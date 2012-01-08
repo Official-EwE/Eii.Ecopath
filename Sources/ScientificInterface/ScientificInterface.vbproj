@@ -176,6 +176,9 @@
     <Compile Include="AppLauncher_helpers.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\cEwEStatusBar.designer.vb">
+      <DependentUpon>cEwEStatusBar.vb</DependentUpon>
+    </Compile>
     <Compile Include="Controls\dlgConfig.Designer.vb">
       <DependentUpon>dlgConfig.vb</DependentUpon>
     </Compile>
@@ -1815,6 +1818,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEResultsExtractorPlugin\EwEResultsExtractorPlugin.vbproj">
       <Project>{0913D0AE-BDEC-4C3E-9551-D0A314BE9DE6}</Project>
       <Name>EwEResultsExtractorPlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
+      <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
+      <Name>EwEShapeGridPlugin %28EwE custom plugins\EwEShapeGridPlugin\EwEShapeGridPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>

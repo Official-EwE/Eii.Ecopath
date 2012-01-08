@@ -82,6 +82,11 @@ Public Class cCore
     ''' <param name="EcospaceResults">Ecospace results for a single time step.</param>
     Public Delegate Sub EcoSpaceInterfaceDelegate(ByRef EcospaceResults As cEcospaceTimestep)
 
+    ''' <summary>
+    ''' Delegate that can be passed to the core to allow interruption of a run or search
+    ''' </summary>
+    Public Delegate Sub StopRunDelegate()
+
 #End Region ' Public delegates
 
 #Region " Generic variables "
@@ -143,6 +148,11 @@ Public Class cCore
     ''' </summary>
     ''' <remarks>This list is used by the core to stop all running models when something major happens. </remarks>
     Private m_ThreadedProcesses As New List(Of IThreadedProcess)
+
+    ''' <summary>
+    ''' Delegate to interrupt a run
+    ''' </summary>
+    Private m_dgtStop As StopRunDelegate = Nothing
 
 #End Region ' Generic variables
 
@@ -2415,6 +2425,55 @@ Public Class cCore
         Return cFileUtils.ToOutputFilename(Me.DataSource.FileName, strComponent, strScenario, strExt, strFilter)
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Check wether a means to stop any running process is in place.
+    ''' </summary>
+    ''' <returns>True if any current running process can be stopped.</returns>
+    ''' <remarks>
+    ''' <para>To set a means to stop any running process see <see cref="SetStopRunDelegate"/>.</para>
+    ''' <para>Call <see cref="StopRun"/> to invoke this delegate. The implementation that this delegate refers to is 
+    ''' responsible for implementing the stopping of the process</para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Function CanStopRun() As Boolean
+        If Not (Me.m_StateMonitor.IsComputing Or Me.m_StateMonitor.IsSearching) Then
+            Return False
+        End If
+        Return (Me.m_dgtStop IsNot Nothing)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Stop any running process, if possible.
+    ''' </summary>
+    ''' <remarks>
+    ''' <para>To set a means to stop any running process see <see cref="SetStopRunDelegate"/>.</para>
+    ''' <para>Check <see cref="CanStopRun"/> to see if a stop delegate is in place.</para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Sub StopRun()
+        If Me.CanStopRun Then
+            Me.m_dgtStop.Invoke()
+        End If
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Provade the delegate that the core can call to stop any running process.
+    ''' </summary>
+    ''' <param name="dgt">The <see cref="StopRunDelegate">delegate</see> that the core can call to stop a running process.</param>
+    ''' <remarks>
+    ''' <para>Call <see cref="StopRun"/> to invoke this delegate. The implementation that this delegate refers to is 
+    ''' responsible for implementing the stopping of the process</para>
+    ''' <para>Check <see cref="CanStopRun"/> to see if a stop delegate is in place.</para>
+    ''' <para>Note that this delegate is cleared any time the core detects the end of a running process.</para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Sub SetStopRunDelegate(dgt As StopRunDelegate)
+        Me.m_dgtStop = dgt
+    End Sub
 
 #End Region ' Generic helper methods
 
@@ -8000,6 +8059,7 @@ Public Class cCore
 
                     'Tell the StateMonitor an run has started
                     Me.m_StateMonitor.SetEcospaceRun()
+                    Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
                     'Tell the Ecospace results writer that a run has started
                     Me.m_EcospaceResultsCSVWriter.StartWrite()
@@ -13146,6 +13206,11 @@ Public Class cCore
         If Me.m_pluginManager IsNot Nothing Then
             ' Inform the plugin manager of the new core state.
             Me.m_pluginManager.UpdatePluginEnabledStates()
+        End If
+
+        If (Not Me.m_StateMonitor.IsSearching And Not Me.m_StateMonitor.IsComputing) Then
+            ' Remove any pending handbrake
+            Me.m_dgtStop = Nothing
         End If
 
     End Sub

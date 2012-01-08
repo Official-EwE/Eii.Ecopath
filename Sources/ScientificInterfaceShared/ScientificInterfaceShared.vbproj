@@ -876,6 +876,7 @@
     <None Include="Resources\fish.png" />
     <None Include="Resources\Back.png" />
     <None Include="Resources\Critical.png" />
+    <None Include="Resources\Cancel.png" />
     <Content Include="Resources\database.png" />
     <None Include="Resources\chain_vert.png" />
     <None Include="Resources\chain_horz.png" />

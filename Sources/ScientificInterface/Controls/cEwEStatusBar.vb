@@ -1,8 +1,7 @@
 ﻿Option Strict On
+Imports System.Reflection
 Imports EwECore
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports System.Reflection
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 ''' -----------------------------------------------------------------------
@@ -11,21 +10,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' </summary>
 ''' -----------------------------------------------------------------------
 Public Class cEwEStatusBar
-    Inherits StatusStrip
 
     ''' <summary>The ui context to use.</summary>
     Private m_uic As cUIContext = Nothing
 
     ''' <summary>The core state monitor offering events to observe.</summary>
     Private WithEvents m_csm As cCoreStateMonitor = Nothing
-    Private WithEvents m_tsEcopathModel As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsEcosimScenario As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsEcospaceScenario As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsEcotracerScenario As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsStatus As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsbProgress As System.Windows.Forms.ToolStripProgressBar
-    Private WithEvents m_tslVersion As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents m_tsiModified As System.Windows.Forms.ToolStripStatusLabel
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -33,7 +23,14 @@ Public Class cEwEStatusBar
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub New()
+        ' Load
         Me.InitializeComponent()
+        ' Hide all items at startup
+        For Each item As ToolStripItem In Me.Items
+            item.Visible = False
+        Next
+        ' .. except for springy status label, which needs to push the model and scenario controls to the right
+        Me.m_tsStatus.Visible = True
     End Sub
 
     Public Sub Attach(ByVal uic As cUIContext)
@@ -42,7 +39,6 @@ Public Class cEwEStatusBar
 
         Me.m_uic = uic
         Me.m_csm = Me.m_uic.Core.StateMonitor
-        Me.m_tslVersion.Text = an.Version.ToString()
 
     End Sub
 
@@ -79,6 +75,13 @@ Public Class cEwEStatusBar
     Private Sub m_csm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
         Handles m_csm.CoreExecutionStateEvent
         Me.UpdateModelPanes()
+    End Sub
+
+    Private Sub OnStopRun(sender As Object, e As System.EventArgs) Handles m_tslStop.Click
+        Try
+            Me.m_uic.Core.StopRun()
+        Catch ex As Exception
+        End Try
     End Sub
 
 #End Region ' Events
@@ -173,10 +176,6 @@ Public Class cEwEStatusBar
             Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
         End If
 
-        ' JS 12Apr2010: removed, dirty feedback handled by save button in model bar
-        '' Update modified indicator
-        'Me.m_tsiModified.Visible = Me.m_csm.IsModified()
-
     End Sub
 
     Private Function ToTooltipLabel(ByVal str As String) As String
@@ -208,7 +207,6 @@ Public Class cEwEStatusBar
 
         ' Configure the item that was found
         With tsi
-            .Height = 18
             .Text = strText
             .ToolTipText = strTooltipText
             ' Hide item if item has no text
@@ -247,13 +245,16 @@ Public Class cEwEStatusBar
         Select Case sProgress
             Case 0
                 Me.m_tsbProgress.Visible = False
+                Me.m_tslStop.Visible = False
             Case -1
                 Me.m_tsbProgress.Style = ProgressBarStyle.Marquee
                 Me.m_tsbProgress.Visible = True
+                Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
             Case Else
                 Me.m_tsbProgress.Style = ProgressBarStyle.Continuous
                 Me.m_tsbProgress.Visible = True
                 Me.m_tsbProgress.Value = CInt(Math.Max(Math.Min(100, sProgress * 100), 0))
+                Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
         End Select
 
         ' Redraw status bar immediately
@@ -264,89 +265,4 @@ Public Class cEwEStatusBar
 
 #End Region ' Pane content handling
 
-    Private Sub InitializeComponent()
-        Me.m_tsbProgress = New System.Windows.Forms.ToolStripProgressBar
-        Me.m_tsStatus = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tslVersion = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcopathModel = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcosimScenario = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcospaceScenario = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsEcotracerScenario = New System.Windows.Forms.ToolStripStatusLabel
-        Me.m_tsiModified = New System.Windows.Forms.ToolStripStatusLabel
-        Me.SuspendLayout()
-        '
-        'm_tsbProgress
-        '
-        Me.m_tsbProgress.Name = "m_tsbProgress"
-        Me.m_tsbProgress.Step = 1
-        Me.m_tsbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous
-        Me.m_tsbProgress.Visible = False
-        '
-        'm_tsStatus
-        '
-        Me.m_tsStatus.Name = "m_tsStatus"
-        Me.m_tsStatus.Spring = True
-        Me.m_tsStatus.Text = ""
-        Me.m_tsStatus.TextAlign = ContentAlignment.MiddleLeft
-        Me.m_tsStatus.Visible = True
-        '
-        'm_tsEcopathModel
-        '
-        Me.m_tsEcopathModel.AutoToolTip = True
-        Me.m_tsEcopathModel.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcopathModel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcopathModel.Image = SharedResources.Ecopath_32x32
-        Me.m_tsEcopathModel.Name = "m_tsEcopathModel"
-        Me.m_tsEcopathModel.Visible = False
-        '
-        'm_tsEcosimScenario
-        '
-        Me.m_tsEcosimScenario.AutoToolTip = True
-        Me.m_tsEcosimScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcosimScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcosimScenario.Image = sharedResources.Ecosim_32x32
-        Me.m_tsEcosimScenario.Name = "m_tsEcosimScenario"
-        Me.m_tsEcosimScenario.Visible = False
-        '
-        'm_tsEcospaceScenario
-        '
-        Me.m_tsEcospaceScenario.AutoToolTip = True
-        Me.m_tsEcospaceScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcospaceScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcospaceScenario.Image = sharedResources.Ecospace_32x32
-        Me.m_tsEcospaceScenario.Name = "m_tsEcospaceScenario"
-        Me.m_tsEcospaceScenario.Visible = False
-        '
-        'm_tsEcotracerScenario
-        '
-        Me.m_tsEcotracerScenario.AutoToolTip = True
-        Me.m_tsEcotracerScenario.BorderSides = CType((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left Or System.Windows.Forms.ToolStripStatusLabelBorderSides.Right), System.Windows.Forms.ToolStripStatusLabelBorderSides)
-        Me.m_tsEcotracerScenario.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter
-        Me.m_tsEcotracerScenario.Image = sharedResources.Ecotracer_32x32
-        Me.m_tsEcotracerScenario.Name = "m_tsEcotracerScenario"
-        Me.m_tsEcotracerScenario.Visible = False
-        '
-        'm_tsiModified
-        '
-        Me.m_tsiModified.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsiModified.Image = SharedResources.SaveModified
-        Me.m_tsiModified.Name = "m_tsiModified"
-        Me.m_tsiModified.Visible = False
-        '
-        'm_tslVersion
-        '
-        Me.m_tslVersion.Name = "m_tslVersion"
-        Me.m_tslVersion.Size = New System.Drawing.Size(39, 21)
-        Me.m_tslVersion.Text = "<EwE version>"
-        Me.m_tslVersion.Visible = False
-        Me.ResumeLayout(False)
-        '
-        'moi
-        '
-        Me.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbProgress, Me.m_tsStatus, Me.m_tsEcopathModel, Me.m_tsEcosimScenario, Me.m_tsEcospaceScenario, Me.m_tsEcotracerScenario, Me.m_tsiModified, Me.m_tslVersion})
-        Me.ShowItemToolTips = True
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
-
-    End Sub
 End Class
