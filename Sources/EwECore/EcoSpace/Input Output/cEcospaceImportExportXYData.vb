@@ -13,7 +13,7 @@ Imports EwEUtils.Utilities
 ' There is a high degree of overlap in the read/write logic here and in cEcospaceCSVResultWriter. That is silly.
 ' Moreover, it would be really nice if the logic presented here would be available to the spatial assets plugin via datasets.
 ' This is probably best accomplished by making this class and the EcospaceResultsWriter both use an cEcospaceLayer to provide access to their data.
-' The plugin can then wrap this class as a IDataset to perform its import and export magic.
+' The plugin can then wrap this class as a IDataProvider to perform its import and export magic.
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
