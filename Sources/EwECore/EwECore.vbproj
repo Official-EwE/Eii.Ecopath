@@ -136,6 +136,7 @@
     <Compile Include="Database\Updates\cDBUpdate6_02_00_03.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_02_00_04.vb" />
     <Compile Include="Database\Updates\cDBUpdate6_02_00_05.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchParameters.vb" />

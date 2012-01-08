@@ -168,6 +168,28 @@ Namespace Ecospace.Basemap.Layers
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a collection with the EwE foundation layers.
+        ''' </summary>
+        ''' <param name="uic"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function BaseRasterLayers(uic As cUIContext) As cLayer()
+
+            Dim lLayers As New List(Of cLayer)
+
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerMPA))
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitat))
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerHabitatCapacityInput))
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
+
+            Return lLayers.ToArray()
+
+        End Function
     End Class
 
 End Namespace

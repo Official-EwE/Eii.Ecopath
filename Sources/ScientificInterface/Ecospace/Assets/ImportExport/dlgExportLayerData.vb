@@ -3,9 +3,9 @@
 Option Strict On
 
 Imports System.IO
-Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
+Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -21,7 +21,6 @@ Namespace Ecospace.Basemap
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class dlgExportLayerData
-        Inherits Form
 
 #Region " Private classes "
 
@@ -133,13 +132,20 @@ Namespace Ecospace.Basemap
                 Me.StretchColumnsToFitWidth()
             End Sub
 
-            Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+            Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+                MyBase.OnCellValueChanged(p, cell)
 
                 Dim strField As String = Me.FieldAtRow(p.Row)
                 Dim layer As cLayer = Me.LayerAtRow(p.Row)
 
                 Try
-                    Me.m_dtLayerMapping(layer) = strField
+                    If String.IsNullOrWhiteSpace(strField) Then
+                        ' May be nothing
+                        Me.m_dtLayerMapping(layer) = String.Empty
+                    Else
+                        Me.m_dtLayerMapping(layer) = strField
+                    End If
                 Catch ex As Exception
                 End Try
 
@@ -176,7 +182,7 @@ Namespace Ecospace.Basemap
         Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cLayer)
         Private m_bDataValid As Boolean = False
-        Private m_data As cImportExportData = Nothing
+        Private m_data As cEcospaceImportExportXYData = Nothing
 
 #End Region ' Private vars
 
@@ -217,12 +223,14 @@ Namespace Ecospace.Basemap
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
+            Dim f As New cLayerFactoryInternal()
+
             ' Set default file
-            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileLocation("layer"))
+            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileLocation("layers"))
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
-                Me.m_lLayers.AddRange(cImportExportData.DefaultLayers(Me.m_uic))
+                Me.m_lLayers.AddRange(f.BaseRasterLayers(Me.m_uic))
             End If
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic
@@ -280,55 +288,9 @@ Namespace Ecospace.Basemap
 
 #Region " Internals "
 
-        ''' <summary>
-        ''' Write data to a shape file.
-        ''' </summary>
-        ''' <param name="strFile"></param>
-        ''' <returns></returns>
-        Private Function WriteCSVFile(ByVal strFile As String) As Boolean
-
-            Dim tw As TextWriter = Nothing
-            Dim strField As String = ""
-            Dim sb As New StringBuilder()
-
-            ' Write header line
-            For iField As Integer = 0 To Me.m_data.Fields.Count - 1
-                If iField > 0 Then sb.Append(",")
-                strField = Me.m_data.Fields(iField).Trim
-
-                While strField.StartsWith(""""c) And strField.EndsWith("""")
-                    strField = strField.Substring(1, strField.Length - 2)
-                End While
-
-                If strField.Contains(""""c) Or strField.Contains(","c) Then
-                    strField = """" & strField & """"
-                End If
-
-                sb.Append(strField)
-            Next
-            sb.AppendLine()
-
-            For iCell As Integer = 0 To Me.m_data.NumCells - 1
-                For iField As Integer = 0 To Me.m_data.Fields.Count - 1
-                    If iField > 0 Then sb.Append(",")
-                    sb.Append(Me.m_data.Value(iCell, Me.m_data.Fields(iField)))
-                Next iField
-                sb.AppendLine()
-            Next iCell
-
-            Try
-                tw = New StreamWriter(strFile)
-                tw.Write(sb.ToString())
-                tw.Close()
-            Catch ex As Exception
-                Return False
-            End Try
-
-            Return True
-
-        End Function
-
         Private Function SaveMappedLayers() As Boolean
+
+            ' ToDo: localize this method
 
             Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
@@ -342,43 +304,45 @@ Namespace Ecospace.Basemap
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
 
-            ' Populate local data
-            For Each layer In dtMappings.Keys
-                strField = dtMappings(layer).Trim
-                If Not String.IsNullOrEmpty(strField) Then
-                    If (lstrFields.IndexOf(strField) = -1) Then
-                        lstrFields.Add(strField)
-                    End If
-                End If
-            Next
-            ' Yippee
-            lstrFields.Sort()
-            lstrFields.Insert(0, Me.RowField)
-            lstrFields.Insert(0, Me.ColField)
+            Try
 
-            ' Create data
-            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, lstrFields.ToArray())
-
-            ' Store layer
-            For iRow = 1 To bm.InRow
-                For iCol = 1 To bm.InCol
-                    ' Populate row, col value (duh!)
-                    Me.m_data.Value(iRow - 1, iCol - 1, Me.RowField) = CSng(iRow)
-                    Me.m_data.Value(iRow - 1, iCol - 1, Me.ColField) = CSng(iCol)
-
-                    ' Populate data
-                    For Each layer In dtMappings.Keys
-                        strField = dtMappings(layer)
-                        If Not String.IsNullOrEmpty(strField.Trim) Then
-                            Me.m_data.Value(iRow - 1, iCol - 1, strField) = CSng(layer.Value(iRow, iCol))
+                ' Populate local data
+                For Each layer In dtMappings.Keys
+                    strField = dtMappings(layer).Trim
+                    If Not String.IsNullOrWhiteSpace(strField) Then
+                        If (lstrFields.IndexOf(strField) = -1) Then
+                            lstrFields.Add(strField)
                         End If
-                    Next layer
-                Next iCol
-            Next iRow
+                    End If
+                Next
 
-            Me.WriteCSVFile(strFile)
+                ' Create data
+                Me.m_data = New cEcospaceImportExportXYData(bm, lstrFields.ToArray())
+
+                ' Store layer
+                For iRow = 1 To bm.InRow
+                    For iCol = 1 To bm.InCol
+                        ' Populate data
+                        For Each layer In dtMappings.Keys
+                            strField = dtMappings(layer)
+                            If Not String.IsNullOrEmpty(strField.Trim) Then
+                                Me.m_data.Value(iRow, iCol, strField) = CSng(layer.Value(iRow, iCol))
+                            End If
+                        Next layer
+                    Next iCol
+                Next iRow
+
+                Me.m_data.WriteXYFile(strFile, Me.ColField, Me.RowField)
+
+            Catch ex As Exception
+
+            End Try
 
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+
+            ' Log this
+            Dim msg As New cMessage(String.Format("Layer data exported to '{0}'", strFile), eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
+            Me.m_uic.Core.Messages.SendMessage(msg)
 
             Return True
 
@@ -413,171 +377,6 @@ Namespace Ecospace.Basemap
         End Sub
 
 #End Region ' Internals
-
-#Region " DevStudio generated surprises "
-
-        'Form overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-            MyBase.Dispose(disposing)
-        End Sub
-
-        'Required by the Windows Form Designer
-        Private components As System.ComponentModel.IContainer
-
-        'NOTE: The following procedure is required by the Windows Form Designer
-        'It can be modified using the Windows Form Designer.  
-        'Do not modify it using the code editor.
-        <System.Diagnostics.DebuggerStepThrough()> _
-        Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportLayerData))
-            Me.m_lblTarget = New System.Windows.Forms.Label()
-            Me.m_tbTarget = New System.Windows.Forms.TextBox()
-            Me.m_btnBrowseTarget = New System.Windows.Forms.Button()
-            Me.m_lblMappings = New System.Windows.Forms.Label()
-            Me.m_tlpOkCancel = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_bntOK = New System.Windows.Forms.Button()
-            Me.m_btnCancel = New System.Windows.Forms.Button()
-            Me.m_grid = New ScientificInterface.Ecospace.Basemap.dlgExportLayerData.gridExportMappings()
-            Me.m_lblRow = New System.Windows.Forms.Label()
-            Me.m_lblCol = New System.Windows.Forms.Label()
-            Me.m_tbRow = New System.Windows.Forms.TextBox()
-            Me.m_tbCol = New System.Windows.Forms.TextBox()
-            Me.m_tlpOkCancel.SuspendLayout()
-            Me.SuspendLayout()
-            '
-            'm_lblTarget
-            '
-            resources.ApplyResources(Me.m_lblTarget, "m_lblTarget")
-            Me.m_lblTarget.Name = "m_lblTarget"
-            '
-            'm_tbTarget
-            '
-            resources.ApplyResources(Me.m_tbTarget, "m_tbTarget")
-            Me.m_tbTarget.Name = "m_tbTarget"
-            '
-            'm_btnBrowseTarget
-            '
-            resources.ApplyResources(Me.m_btnBrowseTarget, "m_btnBrowseTarget")
-            Me.m_btnBrowseTarget.Name = "m_btnBrowseTarget"
-            Me.m_btnBrowseTarget.UseVisualStyleBackColor = True
-            '
-            'm_lblMappings
-            '
-            resources.ApplyResources(Me.m_lblMappings, "m_lblMappings")
-            Me.m_lblMappings.Name = "m_lblMappings"
-            '
-            'm_tlpOkCancel
-            '
-            resources.ApplyResources(Me.m_tlpOkCancel, "m_tlpOkCancel")
-            Me.m_tlpOkCancel.Controls.Add(Me.m_bntOK, 0, 0)
-            Me.m_tlpOkCancel.Controls.Add(Me.m_btnCancel, 1, 0)
-            Me.m_tlpOkCancel.Name = "m_tlpOkCancel"
-            '
-            'm_bntOK
-            '
-            resources.ApplyResources(Me.m_bntOK, "m_bntOK")
-            Me.m_bntOK.Name = "m_bntOK"
-            '
-            'm_btnCancel
-            '
-            resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
-            Me.m_btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-            Me.m_btnCancel.Name = "m_btnCancel"
-            '
-            'm_grid
-            '
-            Me.m_grid.AllowBlockSelect = True
-            resources.ApplyResources(Me.m_grid, "m_grid")
-            Me.m_grid.AutoSizeMinHeight = 10
-            Me.m_grid.AutoSizeMinWidth = 10
-            Me.m_grid.AutoStretchColumnsToFitWidth = False
-            Me.m_grid.AutoStretchRowsToFitHeight = False
-            Me.m_grid.BackColor = System.Drawing.Color.White
-            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_grid.CustomSort = False
-            Me.m_grid.FixedColumnWidths = False
-            Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_grid.GridToolTipActive = True
-            Me.m_grid.Layers = Nothing
-            Me.m_grid.Name = "m_grid"
-            Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_grid.UIContext = Nothing
-            '
-            'm_lblRow
-            '
-            resources.ApplyResources(Me.m_lblRow, "m_lblRow")
-            Me.m_lblRow.Name = "m_lblRow"
-            '
-            'm_lblCol
-            '
-            resources.ApplyResources(Me.m_lblCol, "m_lblCol")
-            Me.m_lblCol.Name = "m_lblCol"
-            '
-            'm_tbRow
-            '
-            resources.ApplyResources(Me.m_tbRow, "m_tbRow")
-            Me.m_tbRow.Name = "m_tbRow"
-            '
-            'm_tbCol
-            '
-            resources.ApplyResources(Me.m_tbCol, "m_tbCol")
-            Me.m_tbCol.Name = "m_tbCol"
-            '
-            'dlgExportLayerData
-            '
-            Me.AcceptButton = Me.m_bntOK
-            Me.CancelButton = Me.m_btnCancel
-            resources.ApplyResources(Me, "$this")
-            Me.ControlBox = False
-            Me.Controls.Add(Me.m_tbCol)
-            Me.Controls.Add(Me.m_tbRow)
-            Me.Controls.Add(Me.m_lblCol)
-            Me.Controls.Add(Me.m_lblRow)
-            Me.Controls.Add(Me.m_tlpOkCancel)
-            Me.Controls.Add(Me.m_grid)
-            Me.Controls.Add(Me.m_lblMappings)
-            Me.Controls.Add(Me.m_tbTarget)
-            Me.Controls.Add(Me.m_btnBrowseTarget)
-            Me.Controls.Add(Me.m_lblTarget)
-            Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
-            Me.Name = "dlgExportLayerData"
-            Me.ShowIcon = False
-            Me.ShowInTaskbar = False
-            Me.m_tlpOkCancel.ResumeLayout(False)
-            Me.ResumeLayout(False)
-            Me.PerformLayout()
-
-        End Sub
-
-        Private WithEvents m_lblTarget As System.Windows.Forms.Label
-        Private WithEvents m_tbTarget As System.Windows.Forms.TextBox
-        Private WithEvents m_btnBrowseTarget As System.Windows.Forms.Button
-        Private WithEvents m_lblMappings As System.Windows.Forms.Label
-        Private WithEvents m_grid As gridExportMappings
-        Private WithEvents m_tlpOkCancel As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_bntOK As System.Windows.Forms.Button
-        Private WithEvents m_btnCancel As System.Windows.Forms.Button
-        Private WithEvents m_lblRow As System.Windows.Forms.Label
-        Private WithEvents m_lblCol As System.Windows.Forms.Label
-        Private WithEvents m_tbRow As System.Windows.Forms.TextBox
-        Private WithEvents m_tbCol As System.Windows.Forms.TextBox
-
-#End Region ' DevStudio generated surprises
 
     End Class
 

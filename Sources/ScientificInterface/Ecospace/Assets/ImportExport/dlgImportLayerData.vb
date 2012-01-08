@@ -5,7 +5,7 @@ Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
+Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
@@ -234,7 +234,7 @@ Namespace Ecospace.Basemap
 
         Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cLayer)
-        Private m_data As cImportExportData = Nothing
+        Private m_data As cEcospaceImportExportXYData = Nothing
 
 #End Region ' Private vars
 
@@ -274,12 +274,14 @@ Namespace Ecospace.Basemap
 
             Debug.Assert(Me.m_uic IsNot Nothing)
 
+            Dim f As New cLayerFactoryInternal()
+
             ' Set default file
             Me.m_tbInput.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileLocation("layer"))
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
-                Me.m_lLayers.AddRange(cImportExportData.DefaultLayers(Me.m_uic))
+                Me.m_lLayers.AddRange(f.BaseRasterLayers(Me.m_uic))
             End If
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic
@@ -389,47 +391,18 @@ Namespace Ecospace.Basemap
 
         Private Function ReadCSVFile() As Boolean
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim tr As TextReader = Nothing
-            Dim strLine As String = ""
-            Dim astrFields As String() = Nothing
-            Dim astrValues As String() = Nothing
-            Dim iCell, iField As Integer
-            Dim sValue As Single = 0.0!
+            ' Create data buffer
+            Me.m_data = New cEcospaceImportExportXYData(Me.m_uic.Core.EcospaceBasemap)
 
-            Try
-                tr = New StreamReader(Me.m_tbInput.Text)
-            Catch ex As Exception
+            ' Read file
+            If (Not Me.m_data.ReadXYFile(Me.m_tbInput.Text)) Then
                 Return False
-            End Try
+            End If
 
-            ' Read fields line
-            strLine = tr.ReadLine()
-            astrFields = cStringUtils.SplitQualified(strLine, (","c))
-
-            ' Clean up
-            For i As Integer = 0 To astrFields.Length - 1
-                astrFields(i) = astrFields(i).Trim
-            Next
-
-            Me.m_data = New cImportExportData(bm.InRow, bm.InCol, astrFields)
-
-            iCell = 0
-            While (tr.Peek() <> -1) And (iCell < Me.m_data.NumCells)
-                strLine = tr.ReadLine()
-                astrValues = strLine.Split(","c)
-
-                For iField = 0 To astrFields.Length - 1
-                    Me.m_data.Value(iCell, astrFields(iField)) = CSng(Val(astrValues(iField)))
-                Next
-
-                iCell += 1
-            End While
-
-            tr.Close()
-
+            ' Get fields
+            Dim astrFields As String() = Me.m_data.Fields
             Array.Sort(astrFields)
-
+            ' Show in UI
             Me.m_cmbRow.Items.AddRange(astrFields) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
             Me.m_cmbCol.Items.AddRange(astrFields) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
             Me.m_grid.Fields = astrFields

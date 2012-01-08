@@ -228,6 +228,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\cLayerFactoryScInt.vb" />
+    <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.designer.vb">
+      <DependentUpon>dlgExportLayerData.vb</DependentUpon>
+    </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.Designer.vb">
       <DependentUpon>dlgExternalData.vb</DependentUpon>
     </Compile>
@@ -740,6 +743,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\dlgConfig.resx">
       <DependentUpon>dlgConfig.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
+      <DependentUpon>dlgExportLayerData.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.resx">
       <DependentUpon>dlgExternalData.vb</DependentUpon>
@@ -1437,7 +1443,6 @@
     <Compile Include="Ecosim\Tools\Fit to time series\gridFitToTimeSeriesGroup.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\ImportExport\cImportExportData.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.vb">
       <SubType>Form</SubType>
     </Compile>
