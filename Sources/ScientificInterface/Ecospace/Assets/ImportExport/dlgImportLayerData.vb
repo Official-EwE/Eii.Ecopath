@@ -393,6 +393,7 @@ Namespace Ecospace.Basemap
 
             ' Create data buffer
             Me.m_data = New cEcospaceImportExportXYData(Me.m_uic.Core.EcospaceBasemap)
+            Me.m_grid.Mappings.Clear()
 
             ' Read file
             If (Not Me.m_data.ReadXYFile(Me.m_tbInput.Text)) Then
@@ -405,6 +406,13 @@ Namespace Ecospace.Basemap
             ' Show in UI
             Me.m_cmbRow.Items.AddRange(astrFields) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
             Me.m_cmbCol.Items.AddRange(astrFields) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
+
+            For Each l As cLayer In Me.m_lLayers
+                If Array.IndexOf(astrFields, l.Name) > -1 Then
+                    Me.m_grid.Mappings(l) = l.Name
+                End If
+            Next
+            ' Last apply fields
             Me.m_grid.Fields = astrFields
 
             Return True

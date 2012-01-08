@@ -64,7 +64,7 @@ Namespace Ecospace.Basemap
 
                     If value IsNot Nothing Then
                         For Each l As cLayer In value
-                            Me.m_dtLayerMapping(l) = l.DisplayText.Trim().Replace(" ", "")
+                            Me.m_dtLayerMapping(l) = l.DisplayText.Trim()
                         Next
                     End If
 
