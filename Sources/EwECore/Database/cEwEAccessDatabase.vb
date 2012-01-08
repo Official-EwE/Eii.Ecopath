@@ -43,7 +43,7 @@ Namespace Database
         ' Also here is a resource with a same question you could refer to: 
         ' Detect whether Office 2010 is 32bit or 64bit via the registry (http://stackoverflow.com/questions/2203980/detect-whether-office-2010-is-32bit-or-64bit-via-the-registry).
         ''' <summary>The connection string to connect to a ACCDB database.</summary>
-        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Persist Security Info=False;"
+        Private m_strConnectionACCDB As String = "Provider=Microsoft.ACE.OLEDB.17.0;Data Source={0};Persist Security Info=False;"
         ''' <summary>File name to access database.</summary>
         Private m_strFileName As String = ""
 

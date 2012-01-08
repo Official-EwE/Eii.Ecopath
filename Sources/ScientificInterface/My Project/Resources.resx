@@ -310,7 +310,8 @@ Description: {1}</value>
     <value>Size/Weight</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_NEW" xml:space="preserve">
-    <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from http://ecopath.org/</value>
+    <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from '{0}'</value>
+    <comment>{0}: EwE home URL</comment>
   </data>
   <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
     <value>'{0}' does not seem to be a valid Ecopath model. Do you wish to remove this from the recent file list?</value>
@@ -567,9 +568,10 @@ Description: {1}</value>
     <value>As popup message</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW" xml:space="preserve">
-    <value>This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from http://www.ecopath.org and try again.
+    <value>This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from '{0}' and try again.
 
 EwE can attempt to continue and load the model in read-only mode, but this may not work. Do you wish to try this? You may need to grab a helmet.</value>
+    <comment>{0}: EwE home URL</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM" xml:space="preserve">
     <value>Missing parameter|Values that are required by the model to run correctly.</value>
@@ -749,7 +751,8 @@ Location: {1}</value>
 
 Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
 
-Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links.</value>
+Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
+    <comment>{0}: EwE home URL</comment>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED" xml:space="preserve">
     <value>The start age for stanza '{0}' has been corrected.</value>

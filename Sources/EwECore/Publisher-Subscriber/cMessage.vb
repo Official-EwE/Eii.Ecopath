@@ -52,6 +52,11 @@ Public Class cMessage
     Private m_bSuppressable As Boolean = False
 
     ''' <summary>
+    ''' Hyperlink that may accompany the message
+    ''' </summary>
+    Private m_strHyperlink As String = ""
+
+    ''' <summary>
     ''' List of cVariableStatus objects that are associated with this message
     ''' </summary>
     ''' <value></value>
@@ -191,6 +196,18 @@ Public Class cMessage
         End Get
         Set(ByVal value As Boolean)
             Me.m_bSuppressable = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the hyperlink for this message.
+    ''' </summary>
+    Public Property Hyperlink() As String
+        Get
+            Return Me.m_strHyperlink
+        End Get
+        Set(ByVal value As String)
+            Me.m_strHyperlink = value
         End Set
     End Property
 

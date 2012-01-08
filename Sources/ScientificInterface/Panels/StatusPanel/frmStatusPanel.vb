@@ -10,6 +10,8 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
 Imports ScientificInterfaceShared.Forms
+Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -59,10 +61,10 @@ Public Class frmStatusPanel
         If (Me.m_uic Is Nothing) Then Return
 
         ' Prepare image list
-        Me.m_il.Images.Add(sKEY_INFO, SystemIcons.Information)
-        Me.m_il.Images.Add(sKEY_WARNING, SystemIcons.Warning)
-        Me.m_il.Images.Add(sKEY_ERROR, SystemIcons.Error)
-        Me.m_il.Images.Add(sKEY_QUESTION, SystemIcons.Question)
+        Me.m_il.Images.Add(sKEY_INFO, SharedResources.Info)
+        Me.m_il.Images.Add(sKEY_WARNING, SharedResources.Warning)
+        Me.m_il.Images.Add(sKEY_ERROR, SharedResources.Critical)
+        Me.m_il.Images.Add(sKEY_QUESTION, SharedResources.Question)
 
         ' Set image list
         Me.m_tvStatus.ImageList = Me.m_il
@@ -131,7 +133,6 @@ Public Class frmStatusPanel
         Else
             Me.RefreshHistoryItems()
         End If
-
     End Sub
 
 #End Region ' Events
@@ -267,7 +268,7 @@ Public Class frmStatusPanel
         Dim bSuppressChildren As Boolean = False
 
         ' Prepare treenode
-        Dim tnMessage As TreeNode = New TreeNode(Me.GetLogText(item))
+        Dim tnMessage As TreeNode = New cNavigateTreeview.cHyperlinkTreeNode(Me.GetLogText(item), item.Hyperlink)
         ' Add original message text to tooltip
         tnMessage.ToolTipText = item.Text
         ' Add original message to the master node
@@ -396,6 +397,20 @@ Public Class frmStatusPanel
     End Function
 
 #End Region ' History handling
+
+#Region " Navigation "
+
+    Private Sub OnNavigate(sender As Object, e As ScientificInterfaceShared.Controls.cNavigateTreeview.TreeViewNavigateEventArgs) Handles m_tvStatus.Navigate
+        Try
+            Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+            Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            cmd.Invoke(e.Node.Hyperlink)
+        Catch ex As Exception
+            cLog.Write(ex, "frmStatusPanel:OnNavigate")
+        End Try
+    End Sub
+
+#End Region ' Navigation
 
 End Class
 

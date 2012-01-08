@@ -2529,7 +2529,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from http://ecopath.org/.
+        '''  Looks up a localized string similar to This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from &apos;{0}&apos;.
         '''</summary>
         Public ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_NEW() As String
             Get
@@ -2542,7 +2542,7 @@ Namespace My.Resources
         '''
         '''Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
         '''
-        '''Ecopath 5 can be downloaded from http://ecopath.org/, follow the download links..
+        '''Ecopath 5 can be downloaded from &apos;{0}&apos;, follow the download links..
         '''</summary>
         Public ReadOnly Property PROMPT_ERROR_IMPORT_EWE5_TOO_OLD() As String
             Get
@@ -2551,7 +2551,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from http://www.ecopath.org and try again.
+        '''  Looks up a localized string similar to This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from &apos;{0}&apos; and try again.
         '''
         '''EwE can attempt to continue and load the model in read-only mode, but this may not work. Do you wish to try this? You may need to grab a helmet..
         '''</summary>

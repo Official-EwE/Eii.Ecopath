@@ -47,6 +47,8 @@ Public Class cMessageHistory
 
         ''' <summary>Message text</summary>
         Private m_strText As String = ""
+        ''' <summary>Message hyperlink</summary>
+        Private m_strHyperlink As String = ""
         ''' <summary>Message importance</summary>
         Private m_importance As eMessageImportance = eMessageImportance.Information
         ''' <summary>History item children.</summary>
@@ -81,7 +83,7 @@ Public Class cMessageHistory
         Public Sub New(ByVal pm As cPropertyManager, _
                        ByVal msg As cMessage)
 
-            Me.New(msg.Message, msg.Importance)
+            Me.New(msg.Message, msg.Importance, msg.Hyperlink)
             Me.m_source = msg.Source
 
             For Each vs As cVariableStatus In msg.Variables
@@ -119,7 +121,6 @@ Public Class cMessageHistory
                                 strReply = My.Resources.GENERIC_REPLY_NO
                             Case cFeedbackMessage.eReply.CANCEL
                                 strReply = My.Resources.GENERIC_REPLY_CANCEL
-
                         End Select
 
                 End Select
@@ -162,11 +163,14 @@ Public Class cMessageHistory
         ''' <param name="strMessage">Text to generate history item for.</param>
         ''' <param name="imp"><see cref="eMessageImportance">message importance</see>,
         ''' inherited from the parent message.</param>
+        ''' <param name="strHyperlink">Hyperlink to include in the message.</param>
         ''' -------------------------------------------------------------------
         Private Sub New(ByVal strMessage As String, _
-                        ByVal imp As eMessageImportance)
+                        ByVal imp As eMessageImportance, _
+                        Optional ByVal strHyperlink As String = "")
 
             Me.m_strText = strMessage
+            Me.m_strHyperlink = strHyperlink
             Me.m_importance = imp
             Me.m_time = DateTime.Now
 
@@ -195,6 +199,17 @@ Public Class cMessageHistory
         Public ReadOnly Property Importance() As eMessageImportance
             Get
                 Return Me.m_importance
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the hyperlink that a message was logged with.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Hyperlink As String
+            Get
+                Return Me.m_strHyperlink
             End Get
         End Property
 

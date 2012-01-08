@@ -545,6 +545,9 @@
     <Compile Include="Controls\Shapes\SketchPad\Derived\ucTimeSeriesSketchPad.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\TreeView\cNavigateTreeview.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\Wizard\cWizard.vb" />
     <Compile Include="Controls\Wizard\Interfaces\IWizardNavigation.vb" />
     <Compile Include="Controls\Wizard\Interfaces\IWizardPage.vb" />
@@ -867,10 +870,12 @@
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
     <Content Include="Resources\Annual.png" />
+    <None Include="Resources\Warning.png" />
     <None Include="Resources\tag.png" />
     <None Include="Resources\fishing_gear.png" />
     <None Include="Resources\fish.png" />
     <None Include="Resources\Back.png" />
+    <None Include="Resources\Critical.png" />
     <Content Include="Resources\database.png" />
     <None Include="Resources\chain_vert.png" />
     <None Include="Resources\chain_horz.png" />
@@ -923,6 +928,8 @@
     <None Include="Resources\map.png" />
     <None Include="Resources\NewItem.png" />
     <None Include="Resources\move.png" />
+    <None Include="Resources\Question.png" />
+    <None Include="Resources\Info.png" />
     <Content Include="Resources\Seasonal.png" />
     <None Include="Resources\PieChart.bmp" />
     <None Include="Resources\ani_loader.gif" />

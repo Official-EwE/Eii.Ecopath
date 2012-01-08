@@ -16,7 +16,7 @@ Imports ScientificInterfaceShared.Forms
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStatusPanel))
-        Me.m_tvStatus = New System.Windows.Forms.TreeView
+        Me.m_tvStatus = New ScientificInterfaceShared.Controls.cNavigateTreeview
         Me.SuspendLayout()
         '
         'm_tvStatus
@@ -24,6 +24,7 @@ Imports ScientificInterfaceShared.Forms
         resources.ApplyResources(Me.m_tvStatus, "m_tvStatus")
         Me.m_tvStatus.Name = "m_tvStatus"
         Me.m_tvStatus.ShowLines = False
+        Me.m_tvStatus.DrawMode = TreeViewDrawMode.OwnerDrawText
         '
         'frmStatusPanel
         '
@@ -46,7 +47,7 @@ Imports ScientificInterfaceShared.Forms
 
     End Sub
 
-    Private WithEvents m_tvStatus As System.Windows.Forms.TreeView
+    Private WithEvents m_tvStatus As ScientificInterfaceShared.Controls.cNavigateTreeview
 
 End Class
 

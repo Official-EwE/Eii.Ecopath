@@ -658,7 +658,8 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Public Sub SendMessage(ByVal strMsg As String, _
                            Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
-                           Optional ByVal component As eCoreComponentType = eCoreComponentType.External)
+                           Optional ByVal component As eCoreComponentType = eCoreComponentType.External, _
+                           Optional strHyperlink As String = "")
 
         If Me.InvokeRequired() Then
             Me.Invoke(New SendMessageDelegate(AddressOf Me.SendMessage), _
@@ -667,6 +668,8 @@ Public Class AppLauncher
         End If
 
         Dim msg As New cMessage(strMsg, eMessageType.Any, component, importance)
+        msg.Hyperlink = strHyperlink
+
         Me.Core.Messages.SendMessage(msg)
 
     End Sub
@@ -685,7 +688,8 @@ Public Class AppLauncher
                              Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
                              Optional ByVal component As eCoreComponentType = eCoreComponentType.Core, _
                              Optional ByVal replystyle As cFeedbackMessage.eReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, _
-                             Optional ByVal defaultreply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES) As cFeedbackMessage.eReply
+                             Optional ByVal defaultreply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES, _
+                             Optional strHyperlink As String = "") As cFeedbackMessage.eReply
 
         If Me.InvokeRequired() Then
             Dim dlgt As New AskFeedbackDelegate(AddressOf Me.AskFeedback)
@@ -694,6 +698,7 @@ Public Class AppLauncher
         End If
 
         Dim fmsg As New cFeedbackMessage(strMsg, component, eMessageType.Any, importance, replystyle, eDataTypes.NotSet, defaultreply)
+        fmsg.Hyperlink = strHyperlink
         Me.Core.Messages.SendMessage(fmsg)
         Return fmsg.Reply
 
@@ -1132,7 +1137,8 @@ Public Class AppLauncher
         Select Case comp
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooOld
-                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD)
+                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_OLD, My.Resources.ewe_home_url), _
+                               strHyperlink:=My.Resources.ewe_home_url)
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5Supported
                 Me.AddRecentFilesSetting(strFileName)
@@ -1146,16 +1152,18 @@ Public Class AppLauncher
                 End If
 
             Case cEwEDatabase.eCompatibilityTypes.EwE5TooNew
-                Me.SendMessage(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW)
+                Me.SendMessage(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE5_TOO_NEW, My.Resources.ewe_home_url), _
+                               strHyperlink:=My.Resources.ewe_home_url)
 
             Case cEwEDatabase.eCompatibilityTypes.EwE6
                 ' Yippee
 
             Case cEwEDatabase.eCompatibilityTypes.UnknownFuture
-                If Me.AskFeedback(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, _
-                                   eMessageImportance.Question, _
-                                   eCoreComponentType.DataSource, _
-                                   cFeedbackMessage.eReplyStyle.YES_NO) = cFeedbackMessage.eReply.NO Then
+                If Me.AskFeedback(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, My.Resources.ewe_home_url), _
+                                  eMessageImportance.Question, _
+                                  eCoreComponentType.DataSource, _
+                                  cFeedbackMessage.eReplyStyle.YES_NO, _
+                                  strHyperlink:=My.Resources.ewe_home_url) = cFeedbackMessage.eReply.NO Then
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
                 End If
 
@@ -1176,12 +1184,14 @@ Public Class AppLauncher
     Private Sub ReportFileAccessError(ByVal atResult As eDatasourceAccessType, ByVal strFileName As String)
 
         Dim strMessage As String = ""
+        Dim strHyperlink As String = ""
 
         Select Case atResult
             Case eDatasourceAccessType.Failed_ReadOnly
                 strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_READONLY, strFileName)
             Case eDatasourceAccessType.Failed_OSUnsupported
                 strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_OS, strFileName)
+                strHyperlink = "http://www.microsoft.com/download/en/details.aspx?displaylang=en&id=13255"
             Case eDatasourceAccessType.Failed_FileNotFound
                 strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_404, strFileName)
             Case eDatasourceAccessType.Failed_CannotSave
@@ -1190,7 +1200,7 @@ Public Class AppLauncher
                 strMessage = String.Format(My.Resources.STATUS_MODEL_ACCESS_FAILED, strFileName)
         End Select
 
-        Me.SendMessage(strMessage, eMessageImportance.Warning, eCoreComponentType.DataSource)
+        Me.SendMessage(strMessage, eMessageImportance.Warning, eCoreComponentType.DataSource, strHyperlink:=strHyperlink)
 
     End Sub
 

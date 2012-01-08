@@ -397,6 +397,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Critical() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Critical", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property Database() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Database", resourceCulture)
@@ -5181,6 +5188,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Info() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Info", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property InsertPictureHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("InsertPictureHS", resourceCulture)
@@ -5751,6 +5765,13 @@ Namespace My.Resources
         Public ReadOnly Property ProtectFormHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ProtectFormHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Question() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Question", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -6376,6 +6397,13 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_TCATCHINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_TCATCHINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Warning() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Warning", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
