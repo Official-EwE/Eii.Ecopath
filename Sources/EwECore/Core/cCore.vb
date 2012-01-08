@@ -2461,14 +2461,18 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Provade the delegate that the core can call to stop any running process.
+    ''' Provide the delegate that the core can call to stop any running process.
     ''' </summary>
-    ''' <param name="dgt">The <see cref="StopRunDelegate">delegate</see> that the core can call to stop a running process.</param>
+    ''' <param name="dgt">The <see cref="StopRunDelegate">delegate</see> that the core 
+    ''' can call to stop a running process. if Nothing is provided the core loses
+    ''' its ability to abort a running process.</param>
     ''' <remarks>
-    ''' <para>Call <see cref="StopRun"/> to invoke this delegate. The implementation that this delegate refers to is 
-    ''' responsible for implementing the stopping of the process</para>
+    ''' <para>Call <see cref="StopRun"/> to invoke this delegate. The implementation 
+    ''' that this delegate refers to is responsible for implementing the stopping 
+    ''' of the process</para>
     ''' <para>Check <see cref="CanStopRun"/> to see if a stop delegate is in place.</para>
-    ''' <para>Note that this delegate is cleared any time the core detects the end of a running process.</para>
+    ''' <para>Note that this delegate is cleared any time the core detects the end 
+    ''' of a running process.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Sub SetStopRunDelegate(dgt As StopRunDelegate)
@@ -7372,12 +7376,13 @@ Public Class cCore
         If Me.m_EcoSimData.bMultiThreaded Then
             bMultiThread = True
             Me.m_EcoSim.RunCompletedDelegate = AddressOf Me.EcoSimRunCompleted
+            Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcoSim))
         End If
 
         'make sure all the searches are turned off
-        m_EcoSim.setSearchOff()
+        Me.m_EcoSim.setSearchOff()
         Me.ResetEcosimGroupOutputs()
-        m_EcoSim.bStopRunning = False
+        Me.m_EcoSim.bStopRunning = False
 
         m_EcoSim.Run()
 
@@ -13210,7 +13215,7 @@ Public Class cCore
 
         If (Not Me.m_StateMonitor.IsSearching And Not Me.m_StateMonitor.IsComputing) Then
             ' Remove any pending handbrake
-            Me.m_dgtStop = Nothing
+            Me.SetStopRunDelegate(Nothing)
         End If
 
     End Sub
