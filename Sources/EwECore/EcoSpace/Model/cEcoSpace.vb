@@ -5799,7 +5799,7 @@ exitline:
     ''' 1.)The Capacity input map and Habitat preferences are summed into the capacity map.
     ''' 2.)The Enviromental input maps are multiplied onto the existing capacity. This allows the Enviromental maps to reduce the capacity.
     ''' 3.)The capacity map is normalized.
-    ''' 4.)Capacity gradients are set to from low to high capacity cells
+    ''' 4.)Capacity gradients are set to move biomass from low to high capacity cells
     ''' </remarks>
     Public Sub SetHabCap()
         'set up array of relative habitat capacities by cell and group
@@ -5853,8 +5853,6 @@ exitline:
                 Next icol
             Next irow
         Next igrp
-
-
 
         Return bReturn
 
