@@ -29,7 +29,7 @@ Public Class cEcospaceImportExportXYData
 
     Private m_bm As cEcospaceBasemap = Nothing
 
-    Private m_data As New Dictionary(Of String, Single())
+    Private m_readbuffer As New Dictionary(Of String, Single())
     Private m_astrFields As String() = Nothing
     Private m_bRowColImplicit As Boolean = False
 
@@ -196,12 +196,12 @@ Public Class cEcospaceImportExportXYData
             End If
 
             ' Clear
-            Me.m_data.Clear()
+            Me.m_readbuffer.Clear()
 
             ' Create storage
             For Each strField As String In Me.Fields
                 Dim asCells(Me.NumCells) As Single
-                Me.m_data.Add(strField, asCells)
+                Me.m_readbuffer.Add(strField, asCells)
             Next
 
         End Set
@@ -239,13 +239,13 @@ Public Class cEcospaceImportExportXYData
             If String.IsNullOrEmpty(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
-            Return Me.m_data(strField)(iCell)
+            Return Me.m_readbuffer(strField)(iCell)
         End Get
         Set(ByVal value As Single)
             If String.IsNullOrEmpty(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
-            Me.m_data(strField)(iCell) = value
+            Me.m_readbuffer(strField)(iCell) = value
         End Set
     End Property
 

@@ -1,6 +1,6 @@
-﻿
-#Region "Import"
+﻿#Region "Import"
 
+Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.Core
@@ -19,23 +19,23 @@ Public Class cEcospaceCSVResultsWriter
 #Region "IEcospaceResultsWriter Implementation"
 
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+
         Dim strm As StreamWriter
         Dim fn As String
-
+        Dim varname As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName("Biomass", igrp, Me.getSubDirName())
-            strm = New StreamWriter(fn, True)
 
-            saveCSV(strm, tsData, igrp)
+            fn = Me.getFileName(varname, igrp, Me.getSubDirName())
+            strm = New StreamWriter(fn, True)
+            saveCSV(strm, tsData, igrp, varname)
 
             strm.Close()
             strm = Nothing
         Next
 
     End Sub
-
 
     Public Overrides Sub EndWrite()
 
@@ -44,10 +44,9 @@ Public Class cEcospaceCSVResultsWriter
     Public Overrides Sub StartWrite()
         If Me.SpaceData.bSaveCSV Then
             Me.CreateTimeStampedDir()
-            Me.WriteFileHeaders()
+            Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
         End If
     End Sub
-
 
     Protected Overrides ReadOnly Property OuputType() As cEcospaceBaseResultsWriter.eSpaceOutputType
         Get
@@ -59,21 +58,31 @@ Public Class cEcospaceCSVResultsWriter
 
 #Region "Private methods"
 
-    Private Sub saveCSV(ByRef strm As StreamWriter, ByVal Results As cEcospaceTimestep, ByVal igrp As Integer)
-        Dim buff As String
-        strm.WriteLine("Step," & Results.iTimeStep.ToString)
+    Private Sub saveCSV(ByRef strm As StreamWriter, ByVal timestep As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
+
+        Dim map As cEcospaceLayer = timestep.Layer(varname)
+        Dim sbBuff As New StringBuilder()
+
+        Debug.Assert(map IsNot Nothing)
+
+        ' Apply index, if any
+        If (iIndex <> cCore.NULL_VALUE) Then
+            If (TypeOf map Is ICoreGroupFilter) Then DirectCast(map, ICoreGroupFilter).Group = iIndex
+            If (TypeOf map Is ICoreFleetFilter) Then DirectCast(map, ICoreFleetFilter).Fleet = iIndex
+        End If
+
+        strm.WriteLine("Step," & timestep.iTimeStep.ToString)
         'TimeNow is the loop counter in Ecospace and is not updated until the end of the loop
         'For the Year of this time step we need to add delta T
-        strm.WriteLine("Year," & Results.TimeStepinYears.ToString)
+        strm.WriteLine("Year," & timestep.TimeStepinYears.ToString)
         For ir As Integer = 1 To Me.SpaceData.InRow
             For ic As Integer = 1 To Me.SpaceData.InCol
-                If ic > 1 Then buff = buff & ","
-                buff = buff & cStringUtils.FormatSingle(Results.BiomassMap(ir, ic, igrp))
+                If ic > 1 Then sbBuff.Append(",")
+                sbBuff.Append(cStringUtils.FormatSingle(CSng(map.Cell(ir, ic))))
             Next
-            strm.WriteLine(buff)
-            buff = ""
+            strm.WriteLine(sbBuff.ToString)
+            sbBuff.Length = 0
         Next
-
         strm.WriteLine()
 
     End Sub
@@ -83,28 +92,40 @@ Public Class cEcospaceCSVResultsWriter
     ''' </summary>
     ''' <param name="strm"></param>
     ''' <param name="SpaceTSData"></param>
-    ''' <param name="igrp"></param>
+    ''' <param name="iIndex"></param>
     ''' <remarks></remarks>
-    Private Sub saveXYZ(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
-        Dim buff As String
+    Private Sub saveXYZ(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
+
+        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname)
+
+        Debug.Assert(map IsNot Nothing)
+
+        ' Apply index, if any
+        If (iIndex <> cCore.NULL_VALUE) Then
+            If (TypeOf map Is ICoreGroupFilter) Then DirectCast(map, ICoreGroupFilter).Group = iIndex
+            If (TypeOf map Is ICoreFleetFilter) Then DirectCast(map, ICoreFleetFilter).Fleet = iIndex
+        End If
+
+        ' Write header
         strm.WriteLine("X,Y,Z")
+        ' Write data
         For ir As Integer = 1 To Me.SpaceData.InRow
             For ic As Integer = 1 To Me.SpaceData.InCol
-                buff = ic.ToString & "," & ir.ToString & "," & cStringUtils.FormatSingle(SpaceTSData.BiomassMap(ir, ic, igrp))
-                strm.WriteLine(buff)
-                buff = ""
+                strm.WriteLine("{0},{1},{2}", ic, ir, cStringUtils.FormatSingle(CSng(map.Cell(ir, ic))))
             Next
         Next
+
     End Sub
 
-    Private Sub WriteFileHeaders()
+    Private Sub WriteFileHeaders(ByVal varname As eVarNameFlags)
+
         Dim strm As StreamWriter
         Dim fn As String
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName("Biomass", igrp, "CSV")
+            fn = Me.getFileName(varname, igrp, "CSV")
             strm = New StreamWriter(fn, True)
-            Me.WriteHeader(strm, igrp, "Biomass")
+            Me.WriteHeader(strm, igrp, varname)
             strm.Close()
             strm = Nothing
         Next
@@ -112,7 +133,7 @@ Public Class cEcospaceCSVResultsWriter
     End Sub
 
 
-    Private Sub WriteHeader(ByRef strm As StreamWriter, ByVal igrp As Integer, ByVal Variable As String)
+    Private Sub WriteHeader(ByRef strm As StreamWriter, ByVal igrp As Integer, ByVal varname As eVarNameFlags)
 
         Try
             Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
@@ -127,7 +148,7 @@ Public Class cEcospaceCSVResultsWriter
             strm.WriteLine("Map Latitude," & Me.SpaceData.Lat1)
             strm.WriteLine("Map Longitude," & Me.SpaceData.Lon1)
             strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
-            strm.WriteLine("Variable," & Variable)
+            strm.WriteLine("Variable," & varname.ToString())
             strm.WriteLine("Group name," & Chr(34) & Me.PathData.GroupName(igrp) & Chr(34))
 
             strm.WriteLine()

@@ -9558,7 +9558,7 @@ Public Class cCore
             Next
 
             'load a new results object for the new scenario
-            m_spaceresults = New cEcospaceTimestep(Me.m_EcoSimData, Me.m_EcoSpaceData, Me.m_Stanza)
+            m_spaceresults = New cEcospaceTimestep(Me, Me.m_EcoSimData, Me.m_EcoSpaceData, Me.m_Stanza)
 
             m_EcospaceStats = New cEcospaceStats(Me, cCore.NULL_VALUE)
 

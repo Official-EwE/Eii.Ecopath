@@ -1,33 +1,27 @@
 
 Imports EwEUtils.Core
+Imports EwECore.Core
 
 ''' <summary>
 ''' Results of the current Ecospace time step
 ''' </summary>
-''' <remarks></remarks>
 Public Class cEcospaceTimestep
     Implements ICoreInterface
+    Implements IEcospaceLayerManager
 
 #Region "Private data"
 
+    Private m_core As cCore
     Private m_dbid As Integer
     Private m_name As String
 
     Private m_iTime As Integer
     Private m_ts As Single
     Private m_ConMax() As Single
-    'Private m_biomap(,,) As Single
-    'Private m_effort(,,) As Single
-    'Private m_contaminants(,,) As Single
-
-    'Private m_nRows As Integer
-    'Private m_nCols As Integer
 
     Private m_biomass() As Single 'biomass by group
     Private m_relativebiomass() As Single 'biomass relative to start biomass by group
     Private m_biomassByRegion(,) As Single 'biomass by group region
-
-    'Private m_IBMMap(,,) As Boolean
 
     Private m_spaceData As cEcospaceDataStructures
     Private m_simData As cEcosimDatastructures
@@ -35,10 +29,121 @@ Public Class cEcospaceTimestep
 
 #End Region
 
+#Region "Private classes"
+
+    ''' <summary>
+    ''' Data wrapper for a (row, col, group) formatted Ecospace result.
+    ''' </summary>
+    Friend Class cTimestepLayerGroup
+        Inherits cEcospaceLayerSingle
+        Implements ICoreGroupFilter
+
+        Public Sub New(core As cCore, manager As cEcospaceTimestep, varName As eVarNameFlags)
+            MyBase.New(core, manager, "", varName)
+        End Sub
+
+        Private m_iGroup As Integer = 0
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the group that this layer represents.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property Group() As Integer _
+            Implements ICoreGroupFilter.Group
+            Get
+                Return Me.m_iGroup
+            End Get
+            Set(ByVal value As Integer)
+                If value <> Me.m_iGroup Then
+                    Me.m_iGroup = value
+                End If
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the value of a cell.
+        ''' </summary>
+        ''' <param name="iRow">Row index of the cell to access.</param>
+        ''' <param name="iCol">Column index of the cell to access.</param>
+        ''' <remarks>
+        ''' Note that cells will be accessed for the currently selected 
+        ''' <see cref="Group">group index</see>.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+            Get
+                Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
+                Return data(iRow, iCol, Me.m_iGroup)
+            End Get
+            Set(ByVal value As Object)
+                ' NOP
+            End Set
+        End Property
+
+    End Class
+
+    ''' <summary>
+    ''' Data wrapper for a (fleet, row, col) formatted Ecospace result.
+    ''' </summary>
+    Friend Class cTimestepLayerFleet
+        Inherits cEcospaceLayerSingle
+        Implements ICoreFleetFilter
+
+        Public Sub New(core As cCore, manager As cEcospaceTimestep, varName As eVarNameFlags)
+            MyBase.New(core, manager, "", varName)
+        End Sub
+
+        Private m_iFleet As Integer = 0
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the fleet that this layer represents.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property Fleet() As Integer _
+            Implements ICoreFleetFilter.Fleet
+            Get
+                Return Me.m_iFleet
+            End Get
+            Set(ByVal value As Integer)
+                If value <> Me.m_iFleet Then
+                    Me.m_iFleet = value
+                End If
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the value of a cell.
+        ''' </summary>
+        ''' <param name="iRow">Row index of the cell to access.</param>
+        ''' <param name="iCol">Column index of the cell to access.</param>
+        ''' <remarks>
+        ''' Note that cells will be accessed for the currently selected 
+        ''' <see cref="Fleet">fleet index</see>.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+            Get
+                Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
+                Return data(iRow, iCol, Me.m_iFleet)
+            End Get
+            Set(ByVal value As Object)
+                ' NOP
+            End Set
+        End Property
+
+    End Class
+
+#End Region
+
 #Region "Constructor & Initialization"
 
-    Public Sub New(ByVal EcoSimData As cEcosimDatastructures, ByVal EcoSpaceData As cEcospaceDataStructures, ByVal StanzaData As cStanzaDatastructures)
+    Public Sub New(theCore As cCore, ByVal EcoSimData As cEcosimDatastructures, ByVal EcoSpaceData As cEcospaceDataStructures, ByVal StanzaData As cStanzaDatastructures)
 
+        m_core = theCore
         m_dbid = cCore.NULL_VALUE
         m_name = eDataTypes.EcospaceTimestepResults.ToString
         Me.m_simData = EcoSimData
@@ -401,6 +506,47 @@ Public Class cEcospaceTimestep
             m_name = value
         End Set
     End Property
+
+#End Region
+
+#Region " IEcospaceLayerManager implementation "
+
+    ''' <inheritdocs cref="IEcospaceLayerManager.Layer"/>
+    Public Function Layer(varName As eVarNameFlags, Optional iIndex As Integer = -9999) As cEcospaceLayer Implements Core.IEcospaceLayerManager.Layer
+        Dim lLayers As cEcospaceLayer() = Me.Layers(varName)
+        If (lLayers.Length = 0) Then Return Nothing
+        If (iIndex < 0) Then
+            Return lLayers(0)
+        Else
+            If (iIndex < lLayers.Length) Then
+                Return lLayers(iIndex)
+            End If
+        End If
+        Return Nothing
+    End Function
+
+    ''' <inheritdocs cref="IEcospaceLayerManager.Layers"/>
+    Public Function Layers(Optional varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() Implements Core.IEcospaceLayerManager.Layers
+
+        Dim lLayers As New List(Of cEcospaceLayer)
+        Select Case varName
+            Case eVarNameFlags.EcospaceMapBiomass
+                lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName))
+        End Select
+        Return lLayers.ToArray
+
+    End Function
+
+    ''' <inheritdocs cref="IEcospaceLayerManager.LayerData"/>
+    Public Function LayerData(varName As EwEUtils.Core.eVarNameFlags) As Object Implements Core.IEcospaceLayerManager.LayerData
+
+        Select Case varName
+            Case eVarNameFlags.EcospaceMapBiomass
+                Return Me.BiomassMap
+        End Select
+        Return Nothing
+
+    End Function
 
 #End Region
 

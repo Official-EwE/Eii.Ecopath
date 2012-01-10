@@ -1,6 +1,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore.Core
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
@@ -13,6 +14,7 @@ Imports EwEUtils.Core
 ''' ===========================================================================
 Public Class cEcospaceBasemap
     Inherits cCoreInputOutputBase
+    Implements IEcospaceLayerManager
 
     ''' <summary>The layers maintained in a basemap.</summary>
     Private m_dictLayers As New Dictionary(Of eVarNameFlags, cEcospaceLayer)
@@ -445,22 +447,6 @@ Public Class cEcospaceBasemap
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns a copy of the layers maintained by this class.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Friend Function LayerCollection() As List(Of cEcospaceLayer)
-        Dim l As New List(Of cEcospaceLayer)
-        For Each o As cEcospaceLayer In Me.m_dictLayers.Values
-            l.Add(o)
-        Next
-        l.AddRange(Me.m_lLayerHabitat.ToArray)
-        l.AddRange(Me.m_lLayerImportance.ToArray)
-        l.AddRange(Me.m_lLayerDriver.ToArray)
-        Return l
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get the Ecospace Depth layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -662,7 +648,12 @@ Public Class cEcospaceBasemap
         End Get
     End Property
 
-    Public Function Layers(ByVal varName As eVarNameFlags) As cEcospaceLayer()
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceLayerManager.Layers"/>
+    ''' -----------------------------------------------------------------------
+    Public Function Layers(Optional ByVal varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() _
+        Implements IEcospaceLayerManager.Layers
+
         Select Case varName
             Case eVarNameFlags.LayerHabitat
                 Return Me.m_lLayerHabitat.ToArray
@@ -670,12 +661,29 @@ Public Class cEcospaceBasemap
                 Return Me.m_lLayerImportance.ToArray
             Case eVarNameFlags.LayerDriver
                 Return Me.m_lLayerDriver.ToArray
+            Case eVarNameFlags.NotSet
+                Dim l As New List(Of cEcospaceLayer)
+                ' Add all single layers
+                For Each o As cEcospaceLayer In Me.m_dictLayers.Values
+                    l.Add(o)
+                Next
+                ' Add all indexed layers
+                l.AddRange(Me.m_lLayerHabitat.ToArray)
+                l.AddRange(Me.m_lLayerImportance.ToArray)
+                l.AddRange(Me.m_lLayerDriver.ToArray)
+                ' Done
+                Return l.ToArray
             Case Else
                 Return New cEcospaceLayer() {Me.Layer(varName)}
         End Select
+
     End Function
 
-    Public Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceLayerManager.Layer"/>
+    ''' -----------------------------------------------------------------------
+    Public Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer _
+        Implements IEcospaceLayerManager.Layer
         Select Case varName
             Case eVarNameFlags.LayerDepth
                 Return Me.LayerDepth
@@ -719,7 +727,11 @@ Public Class cEcospaceBasemap
         Return Nothing
     End Function
 
-    Friend Function GetLayerData(ByVal varName As eVarNameFlags) As Object
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceLayerManager.LayerData"/>
+    ''' -----------------------------------------------------------------------
+    Friend Function LayerData(ByVal varName As eVarNameFlags) As Object _
+        Implements IEcospaceLayerManager.LayerData
         Select Case varName
             Case eVarNameFlags.LayerDepth
                 Return Me.m_core.m_EcoSpaceData.Depth

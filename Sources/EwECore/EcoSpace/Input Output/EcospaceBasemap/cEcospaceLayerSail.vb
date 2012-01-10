@@ -40,7 +40,7 @@ Public Class cEcospaceLayerSail
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the value of a a sailing cost cell.
+    ''' Get/set the value of a sailing cost cell.
     ''' </summary>
     ''' <param name="iRow">Row index of the cell to access.</param>
     ''' <param name="iCol">Column index of the cell to access.</param>

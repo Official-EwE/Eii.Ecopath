@@ -1,8 +1,9 @@
-﻿
-#Region "Import"
+﻿#Region "Import"
 
+Option Strict On
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region
 
@@ -40,7 +41,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 #Region "MustOverride and Overridable methods of cEcospaceBaseResultsWriter "
 
     Public Overridable Sub Init(ByVal theCore As Object) Implements EwEUtils.Core.IEcospaceResultsWriter.Init
-        Me.m_core = theCore
+        Me.m_core = DirectCast(theCore, cCore)
     End Sub
 
     ''' <summary>
@@ -62,7 +63,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' i.e. "Ecospace ASC 11-07-11 16-40-50" </remarks>
     Protected Overridable Sub CreateTimeStampedDir()
 
-        m_TimeStampDirName = System.IO.Path.Combine(Me.m_core.OutputPath, "Ecospace " & Me.getSubDirName & " " & Me.getTimeStamp)
+        m_TimeStampDirName = Path.Combine(Me.m_core.OutputPath, Path.GetDirectoryName(Me.m_core.EcospaceOutputFileLocation(bIncludeTime:=True)) & " " & Me.getSubDirName())
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.TimeStampDirName, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() cannot create directory")
@@ -105,7 +106,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>Initialized by <see cref="CreateTimeStampedDir">CreateTimeStampedDir()</see></remarks>
-    Protected Overridable ReadOnly Property TimeStampDirName()
+    Protected Overridable ReadOnly Property TimeStampDirName() As String
         Get
             Return Me.m_TimeStampDirName
         End Get
@@ -114,13 +115,13 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <summary>
     ''' Convert the variable, group, extention and model time step into a valid file name
     ''' </summary>
-    ''' <param name="VariableName">Name of the variable i.e. Biomass</param>
+    ''' <param name="varname">Variable i.e. Biomass</param>
     ''' <param name="iGrp">Index of the group</param>
     ''' <param name="Ext">Extention of the file</param>
     ''' <param name="ModelTimeStep">Time step for the current file. If this is not supplied then no time stamp will appear in the filename </param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Protected Overridable Function getFileName(ByVal VariableName As String, ByVal iGrp As Integer, ByVal Ext As String, Optional ByRef ModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Protected Overridable Function getFileName(ByVal varname As eVarNameFlags, ByVal iGrp As Integer, ByVal Ext As String, Optional ByRef ModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
         Dim Timestep As String = ""
@@ -131,7 +132,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
             Timestep = "-" & ModelTimeStep.ToString
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(VariableName & "-" & grpName & Timestep & "." & Ext, False)
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(varname.ToString() & "-" & grpName & Timestep & "." & Ext, False)
         Return System.IO.Path.Combine(Me.TimeStampDirName, fn)
 
     End Function

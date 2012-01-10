@@ -1,6 +1,6 @@
-﻿
-#Region "Import"
+﻿#Region "Import"
 
+Option Strict On
 Imports System.IO
 Imports System.Text
 Imports EwEUtils.Core
@@ -19,16 +19,17 @@ Public Class cEcospaceASCResultsWriter
 #Region "IEcospaceResultsWriter Implementation"
 
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
-        Dim strm As StreamWriter
-        Dim fn As String
 
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
+        Dim strm As StreamWriter
+        Dim fn As String
+        Dim varName As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName("Biomass", igrp, Me.getSubDirName(), tsData.iTimeStep)
+            fn = Me.getFileName(varName, igrp, Me.getSubDirName(), tsData.iTimeStep)
             strm = New StreamWriter(fn, False)
 
-            saveASC(strm, tsData, igrp)
+            saveASC(strm, tsData, igrp, varName)
 
             strm.Close()
             strm = Nothing
@@ -91,17 +92,16 @@ Public Class cEcospaceASCResultsWriter
         End Try
     End Sub
 
-    Private Sub saveASC(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
+    Private Sub saveASC(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer, varName As eVarNameFlags)
         Try
             Me.WriteHeader(strm)
-            Me.WriteBody(strm, SpaceTSData, igrp)
+            Me.WriteBody(strm, SpaceTSData, igrp, varName)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".WriteResults() Exception: " & ex.Message)
         End Try
     End Sub
 
-
-    Protected Sub WriteHeader(ByRef writer As TextWriter)
+    Protected Sub WriteHeader(ByRef writer As StreamWriter)
 
         Dim cellSizeDegrees As Single = Me.SpaceData.CellLength * cEcospaceDataStructures.KM_TO_DEGRESS
         Dim latLL As Single = Me.SpaceData.Lat1 + (Me.SpaceData.InRow + 1) * cellSizeDegrees
@@ -116,22 +116,33 @@ Public Class cEcospaceASCResultsWriter
         writer.WriteLine("NODATAVALUE " & cCore.NULL_VALUE)
     End Sub
 
-    Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer)
-        Dim buff As String
+    Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
+
+        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname)
+        Dim sbBuff As New StringBuilder()
         Dim bcell As Single
+
+        Debug.Assert(map IsNot Nothing)
+
+        ' Apply index, if any
+        If (iIndex <> cCore.NULL_VALUE) Then
+            If (TypeOf map Is ICoreGroupFilter) Then DirectCast(map, ICoreGroupFilter).Group = iIndex
+            If (TypeOf map Is ICoreFleetFilter) Then DirectCast(map, ICoreFleetFilter).Fleet = iIndex
+        End If
+
         For ir As Integer = Me.SpaceData.InRow To 1 Step -1
             For ic As Integer = 1 To Me.SpaceData.InCol
-                If ic > 1 Then buff = buff & " "
+                If ic > 1 Then sbBuff.Append(" ")
                 If Me.SpaceData.Depth(ir, ic) > 0 Then
-                    bcell = SpaceTSData.BiomassMap(ir, ic, igrp)
+                    bcell = CSng(map.Cell(ir, ic))
                 Else
                     'land as NODATAVALUE
                     bcell = cCore.NULL_VALUE
                 End If
-                buff = buff & Format(bcell, "#########0.0#####")
+                sbBuff.Append(Format(bcell, "#########0.0#####"))
             Next
-            strm.WriteLine(buff)
-            buff = ""
+            strm.WriteLine(sbBuff.ToString())
+            sbBuff.Length = 0
         Next
 
     End Sub

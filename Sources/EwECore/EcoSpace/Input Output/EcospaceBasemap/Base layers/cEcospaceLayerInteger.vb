@@ -1,7 +1,7 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports EwECore.ValueWrapper
+Imports EwECore.Core
 Imports EwEUtils.Core
 
 #End Region ' Imports
@@ -39,7 +39,7 @@ Public Class cEcospaceLayerInteger
     ''' <param name="iIndex"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, _
-                   ByVal manager As cEcospaceBasemap, _
+                   ByVal manager As IEcospaceLayerManager, _
                    ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
@@ -59,7 +59,7 @@ Public Class cEcospaceLayerInteger
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal theCore As cCore, _
                    ByVal iDBID As Integer, _
-                   ByVal manager As cEcospaceBasemap, _
+                   ByVal manager As IEcospaceLayerManager, _
                    ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)

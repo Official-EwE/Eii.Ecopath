@@ -4,6 +4,7 @@ Option Strict On
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwECore.Core
 
 #End Region ' Imports
 
@@ -27,7 +28,7 @@ Public MustInherit Class cEcospaceLayer
 #Region " Private variables "
 
     ''' <summary>Manager delivering the data, if any.</summary>
-    Private m_manager As cEcospaceBasemap = Nothing
+    Private m_manager As IEcospaceLayerManager = Nothing
     ''' <summary>If set, this flag will direct the manager how to get to the actual map data.</summary>
     Private m_vnData As eVarNameFlags = eVarNameFlags.NotSet
     ''' <summary>Secundary index used to direct the manager how to get to the actual map data.</summary>
@@ -57,7 +58,7 @@ Public MustInherit Class cEcospaceLayer
     ''' -----------------------------------------------------------------------
     Protected Sub New(ByVal theCore As cCore, _
                       ByVal iDBID As Integer, _
-                      ByVal manager As cEcospaceBasemap, _
+                      ByVal manager As IEcospaceLayerManager, _
                       ByVal strName As String, _
                       ByVal vnData As eVarNameFlags, _
                       ByVal iIndex As Integer, _
@@ -72,7 +73,9 @@ Public MustInherit Class cEcospaceLayer
         Me.m_vnData = vnData
         Me.m_iData = iIndex
 
-        Me.m_metadata = Me.m_manager.GetVariableMetadata(Me.m_vnData)
+        If (TypeOf manager Is cCoreInputOutputBase) Then
+            Me.m_metadata = CType(Me.m_manager, cCoreInputOutputBase).GetVariableMetadata(Me.m_vnData)
+        End If
 
     End Sub
 
@@ -152,7 +155,7 @@ Public MustInherit Class cEcospaceLayer
     Protected ReadOnly Property Data() As Object
         Get
             If (Me.m_data Is Nothing) Then
-                Return Me.m_manager.GetLayerData(Me.m_vnData)
+                Return Me.m_manager.LayerData(Me.m_vnData)
             End If
             Return Me.m_data
         End Get
