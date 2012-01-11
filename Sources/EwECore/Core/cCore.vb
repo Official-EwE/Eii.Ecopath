@@ -8753,6 +8753,9 @@ Public Class cCore
 
             m_Ecospace.SearchData = m_SearchData
 
+            'all the input maps have changed if a new scenario is loaded
+            Me.m_Ecospace.setInputMapsChanged(True)
+
             'hardwire some capacity maps for debugging
             Me.m_EcoSpaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)
             Me.m_ShapeManagers.Item(eDataTypes.CapacityMediation).Init()

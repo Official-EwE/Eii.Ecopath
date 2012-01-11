@@ -101,6 +101,7 @@ Namespace Other
             'm_pbFish0
             '
             Me.m_pbFish0.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
+            Me.m_pbFish0.BorderStyle = BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_pbFish0, "m_pbFish0")
             Me.m_pbFish0.Name = "m_pbFish0"
             Me.m_pbFish0.TabStop = False
@@ -218,6 +219,7 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_pbFish1, "m_pbFish1")
             Me.m_pbFish1.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
+            Me.m_pbFish1.BorderStyle = BorderStyle.FixedSingle
             Me.m_pbFish1.Name = "m_pbFish1"
             Me.m_pbFish1.TabStop = False
             '
@@ -246,6 +248,7 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_pbFish2, "m_pbFish2")
             Me.m_pbFish2.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
+            Me.m_pbFish2.BorderStyle = BorderStyle.FixedSingle
             Me.m_pbFish2.Name = "m_pbFish2"
             Me.m_pbFish2.TabStop = False
             '
@@ -267,6 +270,7 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_pbFish3, "m_pbFish3")
             Me.m_pbFish3.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
+            Me.m_pbFish3.BorderStyle = BorderStyle.FixedSingle
             Me.m_pbFish3.Name = "m_pbFish3"
             Me.m_pbFish3.TabStop = False
             '

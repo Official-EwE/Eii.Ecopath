@@ -55,7 +55,7 @@
     <WarningsAsErrors>
     </WarningsAsErrors>
     <RegisterForComInterop>false</RegisterForComInterop>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>None</DebugType>
@@ -246,6 +246,7 @@
     <Compile Include="SpatialTemporal\cDefaultSpatialDataAdapter.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataConnectionManager.vb" />
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
+    <Compile Include="Taxon\cTaxonSearchData.vb" />
     <Compile Include="Validators\cValidatorBase.vb" />
   </ItemGroup>
   <ItemGroup>

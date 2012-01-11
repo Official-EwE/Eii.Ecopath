@@ -876,6 +876,8 @@ Public Class cEcoSpace
                     bAccumulateData = True 'new year collect the model fitting data after the six month
                 End If
 
+                Me.SetHabCap()
+
                 'Tell Ecoseed that we are at the start of a timestep
                 Me.EcoseedBeginTimeStep(m_Data.MonthNow, m_Data.YearNow, Btime)
 
@@ -1545,12 +1547,28 @@ Public Class cEcoSpace
 
     End Sub
 
+
+
+    Friend Sub setInputMapsChanged(ByVal HasChanged As Boolean)
+
+        For igrp As Integer = 1 To Me.m_Data.NGroups
+            Me.m_Data.bHabCapInputChanged(igrp) = HasChanged
+        Next
+
+        'bAjustHabCaps will be set to true by the routines that change the capacity map
+        Me.m_Data.bAjustHabCaps = False
+
+    End Sub
+
     Public Function initSpatialEquilibrium() As Boolean
         Dim ip As Integer, i As Integer, j As Integer
         Dim ig As Integer
         Dim isp As Integer, ist As Integer
 
         Try
+            'Tell all the map variables that they need to be reset
+            Me.setInputMapsChanged(True)
+
             'Is this model coupled to an external model
             If Me.m_EPdata.isEcospaceModelCoupled Then
                 'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
@@ -5782,6 +5800,7 @@ exitline:
 
                     'get max for rescaling to 0-1 range
                     m_Data.MaxHabCap(K) = Math.Max(Me.m_Data.HabCap(i, j, K), m_Data.MaxHabCap(K))
+                    Me.m_Data.bAjustHabCaps = True
 
                 Next j
             Next i
@@ -5822,7 +5841,10 @@ exitline:
         Me.normalizeCapacityMap()
 
         'Set the capacity gradients to flow from low to high capacity cells
-        AdjustLowHapCaps()
+        Me.AdjustLowHapCaps()
+
+        'All the map changes have been computed
+        Me.setInputMapsChanged(False)
 
     End Sub
 
@@ -5841,17 +5863,22 @@ exitline:
 
         bReturn = True
         For igrp = 1 To Me.m_Data.NGroups
-            For irow = 1 To Me.m_Data.InRow
-                For icol = 1 To Me.m_Data.InCol
+            'Have the Habitat Capacity input maps changed
+            If Me.m_Data.bHabCapInputChanged(igrp) Then
+                'Yes the map has changed
+                For irow = 1 To Me.m_Data.InRow
+                    For icol = 1 To Me.m_Data.InCol
 
-                    'Sum the values from the user input capacity map into the HabCap map
-                    If Me.m_Data.Depth(irow, icol) > 0 Then Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
+                        'Sum the values from the user input capacity map into the HabCap map
+                        If Me.m_Data.Depth(irow, icol) > 0 Then Me.m_Data.HabCap(irow, icol, igrp) += Me.m_Data.HabCapInput(irow, icol, igrp)
+                        Me.m_Data.bAjustHabCaps = True
+                        'get max for rescaling to 0-1 range
+                        m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                        Me.m_Data.bAjustHabCaps = True
 
-                    'get max for rescaling to 0-1 range
-                    m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
-
-                Next icol
-            Next irow
+                    Next icol
+                Next irow
+            End If
         Next igrp
 
         Return bReturn
@@ -6029,6 +6056,7 @@ exitline:
                             Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
                             'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
                             m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                            Me.m_Data.bAjustHabCaps = True
 
                         Next
                     Next
@@ -6085,6 +6113,8 @@ exitline:
         'dynamic programming algorithm to set gradient in low habcap cells (habcap<=habcapmin) so as to orient movement ‘toward cells with habcap>habcapmin
         Dim i As Integer, j As Integer, k As Integer, d As Integer, Dmin As Integer, DistMin(,) As Integer, Maxiter As Integer
         Dim HabCapMin As Single, MaxDist As Integer, iter As Integer, DistFac As Single, NumBad As Integer
+
+        If Not Me.m_Data.bAjustHabCaps Then Return
 
         ReDim DistMin(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1)
 

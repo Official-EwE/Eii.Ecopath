@@ -61,6 +61,7 @@ Public Class gridDefineTaxonomy
 #Region " Private helper classes "
 
     Private Class cTaxonInfo
+        Inherits cTaxonSearchData
         Implements ITaxonSearchData
         Implements ITaxonDetailsData
 
@@ -71,44 +72,14 @@ Public Class gridDefineTaxonomy
         Private m_iDBIDTaxon As Integer = cCore.NULL_VALUE
         Private m_iTaxon As Integer = -1
 
-        Private m_lCodeSAUP As Long = 0
-        Private m_lCodeFB As Long = 0
-        Private m_lCodeSLB As Long = 0
-        Private m_strCodeLSID As String = ""
-        Private m_strCodeFAO As String = ""
-
-        Private m_strPhylum As String = ""
-        Private m_strClass As String = ""
-        Private m_strOrder As String = ""
-        Private m_strGenus As String = ""
-        Private m_strFamily As String = ""
-        Private m_strSpecies As String = ""
-        Private m_strCommon As String = ""
-        Private m_strSource As String = ""
-        Private m_strKey As String = ""
-        Private m_sNorth As Single = cCore.NULL_VALUE
-        Private m_sSouth As Single = cCore.NULL_VALUE
-        Private m_sWest As Single = cCore.NULL_VALUE
-        Private m_sEast As Single = cCore.NULL_VALUE
-        Private m_ecology As eEcologyTypes = eEcologyTypes.NotSet
-        Private m_conservation As eIUCNConservationStatusTypes = eIUCNConservationStatusTypes.NotSet
-        Private m_occurrence As eOccurrenceStatusTypes = eOccurrenceStatusTypes.NotSet
-        Private m_organism As eOrganismTypes = eOrganismTypes.Fishes
-        Private m_dLastUpdated As Double = cDateUtils.DateToJulian(Date.Now())
-        Private m_sMaxLength As Single = cCore.NULL_VALUE
-        Private m_sMeanLength As Single = cCore.NULL_VALUE
-        Private m_sMeanLifespan As Single = cCore.NULL_VALUE
-        Private m_sMeanWeight As Single = cCore.NULL_VALUE
-        Private m_sWinf As Single = cCore.NULL_VALUE
-        Private m_svbgfK As Single = cCore.NULL_VALUE
-        Private m_iVulnerabilityIndex As Integer = 0
-        Private m_searchfields As eTaxonLevelType = 0
-
         ''' <summary>Index of the ecopath group that this taxon contributes to.</summary>
         Private m_iGroup As Integer = 0
         ''' <summary>Index of the stanza configuration that this taxon contributes to.</summary>
         Private m_iStanza As Integer = 0
+        ''' <summary>Proportion this taxon contributes to group/stanza biomass.</summary>
         Private m_sProportion As Single = 1.0!
+        ''' <summary>Proportion this taxon contributes to group/stanza catch.</summary>
+        Private m_sPropCatch As Single = 1.0!
 
         ''' <summary>The status of a Layer in the interface.</summary>
         Private m_status As eItemStatusTypes = eItemStatusTypes.Original
@@ -121,10 +92,11 @@ Public Class gridDefineTaxonomy
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal group As cEcoPathGroupInput)
+            MyBase.New("")
             Me.m_iGroup = group.Index
             Me.m_iStanza = 0
             Me.m_sProportion = 1.0!
-            Me.m_strCommon = group.Name
+            Me.Common = group.Name
             Me.m_status = eItemStatusTypes.Added
         End Sub
 
@@ -134,10 +106,11 @@ Public Class gridDefineTaxonomy
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal stanza As cStanzaGroup)
+            MyBase.New("")
             Me.m_iGroup = 0
             Me.m_iStanza = stanza.Index
             Me.m_sProportion = 1.0!
-            Me.m_strCommon = stanza.Name
+            Me.Common = stanza.Name
             Me.m_status = eItemStatusTypes.Added
         End Sub
 
@@ -147,42 +120,43 @@ Public Class gridDefineTaxonomy
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal taxon As cTaxon)
+            MyBase.New(taxon.Source)
             Me.m_iDBIDTaxon = CInt(taxon.GetVariable(eVarNameFlags.DBID))
             Me.m_iTaxon = taxon.Index
             Me.m_iGroup = taxon.Group
             Me.m_iStanza = taxon.Stanza
             Me.m_sProportion = taxon.Proportion
-            Me.m_lCodeSAUP = taxon.CodeSAUP
-            Me.m_lCodeFB = taxon.CodeFishBase
-            Me.m_lCodeSLB = taxon.CodeSeaLifeBase
-            Me.m_strCodeFAO = taxon.CodeFAO
-            Me.m_strCodeLSID = taxon.CodeLSID
-            Me.m_strCommon = taxon.Name
-            Me.m_strClass = taxon.Class
-            Me.m_strOrder = taxon.Order
-            Me.m_strFamily = taxon.Family
-            Me.m_strGenus = taxon.Genus
-            Me.m_strSpecies = taxon.Species
-            Me.m_sNorth = taxon.North
-            Me.m_sSouth = taxon.South
-            Me.m_sEast = taxon.East
-            Me.m_sWest = taxon.West
-            Me.m_ecology = taxon.EcologyType
-            Me.m_occurrence = taxon.OccurrenceStatus
-            Me.m_organism = taxon.OrganismType
-            Me.m_conservation = taxon.IUCNConservationStatus
-            Me.m_sMeanLength = taxon.MeanLength
-            Me.m_sMaxLength = taxon.MaxLength
-            Me.m_sMeanWeight = taxon.MeanWeight
-            Me.m_sMeanLifespan = taxon.MeanLifespan
-            Me.m_dLastUpdated = taxon.LastUpdated
-            Me.m_strSource = taxon.Source
-            Me.m_strKey = taxon.SourceKey
-            Me.m_searchfields = taxon.SearchFields
+            Me.CodeSAUP = taxon.CodeSAUP
+            Me.CodeFB = taxon.CodeFishBase
+            Me.CodeSLB = taxon.CodeSeaLifeBase
+            Me.CodeFAO = taxon.CodeFAO
+            Me.CodeLSID = taxon.CodeLSID
+            Me.Common = taxon.Name
+            Me.Class = taxon.Class
+            Me.Order = taxon.Order
+            Me.Family = taxon.Family
+            Me.Genus = taxon.Genus
+            Me.Species = taxon.Species
+            Me.North = taxon.North
+            Me.South = taxon.South
+            Me.East = taxon.East
+            Me.West = taxon.West
+            Me.EcologyType = taxon.EcologyType
+            Me.OccurrenceStatus = taxon.OccurrenceStatus
+            Me.OrganismType = taxon.OrganismType
+            Me.IUCNConservationStatus = taxon.IUCNConservationStatus
+            Me.MeanLength = taxon.MeanLength
+            Me.MaxLength = taxon.MaxLength
+            Me.MeanWeight = taxon.MeanWeight
+            Me.MeanLifespan = taxon.MeanLifespan
+            Me.LastUpdated = taxon.LastUpdated
+            Me.SourceKey = taxon.SourceKey
+            Me.SearchFields = taxon.SearchFields
             Me.m_status = eItemStatusTypes.Original
         End Sub
 
         Public Sub New(ByVal taxon As ITaxonSearchData)
+            MyBase.New(taxon.Source)
             Me.Update(taxon)
         End Sub
 
@@ -193,37 +167,37 @@ Public Class gridDefineTaxonomy
         ''' <param name="taxon"></param>
         ''' -------------------------------------------------------------------
         Public Sub Update(ByVal taxon As ITaxonSearchData)
-            Me.m_lCodeSAUP = taxon.CodeSAUP
-            Me.m_lCodeFB = taxon.CodeFB
-            Me.m_lCodeSLB = taxon.CodeSLB
-            Me.m_strCodeFAO = taxon.CodeFAO
-            Me.m_strCodeLSID = taxon.CodeLSID
-            Me.m_strCommon = taxon.Common
-            Me.m_strPhylum = taxon.Phylum
-            Me.m_strClass = taxon.Class
-            Me.m_strOrder = taxon.Order
-            Me.m_strFamily = taxon.Family
-            Me.m_strGenus = taxon.Genus
-            Me.m_strSpecies = taxon.Species
-            Me.m_sNorth = taxon.North
-            Me.m_sSouth = taxon.South
-            Me.m_sEast = taxon.East
-            Me.m_sWest = taxon.West
+            Me.CodeSAUP = taxon.CodeSAUP
+            Me.CodeFB = taxon.CodeFB
+            Me.CodeSLB = taxon.CodeSLB
+            Me.CodeFAO = taxon.CodeFAO
+            Me.CodeLSID = taxon.CodeLSID
+            Me.Common = taxon.Common
+            Me.Phylum = taxon.Phylum
+            Me.Class = taxon.Class
+            Me.Order = taxon.Order
+            Me.Family = taxon.Family
+            Me.Genus = taxon.Genus
+            Me.Species = taxon.Species
+            Me.North = taxon.North
+            Me.South = taxon.South
+            Me.East = taxon.East
+            Me.West = taxon.West
             If TypeOf (taxon) Is ITaxonDetailsData Then
                 Dim details As ITaxonDetailsData = DirectCast(taxon, ITaxonDetailsData)
-                Me.m_ecology = details.EcologyType
-                Me.m_occurrence = details.OccurrenceStatus
-                Me.m_organism = details.OrganismType
-                Me.m_conservation = details.IUCNConservationStatus
-                Me.m_sMeanLength = details.MeanLength
-                Me.m_sMaxLength = details.MaxLength
-                Me.m_sMeanWeight = details.MeanWeight
-                Me.m_sMeanLifespan = details.MeanLifespan
-                Me.m_searchfields = details.SearchFields
-                Me.m_dLastUpdated = details.LastUpdated
+                Me.EcologyType = details.EcologyType
+                Me.OccurrenceStatus = details.OccurrenceStatus
+                Me.OrganismType = details.OrganismType
+                Me.IUCNConservationStatus = details.IUCNConservationStatus
+                Me.MeanLength = details.MeanLength
+                Me.MaxLength = details.MaxLength
+                Me.MeanWeight = details.MeanWeight
+                Me.MeanLifespan = details.MeanLifespan
+                Me.SearchFields = details.SearchFields
+                Me.LastUpdated = details.LastUpdated
             End If
-            Me.m_strKey = taxon.SourceKey
-            Me.m_strSource = taxon.Source
+            Me.SourceKey = taxon.SourceKey
+            Me.Source = taxon.Source
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -271,20 +245,20 @@ Public Class gridDefineTaxonomy
 
                 If (taxon.Proportion <> Me.m_sProportion) Then Return True
                 If (taxon.Group <> Me.m_iGroup) Then Return True
-                If (taxon.CodeSAUP <> Me.m_lCodeSAUP) Then Return True
-                If (taxon.CodeFishBase <> Me.m_lCodeFB) Then Return True
-                If (taxon.CodeSeaLifeBase <> Me.m_lCodeSLB) Then Return True
-                If (String.Compare(taxon.CodeLSID, Me.m_strCodeLSID) <> 0) Then Return True
-                If (String.Compare(taxon.CodeFAO, Me.m_strCodeFAO) <> 0) Then Return True
+                If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
+                If (taxon.CodeFishBase <> Me.CodeFB) Then Return True
+                If (taxon.CodeSeaLifeBase <> Me.CodeSLB) Then Return True
+                If (String.Compare(taxon.CodeLSID, Me.CodeLSID) <> 0) Then Return True
+                If (String.Compare(taxon.CodeFAO, Me.CodeFAO) <> 0) Then Return True
 
-                If (String.Compare(taxon.Name, Me.m_strCommon) <> 0) Then Return True
-                If (String.Compare(taxon.Phylum, Me.m_strPhylum) <> 0) Then Return True
-                If (String.Compare(taxon.Class, Me.m_strClass) <> 0) Then Return True
-                If (String.Compare(taxon.Order, Me.m_strOrder) <> 0) Then Return True
-                If (String.Compare(taxon.Family, Me.m_strFamily) <> 0) Then Return True
-                If (String.Compare(taxon.Genus, Me.m_strGenus) <> 0) Then Return True
-                If (String.Compare(taxon.Species, Me.m_strSpecies) <> 0) Then Return True
-                If (String.Compare(taxon.Source, Me.m_strSource) <> 0) Then Return True
+                If (String.Compare(taxon.Name, Me.Common) <> 0) Then Return True
+                If (String.Compare(taxon.Phylum, Me.Phylum) <> 0) Then Return True
+                If (String.Compare(taxon.Class, Me.Class) <> 0) Then Return True
+                If (String.Compare(taxon.Order, Me.Order) <> 0) Then Return True
+                If (String.Compare(taxon.Family, Me.Family) <> 0) Then Return True
+                If (String.Compare(taxon.Genus, Me.Genus) <> 0) Then Return True
+                If (String.Compare(taxon.Species, Me.Species) <> 0) Then Return True
+                If (String.Compare(taxon.Source, Me.Source) <> 0) Then Return True
 
                 Return False
             End Get
@@ -370,67 +344,9 @@ Public Class gridDefineTaxonomy
             End Set
         End Property
 
-        ''' <inheritdocs cref="ITaxonSearchData.CodeSAUP"/>
-        Public Property CodeSAUP() As Long _
-            Implements ITaxonSearchData.CodeSAUP
-            Get
-                Return Me.m_lCodeSAUP
-            End Get
-            Set(ByVal value As Long)
-                Me.m_lCodeSAUP = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonSearchData.CodeFB"/>
-        Public Property CodeFB As Long _
-            Implements ITaxonSearchData.CodeFB
-            Get
-                Return Me.m_lCodeFB
-            End Get
-            Set(value As Long)
-                Me.m_lCodeFB = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonSearchData.CodeSLB"/>
-        Public Property CodeSLB As Long _
-            Implements ITaxonSearchData.CodeSLB
-            Get
-                Return Me.m_lCodeSLB
-            End Get
-            Set(value As Long)
-                Me.m_lCodeSLB = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonSearchData.CodeLSID"/>
-        Public Property CodeLSID() As String _
-            Implements ITaxonSearchData.CodeLSID
-            Get
-                Return Me.m_strCodeLSID
-            End Get
-            Friend Set(ByVal value As String)
-                Me.m_strCodeLSID = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonSearchData.CodeFAO"/>
-        Public Property CodeFAO() As String _
-            Implements ITaxonSearchData.CodeFAO
-            Get
-                ' Rerouted to source key
-                Return Me.m_strCodeFAO
-            End Get
-            Set(ByVal value As String)
-                ' Rerouted to source key
-                Me.m_strCodeFAO = value
-            End Set
-        End Property
-
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the proportion that this administrative unit contributes to
-        ''' a functional group.
+        ''' Get/set the group/stanza biomass proportion for this taxon.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Proportion() As Single
@@ -443,351 +359,53 @@ Public Class gridDefineTaxonomy
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Phylum"/>
+        ''' <summary>
+        ''' Get/set the group/stanza catch proportion for this taxon.
+        ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Phylum() As String _
-            Implements ITaxonSearchData.Phylum
+        Public Property PropCatch() As Single
             Get
-                Return Me.m_strPhylum
-            End Get
-            Set(ByVal value As String)
-                Me.m_strPhylum = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.[Class]"/>
-        ''' -------------------------------------------------------------------
-        Public Property [Class]() As String _
-            Implements ITaxonSearchData.Class
-            Get
-                Return m_strClass
-            End Get
-            Set(ByVal value As String)
-                m_strClass = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Common"/>
-        ''' -------------------------------------------------------------------
-        Public Property Common() As String _
-            Implements ITaxonSearchData.Common
-            Get
-                Return Me.m_strCommon
-            End Get
-            Set(ByVal value As String)
-                Me.m_strCommon = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Family"/>
-        ''' -------------------------------------------------------------------
-        Public Property Family() As String _
-            Implements ITaxonSearchData.Family
-            Get
-                Return Me.m_strFamily
-            End Get
-            Set(ByVal value As String)
-                Me.m_strFamily = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Order"/>
-        ''' -------------------------------------------------------------------
-        Public Property Order() As String _
-            Implements ITaxonSearchData.Order
-            Get
-                Return Me.m_strOrder
-            End Get
-            Set(ByVal value As String)
-                Me.m_strOrder = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Genus"/>
-        ''' -------------------------------------------------------------------
-        Public Property Genus() As String _
-            Implements ITaxonSearchData.Genus
-            Get
-                Return Me.m_strGenus
-            End Get
-            Set(ByVal value As String)
-                Me.m_strGenus = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Source"/>
-        ''' -------------------------------------------------------------------
-        Public Property Source() As String _
-            Implements ITaxonSearchData.Source
-            Get
-                Return Me.m_strSource
-            End Get
-            Set(ByVal value As String)
-                Me.m_strSource = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.SourceKey"/>
-        ''' -------------------------------------------------------------------
-        Public Property SourceKey() As String _
-            Implements ITaxonSearchData.SourceKey
-            Get
-                Return Me.m_strKey
-            End Get
-            Set(ByVal value As String)
-                Me.m_strKey = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.Species"/>
-        ''' -------------------------------------------------------------------
-        Public Property Species() As String _
-           Implements ITaxonSearchData.Species
-            Get
-                Return Me.m_strSpecies
-            End Get
-            Set(ByVal value As String)
-                Me.m_strSpecies = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.North"/>
-        ''' -------------------------------------------------------------------
-        Public Property North() As Single _
-            Implements ITaxonSearchData.North
-            Get
-                Return Me.m_sNorth
+                Return Me.m_sPropCatch
             End Get
             Set(ByVal value As Single)
-                Me.m_sNorth = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.South"/>
-        ''' -------------------------------------------------------------------
-        Public Property South() As Single _
-            Implements ITaxonSearchData.South
-            Get
-                Return Me.m_sSouth
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sSouth = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.East"/>
-        ''' -------------------------------------------------------------------
-        Public Property East() As Single _
-            Implements ITaxonSearchData.East
-            Get
-                Return Me.m_sEast
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sEast = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="ITaxonSearchData.West"/>
-        ''' -------------------------------------------------------------------
-        Public Property West() As Single _
-            Implements ITaxonSearchData.West
-            Get
-                Return Me.m_sWest
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sWest = value
+                Me.m_sPropCatch = value
             End Set
         End Property
 
         Public Sub ApplyChanges(ByVal taxon As cTaxon)
             If Me.IsChanged(taxon) Then
                 With taxon
-                    .Name = Me.m_strCommon
+                    .Name = Me.Common
                     .Group = Me.m_iGroup
                     .Proportion = Me.m_sProportion
-                    .CodeSAUP = Me.m_lCodeSAUP
-                    .CodeFishBase = Me.m_lCodeFB
-                    .CodeSeaLifeBase = Me.m_lCodeSLB
-                    .CodeLSID = Me.m_strCodeLSID
-                    .CodeFAO = Me.m_strCodeFAO
-                    .Species = Me.m_strSpecies
-                    .Family = Me.m_strFamily
-                    .Genus = Me.m_strGenus
-                    .Order = Me.m_strOrder
-                    .Class = Me.m_strClass
-                    .Source = Me.m_strSource
-                    .SourceKey = Me.m_strKey
-                    .North = Me.m_sNorth
-                    .West = Me.m_sWest
-                    .East = Me.m_sEast
-                    .South = Me.m_sSouth
-                    .EcologyType = Me.m_ecology
-                    .IUCNConservationStatus = Me.m_conservation
-                    .OrganismType = Me.m_organism
-                    .OccurrenceStatus = Me.m_occurrence
-                    .MaxLength = Me.m_sMaxLength
-                    .MeanLength = Me.m_sMeanLength
-                    .MeanWeight = Me.m_sMeanWeight
-                    .MeanLifespan = Me.m_sMeanLifespan
+                    .CodeSAUP = Me.CodeSAUP
+                    .CodeFishBase = Me.CodeFB
+                    .CodeSeaLifeBase = Me.CodeSLB
+                    .CodeLSID = Me.CodeLSID
+                    .CodeFAO = Me.CodeFAO
+                    .Species = Me.Species
+                    .Family = Me.Family
+                    .Genus = Me.Genus
+                    .Order = Me.Order
+                    .Class = Me.Class
+                    .Source = Me.Source
+                    .SourceKey = Me.SourceKey
+                    .North = Me.North
+                    .West = Me.West
+                    .East = Me.East
+                    .South = Me.South
+                    .EcologyType = Me.EcologyType
+                    .IUCNConservationStatus = Me.IUCNConservationStatus
+                    .OrganismType = Me.OrganismType
+                    .OccurrenceStatus = Me.OccurrenceStatus
+                    .MaxLength = Me.MaxLength
+                    .MeanLength = Me.MeanLength
+                    .MeanWeight = Me.MeanWeight
+                    .MeanLifespan = Me.MeanLifespan
                     .LastUpdated = cDateUtils.DateToJulian()
                 End With
             End If
         End Sub
-
-        ''' <inheritdocs cref="ITaxonDetailsData.EcologyType"/>
-        Public Property EcologyType() As eEcologyTypes _
-            Implements ITaxonDetailsData.EcologyType
-            Get
-                Return Me.m_ecology
-            End Get
-            Set(ByVal value As eEcologyTypes)
-                Me.m_ecology = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.IUCNConservationStatus"/>
-        Public Property IUCNConservationStatus() As eIUCNConservationStatusTypes _
-            Implements ITaxonDetailsData.IUCNConservationStatus
-            Get
-                Return Me.m_conservation
-            End Get
-            Set(ByVal value As eIUCNConservationStatusTypes)
-                Me.m_conservation = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.LastUpdated"/>
-        Public Property LastUpdated() As Double _
-            Implements ITaxonDetailsData.LastUpdated
-            Get
-                Return Me.m_dLastUpdated
-            End Get
-            Set(ByVal value As Double)
-                Me.m_dLastUpdated = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.MaxLength"/>
-        Public Property MaxLength() As Single _
-            Implements ITaxonDetailsData.MaxLength
-            Get
-                Return Me.m_sMaxLength
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sMaxLength = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.MeanLength"/>
-        Public Property MeanLength() As Single _
-            Implements ITaxonDetailsData.MeanLength
-            Get
-                Return Me.m_sMeanLength
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sMeanLength = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.MeanLifespan"/>
-        Public Property MeanLifespan() As Single _
-            Implements ITaxonDetailsData.MeanLifespan
-            Get
-                Return Me.m_sMeanLifespan
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sMeanLifespan = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.MeanWeight"/>
-        Public Property MeanWeight() As Single _
-            Implements ITaxonDetailsData.MeanWeight
-            Get
-                Return Me.m_sMeanWeight
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sMeanWeight = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.Winf"/>
-        Public Property Winf() As Single _
-            Implements ITaxonDetailsData.Winf
-            Get
-                Return Me.m_sWinf
-            End Get
-            Set(ByVal value As Single)
-                Me.m_sWinf = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.vbgfK"/>
-        Public Property vbgfK() As Single _
-            Implements ITaxonDetailsData.vbgfK
-            Get
-                Return Me.m_svbgfK
-            End Get
-            Set(ByVal value As Single)
-                Me.m_svbgfK = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.OccurrenceStatus"/>
-        Public Property OccurrenceStatus() As eOccurrenceStatusTypes _
-            Implements ITaxonDetailsData.OccurrenceStatus
-            Get
-                Return Me.m_occurrence
-            End Get
-            Set(ByVal value As eOccurrenceStatusTypes)
-                Me.m_occurrence = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.OrganismType"/>
-        Public Property OrganismType() As eOrganismTypes _
-            Implements ITaxonDetailsData.OrganismType
-            Get
-                Return Me.m_organism
-            End Get
-            Set(ByVal value As eOrganismTypes)
-                Me.m_organism = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.VulnerabilityIndex"/>
-        Public Property VulnerabilityIndex() As Integer _
-            Implements ITaxonDetailsData.VulnerabilityIndex
-            Get
-                Return Me.m_iVulnerabilityIndex
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iVulnerabilityIndex = value
-            End Set
-        End Property
-
-        ''' <inheritdocs cref="ITaxonDetailsData.SearchFields"/>
-        Public Property SearchFields As eTaxonLevelType _
-            Implements ITaxonSearchData.SearchFields
-            Get
-                Return Me.m_searchfields
-            End Get
-            Set(value As eTaxonLevelType)
-                Me.m_searchfields = value
-            End Set
-        End Property
 
     End Class
 

@@ -121,6 +121,10 @@ Public MustInherit Class cEcospaceLayerVector
 
     Public Overrides Sub Invalidate()
         Me.m_bInvalidateMax = True
+        ' Call home
+        If (Me.Manager IsNot Nothing) Then
+            Me.Manager.LayerChanged(Me.VarName, Me.Index)
+        End If
     End Sub
 
 #End Region ' Cell interaction

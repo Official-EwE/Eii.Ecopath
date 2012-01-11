@@ -483,6 +483,18 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public HabCapInput(,,) As Single
 
+    ''' <summary>
+    ''' Have the Habitat Capacity Input maps changed
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public bHabCapInputChanged() As Boolean
+
+    ''' <summary>
+    ''' If the habitat capacity has changed then the capacity gradients need to be ajusted to move biomass to higher capacity cells
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public bAjustHabCaps As Boolean
+
     ''' <summary> Sum of Capacity across the map cells by group </summary>
     Public TotHabCap() As Single
 
@@ -1042,6 +1054,9 @@ Public Class cEcospaceDataStructures
             ReDim IsAdvected(NGroups)
             ReDim Me.TotHabCap(NGroups)
             ReDim Me.MaxHabCap(NGroups)
+
+            ReDim Me.bHabCapInputChanged(NGroups)
+
             'jb PrefHab() was redimed here and redimHabitatVariables()
             '        ReDim PrefHab(nGroups, NoHabitats)
 

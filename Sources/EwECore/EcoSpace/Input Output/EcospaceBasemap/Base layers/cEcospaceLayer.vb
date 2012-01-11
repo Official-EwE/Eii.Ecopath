@@ -161,6 +161,17 @@ Public MustInherit Class cEcospaceLayer
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="IEcospaceLayerManager">manager</see> responsible for this layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Protected ReadOnly Property Manager As IEcospaceLayerManager
+        Get
+            Return Me.m_manager
+        End Get
+    End Property
+
     Public ReadOnly Property VarName() As eVarNameFlags
         Get
             Return Me.m_vnData

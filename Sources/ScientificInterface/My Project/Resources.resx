@@ -336,7 +336,7 @@ Description: {1}</value>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT" xml:space="preserve">
     <value>Model execution errors|Values that the model was unable to compute correctly due to a model failure</value>
   </data>
-  <data name="GENERIC_COPYRIGHT" xml:space="preserve">
+  <data name="ABOUT_COPYRIGHT" xml:space="preserve">
     <value>{0} {1}</value>
     <comment>{0}: copyright, {1}: company name</comment>
   </data>
@@ -1041,10 +1041,6 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
     <value>A generic error occurred while trying to create an EwE6 model at '{0}'</value>
     <comment>{0}: model path</comment>
   </data>
-  <data name="GENERIC_VERSION" xml:space="preserve">
-    <value>Version {0}</value>
-    <comment>{0}: version number</comment>
-  </data>
   <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
     <value>Cells that contain a summary of row(s) and/or column(s) in a grid</value>
   </data>
@@ -1503,5 +1499,15 @@ Description: {2}</value>
   <data name="CAPTION_EXTERNAL_DATA_DETAIL" xml:space="preserve">
     <value>External data for '{0}'</value>
     <comment>{0}: layer data name</comment>
+  </data>
+  <data name="ABOUT_32BIT" xml:space="preserve">
+    <value>32 bit</value>
+  </data>
+  <data name="ABOUT_64BIT" xml:space="preserve">
+    <value>64 bit</value>
+  </data>
+  <data name="ABOUT_VERSION" xml:space="preserve">
+    <value>Version {0} ({1})</value>
+    <comment>{0}: ewe version, {1}:32 / 64 bit indicator</comment>
   </data>
 </root>

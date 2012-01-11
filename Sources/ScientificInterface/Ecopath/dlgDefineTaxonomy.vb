@@ -174,13 +174,14 @@ Public Class dlgDefineTaxa
 
     Private Sub OnShowCodes(sender As System.Object, e As System.EventArgs) _
         Handles m_cbShowCodes.CheckedChanged
-
+        Me.Cursor = Cursors.WaitCursor
         Try
             Me.m_gridGroups.ShowCodes = Me.m_cbShowCodes.Checked
             Me.m_gridResults.ShowCodes = Me.m_cbShowCodes.Checked
         Catch ex As Exception
 
         End Try
+        Me.Cursor = Cursors.Default
     End Sub
 
     Private Sub OnRowSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)

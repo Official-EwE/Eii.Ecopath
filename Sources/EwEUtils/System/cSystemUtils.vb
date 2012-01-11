@@ -126,6 +126,18 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function Is64Bit() As Boolean
 
+            Return (System.Runtime.InteropServices.Marshal.SizeOf(GetType(IntPtr)) = 8)
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the OS is 64 bit.
+        ''' </summary>
+        ''' <returns>True if the OS is 64 bit.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function Is64BitOS() As Boolean
+
             Return System.Environment.Is64BitOperatingSystem
 
         End Function

@@ -61,11 +61,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to 32 bit.
+        '''</summary>
+        Public ReadOnly Property ABOUT_32BIT() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_32BIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to 64 bit.
+        '''</summary>
+        Public ReadOnly Property ABOUT_64BIT() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_64BIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to About {0}.
         '''</summary>
         Public ReadOnly Property ABOUT_CAPTION() As String
             Get
                 Return ResourceManager.GetString("ABOUT_CAPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} {1}.
+        '''</summary>
+        Public ReadOnly Property ABOUT_COPYRIGHT() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_COPYRIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Version {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property ABOUT_VERSION() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_VERSION", resourceCulture)
             End Get
         End Property
         
@@ -1374,15 +1410,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} {1}.
-        '''</summary>
-        Public ReadOnly Property GENERIC_COPYRIGHT() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_COPYRIGHT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Created: {0} {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_DEFAULT_DESCRIPTION() As String
@@ -1667,15 +1694,6 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_TOOLTIP_PREY() As String
             Get
                 Return ResourceManager.GetString("GENERIC_TOOLTIP_PREY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Version {0}.
-        '''</summary>
-        Public ReadOnly Property GENERIC_VERSION() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_VERSION", resourceCulture)
             End Get
         End Property
         

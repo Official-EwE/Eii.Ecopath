@@ -123,16 +123,13 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SAUPUtil">
       <HintPath>..\ScientificInterfaceShared\Includes\SAUPUtil.dll</HintPath>
     </Reference>
-    <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
-    <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SourceLibrary">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -143,7 +140,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.4368.1705, Culture=neutral, PublicKeyToken=ba313fadf1c28092, processorArchitecture=x86">
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
     <Reference Include="ZedGraph">

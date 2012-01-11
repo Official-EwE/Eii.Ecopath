@@ -3,7 +3,7 @@ Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 ''' <summary>
-''' Taxonomy definition that contributes to a functional group.
+''' Taxonomy definition that contributes to a functional group or stanza configuration.
 ''' </summary>
 Public Class cTaxon
     Inherits cCoreInputOutputBase

@@ -34,6 +34,15 @@ Namespace Core
         ''' -----------------------------------------------------------------------
         Function LayerData(ByVal varName As eVarNameFlags) As Object
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Callback for layers to report that they have been <see cref="cEcospaceLayer.Invalidate">invalidated</see>.
+        ''' </summary>
+        ''' <param name="varName">The <see cref="eVarNameFlags">variable</see> of the layer that was invalidated.</param>
+        ''' <param name="iIndex">Optional index of the layer that invalidated..</param>
+        ''' -----------------------------------------------------------------------
+        Sub LayerChanged(varName As eVarNameFlags, Optional iIndex As Integer = cCore.NULL_VALUE)
+
     End Interface
 
 End Namespace

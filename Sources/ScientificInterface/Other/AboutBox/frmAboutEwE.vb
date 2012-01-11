@@ -6,6 +6,7 @@ Imports System.Deployment
 Imports System.Text
 Imports EwEUtils.Utilities
 Imports EwECore
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports 
 
@@ -34,15 +35,16 @@ Namespace Other
 
             Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
+            Dim strBit As String = CStr(IIf(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = String.Format(My.Resources.GENERIC_VERSION, an.Version.ToString())
-            Me.m_lbCopyright.Text = String.Format(My.Resources.GENERIC_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
+            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, an.Version.ToString(), strBit)
+            Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page
-            Me.m_lblNetVersion.Text = String.Format(Me.m_lblNetVersion.Text, System.Environment.Version.ToString())
+            Me.m_lblNetVersion.Text = String.Format(My.Resources.ABOUT_VERSION, System.Environment.Version.ToString(), strBit)
 
             ' Format team page
             Me.m_rtbTeam.Rtf = My.Resources.team

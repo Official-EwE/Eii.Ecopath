@@ -95,9 +95,11 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.3.4367.28198, Culture=neutral, PublicKeyToken=ba313fadf1c28092, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\..\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph">
+      <HintPath>..\..\ScientificInterfaceShared\Includes\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

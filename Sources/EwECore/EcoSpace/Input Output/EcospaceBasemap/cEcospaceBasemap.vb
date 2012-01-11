@@ -777,6 +777,38 @@ Public Class cEcospaceBasemap
         Return Nothing
     End Function
 
+    Public Sub LayerChanged(varName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999) _
+        Implements Core.IEcospaceLayerManager.LayerChanged
+
+        Try
+            Select Case varName
+                Case eVarNameFlags.LayerDepth
+                Case eVarNameFlags.LayerHabitat
+                Case eVarNameFlags.LayerHabitatCapacity
+                Case eVarNameFlags.LayerHabitatCapacityInput
+                    Me.m_core.m_EcoSpaceData.bHabCapInputChanged(iIndex) = True
+                Case eVarNameFlags.LayerMPA
+                Case eVarNameFlags.LayerRegion
+                Case eVarNameFlags.LayerRelPP
+                Case eVarNameFlags.LayerRelCin
+                Case eVarNameFlags.LayerMPASeed
+                Case eVarNameFlags.LayerAdvection
+                Case eVarNameFlags.LayerMigration
+                Case eVarNameFlags.LayerWind
+                Case eVarNameFlags.LayerUpwelling
+                Case eVarNameFlags.LayerMLD
+                Case eVarNameFlags.LayerImportance
+                Case eVarNameFlags.LayerDriver
+                Case eVarNameFlags.LayerPort
+                Case eVarNameFlags.LayerSail
+                Case eVarNameFlags.LayerDistribution
+            End Select
+        Catch ex As Exception
+            Debug.Assert(False, "Invalid layer callback")
+        End Try
+
+    End Sub
+
 #End Region ' Layer interface
 
 #Region " Cell position calculations "
