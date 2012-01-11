@@ -1459,6 +1459,8 @@ Namespace Core
         TaxonMeanLength
         TaxonMaxLength
         TaxonMeanLifespan
+        TaxonWinf
+        TaxonvbgfK
         TaxonVulnerabilityIndex
         TaxonSearchFields
 

@@ -34,6 +34,10 @@ Namespace Core
         ''' <summary></summary>
         Property VulnerabilityIndex() As Integer
         ''' <summary></summary>
+        Property Winf() As Single
+        ''' <summary>Weight asymptotic</summary>
+        Property vbgfK() As Single
+        ''' <summary>Von Bertalanffy Curvature parameter, K in taxon table</summary>
         Property LastUpdated() As Double
 
     End Interface

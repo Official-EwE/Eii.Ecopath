@@ -99,6 +99,8 @@ Public Class gridDefineTaxonomy
         Private m_sMeanLength As Single = cCore.NULL_VALUE
         Private m_sMeanLifespan As Single = cCore.NULL_VALUE
         Private m_sMeanWeight As Single = cCore.NULL_VALUE
+        Private m_sWinf As Single = cCore.NULL_VALUE
+        Private m_svbgfK As Single = cCore.NULL_VALUE
         Private m_iVulnerabilityIndex As Integer = 0
         Private m_searchfields As eTaxonLevelType = 0
 
@@ -718,6 +720,28 @@ Public Class gridDefineTaxonomy
             End Get
             Set(ByVal value As Single)
                 Me.m_sMeanWeight = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.Winf"/>
+        Public Property Winf() As Single _
+            Implements ITaxonDetailsData.Winf
+            Get
+                Return Me.m_sWinf
+            End Get
+            Set(ByVal value As Single)
+                Me.m_sWinf = value
+            End Set
+        End Property
+
+        ''' <inheritdocs cref="ITaxonDetailsData.vbgfK"/>
+        Public Property vbgfK() As Single _
+            Implements ITaxonDetailsData.vbgfK
+            Get
+                Return Me.m_svbgfK
+            End Get
+            Set(ByVal value As Single)
+                Me.m_svbgfK = value
             End Set
         End Property
 

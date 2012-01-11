@@ -168,6 +168,16 @@ Public Class cTaxon
         val = New cValue(New Integer, eVarNameFlags.TaxonVulnerabilityIndex, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonVulnerabilityIndex))
         m_values.Add(val.varName, val)
 
+        ' TaxonWinf
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.TaxonWinf, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonWinf))
+        m_values.Add(val.varName, val)
+
+        ' TaxonvbgfK
+        meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
+        val = New cValue(New Single, eVarNameFlags.TaxonvbgfK, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonvbgfK))
+        m_values.Add(val.varName, val)
+
         ' Last updated julian date
         meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
         val = New cValue(New Single, eVarNameFlags.LastUpdated, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.LastUpdated))
@@ -656,6 +666,33 @@ Public Class cTaxon
         End Get
         Set(ByVal value As eStatusFlags)
             Me.SetStatus(eVarNameFlags.TaxonVulnerabilityIndex, value)
+        End Set
+    End Property
+
+
+    ''' <summary>
+    ''' Get/set the asymptotic weight for a taxon.
+    ''' </summary>
+    Public Property Winf() As Single _
+        Implements ITaxonDetailsData.Winf
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonWinf))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonWinf, value)
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the asymptotic weight for a taxon.
+    ''' </summary>
+    Public Property vbgfK() As Single _
+        Implements ITaxonDetailsData.vbgfK
+        Get
+            Return CSng(Me.GetVariable(eVarNameFlags.TaxonvbgfK))
+        End Get
+        Set(ByVal value As Single)
+            Me.SetVariable(eVarNameFlags.TaxonvbgfK, value)
         End Set
     End Property
 
