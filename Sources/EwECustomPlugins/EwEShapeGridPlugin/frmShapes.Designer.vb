@@ -1,8 +1,10 @@
-﻿''' <summary>
+﻿Imports ScientificInterfaceShared.Forms
+
+''' <summary>
 ''' Form to implement shape grids.
 ''' </summary>
 Partial Class frmShapes
-    Inherits ScientificInterfaceShared.Forms.frmEwEGrid
+    Inherits frmEwEGrid
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
