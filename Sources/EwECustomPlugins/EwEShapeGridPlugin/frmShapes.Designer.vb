@@ -1,16 +1,9 @@
-﻿Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.Controls
-
-''' <summary>
+﻿''' <summary>
 ''' Form to implement shape grids.
 ''' </summary>
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmShapes
-    Inherits frmEwEGrid
+    Inherits ScientificInterfaceShared.Forms.frmEwEGrid
 
-    'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -21,13 +14,8 @@ Partial Class frmShapes
         End Try
     End Sub
 
-    'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
-    'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
-    'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShapes))
         Me.m_plGrid = New System.Windows.Forms.Panel
@@ -84,10 +72,12 @@ Partial Class frmShapes
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents m_tsMain As cEwEToolstrip
+
+    Private WithEvents m_tsMain As ScientificInterfaceShared.Controls.cEwEToolstrip
     Private WithEvents m_plGrid As System.Windows.Forms.Panel
     Private WithEvents m_tsbnTimeSeries As System.Windows.Forms.ToolStripButton
     Private m_tsSep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnLongTerm As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnSeasonal As System.Windows.Forms.ToolStripButton
+
 End Class

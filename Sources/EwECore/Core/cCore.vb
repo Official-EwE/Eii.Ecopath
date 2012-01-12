@@ -6102,6 +6102,8 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     Public Function LoadEcosimScenario(ByVal iScenario As Integer) As Boolean
 
+        If (Not Me.StateMonitor.HasEcopathLoaded) Then Return False
+
         Dim ds As IEcosimDatasource = Nothing
         Dim strScenarioName As String = Me.m_EcoPathData.EcosimScenarioName(iScenario)
 
@@ -8709,6 +8711,8 @@ Public Class cCore
     ''' <param name="iScenario">Index of the <see cref="cEcoSpaceScenario">Scenario</see> in the <see cref="m_EcoSpaceScenarios">Scenario list</see>.</param>
     ''' <returns>True if succesful.</returns>
     Public Function LoadEcospaceScenario(ByVal iScenario As Integer) As Boolean
+
+        If (Not Me.StateMonitor.HasEcopathLoaded) Then Return False
 
         Dim ds As IEcospaceDatasource = Nothing
         Dim strScenarioName As String = Me.m_EcoPathData.EcospaceScenarioName(iScenario)
