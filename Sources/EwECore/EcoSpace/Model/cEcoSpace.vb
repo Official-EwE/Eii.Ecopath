@@ -20,6 +20,12 @@ Public Class cEcoSpace
 
     'ToDo_jb Change summary values to be across all time steps
 
+#Region "Helper Class Arguments for PredictEffortDistributionThreaded(cEffortDistArgs)"
+
+    ''' <summary>
+    ''' Arguments for PredictEffortDistributionThreaded()
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Class cEffortDistArgs
         Public WaitHandle As WaitHandle
         Public iFirst As Integer
@@ -34,6 +40,9 @@ Public Class cEcoSpace
             iMonth = iMonthOfyear
         End Sub
     End Class
+
+
+#End Region
 
 #Region "Solver threads"
 
@@ -780,7 +789,7 @@ Public Class cEcoSpace
             Bcw = Nothing '(,,) As Single
             C = Nothing '(,,) As Single
             d = Nothing '(,,) As Single
-            E = Nothing '(,,) As Single
+            e = Nothing '(,,) As Single
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -827,7 +836,6 @@ Public Class cEcoSpace
         'used for timing threaded code
         Dim slvET2 As Single
         Dim slvET As Single
-        Dim efft2 As Single
 
         Dim FtimeTotal(m_Data.NGroups) As Single
 
@@ -1993,7 +2001,7 @@ Public Class cEcoSpace
                     End If
 
                     'init the grid solver object
-                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, E, _
+                    grdslvConSim.Init(m_Data.AMmTr, m_Data.Ftr, m_Data.Ccell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, _
                                        m_Data.Depth, m_ConBypassIntegrated, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, _
                                        m_Data.jEndCol, m_Data.IsMigratory, threadGroupsConSim, m_Data.UseExact)
 
@@ -2084,7 +2092,7 @@ Public Class cEcoSpace
             Me.m_Data.allocate(Bcw, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(C, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(d, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-            Me.m_Data.allocate(E, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+            Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
             Me.m_Data.allocate(BEQlast, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
             Me.m_Data.allocate(m_Data.PredCell, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
@@ -2641,7 +2649,7 @@ Public Class cEcoSpace
         Me.m_Data.allocate(Bcw, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
         Me.m_Data.allocate(C, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
         Me.m_Data.allocate(d, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        Me.m_Data.allocate(E, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
 
         'ReDim Bcw(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
         'ReDim C(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
@@ -2663,10 +2671,10 @@ Public Class cEcoSpace
 
                                 If m_Data.HabCap(i, j + 1, ip) > m_Data.HabCap(i, j, ip) Then
                                     d(i, j, ip) = m_Data.Mrate(ip)
-                                    E(i, j + 1, ip) = m_Data.Mrate(ip) * m_Data.HabCap(i, j, ip) / m_Data.HabCap(i, j + 1, ip)
+                                    e(i, j + 1, ip) = m_Data.Mrate(ip) * m_Data.HabCap(i, j, ip) / m_Data.HabCap(i, j + 1, ip)
                                 Else
                                     d(i, j, ip) = m_Data.Mrate(ip) * m_Data.HabCap(i, j + 1, ip) / m_Data.HabCap(i, j, ip)
-                                    E(i, j + 1, ip) = m_Data.Mrate(ip)
+                                    e(i, j + 1, ip) = m_Data.Mrate(ip)
                                 End If
 
                                 'e(i, j + 1, ip) = m_Data.Mrate(ip) * RelMove(ip, i, j + 1) * RelHabMove(i, j + 1, i, j, Me.HabGrad, m_Data.MoveScale, ip)
@@ -2675,26 +2683,26 @@ Public Class cEcoSpace
                                     If m_Data.Xvel(i, j) > 0 Then
                                         d(i, j, ip) = d(i, j, ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
                                     Else
-                                        E(i, j + 1, ip) = E(i, j + 1, ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
+                                        e(i, j + 1, ip) = e(i, j + 1, ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
                                     End If
 
                                 End If
                             Else
                                 If m_Data.IsAdvected(ip) Then
                                     If m_Data.Xvel(i, j) > 0 Then
-                                        E(i, j + 1, ip) = m_Data.Mrate(ip) 'into j from right
+                                        e(i, j + 1, ip) = m_Data.Mrate(ip) 'into j from right
                                         d(i, j, ip) = m_Data.Mrate(ip) + m_Data.Xvel(i, j) * AdScale 'from j to the right
                                     Else
-                                        E(i, j + 1, ip) = m_Data.Mrate(ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
+                                        e(i, j + 1, ip) = m_Data.Mrate(ip) - m_Data.Xvel(i, j) * AdScale 'into j from right
                                         d(i, j, ip) = m_Data.Mrate(ip) 'from j to the right
 
                                     End If
                                 Else
-                                    E(i, j + 1, ip) = 0
+                                    e(i, j + 1, ip) = 0
                                     d(i, j, ip) = 0
                                 End If
                             End If
-                            Enomig(i, j + 1, ip) = E(i, j + 1, ip)
+                            Enomig(i, j + 1, ip) = e(i, j + 1, ip)
                             dNomig(i, j, ip) = d(i, j, ip)
                         Next
                         'If npairs > 0 Then
@@ -2718,9 +2726,9 @@ Public Class cEcoSpace
                             For ist = 1 To m_Stanza.Nstanza(isp)
                                 ieco = m_Stanza.EcopathCode(isp, ist)
                                 ir = ir + 1
-                                E(i, j + 1, nvar2 + ir) = E(i, j + 1, ieco)
+                                e(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
                                 d(i, j, nvar2 + ir) = d(i, j, ieco)
-                                Enomig(i, j + 1, nvar2 + ir) = E(i, j + 1, ieco)
+                                Enomig(i, j + 1, nvar2 + ir) = e(i, j + 1, ieco)
                                 dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
                             Next
                         Next
@@ -2805,11 +2813,11 @@ Public Class cEcoSpace
                     Bcw(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
                     C(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
                     d(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
-                    E(i, j, 0) = E(i, j, m_EPdata.NumLiving + 1)
+                    e(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
                     BcwNomig(i, j, 0) = Bcw(i, j, m_EPdata.NumLiving + 1)
                     CNomig(i, j, 0) = C(i, j, m_EPdata.NumLiving + 1)
                     dNomig(i, j, 0) = d(i, j, m_EPdata.NumLiving + 1)
-                    Enomig(i, j, 0) = E(i, j, m_EPdata.NumLiving + 1)
+                    Enomig(i, j, 0) = e(i, j, m_EPdata.NumLiving + 1)
                 Next
             Next
         End If
@@ -2926,16 +2934,16 @@ Public Class cEcoSpace
                         End If
 
                         If m_Data.FitRespType < 2 Then
-                            E(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1) * (Distort)
+                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * RelMoveFit(i, j + 1) * (Distort)
                             d(i, j, ip) = dNomig(i, j, ip) * RelMoveFit(i, j) * (2 - Distort)
                         Else
                             FitRatio = RelMoveFit(i, j + 1) / RelMoveFit(i, j)
-                            E(i, j + 1, ip) = Enomig(i, j + 1, ip) * FitRatio * (Distort)
+                            e(i, j + 1, ip) = Enomig(i, j + 1, ip) * FitRatio * (Distort)
                             d(i, j, ip) = dNomig(i, j, ip) / FitRatio * (2 - Distort)
                         End If
 
                         If j = 0 Or j = m_Data.InCol Then
-                            E(i, j + 1, ip) = 0
+                            e(i, j + 1, ip) = 0
                             d(i, j, ip) = 0
                         End If
 
@@ -2952,7 +2960,7 @@ Public Class cEcoSpace
                         nvar2 = m_Data.NGroups
                         If ieco > 0 Then
                             ir = IecoCode(ip)
-                            E(i, j + 1, nvar2 + ir) = E(i, j + 1, ip)
+                            e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
                             d(i, j, nvar2 + ir) = d(i, j, ip)
                             'Enomig(i, j + 1, nvar2 + ir) = E(i, j + 1, ieco)
                             'dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
@@ -3055,7 +3063,7 @@ iterate:
 
             j = jord(jj)
             For i = 1 To M
-                rhs(i, j) = -Floc(i, j, ip) - d(i, j - 1, ip) * X(i, j - 1, ip) - E(i, j + 1, ip) * X(i, j + 1, ip)
+                rhs(i, j) = -Floc(i, j, ip) - d(i, j - 1, ip) * X(i, j - 1, ip) - e(i, j + 1, ip) * X(i, j + 1, ip)
             Next
             rhs(1, j) = rhs(1, j) - Bcw(1, j, ip) * X(0, j, ip)
             rhs(M, j) = rhs(M, j) - C(M, j, ip) * X(M + 1, j, ip)
@@ -3141,11 +3149,11 @@ exitline:
 
         For i = 1 To M
             Xold(i, 1) = X(i, 1, ip)
-            alfa(i, 1) = Aloc(i, 1, ip) : gam(i, 1) = E(i, 2, ip) / alfa(i, 1)
+            alfa(i, 1) = Aloc(i, 1, ip) : gam(i, 1) = e(i, 2, ip) / alfa(i, 1)
             For j = 2 To NomCols
                 Xold(i, j) = X(i, j, ip)
                 alfa(i, j) = Aloc(i, j, ip) - d(i, j - 1, ip) * gam(i, j - 1)
-                gam(i, j) = E(i, j + 1, ip) / alfa(i, j)
+                gam(i, j) = e(i, j + 1, ip) / alfa(i, j)
             Next
         Next
         'now begin block Gauss-Seidel/SOR iteration over columns of grid
@@ -3161,7 +3169,7 @@ iterate:
                 rhs(i, j) = -Floc(i, j, ip) - Bcw(i, j, ip) * X(i - 1, j, ip) - C(i, j, ip) * X(i + 1, j, ip)
             Next
             rhs(i, 1) = rhs(i, 1) - d(i, 0, ip) * X(i, 0, ip)
-            rhs(i, NomCols) = rhs(i, NomCols) - E(i, NomCols + 1, ip) * X(i, NomCols + 1, ip)
+            rhs(i, NomCols) = rhs(i, NomCols) - e(i, NomCols + 1, ip) * X(i, NomCols + 1, ip)
             'now solve for x(i,j) over i using these forcing inputs to one dimensional
             'tridiagonal solver
             G(1) = rhs(i, 1) / alfa(i, 1)
@@ -3319,18 +3327,15 @@ exitline:
         Dim SailCost As Single
         Dim TotE As Single
         Dim Attract(,) As Single
-        Dim arg As cEffortDistArgs
+        Dim arguments As cEffortDistArgs
 
         Try
-            arg = DirectCast(obParam, cEffortDistArgs)
-        Catch ex As Exception
-        End Try
 
-        Try
+            arguments = DirectCast(obParam, cEffortDistArgs)
 
             ReDim Attract(m_Data.InRow, m_Data.InCol)
 
-            For iFlt As Integer = arg.iFirst To arg.iLast - 1
+            For iFlt As Integer = arguments.iFirst To arguments.iLast - 1
                 'check the bounds
                 If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
 
@@ -3359,7 +3364,7 @@ exitline:
                     For j = 1 To m_Data.InCol
                         If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
                         If m_Data.Depth(i, j) > 0 And _
-                            (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(iFlt, m_Data.MPA(i, j)) Or m_Data.MPAmonth(arg.iMonth, m_Data.MPA(i, j))) _
+                            (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(iFlt, m_Data.MPA(i, j)) Or m_Data.MPAmonth(arguments.iMonth, m_Data.MPA(i, j))) _
                              And (Me.m_Data.PAreaFished(i, j, iFlt) > 0 Or m_Data.GearHab(iFlt, 0)) Then
                             'Water and (Not closed by MPA) and (Fished by this gear)
                             'mpamonth(Month, MPAType) is false if closed, True if open.
@@ -3382,11 +3387,11 @@ exitline:
                     For j = 1 To m_Data.InCol
                         'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
                         If m_Data.Depth(i, j) > 0 And _
-                            (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(iFlt, m_Data.MPA(i, j)) Or m_Data.MPAmonth(arg.iMonth, m_Data.MPA(i, j))) _
+                            (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(iFlt, m_Data.MPA(i, j)) Or m_Data.MPAmonth(arguments.iMonth, m_Data.MPA(i, j))) _
                             And (Me.m_Data.PAreaFished(i, j, iFlt) > 0 Or m_Data.GearHab(iFlt, 0)) Then
 
                             'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
-                            m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arg.iCumMonth) * TotE * Attract(i, j) / TotAttract
+                            m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
                             'If Me.m_Data.PAreaFished(i, j, ig) > 0 Then
                             For isp = 1 To m_Data.NGroups
                                 'Fishing Mort
@@ -3402,28 +3407,40 @@ exitline:
             Debug.Assert(False, ex.Message)
         End Try
 
-        DirectCast(arg.WaitHandle, AutoResetEvent).Set()
+        Dim AutoRest As AutoResetEvent = TryCast(arguments.WaitHandle, AutoResetEvent)
+        Debug.Assert(AutoRest IsNot Nothing, "PredictEffortDistributionThreaded Exception AutoResetEvent is null.")
+
+        'Set the AutoRestEvent this will release the wait on this thread
+        If AutoRest IsNot Nothing Then AutoRest.Set()
 
     End Sub
 
 
-
-
+    ''' <summary>
+    ''' Run the PredictEffortDistribution on multiple threads
+    ''' </summary>
+    ''' <param name="iMonth"></param>
+    ''' <param name="iCumMonth"></param>
+    ''' <remarks></remarks>
     Private Sub runPredictEffortDistributionThreads(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
 
         Me.m_Data.allocate(m_Data.Ftot, m_Data.NGroups, m_Data.InRow, m_Data.InCol)
         Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
 
+        'list of wait handles that get passed to the worker threads
+        'used to wait for the routines to finish once all the worker threads have been started
         Dim lstOfCalls As List(Of WaitHandle) = New List(Of WaitHandle)
 
         Dim nFltsPerThread As Integer = Me.m_Data.nFleets \ Me.m_Data.nGridSolverThreads + 1
         Dim iFirstFleet As Integer = 1
-        Dim ilastfleet As Integer = 1
+        Dim ilastfleet As Integer
         Dim bDone As Boolean
 
         For ithrd As Integer = 1 To Me.m_Data.nSpaceSolverThreads
 
             ilastfleet = iFirstFleet + nFltsPerThread
+
+            'bound the fleet index
             If ilastfleet > Me.m_Data.nFleets Then
                 ilastfleet = Me.m_Data.nFleets + 1
                 'Computed all the fleets before we ran out of threads
@@ -3443,7 +3460,6 @@ exitline:
         For Each waitob As WaitHandle In lstOfCalls
             waitob.WaitOne()
         Next
-
 
     End Sub
 
