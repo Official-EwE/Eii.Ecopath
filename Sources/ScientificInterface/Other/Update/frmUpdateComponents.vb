@@ -62,9 +62,6 @@ Public Class frmUpdateComponents
         AddHandler Me.m_pm.AssemblyUpdating, AddressOf OnAssemblyUpdating
         AddHandler Me.m_pm.AssemblyUpdated, AddressOf OnAssemblyUpdated
 
-        Me.m_pbLogo.BackgroundImage = My.Resources.Ecopath.ToBitmap()
-        'Me.m_pbLogo.BackgroundImageLayout = ImageLayout.Stretch
-
         ' Set initial message
         Me.UpdateControls("", 0)
 
