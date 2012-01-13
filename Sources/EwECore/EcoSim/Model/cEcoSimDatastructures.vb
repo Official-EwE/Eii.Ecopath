@@ -586,16 +586,10 @@ Public Class cEcosimDatastructures
         ReDim Qrisk(nGroups)
         ReDim RiskTime(nGroups)
         ReDim Consumption(nGroups, nGroups)
-        'ReDim Consumpt(nGroups, nGroups)
 
         ReDim Eatenby(nGroups)
         ReDim Eatenof(nGroups)
         ReDim EggProdShape(CInt(nGroups / 2))
-        '  ReDim EggProdShapeSplit(Int(nGroups / 2))
-        '  ReDim HatchCode(Int(nGroups / 2)) ' JS190606: Needed for reading Stanza, performed in redimStanza
-
-        'jb moved to cEcosim.SetDefaultParameters
-        ' ReDim FlowType(nGroups, nGroups)
 
         ReDim FtimeAdjust(nGroups)
         ReDim MoPred(nGroups)
@@ -611,13 +605,6 @@ Public Class cEcosimDatastructures
         ReDim PBmaxs(nGroups)
         ReDim pred(nGroups)
         ReDim RecPower(CInt(nGroups / 2))
-
-        'ReDim Prepo(nGroups)
-        'ReDim rzero(nGroups)
-        'ReDim WavgWk(CInt(nGroups / 2)) 'Lk/Loo = length at recruitment / L infinity
-        'ReDim wzero(nGroups)  'weight at recruitment to juvenile stage
-        'ReDim wk(nGroups)  'weight at recruitment to adult stage
-        'ReDim WtGrow(nGroups)
 
         ReDim ilink(nGroups * nGroups)
         ReDim jlink(nGroups * nGroups)
