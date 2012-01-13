@@ -143,8 +143,7 @@ Namespace SpatialData
                         ' #Yes: extract external data
                         Try
                             ' The raster returned here MUST have the extent and projection compatible with Ecospace
-                            ' ToDo: generate attribute query filter from iIndex (e.g. HabitatName='....')
-                            dataExternal = Me.Dataset.GetRaster(bm.CellSize, Me.Converter)
+                            dataExternal = Me.Dataset.GetRaster(bm.CellSize, Me.Converter, layer.Name)
                         Catch ex As Exception
                             ' User should know this
                             cLog.Write(ex)

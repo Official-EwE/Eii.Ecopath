@@ -167,14 +167,14 @@ Namespace SpatialData
         ''' <summary>
         ''' Obtains a <see cref="ISpatialRaster"/> from the <see cref="LoadDataAtT">loaded</see> data.
         ''' </summary>
-        ''' <param name="dCellSize"></param>
-        ''' <param name="converter"></param>
-        ''' <param name="strAttributeFilterQuery"></param>
+        ''' <param name="dCellSize">Map cell size that is requested.</param>
+        ''' <param name="converter">Spatial data converter to perform the magic.</param>
+        ''' <param name="strLayerName">Name of the layer data will be retrieved for.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Function GetRaster(ByVal dCellSize As Double, _
                            ByVal converter As ISpatialDataConverter, _
-                           Optional ByVal strAttributeFilterQuery As String = "") As ISpatialRaster
+                           ByVal strLayerName As String) As ISpatialRaster
 
 #End Region ' Data
 
