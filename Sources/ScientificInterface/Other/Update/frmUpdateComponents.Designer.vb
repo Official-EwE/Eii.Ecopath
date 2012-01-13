@@ -1,4 +1,6 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmUpdateComponents
     Inherits System.Windows.Forms.Form
 
@@ -23,11 +25,13 @@ Partial Class frmUpdateComponents
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmUpdateComponents))
-        Me.m_lblInfo = New System.Windows.Forms.Label
-        Me.m_pbProgress = New System.Windows.Forms.ProgressBar
-        Me.m_btnAbort = New System.Windows.Forms.Button
-        Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel
+        Me.m_lblInfo = New System.Windows.Forms.Label()
+        Me.m_pbProgress = New System.Windows.Forms.ProgressBar()
+        Me.m_btnAbort = New System.Windows.Forms.Button()
+        Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_pbLogo = New System.Windows.Forms.PictureBox()
         Me.m_tlpButtons.SuspendLayout()
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_lblInfo
@@ -53,17 +57,28 @@ Partial Class frmUpdateComponents
         Me.m_tlpButtons.Controls.Add(Me.m_btnAbort, 1, 0)
         Me.m_tlpButtons.Name = "m_tlpButtons"
         '
+        'm_pbLogo
+        '
+        Me.m_pbLogo.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.ecopath_256x256
+        resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
+        Me.m_pbLogo.InitialImage = Global.ScientificInterface.My.Resources.Resources.ecopath_256x256
+        Me.m_pbLogo.Name = "m_pbLogo"
+        Me.m_pbLogo.TabStop = False
+        '
         'frmUpdateComponents
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.Color.White
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_pbLogo)
         Me.Controls.Add(Me.m_tlpButtons)
         Me.Controls.Add(Me.m_pbProgress)
         Me.Controls.Add(Me.m_lblInfo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "frmUpdateComponents"
         Me.m_tlpButtons.ResumeLayout(False)
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -71,4 +86,5 @@ Partial Class frmUpdateComponents
     Private WithEvents m_lblInfo As System.Windows.Forms.Label
     Private WithEvents m_btnAbort As System.Windows.Forms.Button
     Private WithEvents m_tlpButtons As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
 End Class
