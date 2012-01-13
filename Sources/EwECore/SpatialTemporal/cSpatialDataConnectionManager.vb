@@ -46,8 +46,8 @@ Namespace SpatialData
 
             ' Spatial data adapters are hard-coded. This should perhaps change, discuss w Joe B
             Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP))
-            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput))
-            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver))
+            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
+            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalLayers))
 
         End Sub
 
