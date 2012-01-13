@@ -37,17 +37,17 @@ Namespace SpatialData
 
         Friend Sub Init(ByVal core As cCore)
 
+            Dim adapter As ISpatialDataAdapter = Nothing
+
             Me.m_core = core
             Me.m_dtAdapters = New Dictionary(Of eVarNameFlags, ISpatialDataAdapter)
 
             Me.m_datasetManager = New cSpatialDataSetManager()
 
-            ' Spatial data adapters are hard-coded
-            Dim adapter As New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP)
-            Me.m_dtAdapters(adapter.VarName) = adapter
-
-            ' This should perhaps change, discuss w Joe B
-            Me.m_core.m_EcoSpaceData.DataAdapter(eVarNameFlags.LayerRelPP) = adapter
+            ' Spatial data adapters are hard-coded. This should perhaps change, discuss w Joe B
+            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP))
+            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput))
+            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver))
 
         End Sub
 
@@ -88,6 +88,11 @@ Namespace SpatialData
                 Return lAdapters.ToArray
             End Get
         End Property
+
+        Private Sub AddAdapter(adapter As ISpatialDataAdapter)
+            Me.m_dtAdapters(adapter.VarName) = adapter
+            Me.m_core.m_EcoSpaceData.DataAdapter(adapter.VarName) = adapter
+        End Sub
 
 #End Region ' Adapters
 

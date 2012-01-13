@@ -95,7 +95,7 @@ Public Class cMapResponseInteractionManager
                 Try
 
                     layer = Me.m_core.EcospaceBasemap.LayerDriver(iMap)
-                    map = New cEnviroInputMap(Me.m_core.CapacitMapInteractionManager, layer)
+                    map = New cEnviroInputMap(Me.m_core.CapacitMapInteractionManager, layer, iMap)
                     ' Bad hack: disable updates from the layer
                     map.setManager(Nothing)
                     For iGroup As Integer = 1 To Me.m_SpaceData.NGroups

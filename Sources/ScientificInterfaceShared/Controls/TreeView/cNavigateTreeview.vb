@@ -10,9 +10,15 @@ Namespace Controls
     ''' Treeview-derived class that can contain tree items with a URL link. An
     ''' <see cref="cNavigateTreeview.Navigate"/> event is thrown 
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class cNavigateTreeview
         Inherits TreeView
+
+        Public Sub New()
+            MyBase.New()
+            ' Hack to allow a bit more room for rendering items
+            Me.Font = New Font(Me.Font, FontStyle.Bold)
+            Me.FullRowSelect = True
+        End Sub
 
         ''' ---------------------------------------------------------------
         ''' <summary>
@@ -25,8 +31,8 @@ Namespace Controls
 
             Private m_strHyperlink As String = ""
 
-             Public Sub New(strText As String, _
-                           strHyperlink As String)
+            Public Sub New(strText As String, _
+                          strHyperlink As String)
                 MyBase.New(strText)
                 Me.m_strHyperlink = strHyperlink
             End Sub
@@ -87,28 +93,31 @@ Namespace Controls
 
         Public Event Navigate(sender As Object, e As TreeViewNavigateEventArgs)
 
-        Protected Overrides Sub OnAfterSelect(e As System.Windows.Forms.TreeViewEventArgs)
-
+        Protected Overrides Sub OnNodeMouseClick(e As System.Windows.Forms.TreeNodeMouseClickEventArgs)
+            MyBase.OnNodeMouseClick(e)
             If (Me.HasHyperlink(e.Node)) Then
                 Try
-                    Dim args As New TreeViewNavigateEventArgs(DirectCast(e.Node, cHyperlinkTreeNode), e.Action)
+                    Dim args As New TreeViewNavigateEventArgs(DirectCast(e.Node, cHyperlinkTreeNode), TreeViewAction.ByMouse)
                     Me.OnNavigate(args)
                 Catch ex As Exception
 
                 End Try
-            Else
-                MyBase.OnAfterSelect(e)
             End If
-
         End Sub
 
         Protected Overrides Sub OnDrawNode(e As System.Windows.Forms.DrawTreeNodeEventArgs)
 
+            Dim sfmt As New StringFormat()
             Dim bIsURL As Boolean = Me.HasHyperlink(e.Node)
             Dim rc As Rectangle = e.Bounds
 
-            rc.Inflate(2, 0)
-            rc.Offset(1, 0)
+            sfmt.Alignment = StringAlignment.Near
+            sfmt.FormatFlags = StringFormatFlags.NoWrap
+            sfmt.LineAlignment = StringAlignment.Center
+
+            'rc.Inflate(2, 0)
+            'rc.Offset(1, 0)
+            'rc.Width = Math.Min(rc.Width, Me.ClientRectangle.Width - rc.X)
 
             Dim br As Brush = SystemBrushes.ControlText
             Dim ft As Font = Nothing
@@ -126,7 +135,7 @@ Namespace Controls
             Else
                 ft = New Font(Me.Font, FontStyle.Regular)
             End If
-            e.Graphics.DrawString(e.Node.Text, ft, br, rc)
+            e.Graphics.DrawString(e.Node.Text, ft, br, rc, sfmt)
 
             ft.Dispose()
 

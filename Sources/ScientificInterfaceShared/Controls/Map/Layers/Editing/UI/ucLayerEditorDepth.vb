@@ -51,11 +51,21 @@ Namespace Controls.Map.Layers
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
             MyBase.UpdateContent(editor)
 
+            Dim iVal As Integer
+
             ' Sanity check
             If (Me.m_nudDepth Is Nothing) Then Return
             If (Me.UIContext Is Nothing) Then Return
 
             ' Set control value
+            iVal = CInt(Me.Editor.CellValue)
+            If (iVal = 0) Then
+                Me.m_rbLand.Checked = True
+            Else
+                Me.m_rbWater.Checked = True
+                Me.m_nudDepth.Value = iVal
+            End If
+            ' Respond
             Me.UpdatePreview(Me.m_pbPreviewWater, CSng(Me.m_nudDepth.Value))
 
             Dim bEditable As Boolean = editor.IsEditable

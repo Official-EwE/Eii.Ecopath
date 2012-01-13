@@ -69,6 +69,9 @@ Public Class cTaxonDataStructures
     Public TaxonMaxLength() As Single
     Public TaxonMeanLifeSpan() As Single
     Public TaxonVulnerabilityIndex() As Integer
+    Public TaxonWinf() As Single
+    Public TaxonK() As Single
+
 
     ''' <summary>Group taxon index - may be used by model, initially designed for quick taxon access code.</summary>
     Private m_alGroupTaxa() As List(Of Integer)
@@ -127,6 +130,8 @@ Public Class cTaxonDataStructures
         ReDim Me.TaxonMeanLifeSpan(Me.NumTaxon)
         ReDim Me.TaxonVulnerabilityIndex(Me.NumTaxon)
         ReDim Me.TaxonLastUpdated(Me.NumTaxon)
+        ReDim Me.TaxonWinf(Me.NumTaxon)
+        ReDim Me.TaxonK(Me.NumTaxon)
 
         Me.m_alGroupTaxa = Nothing
 
@@ -155,7 +160,7 @@ Public Class cTaxonDataStructures
     End Property
 
     ''' <summary>
-    ''' Get a taxon for a given group.
+    ''' Get the one-based index of a taxon for a given group.
     ''' </summary>
     ''' <param name="iGroup">The one-based group index to get the taxon information for.</param>
     ''' <param name="iIndex">The one-based index [1, <see cref="NumGroupTaxa"/>] of the taxon to obtain.</param>

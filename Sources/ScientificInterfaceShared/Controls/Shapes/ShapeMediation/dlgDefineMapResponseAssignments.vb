@@ -420,7 +420,7 @@ Public Class dlgDefineMapResponseAssignments
             Me.m_zgh.YScaleMin = 0
 
         Catch ex As Exception
-
+            Debug.Assert(False, "PlotMap " & ex.Message)
         End Try
 
     End Sub

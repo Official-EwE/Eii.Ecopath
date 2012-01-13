@@ -80,6 +80,9 @@ Namespace Ecospace
         End Sub
 
         Public Sub AddValue(ByVal iGroup As Integer, ByVal iTimeStep As Integer, ByVal sValue As Single)
+#If DEBUG Then
+            Debug.Assert(Me.IsValidValue(iTimeStep, sValue), "Ecospace value invalid")
+#End If
             Try
                 Dim li As CurveItem = Me.m_pane.CurveList(iGroup - 1)
                 li.AddPoint(iTimeStep, sValue)

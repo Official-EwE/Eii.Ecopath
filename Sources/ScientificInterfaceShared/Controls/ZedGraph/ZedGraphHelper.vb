@@ -753,6 +753,13 @@ Namespace Controls
                                     li.Label.Text = .Title.Text
                                 End If
 
+#If DEBUG Then
+                                ' Validate line content
+                                For ipt As Integer = 0 To li.Points.Count - 1
+                                    Dim pt As PointPair = li.Points(ipt)
+                                    Debug.Assert(Me.IsValidValue(pt.X, pt.Y), "Point contains invalid values")
+                                Next
+#End If
                                 Select Case Me.CurveType(li)
 
                                     Case eLineType.ModelData
@@ -1820,6 +1827,18 @@ Namespace Controls
         End Function
 
 #End Region ' Pane value querying
+
+#Region " Sanity "
+
+        Protected Function IsValidValue(dX As Double, dY As Double) As Boolean
+            If Double.IsNaN(dX) Then Return False
+            If Double.IsInfinity(dX) Then Return False
+            If Double.IsNaN(dY) Then Return False
+            If Double.IsInfinity(dY) Then Return False
+            Return True
+        End Function
+
+#End Region ' Sanity
 
 #End Region ' Public interfaces
 

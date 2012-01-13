@@ -69,7 +69,6 @@ Public Interface IEnviroInputMap
     ''' </summary>
     ReadOnly Property HistogramBinWidth() As Single
 
-
     ''' <summary>
     ''' Updates the map stats on the underlying data
     ''' </summary>

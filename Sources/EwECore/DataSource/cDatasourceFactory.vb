@@ -30,16 +30,21 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Shared Function GetSupportedType(ByVal strFile As String) As eDataSourceTypes
             Select Case Path.GetExtension(strFile).ToLower
-                Case ".eii" : Return eDataSourceTypes.EII
+                Case ".eii"
+                    Return eDataSourceTypes.EII
+
+                Case ".accdb", ".eweaccdb"
+                    Return eDataSourceTypes.Access2007
+
                 Case ".mdb", ".ewemdb"
-                    If cSystemUtils.Is64Bit Then
+                    If cSystemUtils.Is64Bit() Then
                         Return eDataSourceTypes.Access2007
                     Else
                         Return eDataSourceTypes.Access2003
                     End If
-                Case ".accdb", ".eweaccdb" : Return eDataSourceTypes.Access2007
 #If DEBUG Then
-                Case ".mdf" : Return eDataSourceTypes.SQLServer
+                Case ".mdf"
+                    Return eDataSourceTypes.SQLServer
 #End If
             End Select
             Return eDataSourceTypes.NotSet

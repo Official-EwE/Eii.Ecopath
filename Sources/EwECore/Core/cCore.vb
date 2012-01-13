@@ -3854,6 +3854,8 @@ Public Class cCore
                 taxon.MeanWeight = Me.m_TaxonData.TaxonMeanWeight(iTaxon)
                 taxon.MeanLifespan = Me.m_TaxonData.TaxonMeanLifeSpan(iTaxon)
                 taxon.VulnerabilityIndex = Me.m_TaxonData.TaxonVulnerabilityIndex(iTaxon)
+                taxon.Winf = Me.m_TaxonData.TaxonWinf(iTaxon)
+                taxon.vbgfK = Me.m_TaxonData.TaxonK(iTaxon)
 
                 taxon.LastUpdated = Me.m_TaxonData.TaxonLastUpdated(iTaxon)
 
@@ -3912,6 +3914,9 @@ Public Class cCore
         Me.m_TaxonData.TaxonMeanLifeSpan(iTaxon) = taxon.MeanLifespan
         Me.m_TaxonData.TaxonLastUpdated(iTaxon) = taxon.LastUpdated
         Me.m_TaxonData.TaxonVulnerabilityIndex(iTaxon) = taxon.VulnerabilityIndex
+        Me.m_TaxonData.TaxonWinf(iTaxon) = taxon.Winf
+        Me.m_TaxonData.TaxonK(iTaxon) = taxon.vbgfK
+
         Return True
 
     End Function
@@ -7373,10 +7378,8 @@ Public Class cCore
 
         'if Ecosim is being run on a thread then setup the RunCompletedDelegate
         'this will call  Me.EcoSimRunCompleted(Nothing) once Ecosim has completed the run
-        Dim bMultiThread As Boolean
         Me.m_EcoSim.RunCompletedDelegate = Nothing
         If Me.m_EcoSimData.bMultiThreaded Then
-            bMultiThread = True
             Me.m_EcoSim.RunCompletedDelegate = AddressOf Me.EcoSimRunCompleted
             Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcoSim))
         End If
@@ -7391,7 +7394,7 @@ Public Class cCore
         'if not mulithreaded then the Ecosim run has completed 
         'do any processing to complete the run (populate objects, send any messages...)
         'if running in on a thread then Me.EcoSimRunCompleted(Nothing) will be called via the delegate set before the run
-        If Not bMultiThread Then
+        If Not Me.m_EcoSimData.bMultiThreaded Then
             Me.EcoSimRunCompleted(Nothing)
         End If
 
@@ -8008,7 +8011,7 @@ Public Class cCore
     '''  If no handler is supplied then the user will not be called at each time step. </param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function RunEcoSpace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing) As Boolean
+    Public Function RunEcoSpace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing, Optional ByVal RunOnThread As Boolean = True) As Boolean
         Dim breturn As Boolean
 
         Debug.Assert(Me.m_StateMonitor.HasEcospaceLoaded, "RunEcospace() You must load an Ecospace scenario first.")
@@ -8075,8 +8078,17 @@ Public Class cCore
                     'make sure Ecospace is not paused
                     Me.m_Ecospace.isPaused = False
 
-                    'Run Ecospace
-                    breturn = Me.m_Ecospace.RunThreaded()
+                    If RunOnThread Then
+                        'Run Ecospace
+                        breturn = Me.m_Ecospace.RunThreaded()
+                    Else
+                        breturn = Me.m_Ecospace.Run()
+                        If EcospaceTimeStepHandler Is Nothing Then
+                            'if no RunCompleted call back then makes sure the onEcoSpaceRunCompleted() is called
+                            Me.onEcoSpaceRunCompleted(breturn)
+                        End If
+
+                    End If
 
                 End If 'If GroupsMissingHabitat() Then
 
@@ -8758,7 +8770,7 @@ Public Class cCore
             m_Ecospace.SearchData = m_SearchData
 
             'all the input maps have changed if a new scenario is loaded
-            Me.m_Ecospace.setInputMapsChanged(True)
+            Me.m_EcoSpaceData.bHasCapacityChanged = True
 
             'hardwire some capacity maps for debugging
             Me.m_EcoSpaceData.setDebugCapMaps(Me.m_EcoSimData.CapEnvResData)

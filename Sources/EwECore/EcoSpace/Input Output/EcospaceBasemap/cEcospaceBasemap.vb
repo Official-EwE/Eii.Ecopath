@@ -782,11 +782,13 @@ Public Class cEcospaceBasemap
 
         Try
             Select Case varName
-                Case eVarNameFlags.LayerDepth
+                Case eVarNameFlags.LayerDepth, eVarNameFlags.LayerHabitat, eVarNameFlags.LayerHabitatCapacity, _
+                    eVarNameFlags.LayerDriver, eVarNameFlags.LayerDriver
+                    Me.m_core.m_EcoSpaceData.bHasCapacityChanged = True
+
                 Case eVarNameFlags.LayerHabitat
                 Case eVarNameFlags.LayerHabitatCapacity
                 Case eVarNameFlags.LayerHabitatCapacityInput
-                    Me.m_core.m_EcoSpaceData.bHabCapInputChanged(iIndex) = True
                 Case eVarNameFlags.LayerMPA
                 Case eVarNameFlags.LayerRegion
                 Case eVarNameFlags.LayerRelPP

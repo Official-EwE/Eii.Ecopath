@@ -16,32 +16,33 @@ Imports ScientificInterfaceShared.Forms
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStatusPanel))
-        Me.m_tvStatus = New ScientificInterfaceShared.Controls.cNavigateTreeview
+        Me.m_tvStatus = New ScientificInterfaceShared.Controls.cNavigateTreeview()
         Me.SuspendLayout()
         '
         'm_tvStatus
         '
         resources.ApplyResources(Me.m_tvStatus, "m_tvStatus")
+        Me.m_tvStatus.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText
+        Me.m_tvStatus.FullRowSelect = True
+        Me.m_tvStatus.HideSelection = False
         Me.m_tvStatus.Name = "m_tvStatus"
         Me.m_tvStatus.ShowLines = False
-        Me.m_tvStatus.DrawMode = TreeViewDrawMode.OwnerDrawText
         '
         'frmStatusPanel
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.CloseButtonVisible = False
         Me.Controls.Add(Me.m_tvStatus)
         Me.DockAreas = CType((((WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight) _
-                    Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) _
-                    Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom), WeifenLuo.WinFormsUI.Docking.DockAreas)
+            Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockTop) _
+            Or WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom), WeifenLuo.WinFormsUI.Docking.DockAreas)
         Me.DoubleBuffered = True
         Me.HideOnClose = True
         Me.Name = "frmStatusPanel"
         Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
-        Me.HideOnClose = True
-        Me.CloseButtonVisible = False
         Me.TabText = "Status"
         Me.ResumeLayout(False)
 

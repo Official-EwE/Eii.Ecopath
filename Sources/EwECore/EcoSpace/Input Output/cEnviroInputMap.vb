@@ -26,17 +26,27 @@ Public Class cEnviroInputMap
     Private m_mean As Single
     Private m_binWidth As Single
     Private m_manager As cMapResponseInteractionManager
+    Private m_iLayerIndex As Integer
 
 #End Region ' Private vars
+
+#Region "Construction Initialization"
 
     Friend Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal source As cEcospaceLayer)
         Me.m_source = source
         Me.setManager(theManager)
         ' Init to the data in the manager
         Me.Init(Me.m_manager.MediationData, Me.m_manager.SpaceData)
+        m_iLayerIndex = cCore.NULL_VALUE
         Me.Update()
     End Sub
 
+
+    Friend Sub New(ByVal theManager As cMapResponseInteractionManager, ByVal source As cEcospaceLayer, ByVal iLayerIndex As Integer)
+        Me.New(theManager, source)
+        Me.m_iLayerIndex = iLayerIndex
+
+    End Sub
     ''' <inheritdocs cref="IEnviroInputMap.Init"/>
     Friend Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean _
         Implements IEnviroInputMap.Init
@@ -50,89 +60,28 @@ Public Class cEnviroInputMap
 
     End Function
 
-    Private Sub computeMinMax()
+#End Region
 
-        m_min = Single.MaxValue
-        m_max = Single.MinValue
+#Region "Public functions"
 
+    ''' <inheritdocs cref="IEnviroInputMap.Update"/>
+    Public Function Update() As Boolean Implements IEnviroInputMap.Update
+        Dim bReturn As Boolean = False
         Try
-            For ir As Integer = 1 To Me.m_spaceData.InRow
-                For ic As Integer = 1 To Me.m_spaceData.InCol
-                    Dim sCell As Single = CSng(Me.m_source.Cell(ir, ic))
-                    Me.m_min = Math.Min(sCell, Me.m_min)
-                    Me.m_max = Math.Max(sCell, Me.m_max)
-                Next
-            Next
+            Me.computeMinMax()
+            bReturn = True
         Catch ex As Exception
-            ' Argh
+            Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
         End Try
+        Return bReturn
 
-        Me.m_mean = (Me.m_min + Me.m_max) * 0.5F
-
-    End Sub
+    End Function
 
     ''' <inheritdocs cref="IEnviroInputMap.setManager"/>
     Friend Sub setManager(ByVal theManager As cMapResponseInteractionManager) _
         Implements IEnviroInputMap.setManager
         Me.m_manager = theManager
     End Sub
-
-    ''' <summary>
-    ''' Return a value for a cell in the input map base on the the response function for a group.
-    ''' </summary>
-    ''' <param name="igrp">Group index for the response function</param>
-    ''' <param name="iMapRow">Row of the input map</param>
-    ''' <param name="iMapCol">Col of the input map</param>
-    ''' <returns>Y = F(x)</returns>
-    Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single _
-        Implements IEnviroInputMap.ResponseFunction
-
-        Dim iShp As Integer = 0
-
-        Try
-            iShp = Me.ResponseIndexForGroup(igrp)
-            'Response(shape) index of -9999 means there is no shape set for this Map/Group
-            If iShp <= 0 Then
-                'No shape has been set for this group
-                'need to decide what the null response should be
-                Return 0
-            End If
-
-            Return Me.m_MedData.getEnviroResponse(iShp, CSng(Me.m_source.Cell(iMapRow, iMapCol)))
-
-        Catch ex As Exception
-            Debug.Assert(False)
-        End Try
-
-    End Function
-
-    ''' <summary>
-    ''' Sets or gets the response(mediation) function index to use from the current cMediationDataStructures load during the Init(...)
-    ''' </summary>
-    ''' <param name="GrpIndex">Group index for the response function.</param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>
-    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer) As Integer _
-        Implements IEnviroInputMap.ResponseIndexForGroup
-        Get
-            Return Me.m_GrpToShape(GrpIndex)
-        End Get
-
-        Set(ByVal ResponseShapeIndex As Integer)
-            If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
-                'Response index(shape index) of -9999 NULL_VALUE means there is no response set for this Map/Group
-                Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
-
-                'If the manager is nothing the response index was set during initialization
-                'The manager is not initialized until an Ecospace scenarion is loaded
-                If (Not Me.m_manager Is Nothing) Then
-                    Me.m_manager.onChanged()
-                End If
-
-            End If
-        End Set
-    End Property
 
     ''' <inheritdocs cref="IEnviroInputMap.Histogram"/>
     Public Function Histogram() As Drawing.PointF() Implements IEnviroInputMap.Histogram
@@ -142,7 +91,7 @@ Public Class cEnviroInputMap
         Dim pts() As Drawing.PointF
         Dim ncells As Integer
         ReDim pts(nBins)
-
+        Me.computeMinMax()
         'Make sure there is data in the map
         If Me.Max > 0 Then
             Me.m_binWidth = Me.Max / nBins
@@ -186,20 +135,7 @@ Public Class cEnviroInputMap
 
     End Function
 
-    ''' <summary>
-    ''' The basemap layer that provides the data that this map operates onto.
-    ''' </summary>
-    Public ReadOnly Property Layer As cEcospaceLayer
-        Get
-            Return Me.m_source
-        End Get
-    End Property
-
-    Public ReadOnly Property HistogramBinWidth As Single Implements IEnviroInputMap.HistogramBinWidth
-        Get
-            Return Me.m_binWidth
-        End Get
-    End Property
+#End Region
 
 #Region " Properties "
 
@@ -241,19 +177,106 @@ Public Class cEnviroInputMap
         End Get
     End Property
 
-#End Region ' Properties
+    ''' <summary>
+    ''' The basemap layer that provides the data that this map operates onto.
+    ''' </summary>
+    Public ReadOnly Property Layer As cEcospaceLayer
+        Get
+            Return Me.m_source
+        End Get
+    End Property
 
-    ''' <inheritdocs cref="IEnviroInputMap.Update"/>
-    Public Function Update() As Boolean Implements IEnviroInputMap.Update
-        Dim bReturn As Boolean = False
+    Public ReadOnly Property HistogramBinWidth As Single Implements IEnviroInputMap.HistogramBinWidth
+        Get
+            Return Me.m_binWidth
+        End Get
+    End Property
+
+
+
+    ''' <summary>
+    ''' Return a value for a cell in the input map base on the the response function for a group.
+    ''' </summary>
+    ''' <param name="igrp">Group index for the response function</param>
+    ''' <param name="iMapRow">Row of the input map</param>
+    ''' <param name="iMapCol">Col of the input map</param>
+    ''' <returns>Y = F(x)</returns>
+    Public Function ResponseFunction(ByVal igrp As Integer, ByVal iMapRow As Integer, ByVal iMapCol As Integer) As Single _
+        Implements IEnviroInputMap.ResponseFunction
+
+        Dim iShp As Integer = 0
+
         Try
-            Me.computeMinMax()
-            bReturn = True
+            iShp = Me.ResponseIndexForGroup(igrp)
+            'Response(shape) index of -9999 means there is no shape set for this Map/Group
+            If iShp <= 0 Then
+                'No shape has been set for this group
+                'need to decide what the null response should be
+                Return 0
+            End If
+
+            Return Me.m_MedData.getEnviroResponse(iShp, CSng(Me.m_source.Cell(iMapRow, iMapCol)))
+
         Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".Update() Exception: " & ex.Message)
+            Debug.Assert(False)
         End Try
-        Return bReturn
 
     End Function
+
+
+    ''' <summary>
+    ''' Sets or gets the response(mediation) function index to use from the current cMediationDataStructures load during the Init(...)
+    ''' </summary>
+    ''' <param name="GrpIndex">Group index for the response function.</param>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>
+    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer) As Integer _
+        Implements IEnviroInputMap.ResponseIndexForGroup
+        Get
+            Return Me.m_GrpToShape(GrpIndex)
+        End Get
+
+        Set(ByVal ResponseShapeIndex As Integer)
+            If ResponseShapeIndex <= Me.m_MedData.MediationShapes And GrpIndex <= Me.nGroups Then
+                'Response index(shape index) of -9999 NULL_VALUE means there is no response set for this Map/Group
+                Me.m_GrpToShape(GrpIndex) = ResponseShapeIndex
+
+                'If the manager is nothing the response index was set during initialization
+                'The manager is not initialized until an Ecospace scenarion is loaded
+                If (Not Me.m_manager Is Nothing) Then
+                    Me.m_manager.onChanged()
+                End If
+
+            End If
+        End Set
+    End Property
+
+#End Region ' Properties
+
+#Region "Private Functions"
+
+    Private Sub computeMinMax()
+
+        m_min = Single.MaxValue
+        m_max = Single.MinValue
+
+        Try
+            For ir As Integer = 1 To Me.m_spaceData.InRow
+                For ic As Integer = 1 To Me.m_spaceData.InCol
+                    Dim sCell As Single = CSng(Me.m_source.Cell(ir, ic))
+                    Me.m_min = Math.Min(sCell, Me.m_min)
+                    Me.m_max = Math.Max(sCell, Me.m_max)
+                Next
+            Next
+        Catch ex As Exception
+            ' Argh
+        End Try
+
+        Me.m_mean = (Me.m_min + Me.m_max) * 0.5F
+
+    End Sub
+
+#End Region
 
 End Class

@@ -79,12 +79,18 @@ Public Class cEcospaceDataStructures
     Public HabitatText() As String
 
     ''' <summary>The proportion to which a group prefers a habitat.</summary>
-    ''' ''' <remarks>Indexed Group,Habitat</remarks>
+    ''' <remarks>Indexed Group,Habitat</remarks>
     Public PrefHab(,) As Single
 
     ''' <summary>The proportion of habitat type in a map cell.</summary>
     ''' <remarks>Indexed Row,Col,Habitat</remarks>
     Public PHabType(,,) As Single
+
+    ''' <summary>
+    ''' Have any of the capacity input layers changed
+    ''' </summary>
+    ''' <remarks>Capacity Inputs, Habitats, Environmental layers, depth....</remarks>
+    Public bHasCapacityChanged As Boolean
 
     ''' <summary>The proportion of map cell that is fished by a fleet.</summary>
     ''' <remarks>Indexed Row,Col,Gear</remarks>
@@ -304,8 +310,6 @@ Public Class cEcospaceDataStructures
 
     Public SEmult() As Single
 
-    Public Attract(,) As Single
-
     ''' <summary>
     ''' Total fishing mortality by group,row,col
     ''' </summary>
@@ -483,18 +487,6 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     Public HabCapInput(,,) As Single
 
-    ''' <summary>
-    ''' Have the Habitat Capacity Input maps changed
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public bHabCapInputChanged() As Boolean
-
-    ''' <summary>
-    ''' If the habitat capacity has changed then the capacity gradients need to be ajusted to move biomass to higher capacity cells
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public bAjustHabCaps As Boolean
-
     ''' <summary> Sum of Capacity across the map cells by group </summary>
     Public TotHabCap() As Single
 
@@ -529,7 +521,7 @@ Public Class cEcospaceDataStructures
     Public CapMapFunctions(,) As Integer
 
     ' Generate for each driver layer + 0 which is depth
-    Public CapMaps As IEnviroInputMap() = Nothing
+    Public CapMaps As IEnviroInputMap()
 
     Public CapCalType As EwEUtils.Core.eEcospaceCapacityCalType = EwEUtils.Core.eEcospaceCapacityCalType.Capacity
 
@@ -1050,12 +1042,10 @@ Public Class cEcospaceDataStructures
             ReDim Mvel(nvartot)
             ReDim RelMoveBad(nvartot)
             ReDim RelVulBad(nvartot)
-            '   ReDim VulPred(nvartot)
             ReDim IsAdvected(NGroups)
             ReDim Me.TotHabCap(NGroups)
             ReDim Me.MaxHabCap(NGroups)
 
-            ReDim Me.bHabCapInputChanged(NGroups)
 
             'jb PrefHab() was redimed here and redimHabitatVariables()
             '        ReDim PrefHab(nGroups, NoHabitats)
@@ -1159,6 +1149,33 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+
+    '' <summary>
+    ''' Allocate memory for an array with 3 dimensions
+    ''' </summary>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
+    Friend Sub allocate(ByRef array(,,) As Boolean, ByVal d1 As Integer, ByVal d2 As Integer, ByVal d3 As Integer)
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) * (d2 + 1) * (d3 + 1) Then
+                System.Array.Clear(array, 0, array.Length)
+                Return
+            End If
+        End If
+
+        Erase array
+        array = Nothing
+
+        'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
+        'Dim mgs As Single = CSng(d1 * d2 * d3 * 4 / 1048576)
+        'System.Console.WriteLine("Allocating=" & mgs.ToString & " Memory=" & (GC.GetTotalMemory(True) / 1048576).ToString)
+
+        GC.Collect()
+        ReDim array(d1, d2, d3)
+
+    End Sub
+
+
     ''' <summary>
     ''' Allocate memory for an array with 2 dimensions
     ''' </summary>
@@ -1222,17 +1239,18 @@ Public Class cEcospaceDataStructures
             'force the garbage collection
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
+            'For Nereus EcoOcean there are more fleets then groups
+            'so dimension the fleets first
+            Me.allocate(Port, InRow, InCol, nFleets)
+            Me.allocate(PAreaFished, InRow, InCol, nFleets)
+            Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
+
             Me.allocate(Bcell, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Blast, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Me.HabCap, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
             Me.allocate(CatchMap, InRow, InCol, nvartot)
             Me.allocate(PHabType, InRow, InCol, NoHabitats)
-            Me.allocate(PAreaFished, InRow, InCol, nFleets)
-            Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
-
-            'jb Temporarily removed
-            'Me.allocate(GroupDetritus, InRow + 1, InCol + 1, nvartot)
 
             Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)
             Me.allocate(Yv, InRow + 1, InCol + 1, cCore.N_MONTHS)
@@ -1253,8 +1271,6 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
 
-            'Port is boolean so it can't use allocate
-            ReDim Port(nFleets, InRow + 1, InCol + 1)
             ' 
 
             'jb not used in 6

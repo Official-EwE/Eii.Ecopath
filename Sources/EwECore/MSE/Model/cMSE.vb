@@ -2105,8 +2105,6 @@ Namespace MSE
             Dim FleetCatchValue As Single = 0
             Dim marketPrice As Single
 
-            'System.Console.WriteLine()
-
             For igrp As Integer = 1 To Me.m_esData.nGroups
 
                 If Me.m_epdata.Landing(curFleet, igrp) > 0 Then
