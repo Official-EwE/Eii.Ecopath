@@ -5,6 +5,7 @@ Imports System.IO
 Imports EwECore.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -30,7 +31,12 @@ Namespace DataSources
         Public Shared Function GetSupportedType(ByVal strFile As String) As eDataSourceTypes
             Select Case Path.GetExtension(strFile).ToLower
                 Case ".eii" : Return eDataSourceTypes.EII
-                Case ".mdb", ".ewemdb" : Return eDataSourceTypes.Access2003
+                Case ".mdb", ".ewemdb"
+                    If cSystemUtils.Is64Bit Then
+                        Return eDataSourceTypes.Access2007
+                    Else
+                        Return eDataSourceTypes.Access2003
+                    End If
                 Case ".accdb", ".eweaccdb" : Return eDataSourceTypes.Access2007
 #If DEBUG Then
                 Case ".mdf" : Return eDataSourceTypes.SQLServer
@@ -67,7 +73,7 @@ Namespace DataSources
         ''' <returns></returns>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetCompatibility(strDatabase As String, ByRef access As eDatasourceAccessType) As cEwEDatabase.eCompatibilityTypes
+        Public Shared Function GetCompatibility(ByVal strDatabase As String, ByRef access As eDatasourceAccessType) As cEwEDatabase.eCompatibilityTypes
 
             Dim comp As cEwEDatabase.eCompatibilityTypes = cEwEDatabase.eCompatibilityTypes.Unknown
             Dim dst As eDataSourceTypes = cDataSourceFactory.GetSupportedType(strDatabase)
@@ -85,7 +91,7 @@ Namespace DataSources
                         db.Close()
                     End If
 
-#If debug Then
+#If DEBUG Then
                 Case eDataSourceTypes.SQLServer
                     ' Is database, whoohoo
                     Dim db As New cEwESQLServerDatabase()
