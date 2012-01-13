@@ -1510,4 +1510,10 @@ Description: {2}</value>
     <value>Version {0} ({1})</value>
     <comment>{0}: ewe version, {1}:32 / 64 bit indicator</comment>
   </data>
+  <data name="CAPTION_EXTERNAL_DATASET_CONFIGURE" xml:space="preserve">
+    <value>Configure data set</value>
+  </data>
+  <data name="PROMPT_CACHE_CLEAR" xml:space="preserve">
+    <value>The spatial data cache occupies {0} KB of disk space, of which {1} KB is not in use by this model. Do you want to clear unused data only?</value>
+  </data>
 </root>

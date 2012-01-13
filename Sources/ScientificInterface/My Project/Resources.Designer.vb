@@ -141,6 +141,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Configure data set.
+        '''</summary>
+        Public ReadOnly Property CAPTION_EXTERNAL_DATASET_CONFIGURE() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_EXTERNAL_DATASET_CONFIGURE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to MSE fleet ref. levels.
         '''</summary>
         Public ReadOnly Property CAPTION_MSEFLEETREF() As String
@@ -2453,6 +2462,15 @@ Namespace My.Resources
         Public ReadOnly Property PROMPT_ADVECTION_INBALANCED() As String
             Get
                 Return ResourceManager.GetString("PROMPT_ADVECTION_INBALANCED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The spatial data cache occupies {0} KB of disk space, of which {1} KB is not in use by this model. Do you want to clear unused data only?.
+        '''</summary>
+        Public ReadOnly Property PROMPT_CACHE_CLEAR() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_CACHE_CLEAR", resourceCulture)
             End Get
         End Property
         

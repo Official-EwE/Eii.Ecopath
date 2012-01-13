@@ -1,4 +1,5 @@
-﻿Imports EwECore
+﻿Option Strict On
+Imports EwECore
 Imports EwEUtils.SpatialData
 Imports EwEPlugin
 Imports EwECore.SpatialData
@@ -122,7 +123,7 @@ Namespace Ecospace.Controls
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim dSizeTot As Double = cache.GetSize() / 1024
             Dim dSizeUnused As Double = cache.GetUnusedSize(Me.m_manSets) / 1024
-            Dim strPrompt As String = "The cache occupies {0} KB of data, of which {1} KB is no longer used. Do you want to clear unused data only?"
+            Dim strPrompt As String = My.Resources.PROMPT_CACHE_CLEAR
             Dim bSucces As Boolean = True
 
             Try
@@ -142,7 +143,9 @@ Namespace Ecospace.Controls
             Me.EvaluateCache()
             Me.UpdateControls()
 
-            If Not bSucces Then MsgBox("Oops...")
+            If Not bSucces Then
+
+            End If
         End Sub
 
         Private Sub OnFormatCV(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
@@ -330,7 +333,7 @@ Namespace Ecospace.Controls
             If (ctrl Is Nothing) Then Return dsConf.IsConfigured
 
             Dim dlg As New dlgConfig()
-            dlg.ShowDialog(Me.FindForm, "Configure data set", ctrl)
+            dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
 
             Return (dsConf.IsConfigured)
 
