@@ -1150,7 +1150,7 @@ Public Class cEcospaceDataStructures
     End Sub
 
 
-    '' <summary>
+    ''' <summary>
     ''' Allocate memory for an array with 3 dimensions
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
@@ -1241,7 +1241,7 @@ Public Class cEcospaceDataStructures
 
             'For Nereus EcoOcean there are more fleets then groups
             'so dimension the fleets first
-            Me.allocate(Port, InRow, InCol, nFleets)
+            Me.allocate(Port, nFleets, InRow, InCol)
             Me.allocate(PAreaFished, InRow, InCol, nFleets)
             Me.allocate(Sail, nFleets, InRow + 1, InCol + 1)
 
