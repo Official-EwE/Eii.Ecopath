@@ -111,6 +111,15 @@ Public Class cNetworkManager
 
     Public Event OnRunStateChanged()
 
+    Public Sub StopNetworkAnalysis()
+        Me.m_econetwork.bStopNetworkAnnalysis = True
+    End Sub
+
+    Private Sub AllowStopNetworkAnalysis()
+        Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopNetworkAnalysis))
+    End Sub
+
+
 #Region " Main Network Analysis "
 
     ''' -----------------------------------------------------------------------
@@ -158,6 +167,7 @@ Public Class cNetworkManager
 
                 Me.m_runstate = eRunState.NetworkNeedsToRun
                 Me.m_econetwork.GroupsToShow = abGroupsToShow
+                Me.AllowStopNetworkAnalysis()
 
                 'Make sure the network analysis object has the latest data computed by the core
                 'This may not be necessary because m_EcoNetwork keeps a reference to the data. 
@@ -188,11 +198,6 @@ Public Class cNetworkManager
 
     End Function
 
-    'Bug 252 fix by joeh
-    'Cahnge
-    'Public Function IsMainNetworkRun() As Boolean
-    '    Return m_IsMainNetworkRun
-    'End Function
     Public Property IsMainNetworkRun() As Boolean
         Get
             Return Me.m_bIsMainNetworkRun
@@ -204,7 +209,6 @@ Public Class cNetworkManager
             End If
         End Set
     End Property
-    'End Change
 
 #End Region ' Main Network Analysis
 
@@ -305,6 +309,7 @@ Public Class cNetworkManager
         cApplicationStatusNotifier.StartProgress(Me.m_core, _
                                                  String.Format(My.Resources.STATUS_FINDING_PATHWAYS_CONSUMER, Me.GroupName(iToGroup)))
         Try
+            Me.AllowStopNetworkAnalysis()
             Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumer, iToGroup, 0, nPaths, nArrows)
             Me.m_pathwaystate = ePathways.ToConsumer
             Me.m_iPathwayToGroup = iToGroup
@@ -341,6 +346,7 @@ Public Class cNetworkManager
                                                                Me.GroupName(iViaGroup)))
 
         Try
+            Me.AllowStopNetworkAnalysis()
             Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.ToConsumerViaPrey, iToGroup, iViaGroup, nPaths, nArrows)
             Me.m_pathwaystate = ePathways.ToConsumerViaPrey
             Me.m_iPathwayToGroup = iToGroup
@@ -374,6 +380,7 @@ Public Class cNetworkManager
                                         Me.GroupName(iFromGroup)))
 
         Try
+            Me.AllowStopNetworkAnalysis()
             Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.FromPrey, 1, iFromGroup, nPaths, nArrows)
             Me.m_pathwaystate = ePathways.FromPrey
             Me.m_iPathwayFromGroup = iFromGroup
@@ -404,6 +411,7 @@ Public Class cNetworkManager
 
         Try
             'ToDo_jb FindPathwaysCycles EwE5 calls InitCyclesList ????? I can not find this again
+            Me.AllowStopNetworkAnalysis()
             Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.LinkedPathways, 1, 1, nPaths, nArrows)
             Me.m_pathwaystate = ePathways.LinkedPathways
         Catch ex As Exception
@@ -432,6 +440,7 @@ Public Class cNetworkManager
         cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_FINDING_PATHWAYS, -1)
 
         Try
+            Me.AllowStopNetworkAnalysis()
             Me.m_econetwork.FindCycles(m_epdata.DC, ePathways.All, 1, 1, nPaths, nArrows)
             Me.m_pathwaystate = ePathways.All
         Catch ex As Exception

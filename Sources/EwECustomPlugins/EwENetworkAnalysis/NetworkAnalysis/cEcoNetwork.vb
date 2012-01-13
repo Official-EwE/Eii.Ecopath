@@ -372,7 +372,6 @@ Public Class cEcoNetwork
             End If
 
             cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_RUNNING_NA)
-
             FoundCycles = False
             NetworkDimensioning()
 
