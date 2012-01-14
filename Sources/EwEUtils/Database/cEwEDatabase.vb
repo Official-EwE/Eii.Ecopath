@@ -747,20 +747,23 @@ Namespace Database
         ''' Returns a scalar value from the current open connection.
         ''' </summary>
         ''' <param name="strSQL">The query to execute.</param>
+        ''' <param name="objDefault">A default to return in case a value could not be returned.</param>
         ''' <returns>The scalar value returned from the query.</returns>
         ''' -------------------------------------------------------------------
-        Public Overridable Function GetValue(ByVal strSQL As String) As Object
+        Public Overridable Function GetValue(ByVal strSQL As String, Optional objDefault As Object = Nothing) As Object
 
-            Dim value As Object = Nothing
+            Dim value As Object = objDefault
             Try
                 Using command As IDbCommand = Me.CreateDBCommand(strSQL)
                     value = command.ExecuteScalar()
+                    If Convert.IsDBNull(value) Then
+                        value = objDefault
+                    End If
                 End Using
             Catch ex As Exception
 #If VERBOSE_LEVEL >= 2 Then
                 Console.WriteLine("** DB error '{0}' on query '{1}'", ex.Message, strSQL)
 #End If
-                value = Nothing
             End Try
             Return value
         End Function
@@ -1957,11 +1960,7 @@ Namespace Database
                 ' Must turn OOP capabilities on?
                 If bEnable Then
                     ' #Yes: determine next unique ID
-                    Try
-                        Me.m_iNextDBID = CInt(Me.GetValue(String.Format("SELECT MAX(DBID) FROM {0}", Me.OOPGetTableName(GetType(cOOPStorable))))) + 1
-                    Catch ex As Exception
-                        Me.m_iNextDBID = 1
-                    End Try
+                    Me.m_iNextDBID = CInt(Me.GetValue(String.Format("SELECT MAX(DBID) FROM {0}", Me.OOPGetTableName(GetType(cOOPStorable))), 0)) + 1
 
                     ' Create schema verification cache
                     Me.m_OOPObjectSchemaVerified = New List(Of Type)

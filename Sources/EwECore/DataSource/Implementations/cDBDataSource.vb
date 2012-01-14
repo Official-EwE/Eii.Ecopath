@@ -835,7 +835,7 @@ Namespace DataSources
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
 
-            ecopathDS.NumEcosimScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcoSimScenario"))
+            ecopathDS.NumEcosimScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcoSimScenario", 0))
             ecopathDS.RedimEcosimScenarios()
 
             If ecopathDS.NumEcosimScenarios = 0 Then Return bSucces
@@ -926,7 +926,7 @@ Namespace DataSources
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
 
-            ecopathDS.NumEcospaceScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcospaceScenario"))
+            ecopathDS.NumEcospaceScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcospaceScenario", 0))
             ecopathDS.RedimEcospaceScenarios()
 
             If ecopathDS.NumEcospaceScenarios = 0 Then Return bSucces
@@ -1016,7 +1016,7 @@ Namespace DataSources
             Dim iScenario As Integer = 1
             Dim bSucces As Boolean = True
 
-            ecopathDS.NumEcotracerScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcotracerScenario"))
+            ecopathDS.NumEcotracerScenarios = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcotracerScenario", 0))
             ecopathDS.RedimEcotracerScenarios()
 
             If ecopathDS.NumEcotracerScenarios = 0 Then Return bSucces
@@ -1108,7 +1108,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             ' Init data structure
-            ecopathDS.NumPedigreeLevels = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Pedigree"))
+            ecopathDS.NumPedigreeLevels = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Pedigree", 0))
 
             ' Allocate space
             ecopathDS.RedimPedigree()
@@ -1299,11 +1299,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                iPedigreeLevelID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM Pedigree")) + 1
-            Catch
-                iPedigreeLevelID = 1
-            End Try
+            iPedigreeLevelID = CInt(Me.m_db.GetValue("SELECT MAX(LevelID) FROM Pedigree", 0)) + 1
 
             Try
                 ' Start writing, protect sequence
@@ -1512,19 +1508,14 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             ' Count the number of rows in StanzaInfo; this is the number of split groups that we're going to work with
-            stanzaDS.Nsplit = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Stanza"))
+            stanzaDS.Nsplit = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM Stanza", 0))
             ' Get max no of stanza
             stanzaDS.MaxStanza = 0
 
             If (stanzaDS.Nsplit > 0) Then
-                Try
-                    ' Get the highest number of groups in all split groups. Note that the sequence value field is not used here.
-                    ' JS 50Nov2011: appended 'AS X' for SQL server and the likes. Works with MS Access.
-                    stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X"))
-                 Catch ex As Exception
-                    ' There are probably no stanza groups defined yet
-                    stanzaDS.MaxStanza = 0
-                End Try
+                ' Get the highest number of groups in all split groups. Note that the sequence value field is not used here.
+                ' JS 50Nov2011: appended 'AS X' for SQL server and the likes. Works with MS Access.
+                stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
             End If
 
             ' Get the number of groups from ecopath
@@ -1750,7 +1741,7 @@ Namespace DataSources
             ' Process inputs
             For i As Integer = 0 To aiGroupID.Length - 1
                 ' Test if groups exist
-                If CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcopathGroup WHERE GroupID={0}", aiGroupID(i)))) = 0 Then
+                If CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcopathGroup WHERE GroupID={0}", aiGroupID(i)), 0)) = 0 Then
                     Debug.Assert(False, String.Format("Invalid group ID {0} specified", aiGroupID(i)))
                     Return False
                 End If
@@ -1759,11 +1750,7 @@ Namespace DataSources
             Next i
 
             Try
-                Try
-                    iStanzaID = CInt(Me.m_db.GetValue("SELECT MAX(StanzaID) FROM Stanza")) + 1
-                Catch e As Exception
-                    iStanzaID = 1
-                End Try
+                iStanzaID = CInt(Me.m_db.GetValue("SELECT MAX(StanzaID) FROM Stanza", 0)) + 1
 
                 writer = Me.m_db.GetWriter("Stanza")
 
@@ -1913,8 +1900,8 @@ Namespace DataSources
             Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
 
             ' Init data structure
-            ecopathDS.NumGroups = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup"))
-            ecopathDS.NumLiving = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup WHERE (TYPE <= 1)"))
+            ecopathDS.NumGroups = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup", 0))
+            ecopathDS.NumLiving = CInt(Me.m_db.GetValue("SELECT COUNT(*) FROM EcopathGroup WHERE (TYPE <= 1)", 0))
             ecopathDS.NumDetrit = ecopathDS.NumGroups - ecopathDS.NumLiving
 
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathGroup ORDER BY Sequence ASC")
@@ -2118,11 +2105,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Try
-                    iGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcopathGroup")) + 1
-                Catch
-                    iGroupID = 1
-                End Try
+                iGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcopathGroup", 0)) + 1
 
                 ' Start writing, protect sequence
                 writer = Me.m_db.GetWriter("EcopathGroup")
@@ -2816,11 +2799,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                iFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcopathFleet")) + 1
-            Catch
-                iFleetID = 1
-            End Try
+            iFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcopathFleet", 0)) + 1
 
             Try
                 ' Start writing, protect sequence
@@ -3009,11 +2988,7 @@ Namespace DataSources
                 ' Still looking good?
                 If bSucces Then
 
-                    Try
-                        iDatasetID = CInt(Me.m_db.GetValue("SELECT MAX(DatasetID) FROM EcosimTimeSeriesDataset")) + 1
-                    Catch ex As InvalidCastException
-                        iDatasetID = 1
-                    End Try
+                    iDatasetID = CInt(Me.m_db.GetValue("SELECT MAX(DatasetID) FROM EcosimTimeSeriesDataset", 0)) + 1
 
                     writer = Me.m_db.GetWriter("EcosimTimeSeriesDataset")
 
@@ -3380,12 +3355,8 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                ' TaxonID unique for all scenarios
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(TaxonID) FROM EcopathTaxon")) + 1
-            Catch ex As Exception
-                iDBID = 1
-            End Try
+            ' TaxonID unique for all scenarios
+            iDBID = CInt(Me.m_db.GetValue("SELECT MAX(TaxonID) FROM EcopathTaxon", 0)) + 1
 
             writer = Me.m_db.GetWriter("EcopathTaxon")
 
@@ -3638,11 +3609,7 @@ Namespace DataSources
             ' Delete existing scenario
             Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE ScenarioName='{0}'", strScenarioName))
 
-            Try
-                iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario")) + 1
-            Catch ex As Exception
-                iScenarioID = 1
-            End Try
+            iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcosimScenario")
@@ -3790,11 +3757,7 @@ Namespace DataSources
                 ' Delete existing scenario with same name, if any
                 bSucces = Me.m_db.Execute(String.Format("DELETE FROM EcosimScenario WHERE (ScenarioName='{0}')", strScenarioName))
 
-                Try
-                    iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario")) + 1
-                Catch ex As InvalidCastException
-                    iScenarioID = 1
-                End Try
+                iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcosimScenario", 0)) + 1
 
                 writer = Me.m_db.GetWriter("EcosimScenario")
 
@@ -3942,20 +3905,12 @@ Namespace DataSources
 
             ' Resolve group ID
             If (iGroupID <= 0) Then
-                Try
-                    iGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcosimScenarioGroup")) + 1
-                Catch ex As Exception
-                    iGroupID = 1
-                End Try
+                iGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcosimScenarioGroup", 0)) + 1
             End If
 
             ' Resolve Fish mort ID
             If (iFishMortShapeID <= 0) Then
-                Try
-                    iFishMortShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcosimShape")) + 1
-                Catch ex As InvalidCastException
-                    iFishMortShapeID = 1
-                End Try
+                iFishMortShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcosimShape", 0)) + 1
             End If
 
             ' *** Next: Critical bits, create missing entries in DB ***
@@ -4070,24 +4025,11 @@ Namespace DataSources
             Dim iNextFleetID As Integer = 0
             Dim bSucces As Boolean = True
 
-            Try
-                iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet")) + 1
-            Catch ex As Exception
-                iNextFleetID = 1
-            End Try
+            iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet", 0)) + 1
 
             readerFleet = Me.m_db.GetReader(String.Format("SELECT EcopathFleetID FROM EcoSimScenarioFleet WHERE (EcopathFleetID={0}) AND (ScenarioID={1})", iEcopathFleetID, iScenarioID))
-            If readerFleet IsNot Nothing Then
-                Try
-                    readerFleet.Read()
-
-                    ' Try to find existing Sim fleet ID
-                    Dim iDummy As Integer = CInt(readerFleet(0))
-                    ' It this did not fail we have found a fleet
-                    bFleetFound = True
-                Catch ex As InvalidOperationException
-                    bFleetFound = False
-                End Try
+            If (readerFleet IsNot Nothing) Then
+                bFleetFound = readerFleet.Read()
                 Me.m_db.ReleaseReader(readerFleet)
             End If
 
@@ -4499,18 +4441,9 @@ Namespace DataSources
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
 
             ' Get next available shape ID
-            Try
-                iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
-            Catch ex As Exception
-                iNextShapeID = 1
-            End Try
-
+            iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape", 0)) + 1
             ' Get next available group ID
-            Try
-                iNextGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcosimScenarioGroup")) + 1
-            Catch ex As Exception
-                iNextGroupID = 1
-            End Try
+            iNextGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcosimScenarioGroup", 0)) + 1
 
             ' JS 28may07: Change of strategy. The primary key in table EcosimScenarioGroup has been changed from
             '             (ScenarioID, SimGroupID) to (ScenarioID, PathGroupID) for the simple reason that when
@@ -4684,19 +4617,10 @@ Namespace DataSources
             iScenarioID = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
             objKeys(0) = iScenarioID
 
-            Try
-                ' Get next available shape ID
-                iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
-            Catch ex As Exception
-                iNextShapeID = 1
-            End Try
-
-            Try
-                ' Get next available fleet ID
-                iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet")) + 1
-            Catch ex As Exception
-                iNextFleetID = 1
-            End Try
+            ' Get next available shape ID
+            iNextShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape", 0)) + 1
+            ' Get next available fleet ID
+            iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcosimScenarioFleet", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcosimScenarioFleet")
@@ -4897,16 +4821,16 @@ Namespace DataSources
             Dim strQuery As String = ""
 
             strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0} OR ShapeType={1})", CInt(eDataTypes.EggProd), CInt(eDataTypes.Forcing))
-            ecosimDS.ForcingShapes = CInt(Me.m_db.GetValue(strQuery))
+            ecosimDS.ForcingShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
             strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.Mediation))
-            PredPreyMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
+            PredPreyMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
             strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.PriceMediation))
-            LandingsMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
+            LandingsMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
             strQuery = String.Format("SELECT COUNT(*) FROM EcosimShape WHERE (ShapeType={0})", CInt(eDataTypes.CapacityMediation))
-            CapEnvResMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery))
+            CapEnvResMedDS.MediationShapes = CInt(Me.m_db.GetValue(strQuery, 0))
 
             ecosimDS.DimForcingShapes()
             ecosimDS.InitForcingShapes()
@@ -5453,15 +5377,15 @@ Namespace DataSources
             Try
 
                 readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeFishRate WHERE (ShapeID={0})", iShapeID))
-                readerShape.Read()
-
-                ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(readerShape("Title"))
-                strMemo = CStr(readerShape("zScale"))
-                astrMemoBits = strMemo.Trim.Split(CChar(" "))
-                For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
-                    ecosimDS.FishRateGear(iFishingRateShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
-                Next
-                ecosimDS.FishRateGearDBID(iFishingRateShape) = iShapeID
+                If readerShape.Read() Then
+                    ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(readerShape("Title"))
+                    strMemo = CStr(readerShape("zScale"))
+                    astrMemoBits = strMemo.Trim.Split(CChar(" "))
+                    For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
+                        ecosimDS.FishRateGear(iFishingRateShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
+                    Next
+                    ecosimDS.FishRateGearDBID(iFishingRateShape) = iShapeID
+                End If
 
                 Me.m_db.ReleaseReader(readerShape)
                 readerShape = Nothing
@@ -6295,12 +6219,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-
-                Try
-                    iShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
-                Catch
-                    iShapeID = 1
-                End Try
+                iShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape", 0)) + 1
 
                 drow = writerID.NewRow()
                 drow("ShapeID") = iShapeID
@@ -6482,12 +6401,8 @@ Namespace DataSources
             Dim iRepetitions As Integer = 1
             Dim iShapeID As Integer = 0
 
-            Try
-                ' Find shape ID for a FF with the same name as the TS to import
-                iShapeID = CInt(Me.m_db.GetValue("SELECT ShapeID FROM EcosimShapeTime WHERE Title='" & ts.Name & "'"))
-            Catch ex As Exception
-                iShapeID = 0
-            End Try
+            ' Find shape ID for a FF with the same name as the TS to import
+            iShapeID = CInt(Me.m_db.GetValue("SELECT ShapeID FROM EcosimShapeTime WHERE Title='" & ts.Name & "'", 0))
 
             ' Did FF already exist?
             If (iShapeID > 0) Then
@@ -6496,11 +6411,7 @@ Namespace DataSources
             Else
                 ' #No: creating a new shape
                 ' Determine next shape ID
-                Try
-                    iShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape")) + 1
-                Catch
-                    iShapeID = 1
-                End Try
+                iShapeID = CInt(Me.m_db.GetValue("SELECT MAX(ShapeID) FROM EcoSimShape", 0)) + 1
                 bNewShape = True
             End If
 
@@ -6594,11 +6505,7 @@ Namespace DataSources
             Dim sbValues As New Text.StringBuilder()
             Dim bSucces As Boolean = True
 
-            Try
-                iTimeSeriesID = CInt(Me.m_db.GetValue("SELECT MAX(TimeSeriesID) FROM EcosimTimeSeries")) + 1
-            Catch ex As Exception
-                iTimeSeriesID = 1
-            End Try
+            iTimeSeriesID = CInt(Me.m_db.GetValue("SELECT MAX(TimeSeriesID) FROM EcosimTimeSeries", 0)) + 1
 
             ' Time series are scenario-independant
             writer = Me.m_db.GetWriter("EcosimTimeSeries")
@@ -6974,12 +6881,8 @@ Namespace DataSources
                 Return False
             End If
 
-            Try
-                iShapeID = CInt(Me.m_db.GetValue("SELECT MAX(TimeSeriesID) FROM EcosimTimeSeries")) + 1
-                iPosition = CInt(Me.m_db.GetValue("SELECT MAX(Sequence) FROM EcosimTimeSeries")) + 1
-            Catch
-                iShapeID = 1
-            End Try
+            iShapeID = CInt(Me.m_db.GetValue("SELECT MAX(TimeSeriesID) FROM EcosimTimeSeries", 0)) + 1
+            iPosition = CInt(Me.m_db.GetValue("SELECT MAX(Sequence) FROM EcosimTimeSeries", 0)) + 1
 
             Try
                 ' Start writing, protect sequence
@@ -7183,8 +7086,8 @@ Namespace DataSources
             ecospaceDS.NGroups = ecopathDS.NumGroups
             ecospaceDS.nFleets = ecopathDS.NumFleet
             ecospaceDS.nLiving = ecopathDS.NumLiving
-            ecospaceDS.nImportanceLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID)))
-            ecospaceDS.nEnvironmentalLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID)))
+            ecospaceDS.nImportanceLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID), 0))
+            ecospaceDS.nEnvironmentalLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
 
             ' Next is a dangerous solution that may need to be revamped. It is assumed that
             ' SetDefaults properly redimensions the ecospaceDS group variables, which
@@ -7275,12 +7178,7 @@ Namespace DataSources
 
             ' Delete existing scenario
             Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
-
-            Try
-                iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario")) + 1
-            Catch ex As Exception
-                iScenarioID = 1
-            End Try
+            iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenario")
@@ -7489,12 +7387,7 @@ Namespace DataSources
                 ' Delete any existing scenario
                 bSucces = Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenario WHERE ScenarioName='{0}'", strScenarioName))
 
-                Try
-                    iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario")) + 1
-                Catch
-                    iScenarioID = 1
-                End Try
-
+                iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcospaceScenario", 0)) + 1
                 writer = Me.m_db.GetWriter("EcospaceScenario")
 
                 drow = writer.NewRow()
@@ -7743,8 +7636,8 @@ Namespace DataSources
             ' Start loading
             Try
                 ' Allocate space for habitat data
-                ecospaceDS.NoHabitats = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID)))
-                ecospaceDS.NoHabChanges = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID)))
+                ecospaceDS.NoHabitats = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitat WHERE ScenarioID={0}", iScenarioID), 0))
+                ecospaceDS.NoHabChanges = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioHabitatChange WHERE ScenarioID={0}", iScenarioID), 0))
                 ecospaceDS.RedimHabitatVariables(False)
 
                 reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioHabitat WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
@@ -7828,11 +7721,7 @@ Namespace DataSources
             iScenarioIDDest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
             objKeys(0) = iScenarioIDSrc
 
-            Try
-                iHabID = CInt(Me.m_db.GetValue("SELECT MAX(HabitatID) FROM EcospaceScenarioHabitat")) + 1
-            Catch ex As Exception
-                iHabID = 1
-            End Try
+            iHabID = CInt(Me.m_db.GetValue("SELECT MAX(HabitatID) FROM EcospaceScenarioHabitat", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioHabitat")
@@ -7954,13 +7843,8 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim iPosition As Integer = 1
 
-            Try
-                iHabitatID = CInt(Me.m_db.GetValue("SELECT MAX(HabitatID) FROM EcospaceScenarioHabitat")) + 1
-                iPosition = CInt(Me.m_db.GetValue("SELECT Count(*) FROM EcospaceScenarioHabitat")) + 1
-            Catch ex As Exception
-                iHabitatID = 1
-                iPosition = 1
-            End Try
+            iHabitatID = CInt(Me.m_db.GetValue("SELECT MAX(HabitatID) FROM EcospaceScenarioHabitat", 0)) + 1
+            iPosition = CInt(Me.m_db.GetValue("SELECT Count(*) FROM EcospaceScenarioHabitat", 0)) + 1
 
             ' The writer needed here will maintain row sequence for the given scenario only
             writer = Me.m_db.GetWriter("EcospaceScenarioHabitat")
@@ -8067,11 +7951,7 @@ Namespace DataSources
             iScenarioIDDest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
             objKeys(0) = iScenarioIDDest
 
-            Try
-                iRegID = CInt(Me.m_db.GetValue("SELECT MAX(RegionID) FROM EcospaceScenarioRegion")) + 1
-            Catch ex As Exception
-                iRegID = 1
-            End Try
+            iRegID = CInt(Me.m_db.GetValue("SELECT MAX(RegionID) FROM EcospaceScenarioRegion", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioRegion")
@@ -8172,12 +8052,7 @@ Namespace DataSources
                 Return False
             End If
 
-            Try
-                ' RegionID unique across scenarios
-                iRegionID = CInt(Me.m_db.GetValue("SELECT MAX(RegionID) FROM EcospaceScenarioRegion")) + 1
-            Catch ex As Exception
-                iRegionID = 1
-            End Try
+            iRegionID = CInt(Me.m_db.GetValue("SELECT MAX(RegionID) FROM EcospaceScenarioRegion", 0)) + 1
 
             Try
 
@@ -8378,11 +8253,7 @@ Namespace DataSources
             objKeys(0) = iScenarioID
 
             ' Get next available group ID
-            Try
-                iNextGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcospaceScenarioGroup")) + 1
-            Catch ex As Exception
-                iNextGroupID = 1
-            End Try
+            iNextGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcospaceScenarioGroup", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioGroup")
@@ -8553,11 +8424,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                iGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcospaceScenarioGroup")) + 1
-            Catch ex As Exception
-                iGroupID = 1
-            End Try
+            iGroupID = CInt(Me.m_db.GetValue("SELECT MAX(GroupID) FROM EcospaceScenarioGroup", 0)) + 1
 
             Try
                 ' Is this a detritus group?
@@ -8742,12 +8609,8 @@ Namespace DataSources
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
             objKeys(0) = iScenarioID
 
-            Try
-                ' Get next available fleet ID
-                iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcospaceScenarioFleet")) + 1
-            Catch ex As Exception
-                iNextFleetID = 1
-            End Try
+            ' Get next available fleet ID
+            iNextFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcospaceScenarioFleet", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioFleet")
@@ -8998,11 +8861,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                iFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcospaceScenarioFleet")) + 1
-            Catch ex As Exception
-                iFleetID = 1
-            End Try
+            iFleetID = CInt(Me.m_db.GetValue("SELECT MAX(FleetID) FROM EcospaceScenarioFleet", 0)) + 1
 
             Try
                 ' Add fleet
@@ -9135,12 +8994,7 @@ Namespace DataSources
             Dim objKeys() As Object = {Nothing, Nothing} ' Composite key to find MPA per scenario
             Dim bSucces As Boolean = True
 
-            Try
-                iID = CInt(Me.m_db.GetValue("SELECT MAX(MPAID) FROM EcospaceScenarioMPA")) + 1
-            Catch ex As Exception
-                iID = 1
-            End Try
-
+            iID = CInt(Me.m_db.GetValue("SELECT MAX(MPAID) FROM EcospaceScenarioMPA", 0)) + 1
             iScenarioIDDest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
             objKeys(0) = iScenarioIDDest
 
@@ -9244,13 +9098,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim sbMPAMonth As New Text.StringBuilder
 
-            Try
-                ' MPAID unique for all scenarios
-                iMPAID = CInt(Me.m_db.GetValue("SELECT MAX(MPAID) FROM EcospaceScenarioMPA")) + 1
-            Catch ex As Exception
-                iMPAID = 1
-            End Try
-
+            iMPAID = CInt(Me.m_db.GetValue("SELECT MAX(MPAID) FROM EcospaceScenarioMPA", 0)) + 1
             writer = Me.m_db.GetWriter("EcospaceScenarioMPA")
 
             drow = writer.NewRow()
@@ -9365,11 +9213,7 @@ Namespace DataSources
             iScenarioIDdest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
             objKeys(0) = iScenarioIDdest
 
-            Try
-                lID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioWeightLayer")) + 1
-            Catch ex As Exception
-                lID = 1
-            End Try
+            lID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioWeightLayer", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer")
@@ -9467,12 +9311,8 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                ' MPAID unique for all scenarios
-                iLayerID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioWeightLayer")) + 1
-            Catch ex As Exception
-                iLayerID = 1
-            End Try
+            ' MPAID unique for all scenarios
+            iLayerID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioWeightLayer", 0)) + 1
 
             writer = Me.m_db.GetWriter("EcospaceScenarioWeightLayer")
 
@@ -9611,11 +9451,7 @@ Namespace DataSources
             iScenarioIDdest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
             objKeys(0) = iScenarioIDdest
 
-            Try
-                lID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioDriverLayer")) + 1
-            Catch ex As Exception
-                lID = 1
-            End Try
+            lID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioDriverLayer", 0)) + 1
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenarioDriverLayer")
@@ -9713,20 +9549,12 @@ Namespace DataSources
             Implements IEcospaceDatasource.AddEcospaceDriverLayer
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-            Dim iPosition As Integer = 1
 
-            Try
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioDriverLayer")) + 1
-                iPosition = CInt(Me.m_db.GetValue("SELECT Count(*) FROM EcospaceScenarioDriverLayer")) + 1
-            Catch ex As Exception
-                iDBID = 1
-                iPosition = 1
-            End Try
+            iDBID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioDriverLayer", 0)) + 1
 
             ' The writer needed here will maintain row sequence for the given scenario only
             writer = Me.m_db.GetWriter("EcospaceScenarioDriverLayer")
@@ -9734,7 +9562,7 @@ Namespace DataSources
             drow = writer.NewRow()
             drow("ScenarioID") = iScenarioID
             drow("LayerID") = iDBID
-            drow("Sequence") = iPosition
+            drow("Sequence") = iDBID
             drow("LayerName") = strName
             drow("LayerDescription") = strDescription
             drow("LayerMap") = ""
@@ -10074,11 +9902,7 @@ Namespace DataSources
             Dim bSucces As Boolean = True
 
             Try
-                Try
-                    iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcotracerScenario")) + 1
-                Catch
-                    iScenarioID = 1
-                End Try
+                iScenarioID = CInt(Me.m_db.GetValue("SELECT MAX(ScenarioID) FROM EcotracerScenario", 0)) + 1
 
                 Me.m_db.BeginTransaction()
 
@@ -10262,11 +10086,7 @@ Namespace DataSources
             Dim iDBID As Integer = 0
             Dim bSucces As Boolean = True
 
-            Try
-                iDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary")) + 1
-            Catch ex As Exception
-                iDBID = 1
-            End Try
+            iDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary", 0)) + 1
 
             Try
                 Me.m_db.Execute("DELETE * FROM Auxillary")
@@ -10315,11 +10135,7 @@ Namespace DataSources
             Dim key As cValueID = Nothing
             Dim bSucces As Boolean = True
 
-            Try
-                iAdDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary")) + 1
-            Catch ex As Exception
-                iAdDBID = 1
-            End Try
+            iAdDBID = CInt(Me.m_db.GetValue("SELECT MAX(DBID) FROM Auxillary", 0)) + 1
 
             ' Do not save if no such mappings exist
             If idm.GetID(dt, iDBID) = iDBID Then Return True
