@@ -941,11 +941,11 @@ Namespace Database
             'If (Not ColumnExists(reader, strField)) Then Return objValueDefault
 
             Try
-                objResult = reader.Item(strField)
+                If reader.GetSchemaTable().Columns.Contains(strField) Then
+                    objResult = reader.Item(strField)
+                End If
             Catch ex As InvalidOperationException
                 'Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
-            Catch ex As IndexOutOfRangeException
-                'Console.WriteLine("DB: field '{0}' not found in table, returning provided default '{1}'", strField, objValueDefault)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
@@ -3149,8 +3149,15 @@ Namespace Database
 
             Dim version As Version = cAssemblyUtils.GetVersion()
             Dim dtNow As Date = Date.Now()
-            Dim strSQL As String = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES('{0}', '{1}', '{2}', '{3}')", _
+            Dim strSQL As String = ""
+
+            If (sVersion < 6.120003!) Then
+                strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date]) VALUES('{0}', '{1}', '{2}')", _
+                                                 sVersion, strRemark, dtNow.ToShortDateString())
+            Else
+                strSQL = String.Format("INSERT INTO UpdateLog ([Version], [Remark], [Date], [EwEVersion]) VALUES('{0}', '{1}', '{2}', '{3}')", _
                                                  sVersion, strRemark, dtNow.ToShortDateString(), version.ToString())
+            End If
             Dim bSucces As Boolean = True
             Try
                 bSucces = Me.Execute(strSQL)
