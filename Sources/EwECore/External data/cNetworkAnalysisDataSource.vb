@@ -157,7 +157,7 @@ Namespace ExternalData
         Public ReadOnly Property Contact() As String _
             Implements EwEPlugin.IPlugin.Contact
             Get
-                Return "mailto:support@ecopath.org"
+                Return "mailto:ewedevteam@gmail.com"
             End Get
         End Property
 

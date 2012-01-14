@@ -457,7 +457,7 @@
     <value>5</value>
   </data>
   <data name="m_rtbDistribution.Text" xml:space="preserve">
-    <value>This software is protected by international copyright laws and treaties. Distribution is free-of-charge, but please inform us of new users (support@ecopath.org). Registration and support is free. http://www.ecopath.org.</value>
+    <value>This software is protected by international copyright laws and treaties. Distribution is free-of-charge, but please inform us of new users (ewedevteam@gmail.com). Registration and support is free. http://www.ecopath.org.</value>
   </data>
   <data name="&gt;&gt;m_rtbDistribution.Name" xml:space="preserve">
     <value>m_rtbDistribution</value>
