@@ -62,6 +62,8 @@ Public Class cDatabase
         End Try
         If aObjects.Length = 0 Then
             data.AddParameters(New cParameters())
+            ' If no parameters found there is little need to continue...
+            Return True
         Else
             data.AddParameters(DirectCast(aObjects(0), cParameters))
         End If
