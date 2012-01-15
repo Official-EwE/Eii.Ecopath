@@ -1398,21 +1398,19 @@ Namespace DataSources
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcopathPSD")
             Dim bSucces As Boolean = True
 
-            If reader IsNot Nothing Then
-
-                reader.Read()
-                Try
-
-                    psdDS.NAgeSteps = CInt(Me.m_db.ReadSafe(reader, "NumAgeSteps", 101))
-                    psdDS.MortalityType = CType(CInt(Me.m_db.ReadSafe(reader, "MortalityType", 0)), ePSDMortalityTypes)
-                    psdDS.NWeightClasses = CInt(Me.m_db.ReadSafe(reader, "NumWeightClasses", 25))
-                    psdDS.FirstWeightClass = CSng(Me.m_db.ReadSafe(reader, "FirstWeightClass", 0.125))
-                    psdDS.ClimateType = CType(CInt(Me.m_db.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
-
-                Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
-                    bSucces = False
-                End Try
+            If (reader IsNot Nothing) Then
+                If reader.Read() Then
+                    Try
+                        psdDS.NAgeSteps = CInt(Me.m_db.ReadSafe(reader, "NumAgeSteps", 101))
+                        psdDS.MortalityType = CType(CInt(Me.m_db.ReadSafe(reader, "MortalityType", 0)), ePSDMortalityTypes)
+                        psdDS.NWeightClasses = CInt(Me.m_db.ReadSafe(reader, "NumWeightClasses", 25))
+                        psdDS.FirstWeightClass = CSng(Me.m_db.ReadSafe(reader, "FirstWeightClass", 0.125))
+                        psdDS.ClimateType = CType(CInt(Me.m_db.ReadSafe(reader, "ClimateType", eClimateTypes.Temperate)), eClimateTypes)
+                    Catch ex As Exception
+                        Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                        bSucces = False
+                    End Try
+                End If
 
                 Me.m_db.ReleaseReader(reader)
                 reader = Nothing
