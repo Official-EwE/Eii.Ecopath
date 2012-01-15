@@ -940,13 +940,12 @@ Namespace Database
 
             If (reader Is Nothing) Then Return objValueDefault
 
-            ' ToDo: implement reader class with index of columns
-            'If (Not ColumnExists(reader, strField)) Then Return objValueDefault
-
             Try
-                If reader.GetSchemaTable().Columns.Contains(strField) Then
+                If Me.HasColumn(reader, strField) Then
                     objResult = reader.Item(strField)
                 End If
+            Catch ex As IndexOutOfRangeException
+                ' Ugh
             Catch ex As InvalidOperationException
                 'Console.WriteLine("DB: field '{0}' has no value, returning provided default '{1}'", strField, objValueDefault)
             Catch ex As Exception
@@ -1065,7 +1064,7 @@ Namespace Database
             Return Me.CommitDataSet(dset, adapter, strTable)
         End Function
 
-        Public Function ColumnExists(reader As IDataReader, strColumnName As String) As Boolean
+        Protected Function HasColumn(reader As IDataReader, strColumnName As String) As Boolean
             If reader Is Nothing Then Return False
             reader.GetSchemaTable().DefaultView.RowFilter = "ColumnName= '" + strColumnName + "'"
             Return (reader.GetSchemaTable().DefaultView.Count > 0)
@@ -2842,7 +2841,7 @@ Namespace Database
                                 Else ' Me.OOPIsForeignKeyProperty(pi)
                                     ' #No: just read the property value
                                     Dim bRead As Boolean = False
-                                    If Me.ColumnExists(reader, strColumnName) Then
+                                    If Me.HasColumn(reader, strColumnName) Then
                                         Try
                                             ' Special cases
                                             If pi.PropertyType Is GetType(Boolean) Then
