@@ -6969,20 +6969,18 @@ Namespace DataSources
             Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcoSimScenarioMSE WHERE (ScenarioID={0})", iScenarioID))
             Dim bSucces As Boolean = True
 
-            If reader IsNot Nothing Then
-
-                reader.Read()
-                Try
-
-                    mseDS.AssessMethod = DirectCast(Me.m_db.ReadSafe(reader, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
-                    mseDS.AssessPower = CSng(Me.m_db.ReadSafe(reader, "AssessPower", 1))
-                    mseDS.NTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
-                    mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
-
-                Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
-                    bSucces = False
-                End Try
+            If (reader IsNot Nothing) Then
+                If (reader.Read()) Then
+                    Try
+                        mseDS.AssessMethod = DirectCast(Me.m_db.ReadSafe(reader, "AssessMethod", eAssessmentMethods.CatchEstmBio), eAssessmentMethods)
+                        mseDS.AssessPower = CSng(Me.m_db.ReadSafe(reader, "AssessPower", 1))
+                        mseDS.NTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
+                        mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
+                    Catch ex As Exception
+                        Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
+                        bSucces = False
+                    End Try
+                End If
 
                 Me.m_db.ReleaseReader(reader)
                 reader = Nothing
