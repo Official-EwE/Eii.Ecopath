@@ -6896,7 +6896,7 @@ Namespace DataSources
                 ' Concoct time series memo
                 For iYear As Integer = 0 To asValues.Length - 1
                     If (iYear > 0) Then sbValues.Append(" ")
-                    sbValues.Append(cStringUtils.FormatSingle((iYear)))
+                    sbValues.Append(cStringUtils.FormatSingle((asValues(iYear))))
                 Next
                 drow("TimeValues") = sbValues.ToString()
                 writer.AddRow(drow)
