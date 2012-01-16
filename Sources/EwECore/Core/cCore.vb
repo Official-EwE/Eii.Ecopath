@@ -7971,7 +7971,7 @@ Public Class cCore
     Public Sub CalcEcospaceCostOfSailing()
 
         Me.m_Ecospace.CalculateCostOfSailing()
-        Me.onChanged(Me.EcospaceBasemap.LayerSailingCost)
+        Me.onChanged(Me.EcospaceBasemap.LayerSailingCost(1))
 
     End Sub
 
@@ -7985,7 +7985,7 @@ Public Class cCore
     Public Sub SetEcospaceAllCoastToPort(Optional ByVal iFleet As Integer = cCore.NULL_VALUE)
 
         Me.m_Ecospace.SetAllCoastsToPorts(iFleet)
-        Me.onChanged(Me.EcospaceBasemap.LayerPort)
+        Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
 
     End Sub
 
@@ -7999,7 +7999,7 @@ Public Class cCore
     Public Sub ClearEcospacePort(Optional ByVal iFleet As Integer = cCore.NULL_VALUE)
 
         Me.m_Ecospace.ClearPorts(iFleet)
-        Me.onChanged(Me.EcospaceBasemap.LayerPort)
+        Me.onChanged(Me.EcospaceBasemap.LayerPort(iFleet))
 
     End Sub
 
@@ -8812,6 +8812,7 @@ Public Class cCore
             InitEcospaceOutputs()
             InitEcotracerOutputs()
 
+            Me.SpatialDataConnectionManager.Load()
             bSuccess = bSuccess And Me.CapacitMapInteractionManager.Load()
 
             'For debugging add the RelCin Layer to the Capacity maps
@@ -8857,6 +8858,7 @@ Public Class cCore
             'Me.m_EcoSpaceScenarios.Clear()
             'Me.m_EcoPathData.NumEcospaceScenarios = 0
 
+            Me.SpatialDataConnectionManager.Clear()
 
             Me.m_EcoSpaceFleets.Clear()
             Me.m_EcospaceFleetOutputs.Clear()
@@ -13002,8 +13004,10 @@ Public Class cCore
                 Case eDataTypes.EcospaceLayerWind, _
                      eDataTypes.EcospaceLayerMLD
 
-                    ' Update advection fields
-                    Me.m_Ecospace.CalcAdvection(DirectCast(obj, ICoreMonthFilter).Month)
+                    ' ToDo_JS: fix this
+
+                    '' Update advection fields
+                    'Me.m_Ecospace.CalcAdvection(DirectCast(obj, ICoreMonthFilter).Month)
                     ' Trigger layer to be recalculated
                     Me.EcospaceBasemap.LayerUpwelling.Invalidate()
                     ' Update visuals

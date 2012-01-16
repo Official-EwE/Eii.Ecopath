@@ -10,45 +10,26 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cEcospaceLayerHabitatCapacity
     Inherits cEcospaceLayerSingle
-    Implements ICoreGroupFilter
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal dt As eDataTypes, ByVal vn As eVarNameFlags)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal dt As eDataTypes, ByVal vn As eVarNameFlags, iIndex As Integer)
         MyBase.New(theCore, manager, _
-                   CStr(IIf(vn = eVarNameFlags.LayerHabitatCapacity, My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP, My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP_INPUT)), _
-                   vn)
+                   CStr(IIf(vn = eVarNameFlags.LayerHabitatCapacity, _
+                            My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP, My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP_INPUT)), _
+                   vn, iIndex)
         Me.m_dataType = dt
     End Sub
 
 #Region " Cell interaction "
 
-    Private m_iGroup As Integer = 1
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the group that this layer represents.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property Group() As Integer _
-        Implements ICoreGroupFilter.Group
-        Get
-            Return Me.m_iGroup
-        End Get
-        Set(ByVal value As Integer)
-            If value <> Me.m_iGroup Then
-                Me.m_iGroup = value
-            End If
-        End Set
-    End Property
-
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-            If Me.ValidateCellPosition(iRow, iCol) Then Return data(iRow, iCol, Me.m_iGroup)
+            If Me.ValidateCellPosition(iRow, iCol) Then Return data(iRow, iCol, Me.Index)
             Return 0
         End Get
         Set(ByVal value As Object)
             Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-            If Me.ValidateCellPosition(iRow, iCol) then  data(iRow, iCol, Me.m_iGroup) = CSng(value)
+            If Me.ValidateCellPosition(iRow, iCol) Then data(iRow, iCol, Me.Index) = CSng(value)
         End Set
     End Property
 

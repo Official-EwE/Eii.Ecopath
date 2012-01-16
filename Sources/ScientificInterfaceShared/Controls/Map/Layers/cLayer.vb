@@ -93,8 +93,8 @@ Namespace Controls.Map.Layers
         Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
         Private m_data As cEcospaceLayer = Nothing
         Private m_valueType As Type = GetType(Single)
-        Private m_valueSet As Single = cCore.NULL_VALUE
-        Private m_valueClear As Single = cCore.NULL_VALUE
+        Private m_sValueSet As Single = cCore.NULL_VALUE
+        Private m_sValueClear As Single = cCore.NULL_VALUE
         Private m_renderer As cLayerRenderer = Nothing
         Private m_editor As cLayerEditor = Nothing
 
@@ -133,20 +133,6 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="data"></param>
         ''' <param name="renderer"></param>
-        ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal data As cEcospaceLayer, _
-                       ByVal renderer As cLayerRenderer, _
-                       ByVal editor As cLayerEditor)
-            Me.New(uic, data, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, Nothing, Nothing)
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor.
-        ''' </summary>
-        ''' <param name="data"></param>
-        ''' <param name="renderer"></param>
         ''' <param name="source">
         ''' The core object that serves two purposes:
         ''' <list type="number">
@@ -155,61 +141,17 @@ Namespace Controls.Map.Layers
         ''' </list>
         ''' </param>
         ''' <param name="varName">The name of the variable to associate data changes with</param>
+        ''' <param name="sValueSet"></param>
+        ''' <param name="sValueClear"></param>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal data As cEcospaceLayer, _
                        ByVal renderer As cLayerRenderer, _
                        ByVal editor As cLayerEditor, _
-                       ByVal source As cCoreInputOutputBase, _
-                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
-            Me.New(uic, data, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, source, varName)
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor.
-        ''' </summary>
-        ''' <param name="data"></param>
-        ''' <param name="renderer"></param>
-        ''' <param name="objValueSet"></param>
-        ''' <param name="objValueClear"></param>
-        ''' <remarks></remarks>
-        ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal data As cEcospaceLayer, _
-                       ByVal renderer As cLayerRenderer, _
-                       ByVal editor As cLayerEditor, _
-                       ByVal objValueSet As Single, _
-                       ByVal objValueClear As Single)
-            Me.New(uic, data, renderer, editor, objValueSet, objValueClear, Nothing, Nothing)
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor.
-        ''' </summary>
-        ''' <param name="data"></param>
-        ''' <param name="renderer"></param>
-        ''' <param name="source">
-        ''' The core object that serves two purposes:
-        ''' <list type="number">
-        ''' <item><description>Provide the dynamic name for a layer</description></item>
-        ''' <item><description>Provide the definition for distributing data changes</description></item>
-        ''' </list>
-        ''' </param>
-        ''' <param name="varName">The name of the variable to associate data changes with</param>
-        ''' <param name="objValueSet"></param>
-        ''' <param name="objValueClear"></param>
-        ''' <remarks></remarks>
-        ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal data As cEcospaceLayer, _
-                       ByVal renderer As cLayerRenderer, _
-                       ByVal editor As cLayerEditor, _
-                       ByVal objValueSet As Single, _
-                       ByVal objValueClear As Single, _
-                       ByVal source As cCoreInputOutputBase, _
-                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name)
+                       Optional ByVal source As cCoreInputOutputBase = Nothing, _
+                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
+                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE, _
+                       Optional ByVal sValueClear As Single = cCore.NULL_VALUE)
 
             Debug.Assert(uic IsNot Nothing)
 
@@ -217,12 +159,12 @@ Namespace Controls.Map.Layers
 
             Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
 #If DEBUG Then
-            Me.m_mh.Name = "UI::cLayer " & Me.Name
+            Me.m_mh.Name = "UI::cLayer " & Me.m_varName.ToString
 #End If
             Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mh)
 
-            ' Sanity checks
-            Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
+            '' Sanity checks
+            'Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
 
             If (editor Is Nothing) Then editor = cLayer.s_editorLocked
 
@@ -232,8 +174,8 @@ Namespace Controls.Map.Layers
             Me.m_data = data
             Me.m_renderer = renderer
             Me.m_editor = editor
-            Me.m_valueSet = objValueSet
-            Me.m_valueClear = objValueClear
+            Me.m_sValueSet = sValueSet
+            Me.m_sValueClear = sValueClear
             Me.m_valueType = data.ValueType
             Me.m_propBacklink = Me.m_uic.PropertyManager.GetProperty(source, varName)
 
@@ -241,11 +183,8 @@ Namespace Controls.Map.Layers
                 AddHandler Me.m_propBacklink.PropertyChanged, AddressOf OnPropertyChanged
             End If
 
-            ' Update editor
-            Me.m_editor.Initialize(uic, Me)
-
-            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
-            Me.m_mh.Name = "cLayer:" & Me.Name
+            '' Update editor
+            'Me.m_editor.Initialize(uic, Me)
 
         End Sub
 
@@ -257,11 +196,10 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, ByVal layer As cLayer)
 
-            Me.New(uic, layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), _
-                   layer.ValueSet, layer.ValueClear, layer.Source, layer.VarName)
-
+            Me.New(uic, layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), layer.Source, layer.VarName, layer.ValueSet, layer.ValueClear)
             Me.Name = layer.Name
             Me.IsSelected = layer.IsSelected
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -383,14 +321,14 @@ Namespace Controls.Map.Layers
                 ' Map has changed via user drawing
                 If ((updateType And eChangeFlags.Map) = eChangeFlags.Map) Then
                     ' Update visuals
-                    Me.m_data.Invalidate()
+                    Me.Data.Invalidate()
 
                     ' Is a core layer?
                     If bNotifyCore Then
-                        If Me.m_data.DataType <> eDataTypes.NotSet Then
+                        If Me.Data.DataType <> eDataTypes.NotSet Then
                             ' #Yes: inform the core
                             If (Me.m_uic IsNot Nothing) And (Me.AllowValidation) Then
-                                Me.m_uic.Core.onChanged(Me.m_data)
+                                Me.m_uic.Core.onChanged(Me.Data)
                             End If
                         Else
                             ' #No: Fire off property change to make other copies of non-core layers respond
@@ -429,7 +367,7 @@ Namespace Controls.Map.Layers
         ''' Get the name of this layer.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public Property Name() As String
+        Public Overridable Property Name() As String
             Get
                 ' No overriding name defined?
                 If String.IsNullOrWhiteSpace(Me.m_strName) Then
@@ -442,9 +380,9 @@ Namespace Controls.Map.Layers
                         End If
                     End If
                     ' Alternative: is data attached?
-                    If (Me.m_data IsNot Nothing) Then
+                    If (Me.Data IsNot Nothing) Then
                         ' #Yes: return data name)
-                        Return Me.m_data.Name
+                        Return Me.Data.Name
                     End If
                 End If
                 ' Return overriding name
@@ -461,7 +399,7 @@ Namespace Controls.Map.Layers
         ''' Get the source of this layer.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Source() As cCoreInputOutputBase
+        Public Overridable ReadOnly Property Source() As cCoreInputOutputBase
             Get
                 Return Me.m_source
             End Get
@@ -472,7 +410,7 @@ Namespace Controls.Map.Layers
         ''' Get the variable of the source this layer applies to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property VarName() As eVarNameFlags
+        Public Overridable ReadOnly Property VarName() As eVarNameFlags
             Get
                 Return Me.m_varName
             End Get
@@ -483,7 +421,7 @@ Namespace Controls.Map.Layers
         ''' Get the underlying core-exposed layer data.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Data() As cEcospaceLayer
+        Public Overridable ReadOnly Property Data() As cEcospaceLayer
             Get
                 Return Me.m_data
             End Get
@@ -496,7 +434,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property ValueSet() As Single
             Get
-                Return Me.m_valueSet
+                Return Me.m_svalueSet
             End Get
         End Property
 
@@ -507,7 +445,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property ValueClear() As Single
             Get
-                Return Me.m_valueClear
+                Return Me.m_svalueClear
             End Get
         End Property
 
@@ -515,27 +453,25 @@ Namespace Controls.Map.Layers
         ''' <summary>
         ''' Get whether a given cell position has a value.
         ''' </summary>
-        ''' <param name="iRow"></param>
-        ''' <param name="iCol"></param>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property HasValue(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+        Public Overridable ReadOnly Property IsValue(ByVal objValue As Object) As Boolean
             Get
-                If Object.ReferenceEquals(Me.m_valueSet, Nothing) Then Return False
+                'If Object.ReferenceEquals(Me.m_sValueSet, Nothing) Then Return False
 
                 ' Composed value types are too horrendous to test - just assuma a value is there
                 ' until a better idea is conconcted.
-                If TypeOf (Me.Value(iRow, iCol)) Is Array Then Return True
+                If TypeOf (objValue) Is Array Then Return True
 
-                Dim cellValue As Single = CSng(Me.Value(iRow, iCol))
+                Dim sCellValue As Single = CSng(objValue)
 
-                If Me.m_valueSet.Equals(cCore.NULL_VALUE) Then
-                    If Me.m_valueClear.Equals(cCore.NULL_VALUE) Then
-                        Return (cellValue <> cCore.NULL_VALUE)
+                If Me.m_sValueSet.Equals(cCore.NULL_VALUE) Then
+                    If Me.m_sValueClear.Equals(cCore.NULL_VALUE) Then
+                        Return (sCellValue <> cCore.NULL_VALUE)
                     Else
-                        Return (cellValue <> 0)
+                        Return (sCellValue <> 0)
                     End If
                 End If
-                Return Me.m_valueSet.Equals(cellValue)
+                Return Me.m_sValueSet.Equals(sCellValue)
             End Get
         End Property
 
@@ -546,12 +482,12 @@ Namespace Controls.Map.Layers
         ''' <param name="iRow"></param>
         ''' <param name="iCol"></param>
         ''' -----------------------------------------------------------------------
-        Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer) As Object
+        Public Overridable Property Value(ByVal iRow As Integer, ByVal iCol As Integer) As Object
             Get
-                Return Me.m_data.Cell(iRow, iCol)
+                Return Me.Data.Cell(iRow, iCol)
             End Get
             Set(ByVal value As Object)
-                Me.m_data.Cell(iRow, iCol) = value
+                Me.Data.Cell(iRow, iCol) = value
             End Set
         End Property
 
@@ -584,6 +520,10 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Editor() As cLayerEditor
             Get
+                ' Initialize editor upon request
+                If (Me.m_editor.UIContext Is Nothing) Then
+                    Me.m_editor.Initialize(Me.m_uic, Me)
+                End If
                 Return Me.m_editor
             End Get
         End Property
@@ -610,7 +550,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property IsExternal As Boolean
             Get
-                Return Me.m_data.IsExternalData
+                Return Me.Data.IsExternalData
             End Get
         End Property
 
@@ -625,7 +565,9 @@ Namespace Controls.Map.Layers
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bModified = value
-                Me.m_data.Invalidate()
+                If (value = True) Then
+                    Me.Data.Invalidate()
+                End If
             End Set
         End Property
 
@@ -651,7 +593,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Private Sub EcospaceMessageHandler(ByRef msg As cMessage)
 
-            If msg.DataType = Me.m_data.DataType Then
+            If msg.DataType = Me.Data.DataType Then
                 ' Trigger update
                 Me.Update(eChangeFlags.Map, False)
             End If

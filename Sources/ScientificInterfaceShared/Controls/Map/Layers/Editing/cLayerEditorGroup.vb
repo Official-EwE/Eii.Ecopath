@@ -37,15 +37,15 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property Group() As Integer
             Get
-                Dim layerCore As ICoreGroupFilter = DirectCast(Me.Layer.Data, ICoreGroupFilter)
-                Return layerCore.Group
+                Dim layerCore As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
+                Return layerCore.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layer As ICoreGroupFilter = DirectCast(Me.Layer.Data, ICoreGroupFilter)
+                Dim layerCore As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
                 ' Will Group index change?
-                If value <> layer.Group Then
+                If value <> layerCore.iLayer Then
                     ' #Yes: update Group index in the underlying Ecospace layer
-                    layer.Group = value
+                    layerCore.iLayer = value
                     ' Force map update
                     Me.Layer.Update(cLayer.eChangeFlags.Map, False)
                 End If

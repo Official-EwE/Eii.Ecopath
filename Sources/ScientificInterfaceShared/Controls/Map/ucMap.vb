@@ -458,8 +458,8 @@ Namespace Controls.Map
             Me.Invalidate(rcScreen)
 
             ' Draw surrounding cells as well to avoid anomalies
-            iXFrom = Math.Max(0, Math.Min(ptCellFrom.X, ptCellTo.X) - 1)
-            iYFrom = Math.Max(0, Math.Min(ptCellFrom.Y, ptCellTo.Y) - 1)
+            iXFrom = Math.Max(1, Math.Min(ptCellFrom.X, ptCellTo.X) - 1)
+            iYFrom = Math.Max(1, Math.Min(ptCellFrom.Y, ptCellTo.Y) - 1)
             iXTo = Math.Min(Me.Basemap.InCol, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
             iYTo = Math.Min(Me.Basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
 
@@ -485,13 +485,14 @@ Namespace Controls.Map
                         End Select
 
                         If l.Renderer.IsVisible And bDrawCell Then
-                            If l.HasValue(ptCell.Y, ptCell.X) Then
+                            Dim objValue As Object = l.Value(ptCell.Y, ptCell.X)
+                            If l.IsValue(objValue) Then
                                 ' Build style flags
                                 If l.IsSelected Then
                                     style = (style Or cStyleGuide.eStyleFlags.Highlight)
                                 End If
                                 ' Render cell
-                                l.Renderer.RenderCell(g, rcScreen, l.Data, l.Value(ptCell.Y, ptCell.X), style)
+                                l.Renderer.RenderCell(g, rcScreen, l.Data, objValue, style)
                             End If
                         End If
 

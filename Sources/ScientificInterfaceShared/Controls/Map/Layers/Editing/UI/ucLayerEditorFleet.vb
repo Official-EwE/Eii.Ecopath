@@ -42,9 +42,7 @@ Namespace Controls.Map.Layers
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
             MyBase.UpdateContent(editor)
-
             Me.m_cmbFleet.Enabled = Me.IsAttached
-
         End Sub
 
         Protected Overloads Property Editor() As cLayerEditorFleet

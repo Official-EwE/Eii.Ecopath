@@ -82,7 +82,6 @@ Namespace SpatialData
         Public Function Load(Optional strFile As String = "", _
                              Optional bClearFirst As Boolean = False) As Boolean
 
-
             Dim doc As New XmlDocument()
             Dim xnRoot As XmlNode = Nothing
             Dim xa As XmlAttribute = Nothing

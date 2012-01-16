@@ -230,6 +230,7 @@
     <Compile Include="Controls\Map\Layers\cLayer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
     <Compile Include="Controls\Map\Layers\cLayerSynchronizer.vb" />
+    <Compile Include="Controls\Map\Layers\cLayerBundle.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />
@@ -878,6 +879,7 @@
     <Content Include="Resources\database.png" />
     <None Include="Resources\chain_vert.png" />
     <None Include="Resources\chain_horz.png" />
+    <Content Include="Resources\database_NA.png" />
     <Content Include="Resources\Fill.png" />
     <None Include="Resources\History.png" />
     <None Include="Resources\forward.png" />

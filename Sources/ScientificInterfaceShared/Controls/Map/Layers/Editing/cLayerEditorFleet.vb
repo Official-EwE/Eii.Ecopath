@@ -37,15 +37,15 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property Fleet() As Integer
             Get
-                Dim layerCore As ICoreFleetFilter = DirectCast(Me.Layer.Data, ICoreFleetFilter)
-                Return layerCore.Fleet
+                Dim layer As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
+                Return layer.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layer As ICoreFleetFilter = DirectCast(Me.Layer.Data, ICoreFleetFilter)
+                Dim layer As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
                 ' Will fleet index change?
-                If value <> layer.Fleet Then
-                    ' #Yes: update fleet index in the underlying Ecospace layer
-                    layer.Fleet = value
+                If value <> layer.iLayer Then
+                    ' #Yes: update index in the underlying layer collector
+                    layer.iLayer = value
                     ' Force map update
                     Me.Layer.Update(cLayer.eChangeFlags.Map, False)
                 End If

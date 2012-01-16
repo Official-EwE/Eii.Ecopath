@@ -10,33 +10,13 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cEcospaceLayerSail
     Inherits cEcospaceLayerSingle
-    Implements ICoreFleetFilter
 
-    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap)
-        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, EwEUtils.Core.eVarNameFlags.LayerSail)
+    Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, EwEUtils.Core.eVarNameFlags.LayerSail, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerSail
     End Sub
 
 #Region " Cell interaction "
-
-    Private m_iFleet As Integer = 0
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the fleet that this layer represents.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property Fleet() As Integer _
-        Implements ICoreFleetFilter.Fleet
-        Get
-            Return Me.m_iFleet
-        End Get
-        Set(ByVal value As Integer)
-            If value <> Me.m_iFleet Then
-                Me.m_iFleet = value
-            End If
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -45,18 +25,17 @@ Public Class cEcospaceLayerSail
     ''' <param name="iRow">Row index of the cell to access.</param>
     ''' <param name="iCol">Column index of the cell to access.</param>
     ''' <remarks>
-    ''' Note that cells will be accessed for the currently selected 
-    ''' <see cref="Fleet">fleet index</see>.
+    ''' Note that cells will be accessed for the currently selected fleet index.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-            Return data(Me.m_iFleet, iRow, iCol)
+            Return data(Me.Index, iRow, iCol)
         End Get
         Set(ByVal value As Object)
             Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-            data(Me.m_iFleet, iRow, iCol) = CSng(value)
+            data(Me.Index, iRow, iCol) = CSng(value)
         End Set
     End Property
 

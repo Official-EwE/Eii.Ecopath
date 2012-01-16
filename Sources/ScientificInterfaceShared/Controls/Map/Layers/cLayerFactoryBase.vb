@@ -9,8 +9,6 @@ Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-' ToDo: create default colour ramps!
-
 Namespace Controls.Map
 
     ''' =======================================================================
@@ -23,17 +21,14 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Build layer(s) for a given core data layer name.
+        ''' Build user interface layer(s) for given core data.
         ''' </summary>
         ''' <param name="uic">UI context to connect layer to.</param>
-        ''' <param name="layerData">Optional data to attach to the layer. If no
-        ''' data is given the layer will attempt to get its data from the 
-        ''' Ecospace basemap.</param>
+        ''' <param name="varName">Name of the core variable to wrap</param>
         ''' <returns>An array of layers</returns>
         ''' -------------------------------------------------------------------
         Public Overridable Function GetLayers(ByVal uic As cUIContext, _
-                                              ByVal varName As eVarNameFlags, _
-                                              Optional ByVal layerData As cEcospaceLayer = Nothing) As cLayer()
+                                              ByVal varName As eVarNameFlags) As cLayer()
 
             Dim lLayers As New List(Of cLayer)
 
@@ -59,8 +54,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererDepth(vs)
                     editor = New cLayerEditorDepth()
-                    If layerData Is Nothing Then layerData = bmd.LayerDepth
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerDepth)
+                    layer = New cLayer(uic, bmd.LayerDepth, renderer, editor, bmd, eVarNameFlags.LayerDepth)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerHabitat
@@ -84,8 +78,8 @@ Namespace Controls.Map
 
                         ' Create layer
                         renderer = New cLayerRendererBitmap(vs)
-                        editor = New cLayerEditorHabitat(iHabitat)
-                        layer = New cLayer(uic, bmd.LayerHabitat(iHabitat), renderer, editor, 1, 0, hab, eVarNameFlags.Name)
+                        editor = New cLayerEditorHabitat()
+                        layer = New cLayer(uic, bmd.LayerHabitat(iHabitat), renderer, editor, hab, eVarNameFlags.Name, sValueClear:=0)
                         lLayers.Add(layer)
 
                     Next iHabitat
@@ -99,8 +93,8 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
-                    layerData = bmd.LayerHabitatCapacityInput
-                    layer = New cLayer(uic, layerData, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, bmd, eVarNameFlags.LayerHabitatCapacity)
+                    layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacityInput), _
+                                            renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacityInput)
 
                     lLayers.Add(layer)
 
@@ -114,8 +108,8 @@ Namespace Controls.Map
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
                     editor.IsReadOnly = True
-                    layerData = bmd.LayerHabitatCapacity
-                    layer = New cLayer(uic, layerData, renderer, editor, cCore.NULL_VALUE, cCore.NULL_VALUE, bmd, eVarNameFlags.LayerHabitatCapacity)
+                    layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacity), _
+                                            renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacity)
 
                     lLayers.Add(layer)
 
@@ -131,8 +125,7 @@ Namespace Controls.Map
                     editor = New cLayerEditorRange(GetType(ucLayerEditorRegion))
                     editor.CellValueMax = core.nRegions
                     editor.IsEditable = (core.nRegions > 0)
-                    If layerData Is Nothing Then layerData = bmd.LayerRegion
-                    layer = New cLayer(uic, layerData, renderer, editor, layerData, eVarNameFlags.Name)
+                    layer = New cLayer(uic, bmd.LayerRegion, renderer, editor, bmd, eVarNameFlags.Name)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPA
@@ -157,8 +150,7 @@ Namespace Controls.Map
                         ' Create layer
                         renderer = New cLayerRendererHatch(vs)
                         editor = New cLayerEditorTwoState()
-                        If layerData Is Nothing Then layerData = bmd.LayerMPA
-                        layer = New cLayer(uic, layerData, renderer, editor, iMPA, 0, mpa, eVarNameFlags.Name)
+                        layer = New cLayer(uic, bmd.LayerMPA, renderer, editor, mpa, eVarNameFlags.Name, iMPA, 0)
 
                         lLayers.Add(layer)
 
@@ -173,8 +165,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
-                    If layerData Is Nothing Then layerData = bmd.LayerRelPP
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
+                    layer = New cLayer(uic, bmd.LayerRelPP, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
 
                     lLayers.Add(layer)
 
@@ -187,8 +178,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorRange()
-                    If layerData Is Nothing Then layerData = bmd.LayerRelCin
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
+                    layer = New cLayer(uic, bmd.LayerRelCin, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
 
                     lLayers.Add(layer)
 
@@ -202,8 +192,8 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorMigration()
-                    If layerData Is Nothing Then layerData = bmd.LayerMigration
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
+                    layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerMigration), _
+                                            renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerMigration)
 
                     lLayers.Add(layer)
 
@@ -215,8 +205,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
-                    If layerData Is Nothing Then layerData = bmd.LayerAdvection
-                    layer = New cLayer(uic, layerData, renderer, Nothing, bmd, eVarNameFlags.LayerAdvection)
+                    layer = New cLayer(uic, bmd.LayerAdvection, renderer, Nothing, bmd, eVarNameFlags.LayerAdvection)
 
                     lLayers.Add(layer)
 
@@ -229,12 +218,13 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererWindEwE5(vs)
                     editor = New cLayerEditorVector(GetType(ucLayerEditorVector))
-                    If layerData Is Nothing Then layerData = bmd.LayerWind
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerWind)
+                    layer = New cLayer(uic, bmd.LayerWind, renderer, editor, bmd, eVarNameFlags.LayerWind)
 
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerUpwelling
+
+                    ' ToDo: globalize this
 
                     key = New cValueID(eDataTypes.EcospaceLayerFlow, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
@@ -243,13 +233,14 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererUpwelling(vs)
                     editor = New cLayerEditorRange()
-                    If layerData Is Nothing Then layerData = bmd.LayerUpwelling
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerUpwelling)
+                    layer = New cLayer(uic, bmd.LayerUpwelling, renderer, editor, bmd, eVarNameFlags.LayerUpwelling)
                     layer.Name = "Upwelling"
 
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMLD
+
+                    ' ToDo: globalize this
 
                     key = New cValueID(eDataTypes.EcospaceLayerMLD, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
@@ -258,8 +249,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererText(vs) ' MLD rendered as text on top of gradiented layers such as habitats, etc
                     editor = New cLayerEditorMLD()
-                    If layerData Is Nothing Then layerData = bmd.LayerMixedLayerDepths
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, varName)
+                    layer = New cLayer(uic, bmd.LayerMixedLayerDepths, renderer, editor, bmd, varName)
                     layer.Name = "Mixed layer depths"
 
                     lLayers.Add(layer)
@@ -273,9 +263,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorFleet(GetType(ucLayerEditorPort))
-                    If layerData Is Nothing Then layerData = bmd.LayerPort
-                    layer = New cLayer(uic, layerData, renderer, editor, 1.0!, 0.0!, bmd, eVarNameFlags.LayerPort)
-
+                    layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, 1.0!, 0.0!)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerSail
@@ -287,8 +275,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     editor = New cLayerEditorFleet(GetType(ucLayerEditorSailCost))
-                    If layerData Is Nothing Then layerData = bmd.LayerSailingCost
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerSail)
+                    layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerSail), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerSail)
 
                     lLayers.Add(layer)
 

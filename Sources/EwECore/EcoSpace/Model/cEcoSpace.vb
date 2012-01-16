@@ -1,11 +1,9 @@
-Imports System
 Imports System.Math
 Imports System.Threading
+Imports EwECore.SpatialData
 Imports EwEPlugin
-Imports EwECore.EcoSeed
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports EwEUtils.SpatialData
 
 
 ''' <summary>
@@ -1210,7 +1208,7 @@ Public Class cEcoSpace
             ' Apply Ecospace datasources
             ' * This will need to become much more sophisticated
             For Each vn As eVarNameFlags In Me.m_Data.DataAdapters.Keys
-                Dim src As ISpatialDataAdapter = Me.m_Data.DataAdapters(vn)
+                Dim src As cSpatialDataAdapter = Me.m_Data.DataAdapters(vn)
                 If (src IsNot Nothing) Then
                     Try
                         ' ToDo: add error feedback

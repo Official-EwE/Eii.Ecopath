@@ -118,17 +118,11 @@ Public Class cEcospaceASCResultsWriter
 
     Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
 
-        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname)
+        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
         Dim sbBuff As New StringBuilder()
         Dim bcell As Single
 
         Debug.Assert(map IsNot Nothing)
-
-        ' Apply index, if any
-        If (iIndex <> cCore.NULL_VALUE) Then
-            If (TypeOf map Is ICoreGroupFilter) Then DirectCast(map, ICoreGroupFilter).Group = iIndex
-            If (TypeOf map Is ICoreFleetFilter) Then DirectCast(map, ICoreFleetFilter).Fleet = iIndex
-        End If
 
         For ir As Integer = Me.SpaceData.InRow To 1 Step -1
             For ic As Integer = 1 To Me.SpaceData.InCol

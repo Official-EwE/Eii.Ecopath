@@ -60,16 +60,10 @@ Public Class cEcospaceCSVResultsWriter
 
     Private Sub saveCSV(ByRef strm As StreamWriter, ByVal timestep As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
 
-        Dim map As cEcospaceLayer = timestep.Layer(varname)
+        Dim map As cEcospaceLayer = timestep.Layer(varname, iIndex)
         Dim sbBuff As New StringBuilder()
 
         Debug.Assert(map IsNot Nothing)
-
-        ' Apply index, if any
-        If (iIndex <> cCore.NULL_VALUE) Then
-            If (TypeOf map Is ICoreGroupFilter) Then DirectCast(map, ICoreGroupFilter).Group = iIndex
-            If (TypeOf map Is ICoreFleetFilter) Then DirectCast(map, ICoreFleetFilter).Fleet = iIndex
-        End If
 
         strm.WriteLine("Step," & timestep.iTimeStep.ToString)
         'TimeNow is the loop counter in Ecospace and is not updated until the end of the loop
@@ -96,15 +90,9 @@ Public Class cEcospaceCSVResultsWriter
     ''' <remarks></remarks>
     Private Sub saveXYZ(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
 
-        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname)
+        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
 
         Debug.Assert(map IsNot Nothing)
-
-        ' Apply index, if any
-        If (iIndex <> cCore.NULL_VALUE) Then
-            If (TypeOf map Is ICoreGroupFilter) Then DirectCast(map, ICoreGroupFilter).Group = iIndex
-            If (TypeOf map Is ICoreFleetFilter) Then DirectCast(map, ICoreFleetFilter).Fleet = iIndex
-        End If
 
         ' Write header
         strm.WriteLine("X,Y,Z")

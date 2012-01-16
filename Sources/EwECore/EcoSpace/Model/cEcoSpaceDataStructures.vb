@@ -1,7 +1,7 @@
 Option Strict On
 Imports System.Math
+Imports EwECore.SpatialData
 Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
 
 Public Class cEcospaceDataStructures
 
@@ -528,21 +528,21 @@ Public Class cEcospaceDataStructures
 #Region " Spatial data adapters "
 
     ''' <summary>Avalailable data adapters</summary>
-    Public DataAdapters As New Dictionary(Of eVarNameFlags, ISpatialDataAdapter)
+    Public DataAdapters As New Dictionary(Of eVarNameFlags, cSpatialDataAdapter)
     ''' <summary>Flag stating how Ecospace time steps are interpreted when accessing remote data. If true, 
     ''' an Ecospace time step is interpreted as an offset to the start time of a remote dataset. If false,
     ''' an Ecospace time step is translated to an absolute time value for matching remote dataset data.
     ''' </summary>
     Public AdapterUseRelativeTime As Boolean = True
 
-    Public Property DataAdapter(ByVal varname As eVarNameFlags) As ISpatialDataAdapter
+    Public Property DataAdapter(ByVal varname As eVarNameFlags) As cSpatialDataAdapter
         Get
             If Me.DataAdapters.ContainsKey(varname) Then
                 Return Me.DataAdapters(varname)
             End If
             Return Nothing
         End Get
-        Set(ByVal value As ISpatialDataAdapter)
+        Set(ByVal value As cSpatialDataAdapter)
             Me.DataAdapters(varname) = value
         End Set
     End Property

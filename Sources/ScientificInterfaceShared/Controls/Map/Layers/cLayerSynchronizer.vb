@@ -31,28 +31,30 @@ Namespace Controls.Map.Layers
 
             Me.m_bInSync = True
 
-            If TypeOf l.Data Is ICoreFleetFilter Then
-                Dim iFleet As Integer = DirectCast(l.Data, ICoreFleetFilter).Fleet
-                For Each lTest As cLayer In layers
-                    If Not Object.ReferenceEquals(l, lTest) And TypeOf lTest.Data Is ICoreFleetFilter Then
-                        DirectCast(lTest.Data, ICoreFleetFilter).Fleet = iFleet
-                    End If
-                Next
-            ElseIf TypeOf l Is ICoreGroupFilter Then
-                Dim iGroup As Integer = DirectCast(l.Data, ICoreGroupFilter).Group
-                For Each lTest As cLayer In layers
-                    If Not Object.ReferenceEquals(l, lTest) And TypeOf lTest.Data Is ICoreGroupFilter Then
-                        DirectCast(lTest.Data, ICoreGroupFilter).Group = iGroup
-                    End If
-                Next
-            ElseIf TypeOf l Is ICoreMonthFilter Then
-                Dim iMonth As Integer = DirectCast(l.Data, ICoreMonthFilter).Month
-                For Each lTest As cLayer In layers
-                    If Not Object.ReferenceEquals(l, lTest) And TypeOf lTest.Data Is ICoreMonthFilter Then
-                        DirectCast(lTest.Data, ICoreMonthFilter).Month = iMonth
-                    End If
-                Next
-            End If
+            ' ToDo: rework this!
+
+            'If TypeOf l.Data Is ICoreFleetFilter Then
+            '    Dim iFleet As Integer = DirectCast(l.Data, ICoreFleetFilter).Fleet
+            '    For Each lTest As cLayer In layers
+            '        If Not Object.ReferenceEquals(l, lTest) And TypeOf lTest.Data Is ICoreFleetFilter Then
+            '            DirectCast(lTest.Data, ICoreFleetFilter).Fleet = iFleet
+            '        End If
+            '    Next
+            'ElseIf TypeOf l Is ICoreGroupFilter Then
+            '    Dim iGroup As Integer = DirectCast(l.Data, ICoreGroupFilter).Group
+            '    For Each lTest As cLayer In layers
+            '        If Not Object.ReferenceEquals(l, lTest) And TypeOf lTest.Data Is ICoreGroupFilter Then
+            '            DirectCast(lTest.Data, ICoreGroupFilter).Group = iGroup
+            '        End If
+            '    Next
+            'ElseIf TypeOf l Is ICoreMonthFilter Then
+            '    Dim iMonth As Integer = DirectCast(l.Data, ICoreMonthFilter).Month
+            '    For Each lTest As cLayer In layers
+            '        If Not Object.ReferenceEquals(l, lTest) And TypeOf lTest.Data Is ICoreMonthFilter Then
+            '            DirectCast(lTest.Data, ICoreMonthFilter).Month = iMonth
+            '        End If
+            '    Next
+            'End If
 
             Me.m_bInSync = False
 

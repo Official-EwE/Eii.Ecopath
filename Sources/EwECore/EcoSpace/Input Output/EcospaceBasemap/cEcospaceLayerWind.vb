@@ -11,7 +11,6 @@ Imports EwEUtils.Core
 ''' </summary>
 Public Class cEcospaceLayerWind
     Inherits cEcospaceLayerVector
-    Implements ICoreMonthFilter
 
 #Region " Private vars "
 
@@ -39,11 +38,7 @@ Public Class cEcospaceLayerWind
 
 #Region " Filter "
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdoc cref="ICoreMonthFilter.Month"/>
-    ''' -----------------------------------------------------------------------
-    Public Property Month() As Integer _
-        Implements EwEUtils.Core.ICoreMonthFilter.Month
+    Public Property Month() As Integer
         Get
             Return Me.m_iMonth
         End Get

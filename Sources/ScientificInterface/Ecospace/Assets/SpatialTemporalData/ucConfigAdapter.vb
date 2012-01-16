@@ -13,7 +13,8 @@ Namespace Ecospace.Controls
 
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
-        Private m_adt As ISpatialDataAdapter = Nothing
+        Private m_adt As cSpatialDataAdapter = Nothing
+        Private m_layer As cEcospaceLayer = Nothing
         Private m_uic As cUIContext = Nothing
         Private m_bHasCachedData As Boolean = False
 
@@ -28,7 +29,8 @@ Namespace Ecospace.Controls
             End Get
             Set(uic As cUIContext)
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.Adapter = Nothing
+                    Me.m_adt = Nothing
+                    Me.m_layer = Nothing
                     Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_man = Nothing
@@ -43,22 +45,18 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Public Property Adapter As ISpatialDataAdapter
-            Get
-                Return Me.m_adt
-            End Get
-            Set(value As ISpatialDataAdapter)
-                Me.m_adt = value
-                If (Me.m_adt IsNot Nothing) Then
-                    Me.PopulateControls()
-                End If
-                Me.UpdateControls()
-            End Set
-        End Property
+        Public Sub SetConnection(adt As cSpatialDataAdapter, layer As cEcospaceLayer)
+            Me.m_adt = adt
+            Me.m_layer = layer
+            Me.PopulateControls()
+            Me.UpdateControls()
+        End Sub
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
+            If (Me.UIContext Is Nothing) Then Return
             Me.EvaluateCache()
+            Me.FillTemplateDatasetBox()
             Me.UpdateControls()
         End Sub
 
@@ -208,12 +206,6 @@ Namespace Ecospace.Controls
 
             Me.m_btnClearCache.Enabled = (Me.m_bHasCachedData = True)
 
-        End Sub
-
-        Private Sub PopulateControls()
-
-            Debug.Assert(Me.m_uic IsNot Nothing)
-
             Dim fmt As New cVarnameTypeFormatter()
 
             If (Me.m_adt Is Nothing) Then
@@ -222,7 +214,12 @@ Namespace Ecospace.Controls
                 Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, fmt.GetDescriptor(Me.m_adt.VarName))
             End If
 
-            Me.FillTemplateDatasetBox()
+        End Sub
+
+        Private Sub PopulateControls()
+
+            Debug.Assert(Me.m_uic IsNot Nothing)
+
             Me.FillExistingDatasetBox(Me.SelectedDS)
             Me.FillExistingConverterBox()
 
@@ -271,11 +268,11 @@ Namespace Ecospace.Controls
         Private Property SelectedDS As ISpatialDataSet
             Get
                 If (Me.m_adt Is Nothing) Then Return Nothing
-                Return Me.m_adt.Dataset
+                Return Me.m_adt.Dataset(Me.m_layer.Index)
             End Get
             Set(dataset As ISpatialDataSet)
                 If (Me.m_adt Is Nothing) Then Return
-                Me.m_adt.Dataset = dataset
+                Me.m_adt.Dataset(Me.m_layer.Index) = dataset
                 Dim iIndex As Integer = 0
                 If (dataset IsNot Nothing) Then
                     iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
@@ -288,11 +285,11 @@ Namespace Ecospace.Controls
         Private Property SelectedConverter As ISpatialDataConverter
             Get
                 If (Me.m_adt Is Nothing) Then Return Nothing
-                Return Me.m_adt.Converter
+                Return Me.m_adt.Converter(Me.m_layer.Index)
             End Get
             Set(converter As ISpatialDataConverter)
                 If (Me.m_adt Is Nothing) Then Return
-                Me.m_adt.Converter = converter
+                Me.m_adt.Converter(Me.m_layer.Index) = converter
                 Dim iIndex As Integer = 0
                 If (converter IsNot Nothing) Then
                     iIndex = Me.m_lbxExistingConv.Items.IndexOf(converter)
@@ -350,11 +347,7 @@ Namespace Ecospace.Controls
             If (Me.m_uic Is Nothing) Then Return
             If (Me.m_adt Is Nothing) Then Return
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-
-            For Each l As cEcospaceLayer In bm.Layers(Me.m_adt.VarName)
-                Me.m_uic.Core.onChanged(l)
-            Next
+            Me.m_uic.Core.onChanged(Me.m_layer)
 
         End Sub
 

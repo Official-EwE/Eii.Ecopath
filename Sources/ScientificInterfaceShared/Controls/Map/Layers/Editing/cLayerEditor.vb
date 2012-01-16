@@ -61,8 +61,8 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Overridable Sub Initialize(ByVal uic As cUIContext, _
                                           ByVal layer As cLayer)
-            Me.Layer = layer
             Me.UIContext = uic
+            Me.Layer = layer
         End Sub
 
         Protected Overrides Sub Finalize()

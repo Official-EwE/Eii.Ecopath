@@ -36,30 +36,13 @@ Public Class cEcospaceTimestep
     ''' </summary>
     Friend Class cTimestepLayerGroup
         Inherits cEcospaceLayerSingle
-        Implements ICoreGroupFilter
 
-        Public Sub New(core As cCore, manager As cEcospaceTimestep, varName As eVarNameFlags)
+        Public Sub New(core As cCore, manager As cEcospaceTimestep, varName As eVarNameFlags, iGroup As Integer)
             MyBase.New(core, manager, "", varName)
+            Me.m_iGroup = iGroup
         End Sub
 
         Private m_iGroup As Integer = 0
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the group that this layer represents.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property Group() As Integer _
-            Implements ICoreGroupFilter.Group
-            Get
-                Return Me.m_iGroup
-            End Get
-            Set(ByVal value As Integer)
-                If value <> Me.m_iGroup Then
-                    Me.m_iGroup = value
-                End If
-            End Set
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -67,10 +50,6 @@ Public Class cEcospaceTimestep
         ''' </summary>
         ''' <param name="iRow">Row index of the cell to access.</param>
         ''' <param name="iCol">Column index of the cell to access.</param>
-        ''' <remarks>
-        ''' Note that cells will be accessed for the currently selected 
-        ''' <see cref="Group">group index</see>.
-        ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
             Get
@@ -89,30 +68,13 @@ Public Class cEcospaceTimestep
     ''' </summary>
     Friend Class cTimestepLayerFleet
         Inherits cEcospaceLayerSingle
-        Implements ICoreFleetFilter
 
-        Public Sub New(core As cCore, manager As cEcospaceTimestep, varName As eVarNameFlags)
+        Public Sub New(core As cCore, manager As cEcospaceTimestep, varName As eVarNameFlags, iFleet As Integer)
             MyBase.New(core, manager, "", varName)
+            Me.m_iFleet = iFleet
         End Sub
 
         Private m_iFleet As Integer = 0
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the fleet that this layer represents.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property Fleet() As Integer _
-            Implements ICoreFleetFilter.Fleet
-            Get
-                Return Me.m_iFleet
-            End Get
-            Set(ByVal value As Integer)
-                If value <> Me.m_iFleet Then
-                    Me.m_iFleet = value
-                End If
-            End Set
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -120,10 +82,6 @@ Public Class cEcospaceTimestep
         ''' </summary>
         ''' <param name="iRow">Row index of the cell to access.</param>
         ''' <param name="iCol">Column index of the cell to access.</param>
-        ''' <remarks>
-        ''' Note that cells will be accessed for the currently selected 
-        ''' <see cref="Fleet">fleet index</see>.
-        ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
             Get
@@ -531,7 +489,9 @@ Public Class cEcospaceTimestep
         Dim lLayers As New List(Of cEcospaceLayer)
         Select Case varName
             Case eVarNameFlags.EcospaceMapBiomass
-                lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName))
+                For igroup As Integer = 1 To Me.m_core.nGroups
+                    lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
+                Next
         End Select
         Return lLayers.ToArray
 

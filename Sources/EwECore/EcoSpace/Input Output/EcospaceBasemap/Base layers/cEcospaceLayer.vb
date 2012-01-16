@@ -1,10 +1,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore.Core
+Imports EwECore.SpatialData
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports EwEUtils.SpatialData
-Imports EwECore.Core
 
 #End Region ' Imports
 
@@ -31,8 +31,6 @@ Public MustInherit Class cEcospaceLayer
     Private m_manager As IEcospaceLayerManager = Nothing
     ''' <summary>If set, this flag will direct the manager how to get to the actual map data.</summary>
     Private m_vnData As eVarNameFlags = eVarNameFlags.NotSet
-    ''' <summary>Secundary index used to direct the manager how to get to the actual map data.</summary>
-    Private m_iData As Integer = cCore.NULL_VALUE
     ''' <summary>Metadata to restrict values that can enter a layer.</summary>
     Private m_metadata As cVariableMetaData = Nothing
     ''' <summary>If set, a hard-linked reference to an array.</summary>
@@ -68,14 +66,18 @@ Public MustInherit Class cEcospaceLayer
 
         Debug.Assert(vnData <> eVarNameFlags.NotSet)
 
+        Me.AllowValidation = False
+
         ' Store details
         Me.m_manager = manager
         Me.m_vnData = vnData
-        Me.m_iData = iIndex
+        Me.Index = iIndex
 
         If (TypeOf manager Is cCoreInputOutputBase) Then
             Me.m_metadata = CType(Me.m_manager, cCoreInputOutputBase).GetVariableMetadata(Me.m_vnData)
         End If
+
+        Me.AllowValidation = True
 
     End Sub
 
@@ -233,9 +235,9 @@ Public MustInherit Class cEcospaceLayer
         Get
             Dim man As SpatialData.cSpatialDataConnectionManager = Me.m_core.SpatialDataConnectionManager
             If (man Is Nothing) Then Return False
-            Dim adapter As ISpatialDataAdapter = man.Adapter(Me.VarName)
+            Dim adapter As cSpatialDataAdapter = man.Adapter(Me.VarName)
             If (adapter Is Nothing) Then Return False
-            Return adapter.IsConnected
+            Return adapter.IsConnected(Me.Index)
         End Get
     End Property
 

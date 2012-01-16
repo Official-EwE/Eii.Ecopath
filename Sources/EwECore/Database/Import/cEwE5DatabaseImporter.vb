@@ -8,6 +8,7 @@ Imports System.Drawing
 Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports System.Globalization
 
 #End Region ' EwECore
 
@@ -249,25 +250,25 @@ Namespace Database
             ' ------
 
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_SCENARIO)
-            If Me.ImportEcoSim() Then
+            If Me.ImportEcosim() Then
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMGROUPS)
                 Me.ImportEcosimN()
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGMEDIATION)
-                Me.ImportEcoSimnShapes()
+                Me.ImportEcosimnShapes()
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS)
-                Me.ImportEcoSimNxNInteraction()
+                Me.ImportEcosimNxNInteraction()
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS)
-                Me.ImportEcoSimNxN()
+                Me.ImportEcosimNxN()
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS)
-                Me.ImportEcoSimMedWeights()
+                Me.ImportEcosimMedWeights()
 
                 ' Discontinued in EwE6, but still throw a warning
-                Me.ImportEcoSimPairs()
+                Me.ImportEcosimPairs()
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FLEET)
-                Me.ImportEcoSimFishGear()
+                Me.ImportEcosimFishGear()
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_TIMESERIES)
                 Me.ImportTimeSeries()
@@ -694,7 +695,8 @@ Namespace Database
             End If
 
             Try
-                Return CSng(Date.Parse(strDate).ToOADate())
+                Dim dt As Date = Convert.ToDateTime(strDate, New CultureInfo("en-US"))
+                Return CSng(dt.ToOADate())
             Catch ex As Exception
                 ' Woops!
             End Try
@@ -1600,7 +1602,7 @@ Namespace Database
 
             writer = Me.m_dbEwE6.GetWriter("EcosimModel")
             dt = writer.GetDataTable()
-            drow = dt.rows(0)
+            drow = dt.Rows(0)
             drow.BeginEdit()
             drow("ForcePoints") = nMaxForcePoints
             drow.EndEdit()
@@ -3488,7 +3490,7 @@ Namespace Database
                     For Each strEcopathFleet In dtEcopathFleets.Keys
 
                         Me.LogProgress("Importing maps for scenario " & strEcospaceScenario & ", fleet " & strEcopathFleet)
- 
+
                         ' Generate an Ecospace fleet entry
                         reader = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace Gear] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
                                                                   Me.m_strModelName, strEcospaceScenario, strEcopathFleet))

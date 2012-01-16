@@ -26,10 +26,12 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_sc = New System.Windows.Forms.SplitContainer()
-            Me.m_lbxAdapters = New System.Windows.Forms.ListBox()
+            Me.m_tvAdapters = New System.Windows.Forms.TreeView()
             Me.m_config = New ScientificInterface.Ecospace.Controls.ucConfigAdapter()
+            Me.m_ilConnections = New System.Windows.Forms.ImageList(Me.components)
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
             Me.m_sc.Panel2.SuspendLayout()
@@ -56,7 +58,7 @@ Namespace Ecospace
             '
             'm_sc.Panel1
             '
-            Me.m_sc.Panel1.Controls.Add(Me.m_lbxAdapters)
+            Me.m_sc.Panel1.Controls.Add(Me.m_tvAdapters)
             '
             'm_sc.Panel2
             '
@@ -65,20 +67,19 @@ Namespace Ecospace
             Me.m_sc.SplitterDistance = 139
             Me.m_sc.TabIndex = 0
             '
-            'm_lbxAdapters
+            'm_tvAdapters
             '
-            Me.m_lbxAdapters.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_lbxAdapters.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
-            Me.m_lbxAdapters.FormattingEnabled = True
-            Me.m_lbxAdapters.IntegralHeight = False
-            Me.m_lbxAdapters.Location = New System.Drawing.Point(0, 0)
-            Me.m_lbxAdapters.Name = "m_lbxAdapters"
-            Me.m_lbxAdapters.Size = New System.Drawing.Size(139, 278)
-            Me.m_lbxAdapters.TabIndex = 0
+            Me.m_tvAdapters.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_tvAdapters.FullRowSelect = True
+            Me.m_tvAdapters.HideSelection = False
+            Me.m_tvAdapters.Location = New System.Drawing.Point(0, 0)
+            Me.m_tvAdapters.Name = "m_tvAdapters"
+            Me.m_tvAdapters.ShowLines = False
+            Me.m_tvAdapters.Size = New System.Drawing.Size(139, 278)
+            Me.m_tvAdapters.TabIndex = 0
             '
             'm_config
             '
-            Me.m_config.Adapter = Nothing
             Me.m_config.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_config.Location = New System.Drawing.Point(0, 0)
             Me.m_config.Name = "m_config"
@@ -86,11 +87,17 @@ Namespace Ecospace
             Me.m_config.TabIndex = 0
             Me.m_config.UIContext = Nothing
             '
+            'm_ilConnections
+            '
+            Me.m_ilConnections.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            Me.m_ilConnections.ImageSize = New System.Drawing.Size(16, 16)
+            Me.m_ilConnections.TransparentColor = System.Drawing.Color.Transparent
+            '
             'dlgExternalData
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(544, 331)
+            Me.ClientSize = New System.Drawing.Size(544, 334)
             Me.ControlBox = False
             Me.Controls.Add(Me.m_sc)
             Me.Controls.Add(Me.m_btnOK)
@@ -107,8 +114,9 @@ Namespace Ecospace
         End Sub
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_sc As System.Windows.Forms.SplitContainer
-        Private WithEvents m_lbxAdapters As System.Windows.Forms.ListBox
         Private WithEvents m_config As ScientificInterface.Ecospace.Controls.ucConfigAdapter
+        Private WithEvents m_tvAdapters As System.Windows.Forms.TreeView
+        Private WithEvents m_ilConnections As System.Windows.Forms.ImageList
 
     End Class
 

@@ -28,8 +28,8 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cLayer)
             MyBase.Initialize(uic, layer)
-            Me.CellValueMax = CDec(Math.Max(layer.ValueSet, layer.ValueClear))
-            Me.CellValueMin = CDec(Math.Min(layer.ValueSet, layer.ValueClear))
+            Me.CellValueMax = CSng(Math.Max(layer.ValueSet, layer.ValueClear))
+            Me.CellValueMin = CSng(Math.Min(layer.ValueSet, layer.ValueClear))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -40,12 +40,12 @@ Namespace Controls.Map.Layers
             If (Not Me.IsEditable) Then Return
 
             ' Clicked on data cell?
-            If Decimal.Equals(CDec(Layer.Value(ptClick.Y, ptClick.X)), CDec(Layer.ValueSet)) Then
+            If Decimal.Equals(CSng(Layer.Value(ptClick.Y, ptClick.X)), CSng(Layer.ValueSet)) Then
                 ' #Yes: start clearing values
-                Me.CellValue = CDec(Layer.ValueClear)
+                Me.CellValue = CSng(Layer.ValueClear)
             Else
                 ' #No: start setting values
-                Me.CellValue = CDec(Layer.ValueSet)
+                Me.CellValue = CSng(Layer.ValueSet)
             End If
 
             If Me.GUI IsNot Nothing Then

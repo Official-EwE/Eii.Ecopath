@@ -771,7 +771,7 @@ Public Class AppLauncher
         Me.AutolaunchPlugins()
 
         ' Load spatial data sets
-        Me.Core.SpatialDataConnectionManager.Load()
+        Me.Core.SpatialDataConnectionManager.LoadSystemSettings()
 
         Me.ProcessCommandLine()
         Me.OnSettingsLoaded(Nothing, Nothing) ' Ugh!

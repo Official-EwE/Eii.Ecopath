@@ -35,19 +35,19 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property Group() As Integer
             Get
-                ' ToDo: perform sanity checks here?
-                Dim layerCore As cEcospaceLayerMigration = DirectCast(Me.Layer.Data, cEcospaceLayerMigration)
-                Return layerCore.Group
+                '' ToDo: perform sanity checks here?
+                'Dim layerCore As cEcospaceLayerMigration = DirectCast(Me.Layer.Data, cEcospaceLayerMigration)
+                'Return layerCore.Group
             End Get
             Set(ByVal value As Integer)
-                Dim layerMigration As cEcospaceLayerMigration = DirectCast(Me.Layer.Data, cEcospaceLayerMigration)
-                ' Will group index change?
-                If value <> layerMigration.Group Then
-                    ' #Yes: update group index in the underlying Ecospace layer
-                    layerMigration.Group = value
-                    ' Force map update
-                    Me.Layer.Update(cLayer.eChangeFlags.Map, False)
-                End If
+                'Dim layerMigration As cEcospaceLayerMigration = DirectCast(Me.Layer.Data, cEcospaceLayerMigration)
+                '' Will group index change?
+                'If value <> layerMigration.Group Then
+                '    ' #Yes: update group index in the underlying Ecospace layer
+                '    layerMigration.Group = value
+                '    ' Force map update
+                '    Me.Layer.Update(cLayer.eChangeFlags.Map, False)
+                'End If
             End Set
         End Property
 

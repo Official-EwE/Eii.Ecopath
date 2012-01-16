@@ -21,11 +21,9 @@ Public Class cEcospaceLayerMigration
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
-    ''' <param name="varName"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, _
-            ByVal varName As eVarNameFlags)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION, varName, cCore.NULL_VALUE, Nothing)
+    Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION, eVarNameFlags.LayerMigration, iIndex, Nothing)
         Me.m_dataType = eDataTypes.EcospaceLayerMigration
     End Sub
 
@@ -34,24 +32,6 @@ Public Class cEcospaceLayerMigration
 #Region " Cell interaction "
 
     Private m_asData As Single(,)
-    Private m_iGroup As Integer = 1
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the group that this layer represents.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Property Group() As Integer
-        Get
-            Return Me.m_iGroup
-        End Get
-        Set(ByVal value As Integer)
-            If value <> Me.m_iGroup Then
-                Me.m_iGroup = value
-                Me.Refresh()
-            End If
-        End Set
-    End Property
 
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
@@ -63,8 +43,8 @@ Public Class cEcospaceLayerMigration
         Set(ByVal value As Object)
             Dim i As Integer = CInt(Math.Max(Math.Min(cCore.N_MONTHS, CInt(value)), 1))
 
-            Me.PrefRow(Me.m_iGroup, i) = iRow
-            Me.PrefCol(Me.m_iGroup, i) = iCol
+            Me.PrefRow(Me.Index, i) = iRow
+            Me.PrefCol(Me.Index, i) = iCol
             Me.Invalidate()
         End Set
     End Property
@@ -114,8 +94,8 @@ Public Class cEcospaceLayerMigration
         Next
 
         For iMonth As Integer = 1 To cCore.N_MONTHS
-            Dim iRow As Integer = CInt(aiPrefRow(Me.m_iGroup, iMonth))
-            Dim iCol As Integer = CInt(aiPrefCol(Me.m_iGroup, iMonth))
+            Dim iRow As Integer = CInt(aiPrefRow(Me.Index, iMonth))
+            Dim iCol As Integer = CInt(aiPrefCol(Me.Index, iMonth))
             If Me.ValidateCellPosition(iRow, iCol) Then
                 Me.m_asData(iRow, iCol) = iMonth
             End If

@@ -1,7 +1,7 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports EwEUtils.SpatialData
+Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -9,7 +9,7 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="ISpatialDataAdapter"/>.
+    ''' Class for providing a textual description of <see cref="cSpatialDataAdapter"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cSpatialDataAdapterFormatter
@@ -17,7 +17,7 @@ Namespace Style
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(ISpatialDataAdapter)
+            Return GetType(cSpatialDataAdapter)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
@@ -27,7 +27,7 @@ Namespace Style
             Try
                 If (value IsNot Nothing) Then
                     Dim fmt As New cVarnameTypeFormatter()
-                    Dim obj As ISpatialDataAdapter = DirectCast(value, ISpatialDataAdapter)
+                    Dim obj As cSpatialDataAdapter = DirectCast(value, cSpatialDataAdapter)
                     Return fmt.GetDescriptor(obj.VarName)
                 End If
 

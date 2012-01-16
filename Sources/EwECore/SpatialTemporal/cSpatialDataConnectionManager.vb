@@ -12,7 +12,7 @@ Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Manages the connections between available <see cref="ISpatialDataAdapter"/>s 
+    ''' Manages the connections between available <see cref="cSpatialDataAdapter"/>s 
     ''' and <see cref="ISpatialDataSet"/>s
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -24,7 +24,7 @@ Namespace SpatialData
         ''' <summary>Manager of active data sets.</summary>
         Private m_datasetManager As cSpatialDataSetManager = Nothing
         ''' <summary>Hard-coded dictionary of data adapters.</summary>
-        Private m_dtAdapters As Dictionary(Of eVarNameFlags, ISpatialDataAdapter) = Nothing
+        Private m_dtAdapters As Dictionary(Of eVarNameFlags, cSpatialDataAdapter) = Nothing
 
         Private m_core As cCore = Nothing
 
@@ -37,17 +37,12 @@ Namespace SpatialData
 
         Friend Sub Init(ByVal core As cCore)
 
-            Dim adapter As ISpatialDataAdapter = Nothing
+            Dim adapter As cSpatialDataAdapter = Nothing
 
             Me.m_core = core
-            Me.m_dtAdapters = New Dictionary(Of eVarNameFlags, ISpatialDataAdapter)
+            Me.m_dtAdapters = New Dictionary(Of eVarNameFlags, cSpatialDataAdapter)
 
             Me.m_datasetManager = New cSpatialDataSetManager()
-
-            ' Spatial data adapters are hard-coded. This should perhaps change, discuss w Joe B
-            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP))
-            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
-            Me.AddAdapter(New SpatialData.cDefaultSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalLayers))
 
         End Sub
 
@@ -62,9 +57,20 @@ Namespace SpatialData
 
 #End Region ' Construction/ destruction
 
+        Public Sub Load()
+            ' Spatial data adapters are hard-coded. This should perhaps change, discuss w Joe B
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, 1))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, Me.m_core.GetCoreCounter(eCoreCounterTypes.nEnvironmentalLayers)))
+        End Sub
+
+        Public Sub Clear()
+            Me.m_dtAdapters.Clear()
+        End Sub
+
 #Region " Adapters "
 
-        Public ReadOnly Property Adapter(ByVal varname As eVarNameFlags) As ISpatialDataAdapter
+        Public ReadOnly Property Adapter(ByVal varname As eVarNameFlags) As cSpatialDataAdapter
             Get
                 If Me.m_dtAdapters.ContainsKey(varname) Then
                     Return Me.m_dtAdapters(varname)
@@ -79,17 +85,17 @@ Namespace SpatialData
             End Get
         End Property
 
-        Public ReadOnly Property Adapters() As ISpatialDataAdapter()
+        Public ReadOnly Property Adapters() As cSpatialDataAdapter()
             Get
-                Dim lAdapters As New List(Of ISpatialDataAdapter)
-                For Each ad As ISpatialDataAdapter In Me.m_dtAdapters.Values
+                Dim lAdapters As New List(Of cSpatialDataAdapter)
+                For Each ad As cSpatialDataAdapter In Me.m_dtAdapters.Values
                     lAdapters.Add(ad)
                 Next
                 Return lAdapters.ToArray
             End Get
         End Property
 
-        Private Sub AddAdapter(adapter As ISpatialDataAdapter)
+        Private Sub AddAdapter(adapter As cSpatialDataAdapter)
             Me.m_dtAdapters(adapter.VarName) = adapter
             Me.m_core.m_EcoSpaceData.DataAdapter(adapter.VarName) = adapter
         End Sub
@@ -107,7 +113,7 @@ Namespace SpatialData
         ''' <see cref="cSpatialDataSetManager.ConfigFileName">default file path</see> 
         ''' is used.</param>
         ''' -------------------------------------------------------------------
-        Public Sub Load(Optional strFile As String = "")
+        Public Sub LoadSystemSettings(Optional strFile As String = "")
             Try
                 Me.m_datasetManager.Load(strFile, False)
             Catch ex As Exception

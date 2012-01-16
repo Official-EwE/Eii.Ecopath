@@ -34,7 +34,7 @@ Namespace Ecospace.Basemap.Layers
         ''' Ecospace basemap.</param>
         ''' <returns>An array of layers</returns>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetLayers(ByVal uic As cUIContext, _
+        Public Overloads Function GetLayers(ByVal uic As cUIContext, _
                                             ByVal varName As eVarNameFlags, _
                                             Optional ByVal layerData As cEcospaceLayer = Nothing) As cLayer()
 
@@ -49,7 +49,7 @@ Namespace Ecospace.Basemap.Layers
             Dim renderer As cLayerRenderer = Nothing
             Dim editor As cLayerEditor = Nothing
             Dim vs As cVisualStyle = Nothing
- 
+
             Select Case varName
 
                 Case eVarNameFlags.LayerMPASeed
@@ -61,7 +61,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
-                    layer = New cLayer(uic, layerData, renderer, editor, 1, 0, bmd, eVarNameFlags.LayerMPASeed)
+                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMPASeed, 1, 0)
 
                     lLayers.Add(layer)
 
@@ -75,7 +75,7 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-                    layer = New cLayer(uic, layerData, renderer, editor, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.Name, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = My.Resources.ECOSPACE_LAYER_SEEDCURRENT ' Use local layer name
                     layer.Editor.IsReadOnly = True
 
@@ -92,8 +92,7 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-
-                    layer = New cLayer(uic, layerData, renderer, editor, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.NotSet, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = My.Resources.ECOSPACE_LAYER_SEEDBEST
                     layer.Editor.IsReadOnly = True
 
@@ -139,7 +138,7 @@ Namespace Ecospace.Basemap.Layers
 
                 Case Else
                     ' Return default
-                    lLayers.AddRange(MyBase.GetLayers(uic, varName, layerData))
+                    lLayers.AddRange(MyBase.GetLayers(uic, varName))
 
             End Select
 
