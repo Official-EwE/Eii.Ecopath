@@ -610,14 +610,11 @@ Public MustInherit Class cCoreInputOutputBase
     ''' -----------------------------------------------------------------------
     Public Function GetVariableMetadata(ByVal varName As eVarNameFlags) As cVariableMetaData
 
-        Dim objValue As cValue = Nothing
-        Try
-            objValue = m_values.Item(varName)
-            Return objValue.Metadata
-        Catch ex As Exception
-
-        End Try
+        If Me.m_values.ContainsKey(varName) Then
+            Return m_values.Item(varName).Metadata
+        End If
         Return Nothing
+
     End Function
 
 #End Region ' Metadata
