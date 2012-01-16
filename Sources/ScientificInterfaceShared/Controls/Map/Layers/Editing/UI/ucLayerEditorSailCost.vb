@@ -4,7 +4,10 @@
 
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
             MyBase.UpdateContent(editor)
-            Me.m_btnCalculate.Enabled = Me.IsAttached And editor.IsEditable
+            ' May be cleaning up
+            If (Not Me.IsAttached Or Me.Editor Is Nothing) Then Return
+            ' Okidoki
+            Me.m_btnCalculate.Enabled = editor.IsEditable
         End Sub
 
         Private Sub OnCalculate(ByVal sender As System.Object, ByVal e As System.EventArgs) _
