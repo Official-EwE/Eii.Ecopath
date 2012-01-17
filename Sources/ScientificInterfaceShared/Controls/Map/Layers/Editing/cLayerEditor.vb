@@ -485,9 +485,7 @@ Namespace Controls.Map.Layers
                 Dim sValue As Single = Math.Max(Math.Min(CSng(value), Me.m_sValueMax), Me.m_sValueMin)
                 If (sValue <> Me.m_sValue) Then
                     Me.m_sValue = sValue
-                    If (Me.m_gui IsNot Nothing) Then
-                        Me.m_gui.UpdateContent(Me)
-                    End If
+                    Me.UpdateGUI()
                 End If
             End Set
         End Property
@@ -590,6 +588,12 @@ Namespace Controls.Map.Layers
                 Me.m_uic = value
             End Set
         End Property
+
+        Protected Sub UpdateGUI()
+            If (Me.m_gui IsNot Nothing) Then
+                Me.m_gui.UpdateContent(Me)
+            End If
+        End Sub
 
 #End Region ' Properties
 

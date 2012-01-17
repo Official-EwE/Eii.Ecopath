@@ -38,10 +38,11 @@ Namespace Controls.Map.Layers
         Public Property Group() As Integer
             Get
                 Dim layerCore As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
-                Return layerCore.iLayer
+                Return layerCore.iLayer + 1
             End Get
             Set(ByVal value As Integer)
                 Dim layerCore As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
+                value -= 1
                 ' Will Group index change?
                 If value <> layerCore.iLayer Then
                     ' #Yes: update Group index in the underlying Ecospace layer

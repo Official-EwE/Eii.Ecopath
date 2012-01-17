@@ -94,6 +94,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SAUPUtil, Version=6.0.4.4, Culture=neutral, PublicKeyToken=7f98ec142b9ee40a, processorArchitecture=x86" />
+    <Reference Include="ScientificInterfaceShared, Version=6.3.7313.0, Culture=neutral, PublicKeyToken=f4272e218706910f, processorArchitecture=x86" />
     <Reference Include="SourceGrid2, Version=2.0.3.1, Culture=neutral, PublicKeyToken=ad929b4064585aea, processorArchitecture=MSIL" />
     <Reference Include="SourceLibrary, Version=1.2.0.0, Culture=neutral, PublicKeyToken=96907d46c0a9af87" />
     <Reference Include="System" />
@@ -239,6 +240,7 @@
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMigration.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMLD.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRange.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorRegion.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorTwoState.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorVector.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorHabitat.vb" />
@@ -303,10 +305,10 @@
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRange.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegion.Designer.vb">
-      <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegions.Designer.vb">
+      <DependentUpon>ucLayerEditorRegions.vb</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegion.vb">
+    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegions.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.Designer.vb">
@@ -689,9 +691,8 @@
       <DependentUpon>ucLayerEditorRange.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegion.resx">
-      <DependentUpon>ucLayerEditorRegion.vb</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorRegions.resx">
+      <DependentUpon>ucLayerEditorRegions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorSailCost.resx">
       <DependentUpon>ucLayerEditorSailCost.vb</DependentUpon>

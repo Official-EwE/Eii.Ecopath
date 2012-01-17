@@ -2,6 +2,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports DefaultRes = EwECore.My.Resources.CoreDefaults
 
 #End Region ' Imports
 
@@ -13,8 +14,7 @@ Public Class cEcospaceLayerHabitatCapacity
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, ByVal dt As eDataTypes, ByVal vn As eVarNameFlags, iIndex As Integer)
         MyBase.New(theCore, manager, _
-                   CStr(IIf(vn = eVarNameFlags.LayerHabitatCapacity, _
-                            My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP, My.Resources.CoreDefaults.CORE_DEFAULT_HABCAP_INPUT)), _
+                   String.Format(CStr(IIf(vn = eVarNameFlags.LayerHabitatCapacity, DefaultRes.CORE_DEFAULT_HABCAP, DefaultRes.CORE_DEFAULT_HABCAP_INPUT)), iIndex), _
                    vn, iIndex)
         Me.m_dataType = dt
     End Sub

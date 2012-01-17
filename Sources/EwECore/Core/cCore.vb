@@ -377,7 +377,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nRegions() As Integer
         Get
-            Return m_EcoSpaceData.NoRegions
+            Return m_EcoSpaceData.nRegions
         End Get
     End Property
 
@@ -8444,19 +8444,6 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get a <see cref="cEcospaceRegion">Ecospace region</see> for a given index.
-    ''' </summary>
-    ''' <param name="iRegion">The index to obtain the Ecospace region for.</param>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceRegions(ByVal iRegion As Integer) As cEcospaceRegion
-        Get
-            ' JS 06Jul07: list will handle region index / item index offsets
-            Return DirectCast(Me.m_EcospaceRegions(iRegion), cEcospaceRegion)
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Get a <see cref="cEcospaceMPA">Ecospace MPA</see> for a given index.
     ''' </summary>
     ''' <param name="iMPA">The index to obtain the Ecospace marine protected area for.</param>
@@ -8799,7 +8786,6 @@ Public Class cCore
             bSuccess = InitEcospaceBasemap()
             bSuccess = bSuccess And InitEcospaceModelParameters()
             bSuccess = bSuccess And InitEcospaceHabitats()
-            bSuccess = bSuccess And InitEcospaceRegions()
             bSuccess = bSuccess And InitEcospaceMPAs()
             bSuccess = bSuccess And InitEcospaceGroups()
             bSuccess = bSuccess And InitEcospaceFleets()
@@ -9137,6 +9123,7 @@ Public Class cCore
             m_EcospaceModelParams.StartSummaryTime = CInt(m_EcoSpaceData.SumStart(0))
             m_EcospaceModelParams.EndSummaryTime = CInt(m_EcoSpaceData.SumStart(1))
             m_EcospaceModelParams.NumberSummaryTimeSteps = m_EcoSpaceData.NumStep
+            m_EcospaceModelParams.nRegions = m_EcoSpaceData.nRegions
 
             m_EcospaceModelParams.nSolverThreads = m_EcoSpaceData.nGridSolverThreads
             m_EcospaceModelParams.nGroupsPerThread = m_EcoSpaceData.nGroupsPerThread
@@ -9191,6 +9178,7 @@ Public Class cCore
         m_EcoSpaceData.SumStart(1) = m_EcospaceModelParams.EndSummaryTime
         m_EcoSpaceData.NumStep = m_EcospaceModelParams.NumberSummaryTimeSteps
         m_EcoSpaceData.AdjustSpace = m_EcospaceModelParams.AdjustSpace
+        m_EcoSpaceData.nRegions = m_EcospaceModelParams.nRegions
 
         m_EcoSpaceData.nGroupsPerThread = m_EcospaceModelParams.nGroupsPerThread
         m_EcoSpaceData.nGridSolverThreads = m_EcospaceModelParams.nSolverThreads
@@ -9871,163 +9859,6 @@ Public Class cCore
     End Function
 
 #End Region ' Habitats
-
-#Region " Regions "
-
-    Private Function InitEcospaceRegions() As Boolean
-
-        Try
-            Dim objRegion As cEcospaceRegion = Nothing
-
-            m_EcospaceRegions.Clear()
-
-            'populate the list of cEcospaceRegion objects that the user will interact with 
-            'to change region related parameters from the interface
-            For i As Integer = 1 To Me.nRegions
-                ' Create region
-                objRegion = New cEcospaceRegion(Me, Me.m_EcoSpaceData.RegionDBID(i))
-                ' Add to list
-                m_EcospaceRegions.Add(objRegion)
-            Next i
-
-            ' Load the Ecospace data into the objects created above
-            Return LoadEcospaceRegions()
-
-        Catch ex As Exception
-            Debug.Assert(False, "InitEcospaceRegions Error: " & ex.Message)
-            Return False
-        End Try
-
-    End Function
-
-    Private Function LoadEcospaceRegions() As Boolean
-        Dim iReg As Integer
-
-        Try
-
-            For Each objReg As cEcospaceRegion In Me.m_EcospaceRegions
-
-                'convert the Database ID into an iGroup
-                iReg = Array.IndexOf(m_EcoSpaceData.RegionDBID, objReg.DBID)
-                objReg.Index = iReg
-                Debug.Assert(iReg > 0 And iReg <= Me.nRegions, "LoadEcospaceRegions() failed to find iRegion for Ecospace DBID.")
-
-                'this will call the cCore.getCounter() with the counter type
-                'and only resize the arrays if getCounter() is different from the existing size
-                objReg.Resize()
-
-                objReg.AllowValidation = False
-
-                ' Just pass on the name (RegionName)
-                objReg.Name = m_EcoSpaceData.RegionName(iReg)
-
-                objReg.AllowValidation = True
-            Next
-
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".LoadEcospaceRegions() Error: " & ex.Message)
-            Return False
-        End Try
-        Return True
-    End Function
-
-    Private Function UpdateEcospaceRegion(ByVal iDBID As Integer) As Boolean
-        Dim objReg As cCoreInputOutputBase = Nothing
-        Dim iReg As Integer
-
-        Try
-            ' convert the Database ID into an index
-            iReg = Array.IndexOf(m_EcoSpaceData.RegionDBID, iDBID)
-            ' get the object
-            objReg = Me.m_EcospaceRegions(iReg)
-
-            ' Just pass on the name (RegionName)
-            m_EcoSpaceData.RegionName(iReg) = objReg.Name
-
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".UpdateEcospaceRegion() Error: " & ex.Message)
-            Return False
-        End Try
-        Return True
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Add an <see cref="cEcospaceRegion">Ecospace region</see> to the current
-    ''' <see cref="DataSource">data source</see>.
-    ''' </summary>
-    ''' <param name="strRegionName">Name of region to add.</param>
-    ''' <param name="iDBID">DB id of the new region.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function AddEcospaceRegion(ByVal strRegionName As String, ByRef iDBID As Integer) As Boolean
-        Dim ds As IEcospaceDatasource = Nothing
-        Dim obj As cCoreInputOutputBase = Nothing
-        Dim bSucces As Boolean = True
-
-        ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
-        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
-        If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
-
-        ' Increase batch count
-        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
-
-        ds = DirectCast(DataSource, IEcospaceDatasource)
-        If ds.AppendEcospaceRegion(strRegionName, iDBID) Then
-            ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage(String.Format("Ecospace Region {0} has been added", strRegionName), _
-                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
-        Else
-            bSucces = False
-        End If
-
-        ' Decrease batch count, stating what has changed
-        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
-
-        Return bSucces
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Remove an <see cref="cEcospaceRegion">Ecospace region</see> from the current
-    ''' <see cref="DataSource">data source</see>.
-    ''' </summary>
-    ''' <param name="iDBID">The <see cref="cEcospaceRegion.DBID"/> of the region
-    ''' to remove.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Function RemoveEcospaceRegion(ByVal iDBID As Integer) As Boolean
-        Dim bsucces As Boolean = False
-        Dim ds As IEcospaceDatasource = Nothing
-
-        ' Sanity checks
-        If (Not Me.CanSave(True)) Then Return False
-        If (Me.ActiveEcospaceScenarioIndex <= 0) Then Return False
-        If (Not TypeOf (DataSource) Is IEcospaceDatasource) Then Return False
-
-        ' Not allowed to delete 0 region (if any)
-        If iDBID <= 0 Then Return False
-
-        ' Increase batch count
-        If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
-
-        ds = DirectCast(DataSource, IEcospaceDatasource)
-        bsucces = ds.RemoveEcospaceRegion(iDBID)
-
-        If bsucces Then
-            ' Broadcast update
-            Me.m_publisher.AddMessage(New cMessage("Ecospace region has been removed", _
-                eMessageType.DataAddedOrRemoved, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
-        End If
-
-        ' Decrease batch count, stating what has changed
-        Me.ReleaseBatchLock(eBatchChangeLevelFlags.Ecospace)
-
-        Return bsucces
-    End Function
-
-#End Region ' Regions
 
 #Region " MPAs "
 
@@ -11931,9 +11762,6 @@ Public Class cCore
 
                 Case eDataTypes.EcospaceHabitat
                     If bValidatedOk Then Me.UpdateEcospaceHabitat(idAffected)
-
-                Case eDataTypes.EcospaceRegion
-                    If bValidatedOk Then Me.UpdateEcospaceRegion(idAffected)
 
                 Case eDataTypes.EcospaceMPA
                     If bValidatedOk Then Me.UpdateEcospaceMPA(idAffected)

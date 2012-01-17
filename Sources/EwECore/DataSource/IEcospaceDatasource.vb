@@ -147,29 +147,6 @@ Namespace DataSources
 
 #End Region ' Habitats
 
-#Region " Regions "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Adds an ecospace region to active scenario in the datasource.
-        ''' </summary>
-        ''' <param name="strRegionName">Name to assign to new region.</param>
-        ''' <param name="iDBID">Database ID assigned to the new region.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' -------------------------------------------------------------------
-        Function AppendEcospaceRegion(ByVal strRegionName As String, ByRef iDBID As Integer) As Boolean
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Removes an ecospace region from the active scenario in the datasource.
-        ''' </summary>
-        ''' <param name="iDBID">Database ID of the region to remove.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' -------------------------------------------------------------------
-        Function RemoveEcospaceRegion(ByVal iDBID As Integer) As Boolean
-
-#End Region ' Regions
-
 #Region " MPAs "
 
         ''' -------------------------------------------------------------------

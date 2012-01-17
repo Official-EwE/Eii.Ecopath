@@ -6896,7 +6896,7 @@ Namespace DataSources
                 ' Concoct time series memo
                 For iYear As Integer = 0 To asValues.Length - 1
                     If (iYear > 0) Then sbValues.Append(" ")
-                    sbValues.Append(cStringUtils.FormatSingle((asValues(iYear))))
+                    sbValues.Append(cStringUtils.FormatSingle(asValues(iYear)))
                 Next
                 drow("TimeValues") = sbValues.ToString()
                 writer.AddRow(drow)
@@ -7111,11 +7111,13 @@ Namespace DataSources
                 ecospaceDS.IFDPower = CSng(reader("IFDPower"))
                 ecospaceDS.nSpaceSolverThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nGridSolverThreads = CInt(reader("NumThreads"))
-                stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
+                ecospaceDS.nRegions = CInt(Me.m_db.ReadSafe(reader, "NumRegions", 0))
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
                 ecospaceDS.CapCalType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.Capacity)), eEcospaceCapacityCalType)
+
+                stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
                 Select Case CInt(reader("ModelType"))
                     Case 0
@@ -7148,7 +7150,6 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceMap(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceHabitats(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceMPAs(iScenarioID)
-            bSucces = bSucces And Me.LoadEcospaceRegions(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
@@ -7295,7 +7296,9 @@ Namespace DataSources
                 drow("TotalTime") = ecospaceDS.TotalTime
                 drow("IFDPower") = ecospaceDS.IFDPower
                 drow("NumThreads") = ecospaceDS.nSpaceSolverThreads
+                drow("NumRegions") = ecospaceDS.nRegions
                 drow("NumPacketsMultiplier") = stanzaDS.NPacketsMultiplier
+                drow("NumRegions") = ecospaceDS.nRegions
 
                 drow("ModelType") = 0
                 If ecospaceDS.UseIBM Then drow("ModelType") = 1
@@ -7330,7 +7333,6 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceMap(idm)
             bSucces = bSucces And Me.SaveEcospaceHabitats(idm)
             bSucces = bSucces And Me.SaveEcospaceMPAs(idm)
-            bSucces = bSucces And Me.SaveEcospaceRegions(idm)
             bSucces = bSucces And Me.SaveEcospaceGroups(idm)
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
             bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
@@ -7403,6 +7405,7 @@ Namespace DataSources
                 drow("DepthAMap") = cStringUtils.ArrayToString(aiNewMap)
                 drow("RelPPMap") = cStringUtils.ArrayToString(asNewMap)
                 drow("RelCinMap") = cStringUtils.ArrayToString(asNewMap)
+                drow("RegionMap") = "" ' Region map empty for new scenario
                 drow("CapacityCalType") = eEcospaceCapacityCalType.Capacity
 
                 writer.AddRow(drow)
@@ -7539,6 +7542,7 @@ Namespace DataSources
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.Depth)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.Depth)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RegionMap", "")), ecospaceDS.Region)
 
                 End While
 
@@ -7588,6 +7592,7 @@ Namespace DataSources
                 drow("XVelMap") = cStringUtils.ArrayToString(ecospaceDS.Xvel, ecospaceDS.Depth)
                 drow("YVelMap") = cStringUtils.ArrayToString(ecospaceDS.Yvel, ecospaceDS.Depth)
                 drow("DepthAMap") = cStringUtils.ArrayToString(ecospaceDS.DepthA, ecospaceDS.Depth)
+                drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.Depth)
                 drow.EndEdit()
 
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)
@@ -7887,223 +7892,6 @@ Namespace DataSources
 #End Region ' Modify
 
 #End Region ' Habitats
-
-#Region " Regions "
-
-#Region " Load "
-
-        Private Function LoadEcospaceRegions(ByVal iScenarioID As Integer) As Boolean
-
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim reader As IDataReader = Nothing
-            Dim strMap As String = ""
-            Dim bSucces As Boolean = True
-            Dim i As Integer = 0
-
-            ' Read fields
-            Try
-                ' Allocate space for region data
-                ecospaceDS.NoRegions = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioRegion WHERE ScenarioID={0}", iScenarioID)))
-                ecospaceDS.ReDimRegionVars()
-
-                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioRegion WHERE (ScenarioID={0}) ORDER BY Sequence ASC", iScenarioID))
-                While reader.Read()
-                    i += 1
-                    ecospaceDS.RegionDBID(i) = CInt(reader("RegionID"))
-                    ecospaceDS.RegionName(i) = CStr(reader("RegionName"))
-                    strMap = CStr(Me.m_db.ReadSafe(reader, "RegionMap", ""))
-                    ' Read only water cells for this region index
-                    bSucces = bSucces And cStringUtils.StringToArray(strMap, ecospaceDS.Region, ecospaceDS.Depth, True, i)
-                End While
-                Me.m_db.ReleaseReader(reader)
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace region {1}", ex.Message, i))
-                bSucces = False
-            End Try
-
-            Return bSucces
-
-        End Function
-
-#End Region ' Load
-
-#Region " Save "
-
-        Private Function SaveEcospaceRegions(ByVal idm As cIDMappings) As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim iScenarioIDSrc As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim iScenarioIDDest As Integer = 0
-            Dim iRegID As Integer = 0
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim dt As DataTable = Nothing
-            Dim drow As DataRow = Nothing
-            Dim bSucces As Boolean = True
-            Dim bNewRow As Boolean = True
-            Dim objKeys() As Object = {Nothing, Nothing}
-
-            iScenarioIDDest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
-            objKeys(0) = iScenarioIDDest
-
-            iRegID = CInt(Me.m_db.GetValue("SELECT MAX(RegionID) FROM EcospaceScenarioRegion", 0)) + 1
-
-            Try
-                writer = Me.m_db.GetWriter("EcospaceScenarioRegion")
-                dt = writer.GetDataTable()
-                For iRegion As Integer = 1 To ecospaceDS.NoRegions
-
-                    ' Find existing row
-                    objKeys(1) = idm.GetID(eDataTypes.EcospaceRegion, ecospaceDS.RegionDBID(iRegion))
-                    drow = dt.Rows.Find(objKeys)
-
-                    bNewRow = (iScenarioIDDest <> iScenarioIDSrc) Or (drow Is Nothing)
-
-                    If bNewRow Then
-                        drow = writer.NewRow()
-                        drow("ScenarioID") = iScenarioIDDest
-                        drow("RegionID") = iRegID
-                        idm.Add(eDataTypes.EcospaceRegion, ecospaceDS.RegionDBID(iRegion), iRegID)
-                        iRegID += 1
-                    Else
-                        drow.BeginEdit()
-                    End If
-
-                    drow("RegionName") = ecospaceDS.RegionName(iRegion)
-                    drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.Depth, True, iRegion)
-                    drow("Sequence") = iRegion
-
-                    If bNewRow Then
-                        writer.AddRow(drow)
-                    Else
-                        drow.EndEdit()
-                    End If
-
-                    bSucces = bSucces And Me.DuplicateAuxillaryData(idm, eDataTypes.EcospaceRegion, ecospaceDS.RegionDBID(iRegion))
-
-                Next iRegion
-                Me.m_db.ReleaseWriter(writer)
-
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
-            Return bSucces
-        End Function
-
-#End Region ' Save
-
-#Region " Modify "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Adds an ecospace region to active scenario in the data source.
-        ''' </summary>
-        ''' <param name="strRegionName">Name to assign to new region.</param>
-        ''' <param name="iRegionID">Database ID assigned to the new region.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' <remarks>This call will reload ecospace regions.</remarks>
-        ''' -------------------------------------------------------------------
-        Public Function AppendEcospaceRegion(ByVal strRegionName As String, _
-                                             ByRef iRegionID As Integer) As Boolean _
-                Implements DataSources.IEcospaceDatasource.AppendEcospaceRegion
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-
-            Return Me.AddEcospaceRegion(strRegionName, iScenarioID, iRegionID)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Internal call to actually add an ecospace region to a select
-        ''' scenario in the data source.
-        ''' </summary>
-        ''' <param name="strRegionName">Name to assign to new region.</param>
-        ''' <param name="iRegionID">Database ID assigned to the new region.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' <remarks>
-        ''' <para>This method serves two purposes:</para>
-        ''' <list type="bullet">
-        ''' <item><description>To add a region to the current scenario;</description></item>
-        ''' <item><description>To duplicate a region into a new scenario.</description></item>
-        ''' </list>
-        ''' <para>Note that this call will not reload any data.</para>
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Private Function AddEcospaceRegion(ByVal strRegionName As String, _
-                                           ByVal iScenarioID As Integer, _
-                                           ByRef iRegionID As Integer) As Boolean
-
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim drow As DataRow = Nothing
-            Dim bSucces As Boolean = True
-
-            ' Sanity checks
-            If iScenarioID <= 0 Then
-                Debug.Assert(False, String.Format("Invalid scenario ID {0} specified in AddEcospaceRegion", iScenarioID))
-                Return False
-            End If
-
-            iRegionID = CInt(Me.m_db.GetValue("SELECT MAX(RegionID) FROM EcospaceScenarioRegion", 0)) + 1
-
-            Try
-
-                writer = Me.m_db.GetWriter("EcospaceScenarioRegion")
-
-                drow = writer.NewRow()
-                drow("ScenarioID") = iScenarioID
-                drow("RegionID") = iRegionID
-                drow("RegionName") = strRegionName
-                drow("RegionMap") = ""
-                drow("Sequence") = iRegionID
-                writer.AddRow(drow)
-
-                Me.m_db.ReleaseWriter(writer)
-
-            Catch ex As Exception
-                Console.WriteLine("Error {0} occurred while adding ecospace region {1} ({2}) to scenario {3}", ex.Message, strRegionName, iRegionID, iScenarioID)
-                bSucces = False
-            End Try
-
-            Return bSucces
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Removes an ecospace region from the active scenario in the data source.
-        ''' </summary>
-        ''' <param name="iRegionID">Database ID of the region to remove.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' <remarks>Note that there is no need for an internal DeleteEcospaceRegion
-        ''' method; </remarks>
-        ''' -------------------------------------------------------------------
-        Public Function RemoveEcospaceRegion(ByVal iRegionID As Integer) As Boolean _
-                 Implements DataSources.IEcospaceDatasource.RemoveEcospaceRegion
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim bSucces As Boolean = True
-
-            Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioRegion WHERE (ScenarioID={0}) AND (RegionID={1})", iScenarioID, iRegionID))
-                '' This could have far-fetched consequences throughout the scenario; the entire scenario should be reloaded.
-                'bSucces = Me.LoadEcospaceScenario(iScenarioID)
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while removing Ecospace regionID {1}", ex.Message, iRegionID))
-                bSucces = False
-            End Try
-            Return bSucces
-
-        End Function
-
-#End Region ' Modify
-
-#End Region ' Regions
 
 #Region " Groups "
 

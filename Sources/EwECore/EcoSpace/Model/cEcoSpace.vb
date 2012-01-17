@@ -1625,7 +1625,7 @@ Public Class cEcoSpace
 
             If m_tracerData.EcoSpaceConSimOn Then
                 m_Data.RedimConSimVars()
-                m_tracerData.redimForEcospaceRun(m_Data.NoRegions, m_Data.NGroups, m_Data.nTimeSteps)
+                m_tracerData.redimForEcospaceRun(m_Data.nRegions, m_Data.NGroups, m_Data.nTimeSteps)
             End If
 
             m_SimData.FirstTime = True
@@ -4279,7 +4279,7 @@ exitline:
                             m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp, iCumTime) += sum
 
                             'Next line is for adding up catch by region etc
-                            If m_Data.NoRegions > 0 Then
+                            If m_Data.nRegions > 0 Then
                                 m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += sum
                             End If
 
@@ -4437,7 +4437,7 @@ exitline:
             If m_tracerData.EcoSpaceConSimOn Then
 
                 'average contamintant by region for each time step
-                For irgn = 0 To m_Data.NoRegions
+                For irgn = 0 To m_Data.nRegions
 
                     Dim nInRgn As Integer = m_Data.nCellsInRegion(irgn)
                     If nInRgn = 0 Then nInRgn = 1 'there can be regions with zero cells(no area) this avoids a /0 

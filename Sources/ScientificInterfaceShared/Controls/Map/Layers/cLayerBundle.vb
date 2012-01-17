@@ -41,11 +41,13 @@ Namespace Controls.Map.Layers
         Public Property iLayer As Integer
             Get
                 Dim i As Integer = Me.m_iLayer
-                If (Me.m_cc = eCoreCounterTypes.nGroups) Then i += 1
+                ' Fleets include the 0 'All' fleet
+                If (Me.m_cc <> eCoreCounterTypes.nFleets) Then i += 1
                 Return i
             End Get
             Set(value As Integer)
-                If (Me.m_cc = eCoreCounterTypes.nGroups) Then value -= 1
+                ' Fleets include the 0 'All' fleet
+                If (Me.m_cc <> eCoreCounterTypes.nFleets) Then value -= 1
                 Me.m_iLayer = Math.Max(0, value)
             End Set
         End Property

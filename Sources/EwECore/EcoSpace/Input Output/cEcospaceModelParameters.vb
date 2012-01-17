@@ -30,6 +30,11 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' Number of regions
+            meta = New cVariableMetaData(0, 20000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(1, eVarNameFlags.EcospaceRegionNumber, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' PredictEffort
             meta = New cVariableMetaData()
             val = New cValue(1, eVarNameFlags.PredictEffort, eStatusFlags.Null, eValueTypes.Bool, _
@@ -234,6 +239,24 @@ Public Class cEcospaceModelParameters
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.NumTimeStepsPerYear, value)
+        End Set
+
+    End Property
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the number of regions for this scenario.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property nRegions() As Integer
+
+        Get
+            Return CInt(GetVariable(eVarNameFlags.EcospaceRegionNumber))
+        End Get
+
+        Set(ByVal value As Integer)
+            SetVariable(eVarNameFlags.EcospaceRegionNumber, value)
         End Set
 
     End Property

@@ -227,7 +227,7 @@
     <Compile Include="Ecopath\Input\frmDietComp.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\cLayerFactoryScInt.vb" />
+    <Compile Include="Ecospace\Assets\cLayerFactoryInternal.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.designer.vb">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>
     </Compile>
@@ -1076,10 +1076,6 @@
       <DependentUpon>dlgImportLayerData.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgDefineRegions.resx">
-      <DependentUpon>dlgDefineRegions.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Other\Import\dlgImportDatabase.resx">
       <DependentUpon>dlgImportDatabase.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1449,15 +1445,6 @@
     <Compile Include="Ecospace\Assets\ImportExport\dlgImportLayerData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
-      <DependentUpon>dlgDefineRegions.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineRegions.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecospace\Input\gridDefineRegions.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Ecospace\Input\gridDefineInputMaps.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -1800,10 +1787,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EcoBio\EcoBio.vbproj">
-      <Project>{8AD5CD91-87C8-4886-B9F0-17FAD64D6277}</Project>
-      <Name>EcoBio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>

@@ -115,7 +115,7 @@ Public Class cEcospaceTimestep
             ReDim m_biomass(Me.m_simData.nGroups)
             ReDim m_relativebiomass(Me.m_simData.nGroups)
             ReDim m_ConMax(Me.m_simData.nGroups)
-            ReDim m_biomassByRegion(Me.m_simData.nGroups, Me.m_spaceData.NoRegions)
+            ReDim m_biomassByRegion(Me.m_simData.nGroups, Me.m_spaceData.nRegions)
             'ReDim m_IBMMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol, Me.m_simData.nGroups)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)

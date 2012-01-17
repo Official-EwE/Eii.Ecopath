@@ -375,7 +375,6 @@ Public Class frmEcotracerOutput
 
             'get the sort order for the groups list box
             Me.SortGroupList()
-            Me.UpdateRegions()
             Me.UpdateControls()
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -473,23 +472,6 @@ Public Class frmEcotracerOutput
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
-
-    End Sub
-
-    Private Sub UpdateRegions()
-
-        Me.m_cmbRegions.Items.Clear()
-
-        If Me.m_DisplayHelper.EnabledForSpace Then
-            'only populate the region list if space is enabled
-            Me.m_cmbRegions.Items.Add(SharedResources.HEADER_REGIONS_UNDEFINED)
-            For irgn As Integer = 1 To Me.Core.nRegions
-                Me.m_cmbRegions.Items.Add(New cCoreInputOutputControlItem(Me.Core.EcospaceRegions(irgn)))
-            Next
-            Me.m_cmbRegions.Items.Add(SharedResources.HEADER_REGIONS_ALL)
-
-            Me.m_cmbRegions.SelectedIndex = Me.Core.nRegions + 1
-        End If
 
     End Sub
 
@@ -1100,8 +1082,7 @@ Public Class frmEcotracerOutput
             End If
 
             If iRegion > 0 Then
-                strRegionName = Me.Core.EcospaceRegions(iRegion).Name
-                strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strFilter, strRegionName)
+                strLabel = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strFilter, "Region")
             Else
                 strLabel = strFilter
             End If

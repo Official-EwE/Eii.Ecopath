@@ -140,7 +140,6 @@ Public Class AppLauncher
     Private WithEvents m_cmdExportTimeSeries As cCommand = Nothing
     Private WithEvents m_cmdEditBasemap As cCommand = Nothing
     Private WithEvents m_cmdEditHabitats As cCommand = Nothing
-    Private WithEvents m_cmdEditRegions As cCommand = Nothing
     Private WithEvents m_cmdEditMPAs As cCommand = Nothing
     Private WithEvents m_cmdDefineImportanceMaps As cCommand = Nothing
     Private WithEvents m_cmdDefineInputLayers As cCommand = Nothing
@@ -444,9 +443,6 @@ Public Class AppLauncher
 
         Me.m_cmdEditHabitats = New cCommand(cmdh, "EditHabitats")
         Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceDefineHabitats)
-
-        Me.m_cmdEditRegions = New cCommand(cmdh, "EditRegions")
-        Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceDefineRegions)
 
         Me.m_cmdEditMPAs = New cCommand(cmdh, "EditMPAs")
         Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceDefineMPAs)
@@ -3427,21 +3423,6 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit habitats dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; invokes the Ecospace edit regions dialog.
-    ''' </summary>
-    Private Sub OnEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
-        Dim dlg As New dlgEditRegions(Me.UIContext)
-        dlg.ShowDialog(Me)
-    End Sub
-
-    ''' <summary>
-    ''' Command handler; handles access to the Ecospace edit regions dialog.
-    ''' </summary>
-    Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 

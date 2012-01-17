@@ -48,9 +48,10 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiEcospaceEditMap = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineHabitats = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineMPAs = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiEcospaceDefineRegions = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineImportanceMaps = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceInputMaps = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsmiEcospaceDataConnections = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
@@ -118,8 +119,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
-        Me.m_tsmiEcospaceDataConnections = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -206,7 +205,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuEcospace
         '
-        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineRegions, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceDataConnections})
+        MenuEcospace.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiEcospaceNew, Me.m_tsmiEcospaceLoad, m_tssEcospace1, Me.m_tsmiEcospaceSave, Me.m_tsmiEcospaceSaveAs, Me.m_tsmiEcospaceDelete, m_tssEcospace2, Me.m_tsmiEcospaceImportLayers, Me.m_tsmiEcospaceExportLayers, m_tssEcospace3, Me.m_tsmiEcospaceEditMap, Me.m_tsmiEcospaceDefineHabitats, Me.m_tsmiEcospaceDefineMPAs, Me.m_tsmiEcospaceDefineImportanceMaps, Me.m_tsmiEcospaceInputMaps, Me.m_tssEcospace4, Me.m_tsmiEcospaceDataConnections})
         MenuEcospace.Name = "MenuEcospace"
         resources.ApplyResources(MenuEcospace, "MenuEcospace")
         '
@@ -260,11 +259,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiEcospaceDefineMPAs.Name = "m_tsmiEcospaceDefineMPAs"
         resources.ApplyResources(Me.m_tsmiEcospaceDefineMPAs, "m_tsmiEcospaceDefineMPAs")
         '
-        'm_tsmiEcospaceDefineRegions
-        '
-        Me.m_tsmiEcospaceDefineRegions.Name = "m_tsmiEcospaceDefineRegions"
-        resources.ApplyResources(Me.m_tsmiEcospaceDefineRegions, "m_tsmiEcospaceDefineRegions")
-        '
         'm_tsmiEcospaceDefineImportanceMaps
         '
         Me.m_tsmiEcospaceDefineImportanceMaps.Name = "m_tsmiEcospaceDefineImportanceMaps"
@@ -274,6 +268,16 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         Me.m_tsmiEcospaceInputMaps.Name = "m_tsmiEcospaceInputMaps"
         resources.ApplyResources(Me.m_tsmiEcospaceInputMaps, "m_tsmiEcospaceInputMaps")
+        '
+        'm_tssEcospace4
+        '
+        Me.m_tssEcospace4.Name = "m_tssEcospace4"
+        resources.ApplyResources(Me.m_tssEcospace4, "m_tssEcospace4")
+        '
+        'm_tsmiEcospaceDataConnections
+        '
+        Me.m_tsmiEcospaceDataConnections.Name = "m_tsmiEcospaceDataConnections"
+        resources.ApplyResources(Me.m_tsmiEcospaceDataConnections, "m_tsmiEcospaceDataConnections")
         '
         'm_tssModel1
         '
@@ -641,16 +645,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
         '
-        'm_tsmiEcospaceDataConnections
-        '
-        Me.m_tsmiEcospaceDataConnections.Name = "m_tsmiEcospaceDataConnections"
-        resources.ApplyResources(Me.m_tsmiEcospaceDataConnections, "m_tsmiEcospaceDataConnections")
-        '
-        'm_tssEcospace4
-        '
-        Me.m_tssEcospace4.Name = "m_tssEcospace4"
-        resources.ApplyResources(Me.m_tssEcospace4, "m_tssEcospace4")
-        '
         'AppLauncher
         '
         Me.AllowDrop = True
@@ -695,7 +689,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiEcospaceNew As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDefineHabitats As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDefineMPAs As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiEcospaceDefineRegions As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceEditMap As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiTimeSeriesLoad As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuEcotracer As System.Windows.Forms.ToolStripMenuItem

@@ -288,9 +288,6 @@ Namespace Database
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEGROUPS)
                 Me.ImportEcospaceGroups()
 
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEREGIONS)
-                Me.ImportEcospaceRegions()
-
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEMPAS)
                 Me.ImportEcospaceMPA()
 
@@ -3226,41 +3223,6 @@ Namespace Database
 
         End Sub
 
-        Private Sub ImportEcospaceRegions()
-
-            Dim reader As IDataReader = Nothing
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim drow As DataRow = Nothing
-            Dim iScenarioID As Integer = 1
-            Dim iRegionID As Integer = 1
-
-            reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace regions] WHERE modelName='{0}'", Me.m_strModelName))
-            If Object.ReferenceEquals(reader, Nothing) Then Return
-
-            writer = Me.m_dbEwE6.GetWriter("EcospaceScenarioRegion")
-
-            While reader.Read()
-
-                iScenarioID = Me.HashKey(eDataTypes.EcoSpaceScenario, CStr(reader("scenario")))
-
-                drow = writer.NewRow()
-                drow("ScenarioID") = iScenarioID
-                drow("RegionID") = iRegionID
-                drow("Sequence") = reader("RegionNo")
-                drow("RegionName") = reader("RegionText")
-                writer.AddRow(drow)
-
-                ' Remember region ID mapping
-                Me.HashKey(eDataTypes.EcospaceRegion, CStr(reader("RegionNo")), eDataTypes.EcoSpaceScenario, iScenarioID) = iRegionID
-
-                iRegionID += 1
-            End While
-
-            Me.m_dbEwE5.ReleaseReader(reader)
-            Me.m_dbEwE6.ReleaseWriter(writer)
-
-        End Sub
-
         Private Sub ImportEcospaceMPA()
 
             Dim reader As IDataReader = Nothing
@@ -3651,6 +3613,7 @@ Namespace Database
             Dim iCell As Integer = 0
             Dim nRows As Integer = 0
             Dim nCols As Integer = 1
+            Dim iNumRegions As Integer = 0
 
             reader = Me.m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace] WHERE modelName='{0}'", Me.m_strModelName))
             If Object.ReferenceEquals(reader, Nothing) Then Return
@@ -3702,6 +3665,7 @@ Namespace Database
 
                         If astrRegion.Length > iCell Then
                             dataRegion(iRow, iCol) = cStringUtils.ConvertToInteger(astrRegion(iCell), 0)
+                            iNumRegions = Math.Max(iNumRegions, dataRegion(iRow, iCol))
                         End If
 
                         If astrMPA.Length > iCell Then
@@ -3730,6 +3694,8 @@ Namespace Database
                 drow("XVelMap") = ""
                 drow("YVelMap") = ""
                 drow("DepthAMap") = ""
+                drow("RegionMap") = cStringUtils.ArrayToString(dataRegion, dataDepth)
+                drow("NumRegions") = iNumRegions
                 drow.EndEdit()
 
                 Me.m_dicDepthMaps(iScenarioID) = dataDepth
@@ -3765,23 +3731,6 @@ Namespace Database
                     drow = dtSub.Rows.Find(keys)
                     drow.BeginEdit()
                     drow("MPAMap") = cStringUtils.ArrayToString(dataMPA, dataDepth, True, iCell)
-                    drow.EndEdit()
-                End While
-                dtSub = Nothing
-                Me.m_dbEwE5.ReleaseReader(readerSub)
-                Me.m_dbEwE6.ReleaseWriter(writerSub)
-
-                ' Regions
-                readerSub = Me.m_dbEwE5.GetReader(String.Format("SELECT RegionNo FROM [EcoSpace regions] WHERE modelName='{0}' AND Scenario='{1}'", Me.m_strModelName, strScenario))
-                writerSub = Me.m_dbEwE6.GetWriter("EcospaceScenarioRegion")
-                dtSub = writerSub.GetDataTable()
-                While readerSub.Read()
-                    iCell = CInt(readerSub("RegionNo"))
-                    iKey = Me.HashKey(eDataTypes.EcospaceRegion, CStr(iCell), eDataTypes.EcoSpaceScenario, iScenarioID)
-                    keys(1) = iKey
-                    drow = dtSub.Rows.Find(keys)
-                    drow.BeginEdit()
-                    drow("RegionMap") = cStringUtils.ArrayToString(dataMPA, dataDepth, True, iCell)
                     drow.EndEdit()
                 End While
                 dtSub = Nothing

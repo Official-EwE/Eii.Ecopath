@@ -1481,6 +1481,9 @@ Namespace Core
         IsFished
         ''' <summary>Use relative or absolute time in Ecospace when accessing remote datasets</summary>
         UseRelativeTime
+        ''' <summary>No. regions in Ecospace</summary>
+        ''' <remarks>JS 16Jan12: No. regions is now an input, no longer implicit.</remarks>
+        EcospaceRegionNumber
 
     End Enum
 
@@ -1583,10 +1586,10 @@ Namespace Core
         ''' </summary>
         EcospaceHabitat = 15
 
-        ''' <summary>
-        ''' Data belongs to an Ecospace region.
-        ''' </summary>
-        EcospaceRegion = 16
+        ' ''' <summary>
+        ' ''' Data belongs to an Ecospace region.
+        ' ''' </summary>
+        'EcospaceRegion = 16
 
         ''' <summary>
         ''' Data belongs to an Ecospace group.

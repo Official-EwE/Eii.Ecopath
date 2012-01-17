@@ -1,0 +1,124 @@
+﻿Option Strict On
+Imports EwECore
+
+Namespace Controls.Map.Layers
+
+    Public Class ucLayerEditorRegion
+
+#Region " Overrides "
+
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+            Dim iNumRegions As Integer = Me.UIContext.Core.nRegions
+
+            Me.Editor.CellValueMax = iNumRegions
+            Me.m_nudNoRegions.Value = iNumRegions
+            Me.m_nudRegion.Maximum = iNumRegions
+
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim iNumH2O As Integer = bm.InRow * bm.InCol
+            Dim iMinCluster As Integer = 1
+            Dim iMaxCluster As Integer = Math.Max(bm.InRow, bm.InCol)
+
+            ' Try to set to no more than 500 cells
+            Dim bFound As Boolean = (iNumH2O < 500)
+            While Not bFound
+                iMinCluster += 1
+                bFound = ((iNumH2O / (iMinCluster * iMinCluster)) < 500)
+            End While
+
+            Me.m_nudClusterSize.Value = iMinCluster
+            Me.m_nudClusterSize.Minimum = iMinCluster
+            Me.m_nudClusterSize.Maximum = iMaxCluster
+
+        End Sub
+
+        Public Overrides Sub UpdateContent(editor As cLayerEditor)
+            MyBase.UpdateContent(editor)
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim iVal As Integer
+
+            ' Sanity check
+            If (Me.m_nudNoRegions Is Nothing) Then Return
+            If (Me.m_nudRegion Is Nothing) Then Return
+
+            ' Set control value
+            iVal = CInt(editor.CellValue)
+
+            Me.m_nudRegion.Value = iVal
+            Me.m_nudRegion.Maximum = CDec(editor.CellValueMax)
+
+        End Sub
+
+#End Region ' Overrides
+
+#Region " Event handlers "
+
+        Private Sub OnCreateFromCell(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnFromCell.Click
+            If (TypeOf Me.Editor Is cLayerEditorRegion) Then
+                Try
+                    DirectCast(Me.Editor, cLayerEditorRegion).CreateCellRegions(CInt(Me.m_nudClusterSize.Value))
+                Catch ex As Exception
+
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnCreateFromMPA(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnFromMPAs.Click
+            If (TypeOf Me.Editor Is cLayerEditorRegion) Then
+                Try
+                    DirectCast(Me.Editor, cLayerEditorRegion).CreateMPARegions()
+                Catch ex As Exception
+
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnCreateFromHabitat(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnFromHabitats.Click
+            If (TypeOf Me.Editor Is cLayerEditorRegion) Then
+                Try
+                    DirectCast(Me.Editor, cLayerEditorRegion).CreateHabitatRegions()
+                Catch ex As Exception
+
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnNumRegionsChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_nudNoRegions.ValueChanged
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+            parms.nRegions = CInt(Me.m_nudNoRegions.Value)
+
+            Me.Editor.CellValueMax = parms.nRegions
+            'Me.m_nudRegion.Value = Math.Min(Me.m_nudRegion.Value, parms.nRegions)
+            'Me.m_nudRegion.Maximum = parms.nRegions
+            Me.UpdateContent(Me.Editor)
+
+        End Sub
+
+        Private Sub OnDrawRegionChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_nudRegion.ValueChanged
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Me.Editor.CellValue = CInt(Me.m_nudRegion.Value)
+
+        End Sub
+
+#End Region ' Event handlers
+
+        ' ToDo: move to core (want anybody to be able to do this
+
+     
+    End Class
+
+End Namespace

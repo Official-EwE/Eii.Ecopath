@@ -235,7 +235,7 @@ Public Class cEcospaceDataStructures
     Public EffPower() As Single
 
     Public BBase() As Single
-    Public NoRegions As Integer
+    Public nRegions As Integer
 
 
     ''' <summary>Number of Importance layers</summary>
@@ -637,7 +637,7 @@ Public Class cEcospaceDataStructures
         Me.nFleets = 0
         Me.TotalTime = 0
         Me.TotalTime = 0
-        Me.NoRegions = 0
+        Me.nRegions = 0
         Me.InCol = 0
         Me.InRow = 0
         Me.nvartot = 0
@@ -682,9 +682,6 @@ Public Class cEcospaceDataStructures
             MigConcRow = Nothing
             MigConcCol = Nothing
             barrierAvoidanceWeight = Nothing '
-
-            RegionDBID = Nothing '(NoRegions)
-            RegionName = Nothing '(NoRegions)
 
             MPADBID = Nothing '(Me.MPAno)
             MPAname = Nothing '(Me.MPAno)
@@ -1096,11 +1093,6 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
-    Public Sub ReDimRegionVars()
-        ReDim Me.RegionDBID(NoRegions)
-        ReDim Me.RegionName(NoRegions)
-    End Sub
-
     ''' <summary>
     ''' Allocate memory for an array with 4 dimensions
     ''' </summary>
@@ -1377,8 +1369,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(ResultsByFleet, N_RESULTS_FLEETS, nFleets, NumberOfTimeSteps)
             Me.allocate(ResultsByFleetGroup, N_RESULTS_FLEETGROUPS, nFleets, NGroups, NumberOfTimeSteps)
 
-            Me.allocate(ResultsRegionGroup, NoRegions, NGroups, NumberOfTimeSteps)
-            Me.allocate(ResultsCatchRegionGearGroup, NoRegions, nFleets, NGroups, NumberOfTimeSteps)
+            Me.allocate(ResultsRegionGroup, nRegions, NGroups, NumberOfTimeSteps)
+            Me.allocate(ResultsCatchRegionGearGroup, nRegions, nFleets, NGroups, NumberOfTimeSteps)
 
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".redimTimeStepResults() Out of memory: " & ex.Message)
@@ -1420,12 +1412,12 @@ Public Class cEcospaceDataStructures
         Debug.Assert(False, "Ecospace spatial reference data has not been implemented yet!")
 
         Dim ttYears As Integer = CInt(TotalTime)
-        ReDim SpaceBiomassByRegion(ttYears, NGroups, NoRegions)
-        ReDim SpaceBiomassByRegionCount(ttYears, NGroups, NoRegions)
-        ReDim SpaceCatchByRegion(ttYears, NGroups, NoRegions)
-        ReDim SpaceCatchByRegionCount(ttYears, NGroups, NoRegions)
-        ReDim SpaceEffortByRegionFleet(ttYears, nFleets, NoRegions)
-        ReDim SpaceEffortByRegionFleetCount(ttYears, nFleets, NoRegions)
+        ReDim SpaceBiomassByRegion(ttYears, NGroups, nRegions)
+        ReDim SpaceBiomassByRegionCount(ttYears, NGroups, nRegions)
+        ReDim SpaceCatchByRegion(ttYears, NGroups, nRegions)
+        ReDim SpaceCatchByRegionCount(ttYears, NGroups, nRegions)
+        ReDim SpaceEffortByRegionFleet(ttYears, nFleets, nRegions)
+        ReDim SpaceEffortByRegionFleetCount(ttYears, nFleets, nRegions)
 
     End Sub
 
@@ -1692,7 +1684,7 @@ Public Class cEcospaceDataStructures
                 Next iflt
             Next ivar
 
-            For irgn = 0 To Me.NoRegions
+            For irgn = 0 To Me.nRegions
                 ncells = Me.nCellsInRegion(irgn)
                 If ncells = 0 Then ncells = 1
                 For igrp = 1 To Me.NGroups
@@ -1702,7 +1694,7 @@ Public Class cEcospaceDataStructures
                 Next igrp
             Next irgn
 
-            For irgn = 0 To Me.NoRegions
+            For irgn = 0 To Me.nRegions
                 ncells = Me.nCellsInRegion(irgn)
                 If ncells = 0 Then ncells = 1
                 For iflt = 0 To Me.nFleets

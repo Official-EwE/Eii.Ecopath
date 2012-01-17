@@ -115,17 +115,14 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerRegion
 
-                    ' This is screwed-up: one key (and one layer) for all regions
                     key = New cValueID(eDataTypes.EcospaceLayerRegion, bmd.DBID, eVarNameFlags.Name)
                     ad = core.AuxillaryData(key)
 
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
-                    editor = New cLayerEditorRange(GetType(ucLayerEditorRegion))
-                    editor.CellValueMax = core.nRegions
-                    editor.IsEditable = (core.nRegions > 0)
-                    layer = New cLayer(uic, bmd.LayerRegion, renderer, editor, bmd, eVarNameFlags.Name)
+                    editor = New cLayerEditorRegion()
+                    layer = New cLayer(uic, bmd.LayerRegion, renderer, editor)
                     lLayers.Add(layer)
 
                 Case eVarNameFlags.LayerMPA

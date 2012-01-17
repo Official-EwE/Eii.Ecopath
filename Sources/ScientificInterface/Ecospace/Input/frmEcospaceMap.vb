@@ -36,7 +36,6 @@ Namespace Ecospace.Basemap
 
         Private m_cmdEditBasemap As cCommand = Nothing
         Private m_cmdEditHabitats As cCommand = Nothing
-        Private m_cmdEditRegions As cCommand = Nothing
         Private m_cmdEditMPAs As cCommand = Nothing
 
 #End Region ' Private vars
@@ -106,13 +105,6 @@ Namespace Ecospace.Basemap
                 AddHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
 
-            Me.m_cmdEditRegions = cmdh.GetCommand("EditRegions")
-            If (Not Object.ReferenceEquals(Me.m_cmdEditRegions, Nothing)) Then
-                Me.m_cmdEditRegions.AddControl(Me.m_tsbDefineRegion)
-                AddHandler Me.m_cmdEditRegions.OnPreInvoke, AddressOf OnPreIvokeEditcommand
-                AddHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
-            End If
-
             ' Initialize layers from core data
             Me.LoadCoreValuesToBasemap()
 
@@ -152,17 +144,10 @@ Namespace Ecospace.Basemap
             End If
 
             If (Not Object.ReferenceEquals(Me.m_cmdEditMPAs, Nothing)) Then
-                Me.m_cmdEditMPAs.RemoveControl(Me.m_tsbDefineRegion)
+                Me.m_cmdEditMPAs.RemoveControl(Me.m_tsbDefineMPA)
                 RemoveHandler Me.m_cmdEditMPAs.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 RemoveHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
                 Me.m_cmdEditMPAs = Nothing
-            End If
-
-            If (Not Object.ReferenceEquals(Me.m_cmdEditRegions, Nothing)) Then
-                Me.m_cmdEditRegions.RemoveControl(Me.m_tsbDefineRegion)
-                RemoveHandler Me.m_cmdEditRegions.OnPreInvoke, AddressOf OnPreIvokeEditcommand
-                RemoveHandler Me.m_cmdEditRegions.OnPostInvoke, AddressOf OnPostIvokeEditcommand
-                Me.m_cmdEditRegions = Nothing
             End If
 
             MyBase.OnFormClosed(e)
