@@ -48,8 +48,7 @@ Namespace SpatialData
 
         Public Sub Dispose() Implements IDisposable.Dispose
             If (Me.m_core IsNot Nothing) Then
-                Me.m_dtAdapters.Clear()
-                Me.m_dtAdapters = Nothing
+                Me.Clear()
                 Me.m_core = Nothing
             End If
             GC.SuppressFinalize(Me)
@@ -57,16 +56,36 @@ Namespace SpatialData
 
 #End Region ' Construction/ destruction
 
-        Public Sub Load()
-            ' Spatial data adapters are hard-coded. This should perhaps change, discuss w Joe B
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, 1))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, Me.m_core.GetCoreCounter(eCoreCounterTypes.nGroups)))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, Me.m_core.GetCoreCounter(eCoreCounterTypes.nEnvironmentalLayers)))
+        Public Sub CreateAdapters()
+
+            Me.Clear()
+
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, eCoreCounterTypes.NotSet))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalLayers))
+
         End Sub
 
         Public Sub Clear()
             Me.m_dtAdapters.Clear()
         End Sub
+
+#Region " Generic information "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="eVarNameFlags">variables</see> for which adapters are defined.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Variables As eVarNameFlags()
+            Get
+                Dim lVars As New List(Of eVarNameFlags)
+                lVars.AddRange(Me.m_dtAdapters.Keys)
+                Return lVars.ToArray
+            End Get
+        End Property
+
+#End Region ' Generic information
 
 #Region " Adapters "
 
@@ -97,7 +116,7 @@ Namespace SpatialData
 
         Private Sub AddAdapter(adapter As cSpatialDataAdapter)
             Me.m_dtAdapters(adapter.VarName) = adapter
-            Me.m_core.m_EcoSpaceData.DataAdapter(adapter.VarName) = adapter
+            Me.m_core.m_SpatialData.DataAdapters(adapter.VarName) = adapter
         End Sub
 
 #End Region ' Adapters

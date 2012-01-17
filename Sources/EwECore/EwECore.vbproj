@@ -246,6 +246,7 @@
     <Compile Include="Shapes\TimeSeries\cTimeSeries.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataAdapter.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataConnectionManager.vb" />
+    <Compile Include="SpatialTemporal\cSpatialDataStructures.vb" />
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Taxon\cTaxonSearchData.vb" />
     <Compile Include="Validators\cValidatorBase.vb" />

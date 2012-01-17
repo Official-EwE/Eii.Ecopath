@@ -8,6 +8,7 @@ Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
+Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -7074,6 +7075,7 @@ Namespace DataSources
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+            Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
@@ -7089,6 +7091,7 @@ Namespace DataSources
             ' SetDefaults properly redimensions the ecospaceDS group variables, which
             ' may wreck havoc if the implementation of SetDefaults were to change.
             ecospaceDS.SetDefaults()
+            spatialDS.SetDefaults()
 
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
             Try

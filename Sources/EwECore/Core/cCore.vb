@@ -20,6 +20,7 @@ Imports EwECore.ExternalData
 Imports EwEPlugin.Data
 Imports EwECore.Ecospace.Advection
 Imports EwEUtils.SpatialData
+Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -142,6 +143,7 @@ Public Class cCore
     Friend m_tracerData As cContaminantTracerDataStructures = Nothing
 
     Private m_spatialdataconnectionManager As SpatialData.cSpatialDataConnectionManager = Nothing
+    Friend m_SpatialData As cSpatialDataStructures = Nothing
 
     ''' <summary>
     ''' List of all multi threaded models/processes <see cref="IThreadedProcess">IThreadedProcess</see> that the core can run.
@@ -596,6 +598,7 @@ Public Class cCore
         Me.m_EcoPathData = New cEcopathDataStructures(Me.Messages)
         Me.m_EcoSimData = New cEcosimDatastructures
         Me.m_EcoSpaceData = New cEcospaceDataStructures(Me.Messages)
+        Me.m_SpatialData = New cSpatialDataStructures()
         Me.m_Stanza = New cStanzaDatastructures
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
@@ -7943,6 +7946,7 @@ Public Class cCore
         m_Ecospace.EcoSim = Me.m_EcoSim
         m_Ecospace.EcoSimData = Me.m_EcoSimData
         m_Ecospace.ContaiminantTracerData = m_tracerData
+        m_Ecospace.SpatialData = m_SpatialData
 
         'sub in core to call at each time step
         m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
@@ -7958,6 +7962,8 @@ Public Class cCore
 
         m_mapInteractionManager = New cMapResponseInteractionManager(Me)
         m_mapInteractionManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
+
+        m_spatialdataconnectionManager.CreateAdapters()
 
         Return True
 
@@ -8798,7 +8804,6 @@ Public Class cCore
             InitEcospaceOutputs()
             InitEcotracerOutputs()
 
-            Me.SpatialDataConnectionManager.Load()
             bSuccess = bSuccess And Me.CapacitMapInteractionManager.Load()
 
             'For debugging add the RelCin Layer to the Capacity maps
@@ -8843,8 +8848,6 @@ Public Class cCore
 
             'Me.m_EcoSpaceScenarios.Clear()
             'Me.m_EcoPathData.NumEcospaceScenarios = 0
-
-            Me.SpatialDataConnectionManager.Clear()
 
             Me.m_EcoSpaceFleets.Clear()
             Me.m_EcospaceFleetOutputs.Clear()

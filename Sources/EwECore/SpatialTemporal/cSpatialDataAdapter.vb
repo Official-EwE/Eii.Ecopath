@@ -15,49 +15,77 @@ Namespace SpatialData
     Public Class cSpatialDataAdapter
         Inherits cCoreInputOutputBase
 
+#Region " Private vars "
+
         ''' <summary>Converter for each layer.</summary>
         Private m_converters() As ISpatialDataConverter
         ''' <summary>Dataset for each layer.</summary>
         Private m_datasets() As ISpatialDataSet
         ''' <summary>Ecospace variable to operate onto.</summary>
         Private m_varName As eVarNameFlags = Nothing
+        ''' <summary>Core counter that this adapter operates onto.</summary>
+        Private m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
         ''' <summary>Flag stating wether dataset date and core data have to match</summary>
         Private m_bSyncDate As Boolean = False
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, iNumItems As Integer)
+#End Region ' Private vars
+
+#Region " Constructor "
+
+        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, cc As eCoreCounterTypes)
 
             MyBase.New(core)
 
             Me.m_dataType = eDataTypes.SpatialDataSource
             Me.m_coreComponent = eCoreComponentType.EcoSpace
+            Me.m_coreCounter = cc
             Me.m_varName = varName
 
             Me.DBID = -1
-
-            ReDim Me.m_converters(iNumItems)
-            ReDim Me.m_datasets(iNumItems)
-
-            Me.AllowValidation = False
-
             Me.AllowValidation = True
         End Sub
 
+#End Region ' Constructor
+
 #Region " Basic bits "
 
-        Public Overridable ReadOnly Property IsConnected(iIndex As Integer) As Boolean
-            Get
-                Dim cv As ISpatialDataConverter = Me.Converter(iIndex)
-                Dim ds As ISpatialDataSet = Me.Dataset(iIndex)
+        Friend Sub SetDefaults()
+            Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
+            ReDim Me.m_converters(iNumItems)
+            ReDim Me.m_datasets(iNumItems)
+        End Sub
 
-                ' ToDo: check if both converter and dataset are configured?
-                Return (cv IsNot Nothing) And (ds IsNot Nothing)
-            End Get
-        End Property
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the number of layers for this adapter.
+        ''' </summary>
+        ''' <returns>The number of layers for this adapter.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Length() As Integer
+            Return Me.m_converters.Length
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return whether a layer is connected to external data.
+        ''' </summary>
+        ''' <param name="iIndex">The one-based index of the layer to query, or
+        ''' <see cref="cCore.NULL_VALUE"/> if irrelevant.</param>
+        ''' -------------------------------------------------------------------
+        Public Function IsConnected(iIndex As Integer) As Boolean
+
+            Dim cv As ISpatialDataConverter = Me.Converter(iIndex)
+            Dim ds As ISpatialDataSet = Me.Dataset(iIndex)
+
+            ' ToDo: check if both converter and dataset are configured?
+            Return (cv IsNot Nothing) And (ds IsNot Nothing)
+
+        End Function
 
         Public Property Converter(iIndex As Integer) As ISpatialDataConverter
             Get
-                If (iIndex < 0) Or (iIndex >= Me.m_converters.Length) Then Return Nothing
-                Return Me.m_converters(iIndex)
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Return Me.m_converters(Math.Max(0, iIndex))
             End Get
             Set(ByVal value As ISpatialDataConverter)
                 If (iIndex < 0) Or (iIndex >= Me.m_converters.Length) Then Return
@@ -166,7 +194,7 @@ Namespace SpatialData
 
         End Function
 
-#End Region ' ISpatialDataAdapter implementation
+#End Region ' Basic bits
 
 #Region " Translations "
 
@@ -183,6 +211,7 @@ Namespace SpatialData
             ' Get Ecopath start year
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+            Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
             Dim dateTimeStep As DateTime
 
             Try
@@ -194,7 +223,7 @@ Namespace SpatialData
                 Dim iTimeStepMonth As Integer = CInt(((dTimeStepYearFraction - iTimeStepYear) * 12))
 
                 ' Should iTime be interpreted as relative to the dataset start time?
-                If ecospaceDS.AdapterUseRelativeTime Then
+                If spatialDS.AdapterUseRelativeTime Then
                     ' #Yes: use year and month as relative to dataset start time
                     Dim dateSetStart As DateTime = ds.TimeStart
                     If (dateSetStart < DateTime.MaxValue) Then

@@ -93,6 +93,7 @@ Public Class cEcoSpace
     Private m_search As cSearchDatastructures
     Private m_tracerData As cContaminantTracerDataStructures
     Private m_OptMPA As IMPASearchModel
+    Private m_SpatialData As cSpatialDataStructures
 
     Private m_refdata As cEcospaceTimeSeriesDataStructures
 
@@ -349,9 +350,6 @@ Public Class cEcoSpace
     ''' <summary>
     ''' Ecopath data used for initial state
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property EcoPathData() As cEcopathDataStructures
         Get
             Return m_EPdata
@@ -365,9 +363,6 @@ Public Class cEcoSpace
     ''' <summary>
     ''' Ecosim data used for initial state
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property EcoSimData() As cEcosimDatastructures
         Get
             Return m_SimData
@@ -422,7 +417,6 @@ Public Class cEcoSpace
         End Set
     End Property
 
-
     Public Property TimeStepDelegate() As EcoSpaceTimeStepDelegate
         Get
             Return Me.m_TimestepDelegate
@@ -432,6 +426,14 @@ Public Class cEcoSpace
         End Set
     End Property
 
+    Public Property SpatialData As cSpatialDataStructures
+        Get
+            Return Me.m_SpatialData
+        End Get
+        Set(value As cSpatialDataStructures)
+            Me.m_SpatialData = value
+        End Set
+    End Property
 
     'Public Property StopRun() As Boolean
     '    Get
@@ -1207,16 +1209,18 @@ Public Class cEcoSpace
 
             ' Apply Ecospace datasources
             ' * This will need to become much more sophisticated
-            For Each vn As eVarNameFlags In Me.m_Data.DataAdapters.Keys
-                Dim src As cSpatialDataAdapter = Me.m_Data.DataAdapters(vn)
-                If (src IsNot Nothing) Then
-                    Try
-                        ' ToDo: add error feedback
-                        src.Populate(itt)
-                    Catch ex As Exception
-                    End Try
-                End If
-            Next
+            If (Me.m_SpatialData IsNot Nothing) Then
+                For Each vn As eVarNameFlags In Me.m_SpatialData.DataAdapters.Keys
+                    Dim src As cSpatialDataAdapter = Me.m_SpatialData.DataAdapters(vn)
+                    If (src IsNot Nothing) Then
+                        Try
+                            ' ToDo: add error feedback
+                            src.Populate(itt)
+                        Catch ex As Exception
+                        End Try
+                    End If
+                Next
+            End If
 
             If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
@@ -1601,6 +1605,13 @@ Public Class cEcoSpace
                 'so the Space run length must be less then Ecosim run length
                 Me.m_Data.TotalTime = Me.m_SimData.NumYears
             End If
+
+            ' Validate map inputs
+            For i = 1 To m_Data.InRow
+                For j = 1 To m_Data.InCol
+                    If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
+                Next
+            Next
 
             '*******************
             'readAdvectFile()
@@ -3360,7 +3371,8 @@ exitline:
                 '
                 For i = 1 To m_Data.InRow
                     For j = 1 To m_Data.InCol
-                        If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
+                        'Moved to InitSpatialEquilibrium
+                        'If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
                         If m_Data.Depth(i, j) > 0 And _
                             (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(iFlt, m_Data.MPA(i, j)) Or m_Data.MPAmonth(arguments.iMonth, m_Data.MPA(i, j))) _
                              And (Me.m_Data.PAreaFished(i, j, iFlt) > 0 Or m_Data.GearHab(iFlt, 0)) Then
