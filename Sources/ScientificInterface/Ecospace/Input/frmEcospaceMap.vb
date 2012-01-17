@@ -116,6 +116,9 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
+            MyBase.OnFormClosed(e)
+
+            Me.Visible = False
             Me.SelectedLayer = Nothing
 
             ' Detach from message sources
@@ -149,8 +152,6 @@ Namespace Ecospace.Basemap
                 RemoveHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
                 Me.m_cmdEditMPAs = Nothing
             End If
-
-            MyBase.OnFormClosed(e)
 
         End Sub
 

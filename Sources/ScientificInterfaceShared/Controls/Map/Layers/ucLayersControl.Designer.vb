@@ -34,7 +34,7 @@ Namespace Controls.Map
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.BackColor = System.Drawing.Color.White
+            Me.BackColor = System.Drawing.SystemColors.Control
             Me.Controls.Add(Me.m_fpItems)
             Me.Name = "ucLayersControl"
             Me.ResumeLayout(False)

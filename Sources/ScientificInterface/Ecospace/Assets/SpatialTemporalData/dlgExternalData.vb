@@ -87,7 +87,9 @@ Namespace Ecospace
             ' Populate adapters list
             adapters = man.Adapters
             Array.Sort(adapters, New cSpatialAdapterSorter)
+
             For Each adt As cSpatialDataAdapter In adapters
+
                 Dim strGroup As String = fact.GetLayerGroup(adt.VarName)
                 Dim tnAdt As New TreeNode(strGroup)
                 Dim layers() As cEcospaceLayer = bm.Layers(adt.VarName)
@@ -96,16 +98,17 @@ Namespace Ecospace
                 tnAdt.Tag = adt
 
                 If (layers.Length > 0) Then
+                    Dim bExt As Boolean = False
                     For Each l As cEcospaceLayer In layers
                         Dim tnLayer As New TreeNode(l.Name)
                         tnLayer.Tag = l
                         tnAdt.Nodes.Add(tnLayer)
+                        bExt = bExt Or l.IsExternalData
                     Next
                     Me.m_tvAdapters.Nodes.Add(tnAdt)
+                    If bExt Then tnAdt.Expand()
                 End If
             Next
-
-            Me.m_tvAdapters.ExpandAll()
 
             ' Create image list
             Me.m_ilConnections.Images.Add(SharedResources.database_NA)

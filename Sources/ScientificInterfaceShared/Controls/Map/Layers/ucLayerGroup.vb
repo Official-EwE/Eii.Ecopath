@@ -215,7 +215,8 @@ Namespace Controls.Map
             Me.UpdateSize()
         End Sub
 
-        Private Sub pbLayer_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles Me.Paint
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
+            MyBase.OnPaint(e)
 
             Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.m_fpItems.Location.Y)
             Dim rcCollapse As Rectangle = Nothing

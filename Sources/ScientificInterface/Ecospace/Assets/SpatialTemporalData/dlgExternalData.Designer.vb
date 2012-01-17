@@ -41,7 +41,7 @@ Namespace Ecospace
             'm_btnOK
             '
             Me.m_btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnOK.Location = New System.Drawing.Point(457, 296)
+            Me.m_btnOK.Location = New System.Drawing.Point(576, 296)
             Me.m_btnOK.Name = "m_btnOK"
             Me.m_btnOK.Size = New System.Drawing.Size(75, 23)
             Me.m_btnOK.TabIndex = 2
@@ -63,8 +63,8 @@ Namespace Ecospace
             'm_sc.Panel2
             '
             Me.m_sc.Panel2.Controls.Add(Me.m_config)
-            Me.m_sc.Size = New System.Drawing.Size(520, 278)
-            Me.m_sc.SplitterDistance = 139
+            Me.m_sc.Size = New System.Drawing.Size(639, 278)
+            Me.m_sc.SplitterDistance = 170
             Me.m_sc.TabIndex = 0
             '
             'm_tvAdapters
@@ -75,7 +75,7 @@ Namespace Ecospace
             Me.m_tvAdapters.Location = New System.Drawing.Point(0, 0)
             Me.m_tvAdapters.Name = "m_tvAdapters"
             Me.m_tvAdapters.ShowLines = False
-            Me.m_tvAdapters.Size = New System.Drawing.Size(139, 278)
+            Me.m_tvAdapters.Size = New System.Drawing.Size(170, 278)
             Me.m_tvAdapters.TabIndex = 0
             '
             'm_config
@@ -83,7 +83,7 @@ Namespace Ecospace
             Me.m_config.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_config.Location = New System.Drawing.Point(0, 0)
             Me.m_config.Name = "m_config"
-            Me.m_config.Size = New System.Drawing.Size(377, 278)
+            Me.m_config.Size = New System.Drawing.Size(465, 278)
             Me.m_config.TabIndex = 0
             Me.m_config.UIContext = Nothing
             '
@@ -97,7 +97,7 @@ Namespace Ecospace
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(544, 334)
+            Me.ClientSize = New System.Drawing.Size(663, 334)
             Me.ControlBox = False
             Me.Controls.Add(Me.m_sc)
             Me.Controls.Add(Me.m_btnOK)

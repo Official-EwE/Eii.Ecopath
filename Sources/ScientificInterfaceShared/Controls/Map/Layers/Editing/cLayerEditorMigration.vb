@@ -35,22 +35,34 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property Group() As Integer
             Get
-                '' ToDo: perform sanity checks here?
-                'Dim layerCore As cEcospaceLayerMigration = DirectCast(Me.Layer.Data, cEcospaceLayerMigration)
-                'Return layerCore.Group
+                Dim layerCore As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
+                Return layerCore.iLayer
             End Get
             Set(ByVal value As Integer)
-                'Dim layerMigration As cEcospaceLayerMigration = DirectCast(Me.Layer.Data, cEcospaceLayerMigration)
-                '' Will group index change?
-                'If value <> layerMigration.Group Then
-                '    ' #Yes: update group index in the underlying Ecospace layer
-                '    layerMigration.Group = value
-                '    ' Force map update
-                '    Me.Layer.Update(cLayer.eChangeFlags.Map, False)
-                'End If
+                Dim layerCore As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
+                ' Will Group index change?
+                If value <> layerCore.iLayer Then
+                    ' #Yes: update Group index in the underlying Ecospace layer
+                    layerCore.iLayer = value
+                    ' Force map update
+                    Me.Layer.Update(cLayer.eChangeFlags.Map, False)
+                End If
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' This editor requires a 1 pt cursor
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides Property CursorSize As Integer
+            Get
+                Return 1
+            End Get
+            Set(value As Integer)
+                'NOP
+            End Set
+        End Property
 #End Region ' Public interfaces
 
     End Class

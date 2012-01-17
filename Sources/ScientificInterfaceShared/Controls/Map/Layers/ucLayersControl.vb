@@ -225,6 +225,7 @@ Namespace Controls.Map
 
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             Me.m_fpItems.Width = Me.Width - Me.Margin.Horizontal
+            Me.m_fpItems.Height = Me.Height - Me.Margin.Vertical
         End Sub
 
         Private Sub fpItems_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_fpItems.Resize

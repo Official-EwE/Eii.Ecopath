@@ -17,17 +17,27 @@ Namespace Controls.Map.Layers
 
         Private Sub OnMonthChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbMonth.SelectedIndexChanged
-            Me.Editor.CellValue = Me.m_cmbMonth.SelectedIndex + 1
+            Try
+                Me.Editor.CellValue = Me.m_cmbMonth.SelectedIndex + 1
+            Catch ex As Exception
+            End Try
         End Sub
 
         Private Sub OnGroupChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbGroup.SelectedIndexChanged
-            Me.Editor.Group = Me.m_cmbGroup.SelectedIndex + 1
+            Try
+                Me.Editor.Group = Me.m_cmbGroup.SelectedIndex + 1
+            Catch ex As Exception
+            End Try
         End Sub
 
         Public Overrides Sub EndEdit(ByVal editor As cLayerEditor)
             If Me.m_chkAutoRotate.Checked Then
-                Me.Editor.CellValue = CInt(CInt(editor.CellValue) Mod cCore.N_MONTHS) + 1
+                Try
+                    Me.Editor.CellValue = CInt(CInt(editor.CellValue) Mod cCore.N_MONTHS) + 1
+                Catch ex As Exception
+
+                End Try
             End If
         End Sub
 

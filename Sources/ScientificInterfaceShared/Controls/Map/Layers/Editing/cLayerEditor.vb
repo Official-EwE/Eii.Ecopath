@@ -423,9 +423,15 @@ Namespace Controls.Map.Layers
         Public Overridable Property IsEditable() As Boolean
             Get
                 Dim bEditable As Boolean = (Me.m_bEditable = True) And (Me.IsReadOnly = False)
+
                 If (Me.m_layer IsNot Nothing) Then
                     ' External data cannot be edited
                     bEditable = bEditable And (Not Me.m_layer.IsExternal)
+                    ' Invisible data cannot be edited
+                    If (Me.m_layer.Renderer IsNot Nothing) Then bEditable = bEditable And Me.m_layer.Renderer.IsVisible
+                Else
+                    ' No need to edit a layer that does not exist, no?
+                    bEditable = False
                 End If
                 Return bEditable
             End Get
@@ -463,7 +469,7 @@ Namespace Controls.Map.Layers
         ''' This value is persistent across layer editors.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Property CursorSize() As Integer
+        Public Overridable Property CursorSize() As Integer
             Get
                 Return cLayerEditor.s_iCursorSize
             End Get

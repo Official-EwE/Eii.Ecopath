@@ -114,28 +114,6 @@ Namespace Ecospace.Basemap.Layers
                         lLayers.Add(layer)
                     End If
 
-                Case eVarNameFlags.LayerMigration
-
-                    key = New cValueID(eDataTypes.EcospaceLayerMigration, bmd.DBID, eVarNameFlags.Name)
-                    ad = core.AuxillaryData(key)
-
-                    ' Get or create Visual Style
-                    vs = ad.VisualStyle
-                    If vs Is Nothing Then
-                        vs = New cVisualStyle()
-                        vs.ForeColour = Color.Black
-                        ad.AllowValidation = False
-                        ad.VisualStyle = vs
-                        ad.AllowValidation = True
-                    End If
-
-                    renderer = New cLayerRendererValue(vs)
-                    editor = New cLayerEditorMigration()
-                    If layerData Is Nothing Then layerData = bmd.LayerMigration
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMigration)
-
-                    lLayers.Add(layer)
-
                 Case Else
                     ' Return default
                     lLayers.AddRange(MyBase.GetLayers(uic, varName))

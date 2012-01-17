@@ -125,7 +125,6 @@ Namespace Ecospace.Basemap
             '
             'm_ucLayers
             '
-            Me.m_ucLayers.BackColor = System.Drawing.Color.White
             resources.ApplyResources(Me.m_ucLayers, "m_ucLayers")
             Me.m_ucLayers.Name = "m_ucLayers"
             Me.m_ucLayers.UIContext = Nothing
@@ -145,6 +144,7 @@ Namespace Ecospace.Basemap
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.SplitContainer1.ResumeLayout(False)
             Me.m_tlpControls.ResumeLayout(False)
+            Me.m_tlpControls.PerformLayout()
             Me.m_tsEditBasemapThingies.ResumeLayout(False)
             Me.m_tsEditBasemapThingies.PerformLayout()
             Me.ResumeLayout(False)
