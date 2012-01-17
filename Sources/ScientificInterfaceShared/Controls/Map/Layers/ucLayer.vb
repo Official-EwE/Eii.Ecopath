@@ -260,43 +260,43 @@ Namespace Controls.Map
 
             If img IsNot Nothing Then e.Graphics.DrawImage(img, rcEditable)
 
-                ' Draw visible indicator
-                If Me.Layer.Renderer.IsVisible Then
-                    img = g_imgEye0
-                Else
-                    img = g_imgEye1
-                End If
-                e.Graphics.DrawImage(img, rcVisible)
+            ' Draw visible indicator
+            If Me.Layer.Renderer.IsVisible Then
+                img = g_imgEye0
+            Else
+                img = g_imgEye1
+            End If
+            e.Graphics.DrawImage(img, rcVisible)
 
-                ' Draw label
-                fmt.LineAlignment = StringAlignment.Center
-                fmt.Alignment = StringAlignment.Near
-                If Me.m_layer.IsSelected Then
-                    e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.HighlightText, rcLabel, fmt)
-                Else
-                    e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.ControlText, rcLabel, fmt)
-                End If
+            ' Draw label
+            fmt.LineAlignment = StringAlignment.Center
+            fmt.Alignment = StringAlignment.Near
+            If Me.m_layer.IsSelected Then
+                e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.HighlightText, rcLabel, fmt)
+            Else
+                e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.ControlText, rcLabel, fmt)
+            End If
 
-                ' Draw preview
-                ' - Render representation
-                e.Graphics.FillRectangle(Brushes.White, rcPreview)
-                Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview, Me.Layer.Data)
-                ' - Render remarks indicator
-                cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
-                ' - Render border
-                ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken, _
-                    Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
+            ' Draw preview
+            ' - Render representation
+            e.Graphics.FillRectangle(Brushes.White, rcPreview)
+            Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview, Me.Layer.Data)
+            ' - Render remarks indicator
+            cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
+            ' - Render border
+            ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken, _
+                Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
 
-                ' Draw button borders only when hovering
-                If Me.m_bHovering Then
-                    ControlPaint.DrawBorder(e.Graphics, rcEditable, SystemColors.ControlDark, ButtonBorderStyle.Solid)
-                    ControlPaint.DrawBorder(e.Graphics, rcVisible, SystemColors.ControlDark, ButtonBorderStyle.Solid)
-                End If
+            ' Draw button borders only when hovering
+            If Me.m_bHovering Then
+                ControlPaint.DrawBorder(e.Graphics, rcEditable, SystemColors.ControlDark, ButtonBorderStyle.Solid)
+                ControlPaint.DrawBorder(e.Graphics, rcVisible, SystemColors.ControlDark, ButtonBorderStyle.Solid)
+            End If
 
-                ' Highlight line at the top
-                e.Graphics.DrawLine(SystemPens.ButtonHighlight, 0, 0, rcControl.Width, 0)
-                ' Shadow line at the bottom
-                e.Graphics.DrawLine(SystemPens.ButtonShadow, 0, rcControl.Height - 1, rcControl.Width, rcControl.Height - 1)
+            '' Highlight line at the top
+            'e.Graphics.DrawLine(SystemPens.ButtonHighlight, 0, 0, rcControl.Width, 0)
+            ' '' Shadow line at the bottom
+            'e.Graphics.DrawLine(SystemPens.ButtonShadow, 0, rcControl.Height - 1, rcControl.Width, rcControl.Height - 1)
 
         End Sub
 
