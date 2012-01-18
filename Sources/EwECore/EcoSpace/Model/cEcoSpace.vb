@@ -6336,7 +6336,6 @@ exitline:
 
             NumBad = 0
             For i = 0 To Me.m_Data.InRow + 1
-                Dim CellW As Single = EcoSpaceData.Width(i)
                 For j = 0 To Me.m_Data.InCol + 1
                     If Me.m_Data.Depth(i, j) > 0 Then
                         If Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
