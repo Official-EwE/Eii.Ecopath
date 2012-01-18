@@ -23,8 +23,7 @@ Namespace SpatialData
 
         ''' <summary>Manager of active data sets.</summary>
         Private m_datasetManager As cSpatialDataSetManager = Nothing
-        ''' <summary>Hard-coded dictionary of data adapters.</summary>
-        Private m_dtAdapters As Dictionary(Of eVarNameFlags, cSpatialDataAdapter) = Nothing
+        Private m_data As cSpatialDataStructures = Nothing
 
         Private m_core As cCore = Nothing
 
@@ -35,13 +34,10 @@ Namespace SpatialData
         Friend Sub New()
         End Sub
 
-        Friend Sub Init(ByVal core As cCore)
-
-            Dim adapter As cSpatialDataAdapter = Nothing
+        Friend Sub Init(ByVal core As cCore, ByVal data As cSpatialDataStructures)
 
             Me.m_core = core
-            Me.m_dtAdapters = New Dictionary(Of eVarNameFlags, cSpatialDataAdapter)
-
+            Me.m_data = data
             Me.m_datasetManager = New cSpatialDataSetManager()
 
         End Sub
@@ -67,23 +63,32 @@ Namespace SpatialData
         End Sub
 
         Public Sub Clear()
-            Me.m_dtAdapters.Clear()
+            Me.m_data.DataAdapters.Clear()
         End Sub
 
 #Region " Generic information "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the <see cref="eVarNameFlags">variables</see> for which adapters are defined.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property Variables As eVarNameFlags()
-            Get
-                Dim lVars As New List(Of eVarNameFlags)
-                lVars.AddRange(Me.m_dtAdapters.Keys)
-                Return lVars.ToArray
-            End Get
-        End Property
+        Public Sub Load()
+
+            Dim guid As Guid
+            Dim ds As ISpatialDataSet = Nothing
+            Dim cv As ISpatialDataConverter = Nothing
+
+            For Each adt As cSpatialDataAdapter In Me.Adapters
+                For i As Integer = 0 To adt.Length - 1
+                    ' Try to resolve dataset
+                    If guid.TryParse(Me.m_data.DatasetGUID(adt.VarName, i), guid) Then
+                        ds = Me.m_datasetManager.ItemByGUID(guid)
+                    End If
+                    ' Try to resolve converter
+                    'cv = Activator.CreateInstance()
+                Next
+            Next
+        End Sub
+
+        Public Sub Update()
+
+        End Sub
 
 #End Region ' Generic information
 
@@ -91,8 +96,8 @@ Namespace SpatialData
 
         Public ReadOnly Property Adapter(ByVal varname As eVarNameFlags) As cSpatialDataAdapter
             Get
-                If Me.m_dtAdapters.ContainsKey(varname) Then
-                    Return Me.m_dtAdapters(varname)
+                If Me.m_data.DataAdapters.ContainsKey(varname) Then
+                    Return Me.m_data.DataAdapters(varname)
                 End If
                 Return Nothing
             End Get
@@ -100,14 +105,14 @@ Namespace SpatialData
 
         Public ReadOnly Property nAdapters As Integer
             Get
-                Return Me.m_dtAdapters.Count
+                Return Me.m_data.DataAdapters.Count
             End Get
         End Property
 
         Public ReadOnly Property Adapters() As cSpatialDataAdapter()
             Get
                 Dim lAdapters As New List(Of cSpatialDataAdapter)
-                For Each ad As cSpatialDataAdapter In Me.m_dtAdapters.Values
+                For Each ad As cSpatialDataAdapter In Me.m_data.DataAdapters.Values
                     lAdapters.Add(ad)
                 Next
                 Return lAdapters.ToArray
@@ -115,8 +120,7 @@ Namespace SpatialData
         End Property
 
         Private Sub AddAdapter(adapter As cSpatialDataAdapter)
-            Me.m_dtAdapters(adapter.VarName) = adapter
-            Me.m_core.m_SpatialData.DataAdapters(adapter.VarName) = adapter
+            Me.m_data.DataAdapters(adapter.VarName) = adapter
         End Sub
 
 #End Region ' Adapters

@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="System\cEventLog.vb" />
     <Compile Include="System\cEwESettingsProvider.vb" />
+    <Compile Include="System\cTypeUtils.vb" />
     <Compile Include="Utilities\cAssemblyNameUtils.vb" />
     <Compile Include="Net\cSocketWrapper.vb" />
     <Compile Include="Net\cSerializableObject.vb" />

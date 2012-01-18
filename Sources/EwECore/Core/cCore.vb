@@ -7925,7 +7925,7 @@ Public Class cCore
         m_AdvectionManager = New cAdvectionManager
 
         m_spatialdataconnectionManager = New SpatialData.cSpatialDataConnectionManager()
-        m_spatialdataconnectionManager.Init(Me)
+        m_spatialdataconnectionManager.Init(Me, Me.m_SpatialData)
 
         'counters needed 
         'this could change to get the counter from the above data structures

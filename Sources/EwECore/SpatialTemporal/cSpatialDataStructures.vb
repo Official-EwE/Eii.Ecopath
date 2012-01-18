@@ -19,38 +19,64 @@ Namespace SpatialData
         Public AdapterUseRelativeTime As Boolean = True
 
         Public Sub SetDefaults()
+
+            Me.m_data.Clear()
+
             For Each vn As eVarNameFlags In Me.DataAdapters.Keys
                 Dim adt As cSpatialDataAdapter = Me.DataAdapters(vn)
                 adt.SetDefaults()
-            Next
+                Dim iLen As Integer = adt.Length
+                Dim arr(iLen) As cData
+                For i As Integer = 0 To iLen : arr(iLen) = New cData() : Next
+                Me.m_data(vn) = arr
+            Next vn
+
         End Sub
+
+        Public ReadOnly Property NumItems(varname As eVarNameFlags) As Integer
+            Get
+                Return Me.m_data(varname).Length
+            End Get
+        End Property
 
         Public Property DatasetGUID(varname As eVarNameFlags, index As Integer) As String
             Get
-
+                Return Me.m_data(varname)(index).DatasetGUID
             End Get
             Set(value As String)
-
+                Me.m_data(varname)(index).DatasetGUID = value
             End Set
         End Property
 
         Public Property ConverterName(varname As eVarNameFlags, index As Integer) As String
             Get
-
+                Return Me.m_data(varname)(index).ConverterName
             End Get
             Set(value As String)
-
+                Me.m_data(varname)(index).ConverterName = value
             End Set
         End Property
 
         Public Property ConverterConfiguration(varname As eVarNameFlags, index As Integer) As String
             Get
-
+                Return Me.m_data(varname)(index).ConverterConfig
             End Get
             Set(value As String)
-
+                Me.m_data(varname)(index).ConverterConfig = value
             End Set
         End Property
+
+#Region " Internals "
+
+        Private Class cData
+            Public DatasetGUID As String
+            Public ConverterName As String
+            Public ConverterConfig As String
+        End Class
+
+        Private m_data As New Dictionary(Of eVarNameFlags, cData())
+
+#End Region ' Internals
 
     End Class
 
