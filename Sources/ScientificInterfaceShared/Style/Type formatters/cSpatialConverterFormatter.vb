@@ -29,7 +29,7 @@ Namespace Style
                 If (value IsNot Nothing) Then
                     Dim obj As ISpatialDataConverter = DirectCast(value, ISpatialDataConverter)
                     If (descriptor = eDescriptorTypes.Description) Then Return obj.Description
-                    Return obj.Name
+                    Return obj.DisplayName
                 End If
                 Return My.Resources.GENERIC_VALUE_NONE
             Catch ex As Exception

@@ -20,7 +20,7 @@ Namespace SpatialData
         ''' Get the name for displaying the converter in a user interface.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        ReadOnly Property Name As String
+        ReadOnly Property DisplayName As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>

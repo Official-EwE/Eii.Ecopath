@@ -26,7 +26,7 @@ Namespace SpatialData
         ''' Legible name of the dataset.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property Name As String
+        Property DisplayName As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>

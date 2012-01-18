@@ -34,14 +34,14 @@ Namespace Style
                         Case eDescriptorTypes.Name
                             If obj.TimeStart <> DateTime.MaxValue Then
                                 If obj.TimeEnd <> DateTime.MinValue Then
-                                    Return String.Format("{0} ({1} - {2})", obj.Name, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
+                                    Return String.Format("{0} ({1} - {2})", obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
                                 End If
-                                Return String.Format("{0} ({1}-)", obj.Name, obj.TimeStart.ToShortDateString)
+                                Return String.Format("{0} ({1}-)", obj.DisplayName, obj.TimeStart.ToShortDateString)
                             End If
                         Case eDescriptorTypes.Description
                             Return obj.Description
                     End Select
-                    Return obj.Name
+                    Return obj.DisplayName
                 End If
 
                 Return My.Resources.GENERIC_VALUE_NONE
