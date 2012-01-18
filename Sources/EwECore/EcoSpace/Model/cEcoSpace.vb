@@ -6314,13 +6314,29 @@ exitline:
         HabCapMin = 0.01 'minimum allowable value of habcap before adjustment for distance to cell with habcap>habcapmin
         DistFac = 0.4 'exponential decrease in habcap per cell width distance from cell with habcap>habcapmin
         MaxDist = Math.Max(Me.m_Data.InRow, Me.m_Data.InCol)
-        Maxiter = MaxDist / 2 : If Maxiter = 0 Then Maxiter = 1
+        'Maxiter = MaxDist / 2 : If Maxiter = 0 Then Maxiter = 1
 
         For k = 1 To Me.m_Data.NGroups 'Me.m_Data.nvartot
-
             'initialize distmin for all cells for group k
+
+            'How many cells can a fish move in a lifetime? We take it to be longevity * dispersal as a distance in km. 
+            'Divide this with the average cell size. For this we could use length or width or ? 
+            'We chose now to use half the cell length as a compromise, rather than cell width, as it up north would mean that
+            'groups could move perhaps down to equator. 
+            'this is really important with the big global half degree model, where it now (Jan 2012) was iterating 360 times
+            'over the 350 x 720 cell maps.
+            Dim MaxNoOfCellsToMoveInALifetime As Integer = CInt(EcoSpaceData.Mvel(k) / EcoPathData.PB(k) / (EcoSpaceData.CellLength / 2))
+            '                                           = Dispersal           * Longevity          /half the cell length
+            Maxiter = Min(MaxNoOfCellsToMoveInALifetime, MaxDist)
+            If Maxiter = 0 Then Maxiter = 1
+
+            'Longevity for this species:
+            'Dim Longevity As Single = 1 / Me.EcoPathData.PB(k)
+            'Dim Dispersal As Single = Me.EcoSpaceData.Mvel(k)
+
             NumBad = 0
             For i = 0 To Me.m_Data.InRow + 1
+                Dim CellW As Single = EcoSpaceData.Width(i)
                 For j = 0 To Me.m_Data.InCol + 1
                     If Me.m_Data.Depth(i, j) > 0 Then
                         If Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
