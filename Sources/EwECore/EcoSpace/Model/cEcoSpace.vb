@@ -1778,6 +1778,8 @@ Public Class cEcoSpace
                 For i = 0 To m_Data.InRow + 1
                     For j = 0 To m_Data.InCol + 1
 
+                        If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
+
                         If m_Data.IsAdvected(ip) Then
                             m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip)
                         Else
@@ -1831,8 +1833,6 @@ Public Class cEcoSpace
             For isp = 1 To m_Stanza.Nsplit
                 For ist = 1 To m_Stanza.Nstanza(isp)
                     isc = isc + 1
-
-                    If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
 
                     '  If ist = m_Stanza.Nstanza(isp) Then iadultS(isp) = isc
                     ieco = m_Stanza.EcopathCode(isp, ist)
