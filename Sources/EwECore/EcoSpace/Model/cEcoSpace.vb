@@ -24,18 +24,26 @@ Public Class cEcoSpace
     ''' Arguments for PredictEffortDistributionThreaded()
     ''' </summary>
     ''' <remarks></remarks>
-    Private Class cEffortDistArgs
+    Private Class cThreadedCallArgs
         Public WaitHandle As WaitHandle
         Public iFirst As Integer
         Public iLast As Integer
         Public iCumMonth As Integer
         Public iMonth As Integer
-        Public Sub New(ByRef theWaitHandle As WaitHandle, ByVal iFirstFleet As Integer, ByVal iLastFleet As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer)
+        Public Sub New(ByRef theWaitHandle As WaitHandle, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer)
             WaitHandle = theWaitHandle
-            iFirst = iFirstFleet
-            iLast = iLastFleet
+            iFirst = iFirstIndex
+            iLast = iLastIndex
             iCumMonth = iCumMonthIndex
             iMonth = iMonthOfyear
+        End Sub
+
+        Public Sub New(ByRef theWaitHandle As WaitHandle, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer)
+            WaitHandle = theWaitHandle
+            iFirst = iFirstIndex
+            iLast = iLastIndex
+            iCumMonth = cCore.NULL_VALUE
+            iMonth = cCore.NULL_VALUE
         End Sub
     End Class
 
@@ -430,7 +438,7 @@ Public Class cEcoSpace
         Get
             Return Me.m_SpatialData
         End Get
-        Set(value As cSpatialDataStructures)
+        Set(ByVal value As cSpatialDataStructures)
             Me.m_SpatialData = value
         End Set
     End Property
@@ -3340,11 +3348,11 @@ exitline:
         Dim SailCost As Single
         Dim TotE As Single
         Dim Attract(,) As Single
-        Dim arguments As cEffortDistArgs
+        Dim arguments As cThreadedCallArgs
 
         Try
 
-            arguments = DirectCast(obParam, cEffortDistArgs)
+            arguments = DirectCast(obParam, cThreadedCallArgs)
 
             ReDim Attract(m_Data.InRow, m_Data.InCol)
 
@@ -3464,7 +3472,7 @@ exitline:
             End If
 
             Dim waitOb As WaitHandle = New AutoResetEvent(False)
-            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cEffortDistArgs(waitOb, iFirstFleet, ilastfleet, iMonth, iCumMonth))
+            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, ilastfleet, iMonth, iCumMonth))
             lstOfCalls.Add(waitOb)
 
             If bDone Then Exit For
@@ -6036,13 +6044,165 @@ exitline:
         Me.normalizeCapacityMap()
 
         'Set the capacity gradients to flow from low to high capacity cells
-        Me.AdjustLowHapCaps()
+        ' Me.AdjustLowHapCaps()
+        Me.runAjustLowHabCapsThreaded()
+
 
         'All the map changes have been computed
         Me.m_Data.bHasCapacityChanged = False
 
     End Sub
 
+    Private Sub runAjustLowHabCapsThreaded()
+        Dim nGrpsPerThread As Integer = Me.m_Data.NGroups \ Me.m_Data.nGridSolverThreads + 1
+        Dim iFirstGrp As Integer = 1
+        Dim ilastGrp As Integer
+        Dim bDone As Boolean
+        Dim lstOfCalls As List(Of WaitHandle) = New List(Of WaitHandle)
+
+        For ithrd As Integer = 1 To Me.m_Data.nSpaceSolverThreads
+
+            ilastGrp = iFirstGrp + nGrpsPerThread
+
+            'bound the fleet index
+            If ilastGrp > Me.m_Data.NGroups Then
+                ilastGrp = Me.m_Data.NGroups + 1
+                'Computed all the fleets before we ran out of threads
+                bDone = True
+            End If
+
+            Dim waitOb As WaitHandle = New AutoResetEvent(False)
+            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.AdjustLowHapCapsThreaded), New cThreadedCallArgs(waitOb, iFirstGrp, ilastGrp))
+            lstOfCalls.Add(waitOb)
+
+            If bDone Then Exit For
+
+            iFirstGrp = ilastGrp
+
+        Next ithrd
+
+        For Each waitob As WaitHandle In lstOfCalls
+            waitob.WaitOne()
+        Next
+
+
+    End Sub
+
+
+    ''' <summary>
+    ''' Adjust habcap’s so as to cause oriented movement toward nearest good cells. It should be much, much faster than 
+    ''' old habgrad, uses dynamic programming to find minimum distances from bad cells to good ones and then exponential 
+    ''' decrease in habcap with those distances; I have used the same algorithm to find things like minimum distances to 
+    ''' fishing ports, nice because it even works for moving creatures around island barriers and such.
+    ''' </summary>
+    Private Sub AdjustLowHapCapsThreaded(ByVal ArgsOb As Object)
+
+        'dynamic programming algorithm to set gradient in low habcap cells (habcap<=habcapmin) so as to orient movement ‘toward cells with habcap>habcapmin
+        Dim i As Integer, j As Integer, k As Integer, d As Integer, Dmin As Integer, DistMin(,) As Integer, Maxiter As Integer
+        Dim HabCapMin As Single, MaxDist As Integer, iter As Integer, DistFac As Single, NumBad As Integer
+
+        Dim grpArgs As cThreadedCallArgs = DirectCast(ArgsOb, cThreadedCallArgs)
+
+        'bounds checking 
+        If grpArgs.iFirst < 1 Then grpArgs.iFirst = 1
+        If grpArgs.iLast > Me.m_Data.NGroups Then grpArgs.iLast = Me.m_Data.NGroups
+
+        ReDim DistMin(Me.m_Data.InRow + 1, Me.m_Data.InCol + 1)
+
+        HabCapMin = 0.01 'minimum allowable value of habcap before adjustment for distance to cell with habcap>habcapmin
+        DistFac = 0.4 'exponential decrease in habcap per cell width distance from cell with habcap>habcapmin
+        MaxDist = Math.Max(Me.m_Data.InRow, Me.m_Data.InCol)
+        'Maxiter = MaxDist / 2 : If Maxiter = 0 Then Maxiter = 1
+
+        For k = grpArgs.iFirst To grpArgs.iLast 'Me.m_Data.nvartot
+            'initialize distmin for all cells for group k
+
+            'How many cells can a fish move in a lifetime? We take it to be longevity * dispersal as a distance in km. 
+            'Divide this with the average cell size. For this we could use length or width or ? 
+            'We chose now to use half the cell length as a compromise, rather than cell width, as it up north would mean that
+            'groups could move perhaps down to equator. 
+            'this is really important with the big global half degree model, where it now (Jan 2012) was iterating 360 times
+            'over the 350 x 720 cell maps.
+            Dim MaxNoOfCellsToMoveInALifetime As Integer = CInt(EcoSpaceData.Mvel(k) / EcoPathData.PB(k) / (EcoSpaceData.CellLength / 2))
+            '                                           = Dispersal           * Longevity          /half the cell length
+            Maxiter = Min(MaxNoOfCellsToMoveInALifetime, MaxDist)
+            If Maxiter = 0 Then Maxiter = 1
+
+            'Longevity for this species:
+            'Dim Longevity As Single = 1 / Me.EcoPathData.PB(k)
+            'Dim Dispersal As Single = Me.EcoSpaceData.Mvel(k)
+
+            NumBad = 0
+            For i = 0 To Me.m_Data.InRow + 1
+                For j = 0 To Me.m_Data.InCol + 1
+                    If Me.m_Data.Depth(i, j) > 0 Then
+                        If Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
+                            Me.m_Data.HabCap(i, j, k) = HabCapMin
+                            DistMin(i, j) = MaxDist
+                            NumBad = NumBad + 1
+                        Else
+                            DistMin(i, j) = 0
+                        End If
+                    End If
+                Next j
+            Next i
+
+            'then do dynamic program iteratation to reset distmin for each cell to minimum distance to cell with habcap>habcapmin
+            'skip iteration if numbad=0
+            If NumBad > 0 Then
+                For iter = 1 To Maxiter
+                    For i = 1 To Me.m_Data.InRow
+                        For j = 1 To Me.m_Data.InCol
+                            If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
+                                'check the four faces of this cell to find min distance from it toward good cell
+                                Dmin = MaxDist
+
+                                If Me.m_Data.Depth(i - 1, j) > 0 Then
+                                    d = DistMin(i - 1, j) + 1
+                                    If d < Dmin Then Dmin = d
+                                End If
+
+                                If Me.m_Data.Depth(i + 1, j) > 0 Then
+                                    d = DistMin(i + 1, j) + 1
+                                    If d < Dmin Then Dmin = d
+                                End If
+
+                                If Me.m_Data.Depth(i, j - 1) > 0 Then
+                                    d = DistMin(i, j - 1) + 1
+                                    If d < Dmin Then Dmin = d
+                                End If
+
+                                If Me.m_Data.Depth(i, j + 1) > 0 Then
+                                    d = DistMin(i, j + 1) + 1
+                                    If d < Dmin Then Dmin = d
+                                End If
+                                DistMin(i, j) = Dmin
+                            End If
+                        Next j
+                    Next i
+                Next iter
+
+                'have now set distmin for each bad cell to minimum travel distance from that cell to a cell with habcap>habcapmin
+                'apply exponential decrease to habcap based on the minimum travel distance
+                For i = 1 To Me.m_Data.InRow
+                    For j = 1 To Me.m_Data.InCol
+                        If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
+                            Me.m_Data.HabCap(i, j, k) = HabCapMin * Exp(-DistFac * DistMin(i, j))
+                        End If
+                    Next j
+                Next i
+
+            End If 'end of if when numbad=0 and iteration+adjustment can be skipped
+        Next k
+
+        Dim AutoRest As AutoResetEvent = TryCast(grpArgs.WaitHandle, AutoResetEvent)
+        Debug.Assert(AutoRest IsNot Nothing, "PredictEffortDistributionThreaded Exception AutoResetEvent is null.")
+
+        'Set the AutoRestEvent this will release the wait on this thread
+        If AutoRest IsNot Nothing Then AutoRest.Set()
+
+
+    End Sub
 
     ''' <summary>
     ''' Set Habitat Capacity map from the user input HabCap map
