@@ -1606,13 +1606,6 @@ Public Class cEcoSpace
                 Me.m_Data.TotalTime = Me.m_SimData.NumYears
             End If
 
-            ' Validate map inputs
-            For i = 1 To m_Data.InRow
-                For j = 1 To m_Data.InCol
-                    If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
-                Next
-            Next
-
             '*******************
             'readAdvectFile()
             '*****************
@@ -1772,6 +1765,14 @@ Public Class cEcoSpace
 
             Dim btot(ip) As Single
 
+            For iflt As Integer = 1 To Me.m_Data.nFleets
+                For i = 0 To m_Data.InRow + 1
+                    For j = 0 To m_Data.InCol + 1
+                        If m_Data.Sail(iflt, i, j) = 0 Then m_Data.Sail(iflt, i, j) = 0.000001
+                    Next
+                Next
+            Next iflt
+
             For ip = 0 To m_Data.NGroups
                 Btime(ip) = 0
                 For i = 0 To m_Data.InRow + 1
@@ -1830,6 +1831,9 @@ Public Class cEcoSpace
             For isp = 1 To m_Stanza.Nsplit
                 For ist = 1 To m_Stanza.Nstanza(isp)
                     isc = isc + 1
+
+                    If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
+
                     '  If ist = m_Stanza.Nstanza(isp) Then iadultS(isp) = isc
                     ieco = m_Stanza.EcopathCode(isp, ist)
                     If m_Data.NewMultiStanza Or m_Data.UseIBM Then
@@ -3384,7 +3388,9 @@ exitline:
                                 Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
                             Next
 
-                            If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
+                            'jb Move to InitSpatialEquilibrium()
+                            ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
+
                             'VC Sail() above: to avoid dividing with zero
                             Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
                             Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
