@@ -493,7 +493,7 @@ Public Class cPluginManager
             nameAssembly = clsAssembly.GetName
 
             ' Test if valid
-            If clsAssembly Is Nothing Then Return False
+            If (clsAssembly Is Nothing) Then Return False
 
             ' Create plugin assembly and set initial enabled state
             plugAssem = New cPluginAssembly(nameAssembly, bEnable)
@@ -505,7 +505,7 @@ Public Class cPluginManager
             ' Look for appropriate types
             For Each clsType In clsAssembly.GetTypes
                 ' Only look at types we can create
-                If clsType.IsPublic = True Then
+                If (clsType.IsPublic = True) Then
                     ' Ignore abstract classes
                     If Not ((clsType.Attributes And System.Reflection.TypeAttributes.Abstract) = _
                         System.Reflection.TypeAttributes.Abstract) Then
@@ -518,7 +518,9 @@ Public Class cPluginManager
                                 ' Stick it up
                                 plugAssem.Plugin(ip.Name) = ip
                             Catch ex As cPluginException
-                                'Me.RaiseException()
+#If DEBUG Then
+                                Console.WriteLine("PluginManager: file '{0}' failed type check, {1}", strFileName, ex.Message)
+#End If
                             End Try
 
                             ' Is assembly compatible to run?
@@ -532,6 +534,9 @@ Public Class cPluginManager
                                     Catch ex As Exception
                                         ' Disable the plugin entirely
                                         plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
+#If DEBUG Then
+                                        Console.WriteLine("PluginManager: file '{0}' faild to initialize, {1}", strFileName, ex.Message)
+#End If
                                     End Try
                                 End If
 
@@ -543,6 +548,9 @@ Public Class cPluginManager
                                         Catch ex As Exception
                                             ' Disable the plugin entirely
                                             plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
+#If DEBUG Then
+                                            Console.WriteLine("PluginManager: file '{0}' failed to accept UI context, {1}", strFileName, ex.Message)
+#End If
                                         End Try
                                     End If
                                 End If
@@ -579,7 +587,7 @@ Public Class cPluginManager
 
             End If
 
-        Catch loaderEX As System.Reflection.ReflectionTypeLoadException
+        Catch exRefl As System.Reflection.ReflectionTypeLoadException
 
             ' A few things can have happened here, but for sure the DLL that the accessed module
             ' cannot be examined for types. This means that the module is incompatible with the
@@ -593,24 +601,33 @@ Public Class cPluginManager
                 ' the ReflectionTypeLoadException is for diagnosing problems when the loader throwing an exception
                 System.Console.WriteLine(Me.ToString & ".LoadPluginAssembly()")
                 ' what the hell happend
-                For Each ex As Exception In loaderEX.LoaderExceptions
+                For Each ex As Exception In exRefl.LoaderExceptions
                     System.Console.WriteLine(ex.Message)
                 Next
-                Me.RaisePluginException(plugAssem, loaderEX)
+                Me.RaisePluginException(plugAssem, exRefl)
 
-                Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & loaderEX.Message)
+                Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & exRefl.Message)
+            Else
+#If DEBUG Then
+                Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, exRefl.Message)
+#End If
             End If
 
-        Catch ex As BadImageFormatException
+        Catch exBadImg As BadImageFormatException
 
             ' Assessed a DLL that did not contain IPlugin. Be quiet about it
+#If DEBUG Then
+            Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, exBadImg.Message)
+#End If
 
         Catch ex As Exception
 
             'catch any generic exceptions
             Me.RaisePluginException(plugAssem, ex)
-            'Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & ex.Message)
 
+#If DEBUG Then
+            Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, ex.Message)
+#End If
         End Try
 
         Return bHasPlugins
