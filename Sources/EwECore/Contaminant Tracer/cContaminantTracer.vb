@@ -325,7 +325,7 @@ Public Class cContaminantTracerDataStructures
     Public ConcMax() As Single
 
     ''' <summary>Ecosim tracer enabled state flag.</summary>
-    Friend m_bEcoSimConSimOn As Boolean
+    Friend EcoSimConSimOn As Boolean
     ''' <summary>Ecospace tracer enabled state flag.</summary>
     Friend m_bEcoSpaceConSimOn As Boolean
 
@@ -385,14 +385,15 @@ Public Class cContaminantTracerDataStructures
         d.EcoSpaceConSimOn = EcoSpaceConSimOn
     End Sub
 
-    Public Property EcoSimConSimOn() As Boolean
-        Get
-            Return ((Me.m_bEcoSimConSimOn = True) And (Me.m_nGroups > 0))
-        End Get
-        Set(ByVal value As Boolean)
-            m_bEcoSimConSimOn = value
-        End Set
-    End Property
+    'Public Property EcoSimConSimOn() As Boolean
+    '    Get
+    '        Return Me.m_bEcoSimConSimOn
+    '        'Return ((Me.m_bEcoSimConSimOn = True) And (Me.m_nGroups > 0))
+    '    End Get
+    '    Set(ByVal value As Boolean)
+    '        m_bEcoSimConSimOn = value
+    '    End Set
+    'End Property
 
 
     Public Property EcoSpaceConSimOn() As Boolean
