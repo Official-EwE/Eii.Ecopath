@@ -8804,6 +8804,8 @@ Public Class cCore
             InitEcospaceOutputs()
             InitEcotracerOutputs()
 
+            SpatialDataConnectionManager.Load()
+
             bSuccess = bSuccess And Me.CapacitMapInteractionManager.Load()
 
             'For debugging add the RelCin Layer to the Capacity maps
@@ -12907,6 +12909,9 @@ Public Class cCore
                         Me.m_publisher.AddMessage(New cMessage("Capacity map data has changed.", TypeOfChange, _
                                       eCoreComponentType.MapResponseInteractionManager, eMessageImportance.Maintenance))
                     End If
+
+                Case eDataTypes.EcospaceSpatialDataConnection
+                    Me.m_publisher.AddMessage(New cMessage("Spatial data configuration changed.", TypeOfChange, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
 
             End Select
 

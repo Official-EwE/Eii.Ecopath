@@ -14,20 +14,23 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsPlugins))
-            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tvPlugins = New System.Windows.Forms.TreeView
+            Me.components = New System.ComponentModel.Container()
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tvPlugins = New System.Windows.Forms.TreeView()
             Me.m_ilPlugins = New System.Windows.Forms.ImageList(Me.components)
-            Me.m_split = New System.Windows.Forms.SplitContainer
-            Me.m_cbEnablePlugin = New System.Windows.Forms.CheckBox
+            Me.m_split = New System.Windows.Forms.SplitContainer()
+            Me.m_cbEnablePlugin = New System.Windows.Forms.CheckBox()
+            CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_split.Panel1.SuspendLayout()
             Me.m_split.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_hdrCaption
             '
+            Me.m_hdrCaption.CanCollapseParent = False
+            Me.m_hdrCaption.CollapsedParentHeight = 0
             Me.m_hdrCaption.Dock = System.Windows.Forms.DockStyle.Top
+            Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrCaption.Name = "m_hdrCaption"
             Me.m_hdrCaption.Size = New System.Drawing.Size(414, 18)
@@ -52,19 +55,15 @@ Namespace Other
             '
             'm_ilPlugins
             '
-            Me.m_ilPlugins.ImageStream = CType(resources.GetObject("m_ilPlugins.ImageStream"), System.Windows.Forms.ImageListStreamer)
+            Me.m_ilPlugins.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
+            Me.m_ilPlugins.ImageSize = New System.Drawing.Size(16, 16)
             Me.m_ilPlugins.TransparentColor = System.Drawing.Color.Transparent
-            Me.m_ilPlugins.Images.SetKeyName(0, "Ecopath.ico")
-            Me.m_ilPlugins.Images.SetKeyName(1, "plugin.png")
-            Me.m_ilPlugins.Images.SetKeyName(2, "pluginpoint.png")
-            Me.m_ilPlugins.Images.SetKeyName(3, "BreakpointHS.png")
-            Me.m_ilPlugins.Images.SetKeyName(4, "ConflictHS.png")
             '
             'm_split
             '
             Me.m_split.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_split.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_split.Location = New System.Drawing.Point(0, 24)
             Me.m_split.Margin = New System.Windows.Forms.Padding(0)
@@ -99,6 +98,7 @@ Namespace Other
             Me.Name = "ucOptionsPlugins"
             Me.Size = New System.Drawing.Size(414, 353)
             Me.m_split.Panel1.ResumeLayout(False)
+            CType(Me.m_split, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_split.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()

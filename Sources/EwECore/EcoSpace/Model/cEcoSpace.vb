@@ -1218,8 +1218,7 @@ Public Class cEcoSpace
             ' Apply Ecospace datasources
             ' * This will need to become much more sophisticated
             If (Me.m_SpatialData IsNot Nothing) Then
-                For Each vn As eVarNameFlags In Me.m_SpatialData.DataAdapters.Keys
-                    Dim src As cSpatialDataAdapter = Me.m_SpatialData.DataAdapters(vn)
+                For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
                     If (src IsNot Nothing) Then
                         Try
                             ' ToDo: add error feedback

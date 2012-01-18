@@ -2025,6 +2025,7 @@ Namespace Core
         MSEBatchTACInput = 105
 
         EcospaceLayerDriver = 106
+        EcospaceSpatialDataConnection = 107
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

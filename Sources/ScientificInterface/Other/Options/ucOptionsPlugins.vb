@@ -8,6 +8,7 @@ Imports System.Text
 Imports System.Collections.Specialized
 Imports EwECore
 Imports EwEPlugin
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -163,6 +164,13 @@ Namespace Other
             Dim tnP As TreeNode = Nothing
 
             If (Me.m_pm Is Nothing) Then Return
+
+            ' Prepare image list
+            Me.m_ilPlugins.Images.Add(SharedResources.nav8_ecopath)
+            Me.m_ilPlugins.Images.Add(EwEPlugin.My.Resources.plugin)
+            Me.m_ilPlugins.Images.Add(EwEPlugin.My.Resources.pluginpoint)
+            Me.m_ilPlugins.Images.Add(SharedResources.Critical)
+            Me.m_ilPlugins.Images.Add(SharedResources.Warning)
 
             collPA = Me.m_pm.PluginAssemblies
             For Each pa In collPA

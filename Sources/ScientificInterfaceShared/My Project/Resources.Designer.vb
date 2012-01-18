@@ -5421,9 +5421,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property nav6_ecopath() As System.Drawing.Bitmap
+        Public ReadOnly Property nav6_ecospace() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav6_ecopath", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav6_ecospace", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -5435,9 +5435,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property nav8_ecospace() As System.Drawing.Bitmap
+        Public ReadOnly Property nav8_ecopath() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("nav8_ecospace", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("nav8_ecopath", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

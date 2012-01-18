@@ -10,8 +10,8 @@ Namespace SpatialData
 
     Public Class cSpatialDataStructures
 
-        ''' <summary>Avalailable data adapters</summary>
-        Public DataAdapters As New Dictionary(Of eVarNameFlags, cSpatialDataAdapter)
+        ''' <summary>Availalable data adapters</summary>
+        Public DataAdapters As New List(Of cSpatialDataAdapter)
         ''' <summary>Flag stating how Ecospace time steps are interpreted when accessing remote data. If true, 
         ''' an Ecospace time step is interpreted as an offset to the start time of a remote dataset. If false,
         ''' an Ecospace time step is translated to an absolute time value for matching remote dataset data.
@@ -22,14 +22,13 @@ Namespace SpatialData
 
             Me.m_data.Clear()
 
-            For Each vn As eVarNameFlags In Me.DataAdapters.Keys
-                Dim adt As cSpatialDataAdapter = Me.DataAdapters(vn)
+            For Each adt As cSpatialDataAdapter In Me.DataAdapters
                 adt.SetDefaults()
                 Dim iLen As Integer = adt.Length
                 Dim arr(iLen) As cData
-                For i As Integer = 0 To iLen : arr(iLen) = New cData() : Next
-                Me.m_data(vn) = arr
-            Next vn
+                For i As Integer = 0 To iLen - 1 : arr(i) = New cData() : Next
+                Me.m_data(adt.VarName) = arr
+            Next adt
 
         End Sub
 
@@ -48,7 +47,7 @@ Namespace SpatialData
             End Set
         End Property
 
-        Public Property ConverterName(varname As eVarNameFlags, index As Integer) As String
+        Public Property ConverterType(varname As eVarNameFlags, index As Integer) As String
             Get
                 Return Me.m_data(varname)(index).ConverterName
             End Get
@@ -69,9 +68,9 @@ Namespace SpatialData
 #Region " Internals "
 
         Private Class cData
-            Public DatasetGUID As String
-            Public ConverterName As String
-            Public ConverterConfig As String
+            Public DatasetGUID As String = ""
+            Public ConverterName As String = ""
+            Public ConverterConfig As String = ""
         End Class
 
         Private m_data As New Dictionary(Of eVarNameFlags, cData())

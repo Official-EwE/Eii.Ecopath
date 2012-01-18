@@ -133,10 +133,11 @@
     <Compile Include="Auxiliary\cReference.vb" />
     <Compile Include="Auxiliary\cVisualStyle.vb" />
     <Compile Include="Database\cEwESQLServerDatabase.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_02_00_03.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_02_00_04.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_02_00_05.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_02_00_06.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_04.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_05.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_06.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_07.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
@@ -276,24 +277,24 @@
     <Compile Include="Advection\cAdvectionManager.vb" />
     <Compile Include="Advection\cAdvection.vb" />
     <Compile Include="Advection\cAdvectionParameters.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_006.vb">
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_006.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_007.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_008.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_009.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_01_002.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_01_003.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_01_004.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_01_005.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_01_006.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_01_010.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_01_011.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_02_00_000.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_02_00_01.vb">
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_007.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_008.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_009.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_01_002.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_01_003.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_01_004.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_01_005.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_01_006.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_01_010.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_01_011.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_02_00_000.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_01.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Database\Updates\cDBUpdate6_02_00_02.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_02.vb" />
     <Compile Include="DataSource\IEwEDatasourceMetadata.vb" />
     <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
@@ -326,47 +327,47 @@
     <Compile Include="Database\Import\cEwE5EIIImporter.vb" />
     <Compile Include="Database\Import\cEwE5ModelImporter.vb" />
     <Compile Include="Database\Updates\cDBUpdate.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_01_01.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_03_02.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_03_04.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_03_05.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_03_06.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_03_07.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_03_08.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_00.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_001.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_002.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_003.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_004.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_0042.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_005.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_02.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_021.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_04_022.vb">
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_01_01.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_03_02.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_03_04.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_03_05.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_03_06.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_03_07.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_03_08.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_00.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_001.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_002.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_003.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_004.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_0042.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_005.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_02.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_021.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_04_022.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Database\Updates\cDBUpdate6_00_05_001.vb">
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_05_001.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Database\Updates\cDBUpdate6_00_05_005.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_06_001.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_06_002.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_06_003.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_06_004.vb">
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_05_005.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_06_001.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_06_002.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_06_003.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_06_004.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Database\Updates\cDBUpdate6_00_06_005.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_06_006.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_06_007.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_07_001.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_07_002.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_00_07_003.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_000.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_001.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_002.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_003.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_004.vb" />
-    <Compile Include="Database\Updates\cDBUpdate6_01_00_005.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_06_005.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_06_006.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_06_007.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_07_001.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_07_002.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_00_07_003.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_000.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_001.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_002.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_003.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_004.vb" />
+    <Compile Include="Database\Updates\Release 6.2 and before\cDBUpdate6_01_00_005.vb" />
     <Compile Include="DataSource\cDatasourceFactory.vb" />
     <Compile Include="DataSource\IEcotracerDatasource.vb" />
     <Compile Include="EcoFunctions\cEcoFunctions.vb" />

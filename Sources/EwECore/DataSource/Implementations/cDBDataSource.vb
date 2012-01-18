@@ -7157,6 +7157,7 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
             bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
+            bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
             Me.ClearChanged(s_EcospaceComponents)
@@ -7340,6 +7341,7 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceFleets(idm)
             bSucces = bSucces And Me.SaveEcospaceWeightLayers(idm)
             bSucces = bSucces And Me.SaveEcospaceCapacityMaps(idm)
+            bSucces = bSucces And Me.SaveEcospaceDataAdapters(idm)
 
             Return bSucces
 
@@ -9277,10 +9279,10 @@ Namespace DataSources
 
             Catch ex As Exception
                 bSucces = False
-            Finally
-                Me.m_db.ReleaseWriter(writer)
-                writer = Nothing
             End Try
+
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+            writer = Nothing
 
             Return bSucces And SaveCapacityDrivers(idm)
 
@@ -9382,6 +9384,90 @@ Namespace DataSources
 #End Region ' Modify
 
 #End Region ' Driver layers
+
+#Region " Data adapters "
+
+        Private Function LoadEcospaceDataAdapters(iScenarioID As Integer) As Boolean
+
+            Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+            Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDataAdapters WHERE (ScenarioID={0})", iScenarioID))
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim var As eVarNameFlags = eVarNameFlags.NotSet
+            Dim iIndex As Integer = 0
+            Dim strDatasetGUID As String = ""
+            Dim strConverterType As String = ""
+            Dim strConverterCfg As String = ""
+            Dim bSucces As Boolean = True
+
+            While reader.Read()
+                Try
+                    var = cin.GetVarName(CStr(reader("VarName")))
+                    iIndex = CInt(reader("LayerIndex"))
+                    spatialDS.DatasetGUID(var, iIndex) = CStr(reader("Dataset"))
+                    spatialDS.ConverterType(var, iIndex) = CStr(reader("Converter"))
+                    spatialDS.ConverterConfiguration(var, iIndex) = CStr(reader("ConverterCfg"))
+                Catch ex As Exception
+                    bSucces = False
+                    cLog.Write(ex, "DBDataSource::LoadDataAdapters")
+                End Try
+            End While
+
+            Me.m_db.ReleaseReader(reader)
+            Return bSucces
+
+        End Function
+
+        Private Function SaveEcospaceDataAdapters(idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim dt As DataTable = Nothing
+            Dim drow As DataRow = Nothing
+            Dim bSucces As Boolean = True
+
+            ' Get mapped scenario ID, in case saving to a different scenario
+            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
+
+            ' Kaboom
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioDataAdapters WHERE (ScenarioID={0})", iScenarioID))
+
+            Try
+
+                writer = Me.m_db.GetWriter("EcospaceScenarioDataAdapters")
+                dt = writer.GetDataTable()
+
+                For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
+                    For i As Integer = 0 To adt.Length - 1
+                        Dim strDataset As String = spatialDS.DatasetGUID(adt.VarName, i)
+                        Dim strConverter As String = spatialDS.ConverterType(adt.VarName, i)
+                        If Not String.IsNullOrWhiteSpace(strDataset) Or Not String.IsNullOrWhiteSpace(strConverter) Then
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("VarName") = cin.GetVarName(adt.VarName)
+                            drow("LayerIndex") = i
+                            drow("Dataset") = strDataset
+                            drow("Converter") = strConverter
+                            drow("ConverterCfg") = spatialDS.ConverterConfiguration(adt.VarName, i)
+                            writer.AddRow(drow)
+                        End If
+                    Next
+                Next
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            bSucces = bSucces And Me.m_db.ReleaseWriter(writer, bSucces)
+            writer = Nothing
+
+            Return bSucces
+
+        End Function
+
+#End Region ' Data adapters
 
 #End Region ' Ecospace
 

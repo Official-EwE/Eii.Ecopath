@@ -5,6 +5,7 @@ Imports EwEUtils.SpatialData
 Imports EwEUtils.Core
 Imports System.Drawing
 Imports EwEPlugin
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -18,6 +19,7 @@ Namespace SpatialData
     ''' -----------------------------------------------------------------------
     Public Class cSpatialDataConnectionManager
         Implements IDisposable
+        Implements ICoreInterface
 
 #Region " Variables "
 
@@ -73,20 +75,61 @@ Namespace SpatialData
             Dim guid As Guid
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
+            Dim t As Type = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
                 For i As Integer = 0 To adt.Length - 1
+
+                    ds = Nothing
+                    cv = Nothing
+
                     ' Try to resolve dataset
                     If guid.TryParse(Me.m_data.DatasetGUID(adt.VarName, i), guid) Then
                         ds = Me.m_datasetManager.ItemByGUID(guid)
                     End If
-                    ' Try to resolve converter
-                    'cv = Activator.CreateInstance()
+
+                    ' Try to create converter
+                    t = cTypeUtils.StringToType(Me.m_data.ConverterType(adt.VarName, i))
+                    If (t IsNot Nothing) Then
+                        cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
+                    End If
+
+                    ' Worry about converter configuration later
+
+                    adt.Dataset(i) = ds
+                    adt.Converter(i) = cv
                 Next
             Next
+
         End Sub
 
         Public Sub Update()
+
+            Dim ds As ISpatialDataSet = Nothing
+            Dim cv As ISpatialDataConverter = Nothing
+
+            For Each adt As cSpatialDataAdapter In Me.Adapters
+                For i As Integer = 0 To adt.Length - 1
+
+                    ds = adt.Dataset(i)
+                    cv = adt.Converter(i)
+
+                    If (ds IsNot Nothing) Then
+                        Me.m_data.DatasetGUID(adt.VarName, i) = ds.GUID.ToString
+                    Else
+                        Me.m_data.DatasetGUID(adt.VarName, i) = ""
+                    End If
+
+                    If (cv IsNot Nothing) Then
+                        Me.m_data.ConverterType(adt.VarName, i) = cTypeUtils.TypeToString(cv.GetType)
+                    Else
+                        Me.m_data.ConverterType(adt.VarName, i) = ""
+                    End If
+
+                    ' Worry about converter configuration later
+                Next
+            Next
+            Me.m_core.onChanged(Me)
 
         End Sub
 
@@ -96,9 +139,11 @@ Namespace SpatialData
 
         Public ReadOnly Property Adapter(ByVal varname As eVarNameFlags) As cSpatialDataAdapter
             Get
-                If Me.m_data.DataAdapters.ContainsKey(varname) Then
-                    Return Me.m_data.DataAdapters(varname)
-                End If
+                For Each adt As cSpatialDataAdapter In Me.m_data.DataAdapters
+                    If (adt.VarName = varname) Then
+                        Return adt
+                    End If
+                Next
                 Return Nothing
             End Get
         End Property
@@ -111,16 +156,12 @@ Namespace SpatialData
 
         Public ReadOnly Property Adapters() As cSpatialDataAdapter()
             Get
-                Dim lAdapters As New List(Of cSpatialDataAdapter)
-                For Each ad As cSpatialDataAdapter In Me.m_data.DataAdapters.Values
-                    lAdapters.Add(ad)
-                Next
-                Return lAdapters.ToArray
+                Return Me.m_data.DataAdapters.ToArray
             End Get
         End Property
 
         Private Sub AddAdapter(adapter As cSpatialDataAdapter)
-            Me.m_data.DataAdapters(adapter.VarName) = adapter
+            Me.m_data.DataAdapters.Add(adapter)
         End Sub
 
 #End Region ' Adapters
@@ -238,6 +279,53 @@ Namespace SpatialData
         End Function
 
 #End Region ' Converters
+
+#Region " ICoreInterface implementation "
+
+        Public ReadOnly Property CoreComponent As EwEUtils.Core.eCoreComponentType Implements ICoreInterface.CoreComponent
+            Get
+                Return eCoreComponentType.EcoSpace
+            End Get
+        End Property
+
+        Public ReadOnly Property DataType As EwEUtils.Core.eDataTypes Implements ICoreInterface.DataType
+            Get
+                Return eDataTypes.EcospaceSpatialDataConnection
+            End Get
+        End Property
+
+        Public Property DBID As Integer Implements ICoreInterface.DBID
+            Get
+                Return -1
+            End Get
+            Set(value As Integer)
+                ' NOP
+            End Set
+        End Property
+
+        Public Function GetID() As String Implements ICoreInterface.GetID
+            Return ""
+        End Function
+
+        Public Property Index As Integer Implements ICoreInterface.Index
+            Get
+                Return -1
+            End Get
+            Set(value As Integer)
+                ' NOP
+            End Set
+        End Property
+
+        Public Property Name As String Implements ICoreInterface.Name
+            Get
+                Return "SpatialDataConnectionManager"
+            End Get
+            Set(value As String)
+
+            End Set
+        End Property
+
+#End Region ' ICoreInterface implementation
 
     End Class
 

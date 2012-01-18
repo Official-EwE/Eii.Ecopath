@@ -7,9 +7,21 @@ Imports EwEUtils
 
 Namespace Ecospace.Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Configuration interface for setting up a <see cref="cSpatialDataAdapter"/>.
+    ''' </summary>
+    ''' <remarks>
+    ''' This interface allows users to define new datasets, configure datasets, 
+    ''' change dataset selections, define new converters and configure the
+    ''' existing converter.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Class ucConfigAdapter
         Implements IUIElement
         Implements IDisposable
+
+#Region " Private variables "
 
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
@@ -17,6 +29,8 @@ Namespace Ecospace.Controls
         Private m_layer As cEcospaceLayer = Nothing
         Private m_uic As cUIContext = Nothing
         Private m_bHasCachedData As Boolean = False
+
+#End Region ' Private variables
 
         Public Sub New()
             Me.InitializeComponent()
@@ -45,23 +59,39 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Set the connection to configure.
+        ''' </summary>
+        ''' <param name="adt"><see cref="cSpatialDataAdapter"/> to configure.</param>
+        ''' <param name="layer"><see cref="cEcospaceLayer"/> to configure.</param>
+        ''' -------------------------------------------------------------------
         Public Sub SetConnection(adt As cSpatialDataAdapter, layer As cEcospaceLayer)
+            ' Store refs
             Me.m_adt = adt
             Me.m_layer = layer
+            ' Update controls to match selection
             Me.PopulateControls()
+            ' Done
             Me.UpdateControls()
         End Sub
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
             If (Me.UIContext Is Nothing) Then Return
+            ' Only evaluate cache on load
             Me.EvaluateCache()
+            ' Load all existing datasets
             Me.FillTemplateDatasetBox()
+            ' Done
             Me.UpdateControls()
         End Sub
 
 #Region " Control events "
 
+        ''' <summary>
+        ''' Event handler for customizing how datasets are displayed in this UI.
+        ''' </summary>
         Private Sub OnFormatDS(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_lbxExistingDS.Format, m_cmbNewDS.Format
             Dim fmt As New cSpatialDatasetFormatter()
@@ -72,6 +102,9 @@ Namespace Ecospace.Controls
             End If
         End Sub
 
+        ''' <summary>
+        ''' User wants to create a dataset of the selected type.
+        ''' </summary>
         Private Sub OnCreateDS(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCreateDS.Click
             Try
@@ -81,6 +114,9 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
+        ''' <summary>
+        ''' User has selected a dataset for the current adapter and layer.
+        ''' </summary>
         Private Sub OnSelectDS(sender As System.Object, e As System.EventArgs) _
             Handles m_lbxExistingDS.SelectedIndexChanged
             Try
@@ -96,6 +132,9 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
+        ''' <summary>
+        ''' User wants to configure the currently selected dataset.
+        ''' </summary>
         Private Sub OnConfigDS(sender As System.Object, e As System.EventArgs) _
             Handles m_btnConfigDS.Click
             Try
@@ -106,6 +145,9 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
+        ''' <summary>
+        ''' User wants to delete the selected dataset
+        ''' </summary>
         Private Sub OnDeleteDS(sender As System.Object, e As System.EventArgs) _
             Handles m_btnDeleteDS.Click
             Try
@@ -115,6 +157,9 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
+        ''' <summary>
+        ''' User wants to clear the spatial data cache.
+        ''' </summary>
         Private Sub OnClearCache(sender As System.Object, e As System.EventArgs) _
             Handles m_btnClearCache.Click
 
@@ -146,6 +191,9 @@ Namespace Ecospace.Controls
             End If
         End Sub
 
+        ''' <summary>
+        ''' Event handler for customizing how converters are displayed in this UI.
+        ''' </summary>
         Private Sub OnFormatCV(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_lbxExistingConv.Format
             Dim fmt As New cSpatialConverterFormatter()
@@ -156,6 +204,9 @@ Namespace Ecospace.Controls
             End If
         End Sub
 
+        ''' <summary>
+        ''' User wants to configure the currently selected converter.
+        ''' </summary>
         Private Sub OnConfigCV(sender As System.Object, e As System.EventArgs) _
             Handles m_btnConfigureCV.Click
             Try
@@ -165,6 +216,9 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
+        ''' <summary>
+        ''' User has selected a converter for the current adapter and layer.
+        ''' </summary>
         Private Sub OnSelectCV(sender As System.Object, e As System.EventArgs) _
             Handles m_lbxExistingConv.SelectedIndexChanged
             Try
@@ -233,9 +287,7 @@ Namespace Ecospace.Controls
             For Each ds As ISpatialDataSet In Me.m_man.DatasetTemplates
                 Me.m_cmbNewDS.Items.Add(ds)
             Next
-            If (Me.m_cmbNewDS.Items.Count > 0) Then
-                Me.m_cmbNewDS.SelectedIndex = 0
-            End If
+
         End Sub
 
         Private Sub FillExistingDatasetBox(Optional ds As ISpatialDataSet = Nothing)
@@ -271,14 +323,22 @@ Namespace Ecospace.Controls
                 Return Me.m_adt.Dataset(Me.m_layer.Index)
             End Get
             Set(dataset As ISpatialDataSet)
+
                 If (Me.m_adt Is Nothing) Then Return
-                Me.m_adt.Dataset(Me.m_layer.Index) = dataset
+
+                ' Update selection
                 Dim iIndex As Integer = 0
                 If (dataset IsNot Nothing) Then
                     iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
                 End If
                 Me.m_lbxExistingDS.SelectedIndex = iIndex
-                Me.LayerChanged()
+
+                ' Apply
+                If (Not Object.ReferenceEquals(Me.m_adt.Dataset(Me.m_layer.Index), dataset)) Then
+                    Me.m_adt.Dataset(Me.m_layer.Index) = dataset
+                    Me.LayerChanged()
+                End If
+
             End Set
         End Property
 
@@ -288,14 +348,22 @@ Namespace Ecospace.Controls
                 Return Me.m_adt.Converter(Me.m_layer.Index)
             End Get
             Set(converter As ISpatialDataConverter)
+
                 If (Me.m_adt Is Nothing) Then Return
-                Me.m_adt.Converter(Me.m_layer.Index) = converter
+
+                ' Update selection
                 Dim iIndex As Integer = 0
                 If (converter IsNot Nothing) Then
                     iIndex = Me.m_lbxExistingConv.Items.IndexOf(converter)
                 End If
                 Me.m_lbxExistingConv.SelectedIndex = iIndex
-                Me.LayerChanged()
+
+                ' Apply
+                If (Not Object.ReferenceEquals(Me.m_adt.Converter(Me.m_layer.Index), converter)) Then
+                    Me.m_adt.Converter(Me.m_layer.Index) = converter
+                    Me.LayerChanged()
+                End If
+
             End Set
         End Property
 
@@ -347,6 +415,7 @@ Namespace Ecospace.Controls
             If (Me.m_uic Is Nothing) Then Return
             If (Me.m_adt Is Nothing) Then Return
 
+            Me.m_man.Update()
             Me.m_uic.Core.onChanged(Me.m_layer)
 
         End Sub
