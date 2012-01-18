@@ -836,6 +836,7 @@ Public Class cEcoSpace
         Dim timeStepTimer As Single
         Dim effTimer As Single
         Dim IBMTimer As Single
+        Dim tst1 As Single
         gridThreadWaitTimer = 0
         ibmThreadWaitTimer = 0
         ibmThreadWaitTimer2 = 0
@@ -892,6 +893,7 @@ Public Class cEcoSpace
             For m_Data.TimeNow = StartTime To (m_Data.TotalTime - m_Data.TimeStep) Step m_Data.TimeStep
 
                 Me.m_PauseSignal.WaitOne()
+                tst1 = Microsoft.VisualBasic.Timer
                 System.Console.WriteLine(m_Data.TimeNow.ToString)
                 'set time step counters
                 its = Int(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
@@ -1137,14 +1139,15 @@ Public Class cEcoSpace
 
                 'post notification that a time step has been completed
                 marshallOnTimeStep(itt)
-                Dim slvET3 As Single = Microsoft.VisualBasic.Timer
-                timeStepTimer = timeStepTimer + (Microsoft.VisualBasic.Timer - slvET3)
+                timeStepTimer += (Microsoft.VisualBasic.Timer - tst1)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, itt)
 
                 System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver Run Time = " & spaceTimer.ToString)
                 System.Console.WriteLine("FindSpatialEquilibrium() GridSolver Run Time = " & slvrTimer.ToString)
                 System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution Run Time = " & effTimer.ToString)
+
+                System.Console.WriteLine("FindSpatialEquilibrium() Timestep Run Time = " & timeStepTimer.ToString)
 
             Next m_Data.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1224,6 +1227,7 @@ Public Class cEcoSpace
                             ' ToDo: add error feedback
                             src.Populate(itt)
                         Catch ex As Exception
+                            System.Console.WriteLine("Ecospace.BeginTimeStep() Exception populating external dataset.")
                         End Try
                     End If
                 Next
