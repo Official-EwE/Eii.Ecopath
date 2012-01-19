@@ -25,6 +25,7 @@ Public Interface IEnviroInputMap
     ''' Get or Set the index of the Response function applied to a Group
     ''' </summary>
     ''' <param name="GroupIndex">Index of the Group that the response function is applied to</param>
+    ''' <param name="bUpdateMaps">Optional flag to suppress (possibly expensive) map updates</param>
     ''' <value></value>
     ''' <returns>Index of a response function.</returns>
     ''' <remarks>
@@ -38,7 +39,7 @@ Public Interface IEnviroInputMap
     ''' ResponseIndex = IEnviroInputMap.ResponseIndexForGroup(GroupIndex) 
     ''' </code>
     ''' </remarks>
-    Property ResponseIndexForGroup(ByVal GroupIndex As Integer) As Integer
+    Property ResponseIndexForGroup(ByVal GroupIndex As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer
 
     ''' <summary>
     ''' Max value of the map

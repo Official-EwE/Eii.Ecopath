@@ -231,7 +231,7 @@ Public Class cEnviroInputMap
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>
-    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer) As Integer _
+    Public Property ResponseIndexForGroup(ByVal GrpIndex As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer _
         Implements IEnviroInputMap.ResponseIndexForGroup
         Get
             Return Me.m_GrpToShape(GrpIndex)
@@ -244,7 +244,7 @@ Public Class cEnviroInputMap
 
                 'If the manager is nothing the response index was set during initialization
                 'The manager is not initialized until an Ecospace scenarion is loaded
-                If (Not Me.m_manager Is Nothing) Then
+                If (Not Me.m_manager Is Nothing And bUpdateMaps) Then
                     Me.m_manager.onChanged()
                 End If
 
