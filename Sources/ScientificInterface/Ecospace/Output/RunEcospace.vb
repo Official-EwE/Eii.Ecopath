@@ -644,7 +644,7 @@ Namespace Ecospace
                         For iflt As Integer = 1 To Me.Core.nFleets
                             sumEff += baseMap(iflt, i, j) * Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor
                         Next iflt
-                        icc = sumEff * cScaler
+                        icc = (sumEff / Me.Core.nFleets) * cScaler
 
                     End If
 
