@@ -129,10 +129,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         'Is there a time step in the file name
         If ModelTimeStep <> cCore.NULL_VALUE Then
             'Yes so include it in the file name
-            Timestep = "-" & ModelTimeStep.ToString
+            Timestep = String.Format("-{0:00000}", ModelTimeStep)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(varname.ToString() & "-" & grpName & Timestep & "." & Ext, False)
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", varname.ToString(), grpName, Timestep, Ext), False)
         Return System.IO.Path.Combine(Me.TimeStampDirName, fn)
 
     End Function
