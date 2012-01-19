@@ -10081,6 +10081,8 @@ Public Class cCore
                 fleet.EffectivePower = m_EcoSpaceData.EffPower(iFleet)
                 fleet.TotalEffMultiplier = m_EcoSpaceData.SEmult(iFleet)
 
+                fleet.EffortConversionFactor = m_EcoSpaceData.FleetConversionFactor(iFleet)
+
                 For iHabitat As Integer = 0 To Me.nHabitats
                     fleet.HabitatFishery(iHabitat) = m_EcoSpaceData.GearHab(iFleet, iHabitat)
                 Next
@@ -10117,6 +10119,8 @@ Public Class cCore
             'm_EcoPathData.Epower(iFleet) = fleet.EffectivePower
             m_EcoSpaceData.EffPower(iFleet) = fleet.EffectivePower
             m_EcoSpaceData.SEmult(iFleet) = fleet.TotalEffMultiplier
+
+            m_EcoSpaceData.FleetConversionFactor(iFleet) = fleet.EffortConversionFactor
 
             For iHabitat As Integer = 0 To Me.nHabitats
                 m_EcoSpaceData.GearHab(iFleet, iHabitat) = fleet.HabitatFishery(iHabitat)

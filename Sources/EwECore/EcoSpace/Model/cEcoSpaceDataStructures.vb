@@ -95,6 +95,12 @@ Public Class cEcospaceDataStructures
     ''' <remarks>Indexed Row,Col,Gear</remarks>
     Public PAreaFished(,,) As Single
 
+    ''' <summary>
+    ''' Unit conversion factor for fishing effort 
+    ''' </summary>
+    ''' <remarks>Used to sum effort into a single output map</remarks>
+    Public FleetConversionFactor() As Single
+
     ''' <summary>Does this Fishing fleet use this habitat type </summary>
     ''' <remarks>Indexed Fleet,Habitat</remarks>
     Public GearHab(,) As Boolean
@@ -194,29 +200,17 @@ Public Class cEcospaceDataStructures
     Public Xv(,,) As Single, Yv(,,) As Single 'SM, 3d arrays for time varying current velocities.
     Public flow(,) As Single
 
-
     'jb 12-Dec-2011 moved to cEcospace
     'Public BcwNomig(,,) As Single
     'Public CNomig(,,) As Single
     'Public dNomig(,,) As Single
     'Public Enomig(,,) As Single
     'Public F(,,) As Single
-
     'Public Bcw(,,) As Single
     'Public C(,,) As Single
     'Public d(,,) As Single
     'Public E(,,) As Single
-
     'Public AMm(,,) As Single
-
-
-
-    ' ----------------
-    ' ToDo JOE: The datasource now interacts with 3-dim HabTypeJoe, no longer with 2-dim HabType.
-    '           The user interface also uses HabTypeJoe.
-    'Public HabType_old(,) As Integer
-    'Public HabType(,,) As Single
-    ' ----------------
 
     Public RegionName() As String
     Public Region(,) As Integer
@@ -512,11 +506,6 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public bSaveASC As Boolean
 
-    'Public NumCapMaps As Integer
-    'Public CapMapDBID() As Integer
-    'Public CapMapName() As String
-    'Public CapMapVariable() As EwEUtils.Core.eVarNameFlags
-    'Public CapMapVarIndex() As Integer
     Public CapMapFunctions(,) As Integer
 
     ' Generate for each driver layer + 0 which is depth
@@ -537,6 +526,7 @@ Public Class cEcospaceDataStructures
     Public JtoUse(,,,) As Integer
 
     Public MovePacketsAtStanzaEntry As Boolean
+
 
 #End Region
 
@@ -1048,8 +1038,8 @@ Public Class cEcospaceDataStructures
             ReDim Me.EcopathFleetDBID(nFleets)
             ReDim Me.SEmult(nFleets)
             ReDim Me.EffPower(nFleets)
-
-            setFleetDefaults()
+            ReDim Me.FleetConversionFactor(nFleets)
+            Me.setFleetDefaults()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimFleets() Error: " & ex.Message)
@@ -1064,6 +1054,7 @@ Public Class cEcospaceDataStructures
         For i As Integer = 1 To nFleets
             EffPower(i) = 1
             SEmult(i) = 1
+            FleetConversionFactor(i) = 1
         Next 'initially set all gears to fish everywhere
 
     End Sub

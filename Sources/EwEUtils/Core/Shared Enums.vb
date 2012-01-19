@@ -534,6 +534,11 @@ Namespace Core
         ''' </summary>
         AdjustSpace
 
+        ''' <summary>
+        ''' Conversion factor for fishing effort
+        ''' </summary>
+        FleetEffortConversion
+
         'jb outputs for ecospace
         EcospaceMapBiomass
 

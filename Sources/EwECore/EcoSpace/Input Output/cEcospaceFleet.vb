@@ -31,6 +31,11 @@ Public Class cEcospaceFleet
             val = New cValue(New Single, eVarNameFlags.SEmult, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' FleetEffortConversion
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(New Single, eVarNameFlags.FleetEffortConversion, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
@@ -96,6 +101,22 @@ Public Class cEcospaceFleet
         End Set
     End Property
 
+
+    ''' <summary>
+    ''' Effort conversion factor used for summing maps into a single Effort value
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property EffortConversionFactor() As Single
+        Get
+            Return CSng(GetVariable(eVarNameFlags.FleetEffortConversion))
+        End Get
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.FleetEffortConversion, value)
+        End Set
+    End Property
+
 #End Region ' Properties by dot (.) operator
 
 #Region " Status by dot (.) operator "
@@ -127,6 +148,15 @@ Public Class cEcospaceFleet
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.MPAFishery, value, iMPA)
+        End Set
+    End Property
+
+    Public Property EffortConversionFactorStatus() As eStatusFlags
+        Get
+            Return GetStatus(eVarNameFlags.FleetEffortConversion)
+        End Get
+        Set(ByVal value As eStatusFlags)
+            SetStatus(eVarNameFlags.FleetEffortConversion, value)
         End Set
     End Property
 

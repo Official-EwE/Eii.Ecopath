@@ -993,6 +993,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Effort conversion (display).
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_FISHING_EFFORT_CONVERSION_HEADER() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_FISHING_EFFORT_CONVERSION_HEADER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Fleet \ habitat use:.
         '''</summary>
         Public ReadOnly Property ECOSPACE_HEADER_FLEETHABUSE() As String
