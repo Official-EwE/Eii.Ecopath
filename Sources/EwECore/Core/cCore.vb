@@ -7036,6 +7036,7 @@ Public Class cCore
             Me.m_EcoSimData.PcapBase(iFleet) = fleet.PcapBase
             Me.m_EcoSimData.CapBaseGrowth(iFleet) = fleet.CapBaseGrowth
             Me.m_EcoSimData.CapDepreciate(iFleet) = fleet.CapDepreciateRate
+            Me.m_EcoSimData.EffortConversionFactor(iFleet) = fleet.EffortConversionFactor
 
         Catch ex As Exception
             cLog.Write(Me.ToString & ".updateEcoSimGroupInfo() Error: " & ex.Message)
@@ -7064,6 +7065,9 @@ Public Class cCore
                 fleet.PcapBase = m_EcoSimData.PcapBase(iFleet)
                 fleet.CapDepreciateRate = m_EcoSimData.CapDepreciate(iFleet)
                 fleet.CapBaseGrowth = m_EcoSimData.CapBaseGrowth(iFleet)
+
+                fleet.EffortConversionFactor = m_EcoSimData.EffortConversionFactor(iFleet)
+
 
                 fleet.ResetStatusFlags()
                 fleet.AllowValidation = True
@@ -10081,8 +10085,6 @@ Public Class cCore
                 fleet.EffectivePower = m_EcoSpaceData.EffPower(iFleet)
                 fleet.TotalEffMultiplier = m_EcoSpaceData.SEmult(iFleet)
 
-                fleet.EffortConversionFactor = m_EcoSpaceData.FleetConversionFactor(iFleet)
-
                 For iHabitat As Integer = 0 To Me.nHabitats
                     fleet.HabitatFishery(iHabitat) = m_EcoSpaceData.GearHab(iFleet, iHabitat)
                 Next
@@ -10119,8 +10121,6 @@ Public Class cCore
             'm_EcoPathData.Epower(iFleet) = fleet.EffectivePower
             m_EcoSpaceData.EffPower(iFleet) = fleet.EffectivePower
             m_EcoSpaceData.SEmult(iFleet) = fleet.TotalEffMultiplier
-
-            m_EcoSpaceData.FleetConversionFactor(iFleet) = fleet.EffortConversionFactor
 
             For iHabitat As Integer = 0 To Me.nHabitats
                 m_EcoSpaceData.GearHab(iFleet, iHabitat) = fleet.HabitatFishery(iHabitat)

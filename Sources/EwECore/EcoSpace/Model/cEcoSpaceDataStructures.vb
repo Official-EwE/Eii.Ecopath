@@ -95,12 +95,6 @@ Public Class cEcospaceDataStructures
     ''' <remarks>Indexed Row,Col,Gear</remarks>
     Public PAreaFished(,,) As Single
 
-    ''' <summary>
-    ''' Unit conversion factor for fishing effort 
-    ''' </summary>
-    ''' <remarks>Used to sum effort into a single output map</remarks>
-    Public FleetConversionFactor() As Single
-
     ''' <summary>Does this Fishing fleet use this habitat type </summary>
     ''' <remarks>Indexed Fleet,Habitat</remarks>
     Public GearHab(,) As Boolean
@@ -1037,7 +1031,6 @@ Public Class cEcospaceDataStructures
             ReDim Me.EcopathFleetDBID(nFleets)
             ReDim Me.SEmult(nFleets)
             ReDim Me.EffPower(nFleets)
-            ReDim Me.FleetConversionFactor(nFleets)
             Me.setFleetDefaults()
 
         Catch ex As Exception
@@ -1053,7 +1046,6 @@ Public Class cEcospaceDataStructures
         For i As Integer = 1 To nFleets
             EffPower(i) = 1
             SEmult(i) = 1
-            FleetConversionFactor(i) = 1
         Next 'initially set all gears to fish everywhere
 
     End Sub

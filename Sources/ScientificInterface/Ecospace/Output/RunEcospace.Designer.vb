@@ -62,6 +62,7 @@ Namespace Ecospace
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
+            Me.m_rbSumEffort = New System.Windows.Forms.RadioButton()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -212,6 +213,7 @@ Namespace Ecospace
             'm_plDistribution
             '
             resources.ApplyResources(Me.m_plDistribution, "m_plDistribution")
+            Me.m_plDistribution.Controls.Add(Me.m_rbSumEffort)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayRelBiomass)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFishingEffort)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayContaminantC)
@@ -364,6 +366,12 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
+            'm_rbSumEffort
+            '
+            resources.ApplyResources(Me.m_rbSumEffort, "m_rbSumEffort")
+            Me.m_rbSumEffort.Name = "m_rbSumEffort"
+            Me.m_rbSumEffort.UseVisualStyleBackColor = True
+            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -427,6 +435,7 @@ Namespace Ecospace
         Private WithEvents m_btnPause As System.Windows.Forms.Button
         Private WithEvents m_cmbRunType As System.Windows.Forms.ComboBox
         Private WithEvents m_cbShowIBMPackets As System.Windows.Forms.CheckBox
+        Private WithEvents m_rbSumEffort As System.Windows.Forms.RadioButton
 
  
     End Class

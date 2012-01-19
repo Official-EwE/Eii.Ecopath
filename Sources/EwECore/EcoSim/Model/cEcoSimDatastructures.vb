@@ -532,6 +532,13 @@ Public Class cEcosimDatastructures
     ''' <summary>Proportion of regulated discards (by gear group) for the current time step</summary>
     Public Propdiscardtime(,) As Single
 
+
+    ''' <summary>
+    ''' Unit conversion factor for fishing effort 
+    ''' </summary>
+    ''' <remarks>Used to sum effort into a single output map</remarks>
+    Public EffortConversionFactor() As Single
+
     Public Sub RedimVars()
 
         'jb I don't know why these where split up there may be some kind of a reason
@@ -647,6 +654,8 @@ Public Class cEcosimDatastructures
 
         ReDim PropLandedTime(nGear, nGroups)
         ReDim Propdiscardtime(nGear, nGroups)
+
+        ReDim EffortConversionFactor(nGear)
 
     End Sub
 
@@ -1294,6 +1303,7 @@ Public Class cEcosimDatastructures
         For i = 1 To nGear + 1
             FishRateGearBasis(i) = 1
             FishRateGear(i, 0) = 1
+            EffortConversionFactor(i) = 1
 
             For j = 0 To NTimes
                 FishRateGear(i, j) = 1

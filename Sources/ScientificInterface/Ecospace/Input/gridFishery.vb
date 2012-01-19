@@ -39,7 +39,7 @@ Namespace Ecospace
             Dim source As cCoreInputOutputBase = Nothing
 
             'Define grid dimensions
-            Me.Redim(Me.Core.nFleets + 1, Me.Core.nHabitats + Me.Core.nMPAs + 5)
+            Me.Redim(Me.Core.nFleets + 1, Me.Core.nHabitats + Me.Core.nMPAs + 4)
 
             'Set header cells #(0,0)
             Me(0, 0) = New EwEColumnHeaderCell("")
@@ -66,11 +66,10 @@ Namespace Ecospace
             Next
 
             'Column header cell - Effective power
-            Me(0, Me.ColumnsCount - 3) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFPOWER)
+            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFPOWER)
             'Column header cell - Tot.Eff.Multip.
-            Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTEFFMULTI)
-            'Column header cell - Effort Conversion
-            Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_FISHING_EFFORT_CONVERSION_HEADER)
+            Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTEFFMULTI)
+           
 
         End Sub
 
@@ -91,9 +90,8 @@ Namespace Ecospace
                     Me(i, Me.Core.nHabitats + 1 + iMPA).Behaviors.Add(m_ah)
                 Next
 
-                Me(i, Me.ColumnsCount - 3) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EffectivePower)
-                Me(i, Me.ColumnsCount - 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SEmult)
-                Me(i, Me.ColumnsCount - 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.FleetEffortConversion)
+                Me(i, Me.ColumnsCount - 2) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EffectivePower)
+                Me(i, Me.ColumnsCount - 1) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.SEmult)
 
             Next
 

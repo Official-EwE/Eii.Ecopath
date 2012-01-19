@@ -83,6 +83,8 @@ Namespace Ecospace
         Private m_sMaxEffort As Single = 5
         Private m_cmdDisplayGroups As cCommand = Nothing
 
+        Private m_bSumEffort As Boolean
+
         ' Properties to monitor for setting run mode states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
         Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
@@ -544,7 +546,7 @@ Namespace Ecospace
 
         Private Sub PlotMap(ByVal g As Graphics)
             Try
-                If m_rbDisplayFishingEffort.Checked Then
+                If m_rbDisplayFishingEffort.Checked Or m_bSumEffort Then
                     PlotFishingEffortMap(g)
                 Else
                     PlotBiomassMapThreaded(g)
@@ -561,38 +563,53 @@ Namespace Ecospace
 
             If m_iTimeStepCur > 0 Then
 
-                For iFleet As Integer = 1 To Me.Core.nFleets
-                    If Me.StyleGuide.FleetVisible(iFleet) Then
-                        lVizFleets.Add(iFleet)
-                        iNumVizFleets += 1
-                    End If
-                Next
-
-                Me.m_iNumFleetPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVizFleets) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-                Me.m_iNumFleetPlotsVert = CInt(Math.Ceiling(iNumVizFleets / Me.m_iNumFleetPlotsHorz))
-
-                Dim xScale As Double = m_iNumFleetPlotsHorz * (m_iInCol + 1) + 1
-                Dim yScale As Double = m_iNumFleetPlotsVert * (m_iInRow + 1) + 1
-                If xScale > 0 Then xScale = m_pbMap.Width / xScale
-                If yScale > 0 Then yScale = m_pbMap.Height / yScale
-
-                For i As Integer = 0 To m_iNumFleetPlotsVert - 1
-                    For j As Integer = 0 To m_iNumFleetPlotsHorz - 1
-                        Dim cur As Integer = i * m_iNumFleetPlotsHorz + j
-                        If cur < iNumVizFleets Then
-                            Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
-                            Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
-                                                                    CInt(origin.Y * yScale), _
-                                                                    CInt(m_iInCol * xScale), _
-                                                                    CInt(m_iInRow * yScale))
-                            Try
-                                DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(cur), rect, g)
-                            Catch ex As Exception
-
-                            End Try
+                If Not Me.m_bSumEffort Then
+                    'NOT the sum of all fleets effort map!!!!
+                    'NOT NOT NOT
+                    For iFleet As Integer = 1 To Me.Core.nFleets
+                        If Me.StyleGuide.FleetVisible(iFleet) Then
+                            lVizFleets.Add(iFleet)
+                            iNumVizFleets += 1
                         End If
                     Next
-                Next
+
+                    Me.m_iNumFleetPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVizFleets) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
+                    Me.m_iNumFleetPlotsVert = CInt(Math.Ceiling(iNumVizFleets / Me.m_iNumFleetPlotsHorz))
+
+                    Dim xScale As Double = m_iNumFleetPlotsHorz * (m_iInCol + 1) + 1
+                    Dim yScale As Double = m_iNumFleetPlotsVert * (m_iInRow + 1) + 1
+                    If xScale > 0 Then xScale = m_pbMap.Width / xScale
+                    If yScale > 0 Then yScale = m_pbMap.Height / yScale
+
+                    For i As Integer = 0 To m_iNumFleetPlotsVert - 1
+                        For j As Integer = 0 To m_iNumFleetPlotsHorz - 1
+                            Dim cur As Integer = i * m_iNumFleetPlotsHorz + j
+                            If cur < iNumVizFleets Then
+                                Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
+                                Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
+                                                                        CInt(origin.Y * yScale), _
+                                                                        CInt(m_iInCol * xScale), _
+                                                                        CInt(m_iInRow * yScale))
+                                Try
+                                    DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(cur), rect, g)
+                                Catch ex As Exception
+
+                                End Try
+                            End If
+                        Next
+                    Next
+
+                Else
+                    'Yes Sum of all effort map
+                    'just one map 
+
+                    Dim rect As Rectangle = New Rectangle(0, 0, Me.m_pbMap.Width, Me.m_pbMap.Height)
+                    Dim orgShowLabels As Boolean = m_bShowLabels
+                    m_bShowLabels = False
+                    DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, cCore.NULL_VALUE, rect, g)
+                    m_bShowLabels = orgShowLabels
+
+                End If
 
             End If
 
@@ -612,9 +629,21 @@ Namespace Ecospace
                 For j As Integer = 1 To m_iInCol
                     Dim icc As Single
 
-                    icc = baseMap(iFleet, i, j) * cScaler
-                    'Convert to effort per unit of area
-                    icc = baseMap(iFleet, i, j) * cScaler '/ cEcospaceDataStructures.Width(i)
+
+                    If Not Me.m_bSumEffort Then
+
+                        icc = baseMap(iFleet, i, j) * cScaler
+                        'Convert to effort per unit of area
+                        'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
+                    Else
+
+                        Dim sumEff As Single
+                        For iflt As Integer = 1 To Me.Core.nFleets
+                            sumEff += baseMap(iflt, i, j) * Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor
+                        Next iflt
+                        icc = sumEff * cScaler
+
+                    End If
 
                     'Boundary check
                     icc = Math.Max(Math.Min(cColourBins, icc), 0)
@@ -741,7 +770,10 @@ Namespace Ecospace
             Handles m_rbDisplayRelBiomass.CheckedChanged, _
                     m_rbDisplayFishingEffort.CheckedChanged, _
                     m_rbDisplayCoverB.CheckedChanged, _
-                    m_rbDisplayContaminantC.CheckedChanged
+                    m_rbDisplayContaminantC.CheckedChanged, _
+                    m_rbSumEffort.CheckedChanged
+
+            Me.m_bSumEffort = Me.m_rbSumEffort.Checked
 
             Me.RefreshPlot()
             Me.RefreshMap()

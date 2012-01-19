@@ -132,7 +132,7 @@
     <value>0, 3, 3, 3</value>
   </data>
   <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 23</value>
+    <value>130, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_btnRun.TabIndex" type="System.Int32, mscorlib">
@@ -160,7 +160,7 @@
     <value>22, 92</value>
   </data>
   <data name="m_cmbDisplayGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>176, 21</value>
+    <value>245, 21</value>
   </data>
   <data name="m_cmbDisplayGroup.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -295,13 +295,13 @@
     <value>Fill</value>
   </data>
   <data name="m_btnStop.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 32</value>
+    <value>136, 32</value>
   </data>
   <data name="m_btnStop.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 0, 3</value>
   </data>
   <data name="m_btnStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 23</value>
+    <value>131, 23</value>
   </data>
   <data name="m_btnStop.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -328,7 +328,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_pbMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>506, 507</value>
+    <value>548, 607</value>
   </data>
   <data name="m_pbMap.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -349,10 +349,10 @@
     <value>Top, Bottom, Right</value>
   </data>
   <data name="m_pbColors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>514, 17</value>
+    <value>556, 17</value>
   </data>
   <data name="m_pbColors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>26, 474</value>
+    <value>26, 574</value>
   </data>
   <data name="m_pbColors.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -373,7 +373,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_lblHigh.Location" type="System.Drawing.Point, System.Drawing">
-    <value>481, 0</value>
+    <value>523, 0</value>
   </data>
   <data name="m_lblHigh.Size" type="System.Drawing.Size, System.Drawing">
     <value>30, 16</value>
@@ -403,7 +403,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="m_lblLow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>480, 492</value>
+    <value>522, 592</value>
   </data>
   <data name="m_lblLow.Size" type="System.Drawing.Size, System.Drawing">
     <value>31, 13</value>
@@ -499,7 +499,7 @@
     <value>22, 69</value>
   </data>
   <data name="m_cmbLabelPos.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 21</value>
+    <value>244, 21</value>
   </data>
   <data name="m_cmbLabelPos.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -556,7 +556,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrLabelOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 18</value>
+    <value>267, 18</value>
   </data>
   <data name="m_hdrLabelOptions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -571,7 +571,7 @@
     <value>m_hdrLabelOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7326.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7341.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrLabelOptions.Parent" xml:space="preserve">
     <value>m_plLabelOptions</value>
@@ -580,10 +580,10 @@
     <value>3</value>
   </data>
   <data name="m_plLabelOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 337</value>
+    <value>5, 364</value>
   </data>
   <data name="m_plLabelOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>197, 93</value>
+    <value>266, 93</value>
   </data>
   <data name="m_plLabelOptions.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -603,6 +603,36 @@
   <data name="m_plDistribution.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_rbSumEffort.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbSumEffort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbSumEffort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 69</value>
+  </data>
+  <data name="m_rbSumEffort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 17</value>
+  </data>
+  <data name="m_rbSumEffort.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_rbSumEffort.Text" xml:space="preserve">
+    <value>Sum fishing effort</value>
+  </data>
+  <data name="&gt;&gt;m_rbSumEffort.Name" xml:space="preserve">
+    <value>m_rbSumEffort</value>
+  </data>
+  <data name="&gt;&gt;m_rbSumEffort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbSumEffort.Parent" xml:space="preserve">
+    <value>m_plDistribution</value>
+  </data>
+  <data name="&gt;&gt;m_rbSumEffort.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_rbDisplayRelBiomass.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -610,7 +640,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayRelBiomass.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 25</value>
+    <value>4, 25</value>
   </data>
   <data name="m_rbDisplayRelBiomass.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 17</value>
@@ -631,7 +661,7 @@
     <value>m_plDistribution</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayRelBiomass.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_rbDisplayFishingEffort.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -640,7 +670,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayFishingEffort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 48</value>
+    <value>4, 47</value>
   </data>
   <data name="m_rbDisplayFishingEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 17</value>
@@ -661,7 +691,7 @@
     <value>m_plDistribution</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayFishingEffort.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_rbDisplayContaminantC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -670,7 +700,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayContaminantC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 71</value>
+    <value>4, 91</value>
   </data>
   <data name="m_rbDisplayContaminantC.Size" type="System.Drawing.Size, System.Drawing">
     <value>114, 17</value>
@@ -691,7 +721,7 @@
     <value>m_plDistribution</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayContaminantC.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_hdrDist.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -703,7 +733,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrDist.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 18</value>
+    <value>267, 18</value>
   </data>
   <data name="m_hdrDist.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -718,13 +748,13 @@
     <value>m_hdrDist</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7326.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7341.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.Parent" xml:space="preserve">
     <value>m_plDistribution</value>
   </data>
   <data name="&gt;&gt;m_hdrDist.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_rbDisplayCoverB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -733,7 +763,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbDisplayCoverB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 94</value>
+    <value>4, 113</value>
   </data>
   <data name="m_rbDisplayCoverB.Size" type="System.Drawing.Size, System.Drawing">
     <value>154, 17</value>
@@ -754,13 +784,13 @@
     <value>m_plDistribution</value>
   </data>
   <data name="&gt;&gt;m_rbDisplayCoverB.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_plDistribution.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 5</value>
   </data>
   <data name="m_plDistribution.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 115</value>
+    <value>267, 142</value>
   </data>
   <data name="m_plDistribution.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -784,13 +814,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_hdrRunning.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 442</value>
+    <value>4, 469</value>
   </data>
   <data name="m_hdrRunning.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrRunning.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 18</value>
+    <value>267, 18</value>
   </data>
   <data name="m_hdrRunning.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -805,7 +835,7 @@
     <value>m_hdrRunning</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7326.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7341.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRunning.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -820,7 +850,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbShowIBMPackets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 314</value>
+    <value>7, 341</value>
   </data>
   <data name="m_cbShowIBMPackets.Size" type="System.Drawing.Size, System.Drawing">
     <value>116, 17</value>
@@ -850,7 +880,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbMPA.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 285</value>
+    <value>7, 312</value>
   </data>
   <data name="m_cbMPA.Size" type="System.Drawing.Size, System.Drawing">
     <value>84, 17</value>
@@ -880,7 +910,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnDisplayGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>138, 43</value>
+    <value>207, 43</value>
   </data>
   <data name="m_btnDisplayGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 23</value>
@@ -916,7 +946,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_hdrDispOpt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 18</value>
+    <value>267, 18</value>
   </data>
   <data name="m_hdrDispOpt.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -931,7 +961,7 @@
     <value>m_hdrDispOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7326.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7341.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDispOpt.Parent" xml:space="preserve">
     <value>m_plDisplayOptions</value>
@@ -940,10 +970,10 @@
     <value>2</value>
   </data>
   <data name="m_plDisplayOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 126</value>
+    <value>4, 153</value>
   </data>
   <data name="m_plDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 153</value>
+    <value>267, 153</value>
   </data>
   <data name="m_plDisplayOptions.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -976,7 +1006,7 @@
     <value>0, 3, 3, 3</value>
   </data>
   <data name="m_btnPause.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 23</value>
+    <value>130, 23</value>
   </data>
   <data name="m_btnPause.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1009,13 +1039,13 @@
     <value>Basic PDE</value>
   </data>
   <data name="m_cmbRunType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>102, 4</value>
+    <value>136, 4</value>
   </data>
   <data name="m_cmbRunType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 4, 0, 4</value>
   </data>
   <data name="m_cmbRunType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 21</value>
+    <value>131, 21</value>
   </data>
   <data name="m_cmbRunType.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1033,13 +1063,13 @@
     <value>3</value>
   </data>
   <data name="m_tlpRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 463</value>
+    <value>4, 490</value>
   </data>
   <data name="m_tlpRun.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="m_tlpRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 58</value>
+    <value>267, 58</value>
   </data>
   <data name="m_tlpRun.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1081,7 +1111,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tabMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>511, 507</value>
+    <value>553, 607</value>
   </data>
   <data name="m_tabMap.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1111,7 +1141,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_zgPlotLarge.Size" type="System.Drawing.Size, System.Drawing">
-    <value>517, 631</value>
+    <value>511, 507</value>
   </data>
   <data name="m_zgPlotLarge.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1162,7 +1192,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tcOutputs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>519, 533</value>
+    <value>561, 633</value>
   </data>
   <data name="m_tcOutputs.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1192,10 +1222,10 @@
     <value>1</value>
   </data>
   <data name="m_scMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>735, 539</value>
+    <value>846, 639</value>
   </data>
   <data name="m_scMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>207</value>
+    <value>276</value>
   </data>
   <data name="m_scMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1219,7 +1249,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>735, 539</value>
+    <value>846, 639</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
@@ -1231,6 +1261,6 @@
     <value>RunEcospace</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7326.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7341.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
