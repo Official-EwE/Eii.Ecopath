@@ -1148,6 +1148,10 @@ Public Class cEcosimDatastructures
 
         Next
 
+        For iflt As Integer = 1 To Me.nGear
+            EffortConversionFactor(iflt) = 1
+        Next
+
         'Next from CJW's TemporaryRead
         If FtimeMax(0) <= 0 Then FtimeMax(0) = 2
         If FtimeAdjust(0) < 0 Then FtimeAdjust(0) = 0.5
@@ -1303,7 +1307,6 @@ Public Class cEcosimDatastructures
         For i = 1 To nGear + 1
             FishRateGearBasis(i) = 1
             FishRateGear(i, 0) = 1
-            EffortConversionFactor(i) = 1
 
             For j = 0 To NTimes
                 FishRateGear(i, j) = 1
