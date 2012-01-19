@@ -9633,7 +9633,7 @@ Public Class cCore
                 rgn.Init()
 
                 If rgn.Index <> 0 Then
-                    rgn.Name = m_EcoSpaceData.RegionName(rgn.Index)
+                    rgn.Name = "Region " & rgn.Index.ToString()
                 Else
                     rgn.Name = "Undefined Area"
                 End If

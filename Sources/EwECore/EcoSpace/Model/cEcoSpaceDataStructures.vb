@@ -212,7 +212,6 @@ Public Class cEcospaceDataStructures
     'Public E(,,) As Single
     'Public AMm(,,) As Single
 
-    Public RegionName() As String
     Public Region(,) As Integer
     Public MPA(,) As Integer
     Public RelPP(,) As Single
