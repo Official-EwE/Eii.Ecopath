@@ -68,15 +68,11 @@ Namespace Controls.Map.Layers
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
 
-            Dim sValMax As Single = layer.MaxValue
-            Dim sValMin As Single = layer.MinValue
+            Dim sValMax As Single = Me.ScaleMax
+            Dim sValMin As Single = Me.ScaleMin
 
-            'If layer.MetadataCell IsNot Nothing Then sValMin = layer.MetadataCell.Min
-
-            If Not Me.Autoscale Then
-                sValMax = Me.ScaleMax
-                sValMin = Me.ScaleMin
-            End If
+            If (sValMax = cCore.NULL_VALUE) Then sValMax = layer.MaxValue
+            If (sValMin = cCore.NULL_VALUE) Then sValMin = layer.MinValue
 
             Try
                 If Me.m_brFore Is Nothing Then Me.Update()

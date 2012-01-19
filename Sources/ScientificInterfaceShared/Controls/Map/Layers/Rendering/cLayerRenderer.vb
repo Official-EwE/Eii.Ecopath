@@ -30,9 +30,8 @@ Namespace Controls.Map.Layers
         ''' <summary>States whether the underlying layer is visible.</summary>
         Private m_bVisible As Boolean = True
 
-        Private m_bAutoScale As Boolean = True
-        Private m_sScaleMax As Single = 0.0
-        Private m_sScaleMin As Single = 0.0
+        Private m_sScaleMax As Single = cCore.NULL_VALUE
+        Private m_sScaleMin As Single = cCore.NULL_VALUE
 
 #End Region ' Private vars
 
@@ -173,20 +172,6 @@ Namespace Controls.Map.Layers
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bVisible = value
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether this layer renderer auto-scales its values.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property Autoscale() As Boolean
-            Get
-                Return Me.m_bAutoScale
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bAutoScale = value
             End Set
         End Property
 

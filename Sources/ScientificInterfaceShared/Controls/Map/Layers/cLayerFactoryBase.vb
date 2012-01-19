@@ -92,6 +92,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
+                    renderer.ScaleMin = 0
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorHabitatCapacity))
                     layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacityInput), _
                                             renderer, editor, eCoreCounterTypes.nGroups, bmd, eVarNameFlags.LayerHabitatCapacityInput)
@@ -106,6 +107,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
+                    renderer.ScaleMin = 0
                     editor = New cLayerEditorGroup(GetType(ucLayerEditorGroup))
                     editor.IsReadOnly = True
                     layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerHabitatCapacity), _
@@ -121,6 +123,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
+                    renderer.ScaleMin = 0
                     editor = New cLayerEditorRegion()
                     layer = New cLayer(uic, bmd.LayerRegion, renderer, editor)
                     lLayers.Add(layer)
@@ -161,6 +164,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
+                    renderer.ScaleMin = 0
                     editor = New cLayerEditorRange()
                     layer = New cLayer(uic, bmd.LayerRelPP, renderer, editor, bmd, eVarNameFlags.LayerRelPP)
 
@@ -174,6 +178,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
+                    renderer.ScaleMin = 0
                     editor = New cLayerEditorRange()
                     layer = New cLayer(uic, bmd.LayerRelCin, renderer, editor, bmd, eVarNameFlags.LayerRelCin)
 
@@ -271,6 +276,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
+                    renderer.ScaleMin = 0
                     editor = New cLayerEditorFleet(GetType(ucLayerEditorSailCost))
                     layer = New cLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerSail), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerSail)
 
@@ -287,6 +293,7 @@ Namespace Controls.Map
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererValue(vs)
+                        renderer.ScaleMin = 0
                         editor = New cLayerEditorTwoState()
                         layer = New cLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
@@ -305,6 +312,7 @@ Namespace Controls.Map
                         vs = ad.VisualStyle
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererValue(vs)
+                        renderer.ScaleMin = 0
                         editor = New cLayerEditorRange()
                         layer = New cLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
