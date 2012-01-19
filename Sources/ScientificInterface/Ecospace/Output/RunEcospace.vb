@@ -134,6 +134,13 @@ Namespace Ecospace
             Next i
             Me.m_cmbDisplayGroup.SelectedIndex = 0
 
+            Me.m_CmbDisplayFleet.Items.Clear()
+            For i As Integer = 1 To Me.Core.nFleets
+                Me.m_CmbDisplayFleet.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleets(i), eDescriptorTypes.Name))
+            Next i
+            Me.m_CmbDisplayFleet.SelectedIndex = 0
+
+
         End Sub
 
         ''' <summary>
@@ -1122,6 +1129,11 @@ Namespace Ecospace
 
 #End Region ' Internal implementation
 
+        Private Sub m_CmbDisplayFleet_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_CmbDisplayFleet.GotFocus
+
+            Me.ShowGroupMode = eShowGroupType.ShowSingle
+
+        End Sub
     End Class
 
 End Namespace

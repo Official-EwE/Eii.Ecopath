@@ -25,47 +25,49 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunEcospace))
-            Me.m_btnRun = New System.Windows.Forms.Button
-            Me.m_cmbDisplayGroup = New System.Windows.Forms.ComboBox
-            Me.m_rbShowSingle = New System.Windows.Forms.RadioButton
-            Me.m_rbShowNonHidden = New System.Windows.Forms.RadioButton
-            Me.m_rbShowAll = New System.Windows.Forms.RadioButton
-            Me.m_cbOverlay = New System.Windows.Forms.CheckBox
-            Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_pbMap = New System.Windows.Forms.PictureBox
-            Me.m_pbColors = New System.Windows.Forms.PictureBox
-            Me.m_lblHigh = New System.Windows.Forms.Label
-            Me.m_lblLow = New System.Windows.Forms.Label
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_plLabelOptions = New System.Windows.Forms.Panel
-            Me.m_cbInvertColor = New System.Windows.Forms.CheckBox
-            Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox
-            Me.m_cbShowLabels = New System.Windows.Forms.CheckBox
-            Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lblProgress = New System.Windows.Forms.Label
-            Me.m_plDistribution = New System.Windows.Forms.Panel
-            Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton
-            Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton
-            Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton
-            Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton
-            Me.m_hdrRunning = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox
-            Me.m_cbMPA = New System.Windows.Forms.CheckBox
-            Me.m_plDisplayOptions = New System.Windows.Forms.Panel
-            Me.m_btnDisplayGroups = New System.Windows.Forms.Button
-            Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel
-            Me.m_btnPause = New System.Windows.Forms.Button
-            Me.m_cmbRunType = New System.Windows.Forms.ComboBox
-            Me.m_tcOutputs = New System.Windows.Forms.TabControl
-            Me.m_tabMap = New System.Windows.Forms.TabPage
-            Me.m_tabPlot = New System.Windows.Forms.TabPage
-            Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl
+            Me.m_btnRun = New System.Windows.Forms.Button()
+            Me.m_cmbDisplayGroup = New System.Windows.Forms.ComboBox()
+            Me.m_rbShowSingle = New System.Windows.Forms.RadioButton()
+            Me.m_rbShowNonHidden = New System.Windows.Forms.RadioButton()
+            Me.m_rbShowAll = New System.Windows.Forms.RadioButton()
+            Me.m_cbOverlay = New System.Windows.Forms.CheckBox()
+            Me.m_btnStop = New System.Windows.Forms.Button()
+            Me.m_pbMap = New System.Windows.Forms.PictureBox()
+            Me.m_pbColors = New System.Windows.Forms.PictureBox()
+            Me.m_lblHigh = New System.Windows.Forms.Label()
+            Me.m_lblLow = New System.Windows.Forms.Label()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_plLabelOptions = New System.Windows.Forms.Panel()
+            Me.m_cbInvertColor = New System.Windows.Forms.CheckBox()
+            Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox()
+            Me.m_cbShowLabels = New System.Windows.Forms.CheckBox()
+            Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblProgress = New System.Windows.Forms.Label()
+            Me.m_plDistribution = New System.Windows.Forms.Panel()
+            Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton()
+            Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton()
+            Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton()
+            Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton()
+            Me.m_hdrRunning = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
+            Me.m_cbMPA = New System.Windows.Forms.CheckBox()
+            Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
+            Me.RadioButton1 = New System.Windows.Forms.RadioButton()
+            Me.m_btnDisplayGroups = New System.Windows.Forms.Button()
+            Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_btnPause = New System.Windows.Forms.Button()
+            Me.m_cmbRunType = New System.Windows.Forms.ComboBox()
+            Me.m_tcOutputs = New System.Windows.Forms.TabControl()
+            Me.m_tabMap = New System.Windows.Forms.TabPage()
+            Me.m_tabPlot = New System.Windows.Forms.TabPage()
+            Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
+            Me.m_CmbDisplayFleet = New System.Windows.Forms.ComboBox()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -90,6 +92,13 @@ Namespace Ecospace
             Me.m_cmbDisplayGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbDisplayGroup.FormattingEnabled = True
             Me.m_cmbDisplayGroup.Name = "m_cmbDisplayGroup"
+            '
+            'm_cmbDisplayFleet
+            '
+            resources.ApplyResources(Me.m_CmbDisplayFleet, "m_cmbDisplayFleet")
+            Me.m_CmbDisplayFleet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_CmbDisplayFleet.FormattingEnabled = True
+            Me.m_CmbDisplayFleet.Name = "m_cmbDisplayFleet"
             '
             'm_rbShowSingle
             '
@@ -287,6 +296,8 @@ Namespace Ecospace
             'm_plDisplayOptions
             '
             resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
+            Me.m_plDisplayOptions.Controls.Add(Me.m_CmbDisplayFleet)
+            Me.m_plDisplayOptions.Controls.Add(Me.RadioButton1)
             Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
             Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
@@ -295,6 +306,12 @@ Namespace Ecospace
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
             Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayGroup)
             Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
+            '
+            'RadioButton1
+            '
+            resources.ApplyResources(Me.RadioButton1, "RadioButton1")
+            Me.RadioButton1.Name = "RadioButton1"
+            Me.RadioButton1.UseVisualStyleBackColor = True
             '
             'm_btnDisplayGroups
             '
@@ -363,13 +380,19 @@ Namespace Ecospace
             Me.m_zgPlotLarge.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_zgPlotLarge, "m_zgPlotLarge")
             Me.m_zgPlotLarge.Name = "m_zgPlotLarge"
-            Me.m_zgPlotLarge.ScrollGrace = 0
-            Me.m_zgPlotLarge.ScrollMaxX = 0
-            Me.m_zgPlotLarge.ScrollMaxY = 0
-            Me.m_zgPlotLarge.ScrollMaxY2 = 0
-            Me.m_zgPlotLarge.ScrollMinX = 0
-            Me.m_zgPlotLarge.ScrollMinY = 0
-            Me.m_zgPlotLarge.ScrollMinY2 = 0
+            Me.m_zgPlotLarge.ScrollGrace = 0.0R
+            Me.m_zgPlotLarge.ScrollMaxX = 0.0R
+            Me.m_zgPlotLarge.ScrollMaxY = 0.0R
+            Me.m_zgPlotLarge.ScrollMaxY2 = 0.0R
+            Me.m_zgPlotLarge.ScrollMinX = 0.0R
+            Me.m_zgPlotLarge.ScrollMinY = 0.0R
+            Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
+            '
+            'm_CmbDisplayFleet
+            '
+            Me.m_CmbDisplayFleet.FormattingEnabled = True
+            resources.ApplyResources(Me.m_CmbDisplayFleet, "m_CmbDisplayFleet")
+            Me.m_CmbDisplayFleet.Name = "m_CmbDisplayFleet"
             '
             'RunEcospace
             '
@@ -383,6 +406,7 @@ Namespace Ecospace
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             Me.m_plLabelOptions.ResumeLayout(False)
             Me.m_plLabelOptions.PerformLayout()
@@ -434,6 +458,8 @@ Namespace Ecospace
         Private WithEvents m_btnPause As System.Windows.Forms.Button
         Private WithEvents m_cmbRunType As System.Windows.Forms.ComboBox
         Private WithEvents m_cbShowIBMPackets As System.Windows.Forms.CheckBox
+        Private WithEvents RadioButton1 As System.Windows.Forms.RadioButton
+        Friend WithEvents m_CmbDisplayFleet As System.Windows.Forms.ComboBox
 
  
     End Class
