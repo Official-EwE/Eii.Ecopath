@@ -43,7 +43,6 @@ Namespace Ecospace
             Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox()
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox()
             Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lblProgress = New System.Windows.Forms.Label()
             Me.m_plDistribution = New System.Windows.Forms.Panel()
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton()
@@ -54,7 +53,6 @@ Namespace Ecospace
             Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
             Me.m_cbMPA = New System.Windows.Forms.CheckBox()
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
-            Me.RadioButton1 = New System.Windows.Forms.RadioButton()
             Me.m_btnDisplayGroups = New System.Windows.Forms.Button()
             Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel()
@@ -64,7 +62,6 @@ Namespace Ecospace
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
-            Me.m_CmbDisplayFleet = New System.Windows.Forms.ComboBox()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -92,13 +89,6 @@ Namespace Ecospace
             Me.m_cmbDisplayGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbDisplayGroup.FormattingEnabled = True
             Me.m_cmbDisplayGroup.Name = "m_cmbDisplayGroup"
-            '
-            'm_cmbDisplayFleet
-            '
-            resources.ApplyResources(Me.m_CmbDisplayFleet, "m_cmbDisplayFleet")
-            Me.m_CmbDisplayFleet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_CmbDisplayFleet.FormattingEnabled = True
-            Me.m_CmbDisplayFleet.Name = "m_cmbDisplayFleet"
             '
             'm_rbShowSingle
             '
@@ -169,7 +159,6 @@ Namespace Ecospace
             'm_scMain.Panel1
             '
             Me.m_scMain.Panel1.Controls.Add(Me.m_plLabelOptions)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_lblProgress)
             Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
             Me.m_scMain.Panel1.Controls.Add(Me.m_hdrRunning)
             Me.m_scMain.Panel1.Controls.Add(Me.m_cbShowIBMPackets)
@@ -219,11 +208,6 @@ Namespace Ecospace
             Me.m_hdrLabelOptions.CollapsedParentHeight = 0
             Me.m_hdrLabelOptions.IsCollapsed = False
             Me.m_hdrLabelOptions.Name = "m_hdrLabelOptions"
-            '
-            'm_lblProgress
-            '
-            resources.ApplyResources(Me.m_lblProgress, "m_lblProgress")
-            Me.m_lblProgress.Name = "m_lblProgress"
             '
             'm_plDistribution
             '
@@ -296,8 +280,6 @@ Namespace Ecospace
             'm_plDisplayOptions
             '
             resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
-            Me.m_plDisplayOptions.Controls.Add(Me.m_CmbDisplayFleet)
-            Me.m_plDisplayOptions.Controls.Add(Me.RadioButton1)
             Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
             Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
@@ -306,12 +288,6 @@ Namespace Ecospace
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
             Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayGroup)
             Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
-            '
-            'RadioButton1
-            '
-            resources.ApplyResources(Me.RadioButton1, "RadioButton1")
-            Me.RadioButton1.Name = "RadioButton1"
-            Me.RadioButton1.UseVisualStyleBackColor = True
             '
             'm_btnDisplayGroups
             '
@@ -388,12 +364,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
-            'm_CmbDisplayFleet
-            '
-            Me.m_CmbDisplayFleet.FormattingEnabled = True
-            resources.ApplyResources(Me.m_CmbDisplayFleet, "m_CmbDisplayFleet")
-            Me.m_CmbDisplayFleet.Name = "m_CmbDisplayFleet"
-            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -448,7 +418,6 @@ Namespace Ecospace
         Private WithEvents m_rbDisplayContaminantC As System.Windows.Forms.RadioButton
         Private WithEvents m_rbDisplayCoverB As System.Windows.Forms.RadioButton
         Private WithEvents m_cbMPA As System.Windows.Forms.CheckBox
-        Private WithEvents m_lblProgress As System.Windows.Forms.Label
         Private WithEvents m_hdrLabelOptions As cEwEHeaderLabel
         Private WithEvents m_cmbLabelPos As System.Windows.Forms.ComboBox
         Private WithEvents m_cbShowLabels As System.Windows.Forms.CheckBox
@@ -458,8 +427,6 @@ Namespace Ecospace
         Private WithEvents m_btnPause As System.Windows.Forms.Button
         Private WithEvents m_cmbRunType As System.Windows.Forms.ComboBox
         Private WithEvents m_cbShowIBMPackets As System.Windows.Forms.CheckBox
-        Private WithEvents RadioButton1 As System.Windows.Forms.RadioButton
-        Friend WithEvents m_CmbDisplayFleet As System.Windows.Forms.ComboBox
 
  
     End Class

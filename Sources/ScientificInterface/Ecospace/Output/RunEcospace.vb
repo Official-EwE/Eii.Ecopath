@@ -134,13 +134,6 @@ Namespace Ecospace
             Next i
             Me.m_cmbDisplayGroup.SelectedIndex = 0
 
-            Me.m_CmbDisplayFleet.Items.Clear()
-            For i As Integer = 1 To Me.Core.nFleets
-                Me.m_CmbDisplayFleet.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleets(i), eDescriptorTypes.Name))
-            Next i
-            Me.m_CmbDisplayFleet.SelectedIndex = 0
-
-
         End Sub
 
         ''' <summary>
@@ -236,8 +229,6 @@ Namespace Ecospace
             Me.InitUIParams()
             Me.InitMapPlot()
             Me.InitDrawingThreads()
-
-            Me.m_lblProgress.Text = ""
 
             Me.m_zgh = New cEcospaceZedGraphHelper()
             Me.m_zgh.Attach(Me.UIContext, Me.m_zgPlotLarge)
@@ -915,10 +906,10 @@ Namespace Ecospace
                 cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, CSng(Me.m_iTimeStepCur / Me.Core.nEcospaceTimeSteps))
             End If
 
-            ' Update local time
-            Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
-                                                  Me.StyleGuide.FormatNumber(Me.m_iTimeStepCur / parms.NumberOfTimeStepsPerYear), _
-                                                  Me.Core.nEcospaceYears)
+            '' Update local time
+            'Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
+            '                                      Me.StyleGuide.FormatNumber(Me.m_iTimeStepCur / parms.NumberOfTimeStepsPerYear), _
+            '                                      Me.Core.nEcospaceYears)
 
             ' Store time step data
             Me.m_dataTimeStep = TimeStepData
@@ -979,7 +970,7 @@ Namespace Ecospace
                 End If
 
                 ' Update controls
-                Me.m_lblProgress.Text = ""
+                '    Me.m_lblProgress.Text = ""
                 Me.UpdateControls()
 
             End If
@@ -1129,11 +1120,6 @@ Namespace Ecospace
 
 #End Region ' Internal implementation
 
-        Private Sub m_CmbDisplayFleet_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_CmbDisplayFleet.GotFocus
-
-            Me.ShowGroupMode = eShowGroupType.ShowSingle
-
-        End Sub
     End Class
 
 End Namespace
