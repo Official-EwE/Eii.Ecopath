@@ -601,12 +601,14 @@ Namespace Ecospace
 
                 Else
                     'Yes Sum of all effort map
-                    'just one map 
+                    'just one map for all the fleets
 
                     Dim rect As Rectangle = New Rectangle(0, 0, Me.m_pbMap.Width, Me.m_pbMap.Height)
                     Dim orgShowLabels As Boolean = m_bShowLabels
                     m_bShowLabels = False
+
                     DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, cCore.NULL_VALUE, rect, g)
+
                     m_bShowLabels = orgShowLabels
 
                 End If
@@ -624,6 +626,7 @@ Namespace Ecospace
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
+            Dim sumEff As Single
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
@@ -637,7 +640,7 @@ Namespace Ecospace
                         'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
                     Else
 
-                        Dim sumEff As Single
+                        sumEff = 0
                         For iflt As Integer = 1 To Me.Core.nFleets
                             sumEff += baseMap(iflt, i, j) * Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor
                         Next iflt
