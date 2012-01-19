@@ -2668,20 +2668,13 @@ Public Class cEcoSpace
         'sets solvegrid movement arrays based on depth map
         Dim i As Integer, j As Integer, ip As Integer, AdScale As Single ', iad As Integer, iju As Integer
         Dim isp As Integer, ist As Integer, nvar2 As Integer, ir As Integer, ieco As Integer
-        '   Erase Bcw, C, d, e
 
         Me.m_Data.allocate(Bcw, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
         Me.m_Data.allocate(C, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        'd movement to right
         Me.m_Data.allocate(d, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
+        'e movement to left
         Me.m_Data.allocate(e, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-
-        'ReDim Bcw(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        'ReDim C(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ''d movement to right
-        'ReDim d(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        ''e movement to left
-        'ReDim e(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-
 
         AdScale = 1 / m_Data.CellLength '/ (2 * 3.14159 * CellLength)
         For i = 0 To m_Data.InRow
@@ -2729,18 +2722,6 @@ Public Class cEcoSpace
                             Enomig(i, j + 1, ip) = e(i, j + 1, ip)
                             dNomig(i, j, ip) = d(i, j, ip)
                         Next
-                        'If npairs > 0 Then
-                        '    For ip = 1 To npairs : iad = iadult(ip) : iju = ijuv(ip)
-                        '        e(i, j + 1, nvar + ip) = e(i, j + 1, iad)
-                        '        d(i, j, nvar + ip) = d(i, j, iad)
-                        '        e(i, j + 1, nvar + npairs + ip) = e(i, j + 1, iju)
-                        '        d(i, j, nvar + npairs + ip) = d(i, j, iju)
-                        '        Enomig(i, j + 1, nvar + ip) = e(i, j + 1, iad)
-                        '        dNomig(i, j, nvar + ip) = d(i, j, iad)
-                        '        Enomig(i, j + 1, nvar + npairs + ip) = e(i, j + 1, iju)
-                        '        dNomig(i, j, nvar + npairs + ip) = d(i, j, iju)
-                        '    Next
-                        'End If
 
                         'EwE5
                         ' nvar2 = nvar + 2 * npairs
@@ -2796,18 +2777,6 @@ Public Class cEcoSpace
                             CNomig(i, j, ip) = C(i, j, ip)
                             BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
                         Next
-                        'If npairs > 0 Then
-                        '    For ip = 1 To npairs : iad = iadult(ip) : iju = ijuv(ip)
-                        '        Bcw(i + 1, j, nvar + ip) = Bcw(i + 1, j, iad)
-                        '        C(i, j, nvar + ip) = C(i, j, iad)
-                        '        Bcw(i + 1, j, nvar + npairs + ip) = Bcw(i + 1, j, iju)
-                        '        C(i, j, nvar + npairs + ip) = C(i, j, iju)
-                        '        BcwNomig(i + 1, j, nvar + ip) = Bcw(i + 1, j, iad)
-                        '        CNomig(i, j, nvar + ip) = C(i, j, iad)
-                        '        BcwNomig(i + 1, j, nvar + npairs + ip) = Bcw(i + 1, j, iju)
-                        '        CNomig(i, j, nvar + npairs + ip) = C(i, j, iju)
-                        '    Next
-                        'End If
 
                         'EwE5
                         ' nvar2 = nvar + 2 * npairs
