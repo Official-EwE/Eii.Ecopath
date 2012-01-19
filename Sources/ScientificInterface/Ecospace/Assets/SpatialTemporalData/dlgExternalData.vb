@@ -154,6 +154,8 @@ Namespace Ecospace
                 adt = DirectCast(nd.Parent.Tag, cSpatialDataAdapter)
                 layer = DirectCast(nd.Tag, cEcospaceLayer)
                 Me.m_config.SetConnection(adt, layer)
+            Else
+                Me.m_config.SetConnection(Nothing, Nothing)
             End If
 
         End Sub

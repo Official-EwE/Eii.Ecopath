@@ -46,7 +46,6 @@ Partial Class dlgConfig
         Me.ControlBox = False
         Me.Controls.Add(Me.m_btnOK)
         Me.Controls.Add(Me.m_plContent)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "dlgConfig"
         Me.ShowInTaskbar = False
         Me.ResumeLayout(False)

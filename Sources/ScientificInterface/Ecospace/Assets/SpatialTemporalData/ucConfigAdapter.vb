@@ -32,9 +32,15 @@ Namespace Ecospace.Controls
 
 #End Region ' Private variables
 
+#Region " Constructor "
+
         Public Sub New()
             Me.InitializeComponent()
         End Sub
+
+#End Region ' Constructor
+
+#Region " Mandatory overrides etc "
 
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
@@ -59,6 +65,21 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
+            If (Me.UIContext Is Nothing) Then Return
+            ' Only evaluate cache on load
+            Me.EvaluateCache()
+            ' Populate all
+            Me.PopulateControls()
+            ' Done
+            Me.UpdateControls()
+        End Sub
+
+#End Region ' Mandatory overrides etc
+
+#Region " Public bits "
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Set the connection to configure.
@@ -70,36 +91,37 @@ Namespace Ecospace.Controls
             ' Store refs
             Me.m_adt = adt
             Me.m_layer = layer
-            ' Update controls to match selection
-            Me.PopulateControls()
+            ' Set initials
+            If (adt IsNot Nothing) And (layer IsNot Nothing) Then
+                Me.SelectedDS = adt.Dataset(layer.Index)
+                Me.SelectedConverter = adt.Converter(layer.Index)
+            End If
             ' Done
             Me.UpdateControls()
         End Sub
 
-        Protected Overrides Sub OnLoad(e As System.EventArgs)
-            MyBase.OnLoad(e)
-            If (Me.UIContext Is Nothing) Then Return
-            ' Only evaluate cache on load
-            Me.EvaluateCache()
-            ' Load all existing datasets
-            Me.FillTemplateDatasetBox()
-            ' Done
-            Me.UpdateControls()
-        End Sub
+#End Region ' Public bits
 
 #Region " Control events "
+
+        Private Sub OnDatasetTemplateSelected(sender As Object, e As System.EventArgs) _
+            Handles m_cmbNewDS.SelectedIndexChanged
+            Me.UpdateControls()
+        End Sub
 
         ''' <summary>
         ''' Event handler for customizing how datasets are displayed in this UI.
         ''' </summary>
         Private Sub OnFormatDS(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_lbxExistingDS.Format, m_cmbNewDS.Format
+
             Dim fmt As New cSpatialDatasetFormatter()
             If e.ListItem.Equals(String.Empty) Then
                 e.Value = fmt.GetDescriptor(Nothing)
             Else
                 e.Value = fmt.GetDescriptor(e.ListItem)
             End If
+
         End Sub
 
         ''' <summary>
@@ -260,33 +282,31 @@ Namespace Ecospace.Controls
 
             Me.m_btnClearCache.Enabled = (Me.m_bHasCachedData = True)
 
-            Dim fmt As New cVarnameTypeFormatter()
-
-            If (Me.m_adt Is Nothing) Then
+            If (Me.m_adt Is Nothing) Or (Me.m_layer Is Nothing) Then
                 Me.m_hdrSource.Text = My.Resources.CAPTION_EXTERNAL_DATA
             Else
-                Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, fmt.GetDescriptor(Me.m_adt.VarName))
+                Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, Me.m_layer.Name)
             End If
 
         End Sub
 
         Private Sub PopulateControls()
 
-            Debug.Assert(Me.m_uic IsNot Nothing)
-
-            Me.FillExistingDatasetBox(Me.SelectedDS)
+            Me.FillTemplateDatasetBox()
+            Me.FillExistingDatasetBox(Nothing)
             Me.FillExistingConverterBox()
 
         End Sub
 
         Private Sub FillTemplateDatasetBox()
 
-            Dim pm As cPluginManager = Me.m_uic.Core.PluginManager
-
             Me.m_cmbNewDS.Items.Clear()
             For Each ds As ISpatialDataSet In Me.m_man.DatasetTemplates
                 Me.m_cmbNewDS.Items.Add(ds)
             Next
+            If (Me.m_cmbNewDS.Items.Count > 0) Then
+                Me.m_cmbNewDS.SelectedItem = 0
+            End If
 
         End Sub
 

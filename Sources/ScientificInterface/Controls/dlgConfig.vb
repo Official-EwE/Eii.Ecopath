@@ -42,6 +42,8 @@ Public Class dlgConfig
         Me.Size = New Size(Me.Width + szPage.Width - szPanel.Width, _
                            Me.Height + szPage.Height - szPanel.Height)
 
+        Me.MinimumSize = Size
+
         Me.m_ctrl.Dock = DockStyle.Fill
         Me.m_plContent.Controls.Add(Me.m_ctrl)
 

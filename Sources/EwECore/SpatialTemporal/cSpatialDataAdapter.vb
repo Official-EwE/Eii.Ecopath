@@ -88,19 +88,19 @@ Namespace SpatialData
                 Return Me.m_converters(Math.Max(0, iIndex))
             End Get
             Set(ByVal value As ISpatialDataConverter)
-                If (iIndex < 0) Or (iIndex >= Me.m_converters.Length) Then Return
-                Me.m_converters(iIndex) = value
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Me.m_converters(Math.Max(0, iIndex)) = value
             End Set
         End Property
 
         Public Property Dataset(iIndex As Integer) As ISpatialDataSet
             Get
-                If (iIndex < 0) Or (iIndex >= Me.m_datasets.Length) Then Return Nothing
-                Return Me.m_datasets(iIndex)
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Return Me.m_datasets(Math.Max(0, iIndex))
             End Get
             Set(ByVal value As ISpatialDataSet)
-                If (iIndex < 0) Or (iIndex >= Me.m_datasets.Length) Then Return
-                Me.m_datasets(iIndex) = value
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Me.m_datasets(Math.Max(0, iIndex)) = value
             End Set
         End Property
 
