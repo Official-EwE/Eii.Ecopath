@@ -185,6 +185,8 @@ Namespace Ecospace.Controls
         Private Sub OnClearCache(sender As System.Object, e As System.EventArgs) _
             Handles m_btnClearCache.Click
 
+            ' ToDo: globalize this
+
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim dSizeTot As Double = cache.GetSize() / 1024
             Dim dSizeUnused As Double = cache.GetUnusedSize(Me.m_manSets) / 1024
@@ -192,25 +194,30 @@ Namespace Ecospace.Controls
             Dim bSucces As Boolean = True
 
             Try
-                Select Case MsgBox(String.Format(strPrompt, Me.m_uic.StyleGuide.FormatNumber(dSizeTot), Me.m_uic.StyleGuide.FormatNumber(dSizeUnused)), _
-                                   MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Yes
-                        bSucces = cSpatialDataCache.DefaultDataCache.Clear(Me.m_manSets)
-                    Case MsgBoxResult.No
-                        bSucces = cSpatialDataCache.DefaultDataCache.Clear()
-                    Case MsgBoxResult.Cancel
-                End Select
+                If (dSizeUnused > 0) Then
+                    Select Case MsgBox(String.Format(strPrompt, Me.m_uic.StyleGuide.FormatNumber(dSizeTot), Me.m_uic.StyleGuide.FormatNumber(dSizeUnused)), _
+                                           MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
+                        Case MsgBoxResult.Yes
+                            bSucces = cSpatialDataCache.DefaultDataCache.Clear(Me.m_manSets)
+                        Case MsgBoxResult.No
+                            bSucces = cSpatialDataCache.DefaultDataCache.Clear()
+                        Case MsgBoxResult.Cancel
+                    End Select
+                Else
+                    bSucces = cSpatialDataCache.DefaultDataCache.Clear()
+                End If
             Catch ex As Exception
                 bSucces = False
             End Try
+
+            Dim dSizeTot2 As Double = cache.GetSize() / 1024
+            Dim msg As New cMessage(String.Format("Spatial data cache cleared, freed {0} kb of data", Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+            Me.m_uic.Core.Messages.SendMessage(msg)
 
             ' Reflect new state
             Me.EvaluateCache()
             Me.UpdateControls()
 
-            If Not bSucces Then
-
-            End If
         End Sub
 
         ''' <summary>
@@ -261,9 +268,6 @@ Namespace Ecospace.Controls
 #Region " Internals "
 
         Private Sub UpdateControls()
-
-            Me.Enabled = (Me.m_adt IsNot Nothing)
-            If (Not Me.Enabled) Then Return
 
             Dim ds As ISpatialDataSet = Me.SelectedDS
             Dim cv As ISpatialDataConverter = Me.SelectedConverter
