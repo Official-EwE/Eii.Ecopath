@@ -632,14 +632,13 @@ Namespace Ecospace
                 For j As Integer = 1 To m_iInCol
                     Dim icc As Single
 
-
                     If Not Me.m_bSumEffort Then
-
+                        'Effort for a single fleet
                         icc = baseMap(iFleet, i, j) * cScaler
                         'Convert to effort per unit of area
                         'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
                     Else
-
+                        'sum of effort across all fleets
                         sumEff = 0
                         For iflt As Integer = 1 To Me.Core.nFleets
                             sumEff += baseMap(iflt, i, j) * Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor
