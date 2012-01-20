@@ -3100,6 +3100,9 @@ Namespace DataSources
                     taxonDS.TaxonMeanWeight(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanWeight", cCore.NULL_VALUE))
                     taxonDS.TaxonMeanLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLength", cCore.NULL_VALUE))
                     taxonDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
+                    taxonDS.TaxonWinf(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "Winf", cCore.NULL_VALUE))
+                    taxonDS.TaxonK(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "vbgfK", cCore.NULL_VALUE))
+                    taxonDS.TaxonMaxLength(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MaxLength", cCore.NULL_VALUE))
                     taxonDS.TaxonMeanLifeSpan(iTaxon) = CSng(Me.m_db.ReadSafe(reader, "MeanLifeSpan", cCore.NULL_VALUE))
                     taxonDS.TaxonVulnerabilityIndex(iTaxon) = CInt(Me.m_db.ReadSafe(reader, "VulnerabiltyIndex", cCore.NULL_VALUE))
                     taxonDS.TaxonLastUpdated(iTaxon) = CDbl(Me.m_db.ReadSafe(reader, "LastUpdated", -1))
@@ -3240,6 +3243,8 @@ Namespace DataSources
                         drow("MeanWeight") = taxonDS.TaxonMeanWeight(iTaxon)
                         drow("MeanLength") = taxonDS.TaxonMeanLength(iTaxon)
                         drow("MaxLength") = taxonDS.TaxonMaxLength(iTaxon)
+                        drow("Winf") = taxonDS.TaxonWinf(iTaxon)
+                        drow("vbgfK") = taxonDS.TaxonK(iTaxon)
                         drow("MeanLifeSpan") = taxonDS.TaxonMeanLifeSpan(iTaxon)
                         drow("VulnerabiltyIndex") = taxonDS.TaxonVulnerabilityIndex(iTaxon)
                         drow("LastUpdated") = taxonDS.TaxonLastUpdated(iTaxon)
@@ -3387,6 +3392,8 @@ Namespace DataSources
                 drow("MeanLength") = dataDetails.MeanLength
                 drow("MaxLength") = dataDetails.MaxLength
                 drow("MeanLifeSpan") = dataDetails.MeanLifespan
+                drow("Winf") = dataDetails.Winf
+                drow("vbgfK") = dataDetails.vbgfK
                 drow("VulnerabiltyIndex") = dataDetails.VulnerabilityIndex
             End If
 
@@ -4292,6 +4299,7 @@ Namespace DataSources
                     ecosimDS.PcapBase(iFleet) = CSng(Me.m_db.ReadSafe(reader, "PCapBase", 0.5))
                     ecosimDS.CapDepreciate(iFleet) = CSng(Me.m_db.ReadSafe(reader, "CapDepreciate", 0.06))
                     ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.m_db.ReadSafe(reader, "CapBaseGrowth", 0.2))
+                    ecosimDS.EffortConversionFactor(iFleet) = CSng(Me.m_db.ReadSafe(reader, "EffortConversionFactor", 1.0!))
 
                     mseDS.MaxEffort(iFleet) = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", cCore.NULL_VALUE))
                     mseDS.QuotaType(iFleet) = DirectCast(CInt(Me.m_db.ReadSafe(reader, "QuotaType", 0)), eQuotaTypes)
@@ -4663,6 +4671,7 @@ Namespace DataSources
                     drow("PCapBase") = ecosimDS.PcapBase(iFleet)
                     drow("CapDepreciate") = ecosimDS.CapDepreciate(iFleet)
                     drow("CapBaseGrowth") = ecosimDS.CapBaseGrowth(iFleet)
+                    drow("EffortConversionFactor") = ecosimDS.EffortConversionFactor(iFleet)
 
                     drow("CV") = mseDS.CVFest(iFleet)
                     drow("QIncrease") = mseDS.Qgrow(iFleet)

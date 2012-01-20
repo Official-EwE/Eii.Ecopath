@@ -138,6 +138,7 @@
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_05.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_06.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_07.vb" />
+    <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_08.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
