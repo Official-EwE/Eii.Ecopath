@@ -400,7 +400,7 @@ Public Class cEcospaceBasemap
 
         Get
             Return New Drawing.PointF(CSng(GetVariable(eVarNameFlags.Longitude)) + Me.CellSize * Me.InCol, _
-                                      CSng(GetVariable(eVarNameFlags.Latitude)) + Me.CellSize * Me.InRow)
+                                      CSng(GetVariable(eVarNameFlags.Latitude)) - Me.CellSize * Me.InRow)
         End Get
 
         Set(ByVal value As Drawing.PointF)

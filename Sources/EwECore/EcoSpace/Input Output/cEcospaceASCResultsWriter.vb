@@ -104,7 +104,7 @@ Public Class cEcospaceASCResultsWriter
     Protected Sub WriteHeader(ByRef writer As StreamWriter)
 
         Dim cellSizeDegrees As Single = Me.SpaceData.CellLength * cEcospaceDataStructures.KM_TO_DEGRESS
-        Dim latLL As Single = Me.SpaceData.Lat1 + (Me.SpaceData.InRow + 1) * cellSizeDegrees
+        Dim latLL As Single = Me.SpaceData.Lat1 - (Me.SpaceData.InRow + 1) * cellSizeDegrees
 
         writer.WriteLine("ncols       " & Me.SpaceData.InCol)
         writer.WriteLine("nrows       " & Me.SpaceData.InRow)
@@ -119,24 +119,22 @@ Public Class cEcospaceASCResultsWriter
     Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
-        Dim sbBuff As New StringBuilder()
         Dim bcell As Single
 
         Debug.Assert(map IsNot Nothing)
 
         For ir As Integer = Me.SpaceData.InRow To 1 Step -1
             For ic As Integer = 1 To Me.SpaceData.InCol
-                If ic > 1 Then sbBuff.Append(" ")
+                If ic > 1 Then strm.Write(" ")
                 If Me.SpaceData.Depth(ir, ic) > 0 Then
                     bcell = CSng(map.Cell(ir, ic))
                 Else
                     'land as NODATAVALUE
                     bcell = cCore.NULL_VALUE
                 End If
-                sbBuff.Append(Format(bcell, "#########0.0#####"))
+                strm.Write(bcell)
             Next
-            strm.WriteLine(sbBuff.ToString())
-            sbBuff.Length = 0
+            strm.WriteLine("")
         Next
 
     End Sub

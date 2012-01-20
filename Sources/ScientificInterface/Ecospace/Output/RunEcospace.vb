@@ -935,10 +935,10 @@ Namespace Ecospace
             m_iTimeStepCur = TimeStepData.iTimeStep
 
             'Update the running simulation years progress label.
-            If (Me.m_iTimeStepCur Mod cCore.N_MONTHS = 0) Then
-                ' BE easy notifying the world
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, CSng(Me.m_iTimeStepCur / Me.Core.nEcospaceTimeSteps))
-            End If
+            'If (Me.m_iTimeStepCur Mod cCore.N_MONTHS = 0) Then
+            '    ' BE easy notifying the world
+            cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, CSng(Me.m_iTimeStepCur / Me.Core.nEcospaceTimeSteps))
+            'End If
 
             '' Update local time
             'Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
