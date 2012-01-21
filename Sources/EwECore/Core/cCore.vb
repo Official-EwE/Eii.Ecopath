@@ -2313,7 +2313,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Property OutputPath() As String
         Get
-            If String.IsNullOrEmpty(Me.m_strOutputPath) Then
+            If String.IsNullOrWhiteSpace(Me.m_strOutputPath) Then
                 If Me.DataSource IsNot Nothing Then
                     Return Path.Combine(Me.DataSource.Directory, "EwE output")
                 End If

@@ -119,6 +119,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
+        Me.m_tsmiOpenOutput = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -348,7 +349,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'MenuFile
         '
-        Me.MenuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, Me.m_tsmiFileRecent, m_tssFile1, Me.m_tsmiFileClose, m_tssFile2, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, m_tssFile3, Me.m_tsmiPrint, Me.ToolStripSeparator4, Me.m_tsmiFileExit})
+        Me.MenuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiFileNew, Me.m_tsmiFileOpen, Me.m_tsmiFileRecent, Me.m_tsmiOpenOutput, m_tssFile1, Me.m_tsmiFileClose, m_tssFile2, Me.m_tsmiFileSave, Me.m_tsmiFileSaveAs, Me.m_tsmiFileCompact, m_tssFile3, Me.m_tsmiPrint, Me.ToolStripSeparator4, Me.m_tsmiFileExit})
         resources.ApplyResources(Me.MenuFile, "MenuFile")
         Me.MenuFile.Name = "MenuFile"
         '
@@ -645,6 +646,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
         '
+        'm_tsmiOpenOutput
+        '
+        Me.m_tsmiOpenOutput.Name = "m_tsmiOpenOutput"
+        resources.ApplyResources(Me.m_tsmiOpenOutput, "m_tsmiOpenOutput")
+        '
         'AppLauncher
         '
         Me.AllowDrop = True
@@ -746,6 +752,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tsmiEcospaceExportLayers As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tssEcospace4 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiEcospaceDataConnections As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiOpenOutput As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

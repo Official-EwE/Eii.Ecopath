@@ -61,10 +61,12 @@ Public Class cPathUtility
     ''' <remarks>Note that the core needs to have a model loaded.</remarks>
     ''' -----------------------------------------------------------------------
     Public Shared Function ResolvePath(ByVal strMask As String, ByVal core As cCore, ByRef strPathOut As String) As Boolean
+
         If (core Is Nothing) Then Return False
-        If (Not core.StateMonitor.HasEcopathLoaded) Then Return False
-        Dim strVersion As String = core.DataSource.Version.ToString
-        Return cPathUtility.ResolvePath(strMask, core.DataSource.FileName, core.DataSource.Directory, core.DataSource.Extension, strVersion, strPathOut)
+        If (core.StateMonitor.HasEcopathLoaded) Then
+            Return cPathUtility.ResolvePath(strMask, core.DataSource.FileName, core.DataSource.Directory, core.DataSource.Extension, core.DataSource.Version.ToString, strPathOut)
+        End If
+        Return cPathUtility.ResolvePath(strMask, "", "", "", "", strPathOut)
     End Function
 
     ''' -----------------------------------------------------------------------

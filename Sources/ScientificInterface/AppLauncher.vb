@@ -99,6 +99,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdExecute As cExecuteCommand = Nothing
     Private WithEvents m_cmdNewModel As cCommand = Nothing
     Private WithEvents m_cmdLoadModel As cCommand = Nothing
+    Private WithEvents m_cmdOpenOutput As cCommand = Nothing
     Private WithEvents m_cmdSave As cCommand = Nothing
     Private WithEvents m_cmdSaveModelAs As cCommand = Nothing
     Private WithEvents m_cmdCloseModel As cCommand = Nothing
@@ -293,6 +294,10 @@ Public Class AppLauncher
         Me.m_cmdLoadModel = New cCommand(cmdh, "LoadEcopathModel")
         Me.m_cmdLoadModel.AddControl(Me.m_tsmiFileOpen)
         Me.m_cmdLoadModel.AddControl(Me.m_tsbEcopath)
+
+        ' Create and configure open output location command
+        Me.m_cmdOpenOutput = New cCommand(cmdh, "OpenOutputLocation")
+        Me.m_cmdOpenOutput.AddControl(Me.m_tsmiOpenOutput)
 
         Me.m_cmdSave = New cCommand(cmdh, "SaveModel")
         Me.m_cmdSave.AddControl(Me.m_tsmiFileSave)
@@ -2666,7 +2671,19 @@ Public Class AppLauncher
         End If
     End Sub
 
-    Private Sub OnInvokePrint(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
+    ''' <summary>
+    ''' Open the output file location
+    ''' </summary>
+    Private Sub OnOpenOutputLocation(ByVal cmd As cCommand) Handles m_cmdOpenOutput.OnInvoke
+        Try
+            Process.Start("explorer.exe", Me.Core.OutputPath)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
+    Private Sub OnPrintInvoke(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
 
         Dim dlg As New PrintPreviewDialog()
         Dim cnt As IDockContent = Me.m_DockPanel.ActiveDocument
@@ -2680,7 +2697,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnEnablePrint(ByVal cmd As cCommand) Handles m_cmdPrint.OnUpdate
+    Private Sub OnPrintEnable(ByVal cmd As cCommand) Handles m_cmdPrint.OnUpdate
 
         Dim cnt As IDockContent = Me.m_DockPanel.ActiveDocument
         Dim bEnable As Boolean = False
