@@ -18,7 +18,15 @@ Public Class cEcospaceCSVResultsWriter
 
 #Region "IEcospaceResultsWriter Implementation"
 
+    Public Overrides Sub StartWrite()
+        If (Not Me.SpaceData.bSaveCSV) Then Return
+        Me.CreateTimeStampedDir()
+        Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
+    End Sub
+
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+
+        If (Not Me.SpaceData.bSaveCSV) Then Return
 
         Dim strm As StreamWriter
         Dim fn As String
@@ -38,25 +46,18 @@ Public Class cEcospaceCSVResultsWriter
     End Sub
 
     Public Overrides Sub EndWrite()
-
+        If (Not Me.SpaceData.bSaveCSV) Then Return
     End Sub
 
-    Public Overrides Sub StartWrite()
-        If Me.SpaceData.bSaveCSV Then
-            Me.CreateTimeStampedDir()
-            Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
-        End If
-    End Sub
+#End Region
+
+#Region "Private methods"
 
     Protected Overrides ReadOnly Property OuputType() As cEcospaceBaseResultsWriter.eSpaceOutputType
         Get
             Return eSpaceOutputType.CSV
         End Get
     End Property
-
-#End Region
-
-#Region "Private methods"
 
     Private Sub saveCSV(ByRef strm As StreamWriter, ByVal timestep As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
 

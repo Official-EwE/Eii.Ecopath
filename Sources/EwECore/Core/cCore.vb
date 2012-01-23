@@ -8277,24 +8277,20 @@ Public Class cCore
 
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
         Try
-            If Me.m_EcoSpaceData.bSaveCSV Then
-                If m_EcospaceResultsCSVWriter IsNot Nothing Then
-                    Try
-                        Me.m_EcospaceResultsCSVWriter.WriteResults(Me.m_spaceresults)
-                    Catch ex As Exception
-                        System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
-                    End Try
-                End If
+            If m_EcospaceResultsCSVWriter IsNot Nothing Then
+                Try
+                    Me.m_EcospaceResultsCSVWriter.WriteResults(Me.m_spaceresults)
+                Catch ex As Exception
+                    System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
+                End Try
             End If
 
-            If Me.m_EcoSpaceData.bSaveASC Then
-                If m_EcospaceResultsASCWriter IsNot Nothing Then
-                    Try
-                        Me.m_EcospaceResultsASCWriter.WriteResults(Me.m_spaceresults)
-                    Catch ex As Exception
-                        System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
-                    End Try
-                End If
+            If m_EcospaceResultsASCWriter IsNot Nothing Then
+                Try
+                    Me.m_EcospaceResultsASCWriter.WriteResults(Me.m_spaceresults)
+                Catch ex As Exception
+                    System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
+                End Try
             End If
 
         Catch ex As Exception

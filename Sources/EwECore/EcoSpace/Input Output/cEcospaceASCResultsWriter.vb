@@ -18,7 +18,15 @@ Public Class cEcospaceASCResultsWriter
 
 #Region "IEcospaceResultsWriter Implementation"
 
+    Public Overrides Sub StartWrite()
+        If (Not Me.SpaceData.bSaveASC) Then Return
+        Me.CreateTimeStampedDir()
+        Me.WriteInfoFile()
+    End Sub
+
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
+
+        If (Not Me.SpaceData.bSaveASC) Then Return
 
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
         Dim strm As StreamWriter
@@ -37,28 +45,19 @@ Public Class cEcospaceASCResultsWriter
 
     End Sub
 
-
     Public Overrides Sub EndWrite()
-
+        If (Not Me.SpaceData.bSaveASC) Then Return
     End Sub
 
-    Public Overrides Sub StartWrite()
-        If Me.SpaceData.bSaveASC Then
-            Me.CreateTimeStampedDir()
-            Me.WriteInfoFile()
-        End If
-    End Sub
+#End Region
+
+#Region "Private methods"
 
     Protected Overrides ReadOnly Property OuputType() As cEcospaceBaseResultsWriter.eSpaceOutputType
         Get
             Return eSpaceOutputType.ASC
         End Get
     End Property
-
-#End Region
-
-#Region "Private methods"
-
 
     Private Sub WriteInfoFile()
         Try
@@ -106,14 +105,14 @@ Public Class cEcospaceASCResultsWriter
         Dim cellSizeDegrees As Single = Me.SpaceData.CellLength * cEcospaceDataStructures.KM_TO_DEGRESS
         Dim latLL As Single = Me.SpaceData.Lat1 - (Me.SpaceData.InRow + 1) * cellSizeDegrees
 
-        writer.WriteLine("ncols       " & Me.SpaceData.InCol)
-        writer.WriteLine("nrows       " & Me.SpaceData.InRow)
-        'X Lower Left corner (cols)
-        writer.WriteLine("xllcorner   " & Me.SpaceData.Lon1) 'org.LonOrigin)
-        'Y Lower Left Corner (rows)
-        writer.WriteLine("yllcorner   " & latLL) 'org.LatOrigin)
-        writer.WriteLine("cellsize    " & cellSizeDegrees)
-        writer.WriteLine("NODATAVALUE " & cCore.NULL_VALUE)
+        writer.WriteLine("ncols         " & Me.SpaceData.InCol)
+        writer.WriteLine("nrows         " & Me.SpaceData.InRow)
+        writer.WriteLine("xllcorner     " & Me.SpaceData.Lon1)
+        writer.WriteLine("yllcorner     " & latLL)
+        'writer.WriteLine("xllcenter     " & (Me.SpaceData.Lon1 + 0.5 * cellSizeDegrees))
+        'writer.WriteLine("yllcenter     " & (latLL + 0.5 * cellSizeDegrees))
+        writer.WriteLine("cellsize      " & cellSizeDegrees)
+        writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
     End Sub
 
     Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
