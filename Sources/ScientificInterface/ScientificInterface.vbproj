@@ -1724,8 +1724,8 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Ecopath.ico" />
-    <EmbeddedResource Include="Resources\Ecosim3.ico" />
-    <EmbeddedResource Include="Resources\Ecospace3.ico" />
+    <EmbeddedResource Include="Resources\Ecosim.ico" />
+    <EmbeddedResource Include="Resources\Ecospace.ico" />
     <EmbeddedResource Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.resx">
       <SubType>Designer</SubType>
       <DependentUpon>dlgChangeYScale.vb</DependentUpon>

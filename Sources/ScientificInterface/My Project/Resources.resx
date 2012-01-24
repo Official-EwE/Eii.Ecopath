@@ -1263,12 +1263,6 @@ Description: {2}</value>
   <data name="certificate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\certificate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Ecosim3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ecosim3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Ecospace3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\ecospace3.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Ecotracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecotracer.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1518,5 +1512,11 @@ Description: {2}</value>
   </data>
   <data name="ECOSPACE_FISHING_EFFORT_CONVERSION_HEADER" xml:space="preserve">
     <value>Effort conversion (display)</value>
+  </data>
+  <data name="Ecosim" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecosim.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ecospace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\ecospace.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -1573,9 +1573,9 @@ Public Class AppLauncher
                 Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
                     frmNew.Icon = My.Resources.Ecopath
                 Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
-                    frmNew.Icon = My.Resources.Ecosim3
+                    frmNew.Icon = My.Resources.Ecosim
                 Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
-                    frmNew.Icon = My.Resources.Ecospace3
+                    frmNew.Icon = My.Resources.Ecospace
                 Case eCoreExecutionState.EcotracerLoaded
                     frmNew.Icon = My.Resources.Ecotracer
             End Select

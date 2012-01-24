@@ -373,6 +373,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Ecosim() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecosim", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to F{0}.
         '''</summary>
@@ -769,9 +776,9 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property Ecosim3() As System.Drawing.Icon
+        Public ReadOnly Property Ecospace() As System.Drawing.Icon
             Get
-                Dim obj As Object = ResourceManager.GetObject("Ecosim3", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("Ecospace", resourceCulture)
                 Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
@@ -1196,13 +1203,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOSPACE_WARNING_MEMOVERFLOW() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_WARNING_MEMOVERFLOW", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Ecospace3() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecospace3", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
