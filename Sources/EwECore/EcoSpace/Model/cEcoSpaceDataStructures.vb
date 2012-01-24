@@ -499,6 +499,8 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public bSaveASC As Boolean
 
+    Public bSaveAnnual As Boolean
+
     Public CapMapFunctions(,) As Integer
 
     ' Generate for each driver layer + 0 which is depth
