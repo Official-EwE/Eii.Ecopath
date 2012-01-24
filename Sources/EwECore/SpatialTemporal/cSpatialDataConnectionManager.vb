@@ -59,6 +59,8 @@ Namespace SpatialData
             Me.Clear()
 
             Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, eCoreCounterTypes.NotSet))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelCin, eCoreCounterTypes.NotSet))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerMPA, eCoreCounterTypes.NotSet))
             Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalLayers))
 
