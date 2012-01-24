@@ -57,6 +57,32 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether two numbers can be considered equal.
+        ''' </summary>
+        ''' <param name="dVal1">First value to compare.</param>
+        ''' <param name="dVal2">Second value to compare.</param>
+        ''' <param name="dThreshold">Max difference for the two values to be considered equal.</param>
+        ''' <returns>True if the two values differ by no more than the given threshold.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function AlmostEquals(dVal1 As Double, dVal2 As Double, dThreshold As Double) As Boolean
+            Return (Math.Abs(dVal1 - dVal2) < dThreshold)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether two numbers can be considered equal.
+        ''' </summary>
+        ''' <param name="sVal1">First value to compare.</param>
+        ''' <param name="sVal2">Second value to compare.</param>
+        ''' <param name="sThreshold">Max difference for the two values to be considered equal.</param>
+        ''' <returns>True if the two values differ by no more than the given threshold.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function AlmostEquals(sVal1 As Single, sVal2 As Single, sThreshold As Single) As Boolean
+            Return (Math.Abs(sVal1 - sVal2) < sThreshold)
+        End Function
+
     End Class
 
 End Namespace

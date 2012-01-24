@@ -121,6 +121,7 @@ Namespace SpatialData
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim layer As cEcospaceLayer = Nothing
             Dim dataExternal As ISpatialRaster = Nothing
+            Dim dCellSize As Double = CDbl(bm.CellSize)
             Dim sValue As Single
             Dim dt As Date
             Dim bSuccess As Boolean = False
@@ -138,11 +139,11 @@ Namespace SpatialData
                     dt = Me.ToDataSetTime(ds, iTime)
                     If (ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight)) Then
                         ' #Yes: Can load that data?
-                        If (ds.LoadDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight)) Then
+                        If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                             ' #Yes: extract external data
                             Try
                                 ' The raster returned here MUST have the extent and projection compatible with Ecospace
-                                dataExternal = ds.GetRaster(bm.CellSize, cv, layer.Name)
+                                dataExternal = ds.GetRaster(cv, layer.Name)
                             Catch ex As Exception
                                 ' User should know this
                                 cLog.Write(ex)

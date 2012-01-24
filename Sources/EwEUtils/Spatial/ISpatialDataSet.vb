@@ -119,6 +119,7 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="dateTime">The time to query data for. For practical
         ''' purposes, time is assumed to be rounded to days.</param>
+        ''' <param name="dCellSize">Map cell size that is requested.</param>
         ''' <param name="ptfNE">North-east corner of the area to load data for. 
         ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
         ''' <see cref="Point.Y"/> as latiude.</param>
@@ -128,6 +129,7 @@ Namespace SpatialData
         ''' <returns>True if data was loaded.</returns>
         ''' -------------------------------------------------------------------
         Function LoadDataAtT(ByVal datetime As DateTime, _
+                             ByVal dCellSize As Double, _
                              ByVal ptfNE As PointF, _
                              ByVal ptfSW As PointF) As Boolean
 
@@ -167,14 +169,19 @@ Namespace SpatialData
         ''' <summary>
         ''' Obtains a <see cref="ISpatialRaster"/> from the <see cref="LoadDataAtT">loaded</see> data.
         ''' </summary>
-        ''' <param name="dCellSize">Map cell size that is requested.</param>
         ''' <param name="converter">Spatial data converter to perform the magic.</param>
         ''' <param name="strLayerName">Name of the layer data will be retrieved for.</param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Function GetRaster(ByVal dCellSize As Double, _
-                           ByVal converter As ISpatialDataConverter, _
+        Function GetRaster(ByVal converter As ISpatialDataConverter, _
                            ByVal strLayerName As String) As ISpatialRaster
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the dialog read filter for all supported file types.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property DialogReadFilter() As String
 
 #End Region ' Data
 
