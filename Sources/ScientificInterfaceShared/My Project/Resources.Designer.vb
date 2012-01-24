@@ -233,6 +233,24 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Select file.
+        '''</summary>
+        Public ReadOnly Property CAPTION_SELECT_FILE() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_SELECT_FILE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Select files.
+        '''</summary>
+        Public ReadOnly Property CAPTION_SELECT_FILES() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_SELECT_FILES", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property certificate() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("certificate", resourceCulture)

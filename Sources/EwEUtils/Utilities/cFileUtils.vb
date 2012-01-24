@@ -101,15 +101,15 @@ Namespace Utilities
         ''' Find a file in a directory.
         ''' </summary>
         ''' <param name="strFile">Name of the file to locate.</param>
-        ''' <param name="strStartDir">Directory to search.</param>
+        ''' <param name="strPath">Directory to search.</param>
         ''' <param name="bRecursive">Flag stating if subdirectories should be searched recursively.</param>
         ''' <returns>The full path to the file if found, or an empty string if the file could not be located.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FindFile(ByVal strFile As String, _
-                                        ByVal strStartDir As String, _
+                                        ByVal strPath As String, _
                                         Optional ByVal bRecursive As Boolean = False) As String
 
-            Dim strFullPath As String = Path.Combine(strStartDir, strFile)
+            Dim strFullPath As String = Path.Combine(strPath, strFile)
             Dim fsec As FileSecurity = Nothing
 
             Try
@@ -125,12 +125,42 @@ Namespace Utilities
             End Try
 
             If bRecursive Then
-                For Each strDirectory As String In Directory.GetDirectories(strStartDir)
+                For Each strDirectory As String In Directory.GetDirectories(strPath)
                     strFullPath = FindFile(strFile, strDirectory, bRecursive)
                     If Not String.IsNullOrEmpty(strFullPath) Then Return strFullPath
                 Next
             End If
             Return ""
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all files that match a given <see cref="System.Windows.Forms.FileDialog.Filter">dialog filter</see>.
+        ''' </summary>
+        ''' <param name="astrFiles">The array of files to filter.</param>
+        ''' <param name="astrExtensions">Array of file extensions to text.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FilesByDialogFilter(astrFiles() As String, astrExtensions() As String) As String()
+
+            If (astrExtensions Is Nothing) Then Return astrFiles
+
+            Dim hash As New HashSet(Of String)
+            Dim lstrFiles As New List(Of String)
+
+            For i As Integer = 0 To astrExtensions.Length - 1
+                If Not hash.Contains(astrExtensions(i)) Then hash.Add(astrExtensions(i))
+                If astrExtensions(i).Contains(".*") Then Return astrFiles
+            Next
+
+            For i As Integer = 0 To astrFiles.Length - 1
+                If hash.Contains("*" & Path.GetExtension(astrFiles(i)).ToLower()) Then
+                    lstrFiles.Add(astrFiles(i))
+                End If
+            Next
+
+            Return lstrFiles.ToArray()
 
         End Function
 
