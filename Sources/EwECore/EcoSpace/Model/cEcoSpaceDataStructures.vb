@@ -592,6 +592,7 @@ Public Class cEcospaceDataStructures
 
 #Region "Public Methods"
 
+    
     Public Sub Clear()
         Me.m_ngroups = 0
         Me.nFleets = 0
