@@ -229,9 +229,7 @@ Namespace SpatialData
                     Dim dateSetStart As DateTime = ds.TimeStart
                     If (dateSetStart < DateTime.MaxValue) Then
                         ' Add run offset to dataset start time
-                        dateTimeStep = New DateTime(dateSetStart.Ticks)
-                        dateTimeStep.AddYears(iTimeStepYear)
-                        dateTimeStep.AddMonths(iTimeStepMonth)
+                        dateTimeStep = New DateTime(dateSetStart.Ticks).AddYears(iTimeStepYear).AddMonths(iTimeStepMonth)
                     End If
                 Else
                     ' #No: Return absolute date
