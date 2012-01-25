@@ -71,7 +71,9 @@ Namespace Ecospace.Controls
             ' Only evaluate cache on load
             Me.EvaluateCache()
             ' Populate all
-            Me.PopulateControls()
+            Me.FillTemplateDatasetBox()
+            Me.FillExistingDatasetBox(Nothing)
+            Me.FillExistingConverterBox()
             ' Done
             Me.UpdateControls()
         End Sub
@@ -297,14 +299,6 @@ Namespace Ecospace.Controls
 
             Me.m_lbxExistingDS.Enabled = bIsConnected
             Me.m_lbxExistingConv.Enabled = bIsConnected
-
-        End Sub
-
-        Private Sub PopulateControls()
-
-            Me.FillTemplateDatasetBox()
-            Me.FillExistingDatasetBox(Nothing)
-            Me.FillExistingConverterBox()
 
         End Sub
 
