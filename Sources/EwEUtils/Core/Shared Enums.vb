@@ -541,6 +541,7 @@ Namespace Core
 
         'jb outputs for ecospace
         EcospaceMapBiomass
+        EcospaceMapCatch
 
         'Ecospace Group output
         EcospaceGroupBiomassStart
