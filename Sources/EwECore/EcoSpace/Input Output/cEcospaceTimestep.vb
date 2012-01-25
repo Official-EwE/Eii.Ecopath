@@ -488,7 +488,8 @@ Public Class cEcospaceTimestep
 
         Dim lLayers As New List(Of cEcospaceLayer)
         Select Case varName
-            Case eVarNameFlags.EcospaceMapBiomass
+            Case eVarNameFlags.EcospaceMapBiomass, _
+                 eVarNameFlags.EcospaceMapCatch
                 For igroup As Integer = 1 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
                 Next
@@ -503,6 +504,8 @@ Public Class cEcospaceTimestep
         Select Case varName
             Case eVarNameFlags.EcospaceMapBiomass
                 Return Me.BiomassMap
+            Case eVarNameFlags.EcospaceMapCatch
+                Return Me.CatchMap
         End Select
         Return Nothing
 

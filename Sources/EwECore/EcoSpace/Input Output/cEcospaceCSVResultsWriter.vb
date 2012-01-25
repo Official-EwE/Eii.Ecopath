@@ -28,19 +28,23 @@ Public Class cEcospaceCSVResultsWriter
 
         If (Not Me.SpaceData.bSaveCSV) Then Return
 
+        Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
+        Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
         Dim strm As StreamWriter
         Dim fn As String
-        Dim varname As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass
-        Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
 
-        For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+        For Each varname As eVarNameFlags In vars
 
-            fn = Me.getFileName(varname, igrp, Me.getSubDirName())
-            strm = New StreamWriter(fn, True)
-            saveCSV(strm, tsData, igrp, varname)
+            For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
 
-            strm.Close()
-            strm = Nothing
+                fn = Me.getFileName(varname, igrp, Me.getSubDirName())
+                strm = New StreamWriter(fn, True)
+                saveCSV(strm, tsData, igrp, varname)
+
+                strm.Close()
+                strm = Nothing
+            Next
+
         Next
 
     End Sub

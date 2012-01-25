@@ -28,19 +28,22 @@ Public Class cEcospaceASCResultsWriter
 
         If (Not Me.SpaceData.bSaveASC) Then Return
 
+        Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
         Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
         Dim strm As StreamWriter
         Dim fn As String
-        Dim varName As eVarNameFlags = eVarNameFlags.EcospaceMapBiomass
 
-        For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName(varName, igrp, Me.getSubDirName(), tsData.iTimeStep)
-            strm = New StreamWriter(fn, False)
+        For Each varname As eVarNameFlags In vars
 
-            saveASC(strm, tsData, igrp, varName)
+            For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+                fn = Me.getFileName(varname, igrp, Me.getSubDirName(), tsData.iTimeStep)
+                strm = New StreamWriter(fn, False)
 
-            strm.Close()
-            strm = Nothing
+                saveASC(strm, tsData, igrp, varname)
+
+                strm.Close()
+                strm = Nothing
+            Next
         Next
 
     End Sub
