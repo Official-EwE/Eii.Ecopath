@@ -162,20 +162,15 @@ Namespace Ecospace
             Me.Close()
         End Sub
 
-        Private Sub OnAdapterSelected(sender As System.Object, e As TreeViewEventArgs) _
+        Private Sub OnNodeSelected(sender As System.Object, e As TreeViewEventArgs) _
             Handles m_tvAdapters.AfterSelect
 
-            Dim adt As cSpatialDataAdapter = Nothing
-            Dim layer As cEcospaceLayer = Nothing
-
-            Dim nd As TreeNode = e.Node
-            If (TypeOf nd.Tag Is cEcospaceLayer) Then
-                adt = DirectCast(nd.Parent.Tag, cSpatialDataAdapter)
-                layer = DirectCast(nd.Tag, cEcospaceLayer)
-                Me.m_config.SetConnection(adt, layer)
-            Else
-                Me.m_config.SetConnection(Nothing, Nothing)
-            End If
+            Try
+                Me.m_config.SetConnection(Me.SelectedAdapter, Me.SelectedLayer)
+            Catch ex As Exception
+                ' Whoopy
+                Debug.Assert(False, "Bing!")
+            End Try
 
         End Sub
 
