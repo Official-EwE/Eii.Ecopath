@@ -159,12 +159,16 @@ Namespace Ecospace.Controls
         ''' </summary>
         Private Sub OnConfigDS(sender As System.Object, e As System.EventArgs) _
             Handles m_btnConfigDS.Click
+
+            Me.Cursor = Cursors.WaitCursor
             Try
                 Me.ConfigDS(Me.SelectedDS)
                 Me.FillExistingDatasetBox()
             Catch ex As Exception
 
             End Try
+            Me.Cursor = Cursors.Default
+
         End Sub
 
         ''' <summary>
