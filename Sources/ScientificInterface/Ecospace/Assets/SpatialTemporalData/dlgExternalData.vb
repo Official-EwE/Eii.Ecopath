@@ -19,32 +19,31 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     Public Class dlgExternalData
 
-#Region " Helper classes "
+#Region " Private classes "
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper class, sorts <see cref="cSpatialDataAdapter"/>s by name, asc.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Class cSpatialAdapterSorter
-            Implements IComparer(Of cSpatialDataAdapter)
+        Private Class cLayerLink
+            Private m_adt As cSpatialDataAdapter
+            Private m_layer As cEcospaceLayer
 
-            Private m_fmt As New cVarnameTypeFormatter()
-
-            Public Sub New()
+            Public Sub New(adt As cSpatialDataAdapter, layer As cEcospaceLayer)
+                Me.m_adt = adt
+                Me.m_layer = layer
             End Sub
 
-            Public Function Compare(ByVal x As cSpatialDataAdapter, _
-                                    ByVal y As cSpatialDataAdapter) As Integer _
-                                Implements System.Collections.Generic.IComparer(Of cSpatialDataAdapter).Compare
-                If (x Is Nothing) Then Return 1
-                If (y Is Nothing) Then Return -1
-                Return String.Compare(Me.m_fmt.GetDescriptor(x.VarName), Me.m_fmt.GetDescriptor(y.VarName))
-            End Function
+            Public ReadOnly Property Adapter As cSpatialDataAdapter
+                Get
+                    Return Me.m_adt
+                End Get
+            End Property
 
+            Public ReadOnly Property Layer As cEcospaceLayer
+                Get
+                    Return Me.m_layer
+                End Get
+            End Property
         End Class
 
-#End Region ' Helper classes
+#End Region ' Private classes
 
 #Region " Private vars "
 
@@ -71,42 +70,62 @@ Namespace Ecospace
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            ' Safety first
+            ' Sanity checks
             If (Me.UIContext Is Nothing) Then Return
-            ' Sanity check
+
             Debug.Assert(Me.UIContext.Core.StateMonitor.HasEcospaceLoaded)
 
             Dim man As cSpatialDataConnectionManager = Me.m_uic.Core.SpatialDataConnectionManager
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim adapters As cSpatialDataAdapter() = Nothing
+            Dim ecospaceModelParams As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters()
             Dim fact As New cLayerFactoryInternal()
+            Dim strAdapter As String = ""
+            Dim dtGroupNodes As New Dictionary(Of String, TreeNode)
+            Dim tnAdapter As TreeNode = Nothing
+            Dim tnLayer As TreeNode = Nothing
+            Dim layers() As cEcospaceLayer = Nothing
+            Dim bHasExternalLayer As Boolean = False
 
             Debug.Assert(man IsNot Nothing)
 
-            ' Populate adapters list
-            adapters = man.Adapters
-            Array.Sort(adapters, New cSpatialAdapterSorter)
+            ' For all adapters
+            For Each adt As cSpatialDataAdapter In man.Adapters
 
-            For Each adt As cSpatialDataAdapter In adapters
+                ' Get group name for the adapter
+                strAdapter = fact.GetLayerGroup(adt.VarName)
+                ' Get layers for the adapter
+                layers = bm.Layers(adt.VarName)
 
-                Dim strGroup As String = fact.GetLayerGroup(adt.VarName)
-                Dim tnAdt As New TreeNode(strGroup)
-                Dim layers() As cEcospaceLayer = bm.Layers(adt.VarName)
+                ' Get the node for this group, which may already exist
+                If Not dtGroupNodes.ContainsKey(strAdapter) Then
+                    dtGroupNodes(strAdapter) = New TreeNode(strAdapter)
+                End If
+                tnAdapter = dtGroupNodes(strAdapter)
 
-                ' Remeber
-                tnAdt.Tag = adt
-
+                ' If adapter has layers
                 If (layers.Length > 0) Then
-                    Dim bExt As Boolean = False
-                    For Each l As cEcospaceLayer In layers
-                        Dim tnLayer As New TreeNode(l.Name)
-                        tnLayer.Tag = l
-                        tnAdt.Nodes.Add(tnLayer)
-                        bExt = bExt Or l.IsExternalData
+                    ' Assume layers are not connected yet
+                    bHasExternalLayer = False
+                    ' For all layers in the adapter
+                    For Each layer As cEcospaceLayer In layers
+                        ' Create tree node
+                        tnLayer = New TreeNode(layer.Name)
+                        ' Store data link
+                        tnLayer.Tag = New cLayerLink(adt, layer)
+                        ' Add to parent
+                        tnAdapter.Nodes.Add(tnLayer)
+                        ' Check whether any layer is connected to external data
+                        bHasExternalLayer = bHasExternalLayer Or layer.IsExternalData
                     Next
-                    Me.m_tvAdapters.Nodes.Add(tnAdt)
-                    If bExt Then tnAdt.Expand()
+
+                    ' Group layer not added yet?
+                    If (Not Me.m_tvAdapters.Nodes.Contains(tnAdapter)) Then
+                        ' #Yes: add the node
+                        Me.m_tvAdapters.Nodes.Add(tnAdapter)
+                        ' Expand node if any of its layers is connected to external data
+                        If bHasExternalLayer Then tnAdapter.Expand()
+                    End If
+
                 End If
             Next
 
@@ -196,12 +215,35 @@ Namespace Ecospace
             End Set
         End Property
 
+        Private ReadOnly Property SelectedAdapter As cSpatialDataAdapter
+            Get
+                Dim tag As Object = Me.m_tvAdapters.SelectedNode.Tag
+
+                If (tag Is Nothing) Then Return Nothing
+                If (Not TypeOf tag Is cLayerLink) Then Return Nothing
+
+                Return DirectCast(tag, cLayerLink).Adapter
+            End Get
+        End Property
+
+        Private ReadOnly Property SelectedLayer As cEcospaceLayer
+            Get
+                Dim tag As Object = Me.m_tvAdapters.SelectedNode.Tag
+
+                If (tag Is Nothing) Then Return Nothing
+                If (Not TypeOf tag Is cLayerLink) Then Return Nothing
+
+                Return DirectCast(tag, cLayerLink).Layer
+            End Get
+        End Property
+
         Private Sub UpdateNodeImages()
 
             For Each ndAdt As TreeNode In Me.m_tvAdapters.Nodes
                 Dim iNumConnected As Integer = 0
                 For Each ndLayer As TreeNode In ndAdt.Nodes
-                    Dim l As cEcospaceLayer = DirectCast(ndLayer.Tag, cEcospaceLayer)
+                    Dim link As cLayerLink = DirectCast(ndLayer.Tag, cLayerLink)
+                    Dim l As cEcospaceLayer = link.Layer
                     If l.IsExternalData Then
                         iNumConnected += 1
                         ndLayer.ImageIndex = 1
