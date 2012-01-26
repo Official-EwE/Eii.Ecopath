@@ -184,8 +184,12 @@ Namespace SpatialData
                                 layer.AllowValidation = bAllow
                                 ' Update visuals
                                 layer.Invalidate()
-
+                                ' Done
+                                dataExternal.Dispose()
+                                dataExternal = Nothing
                             End If
+                            ' Clean up
+                            ds.Unload()
                         End If
                     End If
                 End If

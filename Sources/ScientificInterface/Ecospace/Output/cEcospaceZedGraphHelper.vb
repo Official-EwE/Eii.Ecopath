@@ -8,6 +8,7 @@ Imports System.Drawing.Drawing2D
 Imports ScientificInterface.Other
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -80,9 +81,15 @@ Namespace Ecospace
         End Sub
 
         Public Sub AddValue(ByVal iGroup As Integer, ByVal iTimeStep As Integer, ByVal sValue As Single)
+
+            If Not cNumberUtils.IsFinite(sValue) Then
+                cNumberUtils.FixValue(sValue)
 #If DEBUG Then
-            Debug.Assert(Me.IsValidValue(iTimeStep, sValue), "Ecospace value invalid")
+                If 2 = 3 Then
+                    Debug.Assert(False, "Point contains invalid values")
+                End If
 #End If
+            End If
             Try
                 Dim li As CurveItem = Me.m_pane.CurveList(iGroup - 1)
                 li.AddPoint(iTimeStep, sValue)

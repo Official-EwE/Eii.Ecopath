@@ -131,11 +131,13 @@ Namespace Ecospace.Controls
         ''' </summary>
         Private Sub OnCreateDS(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCreateDS.Click
+            Me.Cursor = Cursors.WaitCursor
             Try
                 Me.CreateDS()
             Catch ex As Exception
 
             End Try
+            Me.Cursor = Cursors.Default
         End Sub
 
         ''' <summary>

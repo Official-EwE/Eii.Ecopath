@@ -1,6 +1,7 @@
 ﻿#Region " Imports "
 
 Option Strict On
+Imports System
 
 #End Region ' Imports
 
@@ -12,6 +13,7 @@ Namespace SpatialData
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public Interface ISpatialRaster
+        Inherits IDisposable
 
         ''' -------------------------------------------------------------------
         ''' <summary>
