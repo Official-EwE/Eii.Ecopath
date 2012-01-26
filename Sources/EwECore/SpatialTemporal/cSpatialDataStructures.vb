@@ -12,12 +12,7 @@ Namespace SpatialData
 
         ''' <summary>Availalable data adapters</summary>
         Public DataAdapters As New List(Of cSpatialDataAdapter)
-        ''' <summary>Flag stating how Ecospace time steps are interpreted when accessing remote data. If true, 
-        ''' an Ecospace time step is interpreted as an offset to the start time of a remote dataset. If false,
-        ''' an Ecospace time step is translated to an absolute time value for matching remote dataset data.
-        ''' </summary>
-        Public AdapterUseRelativeTime As Boolean = True
-
+       
         Public Sub SetDefaults()
 
             Me.m_data.Clear()

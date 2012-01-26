@@ -256,7 +256,6 @@ Namespace SpatialData
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
-            Dim dateTimeStep As DateTime
 
             Try
 
@@ -266,20 +265,8 @@ Namespace SpatialData
                 Dim iTimeStepYear As Integer = CInt(Math.Floor(dTimeStepYearFraction))
                 Dim iTimeStepMonth As Integer = CInt(((dTimeStepYearFraction - iTimeStepYear) * 12))
 
-                ' Should iTime be interpreted as relative to the dataset start time?
-                If spatialDS.AdapterUseRelativeTime Then
-                    ' #Yes: use year and month as relative to dataset start time
-                    Dim dateSetStart As DateTime = ds.TimeStart
-                    If (dateSetStart < DateTime.MaxValue) Then
-                        ' Add run offset to dataset start time
-                        dateTimeStep = New DateTime(dateSetStart.Ticks).AddYears(iTimeStepYear).AddMonths(iTimeStepMonth)
-                    End If
-                Else
-                    ' #No: Return absolute date
-                    dateTimeStep = New DateTime(Math.Max(ecopathDS.FirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
-                End If
-
-                Return dateTimeStep
+                ' Return absolute date
+                Return New DateTime(Math.Max(ecopathDS.FirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
 
             Catch ex As Exception
 
