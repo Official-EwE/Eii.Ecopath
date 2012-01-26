@@ -110,19 +110,20 @@ Namespace SpatialData
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Populate the core data that this adapter is responsible for.
+        ''' </summary>
+        ''' <param name="iTime">The Ecospace time step to process.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
         Protected Friend Overridable Function Populate(ByVal iTime As Integer) As Boolean
 
-            ' Place a given raster into the core data
-            ' Note that this method writes values straight into the underlying data structures.
-
-            ' ToDo: split this method up in parts
-
+            Dim msg As cMessage = Nothing
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim layer As cEcospaceLayer = Nothing
             Dim dataExternal As ISpatialRaster = Nothing
             Dim dCellSize As Double = CDbl(bm.CellSize)
-            Dim sValue As Single
             Dim dt As Date
             Dim bSuccess As Boolean = False
 
@@ -145,8 +146,11 @@ Namespace SpatialData
                                 ' The raster returned here MUST have the extent and projection compatible with Ecospace
                                 dataExternal = ds.GetRaster(cv, layer.Name)
                             Catch ex As Exception
-                                ' User should know this
-                                cLog.Write(ex)
+                                ' ToDo_JS: Globalize this message
+                                msg = New cMessage(String.Format("Ecospace obtain external data for {0} at time step {1}. Exception {2}", Me.Name, iTime, ex.Message), _
+                                                   eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                Me.m_core.Messages.SendMessage(msg)
+                                cLog.Write(ex, "cSpatialDataAdapter::Populate@GetRaster")
                             End Try
 
                             If (dataExternal IsNot Nothing) Then
@@ -154,31 +158,7 @@ Namespace SpatialData
                                 Dim bAllow As Boolean = layer.AllowValidation
                                 layer.AllowValidation = False
 
-                                Try
-                                    ' For all rows
-                                    For iRow As Integer = 1 To bm.InRow
-                                        ' For all columns
-                                        For iCol As Integer = 1 To bm.InCol
-                                            ' Is a water cell or is this layer affecting depth?
-                                            If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
-                                                ' #Yes: get value
-                                                sValue = CSng(dataExternal.Cell(iRow, iCol))
-                                                ' Is a valid value?
-                                                If (sValue <> cCore.NULL_VALUE) Then
-                                                    ' #Yes: set value
-                                                    ' Hack and slash for now
-                                                    layer.Cell(iRow, iCol) = sValue
-                                                End If
-                                            End If
-                                        Next iCol
-                                    Next iRow
-
-                                    bSuccess = True
-
-                                Catch ex As Exception
-                                    ' Whoah!
-                                    cLog.Write(ex)
-                                End Try
+                                Me.Adapt(bm, layer, iTime, dataExternal)
 
                                 ' Restore layer validation
                                 layer.AllowValidation = bAllow
@@ -191,12 +171,71 @@ Namespace SpatialData
                             ' Clean up
                             ds.Unload()
                         End If
+
                     End If
                 End If
             Next
 
             Return bSuccess
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Adapt loaded external data into a target Ecospace array.
+        ''' </summary>
+        ''' <param name="bm">The <see cref="cEcospaceBasemap"/> for the scenario to load data into.</param>
+        ''' <param name="layer">The <see cref="cEcospaceLayer"/> that will receive the data.</param>
+        ''' <param name="iTime">The Ecospace time step to load data for.</param>
+        ''' <param name="dataExternal">The <see cref="ISpatialRaster"/> that holds the loaded external data.</param>
+        ''' <returns>True if successful.</returns>
+        ''' <remarks>Note that this method writes values straight into the underlying data structures!</remarks>
+        ''' -------------------------------------------------------------------
+        Protected Friend Function Adapt(ByVal bm As cEcospaceBasemap, _
+                                        ByVal layer As cEcospaceLayer, _
+                                        ByVal iTime As Integer, _
+                                        ByVal dataExternal As ISpatialRaster) As Boolean
+
+            ' To ensure proper usage by inherited classes
+            Debug.Assert(bm IsNot Nothing)
+            Debug.Assert(layer IsNot Nothing)
+            Debug.Assert(dataExternal IsNot Nothing)
+
+            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim msg As cMessage = Nothing
+            Dim sValue As Single = 0
+            Dim bSuccess As Boolean = True ' Think positive. Really
+
+            Try
+                ' For all rows
+                For iRow As Integer = 1 To bm.InRow
+                    ' For all columns
+                    For iCol As Integer = 1 To bm.InCol
+                        ' Is a water cell or is this layer affecting depth?
+                        If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
+                            ' #Yes: get value
+                            sValue = CSng(dataExternal.Cell(iRow, iCol))
+                            ' Is a valid value?
+                            If (sValue <> cCore.NULL_VALUE) Then
+                                ' #Yes: set value
+                                ' Hack and slash for now
+                                layer.Cell(iRow, iCol) = sValue
+                            End If
+                        End If
+                    Next iCol
+                Next iRow
+
+            Catch ex As Exception
+                ' Whoah!
+                ' ToDo_JS: Globalize this message
+                msg = New cMessage(String.Format("Ecospace insert external data for {0} at time step {1} into {2}. Exception {3}", Me.Name, iTime, layer.Name, ex.Message), _
+                                   eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                Me.m_core.Messages.SendMessage(msg)
+                bSuccess = False
+                cLog.Write(ex, "cSpatialDataAdapter::LoadData")
+            End Try
+
+            Return bSuccess
         End Function
 
 #End Region ' Basic bits
