@@ -287,7 +287,6 @@ Namespace Ecospace.Controls
             If (cv IsNot Nothing) Then bCanConfigCV = bIsConnected And (TypeOf cv Is IConfigurablePlugin)
 
             Me.m_btnCreateDS.Enabled = (Me.m_cmbNewDS.SelectedIndex >= 0)
-
             Me.m_btnConfigDS.Enabled = bCanConfigDS
             Me.m_btnDeleteDS.Enabled = (ds IsNot Nothing)
             Me.m_btnConfigureCV.Enabled = bCanConfigCV
@@ -311,7 +310,7 @@ Namespace Ecospace.Controls
                 Me.m_cmbNewDS.Items.Add(ds)
             Next
             If (Me.m_cmbNewDS.Items.Count > 0) Then
-                Me.m_cmbNewDS.SelectedItem = 0
+                Me.m_cmbNewDS.SelectedIndex = 0
             End If
 
         End Sub
