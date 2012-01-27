@@ -3108,8 +3108,7 @@ Public Class cCore
                         Me.PluginManager.CloseDatabase()
                         Me.m_pluginManager.CloseModel()
                     End If
-                    ' JS 26Feb11: do not close data source because the core does not have the level of control to open the data source again.
-                    'DataSource.Close()
+                    DataSource.Close()
                 End If
                 ' Release data source
                 DataSource = Nothing
