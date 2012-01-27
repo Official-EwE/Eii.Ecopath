@@ -6272,8 +6272,8 @@ exitline:
                 MapDataType = eDataTypes.EcospaceLayerDriver Then
 
                 Me.m_Data.bHasCapacityChanged = True
-                Me.SetHabCap()
-                Me.m_Data.bHasCapacityChanged = False
+                'Me.SetHabCap()
+                'Me.m_Data.bHasCapacityChanged = False
 
                 Return True
 
