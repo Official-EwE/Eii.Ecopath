@@ -641,7 +641,11 @@ Namespace Ecospace
                         'sum of effort across all fleets
                         sumEff = 0
                         For iflt As Integer = 1 To Me.Core.nFleets
-                            sumEff += baseMap(iflt, i, j) * Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor
+                            If Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor > 0 Then
+                                sumEff += baseMap(iflt, i, j) * Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor
+                            Else
+                                sumEff += baseMap(iflt, i, j)
+                            End If
                         Next iflt
                         icc = (sumEff / Me.Core.nFleets) * cScaler
 

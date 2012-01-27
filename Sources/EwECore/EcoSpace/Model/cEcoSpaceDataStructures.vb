@@ -499,7 +499,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public bSaveASC As Boolean
 
-    Public bSaveAnnual As Boolean
+    Public bSaveAnnual As Boolean = True
 
     Public CapMapFunctions(,) As Integer
 

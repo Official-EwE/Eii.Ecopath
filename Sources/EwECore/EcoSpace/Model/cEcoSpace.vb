@@ -3403,11 +3403,11 @@ exitline:
             Debug.Assert(False, ex.Message)
         End Try
 
-        Dim AutoRest As AutoResetEvent = TryCast(arguments.WaitHandle, AutoResetEvent)
-        Debug.Assert(AutoRest IsNot Nothing, "PredictEffortDistributionThreaded Exception AutoResetEvent is null.")
+        Dim AutoReSet As AutoResetEvent = TryCast(arguments.WaitHandle, AutoResetEvent)
+        Debug.Assert(AutoReSet IsNot Nothing, "PredictEffortDistributionThreaded Exception AutoResetEvent is null.")
 
         'Set the AutoRestEvent this will release the wait on this thread
-        If AutoRest IsNot Nothing Then AutoRest.Set()
+        If AutoReSet IsNot Nothing Then AutoReSet.Set()
 
     End Sub
 

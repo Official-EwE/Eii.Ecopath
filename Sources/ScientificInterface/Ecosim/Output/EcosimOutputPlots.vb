@@ -683,12 +683,13 @@ Namespace Ecosim
                                          ByVal asValues() As Single)
 
             l.Populate(aiFleetIndex)
+
             l.Sorted = False
             For i As Integer = 0 To aiFleetIndex.Count - 1
                 l.SortValue(i) = asValues(i)
             Next
             l.SortType = cFleetListBox.eSortType.ValueAsc
-            l.Sorted = True
+            'l.Sorted = True
 
         End Sub
 
