@@ -98,7 +98,7 @@ Namespace Ecospace
 #Region " Control Event handlers "
 
         Private Sub OnAdd(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_btnAdd.Click
+            Handles m_btnAdd.Click, m_lvAllShapes.DoubleClick
             Try
                 Me.AddShapes()
                 Me.UpdateControls()
@@ -108,7 +108,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnRemove(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_btnRemove.Click
+            Handles m_btnRemove.Click, m_lvAppliedShapes.DoubleClick
             Try
                 Me.RemoveShapes()
                 Me.UpdateControls()

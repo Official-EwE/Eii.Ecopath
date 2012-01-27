@@ -398,7 +398,6 @@ Namespace Ecospace.Controls
             Dim dsNew As ISpatialDataSet = Nothing
 
             If (dsSelected Is Nothing) Then Return
-            If (Me.m_adt Is Nothing) Then Return
 
             dsNew = CType(Activator.CreateInstance(dsSelected.GetType()), ISpatialDataSet)
             If (dsNew Is Nothing) Then Return
