@@ -19,6 +19,7 @@ Namespace Controls.Map.Layers
 
         Public Sub New()
             MyBase.New()
+            Me.CellValue = 1.0!
         End Sub
 
         Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _

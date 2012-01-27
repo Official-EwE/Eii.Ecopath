@@ -155,20 +155,26 @@ Namespace SpatialData
 
                             If (dataExternal IsNot Nothing) Then
 
+                                ' Stop any validation
                                 Dim bAllow As Boolean = layer.AllowValidation
                                 layer.AllowValidation = False
 
+                                ' Integrate data
                                 Me.Adapt(bm, layer, iTime, dataExternal)
 
                                 ' Restore layer validation
                                 layer.AllowValidation = bAllow
-                                ' Notify core
-                                Me.m_core.onChanged(layer)
-                                ' Done
+
+                                ' Done, clean up
                                 dataExternal.Dispose()
                                 dataExternal = Nothing
+
+                                ' Notify core
+                                Me.m_core.onChanged(layer)
+
                             End If
-                            ' Clean up
+
+                            ' Unload dataset
                             ds.Unload()
                         End If
 

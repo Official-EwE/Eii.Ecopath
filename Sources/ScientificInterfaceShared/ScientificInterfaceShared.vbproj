@@ -229,10 +229,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
-    <Compile Include="Controls\Map\cLayerSync.vb" />
     <Compile Include="Controls\Map\Layers\cLayer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
-    <Compile Include="Controls\Map\Layers\cLayerSynchronizer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerBundle.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />

@@ -37,9 +37,6 @@ Namespace Controls.Map
         Private m_layerSelected As cLayer = Nothing
         ''' <summary>States whether map must be refreshed</summary>
         Private m_bRefreshMap As Boolean = False
-        ''' <summary>Helper class to keep group, fleet and month selections 
-        ''' synchronized between all layers in the map.</summary>
-        Private m_sync As New cLayerSynchronizer()
 
         Public Sub New()
 
@@ -327,8 +324,6 @@ Namespace Controls.Map
 
             ' Ignore sole descriptive layer changes
             If (cf = cLayer.eChangeFlags.Descriptive) Then Return
-
-            Me.m_sync.Synchronize(l, Me.Layers)
 
             ' Handle selection changes
             If ((cf And cLayer.eChangeFlags.Selected) > 0) Then
