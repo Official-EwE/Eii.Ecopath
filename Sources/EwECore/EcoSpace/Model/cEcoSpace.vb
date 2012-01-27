@@ -6019,7 +6019,6 @@ exitline:
         ' Me.AdjustLowHapCaps()
         Me.runAjustLowHabCapsThreaded()
 
-
         'All the map changes have been computed
         Me.m_Data.bHasCapacityChanged = False
 

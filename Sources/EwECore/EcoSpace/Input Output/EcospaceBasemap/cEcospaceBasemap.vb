@@ -693,6 +693,8 @@ Public Class cEcospaceBasemap
                 ' ToDo: reroute this
                 Return Me.m_core.m_EcoSpaceData.PHabType
             Case eVarNameFlags.LayerHabitatCapacity
+                ' Just in case, may not be needed
+                Me.m_core.m_Ecospace.SetHabCap()
                 Return Me.m_core.m_EcoSpaceData.HabCap
             Case eVarNameFlags.LayerHabitatCapacityInput
                 Return Me.m_core.m_EcoSpaceData.HabCapInput
@@ -730,40 +732,6 @@ Public Class cEcospaceBasemap
         End Select
         Return Nothing
     End Function
-
-    Public Sub LayerChanged(varName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999) _
-        Implements Core.IEcospaceLayerManager.LayerChanged
-
-        Try
-            Select Case varName
-                Case eVarNameFlags.LayerDepth, eVarNameFlags.LayerHabitat, eVarNameFlags.LayerHabitatCapacity, _
-                    eVarNameFlags.LayerDriver, eVarNameFlags.LayerDriver
-                    Me.m_core.m_EcoSpaceData.bHasCapacityChanged = True
-
-                Case eVarNameFlags.LayerHabitat
-                Case eVarNameFlags.LayerHabitatCapacity
-                Case eVarNameFlags.LayerHabitatCapacityInput
-                Case eVarNameFlags.LayerMPA
-                Case eVarNameFlags.LayerRegion
-                Case eVarNameFlags.LayerRelPP
-                Case eVarNameFlags.LayerRelCin
-                Case eVarNameFlags.LayerMPASeed
-                Case eVarNameFlags.LayerAdvection
-                Case eVarNameFlags.LayerMigration
-                Case eVarNameFlags.LayerWind
-                Case eVarNameFlags.LayerUpwelling
-                Case eVarNameFlags.LayerMLD
-                Case eVarNameFlags.LayerImportance
-                Case eVarNameFlags.LayerDriver
-                Case eVarNameFlags.LayerPort
-                Case eVarNameFlags.LayerSail
-                Case eVarNameFlags.LayerDistribution
-            End Select
-        Catch ex As Exception
-            Debug.Assert(False, "Invalid layer callback")
-        End Try
-
-    End Sub
 
 #End Region ' Layer interface
 

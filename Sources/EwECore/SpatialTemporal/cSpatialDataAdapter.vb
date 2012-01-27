@@ -162,8 +162,8 @@ Namespace SpatialData
 
                                 ' Restore layer validation
                                 layer.AllowValidation = bAllow
-                                ' Update visuals
-                                layer.Invalidate()
+                                ' Notify core
+                                Me.m_core.onChanged(layer)
                                 ' Done
                                 dataExternal.Dispose()
                                 dataExternal = Nothing

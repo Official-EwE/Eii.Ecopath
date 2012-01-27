@@ -511,11 +511,6 @@ Public Class cEcospaceTimestep
 
     End Function
 
-    ''' <inheritdocs cref="IEcospaceLayerManager.LayerChanged"/>
-    Public Sub LayerChanged(varName As EwEUtils.Core.eVarNameFlags, Optional iIndex As Integer = -9999) Implements Core.IEcospaceLayerManager.LayerChanged
-        ' NOP
-    End Sub
-
 #End Region
 
 End Class

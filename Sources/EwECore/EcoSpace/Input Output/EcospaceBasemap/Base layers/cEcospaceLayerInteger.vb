@@ -123,10 +123,6 @@ Public Class cEcospaceLayerInteger
     Public Overrides Sub Invalidate()
         ' Set invalidated flag
         Me.m_bInvalidateMinMax = True
-        ' Call home
-        If (Me.Manager IsNot Nothing) Then
-            Me.Manager.LayerChanged(Me.VarName, Me.Index)
-        End If
     End Sub
 
 #End Region ' Cell interaction
