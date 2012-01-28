@@ -326,21 +326,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Ecopath_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Ecosim_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Ecospace_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ValueChain.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ValueChain_32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\EU_50px.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +392,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\producer.png" />
+    <None Include="Resources\ValueChain.ico" />
     <None Include="Resources\retailer.png" />
     <None Include="Resources\wholesaler.png" />
   </ItemGroup>

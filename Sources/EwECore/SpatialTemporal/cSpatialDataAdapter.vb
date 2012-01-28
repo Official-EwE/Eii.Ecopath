@@ -137,6 +137,9 @@ Namespace SpatialData
                 ' Has both?
                 If (ds IsNot Nothing) And (cv IsNot Nothing) Then
                     ' #Yes: has data for this time step?
+#If DEBUG Then
+                    Dim sw As Stopwatch = Stopwatch.StartNew()
+#End If
                     dt = Me.ToDataSetTime(ds, iTime)
                     If (ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight)) Then
                         ' #Yes: Can load that data?
@@ -177,6 +180,10 @@ Namespace SpatialData
                             ' Unload dataset
                             ds.Unload()
                         End If
+#If DEBUG Then
+                        sw.Stop()
+                        Console.WriteLine("SpatialDataAdapter {0}::{1} {2} ms", Me.Name, layer.Name, sw.ElapsedMilliseconds)
+#End If
 
                     End If
                 End If

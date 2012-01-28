@@ -411,8 +411,6 @@ Namespace Ecospace.Controls
 
         Private Function ConfigDS(ds As ISpatialDataSet) As Boolean
 
-            ' ToDo: Globalize this
-
             If (ds Is Nothing) Then Return False
             If (Not TypeOf ds Is IConfigurablePlugin) Then Return True
 

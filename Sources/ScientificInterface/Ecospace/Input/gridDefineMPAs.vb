@@ -836,7 +836,7 @@ Namespace Ecospace
             If (bConfigurationChanged) Then
 
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
-                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
+                cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_APPLYCHANGES)
 
                 ' Add new MPAs
                 For iMPA = 0 To Me.m_alMPAs.Count - 1

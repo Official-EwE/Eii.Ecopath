@@ -2454,4 +2454,13 @@
   <data name="CAPTION_SELECT_FILES" xml:space="preserve">
     <value>Select files</value>
   </data>
+  <data name="GENERIC_STATUS_APPLYCHANGES" xml:space="preserve">
+    <value>Applying changes...</value>
+  </data>
+  <data name="GENERIC_STATUS_BUSY" xml:space="preserve">
+    <value>Please wait...</value>
+  </data>
+  <data name="GENERIC_STATUS_LOADINGPLUGIN" xml:space="preserve">
+    <value>Loading plug-in, please wait...</value>
+  </data>
 </root>

@@ -753,7 +753,7 @@ Namespace Ecospace
 
                 If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
+                cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_APPLYCHANGES)
 
                 ' Add new Habitats
                 For iHabitat = 0 To Me.m_alHabitats.Count - 1

@@ -148,12 +148,6 @@
   <data name="CAPTION_PSD_GROUP_CONTRIB" xml:space="preserve">
     <value>Particle size distribution (group contribution)</value>
   </data>
-  <data name="GENERIC_STATUS_LOADINGFORM" xml:space="preserve">
-    <value>Loading form, please wait...</value>
-  </data>
-  <data name="GENERIC_STATUS_APPLYCHANGES" xml:space="preserve">
-    <value>Applying changes...</value>
-  </data>
   <data name="GENERIC_TOOLTIP_PREY" xml:space="preserve">
     <value>Prey {0}</value>
     <comment>{0}: prey name</comment>
@@ -946,9 +940,6 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   <data name="ECOSIM_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecosim scenario - Ecopath model {0}</value>
     <comment>{0}: scenario name</comment>
-  </data>
-  <data name="GENERIC_STATUS_LOADINGPLUGIN" xml:space="preserve">
-    <value>Loading plugin, please wait...</value>
   </data>
   <data name="STATUS_MODEL_SAVING" xml:space="preserve">
     <value>Saving model...</value>

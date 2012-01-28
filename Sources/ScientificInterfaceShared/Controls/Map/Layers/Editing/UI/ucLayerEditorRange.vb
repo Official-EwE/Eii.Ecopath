@@ -2,6 +2,8 @@
 
 Option Strict On
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -147,7 +149,24 @@ Namespace Controls.Map.Layers
             Me.Editor.Fill()
         End Sub
 
+        Private Sub OnClickPreview(sender As System.Object, e As System.EventArgs) Handles m_pbPreview.Click
+            Me.EditLayer(eLayerEditTypes.EditVisuals)
+        End Sub
+
 #End Region ' Events
+
+#Region " Internals "
+
+        Protected Sub EditLayer(ByVal edittype As eLayerEditTypes)
+            Try
+                Dim cmd As cEditLayerCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+                cmd.Invoke(Me.Layer, Nothing, edittype)
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

@@ -48,9 +48,9 @@
             'm_btnFill
             '
             resources.ApplyResources(Me.m_btnFill, "m_btnFill")
+            Me.m_btnFill.Image = Global.ScientificInterfaceShared.My.Resources.Resources.Fill
             Me.m_btnFill.Name = "m_btnFill"
             Me.m_btnFill.UseVisualStyleBackColor = True
-            Me.m_btnFill.Image = ScientificInterfaceShared.My.Resources.Fill
             '
             'ucLayerEditorRange
             '

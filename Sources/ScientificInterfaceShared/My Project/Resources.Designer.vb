@@ -1297,6 +1297,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Applying changes....
+        '''</summary>
+        Public ReadOnly Property GENERIC_STATUS_APPLYCHANGES() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_STATUS_APPLYCHANGES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Please wait....
+        '''</summary>
+        Public ReadOnly Property GENERIC_STATUS_BUSY() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_STATUS_BUSY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Loading plug-in, please wait....
+        '''</summary>
+        Public ReadOnly Property GENERIC_STATUS_LOADINGPLUGIN() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_STATUS_LOADINGPLUGIN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cursor.
         '''</summary>
         Public ReadOnly Property GENERIC_TEXT_CURSOR() As String

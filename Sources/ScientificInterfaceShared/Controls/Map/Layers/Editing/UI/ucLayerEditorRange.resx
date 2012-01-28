@@ -163,7 +163,7 @@
     <value>m_nudValue</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.922.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7384.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudValue.Parent" xml:space="preserve">
     <value>$this</value>
@@ -265,6 +265,6 @@
     <value>ucLayerEditorRange</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Basemap.Layers.ucLayerEditorDefault, EwE6, Version=6.3.922.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Controls.Map.Layers.ucLayerEditorDefault, ScientificInterfaceShared, Version=6.3.7384.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

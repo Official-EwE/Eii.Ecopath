@@ -902,7 +902,7 @@ Imports EwEUtils.Core
 
             If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
-            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
+            cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_APPLYCHANGES)
 
             Dim htFleetID As New Dictionary(Of cFleetInfo, Integer)
             Dim iDBID As Integer = Nothing

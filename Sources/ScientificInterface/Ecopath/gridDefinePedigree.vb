@@ -1143,7 +1143,7 @@ Imports SourceGrid2.Cells
 
             ' Ooh!
             If Not Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
-            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_APPLYCHANGES)
+            cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_APPLYCHANGES)
 
             Try
                 For Each manInfo As cPedigreeManagerInfo In Me.m_dictConfigs.Values

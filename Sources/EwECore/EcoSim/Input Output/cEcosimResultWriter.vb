@@ -299,7 +299,11 @@ Namespace Ecosim
                         strFileName = Me.m_core.EcosimOutputFileLocation("Value", "", strExt)
                 End Select
             End If
-            Return Path.Combine(strPath, strFileName)
+
+            Dim strFullPath As String = Path.Combine(strPath, strFileName)
+            If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
+            Return strFullPath
+
         End Function
 
         Private Function SaveDataToFile(ByVal strFileName As String, _

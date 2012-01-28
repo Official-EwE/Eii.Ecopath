@@ -1635,33 +1635,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Applying changes....
-        '''</summary>
-        Public ReadOnly Property GENERIC_STATUS_APPLYCHANGES() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_STATUS_APPLYCHANGES", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Loading form, please wait....
-        '''</summary>
-        Public ReadOnly Property GENERIC_STATUS_LOADINGFORM() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_STATUS_LOADINGFORM", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Loading plugin, please wait....
-        '''</summary>
-        Public ReadOnly Property GENERIC_STATUS_LOADINGPLUGIN() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_STATUS_LOADINGPLUGIN", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to &amp;Create.
         '''</summary>
         Public ReadOnly Property GENERIC_TEXT_CREATE() As String

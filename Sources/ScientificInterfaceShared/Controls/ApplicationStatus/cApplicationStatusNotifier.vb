@@ -20,13 +20,19 @@ Namespace Controls
         ''' <summary>
         ''' Start progress status text feedback.
         ''' </summary>
+        ''' <param name="core"></param>
+        ''' <param name="strText">Progress message to show, if any. If left emtpy a generic busy message will be used.</param>
+        ''' <param name="sProgress">Optional progress indicator [0, 1] to use.</param>
         ''' -------------------------------------------------------------------
-        Public Shared Sub StartProgress(ByVal core As cCore, ByVal strText As String, _
+        Public Shared Sub StartProgress(ByVal core As cCore, _
+                                        Optional ByVal strText As String = "", _
                                         Optional ByVal sProgress As Single = 0.0!)
-
 
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return
+
+            ' Provide default
+            If (String.IsNullOrWhiteSpace(strText)) Then strText = My.Resources.GENERIC_STATUS_BUSY
 
             Dim pmsg As New cProgressMessage(sProgress, strText, eMessageType.Progress)
             pmsg.ProgressState = eProgressState.Start

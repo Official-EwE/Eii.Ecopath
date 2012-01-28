@@ -2391,7 +2391,7 @@ Public Class AppLauncher
             ' Is form already loaded?
             If Not ActivateForm(strNavPageName) Then
 
-                cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_LOADINGFORM)
+                cApplicationStatusNotifier.StartProgress(Me.Core)
 
                 Try
                     ' Load instance of form for selected node
@@ -3753,7 +3753,7 @@ Public Class AppLauncher
             ' and whether any plug-in UI elements are still active. The plug-in is responsible for dealing
             ' with consecutive run requests.
 
-            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.GENERIC_STATUS_LOADINGPLUGIN)
+            cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_LOADINGPLUGIN)
             Try
                 pgcmd.RunPlugin()
             Catch ex As Exception
