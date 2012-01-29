@@ -367,7 +367,7 @@ Public Class cSpaceSolver
 
             Next iGrp
 
-            m_EcospaceModel.accumCatchData(itt, iYear, BB, i, j)
+            m_EcospaceModel.accumCatchData(itt, iYear, BB, FishTime, i, j)
 
             For isc = 1 To m_Data.Nvarsplit
                 ieco = Ecode(isc)

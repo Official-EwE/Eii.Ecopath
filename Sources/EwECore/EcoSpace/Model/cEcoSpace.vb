@@ -4225,7 +4225,7 @@ exitline:
     ''' <param name="iRow">Map row</param>
     ''' <param name="iCol">Map col</param>
     ''' <remarks></remarks>
-    Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+    Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
         Dim sum As Single, iFlt As Integer, igrp As Integer
         'Dim Landings(,) As Single
 
@@ -4258,7 +4258,10 @@ exitline:
             For igrp = 1 To Me.m_Data.NGroups
 
                 If m_EPdata.fCatch(igrp) > 0 Then
-                    Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
+                    'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
+                    'use fishing mortality rate passed in instead 
+                    'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
+                    Dim bCatch As Single = Biomass(igrp) * FMortByGroup(igrp) * m_Data.Width(iRow)
                     m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
                     m_Data.CatchMap(iRow, iCol, igrp) += bCatch
                     'Next value of catch, depends on what gear was used:
