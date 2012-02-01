@@ -267,6 +267,7 @@ Namespace SpatialData
 
             ' Get Ecopath start year
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
 
@@ -279,7 +280,9 @@ Namespace SpatialData
                 Dim iTimeStepMonth As Integer = CInt(((dTimeStepYearFraction - iTimeStepYear) * 12))
 
                 ' Return absolute date
-                Return New DateTime(Math.Max(ecopathDS.FirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
+                Dim iStartYear As Integer = Me.m_core.EcosimFirstYear
+                If iStartYear = 0 Then iStartYear = ecopathDS.FirstYear
+                Return New DateTime(Math.Max(iStartYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
 
             Catch ex As Exception
 
