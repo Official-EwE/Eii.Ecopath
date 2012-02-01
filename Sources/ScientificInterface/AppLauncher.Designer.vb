@@ -279,6 +279,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         Me.m_tsmiEcospaceDataConnections.Name = "m_tsmiEcospaceDataConnections"
         resources.ApplyResources(Me.m_tsmiEcospaceDataConnections, "m_tsmiEcospaceDataConnections")
+        Me.m_tsmiEcospaceDataConnections.Image = SharedResources.Database
         '
         'm_tssModel1
         '
