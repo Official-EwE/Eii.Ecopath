@@ -125,7 +125,7 @@ Public Class cEcospaceASCResultsWriter
 
         Debug.Assert(map IsNot Nothing)
 
-        For ir As Integer = Me.SpaceData.InRow To 1 Step -1
+        For ir As Integer = 1 To Me.SpaceData.InRow
             For ic As Integer = 1 To Me.SpaceData.InCol
                 If ic > 1 Then strm.Write(" ")
                 If Me.SpaceData.Depth(ir, ic) > 0 Then
