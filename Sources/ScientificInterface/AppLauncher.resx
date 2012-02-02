@@ -379,7 +379,7 @@
     <value>264, 22</value>
   </data>
   <data name="m_tsmiEcospaceDataConnections.Text" xml:space="preserve">
-    <value>&amp;External data connections...</value>
+    <value>&amp;External Data Connections...</value>
   </data>
   <data name="MenuEcospace.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 20</value>

@@ -32,6 +32,7 @@ Namespace Ecospace
             Me.m_tvAdapters = New System.Windows.Forms.TreeView()
             Me.m_config = New ScientificInterface.Ecospace.Controls.ucConfigAdapter()
             Me.m_ilConnections = New System.Windows.Forms.ImageList(Me.components)
+            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
             Me.m_sc.Panel2.SuspendLayout()
@@ -58,6 +59,7 @@ Namespace Ecospace
             '
             'm_sc.Panel1
             '
+            Me.m_sc.Panel1.Controls.Add(Me.m_hdrLayers)
             Me.m_sc.Panel1.Controls.Add(Me.m_tvAdapters)
             '
             'm_sc.Panel2
@@ -69,13 +71,15 @@ Namespace Ecospace
             '
             'm_tvAdapters
             '
-            Me.m_tvAdapters.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_tvAdapters.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tvAdapters.FullRowSelect = True
             Me.m_tvAdapters.HideSelection = False
-            Me.m_tvAdapters.Location = New System.Drawing.Point(0, 0)
+            Me.m_tvAdapters.Location = New System.Drawing.Point(0, 21)
             Me.m_tvAdapters.Name = "m_tvAdapters"
             Me.m_tvAdapters.ShowLines = False
-            Me.m_tvAdapters.Size = New System.Drawing.Size(170, 278)
+            Me.m_tvAdapters.Size = New System.Drawing.Size(170, 257)
             Me.m_tvAdapters.TabIndex = 0
             '
             'm_config
@@ -92,6 +96,19 @@ Namespace Ecospace
             Me.m_ilConnections.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit
             Me.m_ilConnections.ImageSize = New System.Drawing.Size(16, 16)
             Me.m_ilConnections.TransparentColor = System.Drawing.Color.Transparent
+            '
+            'm_hdrLayers
+            '
+            Me.m_hdrLayers.CanCollapseParent = False
+            Me.m_hdrLayers.CollapsedParentHeight = 0
+            Me.m_hdrLayers.Dock = System.Windows.Forms.DockStyle.Top
+            Me.m_hdrLayers.IsCollapsed = False
+            Me.m_hdrLayers.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrLayers.Name = "m_hdrLayers"
+            Me.m_hdrLayers.Size = New System.Drawing.Size(170, 18)
+            Me.m_hdrLayers.TabIndex = 1
+            Me.m_hdrLayers.Text = "Layers"
+            Me.m_hdrLayers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'dlgExternalData
             '
@@ -117,6 +134,7 @@ Namespace Ecospace
         Private WithEvents m_config As ScientificInterface.Ecospace.Controls.ucConfigAdapter
         Private WithEvents m_tvAdapters As System.Windows.Forms.TreeView
         Private WithEvents m_ilConnections As System.Windows.Forms.ImageList
+        Private WithEvents m_hdrLayers As ScientificInterfaceShared.Controls.cEwEHeaderLabel
 
     End Class
 
