@@ -2853,10 +2853,8 @@ Public Class cCore
             Me.InitCore()
         End If
 
-        If Not Me.CloseModel() Then Return False
-
-        '' Update core state
-        'If Not Me.SaveChanges() Then Return False
+        ' Only perform a total close if not reopening for the same datasource
+        If Not Me.CloseModel(Not Object.ReferenceEquals(ds, Me.DataSource)) Then Return False
 
         Me.m_EcoPathData.ActiveEcosimScenario = -1
         Me.m_EcoPathData.ActiveEcospaceScenario = -1
@@ -3076,10 +3074,19 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Try to terminate the core
+    ''' Close the Ecopath model and terminate the core.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function CloseModel() As Boolean
+        Return Me.CloseModel(True)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Close the model and optionally terminate the datasource
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Function CloseModel(bTotalCleanup As Boolean) As Boolean
 
         'Stop any running search
         For Each tp As IThreadedProcess In Me.m_ThreadedProcesses
@@ -3108,7 +3115,7 @@ Public Class cCore
                         Me.PluginManager.CloseDatabase()
                         Me.m_pluginManager.CloseModel()
                     End If
-                    DataSource.Close()
+                    If bTotalCleanup Then DataSource.Close()
                 End If
                 ' Release data source
                 DataSource = Nothing
