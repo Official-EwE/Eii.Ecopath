@@ -37,7 +37,7 @@ Public Class cEcospaceCSVResultsWriter
 
             For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
 
-                fn = Me.getFileName(varname, igrp, Me.getSubDirName())
+                fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName())
                 strm = New StreamWriter(fn, True)
                 saveCSV(strm, tsData, igrp, varname)
 
@@ -116,7 +116,7 @@ Public Class cEcospaceCSVResultsWriter
         Dim fn As String
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.getFileName(varname, igrp, "CSV")
+            fn = Me.getGroupFileName(varname, igrp, "CSV")
             strm = New StreamWriter(fn, True)
             Me.WriteHeader(strm, igrp, varname)
             strm.Close()

@@ -36,7 +36,7 @@ Public Class cEcospaceASCResultsWriter
         For Each varname As eVarNameFlags In vars
 
             For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-                fn = Me.getFileName(varname, igrp, Me.getSubDirName(), tsData.iTimeStep)
+                fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName(), tsData.iTimeStep)
                 strm = New StreamWriter(fn, False)
 
                 saveASC(strm, tsData, igrp, varname)
@@ -45,6 +45,13 @@ Public Class cEcospaceASCResultsWriter
                 strm = Nothing
             Next
         Next
+
+        ' Sum space effort
+        fn = Me.getFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.getSubDirName(), tsData.iTimeStep)
+        strm = New StreamWriter(fn, False)
+        saveASC(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
+        strm.Close()
+        strm = Nothing
 
     End Sub
 
@@ -116,12 +123,13 @@ Public Class cEcospaceASCResultsWriter
         'writer.WriteLine("yllcenter     " & (latLL + 0.5 * cellSizeDegrees))
         writer.WriteLine("cellsize      " & cellSizeDegrees)
         writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
+
     End Sub
 
     Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
-        Dim bcell As Single
+        Dim value As Single
 
         Debug.Assert(map IsNot Nothing)
 
@@ -129,12 +137,12 @@ Public Class cEcospaceASCResultsWriter
             For ic As Integer = 1 To Me.SpaceData.InCol
                 If ic > 1 Then strm.Write(" ")
                 If Me.SpaceData.Depth(ir, ic) > 0 Then
-                    bcell = CSng(map.Cell(ir, ic))
+                    value = CSng(map.Cell(ir, ic))
                 Else
                     'land as NODATAVALUE
-                    bcell = cCore.NULL_VALUE
+                    value = cCore.NULL_VALUE
                 End If
-                strm.Write(bcell)
+                strm.Write(value)
             Next
             strm.WriteLine("")
         Next

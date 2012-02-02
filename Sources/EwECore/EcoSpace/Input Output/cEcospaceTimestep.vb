@@ -22,6 +22,7 @@ Public Class cEcospaceTimestep
     Private m_biomass() As Single 'biomass by group
     Private m_relativebiomass() As Single 'biomass relative to start biomass by group
     Private m_biomassByRegion(,) As Single 'biomass by group region
+    Private m_sumEffortMap(,) As Single 'map of effort over all fleets
 
     Private m_spaceData As cEcospaceDataStructures
     Private m_simData As cEcosimDatastructures
@@ -30,6 +31,18 @@ Public Class cEcospaceTimestep
 #End Region
 
 #Region "Private classes"
+
+    ''' <summary>
+    ''' Data wrapper for a (row, col) formatted Ecospace result.
+    ''' </summary>
+    Friend Class cTimestepLayer
+        Inherits cEcospaceLayerSingle
+
+        Public Sub New(core As cCore, manager As cEcospaceTimestep, varName As eVarNameFlags)
+            MyBase.New(core, manager, "", varName)
+        End Sub
+
+    End Class
 
     ''' <summary>
     ''' Data wrapper for a (row, col, group) formatted Ecospace result.
@@ -116,45 +129,28 @@ Public Class cEcospaceTimestep
             ReDim m_relativebiomass(Me.m_simData.nGroups)
             ReDim m_ConMax(Me.m_simData.nGroups)
             ReDim m_biomassByRegion(Me.m_simData.nGroups, Me.m_spaceData.nRegions)
-            'ReDim m_IBMMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol, Me.m_simData.nGroups)
+            'ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
         End Try
 
     End Sub
 
+    Friend Sub ComputeSumEffortMap()
 
-    Friend Sub ComputeIBMMap()
+        ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
 
-        Try
-
-            ''clear out the data from the last timestep
-            ''this will set all the cells to false
-            'Array.Clear(m_IBMMap, 0, m_IBMMap.Length)
-
-            'If Me.m_spaceData.UseIBM Then
-
-            '    Dim irow As Integer, jcol As Integer
-            '    Dim iGrp As Integer
-            '    For isp As Integer = 1 To Me.m_stanzaData.Nsplit
-            '        For ist As Integer = 1 To Me.m_stanzaData.Nstanza(isp)
-            '            For iage As Integer = Me.m_stanzaData.Age1(isp, ist) To Me.m_stanzaData.Age2(isp, ist)
-            '                For ipkt As Integer = 1 To Me.m_stanzaData.Npackets
-            '                    irow = Int(Me.m_stanzaData.iPacket(isp, iage, ipkt))
-            '                    jcol = Int(Me.m_stanzaData.jPacket(isp, iage, ipkt))
-            '                    iGrp = Me.m_stanzaData.EcopathCode(isp, ist)
-            '                    m_IBMMap(irow, jcol, iGrp) = True
-            '                Next ipkt
-            '            Next iage
-            '        Next ist
-            '    Next isp
-
-            'End If
-
-        Catch ex As Exception
-            Debug.Assert(False, Me.ToString & ".ComputeIBMMap() Exception: " & ex.Message)
-            cLog.Write(ex)
-        End Try
+        For iRow As Integer = 1 To Me.m_spaceData.InRow
+            For iCol As Integer = 1 To Me.m_spaceData.InCol
+                Dim sTotal As Single = 0
+                If Me.m_spaceData.Depth(iRow, iCol) > 0 Then
+                    For iFleet As Integer = 1 To Me.m_simData.nGear
+                        sTotal += Me.FishingEffortMap(iFleet, iRow, iCol) * Me.m_simData.EffortConversionFactor(iFleet)
+                    Next iFleet
+                End If
+                Me.m_sumEffortMap(iRow, iCol) = sTotal
+            Next iCol
+        Next iRow
 
     End Sub
 
@@ -400,18 +396,6 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
-    '''' <summary>
-    '''' Map of IMB packets by Row, Col, Group
-    '''' </summary>
-    '''' <value>True if cell contains IBM packet(s). False otherwise</value>
-    '''' <returns></returns>
-    '''' <remarks></remarks>
-    'Public ReadOnly Property IMBLocationsMap() As Boolean(,,)
-    '    Get
-    '        Return Me.m_IBMMap
-    '    End Get
-    'End Property
-
     Public ReadOnly Property StanzaDS() As cStanzaDatastructures
         Get
             Return Me.m_stanzaData
@@ -493,6 +477,8 @@ Public Class cEcospaceTimestep
                 For igroup As Integer = 1 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
                 Next
+            Case eVarNameFlags.EcospaceMapSumEffort
+                lLayers.Add(New cTimestepLayer(Me.m_core, Me, varName))
         End Select
         Return lLayers.ToArray
 
@@ -506,6 +492,8 @@ Public Class cEcospaceTimestep
                 Return Me.BiomassMap
             Case eVarNameFlags.EcospaceMapCatch
                 Return Me.CatchMap
+            Case eVarNameFlags.EcospaceMapSumEffort
+                Return Me.m_sumEffortMap
         End Select
         Return Nothing
 

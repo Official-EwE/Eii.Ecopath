@@ -113,7 +113,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     End Property
 
     ''' <summary>
-    ''' Convert the variable, group, extention and model time step into a valid file name
+    ''' Convert the variable, group index, extention and model time step into a valid file name
     ''' </summary>
     ''' <param name="varname">Variable i.e. Biomass</param>
     ''' <param name="iGrp">Index of the group</param>
@@ -121,8 +121,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <param name="ModelTimeStep">Time step for the current file. If this is not supplied then no time stamp will appear in the filename </param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Protected Overridable Function getFileName(ByVal varname As eVarNameFlags, ByVal iGrp As Integer, ByVal Ext As String, Optional ByRef ModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    Protected Overridable Function getGroupFileName(ByVal varname As eVarNameFlags, ByVal iGrp As Integer, ByVal Ext As String, Optional ByRef ModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
         Dim Timestep As String = ""
 
@@ -132,7 +133,33 @@ Public MustInherit Class cEcospaceBaseResultsWriter
             Timestep = String.Format("-{0:00000}", ModelTimeStep)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", varname.ToString(), grpName, Timestep, Ext), False)
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", cin.GetVarName(varname), grpName, Timestep, Ext), False)
+        Return System.IO.Path.Combine(Me.TimeStampDirName, fn)
+
+    End Function
+
+    ''' <summary>
+    ''' Convert the variable, fleet index, extention and model time step into a valid file name
+    ''' </summary>
+    ''' <param name="varname">Variable i.e. Biomass</param>
+    ''' <param name="iFlt">Index of the fleet</param>
+    ''' <param name="Ext">Extention of the file</param>
+    ''' <param name="ModelTimeStep">Time step for the current file. If this is not supplied then no time stamp will appear in the filename </param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Protected Overridable Function getFleetFileName(ByVal varname As eVarNameFlags, ByVal iFlt As Integer, ByVal Ext As String, Optional ByRef ModelTimeStep As Integer = cCore.NULL_VALUE) As String
+
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim fltName As String = Me.m_core.m_EcoPathData.FleetName(iFlt)
+        Dim Timestep As String = ""
+
+        'Is there a time step in the file name
+        If ModelTimeStep <> cCore.NULL_VALUE Then
+            'Yes so include it in the file name
+            Timestep = String.Format("-{0:00000}", ModelTimeStep)
+        End If
+
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", cin.GetVarName(varname), fltName, Timestep, Ext), False)
         Return System.IO.Path.Combine(Me.TimeStampDirName, fn)
 
     End Function
@@ -141,9 +168,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <summary>
     ''' Ecopath data structure
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Protected ReadOnly Property PathData() As cEcopathDataStructures
         Get
             Return Me.m_core.m_EcoPathData

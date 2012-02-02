@@ -8246,7 +8246,7 @@ Public Class cCore
             m_spaceresults.iTimeStep = iTime
             m_spaceresults.TimeStepinYears = m_EcoSpaceData.TimeNow + m_EcoSpaceData.TimeStep
 
-            m_spaceresults.ComputeIBMMap()
+            m_spaceresults.ComputeSumEffortMap()
 
             'the group time-step data was populated by Ecospace
             For igrp As Integer = 1 To nGroups
