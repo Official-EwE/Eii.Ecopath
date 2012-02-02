@@ -894,7 +894,7 @@ Public Class cEcoSpace
 
                 Me.m_PauseSignal.WaitOne()
                 tst1 = Microsoft.VisualBasic.Timer
-                System.Console.WriteLine(m_Data.TimeNow.ToString)
+
                 'set time step counters
                 its = Int(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
                 itt += 1 'cumulative i time at the curent time step 
@@ -976,7 +976,7 @@ Public Class cEcoSpace
 
                 Dim effT1 As Single = Microsoft.VisualBasic.Timer
                 If m_Data.PredictEffort Then
-                    If its = 3 Then Me.AdjustTotalEffort(m_Data.MonthNow, its)
+                    If its = 3 Then Me.AdjustTotalEffort()
                     ' Me.PredictEffortDistribution(m_Data.MonthNow, its)
                     Me.runPredictEffortDistributionThreads(m_Data.MonthNow, its)
                 End If
@@ -2069,6 +2069,10 @@ Public Class cEcoSpace
             'm_Data.nGroupsPerThread = (m_Data.totalIntegratedGroups + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads 'm_Data.nvartot \ m_Data.nGridSolverThreads + 1
             m_Data.nCellsPerThread = (m_Data.iTotalWaterCells + m_Data.nSpaceSolverThreads - 1) \ m_Data.nSpaceSolverThreads
             m_Data.nIBMGroupsPerThread = (m_Stanza.Nsplit + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
+
+            'Adjust the total effort base on the biomass (BCell()) 
+            'in the cells after the habitat bases biomass adjustment
+            Me.AdjustTotalEffort()
 
             Return True
 
@@ -3460,7 +3464,7 @@ exitline:
     End Sub
 
 
-    Sub AdjustTotalEffort(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
+    Sub AdjustTotalEffort()
         'this is a modified version of PredictEffortDistribution, to be called only once at around simulation
         'month 2 or 3; it resets totaleffort(gear) so as to avoid overfishing (relative to ecopath base) on concentrated species
         'modifications to PredictEffortDistribution are ahown as '***
