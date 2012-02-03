@@ -60,6 +60,12 @@ Public Class cEcospaceBasemap
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' CellSize
+            meta = New cVariableMetaData(0, 90, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(1, eVarNameFlags.CellSize, eStatusFlags.Null, eValueTypes.Sng, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' Latitude (top-left coord of layer)
             meta = New cVariableMetaData(-90.0!, 90.0!, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(0, eVarNameFlags.Latitude, eStatusFlags.Null, eValueTypes.Sng, _
@@ -330,11 +336,11 @@ Public Class cEcospaceBasemap
     Public Property CellSize() As Single
 
         Get
-            Return cEcospaceBasemap.ToCellSize(Me.CellLength)
+            Return CSng(GetVariable(eVarNameFlags.CellSize))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.CellLength, cEcospaceBasemap.ToCellLength(value))
+            SetVariable(eVarNameFlags.CellSize, value)
         End Set
 
     End Property

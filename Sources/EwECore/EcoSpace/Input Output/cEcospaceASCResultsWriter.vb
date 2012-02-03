@@ -69,6 +69,12 @@ Public Class cEcospaceASCResultsWriter
         End Get
     End Property
 
+    Protected Function CellSize() As Single
+        Dim cellSizeDegrees As Single = Me.SpaceData.CellSize
+        If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.SpaceData.CellLength)
+        Return cellSizeDegrees
+    End Function
+
     Private Sub WriteInfoFile()
         Try
             Dim fn As String
@@ -90,6 +96,7 @@ Public Class cEcospaceASCResultsWriter
             strm.WriteLine("Map rows," & Me.SpaceData.InRow)
             strm.WriteLine("Map cols," & Me.SpaceData.InCol)
             strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)
+            strm.WriteLine("Map cell size," & Me.CellSize())
             strm.WriteLine("Map Latitude," & Me.SpaceData.Lat1)
             strm.WriteLine("Map Longitude," & Me.SpaceData.Lon1)
             strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
@@ -112,8 +119,7 @@ Public Class cEcospaceASCResultsWriter
 
     Protected Sub WriteHeader(ByRef writer As StreamWriter)
 
-        Dim cellSizeDegrees As Single = Me.SpaceData.CellLength * cEcospaceDataStructures.KM_TO_DEGRESS
-        Dim latLL As Single = Me.SpaceData.Lat1 - (Me.SpaceData.InRow + 1) * cellSizeDegrees
+        Dim latLL As Single = Me.SpaceData.Lat1 - (Me.SpaceData.InRow + 1) * Me.CellSize()
 
         writer.WriteLine("ncols         " & Me.SpaceData.InCol)
         writer.WriteLine("nrows         " & Me.SpaceData.InRow)
@@ -121,7 +127,7 @@ Public Class cEcospaceASCResultsWriter
         writer.WriteLine("yllcorner     " & latLL)
         'writer.WriteLine("xllcenter     " & (Me.SpaceData.Lon1 + 0.5 * cellSizeDegrees))
         'writer.WriteLine("yllcenter     " & (latLL + 0.5 * cellSizeDegrees))
-        writer.WriteLine("cellsize      " & cellSizeDegrees)
+        writer.WriteLine("cellsize      " & Me.CellSize())
         writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
 
     End Sub

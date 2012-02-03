@@ -7111,6 +7111,7 @@ Namespace DataSources
                 ecospaceDS.InRow = CInt(reader("Inrow"))
                 ecospaceDS.InCol = CInt(reader("Incol"))
                 ecospaceDS.CellLength = CSng(reader("CellLength"))
+                ecospaceDS.CellSize = CSng(Me.m_db.ReadSafe(reader, "CellSize", cEcospaceBasemap.ToCellSize(ecospaceDS.CellLength)))
                 ecospaceDS.Lat1 = CSng(Me.m_db.ReadSafe(reader, "MinLat", 0))
                 ecospaceDS.Lon1 = CSng(Me.m_db.ReadSafe(reader, "MinLon", 0))
                 ecospaceDS.TimeStep = CSng(Me.m_db.ReadSafe(reader, "TimeStep", 0))
@@ -7301,6 +7302,7 @@ Namespace DataSources
                 drow("Inrow") = ecospaceDS.InRow
                 drow("Incol") = ecospaceDS.InCol
                 drow("CellLength") = ecospaceDS.CellLength
+                drow("CellSize") = ecospaceDS.CellSize
                 drow("MinLon") = ecospaceDS.Lon1
                 drow("MinLat") = ecospaceDS.Lat1
                 drow("TimeStep") = ecospaceDS.TimeStep

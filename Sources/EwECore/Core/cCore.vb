@@ -9302,6 +9302,7 @@ Public Class cCore
                 .InCol = m_EcoSpaceData.InCol
                 .InRow = m_EcoSpaceData.InRow
                 .CellLength = m_EcoSpaceData.CellLength
+                .CellSize = m_EcoSpaceData.CellSize
                 .Latitude = m_EcoSpaceData.Lat1 'UDH_UL
                 .Longitude = m_EcoSpaceData.Lon1
                 .ResetStatusFlags()
@@ -9371,6 +9372,8 @@ Public Class cCore
             'Me.m_EcoSpaceData.InCol = m_EcospaceBasemap.InCol
 
             Me.m_EcoSpaceData.CellLength = m_EcospaceBasemap.CellLength
+            Me.m_EcoSpaceData.CellSize = m_EcospaceBasemap.CellSize
+
             Me.m_EcoSpaceData.Lat1 = m_EcospaceBasemap.Latitude
             Me.m_EcoSpaceData.Lon1 = m_EcospaceBasemap.Longitude
 

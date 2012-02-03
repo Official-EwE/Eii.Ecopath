@@ -443,7 +443,10 @@ Namespace Core
         ' ---------------------------------
         InRow
         InCol
+        ''' <summary>Length of a cell (km).</summary>
         CellLength
+        ''' <summary>Size of a cell (decimal degrees).</summary>
+        CellSize
         ''' <summary>Latitude of spatial data.</summary>
         Latitude
         ''' <summary>Longitude of spatial data.</summary>

@@ -9,7 +9,7 @@ Public Class cEcospaceDataStructures
     ''' Multiplier to convert KM to Degrees
     ''' </summary>
     ''' <remarks></remarks>
-    Public Const KM_TO_DEGRESS As Single = 1 / (40007.86291736 / 360.0)
+    Public Const KM_TO_DEGREES As Single = 1 / (40007.86291736 / 360.0)
 
 #Region "Public Fields"
 
@@ -143,6 +143,9 @@ Public Class cEcospaceDataStructures
     ''' <summary>Length in KM of a cell </summary>
     ''' <remarks>Not area</remarks>
     Public CellLength As Single
+    ''' <summary>Size of a cell in decimal degrees.</summary>
+    ''' <remarks>Maintained for spatially referencing a map.</remarks>
+    Public CellSize As Single
     ''' <summary>Latitude of upper left coordinate of the current basemap.</summary>
     Public Lat1 As Single
     ''' <summary>Longitude of upper left coordinate of the current basemap.</summary>
