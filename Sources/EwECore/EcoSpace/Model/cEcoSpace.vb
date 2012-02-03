@@ -6301,12 +6301,14 @@ exitline:
         For iGrp = 1 To Me.m_Data.NGroups
             'rescale and sum up over cells
             For ir = 1 To Me.m_Data.InRow : For ic = 1 To Me.m_Data.InCol
-                    Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / Me.m_Data.MaxHabCap(iGrp)
-                    'Min Capacity
-                    If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
-                    Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
-                    'MaxHabCap() is used to test if the capacity of a group is above so min level
-                    '   Me.m_Data.MaxHabCap(iGrp) = Math.Max(Me.m_Data.MaxHabCap(iGrp), Me.m_Data.HabCap(ir, ic, iGrp))
+                    If Me.m_Data.Depth(ir, ic) > 0 Then
+                        'normalized capacity
+                        Me.m_Data.HabCap(ir, ic, iGrp) = Me.m_Data.HabCap(ir, ic, iGrp) / Me.m_Data.MaxHabCap(iGrp)
+                        'Greater than min Capacity
+                        If Me.m_Data.HabCap(ir, ic, iGrp) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, iGrp) = MIN_HABCAP '0.000001F
+                        'sum of capacity
+                        Me.m_Data.TotHabCap(iGrp) = Me.m_Data.TotHabCap(iGrp) + Me.m_Data.HabCap(ir, ic, iGrp)
+                    End If
                 Next
             Next
 
@@ -6408,11 +6410,13 @@ exitline:
                 If map.ResponseIndexForGroup(igrp) > 0 Then
                     For irow = 1 To Me.m_Data.InRow
                         For icol = 1 To Me.m_Data.InCol
-                            '28-Sept-2011 jb Changed to multiple response with the existing capacity
-                            'this allows the enviromental response function to reduce the capacity
-                            Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
-                            'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
-                            m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                            If Me.m_Data.Depth(irow, icol) > 0 Then
+                                '28-Sept-2011 jb Changed to multiple response with the existing capacity
+                                'this allows the enviromental response function to reduce the capacity
+                                Me.m_Data.HabCap(irow, icol, igrp) *= map.ResponseFunction(igrp, irow, icol)
+                                'HabCap() will be normalized by MaxCap(max capacity across all cells and groups)
+                                m_Data.MaxHabCap(igrp) = Math.Max(Me.m_Data.HabCap(irow, icol, igrp), m_Data.MaxHabCap(igrp))
+                            End If
                         Next
                     Next
                 End If ' map.ResponseIndexForGroup(igrp) > 0
