@@ -1798,6 +1798,11 @@ Public Class cEcoSpace
                         End If
 
                         If m_Data.Depth(i, j) > 0 Then
+                            If ip > 0 And i > 0 And j > 0 Then
+                                Debug.Assert(Me.m_Data.HabCap(i, j, ip) > 0, "Opps cap=0")
+                            End If
+
+                            'Debug.Assert(Me.m_Data.HabCap(i, j, ip) > 0, "Hab cap = 0")
                             m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip) 'Basebiomass(ip)
                             'If m_Data.PrefHab(ip, m_Data.HabType(i, j)) = False And m_Data.PrefHab(ip, 0) = False Then
                             '    m_Data.Bcell(i, j, ip) = 0.1 * m_SimData.StartBiomass(ip)
@@ -6026,6 +6031,18 @@ exitline:
         ' Me.AdjustLowHapCaps()
         Me.runAjustLowHabCapsThreaded()
 
+        For ig As Integer = 1 To Me.m_Data.NGroups
+            For ir As Integer = 1 To Me.m_Data.InRow
+                For ic As Integer = 1 To Me.m_Data.InCol
+                    If Me.m_Data.Depth(ir, ic) > 0 Then
+
+                        Debug.Assert(Me.m_Data.HabCap(ir, ic, ig) > 0, "Habcap = 0")
+                        '  If Me.m_Data.HabCap(ir, ic, ig) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, ig) = MIN_HABCAP
+                    End If
+                Next
+            Next
+        Next
+
         'All the map changes have been computed
         Me.m_Data.bHasCapacityChanged = False
 
@@ -6176,6 +6193,7 @@ exitline:
                         For j = 1 To Me.m_Data.InCol
                             If Me.m_Data.Depth(i, j) > 0 And Me.m_Data.HabCap(i, j, k) <= HabCapMin Then
                                 Me.m_Data.HabCap(i, j, k) = HabCapMin * Exp(-DistFac * DistMin(i, j))
+                                If Me.m_Data.HabCap(i, j, k) < MIN_HABCAP Then Me.m_Data.HabCap(i, j, k) = MIN_HABCAP
                             End If
                         Next j
                     Next i
