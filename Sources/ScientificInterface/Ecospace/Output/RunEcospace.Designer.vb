@@ -38,41 +38,46 @@ Namespace Ecospace
             Me.m_lblHigh = New System.Windows.Forms.Label()
             Me.m_lblLow = New System.Windows.Forms.Label()
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plRun = New System.Windows.Forms.Panel()
+            Me.m_hdrRunning = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_btnPause = New System.Windows.Forms.Button()
+            Me.m_cmbRunType = New System.Windows.Forms.ComboBox()
             Me.m_plLabelOptions = New System.Windows.Forms.Panel()
             Me.m_cbInvertColor = New System.Windows.Forms.CheckBox()
             Me.m_cmbLabelPos = New System.Windows.Forms.ComboBox()
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox()
             Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plDistribution = New System.Windows.Forms.Panel()
+            Me.m_rbSumEffort = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton()
+            Me.m_rbDisaplyFOverB = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton()
             Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton()
-            Me.m_hdrRunning = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
-            Me.m_cbMPA = New System.Windows.Forms.CheckBox()
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
             Me.m_btnDisplayGroups = New System.Windows.Forms.Button()
+            Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
             Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_tlpRun = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_btnPause = New System.Windows.Forms.Button()
-            Me.m_cmbRunType = New System.Windows.Forms.ComboBox()
+            Me.m_cbMPA = New System.Windows.Forms.CheckBox()
             Me.m_tcOutputs = New System.Windows.Forms.TabControl()
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
-            Me.m_rbSumEffort = New System.Windows.Forms.RadioButton()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            Me.m_tlpOptions.SuspendLayout()
+            Me.m_plRun.SuspendLayout()
+            Me.m_tlpRun.SuspendLayout()
             Me.m_plLabelOptions.SuspendLayout()
             Me.m_plDistribution.SuspendLayout()
             Me.m_plDisplayOptions.SuspendLayout()
-            Me.m_tlpRun.SuspendLayout()
             Me.m_tcOutputs.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
             Me.m_tabPlot.SuspendLayout()
@@ -155,29 +160,71 @@ Namespace Ecospace
             '
             Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_scMain, "m_scMain")
+            Me.m_scMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
             Me.m_scMain.Name = "m_scMain"
             '
             'm_scMain.Panel1
             '
-            Me.m_scMain.Panel1.Controls.Add(Me.m_plLabelOptions)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_plDistribution)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_hdrRunning)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_cbShowIBMPackets)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_cbMPA)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_plDisplayOptions)
-            Me.m_scMain.Panel1.Controls.Add(Me.m_tlpRun)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_tlpOptions)
             '
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_tcOutputs)
             '
+            'm_tlpOptions
+            '
+            resources.ApplyResources(Me.m_tlpOptions, "m_tlpOptions")
+            Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 3)
+            Me.m_tlpOptions.Controls.Add(Me.m_plLabelOptions, 0, 2)
+            Me.m_tlpOptions.Controls.Add(Me.m_plDistribution, 0, 0)
+            Me.m_tlpOptions.Controls.Add(Me.m_plDisplayOptions, 0, 1)
+            Me.m_tlpOptions.Name = "m_tlpOptions"
+            '
+            'm_plRun
+            '
+            resources.ApplyResources(Me.m_plRun, "m_plRun")
+            Me.m_plRun.Controls.Add(Me.m_hdrRunning)
+            Me.m_plRun.Controls.Add(Me.m_tlpRun)
+            Me.m_plRun.Name = "m_plRun"
+            '
+            'm_hdrRunning
+            '
+            resources.ApplyResources(Me.m_hdrRunning, "m_hdrRunning")
+            Me.m_hdrRunning.CanCollapseParent = False
+            Me.m_hdrRunning.CollapsedParentHeight = 0
+            Me.m_hdrRunning.IsCollapsed = False
+            Me.m_hdrRunning.Name = "m_hdrRunning"
+            '
+            'm_tlpRun
+            '
+            resources.ApplyResources(Me.m_tlpRun, "m_tlpRun")
+            Me.m_tlpRun.Controls.Add(Me.m_btnRun, 0, 0)
+            Me.m_tlpRun.Controls.Add(Me.m_btnPause, 0, 1)
+            Me.m_tlpRun.Controls.Add(Me.m_btnStop, 1, 1)
+            Me.m_tlpRun.Controls.Add(Me.m_cmbRunType, 1, 0)
+            Me.m_tlpRun.Name = "m_tlpRun"
+            '
+            'm_btnPause
+            '
+            resources.ApplyResources(Me.m_btnPause, "m_btnPause")
+            Me.m_btnPause.Name = "m_btnPause"
+            Me.m_btnPause.UseVisualStyleBackColor = True
+            '
+            'm_cmbRunType
+            '
+            resources.ApplyResources(Me.m_cmbRunType, "m_cmbRunType")
+            Me.m_cmbRunType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbRunType.FormattingEnabled = True
+            Me.m_cmbRunType.Items.AddRange(New Object() {resources.GetString("m_cmbRunType.Items"), resources.GetString("m_cmbRunType.Items1"), resources.GetString("m_cmbRunType.Items2")})
+            Me.m_cmbRunType.Name = "m_cmbRunType"
+            '
             'm_plLabelOptions
             '
-            resources.ApplyResources(Me.m_plLabelOptions, "m_plLabelOptions")
             Me.m_plLabelOptions.Controls.Add(Me.m_cbInvertColor)
             Me.m_plLabelOptions.Controls.Add(Me.m_cmbLabelPos)
             Me.m_plLabelOptions.Controls.Add(Me.m_cbShowLabels)
             Me.m_plLabelOptions.Controls.Add(Me.m_hdrLabelOptions)
+            resources.ApplyResources(Me.m_plLabelOptions, "m_plLabelOptions")
             Me.m_plLabelOptions.Name = "m_plLabelOptions"
             '
             'm_cbInvertColor
@@ -205,21 +252,28 @@ Namespace Ecospace
             'm_hdrLabelOptions
             '
             resources.ApplyResources(Me.m_hdrLabelOptions, "m_hdrLabelOptions")
-            Me.m_hdrLabelOptions.CanCollapseParent = False
+            Me.m_hdrLabelOptions.CanCollapseParent = True
             Me.m_hdrLabelOptions.CollapsedParentHeight = 0
             Me.m_hdrLabelOptions.IsCollapsed = False
             Me.m_hdrLabelOptions.Name = "m_hdrLabelOptions"
             '
             'm_plDistribution
             '
-            resources.ApplyResources(Me.m_plDistribution, "m_plDistribution")
             Me.m_plDistribution.Controls.Add(Me.m_rbSumEffort)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayRelBiomass)
+            Me.m_plDistribution.Controls.Add(Me.m_rbDisaplyFOverB)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFishingEffort)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayContaminantC)
             Me.m_plDistribution.Controls.Add(Me.m_hdrDist)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayCoverB)
+            resources.ApplyResources(Me.m_plDistribution, "m_plDistribution")
             Me.m_plDistribution.Name = "m_plDistribution"
+            '
+            'm_rbSumEffort
+            '
+            resources.ApplyResources(Me.m_rbSumEffort, "m_rbSumEffort")
+            Me.m_rbSumEffort.Name = "m_rbSumEffort"
+            Me.m_rbSumEffort.UseVisualStyleBackColor = True
             '
             'm_rbDisplayRelBiomass
             '
@@ -228,6 +282,12 @@ Namespace Ecospace
             Me.m_rbDisplayRelBiomass.Name = "m_rbDisplayRelBiomass"
             Me.m_rbDisplayRelBiomass.TabStop = True
             Me.m_rbDisplayRelBiomass.UseVisualStyleBackColor = True
+            '
+            'm_rbDisaplyFOverB
+            '
+            resources.ApplyResources(Me.m_rbDisaplyFOverB, "m_rbDisaplyFOverB")
+            Me.m_rbDisaplyFOverB.Name = "m_rbDisaplyFOverB"
+            Me.m_rbDisaplyFOverB.UseVisualStyleBackColor = True
             '
             'm_rbDisplayFishingEffort
             '
@@ -255,13 +315,25 @@ Namespace Ecospace
             Me.m_rbDisplayCoverB.Name = "m_rbDisplayCoverB"
             Me.m_rbDisplayCoverB.UseVisualStyleBackColor = True
             '
-            'm_hdrRunning
+            'm_plDisplayOptions
             '
-            resources.ApplyResources(Me.m_hdrRunning, "m_hdrRunning")
-            Me.m_hdrRunning.CanCollapseParent = False
-            Me.m_hdrRunning.CollapsedParentHeight = 0
-            Me.m_hdrRunning.IsCollapsed = False
-            Me.m_hdrRunning.Name = "m_hdrRunning"
+            Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cbShowIBMPackets)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cbMPA)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayGroup)
+            resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
+            Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
+            '
+            'm_btnDisplayGroups
+            '
+            resources.ApplyResources(Me.m_btnDisplayGroups, "m_btnDisplayGroups")
+            Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
+            Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
             '
             'm_cbShowIBMPackets
             '
@@ -271,32 +343,6 @@ Namespace Ecospace
             Me.m_cbShowIBMPackets.Name = "m_cbShowIBMPackets"
             Me.m_cbShowIBMPackets.UseVisualStyleBackColor = True
             '
-            'm_cbMPA
-            '
-            resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
-            Me.m_cbMPA.Checked = True
-            Me.m_cbMPA.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_cbMPA.Name = "m_cbMPA"
-            Me.m_cbMPA.UseVisualStyleBackColor = True
-            '
-            'm_plDisplayOptions
-            '
-            resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
-            Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayGroup)
-            Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
-            '
-            'm_btnDisplayGroups
-            '
-            resources.ApplyResources(Me.m_btnDisplayGroups, "m_btnDisplayGroups")
-            Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
-            Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
-            '
             'm_hdrDispOpt
             '
             resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
@@ -305,28 +351,13 @@ Namespace Ecospace
             Me.m_hdrDispOpt.IsCollapsed = False
             Me.m_hdrDispOpt.Name = "m_hdrDispOpt"
             '
-            'm_tlpRun
+            'm_cbMPA
             '
-            resources.ApplyResources(Me.m_tlpRun, "m_tlpRun")
-            Me.m_tlpRun.Controls.Add(Me.m_btnRun, 0, 0)
-            Me.m_tlpRun.Controls.Add(Me.m_btnPause, 0, 1)
-            Me.m_tlpRun.Controls.Add(Me.m_btnStop, 1, 1)
-            Me.m_tlpRun.Controls.Add(Me.m_cmbRunType, 1, 0)
-            Me.m_tlpRun.Name = "m_tlpRun"
-            '
-            'm_btnPause
-            '
-            resources.ApplyResources(Me.m_btnPause, "m_btnPause")
-            Me.m_btnPause.Name = "m_btnPause"
-            Me.m_btnPause.UseVisualStyleBackColor = True
-            '
-            'm_cmbRunType
-            '
-            resources.ApplyResources(Me.m_cmbRunType, "m_cmbRunType")
-            Me.m_cmbRunType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbRunType.FormattingEnabled = True
-            Me.m_cmbRunType.Items.AddRange(New Object() {resources.GetString("m_cmbRunType.Items"), resources.GetString("m_cmbRunType.Items1"), resources.GetString("m_cmbRunType.Items2")})
-            Me.m_cmbRunType.Name = "m_cmbRunType"
+            resources.ApplyResources(Me.m_cbMPA, "m_cbMPA")
+            Me.m_cbMPA.Checked = True
+            Me.m_cbMPA.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_cbMPA.Name = "m_cbMPA"
+            Me.m_cbMPA.UseVisualStyleBackColor = True
             '
             'm_tcOutputs
             '
@@ -366,12 +397,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
-            'm_rbSumEffort
-            '
-            resources.ApplyResources(Me.m_rbSumEffort, "m_rbSumEffort")
-            Me.m_rbSumEffort.Name = "m_rbSumEffort"
-            Me.m_rbSumEffort.UseVisualStyleBackColor = True
-            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -382,17 +407,18 @@ Namespace Ecospace
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.Panel1.ResumeLayout(False)
-            Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
+            Me.m_tlpOptions.ResumeLayout(False)
+            Me.m_plRun.ResumeLayout(False)
+            Me.m_tlpRun.ResumeLayout(False)
             Me.m_plLabelOptions.ResumeLayout(False)
             Me.m_plLabelOptions.PerformLayout()
             Me.m_plDistribution.ResumeLayout(False)
             Me.m_plDistribution.PerformLayout()
             Me.m_plDisplayOptions.ResumeLayout(False)
             Me.m_plDisplayOptions.PerformLayout()
-            Me.m_tlpRun.ResumeLayout(False)
             Me.m_tcOutputs.ResumeLayout(False)
             Me.m_tabMap.ResumeLayout(False)
             Me.m_tabPlot.ResumeLayout(False)
@@ -436,6 +462,9 @@ Namespace Ecospace
         Private WithEvents m_cmbRunType As System.Windows.Forms.ComboBox
         Private WithEvents m_cbShowIBMPackets As System.Windows.Forms.CheckBox
         Private WithEvents m_rbSumEffort As System.Windows.Forms.RadioButton
+        Private WithEvents m_plRun As System.Windows.Forms.Panel
+        Private WithEvents m_rbDisaplyFOverB As System.Windows.Forms.RadioButton
+        Private WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
 
  
     End Class

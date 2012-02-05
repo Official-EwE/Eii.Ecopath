@@ -38,11 +38,13 @@ Namespace Ecospace
         ' === Timestep and derived values ===
         Private m_dataTimeStep As cEcospaceTimestep = Nothing
         ''' <summary>The array to hold the Ecospace average biomass results.</summary>
-        Private m_as2RelBiomassResults(,) As Single
+        Private m_RelBiomassResults(,) As Single
         ''' <summary>The array to hold the Ecospace base biomass results.</summary>
-        Private m_asBaseBiomassResults() As Single
+        Private m_BaseBiomassResults() As Single
         ''' <summary>Contaminants over Biomass.</summary>
-        Private m_as2ConcOverB(,,) As Single
+        Private m_ConcOverB(,,) As Single
+        ''' <summary>Effort over Biomass.</summary>
+        Private m_FoverB(,,) As Single
 
         Private m_layerDepth As cEcospaceLayer = Nothing
 
@@ -83,8 +85,6 @@ Namespace Ecospace
         Private m_sMaxEffort As Single = 5
         Private m_cmdDisplayGroups As cCommand = Nothing
 
-        Private m_bSumEffort As Boolean
-
         ' Properties to monitor for setting run mode states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
         Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
@@ -109,10 +109,10 @@ Namespace Ecospace
             Me.m_layerDepth = Me.Core.EcospaceBasemap.LayerDepth
 
             'Redim relative biomass results array
-            ReDim Me.m_as2RelBiomassResults(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps)
+            ReDim Me.m_RelBiomassResults(Me.Core.nGroups, Me.Core.nEcospaceTimeSteps)
 
             'Redim base biomass base result array
-            ReDim Me.m_asBaseBiomassResults(Me.Core.nGroups)
+            ReDim Me.m_BaseBiomassResults(Me.Core.nGroups)
 
             'get the ecospace stats object from the core
             Me.m_spaceStats = Me.Core.EcospaceStats
@@ -226,6 +226,8 @@ Namespace Ecospace
             Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
             Me.m_bpUseIBM = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
             Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
+
+            Me.m_hdrLabelOptions.IsCollapsed = True
 
             Me.InitCoreParams()
             Me.InitUIParams()
@@ -341,7 +343,7 @@ Namespace Ecospace
         Private Sub UpdateBiomassPlot()
             For iGroup As Integer = 1 To Core.nGroups
                 For iTimeStep As Integer = Me.m_iTimeStepPrev To Me.m_iTimeStepCur - 1
-                    Me.m_zgh.AddValue(iGroup, iTimeStep, Me.m_as2RelBiomassResults(iGroup, iTimeStep + 1))
+                    Me.m_zgh.AddValue(iGroup, iTimeStep, Me.m_RelBiomassResults(iGroup, iTimeStep + 1))
                 Next
             Next
             Me.m_zgh.RescaleAndRedraw()
@@ -506,10 +508,14 @@ Namespace Ecospace
                             If parms.UseIBM And Me.m_bShowIBM Then
                                 drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
                             End If
+                        ElseIf Me.m_rbDisaplyFOverB.Checked Then
+                            drawer.Map = Me.m_FoverB
+                        ElseIf Me.m_rbDisplayCoverB.Checked Then
+
                         ElseIf Me.m_rbDisplayContaminantC.Checked Then
                             drawer.Map = Me.m_dataTimeStep.ContaminantMap
                         ElseIf Me.m_rbDisplayCoverB.Checked Then
-                            drawer.Map = Me.m_as2ConcOverB
+                            drawer.Map = Me.m_ConcOverB
                         End If
 
                         drawer.InCol = Me.m_iInCol
@@ -546,7 +552,7 @@ Namespace Ecospace
 
         Private Sub PlotMap(ByVal g As Graphics)
             Try
-                If m_rbDisplayFishingEffort.Checked Or m_bSumEffort Then
+                If m_rbDisplayFishingEffort.Checked Then
                     PlotFishingEffortMap(g)
                 Else
                     PlotBiomassMapThreaded(g)
@@ -563,61 +569,45 @@ Namespace Ecospace
 
             If m_iTimeStepCur > 0 Then
 
-                If Not Me.m_bSumEffort Then
-                    'NOT the sum of all fleets effort map!!!!
-                    'NOT NOT NOT
-                    For iFleet As Integer = 1 To Me.Core.nFleets
-                        If Me.StyleGuide.FleetVisible(iFleet) Then
-                            lVizFleets.Add(iFleet)
-                            iNumVizFleets += 1
+                For iFleet As Integer = 1 To Me.Core.nFleets
+                    If Me.StyleGuide.FleetVisible(iFleet) Then
+                        lVizFleets.Add(iFleet)
+                        iNumVizFleets += 1
+                    End If
+                Next
+
+                Me.m_iNumFleetPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVizFleets) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
+                Me.m_iNumFleetPlotsVert = CInt(Math.Ceiling(iNumVizFleets / Me.m_iNumFleetPlotsHorz))
+
+                Dim xScale As Double = m_iNumFleetPlotsHorz * (m_iInCol + 1) + 1
+                Dim yScale As Double = m_iNumFleetPlotsVert * (m_iInRow + 1) + 1
+                If xScale > 0 Then xScale = m_pbMap.Width / xScale
+                If yScale > 0 Then yScale = m_pbMap.Height / yScale
+
+                For i As Integer = 0 To m_iNumFleetPlotsVert - 1
+                    For j As Integer = 0 To m_iNumFleetPlotsHorz - 1
+                        Dim cur As Integer = i * m_iNumFleetPlotsHorz + j
+                        If cur < iNumVizFleets Then
+                            Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
+                            Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
+                                                                    CInt(origin.Y * yScale), _
+                                                                    CInt(m_iInCol * xScale), _
+                                                                    CInt(m_iInRow * yScale))
+                            Try
+                                DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(cur), rect, g)
+                            Catch ex As Exception
+
+                            End Try
                         End If
                     Next
-
-                    Me.m_iNumFleetPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVizFleets) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
-                    Me.m_iNumFleetPlotsVert = CInt(Math.Ceiling(iNumVizFleets / Me.m_iNumFleetPlotsHorz))
-
-                    Dim xScale As Double = m_iNumFleetPlotsHorz * (m_iInCol + 1) + 1
-                    Dim yScale As Double = m_iNumFleetPlotsVert * (m_iInRow + 1) + 1
-                    If xScale > 0 Then xScale = m_pbMap.Width / xScale
-                    If yScale > 0 Then yScale = m_pbMap.Height / yScale
-
-                    For i As Integer = 0 To m_iNumFleetPlotsVert - 1
-                        For j As Integer = 0 To m_iNumFleetPlotsHorz - 1
-                            Dim cur As Integer = i * m_iNumFleetPlotsHorz + j
-                            If cur < iNumVizFleets Then
-                                Dim origin As PointF = New PointF((m_iInCol + 1) * j + 1, i * (m_iInRow + 1) + 1)
-                                Dim rect As Rectangle = New Rectangle(CInt(origin.X * xScale), _
-                                                                        CInt(origin.Y * yScale), _
-                                                                        CInt(m_iInCol * xScale), _
-                                                                        CInt(m_iInRow * yScale))
-                                Try
-                                    DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, lVizFleets(cur), rect, g)
-                                Catch ex As Exception
-
-                                End Try
-                            End If
-                        Next
-                    Next
-
-                Else
-                    'Yes Sum of all effort map
-                    'just one map for all the fleets
-
-                    Dim rect As Rectangle = New Rectangle(0, 0, Me.m_pbMap.Width, Me.m_pbMap.Height)
-                    Dim orgShowLabels As Boolean = m_bShowLabels
-                    m_bShowLabels = False
-
-                    DrawFishingBaseMap(Me.m_dataTimeStep.FishingEffortMap, cCore.NULL_VALUE, rect, g)
-
-                    m_bShowLabels = orgShowLabels
-
-                End If
+                Next
 
             End If
 
         End Sub
 
-        Private Sub DrawFishingBaseMap(ByRef baseMap(,,) As Single, ByVal iFleet As Integer, ByVal rcPos As Rectangle, ByRef g As Graphics)
+        Private Sub DrawFishingBaseMap(ByVal mapFishing(,,) As Single, _
+                                       iFleet As Integer, ByVal rcPos As Rectangle, ByRef g As Graphics)
 
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
@@ -626,30 +616,15 @@ Namespace Ecospace
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
-            Dim sumEff As Single
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
                     Dim icc As Single
 
-                    If Not Me.m_bSumEffort Then
-                        'Effort for a single fleet
-                        icc = baseMap(iFleet, i, j) * cScaler
-                        'Convert to effort per unit of area
-                        'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
-                    Else
-                        'sum of effort across all fleets
-                        sumEff = 0
-                        For iflt As Integer = 1 To Me.Core.nFleets
-                            If Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor > 0 Then
-                                sumEff += baseMap(iflt, i, j) * Me.Core.EcosimFleetInputs(iflt).EffortConversionFactor
-                            Else
-                                sumEff += baseMap(iflt, i, j)
-                            End If
-                        Next iflt
-                        icc = (sumEff / Me.Core.nFleets) * cScaler
-
-                    End If
+                    'Effort for a single fleet
+                    icc = mapFishing(iFleet, i, j) * cScaler
+                    'Convert to effort per unit of area
+                    'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
 
                     'Boundary check
                     icc = Math.Max(Math.Min(cColourBins, icc), 0)
@@ -738,9 +713,9 @@ Namespace Ecospace
 
             For i As Integer = 1 To Me.Core.nGroups - 1
                 For j As Integer = 1 To Me.Core.nEcospaceTimeSteps - 1
-                    Me.m_as2RelBiomassResults(i, j) = 0
+                    Me.m_RelBiomassResults(i, j) = 0
                 Next j
-                Me.m_asBaseBiomassResults(i) = 0
+                Me.m_BaseBiomassResults(i) = 0
             Next i
 
             ' Reset plot drawer if overlay is not needed
@@ -777,9 +752,7 @@ Namespace Ecospace
                     m_rbDisplayFishingEffort.CheckedChanged, _
                     m_rbDisplayCoverB.CheckedChanged, _
                     m_rbDisplayContaminantC.CheckedChanged, _
-                    m_rbSumEffort.CheckedChanged
-
-            Me.m_bSumEffort = Me.m_rbSumEffort.Checked
+                    m_rbSumEffort.CheckedChanged, m_rbDisaplyFOverB.CheckedChanged
 
             Me.RefreshPlot()
             Me.RefreshMap()
@@ -910,7 +883,6 @@ Namespace Ecospace
         ''' This GUI event handler will be called for every time step of the Ecospace model run. 
         ''' </summary>
         ''' <param name="TimeStepData">Data from the current time step</param>
-        ''' <remarks></remarks>
         Private Sub onEcospaceTimeStep(ByRef TimeStepData As cEcospaceTimestep)
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
@@ -920,17 +892,10 @@ Namespace Ecospace
             ' The following algorithm was extracted from EwE5. Biomass Log plotting, the value between 0.1 to 10. 
             For groupIndex As Integer = 1 To Core.nGroups
                 If TimeStepData.iTimeStep = 1 Then
-                    m_asBaseBiomassResults(groupIndex) = TimeStepData.RelativeBiomass(groupIndex)
-                    m_as2RelBiomassResults(groupIndex, 1) = 0
+                    m_BaseBiomassResults(groupIndex) = TimeStepData.RelativeBiomass(groupIndex)
+                    m_RelBiomassResults(groupIndex, 1) = 0
                 Else
-                    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
-                    'If TimeStepData.RelativeBiomass(groupIndex) < 0.1 * m_asBaseBiomassResults(groupIndex) Then
-                    '    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(0.1))
-                    'ElseIf m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) > 10 * m_asBaseBiomassResults(groupIndex) Then
-                    '    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(10))
-                    'Else
-                    '    m_as2RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex) / m_asBaseBiomassResults(groupIndex)))
-                    'End If
+                    m_RelBiomassResults(groupIndex, TimeStepData.iTimeStep) = CSng(Math.Log10(TimeStepData.RelativeBiomass(groupIndex)))
                 End If
             Next
 
@@ -939,33 +904,26 @@ Namespace Ecospace
             m_iTimeStepCur = TimeStepData.iTimeStep
 
             'Update the running simulation years progress label.
-            'If (Me.m_iTimeStepCur Mod cCore.N_MONTHS = 0) Then
-            '    ' BE easy notifying the world
             cApplicationStatusNotifier.UpdateProgress(Me.Core, My.Resources.STATUS_ECOSPACE_RUNNING, CSng(Me.m_iTimeStepCur / Me.Core.nEcospaceTimeSteps))
-            'End If
-
-            '' Update local time
-            'Me.m_lblProgress.Text = String.Format(My.Resources.STATUS_ECOSPACE_PROGRESS, _
-            '                                      Me.StyleGuide.FormatNumber(Me.m_iTimeStepCur / parms.NumberOfTimeStepsPerYear), _
-            '                                      Me.Core.nEcospaceYears)
-
-            ' Store time step data
             Me.m_dataTimeStep = TimeStepData
 
-            ' Calc C/B
-            If (TimeStepData.ContaminantMap IsNot Nothing) Then
-                ReDim Me.m_as2ConcOverB(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups)
-                For iRow As Integer = 1 To TimeStepData.inRows
-                    For iCol As Integer = 1 To TimeStepData.inCols
-                        For iGroup As Integer = 1 To Me.Core.nGroups
-                            Dim sB As Single = TimeStepData.BiomassMap(iRow, iCol, iGroup)
-                            If (sB > 0) Then
-                                Me.m_as2ConcOverB(iRow, iCol, iGroup) = TimeStepData.ContaminantMap(iRow, iCol, iGroup) / sB
+            ' Calc C/B, F/B
+            ReDim Me.m_ConcOverB(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups)
+            ReDim Me.m_FoverB(TimeStepData.inRows, TimeStepData.inCols, Me.Core.nGroups)
+
+            For iRow As Integer = 1 To TimeStepData.inRows
+                For iCol As Integer = 1 To TimeStepData.inCols
+                    For iGroup As Integer = 1 To Me.Core.nGroups
+                        Dim sB As Single = TimeStepData.BiomassMap(iRow, iCol, iGroup)
+                        If (sB > 0) Then
+                            If (TimeStepData.ContaminantMap IsNot Nothing) Then
+                                Me.m_ConcOverB(iRow, iCol, iGroup) = TimeStepData.ContaminantMap(iRow, iCol, iGroup) / sB
                             End If
-                        Next iGroup
-                    Next iCol
-                Next iRow
-            End If
+                        End If
+                        Me.m_FoverB(iRow, iCol, iGroup) = TimeStepData.CatchMap(iRow, iCol, iGroup) / sB
+                    Next iGroup
+                Next iCol
+            Next iRow
 
             'if the size of the map has changed reset the interface
             If m_iInRow <> TimeStepData.inRows Or m_iInCol <> TimeStepData.inCols Then
@@ -981,11 +939,6 @@ Namespace Ecospace
             Me.UpdateBiomassPlot()
             Me.m_pbMap.Invalidate()
             Me.UpdateControls()
-
-            'Me.DumpIBMMap(TimeStepData)
-            'jb 26-May-11 Ecospace now runs on its own thread
-            'so there is no need to call DoEvents()
-            ' Application.DoEvents()
 
         End Sub
 
