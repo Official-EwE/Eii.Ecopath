@@ -227,6 +227,7 @@ Namespace Ecospace
             Me.m_bpUseIBM = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
             Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
 
+            ' Initially collapse labels
             Me.m_hdrLabelOptions.IsCollapsed = True
 
             Me.InitCoreParams()
@@ -306,12 +307,13 @@ Namespace Ecospace
 
         Private Sub OnMapMouseDouble(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_pbMap.DoubleClick
+            ' ToDo: use toolbar (perhaps floating toolbar?)
             Me.SaveMapImage()
         End Sub
 
         Private Sub OnMapMouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
             Handles m_pbMap.MouseClick
-
+            ' ToDo: use toolbar (perhaps floating toolbar?) Right-click should be reserved for a context menu
             If e.Button = Windows.Forms.MouseButtons.Right Then
                 Me.SaveMapImage()
             End If
@@ -326,7 +328,7 @@ Namespace Ecospace
         ''' <summary>
         ''' Display groups command has been invoked: entirely invalidate the map plot.
         ''' This is rather hack but necessary, since this form is entirely responsible
-        ''' for rendering of the map picture box.
+        ''' for rendering the map picture box.
         ''' </summary>
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
@@ -508,10 +510,10 @@ Namespace Ecospace
                             If parms.UseIBM And Me.m_bShowIBM Then
                                 drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
                             End If
-                        ElseIf Me.m_rbDisaplyFOverB.Checked Then
+                        ElseIf Me.m_rbDisplayFOverB.Checked Then
                             drawer.Map = Me.m_FoverB
-                        ElseIf Me.m_rbDisplayCoverB.Checked Then
-
+                        ElseIf Me.m_rbDisplayF.Checked Then
+                            drawer.Map = Me.m_dataTimeStep.CatchMap
                         ElseIf Me.m_rbDisplayContaminantC.Checked Then
                             drawer.Map = Me.m_dataTimeStep.ContaminantMap
                         ElseIf Me.m_rbDisplayCoverB.Checked Then
@@ -752,7 +754,7 @@ Namespace Ecospace
                     m_rbDisplayFishingEffort.CheckedChanged, _
                     m_rbDisplayCoverB.CheckedChanged, _
                     m_rbDisplayContaminantC.CheckedChanged, _
-                    m_rbSumEffort.CheckedChanged, m_rbDisaplyFOverB.CheckedChanged
+                    m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged
 
             Me.RefreshPlot()
             Me.RefreshMap()

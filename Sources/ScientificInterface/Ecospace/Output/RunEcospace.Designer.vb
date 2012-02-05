@@ -50,9 +50,9 @@ Namespace Ecospace
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox()
             Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plDistribution = New System.Windows.Forms.Panel()
-            Me.m_rbSumEffort = New System.Windows.Forms.RadioButton()
+            Me.m_rbDisplayF = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton()
-            Me.m_rbDisaplyFOverB = New System.Windows.Forms.RadioButton()
+            Me.m_rbDisplayFOverB = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayFishingEffort = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayContaminantC = New System.Windows.Forms.RadioButton()
             Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -259,9 +259,9 @@ Namespace Ecospace
             '
             'm_plDistribution
             '
-            Me.m_plDistribution.Controls.Add(Me.m_rbSumEffort)
+            Me.m_plDistribution.Controls.Add(Me.m_rbDisplayF)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayRelBiomass)
-            Me.m_plDistribution.Controls.Add(Me.m_rbDisaplyFOverB)
+            Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFOverB)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFishingEffort)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayContaminantC)
             Me.m_plDistribution.Controls.Add(Me.m_hdrDist)
@@ -269,11 +269,11 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_plDistribution, "m_plDistribution")
             Me.m_plDistribution.Name = "m_plDistribution"
             '
-            'm_rbSumEffort
+            'm_rbDisplayF
             '
-            resources.ApplyResources(Me.m_rbSumEffort, "m_rbSumEffort")
-            Me.m_rbSumEffort.Name = "m_rbSumEffort"
-            Me.m_rbSumEffort.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbDisplayF, "m_rbDisplayF")
+            Me.m_rbDisplayF.Name = "m_rbDisplayF"
+            Me.m_rbDisplayF.UseVisualStyleBackColor = True
             '
             'm_rbDisplayRelBiomass
             '
@@ -283,11 +283,11 @@ Namespace Ecospace
             Me.m_rbDisplayRelBiomass.TabStop = True
             Me.m_rbDisplayRelBiomass.UseVisualStyleBackColor = True
             '
-            'm_rbDisaplyFOverB
+            'm_rbDisplayFOverB
             '
-            resources.ApplyResources(Me.m_rbDisaplyFOverB, "m_rbDisaplyFOverB")
-            Me.m_rbDisaplyFOverB.Name = "m_rbDisaplyFOverB"
-            Me.m_rbDisaplyFOverB.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_rbDisplayFOverB, "m_rbDisplayFOverB")
+            Me.m_rbDisplayFOverB.Name = "m_rbDisplayFOverB"
+            Me.m_rbDisplayFOverB.UseVisualStyleBackColor = True
             '
             'm_rbDisplayFishingEffort
             '
@@ -461,9 +461,9 @@ Namespace Ecospace
         Private WithEvents m_btnPause As System.Windows.Forms.Button
         Private WithEvents m_cmbRunType As System.Windows.Forms.ComboBox
         Private WithEvents m_cbShowIBMPackets As System.Windows.Forms.CheckBox
-        Private WithEvents m_rbSumEffort As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayF As System.Windows.Forms.RadioButton
         Private WithEvents m_plRun As System.Windows.Forms.Panel
-        Private WithEvents m_rbDisaplyFOverB As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbDisplayFOverB As System.Windows.Forms.RadioButton
         Private WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
 
  
