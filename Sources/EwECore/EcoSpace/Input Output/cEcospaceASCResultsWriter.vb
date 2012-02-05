@@ -20,7 +20,7 @@ Public Class cEcospaceASCResultsWriter
 
     Public Overrides Sub StartWrite()
         If (Not Me.SpaceData.bSaveASC) Then Return
-        Me.CreateTimeStampedDir()
+        Me.CreateOutputDir()
         Me.WriteInfoFile()
     End Sub
 
@@ -79,7 +79,7 @@ Public Class cEcospaceASCResultsWriter
         Try
             Dim fn As String
             Dim strm As StreamWriter
-            fn = Path.Combine(Me.TimeStampDirName, ".Ecospace RunInfo.txt")
+            fn = Path.Combine(Me.OutputDirectory, ".Ecospace RunInfo.txt")
             strm = New StreamWriter(fn, False)
 
             Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name

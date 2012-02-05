@@ -20,7 +20,7 @@ Public Class cEcospaceCSVResultsWriter
 
     Public Overrides Sub StartWrite()
         If (Not Me.SpaceData.bSaveCSV) Then Return
-        Me.CreateTimeStampedDir()
+        Me.CreateOutputDir()
         Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
     End Sub
 

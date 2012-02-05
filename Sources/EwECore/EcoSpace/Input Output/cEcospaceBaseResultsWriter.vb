@@ -61,11 +61,11 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <remarks>
     ''' Directory will be created on the default output path in the format "Ecopace {datatype} {y-m-d h-m-s}
     ''' i.e. "Ecospace ASC 11-07-11 16-40-50" </remarks>
-    Protected Overridable Sub CreateTimeStampedDir()
+    Protected Overridable Sub CreateOutputDir(Optional bIncludeTime As Boolean = False)
 
-        m_TimeStampDirName = Path.Combine(Me.m_core.OutputPath, Path.GetDirectoryName(Me.m_core.EcospaceOutputFileLocation(bIncludeTime:=True)) & " " & Me.getSubDirName())
+        m_TimeStampDirName = Path.Combine(Me.m_core.OutputPath, Path.GetDirectoryName(Me.m_core.EcospaceOutputFileLocation(bIncludeTime:=bIncludeTime)) & " " & Me.getSubDirName())
 
-        If (Not cFileUtils.IsDirectoryAvailable(Me.TimeStampDirName, True)) Then
+        If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() cannot create directory")
         End If
 
@@ -99,14 +99,13 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Return Format(Date.Now, "y-MM-dd HH-mm-ss")
     End Function
 
-
     ''' <summary>
-    ''' Full path name of the current time stamped output directory
+    ''' Full path name of the current output directory
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
-    ''' <remarks>Initialized by <see cref="CreateTimeStampedDir">CreateTimeStampedDir()</see></remarks>
-    Protected Overridable ReadOnly Property TimeStampDirName() As String
+    ''' <remarks>Initialized by <see cref="CreateOutputDir"/></remarks>
+    Protected Overridable ReadOnly Property OutputDirectory() As String
         Get
             Return Me.m_TimeStampDirName
         End Get
@@ -134,7 +133,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End If
 
         Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", cin.GetVarName(varname), grpName, Timestep, Ext), False)
-        Return System.IO.Path.Combine(Me.TimeStampDirName, fn)
+        Return System.IO.Path.Combine(Me.OutputDirectory, fn)
 
     End Function
 
@@ -160,7 +159,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         End If
 
         Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", cin.GetVarName(varname), fltName, Timestep, Ext), False)
-        Return System.IO.Path.Combine(Me.TimeStampDirName, fn)
+        Return System.IO.Path.Combine(Me.OutputDirectory, fn)
 
     End Function
 
