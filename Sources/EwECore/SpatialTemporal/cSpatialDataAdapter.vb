@@ -136,55 +136,60 @@ Namespace SpatialData
 
                 ' Has both?
                 If (ds IsNot Nothing) And (cv IsNot Nothing) Then
-                    ' #Yes: has data for this time step?
+                    ' #Yes: allowed to execute?
+                    If ds.IsEnabled Then
+                        ' #Yes: has data for this time step?
+                        dt = Me.ToDataSetTime(ds, iTime)
+                        If (ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight)) Then
+                            ' #Yes: Can load that data?
+                            If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                                ' #Yes: extract external data
 #If DEBUG Then
-                    Dim sw As Stopwatch = Stopwatch.StartNew()
+                                Dim sw As Stopwatch = Stopwatch.StartNew()
 #End If
-                    dt = Me.ToDataSetTime(ds, iTime)
-                    If (ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight)) Then
-                        ' #Yes: Can load that data?
-                        If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-                            ' #Yes: extract external data
-                            Try
-                                ' The raster returned here MUST have the extent and projection compatible with Ecospace
-                                dataExternal = ds.GetRaster(cv, layer.Name)
-                            Catch ex As Exception
-                                ' ToDo_JS: Globalize this message
-                                msg = New cMessage(String.Format("Ecospace obtain external data for {0} at time step {1}. Exception {2}", Me.Name, iTime, ex.Message), _
-                                                   eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
-                                Me.m_core.Messages.SendMessage(msg)
-                                cLog.Write(ex, "cSpatialDataAdapter::Populate@GetRaster")
-                            End Try
 
-                            If (dataExternal IsNot Nothing) Then
+                                Try
+                                    ' The raster returned here MUST have the extent and projection compatible with Ecospace
+                                    dataExternal = ds.GetRaster(cv, layer.Name)
+                                Catch ex As Exception
+                                    ' ToDo_JS: Globalize this message
+                                    msg = New cMessage(String.Format("Ecospace obtain external data for {0} at time step {1}. Exception {2}", Me.Name, iTime, ex.Message), _
+                                                       eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                                    Me.m_core.Messages.SendMessage(msg)
+                                    cLog.Write(ex, "cSpatialDataAdapter::Populate@GetRaster")
+                                End Try
 
-                                ' Stop any validation
-                                Dim bAllow As Boolean = layer.AllowValidation
-                                layer.AllowValidation = False
+                                If (dataExternal IsNot Nothing) Then
 
-                                ' Integrate data
-                                Me.Adapt(bm, layer, iTime, dataExternal)
+                                    ' Stop any validation
+                                    Dim bAllow As Boolean = layer.AllowValidation
+                                    layer.AllowValidation = False
 
-                                ' Restore layer validation
-                                layer.AllowValidation = bAllow
+                                    ' Integrate data
+                                    Me.Adapt(bm, layer, iTime, dataExternal)
 
-                                ' Done, clean up
-                                dataExternal.Dispose()
-                                dataExternal = Nothing
+                                    ' Restore layer validation
+                                    layer.AllowValidation = bAllow
 
-                                ' Notify core
-                                Me.m_core.onChanged(layer)
+                                    ' Done, clean up
+                                    dataExternal.Dispose()
+                                    dataExternal = Nothing
 
+                                    ' Notify core
+                                    Me.m_core.onChanged(layer)
+
+                                End If
+
+                                ' Unload dataset
+                                ds.Unload()
+#If DEBUG Then
+                                sw.Stop()
+                                Console.WriteLine("SpatialDataAdapter {0}::{1} {2} ms", Me.Name, layer.Name, sw.ElapsedMilliseconds)
+#End If
                             End If
-
-                            ' Unload dataset
-                            ds.Unload()
+                        Else
+                            Console.WriteLine(">> SpatialDataAdapter {0}::{1} is disabled <<", Me.Name, layer.Name)
                         End If
-#If DEBUG Then
-                        sw.Stop()
-                        Console.WriteLine("SpatialDataAdapter {0}::{1} {2} ms", Me.Name, layer.Name, sw.ElapsedMilliseconds)
-#End If
-
                     End If
                 End If
             Next
