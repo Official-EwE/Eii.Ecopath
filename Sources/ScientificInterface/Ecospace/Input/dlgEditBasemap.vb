@@ -59,7 +59,7 @@ Public Class dlgEditBasemap
         Me.m_fpCellLength = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellLength, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellLength))
         Me.m_fpCellLength.Value = Me.m_basemap.CellLength
 
-        Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellSize, GetType(Single))
+        Me.m_fpCellSize = New cEwEFormatProvider(Me.m_uic, Me.m_nudCellSize, GetType(Single), Me.m_basemap.GetVariableMetadata(eVarNameFlags.CellSize))
         Me.m_fpCellSize.Value = Me.m_basemap.CellSize
 
         Me.UpdateControls()
@@ -148,6 +148,7 @@ Public Class dlgEditBasemap
 
         ' Apply other data first
         Me.m_basemap.CellLength = CSng(Me.m_fpCellLength.Value)
+        Me.m_basemap.CellSize = CSng(Me.m_fpCellSize.Value)
         Me.m_basemap.Latitude = CSng(Me.m_fpLat.Value)
         Me.m_basemap.Longitude = CSng(Me.m_fpLon.Value)
 
