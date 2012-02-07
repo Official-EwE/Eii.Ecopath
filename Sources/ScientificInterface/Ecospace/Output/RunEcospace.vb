@@ -1053,9 +1053,6 @@ Namespace Ecospace
                 Me.m_btnPause.Text = My.Resources.ECOSPACE_PAUSE
             End If
 
-            ' Enable display options for non-fleet maps
-            Me.m_plDisplayOptions.Enabled = (Me.m_rbDisplayFishingEffort.Checked = False)
-
             ' Enable contaminant options based on space tracer enabled state
             Me.m_rbDisplayContaminantC.Enabled = CBool(Me.m_bpConTracing.GetValue())
             Me.m_rbDisplayCoverB.Enabled = CBool(Me.m_bpConTracing.GetValue())
