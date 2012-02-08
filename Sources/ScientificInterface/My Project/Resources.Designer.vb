@@ -228,6 +228,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Computer() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Computer", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Only models stored in databases can be duplicated..
         '''</summary>

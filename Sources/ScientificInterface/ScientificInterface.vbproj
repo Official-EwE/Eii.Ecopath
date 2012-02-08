@@ -1598,6 +1598,7 @@
     <None Include="Resources\certificate.png" />
     <None Include="Resources\Ecopath_hohoho.ico" />
     <None Include="Resources\EditTaxa.png" />
+    <Content Include="Resources\Computer.png" />
     <Content Include="Resources\Ecopath_beta.ico" />
     <None Include="Resources\EWE_forever.jpg" />
     <Content Include="Resources\Ecopath_beta.ico" />

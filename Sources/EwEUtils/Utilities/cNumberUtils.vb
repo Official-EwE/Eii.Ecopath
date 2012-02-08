@@ -66,8 +66,8 @@ Namespace Utilities
         ''' <param name="dThreshold">Max difference for the two values to be considered equal.</param>
         ''' <returns>True if the two values differ by no more than the given threshold.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function AlmostEquals(dVal1 As Double, dVal2 As Double, dThreshold As Double) As Boolean
-            Return (Math.Abs(dVal1 - dVal2) < dThreshold)
+        Public Shared Function Approximates(dVal1 As Double, dVal2 As Double, dThreshold As Double) As Boolean
+            Return (Math.Abs(dVal1 - dVal2) <= dThreshold)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -79,8 +79,8 @@ Namespace Utilities
         ''' <param name="sThreshold">Max difference for the two values to be considered equal.</param>
         ''' <returns>True if the two values differ by no more than the given threshold.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function AlmostEquals(sVal1 As Single, sVal2 As Single, sThreshold As Single) As Boolean
-            Return (Math.Abs(sVal1 - sVal2) < sThreshold)
+        Public Shared Function Approximates(sVal1 As Single, sVal2 As Single, sThreshold As Single) As Boolean
+            Return (Math.Abs(sVal1 - sVal2) <= sThreshold)
         End Function
 
     End Class

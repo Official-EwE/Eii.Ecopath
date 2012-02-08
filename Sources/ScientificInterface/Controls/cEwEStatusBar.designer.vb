@@ -68,7 +68,7 @@ Partial Class cEwEStatusBar
         '
         Me.m_tsIP.Name = "m_tsIP"
         Me.m_tsIP.Size = New System.Drawing.Size(33, 15)
-        Me.m_tsIP.Image = SharedResources.HomeHS
+        Me.m_tsIP.Image = My.Resources.Computer
         '
         'cEwEStatusBar
         '

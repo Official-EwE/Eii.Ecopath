@@ -3,6 +3,7 @@ Imports System.Reflection
 Imports EwECore
 Imports EwEUtils.Core
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SystemUtilities
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -35,10 +36,12 @@ Public Class cEwEStatusBar
             Me.m_tsStatus.Visible = True
             ' Configure host IP
             If My.Settings.ShowHostInfo Then
-                Me.m_tsIP.Text = System.Net.Dns.GetHostName
+                Try
+                    Me.m_tsIP.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXED, cSystemUtils.GetHostName(), cSystemUtils.GetHostIP())
+                Catch ex As Exception
+                    '  Hmm
+                End Try
                 Me.m_tsIP.Visible = True
-            Else
-                Me.m_tsIP.Visible = False
             End If
         End If
     End Sub

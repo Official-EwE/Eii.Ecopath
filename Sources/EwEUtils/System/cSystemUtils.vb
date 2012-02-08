@@ -8,6 +8,7 @@ Imports Microsoft.VisualBasic
 Imports EwEUtils.Win32Api
 Imports EwEUtils.Utilities
 Imports System.Security.AccessControl
+Imports System.Net
 
 #End Region ' Imports
 
@@ -23,6 +24,41 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function GetUserName() As String
             Return System.Security.Principal.WindowsIdentity.GetCurrent.Name
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the name of the host machine.
+        ''' </summary>
+        ''' <returns>The name of the host machine.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function GetHostName() As String
+            Return Dns.GetHostName()
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the IP address of the host machine.
+        ''' </summary>
+        ''' <param name="bIP4">True to get the IP4 address, False to get the IP6 address.</param>
+        ''' <returns>The IP address of the host machine.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function GetHostIP(Optional strHost As String = "", _
+                                         Optional bIP4 As Boolean = True) As String
+            If String.IsNullOrWhiteSpace(strHost) Then strHost = GetHostName()
+            For Each ip As IPAddress In Dns.GetHostEntry(strHost).AddressList
+                Dim by As Byte() = ip.GetAddressBytes
+                If bIP4 Then
+                    If (by.Length = 4) And (by(0) <> 169) Then
+                        Return ip.ToString
+                    End If
+                Else
+                    If (by.Length = 16) Then
+                        Return ip.ToString
+                    End If
+                End If
+            Next
+            Return ""
         End Function
 
         ''' -----------------------------------------------------------------------
