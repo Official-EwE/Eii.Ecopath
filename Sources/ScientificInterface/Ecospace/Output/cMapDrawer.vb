@@ -20,6 +20,12 @@ Imports ScientificInterface.Other
 ''' </remarks>
 Public Class cMapDrawer
 
+    Public Enum eMapType As Integer
+        RelBiomass = 0
+        RelCatch
+        FishingMort
+    End Enum
+
 #Region " Private vars "
 
     Public SignalState As New ManualResetEvent(True)
@@ -89,15 +95,6 @@ Public Class cMapDrawer
             Me.m_map = value
         End Set
     End Property
-
-    'Public Property MapIBMPackets() As Boolean(,,)
-    '    Get
-    '        Return Me.m_mapIBMPackets
-    '    End Get
-    '    Set(ByVal value As Boolean(,,))
-    '        Me.m_mapIBMPackets = value
-    '    End Set
-    'End Property
 
     Public Property StanzaDS() As cStanzaDatastructures
         Get
@@ -304,15 +301,6 @@ Public Class cMapDrawer
                                                                CSng(rcPos.Height() / m_iInRow))
                     Dim rcTemp As Rectangle = Nothing
                     Dim brCell As Brush = Nothing
-                    'If ConShow And ConcMax(ip) > 0 Then
-                    '    If ConShowType = 0 Then
-                    '        MapValue = 11 * p_baseMap(i, j, ip) / ConcMax(ip)
-                    '    Else
-                    '        If Bcell(i, j, ip) > 0 And (PrefHab(ip, HabType(i, j)) Or PrefHab(ip, 0)) Then MapValue = 11 * (p_baseMap(i, j, ip) / Bcell(i, j, ip)) / ConcMax(ip) Else MapValue = 1.0E-20
-                    '    End If
-                    'Else
-                    '    MapValue = p_baseMap(i, j, ip) / StartBiomass(ip)
-                    'End If
 
                     'If it is water
                     If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
@@ -327,12 +315,10 @@ Public Class cMapDrawer
                             ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
                             '              ColorScaling is MaxColorsInGrad / 2
                             icc = m_lColors.Count * sMapValue / (sMapValue + 1)
-                            'icc = CSng(Math.Log(sMapValue) * m_lColors.Count + m_lColors.Count / 2)
                         End If
 
                        'Boundary check
                         icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
-
                         brCell = New SolidBrush(m_lColors(CInt(icc)))
                     Else
                         ' #Land
