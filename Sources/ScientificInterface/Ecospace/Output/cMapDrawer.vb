@@ -23,10 +23,14 @@ Public Class cMapDrawer
     Public Enum eMapType As Integer
         RelBiomass = 0
         RelCatch
-        FishingMort
+        FishingMortRate
+        RelContam
+        ContamRate
     End Enum
 
 #Region " Private vars "
+
+    Private Const MAX_FISH_MORT As Single = 2
 
     Public SignalState As New ManualResetEvent(True)
 
@@ -257,16 +261,16 @@ Public Class cMapDrawer
 
     Public Sub Draw(ByVal obParam As Object)
         m_bAllowedToRun = False
+        Dim args As cMapDrawerArgs = DirectCast(obParam, cMapDrawerArgs)
         Try
             Dim i As Integer
             Dim iGroup As Integer
             Dim iLocation As Integer
-            'SignalState.Reset()
             For i = 0 To Me.m_lGroups.Count - 1
                 iGroup = Me.m_lGroups(i)
                 iLocation = Me.m_lLocations(i)
                 Try
-                    DrawBiomassBaseMap(iGroup, m_lrc(iLocation))
+                    DrawMap(iGroup, m_lrc(iLocation), args.RelMapScaler, args.MapType)
                 Catch ex As Exception
 
                 End Try
@@ -287,8 +291,13 @@ Public Class cMapDrawer
     ''' <param name="iGroup"></param>
     ''' <param name="rcPos"></param>
     ''' <remarks></remarks>
-    Public Sub DrawBiomassBaseMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle)
+    Public Sub DrawMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle, ByVal RelScaler() As Single, ByVal MapType As eMapType)
         If m_map Is Nothing Then Return
+        Dim FScaler As Single
+
+        If MapType = eMapType.FishingMortRate Then
+            FScaler = m_lColors.Count / MAX_FISH_MORT
+        End If
 
         For i As Integer = 1 To m_iInRow
             For j As Integer = 1 To m_iInCol
@@ -304,26 +313,36 @@ Public Class cMapDrawer
 
                     'If it is water
                     If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
-                        ' #Water
-                        sMapValue = m_map(i, j, iGroup) / m_core.StartBiomass(iGroup)
-                        If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
-                            icc = m_lColors.Count
-                        ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
-                            icc = 1
-                        Else
-                            ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
-                            ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
-                            '              ColorScaling is MaxColorsInGrad / 2
-                            icc = m_lColors.Count * sMapValue / (sMapValue + 1)
-                        End If
+                        ' Not Water
+                        sMapValue = m_map(i, j, iGroup) / RelScaler(iGroup)
 
-                       'Boundary check
+                        ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
+                        ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
+                        '              ColorScaling is MaxColorsInGrad / 2
+
+                        Select Case MapType
+                            Case eMapType.FishingMortRate
+                                'Only Fishing mort map has it's own color binning 
+                                icc = sMapValue * FScaler
+                            Case Else
+                                If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
+                                    icc = m_lColors.Count
+                                ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
+                                    icc = 1
+                                Else
+                                    icc = m_lColors.Count * sMapValue / (sMapValue + 1)
+                                End If
+                        End Select
+
+                        'Boundary check
                         icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
                         brCell = New SolidBrush(m_lColors(CInt(icc)))
+
                     Else
                         ' #Land
                         brCell = New SolidBrush(Color.Gray)
                     End If
+
                     m_graphics.FillRectangle(brCell, rcfCell)
                     brCell.Dispose()
 
@@ -417,4 +436,14 @@ Public Class cMapDrawer
 
 #End Region ' Public access
 
+End Class
+
+Public Class cMapDrawerArgs
+    Public MapType As cMapDrawer.eMapType
+    Public RelMapScaler() As Single
+
+    Public Sub New(ByVal theMapType As cMapDrawer.eMapType, ByVal theRelScaler() As Single)
+        Me.MapType = theMapType
+        Me.RelMapScaler = theRelScaler
+    End Sub
 End Class

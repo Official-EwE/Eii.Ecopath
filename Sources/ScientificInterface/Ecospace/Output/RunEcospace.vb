@@ -46,6 +46,13 @@ Namespace Ecospace
         ''' <summary>Effort over Biomass.</summary>
         Private m_FoverB(,,) As Single
 
+
+        Private m_BaseCatch() As Single
+        Private m_BaseBiomass() As Single
+        Private m_FishingMortScaler() As Single
+        Private m_CBScaler() As Single
+        Private m_BaseC() As Single
+
         Private m_layerDepth As cEcospaceLayer = Nothing
 
         ''' <summary>The speed of the plotting. 1 is the slowest, 10 is the fastest.</summary>
@@ -250,6 +257,21 @@ Namespace Ecospace
 
             Me.ShowGroupMode = eShowGroupType.ShowAll
             Me.IsRunning = Me.Core.StateMonitor.IsEcospaceRunning
+
+            Dim nGrps As Integer = Me.Core.nGroups
+            ReDim Me.m_BaseC(nGrps)
+            ReDim Me.m_BaseCatch(nGrps)
+            ReDim Me.m_FishingMortScaler(nGrps)
+            ReDim Me.m_BaseBiomass(nGrps)
+
+            For igrp As Integer = 1 To nGrps
+                Me.m_FishingMortScaler(igrp) = 1
+                Me.m_BaseC(igrp) = 1
+                Me.m_BaseBiomass(igrp) = Me.Core.StartBiomass(igrp)
+                For iflt As Integer = 1 To Me.Core.nFleets
+                    Me.m_BaseCatch(igrp) += Me.Core.FleetInputs(iflt).Landings(igrp) + Me.Core.FleetInputs(iflt).Discards(igrp)
+                Next
+            Next
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
@@ -489,12 +511,15 @@ Namespace Ecospace
                     Next
                 Next
 
+                Dim maptype As cMapDrawer.eMapType
+                Dim RelScaler() As Single
                 Dim ifirst As Integer = 0
                 Dim ilast As Integer = 0
 
                 For Each drawer In m_drawers
 
                     If drawer.AllowedToRun Then
+
                         'init the drawer to the latest values
                         drawer.OriginList = originList
                         drawer.RectList = rectList
@@ -507,18 +532,36 @@ Namespace Ecospace
 
                         If Me.m_rbDisplayRelBiomass.Checked Then
                             drawer.Map = Me.m_dataTimeStep.BiomassMap
+                            maptype = cMapDrawer.eMapType.RelBiomass
+                            RelScaler = Me.m_BaseBiomass
+
                             If parms.UseIBM And Me.m_bShowIBM Then
                                 drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
                             End If
+
                         ElseIf Me.m_rbDisplayFOverB.Checked Then
                             drawer.Map = Me.m_FoverB
+                            maptype = cMapDrawer.eMapType.FishingMortRate
+                            RelScaler = Me.m_FishingMortScaler
+
                         ElseIf Me.m_rbDisplayF.Checked Then
                             drawer.Map = Me.m_dataTimeStep.CatchMap
+                            maptype = cMapDrawer.eMapType.RelCatch
+                            RelScaler = Me.m_BaseCatch
+
                         ElseIf Me.m_rbDisplayContaminantC.Checked Then
                             drawer.Map = Me.m_dataTimeStep.ContaminantMap
+                            maptype = cMapDrawer.eMapType.RelContam
+                            RelScaler = Me.m_BaseC
+
                         ElseIf Me.m_rbDisplayCoverB.Checked Then
                             drawer.Map = Me.m_ConcOverB
+                            maptype = cMapDrawer.eMapType.ContamRate
+                            RelScaler = Me.m_BaseC
+
                         End If
+
+                        Dim mapArgs As New cMapDrawerArgs(maptype, RelScaler)
 
                         drawer.InCol = Me.m_iInCol
                         drawer.InRow = Me.m_iInRow
@@ -535,7 +578,7 @@ Namespace Ecospace
                         drawer.SignalState.Reset()
 
                         drawer.AllowedToRun = False
-                        ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw)
+                        ThreadPool.QueueUserWorkItem(AddressOf drawer.Draw, mapArgs)
 
                         ifirst += m_nMapsPerThread
                     End If
