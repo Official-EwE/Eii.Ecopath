@@ -69,6 +69,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiFileOpen = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileRecent = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiNone = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiOpenOutput = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileClose = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiFileSaveAs = New System.Windows.Forms.ToolStripMenuItem()
@@ -119,7 +120,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
-        Me.m_tsmiOpenOutput = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -277,9 +277,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'm_tsmiEcospaceDataConnections
         '
-        Me.m_tsmiEcospaceDataConnections.Name = "m_tsmiEcospaceDataConnections"
         resources.ApplyResources(Me.m_tsmiEcospaceDataConnections, "m_tsmiEcospaceDataConnections")
-        Me.m_tsmiEcospaceDataConnections.Image = SharedResources.Database
+        Me.m_tsmiEcospaceDataConnections.Name = "m_tsmiEcospaceDataConnections"
         '
         'm_tssModel1
         '
@@ -374,6 +373,11 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         resources.ApplyResources(Me.m_tsmiNone, "m_tsmiNone")
         Me.m_tsmiNone.Name = "m_tsmiNone"
+        '
+        'm_tsmiOpenOutput
+        '
+        Me.m_tsmiOpenOutput.Name = "m_tsmiOpenOutput"
+        resources.ApplyResources(Me.m_tsmiOpenOutput, "m_tsmiOpenOutput")
         '
         'm_tsmiFileClose
         '
@@ -646,11 +650,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
-        '
-        'm_tsmiOpenOutput
-        '
-        Me.m_tsmiOpenOutput.Name = "m_tsmiOpenOutput"
-        resources.ApplyResources(Me.m_tsmiOpenOutput, "m_tsmiOpenOutput")
         '
         'AppLauncher
         '

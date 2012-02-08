@@ -137,5 +137,8 @@
     <Setting Name="OutputPathMask" Type="System.String" Scope="User">
       <Value Profile="(Default)">{MyDocuments}\EwE6 output\{ModelFile}\</Value>
     </Setting>
+    <Setting Name="ShowHostInfo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

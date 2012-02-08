@@ -25,12 +25,22 @@ Public Class cEwEStatusBar
     Public Sub New()
         ' Load
         Me.InitializeComponent()
-        ' Hide all items at startup
-        For Each item As ToolStripItem In Me.Items
-            item.Visible = False
-        Next
-        ' .. except for springy status label, which needs to push the model and scenario controls to the right
-        Me.m_tsStatus.Visible = True
+        ' At runtime set visible state of controls
+        If (Not Me.DesignMode) Then
+            ' Hide all items at startup
+            For Each item As ToolStripItem In Me.Items
+                item.Visible = False
+            Next
+            ' .. except for springy status label, which needs to push the model and scenario controls to the right
+            Me.m_tsStatus.Visible = True
+            ' Configure host IP
+            If My.Settings.ShowHostInfo Then
+                Me.m_tsIP.Text = System.Net.Dns.GetHostName
+                Me.m_tsIP.Visible = True
+            Else
+                Me.m_tsIP.Visible = False
+            End If
+        End If
     End Sub
 
     Public Sub Attach(ByVal uic As cUIContext)
