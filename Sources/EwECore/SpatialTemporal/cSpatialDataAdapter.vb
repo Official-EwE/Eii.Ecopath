@@ -346,6 +346,8 @@ Namespace SpatialData
                 End If
                 Me.DataScale(layer.Index) = sScale
 
+                Console.WriteLine(">> Scaling factor for layer {0} is {1}", Me.VarName.ToString, sScale)
+
             Catch ex As Exception
                 ' Whoah!
                 ' ToDo_JS: Globalize this message
