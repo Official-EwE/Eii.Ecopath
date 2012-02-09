@@ -187,7 +187,8 @@ Public Class cEwEStatusBar
             Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
         End If
 
-        Me.m_tsIP.Visible = My.Settings.ShowHostInfo
+        ' Show machine ID when wanted by the user AND a remote desktop session is active
+        Me.m_tsIP.Visible = My.Settings.ShowHostInfo And cSystemUtils.IsRDC
 
     End Sub
 

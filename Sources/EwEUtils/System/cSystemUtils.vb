@@ -168,6 +168,20 @@ Namespace SystemUtilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Returns whether this application is running in a remote desktop session.
+        ''' </summary>
+        ''' <returns>True if this application was running in a remote desktop session.</returns>
+        ''' <remarks>This test should also properly detect VNC. Other protocols have
+        ''' not been evaluated.</remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsRDC() As Boolean
+
+            Return System.Windows.Forms.SystemInformation.TerminalServerSession
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Returns whether the OS is 64 bit.
         ''' </summary>
         ''' <returns>True if the OS is 64 bit.</returns>

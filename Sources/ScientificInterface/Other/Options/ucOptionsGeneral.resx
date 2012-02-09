@@ -139,7 +139,7 @@
     <value>m_fieldpickOutput</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -163,7 +163,7 @@
     <value>m_fieldpickBackup</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -346,7 +346,7 @@
     <value>m_nudMRU</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -471,66 +471,6 @@
   <data name="m_gpMsg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;m_cbShowTime.Name" xml:space="preserve">
-    <value>m_cbShowTime</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowTime.Parent" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_cbShowTime.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.Name" xml:space="preserve">
-    <value>m_nudMaxNumMessages</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_nudMaxNumMessages.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.Name" xml:space="preserve">
-    <value>m_lblMaxNumMessages</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.Parent" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 308</value>
-  </data>
-  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 71</value>
-  </data>
-  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_gpMsg.Text" xml:space="preserve">
-    <value>Status panel</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_cbShowTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -574,7 +514,7 @@
     <value>m_nudMaxNumMessages</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
     <value>m_gpMsg</value>
@@ -612,6 +552,30 @@
   <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 308</value>
+  </data>
+  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>490, 71</value>
+  </data>
+  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_gpMsg.Text" xml:space="preserve">
+    <value>Status panel</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_gbStartup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -625,13 +589,13 @@
     <value>15, 69</value>
   </data>
   <data name="m_cbShowHost.Size" type="System.Drawing.Size, System.Drawing">
-    <value>263, 17</value>
+    <value>333, 17</value>
   </data>
   <data name="m_cbShowHost.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="m_cbShowHost.Text" xml:space="preserve">
-    <value>Show computer name and IP address in status bar</value>
+    <value>Show IP address in status bar when running via Remote Desktop</value>
   </data>
   <data name="&gt;&gt;m_cbShowHost.Name" xml:space="preserve">
     <value>m_cbShowHost</value>
@@ -751,7 +715,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>

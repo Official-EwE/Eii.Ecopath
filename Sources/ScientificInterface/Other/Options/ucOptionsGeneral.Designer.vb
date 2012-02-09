@@ -33,9 +33,9 @@ Partial Class ucOptionsGeneral
             Me.m_nudMaxNumMessages = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label()
             Me.m_gbStartup = New System.Windows.Forms.GroupBox()
+            Me.m_cbClearSuppressedPrompts = New System.Windows.Forms.CheckBox()
             Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_cbClearSuppressedPrompts = New System.Windows.Forms.CheckBox()
             Me.m_cbShowHost = New System.Windows.Forms.CheckBox()
             Me.m_gpMRU.SuspendLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -177,6 +177,12 @@ Partial Class ucOptionsGeneral
             Me.m_gbStartup.Name = "m_gbStartup"
             Me.m_gbStartup.TabStop = False
             '
+            'm_cbClearSuppressedPrompts
+            '
+            resources.ApplyResources(Me.m_cbClearSuppressedPrompts, "m_cbClearSuppressedPrompts")
+            Me.m_cbClearSuppressedPrompts.Name = "m_cbClearSuppressedPrompts"
+            Me.m_cbClearSuppressedPrompts.UseVisualStyleBackColor = True
+            '
             'm_cbDownloadUpdates
             '
             resources.ApplyResources(Me.m_cbDownloadUpdates, "m_cbDownloadUpdates")
@@ -190,12 +196,6 @@ Partial Class ucOptionsGeneral
             resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
             Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
-            '
-            'm_cbClearSuppressedPrompts
-            '
-            resources.ApplyResources(Me.m_cbClearSuppressedPrompts, "m_cbClearSuppressedPrompts")
-            Me.m_cbClearSuppressedPrompts.Name = "m_cbClearSuppressedPrompts"
-            Me.m_cbClearSuppressedPrompts.UseVisualStyleBackColor = True
             '
             'm_cbShowHost
             '
@@ -241,10 +241,10 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_fieldpickOutput As ScientificInterfaceShared.Controls.ucFieldPicker
         Private WithEvents m_btnDefaults As System.Windows.Forms.Button
         Private WithEvents m_lblSampleOutput As System.Windows.Forms.Label
-        Private WithEvents m_cbShowHost As System.Windows.Forms.CheckBox
         Private WithEvents m_cbClearSuppressedPrompts As System.Windows.Forms.CheckBox
         Private WithEvents m_nudMaxNumMessages As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMRU As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_cbShowHost As System.Windows.Forms.CheckBox
 
     End Class
 

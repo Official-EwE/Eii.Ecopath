@@ -39,36 +39,38 @@ Partial Class cEwEStatusBar
         'm_tsEcopathModel
         '
         Me.m_tsEcopathModel.AutoToolTip = True
-        Me.m_tsEcopathModel.Image = SharedResources.Ecopath_32x32
+        Me.m_tsEcopathModel.Image = CType(resources.GetObject("m_tsEcopathModel.Image"), System.Drawing.Image)
         Me.m_tsEcopathModel.Name = "m_tsEcopathModel"
         Me.m_tsEcopathModel.Size = New System.Drawing.Size(16, 17)
         '
         'm_tsEcosimScenario
         '
         Me.m_tsEcosimScenario.AutoToolTip = True
-        Me.m_tsEcosimScenario.Image = SharedResources.Ecosim_32x32
+        Me.m_tsEcosimScenario.Image = CType(resources.GetObject("m_tsEcosimScenario.Image"), System.Drawing.Image)
         Me.m_tsEcosimScenario.Name = "m_tsEcosimScenario"
         Me.m_tsEcosimScenario.Size = New System.Drawing.Size(16, 17)
         '
         'm_tsEcospaceScenario
         '
         Me.m_tsEcospaceScenario.AutoToolTip = True
-        Me.m_tsEcospaceScenario.Image = SharedResources.Ecospace_32x32
+        Me.m_tsEcospaceScenario.Image = CType(resources.GetObject("m_tsEcospaceScenario.Image"), System.Drawing.Image)
         Me.m_tsEcospaceScenario.Name = "m_tsEcospaceScenario"
         Me.m_tsEcospaceScenario.Size = New System.Drawing.Size(16, 16)
         '
         'm_tsEcotracerScenario
         '
         Me.m_tsEcotracerScenario.AutoToolTip = True
-        Me.m_tsEcotracerScenario.Image = SharedResources.Ecotracer_32x32
+        Me.m_tsEcotracerScenario.Image = CType(resources.GetObject("m_tsEcotracerScenario.Image"), System.Drawing.Image)
         Me.m_tsEcotracerScenario.Name = "m_tsEcotracerScenario"
         Me.m_tsEcotracerScenario.Size = New System.Drawing.Size(16, 16)
         '
         'm_tsIP
         '
+        Me.m_tsIP.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left
+        Me.m_tsIP.BorderStyle = System.Windows.Forms.Border3DStyle.Etched
+        'Me.m_tsIP.Image = Global.ScientificInterface.My.Resources.Resources.Computer
         Me.m_tsIP.Name = "m_tsIP"
-        Me.m_tsIP.Size = New System.Drawing.Size(33, 15)
-        Me.m_tsIP.Image = My.Resources.Computer
+        Me.m_tsIP.Size = New System.Drawing.Size(20, 17)
         '
         'cEwEStatusBar
         '
