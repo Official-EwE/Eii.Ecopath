@@ -236,7 +236,13 @@ Namespace SpatialData
                             ' Is a valid value?
                             If (sValue <> cCore.NULL_VALUE) Then
                                 ' #Yes: set value
-                                ' Hack and slash for now
+                                ' AAAS SPECIAL for integrating GFDL semi-absolute PP values
+                                If Me.VarName = eVarNameFlags.LayerRelPP Then
+                                    ' THIS REALLY DOES NOT BELONG HERE! Either a dataset should be scaled to relative values or
+                                    ' the converter should be configurable to allow scaling!!!
+                                    sValue *= 2135250
+                                End If
+
                                 layer.Cell(iRow, iCol) = sValue
                             End If
                         End If
