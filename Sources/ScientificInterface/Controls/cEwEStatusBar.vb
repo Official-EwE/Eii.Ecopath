@@ -37,7 +37,7 @@ Public Class cEwEStatusBar
             ' Configure host IP
             If My.Settings.ShowHostInfo Then
                 Try
-                    Me.m_tsIP.Text = String.Format(SharedResources.GENERIC_LABEL_INDEXED, cSystemUtils.GetHostName(), cSystemUtils.GetHostIP())
+                    Me.m_tsIP.Text = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, cSystemUtils.GetHostName(), cSystemUtils.GetHostIP())
                 Catch ex As Exception
                     '  Hmm
                 End Try
