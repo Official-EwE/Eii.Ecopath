@@ -112,26 +112,26 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_gpMRU.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="m_fieldpickOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_fieldpickOutput.Location" type="System.Drawing.Point, System.Drawing">
     <value>412, 46</value>
   </data>
   <data name="m_fieldpickOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>72, 21</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_fieldpickOutput.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
@@ -139,7 +139,7 @@
     <value>m_fieldpickOutput</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -163,7 +163,7 @@
     <value>m_fieldpickBackup</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -190,7 +190,7 @@
     <value>m_lblSampleOutput</value>
   </data>
   <data name="&gt;&gt;m_lblSampleOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblSampleOutput.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -217,7 +217,7 @@
     <value>m_lblSampleBackup</value>
   </data>
   <data name="&gt;&gt;m_lblSampleBackup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblSampleBackup.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -241,7 +241,7 @@
     <value>m_tbOutputMask</value>
   </data>
   <data name="&gt;&gt;m_tbOutputMask.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbOutputMask.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -265,7 +265,7 @@
     <value>m_tbBackupMask</value>
   </data>
   <data name="&gt;&gt;m_tbBackupMask.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbBackupMask.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -295,7 +295,7 @@
     <value>m_lblOutput</value>
   </data>
   <data name="&gt;&gt;m_lblOutput.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblOutput.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -325,7 +325,7 @@
     <value>m_lblBackupFolder</value>
   </data>
   <data name="&gt;&gt;m_lblBackupFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblBackupFolder.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -346,7 +346,7 @@
     <value>m_nudMRU</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -376,7 +376,7 @@
     <value>m_btnDefaults</value>
   </data>
   <data name="&gt;&gt;m_btnDefaults.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnDefaults.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -406,7 +406,7 @@
     <value>m_btnClearMRU</value>
   </data>
   <data name="&gt;&gt;m_btnClearMRU.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnClearMRU.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -436,7 +436,7 @@
     <value>m_lblMRU</value>
   </data>
   <data name="&gt;&gt;m_lblMRU.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblMRU.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -460,7 +460,7 @@
     <value>m_gpMRU</value>
   </data>
   <data name="&gt;&gt;m_gpMRU.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_gpMRU.Parent" xml:space="preserve">
     <value>$this</value>
@@ -470,6 +470,66 @@
   </data>
   <data name="m_gpMsg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.Name" xml:space="preserve">
+    <value>m_cbShowTime</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.Parent" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_cbShowTime.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Name" xml:space="preserve">
+    <value>m_nudMaxNumMessages</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_nudMaxNumMessages.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Name" xml:space="preserve">
+    <value>m_lblMaxNumMessages</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.Parent" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 308</value>
+  </data>
+  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>490, 71</value>
+  </data>
+  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_gpMsg.Text" xml:space="preserve">
+    <value>Status panel</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
+    <value>m_gpMsg</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_cbShowTime.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -493,7 +553,7 @@
     <value>m_cbShowTime</value>
   </data>
   <data name="&gt;&gt;m_cbShowTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbShowTime.Parent" xml:space="preserve">
     <value>m_gpMsg</value>
@@ -514,7 +574,7 @@
     <value>m_nudMaxNumMessages</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
     <value>m_gpMsg</value>
@@ -544,7 +604,7 @@
     <value>m_lblMaxNumMessages</value>
   </data>
   <data name="&gt;&gt;m_lblMaxNumMessages.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblMaxNumMessages.Parent" xml:space="preserve">
     <value>m_gpMsg</value>
@@ -552,128 +612,65 @@
   <data name="&gt;&gt;m_lblMaxNumMessages.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_gpMsg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 308</value>
-  </data>
-  <data name="m_gpMsg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 71</value>
-  </data>
-  <data name="m_gpMsg.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_gpMsg.Text" xml:space="preserve">
-    <value>Status panel</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Name" xml:space="preserve">
-    <value>m_gpMsg</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gpMsg.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_gbStartup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_lblResetOverwritePrompts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="m_lblResetOverwritePrompts.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_cbShowHost.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_lblResetOverwritePrompts.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_cbShowHost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_lblResetOverwritePrompts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>32, 66</value>
+  <data name="m_cbShowHost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 69</value>
   </data>
-  <data name="m_lblResetOverwritePrompts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 13</value>
+  <data name="m_cbShowHost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 17</value>
   </data>
-  <data name="m_lblResetOverwritePrompts.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_lblResetOverwritePrompts.Text" xml:space="preserve">
-    <value>Clear &amp;suppressed plug-in overwrite prompts:</value>
-  </data>
-  <data name="&gt;&gt;m_lblResetOverwritePrompts.Name" xml:space="preserve">
-    <value>m_lblResetOverwritePrompts</value>
-  </data>
-  <data name="&gt;&gt;m_lblResetOverwritePrompts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblResetOverwritePrompts.Parent" xml:space="preserve">
-    <value>m_gbStartup</value>
-  </data>
-  <data name="&gt;&gt;m_lblResetOverwritePrompts.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_btnResetOverwritePrompts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_btnResetOverwritePrompts.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnResetOverwritePrompts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>409, 61</value>
-  </data>
-  <data name="m_btnResetOverwritePrompts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="m_btnResetOverwritePrompts.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_cbShowHost.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="m_btnResetOverwritePrompts.Text" xml:space="preserve">
-    <value>&amp;Clear</value>
+  <data name="m_cbShowHost.Text" xml:space="preserve">
+    <value>Show computer name and IP address in status bar</value>
   </data>
-  <data name="&gt;&gt;m_btnResetOverwritePrompts.Name" xml:space="preserve">
-    <value>m_btnResetOverwritePrompts</value>
+  <data name="&gt;&gt;m_cbShowHost.Name" xml:space="preserve">
+    <value>m_cbShowHost</value>
   </data>
-  <data name="&gt;&gt;m_btnResetOverwritePrompts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_cbShowHost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_btnResetOverwritePrompts.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_cbShowHost.Parent" xml:space="preserve">
     <value>m_gbStartup</value>
   </data>
-  <data name="&gt;&gt;m_btnResetOverwritePrompts.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_cbCheckEwE6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbCheckEwE6.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_cbCheckEwE6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_cbCheckEwE6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 23</value>
-  </data>
-  <data name="m_cbCheckEwE6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>313, 17</value>
-  </data>
-  <data name="m_cbCheckEwE6.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;m_cbShowHost.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_cbCheckEwE6.Text" xml:space="preserve">
-    <value>&amp;Check for updates of EwE6   (pending for release Sept 2011)</value>
+  <data name="m_cbClearSuppressedPrompts.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;m_cbCheckEwE6.Name" xml:space="preserve">
-    <value>m_cbCheckEwE6</value>
+  <data name="m_cbClearSuppressedPrompts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 46</value>
   </data>
-  <data name="&gt;&gt;m_cbCheckEwE6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_cbClearSuppressedPrompts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 17</value>
   </data>
-  <data name="&gt;&gt;m_cbCheckEwE6.Parent" xml:space="preserve">
+  <data name="m_cbClearSuppressedPrompts.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_cbClearSuppressedPrompts.Text" xml:space="preserve">
+    <value>Clear &amp;suppressed plug-in overwrite prompts</value>
+  </data>
+  <data name="&gt;&gt;m_cbClearSuppressedPrompts.Name" xml:space="preserve">
+    <value>m_cbClearSuppressedPrompts</value>
+  </data>
+  <data name="&gt;&gt;m_cbClearSuppressedPrompts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbClearSuppressedPrompts.Parent" xml:space="preserve">
     <value>m_gbStartup</value>
   </data>
-  <data name="&gt;&gt;m_cbCheckEwE6.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;m_cbClearSuppressedPrompts.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_cbDownloadUpdates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -682,28 +679,28 @@
     <value>NoControl</value>
   </data>
   <data name="m_cbDownloadUpdates.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 46</value>
+    <value>15, 23</value>
   </data>
   <data name="m_cbDownloadUpdates.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 17</value>
+    <value>219, 17</value>
   </data>
   <data name="m_cbDownloadUpdates.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_cbDownloadUpdates.Text" xml:space="preserve">
-    <value>&amp;Download updates for plug-ins</value>
+    <value>&amp;Download updates for plug-ins at start up</value>
   </data>
   <data name="&gt;&gt;m_cbDownloadUpdates.Name" xml:space="preserve">
     <value>m_cbDownloadUpdates</value>
   </data>
   <data name="&gt;&gt;m_cbDownloadUpdates.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbDownloadUpdates.Parent" xml:space="preserve">
     <value>m_gbStartup</value>
   </data>
   <data name="&gt;&gt;m_cbDownloadUpdates.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_gbStartup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
@@ -715,13 +712,13 @@
     <value>0</value>
   </data>
   <data name="m_gbStartup.Text" xml:space="preserve">
-    <value>Start-up</value>
+    <value>General options</value>
   </data>
   <data name="&gt;&gt;m_gbStartup.Name" xml:space="preserve">
     <value>m_gbStartup</value>
   </data>
   <data name="&gt;&gt;m_gbStartup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_gbStartup.Parent" xml:space="preserve">
     <value>$this</value>
@@ -754,7 +751,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.510, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7430.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>
@@ -762,7 +759,7 @@
   <data name="&gt;&gt;m_hdrCaption.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -775,6 +772,6 @@
     <value>ucOptionsGeneral</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

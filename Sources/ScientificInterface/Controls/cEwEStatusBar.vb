@@ -35,15 +35,12 @@ Public Class cEwEStatusBar
             ' .. except for springy status label, which needs to push the model and scenario controls to the right
             Me.m_tsStatus.Visible = True
             ' Configure host IP
-            If My.Settings.ShowHostInfo Then
-                Try
-                    Me.m_tsIP.Text = cSystemUtils.GetHostIP()
-                    Me.m_tsIP.ToolTipText = cSystemUtils.GetHostName()
-                Catch ex As Exception
-                    '  Hmm
-                End Try
-                Me.m_tsIP.Visible = True
-            End If
+            Try
+                Me.m_tsIP.Text = cSystemUtils.GetHostIP()
+                Me.m_tsIP.ToolTipText = cSystemUtils.GetHostName()
+            Catch ex As Exception
+                '  Hmm
+            End Try
         End If
     End Sub
 
@@ -189,6 +186,8 @@ Public Class cEwEStatusBar
             Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
             Me.UpdateToolstripItem(Me.m_tsEcotracerScenario)
         End If
+
+        Me.m_tsIP.Visible = My.Settings.ShowHostInfo
 
     End Sub
 

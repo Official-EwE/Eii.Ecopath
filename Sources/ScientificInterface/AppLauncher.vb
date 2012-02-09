@@ -3898,6 +3898,8 @@ Public Class AppLauncher
 
             End Select
 
+            Me.m_ssMain.UpdateModelPanes()
+
         Catch ex As Exception
 
         End Try

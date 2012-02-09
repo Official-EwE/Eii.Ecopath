@@ -73,8 +73,9 @@ Namespace Other
             Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
             Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
 
-            Me.m_cbCheckEwE6.Checked = False
             Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
+            Me.m_cbClearSuppressedPrompts.Checked = False
+            Me.m_cbShowHost.Checked = My.Settings.ShowHostInfo
             Me.m_cbShowTime.Checked = My.Settings.StatusShowTime
 
             Me.UpdateControls()
@@ -106,6 +107,11 @@ Namespace Other
                 My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
                 My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
                 My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
+                My.Settings.ShowHostInfo = Me.m_cbShowHost.Checked
+
+                If Me.m_cbClearSuppressedPrompts.Checked Then
+                    My.Settings.SuppressedOverwritePrompts = ""
+                End If
 
             Catch ex As Exception
                 result = IOptionsPage.eApplyResultType.Failed
@@ -118,12 +124,6 @@ Namespace Other
 #End Region ' Public access
 
 #Region " Event handlers "
-
-        Private Sub m_btnResetOverwritePrompts_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnResetOverwritePrompts.Click
-            My.Settings.SuppressedOverwritePrompts = ""
-            Me.UpdateControls()
-        End Sub
 
         Private Sub btnClearMRU_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnClearMRU.Click
@@ -210,14 +210,9 @@ Namespace Other
         Private Sub UpdateControls()
 
             Dim bHasSuppressedPrompts As Boolean = (Not String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts))
-            Dim bCanCheckExEUpdate As Boolean = False
             Dim bHasMRU As Boolean = (My.Settings.MdbRecentlyUsedList.Count > 0)
 
-            Me.m_btnResetOverwritePrompts.Enabled = bHasSuppressedPrompts
-            Me.m_lblResetOverwritePrompts.Enabled = bHasSuppressedPrompts
-
-            Me.m_cbCheckEwE6.Enabled = bCanCheckExEUpdate
-
+            Me.m_cbClearSuppressedPrompts.Enabled = bHasSuppressedPrompts
             Me.m_btnClearMRU.Enabled = bHasMRU
 
             Me.UpdateSample(Me.m_lblSampleOutput, Me.m_tbOutputMask.Text)
