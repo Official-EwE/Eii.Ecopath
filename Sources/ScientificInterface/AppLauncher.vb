@@ -2009,9 +2009,12 @@ Public Class AppLauncher
         If (Me.m_cmdLoadEcosimScenario.IsInvoking()) Then
             ' #Yes: try to obtain scenario from command
             es = DirectCast(Me.m_cmdLoadEcosimScenario.Tag, cEcoSimScenario)
-            ' #No: Are we reloading and an active scenario is present?
+            ' #No: Are we reloading and an active scenario is present
         ElseIf (bTryReuse = True) And (Me.Core.ActiveEcosimScenarioIndex >= 0) Then
             Return True
+        ElseIf Me.Core.EcosimScenarioCount = 1 Then
+            ' Automatically load the only available scenario
+            es = Me.Core.EcosimScenarios(1)
         End If
 
         ' No scenario found yet?
@@ -2122,6 +2125,9 @@ Public Class AppLauncher
             ' #No: Are we reloading and an active scenario is present?
         ElseIf (bTryReuse = True) And (Me.Core.ActiveEcospaceScenarioIndex >= 0) Then
             Return True
+        ElseIf (Me.Core.EcospaceScenarioCount = 1) Then
+            ' Automatically load the only available scenario
+            es = Me.Core.EcospaceScenarios(1)
         End If
 
         ' No scenario found yet?
@@ -2224,6 +2230,9 @@ Public Class AppLauncher
             ' #No: Are we reloading and an active scenario is present?
         ElseIf (bTryReuse = True) And (Me.Core.ActiveEcotracerScenarioIndex >= 0) Then
             Return True
+        ElseIf (Me.Core.EcotracerScenarioCount = 1) Then
+            ' Automatically load the only available scenario
+            es = Me.Core.EcotracerScenarios(1)
         End If
 
         ' No scenario found yet?
