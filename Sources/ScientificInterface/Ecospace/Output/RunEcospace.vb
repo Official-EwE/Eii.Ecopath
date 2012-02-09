@@ -607,6 +607,28 @@ Namespace Ecospace
             End Try
         End Sub
 
+
+        Private Sub setFleetsForSelGroups()
+
+            'Turn all the fleets off
+            For iflt As Integer = 1 To Me.Core.nFleets
+                Me.StyleGuide.FleetVisible(iflt) = False
+            Next
+
+            'now just the ones for the seleted group
+            For igrp As Integer = 1 To Me.Core.nGroups
+                If Me.StyleGuide.GroupVisible(igrp) Then
+                    For iflt As Integer = 1 To Me.Core.nFleets
+                        Dim flt As cFleetInput = Me.Core.FleetInputs(iflt)
+                        If flt.Landings(igrp) + flt.Discards(igrp) > 0 Then
+                            Me.StyleGuide.FleetVisible(iflt) = True
+                        End If
+                    Next
+                End If
+            Next
+
+        End Sub
+
         Private Sub PlotFishingEffortMap(ByRef g As Graphics)
 
             Dim iNumVizFleets As Integer = 0
@@ -799,8 +821,30 @@ Namespace Ecospace
                     m_rbDisplayContaminantC.CheckedChanged, _
                     m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged
 
+            If Me.m_rbDisplayFishingEffort.Checked Then
+                If Me.m_ckSelFleets.Checked Then
+                    Me.setFleetsForSelGroups()
+                End If
+            End If
+
             Me.RefreshPlot()
             Me.RefreshMap()
+
+        End Sub
+
+
+        Private Sub OnSelFleetsCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_ckSelFleets.CheckedChanged
+
+            If Me.m_ckSelFleets.Checked Then
+                If Me.m_rbDisplayFishingEffort.Checked Then
+
+                    Me.setFleetsForSelGroups()
+
+                    Me.RefreshPlot()
+                    Me.RefreshMap()
+
+                End If
+            End If
 
         End Sub
 

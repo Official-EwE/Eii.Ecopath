@@ -66,6 +66,7 @@ Namespace Ecospace
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
+            Me.m_ckSelFleets = New System.Windows.Forms.CheckBox()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -174,10 +175,10 @@ Namespace Ecospace
             'm_tlpOptions
             '
             resources.ApplyResources(Me.m_tlpOptions, "m_tlpOptions")
-            Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 3)
             Me.m_tlpOptions.Controls.Add(Me.m_plLabelOptions, 0, 2)
             Me.m_tlpOptions.Controls.Add(Me.m_plDistribution, 0, 0)
             Me.m_tlpOptions.Controls.Add(Me.m_plDisplayOptions, 0, 1)
+            Me.m_tlpOptions.Controls.Add(Me.m_plRun, 0, 3)
             Me.m_tlpOptions.Name = "m_tlpOptions"
             '
             'm_plRun
@@ -259,6 +260,7 @@ Namespace Ecospace
             '
             'm_plDistribution
             '
+            Me.m_plDistribution.Controls.Add(Me.m_ckSelFleets)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayF)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayRelBiomass)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFOverB)
@@ -397,6 +399,12 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
+            'm_ckSelFleets
+            '
+            resources.ApplyResources(Me.m_ckSelFleets, "m_ckSelFleets")
+            Me.m_ckSelFleets.Name = "m_ckSelFleets"
+            Me.m_ckSelFleets.UseVisualStyleBackColor = True
+            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -465,6 +473,7 @@ Namespace Ecospace
         Private WithEvents m_plRun As System.Windows.Forms.Panel
         Private WithEvents m_rbDisplayFOverB As System.Windows.Forms.RadioButton
         Private WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
+        Friend WithEvents m_ckSelFleets As System.Windows.Forms.CheckBox
 
  
     End Class

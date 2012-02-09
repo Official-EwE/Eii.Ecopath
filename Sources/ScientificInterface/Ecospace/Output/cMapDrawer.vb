@@ -313,7 +313,7 @@ Public Class cMapDrawer
 
                     'If it is water
                     If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
-                        ' Not Water
+                        ' Water Cell
                         sMapValue = m_map(i, j, iGroup) / RelScaler(iGroup)
 
                         ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
