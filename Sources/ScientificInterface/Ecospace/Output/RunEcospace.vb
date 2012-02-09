@@ -22,6 +22,8 @@ Namespace Ecospace
         ''' <summary>number of legend bins is arbitrary</summary>
         Private Const cColourBins As Integer = 200
 
+        Private m_FishingMortMax As Single = 2.0
+
         Public Enum eShowGroupType
             ShowAll = 0
             ShowNonHidden
@@ -272,6 +274,9 @@ Namespace Ecospace
                     Me.m_BaseCatch(igrp) += Me.Core.FleetInputs(iflt).Landings(igrp) + Me.Core.FleetInputs(iflt).Discards(igrp)
                 Next
             Next
+
+            'Scaler for the fishing mort map legend
+            Me.m_txFMax.Text = Me.m_FishingMortMax.ToString
 
             'Start tracking ConcTracing setting
             AddHandler Me.m_bpConTracing.PropertyChanged, AddressOf OnPropertyChanged
@@ -561,7 +566,7 @@ Namespace Ecospace
 
                         End If
 
-                        Dim mapArgs As New cMapDrawerArgs(maptype, RelScaler)
+                        Dim mapArgs As New cMapDrawerArgs(maptype, RelScaler, Me.m_FishingMortMax)
 
                         drawer.InCol = Me.m_iInCol
                         drawer.InRow = Me.m_iInRow
@@ -947,6 +952,54 @@ Namespace Ecospace
             End If
             Me.UpdateControls()
         End Sub
+
+
+#Region "Crap for new FishingMort Legend max value"
+        'Added for the EcoOcean model to scale Catch/Bio legend
+        'if there is some way to scale legends then this will go
+        Private Sub m_txFMax_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_txFMax.KeyUp
+            If e.KeyCode = Keys.Enter Then
+                Dim newMax As Single = CSng(Val(Me.m_txFMax.Text))
+                If ValidateFMax(newMax) Then
+                    Me.m_FishingMortMax = newMax
+                    Me.RefreshPlot()
+                    Me.RefreshMap()
+                End If
+            End If
+        End Sub
+
+        Private Function ValidateFMax(ByVal newFMax As Single) As Boolean
+            If newFMax > 0 And newFMax < 10 Then
+                Return True
+            End If
+            Return False
+        End Function
+
+
+        Private Sub OntxFMaxValidated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_txFMax.Validated
+            Try
+                Dim newMax As Single = CSng(Val(Me.m_txFMax.Text))
+                If newMax <> Me.m_FishingMortMax Then
+                    Me.m_FishingMortMax = newMax
+                    Me.RefreshPlot()
+                    Me.RefreshMap()
+                End If
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OntxFMaxValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles m_txFMax.Validating
+            Dim newVal As Single = CSng(Val(Me.m_txFMax.Text))
+            If Me.ValidateFMax(newVal) Then
+                e.Cancel = False
+                Return
+            End If
+            e.Cancel = True
+            Return
+        End Sub
+
+#End Region
 
 #End Region ' Events
 

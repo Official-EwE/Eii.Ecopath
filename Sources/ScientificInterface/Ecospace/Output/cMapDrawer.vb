@@ -270,7 +270,7 @@ Public Class cMapDrawer
                 iGroup = Me.m_lGroups(i)
                 iLocation = Me.m_lLocations(i)
                 Try
-                    DrawMap(iGroup, m_lrc(iLocation), args.RelMapScaler, args.MapType)
+                    DrawMap(iGroup, m_lrc(iLocation), args)
                 Catch ex As Exception
 
                 End Try
@@ -291,12 +291,14 @@ Public Class cMapDrawer
     ''' <param name="iGroup"></param>
     ''' <param name="rcPos"></param>
     ''' <remarks></remarks>
-    Public Sub DrawMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle, ByVal RelScaler() As Single, ByVal MapType As eMapType)
+    Public Sub DrawMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
         If m_map Is Nothing Then Return
         Dim FScaler As Single
+        Dim maptype As cMapDrawer.eMapType = Args.MapType
+        Dim RelScaler() As Single = Args.RelMapScaler
 
         If MapType = eMapType.FishingMortRate Then
-            FScaler = m_lColors.Count / MAX_FISH_MORT
+            FScaler = m_lColors.Count / Args.FishingMortLegendMax
         End If
 
         For i As Integer = 1 To m_iInRow
@@ -441,9 +443,11 @@ End Class
 Public Class cMapDrawerArgs
     Public MapType As cMapDrawer.eMapType
     Public RelMapScaler() As Single
+    Public FishingMortLegendMax As Single
 
-    Public Sub New(ByVal theMapType As cMapDrawer.eMapType, ByVal theRelScaler() As Single)
+    Public Sub New(ByVal theMapType As cMapDrawer.eMapType, ByVal theRelScaler() As Single, ByVal MaxLegendF As Single)
         Me.MapType = theMapType
         Me.RelMapScaler = theRelScaler
+        Me.FishingMortLegendMax = MaxLegendF
     End Sub
 End Class
