@@ -1994,10 +1994,9 @@ Public Class AppLauncher
     ''' <summary>
     ''' Load or reload an Ecosim scenario.
     ''' </summary>
-    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function LoadEcosimScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+    Friend Function LoadEcosimScenario() As Boolean
 
         Dim dlg As EcosimScenarioDlg = Nothing
         Dim bSucces As Boolean = False
@@ -2010,7 +2009,7 @@ Public Class AppLauncher
             ' #Yes: try to obtain scenario from command
             es = DirectCast(Me.m_cmdLoadEcosimScenario.Tag, cEcoSimScenario)
             ' #No: Are we reloading and an active scenario is present
-        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcosimScenarioIndex >= 0) Then
+        ElseIf (Me.Core.ActiveEcosimScenarioIndex >= 0) Then
             Return True
         ElseIf Me.Core.EcosimScenarioCount = 1 Then
             ' Automatically load the only available scenario
@@ -2107,10 +2106,9 @@ Public Class AppLauncher
     ''' <summary>
     ''' Load or reload an Ecospace scenario.
     ''' </summary>
-    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function LoadEcospaceScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+    Friend Function LoadEcospaceScenario() As Boolean
 
         Dim dlg As EcospaceScenarioDlg = Nothing
         Dim bSucces As Boolean = False
@@ -2123,7 +2121,7 @@ Public Class AppLauncher
             ' #Yes: try to obtain scenario from command
             es = CType(Me.m_cmdLoadEcospaceScenario.Tag, cEcospaceScenario)
             ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcospaceScenarioIndex >= 0) Then
+        ElseIf (Me.Core.ActiveEcospaceScenarioIndex >= 0) Then
             Return True
         ElseIf (Me.Core.EcospaceScenarioCount = 1) Then
             ' Automatically load the only available scenario
@@ -2207,10 +2205,9 @@ Public Class AppLauncher
     ''' <summary>
     ''' Load or reload an Ecotracer scenario.
     ''' </summary>
-    ''' <param name="bTryReuse">Flag indicating whether current scenario should reused, not reloaded, if possible.</param>
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
-    Friend Function LoadEcotracerScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
+    Friend Function LoadEcotracerScenario() As Boolean
 
         Dim dlg As EcotracerScenarioDlg = Nothing
         Dim bSucces As Boolean = False
@@ -2228,7 +2225,7 @@ Public Class AppLauncher
             ' #Yes: try to obtain scenario from command
             es = CType(Me.m_cmdLoadEcotracerScenario.Tag, cEcotracerScenario)
             ' #No: Are we reloading and an active scenario is present?
-        ElseIf (bTryReuse = True) And (Me.Core.ActiveEcotracerScenarioIndex >= 0) Then
+        ElseIf (Me.Core.ActiveEcotracerScenarioIndex >= 0) Then
             Return True
         ElseIf (Me.Core.EcotracerScenarioCount = 1) Then
             ' Automatically load the only available scenario

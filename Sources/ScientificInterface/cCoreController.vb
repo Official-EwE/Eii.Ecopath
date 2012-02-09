@@ -199,7 +199,7 @@ Public Class cCoreController
 
         If Me.LoadState(eCoreExecutionState.EcopathCompleted) Then
             ' Let AppLauncher perform the load as it sees fit
-            bSuccess = appl.LoadEcosimScenario(True)
+            bSuccess = appl.LoadEcosimScenario()
         End If
 
         Return bSuccess
@@ -219,7 +219,7 @@ Public Class cCoreController
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecospace model to load.
         If LoadState(eCoreExecutionState.EcosimLoaded) Then
             ' Let AppLauncher perform the load as it sees fit
-            bSuccess = appl.LoadEcospaceScenario(True)
+            bSuccess = appl.LoadEcospaceScenario()
         End If
  
         Return bSuccess
@@ -240,7 +240,7 @@ Public Class cCoreController
         ' JS 07mar07: Ecosim model needs to be loaded, not run, for an ecotracer model to load.
         If Me.LoadState(eCoreExecutionState.EcosimLoaded) Then
             ' Let AppLauncher perform the load as it sees fit
-            bSuccess = appl.LoadEcotracerScenario(True)
+            bSuccess = appl.LoadEcotracerScenario()
         End If
 
         Return bSuccess
