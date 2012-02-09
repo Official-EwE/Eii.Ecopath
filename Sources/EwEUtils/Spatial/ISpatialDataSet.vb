@@ -89,6 +89,13 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether the dataset contains relative values
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property IsRelativeValues As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get/set the configuration information for the converter.
         ''' </summary>
         ''' <param name="doc"><see cref="XmlDocument"/> for creating and parsing nodes.</param>

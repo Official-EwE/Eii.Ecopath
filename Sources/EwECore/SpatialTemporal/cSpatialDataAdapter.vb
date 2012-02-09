@@ -3,6 +3,7 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -21,12 +22,13 @@ Namespace SpatialData
         Private m_converters() As ISpatialDataConverter
         ''' <summary>Dataset for each layer.</summary>
         Private m_datasets() As ISpatialDataSet
+        ''' <summary>Absolute to relative scale.</summary>
+        Private m_scales() As Single
+
         ''' <summary>Ecospace variable to operate onto.</summary>
         Private m_varName As eVarNameFlags = Nothing
         ''' <summary>Core counter that this adapter operates onto.</summary>
         Private m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
-        ''' <summary>Flag stating wether dataset date and core data have to match</summary>
-        Private m_bSyncDate As Boolean = False
 
 #End Region ' Private vars
 
@@ -53,6 +55,7 @@ Namespace SpatialData
             Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
             ReDim Me.m_converters(iNumItems)
             ReDim Me.m_datasets(iNumItems)
+            ReDim Me.m_scales(iNumItems)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -104,11 +107,28 @@ Namespace SpatialData
             End Set
         End Property
 
+        Private Property DataScale(iIndex As Integer) As Single
+            Get
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Return Me.m_scales(Math.Max(0, iIndex))
+            End Get
+            Set(value As Single)
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Me.m_scales(Math.Max(0, iIndex)) = value
+            End Set
+        End Property
+
         Public ReadOnly Property VarName() As eVarNameFlags
             Get
                 Return Me.m_varName
             End Get
         End Property
+
+        Protected Overridable Sub InitRun()
+            For i As Integer = 0 To Me.m_scales.Length - 1
+                Me.m_scales(i) = cCore.NULL_VALUE
+            Next
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -126,6 +146,10 @@ Namespace SpatialData
             Dim dCellSize As Double = CDbl(bm.CellSize)
             Dim dt As Date
             Dim bSuccess As Boolean = False
+
+            If (iTime = 1) Then
+                Me.InitRun()
+            End If
 
             ' For each layer for this adapter
             For Each layer In bm.Layers(Me.m_varName)
@@ -222,8 +246,12 @@ Namespace SpatialData
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim msg As cMessage = Nothing
             Dim sValue As Single = 0
+            Dim sScale As Single = Me.LayerScale(bm, layer, dataExternal)
             Dim bSuccess As Boolean = True ' Think positive. Really
 
+#If DEBUG Then
+            Dim sTot As Single = 0
+#End If
             Try
                 ' For all rows
                 For iRow As Integer = 1 To bm.InRow
@@ -236,18 +264,24 @@ Namespace SpatialData
                             ' Is a valid value?
                             If (sValue <> cCore.NULL_VALUE) Then
                                 ' #Yes: set value
-                                ' AAAS SPECIAL for integrating GFDL semi-absolute PP values
-                                If Me.VarName = eVarNameFlags.LayerRelPP Then
-                                    ' THIS REALLY DOES NOT BELONG HERE! Either a dataset should be scaled to relative values or
-                                    ' the converter should be configurable to allow scaling!!!
-                                    sValue *= 2135250
-                                End If
+                                layer.Cell(iRow, iCol) = sValue * sScale
+#If DEBUG Then
+                                sTot += sValue * sScale
+#End If
 
-                                layer.Cell(iRow, iCol) = sValue
                             End If
                         End If
                     Next iCol
                 Next iRow
+
+#If DEBUG Then
+                ' Validate recalculated absolute values
+                Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
+                Dim sBase As Single = Me.GetBaseValue()
+                If (Not ds.IsRelativeValues) And (iTime = 1) Then
+                    Debug.Assert(cNumberUtils.Approximates(sBase, sTot, (sBase + sTot) / 200))
+                End If
+#End If
 
             Catch ex As Exception
                 ' Whoah!
@@ -260,6 +294,69 @@ Namespace SpatialData
             End Try
 
             Return bSuccess
+        End Function
+
+        Protected Function LayerScale(ByVal bm As cEcospaceBasemap, _
+                                      ByVal layer As cEcospaceLayer, _
+                                      ByVal dataExternal As ISpatialRaster) As Single
+
+            ' To ensure proper usage by inherited classes
+            Debug.Assert(bm IsNot Nothing)
+            Debug.Assert(layer IsNot Nothing)
+            Debug.Assert(dataExternal IsNot Nothing)
+
+            Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
+            If ds.IsRelativeValues Then Return 1
+
+            Dim sScale As Single = Me.DataScale(layer.Index)
+            If (sScale <> cCore.NULL_VALUE) Then Return sScale
+
+            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim msg As cMessage = Nothing
+            Dim sTot As Single = 0
+            Dim sValue As Single = 0
+            Dim sBase As Single = 0
+            Dim iNum As Integer = 0
+
+            Try
+                ' For all rows
+                For iRow As Integer = 1 To bm.InRow
+                    ' For all columns
+                    For iCol As Integer = 1 To bm.InCol
+                        ' Is a water cell or is this layer affecting depth?
+                        If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
+                            ' #Yes: get value
+                            sValue = CSng(dataExternal.Cell(iRow, iCol))
+                            ' Is a valid value?
+                            If (sValue <> cCore.NULL_VALUE) Then
+                                ' #Yes: calc
+                                sTot += sValue : iNum += 1
+                            End If
+                        End If
+                    Next iCol
+                Next iRow
+
+                sBase = Me.GetBaseValue()
+
+                ' Calc scale, allowing for errors
+                If (sBase = cCore.NULL_VALUE) Or (sTot = cCore.NULL_VALUE) Then
+                    sScale = 1
+                Else
+                    sScale = sBase / sTot ' Scale Ecopath total to map total, no need to consider cells
+                End If
+                Me.DataScale(layer.Index) = sScale
+
+            Catch ex As Exception
+                ' Whoah!
+                ' ToDo_JS: Globalize this message
+                msg = New cMessage(String.Format("Ecospace cacl scale for {0} into {1}. Exception {2}", Me.Name, layer.Name, ex.Message), _
+                                   eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                Me.m_core.Messages.SendMessage(msg)
+                sScale = 0
+                cLog.Write(ex, "cSpatialDataAdapter::LoadData")
+            End Try
+
+            Return sScale
         End Function
 
 #End Region ' Basic bits
@@ -299,6 +396,29 @@ Namespace SpatialData
 
             End Try
             Return Date.Now
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the Ecopath or Ecosim base value for a data layer.
+        ''' </summary>
+        ''' <returns>The base value for the data layer.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function GetBaseValue() As Single
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim sBase As Single = 0
+
+            Select Case Me.m_varName
+                Case eVarNameFlags.LayerRelPP
+                    For iGroup As Integer = 1 To Me.m_core.nGroups
+                        If ecopathDS.PP(iGroup) = 1 Then sBase += (ecopathDS.B(iGroup) * ecopathDS.PB(iGroup))
+                    Next
+                    Return sBase
+            End Select
+            Return 1
 
         End Function
 
