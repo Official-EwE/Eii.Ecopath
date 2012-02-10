@@ -134,8 +134,6 @@
     <Compile Include="Core\IRunType.vb" />
     <Compile Include="Core\Shared Enums.vb" />
     <Compile Include="Database\cEwEDatabase.vb" />
-    <Compile Include="Spatial\cSpatialDataCache.vb" />
-    <Compile Include="Spatial\cSpatialDataSetManager.vb" />
     <Compile Include="Spatial\ISpatialRaster.vb" />
     <Compile Include="Drawing\DIBitmap32.vb" />
     <Compile Include="Drawing\HSV.vb" />
@@ -220,6 +218,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Spatial\ISpatialDataCache.vb" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

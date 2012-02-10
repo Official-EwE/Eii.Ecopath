@@ -1,12 +1,9 @@
 ﻿#Region " Imports "
 
 Option Strict On
-Imports System
-Imports System.Collections.Generic
-Imports System.Diagnostics
 Imports System.Drawing
-Imports System.Globalization
 Imports System.IO
+Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
@@ -18,6 +15,7 @@ Namespace SpatialData
     ''' Cache for spatial data files
     ''' </summary>
     Public Class cSpatialDataCache
+        Implements ISpatialDataCache
 
 #Region " Private vars "
 
@@ -108,7 +106,8 @@ Namespace SpatialData
         ''' Get/set the path to the cache root folder.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property CacheRootFolder As String
+        Public Property RootFolder As String _
+            Implements ISpatialDataCache.RootFolder
             Get
                 If (String.IsNullOrWhiteSpace(Me.m_strRootPath)) Then
                     Return System.IO.Path.Combine(cSystemUtils.ApplicationSettingsPath, "Cache\Spatial")
@@ -120,22 +119,14 @@ Namespace SpatialData
             End Set
         End Property
 
-
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the path to a cache for a dataset.
-        ''' </summary>
-        ''' <param name="ds"><see cref="ISpatialDataSet"/> to obtain the cache path for.</param>
-        ''' <param name="ptfTL">Top-left location (in decimal degrees lon,lat) of the bounding box of the data.</param>
-        ''' <param name="ptfBR">Bottom-right location (in decimal degrees lon,lat) of the bounding box of the data.</param>
-        ''' <param name="dCellSize">Cell size to obtain the cache path for.</param>
-        ''' <param name="time">Time to create the file name for.</param>
-        ''' <param name="strExt">File extension tpo create the file name for.</param>
-        ''' <returns>A cache path.</returns>
+        ''' <inheritdocs cref="ISpatialDataCache.GetFileName"/>"
         ''' -------------------------------------------------------------------
         Public Function GetFileName(ds As ISpatialDataSet, _
                                     ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
-                                    Optional strExt As String = ".tif") As String
+                                    Optional strExt As String = ".tif") As String _
+                                Implements ISpatialDataCache.GetFileName
+
             Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strExt)
         End Function
 
@@ -155,7 +146,7 @@ Namespace SpatialData
             Debug.Assert(ds IsNot Nothing, "Need valid dataset")
             Debug.Assert(Not Guid.Empty.Equals(ds.GUID), "Need dataset with valid GUID")
 
-            Return System.IO.Path.Combine(Me.CacheRootFolder, ds.GUID.ToString)
+            Return System.IO.Path.Combine(Me.RootFolder, ds.GUID.ToString)
 
         End Function
 
@@ -226,8 +217,8 @@ Namespace SpatialData
             Dim lstrRemove As New List(Of String)
 
             ' Get all cache dirs
-            If (Directory.Exists(Me.CacheRootFolder)) Then
-                lstrPaths.AddRange(Directory.GetDirectories(Me.CacheRootFolder))
+            If (Directory.Exists(Me.RootFolder)) Then
+                lstrPaths.AddRange(Directory.GetDirectories(Me.RootFolder))
             End If
 
             If (man IsNot Nothing) Then

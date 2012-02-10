@@ -203,12 +203,10 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the cache to use for the dataset. If not specified the
-        ''' <see cref="cSpatialDataCache.DefaultDataCache">default</see> cache
-        ''' should be used.
+        ''' Get/set the cache to use for the dataset.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property Cache As cSpatialDataCache
+        Property Cache As ISpatialDataCache
 
 #End Region ' Cache
 
