@@ -12923,7 +12923,7 @@ Public Class cCore
                     End If
 
                 Case eDataTypes.EcospaceSpatialDataConnection
-                    Me.m_publisher.AddMessage(New cMessage("Spatial data configuration changed.", TypeOfChange, eCoreComponentType.MediatedInteractionManager, eMessageImportance.Maintenance))
+                    Me.m_publisher.AddMessage(New cMessage("Spatial data configuration changed.", TypeOfChange, eCoreComponentType.EcoSpace, eMessageImportance.Maintenance, eDataTypes.EcospaceSpatialDataConnection))
 
             End Select
 
