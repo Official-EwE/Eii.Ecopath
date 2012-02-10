@@ -20,7 +20,7 @@ Namespace Core
         ''' Get a single layer.
         ''' </summary>
         ''' <param name="varName">The <see cref="eVarNameFlags">variable</see> to get layers for.</param>
-        ''' <param name="iIndex">Optional index of the layer to retrieve.</param>
+        ''' <param name="iIndex">Optional one-based index of the layer to retrieve.</param>
         ''' <returns>A single layer.</returns>
         ''' -----------------------------------------------------------------------
         Function Layer(ByVal varName As eVarNameFlags, Optional ByVal iIndex As Integer = cCore.NULL_VALUE) As cEcospaceLayer

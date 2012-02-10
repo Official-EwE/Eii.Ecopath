@@ -474,6 +474,7 @@ Public Class cEcospaceTimestep
         Select Case varName
             Case eVarNameFlags.EcospaceMapBiomass, _
                  eVarNameFlags.EcospaceMapCatch
+                lLayers.Add(Nothing) ' Add 0-item emptyness
                 For igroup As Integer = 1 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
                 Next
