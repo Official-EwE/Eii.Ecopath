@@ -25,9 +25,11 @@ Namespace SpatialData
 
         ''' <summary>Manager of active data sets.</summary>
         Private m_datasetManager As cSpatialDataSetManager = Nothing
+        Private m_core As cCore = Nothing
         Private m_data As cSpatialDataStructures = Nothing
 
-        Private m_core As cCore = Nothing
+        ''' <summary>Pre-determined number of configured data connections</summary>
+        Private m_iNumConfigured As Integer = 0
 
 #End Region ' Variables
 
@@ -103,6 +105,8 @@ Namespace SpatialData
                 Next
             Next
 
+            Me.UpdateNumConfigCount()
+
         End Sub
 
         Public Sub Update()
@@ -127,13 +131,19 @@ Namespace SpatialData
                     Else
                         Me.m_data.ConverterType(adt.VarName, i) = ""
                     End If
-
-                    ' Worry about converter configuration later
                 Next
             Next
+
+            Me.UpdateNumConfigCount()
             Me.m_core.onChanged(Me)
 
         End Sub
+
+        Public ReadOnly Property NumConfigured As Integer
+            Get
+                Return Me.m_iNumConfigured
+            End Get
+        End Property
 
 #End Region ' Generic information
 
@@ -328,6 +338,20 @@ Namespace SpatialData
         End Property
 
 #End Region ' ICoreInterface implementation
+
+#Region " Internals "
+
+        Private Sub UpdateNumConfigCount()
+
+            Me.m_iNumConfigured = 0
+            For Each adt As cSpatialDataAdapter In Me.Adapters
+                For i As Integer = 0 To adt.Length - 1
+                    If adt.IsConnected(i) Then m_iNumConfigured += 1
+                Next
+            Next
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

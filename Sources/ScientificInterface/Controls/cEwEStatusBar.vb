@@ -1,9 +1,15 @@
-﻿Option Strict On
+﻿#Region " Imports "
+
+Option Strict On
+
 Imports System.Reflection
 Imports EwECore
+Imports EwECore.SpatialData
 Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.SystemUtilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region ' Imports
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
@@ -107,6 +113,7 @@ Public Class cEwEStatusBar
     Public Sub UpdateModelPanes()
 
         Dim appl As AppLauncher = AppLauncher.GetInstance()
+        Dim core As cCore = Me.m_uic.Core
         Dim eweModel As cEwEModel = Me.m_uic.Core.EwEModel
         Dim simScenario As cEcoSimScenario = Nothing
         Dim tsds As cTimeSeriesDataset = Nothing
@@ -131,10 +138,10 @@ Public Class cEwEStatusBar
             ' Ecosim
             ' -------
             If Me.m_uic.Core.ActiveEcosimScenarioIndex >= 0 Then
-                simScenario = Me.m_uic.Core.EcosimScenarios(Me.m_uic.Core.ActiveEcosimScenarioIndex)
+                simScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
 
-                If Me.m_uic.Core.ActiveTimeSeriesDatasetIndex > 0 Then
-                    tsds = Me.m_uic.Core.TimeSeriesDataset(Me.m_uic.Core.ActiveTimeSeriesDatasetIndex)
+                If core.ActiveTimeSeriesDatasetIndex > 0 Then
+                    tsds = core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex)
                     strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSIM_TOOLTIP, _
                                                simScenario.Name, _
                                                tsds.Name, _
@@ -155,12 +162,19 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecospace
             ' -------
-            If (Me.m_uic.Core.ActiveEcospaceScenarioIndex >= 0) Then
-                spaceScenario = Me.m_uic.Core.EcospaceScenarios(Me.m_uic.Core.ActiveEcospaceScenarioIndex)
+            If (core.ActiveEcospaceScenarioIndex >= 0) Then
+                spaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
                 strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOSPACE_TOOLTIP, _
                                            spaceScenario.Name, _
                                            Me.ToTooltipLabel(spaceScenario.Description))
-                Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, spaceScenario.Name, strTooltip)
+                Dim man As cSpatialDataConnectionManager = core.SpatialDataConnectionManager
+                If man.NumConfigured > 0 Then
+                    strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, spaceScenario.Name, _
+                                            String.Format("{0} connections", man.NumConfigured.ToString()))
+                Else
+                    strName = spaceScenario.Name
+                End If
+                Me.UpdateToolstripItem(Me.m_tsEcospaceScenario, strName, strTooltip)
             Else
                 Me.UpdateToolstripItem(Me.m_tsEcospaceScenario)
             End If
@@ -168,8 +182,8 @@ Public Class cEwEStatusBar
             ' -------
             ' Ecotracer
             ' -------
-            If (Me.m_uic.Core.ActiveEcotracerScenarioIndex >= 0) Then
-                tracerScenario = Me.m_uic.Core.EcotracerScenarios(Me.m_uic.Core.ActiveEcotracerScenarioIndex)
+            If (core.ActiveEcotracerScenarioIndex >= 0) Then
+                tracerScenario = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex)
                 strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, _
                                            vbNewLine, _
                                            tracerScenario.Name, _
