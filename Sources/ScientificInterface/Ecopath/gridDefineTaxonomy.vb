@@ -674,7 +674,7 @@ Public Class gridDefineTaxonomy
         End If
 
         Dim hgcParent As EwEHierarchyGridCell = DirectCast(Me(iRow, eColumnTypes.Hierarchy), EwEHierarchyGridCell)
-        iRow += 1
+        iRow += hgcParent.NumChildRows + 1
         Me.Rows.Insert(iRow)
         Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell()
         Me(iRow, eColumnTypes.Hierarchy).Tag = ti
