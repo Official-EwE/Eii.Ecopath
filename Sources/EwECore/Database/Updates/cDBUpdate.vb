@@ -35,10 +35,6 @@ Friend MustInherit Class cDBUpdate
     ''' the update log of the database. This version number is also used to check
     ''' whether an update should run.
     ''' </summary>
-    ''' <remarks>
-    ''' If <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> is provided, the
-    ''' update is ran regardless of version number.
-    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public MustOverride ReadOnly Property UpdateVersion() As Single
 
@@ -70,5 +66,26 @@ Friend MustInherit Class cDBUpdate
                                  strProgress, _
                                  IIf(bSucces, "Succes", "Failed")))
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get whether an update should always run. It is advised to use this method
+    ''' only to insert database changes into both the EwE trunk and older, already 
+    ''' released versions of EwE.
+    ''' </summary>
+    ''' <remarks>
+    ''' By default, updates will only run if their reported <see cref="UpdateVersion"/>
+    ''' exceeds the <see cref="cEwEDatabase.GetVersion">version of a database</see>.
+    ''' Updates that always run will, well, always run, and therefore will need to 
+    ''' perform extra rigorous tests whether execution is necessary prior to 
+    ''' affecting a database. Please use this flag with utmost care. Preferably do
+    ''' not use it at all.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Public Overridable ReadOnly Property RunAlways As Boolean
+        Get
+            Return False
+        End Get
+    End Property
 
 End Class

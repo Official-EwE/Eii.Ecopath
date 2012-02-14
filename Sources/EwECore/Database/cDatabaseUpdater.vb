@@ -179,7 +179,7 @@ Namespace Database
             If sDBVersion < sBaselineVersion Then Return False
 
             For Each update As cDBUpdate In cDatabaseUpdater.GetUpdates()
-                If (update.UpdateVersion > sDBVersion) Then
+                If (update.UpdateVersion > sDBVersion) Or (update.RunAlways) Then
                     Return True
                 End If
             Next
@@ -212,9 +212,6 @@ Namespace Database
             ' Get DB version
             sDBVersion = db.GetVersion()
 
-            ' Abort if no need to run updates
-            If (sDBVersion < sBaselineVersion) Then Return True
-
             ' For all updates
             While (iUpdate < aUpdates.Length) And (bSucces = True)
 
@@ -222,17 +219,19 @@ Namespace Database
                 update = aUpdates(iUpdate)
 
                 ' Version ok?
-                If (update.UpdateVersion > sDBVersion) Then
+                If (update.UpdateVersion > sDBVersion) Or (update.RunAlways) Then
                     ' #Yes: able to start transaction?
                     If db.BeginTransaction() Then
 
-                        Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion), eMessageImportance.Information)
+                        ' Do not publicly report updates taht always run
+                        Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion), _
+                                              DirectCast(IIf(update.RunAlways, eMessageImportance.Maintenance, eMessageImportance.Information), eMessageImportance))
 
                         Try
                             ' #Yes: run the update
                             bSucces = update.ApplyUpdate(db)
                             ' Update ran successful?
-                            If bSucces Then
+                            If bSucces And (Not update.RunAlways) Then
                                 ' #Yes: Update database version
                                 db.SetVersion(update.UpdateVersion, Me.ToShortDescription(update.UpdateDescription))
                             Else
