@@ -102,12 +102,6 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
-            ' RelativeTime
-            meta = New cVariableMetaData()
-            val = New cValue(1, eVarNameFlags.UseRelativeTime, eStatusFlags.Null, eValueTypes.Bool, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             ' Multi threading vars
 
@@ -625,25 +619,6 @@ Public Class cEcospaceModelParameters
 
         Set(ByVal value As eEcospaceCapacityCalType)
             SetVariable(eVarNameFlags.EcospaceCapCalType, value)
-        End Set
-
-    End Property
-
-    ''' <summary>
-    ''' Use relative time when trying to match external data to Ecospace time steps.
-    ''' </summary>
-    ''' <remarks>
-    ''' If true, an Ecospace time step is interpreted as an offset to the start time of a remote dataset. 
-    ''' If false, an Ecospace time step is translated to an absolute time value for matching remote dataset data.
-    ''' </remarks>
-    Public Property UseRelativeTime() As Boolean
-
-        Get
-            Return CBool(GetVariable(eVarNameFlags.UseRelativeTime))
-        End Get
-
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.UseRelativeTime, value)
         End Set
 
     End Property

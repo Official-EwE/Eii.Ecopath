@@ -1506,8 +1506,6 @@ Namespace Core
         OtherMortInput
         ''' <summary>Helper flag to determine whether a group is fished</summary>
         IsFished
-        ''' <summary>Use relative or absolute time in Ecospace when accessing remote datasets</summary>
-        UseRelativeTime
         ''' <summary>No. regions in Ecospace</summary>
         ''' <remarks>JS 16Jan12: No. regions is now an input, no longer implicit.</remarks>
         EcospaceRegionNumber
