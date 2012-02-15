@@ -1873,6 +1873,7 @@ Namespace Database
                     drow("PCapBase") = Me.FixValue(readerEcopath, "PCapBase", 0.5!)
                     drow("CapDepreciate") = Me.FixValue(readerEcopath, "CapDepreciate", 0.06!)
                     drow("CapBaseGrowth") = Me.FixValue(readerEcopath, "CapBaseGrowth", 0.2!)
+                    drow("EffortConversionFactor") = 1.0!
 
                     m_dbEwE5.ReleaseReader(readerEcopath)
                     readerEcopath = Nothing
