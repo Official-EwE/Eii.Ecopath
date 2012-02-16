@@ -34,7 +34,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get a cell value for a given Ecospace row and column.
+        ''' Return a cell value for a given Ecospace row and column.
         ''' </summary>
         ''' <param name="iRow">One-based Ecospace row index</param>
         ''' <param name="iCol">One-based Ecospace column index</param>
@@ -45,6 +45,43 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Function Cell(ByVal iRow As Integer, ByVal iCol As Integer, _
                          Optional ByVal dNoDataValue As Double = -9999) As Double
+
+#Region " Diagnostics "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the mean value across all data values the raster.
+        ''' </summary>
+        ''' <returns>The mean value across all data values the raster. This
+        ''' excludes cells with <see cref="NoData">no data</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Function Mean() As Double
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the min value across all data values in the raster.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function Min() As Double
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the max value across all data values in the raster.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function Max() As Double
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the no data value in the raster.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function NoData() As Single
+
+#End Region 'Diagnostics
 
     End Interface
 

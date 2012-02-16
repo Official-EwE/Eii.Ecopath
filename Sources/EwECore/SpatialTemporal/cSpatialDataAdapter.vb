@@ -292,12 +292,17 @@ Namespace SpatialData
                 Next iRow
 
 #If DEBUG Then
-                ' Validate recalculated absolute values
-                Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
-                Dim sBase As Single = Me.GetBaseValue()
-                If (Not ds.IsRelativeValues) And (iTime = 1) Then
-                    Debug.Assert(cNumberUtils.Approximates(sBase, sTot, (sBase + sTot) / 200))
-                End If
+                '' Validate recalculated absolute values
+                'Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
+                'Dim sBase As Single = Me.GetBaseValue()
+                'If (Not ds.IsRelativeValues) And (iTime = 1) Then
+                '    Debug.Assert(cNumberUtils.Approximates(sBase, sTot, (sBase + sTot) / 200))
+                'End If
+
+                Console.WriteLine("Adapting raster " & VarName & " at " & iTime & ":")
+                Console.WriteLine("   Mean: " & dataExternal.Mean)
+                Console.WriteLine("   Min.: " & dataExternal.Min)
+                Console.WriteLine("   Max.: " & dataExternal.Max)
 #End If
 
             Catch ex As Exception
@@ -356,10 +361,16 @@ Namespace SpatialData
                 sBase = Me.GetBaseValue()
 
                 ' Calc scale, allowing for errors
-                If (sBase = cCore.NULL_VALUE) Or (sTot = cCore.NULL_VALUE) Then
+                If (sBase <= 0) Or (sTot <= 0) Then
+                    Debug.Assert(False)
                     sScale = 1
                 Else
-                    sScale = sBase / sTot ' Scale Ecopath total to map total, no need to consider cells
+                    sScale = sBase / sTot ' Scale Ecopath total to map average
+
+                    'Dim sAvg As Single = sTot / iNum
+                    'sScale = sBase / sAvg ' Scale Ecopath total to map average
+                    'sScale = 1 / sAvg ' Scale Ecopath total to map average
+
                 End If
                 Me.DataScale(layer.Index) = sScale
 
