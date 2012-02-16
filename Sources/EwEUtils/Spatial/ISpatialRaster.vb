@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports System
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -31,6 +32,8 @@ Namespace SpatialData
     ''' -------------------------------------------------------------------
     Public Interface ISpatialRaster
         Inherits IDisposable
+
+#Region " Data access "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -45,6 +48,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Function Cell(ByVal iRow As Integer, ByVal iCol As Integer, _
                          Optional ByVal dNoDataValue As Double = -9999) As Double
+
+#End Region ' Data access
 
 #Region " Diagnostics "
 
