@@ -145,7 +145,7 @@ Namespace Ecospace.Controls
             Me.PaintTimeGrid(e.Graphics, New Rectangle(0, 0, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_barheight))
 
             For Each pos As cDatasetPos In Me.m_lPos
-                Me.PaintDataset(e.Graphics, New Rectangle(0, c_barheight + pos.m_iPosVert * c_barheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_barheight), pos)
+                Me.PaintDataset(e.Graphics, New Rectangle(0, c_barheight + pos.m_iPosVert * c_barheight * 2, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_barheight * 2), pos)
             Next
 
         End Sub
@@ -180,16 +180,26 @@ Namespace Ecospace.Controls
 
             Dim iStart As Integer = rc.X + pos.m_iTimeStart * Me.m_iTimestepSize
             Dim iEnd As Integer = rc.X + pos.m_iTimeEnd * Me.m_iTimestepSize
-            Dim rcBar As New Rectangle(rc.X + iStart, rc.Y + 2, iEnd - iStart, c_barheight - 4)
+            Dim rcBar As New Rectangle(rc.X + iStart, rc.Y + 2, iEnd - iStart, 2 * c_barheight - 4)
             Dim fmt As New StringFormat()
 
-            fmt.LineAlignment = StringAlignment.Far
+            fmt.LineAlignment = StringAlignment.Center
 
+            Dim rc2 As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barheight - 2)
+            Using br As New SolidBrush(Color.FromArgb(80, 100, 140, 250))
+                g.FillRectangle(br, rc2)
+            End Using
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
-                Using br As New SolidBrush(Color.FromArgb(255, 100, 140, 250))
-                    g.FillRectangle(br, rcBar)
-                    g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, rcBar, fmt)
-                End Using
+                g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, rc2, fmt)
+            End Using
+
+            rc2 = New Rectangle(rcBar.X, rcBar.Y + c_barheight - 2, rcBar.Width, c_barheight - 2)
+            Using br As New SolidBrush(Color.FromArgb(255, 100, 140, 250))
+                g.FillRectangle(br, rc2)
+            End Using
+
+            Using p As New Pen(Color.FromArgb(255, 100, 140, 250), 1)
+                g.DrawRectangle(p, rcBar)
             End Using
 
         End Sub
