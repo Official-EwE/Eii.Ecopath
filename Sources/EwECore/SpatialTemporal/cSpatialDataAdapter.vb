@@ -180,7 +180,8 @@ Namespace SpatialData
                     ' #Yes: allowed to execute?
                     If ds.IsEnabled Then
                         ' #Yes: has data for this time step?
-                        dt = Me.ToDataSetTime(ds, iTime)
+                        dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
+
                         If (ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight)) Then
                             ' #Yes: Can load that data?
                             If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
@@ -392,42 +393,6 @@ Namespace SpatialData
 #End Region ' Basic bits
 
 #Region " Translations "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Convert a time step to a time usable by the attached dataset.
-        ''' </summary>
-        ''' <param name="iTime">The Ecospace time step to populate data for.</param>
-        ''' <returns></returns>
-        ''' <remarks>Takes relative dates into account.</remarks>
-        ''' -------------------------------------------------------------------
-        Protected Function ToDataSetTime(ByVal ds As ISpatialDataSet, ByVal iTime As Integer) As DateTime
-
-            ' Get Ecopath start year
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
-
-            Try
-
-                ' Translate ecospace time step to year and month
-                ' *** Note that time steps that are fractions of months are rounded up to the first of the month! ***
-                Dim dTimeStepYearFraction As Double = iTime * ecospaceDS.TimeStep
-                Dim iTimeStepYear As Integer = CInt(Math.Floor(dTimeStepYearFraction))
-                Dim iTimeStepMonth As Integer = CInt(((dTimeStepYearFraction - iTimeStepYear) * 12))
-
-                ' Return absolute date
-                Dim iStartYear As Integer = Me.m_core.EcosimFirstYear
-                If iStartYear = 0 Then iStartYear = ecopathDS.FirstYear
-                Return New DateTime(Math.Max(iStartYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
-
-            Catch ex As Exception
-
-            End Try
-            Return Date.Now
-
-        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>

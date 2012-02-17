@@ -8036,6 +8036,43 @@ Public Class cCore
 
     End Sub
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert an Ecospace time step to absolute time
+    ''' </summary>
+    ''' <param name="iTime">The Ecospace time step to convert.</param>
+    ''' <returns>The absolute time represented by a time step.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function EcospaceTimestepToAbsoluteTime(ByVal iTime As Integer) As DateTime
+
+        ' Translate ecospace time step to year and month
+        ' *** Note that time steps that are fractions of months are rounded up to the first of the month! ***
+        Dim dTimeStepYearFraction As Double = iTime * Me.m_EcoSpaceData.TimeStep
+        Dim iTimeStepYear As Integer = CInt(Math.Floor(dTimeStepYearFraction))
+        Dim iTimeStepMonth As Integer = CInt(((dTimeStepYearFraction - iTimeStepYear) * 12))
+
+        ' Return absolute date
+        Return New DateTime(Math.Max(Me.EcosimFirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
+
+    End Function
+
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Convert an absolute time to an Ecospace time step.
+    ''' </summary>
+    ''' <param name="dt">The date to convert to a time step.</param>
+    ''' <returns></returns>
+    ''' <remarks>Takes relative dates into account.</remarks>
+    ''' -------------------------------------------------------------------
+    Public Function AbsoluteTimeToEcospaceTimestep(ByVal dt As DateTime) As Integer
+
+        Dim dtStart As New Date(Math.Max(Me.EcosimFirstYear, 1), 1, 1)
+        Dim sTime As Single = (dt.Year - dtStart.Year) + CSng((dt.Month - dtStart.Month) / cCore.N_MONTHS)
+        Return CInt(sTime / Me.m_EcoSpaceData.TimeStep)
+
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Run the Ecospace model with the currently loaded Ecosim and Ecospace scenario
