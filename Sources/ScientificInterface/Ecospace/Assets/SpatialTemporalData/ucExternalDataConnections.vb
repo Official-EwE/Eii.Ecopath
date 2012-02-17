@@ -61,18 +61,13 @@ Namespace Ecospace.Controls
 
         ' ToDo: respond to core messages to update ecospace run time, dataset changes
 
-        Public Overrides ReadOnly Property DisplayRectangle As System.Drawing.Rectangle
-            Get
-                Return New Rectangle(0, 0, Me.m_iTimestepSize, (Me.m_lPos.Count + 1) * 18)
-            End Get
-        End Property
-
         Protected Sub RecalcSize()
             ' Safety check
             If (Me.m_uic Is Nothing) Then Return
             ' Calc number of pixels per time step
             Me.m_iTimestepSize = CInt(Math.Max(4, Math.Floor(Me.Width / Me.m_uic.Core.nEcospaceTimeSteps)))
-            Me.Invalidate()
+            Me.AutoScrollMinSize = New Size(Me.m_iTimestepSize, (Me.m_lPos.Count + 1) * 18)
+            'Me.Invalidate()
         End Sub
 
         ''' <summary>

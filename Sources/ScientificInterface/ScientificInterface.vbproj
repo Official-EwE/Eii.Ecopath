@@ -281,6 +281,12 @@
     <Compile Include="My Project\Settings.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Other\Options\ucOptionsPlugins.Designer.vb">
+      <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsPlugins.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Tools\MSEBatch\gridMSEBatchFixedFIter.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -604,12 +610,6 @@
     <Compile Include="Other\AboutBox\AboutEwEGrid.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Other\Options\ucOptionsPlugins.Designer.vb">
-      <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Other\Options\ucOptionsPlugins.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Other\Options\dlgOptions.Designer.vb">
       <DependentUpon>dlgOptions.vb</DependentUpon>
     </Compile>
@@ -858,6 +858,10 @@
     <EmbeddedResource Include="Ecospace\Output\RunEcospace.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RunEcospace.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsPlugins.resx">
+      <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsColors.resx">
       <SubType>Designer</SubType>
@@ -1738,10 +1742,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsPluginDetails.resx">
       <DependentUpon>ucOptionsPluginDetails.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\ucOptionsPlugins.resx">
-      <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\RemarkPanel\frmRemarkPanel.resx">
