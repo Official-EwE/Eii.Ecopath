@@ -20,9 +20,9 @@
 Option Strict On
 Imports EwECore
 Imports EwEUtils.Commands
-Imports ScientificInterfaceShared.Definitions
-Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -204,22 +204,28 @@ Namespace Controls
             Select Case cmd
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Import, _
-                     eShapeCommandTypes.Load, _
-                     eShapeCommandTypes.Filter
+                     cShapeGUIHandler.eShapeCommandTypes.Load, _
+                     cShapeGUIHandler.eShapeCommandTypes.Filter
                     Return True
 
+                Case cShapeGUIHandler.eShapeCommandTypes.SetWeight
+                    ' #1079: only enable for reference series
+                    If bHasSingleSelection Then
+                        Return DirectCast(Me.SelectedShape, cTimeSeries).IsReference
+                    End If
+                    Return False
+
                 Case cShapeGUIHandler.eShapeCommandTypes.Add, _
-                     eShapeCommandTypes.Weight, _
-                     eShapeCommandTypes.Export
+                     cShapeGUIHandler.eShapeCommandTypes.Weight, _
+                     cShapeGUIHandler.eShapeCommandTypes.Export
                     Return Me.Core.HasTimeSeries
 
                 Case cShapeGUIHandler.eShapeCommandTypes.Duplicate, _
                      cShapeGUIHandler.eShapeCommandTypes.Remove
                     Return bHasSelection
 
-                Case eShapeCommandTypes.Modify, _
-                     eShapeCommandTypes.SetWeight, _
-                     eShapeCommandTypes.SaveAsImage
+                Case cShapeGUIHandler.eShapeCommandTypes.Modify, _
+                     cShapeGUIHandler.eShapeCommandTypes.SaveAsImage
                     Return bHasSingleSelection
 
             End Select
@@ -606,7 +612,8 @@ Namespace Controls
             Debug.Assert(shape IsNot Nothing, "Need valid TS")
             Debug.Assert(TypeOf shape Is cTimeSeries, "Need valid TS")
 
-            DirectCast(shape, cTimeSeries).WtType = sWeight
+            Dim ts As cTimeSeries = DirectCast(shape, cTimeSeries)
+            ts.WtType = sWeight
             shape.Update()
 
         End Sub

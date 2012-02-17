@@ -228,6 +228,20 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Helper method, states whether a time series is a reference series.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsReference() As Boolean
+        Return (Me.m_timeSeriesType = eTimeSeriesType.BiomassRel) Or _
+               (Me.m_timeSeriesType = eTimeSeriesType.BiomassAbs) Or _
+               (Me.m_timeSeriesType = eTimeSeriesType.TotalMortality) Or _
+               (Me.m_timeSeriesType = eTimeSeriesType.Catches) Or _
+               (Me.m_timeSeriesType = eTimeSeriesType.CatchesForcing)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get/set whether this time series can be used.
     ''' </summary>
     ''' <returns>A <see cref="eStatusFlags"/> stating whether the time series

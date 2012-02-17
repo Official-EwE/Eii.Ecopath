@@ -136,6 +136,8 @@ Public Class gridWeightTS
         cell.DataModel.EnableEdit = bCanEnable
         Me(iRow, CInt(eColumnTypes.Enabled)) = cell
 
+        ' #1079: only allow weight for reference series
+        If ts.IsReference Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
         cell = New EwECell(ts.WtType, GetType(Single), style)
         Me(iRow, CInt(eColumnTypes.Weight)) = cell
 

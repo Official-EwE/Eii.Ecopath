@@ -242,7 +242,13 @@ Namespace Controls
             End If
 
             If ((shapeSelected IsNot Nothing) And (TypeOf shapeSelected Is cTimeSeries)) Then
-                Me.m_tstbWeight.Text = Me.m_uic.StyleGuide.FormatNumber(DirectCast(shapeSelected, cTimeSeries).WtType)
+                ' #1079
+                Dim ts As cTimeSeries = DirectCast(shapeSelected, cTimeSeries)
+                If (ts.IsReference) Then
+                    Me.m_tstbWeight.Text = Me.m_uic.StyleGuide.FormatNumber(DirectCast(shapeSelected, cTimeSeries).WtType)
+                Else
+                    Me.m_tstbWeight.Text = ""
+                End If
             End If
 
             If (shapeSelected IsNot Nothing) Then
