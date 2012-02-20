@@ -35,6 +35,7 @@ Public Class cTaxonSearchData
 #Region " Privates "
 
     Private m_strSource As String = ""
+    Private m_strSourceKey As String = ""
     Private m_searchFields As eTaxonLevelType = eTaxonLevelType.Any
 
     ' -- ID --
@@ -232,10 +233,10 @@ Public Class cTaxonSearchData
     Public Property SourceKey() As String _
         Implements ITaxonSearchData.SourceKey
         Get
-            Return Me.m_lCodeSAUP.ToString
+            Return Me.m_strSourceKey
         End Get
         Set(ByVal value As String)
-            Me.m_lCodeSAUP = Long.Parse(value)
+            Me.m_strSourceKey = value
         End Set
     End Property
 
