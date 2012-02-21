@@ -88,7 +88,7 @@ Friend Class cDBUpdate6_02_00_02
                 iForcePoints = Math.Max(CInt(readerScenario(0)), iForcePoints) * cCore.N_MONTHS
             End While
         Catch ex As Exception
-            bSuccess = False
+            iForcePoints = Integer.MaxValue
         End Try
         db.ReleaseReader(readerScenario)
 
