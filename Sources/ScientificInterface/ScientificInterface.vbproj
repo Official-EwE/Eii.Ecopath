@@ -123,9 +123,6 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EwE6, Version=6.3.7471.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
-      <ExecutableExtension>.exe</ExecutableExtension>
-    </Reference>
     <Reference Include="SAUPUtil">
       <HintPath>..\ScientificInterfaceShared\Includes\SAUPUtil.dll</HintPath>
     </Reference>
@@ -240,10 +237,10 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmExternalDataConnections.Designer.vb">
-      <DependentUpon>frmExternalDataConnections.vb</DependentUpon>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmSpatialTimeSeries.Designer.vb">
+      <DependentUpon>frmSpatialTimeSeries.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmExternalDataConnections.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmSpatialTimeSeries.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.Designer.vb">
@@ -765,8 +762,8 @@
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.resx">
       <DependentUpon>dlgExternalData.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\frmExternalDataConnections.resx">
-      <DependentUpon>frmExternalDataConnections.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\frmSpatialTimeSeries.resx">
+      <DependentUpon>frmSpatialTimeSeries.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.resx">
       <DependentUpon>ucConfigAdapter.vb</DependentUpon>

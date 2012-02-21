@@ -202,6 +202,7 @@ Public Class frmNavigationPanel
             .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.RunEcospace), "Run Ecospace.htm")
             .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Advection.frmAdvection), "")
             .Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAOptimizations), "EcoSeed.htm")
+            .Add("ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmSpatialTimeSeries), "")
 
             ' Ecospace output
             .Add("ndEcospaceResults", eCoreExecutionState.EcospaceCompleted, GetType(Ecospace.cFormEcospaceResults), "") ' ToDo: connect to help

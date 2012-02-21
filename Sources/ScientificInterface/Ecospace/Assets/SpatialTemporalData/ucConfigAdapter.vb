@@ -189,6 +189,7 @@ Namespace Ecospace.Controls
 
             End Try
             Me.Cursor = Cursors.Default
+            Me.LayerChanged()
 
         End Sub
 
