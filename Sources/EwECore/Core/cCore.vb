@@ -8038,18 +8038,27 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Convert an Ecospace time step to absolute time
+    ''' Convert an Ecospace time step to absolute time.
     ''' </summary>
     ''' <param name="iTime">The Ecospace time step to convert.</param>
     ''' <returns>The absolute time represented by a time step.</returns>
+    ''' <remarks>The absolute time is based on the <see cref="EcosimFirstYear"/>, to
+    ''' which the time represnted by a given time step is added. The resulting 
+    ''' date is rounded to the first day of the month.</remarks>
     ''' -------------------------------------------------------------------
     Public Function EcospaceTimestepToAbsoluteTime(ByVal iTime As Integer) As DateTime
 
         ' Translate ecospace time step to year and month
         ' *** Note that time steps that are fractions of months are rounded up to the first of the month! ***
-        Dim dTimeStepYearFraction As Double = iTime * Me.m_EcoSpaceData.TimeStep
-        Dim iTimeStepYear As Integer = CInt(Math.Floor(dTimeStepYearFraction))
-        Dim iTimeStepMonth As Integer = CInt(((dTimeStepYearFraction - iTimeStepYear) * 12))
+        Dim sTimeStepYearFraction As Single = iTime * Me.m_EcoSpaceData.TimeStep
+        Dim iTimeStepYear As Integer = CInt(Math.Floor(sTimeStepYearFraction))
+        Dim iTimeStepMonth As Integer = CInt(((sTimeStepYearFraction - iTimeStepYear) * 12))
+
+        ' Fix potential rounding oddness
+        While (iTimeStepMonth >= 12)
+            iTimeStepYear += 1
+            iTimeStepMonth -= 12
+        End While
 
         ' Return absolute date
         Return New DateTime(Math.Max(Me.EcosimFirstYear, 1) + iTimeStepYear, iTimeStepMonth + 1, 1)
@@ -8063,7 +8072,8 @@ Public Class cCore
     ''' </summary>
     ''' <param name="dt">The date to convert to a time step.</param>
     ''' <returns></returns>
-    ''' <remarks>Takes relative dates into account.</remarks>
+    ''' <remarks>The resulting time step is calculated from difference in time steps,
+    ''' rounded to months, between the given time and the <see cref="EcosimFirstYear"/>.</remarks>
     ''' -------------------------------------------------------------------
     Public Function AbsoluteTimeToEcospaceTimestep(ByVal dt As DateTime) As Integer
 
