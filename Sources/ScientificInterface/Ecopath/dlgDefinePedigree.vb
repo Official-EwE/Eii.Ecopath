@@ -68,6 +68,9 @@ Namespace Ecopath
             Dim descr As cVarnameTypeFormatter = Nothing
             Dim iSelection As Integer = 0
 
+            Me.m_ilPretty.Images.Add(ScientificInterfaceShared.My.Resources.CommentHS)
+            Me.m_tpRemarks.ImageIndex = 0
+
             ' Clear drop down
             Me.m_cmbVariable.Items.Clear()
             ' For all pedigree vars
@@ -144,8 +147,8 @@ Namespace Ecopath
             Me.UpdateControls()
         End Sub
 
-        Private Sub m_tbDescription_Validated(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tbDescription.Validated
+        Private Sub m_tbDescription_Validated(ByVal sender As Object, ByVal e As System.EventArgs)
+
             Me.m_grid.SelectedLevelDescription = Me.m_tbDescription.Text
         End Sub
 
@@ -156,12 +159,12 @@ Namespace Ecopath
 
         Private Sub OnDefaultAllColors(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnColorDefaultAll.Click
-            Me.m_grid.SetDefaultFleetColors()
+            Me.m_grid.SetDefaultColors()
         End Sub
 
         Private Sub OnDefaultColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnColorDefaultCurrent.Click
-            Me.m_grid.SetDefaultFleetColor()
+            Me.m_grid.SetDefaultColor()
         End Sub
 
         Private Sub OnSelectCustomColor(ByVal sender As System.Object, ByVal e As System.EventArgs) _

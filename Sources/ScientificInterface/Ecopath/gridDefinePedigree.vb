@@ -736,13 +736,29 @@ Imports SourceGrid2.Cells
         Dim ewec As ICell = Nothing
         Dim clr As Color
 
+        Dim iClr As Integer = 0 : Dim iNumColors As Integer = 0
+        Dim cfg As cPedigreeManagerInfo = Me.ActiveConfig
+
+        For i As Integer = 0 To cfg.Levels.Count - 1
+            If (cfg.Levels(i).Status <> eItemStatusTypes.Removed) Then
+                If i = (iRow - iFIRSTDATAROW) Then
+                    iClr = iNumColors
+                End If
+                iNumColors += 1
+            End If
+        Next
+
         Me.AllowUpdates = False
 
         lvlInfo = DirectCast(Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW), cPedigreeLevelInfo)
         ri = Me.Rows(iRow)
 
-        clr = cColorUtils.IntToColor(lvlInfo.Color)
-        If clr.A = 0 Then clr = Me.StyleGuide.PedigreeColorDefault(iRow - iFIRSTDATAROW, Me.RowsCount - iFIRSTDATAROW - 1)
+        If lvlInfo.Status = eItemStatusTypes.Removed Then
+            clr = Color.Gray
+        Else
+            clr = cColorUtils.IntToColor(lvlInfo.Color)
+            If clr.A = 0 Then clr = Me.StyleGuide.PedigreeColorDefault(iClr, iNumColors - 1)
+        End If
 
         ri.Tag = lvlInfo
 
@@ -1061,7 +1077,7 @@ Imports SourceGrid2.Cells
 
         Select Case Me.m_vnActive
 
-            Case eVarNameFlags.Biomass
+            Case eVarNameFlags.Biomass, eVarNameFlags.BiomassAreaInput
 
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_ESTIMATED, 0, 80))
                 lLevels.Add(New cPedigreeLevelInfo(My.Resources.PEDIGREE_DEFAULT_OTHERMODEL, 0.0, 80))
@@ -1108,13 +1124,13 @@ Imports SourceGrid2.Cells
 
 #Region " Colors "
 
-    Public Sub SetDefaultFleetColors()
+    Public Sub SetDefaultColors()
         For iRow As Integer = iFIRSTDATAROW To Me.RowsCount - 1
-            Me.SetDefaultFleetColor(iRow)
+            Me.SetDefaultColor(iRow)
         Next
     End Sub
 
-    Public Sub SetDefaultFleetColor(Optional ByVal iRow As Integer = -1)
+    Public Sub SetDefaultColor(Optional ByVal iRow As Integer = -1)
         If iRow = -1 Then iRow = Me.SelectedRow
         Me.ActiveConfig.Levels(iRow - iFIRSTDATAROW).Color = 0
         Me.UpdateRow(iRow)

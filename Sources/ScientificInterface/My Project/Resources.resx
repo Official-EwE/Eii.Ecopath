@@ -318,7 +318,7 @@ Description: {1}</value>
     <value>Unable to save your model to location '{0}'.</value>
   </data>
   <data name="PROMPT_UPDATE_MIGRATION_SUPPRESS" xml:space="preserve">
-    <value>Do not ask again for this file</value>
+    <value>Do not ask again for this file.</value>
   </data>
   <data name="ECOSIM_GROUPINFO_PREDATORFEEDINGTIME" xml:space="preserve">
     <value>Predator effect on feeding time [0,1]</value>
@@ -410,7 +410,7 @@ Description: {1}</value>
     <value>Please select a model to convert to EwE6.</value>
   </data>
   <data name="PROMPT_MODELCREATED" xml:space="preserve">
-    <value>New EwE6 model  '{0}' successfully created</value>
+    <value>New EwE6 model  '{0}' successfully created.</value>
     <comment>{0}: model path</comment>
   </data>
   <data name="STATUS_MODEL_ACCESS_READONLY" xml:space="preserve">
@@ -624,7 +624,7 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
     <comment>{0}: # of rows, {1}: # of cols</comment>
   </data>
   <data name="PROMPT_MESSAGE_HIDE" xml:space="preserve">
-    <value>Hide this type of message until a model is reloaded</value>
+    <value>Hide this type of message until a model is reloaded.</value>
   </data>
   <data name="LEGEND_BYBIOMASS" xml:space="preserve">
     <value>By biomass</value>
@@ -1157,7 +1157,7 @@ Description: {2}</value>
     <value>Some of the changes that you made will only be effective after Ecopath with Ecosim has restarted.</value>
   </data>
   <data name="PROMPT_SEARCH_NORESULTS" xml:space="preserve">
-    <value>Your search did not produce any results</value>
+    <value>Your search did not produce any results.</value>
   </data>
   <data name="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY" xml:space="preserve">
     <value>Do you wish to import '{0}' as monthly forcing data?</value>
@@ -1512,5 +1512,8 @@ Description: {2}</value>
   </data>
   <data name="Computer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\computer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PROMPT_DEFINE_PEDIGREE" xml:space="preserve">
+    <value>Pedigree levels are not defined for one or more value types. Do you want to define these now?</value>
   </data>
 </root>

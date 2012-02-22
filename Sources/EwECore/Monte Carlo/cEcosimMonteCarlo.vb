@@ -26,6 +26,7 @@ Imports System.IO
 
 
 Public Enum eMCParams
+    NotSet = -1
     Biomass = 1
     PB = 2
     QB = 3
@@ -200,16 +201,16 @@ Public Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Function PedigreeVarToMCIndex(ByVal vn As eVarNameFlags) As Integer
+    Private Function PedigreeVarToMCIndex(ByVal vn As eVarNameFlags) As eMCParams
 
         Select Case vn
-            Case eVarNameFlags.Biomass : Return 1
-            Case eVarNameFlags.PBInput : Return 2
-            Case eVarNameFlags.QBInput : Return 3
+            Case eVarNameFlags.BiomassAreaInput : Return eMCParams.BA
+            Case eVarNameFlags.PBInput : Return eMCParams.PB
+            Case eVarNameFlags.QBInput : Return eMCParams.QB
         End Select
 
         System.Console.WriteLine(Me.ToString & ".PedigreeVarToMCIndex() Invalid VarName '" & vn.ToString & "'")
-        Return -1
+        Return eMCParams.NotSet
 
     End Function
 
@@ -235,7 +236,7 @@ Public Class cEcosimMonteCarlo
 
                         If iPar > 0 And iPar < 4 Then
                             Select Case varname
-                                Case eVarNameFlags.Biomass, _
+                                Case eVarNameFlags.BiomassAreaInput, _
                                      eVarNameFlags.PBInput, _
                                      eVarNameFlags.QBInput
 
@@ -740,7 +741,8 @@ Public Class cEcosimMonteCarlo
     End Sub
 
     Private Function NumParams() As Integer
-        Return [Enum].GetValues(GetType(eMCParams)).Length + 1
+        ' Do not include 'not set' (thus not redim by length  + 1)
+        Return [Enum].GetValues(GetType(eMCParams)).Length
     End Function
 
     Private Sub redimVariables()

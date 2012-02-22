@@ -1137,7 +1137,12 @@ Namespace DataSources
                     ecopathDS.PedigreeLevelDBID(iLevel) = CInt(reader("LevelID"))
                     ecopathDS.PedigreeLevelName(iLevel) = CStr(reader("LevelName"))
                     ecopathDS.PedigreeLevelDescription(iLevel) = CStr(reader("Description"))
-                    ecopathDS.PedigreeLevelVarName(iLevel) = cin.GetVarName(CStr(reader("VarName")))
+
+                    Dim var As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
+                    ' fudge, no need to issue a database update
+                    If var = eVarNameFlags.Biomass Then var = eVarNameFlags.BiomassAreaInput
+                    ecopathDS.PedigreeLevelVarName(iLevel) = var
+
                     ecopathDS.PedigreeLevelIndexValue(iLevel) = CSng(reader("IndexValue"))
                     ecopathDS.PedigreeLevelConfidence(iLevel) = CInt(reader("Confidence"))
                     ecopathDS.PedigreeLevelColor(iLevel) = CInt(Me.m_db.ReadSafe(reader, "LevelColor", 0))

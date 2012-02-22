@@ -106,7 +106,7 @@ Namespace Ecopath.Tools
             Dim cmd As cEditPedigreeCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cEditPedigreeCommand.cCOMMAND_NAME), cEditPedigreeCommand)
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditPedigree)
 
-            Me.SelectedVariable = eVarNameFlags.Biomass
+            Me.SelectedVariable = Me.Core.PedigreeVariable(1)
 
             Me.UpdateControls()
 
@@ -121,10 +121,10 @@ Namespace Ecopath.Tools
             Next
 
             If bLevelsMissing And (cmd IsNot Nothing) Then
-                ' ToDo: localize this
-                Dim fmsg As New cFeedbackMessage("Pedigree levels are missing for one or more value types. Do you want to define these now?", _
+                Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DEFINE_PEDIGREE, _
                                                  eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
                 fmsg.Reply = cFeedbackMessage.eReply.YES
+                fmsg.Suppressable = True
                 Core.Messages.SendMessage(fmsg)
 
                 If fmsg.Reply = cFeedbackMessage.eReply.YES Then
