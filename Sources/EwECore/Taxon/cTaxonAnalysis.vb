@@ -56,8 +56,23 @@ Public Class cTaxonAnalysis
     ''' <param name="op">The <see cref="eOperators">operation</see> to perform.
     ''' If not provided <see cref="eOperators.EqualTo">'='</see> is used.</param>
     ''' <returns>The proportion of biomass.</returns>
+    ''' <example lang="VB.NET">
+    ''' <code>
+    ''' Dim taxonanalysis As cTaxonAnalysis = Me.m_core.TaxonAnalysis
+    ''' Dim Binv As Single = 0
+    ''' Dim Bnt as single = 0
+    ''' 
+    ''' For iGroup As Integer = 1 To Me.m_core.NumGroups
+    '''     ' Sum up the biomass for all invertebrates
+    '''     Binv += Me.m_core.EcopathGroupOutput(iGroup).Biomass * taxonanalysis.GroupBiomassProportion(iGroup, eOrganismTypes.Invertebrates))
+    '''     ' Sum up the biomass for all species with a IUCN status of near-threathened or worse
+    '''     Bnt += Me.m_core.EcopathGroupOutput(iGroup).Biomass * taxonanalysis.GroupBiomassProportion(iGroup, eIUCNConservationStatusTypes.NearThreatened, eOperators.GreaterThanOrEqualTo))
+    ''' Next iGroup
+    ''' </code>
+    ''' </example>
     ''' -----------------------------------------------------------------------
-    Public Function GroupBiomassProportion(iGroup As Integer, val As Object, _
+    Public Function GroupBiomassProportion(iGroup As Integer, _
+                                           val As Object, _
                                            Optional op As eOperators = eOperators.EqualTo) As Single
         Return Me.GroupProportion(True, iGroup, val, op)
     End Function
@@ -81,90 +96,6 @@ Public Class cTaxonAnalysis
         Return Me.GroupProportion(False, iGroup, val, op)
     End Function
 
-#Region " Filters "
-#If 0 Then
-
-    ' ToDo_JS: consider solving this using LINQ (custom IQueryable LINQ provider, custom operators, etc)
-
-    ' This would be ideal:
-    '    SELECT Taxa FROM group WHERE .Organism = eOrganismTypes.Fishes AND .IUCNStatus < eIUCNConservationStatusTypes.Endangered
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns those indexes that occur in both collections.
-    ''' </summary>
-    ''' <param name="taxa1"></param>
-    ''' <param name="taxa2"></param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Public Shared Function [Overlap](taxa1 As ICollection(Of Integer), taxa2 As ICollection(Of Integer)) As Integer()
-        Dim li As New List(Of Integer)
-        For Each i As Integer In taxa1
-            If taxa2.Contains(i) Then li.Add(i)
-        Next
-        Return li.ToArray
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns those indexes that occur in either collection.
-    ''' </summary>
-    ''' <param name="taxa1"></param>
-    ''' <param name="taxa2"></param>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Public Shared Function [Join](taxa1 As ICollection(Of Integer), taxa2 As ICollection(Of Integer)) As Integer()
-        Dim li As New List(Of Integer)
-        li.AddRange(taxa2)
-        For Each i As Integer In taxa1
-            If Not taxa2.Contains(i) Then li.Add(i)
-        Next
-        Return li.ToArray
-    End Function
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get all taxa for a group that match a given condition.
-    ''' </summary>
-    ''' <param name="core"></param>
-    ''' <param name="iGroup"></param>
-    ''' <param name="var"></param>
-    ''' <param name="op"></param>
-    ''' <param name="sValue"></param>
-    ''' <returns>An array of <see cref="cTaxon.Index">taxon indices</see> of taxa 
-    ''' that match the given condition.</returns>
-    ''' -----------------------------------------------------------------------
-    Public Shared Function GetGroupTaxa(ByVal core As cCore, _
-                                        ByVal iGroup As Integer, _
-                                        ByVal var As eVarNameFlags, _
-                                        ByVal op As EwECore.eOperators, _
-                                        ByVal sValue As Single) As Integer()
-
-        Dim lTaxa As New List(Of Integer)
-        Dim tax As cTaxon = Nothing
-        Dim grp As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
-        Dim iTaxon As Integer = 0
-        Dim comp As cOperatorBase = cOperatorManager.getOperator(op)
-
-        For i As Integer = 1 To grp.NTaxon
-
-            iTaxon = grp.iTaxon(i)
-            tax = core.Taxon(iTaxon)
-
-            If comp.Compare(CSng(tax.GetVariable(var)), sValue) Then
-                lTaxa.Add(iTaxon)
-            End If
-
-        Next
-
-        Return lTaxa.ToArray()
-
-    End Function
-
-#End If
-
-#End Region ' Filters
-
 #Region " Internals "
 
     Private Function GroupProportion(ByVal bBiomass As Boolean, _
@@ -172,6 +103,7 @@ Public Class cTaxonAnalysis
                                      ByVal value As Object, _
                                      Optional ByVal op As eOperators = eOperators.EqualTo) As Single
 
+        Dim iTaxon As Integer = 0
         Dim sProportion As Single = 0
         Dim sPropTot As Single = 0
         Dim comp As cOperatorBase = cOperatorManager.getOperator(op)
@@ -191,12 +123,12 @@ Public Class cTaxonAnalysis
         Debug.Assert(avals IsNot Nothing)
 
         For i As Integer = 1 To Me.m_taxonDS.NumGroupTaxa(iGroup)
-            Dim iTaxon As Integer = Me.m_taxonDS.GroupTaxa(iGroup, i)
+            iTaxon = Me.m_taxonDS.GroupTaxa(iGroup, i)
             If (comp.Compare(CSng(avals.GetValue(iTaxon)), sVal)) Then
                 If bBiomass Then
-                    sProportion = sProportion + Me.m_taxonDS.TaxonProp(iTaxon)
+                    sProportion += Me.m_taxonDS.TaxonProp(iTaxon)
                 Else
-                    sProportion = sProportion + Me.m_taxonDS.TaxonPropCatch(iTaxon)
+                    sProportion += Me.m_taxonDS.TaxonPropCatch(iTaxon)
                 End If
             End If
             If bBiomass Then
