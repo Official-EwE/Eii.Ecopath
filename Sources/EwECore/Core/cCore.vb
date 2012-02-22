@@ -12787,7 +12787,8 @@ Public Class cCore
     ''' provides a way for these object to comumicate changes with the core.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub onChanged(ByVal obj As ICoreInterface, Optional ByVal TypeOfChange As eMessageType = eMessageType.NotSet)
+    Public Sub onChanged(ByVal obj As ICoreInterface, _
+                         Optional ByVal TypeOfChange As eMessageType = eMessageType.NotSet)
         Dim manager As cBaseShapeManager = Nothing
 
         Try

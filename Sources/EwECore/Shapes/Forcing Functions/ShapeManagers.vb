@@ -357,7 +357,7 @@ Public MustInherit Class cBaseShapeManager
 
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
-            Return eCoreComponentType.EcoSim
+            Return eCoreComponentType.ShapesManager
         End Get
     End Property
 

@@ -3680,6 +3680,7 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim iScenario As Integer = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
             Dim iActiveScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+            Dim bDuplicating As Boolean = False
             Dim bSucces As Boolean = True
             Dim idm As New cIDMappings()
 
@@ -3689,6 +3690,7 @@ Namespace DataSources
             If (iScenarioID <> iActiveScenarioID) Then
                 ' #Yes: add ID mapping to allow copying of scenario content
                 idm.Add(eDataTypes.EcoSimScenario, iActiveScenarioID, iScenarioID)
+                bDuplicating = True
             End If
 
             bSucces = Me.m_db.BeginTransaction()
@@ -3737,9 +3739,15 @@ Namespace DataSources
 
             bSucces = bSucces And Me.SaveEcosimGroups(idm)
             bSucces = bSucces And Me.SaveEcosimFleets(idm)
-            bSucces = bSucces And Me.SaveShapes(idm)
-            bSucces = bSucces And Me.SaveTimeSeries(idm)
-            bSucces = bSucces And Me.SaveEcosimMSE(idm)
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
+                bSucces = bSucces And Me.SaveShapes(idm)
+            End If
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.TimeSeries}) Then
+                bSucces = bSucces And Me.SaveTimeSeries(idm)
+            End If
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.MSE}) Then
+                bSucces = bSucces And Me.SaveEcosimMSE(idm)
+            End If
 
             If bSucces Then
                 ' Commit save
@@ -7310,9 +7318,11 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim iScenario As Integer = ecopathDS.ActiveEcospaceScenario
             Dim iScenarioID As Integer = 0
+            Dim bDuplicating As Boolean = False
             Dim bSucces As Boolean = True
 
             iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(iScenario))
+            bDuplicating = ((iScenarioID) <> ecopathDS.EcospaceScenarioDBID(iScenario))
 
             Try
 
