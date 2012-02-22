@@ -29,7 +29,7 @@ Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Helper class, renders remarks a remarks indicator into a control.
+    ''' Helper class, renders a remarks indicator.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cRemarksIndicator
@@ -49,11 +49,11 @@ Namespace Controls
                                 ByVal g As Graphics, _
                                 ByVal bHasRemarks As Boolean)
 
-            Dim pt() As Point = GetPoints(sg, rcClip)
-            Dim clrFill As Color = Nothing
-
             If (bHasRemarks) Then
-                clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
+
+                Dim pt() As Point = GetPoints(sg, rcClip)
+                Dim clrFill As Color = sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
+
                 Using br As New SolidBrush(clrFill)
                     g.FillPolygon(br, pt)
                 End Using
