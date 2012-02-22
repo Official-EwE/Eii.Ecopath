@@ -73,7 +73,7 @@ Friend Class cDBUpdate6_02_00_02
 
     Private Function UpdateForcePoints(ByVal db As cEwEDatabase) As Boolean
 
-        Dim iForcePoints As Integer = CInt(Math.Ceiling(cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS / cCore.N_MONTHS))
+        Dim iForcePoints As Integer = cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS
         Dim readerScenario As IDataReader = Nothing
         Dim bSuccess As Boolean = True
 
@@ -85,7 +85,7 @@ Friend Class cDBUpdate6_02_00_02
         readerScenario = db.GetReader("SELECT TotalTime FROM EcosimScenario")
         Try
             While readerScenario.Read()
-                iForcePoints = Math.Max(CInt(readerScenario(0)), iForcePoints) * cCore.N_MONTHS
+                iForcePoints = Math.Max(CInt(readerScenario(0)) * cCore.N_MONTHS, iForcePoints)
             End While
         Catch ex As Exception
             iForcePoints = Integer.MaxValue
