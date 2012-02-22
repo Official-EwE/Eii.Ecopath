@@ -214,6 +214,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cColorRampIndicator.vb" />
+    <Compile Include="Controls\Indicator renderers\cPedigreeIndicator.vb" />
     <Compile Include="Controls\IUIElement.vb" />
     <Compile Include="Controls\Label\cEwEHeaderLabel.vb">
       <SubType>Component</SubType>

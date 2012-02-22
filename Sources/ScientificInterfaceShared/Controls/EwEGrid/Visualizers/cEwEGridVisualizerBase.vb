@@ -84,6 +84,7 @@ Namespace Controls.EwEGrid
 
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
             Dim style As cStyleGuide.eStyleFlags = Me.Style(cell)
+            Dim sPedigree As Single = Me.Pedigree(cell)
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
 
@@ -105,6 +106,10 @@ Namespace Controls.EwEGrid
             Using br As New SolidBrush(clrBack)
                 e.Graphics.FillRectangle(br, rc)
             End Using
+
+            If (sPedigree > 0) Then
+                cPedigreeIndicator.Paint(sg, rc, e.Graphics, sPedigree)
+            End If
 
             ' Check if need to render specific styles
             If (style = 0) Then
@@ -252,12 +257,23 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected ReadOnly Property Style(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide.eStyleFlags
             Get
-                ' Rendering a cell with an associated property?
+                ' Rendering an EwE base cell?
                 If (TypeOf cell Is EwECellBase) Then
                     ' #Yes: obtain cell style
-                    Return DirectCast(cell, EwECellBase).Style()
+                    Return DirectCast(cell, EwECellBase).Style
                 End If
                 Return cStyleGuide.eStyleFlags.OK
+            End Get
+        End Property
+
+        Protected ReadOnly Property Pedigree(ByVal cell As SourceGrid2.Cells.ICellVirtual) As Single
+            Get
+                ' Rendering an EwE base cell?
+                If (TypeOf cell Is EwECellBase) Then
+                    ' #Yes: obtain cell style
+                    Return DirectCast(cell, EwECellBase).Pedigree
+                End If
+                Return 0
             End Get
         End Property
 

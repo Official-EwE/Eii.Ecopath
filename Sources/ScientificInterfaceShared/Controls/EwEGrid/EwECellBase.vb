@@ -112,6 +112,8 @@ Namespace Controls.EwEGrid
         Private m_tsGroupDigits As TriState = TriState.UseDefault
         ''' <summary>If true, the cell will not show numerical '0' values.</summary>
         Private m_bSuppressZero As Boolean = False
+        ''' <summary>Scaled pedigree level, if any.</summary>
+        Private m_sPedigree As Single = 0
         ''' <summary>Behaviour model to catch [ENTER] key presses.</summary>
         Private m_bmCatchEnter As BehaviorModels.IBehaviorModel = Nothing
         ''' <summary>Behaviour model to catch cell resize events.</summary>
@@ -184,7 +186,7 @@ Namespace Controls.EwEGrid
 
 #End Region ' Construction
 
-#Region " Data (value, style, remarks, image) "
+#Region " Data (value, style, image, pedigree) "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -406,7 +408,16 @@ Namespace Controls.EwEGrid
             End Set
         End Property
 
-#End Region ' Data (value, style, remarks, image)
+        Public Overridable Property Pedigree As Single
+            Get
+                Return Me.m_sPedigree
+            End Get
+            Set(value As Single)
+                Me.m_sPedigree = value
+            End Set
+        End Property
+
+#End Region ' Data (value, style, image, pedigree)
 
 #Region " UIContext connection "
 

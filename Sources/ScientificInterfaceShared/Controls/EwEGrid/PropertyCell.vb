@@ -246,6 +246,22 @@ Namespace Controls.EwEGrid
 
 #End Region ' Updates (property)
 
+#Region " Pedigree "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="EwECellBase.Pedigree"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Property Pedigree As Single
+            Get
+                Return Me.GetProperty().Pedigree
+            End Get
+            Set(value As Single)
+                ' NOP
+            End Set
+        End Property
+
+#End Region ' Pedigree
+
     End Class
 
 End Namespace
