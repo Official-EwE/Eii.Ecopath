@@ -141,7 +141,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdNavigate As cNavigationCommand = Nothing
     Private WithEvents m_cmdViewNavPane As cCommand = Nothing
     Private WithEvents m_cmdViewStatusPane As cCommand = Nothing
-    Private WithEvents m_cmdViewStartPanel As cBrowserCommand = Nothing
+    Private WithEvents m_cmdBrowseURI As cBrowserCommand = Nothing
     Private WithEvents m_cmdViewRemarkPane As cCommand = Nothing
     Private WithEvents m_cmdViewMenu As cCommand = Nothing
     Private WithEvents m_cmdViewModelBar As cCommand = Nothing
@@ -415,8 +415,8 @@ Public Class AppLauncher
         Me.m_cmdViewNavPane.AddControl(Me.m_tsmiViewNavigation)
 
         'Create and configure 'view start page' command
-        Me.m_cmdViewStartPanel = New cBrowserCommand(cmdh)
-        Me.m_cmdViewStartPanel.AddControl(Me.m_tsmiViewStartPage)
+        Me.m_cmdBrowseURI = New cBrowserCommand(cmdh)
+        Me.m_cmdBrowseURI.AddControl(Me.m_tsmiViewStartPage)
 
         'Create and configure 'view status pane' command
         Me.m_cmdViewStatusPane = New cCommand(cmdh, "ViewStatusPane")
@@ -2822,30 +2822,40 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; shows the start page.
     ''' </summary>
-    Private Sub OnViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnInvoke
+    Private Sub OnBrowseURI(ByVal cmd As cCommand) Handles m_cmdBrowseURI.OnInvoke
 
         Dim panel As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
         Dim bcmd As cBrowserCommand = DirectCast(cmd, cBrowserCommand)
 
-        If Not cmd.Checked Or Not String.IsNullOrEmpty(bcmd.URL) Then
-            If panel.IsDisposed() Then
-                panel = New frmStartPanel(Me.UIContext)
-                Me.m_dtPanels(cPANEL_START) = panel
+        ' Not a hyperlink?
+        If cStringUtils.BeginsWith(bcmd.URL, "http:", True) Then
+            If Not cmd.Checked Or Not String.IsNullOrEmpty(bcmd.URL) Then
+                If panel.IsDisposed() Then
+                    panel = New frmStartPanel(Me.UIContext)
+                    Me.m_dtPanels(cPANEL_START) = panel
+                End If
+                panel.Show(Me.m_DockPanel, DockState.Document)
+                panel.URL = bcmd.URL
+            Else
+                If Not panel.IsDisposed Then
+                    panel.Close()
+                End If
             End If
-            panel.Show(Me.m_DockPanel, DockState.Document)
-            panel.URL = bcmd.URL
         Else
-            If Not panel.IsDisposed Then
-                panel.Close()
-            End If
+            Try
+                ' Launch folder via Explorer
+                Process.Start("explorer.exe", Path.GetDirectoryName(bcmd.URL))
+            Catch ex As Exception
+                ' No need to panic
+            End Try
         End If
 
     End Sub
 
     ''' <summary>
-    ''' Command update handler; manages the <see cref="m_cmdViewStartPanel">View Start Page command</see> state.
+    ''' Command update handler; manages the <see cref="m_cmdBrowseURI"/> state.
     ''' </summary>
-    Private Sub OnUpdateViewStartPage(ByVal cmd As cCommand) Handles m_cmdViewStartPanel.OnUpdate
+    Private Sub OnUpdateBrowseURI(ByVal cmd As cCommand) Handles m_cmdBrowseURI.OnUpdate
         Dim p As frmEwEDockContent = Me.Panel(cPANEL_START)
         cmd.Checked = p.Visible
     End Sub
@@ -2964,7 +2974,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnVisitForums(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiForums.Click
-        Me.m_cmdViewStartPanel.Invoke("http://www.ecopath.org/forum")
+        Me.m_cmdBrowseURI.Invoke("http://www.ecopath.org/forum")
     End Sub
 
 #End Region ' Main Menu - Help

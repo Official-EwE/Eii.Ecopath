@@ -235,7 +235,7 @@ Public Class frmStatusPanel
     ''' Event handler; traps the mouse down event to initiate property highlighting for a given index
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub lbStatus_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseDown
+    Private Sub OnStatusMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseDown
         ' Get node that the user clicked on, if any
         Dim tn As TreeNode = Me.m_tvStatus.GetNodeAt(e.Location)
         ' Extract list op properties and highlight these
@@ -247,7 +247,7 @@ Public Class frmStatusPanel
     ''' Event handler; traps the mouse up event to end property highlighting for a given index
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub lbStatus_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseUp
+    Private Sub OnStatusMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles m_tvStatus.MouseUp
         ' Clear any highlights
         SetHighlights(Nothing)
     End Sub
@@ -281,11 +281,13 @@ Public Class frmStatusPanel
         If (item.Importance = eMessageImportance.Progress) Then Return
         If (item.Importance = eMessageImportance.Maintenance) Then Return
 
+        Me.m_tvStatus.ShowTime = My.Settings.StatusShowTime
+
         Dim iMaxMessages As Integer = Math.Max(10, Math.Min(200, My.Settings.StatusMaxMessages))
         Dim bSuppressChildren As Boolean = False
 
         ' Prepare treenode
-        Dim tnMessage As TreeNode = New cNavigateTreeview.cHyperlinkTreeNode(Me.GetLogText(item), item.Hyperlink)
+        Dim tnMessage As TreeNode = New cNavigateTreeview.cHyperlinkTreeNode(Me.GetLogText(item), item.Hyperlink, item.Time)
         ' Add original message text to tooltip
         tnMessage.ToolTipText = item.Text
         ' Add original message to the master node
@@ -405,10 +407,6 @@ Public Class frmStatusPanel
         Dim strText As String = ""
         If (item IsNot Nothing) Then
             strText = item.Text.Replace(vbNewLine, " ")
-            If My.Settings.StatusShowTime Then
-                strText = String.Format(SharedResources.GENERIC_LABEL_INDEXED, _
-                                        item.Time.ToShortTimeString(), strText)
-            End If
         End If
         Return strText
     End Function

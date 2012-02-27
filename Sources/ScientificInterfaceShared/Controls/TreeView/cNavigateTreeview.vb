@@ -30,11 +30,14 @@ Namespace Controls
     Public Class cNavigateTreeview
         Inherits TreeView
 
+        Private m_bShowTime As Boolean = False
+
         Public Sub New()
             MyBase.New()
             ' Hack to allow a bit more room for rendering items
             Me.Font = New Font(Me.Font, FontStyle.Bold)
             Me.FullRowSelect = True
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint, True)
         End Sub
 
         ''' ---------------------------------------------------------------
@@ -47,15 +50,19 @@ Namespace Controls
             Inherits TreeNode
 
             Private m_strHyperlink As String = ""
+            Private m_time As Date
 
             Public Sub New(strText As String, _
-                          strHyperlink As String)
+                           strHyperlink As String, _
+                           time As Date)
                 MyBase.New(strText)
                 Me.m_strHyperlink = strHyperlink
+                Me.m_time = time
             End Sub
 
             Public Sub New(strText As String, _
                            strHyperlink As String, _
+                           time As Date, _
                            children() As TreeNode)
                 MyBase.New(strText, children)
                 Me.m_strHyperlink = strHyperlink
@@ -63,6 +70,7 @@ Namespace Controls
 
             Public Sub New(strText As String, _
                            strHyperlink As String, _
+                           time As Date, _
                            imageindex As Integer, _
                            selectedImageIndex As Integer)
                 MyBase.new(strText, imageindex, selectedImageIndex)
@@ -72,6 +80,7 @@ Namespace Controls
             Public Sub New(strText As String, _
                            strHyperlink As String, _
                            imageindex As Integer, _
+                           time As Date, _
                            selectedImageIndex As Integer, _
                            children() As TreeNode)
                 MyBase.New(strText, imageindex, selectedImageIndex, children)
@@ -80,7 +89,7 @@ Namespace Controls
 
             ''' ---------------------------------------------------------------
             ''' <summary>
-            ''' Get/set the hyperlink attached to the control.
+            ''' Get/set the hyperlink attached to the node.
             ''' </summary>
             ''' ---------------------------------------------------------------
             Public Property Hyperlink As String
@@ -90,6 +99,17 @@ Namespace Controls
                 Set(strHyperlink As String)
                     Me.m_strHyperlink = strHyperlink
                 End Set
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set the time attached to the node.
+            ''' </summary>
+            ''' ---------------------------------------------------------------
+            Public ReadOnly Property Time As Date
+                Get
+                    Return Me.m_time
+                End Get
             End Property
 
         End Class
@@ -108,6 +128,16 @@ Namespace Controls
 
         End Class
 
+        Public Property ShowTime() As Boolean
+            Get
+                Return Me.m_bShowTime
+            End Get
+            Set(value As Boolean)
+                Me.m_bShowTime = value
+                Me.Invalidate()
+            End Set
+        End Property
+
         Public Event Navigate(sender As Object, e As TreeViewNavigateEventArgs)
 
         Protected Overrides Sub OnNodeMouseClick(e As System.Windows.Forms.TreeNodeMouseClickEventArgs)
@@ -124,27 +154,40 @@ Namespace Controls
 
         Protected Overrides Sub OnDrawNode(e As System.Windows.Forms.DrawTreeNodeEventArgs)
 
-            Dim sfmt As New StringFormat()
+            Dim fmt As TextFormatFlags = TextFormatFlags.EndEllipsis Or TextFormatFlags.SingleLine
             Dim bIsURL As Boolean = Me.HasHyperlink(e.Node)
-            Dim rc As Rectangle = e.Bounds
-
-            sfmt.Alignment = StringAlignment.Near
-            sfmt.FormatFlags = StringFormatFlags.NoWrap
-            sfmt.LineAlignment = StringAlignment.Center
-
-            'rc.Inflate(2, 0)
-            'rc.Offset(1, 0)
-            'rc.Width = Math.Min(rc.Width, Me.ClientRectangle.Width - rc.X)
-
-            Dim br As Brush = SystemBrushes.ControlText
+            Dim clrText As Color = SystemColors.ControlText
             Dim ft As Font = Nothing
+            Dim rcItem As Rectangle = e.Bounds
+            Dim bShowTime As Boolean = Me.m_bShowTime And (TypeOf (e.Node) Is cHyperlinkTreeNode)
 
-            If (e.State And TreeNodeStates.Selected) > 0 Then
-                br = SystemBrushes.HighlightText
-            ElseIf (e.State And TreeNodeStates.Hot) > 0 Then
-                br = SystemBrushes.HotTrack
+            Dim dx As Integer = Me.ClientRectangle.Width - e.Bounds.Width
+            If Threading.Thread.CurrentThread.CurrentUICulture.TextInfo.IsRightToLeft Then
+                fmt = fmt Or TextFormatFlags.RightToLeft
+                rcItem.Width += dx
+                rcItem.X -= dx
             Else
-                br = SystemBrushes.ControlText
+                rcItem.Width += dx
+            End If
+            Dim rcTime As Rectangle = e.Bounds
+
+            If ((e.State And (TreeNodeStates.Focused)) > 0) Then
+                clrText = SystemColors.HighlightText
+            End If
+
+            If m_bShowTime And e.Node.Parent Is Nothing Then
+                Dim sz As Size = TextRenderer.MeasureText("XX:XX:XXW", Me.Font)
+                rcItem.Width -= sz.Width
+                If (fmt And TextFormatFlags.RightToLeft) > 0 Then
+                    rcTime.X = e.Bounds.Width - sz.Width
+                Else
+                    rcItem.X += sz.Width
+                End If
+
+                ft = New Font(Me.Font, FontStyle.Regular)
+                TextRenderer.DrawText(e.Graphics, DirectCast(e.Node, cHyperlinkTreeNode).Time.ToShortTimeString, _
+                                      ft, rcTime, clrText, fmt)
+                ft.Dispose()
             End If
 
             If bIsURL Then
@@ -152,22 +195,10 @@ Namespace Controls
             Else
                 ft = New Font(Me.Font, FontStyle.Regular)
             End If
-            e.Graphics.DrawString(e.Node.Text, ft, br, rc, sfmt)
-
+            TextRenderer.DrawText(e.Graphics, e.Node.Text, ft, rcItem, clrText, fmt)
             ft.Dispose()
 
         End Sub
-
-        ' JS: Cursor hover feedback is overkill
-
-        'Protected Overrides Sub OnMouseMove(e As System.Windows.Forms.MouseEventArgs)
-        '    MyBase.OnMouseMove(e)
-        '    If (Me.HasHyperlink(Me.GetNodeAt(e.Location))) Then
-        '        Me.Cursor = Cursors.Hand
-        '    Else
-        '        Me.Cursor = Cursors.Default
-        '    End If
-        'End Sub
 
         Protected Overridable Sub OnNavigate(e As TreeViewNavigateEventArgs)
             RaiseEvent Navigate(Me, e)
