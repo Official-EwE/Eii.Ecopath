@@ -202,7 +202,7 @@ Namespace Ecopath
             Dim pplNumber As New PointPairList()
             Dim pplWeight As New PointPairList()
             Dim pplB As New PointPairList()
-            Dim applSeparator(sg.NStanzas) As PointPairList
+            Dim pplSep As PointPairList = Nothing
             Dim strLabel As String = ""
 
             Dim sMaxNumber As Single = 0.0
@@ -239,7 +239,7 @@ Namespace Ecopath
             For i As Integer = 2 To sg.NStanzas
 
                 ' First vertical separator?
-                If (i = 1) Then
+                If (i = 2) Then
                     ' #Yes: name this curve
                     strLabel = My.Resources.ECOPATH_GRAPH_LEGEND_STANZA_SEP
                 Else
@@ -247,10 +247,10 @@ Namespace Ecopath
                     strLabel = ""
                 End If
 
-                applSeparator(i) = New PointPairList
-                applSeparator(i).Add(sg.StartAge(i), 0)
-                applSeparator(i).Add(sg.StartAge(i), 1)
-                pane.AddCurve(strLabel, applSeparator(i), Color.Green, SymbolType.None)
+                pplSep= New PointPairList
+                pplSep.Add(sg.StartAge(i) - 1, 0)
+                pplSep.Add(sg.StartAge(i) - 1, 1)
+                pane.AddCurve(strLabel, pplSep, Color.Green, SymbolType.None)
             Next
 
             ' Calculate the Axis Scale Ranges
