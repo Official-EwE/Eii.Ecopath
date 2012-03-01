@@ -1220,9 +1220,7 @@ Namespace Controls.EwEGrid
                 r = New Range(r.Start.Row, r.Start.Column, Me.RowsCount - r.Start.Row, Me.ColumnsCount - r.Start.Column)
             End If
 
-            ' JS 28Feb12: todo detect special cases
-            ' - Repeat horizontally if a single column of source data is pasted to a row of cells of equal height
-            ' - Repeat vertically if a single row of source data is pasted to a column of cells of equal width
+            ' Diagnose dimensions of pasted data
             Dim iDY As Integer = astrLines.Length
             Dim iDX As Integer = 0
             For Each strLine As String In astrLines
@@ -1230,19 +1228,21 @@ Namespace Controls.EwEGrid
                 iDX = Math.Max(iDX, astrBits.Length)
             Next
 
+            ' JS 28Feb12: added special paste behaviour
+            ' - Rows can be repeated if the selected row(s) exactly fit the selected area
+            ' - Columns can be repeated if the selected column(s) exactly fit the selected area
             Dim bRepeatRow As Boolean = (r.ColumnsCount Mod iDX = 0) And (iDX > 1)
             Dim bRepeatCol As Boolean = (r.RowsCount Mod iDY = 0) And (iDY > 1)
             Dim iRowFrom As Integer = r.Start.Row
             Dim iRowTo As Integer = Math.Min(CInt(IIf(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1)), Me.RowsCount - 1)
+            ' Restrict paste operation to the selection area when repeating data and/or when pasting into a range
             Dim bRestrictToSelection As Boolean = bRepeatRow Or bRepeatCol Or (r.RowsCount > 1) Or (r.ColumnsCount > 1)
 
             If bRestrictToSelection Then iRowTo = Math.Min(iRowTo, r.End.Row)
 
             Me.BeginBatchEdit()
 
-            ' JS 29aug09: paste behaviour changed to imitate Excel. Do not only paste in selected cells,
-            '             but paste 'all the way through'
-            For iRow As Integer = iRowFrom To iRowTo
+             For iRow As Integer = iRowFrom To iRowTo
 
                 ' Only process visible rows (#1012)
                 If Me.Rows(iRow).Visible Then
