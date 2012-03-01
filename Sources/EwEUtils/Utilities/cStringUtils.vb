@@ -604,6 +604,43 @@ Namespace Utilities
 
         End Function
 
+        Private Shared CSV_SEPARATORCHARS As Char() = New Char() {","c, " "c}
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Format a value for use in a CSV file.
+        ''' </summary>
+        ''' <param name="objValue">The value to format.</param>
+        ''' <returns>A field fit for display in a CSV file.</returns>
+        ''' <remarks>
+        ''' Numbers will be en-US formatted.
+        ''' Double quotes will be removed.
+        ''' Values containing potential CSV separator characters will be encapsulated in double quotes.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ToCSVField(objValue As Object) As String
+
+            Dim strValue As String = ""
+
+            If (objValue Is Nothing) Then Return strValue
+
+            If (TypeOf (objValue) Is String) Then
+                strValue = CStr(objValue)
+            Else
+                strValue = cStringUtils.FormatNumber(objValue)
+            End If
+
+            If strValue.IndexOf(Chr(34)) > 0 Then
+                strValue = strValue.Replace("""", "")
+            End If
+            If strValue.IndexOfAny(CSV_SEPARATORCHARS) > 0 Then
+                strValue = """"c & strValue & """"c
+            End If
+
+            Return strValue
+
+        End Function
+
 #Region " Map array conversions "
 
         ''' -----------------------------------------------------------------------
