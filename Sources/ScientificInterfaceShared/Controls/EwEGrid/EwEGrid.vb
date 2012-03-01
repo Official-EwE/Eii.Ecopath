@@ -1211,10 +1211,8 @@ Namespace Controls.EwEGrid
             Dim pos As Position = Nothing
             Dim cell As SourceGrid2.Cells.ICell = Nothing
             Dim iRowData As Integer = 0
-            Dim iColData As Integer = -1
+            Dim iColData As Integer = 0
             Dim strValue As String = ""
-
-            Me.BeginBatchEdit()
 
             ' Empty or near-empty range?
             If (r.IsEmpty) Then
@@ -1222,18 +1220,43 @@ Namespace Controls.EwEGrid
                 r = New Range(r.Start.Row, r.Start.Column, Me.RowsCount - r.Start.Row, Me.ColumnsCount - r.Start.Column)
             End If
 
+            ' JS 28Feb12: todo detect special cases
+            ' - Repeat horizontally if a single column of source data is pasted to a row of cells of equal height
+            ' - Repeat vertically if a single row of source data is pasted to a column of cells of equal width
+            Dim iDY As Integer = astrLines.Length
+            Dim iDX As Integer = 0
+            For Each strLine As String In astrLines
+                Dim astrBits As String() = strLine.Split(CChar(vbTab))
+                iDX = Math.Max(iDX, astrBits.Length)
+            Next
+
+            Dim bRepeatRow As Boolean = (r.ColumnsCount Mod iDX = 0) And (iDX > 1)
+            Dim bRepeatCol As Boolean = (r.RowsCount Mod iDY = 0) And (iDY > 1)
+            Dim iRowFrom As Integer = r.Start.Row
+            Dim iRowTo As Integer = Math.Min(CInt(IIf(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1)), Me.RowsCount - 1)
+            Dim bRestrictToSelection As Boolean = bRepeatRow Or bRepeatCol Or (r.RowsCount > 1) Or (r.ColumnsCount > 1)
+
+            If bRestrictToSelection Then iRowTo = Math.Min(iRowTo, r.End.Row)
+
+            Me.BeginBatchEdit()
+
             ' JS 29aug09: paste behaviour changed to imitate Excel. Do not only paste in selected cells,
             '             but paste 'all the way through'
-            For iRow As Integer = r.Start.Row To Math.Min(r.Start.Row + astrLines.Length - 1, Me.RowsCount - 1)
+            For iRow As Integer = iRowFrom To iRowTo
 
                 ' Only process visible rows (#1012)
                 If Me.Rows(iRow).Visible Then
 
                     If Not String.IsNullOrEmpty(astrLines(iRowData)) Then
+
                         Dim astrCols() As String = astrLines(iRowData).Split(CChar(vbTab))
+                        Dim iColFrom As Integer = r.Start.Column
+                        Dim iColTo As Integer = Math.Min(CInt(IIf(bRepeatCol, r.End.Column, r.Start.Column + astrCols.Length - 1)), Me.ColumnsCount - 1)
                         iColData = 0
 
-                        For iCol As Integer = r.Start.Column To Me.ColumnsCount - 1
+                        If bRestrictToSelection Then iColTo = Math.Min(iColTo, r.End.Column)
+
+                        For iCol As Integer = iColFrom To iColTo
                             ' Only process visible columns
                             If Me.Columns(iCol).Visible And (iColData < astrCols.Length) Then
 
@@ -1272,12 +1295,19 @@ Namespace Controls.EwEGrid
 
                                     End If
                                 End If
+
+                                ' Next column
                                 iColData += 1
+                                If bRepeatCol Then iColData = iColData Mod iDX
+
                             End If ' Column visible
                         Next iCol
                     End If
-                    ' Next data row
+
+                    ' Next row
                     iRowData += 1
+                    If bRepeatRow Then iRowData = iRowData Mod iDY
+
                 End If ' Row visible
             Next iRow
             ' Redraw later
