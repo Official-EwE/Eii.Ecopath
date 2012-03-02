@@ -78,8 +78,8 @@ Namespace Ecosim
             Dim cnt As Integer = Me.RowsCount
 
             Me.Rows.Insert(cnt)
-            Me(cnt, 0) = New EwERowHeaderCell(CStr(results.nCalls))
-            Me(cnt, 1) = New Cell(CStr(results.Totals))
+            Me(cnt, eColumnTypes.Iteration) = New EwERowHeaderCell(CStr(results.nCalls))
+            Me(cnt, eColumnTypes.Total) = New Cell(CStr(results.Totals))
 
             For Each result As eSearchCriteriaResultTypes In [Enum].GetValues(GetType(eSearchCriteriaResultTypes))
                 Me(cnt, eColumnTypes.Total + result) = New Cell(results.CriteriaValues(result).ToString)
