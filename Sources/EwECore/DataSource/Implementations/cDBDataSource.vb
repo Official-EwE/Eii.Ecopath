@@ -2611,16 +2611,8 @@ Namespace DataSources
                         iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
                         iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(reader("FleetID")))
 
-                        ' JS 27jul07: no need to assert any longer
-                        'Debug.Assert(iGroup >= 0 And iFleet >= 0)
-
                         If (iGroup > ecopathDS.NumLiving) Then
                             ecopathDS.DiscardFate(iFleet, iGroup - ecopathDS.NumLiving) = CSng(reader("DiscardFate"))
-                            'Else
-                            '    '' ToDo_JS: localize this
-                            '    'Me.LogMessage(String.Format("DiscardFate value ignored for living group {0}, fleet ", iGroup), eMessageType.Any, eMessageImportance.Information)
-                            '    ' Keep on chugging, do not make assignment
-                            '    bSucces = True
                         End If
 
                     End While
@@ -2856,7 +2848,8 @@ Namespace DataSources
             Dim iGroupID As Integer = 0
             Dim bSucces As Boolean = True
 
-            For iGroup As Integer = 1 To ecopathDS.NumLiving
+            ' JS 01Mar12: Store catches for all groups, not only living groups
+            For iGroup As Integer = 1 To ecopathDS.NumGroups
                 iGroupID = ecopathDS.GroupDBID(iGroup)
                 bSucces = bSucces And Me.AddCatch(iGroupID, iFleetID)
             Next
@@ -6554,6 +6547,7 @@ Namespace DataSources
             drow("DatName") = ts.Name
             drow("DatType") = ts.TimeSeriesType
             drow("WtType") = ts.WtType
+            drow("CV") = ts.CV
             drow("DatasetID") = tsds.iDatasetDBID(iDataset)
 
             ' Concoct time series memo
@@ -6712,6 +6706,7 @@ Namespace DataSources
                     tsDS.strName(iSeries) = CStr(reader("DatName"))
                     tsDS.TimeSeriesType(iSeries) = DirectCast(CInt(reader("DatType")), eTimeSeriesType)
                     tsDS.sWeight(iSeries) = CSng(reader("WtType"))
+                    tsDS.sCV(iSeries) = CSng(Me.m_db.ReadSafe(reader, "CV", 0.0!))
 
                     Select Case cTimeSeriesFactory.TimeSeriesCategory(CType(tsDS.TimeSeriesType(iSeries), eTimeSeriesType))
 
@@ -6815,6 +6810,7 @@ Namespace DataSources
                     drow("DatName") = tsDS.strName(iTS)
                     drow("DatType") = tsDS.TimeSeriesType(iTS)
                     drow("WtType") = tsDS.sWeight(iTS)
+                    drow("CV") = tsDS.sCV(iTS)
 
                     ' Concoct time series memo
                     sbValues.Length = 0

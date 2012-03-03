@@ -69,6 +69,8 @@ Public Class cTimeSeriesDataStructures
     Public iPool() As Integer
     ''' <summary>Weight type for each time series.</summary>
     Public sWeight() As Single
+    ''' <summary>CV for each time series.</summary>
+    Public sCV() As Single
     '''' <summary>First year of each time series.</summary>
     'Public iFirstYear() As Integer
     ''' <summary>Annual values for each time series, indexed as (iYear, iSeries).</summary>
@@ -95,6 +97,8 @@ Public Class cTimeSeriesDataStructures
     Public DatPool() As Integer
     ''' <summary>Weight type for each applied time series.</summary>
     Public WtType() As Single
+    ''' <summary>CV for each applied time series.</summary>
+    Public CV() As Single
     ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
     Public DatVal(,) As Single
     ''' <summary>Start year for each applied time series.</summary>
@@ -182,6 +186,7 @@ Public Class cTimeSeriesDataStructures
         ReDim bEnable(nNumTimeSeries)
         ReDim iPool(nNumTimeSeries)
         ReDim sWeight(nNumTimeSeries)
+        ReDim sCV(nNumTimeSeries)
         ReDim TimeSeriesType(nNumTimeSeries)
         ReDim sValues(nMaxYears + 1, nNumTimeSeries)
         ReDim sDatSS(nNumTimeSeries)
@@ -203,6 +208,7 @@ Public Class cTimeSeriesDataStructures
         ReDim DatPool(NdatType)
         ReDim DatType(NdatType)
         ReDim WtType(NdatType)
+        ReDim CV(NdatType)
         ReDim DatVal(NdatYear + 1, NdatType)
         ReDim DatYear(NdatYear)
         ReDim DatSS(NdatType)
@@ -321,6 +327,7 @@ Public Class cTimeSeriesDataStructures
         DatPool(iTSEnable) = iPool(iTS)
         DatType(iTSEnable) = TimeSeriesType(iTS)
         WtType(iTSEnable) = sWeight(iTS)
+        CV(iTSEnable) = sCV(iTS)
         For iYear As Integer = 0 To NdatYear
             DatVal(iYear, iTSEnable) = sValues(iYear, iTS)
         Next iYear
@@ -337,7 +344,6 @@ Public Class cTimeSeriesDataStructures
                 sDatSS(iTS) = DatSS(iTSenabled)
                 sDatQ(iTS) = DatQ(iTSenabled)
                 sEDatQ(iTS) = eDatQ(iTSenabled)
-
             Else
                 sDatSS(iTS) = 0.0!
                 sDatQ(iTS) = 0.0!

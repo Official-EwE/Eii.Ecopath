@@ -307,6 +307,7 @@ Public MustInherit Class cTimeSeriesTextReader
         Dim iYear As Integer = 0
         Dim iPrevYear As Integer = 0
         Dim bSucces As Boolean = True
+        Dim iWeightFactors As Integer = 0
 
         ' Sanity checks
         If (reader Is Nothing) Then Return False
@@ -346,6 +347,26 @@ Public MustInherit Class cTimeSeriesTextReader
                 strLine = Me.ReadLine(reader, iLineNumber)
                 astrCols = Me.SplitLine(strLine)
                 Me.m_tsPreview.AddRow(strLine, astrCols)
+                iWeightFactors += 1
+            End If
+
+            If cStringUtils.BeginsWith(astrCols(0), "cv") Then
+                If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+                    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_CVVALUEMISSING, iLineNumber)
+                    bSucces = False
+                End If
+
+                ' Advance to next line
+                strLine = Me.ReadLine(reader, iLineNumber)
+                astrCols = Me.SplitLine(strLine)
+                Me.m_tsPreview.AddRow(strLine, astrCols)
+                iWeightFactors += 1
+            End If
+
+            If (iWeightFactors > 1) Then
+                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TOOMANYWEIGHTS, iLineNumber - 2)
+                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_TOOMANYWEIGHTS, iLineNumber - 1)
+                bSucces = False
             End If
 
             ' Pool code
@@ -450,7 +471,8 @@ Public MustInherit Class cTimeSeriesTextReader
         Dim sValue As Single = 0.0
 
         ' Temp buffers for creating Time Series objects
-        Dim asWtType(iNumSeries) As Single
+        Dim asWeight(iNumSeries) As Single
+        Dim asCV(iNumSeries) As Single
         Dim astrNames(iNumSeries) As String
         Dim aiDatPool(iNumSeries) As Integer
         Dim aiType(iNumSeries) As eTimeSeriesType
@@ -461,7 +483,7 @@ Public MustInherit Class cTimeSeriesTextReader
         If (tr Is Nothing) Then Return False
 
         ' Init all weights to 1 by default
-        For i As Integer = 0 To iNumSeries : asWtType(i) = 1.0! : Next i
+        For i As Integer = 0 To iNumSeries : asWeight(i) = 1.0! : Next i
 
         ' Read names from columns
         astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
@@ -471,7 +493,14 @@ Public MustInherit Class cTimeSeriesTextReader
         astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
         If (String.Compare(astrCols(0), "weight", True) = 0) Then
             Try
-                For i As Integer = 1 To iNumSeries : asWtType(i - 1) = cStringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
+                For i As Integer = 1 To iNumSeries : asWeight(i - 1) = cStringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
+            Catch ex As Exception
+                Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTFORMAT, iLineNumber)
+            End Try
+            astrCols = Me.SplitLine(Me.ReadLine(tr, iLineNumber))
+        ElseIf (String.Compare(astrCols(0), "cv", True) = 0) Then
+            Try
+                For i As Integer = 1 To iNumSeries : asCV(i - 1) = cStringUtils.ConvertToSingle(astrCols(i), 0, Me.m_strDecimalSeparator) : Next i
             Catch ex As Exception
                 Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_WEIGHTFORMAT, iLineNumber)
             End Try
@@ -540,7 +569,8 @@ Public MustInherit Class cTimeSeriesTextReader
             ' Configure time series
             With ts
                 .Name = astrNames(i)
-                .WtType = asWtType(i)
+                .WtType = asWeight(i)
+                .CV = asCV(i)
                 .DatPool = aiDatPool(i)
                 .ResizeData(Me.m_iNumYears)
             End With

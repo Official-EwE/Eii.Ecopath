@@ -594,9 +594,6 @@ System Error: {0}</value>
   <data name="TIMESERIES_ERROR_WEIGHTFORMAT" xml:space="preserve">
     <value>One or more weight values cannot be read</value>
   </data>
-  <data name="TIMESERIES_ERROR_WEIGHTVALUEMISSING" xml:space="preserve">
-    <value>Weight value missing</value>
-  </data>
   <data name="TIMESERIES_ERROR_YEARLINEMISSING" xml:space="preserve">
     <value>Year data expected</value>
   </data>
@@ -999,5 +996,17 @@ System Error: {0}</value>
   <data name="RELOAD_ECOSPACE" xml:space="preserve">
     <value>You must re-load Ecospace for your changes to take affect.</value>
     <comment>isEcoSpaceModelCoupled has changed reload message</comment>
+  </data>
+  <data name="TIMESERIES_ERROR_CVVALUEMISSING" xml:space="preserve">
+    <value>CV value(s) missing</value>
+  </data>
+  <data name="TIMESERIES_ERROR_WEIGHTVALUEMISSING" xml:space="preserve">
+    <value>Weight value missing</value>
+  </data>
+  <data name="TIMESERIES_ERROR_CVFORMAT" xml:space="preserve">
+    <value>One or more cv values cannot be read</value>
+  </data>
+  <data name="TIMESERIES_ERROR_TOOMANYWEIGHTS" xml:space="preserve">
+    <value>Cannot specify both CV and Weight</value>
   </data>
 </root>

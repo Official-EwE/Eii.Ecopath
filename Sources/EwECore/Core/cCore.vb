@@ -1482,6 +1482,7 @@ Public Class cCore
                 ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
                 ts.DatPool = Me.m_TSData.iPool(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
+                ts.CV = Me.m_TSData.sCV(ts.Index)
 
                 'DatSS and DatQ are not part of m_TSData yet
                 ts.DataSS = Me.m_TSData.sDatSS(ts.Index)
@@ -1511,6 +1512,7 @@ Public Class cCore
                 ts.TimeSeriesType = Me.m_TSData.TimeSeriesType(ts.Index)
                 ts.DatPool = Me.m_TSData.iPool(ts.Index)
                 ts.WtType = Me.m_TSData.sWeight(ts.Index)
+                ts.CV = Me.m_TSData.sCV(ts.Index)
 
                 'DatSS and DatQ are not part of m_TSData yet
                 ts.DataSS = Me.m_TSData.sDatSS(ts.Index)
@@ -1565,6 +1567,7 @@ Public Class cCore
                 Me.m_TSData.strName(ts.Index) = ts.Name
                 Me.m_TSData.iPool(ts.Index) = ts.DatPool
                 Me.m_TSData.sWeight(ts.Index) = ts.WtType
+                Me.m_TSData.sCV(ts.Index) = ts.CV
 
                 'DatSS and DatQ are computed so they are not updated from the interface
                 'Me.m_TSData.datass(ts.Index) = ts.DataQ
@@ -1599,10 +1602,10 @@ Public Class cCore
                 ' Validate whether TS will remain in its category (fleet)
                 Debug.Assert(cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Fleet, "Cannot change TS to a different category")
                 Me.m_TSData.TimeSeriesType(ts.Index) = ts.TimeSeriesType
-
                 Me.m_TSData.strName(ts.Index) = ts.Name
                 Me.m_TSData.iPool(ts.Index) = ts.DatPool
                 Me.m_TSData.sWeight(ts.Index) = ts.WtType
+                Me.m_TSData.sCV(ts.Index) = ts.CV
 
                 'DatSS and DatQ are computed so they are not updated from the interface
                 'Me.m_TSData.datass(ts.Index) = ts.DataQ
@@ -1864,8 +1867,16 @@ Public Class cCore
         For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
             bChanged = bChanged Or (Me.m_TSData.bEnable(ts.Index) <> ts.Enabled)
             Me.m_TSData.bEnable(ts.Index) = ts.Enabled
-            bChanged = bChanged Or (Me.m_TSData.sWeight(ts.Index) <> ts.WtType)
+            bChanged = bChanged Or (Me.m_TSData.sWeight(ts.Index) <> ts.WtType) Or (Me.m_TSData.sCV(ts.Index) <> ts.CV)
             Me.m_TSData.sWeight(ts.Index) = ts.WtType
+            Me.m_TSData.sCV(ts.Index) = ts.CV
+        Next
+        For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
+            bChanged = bChanged Or (Me.m_TSData.bEnable(ts.Index) <> ts.Enabled)
+            Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+            bChanged = bChanged Or (Me.m_TSData.sWeight(ts.Index) <> ts.WtType) Or (Me.m_TSData.sCV(ts.Index) <> ts.CV)
+            Me.m_TSData.sWeight(ts.Index) = ts.WtType
+            Me.m_TSData.sCV(ts.Index) = ts.CV
         Next
 
         For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet

@@ -37,15 +37,17 @@ Public MustInherit Class cTimeSeries
 
 #Region " Protected variables "
 
-    ''' <summary>The <see cref="eTimeSeriesType">type</see> of this time series.</summary>
+    ''' <summary>The <see cref="eTimeSeriesType">type</see> of a time series.</summary>
     Protected m_timeSeriesType As eTimeSeriesType = eTimeSeriesType.NotSet
-    ''' <summary>The weight of time for this time series.</summary>
+    ''' <summary>The weight of time for a time series.</summary>
     Protected m_sWtType As Single = 1.0!
-    ''' <summary>The index of the target that this time series applies to.</summary>
+    ''' <summary>Covariance.</summary>
+    Protected m_sCV As Single = 0
+    ''' <summary>The index of the target that a time series applies to.</summary>
     Protected m_iDatPool As Integer = 0
     ''' <summary>Applied flag</summary>
     Protected m_bEnabled As Boolean = False
-    ''' <summary>Sum of squares for this TS.</summary>
+    ''' <summary>Sum of squares for a TS.</summary>
     Protected m_sDatSS As Single = 0.0!
     ''' <summary>Average zstat sumof(Log(observed/predicted))/nobs.</summary>
     Protected m_sDataQ As Single = 0.0!
@@ -53,7 +55,7 @@ Public MustInherit Class cTimeSeries
     ''' <summary>exp(DataQ)</summary>
     Protected m_eDataQ As Single
 
-    ''' <summary>The core this TS belongs to.</summary>
+    ''' <summary>The core a TS belongs to.</summary>
     Protected m_core As cCore = Nothing
 
     Protected m_status As eStatusFlags = eStatusFlags.Null
@@ -77,7 +79,7 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the <see cref="eTimeSeriesType">type</see> of this time series.
+    ''' Get/set the <see cref="eTimeSeriesType">type</see> of a time series.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property TimeSeriesType() As eTimeSeriesType
@@ -103,7 +105,21 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the weight of time for this time series.
+    ''' Get/set the CV for a time series.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property CV As Single
+        Get
+            Return Me.m_sCV
+        End Get
+        Set(value As Single)
+            Me.m_sCV = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the weight of time for a time series.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property WtType() As Single
@@ -118,7 +134,7 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the index of the target that this time series applies to. The
+    ''' Get/set the index of the target that a time series applies to. The
     ''' type of the target is implied by the <see cref="TimeSeriesType">type</see>
     ''' of the time series.
     ''' </summary>
@@ -135,7 +151,7 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the annual values for this time series.
+    ''' Get/set the annual values for a time series.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property DatVal(ByVal iIndex As Integer) As Single
@@ -167,7 +183,7 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Sum of squares for the fit of this data set to the predicted value DatSS
+    ''' Sum of squares for the fit of a data set to the predicted value DatSS
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property DataSS() As Single
@@ -242,7 +258,7 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set whether this time series can be used.
+    ''' Get/set whether a time series can be used.
     ''' </summary>
     ''' <returns>A <see cref="eStatusFlags"/> stating whether the time series
     ''' can be used.</returns>

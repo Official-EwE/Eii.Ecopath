@@ -874,6 +874,7 @@
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
     <Content Include="Resources\Annual.png" />
+    <Content Include="Resources\timeseries.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\tag.png" />
     <None Include="Resources\fishing_gear.png" />

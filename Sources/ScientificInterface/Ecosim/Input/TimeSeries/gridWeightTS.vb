@@ -32,6 +32,7 @@ Public Class gridWeightTS
         [Type]
         Enabled
         Weight
+        CV
     End Enum
 
     Public Sub New()
@@ -58,10 +59,9 @@ Public Class gridWeightTS
             For iRow As Integer = 1 To Me.RowsCount - 1
                 cbc = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
                 ts = DirectCast(cbc.Tag, cTimeSeries)
-                ' Enabled flag
                 ts.Enabled = bEnableAll Or cbc.Checked
-                ' Weight
                 ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
+                ts.CV = CSng(Me(iRow, CInt(eColumnTypes.CV)).Value)
             Next
             Me.UIContext.Core.UpdateTimeSeries(True)
         Catch ex As Exception
@@ -82,6 +82,7 @@ Public Class gridWeightTS
         Me(0, eColumnTypes.Type) = New EwEColumnHeaderCell(SharedResources.HEADER_TYPE)
         Me(0, eColumnTypes.Enabled) = New EwEColumnHeaderCell(SharedResources.HEADER_ENABLE)
         Me(0, eColumnTypes.Weight) = New EwEColumnHeaderCell(SharedResources.HEADER_WEIGHT)
+        Me(0, eColumnTypes.CV) = New EwEColumnHeaderCell(SharedResources.HEADER_CV)
 
     End Sub
 
@@ -126,21 +127,52 @@ Public Class gridWeightTS
         If Not bCanEnable Then style = cStyleGuide.eStyleFlags.NotEditable
 
         cell = New EwERowHeaderCell(ts.Name)
-        Me(iRow, CInt(eColumnTypes.Name)) = cell
+        Me(iRow, eColumnTypes.Name) = cell
 
         cell = New EwERowHeaderCell(fmt.GetDescriptor(ts.TimeSeriesType))
-        Me(iRow, CInt(eColumnTypes.Type)) = cell
+        Me(iRow, eColumnTypes.Type) = cell
 
         cell = New SourceGrid2.Cells.Real.CheckBox(ts.Enabled)
         cell.Tag = ts
         cell.DataModel.EnableEdit = bCanEnable
-        Me(iRow, CInt(eColumnTypes.Enabled)) = cell
+        Me(iRow, eColumnTypes.Enabled) = cell
 
-        ' #1079: only allow weight for reference series
-        If ts.IsReference Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+        '' #1079: only allow weight for reference series
+        'If ts.IsReference Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+
         cell = New EwECell(ts.WtType, GetType(Single), style)
-        Me(iRow, CInt(eColumnTypes.Weight)) = cell
+        Me(iRow, eColumnTypes.Weight) = cell
 
+        cell = New EwECell(ts.CV, GetType(Single), style)
+        cell.Behaviors.Add(Me.EwEEditHandler)
+        DirectCast(cell, EwECell).SuppressZero = True
+        Me(iRow, eColumnTypes.CV) = cell
+
+        'If Not ts.IsReference Then
+        Me.UpdateRow(iRow)
+        'End If
+
+    End Sub
+
+    Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+        MyBase.OnCellValueChanged(p, cell)
+        If MyBase.OnCellEdited(p, cell) Then
+            If p.Column = eColumnTypes.CV Then
+                UpdateRow(p.Row)
+            End If
+        End If
+    End Function
+
+    Protected Sub UpdateRow(iRow As Integer)
+        Dim cellCV As EwECell = DirectCast(Me(iRow, eColumnTypes.CV), EwECell)
+        Dim cellWeight As EwECell = DirectCast(Me(iRow, eColumnTypes.Weight), EwECell)
+        Dim st As cStyleGuide.eStyleFlags = cellWeight.Style
+        If (CSng(cellCV.GetValue(New SourceGrid2.Position(iRow, eColumnTypes.CV))) <= 0) Then
+            st = cStyleGuide.eStyleFlags.OK
+        Else
+            st = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+        End If
+        cellWeight.Style = st
     End Sub
 
 End Class

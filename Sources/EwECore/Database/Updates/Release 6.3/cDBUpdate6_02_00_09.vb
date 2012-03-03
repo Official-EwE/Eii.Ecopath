@@ -33,15 +33,7 @@ Friend Class cDBUpdate6_12_00009
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' This method provides the update version number that will be entered in
-    ''' the update log of the database. This version number is also used to check
-    ''' whether an update should run.
-    ''' </summary>
-    ''' <remarks>
-    ''' If <see cref="cCore.NULL_VALUE">cCore.NULL_VALUE</see> is provided, the
-    ''' update is ran regardless of version number.
-    ''' </remarks>
+    ''' <inheritdocs cref="cDBUpdate.UpdateVersion"/>
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
@@ -50,10 +42,7 @@ Friend Class cDBUpdate6_12_00009
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' This method provides the text that will be entered in the update log in
-    ''' the database.
-    ''' </summary>
+    ''' <inheritdocs cref="cDBUpdate.UpdateDescription"/>
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get

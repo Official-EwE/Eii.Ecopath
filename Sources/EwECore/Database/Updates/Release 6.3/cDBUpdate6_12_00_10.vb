@@ -21,15 +21,15 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.120007:</para>
+''' <para>Database update 6.120010:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Added table to save spatial data configuration.</description></item>
+''' <item><description>Added CV to Ecosim time series.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_12_00007
+Friend Class cDBUpdate6_12_00010
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -37,7 +37,7 @@ Friend Class cDBUpdate6_12_00007
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.120007!
+            Return 6.12001!
         End Get
     End Property
 
@@ -46,18 +46,12 @@ Friend Class cDBUpdate6_12_00007
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added storage for external spatial data."
+            Return "Added timeseries CV"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-
-        Dim bSucces As Boolean = db.Execute("CREATE TABLE EcospaceScenarioDataAdapters (ScenarioID LONG, VarName TEXT(50), LayerIndex INTEGER, [Dataset] TEXT(140), [Converter] TEXT(255), ConverterCfg MEMO)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioDataAdapters ADD PRIMARY KEY (ScenarioID, VarName, LayerIndex)")
-        bSucces = bSucces And db.Execute("ALTER TABLE EcospaceScenarioDataAdapters ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
-
-        Return bSucces
-
+        Return db.Execute("ALTER TABLE EcosimTimeSeries ADD COLUMN CV SINGLE")
     End Function
 
 End Class

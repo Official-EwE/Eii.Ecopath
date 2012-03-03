@@ -678,7 +678,8 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Finalizes the grid by formatting the grid header and column widths to indicated sizes after data has been provided.
+        ''' Finalize the grid by formatting the grid header and column widths 
+        ''' to indicated sizes after data has been provided.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overridable Sub FinishStyle()
@@ -718,10 +719,12 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> callback for responding
-        ''' to user cell value edits.
+        ''' to user cell value edits. Override to respond to the notification or
+        ''' to cancel the edit if the cell value is not allowed.
         ''' </summary>
         ''' <param name="p">Position that was affected.</param>
         ''' <param name="cell">Cell that was edited.</param>
+        ''' <returns>True if the cell edit is allowed, false otherwise.</returns>
         ''' <remarks>
         ''' Note that this method will only be called if a cell has been given a 
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.
@@ -734,10 +737,11 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> callback for responding
-        ''' to user cell value changes.
+        ''' to user cell value changes. Override to respond to the notification.
         ''' </summary>
         ''' <param name="p">Position that was affected.</param>
         ''' <param name="cell">Cell that has received a new value.</param>
+        ''' <returns>The return value is ignored by the EwEGrid framework.</returns>
         ''' <remarks>
         ''' Note that this method will only be called if a cell has been given a 
         ''' <see cref="EwEEditHandler">EwEEditHandler</see> behaviour model.

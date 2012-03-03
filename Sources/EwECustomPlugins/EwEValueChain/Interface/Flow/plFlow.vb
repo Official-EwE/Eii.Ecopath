@@ -462,7 +462,7 @@ Public Class plFlow
 
         ' Draw form background
         Using br As New SolidBrush(Me.BackColor)
-            e.Graphics.FillRectangle(br, e.ClipRectangle)
+            e.Graphics.FillRectangle(br, Me.ClientRectangle)
         End Using
 
         ' Need to draw grid?
@@ -513,7 +513,9 @@ Public Class plFlow
 
     End Sub
 
-    Protected Overrides Sub OnPaintBackground(ByVal arg As PaintEventArgs)
+    Protected Overrides Sub OnScroll(se As System.Windows.Forms.ScrollEventArgs)
+        Me.Invalidate()
+        MyBase.OnScroll(se)
     End Sub
 
     Protected Overrides Sub OnResize(ByVal eventargs As System.EventArgs)
