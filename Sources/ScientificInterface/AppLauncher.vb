@@ -1288,7 +1288,6 @@ Public Class AppLauncher
                 tsmi.Text = Me.Core.TimeSeriesDataset(i).Name
                 tsmi.Tag = Me.Core.TimeSeriesDataset(i)
                 tsmi.Checked = (Me.Core.ActiveTimeSeriesDatasetIndex = i)
-                tsmi.Image = SharedResources.timeseries
 
                 AddHandler tsmi.Click, AddressOf OnLoadEcosimScenarioOrDataset
                 Me.m_tsbEcosim.DropDownItems.Add(tsmi)
