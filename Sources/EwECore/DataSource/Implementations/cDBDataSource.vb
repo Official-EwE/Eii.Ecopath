@@ -1588,6 +1588,9 @@ Namespace DataSources
                         ' JS 23nov10: Hah, three and a half years later these values are stored again
                         stanzaDS.BaseStanza(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingLifeStage", cCore.NULL_VALUE))
 
+                        ' Truncate
+                        stanzaDS.BaseStanza(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanza(iStanza)))
+
                     Catch ex As Exception
                         Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
                         bSucces = False
