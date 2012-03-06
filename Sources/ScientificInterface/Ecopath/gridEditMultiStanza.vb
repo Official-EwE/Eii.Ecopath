@@ -88,6 +88,7 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
         Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
 
+        Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
     End Sub
 

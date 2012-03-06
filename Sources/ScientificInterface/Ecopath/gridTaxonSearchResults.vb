@@ -134,17 +134,11 @@ Public Class gridTaxonSearchResults
 
 #Region " Internals "
 
-    Protected Overrides Sub InitLayout()
-
-        MyBase.InitLayout()
+    Protected Overrides Sub InitStyle()
+        MyBase.InitStyle()
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
-
-    End Sub
-
-    Protected Overrides Sub InitStyle()
-        MyBase.InitStyle()
 
         Dim iNumCols As Integer = CInt(IIf(Me.m_bShowCodes, System.Enum.GetValues(GetType(eColumnTypes)).Length, eColumnTypes.Phylum + 1))
         Me.Redim(1, iNumCols)
