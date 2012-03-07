@@ -58,7 +58,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private m_bMouseDown As Boolean = False
         Private WithEvents m_pbFlowDiagram As System.Windows.Forms.PictureBox
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
-        Private WithEvents m_tsFlowDiagram As System.Windows.Forms.ToolStrip
+        Private WithEvents m_tsFlowDiagram As cEwEToolstrip
         Private WithEvents m_pgFlowDiagram As System.Windows.Forms.PropertyGrid
         Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiLoad As System.Windows.Forms.ToolStripButton
@@ -322,7 +322,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_pbFlowDiagram = New System.Windows.Forms.PictureBox
             Me.m_scContent = New System.Windows.Forms.SplitContainer
             Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid
-            Me.m_tsFlowDiagram = New System.Windows.Forms.ToolStrip
+            Me.m_tsFlowDiagram = New cEwEToolstrip
             Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton
             Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton
             Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton

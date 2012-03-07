@@ -1280,7 +1280,7 @@ Public Class AppLauncher
 
                 ' Is first dataset?
                 If (i = 1) Then
-                    ' #Yes: add a separtor
+                    ' #Yes: add a separator
                     Me.m_tsbEcosim.DropDownItems.Add(New ToolStripSeparator())
                 End If
 
