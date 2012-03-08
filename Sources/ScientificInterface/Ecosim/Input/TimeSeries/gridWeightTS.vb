@@ -20,6 +20,7 @@
 Option Strict On
 Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2.Cells
 
 #End Region ' Imports
 
@@ -75,6 +76,7 @@ Public Class gridWeightTS
         MyBase.InitStyle()
 
         Me.FixedColumns = 1
+        Me.Selection.SelectionMode = SourceGrid2.GridSelectionMode.Row
 
         Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
@@ -164,15 +166,24 @@ Public Class gridWeightTS
     End Function
 
     Protected Sub UpdateRow(iRow As Integer)
+
         Dim cellCV As EwECell = DirectCast(Me(iRow, eColumnTypes.CV), EwECell)
+        Dim sCV As Single = CSng(cellCV.GetValue(New SourceGrid2.Position(iRow, eColumnTypes.CV)))
         Dim cellWeight As EwECell = DirectCast(Me(iRow, eColumnTypes.Weight), EwECell)
-        Dim st As cStyleGuide.eStyleFlags = cellWeight.Style
-        If (CSng(cellCV.GetValue(New SourceGrid2.Position(iRow, eColumnTypes.CV))) <= 0) Then
-            st = cStyleGuide.eStyleFlags.OK
+        Dim sWeight As Single = CSng(cellWeight.GetValue(New SourceGrid2.Position(iRow, eColumnTypes.Weight)))
+        Dim cellEnable As ICell = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
+        Dim ts As cTimeSeries = DirectCast(cellEnable.Tag, cTimeSeries)
+
+        If (sCV <= 0) Then
+            cellWeight.Style = cStyleGuide.eStyleFlags.OK
+            sWeight = ts.WtType
+            cellWeight.SetValue(New SourceGrid2.Position(iRow, eColumnTypes.Weight), sWeight)
         Else
-            st = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null
+            cellWeight.Style = cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.ValueComputed
+            sWeight = CSng(Math.Pow(sCV, -2))
+            cellWeight.SetValue(New SourceGrid2.Position(iRow, eColumnTypes.Weight), sWeight)
         End If
-        cellWeight.Style = st
+
     End Sub
 
 End Class
