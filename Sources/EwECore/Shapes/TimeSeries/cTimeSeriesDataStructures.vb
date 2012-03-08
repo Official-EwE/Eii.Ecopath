@@ -97,9 +97,7 @@ Public Class cTimeSeriesDataStructures
     Public DatPool() As Integer
     ''' <summary>Weight type for each applied time series.</summary>
     Public WtType() As Single
-    ''' <summary>CV for each applied time series.</summary>
-    Public CV() As Single
-    ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
+     ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
     Public DatVal(,) As Single
     ''' <summary>Start year for each applied time series.</summary>
     Public DatYear() As Integer
@@ -208,7 +206,6 @@ Public Class cTimeSeriesDataStructures
         ReDim DatPool(NdatType)
         ReDim DatType(NdatType)
         ReDim WtType(NdatType)
-        ReDim CV(NdatType)
         ReDim DatVal(NdatYear + 1, NdatType)
         ReDim DatYear(NdatYear)
         ReDim DatSS(NdatType)
@@ -327,10 +324,10 @@ Public Class cTimeSeriesDataStructures
         DatPool(iTSEnable) = iPool(iTS)
         DatType(iTSEnable) = TimeSeriesType(iTS)
         WtType(iTSEnable) = sWeight(iTS)
-        CV(iTSEnable) = sCV(iTS)
         For iYear As Integer = 0 To NdatYear
             DatVal(iYear, iTSEnable) = sValues(iYear, iTS)
         Next iYear
+
     End Sub
 
     Friend Sub Update()
