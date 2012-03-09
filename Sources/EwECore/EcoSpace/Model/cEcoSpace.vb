@@ -6048,13 +6048,13 @@ exitline:
         ' Me.AdjustLowHapCaps()
         Me.runAjustLowHabCapsThreaded()
 
+        'Make sure runAjustLowHabCapsThreaded() did not set HabCap()<MIN_HABCAP
         For ig As Integer = 1 To Me.m_Data.NGroups
             For ir As Integer = 1 To Me.m_Data.InRow
                 For ic As Integer = 1 To Me.m_Data.InCol
                     If Me.m_Data.Depth(ir, ic) > 0 Then
-
-                        Debug.Assert(Me.m_Data.HabCap(ir, ic, ig) > 0, "Habcap = 0")
-                        '  If Me.m_Data.HabCap(ir, ic, ig) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, ig) = MIN_HABCAP
+                        'Debug.Assert(Me.m_Data.HabCap(ir, ic, ig) > 0, "Habcap = 0")
+                        If Me.m_Data.HabCap(ir, ic, ig) < MIN_HABCAP Then Me.m_Data.HabCap(ir, ic, ig) = MIN_HABCAP
                     End If
                 Next
             Next
