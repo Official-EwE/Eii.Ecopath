@@ -316,6 +316,11 @@ Public Class cStanzaGroup
 
 #Region "Variables by dot (.) operator"
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the zero-based index of the group that determines B for this stanza.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property LeadingB() As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.LeadingBiomass))
@@ -325,6 +330,11 @@ Public Class cStanzaGroup
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the zero-based index of the group that determines CB for this stanza.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property LeadingCB() As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.LeadingCB))
