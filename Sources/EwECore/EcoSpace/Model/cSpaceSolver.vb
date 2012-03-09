@@ -705,7 +705,6 @@ Public Class cSpaceSolver
             For i = 1 To m_Data.NGroups
 
                 Eatenby(i) = Eatenby(i) + m_SimData.QBoutside(i) * Biomass(i)
-                'Debug.Assert(i <> 41)
 
                 If i <= m_Data.nLiving Then      'Living group
                     Pmult = 1.0#
