@@ -8338,7 +8338,6 @@ Public Class cCore
 
             'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
             'Default is to save every time step
-
             If (iTime Mod EcospaceModelParameters.NumberOfTimeStepsPerYear = 0) Or (Me.m_EcoSpaceData.bSaveAnnual = False) Then
                 Me.SaveEcospaceResults(Me.m_spaceresults)
             End If

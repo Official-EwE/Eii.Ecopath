@@ -37,38 +37,50 @@ Public Class cEcospaceASCResultsWriter
 
     Public Overrides Sub StartWrite()
         If (Not Me.SpaceData.bSaveASC) Then Return
-        Me.CreateOutputDir()
-        Me.WriteInfoFile()
+        Try
+            Me.CreateOutputDir()
+            Me.WriteInfoFile()
+        Catch ex As Exception
+            Me.m_core.Messages.SendMessage(New cMessage("Failed to save Ecospace maps " & ex.Message, _
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+        End Try
     End Sub
 
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
         If (Not Me.SpaceData.bSaveASC) Then Return
 
-        Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
-        Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
-        Dim strm As StreamWriter
-        Dim fn As String
+        Try
 
-        For Each varname As eVarNameFlags In vars
+            Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
+            Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
+            Dim strm As StreamWriter
+            Dim fn As String
 
-            For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-                fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName(), tsData.iTimeStep)
-                strm = New StreamWriter(fn, False)
+            For Each varname As eVarNameFlags In vars
 
-                saveASC(strm, tsData, igrp, varname)
+                For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+                    fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName(), tsData.iTimeStep)
+                    strm = New StreamWriter(fn, False)
 
-                strm.Close()
-                strm = Nothing
+                    saveASC(strm, tsData, igrp, varname)
+
+                    strm.Close()
+                    strm = Nothing
+                Next
             Next
-        Next
 
-        ' Sum space effort
-        fn = Me.getFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.getSubDirName(), tsData.iTimeStep)
-        strm = New StreamWriter(fn, False)
-        saveASC(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
-        strm.Close()
-        strm = Nothing
+            ' Sum space effort
+            fn = Me.getFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.getSubDirName(), tsData.iTimeStep)
+            strm = New StreamWriter(fn, False)
+            saveASC(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
+            strm.Close()
+            strm = Nothing
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)
+        End Try
+
 
     End Sub
 

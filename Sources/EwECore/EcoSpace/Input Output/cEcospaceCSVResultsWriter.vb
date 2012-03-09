@@ -37,32 +37,42 @@ Public Class cEcospaceCSVResultsWriter
 
     Public Overrides Sub StartWrite()
         If (Not Me.SpaceData.bSaveCSV) Then Return
-        Me.CreateOutputDir()
-        Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
+        Try
+            Me.CreateOutputDir()
+            Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
+        Catch ex As Exception
+            Me.m_core.Messages.SendMessage(New cMessage("Failed to save Ecospace maps " & ex.Message, _
+                                                        eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+        End Try
     End Sub
 
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
         If (Not Me.SpaceData.bSaveCSV) Then Return
 
-        Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
-        Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
-        Dim strm As StreamWriter
-        Dim fn As String
+        Try
+            Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
+            Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
+            Dim strm As StreamWriter
+            Dim fn As String
 
-        For Each varname As eVarNameFlags In vars
+            For Each varname As eVarNameFlags In vars
 
-            For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+                For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
 
-                fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName())
-                strm = New StreamWriter(fn, True)
-                saveCSV(strm, tsData, igrp, varname)
+                    fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName())
+                    strm = New StreamWriter(fn, True)
+                    saveCSV(strm, tsData, igrp, varname)
 
-                strm.Close()
-                strm = Nothing
+                    strm.Close()
+                    strm = Nothing
+                Next
+
             Next
 
-        Next
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)
+        End Try
 
     End Sub
 
