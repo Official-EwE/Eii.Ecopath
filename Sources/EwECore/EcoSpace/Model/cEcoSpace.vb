@@ -1815,9 +1815,9 @@ Public Class cEcoSpace
                         End If
 
                         If m_Data.Depth(i, j) > 0 Then
-                            If ip > 0 And i > 0 And j > 0 Then
-                                Debug.Assert(Me.m_Data.HabCap(i, j, ip) > 0, "Opps cap=0")
-                            End If
+                            'If ip > 0 And i > 0 And j > 0 Then
+                            '    Debug.Assert(Me.m_Data.HabCap(i, j, ip) > 0, "Opps cap=0")
+                            'End If
 
                             'Debug.Assert(Me.m_Data.HabCap(i, j, ip) > 0, "Hab cap = 0")
                             m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip) 'Basebiomass(ip)
