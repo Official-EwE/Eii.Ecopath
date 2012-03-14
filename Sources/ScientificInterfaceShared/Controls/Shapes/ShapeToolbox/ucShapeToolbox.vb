@@ -473,6 +473,8 @@ Namespace Controls
 
             ' Sanity check
             If (e.Item Is Nothing) Then Return
+            ' Fixed #1095: itemchecked event was fired spontaneously when docking / undocking panels
+            If (Me.m_bInUpdate Or Not Me.m_lvShapes.Focused) Then Return
 
             Dim shape As cShapeData = DirectCast(e.Item.Tag, cShapeData)
 
