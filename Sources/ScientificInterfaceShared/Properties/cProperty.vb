@@ -255,6 +255,9 @@ Namespace Properties
             iIndex -= Me.m_iSecIndexOffset
 
             If (Me.m_Source IsNot Nothing) Then
+                ' Bail-out
+                If (Me.m_Source.Disposed) Then Return
+
                 ' Get the variable
                 newValue = m_Source.GetVariable(Me.m_VarName, iIndex)
 

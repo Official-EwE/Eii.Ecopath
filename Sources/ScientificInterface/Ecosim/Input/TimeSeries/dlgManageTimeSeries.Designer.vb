@@ -41,51 +41,51 @@ Partial Class dlgManageTimeSeries
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgManageTimeSeries))
-        Me.m_btnOk = New System.Windows.Forms.Button
-        Me.m_btnCancel = New System.Windows.Forms.Button
+        Me.m_btnOk = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
         Me.m_ilTabImages = New System.Windows.Forms.ImageList(Me.components)
-        Me.lbSettings = New System.Windows.Forms.Label
-        Me.m_tpDelete = New System.Windows.Forms.TabPage
-        Me.m_lvDeleteDatasets = New System.Windows.Forms.ListView
-        Me.m_colDeleteDataset = New System.Windows.Forms.ColumnHeader
-        Me.m_colDeleteLoaded = New System.Windows.Forms.ColumnHeader
-        Me.m_colDeleteNumSeries = New System.Windows.Forms.ColumnHeader
-        Me.m_tpImport = New System.Windows.Forms.TabPage
-        Me.m_cbShowFirst50 = New System.Windows.Forms.CheckBox
-        Me.m_dgvImportPreview = New System.Windows.Forms.DataGridView
-        Me.m_hdrTarget = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrPreview = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_tbImportSeparator = New ScientificInterfaceShared.Controls.ucCharacterTextBox
-        Me.m_tbImportDelimiter = New ScientificInterfaceShared.Controls.ucCharacterTextBox
-        Me.m_tbImportAuthor = New System.Windows.Forms.TextBox
-        Me.m_tbImportContact = New System.Windows.Forms.TextBox
-        Me.m_tbImportDescription = New System.Windows.Forms.TextBox
-        Me.m_tbImportFileName = New System.Windows.Forms.TextBox
-        Me.m_cbImportEnableOnImport = New System.Windows.Forms.CheckBox
-        Me.m_lblImportContact = New System.Windows.Forms.Label
-        Me.m_lblImportAuthor = New System.Windows.Forms.Label
-        Me.m_lblImportDescription = New System.Windows.Forms.Label
-        Me.m_cmbImportDataset = New System.Windows.Forms.ComboBox
-        Me.m_lblImportDataset = New System.Windows.Forms.Label
-        Me.m_lblImportDecimalSeparator = New System.Windows.Forms.Label
-        Me.m_lblImportDelimiter = New System.Windows.Forms.Label
-        Me.m_rbImportSourceClipboard = New System.Windows.Forms.RadioButton
-        Me.m_btnImportBrowse = New System.Windows.Forms.Button
-        Me.m_rbImportSourceTextFile = New System.Windows.Forms.RadioButton
-        Me.m_tpWeights = New System.Windows.Forms.TabPage
-        Me.m_gridWeights = New ScientificInterface.gridWeightTS
-        Me.m_btnApplyCheckNone = New System.Windows.Forms.Button
-        Me.m_btnApplyCheckAll = New System.Windows.Forms.Button
-        Me.m_tpLoad = New System.Windows.Forms.TabPage
-        Me.m_cbLoadEnableOnLoad = New System.Windows.Forms.CheckBox
-        Me.m_lvLoadDatasets = New System.Windows.Forms.ListView
-        Me.m_colLoadDataset = New System.Windows.Forms.ColumnHeader
-        Me.m_colLoaded = New System.Windows.Forms.ColumnHeader
-        Me.m_colDescription = New System.Windows.Forms.ColumnHeader
-        Me.m_tcMain = New System.Windows.Forms.TabControl
+        Me.lbSettings = New System.Windows.Forms.Label()
+        Me.m_tpDelete = New System.Windows.Forms.TabPage()
+        Me.m_lvDeleteDatasets = New System.Windows.Forms.ListView()
+        Me.m_colDeleteDataset = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_colDeleteLoaded = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_colDeleteNumSeries = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_tpImport = New System.Windows.Forms.TabPage()
+        Me.m_cbShowFirst50 = New System.Windows.Forms.CheckBox()
+        Me.m_dgvImportPreview = New System.Windows.Forms.DataGridView()
+        Me.m_hdrTarget = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrPreview = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_tbImportSeparator = New ScientificInterfaceShared.Controls.ucCharacterTextBox()
+        Me.m_tbImportDelimiter = New ScientificInterfaceShared.Controls.ucCharacterTextBox()
+        Me.m_tbImportAuthor = New System.Windows.Forms.TextBox()
+        Me.m_tbImportContact = New System.Windows.Forms.TextBox()
+        Me.m_tbImportDescription = New System.Windows.Forms.TextBox()
+        Me.m_tbImportFileName = New System.Windows.Forms.TextBox()
+        Me.m_cbImportEnableOnImport = New System.Windows.Forms.CheckBox()
+        Me.m_lblImportContact = New System.Windows.Forms.Label()
+        Me.m_lblImportAuthor = New System.Windows.Forms.Label()
+        Me.m_lblImportDescription = New System.Windows.Forms.Label()
+        Me.m_cmbImportDataset = New System.Windows.Forms.ComboBox()
+        Me.m_lblImportDataset = New System.Windows.Forms.Label()
+        Me.m_lblImportDecimalSeparator = New System.Windows.Forms.Label()
+        Me.m_lblImportDelimiter = New System.Windows.Forms.Label()
+        Me.m_rbImportSourceClipboard = New System.Windows.Forms.RadioButton()
+        Me.m_btnImportBrowse = New System.Windows.Forms.Button()
+        Me.m_rbImportSourceTextFile = New System.Windows.Forms.RadioButton()
+        Me.m_tpWeights = New System.Windows.Forms.TabPage()
+        Me.m_gridWeights = New ScientificInterface.gridWeightTS()
+        Me.m_btnApplyCheckNone = New System.Windows.Forms.Button()
+        Me.m_btnApplyCheckAll = New System.Windows.Forms.Button()
+        Me.m_tpLoad = New System.Windows.Forms.TabPage()
+        Me.m_cbLoadEnableOnLoad = New System.Windows.Forms.CheckBox()
+        Me.m_lvLoadDatasets = New System.Windows.Forms.ListView()
+        Me.m_colLoadDataset = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_colLoaded = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_colDescription = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.m_tcMain = New System.Windows.Forms.TabControl()
         Me.m_tpDelete.SuspendLayout()
         Me.m_tpImport.SuspendLayout()
         CType(Me.m_dgvImportPreview, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -239,7 +239,10 @@ Partial Class dlgManageTimeSeries
         'm_hdrTarget
         '
         Me.m_hdrTarget.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrTarget.CanCollapseParent = False
+        Me.m_hdrTarget.CollapsedParentHeight = 0
+        Me.m_hdrTarget.IsCollapsed = False
         Me.m_hdrTarget.Location = New System.Drawing.Point(-1, 384)
         Me.m_hdrTarget.Name = "m_hdrTarget"
         Me.m_hdrTarget.Size = New System.Drawing.Size(499, 18)
@@ -250,7 +253,10 @@ Partial Class dlgManageTimeSeries
         'm_hdrPreview
         '
         Me.m_hdrPreview.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrPreview.CanCollapseParent = False
+        Me.m_hdrPreview.CollapsedParentHeight = 0
+        Me.m_hdrPreview.IsCollapsed = False
         Me.m_hdrPreview.Location = New System.Drawing.Point(0, 100)
         Me.m_hdrPreview.Name = "m_hdrPreview"
         Me.m_hdrPreview.Size = New System.Drawing.Size(499, 18)
@@ -261,7 +267,10 @@ Partial Class dlgManageTimeSeries
         'm_hdrSource
         '
         Me.m_hdrSource.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_hdrSource.CanCollapseParent = False
+        Me.m_hdrSource.CollapsedParentHeight = 0
+        Me.m_hdrSource.IsCollapsed = False
         Me.m_hdrSource.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrSource.Name = "m_hdrSource"
         Me.m_hdrSource.Size = New System.Drawing.Size(499, 18)
@@ -305,7 +314,7 @@ Partial Class dlgManageTimeSeries
         'm_tbImportAuthor
         '
         Me.m_tbImportAuthor.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbImportAuthor.Location = New System.Drawing.Point(74, 486)
         Me.m_tbImportAuthor.Name = "m_tbImportAuthor"
         Me.m_tbImportAuthor.Size = New System.Drawing.Size(425, 20)
@@ -314,7 +323,7 @@ Partial Class dlgManageTimeSeries
         'm_tbImportContact
         '
         Me.m_tbImportContact.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbImportContact.Location = New System.Drawing.Point(74, 512)
         Me.m_tbImportContact.Multiline = True
         Me.m_tbImportContact.Name = "m_tbImportContact"
@@ -324,7 +333,7 @@ Partial Class dlgManageTimeSeries
         'm_tbImportDescription
         '
         Me.m_tbImportDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbImportDescription.Location = New System.Drawing.Point(74, 434)
         Me.m_tbImportDescription.Multiline = True
         Me.m_tbImportDescription.Name = "m_tbImportDescription"
@@ -334,7 +343,7 @@ Partial Class dlgManageTimeSeries
         'm_tbImportFileName
         '
         Me.m_tbImportFileName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbImportFileName.Location = New System.Drawing.Point(74, 24)
         Me.m_tbImportFileName.Name = "m_tbImportFileName"
         Me.m_tbImportFileName.Size = New System.Drawing.Size(344, 20)
@@ -390,7 +399,7 @@ Partial Class dlgManageTimeSeries
         'm_cmbImportDataset
         '
         Me.m_cmbImportDataset.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_cmbImportDataset.FormattingEnabled = True
         Me.m_cmbImportDataset.Location = New System.Drawing.Point(74, 407)
         Me.m_cmbImportDataset.Name = "m_cmbImportDataset"
@@ -441,7 +450,6 @@ Partial Class dlgManageTimeSeries
         'm_btnImportBrowse
         '
         Me.m_btnImportBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnImportBrowse.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.m_btnImportBrowse.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_btnImportBrowse.Location = New System.Drawing.Point(424, 22)
         Me.m_btnImportBrowse.Name = "m_btnImportBrowse"
@@ -481,8 +489,8 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_gridWeights.AllowBlockSelect = True
         Me.m_gridWeights.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_gridWeights.AutoSizeMinHeight = 10
         Me.m_gridWeights.AutoSizeMinWidth = 10
         Me.m_gridWeights.AutoStretchColumnsToFitWidth = False
@@ -490,8 +498,8 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.BackColor = System.Drawing.Color.White
         Me.m_gridWeights.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_gridWeights.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_gridWeights.CustomSort = False
         Me.m_gridWeights.FixedColumnWidths = False
         Me.m_gridWeights.FocusStyle = SourceGrid2.FocusStyle.None
@@ -500,14 +508,14 @@ Partial Class dlgManageTimeSeries
         Me.m_gridWeights.Name = "m_gridWeights"
         Me.m_gridWeights.Size = New System.Drawing.Size(420, 578)
         Me.m_gridWeights.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                    Or SourceGrid2.GridSpecialKeys.Delete) _
-                    Or SourceGrid2.GridSpecialKeys.Arrows) _
-                    Or SourceGrid2.GridSpecialKeys.Tab) _
-                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                    Or SourceGrid2.GridSpecialKeys.Enter) _
-                    Or SourceGrid2.GridSpecialKeys.Escape) _
-                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_gridWeights.TabIndex = 0
         Me.m_gridWeights.UIContext = Nothing
         '
@@ -564,18 +572,18 @@ Partial Class dlgManageTimeSeries
         'm_lvLoadDatasets
         '
         Me.m_lvLoadDatasets.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_lvLoadDatasets.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.m_colLoadDataset, Me.m_colLoaded, Me.m_colDescription})
         Me.m_lvLoadDatasets.FullRowSelect = True
         Me.m_lvLoadDatasets.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.m_lvLoadDatasets.HideSelection = False
         Me.m_lvLoadDatasets.LabelWrap = False
-        Me.m_lvLoadDatasets.Location = New System.Drawing.Point(3, 3)
+        Me.m_lvLoadDatasets.Location = New System.Drawing.Point(0, 0)
         Me.m_lvLoadDatasets.Margin = New System.Windows.Forms.Padding(0)
         Me.m_lvLoadDatasets.MultiSelect = False
         Me.m_lvLoadDatasets.Name = "m_lvLoadDatasets"
-        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(493, 555)
+        Me.m_lvLoadDatasets.Size = New System.Drawing.Size(499, 555)
         Me.m_lvLoadDatasets.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.m_lvLoadDatasets.TabIndex = 0
         Me.m_lvLoadDatasets.UseCompatibleStateImageBehavior = False
@@ -599,8 +607,8 @@ Partial Class dlgManageTimeSeries
         'm_tcMain
         '
         Me.m_tcMain.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tcMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons
         Me.m_tcMain.Controls.Add(Me.m_tpLoad)
         Me.m_tcMain.Controls.Add(Me.m_tpWeights)

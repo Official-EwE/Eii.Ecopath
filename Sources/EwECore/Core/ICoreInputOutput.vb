@@ -101,6 +101,11 @@ Public Interface ICoreInputOutput
     ''' </summary>
     Sub Clear()
 
+    ''' <summary>
+    ''' Gets whether the instance is disposed.
+    ''' </summary>
+    ReadOnly Property Disposed As Boolean
+
 End Interface ' ICoreInputOutput
 
 ''' ---------------------------------------------------------------------------
@@ -431,9 +436,16 @@ Public MustInherit Class cCoreInputOutputBase
     End Sub
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Clears an instance for further use.
-    ''' </summary>
+    ''' <inheritdocs cref="ICoreInputOutput.Disposed"/>"
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Disposed As Boolean Implements ICoreInputOutput.Disposed
+        Get
+            Return (Me.m_values.Count = 0)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="ICoreInputOutput.Clear"/>"
     ''' -----------------------------------------------------------------------
     Public Overridable Sub Clear() Implements ICoreInputOutput.Clear
         ' NOP
