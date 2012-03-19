@@ -45,6 +45,7 @@ Public Class gridLayerData
         End Get
         Set(ByVal value As ScientificInterfaceShared.Controls.cUIContext)
             If (Me.UIContext IsNot Nothing) Then
+                Me.Layer = Nothing
                 Me.m_basemap = Nothing
             End If
             MyBase.UIContext = value
@@ -155,10 +156,20 @@ Public Class gridLayerData
             Return Me.m_layer
         End Get
         Set(ByVal value As cLayer)
+
+            If Me.m_layer IsNot Nothing Then
+                RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+            End If
+
             If Not Object.ReferenceEquals(Me.m_layer, value) Then
                 Me.m_layer = value
                 Me.RefreshContent()
             End If
+
+            If Me.m_layer IsNot Nothing Then
+                AddHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
+            End If
+
         End Set
     End Property
 
@@ -207,5 +218,11 @@ Public Class gridLayerData
         Return bChanged
 
     End Function
+
+    Private Sub OnLayerChanged(l As cLayer, cf As cLayer.eChangeFlags)
+        If ((cf And cLayer.eChangeFlags.Map) > 0) Then
+            Me.RefreshContent()
+        End If
+    End Sub
 
 End Class

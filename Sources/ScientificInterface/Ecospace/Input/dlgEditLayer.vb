@@ -205,6 +205,7 @@ Namespace Ecospace.Basemap.Layers
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
                 cmd.Invoke(New cLayer() {Me.m_layerWork})
+                Me.UpdateControls()
             Catch ex As Exception
 
             End Try

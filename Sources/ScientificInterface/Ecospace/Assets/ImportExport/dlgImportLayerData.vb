@@ -293,9 +293,6 @@ Namespace Ecospace.Basemap
 
             Dim f As New cLayerFactoryInternal()
 
-            ' Set default file
-            Me.m_tbInput.Text = Path.Combine(Me.m_uic.Core.OutputPath, Me.m_uic.Core.EcospaceOutputFileLocation("layer"))
-
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
                 Me.m_lLayers.AddRange(f.BaseRasterLayers(Me.m_uic))
@@ -448,37 +445,43 @@ Namespace Ecospace.Basemap
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
 
-            ' For each mapped field
-            For Each layer In dtMappings.Keys
-                strField = dtMappings(layer)
-                If Not String.IsNullOrEmpty(strField.Trim) Then
+            Try
 
-                    ' Clear layer
-                    For iRow = 1 To bm.InRow
-                        For iCol = 1 To bm.InCol
-                            layer.Value(iRow, iCol) = 0.0!
+                ' For each mapped field
+                For Each layer In dtMappings.Keys
+                    strField = dtMappings(layer)
+                    If Not String.IsNullOrEmpty(strField.Trim) Then
+
+                        ' Clear layer
+                        For iRow = 1 To bm.InRow
+                            For iCol = 1 To bm.InCol
+                                layer.Value(iRow, iCol) = 0.0!
+                            Next
                         Next
-                    Next
 
-                    ' Load layer
-                    For iCell = 0 To Me.m_data.NumCells
-                        If Me.m_data.IsRowColImplicit Then
-                            ' Calculate row, col from cell index
-                            iRow = CInt(Math.Floor(iCell / bm.InCol)) + 1
-                            iCol = CInt(iCell Mod bm.InCol) + 1
-                        Else
-                            ' Obtain row, col field values from data
-                            iRow = CInt(Me.m_data.Value(iCell, Me.RowField()))
-                            iCol = CInt(Me.m_data.Value(iCell, Me.ColField()))
-                        End If
-                        layer.Value(iRow, iCol) = Me.m_data.Value(iCell, strField)
-                    Next
+                        ' Load layer
+                        For iCell = 0 To Me.m_data.NumCells
+                            If Me.m_data.IsRowColImplicit Then
+                                ' Calculate row, col from cell index
+                                iRow = CInt(Math.Floor(iCell / bm.InCol)) + 1
+                                iCol = CInt(iCell Mod bm.InCol) + 1
+                            Else
+                                ' Obtain row, col field values from data
+                                iRow = CInt(Me.m_data.Value(iCell, Me.RowField()))
+                                iCol = CInt(Me.m_data.Value(iCell, Me.ColField()))
+                            End If
+                            layer.Value(iRow, iCol) = Me.m_data.Value(iCell, strField)
+                        Next
 
-                    layer.IsModified = True
-                    layer.Update(cLayer.eChangeFlags.Map)
+                        layer.IsModified = True
+                        layer.Update(cLayer.eChangeFlags.Map)
 
-                End If
-            Next layer
+                    End If
+                Next layer
+
+            Catch ex As Exception
+
+            End Try
 
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
