@@ -1247,6 +1247,7 @@ Namespace Ecosim
         Private Sub CheckIfSmall(ByVal Start As Integer, ByVal last As Integer, ByRef ArrayX() As Single)
             Dim i As Integer
             For i = Start To last
+                If Single.IsNaN(ArrayX(i)) Then ArrayX(i) = 1.0E-20
                 If ArrayX(i) < 1.0E-20 Then ArrayX(i) = 1.0E-20
             Next
         End Sub
