@@ -112,20 +112,41 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_pnlRegOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="txMaxEffort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>108, 2</value>
+  </data>
+  <data name="txMaxEffort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 20</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="txMaxEffort.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="&gt;&gt;txMaxEffort.Name" xml:space="preserve">
+    <value>txMaxEffort</value>
+  </data>
+  <data name="&gt;&gt;txMaxEffort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;txMaxEffort.Parent" xml:space="preserve">
+    <value>pnlUseReg</value>
+  </data>
+  <data name="&gt;&gt;txMaxEffort.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="rbEffortEcosim.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="rbEffortEcosim.Location" type="System.Drawing.Point, System.Drawing">
     <value>19, 26</value>
   </data>
@@ -142,13 +163,13 @@
     <value>rbEffortEcosim</value>
   </data>
   <data name="&gt;&gt;rbEffortEcosim.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbEffortEcosim.Parent" xml:space="preserve">
     <value>pnlUseReg</value>
   </data>
   <data name="&gt;&gt;rbEffortEcosim.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="rbEffortNoCap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -157,25 +178,25 @@
     <value>19, 3</value>
   </data>
   <data name="rbEffortNoCap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 17</value>
+    <value>83, 17</value>
   </data>
   <data name="rbEffortNoCap.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="rbEffortNoCap.Text" xml:space="preserve">
-    <value>No upper cap on effort</value>
+    <value>Cap effort at</value>
   </data>
   <data name="&gt;&gt;rbEffortNoCap.Name" xml:space="preserve">
     <value>rbEffortNoCap</value>
   </data>
   <data name="&gt;&gt;rbEffortNoCap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbEffortNoCap.Parent" xml:space="preserve">
     <value>pnlUseReg</value>
   </data>
   <data name="&gt;&gt;rbEffortNoCap.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="rbEffortPredicted.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -199,19 +220,19 @@
     <value>rbEffortPredicted</value>
   </data>
   <data name="&gt;&gt;rbEffortPredicted.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbEffortPredicted.Parent" xml:space="preserve">
     <value>pnlUseReg</value>
   </data>
   <data name="&gt;&gt;rbEffortPredicted.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="pnlUseReg.Location" type="System.Drawing.Point, System.Drawing">
     <value>16, 45</value>
   </data>
   <data name="pnlUseReg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>249, 81</value>
+    <value>427, 81</value>
   </data>
   <data name="pnlUseReg.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
@@ -220,7 +241,7 @@
     <value>pnlUseReg</value>
   </data>
   <data name="&gt;&gt;pnlUseReg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pnlUseReg.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
@@ -241,7 +262,7 @@
     <value>txSBPower</value>
   </data>
   <data name="&gt;&gt;txSBPower.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txSBPower.Parent" xml:space="preserve">
     <value>pnlFTracking</value>
@@ -268,7 +289,7 @@
     <value>Label6</value>
   </data>
   <data name="&gt;&gt;Label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Label6.Parent" xml:space="preserve">
     <value>pnlFTracking</value>
@@ -295,7 +316,7 @@
     <value>rbExact</value>
   </data>
   <data name="&gt;&gt;rbExact.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbExact.Parent" xml:space="preserve">
     <value>pnlFTracking</value>
@@ -322,7 +343,7 @@
     <value>rbDirectExp</value>
   </data>
   <data name="&gt;&gt;rbDirectExp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbDirectExp.Parent" xml:space="preserve">
     <value>pnlFTracking</value>
@@ -349,7 +370,7 @@
     <value>rbCatchEstBio</value>
   </data>
   <data name="&gt;&gt;rbCatchEstBio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbCatchEstBio.Parent" xml:space="preserve">
     <value>pnlFTracking</value>
@@ -370,7 +391,7 @@
     <value>pnlFTracking</value>
   </data>
   <data name="&gt;&gt;pnlFTracking.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pnlFTracking.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
@@ -397,7 +418,7 @@
     <value>rbUseRegs</value>
   </data>
   <data name="&gt;&gt;rbUseRegs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbUseRegs.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
@@ -424,7 +445,7 @@
     <value>rbNoRegs</value>
   </data>
   <data name="&gt;&gt;rbNoRegs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;rbNoRegs.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
@@ -457,7 +478,7 @@
     <value>m_hdrEffortRegOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrEffortRegOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.317, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrEffortRegOptions.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
@@ -478,7 +499,7 @@
     <value>m_pnlRegOpt</value>
   </data>
   <data name="&gt;&gt;m_pnlRegOpt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_pnlRegOpt.Parent" xml:space="preserve">
     <value>$this</value>
@@ -502,7 +523,7 @@
     <value>txKalmanGain</value>
   </data>
   <data name="&gt;&gt;txKalmanGain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;txKalmanGain.Parent" xml:space="preserve">
     <value>m_pnlRunOpt</value>
@@ -529,7 +550,7 @@
     <value>m_lblKalmanGain</value>
   </data>
   <data name="&gt;&gt;m_lblKalmanGain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblKalmanGain.Parent" xml:space="preserve">
     <value>m_pnlRunOpt</value>
@@ -559,7 +580,7 @@
     <value>m_ckPlugin</value>
   </data>
   <data name="&gt;&gt;m_ckPlugin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_ckPlugin.Parent" xml:space="preserve">
     <value>m_pnlRunOpt</value>
@@ -592,7 +613,7 @@
     <value>m_hdrRunOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrRunOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.317, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRunOptions.Parent" xml:space="preserve">
     <value>m_pnlRunOpt</value>
@@ -613,7 +634,7 @@
     <value>m_pnlRunOpt</value>
   </data>
   <data name="&gt;&gt;m_pnlRunOpt.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_pnlRunOpt.Parent" xml:space="preserve">
     <value>$this</value>
@@ -621,7 +642,7 @@
   <data name="&gt;&gt;m_pnlRunOpt.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -643,6 +664,6 @@
     <value>frmOptions</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.317, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

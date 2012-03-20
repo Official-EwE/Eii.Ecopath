@@ -124,7 +124,7 @@ Namespace MSE
 
 #Region "Private data"
 
-        Private Const DEFAULT_EFFORT As Single = 1000000000
+        ' Private Const DEFAULT_EFFORT As Single = 1000000000
 
         Private m_core As cCore
         Private m_data As cMSEDataStructures
@@ -528,28 +528,6 @@ Namespace MSE
 
         End Sub
 
-
-        '''' <summary>
-        '''' Disable/Unload and F (fishing mortality) timeseries 
-        '''' </summary>
-        '''' <remarks>Fishing mortality timeseries prevent the current effort from being used to set fishing mortality FishTime(group) on a group.</remarks>
-        'Private Sub DisableFTimeSeries()
-
-        '    Try
-
-        '        If Me.m_data.RegulationMode = eMSERegulationMode.NoRegulations Then
-        '            'if not using a quota/effort regulation then no need to unload the F timeseries
-        '            'this mode is evaluating the current Ecosim scenario if there is timeseries loaded we need to leave it in place
-        '            Exit Sub
-        '        End If
-
-        '    Catch ex As Exception
-        '        System.Console.WriteLine(ex.Message)
-        '        cLog.Write(ex)
-        '    End Try
-
-        'End Sub
-
         ''' <summary>
         ''' Set the Effort to a max value if running in default mode TrackUseQuota
         ''' </summary>
@@ -565,7 +543,7 @@ Namespace MSE
                         'Only if this fleet is regulated
                         If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
                             For it As Integer = Me.StartT To Me.EndT
-                                Me.m_esData.FishRateGear(iflt, it) = DEFAULT_EFFORT
+                                Me.m_esData.FishRateGear(iflt, it) = Me.m_data.MSEMaxEffort
                             Next it
                         End If 'Me.m_data.QuotaType(iflt) <> eQuotaTypes.NotUsed
                     Next iflt
@@ -1402,7 +1380,7 @@ Namespace MSE
 
             'store the pred/actual
             Dim val As Single
-            val = Best / (B + 1.0E-20F)
+            val = Best / B
             Me.m_data.BioEstStats.AddValue(iGroup, Me.m_curYear, val)
 
             Return Best
@@ -1418,10 +1396,8 @@ Namespace MSE
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
             For i As Integer = 1 To Me.m_data.nLiving
-
                 Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
                 Me.m_data.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i))
-
             Next i
 
             Try

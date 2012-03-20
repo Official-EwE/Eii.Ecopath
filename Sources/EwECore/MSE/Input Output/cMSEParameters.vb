@@ -60,7 +60,7 @@ Namespace MSE
             'Assessment method
             meta = New cVariableMetaData(0, System.Enum.GetValues(GetType(eAssessmentMethods)).Length, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(New Integer, eVarNameFlags.MSEAssessMethod, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEAssessMethod))
-            val.Stored = False
+            val.Stored = True
             m_values.Add(val.varName, val)
 
             'Kalman gain
@@ -78,13 +78,13 @@ Namespace MSE
             'Assess Power
             meta = New cVariableMetaData(1, 1000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Single, eVarNameFlags.MSEAssessPower, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEAssessPower))
-            val.Stored = False
+            val.Stored = True
             m_values.Add(val.varName, val)
 
             'nTrials
             meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Integer, eVarNameFlags.MSENTrials, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSENTrials))
-            val.Stored = False
+            val.Stored = True
             m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData()
@@ -138,7 +138,7 @@ Namespace MSE
 
             meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Integer, eVarNameFlags.MSEStartYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEStartYear))
-            val.Stored = False
+            val.Stored = True
             m_values.Add(val.varName, val)
 
             meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -150,6 +150,12 @@ Namespace MSE
             val = New cValue(New Integer, eVarNameFlags.MSEResultsEndYear, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEResultsEndYear))
             val.Stored = False
             m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(1, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
+            val = New cValue(New Integer, eVarNameFlags.MSEMaxEffort, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEMaxEffort))
+            val.Stored = True
+            m_values.Add(val.varName, val)
+
 
             ResetStatusFlags()
             AllowValidation = True
@@ -312,6 +318,16 @@ Namespace MSE
 
             Set(ByVal value As Integer)
                 SetVariable(eVarNameFlags.MSEResultsEndYear, value)
+            End Set
+        End Property
+
+        Public Property MaxEffort As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEMaxEffort))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEMaxEffort, value)
             End Set
         End Property
 

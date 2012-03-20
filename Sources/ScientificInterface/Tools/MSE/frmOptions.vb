@@ -44,6 +44,8 @@ Public Class frmOptions
     Private m_fpForecast As cPropertyFormatProvider
     Private m_fpSBPower As cPropertyFormatProvider
 
+    Private m_fpMaxEffort As cPropertyFormatProvider
+
     Private m_fpUseQuotaRegs As cPropertyFormatProvider
     Private m_dctEffortControls As Dictionary(Of eMSERegulationMode, RadioButton)
 
@@ -62,6 +64,7 @@ Public Class frmOptions
         'Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
         Me.m_fpSBPower = New cPropertyFormatProvider(Me.UIContext, Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
         Me.m_fpKalman = New cPropertyFormatProvider(Me.UIContext, Me.txKalmanGain, Me.m_MSE.ModelParameters, eVarNameFlags.MSEKalmanGain)
+        Me.m_fpMaxEffort = New cPropertyFormatProvider(Me.UIContext, Me.txMaxEffort, Me.m_MSE.ModelParameters, eVarNameFlags.MSEMaxEffort)
 
 
         'Assessment methods Catch Estimated Biomass and Direct Exploitation are stored in the tag property of the radio buttons

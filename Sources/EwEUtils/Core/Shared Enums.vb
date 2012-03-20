@@ -1109,6 +1109,9 @@ Namespace Core
         ''' <summary>Total allowable catch </summary>
         MSETAC
 
+        ''' <summary>Max Effort for the MSE </summary>
+        MSEMaxEffort
+
         'data by iteration
         MSEBiomass
         MSECatchByGroup

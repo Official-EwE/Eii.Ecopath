@@ -43,25 +43,26 @@ Partial Class frmOptions
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOptions))
-        Me.m_pnlRegOpt = New System.Windows.Forms.Panel
-        Me.pnlUseReg = New System.Windows.Forms.Panel
-        Me.rbEffortEcosim = New System.Windows.Forms.RadioButton
-        Me.rbEffortNoCap = New System.Windows.Forms.RadioButton
-        Me.rbEffortPredicted = New System.Windows.Forms.RadioButton
-        Me.pnlFTracking = New System.Windows.Forms.Panel
-        Me.txSBPower = New System.Windows.Forms.TextBox
-        Me.Label6 = New System.Windows.Forms.Label
-        Me.rbExact = New System.Windows.Forms.RadioButton
-        Me.rbDirectExp = New System.Windows.Forms.RadioButton
-        Me.rbCatchEstBio = New System.Windows.Forms.RadioButton
-        Me.rbUseRegs = New System.Windows.Forms.RadioButton
-        Me.rbNoRegs = New System.Windows.Forms.RadioButton
-        Me.m_hdrEffortRegOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_pnlRunOpt = New System.Windows.Forms.Panel
-        Me.txKalmanGain = New System.Windows.Forms.TextBox
-        Me.m_lblKalmanGain = New System.Windows.Forms.Label
-        Me.m_ckPlugin = New System.Windows.Forms.CheckBox
-        Me.m_hdrRunOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_pnlRegOpt = New System.Windows.Forms.Panel()
+        Me.pnlUseReg = New System.Windows.Forms.Panel()
+        Me.rbEffortEcosim = New System.Windows.Forms.RadioButton()
+        Me.rbEffortNoCap = New System.Windows.Forms.RadioButton()
+        Me.rbEffortPredicted = New System.Windows.Forms.RadioButton()
+        Me.pnlFTracking = New System.Windows.Forms.Panel()
+        Me.txSBPower = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.rbExact = New System.Windows.Forms.RadioButton()
+        Me.rbDirectExp = New System.Windows.Forms.RadioButton()
+        Me.rbCatchEstBio = New System.Windows.Forms.RadioButton()
+        Me.rbUseRegs = New System.Windows.Forms.RadioButton()
+        Me.rbNoRegs = New System.Windows.Forms.RadioButton()
+        Me.m_hdrEffortRegOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_pnlRunOpt = New System.Windows.Forms.Panel()
+        Me.txKalmanGain = New System.Windows.Forms.TextBox()
+        Me.m_lblKalmanGain = New System.Windows.Forms.Label()
+        Me.m_ckPlugin = New System.Windows.Forms.CheckBox()
+        Me.m_hdrRunOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.txMaxEffort = New System.Windows.Forms.TextBox()
         Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
@@ -80,6 +81,7 @@ Partial Class frmOptions
         '
         'pnlUseReg
         '
+        Me.pnlUseReg.Controls.Add(Me.txMaxEffort)
         Me.pnlUseReg.Controls.Add(Me.rbEffortEcosim)
         Me.pnlUseReg.Controls.Add(Me.rbEffortNoCap)
         Me.pnlUseReg.Controls.Add(Me.rbEffortPredicted)
@@ -163,7 +165,10 @@ Partial Class frmOptions
         '
         'm_hdrEffortRegOptions
         '
+        Me.m_hdrEffortRegOptions.CanCollapseParent = False
+        Me.m_hdrEffortRegOptions.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_hdrEffortRegOptions, "m_hdrEffortRegOptions")
+        Me.m_hdrEffortRegOptions.IsCollapsed = False
         Me.m_hdrEffortRegOptions.Name = "m_hdrEffortRegOptions"
         '
         'm_pnlRunOpt
@@ -193,8 +198,16 @@ Partial Class frmOptions
         '
         'm_hdrRunOptions
         '
+        Me.m_hdrRunOptions.CanCollapseParent = False
+        Me.m_hdrRunOptions.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_hdrRunOptions, "m_hdrRunOptions")
+        Me.m_hdrRunOptions.IsCollapsed = False
         Me.m_hdrRunOptions.Name = "m_hdrRunOptions"
+        '
+        'txMaxEffort
+        '
+        resources.ApplyResources(Me.txMaxEffort, "txMaxEffort")
+        Me.txMaxEffort.Name = "txMaxEffort"
         '
         'frmOptions
         '
@@ -233,4 +246,5 @@ Partial Class frmOptions
     Private WithEvents m_hdrRunOptions As cEwEHeaderLabel
     Private WithEvents m_pnlRegOpt As System.Windows.Forms.Panel
     Private WithEvents m_pnlRunOpt As System.Windows.Forms.Panel
+    Friend WithEvents txMaxEffort As System.Windows.Forms.TextBox
 End Class

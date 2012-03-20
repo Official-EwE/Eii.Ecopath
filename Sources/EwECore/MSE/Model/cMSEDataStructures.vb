@@ -285,6 +285,8 @@ Namespace MSE
 
         Public CatchYearGroup() As Single
 
+        Public MSEMaxEffort As Single
+
 #End Region
 
 #Region "Private data"
@@ -309,6 +311,7 @@ Namespace MSE
             Me.NTrials = 10 'default number of trials
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
+            Me.MSEMaxEffort = 1000000000
 
         End Sub
 

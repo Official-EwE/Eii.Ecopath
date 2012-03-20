@@ -771,6 +771,8 @@ Namespace MSE
 
                 m_parameters.MSEResultsEndYear = Me.m_MSEdata.ResultsEndYear
 
+                m_parameters.MaxEffort = Me.m_MSEdata.MSEMaxEffort
+
                 m_parameters.ResetStatusFlags()
 
                 m_parameters.AllowValidation = True
@@ -933,6 +935,8 @@ Namespace MSE
                         Me.m_MSEdata.ResultsStartYear = Me.m_parameters.MSEResultsStartYear
                         Me.m_MSEdata.MSYEvaluateValue = Me.m_parameters.MSYEvaluateValue
                         Me.m_MSEdata.MSYRunSilent = Me.m_parameters.MSYRunSilent
+
+                        Me.m_MSEdata.MSEMaxEffort = Me.m_parameters.MaxEffort
 
                         Me.m_search.MSEUseEconomicPlugin = Me.m_parameters.UseEconomicPlugin
 
