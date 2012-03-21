@@ -311,7 +311,7 @@ Namespace MSE
             Me.NTrials = 10 'default number of trials
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
-            Me.MSEMaxEffort = 1000000000
+            Me.MSEMaxEffort = 1000
 
         End Sub
 

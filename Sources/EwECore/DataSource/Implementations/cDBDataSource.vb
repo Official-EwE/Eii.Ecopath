@@ -7015,7 +7015,7 @@ Namespace DataSources
                         mseDS.AssessPower = CSng(Me.m_db.ReadSafe(reader, "AssessPower", 1))
                         mseDS.NTrials = CInt(Me.m_db.ReadSafe(reader, "NTrials", 10))
                         mseDS.MSYStartTimeIndex = CInt(Me.m_db.ReadSafe(reader, "StartIndex", 2))
-                        mseDS.MSEMaxEffort = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", 1000000000))
+                        mseDS.MSEMaxEffort = CSng(Me.m_db.ReadSafe(reader, "MaxEffort", 1000))
                     Catch ex As Exception
                         Me.LogMessage(String.Format("Error {0} occurred while reading EcopathPSD", ex.Message))
                         bSucces = False
