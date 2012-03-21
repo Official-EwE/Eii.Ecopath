@@ -338,7 +338,6 @@ Namespace SpatialData
             Dim msg As cMessage = Nothing
             Dim sTot As Single = 0
             Dim sValue As Single = 0
-            Dim sBase As Single = 0
             Dim iNum As Integer = 0
 
             Try
@@ -359,20 +358,13 @@ Namespace SpatialData
                     Next iCol
                 Next iRow
 
-                'sBase = Me.GetBaseValue()
-
                 ' Calc scale, allowing for errors
                 If (sTot <= 0 Or iNum <= 0) Then    '(sBase <= 0) Or
                     Debug.Assert(False)
                     sScale = 1
                 Else
-                    'scaling of primary production and other layers. Has to scale to the baseline.
-                    'sScale = sBase / sTot ' Scale Ecopath total to map average
-
-                    Dim sAvg As Single = sTot / iNum
-                    'sScale = sBase / sAvg ' Scale Ecopath total to map average
+                     Dim sAvg As Single = sTot / iNum
                     sScale = 1 / sAvg ' Scale Ecopath total to map average
-
                 End If
                 Me.DataScale(layer.Index) = sScale
 
@@ -392,33 +384,6 @@ Namespace SpatialData
         End Function
 
 #End Region ' Basic bits
-
-#Region " Translations "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Return the Ecopath or Ecosim base value for a data layer.
-        ''' </summary>
-        ''' <returns>The base value for the data layer.</returns>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Function GetBaseValue() As Single
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim sBase As Single = 0
-
-            Select Case Me.m_varName
-                Case eVarNameFlags.LayerRelPP
-                    For iGroup As Integer = 1 To Me.m_core.nGroups
-                        If ecopathDS.PP(iGroup) = 1 Then sBase += (ecopathDS.B(iGroup) * ecopathDS.PB(iGroup))
-                    Next
-                    Return sBase
-            End Select
-            Return 1
-
-        End Function
-
-#End Region ' Translations
 
     End Class
 
