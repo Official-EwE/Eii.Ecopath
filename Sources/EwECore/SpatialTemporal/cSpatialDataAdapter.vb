@@ -359,18 +359,19 @@ Namespace SpatialData
                     Next iCol
                 Next iRow
 
-                sBase = Me.GetBaseValue()
+                'sBase = Me.GetBaseValue()
 
                 ' Calc scale, allowing for errors
-                If (sBase <= 0) Or (sTot <= 0) Then
+                If (sTot <= 0 Or iNum <= 0) Then    '(sBase <= 0) Or
                     Debug.Assert(False)
                     sScale = 1
                 Else
-                    sScale = sBase / sTot ' Scale Ecopath total to map average
+                    'scaling of primary production and other layers. Has to scale to the baseline.
+                    'sScale = sBase / sTot ' Scale Ecopath total to map average
 
-                    'Dim sAvg As Single = sTot / iNum
+                    Dim sAvg As Single = sTot / iNum
                     'sScale = sBase / sAvg ' Scale Ecopath total to map average
-                    'sScale = 1 / sAvg ' Scale Ecopath total to map average
+                    sScale = 1 / sAvg ' Scale Ecopath total to map average
 
                 End If
                 Me.DataScale(layer.Index) = sScale
