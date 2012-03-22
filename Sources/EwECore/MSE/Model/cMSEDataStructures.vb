@@ -25,6 +25,8 @@ Imports EwEUtils.Core
 
 Namespace MSE
 
+
+
     Public Delegate Function MSECounterDelegate(ByVal SizeType As eCoreCounterTypes) As Integer
 
     ''' <summary>
@@ -50,6 +52,8 @@ Namespace MSE
     Public Class cMSEDataStructures
 
 #Region "Public Data"
+
+        Public Const MSE_DEFAULT_MAXEFFORT As Integer = 200
 
         Public NTrials As Integer
 
@@ -311,7 +315,7 @@ Namespace MSE
             Me.NTrials = 10 'default number of trials
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
-            Me.MSEMaxEffort = 1000
+            Me.MSEMaxEffort = MSE_DEFAULT_MAXEFFORT
 
         End Sub
 
