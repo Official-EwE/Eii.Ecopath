@@ -471,6 +471,8 @@ Public Class cEIIDataSource
 
             FileClose(fnum)
 
+            ecopathDS.RedimPedigree()
+
         Catch ex As Exception 'catch any error during the reading of the data
             FileClose(fnum)
             'some kind of a reading error better find out what happend
