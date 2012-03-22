@@ -1,4 +1,21 @@
-﻿#Region " Imports "
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
 
 Option Strict On
 
@@ -38,9 +55,11 @@ Public MustInherit Class cEIIDataSource
     ''' datastructures to read to, and write from.</param>
     ''' <returns>True if opened successfully.</returns>
     ''' -------------------------------------------------------------------
-    Public Function Open(ByVal strName As String, ByVal core As cCore, _
-                         Optional ByVal datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType _
-                         Implements IEwEDataSource.Open
+    Public Function Open(strName As String, _
+                         core As cCore, _
+                         Optional datasourceType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                         Optional bReadOnly As Boolean = False) As eDatasourceAccessType _
+                     Implements DataSources.IEwEDataSource.Open
 
         Dim fnum As Integer = FreeFile()
 
@@ -223,7 +242,7 @@ Public MustInherit Class cEIIDataSource
             Me.LoadStanza()
             Me.LoadEcosimScenarioDefinitions()
 
-            ' Make sure that the core knows not to exect anything else
+            ' Make sure that the core knows not to expect anything else
             ecopathDS.RedimEcospaceScenarios()
             ecopathDS.RedimEcotracerScenarios()
 
@@ -268,16 +287,16 @@ Public MustInherit Class cEIIDataSource
         End Try
 
         'fake model data
-        m_core.m_EwEModelDBID = 1
-        m_core.m_EwEModelName = Path.GetFileName(m_strFilename)
-        m_core.m_EwEModelNumDigits = 3
-        m_core.m_EwEModelDescription = "Simulated model read from EII file " & m_strFilename
+        ecopathDS.ModelDBID = 1
+        ecopathDS.ModelName = Path.GetFileName(m_strFilename)
+        ecopathDS.ModelNumDigits = 3
+        ecopathDS.ModelDescription = "Simulated model read from EII file " & m_strFilename
 
         'read the file
         Try
             Input(fnum, ecopathDS.NumGroups)
             Input(fnum, ecopathDS.NumLiving)
-            Input(fnum, Me.m_core.m_EwEModelUnitCurrencyCustom)
+            Input(fnum, ecopathDS.ModelUnitCurrencyCustom)
             Input(fnum, ecopathDS.currUnitIndex)
 
             If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
@@ -357,12 +376,12 @@ Public MustInherit Class cEIIDataSource
                 ecopathDS.TimeUnitName = tmpbuff.Trim
                 Select Case LCase(ecopathDS.TimeUnitName)
                     Case "year"
-                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Year
+                        ecopathDS.ModelUnitTime = eUnitTimeType.Year
                     Case "day"
-                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Day
+                        ecopathDS.ModelUnitTime = eUnitTimeType.Day
                     Case Else
-                        Me.m_core.m_EwEModelUnitTime = eUnitTimeType.Custom
-                        Me.m_core.m_EwEModelUnitTimeCustom = ecopathDS.TimeUnitName
+                        ecopathDS.ModelUnitTime = eUnitTimeType.Custom
+                        ecopathDS.ModelUnitTimeCustom = ecopathDS.TimeUnitName
 
                 End Select
             End If
@@ -481,19 +500,34 @@ Public MustInherit Class cEIIDataSource
 
 #Region " Pedigree "
 
-    Public Function AddPedigreeLevel(ByVal iPosition As Integer, ByVal varName As EwEUtils.Core.eVarNameFlags, ByVal sIndexValue As Single, ByVal sConfidence As Single, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.AddPedigreeLevel
+    Public Function AddPedigreeLevel(iPosition As Integer, strName As String, iColor As Integer, strDescription As String, varName As eVarNameFlags, sIndexValue As Single, sConfidence As Single, ByRef iDBID As Integer) As Boolean _
+     Implements DataSources.IEcopathDataSource.AddPedigreeLevel
         Return False
     End Function
 
-    Public Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
+    Public Function MovePedigreeLevel(iDBID As Integer, iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
         Return False
     End Function
 
-    Public Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
+    Public Function RemovePedigreeLevel(iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
         Return False
     End Function
 
 #End Region ' Pedigree
+
+#Region " Taxon "
+
+    Public Function AddTaxon(iTargetDBID As Integer, bIsStanza As Boolean, data As ITaxonSearchData, sProportion As Single, ByRef iDBID As Integer) As Boolean _
+        Implements DataSources.IEcopathDataSource.AddTaxon
+        Return False
+    End Function
+
+    Public Function RemoveTaxon(iTaxonID As Integer) As Boolean _
+        Implements DataSources.IEcopathDataSource.RemoveTaxon
+        Return False
+    End Function
+
+#End Region ' Taxon
 
 #End Region ' EwE Model
 
@@ -730,8 +764,8 @@ Public MustInherit Class cEIIDataSource
 
         ecosimDS.DimForcingShapes()
         ecosimDS.InitForcingShapes()
-        ecosimDS.ReDimMediation()
-
+        ecosimDS.BioMedData.ReDimMediation(ecopathDS.NumGroups, ecopathDS.NumFleet)
+        ecosimDS.PriceMedData.ReDimMediation(ecopathDS.NumGroups, ecopathDS.NumFleet)
 
         'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         'HACK WARNING this is a temp fix to populate SimDC so that it can be used be tempCreateForcingMediationShapes() to init some fake data
@@ -748,8 +782,11 @@ Public MustInherit Class cEIIDataSource
             ecosimDS.ForcingDBIDs(i) = i
         Next
         'jb Temp Hack to build DBID for each shape 
-        For i = 1 To ecosimDS.MediationShapes
-            ecosimDS.MediationDBIDs(i) = i
+        For i = 1 To ecosimDS.BioMedData.MediationShapes
+            ecosimDS.BioMedData.MediationDBIDs(i) = i
+        Next
+        For i = 1 To ecosimDS.PriceMedData.MediationShapes
+            ecosimDS.PriceMedData.MediationDBIDs(i) = i
         Next
 
         'fake database IDs
@@ -844,26 +881,7 @@ Public MustInherit Class cEIIDataSource
         'return the new Ecosim Index and Database ID
 
         If shapeType = eDataTypes.Mediation Then
-
-            'get the new number of shape by adding one to the existing number of shapes
-            Dim tmpNumberOfShapes As Integer = ecosimDS.MediationShapes + 1
-
-            'add the shape to the underlying EcoSim data
-            'this will redim to the new number of shapes
-            b_return = ecosimDS.ResizeMediationShapes(tmpNumberOfShapes, tmpNumberOfShapes)
-
-            'fake DB id's
-            For i As Integer = 1 To ecosimDS.MediationShapes
-                ecosimDS.MediationDBIDs(i) = i
-            Next
-
-            ''Fake a database ID because there are no database ID in the EII files
-            ''this will allow for testing of database ID
-            'newDBID = ecosimDS.MediationDBIDs(newEcoSimIndex)
-
-            Return b_return
-
-
+            Return False
         Else
             Dim tmpNumberOfShapes As Integer = ecosimDS.ForcingShapes + 1
 
@@ -1221,5 +1239,26 @@ Public MustInherit Class cEIIDataSource
         Implements IEwEDataSource.IsOSSupported
         Return True ' We can do this!
     End Function
+
+    Public Function Directory() As String Implements DataSources.IEwEDataSource.Directory
+        Return Path.GetDirectoryName(Me.m_strFilename)
+    End Function
+
+    Public Function Extension() As String Implements DataSources.IEwEDataSource.Extension
+        Return Path.GetExtension(Me.m_strFilename)
+    End Function
+
+    Public Function FileName() As String Implements DataSources.IEwEDataSource.FileName
+        Return Path.GetFileName(Me.m_strFilename)
+    End Function
+
+    Public Function IsReadOnly() As Boolean Implements DataSources.IEwEDataSource.IsReadOnly
+        Return True
+    End Function
+
+    Public Sub Dispose() Implements IDisposable.Dispose
+        GC.SuppressFinalize(Me)
+    End Sub
+
 End Class
 
