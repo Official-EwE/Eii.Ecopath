@@ -329,6 +329,9 @@ Public Class cPedigreeManager
         Dim iLevel As Integer = 0
         Dim iIndex As Integer = 0
 
+        ' Sanity check
+        Debug.Assert(data.Pedigree IsNot Nothing, "Pedigree data not dimensioned")
+
         Me.AllowValidation = False
 
         ' Map core level indexes to local manager indexes
