@@ -92,6 +92,7 @@ Namespace DataSources
         ''' Returns the compatibility of a given database with the current code.
         ''' </summary>
         ''' <param name="strDatabase"></param>
+        ''' <param name="access">Flag that must state whether the database can be accessed.</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         ''' -------------------------------------------------------------------
@@ -126,7 +127,8 @@ Namespace DataSources
 
                 Case eDataSourceTypes.EII
                     ' Is EII
-                    comp = cEwEDatabase.eCompatibilityTypes.EwE5Supported
+                    comp = cEwEDatabase.eCompatibilityTypes.EwE6
+                    access = eDatasourceAccessType.Opened
 
                 Case eDataSourceTypes.NotSet
                     ' ?Que?
@@ -170,9 +172,10 @@ Namespace DataSources
             Dim nResult As eStatusFlags = eStatusFlags.OK
 
             Select Case dst
-                ' EII files need to be imported instead
-                'Case eDataSourceTypes.EII
-                '    Return New cEIIDataSource()
+
+                Case eDataSourceTypes.EII
+                    Return New cEIIDataSource()
+
                 Case eDataSourceTypes.Access2003, _
                      eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database

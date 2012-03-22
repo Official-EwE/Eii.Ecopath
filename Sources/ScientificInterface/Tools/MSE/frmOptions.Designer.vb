@@ -45,6 +45,7 @@ Partial Class frmOptions
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOptions))
         Me.m_pnlRegOpt = New System.Windows.Forms.Panel()
         Me.pnlUseReg = New System.Windows.Forms.Panel()
+        Me.txMaxEffort = New System.Windows.Forms.TextBox()
         Me.rbEffortEcosim = New System.Windows.Forms.RadioButton()
         Me.rbEffortNoCap = New System.Windows.Forms.RadioButton()
         Me.rbEffortPredicted = New System.Windows.Forms.RadioButton()
@@ -62,7 +63,6 @@ Partial Class frmOptions
         Me.m_lblKalmanGain = New System.Windows.Forms.Label()
         Me.m_ckPlugin = New System.Windows.Forms.CheckBox()
         Me.m_hdrRunOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.txMaxEffort = New System.Windows.Forms.TextBox()
         Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
@@ -81,12 +81,17 @@ Partial Class frmOptions
         '
         'pnlUseReg
         '
+        resources.ApplyResources(Me.pnlUseReg, "pnlUseReg")
         Me.pnlUseReg.Controls.Add(Me.txMaxEffort)
         Me.pnlUseReg.Controls.Add(Me.rbEffortEcosim)
         Me.pnlUseReg.Controls.Add(Me.rbEffortNoCap)
         Me.pnlUseReg.Controls.Add(Me.rbEffortPredicted)
-        resources.ApplyResources(Me.pnlUseReg, "pnlUseReg")
         Me.pnlUseReg.Name = "pnlUseReg"
+        '
+        'txMaxEffort
+        '
+        resources.ApplyResources(Me.txMaxEffort, "txMaxEffort")
+        Me.txMaxEffort.Name = "txMaxEffort"
         '
         'rbEffortEcosim
         '
@@ -203,11 +208,6 @@ Partial Class frmOptions
         resources.ApplyResources(Me.m_hdrRunOptions, "m_hdrRunOptions")
         Me.m_hdrRunOptions.IsCollapsed = False
         Me.m_hdrRunOptions.Name = "m_hdrRunOptions"
-        '
-        'txMaxEffort
-        '
-        resources.ApplyResources(Me.txMaxEffort, "txMaxEffort")
-        Me.txMaxEffort.Name = "txMaxEffort"
         '
         'frmOptions
         '
