@@ -57,8 +57,8 @@ Namespace Database
 
 #Region " Private vars "
 
-        ''' <summary>Source file index to read from.</summary>
-        Private m_iFNum As Integer = cCore.NULL_VALUE
+        '''' <summary>Source file index to read from.</summary>
+        'Private m_iFNum As Integer = cCore.NULL_VALUE
 
         ''' <summary>Data buffer.</summary>
         Private m_data As cImportData
@@ -90,16 +90,17 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         Public Overrides Function Open() As Boolean
 
-            Debug.Assert(Not Me.IsOpen())
+            Debug.Assert(False, Me.ToString & ".Open() removed for Mono compatibility.")
+            'Debug.Assert(Not Me.IsOpen())
 
-            Me.m_iFNum = FreeFile()
-            Try
-                FileOpen(Me.m_iFNum, Me.m_strEwE5File, OpenMode.Input)
-            Catch ex As Exception
-                Me.LogMessage(".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strEwE5File + vbCrLf + "Error:" + ex.Message())
-                Me.m_iFNum = cCore.NULL_VALUE
-                Return False
-            End Try
+            'Me.m_iFNum = FreeFile()
+            'Try
+            '    FileOpen(Me.m_iFNum, Me.m_strEwE5File, OpenMode.Input)
+            'Catch ex As Exception
+            '    Me.LogMessage(".LoadEcopath(...) Error opening eii file. " + vbCrLf + m_strEwE5File + vbCrLf + "Error:" + ex.Message())
+            '    Me.m_iFNum = cCore.NULL_VALUE
+            '    Return False
+            'End Try
             Return True
 
         End Function
@@ -108,10 +109,12 @@ Namespace Database
         ''' <inheritdoc cref="cEwE5ModelImporter.Close"/>
         ''' -----------------------------------------------------------------------
         Public Overrides Sub Close()
-            Debug.Assert(Me.IsOpen())
 
-            FileClose(Me.m_iFNum)
-            Me.m_iFNum = cCore.NULL_VALUE
+            Debug.Assert(False, Me.ToString & ".Close() removed for Mono compatibility.")
+            'Debug.Assert(Me.IsOpen())
+
+            'FileClose(Me.m_iFNum)
+            'Me.m_iFNum = cCore.NULL_VALUE
 
         End Sub
 
@@ -119,8 +122,9 @@ Namespace Database
         ''' <inheritdoc cref="cEwE5ModelImporter.IsOpen"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function IsOpen() As Boolean
-
-            Return (Me.m_iFNum <> cCore.NULL_VALUE)
+            Debug.Assert(False, Me.ToString & ".IsOpen() removed for Mono compatibility.")
+            Return False
+            'Return (Me.m_iFNum <> cCore.NULL_VALUE)
 
         End Function
 
@@ -129,7 +133,7 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         Public Overrides Function GetModels() As cEwE5ModelImporter.cEwE5ModelInfo()
 
-            Debug.Assert(Me.IsOpen())
+            'Debug.Assert(Me.IsOpen())
 
             Dim info As New cEwE5ModelImporter.cEwE5ModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strEwE5File), "Ecopath 5 EII file", 0)
             Return New cEwE5ModelImporter.cEwE5ModelInfo() {info}
@@ -153,12 +157,9 @@ Namespace Database
 
             Me.m_iNumSteps = 7
 
-            If Me.Open() Then
-                Me.LogProgress("Loading eii file...")
-                If Me.LoadEII() Then
-                    bSucces = Me.Save()
-                End If
-                Me.Close()
+            Me.LogProgress("Loading eii file...")
+            If Me.LoadEII() Then
+                bSucces = Me.Save()
             End If
 
             ' Set version
@@ -182,8 +183,333 @@ Namespace Database
 
 #Region " Loading "
 
+        Private Function LoadEII() As Boolean
+
+            'read the contents of the eii file into an EcopathParameters object
+            'this is written using vb file access instead of a filestream to keep it as close to the original vb code as possible
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+            Dim pvar As Single
+            Dim i As Integer
+            Dim j As Integer
+            Dim K As Integer
+
+            Dim quotes() As Char = {CChar(""""), CChar(" ")}
+            Dim eiiStrm As System.IO.StreamReader
+
+            If Not File.Exists(Me.m_strEwE5File) Then
+                cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
+                Return False
+            End If
+
+            Try
+                eiiStrm = New System.IO.StreamReader(Me.m_strEwE5File)
+            Catch ex As Exception
+                cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strEwE5File & "' Error:" + ex.Message())
+                Return False
+            End Try
+
+            'fake model data
+            ecopathDS.ModelDBID = 1
+            ecopathDS.ModelName = Path.GetFileName(Me.m_strEwE5File)
+            ecopathDS.ModelNumDigits = 3
+            ecopathDS.ModelDescription = "Simulated model read from EII file " & Me.m_strEwE5File
+
+            'read the file
+            Try
+                Dim buff As String
+                Dim recs() As String
+                buff = eiiStrm.ReadLine()
+                recs = buff.Split(CChar(","))
+
+                Integer.TryParse(recs(0), ecopathDS.NumGroups)
+                Integer.TryParse(recs(1), ecopathDS.NumLiving)
+                ecopathDS.ModelUnitCurrencyCustom = recs(2)
+                Integer.TryParse(recs(3), ecopathDS.currUnitIndex)
+
+                If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
+                    cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
+                    Return False
+                End If
+                Dim iNextIndex As Integer
+                'groups
+                For K = 1 To ecopathDS.NumGroups
+
+                    buff = eiiStrm.ReadLine()
+                    'delimiter is 2 spaces "  " yeah....
+                    recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                    iNextIndex = 0
+
+                    'Debug.Assert(data.Length = 10, "EII DataSource wrong number of recs in group section.")
+                    ecopathDS.GroupName(K) = Me.getNextValid(recs, iNextIndex).Trim(quotes)
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), pvar)
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DtImp(K))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.Ex(K))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.fCatch(K))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DC(K, 0))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.Binput(K))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.PBinput(K))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.EEinput(K))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.GEinput(K))
+                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.QBinput(K))
+
+                    ecopathDS.BHinput(K) = ecopathDS.Binput(K) / ecopathDS.Area(K)
+
+                    ecopathDS.GroupDBID(K) = K
+
+                    ecopathDS.PP(K) = pvar - 2
+                    If K > ecopathDS.NumLiving Then ecopathDS.PP(K) = 2
+                    If ecopathDS.GE(K) = 0 Then ecopathDS.GE(K) = -9
+
+                Next K
+
+
+                '' "Read DietComp"
+                ReDim ecopathDS.DietChanged(1, 0)
+                For K = 1 To ecopathDS.NumGroups
+                    buff = eiiStrm.ReadLine()
+                    recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                    iNextIndex = 0
+                    For j = 1 To ecopathDS.NumGroups
+
+                        Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DCInput(K, j))
+                        ' Input(fnum, ecopathDS.DCInput(K, j))
+                        If ecopathDS.DCInput(K, j) > 0 Then
+                            ecopathDS.DietWasChanged(K, j)
+                        End If
+                    Next j
+                Next K
+
+                If eiiStrm.EndOfStream Then Return True
+                'If EOF(fnum) Then Return True
+
+                'junk 
+                buff = eiiStrm.ReadLine()
+
+                ''jb totp read in original routine using a string will read the entire line
+                'Input(fnum, jnk)
+                ''jb I have no idea what this is all about 
+                'If Import < 0 Then Import = 0
+
+                ''Unassimilated food
+                'Data looks like this
+                '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 
+                buff = eiiStrm.ReadLine()
+                Dim seperators() As String = {" ", "  "}
+                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                'recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                Dim iRec As Integer = 1
+                For j = 1 To ecopathDS.NumGroups
+
+                    Single.TryParse(recs(iRec), ecopathDS.GS(j))
+                    iRec += 2
+                    ecopathDS.GS(j) = ecopathDS.GS(j)
+                    If ecopathDS.GS(j) > 1 Then ecopathDS.GS(j) = ecopathDS.GS(j) / 100
+                Next j
+
+                'junk
+                buff = eiiStrm.ReadLine()
+                'Input(fnum, jnk)
+
+
+                buff = eiiStrm.ReadLine()
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+
+                ''the time unit name
+                ecopathDS.TimeUnitName = recs(0)
+                If ecopathDS.TimeUnitName.Contains("year") Then
+                    ecopathDS.ModelUnitTime = eUnitTimeType.Year
+                ElseIf ecopathDS.TimeUnitName.Contains("day") Then
+                    ecopathDS.ModelUnitTime = eUnitTimeType.Day
+                End If
+
+                'the ecosystem remarks.
+                'junk
+                buff = eiiStrm.ReadLine()
+
+
+                'parms.Bomass accumulation added March 95/VC
+                '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 
+                buff = eiiStrm.ReadLine()
+                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                For i = 1 To ecopathDS.NumGroups
+                    Single.TryParse(recs(i - 1), ecopathDS.BA(i))
+                Next i
+
+                ' Diet Fate array added July 1994/VC
+                'If EOF(fnum) = False And NumGroups > NumLiving + 1 Then
+                'More than 1 detritusbox Any reason for this??
+                For i = 1 To ecopathDS.NumGroups
+                    buff = eiiStrm.ReadLine()
+                    recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                    For j = ecopathDS.NumLiving + 1 To ecopathDS.NumGroups
+                        Single.TryParse(recs(j - ecopathDS.NumLiving - 1), ecopathDS.DF(i, j - ecopathDS.NumLiving))
+                        ' Input(fnum, ecopathDS.DF(i, j - ecopathDS.NumLiving))    
+                    Next j
+                Next i
+
+                ' Emigration added Dec 98/VC
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("Emigration"), "EII datasource file format may be wrong!")
+                buff = eiiStrm.ReadLine()
+                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                'Input(fnum, jnk) ' 
+                For i = 1 To ecopathDS.NumGroups
+                    Single.TryParse(recs(i - 1), ecopathDS.Emigration(i))
+                    ' Input(fnum, ecopathDS.Emigration(i))
+                Next i
+
+                'immigration added Dec 98/VC
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("Immig"), "EII datasource file format may be wrong!")
+                buff = eiiStrm.ReadLine()
+                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                For i = 1 To ecopathDS.NumGroups
+                    Single.TryParse(recs(i - 1), ecopathDS.Immig(i))
+                    ' Input(fnum, ecopathDS.Immig(i))
+                Next i
+
+                'NumGear
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("NumGear"), "EII datasource file format may be wrong!")
+                buff = eiiStrm.ReadLine()
+                Integer.TryParse(buff, ecopathDS.NumFleet)
+                ecopathDS.RedimFleetVariables(True)
+
+                'Gearnames
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("Gearnames"), "EII datasource file format may be wrong!")
+                For i = 1 To ecopathDS.NumFleet
+                    buff = eiiStrm.ReadLine()
+                    ecopathDS.FleetName(i) = buff.Trim(quotes) ' Added Dec 98/VC
+                    '  Input(fnum, ecopathDS.FleetName(i))
+                    ecopathDS.FleetDBID(i) = i
+                Next i
+
+                'cost
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("cost"), "EII datasource file format may be wrong!")
+                'Input(fnum, jnk)  
+                For i = 1 To ecopathDS.NumFleet
+                    'First is fixed cost, second is cost per unit effort' Added Dec 98/VC
+                    buff = eiiStrm.ReadLine()
+                    recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                    Single.TryParse(recs(0), ecopathDS.CostPct(i, eCostIndex.Fixed))
+                    Single.TryParse(recs(1), ecopathDS.CostPct(i, eCostIndex.CUPE))
+                    Single.TryParse(recs(2), ecopathDS.CostPct(i, eCostIndex.Sail))
+                Next i
+
+                'landing
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("landing"), "EII datasource file format may be wrong!")
+                'Input(fnum, jnk)  
+                For i = 1 To ecopathDS.NumFleet
+                    buff = eiiStrm.ReadLine()
+                    recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                    For j = 1 To ecopathDS.NumGroups
+                        Single.TryParse(recs(j - 1), ecopathDS.Landing(i, j))
+                        '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
+                    Next j
+                Next i
+
+                'discard
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("Discard"), "EII datasource file format may be wrong!")
+                'Input(fnum, jnk)  
+                For i = 1 To ecopathDS.NumFleet
+                    buff = eiiStrm.ReadLine()
+                    recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                    For j = 1 To ecopathDS.NumGroups
+                        Single.TryParse(recs(j - 1), ecopathDS.Discard(i, j))
+                        '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
+                    Next j
+                Next i
+
+                'discard fate
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("DiscardFate"), "EII datasource file format may be wrong!")
+                For i = 1 To ecopathDS.NumFleet
+                    buff = eiiStrm.ReadLine()
+                    recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                    For j = 1 To ecopathDS.NumGroups - ecopathDS.NumLiving
+                        Single.TryParse(recs(j - 1), ecopathDS.DiscardFate(i, j))
+                        ' Input(fnum, ecopathDS.DiscardFate(i, j))   ' Added Dec 98/VC
+                    Next j
+                Next i
+
+                'market
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("Market"), "EII datasource file format may be wrong!")
+                'Input(fnum, jnk)  
+                For i = 1 To ecopathDS.NumFleet
+                    buff = eiiStrm.ReadLine()
+                    recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                    For j = 1 To ecopathDS.NumGroups
+                        Single.TryParse(recs(j - 1), ecopathDS.Market(i, j))
+                        '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
+                    Next j
+                Next i
+
+                'ecopathDS.NoGearData = False
+
+                ''shadow
+                'Input(fnum, jnk)
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("Shadow"), "EII datasource file format may be wrong!")
+                buff = eiiStrm.ReadLine()
+                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                For i = 1 To ecopathDS.NumGroups             ' Added Dec 98/VC
+                    Single.TryParse(recs(i - 1), ecopathDS.Shadow(i))
+                    '  Input(fnum, ecopathDS.Shadow(i))
+                Next i
+
+                ''Habitatarea
+                buff = eiiStrm.ReadLine()
+                Debug.Assert(buff.Contains("Area&HabitatBiomass(BH)"), "EII datasource file format may be wrong!")
+                buff = eiiStrm.ReadLine()
+                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                iRec = 0
+                For i = 1 To ecopathDS.NumGroups
+                    Single.TryParse(recs(iRec), ecopathDS.Area(i))
+                    iRec += 1
+                    Single.TryParse(recs(iRec), ecopathDS.BH(i))
+                    iRec += 1
+                Next i
+
+                eiiStrm.Close()
+                ecopathDS.RedimPedigree()
+
+            Catch ex As Exception 'catch any error during the reading of the data
+                'FileClose(fnum)
+                'some kind of a reading error better find out what happend
+                cLog.Write(Me.ToString + ".LoadEcopath() Error reading eii file. Error: " + ex.Message())
+                Debug.Assert(False)
+                Return False
+            End Try
+
+            Return True
+
+        End Function
+
+
+        Private Function getNextValid(ByVal data() As String, ByRef iNextIndex As Integer) As String
+            Dim validData As String
+            Do While validData = ""
+                validData = data(iNextIndex)
+                iNextIndex += 1
+            Loop
+
+            Return validData
+
+        End Function
+
+#Region "Old LoadEII (not Mono compatible)"
+
+#If 0 Then
+
         ''' <summary>
         ''' The old datasource code, to be transmogrified into database import logic
+        ''' Replaced with Mono compatible streams 
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
@@ -359,6 +685,10 @@ Namespace Database
             Return True
 
         End Function
+
+#End If
+
+#End Region
 
 #End Region ' Loading
 
