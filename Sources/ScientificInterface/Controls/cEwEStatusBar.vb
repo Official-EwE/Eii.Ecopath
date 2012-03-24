@@ -37,9 +37,10 @@ Public Class cEwEStatusBar
 
     ''' <summary>The ui context to use.</summary>
     Private m_uic As cUIContext = Nothing
-
     ''' <summary>The core state monitor offering events to observe.</summary>
-    Private WithEvents m_csm As cCoreStateMonitor = Nothing
+    Private m_csm As cCoreStateMonitor = Nothing
+
+    Private m_selmon As cSelectionMonitor = Nothing
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -64,20 +65,38 @@ Public Class cEwEStatusBar
             Catch ex As Exception
                 '  Hmm
             End Try
+            Me.m_selmon = New cSelectionMonitor()
         End If
     End Sub
 
     Public Sub Attach(ByVal uic As cUIContext)
 
-        Dim an As AssemblyName = Assembly.GetExecutingAssembly().GetName()
+        ' Sanity checks
+        Debug.Assert(Me.m_uic Is Nothing)
 
         Me.m_uic = uic
         Me.m_csm = Me.m_uic.Core.StateMonitor
+        Me.m_selmon.Attach(uic)
+
+        AddHandler Me.m_csm.CoreDataStateEvent, AddressOf OnCoreDataStateEvent
+        AddHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+        AddHandler Me.m_selmon.OnSelectionChanged, AddressOf OnSelectionChanged
 
     End Sub
 
     Public Sub Detach()
+
+        ' Sanity checks
+        Debug.Assert(Me.m_uic IsNot Nothing)
+
+        RemoveHandler Me.m_csm.CoreDataStateEvent, AddressOf OnCoreDataStateEvent
+        RemoveHandler Me.m_csm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+        RemoveHandler Me.m_selmon.OnSelectionChanged, AddressOf OnSelectionChanged
+
+        Me.m_selmon.Detach()
         Me.m_csm = Nothing
+        Me.m_uic = Nothing
+
     End Sub
 
 #Region " Events "
@@ -92,7 +111,7 @@ Public Class cEwEStatusBar
     ''' for a detailed description of this event.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub m_csm_CoreDataStateEvent(ByVal csm As EwECore.cCoreStateMonitor) Handles m_csm.CoreDataStateEvent
+    Private Sub OnCoreDataStateEvent(ByVal csm As EwECore.cCoreStateMonitor)
         Me.UpdateModelPanes()
     End Sub
 
@@ -106,9 +125,12 @@ Public Class cEwEStatusBar
     ''' for a detailed description of this event.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Private Sub m_csm_CoreExecutionStateEvent(ByVal csm As cCoreStateMonitor) _
-        Handles m_csm.CoreExecutionStateEvent
+    Private Sub OnCoreExecutionStateEvent(ByVal csm As cCoreStateMonitor)
         Me.UpdateModelPanes()
+    End Sub
+
+    Private Sub OnSelectionChanged(mon As cSelectionMonitor)
+        Me.SetStatusText(Me.m_strLastStatusText, Me.m_sLastProgress)
     End Sub
 
     Private Sub OnStopRun(sender As Object, e As System.EventArgs) Handles m_tslStop.Click
@@ -228,11 +250,6 @@ Public Class cEwEStatusBar
         Return str
     End Function
 
-    Private Function ToTooltipNameLabel(ByVal strName As String, ByVal bModified As Boolean) As String
-        If bModified Then Return String.Format(SharedResources.GENERIC_LABEL_DETAILED, strName, My.Resources.STATUSSTRIP_MODIFIED)
-        Return strName
-    End Function
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Update the content of a single tool strip item.
@@ -260,7 +277,7 @@ Public Class cEwEStatusBar
     End Sub
 
     Private m_strLastStatusText As String = ""
-    Private m_iLastProgress As Integer = 0
+    Private m_sLastProgress As Single = 0
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -274,16 +291,18 @@ Public Class cEwEStatusBar
 
         If (Me.m_tsStatus Is Nothing) Then Return
 
-        Dim iProgress As Integer = Math.Max(Math.Min(100, CInt(CInt(sProgress * 25) * 4)), 0)
-
-        ' Optimization
-        If (String.Compare(Me.m_strLastStatusText, strText) = 0) And _
-           (iProgress = Me.m_iLastProgress) Then
-            Return
-        End If
+        '' Optimization
+        'If (String.Compare(Me.m_strLastStatusText, strText) = 0) And _
+        '   (sProgress = Me.m_sLastProgress) Then
+        '    Return
+        'End If
 
         Me.m_strLastStatusText = strText
-        Me.m_iLastProgress = iProgress
+        Me.m_sLastProgress = sProgress
+
+        If String.IsNullOrEmpty(strText) Then
+            strText = Me.m_selmon.ToString
+        End If
 
         ' Update
         Me.m_tsStatus.Text = strText

@@ -278,6 +278,7 @@
     <Compile Include="My Project\Settings.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Other\cSelectionMonitor.vb" />
     <Compile Include="Other\Options\ucOptionsPlugins.Designer.vb">
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
     </Compile>

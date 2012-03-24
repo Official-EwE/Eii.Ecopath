@@ -38,10 +38,7 @@ Public Class frmRemarkPanel
 #Region " Private vars "
 
     Private m_uic As cUIContext = Nothing
-    ''' <summary>The property selection command to listen to.</summary>
-    Private m_cmd As cPropertySelectionCommand = Nothing
-    ''' <summary>The currently selected property.</summary>
-    Private m_aprop() As cProperty = Nothing
+    Private m_mon As cSelectionMonitor = Nothing
     ''' <summary>State monitor to observe.</summary>
     Private m_sm As cCoreStateMonitor = Nothing
     ''' <summary>Flag stating whether the user has made any textual changes.</summary>
@@ -57,6 +54,7 @@ Public Class frmRemarkPanel
     Public Sub New(ByVal uic As cUIContext)
         Me.InitializeComponent()
         Me.m_uic = uic
+        Me.m_mon = New cSelectionMonitor()
     End Sub
 
 #Region " Form overrides "
@@ -66,13 +64,12 @@ Public Class frmRemarkPanel
 
         If (Me.m_uic Is Nothing) Then Return
 
-        ' Create property selection command
-        Me.m_cmd = DirectCast(Me.m_uic.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
-        AddHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
-
         ' Hook up to core state monitor
         Me.m_sm = Me.m_uic.Core.StateMonitor
         AddHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
+
+        Me.m_mon.Attach(Me.m_uic)
+        AddHandler Me.m_mon.OnSelectionChanged, AddressOf OnSelectionChanged
 
         Me.Icon = Icon.FromHandle(SharedResources.CommentHS.GetHicon)
 
@@ -83,14 +80,13 @@ Public Class frmRemarkPanel
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
         ' Clean up
-        If Me.m_cmd IsNot Nothing Then
-            RemoveHandler Me.m_cmd.OnInvoke, AddressOf OnInvoke
-            Me.m_cmd = Nothing
-
+        If (Me.m_uic IsNot Nothing) Then
             RemoveHandler Me.m_sm.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateEvent
             Me.m_sm = Nothing
+            RemoveHandler Me.m_mon.OnSelectionChanged, AddressOf OnSelectionChanged
+            Me.m_mon.Detach()
+            Me.m_uic = Nothing
         End If
-        Me.m_uic = Nothing
         MyBase.OnFormClosed(e)
 
     End Sub
@@ -105,27 +101,15 @@ Public Class frmRemarkPanel
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Event handler, invoked when the <see cref="m_cmd">selection command</see>
-    ''' is invoked from anywhere in the GUI.
+    ''' Event handler, invoked when the <see cref="cSelectionMonitor">selection has changede</see>.
     ''' </summary>
-    ''' <param name="cmd">The <see cref="Command">Command</see> that was invoked.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnInvoke(ByVal cmd As cCommand)
+    Private Sub OnSelectionChanged(mon As cSelectionMonitor)
 
-        ' Sanity check
-        If Not (cmd Is m_cmd) Then Return
-
-        Try
-            ' Get selected props
-            Me.m_aprop = m_cmd.Selection()
-            ' Update panel state
-            Me.UpdateControls()
-            ' Update panel content
-            Me.UpdateContents()
-        Catch ex As Exception
-            Me.m_aprop = Nothing
-            cLog.Write(ex, "frmRemarkPanel::OnInvoke")
-        End Try
+        ' Update panel state
+        Me.UpdateControls()
+        ' Update panel content
+        Me.UpdateContents()
 
         ' Clear any changes
         Me.HasPendingChanges = False
@@ -186,7 +170,7 @@ Public Class frmRemarkPanel
 
         Me.m_bInUpdate = True
         Try
-            For Each p As cProperty In Me.m_aprop
+            For Each p As cProperty In Me.m_mon.Selection
                 p.SetRemark(strRemark)
             Next p
         Catch ex As Exception
@@ -239,11 +223,9 @@ Public Class frmRemarkPanel
         Dim bHasEcopath As Boolean = Me.m_sm.HasEcopathLoaded()
         Dim bHasSelection As Boolean = False
 
-        If Me.m_aprop IsNot Nothing Then
-            For Each p As cProperty In Me.m_aprop
-                If Not String.IsNullOrEmpty(p.ID) Then bHasSelection = True
-            Next
-        End If
+        For Each p As cProperty In Me.m_mon.Selection
+            If Not String.IsNullOrEmpty(p.ID) Then bHasSelection = True
+        Next
 
         Me.m_btnApply.Visible = bHasEcopath
         Me.m_btnApply.Enabled = bHasSelection
@@ -259,46 +241,18 @@ Public Class frmRemarkPanel
     ''' -----------------------------------------------------------------------
     Private Sub UpdateContents()
 
-        Dim strSelection As String = My.Resources.SELECTION_NONE
+        Dim props() As cProperty = Me.m_mon.Selection
+        Dim strSelection As String = Me.m_mon.ToString
         Dim strRemark As String = ""
         Dim strRemarkFinal As String = ""
         Dim vd As New cVarnameTypeFormatter()
 
-        If Me.m_aprop IsNot Nothing Then
-            Select Case Me.m_aprop.Length
-
-                Case 0
-                    ' NOP
-
-                Case 1
-                    ' Get selection text
-                    If Not Object.ReferenceEquals(Me.m_aprop(0).Source, Nothing) Then
-                        ' Get variable descriptor
-                        Dim var As eVarNameFlags = Me.m_aprop(0).VarName
-                        ' Format message
-                        If Not Object.ReferenceEquals(m_aprop(0).SourceSec, Nothing) Then
-                            strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
-                                                         Me.m_aprop(0).Source.Name, _
-                                                         vd.GetDescriptor(var, eDescriptorTypes.Name), _
-                                                         Me.m_aprop(0).SourceSec.Name)
-                        Else
-                            strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                                         Me.m_aprop(0).Source.Name, _
-                                                         vd.GetDescriptor(var, eDescriptorTypes.Description))
-                        End If
-                    Else
-                        strSelection = My.Resources.SELECTION_DERIVED
-                    End If
-
-                Case Else
-                    strSelection = My.Resources.SELECTION_MULTIPLE
-
-            End Select
+        If (props IsNot Nothing) Then
 
             ' Concat remark text of selected properties
-            For iProp As Integer = 0 To Me.m_aprop.Length - 1
+            For iProp As Integer = 0 To props.Length - 1
                 ' Get remark text for this property
-                strRemark = Me.m_aprop(iProp).GetRemark().Trim
+                strRemark = props(iProp).GetRemark().Trim
                 ' Is valid remark text?
                 If (Not String.IsNullOrEmpty(strRemark)) Then
                     ' No remark picked yet?
