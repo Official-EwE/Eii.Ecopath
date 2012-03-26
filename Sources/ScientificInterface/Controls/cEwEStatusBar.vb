@@ -289,20 +289,25 @@ Public Class cEwEStatusBar
     ''' -------------------------------------------------------------------
     Public Sub SetStatusText(ByVal strText As String, Optional ByVal sProgress As Single = 0.0)
 
+        ' Early bail-out
         If (Me.m_tsStatus Is Nothing) Then Return
 
-        '' Optimization
-        'If (String.Compare(Me.m_strLastStatusText, strText) = 0) And _
-        '   (sProgress = Me.m_sLastProgress) Then
-        '    Return
-        'End If
+        ' Truncate progress
+        sProgress = CInt(sProgress * 50) / 50.0!
 
+        ' Store original text
         Me.m_strLastStatusText = strText
-        Me.m_sLastProgress = sProgress
 
-        If String.IsNullOrEmpty(strText) Then
-            strText = Me.m_selmon.ToString
+        ' Obtain alternate text from selection monitor
+        If String.IsNullOrEmpty(strText) Then strText = Me.m_selmon.ToString
+
+        ' Optimization
+        If (String.Compare(strText, Me.m_tsStatus.Text, True) = 0) And (sProgress = m_sLastProgress) Then
+            Return
         End If
+
+        ' Now store progress
+        Me.m_sLastProgress = sProgress
 
         ' Update
         Me.m_tsStatus.Text = strText
