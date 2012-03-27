@@ -176,7 +176,9 @@ Public Class cPluginPoint
                                                      eCoreComponentType.EcoPath, _
                                                      eMessageType.DataValidation, _
                                                      Me.m_syncobj)
+#If DEBUG Then
                 Me.m_mhEcopath.Name = "ValueChain::Ecopath"
+#End If
                 Me.m_core.Messages.AddMessageHandler(Me.m_mhEcopath)
 
                 ' Done initializing
