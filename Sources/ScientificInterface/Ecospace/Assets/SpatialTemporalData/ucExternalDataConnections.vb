@@ -158,6 +158,9 @@ Namespace Ecospace.Controls
             ' Safety check
             If (Me.m_uic Is Nothing) Then Return
 
+            Dim rmp As New cEwEColorRamp()
+            rmp.ColorOffsetStart = 0.2
+
             e.Graphics.Clear(Me.BackColor)
 
             Try
@@ -166,7 +169,7 @@ Namespace Ecospace.Controls
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, AutoScrollPosition.Y)
                 Me.PaintGrid(e.Graphics)
                 For i As Integer = 0 To Me.m_lPos.Count - 1
-                    Me.PaintDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex)
+                    Me.PaintDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex, rmp.GetColor(i / Me.m_lPos.Count))
                 Next
                 e.Graphics.ResetTransform()
 
@@ -301,12 +304,14 @@ Namespace Ecospace.Controls
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
         ''' <remarks></remarks>
-        Private Sub PaintDataset(g As Graphics, pos As cDatasetPos, bSelected As Boolean)
+        Private Sub PaintDataset(g As Graphics, pos As cDatasetPos, bSelected As Boolean, clr As Color)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
             Dim rcBack As Rectangle = New Rectangle(0, rcBar.Y - 2, Me.ClientRectangle.Width, rcBar.Height + 4)
             Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barheight - 2)
-            Dim rcTimeStep As New Rectangle(rcBar.X, rcBar.Y + c_barheight - 2, Math.Max(1, Me.m_iTimestepSize - 1), c_barheight - 2)
+            Dim rcTimeStep As New Rectangle(rcBar.X, rcBar.Y + c_barheight - 2, Math.Max(1, Me.m_iTimestepSize), c_barheight - 2)
+            Dim clrLight As Color = EwEUtils.Utilities.cColorUtils.GetVariant(clr, 0.5)
+            Dim clrDark As Color = EwEUtils.Utilities.cColorUtils.GetVariant(clr, -0.5)
 
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
             fmt.LineAlignment = StringAlignment.Center
@@ -323,16 +328,16 @@ Namespace Ecospace.Controls
                 Next
             Else
                 ' Fill area bar
-                Using br As New SolidBrush(Color.FromArgb(255, 167, 190, 250))
+                Using br As New SolidBrush(clrLight)
                     g.FillRectangle(br, rcBar)
                 End Using
-                Using p As New Pen(Color.FromArgb(255, 100, 140, 250))
+                Using p As New Pen(clr)
                     g.DrawRectangle(p, rcBar)
                 End Using
                 Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                     g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, rcLabel, fmt)
                 End Using
-                Using br As New SolidBrush(Color.FromArgb(255, 100, 140, 250))
+                Using br As New SolidBrush(clrDark)
                     For Each iStep As Integer In pos.m_liData
                         rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize
                         g.FillRectangle(br, rcTimeStep)

@@ -16,6 +16,7 @@
 ' ===============================================================================
 '
 Imports EwEUtils.Core
+Imports EwEUtils.Commands
 
 Namespace Ecospace
 
@@ -33,10 +34,18 @@ Namespace Ecospace
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            If (Me.UIContext Is Nothing) Then Return
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialTemporalDataConnections")
+            If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnConnections)
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.External}
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+            If (Me.UIContext Is Nothing) Then Return
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialTemporalDataConnections")
+            If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnConnections)
             MyBase.OnFormClosed(e)
         End Sub
 

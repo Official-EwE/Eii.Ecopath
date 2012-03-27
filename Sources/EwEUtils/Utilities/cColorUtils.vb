@@ -34,19 +34,27 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Obtain a lighter variant of a <see cref="Color">color</see>.
+        ''' Obtain a different shade of a <see cref="Color">color</see>.
         ''' </summary>
         ''' <param name="clr">The colour to obtain a variant colour for.</param>
-        ''' <param name="iVariant">The zero-based numbered variant to obtain.</param>
-        ''' <returns>A lighter colour variant.</returns>
+        ''' <param name="sShade">Shade [-1, 1] to obtain. -1 returns black, 1 returns white.</param>
+        ''' <returns>A different shade of a colour.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function GetVariant(ByVal clr As Color, ByVal iVariant As Integer) As Color
+        Public Shared Function GetVariant(ByVal clr As Color, ByVal sShade As Single) As Color
 
-            iVariant = Math.Max(0, iVariant + 1)
-            Return Color.FromArgb(255, _
-                                  CInt(255 - (255 - clr.R) / iVariant), _
-                                  CInt(255 - (255 - clr.G) / iVariant), _
-                                  CInt(255 - (255 - clr.B) / iVariant))
+            sShade = Math.Max(-1, Math.Min(1, sShade))
+
+            If (sShade < 0) Then
+                Return Color.FromArgb(255, _
+                                      CInt(clr.R * (1 + sShade)), _
+                                      CInt(clr.G * (1 + sShade)), _
+                                      CInt(clr.B * (1 + sShade)))
+            Else
+                Return Color.FromArgb(255, _
+                                      CInt(clr.R + (255 - clr.R) * sShade), _
+                                      CInt(clr.G + (255 - clr.G) * sShade), _
+                                      CInt(clr.B + (255 - clr.B) * sShade))
+            End If
 
         End Function
 

@@ -475,7 +475,7 @@ Public Class AppLauncher
         Me.m_cmdDefineInputLayers = New cCommand(cmdh, "EditInputMaps")
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
 
-        Me.m_cmdEcospaceDataConnections = New cCommand(cmdh, "DataConnections")
+        Me.m_cmdEcospaceDataConnections = New cCommand(cmdh, "EditSpatialTemporalDataConnections")
         Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)
 
         Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
