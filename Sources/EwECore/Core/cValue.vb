@@ -17,6 +17,7 @@
 '
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 
 Namespace ValueWrapper
 
@@ -44,10 +45,8 @@ Namespace ValueWrapper
         Bool 'boolean
 
         SingleArray 'array of singles 
-        PointArray ' array of points
         BoolArray 'array of boolean 
         IntArray 'array of integers
-        LayerArray 'array of basemap layers
 
         Histogram
     End Enum
@@ -411,7 +410,9 @@ Namespace ValueWrapper
                         Select Case Me.varType
                             Case eValueTypes.Int, eValueTypes.Sng
                                 ' Is 0.0! entered and metadata available?
-                                If (CSng(Val(newValue)) = 0.0!) And (Me.Metadata IsNot Nothing) Then
+                                Dim x As Single
+                                Single.TryParse(newValue.ToString, x)
+                                If x = 0.0F And (Me.Metadata IsNot Nothing) Then
                                     ' #Yes: does metadata NOT allow 0.0?
                                     If Not (Metadata.MinOperator.Compare(0.0!, Metadata.Min) And Metadata.MaxOperator.Compare(0.0!, Metadata.Max)) Then
                                         ' #Yes: '0' clears the variable
@@ -431,15 +432,12 @@ Namespace ValueWrapper
                         newValue = CInt(Me.m_metadata.NullValue)
                     Case eValueTypes.Sng, eValueTypes.SingleArray
                         newValue = CSng(Me.m_metadata.NullValue)
-                    Case eValueTypes.PointArray
-                        newValue = CType(Me.m_metadata.NullValue, Drawing.Point)
                     Case eValueTypes.Bool, eValueTypes.BoolArray
                         newValue = CBool(Me.m_metadata.NullValue)
-                    Case eValueTypes.LayerArray
-                        newValue = CType(Me.m_metadata.NullValue, cEcospaceLayer)
                     Case Else
-                        Status = eStatusFlags.ErrorEncountered
-                        Debug.Assert(False, Me.ToString & ".setVariable(...) unsupported varType " & Me.varType)
+                        ' JS: status flag is overwritten later on. No need trying to set
+                        ' Status = eStatusFlags.ErrorEncountered
+                        Debug.Assert(False, Me.ToString & ".convertEmptyInputs(...) unsupported varType " & Me.varType)
                 End Select
             End If
 
@@ -449,24 +447,30 @@ Namespace ValueWrapper
             '            For instance, this thing converts "4foo" to 4 and "plop8" to 0.
             '            The calling logic will need to decide whether this is proper behaviour. This
             '            method of conversion is simply selected to keep the core from exploding.
-            If TypeOf newValue Is System.String Then
+
+            'jb Mar-2012 Mono compatibility 
+            'Val() is in the Microsoft.VisualBasic library
+            'So I've replace the Val() code with TryParse(string,x)
+            'Hope this works the same...
+            If (TypeOf newValue Is System.String) Then
 
                 Select Case Me.varType
-                    Case eValueTypes.Int, eValueTypes.IntArray
-                        newValue = CInt(Val(newValue))
-                    Case eValueTypes.Sng, eValueTypes.SingleArray
-                        newValue = CSng(Val(newValue))
-                    Case eValueTypes.PointArray
-                        ' ToDo_JS: parse string to create a proper point
-                        newValue = CType(Me.m_metadata.NullValue, Drawing.Point)
-                    Case eValueTypes.Bool, eValueTypes.BoolArray
-                        newValue = CBool(Val(newValue))
-                    Case eValueTypes.LayerArray
-                        ' ToDo_JS: parse string to create a proper layer (and how? no clue)
-                        newValue = CType(Me.m_metadata.NullValue, cEcospaceLayer)
-                        ' Case Else
-                        '    Status = eStatusFlags.ErrorEncountered
-                        '    Debug.Assert(False, Me.ToString & ".setVariable(...) unsupported varType " & Me.varType)
+                    Case eValueTypes.Str
+                        ' Ok
+                    Case eValueTypes.Int
+                        Dim x As Integer = CInt(cSystemUtils.Val(newValue))
+                        newValue = x
+                    Case eValueTypes.Sng
+                        Dim x As Single = CSng(cSystemUtils.Val(newValue))
+                        newValue = x
+                    Case eValueTypes.Bool
+                        Dim x As Boolean
+                        Boolean.TryParse(newValue.ToString, x)
+                        newValue = x
+                    Case Else
+                        ' JS: status flag is overwritten later on. No need trying to set
+                        'Status = eStatusFlags.ErrorEncountered
+                        Debug.Assert(False, Me.ToString & ".convertEmptyInputs() unsupported varType " & Me.varType)
                 End Select
             End If
 
@@ -507,7 +511,7 @@ Namespace ValueWrapper
                 ByRef CounterDelegate As CoreCounterDelegate, ByRef MetaData As cVariableMetaData, ByRef Validator As cValidatorDefault)
             MyBase.New(Nothing, VarName, Status, theValueType)
 
-            VarType = theValueType
+            varType = theValueType
             m_varName = VarName
 
             m_metadata = MetaData
@@ -560,14 +564,8 @@ Namespace ValueWrapper
                         Case eValueTypes.IntArray
                             Dim s(m_nObjects) As Integer
                             m_values = s
-                        Case eValueTypes.PointArray
-                            Dim s(m_nObjects) As Drawing.Point
-                            m_values = s
                         Case eValueTypes.SingleArray
                             Dim s(m_nObjects) As Single
-                            m_values = s
-                        Case eValueTypes.LayerArray
-                            Dim s(m_nObjects) As cEcospaceLayer
                             m_values = s
                     End Select
 
@@ -767,7 +765,7 @@ Namespace ValueWrapper
                 ByRef CounterDelegate As CoreIndexedCounterDelegate, ByVal iArrayIndex As Integer, ByVal DataType As eDataTypes)
             MyBase.New(theValueType, VarName, Status, CounterType, Nothing)
 
-            VarType = theValueType
+            varType = theValueType
             m_varName = VarName
             m_dataType = DataType
             m_iArrayIndex = iArrayIndex
@@ -808,14 +806,8 @@ Namespace ValueWrapper
                         Case eValueTypes.IntArray
                             Dim s(m_nObjects) As Integer
                             m_values = s
-                        Case eValueTypes.PointArray
-                            Dim s(m_nObjects) As Drawing.Point
-                            m_values = s
                         Case eValueTypes.SingleArray
                             Dim s(m_nObjects) As Single
-                            m_values = s
-                        Case eValueTypes.LayerArray
-                            Dim s(m_nObjects) As cEcospaceLayer
                             m_values = s
                     End Select
 

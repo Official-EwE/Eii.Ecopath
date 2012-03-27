@@ -16,13 +16,10 @@
 ' ===============================================================================
 '
 #Region " Imports "
-Option Strict On
-Imports System.ComponentModel
-Imports EwECore
-Imports EwEUtils.Utilities
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Style
 
+Option Strict On
+Imports EwECore
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 
@@ -163,7 +160,7 @@ Public Class cResults
 
 
                 ' TotalUtility a.k.a. Throughput = cost when (profit < 0), revenue otherwise
-                sTotalUtility = CSng(IIf(sProfit < 0, sCost, sRevenue))
+                sTotalUtility = IIf(sProfit < 0, sCost, sRevenue)
 
                 ' Jobs
                 sTotalJobsMale = Me.m_results(eVariableType.NumberOfWorkerMales, unit.Sequence) + _

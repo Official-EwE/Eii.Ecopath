@@ -20,15 +20,13 @@
 Option Strict On
 Option Explicit On
 
-Imports System.Text
 Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports WeifenLuo.WinFormsUI.Docking
-Imports ScientificInterfaceShared.Forms
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -344,10 +342,10 @@ Public Class frmStatusPanel
                (item.Importance = eMessageImportance.Warning) Then
                 ' Is dockable AND is in auto-hiding state?
                 If (Me.DockPanel IsNot Nothing) And _
-                   ((Me.DockState = DockState.DockBottomAutoHide) Or _
-                    (Me.DockState = DockState.DockLeftAutoHide) Or _
-                    (Me.DockState = DockState.DockRightAutoHide) Or _
-                    (Me.DockState = DockState.DockTopAutoHide)) Then
+                   ((Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockBottomAutoHide) Or _
+                    (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockLeftAutoHide) Or _
+                    (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockRightAutoHide) Or _
+                    (Me.DockState = WeifenLuo.WinFormsUI.Docking.DockState.DockTopAutoHide)) Then
                     Try
                         Me.DockPanel.ActiveAutoHideContent = Me
                     Catch ex As Exception
@@ -416,7 +414,7 @@ Public Class frmStatusPanel
     Private Function GetLogText(ByVal item As cMessageHistory.cHistoryItem) As String
         Dim strText As String = ""
         If (item IsNot Nothing) Then
-            strText = item.Text.Replace(vbNewLine, " ")
+            strText = item.Text.Replace(cStringUtils.vbNewline, " ")
         End If
         Return strText
     End Function

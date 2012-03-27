@@ -3148,6 +3148,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Data cache cleared, freed {0} kb of data.
+        '''</summary>
+        Public ReadOnly Property STATUS_CACHECLEARED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CACHECLEARED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Saving data, please wait....
         '''</summary>
         Public ReadOnly Property STATUS_DATA_SAVING() As String

@@ -146,8 +146,8 @@ Namespace Ecospace.Controls
 
         Protected Overrides Sub OnMouseClick(e As System.Windows.Forms.MouseEventArgs)
             Dim pos As cDatasetPos = Me.DatasetFromPoint(e.Location)
-            If pos IsNot Nothing Then
-                MsgBox(pos.m_ds.DisplayName)
+            If (pos IsNot Nothing) Then
+                ' Debug stuff
             End If
             MyBase.OnMouseClick(e)
         End Sub

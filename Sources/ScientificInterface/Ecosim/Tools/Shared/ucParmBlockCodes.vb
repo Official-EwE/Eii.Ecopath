@@ -254,7 +254,7 @@ Namespace Ecosim
             If (Me.m_uic Is Nothing) Then Return
             If (Me.m_bInUpdate = True) Then Return
 
-            Me.SelectedBlock = CInt(Int(CSng(e.X) / Me.BlockWidth()))
+            Me.SelectedBlock = CInt(CSng(e.X) / Me.BlockWidth())
 
         End Sub
 

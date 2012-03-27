@@ -19,15 +19,14 @@
 
 Option Strict On
 
+Imports System.Drawing.Drawing2D
 Imports System.Globalization
 Imports System.Threading
 Imports EwECore
+Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
-Imports VB = Microsoft.VisualBasic
-Imports EwECore.Auxiliary
-Imports System.Drawing.Drawing2D
 
 #End Region ' Imports
 
@@ -504,10 +503,7 @@ Namespace Style
 
             ' Calculated values must be formatted with a hard number of digits
             If (style And (eStyleFlags.ValueComputed Or eStyleFlags.Sum)) > 0 Then
-                Return VB.FormatNumber(dValue, iNumDigits, _
-                                       TriState.UseDefault, _
-                                       TriState.UseDefault, _
-                                       tsGroupDigits)
+                Return FormatNumber(dValue, iNumDigits, tsGroupDigits)
             End If
 
             ' Need to try to figure out num of decimal digits?
@@ -533,11 +529,23 @@ Namespace Style
             End If
 
             ' Format the value with selected number of decimal digits
-            Return VB.FormatNumber(dValue, _
-                                   Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision), _
-                                   TriState.UseDefault, _
-                                   TriState.UseDefault, _
-                                   tsGroupDigits)
+            Return FormatNumber(dValue, Math.Min(Math.Max(iNumDigits, iMinPrecision), iMaxPrecision), tsGroupDigits)
+
+        End Function
+
+        Private Shared Function FormatNumber(dValue As Double, iNumDigits As Integer, tsGroupDigits As TriState) As String
+
+            Dim nf As NumberFormatInfo = DirectCast(Thread.CurrentThread.CurrentCulture.NumberFormat.Clone, NumberFormatInfo)
+            nf.NumberDecimalDigits = iNumDigits
+
+            Select tsGroupDigits
+                Case TriState.True
+                Case TriState.False
+                    nf.NumberGroupSeparator = ""
+                Case TriState.UseDefault
+            End Select
+
+            Return dValue.ToString("N", nf)
 
         End Function
 

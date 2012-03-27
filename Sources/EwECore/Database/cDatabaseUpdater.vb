@@ -23,6 +23,8 @@ Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
 #End Region ' Imports
 
 Namespace Database
@@ -222,10 +224,13 @@ Namespace Database
                 If (update.UpdateVersion > sDBVersion) Or (update.RunAlways) Then
                     ' #Yes: able to start transaction?
                     If db.BeginTransaction() Then
-
+                        Dim msgImportance As eMessageImportance = eMessageImportance.Maintenance
+                        If Not update.RunAlways Then
+                            msgImportance = eMessageImportance.Information
+                        End If
                         ' Do not publicly report updates taht always run
                         Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion), _
-                                              DirectCast(IIf(update.RunAlways, eMessageImportance.Maintenance, eMessageImportance.Information), eMessageImportance))
+                                              msgImportance)
 
                         Try
                             ' #Yes: run the update
@@ -283,7 +288,7 @@ Namespace Database
             Dim strBit As String = ""
             Dim iBit As Integer = 0
 
-            For Each strBit In strDescription.Split(New String() {"." & vbNewLine, vbNewLine}, StringSplitOptions.RemoveEmptyEntries)
+            For Each strBit In strDescription.Split(New String() {"." & Environment.NewLine, Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)
                 strBit = strBit.Trim
                 If Not String.IsNullOrEmpty(strBit) Then
                     If iBit > 0 Then sbDescription.Append("; ")

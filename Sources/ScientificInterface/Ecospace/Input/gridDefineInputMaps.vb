@@ -21,6 +21,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
@@ -686,17 +687,21 @@ Namespace Ecospace
             If Me.m_alLayersRemoved.Count > 5 Then
 
                 strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT, Me.m_alLayersRemoved.Count)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Cancel
+                Select Case fmsg.Reply
+                    Case cFeedbackMessage.eReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case MsgBoxResult.Yes
+                    Case cFeedbackMessage.eReply.YES
                         ' Confirm all regions
                         For Each li In Me.m_alLayersRemoved
                             li.Confirmed = True
                         Next
                         bConfigurationChanged = True
+                    Case cFeedbackMessage.eReply.NO
+                        ' NOP
                     Case Else
                         ' Unexpected anwer: assert
                         Debug.Assert(False)
@@ -709,15 +714,17 @@ Namespace Ecospace
                     If (Not li.IsNew()) Then
 
                         strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT, li.Name)
+                        Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                        Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                        Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                            Case MsgBoxResult.Cancel
+                        Select Case fmsg.Reply
+                            Case cFeedbackMessage.eReply.CANCEL
                                 ' Abort Apply process
                                 Return False
-                            Case MsgBoxResult.No
+                            Case cFeedbackMessage.eReply.NO
                                 ' Do not delete this Layer
                                 li.Confirmed = False
-                            Case MsgBoxResult.Yes
+                            Case cFeedbackMessage.eReply.YES
                                 ' Delete this Layer
                                 li.Confirmed = True
                                 bConfigurationChanged = True

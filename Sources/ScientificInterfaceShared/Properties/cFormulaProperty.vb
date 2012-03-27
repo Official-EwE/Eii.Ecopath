@@ -19,8 +19,8 @@
 
 Option Strict On
 
-Imports EwECore
 Imports System.Globalization
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports

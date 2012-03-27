@@ -72,19 +72,24 @@ Public Class cSelectionMonitor
 
                 Case 1
                     ' Get selection text
-                    If Not Object.ReferenceEquals(props(0).Source, Nothing) Then
-                        ' Get variable descriptor
-                        Dim var As eVarNameFlags = props(0).VarName
-                        ' Format message
-                        If Not Object.ReferenceEquals(props(0).SourceSec, Nothing) Then
-                            strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
-                                                         props(0).Source.Name, _
-                                                         vd.GetDescriptor(var, eDescriptorTypes.Name), _
-                                                         props(0).SourceSec.Name)
+                    If (Not Object.ReferenceEquals(props(0).Source, Nothing)) Then
+                        If (Not props(0).Source.Disposed) Then
+
+                            ' Get variable descriptor
+                            Dim var As eVarNameFlags = props(0).VarName
+                            ' Format message
+                            If Not Object.ReferenceEquals(props(0).SourceSec, Nothing) Then
+                                strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
+                                                             props(0).Source.Name, _
+                                                             vd.GetDescriptor(var, eDescriptorTypes.Name), _
+                                                             props(0).SourceSec.Name)
+                            Else
+                                strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                                                             props(0).Source.Name, _
+                                                             vd.GetDescriptor(var, eDescriptorTypes.Description))
+                            End If
                         Else
-                            strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                                         props(0).Source.Name, _
-                                                         vd.GetDescriptor(var, eDescriptorTypes.Description))
+                            ' NOP: property gone
                         End If
                     Else
                         strSelection = My.Resources.SELECTION_DERIVED
@@ -97,7 +102,7 @@ Public Class cSelectionMonitor
                         If (var = eVarNameFlags.NotSet) Then
                             var = prop.VarName
                         Else
-                            bMixed = bMixed or (var <> prop.VarName) 
+                            bMixed = bMixed Or (var <> prop.VarName)
                         End If
                     Next
                     If bMixed Then

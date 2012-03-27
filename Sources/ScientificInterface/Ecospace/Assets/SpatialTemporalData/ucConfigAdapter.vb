@@ -211,8 +211,6 @@ Namespace Ecospace.Controls
         Private Sub OnClearCache(sender As System.Object, e As System.EventArgs) _
             Handles m_btnClearCache.Click
 
-            ' ToDo: globalize this
-
             Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
             Dim dSizeTot As Double = cache.GetSize() / 1024
             Dim dSizeUnused As Double = cache.GetUnusedSize(Me.m_manSets) / 1024
@@ -221,13 +219,16 @@ Namespace Ecospace.Controls
 
             Try
                 If (dSizeUnused > 0) Then
-                    Select Case MsgBox(String.Format(strPrompt, Me.m_uic.StyleGuide.FormatNumber(dSizeTot), Me.m_uic.StyleGuide.FormatNumber(dSizeUnused)), _
-                                           MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                        Case MsgBoxResult.Yes
+                    Dim fmsg As New cFeedbackMessage(String.Format(strPrompt, Me.m_uic.StyleGuide.FormatNumber(dSizeTot), Me.m_uic.StyleGuide.FormatNumber(dSizeUnused)), _
+                                                     EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                    Me.m_uic.Core.Messages.SendMessage(fmsg)
+
+                    Select Case fmsg.Reply
+                        Case cFeedbackMessage.eReply.YES
                             bSucces = cSpatialDataCache.DefaultDataCache.Clear(Me.m_manSets)
-                        Case MsgBoxResult.No
+                        Case cFeedbackMessage.eReply.NO
                             bSucces = cSpatialDataCache.DefaultDataCache.Clear()
-                        Case MsgBoxResult.Cancel
+                        Case cFeedbackMessage.eReply.CANCEL
                     End Select
                 Else
                     bSucces = cSpatialDataCache.DefaultDataCache.Clear()
@@ -237,7 +238,7 @@ Namespace Ecospace.Controls
             End Try
 
             Dim dSizeTot2 As Double = cache.GetSize() / 1024
-            Dim msg As New cMessage(String.Format("Spatial data cache cleared, freed {0} kb of data", Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
 
             ' Reflect new state

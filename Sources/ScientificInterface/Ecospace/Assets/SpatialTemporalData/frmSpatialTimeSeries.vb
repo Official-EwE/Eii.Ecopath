@@ -50,7 +50,9 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnSelectedDatasetChanged(owner As Object, ds As EwEUtils.SpatialData.ISpatialDataSet) Handles m_ucDatasets.OnSelectedDatasetChanged
-            If (ds IsNot Nothing) Then MsgBox(ds.DisplayName)
+            If (ds IsNot Nothing) Then
+                ' Debug
+            End If
         End Sub
 
         Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)

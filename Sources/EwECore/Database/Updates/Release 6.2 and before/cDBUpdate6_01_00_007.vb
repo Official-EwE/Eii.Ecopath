@@ -60,7 +60,7 @@ Friend Class cDBUpdate6_01_00_007
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added pedigree level colours" & vbNewLine & "Changed pedigree storage location" & vbNewLine & "Fixed pedigree designation error"
+            Return "Added pedigree level colours" & Environment.NewLine & "Changed pedigree storage location" & Environment.NewLine & "Fixed pedigree designation error"
         End Get
     End Property
 

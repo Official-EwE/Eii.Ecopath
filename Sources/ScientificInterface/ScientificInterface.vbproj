@@ -148,7 +148,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
     <Import Include="ScientificInterface.Controls" />
     <Import Include="ScientificInterfaceShared.Controls" />
     <Import Include="ScientificInterfaceShared.Controls.EwEGrid" />

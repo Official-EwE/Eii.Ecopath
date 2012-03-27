@@ -80,6 +80,8 @@ Public Class cGridSolver
 
     Private useExact As Boolean
 
+    Private m_rand As Random
+
 #End Region
 
 #Region "Constructor and Initialization"
@@ -87,6 +89,7 @@ Public Class cGridSolver
     Public Sub New(ByVal ThreadNumber As Integer)
         isOkToRunning = True
         ThreadID = ThreadNumber
+        Me.m_rand = New Random
     End Sub
 
     ''' <summary>
@@ -771,7 +774,7 @@ exitline:
                 Next
                 Debug.Print(str)
             Next
-            Debug.Print(vbCr)
+            Debug.Print(Environment.NewLine)
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
@@ -828,11 +831,11 @@ exitline:
         Dim i As Integer
         ReDim a(M * N, 2 * N + 1)
         For i = 1 To M * N
-            a(i, 1) = Rnd()
-            a(i, N) = Rnd()
-            a(i, N + 2) = Rnd()
-            a(i, 2 * N + 1) = Rnd()
-            a(i, N + 1) = (-1.0 - Rnd() / 10) * (a(i, 2 * N + 1) + a(i, N + 2) + a(i, N) + a(i, 1)) 'Rnd()
+            a(i, 1) = Me.m_rand.NextDouble()
+            a(i, N) = Me.m_rand.NextDouble()
+            a(i, N + 2) = Me.m_rand.NextDouble()
+            a(i, 2 * N + 1) = Me.m_rand.NextDouble()
+            a(i, N + 1) = (-1.0 - Me.m_rand.NextDouble() / 10) * (a(i, 2 * N + 1) + a(i, N + 2) + a(i, N) + a(i, 1)) 'Rnd()
         Next
         displaymatrix(a, M, N)
         randMatrix = a

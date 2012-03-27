@@ -29,11 +29,14 @@ Public Class cMonteCarloResultsWriter
 
     Private m_MC As cEcosimMonteCarlo
     Private m_core As cCore
+    Private _delimiter As String
 
     Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
 
         Me.m_MC = MonteCarlo
         Me.m_core = theCore
+        'coma
+        Me._delimiter = Convert.ToChar(34).ToString
 
     End Sub
 
@@ -130,11 +133,11 @@ Public Class cMonteCarloResultsWriter
             'save a bunch of crap here....
             'model name blaaaaaa
             header.AppendLine("EwE Monte Carlo version number," & ver) 'version number
-            header.AppendLine("Model name," & Chr(34) & Me.ModelName & Chr(34))
-            header.AppendLine("Ecosim scenario," & Chr(34) & Me.ScenarioName & Chr(34))
-            header.AppendLine("Timeseries," & Chr(34) & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Chr(34))
+            header.AppendLine("Model name," & Me._delimiter & Me.ModelName & Me._delimiter)
+            header.AppendLine("Ecosim scenario," & Me._delimiter & Me.ScenarioName & Me._delimiter)
+            header.AppendLine("Timeseries," & Me._delimiter & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Me._delimiter)
 
-            header.AppendLine("Run Date," & Chr(34) & d.ToShortDateString & " " & d.ToShortTimeString & Chr(34))
+            header.AppendLine("Run Date," & Me._delimiter & d.ToShortDateString & " " & d.ToShortTimeString & Me._delimiter)
 
             strm = New StreamWriter(Filename, True)
             strm.WriteLine(header)
@@ -223,7 +226,7 @@ Public Class cMonteCarloResultsWriter
                 strm.Write(",")
                 strm.Write(it.ToString)
             Next
-            strm.Write(vbCrLf)
+            strm.Write(Environment.NewLine)
 
             'biomass at T from Ecosim results
             For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
@@ -402,7 +405,7 @@ Public Class cMonteCarloResultsWriter
 
             For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff = buff & ","
-                buff = buff & Chr(34) & Values(igrp) & Chr(34)
+                buff = buff & Me._delimiter & Values(igrp) & Me._delimiter
             Next
 
         Catch ex As Exception
@@ -532,9 +535,9 @@ Public Class cMonteCarloResultsWriter
             'save a bunch of crap here....
             'model name blaaaaaa
             header.AppendLine("EwE Monte Carlo version number," & ver) 'version number
-            header.AppendLine("Model name," & Chr(34) & Me.ModelName & Chr(34))
-            header.AppendLine("Ecosim scenario," & Chr(34) & Me.ScenarioName & Chr(34))
-            header.AppendLine("Run Date," & Chr(34) & d.ToShortDateString & " " & d.ToShortTimeString & Chr(34))
+            header.AppendLine("Model name," & Me._delimiter & Me.ModelName & Me._delimiter)
+            header.AppendLine("Ecosim scenario," & Me._delimiter & Me.ScenarioName & Me._delimiter)
+            header.AppendLine("Run Date," & Me._delimiter & d.ToShortDateString & " " & d.ToShortTimeString & Me._delimiter)
 
             strm = New StreamWriter(Me.OuputFilename, True)
             strm.WriteLine(header)
@@ -722,7 +725,7 @@ Public Class cMonteCarloResultsWriter
 
             For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff = buff & ","
-                buff = buff & Chr(34) & Values(igrp) & Chr(34)
+                buff = buff & Me._delimiter & Values(igrp) & Me._delimiter
             Next
 
         Catch ex As Exception

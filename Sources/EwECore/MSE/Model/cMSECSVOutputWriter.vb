@@ -190,10 +190,10 @@ Friend Class cMSECSVOutputWriter
             header = New StringBuilder()
             Dim d As DateTime = Date.Now
 
-            header.Append("MSE " & DataDescription & vbCrLf)
-            header.Append("Date, '" & d.ToLongDateString & " " & d.ToLongTimeString & vbCrLf)
-            header.Append("Group, '" & GroupFleet & "'" & vbCrLf)
-            header.Append("Rows = MSE Run, Columns = Time" & vbCrLf)
+            header.Append("MSE " & DataDescription & Environment.NewLine)
+            header.Append("Date, '" & d.ToLongDateString & " " & d.ToLongTimeString & Environment.NewLine)
+            header.Append("Group, '" & GroupFleet & "'" & Environment.NewLine)
+            header.Append("Rows = MSE Run, Columns = Time" & Environment.NewLine)
 
             For it As Integer = 1 To Me.m_core.nEcosimTimeSteps
                 If it > 1 Then header.Append(", ")

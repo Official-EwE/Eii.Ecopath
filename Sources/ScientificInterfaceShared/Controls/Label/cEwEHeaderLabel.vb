@@ -18,10 +18,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports System.Globalization
 Imports System.Threading
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 
 #End Region ' Imports

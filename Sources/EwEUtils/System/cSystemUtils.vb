@@ -26,6 +26,7 @@ Imports EwEUtils.Win32Api
 Imports EwEUtils.Utilities
 Imports System.Security.AccessControl
 Imports System.Net
+Imports System.Text.RegularExpressions
 
 #End Region ' Imports
 
@@ -276,6 +277,193 @@ Namespace SystemUtilities
             End If
             Return strPath
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns one of two Single values, depending on the evaluation of an expression. 
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
+        ''' </summary>
+        ''' <param name="BoolValue">The value to test.</param>
+        ''' <param name="TrueReturnSingle">Single value to return if <paramref name="BoolValue"/> resolved to True.</param>
+        ''' <param name="FalseReturnSingle">Single value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <returns>A Single value.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnSingle As Single, ByVal FalseReturnSingle As Single) As Single
+            If BoolValue Then
+                Return TrueReturnSingle
+            Else
+                Return FalseReturnSingle
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns one of two Double values, depending on the evaluation of an expression. 
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
+        ''' </summary>
+        ''' <param name="BoolValue">The value to test.</param>
+        ''' <param name="TrueReturnDouble">Double value to return if <paramref name="BoolValue"/> resolved to True.</param>
+        ''' <param name="FalseReturnDouble">Double value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <returns>A Double value.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnDouble As Double, ByVal FalseReturnDouble As Double) As Double
+            If BoolValue Then
+                Return TrueReturnDouble
+            Else
+                Return FalseReturnDouble
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns one of two Boolean values, depending on the evaluation of an expression. 
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
+        ''' </summary>
+        ''' <param name="BoolValue">The value to test.</param>
+        ''' <param name="TrueReturnBool">Booolean value to return if <paramref name="BoolValue"/> resolved to True.</param>
+        ''' <param name="FalseReturnBool">Booolean value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <returns>A boolean value.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnBool As Boolean, ByVal FalseReturnBool As Boolean) As Boolean
+            If BoolValue Then
+                Return TrueReturnBool
+            Else
+                Return FalseReturnBool
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns one of two String values, depending on the evaluation of an expression. 
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
+        ''' </summary>
+        ''' <param name="BoolValue">The value to test.</param>
+        ''' <param name="TrueReturnString">String value to return if <paramref name="BoolValue"/> resolved to True.</param>
+        ''' <param name="FalseReturnString">String value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <returns>A String value.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IIF(ByVal BoolValue As Boolean, ByVal TrueReturnString As String, ByVal FalseReturnString As String) As String
+            If BoolValue Then
+                Return TrueReturnString
+            Else
+                Return FalseReturnString
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns one of two Integer values, depending on the evaluation of an expression. 
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
+        ''' </summary>
+        ''' <param name="bTest">The value to test.</param>
+        ''' <param name="iTrue">Integer value to return if <paramref name="BoolValue"/> resolved to True.</param>
+        ''' <param name="iFalse">Integer value to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <returns>An Integer value.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IIF(ByVal bTest As Boolean, ByVal iTrue As Integer, ByVal iFalse As Integer) As Integer
+            If bTest Then
+                Return iTrue
+            Else
+                Return iFalse
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns one of two objects, depending on the evaluation of an expression. 
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic IIF.
+        ''' </summary>
+        ''' <param name="bTest">The value to test.</param>
+        ''' <param name="objTrue">Object to return if <paramref name="BoolValue"/> resolved to True.</param>
+        ''' <param name="objFalse">Object to return if <paramref name="BoolValue"/> resolved to False.</param>
+        ''' <returns>An object.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IIF(ByVal bTest As Boolean, ByVal objTrue As Object, ByVal objFalse As Object) As Object
+            If bTest Then
+                Return objTrue
+            Else
+                Return objFalse
+            End If
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the numbers contained in a string as a numeric value of appropriate type.
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic Val.
+        ''' </summary>
+        ''' <param name="strValue">The string to convert.</param>
+        ''' <returns>A Double value, or 0 if the conversion failed.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Val(ByVal strValue As String) As Double
+            Dim m As Match = Regex.Match(strValue, "^[\d\s]+(\.?[\d\s]+|[\d\s]*)")
+            If (m.Value <> "") Then
+                Return Convert.ToDouble(Regex.Replace(m.Value, "\s+", ""))
+            End If
+            Return 0
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the numbers contained in an object as a numeric value of appropriate type.
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic Val.
+        ''' </summary>
+        ''' <param name="value">The object to convert.</param>
+        ''' <returns>A Double value, or 0 if the conversion failed.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Val(ByVal value As Object) As Double
+            Return Val(value.ToString)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the number contained in a character as a numeric value of appropriate type.
+        ''' This is a strong-typed alternative to Microsoft.VisualBasic Val.
+        ''' </summary>
+        ''' <param name="value">The character to convert.</param>
+        ''' <returns>A Double value, or 0 if the conversion failed.</returns>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic namespace is known to cause problems under Mono. If
+        ''' Mono-compliance is required do not reference Microsoft.VisualBasic and use this method instead.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function Val(ByVal value As Char) As Integer
+            If Char.IsDigit(value) Then
+                Return Convert.ToInt32(value)
+            End If
+            Return 0
         End Function
 
     End Class

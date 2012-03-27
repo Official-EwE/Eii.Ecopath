@@ -831,15 +831,17 @@ Namespace Ecospace
             If (iDeleteCount > 0) Then
 
                 strPrompt = String.Format(My.Resources.ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT, iDeleteCount)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Cancel
+                Select fmsg.Reply
+                    Case cFeedbackMessage.eReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case MsgBoxResult.No
+                    Case cFeedbackMessage.eReply.NO
                         ' Do not delete MPAs
                         iDeleteCount = 0
-                    Case MsgBoxResult.Yes
+                    Case cFeedbackMessage.eReply.YES
                         ' Delete MPAs
                         bConfigurationChanged = True
                     Case Else

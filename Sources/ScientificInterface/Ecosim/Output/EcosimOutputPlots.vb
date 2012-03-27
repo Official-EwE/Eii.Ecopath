@@ -20,18 +20,15 @@
 Option Explicit On
 Option Strict On
 
-Imports System.IO
 Imports System.Text
 Imports EwECore
-Imports ScientificInterface.Controls
-Imports ScientificInterface.Other
+Imports EwECore.Ecosim
 Imports EwEUtils.Core
-Imports EwEUtils.Commands
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ZedGraph
-Imports EwECore.Ecosim
-Imports ScientificInterfaceShared.Commands
 
 #End Region
 
@@ -279,7 +276,7 @@ Namespace Ecosim
                 Dim sbSettings As New StringBuilder()
                 Dim iNumPlots As Integer = [Enum].GetValues(GetType(ePlot)).Length
                 For iPlot As Integer = 0 To iNumPlots - 1
-                    sbSettings.Append((IIf(Me.m_abPlotVisible(DirectCast(iPlot, ePlot)), "1", "0")))
+                    sbSettings.Append(IIf(Me.m_abPlotVisible(DirectCast(iPlot, ePlot)), "1", "0"))
                 Next
                 Return sbSettings.ToString()
             End Get

@@ -71,7 +71,7 @@ Friend Class cDBUpdate6_00_03_08
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Adds last saved date to model and scenarios" + vbNewLine + "Adds quotes table" + vbNewLine + "Fixes Ecospace group defaults"
+            Return "Adds last saved date to model and scenarios" + Environment.NewLine + "Adds quotes table" + Environment.NewLine + "Fixes Ecospace group defaults"
         End Get
     End Property
 

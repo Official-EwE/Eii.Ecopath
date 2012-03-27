@@ -58,7 +58,7 @@ Friend Class cDBUpdate6_01_00_006
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added pedigree level name" & vbNewLine & "Added Ecospace advection fields"
+            Return "Added pedigree level name" & Environment.NewLine & "Added Ecospace advection fields"
         End Get
     End Property
 

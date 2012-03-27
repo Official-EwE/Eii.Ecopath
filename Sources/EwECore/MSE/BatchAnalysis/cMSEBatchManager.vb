@@ -20,6 +20,7 @@ Imports System.IO
 Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports EwECore.MSECommandFile
+Imports EwEUtils.Utilities
 
 
 Namespace MSEBatchManager
@@ -865,10 +866,10 @@ Namespace MSEBatchManager
 
                 Me.MarshallMessage("")
                 Me.MarshallMessage("Run Type:")
-                Me.MarshallMessage(vbTab & Me.BatchData.RunType.ToString)
+                Me.MarshallMessage(cStringUtils.vbTab & Me.BatchData.RunType.ToString)
 
                 Me.MarshallMessage("Output directory:")
-                Me.MarshallMessage(vbTab & Me.BatchData.OuputDir)
+                Me.MarshallMessage(cStringUtils.vbTab & Me.BatchData.OuputDir)
 
                 Dim endYearMsg As String = "End of Ecosim run."
                 If Me.MSEData.EndYear > 0 Then
@@ -876,14 +877,14 @@ Namespace MSEBatchManager
                 End If
 
                 Me.MarshallMessage("Last control year:")
-                Me.MarshallMessage(vbTab & endYearMsg)
+                Me.MarshallMessage(cStringUtils.vbTab & endYearMsg)
 
                 Me.MarshallMessage("Primary production variation:")
-                Me.MarshallMessage(vbTab & Me.BatchData.STDevForcing.ToString)
+                Me.MarshallMessage(cStringUtils.vbTab & Me.BatchData.STDevForcing.ToString)
 
                 Me.MarshallMessage("Loaded primary production forcing:")
                 For iff As Integer = 1 To Me.BatchData.nForcing
-                    Me.MarshallMessage(vbTab & Me.BatchData.ForcingNames(iff))
+                    Me.MarshallMessage(cStringUtils.vbTab & Me.BatchData.ForcingNames(iff))
                 Next
 
                 ' Me.checkRunType()
@@ -931,17 +932,17 @@ Namespace MSEBatchManager
                 Me.MarshallMessage("WARNING: values for")
 
                 If bFixedEsc Then
-                    Me.MarshallMessage(vbTab & "Fixed Escapement")
+                    Me.MarshallMessage(cStringUtils.vbTab & "Fixed Escapement")
                 End If
                 If bFixedF Then
-                    Me.MarshallMessage(vbTab & "Fixed F")
+                    Me.MarshallMessage(cStringUtils.vbTab & "Fixed F")
                 End If
                 If bTAC Then
-                    Me.MarshallMessage(vbTab & "Total Allowable Catch")
+                    Me.MarshallMessage(cStringUtils.vbTab & "Total Allowable Catch")
                 End If
 
-                Me.MarshallMessage(vbTab & "Have been set in the user interface.")
-                Me.MarshallMessage(vbTab & "Please check these value(s) in the user interface to make sure this is correct.")
+                Me.MarshallMessage(cStringUtils.vbTab & "Have been set in the user interface.")
+                Me.MarshallMessage(cStringUtils.vbTab & "Please check these value(s) in the user interface to make sure this is correct.")
 
             End If
 

@@ -79,7 +79,7 @@ Friend Class cDBUpdate6_00_03_07
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added salinity to Ecosim" + vbNewLine + "Added concentration FF to Ecotracer" + vbNewLine + "Fixed missing Ecospace group defaults"
+            Return "Added salinity to Ecosim" + Environment.NewLine + "Added concentration FF to Ecotracer" + Environment.NewLine + "Fixed missing Ecospace group defaults"
         End Get
     End Property
 

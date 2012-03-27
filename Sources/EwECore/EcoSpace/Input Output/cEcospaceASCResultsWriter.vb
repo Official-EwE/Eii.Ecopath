@@ -119,9 +119,9 @@ Public Class cEcospaceASCResultsWriter
             strm.WriteLine("EwE version," & ver)
             strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
 
-            strm.WriteLine("Model," & Chr(34) & Me.m_core.DataSource.FileName & Chr(34))
-            strm.WriteLine("EcoSim Scenario," & Chr(34) & simScen & Chr(34))
-            strm.WriteLine("EcoSpace Scenario," & Chr(34) & SpaceScen & Chr(34))
+            strm.WriteLine("Model," & Me.m_delimiter & Me.m_core.DataSource.FileName & Me.m_delimiter)
+            strm.WriteLine("EcoSim Scenario," & Me.m_delimiter & simScen & Me.m_delimiter)
+            strm.WriteLine("EcoSpace Scenario," & Me.m_delimiter & SpaceScen & Me.m_delimiter)
             strm.WriteLine("Map rows," & Me.SpaceData.InRow)
             strm.WriteLine("Map cols," & Me.SpaceData.InCol)
             strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)

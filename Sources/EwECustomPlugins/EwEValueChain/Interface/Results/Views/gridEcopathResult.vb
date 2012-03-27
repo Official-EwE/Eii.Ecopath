@@ -19,10 +19,12 @@
 
 Option Strict On
 Imports System.Windows.Forms
-Imports SourceGrid2
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Controls
+Imports SourceGrid2
 
 #End Region ' Imports
 

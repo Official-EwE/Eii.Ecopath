@@ -2156,8 +2156,8 @@ QmCCCw==</value>
     <value>Do you wish to delete unit '{0}'? This action cannot be undone.</value>
     <comment>{0}: unit name</comment>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="PROMPT_AUTOLAYOUT" xml:space="preserve">
+    <value>Are you sure you want to arrange the diagram layout?</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ValueChain" type="System.Resources.ResXFileRef, System.Windows.Forms">

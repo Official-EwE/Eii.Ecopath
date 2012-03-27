@@ -151,7 +151,7 @@ Namespace Ecopath.Output
 
             Select Case paneType
                 Case ePaneTypes.PSD
-                    gp.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
+                    gp.XAxis.Scale.Min = CInt(Math.Log10(parms.FirstWeightClass))
                     gp.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
                     gp.YAxis.Scale.Min = 0
                     'gp.YAxis.Scale.Max = 8 if PSDPlotByGroup has the same scale as that of PSDContributionPlot

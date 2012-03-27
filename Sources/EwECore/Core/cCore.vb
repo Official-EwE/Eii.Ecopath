@@ -39,6 +39,8 @@ Imports EwECore.Ecospace.Advection
 Imports EwEUtils.SpatialData
 Imports EwECore.SpatialData
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
 #End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
@@ -4681,15 +4683,18 @@ Public Class cCore
                    (msg.Importance = eMessageImportance.Maintenance) Then
                     ' Has data source?
                     If (Me.DataSource IsNot Nothing) Then
+                        Dim state As TriState = TriState.False
+                        If Me.m_batchLockType = eBatchLockType.NotSet Then state = TriState.UseDefault
                         ' #Yes: dirty the data source
                         Me.DataSource.SetChanged(msAffected)
                         ' Notify state monitor of data modification
                         Me.m_StateMonitor.RegisterModification(msAffected)
                         ' Send only notifications when NO lock active
-                        Me.m_StateMonitor.UpdateDataState(DataSource, _
-                            DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
+                        Me.m_StateMonitor.UpdateDataState(DataSource, state)
+                        'logic before Mono compatibility changes
+                        ' DirectCast(IIF(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
                     End If
-                End If
+                    End If
 
             Next var
 
@@ -7750,7 +7755,7 @@ Public Class cCore
                 strm.Write(m_EcoPathData.GroupName(igrp))
                 If igrp < m_EcoPathData.NumGroups Then strm.Write(delimiter)
             Next igrp
-            strm.Write(vbNewLine)
+            strm.Write(Environment.NewLine )
 
             'data Groups in columns 
             'Time in rows
@@ -7759,7 +7764,7 @@ Public Class cCore
                     strm.Write(Me.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, it).ToString)
                     If igrp < m_EcoPathData.NumGroups Then strm.Write(delimiter)
                 Next igrp
-                strm.Write(vbNewLine)
+                strm.Write(Environment.NewLine )
             Next it
 
             strm.Close()
@@ -8146,7 +8151,7 @@ Public Class cCore
         End If
 
         Try
-            Dim t As Double = Timer
+            ' Dim t As Double = Timer
             System.Console.WriteLine("----------cCore.RunEcospace() Start------------")
 
             If Me.m_StateMonitor.HasEcospaceLoaded Then
@@ -9570,15 +9575,6 @@ Public Class cCore
                 grp.BarrierAvoidanceWeight = m_EcoSpaceData.barrierAvoidanceWeight(iGroup)
                 grp.PP = m_EcoPathData.PP(iGroup)
 
-                'jb test this out PreferedCell
-                Dim pt As Drawing.Point
-                For i = 1 To N_MONTHS
-                    pt = New Drawing.Point
-                    pt.X = m_EcoSpaceData.Prefcol(iGroup, i)
-                    pt.Y = m_EcoSpaceData.PrefRow(iGroup, i)
-                    grp.PreferredCell(i) = pt
-                Next i
-
                 For i = 0 To nHabitats - 1
                     grp.PreferredHabitat(i) = m_EcoSpaceData.PrefHab(iGroup, i)
                 Next
@@ -9621,12 +9617,6 @@ Public Class cCore
             m_EcoSpaceData.MigConcCol(iGroup) = grp.MigrationEWCon
             m_EcoSpaceData.MigConcRow(iGroup) = grp.MigrationNSCon
             m_EcoSpaceData.barrierAvoidanceWeight(iGroup) = grp.BarrierAvoidanceWeight
-
-            For i = 1 To N_MONTHS
-                pt = grp.PreferredCell(i)
-                m_EcoSpaceData.Prefcol(iGroup, i) = pt.X
-                m_EcoSpaceData.PrefRow(iGroup, i) = pt.Y
-            Next i
 
             For i = 0 To nHabitats - 1
                 m_EcoSpaceData.PrefHab(iGroup, i) = grp.PreferredHabitat(i)
@@ -11774,6 +11764,7 @@ Public Class cCore
         Dim msAffected As eCoreComponentType = eCoreComponentType.NotSet
         Dim rsAffected As eCoreExecutionState = eCoreExecutionState.Idle
         Dim bBlock As Boolean = False
+        Dim updateState As TriState
 
         'Dim objAffected As cCoreInputOutputBase = Nothing
         Dim msg As cMessage = Nothing
@@ -11949,8 +11940,10 @@ Public Class cCore
 
                 If (Not bBlock) Then
                     ' Update state monitor execution state
-                    Me.m_StateMonitor.UpdateExecutionState(msAffected, _
-                        DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
+
+                    If Me.m_batchLockType = eBatchLockType.NotSet Then updateState = TriState.UseDefault Else updateState = TriState.False
+                    Me.m_StateMonitor.UpdateExecutionState(msAffected, updateState)
+                    '  DirectCast(IIF(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
                 End If
 
             End If
@@ -11960,9 +11953,10 @@ Public Class cCore
             PostVariableUpdated(value, objValidated)
         End If
 
+        If Me.m_batchLockType = eBatchLockType.NotSet Then updateState = TriState.UseDefault Else updateState = TriState.False
         ' Send only notifications when NO lock active
-        Me.m_StateMonitor.UpdateDataState(DataSource, _
-            DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
+        Me.m_StateMonitor.UpdateDataState(DataSource, updateState)
+         '   DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
 
         ' Send all messages
         Me.m_publisher.AddMessage(msg)
@@ -13127,7 +13121,7 @@ Public Class cCore
             m_publisher.SendMessage(msg)
         Else
             Dim fmsg As New cFeedbackMessage( _
-                    String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, PluginException.Message, vbNewLine), _
+                    String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, PluginException.Message, Environment.NewLine), _
                     eCoreComponentType.External, eMessageType.Any, _
                     eMessageImportance.Warning, _
                     cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)

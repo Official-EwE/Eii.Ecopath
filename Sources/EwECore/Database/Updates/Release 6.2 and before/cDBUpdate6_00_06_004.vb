@@ -60,7 +60,7 @@ Friend Class cDBUpdate6_00_06_004
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Simplified port table layout." & vbNewLine & "Added GroupDigits setting"
+            Return "Simplified port table layout." & Environment.NewLine & "Added GroupDigits setting"
         End Get
     End Property
 

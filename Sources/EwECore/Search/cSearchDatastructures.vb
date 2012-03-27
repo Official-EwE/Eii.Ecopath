@@ -19,6 +19,8 @@ Option Strict On
 Imports EwEUtils.Core
 Imports EwECore.Ecosim
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
 Public Enum eSearchModes
     ''' <summary>Not in any kind of a search mode</summary>
     NotInSearch

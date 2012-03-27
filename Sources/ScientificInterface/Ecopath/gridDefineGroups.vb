@@ -1709,14 +1709,16 @@ Public Class gridDefineGroups
                     If gi.StanzaAge <> 0 Then
                         gi.StanzaAge = 0
                         strPrompt = String.Format(My.Resources.ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED, si.Name)
-                        MsgBox(strPrompt, MsgBoxStyle.Information Or MsgBoxStyle.OkOnly)
+                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        Me.UIContext.Core.Messages.SendMessage(msg)
                         Me.UpdateStanzaColumns()
                     End If
                 Else
                     ' Cannot have two groups of the same age within a stanza
                     If gi.StanzaAge = giPrev.StanzaAge Then
                         strPrompt = String.Format(My.Resources.ECOPATH_EDITGROUPSSTANZA_AGECONFLICT, giPrev.Name, gi.Name, si.Name)
-                        MsgBox(strPrompt, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
+                        Dim msg As New cMessage(strPrompt, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+                        Me.UIContext.Core.Messages.SendMessage(msg)
                         Return False
                     End If
                 End If
@@ -1749,7 +1751,6 @@ Public Class gridDefineGroups
         Dim nDetritus As Integer = 0
         Dim bAllDetritusAtEnd As Boolean = True
         Dim gi As cGroupInfo = Nothing
-        Dim msg As cMessage = Nothing
 
         ' Check detritus config
         For iGroup As Integer = 0 To Me.m_lgiGroups.Count - 1
@@ -1772,17 +1773,17 @@ Public Class gridDefineGroups
         ' 1. Must be at least 1 detritus group found
         If nDetritus < 1 Then
             ' Display warning that requires user action
-            MsgBox(My.Resources.ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS, MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly Or MsgBoxStyle.Exclamation)
+            Dim msg As New cMessage(My.Resources.ECOPATH_EDITGROUPSSTANZA_NEEDDETRITUS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Warning)
+            Me.UIContext.Core.Messages.SendMessage(msg)
             Return False
         End If
 
         ' 2. All detritus groups must be at the end of the list
         If Not bAllDetritusAtEnd Then
-            ' Display information message to the user, allow intervention
-            If MsgBox(My.Resources.PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND, _
-                    MsgBoxStyle.OkCancel Or MsgBoxStyle.Information) <> MsgBoxResult.Ok Then
-                Return False
-            End If
+            ' Ask user feedback whether detritus order may be corrected
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Me.UIContext.Core.Messages.SendMessage(fmsg)
+            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
             ' Fix it
             Me.FixDetritusOrder()
         End If
@@ -1858,15 +1859,17 @@ Public Class gridDefineGroups
             If (Not gi.IsNew()) Then
 
                 strPrompt = String.Format(My.Resources.ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT, gi.Name)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Cancel
+                Select Case fmsg.Reply
+                    Case cFeedbackMessage.eReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case MsgBoxResult.No
+                    Case cFeedbackMessage.eReply.NO
                         ' Do not delete this group
                         gi.Confirmed = False
-                    Case MsgBoxResult.Yes
+                    Case cFeedbackMessage.eReply.YES
                         ' Delete this group
                         gi.Confirmed = True
                         bConfigurationChanged = True
@@ -2039,7 +2042,8 @@ Public Class gridDefineGroups
         End If
 
         If Not bSuccess Then
-            MsgBox(sb.ToString, MsgBoxStyle.Exclamation And MsgBoxStyle.OkOnly)
+            Dim msg As New cMessage(sb.ToString, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Critical)
+            Me.UIContext.Core.Messages.SendMessage(msg)
         End If
 
         ' Update core objects when previous operations were succesful

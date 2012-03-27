@@ -47,7 +47,7 @@ Friend Class cDBUpdate6_12_00008
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecosim effort conversion factor" & vbNewLine & "Added taxon growth parameters"
+            Return "Added Ecosim effort conversion factor" & Environment.NewLine & "Added taxon growth parameters"
         End Get
     End Property
 

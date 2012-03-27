@@ -490,10 +490,6 @@ Namespace Core
         MigrationConcCol
 
         ''' <summary>To document</summary>
-        PreferredCell
-        ''' <summary>To document</summary>
-        PreferredCol
-        ''' <summary>To document</summary>
         PreferredHabitat
         ''' <summary>To document</summary>
         HabitatFishery
@@ -2594,5 +2590,22 @@ Namespace Core
     End Enum
 
 #End Region
+
+#Region "TriState"
+
+    ''' <summary>
+    ''' TriState added for Mono compatibility.
+    ''' </summary>
+    ''' <remarks>
+    ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
+    ''' This definition of TriState should be used instead.
+    ''' </remarks>
+    Public Enum TriState As Integer
+        UseDefault = -2
+        [False] = -1
+        [True] = 0
+    End Enum
+
+#End Region ' TriState
 
 End Namespace ' Core

@@ -20,6 +20,7 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
 
 #End Region 'Imports
@@ -71,8 +72,8 @@ Namespace Controls.Map.Layers
                 ' Has a value to draw?
                 If (sValue <> 0.0!) Then
                     ' #Yes: render a Green (up) or Blue (down) upwelling arrow
-                    iG = CInt(IIf(sValue > 0, 150, 0))
-                    iB = CInt(IIf(sValue > 0, 0, 150))
+                    iG = IIf(sValue > 0, 150, 0)
+                    iB = IIf(sValue > 0, 0, 150)
                     Using p As New Pen(Color.FromArgb(255, iR, iG, iB), 0.001!)
                         g.DrawLine(p, _
                                    ptfCenter.X, ptfCenter.Y - sHalfArrow, _

@@ -46,7 +46,7 @@ Public Class cEcoSimGroupInput
                 'Status flag for VulMult and VulRate are set in cCore.LoadEcosimGroups
                 If value.varName <> eVarNameFlags.VulMult And value.varName <> eVarNameFlags.VulRate Then
                     Select Case value.varType
-                        Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
+                        Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.BoolArray
                             For i = 0 To value.Length
                                 If bForceReset Then
                                     value.Status(i) = 0

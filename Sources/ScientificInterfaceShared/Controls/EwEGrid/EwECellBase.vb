@@ -19,6 +19,8 @@
 
 Option Strict On
 Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2

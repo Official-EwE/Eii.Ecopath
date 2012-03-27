@@ -20,7 +20,7 @@
 Option Strict On
 
 Imports EwECore
-Imports System.Windows.Forms
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 

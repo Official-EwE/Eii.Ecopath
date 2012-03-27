@@ -18,13 +18,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports System.Globalization
 Imports EwECore
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -602,7 +601,7 @@ Public Class dlgManageTimeSeries
         Me.m_dgvImportPreview.SuspendLayout()
 
         'vc had a model with 3000 years run & time series; takes forever to make the preview, so truncating it
-        Me.m_dgvImportPreview.RowCount = Math.Min(CInt(IIf(Me.m_bLimitPreview, 50, tsrPreview.RowCount)), tsrPreview.RowCount)
+        Me.m_dgvImportPreview.RowCount = Math.Min(IIf(Me.m_bLimitPreview, 50, tsrPreview.RowCount), tsrPreview.RowCount)
         Me.m_dgvImportPreview.ColumnCount = tsrPreview.ColumnCount
 
         For iRow As Integer = 1 To Me.m_dgvImportPreview.RowCount
@@ -774,7 +773,9 @@ Public Class dlgManageTimeSeries
         Dim bSucces As Boolean = True
 
         ' Ask for confirmation
-        If MsgBox(My.Resources.ECOSIM_PROMPT_DELETE_TSDATASETS, MsgBoxStyle.Question Or MsgBoxStyle.YesNo) <> MsgBoxResult.Yes Then Return False
+        Dim fmsg As New cFeedbackMessage(My.Resources.ECOSIM_PROMPT_DELETE_TSDATASETS, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+        Me.m_uic.Core.Messages.SendMessage(fmsg)
+        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
 
         ' Save any changes
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False

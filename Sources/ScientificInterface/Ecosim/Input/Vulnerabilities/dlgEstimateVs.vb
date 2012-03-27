@@ -19,9 +19,9 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterfaceShared.Controls
-Imports ZedGraph
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region ' Imports
 

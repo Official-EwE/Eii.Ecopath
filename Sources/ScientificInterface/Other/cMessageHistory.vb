@@ -18,9 +18,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Text
 Imports EwECore
 Imports EwEUtils.Core
-Imports System.Text
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -650,6 +651,7 @@ Public Class cMessageHistory
                 End If
             Else
                 ' #No: show the message
+                ' The one and only static popup message box in EwE
                 MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
         End If
@@ -690,7 +692,7 @@ Public Class cMessageHistory
             Next
         End If
 
-        strMessage = sb.ToString().Replace("\n", vbNewLine)
+        strMessage = sb.ToString().Replace("\n", cStringUtils.vbNewline)
         Return bError
 
     End Function

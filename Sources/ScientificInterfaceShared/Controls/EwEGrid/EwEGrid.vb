@@ -33,6 +33,8 @@ Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SourceGrid2.Cells.Real
+Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region
 
@@ -831,7 +833,7 @@ Namespace Controls.EwEGrid
         <Browsable(True), _
          Description("States whether the grid maintains a list of selected cProperty instances."), _
          DefaultValue(True)> _
-      Public Property TrackPropertySelection() As Boolean
+        Public Property TrackPropertySelection() As Boolean
             Get
                 Return Me.m_bTrackPropertySelection
             End Get
@@ -1134,7 +1136,7 @@ Namespace Controls.EwEGrid
                 ' Only process visible rows (#1012)
                 If Me.Rows(iRow).Visible Then
 
-                    If bHasRowData Then sbClipText.Append(vbCr + vbLf)
+                    If bHasRowData Then sbClipText.AppendLine()
 
                     bHasColData = False
                     For iCol As Integer = r.Start.Column To r.End.Column
@@ -1144,7 +1146,7 @@ Namespace Controls.EwEGrid
                             pos = New Position(iRow, iCol)
                             strValue = ""
 
-                            If bHasColData Then sbClipText.Append(vbTab)
+                            If bHasColData Then sbClipText.Append(cStringUtils.vbTab)
 
                             If (Me.Selection.Contains(pos) Or bIgnoreSelection) Then
                                 cell = Me(iRow, iCol)
@@ -1209,8 +1211,8 @@ Namespace Controls.EwEGrid
 
             If dtObj.GetDataPresent(DataFormats.Text, True) = False Then Return
 
-            Dim strData As String = CStr(dtObj.GetData(DataFormats.Text)).Replace(CStr(vbCr + vbLf), CStr(vbLf))
-            Dim astrLines() As String = strData.Split(New Char() {CChar(vbCr), CChar(vbLf)})
+            Dim strData As String = CStr(dtObj.GetData(DataFormats.Text)).Replace(cStringUtils.vbCrLf, cStringUtils.vbLf)
+            Dim astrLines() As String = strData.Split(New Char() {CChar(cStringUtils.vbCr), CChar(cStringUtils.vbLf)})
             Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing
             Dim cell As SourceGrid2.Cells.ICell = Nothing
@@ -1228,7 +1230,7 @@ Namespace Controls.EwEGrid
             Dim iDY As Integer = astrLines.Length
             Dim iDX As Integer = 0
             For Each strLine As String In astrLines
-                Dim astrBits As String() = strLine.Split(CChar(vbTab))
+                Dim astrBits As String() = strLine.Split(CChar(cStringUtils.vbTab))
                 iDX = Math.Max(iDX, astrBits.Length)
             Next
 
@@ -1238,7 +1240,7 @@ Namespace Controls.EwEGrid
             Dim bRepeatRow As Boolean = (r.ColumnsCount Mod iDX = 0) And (iDX > 1)
             Dim bRepeatCol As Boolean = (r.RowsCount Mod iDY = 0) And (iDY > 1)
             Dim iRowFrom As Integer = r.Start.Row
-            Dim iRowTo As Integer = Math.Min(CInt(IIf(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1)), Me.RowsCount - 1)
+            Dim iRowTo As Integer = Math.Min(IIf(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1), Me.RowsCount - 1)
             ' Restrict paste operation to the selection area when repeating data and/or when pasting into a range
             Dim bRestrictToSelection As Boolean = bRepeatRow Or bRepeatCol Or (r.RowsCount > 1) Or (r.ColumnsCount > 1)
 
@@ -1246,14 +1248,14 @@ Namespace Controls.EwEGrid
 
             Me.BeginBatchEdit()
 
-             For iRow As Integer = iRowFrom To iRowTo
+            For iRow As Integer = iRowFrom To iRowTo
 
                 ' Only process visible rows (#1012)
                 If Me.Rows(iRow).Visible Then
 
                     If Not String.IsNullOrEmpty(astrLines(iRowData)) Then
 
-                        Dim astrCols() As String = astrLines(iRowData).Split(CChar(vbTab))
+                        Dim astrCols() As String = astrLines(iRowData).Split(CChar(cStringUtils.vbTab))
                         Dim iColFrom As Integer = r.Start.Column
                         Dim iColTo As Integer = Math.Min(CInt(IIf(bRepeatCol, r.End.Column, r.Start.Column + astrCols.Length - 1)), Me.ColumnsCount - 1)
                         iColData = 0
@@ -1339,10 +1341,10 @@ Namespace Controls.EwEGrid
                 If Me.m_bTrackPropertySelection Then
 
                     ' Clean up
-                    Me.m_lpropertySelected.Clear()
-                    If e.EventType <> SelectionChangeEventType.Clear Then
+                    If (e.EventType = SelectionChangeEventType.Add) Then
 
                         ' Get properties from selected cells
+                        Me.m_lpropertySelected.Clear()
                         For Each p As Position In Me.Selection.GetCellsPositions
                             Try
                                 c = Me(p.Row, p.Column)

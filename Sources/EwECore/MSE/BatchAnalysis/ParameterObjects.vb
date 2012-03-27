@@ -23,6 +23,7 @@ Imports System.IO
 Imports EwECore.MSE
 Imports EwECore.MSEBatchManager
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 Namespace MSECommandFile
 
@@ -148,7 +149,7 @@ Namespace MSECommandFile
 
             Catch ex As Exception
                 Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
-                Me.SendMessage(vbTab & ex.Message)
+                Me.SendMessage(cStringUtils.vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
 
@@ -256,7 +257,7 @@ Namespace MSECommandFile
 
             Catch ex As Exception
                 Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
-                Me.SendMessage(vbTab & ex.Message)
+                Me.SendMessage(cStringUtils.vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
 
@@ -286,7 +287,8 @@ Namespace MSECommandFile
         End Sub
 
         Public Overrides Function Validate() As Boolean
-            If IsNumeric(Me.m_data) Then
+            Dim x As Double
+            If Double.TryParse(Me.m_data, x) Then
                 Return True
             End If
             Me.SendMessage("ERROR: invalid format for data '" & Me.m_DataTag & "'.")
@@ -371,7 +373,7 @@ Namespace MSECommandFile
             Dim ModelName As String = System.IO.Path.GetFileName(DirectCast(Me.Manager.Manager.Core.DataSource.Connection, Database.cEwEAccessDatabase).Name)
             If String.Compare(data, ModelName) <> 0 Then
                 Me.SendMessage("WARNING: Currently loaded EwE model is not the same as model in command file!")
-                '    Me.SendMessage(vbTab & "Currently loaded EwE model is not the same as model in command file!")
+                '    Me.SendMessage(CORE_TAB & "Currently loaded EwE model is not the same as model in command file!")
             End If
 
             Return True
@@ -819,7 +821,7 @@ Namespace MSECommandFile
 
             Catch ex As Exception
                 'Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
-                'Me.SendMessage(vbTab & ex.Message)
+                'Me.SendMessage(CORE_TAB & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
 
@@ -883,7 +885,7 @@ Namespace MSECommandFile
 
             Catch ex As Exception
                 Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
-                Me.SendMessage(vbTab & ex.Message)
+                Me.SendMessage(cStringUtils.vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
 
@@ -1177,7 +1179,7 @@ Namespace MSECommandFile
 
             Catch ex As Exception
                 Me.SendMessage("ERROR: reading tag '" & Me.m_DataTag & "' from command file.")
-                Me.SendMessage(vbTab & ex.Message)
+                Me.SendMessage(cStringUtils.vbTab & ex.Message)
                 System.Console.WriteLine(Me.ToString & ".Init() Exception: " & ex.Message)
             End Try
 
@@ -1204,7 +1206,7 @@ Namespace MSECommandFile
 
         Public Shared Function CanRead(ByVal ControlString As String) As Boolean
 
-            If InStr(ControlString, "_OUTPUT") <> 0 Then
+            If ControlString.Contains("_OUTPUT") Then
                 Return True
             End If
             Return False

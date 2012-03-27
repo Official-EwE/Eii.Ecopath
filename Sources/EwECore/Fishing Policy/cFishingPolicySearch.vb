@@ -608,7 +608,7 @@ Namespace FishingPolicy
                 mode = 1
                 maxfn = MaxNoOfIterations    '200
                 iprint = 1
-                For i = 1 To UBound(X) : Xm(i) = X(i) : Next
+                For i = 1 To X.Length - 1 : Xm(i) = X(i) : Next
                 '      iprintresid = 0
 
                 Estfn = FUNC(X, n)

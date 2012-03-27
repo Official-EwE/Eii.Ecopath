@@ -68,6 +68,8 @@ Public Class cIBMSolver
     Public threadTime2 As Single
     Public threadTimeMove As Single
 
+    Private m_rand As Random
+
 
     Public Sub Init()
 
@@ -99,8 +101,8 @@ Public Class cIBMSolver
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
         isOkToRun = False
-        Dim timeTemp As Single = Microsoft.VisualBasic.Timer
-        Dim timeTemp2 As Single
+        'Dim timeTemp As Single = Microsoft.VisualBasic.Timer
+        '  Dim timeTemp2 As Single
         Try
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             SignalState.Reset()
@@ -110,16 +112,16 @@ Public Class cIBMSolver
             For iPacket = iFirstPacket To iLastPacket
                 'now do the computations
                 'GrowSurvivePackets(iGrp) 'this is called outside now
-                timeTemp2 = timeTemp2 - Microsoft.VisualBasic.Timer
+                'timeTemp2 = timeTemp2 - Microsoft.VisualBasic.Timer
                 MovePackets(iPacket)
-                timeTemp2 = timeTemp2 + Microsoft.VisualBasic.Timer
+                'timeTemp2 = timeTemp2 + Microsoft.VisualBasic.Timer
                 UpDateBcellIBM(iPacket)
             Next iPacket
 
             'thread has finished it is ok to run this again
             isOkToRun = True
-            threadTime2 = threadTime2 + Microsoft.VisualBasic.Timer - timeTemp
-            threadTimeMove = threadTimeMove + timeTemp2
+            'threadTime2 = threadTime2 + Microsoft.VisualBasic.Timer - timeTemp
+            'threadTimeMove = threadTimeMove + timeTemp2
             'set signal state to 'signaled' 
             'the processing has finished SignalState.WaitOne() will return immediately
             SignalState.Set()
@@ -149,7 +151,7 @@ Public Class cIBMSolver
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
         isOkToRun = False
-        Dim timeTemp As Single = Microsoft.VisualBasic.Timer
+        'Dim timeTemp As Single = Microsoft.VisualBasic.Timer
         Try
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             SignalState.Reset()
@@ -163,7 +165,7 @@ Public Class cIBMSolver
 
             'thread has finished it is ok to run this again
             isOkToRun = True
-            threadTime1 = threadTime1 + Microsoft.VisualBasic.Timer - timeTemp
+            'threadTime1 = threadTime1 + Microsoft.VisualBasic.Timer - timeTemp
             'set signal state to 'signaled' 
             'the processing has finished SignalState.WaitOne() will return immediately
             SignalState.Set()
@@ -215,13 +217,13 @@ Public Class cIBMSolver
                         'as they enter the next stanza group
                         If Math.Abs(ia - m_Stanza.Age1(isp, ist)) < 2 Then
 
-                            i = Int(Me.m_Stanza.iPacket(isp, iaa, ip))
-                            j = Int(Me.m_Stanza.jPacket(isp, iaa, ip))
+                            i = Math.Truncate(Me.m_Stanza.iPacket(isp, iaa, ip))
+                            j = Math.Truncate(Me.m_Stanza.jPacket(isp, iaa, ip))
 
                             If HabIsOk(ieco, i, j) = False And Me.m_Data.ItoUse(isp, ist, i, j) <> 0 Then
                                 'System.Console.WriteLine("Moving Stanza " & isp.ToString & " Group " & ist.ToString & " To " & Me.m_Data.ItoUse(isp, ist, i, j).ToString & "," & Me.m_Data.JtoUse(isp, ist, i, j).ToString)
-                                Me.m_Stanza.iPacket(isp, iaa, ip) = Me.m_Data.ItoUse(isp, ist, i, j) + Rnd()
-                                Me.m_Stanza.jPacket(isp, iaa, ip) = Me.m_Data.JtoUse(isp, ist, i, j) + Rnd()
+                                Me.m_Stanza.iPacket(isp, iaa, ip) = Me.m_Data.ItoUse(isp, ist, i, j) + Me.m_rand.NextDouble
+                                Me.m_Stanza.jPacket(isp, iaa, ip) = Me.m_Data.JtoUse(isp, ist, i, j) + Me.m_rand.NextDouble
                             End If
 
                         End If 'Math.Abs(ia - m_Stanza.Age1(isp, ist)) < 2
@@ -230,7 +232,7 @@ Public Class cIBMSolver
                     Mrat = m_Data.Mrate(ieco)
                     Dmove = m_Stanza.IBMdistmove(isp, ia)
                     dAllow = Dmove + 0.0001
-                    i = Int(m_Stanza.iPacket(isp, iaa, ip)) : j = Int(m_Stanza.jPacket(isp, iaa, ip))
+                    i = Math.Truncate(m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(m_Stanza.jPacket(isp, iaa, ip))
 
                     If m_Data.HabCap(i, j, ieco) > 0.1 And m_Data.Depth(i, j) > 0 Then
                         Nmoves = m_Stanza.IBMMovesPerMonth(ieco)
@@ -241,7 +243,7 @@ Public Class cIBMSolver
                     For imm = 1 To Nmoves
                         'For ip = 1 To m_Stanza.Npackets
                         'use rapid movement if packet is initially in unfavorable habitat
-                        i = Int(m_Stanza.iPacket(isp, iaa, ip)) : j = Int(m_Stanza.jPacket(isp, iaa, ip))
+                        i = Math.Truncate(m_Stanza.iPacket(isp, iaa, ip)) : j = Math.Truncate(m_Stanza.jPacket(isp, iaa, ip))
                         aa = Bcw(i + 1, j, ieco) 'south move
                         bb = C(i - 1, j, ieco) 'north move
                         cc = d(i, j, ieco) 'east move
@@ -279,7 +281,7 @@ Public Class cIBMSolver
         bb = bb + aa '+ 0.0000000001
         cc = cc + bb '+ 0.0000000001
         dd = dd + cc '+ 0.0000000001
-        Dim randMove As Single = Rnd() * dd
+        Dim randMove As Single = Me.m_rand.NextDouble * dd
         'Tns = aa + bb + 0.0000000001 : Tew = cc + dd + 0.0000000001
         If randMove < aa Then 'move south
             'If ieco = 2 And (m_Stanza.iPacket(isp, ia, ip) > 2.0 And m_Stanza.iPacket(isp, ia, ip) < 3.0) Then
@@ -353,8 +355,8 @@ Public Class cIBMSolver
                 ieco = m_Stanza.EcopathCode(isp, ist)
                 'loop over packets within this age and update numbers,wt dependent on current cell position
                 For ip = 1 To m_Stanza.Npackets
-                    i = Int(m_Stanza.iPacket(isp, iaa, ip))
-                    j = Int(m_Stanza.jPacket(isp, iaa, ip))
+                    i = Math.Truncate(m_Stanza.iPacket(isp, iaa, ip))
+                    j = Math.Truncate(m_Stanza.jPacket(isp, iaa, ip))
                     Su = Math.Exp(-m_Stanza.Zcell(i, j, ieco) / 12.0#) 'mortality
                     Gf = Cper(i, j, ieco) '(month factor here included in splitalpha scaling setup)
 
@@ -406,12 +408,12 @@ Public Class cIBMSolver
                         Te(i, j) = XeT 'cumulative probability distribution
                     Next : Next
                 For ip = 1 To m_Stanza.Npackets
-                    Xe = Rnd() * XeT 'Be
+                    Xe = Me.m_rand.NextDouble * XeT 'Be
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
                             If Xe < Te(i, j) Then
-                                m_Stanza.iPacket(isp, ia1, ip) = i + Rnd()
-                                m_Stanza.jPacket(isp, ia1, ip) = j + Rnd()
+                                m_Stanza.iPacket(isp, ia1, ip) = i + Me.m_rand.NextDouble
+                                m_Stanza.jPacket(isp, ia1, ip) = j + Me.m_rand.NextDouble
                                 Exit For 'have found the packet position
                             End If
                         Next
@@ -421,9 +423,9 @@ Public Class cIBMSolver
             Else
                 'simple model for random distribution of packets over nursery cells for the species
                 For ip = 1 To m_Stanza.Npackets
-                    iNurse = 1 + Rnd() * (m_Stanza.Nnursery(isp) - 1)
-                    m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Rnd()
-                    m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Rnd()
+                    iNurse = 1 + Me.m_rand.NextDouble * (m_Stanza.Nnursery(isp) - 1)
+                    m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Me.m_rand.NextDouble
+                    m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble
                 Next
             End If
         End If
@@ -445,8 +447,8 @@ Public Class cIBMSolver
                     ia = m_Stanza.AgeIndex1(isp) + iaa : If ia > m_Stanza.MaxAgeSpecies(isp) Then ia = ia - m_Stanza.MaxAgeSpecies(isp) - 1
                     ist = m_Stanza.StanzaNo(isp, ia)
                     ieco = m_Stanza.EcopathCode(isp, ist)
-                    i = Int(m_Stanza.iPacket(isp, iaa, ip))
-                    j = Int(m_Stanza.jPacket(isp, iaa, ip))
+                    i = Math.Truncate(m_Stanza.iPacket(isp, iaa, ip))
+                    j = Math.Truncate(m_Stanza.jPacket(isp, iaa, ip))
 
                     'do the updating
                     BcellThread(i, j, ieco) = BcellThread(i, j, ieco) + m_Stanza.Npacket(isp, iaa, ip) * m_Stanza.Wpacket(isp, iaa, ip)
@@ -472,5 +474,6 @@ Public Class cIBMSolver
     Public Sub New(ByVal ThreadNumber As Integer)
         isOkToRun = True
         ThreadID = ThreadNumber
+        Me.m_rand = New Random
     End Sub
 End Class

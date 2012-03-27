@@ -334,7 +334,7 @@ Public Class cCoreStateMonitor
 #Region " Data "
 
     Friend Sub UpdateDataState(ByVal ds As IEwEDataSource, _
-                               Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
+                               Optional ByVal tsSendUpdate As EwEUtils.Core.TriState = TriState.UseDefault)
 
         Dim bDatasourceModified As Boolean = False
         Dim bEcopathModified As Boolean = False

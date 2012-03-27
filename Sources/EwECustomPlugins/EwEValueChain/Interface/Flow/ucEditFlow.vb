@@ -21,6 +21,7 @@ Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports ScientificInterfaceShared.Controls
+Imports EwECore
 
 #End Region ' Imports
 
@@ -95,7 +96,7 @@ Public Class ucEditFlow
     Private Sub m_tsmiExportToImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsmiExportToImage.Click
 
-        MsgBox("Image save functionality not yet implemented")
+        Debug.Assert(False, "Image save functionality not yet implemented")
 
     End Sub
 
@@ -189,10 +190,14 @@ Public Class ucEditFlow
 
     Private Sub OnArrangeLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbArrange.Click
-        If MsgBox("Are you sure you want to arrange the diagram layout?", MsgBoxStyle.Question Or MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
-            Me.m_plFlow.Arrange()
-        End If
+
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_AUTOLAYOUT, EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+        Me.m_uic.Core.Messages.SendMessage(fmsg)
+        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return
+
+        Me.m_plFlow.Arrange()
         Me.UpdateControls()
+
     End Sub
 
     Private Sub OnShowGrid(ByVal sender As System.Object, ByVal e As System.EventArgs) _

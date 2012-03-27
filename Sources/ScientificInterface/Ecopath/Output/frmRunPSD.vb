@@ -275,7 +275,7 @@ Namespace Ecopath.Output
             'pane.XAxis.Title.FontSpec.Size = 14
             'pane.YAxis.Title.FontSpec.Size = 14
 
-            pane.XAxis.Scale.Min = Int(Math.Log10(parms.FirstWeightClass))
+            pane.XAxis.Scale.Min = CInt(Math.Log10(parms.FirstWeightClass))
             pane.XAxis.Scale.Max = Math.Round(Math.Log10(parms.FirstWeightClass * 2 ^ (Me.Core.nWeightClasses - 1)) + 0.4, 0, MidpointRounding.AwayFromZero)
             pane.YAxis.Scale.Min = 0
 
@@ -330,12 +330,12 @@ Namespace Ecopath.Output
             If iSampleSize = 2 Then
                 'Without std err
                 strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_WO_STDERR, sg.FormatNumber(sSlope), _
-                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sCorrelation) & vbCrLf, _
+                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sCorrelation) & cStringUtils.vbCrLf, _
                                     sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
             Else
                 'With std err
                 strLabel = String.Format(My.Resources.PSD_GRAPH_REGRESSION_LABEL_W_STDERR, sg.FormatNumber(sSlope), sg.FormatNumber(sSlopeStdErr), _
-                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & vbCrLf, _
+                                    sg.FormatNumber(sIntercept), sg.FormatNumber(sInterceptStdErr), sg.FormatNumber(sCorrelation) & cStringUtils.vbCrLf, _
                                     sg.FormatNumber(sLowWtClass), sg.FormatNumber(sHighWtClass), sg.FormatNumber(iSampleSize))
             End If
             Me.AddCurveToGraphPane(pane, resultLists(1), strLabel, Color.Black)

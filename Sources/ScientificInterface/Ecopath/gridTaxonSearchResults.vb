@@ -21,8 +21,7 @@ Option Strict On
 
 Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 

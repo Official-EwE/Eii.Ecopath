@@ -19,10 +19,8 @@
 
 Option Strict On
 Imports EwECore
-Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
-Imports Microsoft.VisualBasic
 
 #End Region ' Imports
 

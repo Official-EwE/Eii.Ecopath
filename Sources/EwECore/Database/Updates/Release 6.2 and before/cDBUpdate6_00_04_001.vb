@@ -80,7 +80,7 @@ Friend Class cDBUpdate6_00_04_0001
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Fixes stanza life stage vbK issue." + vbNewLine + "Added Ecopath Area"
+            Return "Fixes stanza life stage vbK issue." + Environment.NewLine + "Added Ecopath Area"
         End Get
     End Property
 

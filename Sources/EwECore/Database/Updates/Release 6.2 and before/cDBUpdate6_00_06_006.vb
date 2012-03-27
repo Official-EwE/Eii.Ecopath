@@ -60,7 +60,7 @@ Friend Class cDBUpdate6_00_06_006
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecosim temperature fields." & vbNewLine & "Add forcing function application types."
+            Return "Added Ecosim temperature fields." & Environment.NewLine & "Add forcing function application types."
         End Get
     End Property
 

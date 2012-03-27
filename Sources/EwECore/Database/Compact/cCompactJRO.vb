@@ -161,7 +161,8 @@ Namespace Database
                             Dim sb As New StringBuilder()
 
                             For i As Integer = 0 To abData.Length - 1
-                                sb.Append(Chr(i))
+                                'sb.Append(Chr(i))
+                                sb.Append(Convert.ToChar(i))
                             Next
                             strFile = sb.ToString().ToLower
 

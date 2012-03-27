@@ -137,6 +137,7 @@ Public Class cEcosimMonteCarlo
 
     Dim m_ouputWriter As cMonteCarloResultsWriter
 
+    Private m_rand As Random
 
     Public Sub New(ByRef theCore As cCore)
 
@@ -151,6 +152,8 @@ Public Class cEcosimMonteCarlo
         m_tracerData = m_ecosim.TracerData
 
         Ntrials = 20 'default number of trials
+
+        m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
 
         Me.m_ouputWriter = New cMonteCarloResultsWriter(Me, Me.m_core)
 
@@ -261,9 +264,6 @@ Public Class cEcosimMonteCarlo
 
             ReDim isCrashed(m_core.nGroups)
             ReDim isExploded(m_core.nGroups)
-
-            'seed the random number generator
-            Randomize()
 
             m_ecosim.Init(True)
 
@@ -882,7 +882,7 @@ Public Class cEcosimMonteCarlo
     Private Function RandomNormal() As Single
         Dim i As Integer, X As Single
         X = -6
-        For i = 1 To 12 : X = X + Rnd() : Next
+        For i = 1 To 12 : X = X + CSng(Me.m_rand.NextDouble()) : Next
         Return X
     End Function
 

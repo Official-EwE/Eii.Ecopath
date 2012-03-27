@@ -19,9 +19,10 @@
 
 Option Strict On
 Imports EwECore
-Imports ScientificInterfaceShared.Definitions
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -602,7 +603,7 @@ Namespace Controls
         Protected Overridable Sub SketchpadDisplayAllData(ByVal bShowAll As Boolean)
             Me.m_bShowAll = bShowAll
             If (Me.SketchPad IsNot Nothing) Then
-                Me.SketchPad.XAxisMaxValue = CInt(IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataPoints * cCore.N_MONTHS))
+                Me.SketchPad.XAxisMaxValue = IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataPoints * cCore.N_MONTHS)
             End If
         End Sub
 
@@ -617,7 +618,9 @@ Namespace Controls
             If (ashapes Is Nothing) Then Return
             If (ashapes.Length = 0) Then Return
 
-            strValue = Interaction.InputBox(strMessage, strCaption, strDefault)
+            Dim box As New frmInputBox()
+            If (box.Show(strMessage, strCaption, strDefault) <> DialogResult.OK) Then Return
+            strValue = box.Value
 
             'User clicks OK
             If Not String.IsNullOrEmpty(strValue) Then

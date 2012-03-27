@@ -103,12 +103,14 @@ Public Class cEcospaceImportExportXYData
             Me.Fields = astrFields
 
             iCell = 0
+            Dim val As Single
             While (tr.Peek() <> -1) And (iCell < Me.NumCells)
                 strLine = tr.ReadLine()
                 astrValues = strLine.Split(","c)
 
                 For iField = 0 To astrFields.Length - 1
-                    Me.Value(iCell, astrFields(iField)) = CSng(Val(astrValues(iField)))
+                    Single.TryParse(astrValues(iField), val)
+                    Me.Value(iCell, astrFields(iField)) = val
                 Next
                 ' Next
                 iCell += 1

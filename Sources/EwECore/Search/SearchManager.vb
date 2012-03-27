@@ -367,7 +367,8 @@ Public MustInherit Class cThreadWaitBase
         Do
             n += 1
 
-            Windows.Forms.Application.DoEvents()
+            'remove for Mono compatibilty
+            ' Windows.Forms.Application.DoEvents()
 
             'WaitOne() will return False if it timed out, the process has not completed
             'True if the wait was completed or there was no wait 

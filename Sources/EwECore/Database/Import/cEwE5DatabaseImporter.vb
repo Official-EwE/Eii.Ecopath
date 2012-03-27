@@ -249,11 +249,11 @@ Namespace Database
 
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FLEET)
             Me.ImportGear()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH)
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 1/3")
             Me.ImportCatch()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH)
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 2/3")
             Me.ImportCatchCodes()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH)
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 3/3")
             Me.ImportDiscardFate()
 
             ' Discontinued in EwE6, but throw a warning when EwE5 data exists
@@ -274,11 +274,11 @@ Namespace Database
 
                 Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGMEDIATION)
                 Me.ImportEcosimnShapes()
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS)
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 1/3")
                 Me.ImportEcosimNxNInteraction()
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS)
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 2/3")
                 Me.ImportEcosimNxN()
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS)
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 3/3")
                 Me.ImportEcosimMedWeights()
 
                 ' Discontinued in EwE6, but still throw a warning
@@ -405,7 +405,13 @@ Namespace Database
                 Dim iSecond As Integer = strMemo.IndexOf(CChar("."), iFirst + 1)
                 ' Take calculated number string length if two decimal points found. If this fails,
                 ' take the default number string length provided as a parameter
-                Dim iNumLen As Integer = CInt(IIf(iFirst = -1 Or iSecond = -1, nDefaultNumberLen, iSecond - iFirst))
+                'Dim iNumLen As Integer = CInt(IIf(iFirst = -1 Or iSecond = -1, nDefaultNumberLen, iSecond - iFirst))
+                Dim iNumLen As Integer
+                If iFirst = -1 Or iSecond = -1 Then
+                    iNumLen = nDefaultNumberLen
+                Else
+                    iNumLen = iSecond - iFirst
+                End If
                 ' Calculate the total of number strings in the memo string, rounded up
                 Dim iNumBits As Integer = CInt(Math.Ceiling(strMemo.Length / iNumLen))
 
@@ -512,10 +518,17 @@ Namespace Database
                 ' Is this a character from the match set?
                 If (strMatch.IndexOf(cTest) >= 0) Then
                     ' #Yes: Add 1 or 0, depending on bMatchAsOne flag value
-                    iBitFlags += CInt(IIf(bMatchAsOne, 1, 0))
+                    'CInt(IIf(bMatchAsOne, 1, 0))
+                    If bMatchAsOne Then
+                        iBitFlags += 1
+                    End If
                 Else
                     ' #No: Add 0 or 1, depending on bMatchAsOne flag value
-                    iBitFlags += CInt(IIf(bMatchAsOne, 0, 1))
+                    ' iBitFlags += CInt(IIf(bMatchAsOne, 0, 1))
+                    If bMatchAsOne Then
+                        iBitFlags += 1
+                    End If
+
                 End If
             Next
             Return iBitFlags
@@ -1011,7 +1024,12 @@ Namespace Database
                             sTemp), _
                             eMessageType.DataImport, eMessageImportance.Information, True)
                 End If
-                drow("Unassim") = CSng(IIf(sTemp > 1, sTemp / 100.0, sTemp))
+                ' drow("Unassim") = CSng(IIf(sTemp > 1, sTemp / 100.0, sTemp))
+                If sTemp > 1 Then
+                    drow("Unassim") = CSng(sTemp / 100.0)
+                Else
+                    drow("Unassim") = CSng(sTemp)
+                End If
                 ' -- end validate --'
                 drow("Unassim") = Me.FixValue(reader, "Unassim")
                 drow("DtImports") = Me.FixValue(reader, "DtImports")
@@ -3272,7 +3290,12 @@ Namespace Database
                 sbMPA = New StringBuilder()
                 For i As Integer = 0 To Math.Min(strMPA.Length, 12) - 1
                     ' Closed for fishing: store as 0, open: store as 1
-                    sbMPA.Append(CChar(IIf("Cc".IndexOf(strMPA(i)) >= 0, "0", "1")))
+                    'sbMPA.Append(CChar(IIf("Cc".IndexOf(strMPA(i)) >= 0, "0", "1")))
+                    If "Cc".IndexOf(strMPA(i)) >= 0 Then
+                        sbMPA.Append(CChar("0"))
+                    Else
+                        sbMPA.Append(CChar("1"))
+                    End If
                 Next
                 drow("MPAMonth") = sbMPA.ToString()
                 writer.AddRow(drow)

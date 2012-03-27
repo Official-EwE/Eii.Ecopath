@@ -718,20 +718,24 @@ Namespace Ecospace
                 End If
             Next iHabitat
 
-            If Me.m_alHabitatsRemoved.Count > 5 Then
+            If (Me.m_alHabitatsRemoved.Count > 5) Then
 
                 strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT, Me.m_alHabitatsRemoved.Count)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Cancel
+                Select Case fmsg.Reply
+                    Case cFeedbackMessage.eReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case MsgBoxResult.Yes
+                    Case cFeedbackMessage.eReply.YES
                         ' Confirm all regions
                         For Each hi In Me.m_alHabitatsRemoved
                             hi.Confirmed = True
                         Next
                         bConfigurationChanged = True
+                    Case cFeedbackMessage.eReply.NO
+                        ' NOP
                     Case Else
                         ' Unexpected anwer: assert
                         Debug.Assert(False)
@@ -744,15 +748,17 @@ Namespace Ecospace
                     If (Not hi.IsNew()) Then
 
                         strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, hi.Name)
+                        Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                        Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                        Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                            Case MsgBoxResult.Cancel
+                        Select Case fmsg.Reply
+                            Case cFeedbackMessage.eReply.CANCEL
                                 ' Abort Apply process
                                 Return False
-                            Case MsgBoxResult.No
+                            Case cFeedbackMessage.eReply.NO
                                 ' Do not delete this Habitat
                                 hi.Confirmed = False
-                            Case MsgBoxResult.Yes
+                            Case cFeedbackMessage.eReply.YES
                                 ' Delete this Habitat
                                 hi.Confirmed = True
                                 bConfigurationChanged = True

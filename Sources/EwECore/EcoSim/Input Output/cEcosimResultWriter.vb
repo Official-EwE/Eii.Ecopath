@@ -53,12 +53,15 @@ Namespace Ecosim
             Value
         End Enum
 
+        Private m_delimiter As String
+
 #End Region ' Private vars
 
 #Region " Public interfaces "
 
         Public Sub New(ByVal core As cCore)
             Me.m_core = core
+            Me.m_delimiter = Convert.ToChar(34).ToString
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -210,7 +213,7 @@ Namespace Ecosim
                                     iNumPred += 1
                                 End If
                             Next
-                            strDataDetails = "Data, " & Chr(34) & resulttype.ToString & " of " & grpOutput.Name & Chr(34)
+                            strDataDetails = "Data, " & Me.m_delimiter & resulttype.ToString & " of " & grpOutput.Name & Me.m_delimiter
 
                             bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                                       bSaveAnnual, predData, _
@@ -249,7 +252,7 @@ Namespace Ecosim
                                 End If
                             Next
 
-                            strDataDetails = "Data, " & Chr(34) & resulttype.ToString & " of " & grpOutput.Name & Chr(34)
+                            strDataDetails = "Data, " & Me.m_delimiter & resulttype.ToString & " of " & grpOutput.Name & Me.m_delimiter
                             bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                   bSaveAnnual, preyData, _
                                                   strModelDetails, strDataDetails, preyNames.ToString)
@@ -396,7 +399,7 @@ Namespace Ecosim
             ' Append time series name to scenario, if any
             sb.Append("TimeSeries,")
             If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-                sb.Append(Chr(34) & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Chr(34))
+                sb.Append(Me.m_delimiter & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Me.m_delimiter)
             Else
                 sb.Append("(none)")
             End If

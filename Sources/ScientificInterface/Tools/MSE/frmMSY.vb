@@ -85,9 +85,9 @@ Public Class frmMSY
             Me.btStop.Enabled = False
 
             Dim sb As New StringBuilder()
-            sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_HEADER, vbTab))
+            sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_HEADER, cStringUtils.vbTab))
             For i As Integer = 1 To Me.UIContext.Core.nFleets
-                sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_LINE, vbTab, i, Me.StyleGuide.FormatNumber(MSY(i))))
+                sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_LINE, cStringUtils.vbTab, i, Me.StyleGuide.FormatNumber(MSY(i))))
             Next
             Me.txtMSYresults.Text = sb.ToString
         End If
@@ -127,7 +127,7 @@ Public Class frmMSY
             Me.m_mse.FleetTradeoffs()
             Me.m_mse.Disconnect()
 
-            MsgBox(SharedResources.GENERIC_LABEL_FINISHED)
+            MessageBox.Show(SharedResources.GENERIC_LABEL_FINISHED)
 
         Catch ex As Exception
 

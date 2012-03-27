@@ -16,6 +16,7 @@
 ' ===============================================================================
 '
 Option Strict On
+Option Explicit On
 Imports System.IO
 Imports System.xml
 Imports EwEUtils.Utilities
@@ -162,7 +163,10 @@ Public Class cXMLLogWriter
     ''' If no doc tag is found this will leave the file cursor at the end of the file for appending the new data.</remarks>
     Private Sub FindDocumentEnd()
         Dim ipos As Integer
-        Dim curByte(1) As Byte, byteToFind As Byte = Asc("/")
+        Dim curByte(1) As Byte
+        Dim x As String = "/"
+        'Convert.ToByte("/")
+        Dim byteToFind As Byte = System.Text.Encoding.ASCII.GetBytes(x.ToCharArray(), 0, 1)(0)
         Dim tagbuff As String
 
         Try
@@ -188,13 +192,14 @@ Public Class cXMLLogWriter
                     'end of the file before finding the end tag??????
                     Exit Do
                 End If
-                tagbuff = tagbuff + Chr(curByte(0))
+                tagbuff = tagbuff + Convert.ToChar(curByte(0))
                 '    System.Console.Write(Chr(curByte(0)) & ", " & m_filestream.Position & ", ")
             Loop
 
             'make sure the tag we found is the </doc> tag 
             'tagbuff is backwards!
-            If InStr(tagbuff.ToLower, ">cod/", CompareMethod.Text) > 0 Then
+            If tagbuff.ToLower.Contains(">cod/") Then
+                'If InStr(tagbuff.ToLower, ">cod/", CompareMethod.Text) > 0 Then
                 m_filestream.Seek(ipos - 1, SeekOrigin.End)
             Else
                 'not the correct tag so just append to the end of the file
@@ -219,7 +224,8 @@ Public Class cXMLLogWriter
         Dim flength As Long = m_filestream.Length
 
         tagbuff = ""
-        Do While InStr(tagbuff.ToLower, TagToFind, CompareMethod.Text) <= 0
+        Do While String.Compare(tagbuff.ToLower, TagToFind, ignoreCase:=True) <= 0
+            'Do While InStr(tagbuff.ToLower, TagToFind, CompareMethod.Text) <= 0
             iPos -= 1
             If iPos <= -flength Then
                 bEndFound = False
@@ -231,7 +237,7 @@ Public Class cXMLLogWriter
                 bEndFound = False
                 Exit Do
             End If
-            tagbuff = tagbuff + Chr(curByte(0))
+            tagbuff = tagbuff + Convert.ToChar(curByte(0))
         Loop
 
         If bEndFound Then
@@ -248,7 +254,7 @@ Public Class cXMLLogWriter
 
     Public Overrides Sub WriteEndDocument()
 
-        m_XMLwriter.WriteRaw(ControlChars.CrLf)
+        m_XMLwriter.WriteRaw(Environment.NewLine)
         m_XMLwriter.WriteRaw(m_endDocXmlTag)
 
     End Sub

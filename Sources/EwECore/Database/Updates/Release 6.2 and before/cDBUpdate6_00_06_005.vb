@@ -61,7 +61,7 @@ Friend Class cDBUpdate6_00_06_005
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Moved Fleet size dynamics data to Ecosim tables." & vbNewLine & "Added Ecopath year"
+            Return "Moved Fleet size dynamics data to Ecosim tables." & Environment.NewLine & "Added Ecopath year"
         End Get
     End Property
 

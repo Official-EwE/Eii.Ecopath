@@ -22,9 +22,8 @@ Option Strict On
 Imports EwECore
 Imports EwECore.FitToTimeSeries
 Imports EwEUtils.Commands
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -435,7 +434,7 @@ Namespace Ecosim
             Dim iBlock As Integer = 1
             Dim ts As cTimeSeries = Nothing
             Dim gts As cGroupTimeSeries = Nothing
-            Dim abUseBlock(core.nGroups) As Boolean
+            Dim abUseBlock(Core.nGroups) As Boolean
 
             Me.Core.CheckResetDefaultVulnerabilities()
 
@@ -667,7 +666,7 @@ Namespace Ecosim
         ''' <param name="bAppend"></param>
         ''' -------------------------------------------------------------------
         Private Sub LogProgress(ByVal strEntry As String, Optional ByVal bAppend As Boolean = True)
-            Dim strLog As String = strEntry & vbNewLine & Me.m_tbResults.Text
+            Dim strLog As String = strEntry & cStringUtils.vbNewline & Me.m_tbResults.Text
             Me.m_tbResults.Text = strLog
         End Sub
 

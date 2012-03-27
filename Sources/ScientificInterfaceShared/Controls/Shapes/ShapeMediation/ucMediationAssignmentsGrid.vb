@@ -20,11 +20,11 @@
 Option Strict On
 
 Imports EwECore
-Imports SourceGrid2
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -219,7 +219,7 @@ Namespace Controls
 #Region " Internals "
 
         Private Function WeightCol() As Integer
-            Return CInt(IIf(Me.m_bLandings, 2, 1))
+            Return IIf(Me.m_bLandings, 2, 1)
         End Function
 
         ''' -------------------------------------------------------------------

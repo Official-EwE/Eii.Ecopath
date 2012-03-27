@@ -59,7 +59,7 @@ Friend Class cDBUpdate6_00_04_021
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecosim group max fishing mortality." & vbNewLine & "Split salinity fields."
+            Return "Added Ecosim group max fishing mortality." & Environment.NewLine & "Split salinity fields."
         End Get
     End Property
 

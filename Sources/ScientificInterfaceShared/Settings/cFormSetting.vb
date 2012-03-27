@@ -18,14 +18,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Text
-Imports System.Windows.Forms
-Imports System.Collections.Specialized
-Imports ScientificInterfaceShared.Forms
-Imports System.Web
-Imports EwEUtils.Utilities
-Imports EwECore
 Imports System.Xml
+Imports EwECore
+Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI
 
 #End Region ' Imports

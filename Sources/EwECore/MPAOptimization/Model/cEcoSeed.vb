@@ -853,8 +853,8 @@ Namespace EcoSeed
             If SeedLeft = False Then
                 'And TargetSumMax <= 0 Then 'VESSELS CANT MAKE ANY MONEY
                 'MsgBox "The Ecoseed routine can no longer add MPA cells:" _
-                '& vbNewLine + "the rent(s) for all fishery(ies) are =< 0." _
-                '& vbNewLine + "The Ecospace routine will now continue without Ecoseed.", vbInformation + vbOKOnly
+                '& Environment.NewLine  + "the rent(s) for all fishery(ies) are =< 0." _
+                '& Environment.NewLine  + "The Ecospace routine will now continue without Ecoseed.", vbInformation + vbOKOnly
                 EcoSeedOn = False
                 MPAstep = m_SpaceData.InRow * m_SpaceData.InCol + 1
             End If

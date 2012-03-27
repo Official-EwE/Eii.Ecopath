@@ -246,7 +246,8 @@ Public Class cMatrixCalc
             'Lo = LBound(A, 1)
             'jb in EwE5 lo boundary of the arrays was set to 1 we can not do that here so hard wire this value
             Lo = 1
-            Up = UBound(A, 1)
+            'Up = UBound(A, 1)
+            Up = A.GetUpperBound(0)
             ReDim X(Up)
             ReDim rpvt(Up)
             ReDim cpvt(Up)
@@ -259,7 +260,7 @@ Public Class cMatrixCalc
             End If
             'check dimensions of b
             'If (Lo <> LBound(B)) Or (Up <> UBound(B)) Then Error 197
-            If (Up <> UBound(B)) Then
+            If (Up <> B.Length - 1) Then
                 Debug.Assert(False)
                 Return 197
             End If
@@ -329,7 +330,9 @@ Public Class cMatrixCalc
 
         Try
             'Checks if A is square, returns error code if not
-            If Up <> UBound(A, 2) Then
+            'If Up <> UBound(A, 2) Then
+            If Up <> A.GetUpperBound(1) Then
+
                 'If Not (Lo = LBound(A, 2) And Up = UBound(A, 2)) Then
 
                 Debug.Assert(False)

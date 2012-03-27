@@ -898,10 +898,9 @@ Public Class AppLauncher
                 End If
             End If
 
-
             ' Egg!
             If (e.KeyCode = Keys.F12) Then
-                MsgBox("Blub", MsgBoxStyle.Exclamation)
+                MessageBox.Show("Blub", Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             End If
 
             ' Egg!
@@ -1822,8 +1821,8 @@ Public Class AppLauncher
             My.Settings.LastSelectedDirectory = Path.GetDirectoryName(strFileName)
             Return True
         Else
-            Dim message As String = String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName)
-            MessageBox.Show(Me, message, Me.Text, MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Dim msg As New cMessage(String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Critical)
+            Me.Core.Messages.SendMessage(msg)
             Return False
         End If
 
@@ -3152,16 +3151,17 @@ Public Class AppLauncher
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
             ' Overwriting?
             If dlg.Scenario IsNot Nothing Then
-                ' Prompt for overwrite confirmation
-                If MessageBox.Show(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), _
-                        My.Resources.SCENARIO_CONFIRMOVERWRITE_CAPTION, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                ' #Yes: prompt for overwrite confirmation
+                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                Me.Core.Messages.SendMessage(fmsg)
 
+                If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
                     ' #Overwrite
                     cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName))
                     Try
                         Me.Core.SaveEcosimScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                     Catch ex As Exception
-
+                        cLog.Write(ex, "AppLauncher::SaveEcosimScenarioAs")
                     End Try
                     cApplicationStatusNotifier.EndProgress(Me.Core)
 
@@ -3393,15 +3393,17 @@ Public Class AppLauncher
                 ' About to overwrite?
                 If (Not Object.ReferenceEquals(scenarioTarget, Nothing)) Then
                     ' #Yes: prompt for overwrite confirmation
-                    If MessageBox.Show(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), _
-                            My.Resources.SCENARIO_CONFIRMOVERWRITE_CAPTION, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                    Me.Core.Messages.SendMessage(fmsg)
+
+                    If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
 
                         ' #Overwrite
                         cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_SAVING, dlg.ScenarioName))
                         Try
                             Me.Core.SaveEcospaceScenarioAs(dlg.ScenarioName, dlg.ScenarioDescription)
                         Catch ex As Exception
-
+                            cLog.Write(ex, "AppLauncher::SaveEcopaceScenarioAs")
                         End Try
                         cApplicationStatusNotifier.EndProgress(Me.Core)
 
@@ -3669,15 +3671,19 @@ Public Class AppLauncher
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
             ' Overwriting?
             If (dlg.Scenario IsNot Nothing) Then
-                ' Prompt for overwrite confirmation
-                If MessageBox.Show(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), _
-                        My.Resources.SCENARIO_CONFIRMOVERWRITE_CAPTION, MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                ' #Yes: prompt for overwrite confirmation
+                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                Me.Core.Messages.SendMessage(fmsg)
 
+                If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
                     ' #Overwrite
                     cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_SAVING, dlg.ScenarioName))
-                    Me.Core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
+                    Try
+                        Me.Core.SaveEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
+                    Catch ex As Exception
+                        cLog.Write(ex, "AppLauncher::SaveEcotracerScenarioAs")
+                    End Try
                     cApplicationStatusNotifier.EndProgress(Me.Core)
-
                 End If
                 ' User does not want to overwrite? Abort
                 Return

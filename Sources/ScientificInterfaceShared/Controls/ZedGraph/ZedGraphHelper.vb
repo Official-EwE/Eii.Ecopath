@@ -23,6 +23,8 @@ Imports System.IO
 Imports System.Text
 Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
@@ -1576,7 +1578,7 @@ Namespace Controls
                 ' Get pane
                 gp = Me.GetPane(iPane)
                 ' Print the title of the pane
-                sb.Append(String.Format(",{0}{1}{0}", Chr(34), gp.Title.Text))
+                sb.Append(",""" & gp.Title.Text & """")
                 ' Get all data lines for the pane
                 Dim aCurves As CurveItem() = Me.DataLines(iPane)
                 ' Append columns for child curves
@@ -1594,7 +1596,7 @@ Namespace Controls
             ' For each curve
             For iCurve As Integer = 0 To lAllCurves.Count - 1
                 ' Print the title of the curve
-                sb.Append(String.Format(",{0}{1}{0}", Chr(34), lAllCurves(iCurve).Label.Text))
+                sb.Append(",""" & lAllCurves(iCurve).Label.Text & """")
             Next
             sb.AppendLine()
 
@@ -1685,7 +1687,7 @@ Namespace Controls
                 ' Get pane
                 gp = Me.GetPane(iPane)
                 ' Print the title
-                sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), gp.Title.Text))
+                sb.AppendLine("""" & gp.Title.Text & """")
                 ' Get curves
                 aCurves = Me.DataLines(iPane)
                 ' For each curve
@@ -1700,7 +1702,7 @@ Namespace Controls
                     End If
 
                     ' Print Item
-                    sb.AppendLine(String.Format("{0}{1}{0}", Chr(34), ci.Label.Text))
+                    sb.AppendLine("""" & ci.Label.Text & """")
                     sbX = New StringBuilder("x")
                     sbY = New StringBuilder("y")
                     For i As Integer = 0 To ci.NPts - 1

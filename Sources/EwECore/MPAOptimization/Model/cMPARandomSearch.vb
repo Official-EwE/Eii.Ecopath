@@ -1016,7 +1016,7 @@ Public Class cMPARandomSearch
             For Each cell As cMPACell In m_data.Cells
                 sb.Append(String.Format("{0:D}, {1:D}, {2:D}, ", cell.Row, cell.Col, cell.iMPA))
             Next
-            sb.Append(ControlChars.NewLine)
+            sb.Append(Environment.NewLine)
 
             sb.AppendLine(String.Format("{0:r}, {1:r}, {2:r}, {3:r}, {4:r},{5:r}", _
                              m_data.objFuncEconomicValue, m_data.objFuncSocialValue, m_data.objFuncMandatedValue, m_data.objFuncEcologicalValue, m_data.objFuncBiomassDiv, m_data.objFuncAreaBorder))

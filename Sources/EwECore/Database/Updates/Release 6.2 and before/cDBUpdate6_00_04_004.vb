@@ -57,7 +57,7 @@ Friend Class cDBUpdate6_00_04_0004
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Fixes relative primary production issue in existing Ecospace scenarios." & vbNewLine _
+            Return "Fixes relative primary production issue in existing Ecospace scenarios." & Environment.NewLine _
                 & "Fixes system units."
         End Get
     End Property

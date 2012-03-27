@@ -21,6 +21,8 @@ Option Explicit On
 Imports EwEPlugin
 Imports EwEUtils.Core
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
 Imports System.Threading
 Imports EwECore.MSE
 Imports EwECore.FishingPolicy
@@ -840,7 +842,7 @@ Namespace Ecosim
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
 
-                    If ipct = 6 Then AccumulateDataInfo(Int(itime / 12), BB, m_Data.loss)
+                    If ipct = 6 Then AccumulateDataInfo(Math.Truncate(itime / 12), BB, m_Data.loss)
 
                     'Set FishTime() (fishing mort at timestep)
                     Me.setFishTime(itime, iyr)
@@ -2061,19 +2063,19 @@ Namespace Ecosim
 
             If m_EPData Is Nothing Then
                 nMissing += 1
-                msg = msg + vbNewLine + "Model not initialized properly: The property EcopathParameters() must be set before Ecosim is called."
+                msg = msg + Environment.NewLine + "Model not initialized properly: The property EcopathParameters() must be set before Ecosim is called."
                 cLog.Write(Me.ToString & "Model not initialized properly: The property EcopathParameters() must be set before Ecosim is called.")
             End If
 
             If m_Data Is Nothing Then
                 nMissing += 1
-                msg = msg + vbNewLine + "Model not initialized properly: Ecosim data not initialized."
+                msg = msg + Environment.NewLine + "Model not initialized properly: Ecosim data not initialized."
                 cLog.Write(Me.ToString & "Model not initialized properly: Ecosim data not initialized.")
             End If
 
             If m_search Is Nothing Then
                 nMissing += 1
-                msg = msg + vbNewLine + "Model not initialized properly: Ecosim data not initialized."
+                msg = msg + Environment.NewLine + "Model not initialized properly: Ecosim data not initialized."
                 cLog.Write(Me.ToString & "Model not initialized properly: Ecosim data not initialized.")
             End If
 

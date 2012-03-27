@@ -18,9 +18,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Threading
 Imports EwECore
 Imports EwEUtils.Core
-Imports System.Threading
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
 #End Region ' Imports
@@ -168,7 +169,7 @@ Namespace Import
             ' Update progress bar
             Me.m_pb.Value = Math.Max(0, Math.Min(100, iProgress))
             ' Update progress listbox
-            Me.m_lbSummary.Items.Add(vbTab & strMsg)
+            Me.m_lbSummary.Items.Add(cStringUtils.vbTab & strMsg)
             Me.m_lbSummary.TopIndex = Me.m_lbSummary.Items.Count - 1
 
         End Sub

@@ -58,8 +58,8 @@ Friend Class cDBUpdate6_00_04_00042
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Adds Description to Ecotracer Scenarios" & vbNewLine & _
-                "Adds Pedigree" & vbNewLine & _
+            Return "Adds Description to Ecotracer Scenarios" & Environment.NewLine & _
+                "Adds Pedigree" & Environment.NewLine & _
                 "Adds monetary unit"
         End Get
     End Property

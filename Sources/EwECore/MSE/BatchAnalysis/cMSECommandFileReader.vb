@@ -20,6 +20,7 @@ Imports System.IO
 Imports EwECore.MSE
 Imports EwEUtils.Core
 Imports EwECore.MSEBatchManager
+Imports EwEUtils.Utilities
 
 Namespace MSECommandFile
 
@@ -160,7 +161,7 @@ Namespace MSECommandFile
             Catch ex As Exception
                 bSuccess = False
                 Me.Manager.MarshallMessage("ERROR reading command file. ")
-                Me.Manager.MarshallMessage(vbTab & ex.Message)
+                Me.Manager.MarshallMessage(cStringUtils.vbTab & ex.Message)
             End Try
 
             Debug.Assert(bSuccess, Me.ToString & " Failed to read command file!")
@@ -179,7 +180,7 @@ Namespace MSECommandFile
             If Version.Count = 0 Then
                 'no version tag in the file it must be invalid
                 Me.Manager.MarshallMessage("ERROR:")
-                Me.Manager.MarshallMessage(vbTab & "Invalid command file.")
+                Me.Manager.MarshallMessage(cStringUtils.vbTab & "Invalid command file.")
                 Return False
             End If
             If Not Version.Item(0).Validate() Then
@@ -210,8 +211,8 @@ Namespace MSECommandFile
             If Me.BatchData.RunType = eMSEBatchRunTypes.Any Then
                 If Me.BatchData.nFixedF <> Me.BatchData.nTAC <> Me.BatchData.nTFM Then
                     Me.Manager.MarshallMessage("WARNING:")
-                    Me.Manager.MarshallMessage(vbTab & "Run Type 'Any' there is a different number of iterations for F, TAC and TFM.")
-                    Me.Manager.MarshallMessage(vbTab & "Last entry will be used the when number of iteration has been exceeded.")
+                    Me.Manager.MarshallMessage(cStringUtils.vbTab & "Run Type 'Any' there is a different number of iterations for F, TAC and TFM.")
+                    Me.Manager.MarshallMessage(cStringUtils.vbTab & "Last entry will be used the when number of iteration has been exceeded.")
                 End If
             End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -226,7 +227,7 @@ Namespace MSECommandFile
 
             If bMissing Then
                 Me.Manager.MarshallMessage("WARNING:")
-                Me.Manager.MarshallMessage(vbTab & "No enteries in command file for this Run Type.")
+                Me.Manager.MarshallMessage(cStringUtils.vbTab & "No enteries in command file for this Run Type.")
             End If
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -337,12 +338,12 @@ Namespace MSECommandFile
                     Next
                 Else
                     Me.Manager.MarshallMessage("WARNING:")
-                    Me.Manager.MarshallMessage(vbTab & "Failed to find tag '" & DataTag & "' in command file.")
+                    Me.Manager.MarshallMessage(cStringUtils.vbTab & "Failed to find tag '" & DataTag & "' in command file.")
                 End If
 
             Catch ex As Exception
                 Me.Manager.MarshallMessage("WARNING:")
-                Me.Manager.MarshallMessage(vbTab & "Error updating '" & DataTag & "' in command file.")
+                Me.Manager.MarshallMessage(cStringUtils.vbTab & "Error updating '" & DataTag & "' in command file.")
                 Return False
             End Try
 

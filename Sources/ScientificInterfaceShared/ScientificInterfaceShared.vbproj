@@ -107,7 +107,6 @@
     <Reference Include="ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
@@ -215,6 +214,12 @@
     </Compile>
     <Compile Include="Controls\Indicator renderers\cColorRampIndicator.vb" />
     <Compile Include="Controls\Indicator renderers\cPedigreeIndicator.vb" />
+    <Compile Include="Controls\InputBox\frmInputBox.Designer.vb">
+      <DependentUpon>frmInputBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\InputBox\frmInputBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\IUIElement.vb" />
     <Compile Include="Controls\Label\cEwEHeaderLabel.vb">
       <SubType>Component</SubType>
@@ -651,6 +656,9 @@
     <EmbeddedResource Include="Controls\GlyphSelect\ucGlyphSelect.resx">
       <DependentUpon>ucGlyphSelect.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\InputBox\frmInputBox.resx">
+      <DependentUpon>frmInputBox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditor.resx">
       <DependentUpon>ucLayerEditor.vb</DependentUpon>

@@ -18,10 +18,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports System.Drawing.Imaging
-Imports EwEUtils.Utilities
-Imports EwEUtils.Commands
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 
@@ -298,8 +295,8 @@ Namespace Controls.Map
             Dim ptScroll As Point = New Point(-Me.m_sbHorz.Value, -Me.m_sbVert.Value)
             Dim ptMap As New Point
 
-            ptMap.X = CInt(IIf(ptCentered.X > 0, ptCentered.X, ptScroll.X))
-            ptMap.Y = CInt(IIf(ptCentered.Y > 0, ptCentered.Y, ptScroll.Y))
+            ptMap.X = IIf(ptCentered.X > 0, ptCentered.X, ptScroll.X)
+            ptMap.Y = IIf(ptCentered.Y > 0, ptCentered.Y, ptScroll.Y)
 
             ' Hold all blinking etc
             Me.SuspendLayout()

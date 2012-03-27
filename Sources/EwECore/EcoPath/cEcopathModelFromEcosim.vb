@@ -312,7 +312,7 @@ Dim Response As Variant
     End If
 
     'SaveEiiFile SaveRunFile
-    Response = "Ecopath file saved to " + SaveRunFile + vbNewLine + vbNewLine + "You can import the file as a text-file (eii) from the File menu" + vbNewLine + "Do you want to keep this file?"
+    Response = "Ecopath file saved to " + SaveRunFile + Environment.NewLine  + Environment.NewLine  + "You can import the file as a text-file (eii) from the File menu" + Environment.NewLine  + "Do you want to keep this file?"
     Response = MsgBox(Response, vbInformation + vbYesNo, "Save Ecopath model from Ecosim")
     If Response = vbYes Then SaveEiiFile SaveRunFile
     modelRemarks = titi

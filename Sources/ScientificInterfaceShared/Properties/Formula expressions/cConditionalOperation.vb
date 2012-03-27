@@ -29,8 +29,8 @@ Namespace Properties
     ''' <para>
     ''' Returns one of two operands, depending on the evaluation of a test operand.
     ''' </para>
-    ''' <para>This operation behaves exactly like <see cref="IIf">IIf</see>, other 
-    ''' than expression responds to live data changes of all three parameters.</para>
+    ''' <para>This operation behaves exactly like IIf, other than that the expression 
+    ''' responds to live data changes of all three parameters.</para>
     ''' </summary>
     ''' <remarks>
     ''' This expression monitors its property for value changes, and will broadcast 

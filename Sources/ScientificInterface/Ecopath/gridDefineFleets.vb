@@ -895,14 +895,17 @@ Imports EwEUtils.Core
 
                 strPrompt = String.Format(My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT, fi.Name)
 
-                Select Case MsgBox(strPrompt, MsgBoxStyle.Question Or MsgBoxStyle.YesNoCancel)
-                    Case MsgBoxResult.Cancel
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Me.UIContext.Core.Messages.SendMessage(fmsg)
+
+                Select Case fmsg.Reply
+                    Case cFeedbackMessage.eReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case MsgBoxResult.No
+                    Case cFeedbackMessage.eReply.NO
                         ' Do not delete this Fleet
                         fi.Confirmed = False
-                    Case MsgBoxResult.Yes
+                    Case cFeedbackMessage.eReply.YES
                         ' Delete this Fleet
                         fi.Confirmed = True
                         bConfigurationChanged = True

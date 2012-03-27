@@ -18,9 +18,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports EwECore.Auxiliary
 Imports System.Drawing.Drawing2D
+Imports EwECore.Auxiliary
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 

@@ -20,12 +20,13 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
 Imports System.Threading
+Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -970,8 +971,8 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-
 #Region "Crap for new FishingMort Legend max value"
+
         'Added for the EcoOcean model to scale Catch/Bio legend
         'if there is some way to scale legends then this will go
         Private Sub m_txFMax_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles m_txFMax.KeyUp

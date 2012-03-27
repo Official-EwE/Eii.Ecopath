@@ -22,10 +22,11 @@ Option Strict On
 Imports System.Text
 Imports EwECore.Auxiliary
 Imports EwECore.MSE
+Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
-Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -8271,7 +8272,7 @@ Namespace DataSources
                 drow("EcopathGroupID") = iEcopathGroupID
                 drow("GroupID") = iGroupID
                 ' Detritus default of 10, non-detritus 300
-                drow("MVel") = CSng(IIf(bIsDetritus, 10, 300))
+                drow("MVel") = IIF(bIsDetritus, 10.0!, 300.0!)
                 drow("CapacityMap") = ""
                 writer.AddRow(drow)
 
@@ -8859,7 +8860,7 @@ Namespace DataSources
                     sbMPAMonth.Length = 0
                     For iMonth As Integer = 1 To cCore.N_MONTHS
                         ' Closed for fishing: store as 0, open: store as 1
-                        sbMPAMonth.Append(CStr(IIf(ecospaceDS.MPAmonth(iMonth, iMPA), "1", "0")))
+                        sbMPAMonth.Append(IIF(ecospaceDS.MPAmonth(iMonth, iMPA), "1", "0"))
                     Next iMonth
                     drow("MPAMonth") = sbMPAMonth.ToString()
 
@@ -8944,7 +8945,7 @@ Namespace DataSources
             sbMPAMonth.Length = 0
             For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, bMPAMonths.Length - 1)
                 ' Closed for fishing: store as 0, open: store as 1
-                sbMPAMonth.Append(CStr(IIf(bMPAMonths(iMonth), "1", "0")))
+                sbMPAMonth.Append(IIF(bMPAMonths(iMonth), "1", "0"))
             Next iMonth
             drow("MPAMonth") = sbMPAMonth.ToString()
 
@@ -9342,7 +9343,7 @@ Namespace DataSources
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-
+            Dim layerType As eVarNameFlags
             ' Clear
             Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacitDrivers WHERE (ScenarioID={0})", iScenarioID))
             writer = Me.m_db.GetWriter("EcospaceScenarioCapacitDrivers")
@@ -9355,8 +9356,9 @@ Namespace DataSources
                             drow("ScenarioID") = iScenarioID
                             drow("GroupID") = ecopathDS.GroupDBID(iGroup)
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
-                            drow("VarName") = cin.GetVarName(DirectCast(IIf(iMap = 0, eVarNameFlags.LayerDepth, eVarNameFlags.LayerDriver), eVarNameFlags))
-                            drow("VarDBID") = CInt(IIf(iMap = 0, 0, ecospaceDS.EnvironmentalLayerDBID(iMap)))
+                            If iMap = 0 Then layerType = eVarNameFlags.LayerDepth Else layerType = eVarNameFlags.LayerDriver
+                            drow("VarName") = cin.GetVarName(layerType)
+                            drow("VarDBID") = IIF(iMap = 0, 0, ecospaceDS.EnvironmentalLayerDBID(iMap))
                             writer.AddRow(drow)
                         End If
                     Next iGroup

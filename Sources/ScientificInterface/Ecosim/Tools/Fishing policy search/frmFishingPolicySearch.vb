@@ -22,9 +22,8 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.FishingPolicy
-Imports EwECore.SearchObjectives
-Imports ScientificInterface.Controls
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region

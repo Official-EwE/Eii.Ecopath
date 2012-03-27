@@ -19,11 +19,11 @@
 
 Option Strict On
 
-Imports System.Reflection
 Imports EwECore
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
@@ -224,7 +224,7 @@ Public Class cEwEStatusBar
             If (core.ActiveEcotracerScenarioIndex >= 0) Then
                 tracerScenario = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex)
                 strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOTRACER_TOOLTIP, _
-                                           vbNewLine, _
+                                           cStringUtils.vbNewline, _
                                            tracerScenario.Name, _
                                            Me.ToTooltipLabel(tracerScenario.Description))
                 Me.UpdateToolstripItem(Me.m_tsEcotracerScenario, tracerScenario.Name, strTooltip)

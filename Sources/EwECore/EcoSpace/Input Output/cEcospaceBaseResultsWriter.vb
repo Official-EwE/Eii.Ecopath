@@ -42,6 +42,11 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
     Protected m_core As cCore
     Protected m_TimeStampDirName As String
+    Protected m_delimiter As String
+
+    Public Sub New()
+        Me.m_delimiter = Convert.ToChar(34).ToString
+    End Sub
 
 #End Region
 
@@ -113,7 +118,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <returns></returns>
     ''' <remarks>format year-month-day hour-minute-second</remarks>
     Protected Overridable Function getTimeStamp() As String
-        Return Format(Date.Now, "y-MM-dd HH-mm-ss")
+        Return Date.Now.ToString("y-MM-dd HH-mm-ss")
     End Function
 
     ''' <summary>

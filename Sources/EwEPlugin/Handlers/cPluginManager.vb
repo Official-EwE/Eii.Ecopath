@@ -1984,7 +1984,7 @@ Public Class cPluginManager
 
     Friend Sub RaisePluginException(ByVal pex As cPluginException)
 
-        'Debug.Assert(False, strMessage & vbNewLine & ex.Message)
+        'Debug.Assert(False, strMessage & Environment.NewLine  & ex.Message)
         RaiseEvent PluginException(pex)
 
     End Sub

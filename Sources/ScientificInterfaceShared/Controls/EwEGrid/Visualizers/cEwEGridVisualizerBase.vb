@@ -18,8 +18,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports System.Drawing
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real

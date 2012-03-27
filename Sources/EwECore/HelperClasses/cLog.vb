@@ -328,13 +328,13 @@ Public Class cLog
             End If
 
             For i = 0 To n - 1
-                strm.Write(Format(array(i), "###0.00000##"))
+                strm.Write(array(i).ToString("###0.00000##"))
                 '       strm.Write(array(i))
                 If i < n - 1 Then
                     strm.Write(", ")
                 End If
             Next i
-            strm.Write(ControlChars.CrLf)
+            strm.Write(Environment.NewLine)
             strm.Close()
 
         Catch ex As Exception
@@ -364,12 +364,12 @@ Public Class cLog
             End If
             For i = 0 To n - 1
                 'CStr(Format(GetType(Integer), i, "00")
-                strm.Write(Format(array(i), "###0.00000##"))
+                strm.Write(array(i).ToString("###0.00000##"))
                 If i < n - 1 Then
                     strm.Write(", ")
                 End If
             Next i
-            strm.Write(ControlChars.CrLf)
+            strm.Write(Environment.NewLine)
             strm.Close()
 
         Catch ex As Exception
@@ -412,7 +412,7 @@ Public Class cLog
                     End If
 
                 Next j
-                strm.Write(ControlChars.NewLine)
+                strm.Write(Environment.NewLine)
             Next i
             strm.Close()
 

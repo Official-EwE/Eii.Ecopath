@@ -290,6 +290,8 @@ Public Class cEcoSpace
 
     Private m_ResultsWriter As IEcospaceResultsWriter
 
+    Private m_rand As Random
+
 #End Region
 
 #Region "Construction"
@@ -302,6 +304,7 @@ Public Class cEcoSpace
         If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
 
         Me.m_PauseSignal = New System.Threading.ManualResetEvent(True)
+        Me.m_rand = New Random
 
     End Sub
 
@@ -848,20 +851,23 @@ Public Class cEcoSpace
         Dim RelFopt() As Single
         Dim Fgear() As Single
 
-        Dim slvrTimer As Single
-        Dim spaceTimer As Single
-        Dim timeStepTimer As Single
-        Dim effTimer As Single
-        Dim IBMTimer As Single
-        Dim tst1 As Single
+        'Dim slvrTimer As Single
+        'Dim spaceTimer As Single
+        'Dim timeStepTimer As Single
+        'Dim effTimer As Single
+        'Dim IBMTimer As Single
+        'Dim tst1 As Single
         gridThreadWaitTimer = 0
         ibmThreadWaitTimer = 0
         ibmThreadWaitTimer2 = 0
         spaceThreadWaitTimer = 0
 
         'used for timing threaded code
-        Dim slvET2 As Single
-        Dim slvET As Single
+        'Dim slvET2 As Single
+        'Dim slvET As Single
+
+        Dim stpwchTotRunTime As New Stopwatch
+        Dim stpwchSolver As New Stopwatch
 
         Dim FtimeTotal(m_Data.NGroups) As Single
 
@@ -889,8 +895,7 @@ Public Class cEcoSpace
             Me.InitIBM()
             m_Data.nIBMPacketsPerThread = (m_Stanza.Npackets + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
 
-            tTimeLoop = Microsoft.VisualBasic.Timer '* 1000
-            '  System.Console.WriteLine("Ecospace Start Temporal Spatial loop")
+
             itt = 0
 
             If m_search.bInSearch Then
@@ -904,16 +909,19 @@ Public Class cEcoSpace
                     StartTime = m_OptMPA.EcospaceStartTime
                 End If
             End If
+
+            stpwchTotRunTime.Start()
+
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For m_Data.TimeNow = StartTime To (m_Data.TotalTime - m_Data.TimeStep) Step m_Data.TimeStep
 
                 Me.m_PauseSignal.WaitOne()
-                tst1 = Microsoft.VisualBasic.Timer
+                '  tst1 = Microsoft.VisualBasic.Timer
 
                 'set time step counters
-                its = Int(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
+                its = Math.Truncate(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
                 itt += 1 'cumulative i time at the curent time step 
 
                 Debug.Assert(itt <= nEcospaceTimeSteps, "itt > nEcospaceTimeSteps")
@@ -991,14 +999,14 @@ Public Class cEcoSpace
                     End If
                 Next
 
-                Dim effT1 As Single = Microsoft.VisualBasic.Timer
+                'Dim effT1 As Single = Microsoft.VisualBasic.Timer
                 If m_Data.PredictEffort Then
                     If its = 3 Then Me.AdjustTotalEffort()
                     ' Me.PredictEffortDistribution(m_Data.MonthNow, its)
                     Me.runPredictEffortDistributionThreads(m_Data.MonthNow, its)
                 End If
 
-                effTimer += (Microsoft.VisualBasic.Timer - effT1)
+                'effTimer += (Microsoft.VisualBasic.Timer - effT1)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_Data, itt)
 
@@ -1012,17 +1020,18 @@ Public Class cEcoSpace
                 '*************
                 UpdateSpaceSolverThreads(m_Data.YearNow)
 
-                slvET2 = Microsoft.VisualBasic.Timer
+                stpwchSolver.Start()
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Run the biomass calculation for each spatial cell at this time step
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 runSpaceSolverThreads()
-                spaceTimer = spaceTimer + (Microsoft.VisualBasic.Timer - slvET2)
+                stpwchSolver.Stop()
+                '  spaceTimer = spaceTimer + (Microsoft.VisualBasic.Timer - slvET2)
 
-                slvET = Microsoft.VisualBasic.Timer
+                '  slvET = Microsoft.VisualBasic.Timer
                 'now solve the spatial grid
                 runGridSolverThreads()
-                slvrTimer = slvrTimer + (Microsoft.VisualBasic.Timer - slvET)
+                '  slvrTimer = slvrTimer + (Microsoft.VisualBasic.Timer - slvET)
 
                 'make sure none of the biomass cells are zero
                 For ip = 1 To m_Data.nvartot
@@ -1085,9 +1094,9 @@ Public Class cEcoSpace
                     Next isp
 
                 ElseIf m_Data.UseIBM Then
-                    slvET2 = Microsoft.VisualBasic.Timer
+                    '   slvET2 = Microsoft.VisualBasic.Timer
                     runIBMSolverThreads()
-                    IBMTimer = IBMTimer + (Microsoft.VisualBasic.Timer - slvET2)
+                    ' IBMTimer = IBMTimer + (Microsoft.VisualBasic.Timer - slvET2)
                 End If 'end of section to overwrite PDE biomasses with multistanza distributed biomasses if newmultistanza=true
 
                 'sum biomass after Multistanza updates
@@ -1156,15 +1165,15 @@ Public Class cEcoSpace
 
                 'post notification that a time step has been completed
                 marshallOnTimeStep(itt)
-                timeStepTimer += (Microsoft.VisualBasic.Timer - tst1)
+                ' timeStepTimer += (Microsoft.VisualBasic.Timer - tst1)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, itt)
 
-                System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver Run Time = " & spaceTimer.ToString)
-                System.Console.WriteLine("FindSpatialEquilibrium() GridSolver Run Time = " & slvrTimer.ToString)
-                System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution Run Time = " & effTimer.ToString)
+                System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver Run Time(sec) = " & stpwchSolver.Elapsed.TotalSeconds.ToString)
+                '  System.Console.WriteLine("FindSpatialEquilibrium() GridSolver Run Time = " & slvrTimer.ToString)
+                '  System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution Run Time = " & effTimer.ToString)
 
-                System.Console.WriteLine("FindSpatialEquilibrium() Timestep Run Time = " & timeStepTimer.ToString)
+                System.Console.WriteLine("FindSpatialEquilibrium() Total Run Time(min) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
 
             Next m_Data.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1191,6 +1200,9 @@ Public Class cEcoSpace
             For i = 1 To m_Data.nGridSolverThreads
                 totalIter = totalIter + totalIterThread(i)
             Next
+
+            stpwchTotRunTime.Stop()
+            System.Console.WriteLine("FindSpatialEquilibrium() Run Time(min) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
 
             'System.Console.WriteLine("FindSpatialEquilibrium() Number of Time Steps " & itt.ToString)
             'System.Console.WriteLine("FindSpatialEquilibrium() Run Time = " & CStr(Microsoft.VisualBasic.Timer - tTimeLoop))
@@ -1476,14 +1488,14 @@ Public Class cEcoSpace
             Dim timerTemp As Single
             Dim iterTime As Single
             For Each solver In m_gridSolvers
-                If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
+                '  If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
                 solver.SignalState.WaitOne()
                 totalIterThread(solvCtr) = totalIterThread(solvCtr) + solver.iterThread
                 iterTime = iterTime + solver.iterThread
                 solvCtr = solvCtr + 1
             Next
-            If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            gridThreadWaitTimer = gridThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
+            '    If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
+            'gridThreadWaitTimer = gridThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
 
 
             '  System.Console.WriteLine("Solvegrid iterations = " & iterTime.ToString)
@@ -1564,12 +1576,12 @@ Public Class cEcoSpace
             Dim timerTemp As Single
             ' wait for all the threads to finish before starting the next time step
             For Each solver In m_spaceSolvers
-                If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
+                '  If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
                 solver.SignalState.WaitOne()
                 solvCtr = solvCtr + 1
             Next
-            If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            spaceThreadWaitTimer = spaceThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
+            ' If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
+            'spaceThreadWaitTimer = spaceThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
 
             'Gather data from across all threads
             For Each solver In m_spaceSolvers
@@ -1910,7 +1922,7 @@ Public Class cEcoSpace
             'm_Data.Tol = 0.0001
             'm_Data.maxIter = 40
 
-            Dim ihalf As Integer = Int(m_Data.InCol / 2)
+            Dim ihalf As Integer = Math.Truncate(m_Data.InCol / 2)
             j = 0
             For i = ihalf To 1 Step -1
                 j = j + 1
@@ -4714,7 +4726,8 @@ exitline:
                 IncolRead = cFileUtils.ReadNumber(sr)
 
                 If InrowRead <> m_Data.InRow Or IncolRead <> m_Data.InCol Then
-                    If MsgBox("Number of rows and columns in this advection file are not the same as your current map; try to read anyway?", vbYesNo) = vbNo Then Exit Sub
+                    'vbYesNo is not Mon compatible
+                    'If MsgBox("Number of rows and columns in this advection file are not the same as your current map; try to read anyway?", vbYesNo) = vbNo Then Exit Sub
                 End If
 
                 Vxp = cFileUtils.ReadNumber(sr)
@@ -5568,9 +5581,9 @@ exitline:
                     Next
                     For ip = 1 To m_Stanza.Npackets
                         'distribute packets uniformly over suitable cells for this stanza, using list set above
-                        i1 = 1 + Rnd() * (Nused - 1)
-                        m_Stanza.iPacket(isp, ia, ip) = iList(i1) + Rnd() ' 0.5 '
-                        m_Stanza.jPacket(isp, ia, ip) = Jlist(i1) + Rnd() '0.5 '
+                        i1 = 1 + Me.m_rand.NextDouble() * (Nused - 1)
+                        m_Stanza.iPacket(isp, ia, ip) = iList(i1) + Me.m_rand.NextDouble() ' 0.5 '
+                        m_Stanza.jPacket(isp, ia, ip) = Jlist(i1) + Me.m_rand.NextDouble() '0.5 '
                         'DEBUG: reenable following two lines
                         m_Data.Bcell(iList(i1), Jlist(i1), ieco) = m_Data.Bcell(iList(i1), Jlist(i1), ieco) + m_Stanza.Npacket(isp, ia, ip) * m_Stanza.Wpacket(isp, ia, ip)
                         m_Data.PredCell(iList(i1), Jlist(i1), ieco) = m_Data.PredCell(iList(i1), Jlist(i1), ieco) + m_Stanza.Npacket(isp, ia, ip) * m_Stanza.WWa(isp, ia)

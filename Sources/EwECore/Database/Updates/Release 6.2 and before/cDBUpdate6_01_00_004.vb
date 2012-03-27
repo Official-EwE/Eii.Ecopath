@@ -58,7 +58,7 @@ Friend Class cDBUpdate6_01_00_004
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecopath taxonomy support" & vbNewLine & "Added Ecopath model area" & vbNewLine & "Fixed date columns to Float"
+            Return "Added Ecopath taxonomy support" & Environment.NewLine & "Added Ecopath model area" & Environment.NewLine & "Fixed date columns to Float"
         End Get
     End Property
 

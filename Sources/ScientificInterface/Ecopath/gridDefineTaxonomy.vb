@@ -19,9 +19,9 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEPlugin.Data
-Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
@@ -1183,12 +1183,16 @@ Public Class gridDefineTaxonomy
         Next iTaxon
 
         ' Assess Taxons to remove
-        If Me.m_lTaxonInfoRemoved.Count > 0 Then
-            Select Case MsgBox(My.Resources.TAXON_DELETE_CONFIRMATION, MsgBoxStyle.Question Or MsgBoxStyle.YesNo)
-                Case MsgBoxResult.No
+        If (Me.m_lTaxonInfoRemoved.Count > 0) Then
+
+            Dim fmsg As New cFeedbackMessage(My.Resources.TAXON_DELETE_CONFIRMATION, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Me.UIContext.Core.Messages.AddMessage(fmsg)
+
+            Select Case fmsg.Reply
+                Case cFeedbackMessage.eReply.NO
                     ' Abort
                     Return False
-                Case MsgBoxResult.Yes
+                Case cFeedbackMessage.eReply.YES
                     ' Delete this Taxon
                     bConfigurationChanged = True
                 Case Else

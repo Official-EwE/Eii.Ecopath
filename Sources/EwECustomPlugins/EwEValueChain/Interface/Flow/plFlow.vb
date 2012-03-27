@@ -781,11 +781,9 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Select Case MessageBox.Show(String.Format(My.Resources.PROMPT_DELETEUNIT, unit.Name), _
-                                        My.Resources.GENERIC_CAPTION, MessageBoxButtons.YesNo)
-                Case DialogResult.No
-                    Return False
-            End Select
+            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETEUNIT, unit.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Me.m_uic.Core.Messages.SendMessage(fmsg)
+            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
 
         End If
 
@@ -858,11 +856,9 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Select Case MessageBox.Show(String.Format(My.Resources.PROMPT_DELETELINK, link.Name), _
-                                        My.Resources.GENERIC_CAPTION, MessageBoxButtons.YesNo)
-                Case DialogResult.No
-                    Return False
-            End Select
+            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETELINK, link.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Me.m_uic.Core.Messages.SendMessage(fmsg)
+            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
 
         End If
 

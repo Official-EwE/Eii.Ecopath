@@ -101,10 +101,6 @@ Public Class cEcospaceGroup
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Array variables
 
-            ' PreferredRow as an array of Point objects
-            val = New cValueArray(eValueTypes.PointArray, eVarNameFlags.PreferredCell, eStatusFlags.OK, eCoreCounterTypes.nMonths, AddressOf m_core.GetCoreCounter)
-            m_values.Add(val.varName, val)
-
             'PreferredHabitat()
             meta = New cVariableMetaData(0, 1, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.PreferredHabitat, eStatusFlags.Null, eCoreCounterTypes.nHabitats, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -185,16 +181,6 @@ Public Class cEcospaceGroup
 
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.IsMigratory, value)
-        End Set
-    End Property
-
-    Public Property PreferredCell(ByVal iMonth As Integer) As Drawing.Point
-        Get
-            Return DirectCast(GetVariable(eVarNameFlags.PreferredCell, iMonth), Drawing.Point)
-        End Get
-
-        Set(ByVal value As Drawing.Point)
-            SetVariable(eVarNameFlags.PreferredCell, value, iMonth)
         End Set
     End Property
 
@@ -299,16 +285,6 @@ Public Class cEcospaceGroup
 
         Friend Set(ByVal value As eStatusFlags)
             SetStatus(eVarNameFlags.IsMigratory, value)
-        End Set
-    End Property
-
-    Public Property PreferredCellStatus(ByVal iMonth As Integer) As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.PreferredCell, iMonth)
-        End Get
-
-        Friend Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.PreferredCell, value, iMonth)
         End Set
     End Property
 

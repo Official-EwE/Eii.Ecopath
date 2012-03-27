@@ -25,6 +25,7 @@ Imports ScientificInterface.Ecopath.Input
 Imports ScientificInterface.Ecopath.Output
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -585,16 +586,16 @@ Namespace Wizard
             If Not Me.CanDeleteScenario() Then Return
 
             Dim scenario As cEwEScenario = Me.Scenario
-            Dim strMessage As String = ""
 
             ' Sanity check
             If Object.ReferenceEquals(scenario, Nothing) Then Return
 
             ' Ask for confirmation
-            strMessage = String.Format(My.Resources.SCENARIO_CONFIRMDELETE_PROMPT, scenario.Name)
-            If MsgBox(strMessage, MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, My.Resources.SCENARIO_CONFIRMDELETE_CAPTION) <> MsgBoxResult.Yes Then
-                Return
-            End If
+            Dim strMessage As String = String.Format(My.Resources.SCENARIO_CONFIRMDELETE_PROMPT, scenario.Name)
+            Dim fmsg As New cFeedbackMessage(strMessage, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Me.UIContext.Core.Messages.SendMessage(fmsg)
+
+            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return
 
             ' Remove successful?
             If Me.DeleteScenario(scenario) Then

@@ -194,7 +194,9 @@ Public Class cEIIDataSource
 
 #End Region
 
-#Region " EwEModel "
+#Region " Ecopath "
+
+#Region " Load "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -208,7 +210,7 @@ Public Class cEIIDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim i As Integer
 
-        If Me.LoadEII() Then
+        If Me.LoadEcopath() Then
 
             For i = 1 To ecopathDS.NumGroups
                 If ecopathDS.QB(i) = 0 And ecopathDS.PP(i) = 1 Then ecopathDS.GS(i) = 0
@@ -242,10 +244,7 @@ Public Class cEIIDataSource
 
     End Function
 
-   
-
-
-    Private Function LoadEII() As Boolean
+    Private Function LoadEcopath() As Boolean
 
         'read the contents of the eii file into an EcopathParameters object
         'this is written using vb file access instead of a filestream to keep it as close to the original vb code as possible
@@ -267,7 +266,7 @@ Public Class cEIIDataSource
         Try
             eiiStrm = New System.IO.StreamReader(m_strFilename)
         Catch ex As Exception
-            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & m_strFilename & "' Error:" + ex.Message())
+            cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strFilename & "' Error:" + ex.Message())
             Return False
         End Try
 
@@ -275,7 +274,7 @@ Public Class cEIIDataSource
         ecopathDS.ModelDBID = 1
         ecopathDS.ModelName = Path.GetFileName(m_strFilename)
         ecopathDS.ModelNumDigits = 3
-        ecopathDS.ModelDescription = "Simulated model read from EII file " & m_strFilename
+        ecopathDS.ModelDescription = "Model read from EII file " & Me.m_strFilename
 
         'read the file
         Try
@@ -294,47 +293,48 @@ Public Class cEIIDataSource
                 Return False
             End If
             Dim iNextIndex As Integer
-            'groups
+
+            ' Read groups
             For K = 1 To ecopathDS.NumGroups
 
-                buff = eiiStrm.ReadLine()
-                'delimiter is 2 spaces "  " yeah....
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                ' Replace double spaces with single space
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 iNextIndex = 0
 
                 'Debug.Assert(data.Length = 10, "EII DataSource wrong number of recs in group section.")
-                ecopathDS.GroupName(K) = Me.getNextValid(recs, iNextIndex).Trim(quotes)
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), pvar)
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DtImp(K))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.Ex(K))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.fCatch(K))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DC(K, 0))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.Binput(K))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.PBinput(K))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.EEinput(K))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.GEinput(K))
-                Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.QBinput(K))
+                ecopathDS.GroupName(K) = Me.GetNextValue(recs, iNextIndex).Trim(quotes)
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), pvar)
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.DtImp(K))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.Ex(K))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.fCatch(K))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.DC(K, 0))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.Binput(K))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.PBinput(K))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.EEinput(K))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.GEinput(K))
+                Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.QBinput(K))
 
                 ecopathDS.BHinput(K) = ecopathDS.Binput(K) / ecopathDS.Area(K)
-
                 ecopathDS.GroupDBID(K) = K
-
                 ecopathDS.PP(K) = pvar - 2
+
                 If K > ecopathDS.NumLiving Then ecopathDS.PP(K) = 2
-                If ecopathDS.GE(K) = 0 Then ecopathDS.GE(K) = -9
+                If ecopathDS.GE(K) = 0 Then ecopathDS.GE(K) = cCore.NULL_VALUE
 
             Next K
 
 
-            '' "Read DietComp"
+            ' Read DietComp
             ReDim ecopathDS.DietChanged(1, 0)
             For K = 1 To ecopathDS.NumGroups
-                buff = eiiStrm.ReadLine()
-                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+                ' Replace double spaces with single space
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 iNextIndex = 0
                 For j = 1 To ecopathDS.NumGroups
 
-                    Single.TryParse(Me.getNextValid(recs, iNextIndex), ecopathDS.DCInput(K, j))
+                    Single.TryParse(Me.GetNextValue(recs, iNextIndex), ecopathDS.DCInput(K, j))
                     ' Input(fnum, ecopathDS.DCInput(K, j))
                     If ecopathDS.DCInput(K, j) > 0 Then
                         ecopathDS.DietWasChanged(K, j)
@@ -356,10 +356,8 @@ Public Class cEIIDataSource
             ''Unassimilated food
             'Data looks like this
             '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 
-            buff = eiiStrm.ReadLine()
-            Dim seperators() As String = {" ", "  "}
-            recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
-            'recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
+            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
             Dim iRec As Integer = 1
             For j = 1 To ecopathDS.NumGroups
 
@@ -373,9 +371,8 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine()
             'Input(fnum, jnk)
 
-
-            buff = eiiStrm.ReadLine()
-            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, "  ")
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
+            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
 
             ''the time unit name
             ecopathDS.TimeUnitName = recs(0)
@@ -389,11 +386,10 @@ Public Class cEIIDataSource
             'junk
             buff = eiiStrm.ReadLine()
 
-
             'parms.Bomass accumulation added March 95/VC
             '-91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  20  -91  0  -92  0 
-            buff = eiiStrm.ReadLine()
-            recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
+            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(i - 1), ecopathDS.BA(i))
             Next i
@@ -402,8 +398,8 @@ Public Class cEIIDataSource
             'If EOF(fnum) = False And NumGroups > NumLiving + 1 Then
             'More than 1 detritusbox Any reason for this??
             For i = 1 To ecopathDS.NumGroups
-                buff = eiiStrm.ReadLine()
-                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 For j = ecopathDS.NumLiving + 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - ecopathDS.NumLiving - 1), ecopathDS.DF(i, j - ecopathDS.NumLiving))
                     ' Input(fnum, ecopathDS.DF(i, j - ecopathDS.NumLiving))    
@@ -413,8 +409,8 @@ Public Class cEIIDataSource
             ' Emigration added Dec 98/VC
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Emigration"), "EII datasource file format may be wrong!")
-            buff = eiiStrm.ReadLine()
-            recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
+            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
             'Input(fnum, jnk) ' 
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(i - 1), ecopathDS.Emigration(i))
@@ -424,8 +420,8 @@ Public Class cEIIDataSource
             'immigration added Dec 98/VC
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Immig"), "EII datasource file format may be wrong!")
-            buff = eiiStrm.ReadLine()
-            recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
+            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(i - 1), ecopathDS.Immig(i))
                 ' Input(fnum, ecopathDS.Immig(i))
@@ -434,7 +430,7 @@ Public Class cEIIDataSource
             'NumGear
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("NumGear"), "EII datasource file format may be wrong!")
-            buff = eiiStrm.ReadLine()
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
             Integer.TryParse(buff, ecopathDS.NumFleet)
             ecopathDS.RedimFleetVariables(True)
 
@@ -442,7 +438,7 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Gearnames"), "EII datasource file format may be wrong!")
             For i = 1 To ecopathDS.NumFleet
-                buff = eiiStrm.ReadLine()
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
                 ecopathDS.FleetName(i) = buff.Trim(quotes) ' Added Dec 98/VC
                 '  Input(fnum, ecopathDS.FleetName(i))
                 ecopathDS.FleetDBID(i) = i
@@ -454,8 +450,8 @@ Public Class cEIIDataSource
             'Input(fnum, jnk)  
             For i = 1 To ecopathDS.NumFleet
                 'First is fixed cost, second is cost per unit effort' Added Dec 98/VC
-                buff = eiiStrm.ReadLine()
-                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 Single.TryParse(recs(0), ecopathDS.CostPct(i, eCostIndex.Fixed))
                 Single.TryParse(recs(1), ecopathDS.CostPct(i, eCostIndex.CUPE))
                 Single.TryParse(recs(2), ecopathDS.CostPct(i, eCostIndex.Sail))
@@ -466,8 +462,8 @@ Public Class cEIIDataSource
             Debug.Assert(buff.Contains("landing"), "EII datasource file format may be wrong!")
             'Input(fnum, jnk)  
             For i = 1 To ecopathDS.NumFleet
-                buff = eiiStrm.ReadLine()
-                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - 1), ecopathDS.Landing(i, j))
                     '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
@@ -479,8 +475,8 @@ Public Class cEIIDataSource
             Debug.Assert(buff.Contains("Discard"), "EII datasource file format may be wrong!")
             'Input(fnum, jnk)  
             For i = 1 To ecopathDS.NumFleet
-                buff = eiiStrm.ReadLine()
-                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - 1), ecopathDS.Discard(i, j))
                     '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
@@ -491,8 +487,8 @@ Public Class cEIIDataSource
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("DiscardFate"), "EII datasource file format may be wrong!")
             For i = 1 To ecopathDS.NumFleet
-                buff = eiiStrm.ReadLine()
-                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups - ecopathDS.NumLiving
                     Single.TryParse(recs(j - 1), ecopathDS.DiscardFate(i, j))
                     ' Input(fnum, ecopathDS.DiscardFate(i, j))   ' Added Dec 98/VC
@@ -504,8 +500,8 @@ Public Class cEIIDataSource
             Debug.Assert(buff.Contains("Market"), "EII datasource file format may be wrong!")
             'Input(fnum, jnk)  
             For i = 1 To ecopathDS.NumFleet
-                buff = eiiStrm.ReadLine()
-                recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+                buff = eiiStrm.ReadLine().Replace("  ", " ")
+                recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
                 For j = 1 To ecopathDS.NumGroups
                     Single.TryParse(recs(j - 1), ecopathDS.Market(i, j))
                     '  Input(fnum, ecopathDS.Landing(i, j))    ' Landing added Dec 98/VC
@@ -518,8 +514,8 @@ Public Class cEIIDataSource
             'Input(fnum, jnk)
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Shadow"), "EII datasource file format may be wrong!")
-            buff = eiiStrm.ReadLine()
-            recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
+            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
             For i = 1 To ecopathDS.NumGroups             ' Added Dec 98/VC
                 Single.TryParse(recs(i - 1), ecopathDS.Shadow(i))
                 '  Input(fnum, ecopathDS.Shadow(i))
@@ -528,8 +524,8 @@ Public Class cEIIDataSource
             ''Habitatarea
             buff = eiiStrm.ReadLine()
             Debug.Assert(buff.Contains("Area&HabitatBiomass(BH)"), "EII datasource file format may be wrong!")
-            buff = eiiStrm.ReadLine()
-            recs = buff.Split(seperators, System.StringSplitOptions.RemoveEmptyEntries)
+            buff = eiiStrm.ReadLine().Replace("  ", " ")
+            recs = EwEUtils.Utilities.cStringUtils.SplitQualified(buff, " ")
             iRec = 0
             For i = 1 To ecopathDS.NumGroups
                 Single.TryParse(recs(iRec), ecopathDS.Area(i))
@@ -553,16 +549,9 @@ Public Class cEIIDataSource
 
     End Function
 
-    Private Function getNextValid(ByVal data() As String, ByRef iNextIndex As Integer) As String
-        Dim validData As String
-        Do While validData = ""
-            validData = data(iNextIndex)
-            iNextIndex += 1
-        Loop
+#End Region ' Load
 
-        Return validData
-
-    End Function
+#Region " Save "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -575,40 +564,7 @@ Public Class cEIIDataSource
         Return False
     End Function
 
-#Region " Pedigree "
-
-    Public Function AddPedigreeLevel(iPosition As Integer, strName As String, iColor As Integer, strDescription As String, varName As eVarNameFlags, sIndexValue As Single, sConfidence As Single, ByRef iDBID As Integer) As Boolean _
-     Implements DataSources.IEcopathDataSource.AddPedigreeLevel
-        Return False
-    End Function
-
-    Public Function MovePedigreeLevel(iDBID As Integer, iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
-        Return False
-    End Function
-
-    Public Function RemovePedigreeLevel(iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
-        Return False
-    End Function
-
-#End Region ' Pedigree
-
-#Region " Taxon "
-
-    Public Function AddTaxon(iTargetDBID As Integer, bIsStanza As Boolean, data As ITaxonSearchData, sProportion As Single, ByRef iDBID As Integer) As Boolean _
-        Implements DataSources.IEcopathDataSource.AddTaxon
-        Return False
-    End Function
-
-    Public Function RemoveTaxon(iTaxonID As Integer) As Boolean _
-        Implements DataSources.IEcopathDataSource.RemoveTaxon
-        Return False
-    End Function
-
-#End Region ' Taxon
-
-#End Region ' EwE Model
-
-#Region " Ecopath "
+#End Region ' Save
 
 #Region " Diagnostics "
 
@@ -645,38 +601,7 @@ Public Class cEIIDataSource
     Function AddGroup(ByVal strGroupName As String, ByVal sPP As Single, ByVal sVBK As Single, _
                       ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.AddGroup
-
-
         Return False
-
-        'Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        'Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-
-        'Dim newNumGroups As Integer = ecopathDS.NumGroups + 1
-        'ecopathDS.NumGroups = newNumGroups
-        'ecopathDS.redimGroups()
-
-        'LoadStanza()
-
-        'If ecosimDS IsNot Nothing Then
-        '    ecosimDS.nGroups = newNumGroups
-        '    ' ecosimDS.RedimVars()
-        '    LoadScenario(-1)
-        'End If
-
-
-        ''insert the record into the database then
-        ''popluate the ecopath data structures with the data from the database
-        ''in this case we can't  because we do not have a proper datasource
-
-        ''just fake the Database ID's
-        ''this is the same numbering system that was used by the EII reading routine
-        'For i As Integer = 1 To newNumGroups
-        '    ecopathDS.GroupDBID(i) = i
-        'Next
-
-        'Return True 'sweeeeet see that was no problem
-
     End Function
 
     ''' -------------------------------------------------------------------
@@ -692,33 +617,7 @@ Public Class cEIIDataSource
     ''' -------------------------------------------------------------------
     Function RemoveGroup(ByVal iDBID As Integer) As Boolean _
             Implements IEcopathDataSource.RemoveGroup
-
         Return False
-
-        'Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        'Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
-
-        'ecopathDS.NumGroups -= 1
-        'ecopathDS.redimGroupVariables()
-        'psdDS.redimGroupVariables()
-
-        'If m_core.m_EcoSimData IsNot Nothing Then
-        '    m_core.m_EcoSimData.nGroups -= 1
-        '    m_core.m_EcoSimData.RedimVars()
-        'End If
-
-        ''insert the record into the database then
-        ''popluate the ecopath data structures with the data from the database
-        ''in this case we can't  because we do not have a proper datasource
-
-        ''just fake the Database ID's
-        ''this is the same numbering system that was used by the EII reading routine
-        'For i As Integer = 1 To ecopathDS.NumGroups
-        '    ecopathDS.GroupDBID(i) = i
-        'Next
-
-        'Return True
-
     End Function
 
     ''' -------------------------------------------------------------------
@@ -752,7 +651,6 @@ Public Class cEIIDataSource
     ''' -------------------------------------------------------------------
     Public Function AddFleet(ByVal strFleetName As String, ByVal iPosition As Integer, ByRef iDBID As Integer) As Boolean _
             Implements DataSources.IEcopathDataSource.AddFleet
-        ' ToDo_JB: Write this
         Return False
     End Function
 
@@ -784,7 +682,38 @@ Public Class cEIIDataSource
 
 #End Region ' Fleets
 
-#End Region ' Ecopath (Model, Groups, Fleets)
+#Region " Pedigree "
+
+    Public Function AddPedigreeLevel(iPosition As Integer, strName As String, iColor As Integer, strDescription As String, varName As eVarNameFlags, sIndexValue As Single, sConfidence As Single, ByRef iDBID As Integer) As Boolean _
+     Implements DataSources.IEcopathDataSource.AddPedigreeLevel
+        Return False
+    End Function
+
+    Public Function MovePedigreeLevel(iDBID As Integer, iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
+        Return False
+    End Function
+
+    Public Function RemovePedigreeLevel(iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
+        Return False
+    End Function
+
+#End Region ' Pedigree
+
+#Region " Taxon "
+
+    Public Function AddTaxon(iTargetDBID As Integer, bIsStanza As Boolean, data As ITaxonSearchData, sProportion As Single, ByRef iDBID As Integer) As Boolean _
+        Implements DataSources.IEcopathDataSource.AddTaxon
+        Return False
+    End Function
+
+    Public Function RemoveTaxon(iTaxonID As Integer) As Boolean _
+        Implements DataSources.IEcopathDataSource.RemoveTaxon
+        Return False
+    End Function
+
+#End Region ' Taxon
+
+#End Region ' Ecopath
 
 #Region " EcoSim "
 
@@ -1194,7 +1123,7 @@ Public Class cEIIDataSource
 
 #End Region ' Stanza
 
-#Region "Interface Implementations"
+#Region " Interface Implementations "
 
     Public Function Compact(ByVal strTarget As String) As eDatasourceAccessType _
         Implements DataSources.IEwEDataSource.Compact
@@ -1231,122 +1160,22 @@ Public Class cEIIDataSource
         GC.SuppressFinalize(Me)
     End Sub
 
-#End Region
+#End Region ' Interface Implementations
 
-#Region "Dead Code used during development"
-#If 0 Then
-    Private Sub tempCreateForcingMediationShapes()
+#Region " Helper methods "
 
-        'temp
-        'ToDo_jb  remove this temp hack to load the forcing functions 
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+    Private Function GetNextValue(ByVal data() As String, ByRef iNextIndex As Integer) As String
+        Dim strData As String = ""
+        Do While String.IsNullOrWhiteSpace(strData)
+            strData = data(iNextIndex)
+            iNextIndex += 1
+        Loop
+        Return strData
+    End Function
 
-        Try
-            '
-            'ecosimDS.ForcingShapes = 2 'one Forcing one EggProd
-            ' ecosimDS.MediationShapes = 1
-            ecosimDS.ResizeForcingShapes(2)
-            ' ecosimDS.redimForcingShapes()
-            '   ecosimDS.InitForcingShapes()
-            ecosimDS.ResizeMediationShapes(1)
-            '  ecosimDS.ReDimMediation()
+#End Region ' Helper methods
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Forcing Shape
-            Dim iForceShape As Integer = 1
-            ecosimDS.ForcingTitles(iForceShape) = "Forcing Shape From Datasource"
-            ecosimDS.ForcingShapeType(iForceShape) = eDataTypes.Forcing
-            ecosimDS.ForcingDBIDs(iForceShape) = CInt(Rnd() * 1000)
-
-            For ipt As Integer = 1 To ecosimDS.ForcePoints
-                ecosimDS.zscale(ipt, iForceShape) = (2 / ecosimDS.ForcePoints) * ipt
-            Next ipt
-
-            'apply this shape to all the valid pred/prey
-            For iPred As Integer = 1 To ecosimDS.nGroups
-                For iPrey As Integer = 1 To ecosimDS.nGroups
-                    If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
-                        ecosimDS.FunctionNumber(iPrey, iPred, 1) = iForceShape
-                        ecosimDS.IsMedFunction(iPrey, iPred, 1) = False
-                        If iPred = iPrey Then
-                            ecosimDS.FunctionType(iPrey, iPred, 1) = 2
-                        Else
-                            ecosimDS.FunctionType(iPrey, iPred, 1) = 1
-                        End If
-                    End If
-                Next iPrey
-            Next iPred
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Egg Production
-            Dim iEggShape As Integer = 2
-
-            ecosimDS.ForcingTitles(iEggShape) = "EggProd Shape From Datasource"
-            ecosimDS.ForcingShapeType(iEggShape) = eDataTypes.EggProd
-            ecosimDS.ForcingDBIDs(iEggShape) = CInt(Rnd() * 1000)
-
-            For ipt As Integer = 1 To ecosimDS.ForcePoints
-                ecosimDS.zscale(ecosimDS.ForcePoints - ipt, iEggShape) = (2 / ecosimDS.ForcePoints) * ipt
-            Next ipt
-
-            For iStanza As Integer = 1 To stanzaDS.Nsplit 'nSplit is the number of stanza groups
-                stanzaDS.EggProdShapeSplit(iStanza) = iEggShape
-            Next iStanza
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'Mediation 
-            ecosimDS.MediationTitles(1) = "Mediation Function from Datasource"
-            ecosimDS.MediationDBIDs(1) = CInt(Rnd() * 1000)
-            ecosimDS.MedIsUsed(1) = True
-            ecosimDS.NMedXused(1) = 2
-
-            'IMedUsed(nGroups + nGear, MediationShapes)
-            ecosimDS.IMedUsed(1, 1) = 1
-            ecosimDS.IMedUsed(2, 1) = ecosimDS.nGroups
-
-            ecosimDS.MedWeights(1, 1) = 1
-            ecosimDS.MedWeights(2, 1) = 0.5
-
-            For ipt As Integer = 1 To ecosimDS.NMedPoints
-                ecosimDS.Medpoints(ipt, 1) = (2 / ecosimDS.NMedPoints) * ipt
-            Next ipt
-
-            'apply this shape to all the valid pred/prey
-            For iPred As Integer = 1 To ecosimDS.nGroups
-                For iPrey As Integer = 1 To ecosimDS.nGroups
-                    If ecosimDS.SimDC(iPred, iPrey) <> 0 Then
-                        ecosimDS.FunctionNumber(iPrey, iPred, 2) = 1
-                        ecosimDS.IsMedFunction(iPrey, iPred, 2) = True
-                        ecosimDS.FunctionType(iPrey, iPred, 2) = eForcingFunctionApplication.ProductionRate
-                    End If
-                Next iPrey
-            Next iPred
-
-            'shape parameters for both type of shapes
-            Dim i As Integer
-            For i = 1 To ecosimDS.MediationShapes
-                ecosimDS.MediationShapeParams(i).ShapeFunctionType = eShapeFunctionType.NotSet
-            Next
-
-            For i = 1 To ecosimDS.ForcingShapes
-                ecosimDS.ForcingShapeParams(i).ShapeFunctionType = eShapeFunctionType.Exponential
-            Next
-
-        Catch ex As Exception
-            Debug.Assert(False, "Error in temporary init of Forcing & Mediation Shapes.")
-        End Try
-
-
-    End Sub
-#End If
-#End Region
-
-#Region "Methods replace for Mono compatibility"
+#Region " Methods replaced for Mono compatibility "
 
 #If 0 Then
 
@@ -1419,7 +1248,7 @@ Public Class cEIIDataSource
                 '        + "Open the eii file in Notepad, and check it. " _
                 '        + "A testversion of Ecopath with Ecosim had a bug where it would place, " _
                 '        + "e.g., '-94-95' instead of '-94 -95' in the eii file. If this is the case then add spaces where needed. " _
-                '        + "If not, please email v.christensen@cgiar.org " + vbNewLine _
+                '        + "If not, please email v.christensen@cgiar.org " + Environment.NewLine  _
                 '        + "Please edit data.  Press any key to abort. "
 
                 '    MsgBox(txt, vbCritical + vbOKOnly, "Problem importing old file type")
@@ -1585,7 +1414,7 @@ Public Class cEIIDataSource
 
 #End If
 
-#End Region
+#End Region ' Methods replaced for Mono compatibility
 
 End Class
 

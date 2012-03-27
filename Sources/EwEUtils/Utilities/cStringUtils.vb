@@ -1022,6 +1022,75 @@ Namespace Utilities
 
 #End Region ' Map array conversions
 
+#Region " Microsoft.VisualBasic alternatives "
+
+        ''' <summary>
+        ''' Return a Tab character.
+        ''' </summary>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
+        ''' For Mono compliance this definition should be used instead.
+        ''' </remarks>
+        Public Shared ReadOnly Property vbTab As String
+            Get
+                Return Convert.ToChar(9).ToString
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return a Newline character.
+        ''' </summary>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
+        ''' For Mono compliance this definition should be used instead.
+        ''' </remarks>
+        Public Shared ReadOnly Property vbNewline As String
+            Get
+                Return cStringUtils.vbCr
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return a carriage return character.
+        ''' </summary>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
+        ''' For Mono compliance this definition should be used instead.
+        ''' </remarks>
+        Public Shared ReadOnly Property vbCr As String
+            Get
+                Return Convert.ToChar(13).ToString
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return a line feed character.
+        ''' </summary>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
+        ''' For Mono compliance this definition should be used instead.
+        ''' </remarks>
+        Public Shared ReadOnly Property vbLf As String
+            Get
+                Return Convert.ToChar(10).ToString
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return a carriage return + line feed character.
+        ''' </summary>
+        ''' <remarks>
+        ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
+        ''' For Mono compliance this definition should be used instead.
+        ''' </remarks>
+        Public Shared ReadOnly Property vbCrLf As String
+            Get
+                Return Environment.NewLine
+            End Get
+        End Property
+
+#End Region ' Microsoft.VisualBasic alternatives
+
     End Class
 
 End Namespace ' Utilities

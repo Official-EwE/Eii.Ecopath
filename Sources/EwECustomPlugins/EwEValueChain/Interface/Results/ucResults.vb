@@ -19,14 +19,13 @@
 
 Option Strict On
 
-Imports System.Drawing
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Commands
-Imports ZedGraph
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Utilities
+Imports ZedGraph
 
 #End Region ' Imports
 

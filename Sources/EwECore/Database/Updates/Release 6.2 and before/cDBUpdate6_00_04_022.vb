@@ -61,8 +61,8 @@ Friend Class cDBUpdate6_00_04_022
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added Ecopath discards mortality." & vbNewLine & _
-                   "Added Ecosim fisheries regulation." & vbNewLine & _
+            Return "Added Ecopath discards mortality." & Environment.NewLine & _
+                   "Added Ecosim fisheries regulation." & Environment.NewLine & _
                    "Updated group x group indexes."
         End Get
     End Property

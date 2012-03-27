@@ -214,8 +214,10 @@ Namespace Other
 
             If (fileList Is Nothing) Then Return
 
-            If MessageBox.Show(My.Resources.GENERIC_PROMPT_CLEAR_MRU, Me.Text, _
-                MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = DialogResult.OK Then
+            Dim fmsg As New cFeedbackMessage(My.Resources.GENERIC_PROMPT_CLEAR_MRU, EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Me.m_uic.Core.Messages.SendMessage(fmsg)
+
+            If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
                 ' Clear confirmed
                 fileList.Clear()
                 ' This is a temporary solution to avoid returning null reference.

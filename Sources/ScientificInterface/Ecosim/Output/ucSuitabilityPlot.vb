@@ -21,9 +21,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 Imports ZedGraph
 
 #End Region ' Imports
@@ -191,19 +189,19 @@ Public Class ucSuitabilityPlot
             Select Case Me.m_plottype
 
                 Case ePlotTypes.Electivity
-                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY & vbCrLf & _
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_ELECTIVITY & cStringUtils.vbCrLf & _
                                My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
                     strXAxisTitle = ""
                     strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_CHESSON_ELECTIVITY
 
                 Case ePlotTypes.FunctionalResponse
-                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP & vbCrLf & _
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_FUNCT_RESP & cStringUtils.vbCrLf & _
                                My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
                     strXAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
                     strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_QPREY_BPRED
 
                 Case ePlotTypes.Suitability
-                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY & vbCrLf & _
+                    strTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY & cStringUtils.vbCrLf & _
                                My.Resources.ECOSIM_SUITABILITY_PLOT_PRED & predIn.Name
                     strXAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_PREYBIOM_ECOPATHBIOM
                     strYAxisTitle = My.Resources.ECOSIM_SUITABILITY_PLOT_SUITABILITY

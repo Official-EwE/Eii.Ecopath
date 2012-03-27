@@ -20,17 +20,14 @@
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Commands
-Imports ScientificInterface.Ecosim
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SAUPUtil.SAUPData
-Imports SAUPUtil.SAUPFile
-Imports System.Collections.Generic
-Imports ZedGraph
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region ' Import
 
@@ -1375,7 +1372,7 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: transmogrify non-zero values
-                        iValue = CInt(IIf(iValue = 0, iValue, iConvertTo))
+                        iValue = IIf(iValue = 0, iValue, iConvertTo)
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = iValue

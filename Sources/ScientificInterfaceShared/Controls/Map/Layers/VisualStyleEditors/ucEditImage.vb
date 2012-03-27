@@ -94,7 +94,8 @@ Namespace Controls
                         Me.m_glyphSelect.SelectedImage = img
                     Else
                         ' Warn user
-                        MsgBox(My.Resources.PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH, MsgBoxStyle.Information Or MsgBoxStyle.OkOnly)
+                        Dim msg As New cMessage(My.Resources.PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH, eMessageType.DataImport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning)
+                        Me.UIContext.Core.Messages.SendMessage(msg)
                     End If
                 Catch ex As Exception
                     ' Neh

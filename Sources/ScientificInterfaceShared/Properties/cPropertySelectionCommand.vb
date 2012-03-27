@@ -30,7 +30,7 @@ Namespace Properties
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' This class implements a selection change <see cref="Command">Command</see>.
+    ''' This class implements a selection change <see cref="cCommand">Command</see>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     <CLSCompliant(False)> _

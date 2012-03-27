@@ -61,7 +61,7 @@ Friend Class cDBUpdate6_00_05_001
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Updated pedigree." & vbNewLine & _
+            Return "Updated pedigree." & Environment.NewLine & _
                    "Added particle size distribution tables."
         End Get
     End Property

@@ -22,8 +22,9 @@ Option Strict On
 
 Imports EwECore
 Imports EwEUtils.Core
-Imports ZedGraph
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region
 
@@ -258,7 +259,7 @@ Namespace Ecosim
                 Me.IsRunning = bEcosimRunning
 
                 ' Configure run/stop button
-                Me.m_btnRun.Text = CStr(IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
+                Me.m_btnRun.Text = IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN)
                 Me.m_btnRun.Enabled = Me.m_coreStateMonitor.HasEcosimLoaded
                 ' Reflect change immediately
                 Me.m_btnRun.Update()

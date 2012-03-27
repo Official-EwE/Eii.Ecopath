@@ -59,7 +59,7 @@ Friend Class cDBUpdate6_00_04_0005
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Adds Ecospace weight layer tables" & vbNewLine & "Fixed field lengths"
+            Return "Adds Ecospace weight layer tables" & Environment.NewLine & "Fixed field lengths"
         End Get
     End Property
 

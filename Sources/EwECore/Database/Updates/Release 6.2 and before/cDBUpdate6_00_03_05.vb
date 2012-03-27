@@ -66,7 +66,7 @@ Friend Class cDBUpdate6_00_03_05
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Fixesdefault weight for imported time series" + vbNewLine + "Adds Species table"
+            Return "Fixesdefault weight for imported time series" + Environment.NewLine + "Adds Species table"
         End Get
     End Property
 

@@ -17,6 +17,7 @@
 '
 Option Strict Off ' OUCH
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 ''' <summary>
 ''' Wrapper for the underlying data structures of the EcoPath model. 
@@ -929,7 +930,8 @@ Public Class cEcopathDataStructures
         Dim j As Integer, K As Integer
         Dim FoundPredPrey As Boolean
 
-        j = UBound(DietChanged, 2)
+        ' j = UBound(DietChanged, 2)
+        j = DietChanged.GetUpperBound(1)
         For K = 0 To j
             If DietChanged(0, K) = pred And DietChanged(1, K) = prey Then
                 FoundPredPrey = True
@@ -1012,7 +1014,8 @@ Public Class cEcopathDataStructures
     Public Sub SumDCToOne(Optional ByVal bSumDCInput As Boolean = False)
 
         ' Pick matrix to alter
-        Dim asDCref(,) As Single = CType(IIf(bSumDCInput, Me.DCInput, Me.DC), Single(,))
+        Dim asDCref(,) As Single ' = CType(IIF(bSumDCInput, Me.DCInput, Me.DC), Single(,))
+        If bSumDCInput Then asDCref = Me.DCInput Else Me.DCInput = Me.DC
 
         ' For each potential predator
         For iPred As Integer = 1 To NumLiving
@@ -1083,7 +1086,7 @@ Public Class cEcopathDataStructures
                 stream.Write(",")
                 stream.Write(GE(i))
 
-                stream.Write(vbCrLf)
+                stream.Write(Environment.NewLine)
             Next
 
             stream.Close()

@@ -22,6 +22,9 @@ Imports EwECore.Ecosim
 Imports System.ComponentModel
 Imports EwEUtils.Core
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
+
 Namespace FitToTimeSeries
 
     Public Enum eRunType As Integer
@@ -809,9 +812,9 @@ Namespace FitToTimeSeries
 
                 MaxObs = m_tsData.Iobs
 
-                MaxPars = m_esdata.NumYears + UBound(VBlock)    '15
-                If UBound(VBlock) + PPyear2 - PPyear1 > MaxPars Then
-                    MaxPars = UBound(VBlock) + PPyear2 - PPyear1
+                MaxPars = m_esdata.NumYears + VBlock.GetUpperBound(0)    '15
+                If VBlock.GetUpperBound(0) + PPyear2 - PPyear1 > MaxPars Then
+                    MaxPars = VBlock.GetUpperBound(0) + PPyear2 - PPyear1
                 End If
                 ReDim Se(MaxPars, MaxObs), Sold(MaxPars), Xy(MaxPars)
                 ReDim Ybase(MaxObs), St(MaxPars) ', Wt(MaxObs)
@@ -839,7 +842,7 @@ Namespace FitToTimeSeries
                 'if vulnerability variance = 0 then these parameters will not be counted in 'n' see below
                 'this means the vulnerability parameters will not be included in the search
                 'InitForRun() decides if pvVul is set or not based on the bVulnerabilitySearch flag
-                For i = 1 To UBound(IsBlockEstimated)   '15
+                For i = 1 To IsBlockEstimated.GetUpperBound(0)   '15
                     If IsBlockEstimated(i) Then
                         pv(TotalTime + i) = pvVul 'pvVul was set in IntForRun
                     Else
@@ -1128,7 +1131,7 @@ Namespace FitToTimeSeries
         Sub SetVblock(ByRef esData As cEcosimDatastructures)
             Dim i As Integer, j As Integer, ii As Integer
             Dim iBlock As Integer
-            For i = 1 To UBound(IsBlockEstimated)
+            For i = 1 To IsBlockEstimated.GetUpperBound(0)
                 IsBlockEstimated(i) = False
             Next
 
@@ -1164,7 +1167,7 @@ Namespace FitToTimeSeries
                 End If
             End If
             'Par(TotalTime + 1) = VulMultAll
-            For i = 1 To UBound(VBlock) '15
+            For i = 1 To VBlock.GetUpperBound(0)  '15
                 If IsBlockEstimated(i) = True And VBlock(i) > 0 Then
                     Pvl = CSng(VBlock(i) - 1.0)
                     If Pvl < 0.000001 Then Pvl = 0.000001
@@ -1511,7 +1514,7 @@ Namespace FitToTimeSeries
                     End If
                 End If
 
-                For i = 1 To UBound(VBlock) '15
+                For i = 1 To VBlock.GetUpperBound(0) '15
                     If IsBlockEstimated(i) = True Then
                         If Par(TotalTime + i) < 34.538 Then
                             VBlock(i) = 1 + CSng(Math.Exp(Par(TotalTime + i)))

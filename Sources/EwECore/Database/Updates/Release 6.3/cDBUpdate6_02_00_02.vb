@@ -46,8 +46,8 @@ Friend Class cDBUpdate6_02_00_02
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Max forcing time remembered in model" & vbNewLine & _
-                   "Added capacity map tables" & vbNewLine &
+            Return "Max forcing time remembered in model" & Environment.NewLine & _
+                   "Added capacity map tables" & Environment.NewLine &
                    "Applied fix to Stanza table"
         End Get
     End Property

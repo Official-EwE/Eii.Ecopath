@@ -71,7 +71,7 @@ Friend Class cDBUpdate6_00_03_06
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Adds Ecotracer tables" + vbNewLine + "Removes Ecoranger tables"
+            Return "Adds Ecotracer tables" + Environment.NewLine + "Removes Ecoranger tables"
         End Get
     End Property
 

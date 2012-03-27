@@ -193,7 +193,7 @@ Namespace MSE
                     value = keyvalue.Value
 
                     Select Case value.varType
-                        Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
+                        Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.BoolArray
                             For i = 0 To value.Length : value.Status(i) = statusflag : Next i
                         Case Else
                             value.Status = statusflag
@@ -320,8 +320,8 @@ Public Class cMSEFleetOutput
                 value = keyvalue.Value
 
                 Select Case value.varType
-                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
-                        For i = 0 To value.Length : value.Status(i) = statusflag : Next i
+                        Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.BoolArray
+                            For i = 0 To value.Length : value.Status(i) = statusflag : Next i
                     Case Else
                         value.Status = statusflag
                 End Select
@@ -736,8 +736,8 @@ Public Class cMSEStats
                 value = keyvalue.Value
 
                 Select Case value.varType
-                    Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.PointArray, eValueTypes.BoolArray, eValueTypes.LayerArray
-                        For i = 0 To value.Length : value.Status(i) = statusflag : Next i
+                        Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.BoolArray
+                            For i = 0 To value.Length : value.Status(i) = statusflag : Next i
                     Case Else
                         value.Status = statusflag
                 End Select

@@ -386,7 +386,7 @@ Partial Public Class AppLauncher
                 .ThumbnailSize = My.Settings.ThumbnailSize
                 ' Fix: do not allow disabling of legend viz
                 If (My.Settings.ShowLegends = TriState.False) Then My.Settings.ShowLegends = TriState.UseDefault
-                .ShowLegends = My.Settings.ShowLegends
+                .ShowLegends = DirectCast(My.Settings.ShowLegends, TriState)
                 .UseTransparentBackgrounds = My.Settings.UseTransparentBackgrounds
 
             End With

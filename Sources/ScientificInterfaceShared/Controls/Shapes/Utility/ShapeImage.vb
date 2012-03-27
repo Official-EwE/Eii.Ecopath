@@ -18,14 +18,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
-Imports System.Drawing
 Imports System.Drawing.Drawing2D
-Imports System.Globalization
-Imports System.Threading
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Style
+Imports EwECore
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -124,7 +121,7 @@ Namespace Controls
 
             ' Provide defaults
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
-            If (sYMark = cCore.NULL_VALUE) Then sYMark = CSng(IIf(TypeOf (shape) Is cMediationFunction, 0.5!, 1.0!))
+            If (sYMark = cCore.NULL_VALUE) Then sYMark = IIf(TypeOf (shape) Is cMediationFunction, 0.5!, 1.0!)
             If (iXMax <= 0) Then iXMax = shape.XMax
 
             cShapeImage.DrawShapeDirect(uic, _

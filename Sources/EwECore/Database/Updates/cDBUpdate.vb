@@ -22,6 +22,9 @@ Imports System.Data
 Imports EwEUtils.Core
 Imports System.Xml
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
+
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' Database update base class.

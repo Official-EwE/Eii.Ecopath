@@ -19,11 +19,11 @@
 
 Option Strict On
 
-Imports System.Drawing
-Imports EwECore
-Imports ScientificInterfaceShared.Style
 Imports System.ComponentModel
+Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 

@@ -27,6 +27,8 @@ Imports EwEPlugin
 Imports EwEPlugin.Data
 Imports System.Text
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
 Namespace MSE
 
 #Region "Public definitions"
@@ -138,7 +140,7 @@ Namespace MSE
 
         Private m_output As IMSEOutputWriter
 
-        Dim rndGen As Random
+        Dim m_rndGen As Random
 
         Private m_nTrials As Integer
 
@@ -336,7 +338,7 @@ Namespace MSE
 
                 'create a new random number generator for each run
                 'the seed will decide if the sequence is unique or not
-                Me.rndGen = New Random(rndSeed)
+                Me.m_rndGen = New Random(rndSeed)
 
                 Dim ds As cEconomicDataSource = cEconomicDataSource.getInstance()
                 If (ds IsNot Nothing) Then
@@ -974,7 +976,7 @@ Namespace MSE
                         If Me.isTStepRegulated(Me.m_curT) Then
 
                             'Regulated Vary QYear()
-                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.rndGen.NextDouble))
+                            QYear(i) = QYear(i) * (1 + Me.m_data.QGrowUsed(i) * CSng(Me.m_rndGen.NextDouble))
 
                         Else
                             'Not Regulated 
@@ -1118,7 +1120,7 @@ Namespace MSE
 
         End Sub
 
-      
+
 
 
         Public Sub DoRegulations(ByVal Biomass() As Single, ByVal Effort() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal iTimeStep As Integer, ByVal iMonth As Integer, ByVal iYear As Integer)
@@ -1548,7 +1550,7 @@ Namespace MSE
             'For i = 1 To 12
             '    R = R + Rnd
             'Next
-            R = 2 * Rnd() - 1
+            R = CSng(2 * Me.m_rndGen.NextDouble - 1)
             Normal2 = CSng(Math.Log((1 + R) / (1 - R)) / 1.82)
 
         End Function
@@ -1565,8 +1567,8 @@ Namespace MSE
         Private Function Normal() As Single
             Dim V1 As Double, V2 As Double
             Do
-                V1 = rndGen.NextDouble
-                V2 = rndGen.NextDouble
+                V1 = m_rndGen.NextDouble
+                V2 = m_rndGen.NextDouble
             Loop Until V1 > 0
             Return CSng(Math.Sqrt(-2 * Math.Log(V1)) * Math.Cos(2 * 3.14159 * V2))
         End Function
@@ -2646,10 +2648,10 @@ Namespace MSE
         ''' <remarks></remarks>
         Friend Function RandomNormal() As Single
             Dim X As Double
-            Debug.Assert(rndGen IsNot Nothing, Me.ToString & ".RandomNormal() Random number generator has not been initialized!")
+            Debug.Assert(m_rndGen IsNot Nothing, Me.ToString & ".RandomNormal() Random number generator has not been initialized!")
             X = -6
             For i As Integer = 1 To 12
-                X = X + rndGen.NextDouble
+                X = X + m_rndGen.NextDouble
             Next
             Return CSng(X)
         End Function

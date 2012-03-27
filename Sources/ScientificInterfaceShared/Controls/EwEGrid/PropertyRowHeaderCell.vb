@@ -72,8 +72,7 @@ Namespace Controls.EwEGrid
         ''' Constructor to create a row header cell that derives its 
         ''' <see cref="DisplayText">display text</see> from a 
         ''' <see cref="cProperty">cProperty</see>. The property value is 
-        ''' inserted in the cell display text via a 
-        ''' <see cref="Strings.Format">format mask</see>.
+        ''' inserted in the cell display text via a format mask.
         ''' </summary>
         ''' <param name="prop">cProperty to deliver the cell value.</param>
         ''' <param name="strUnitMask">The format mask to apply. This mask must
@@ -92,7 +91,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cProperty">cProperty</see> and a 
         ''' <see cref="cStyleGuide.eUnitType">system unit</see>. 
         ''' Both the property value and the unit mask text are inserted in the 
-        ''' cell display text via a <see cref="Strings.Format">format mask</see>.
+        ''' cell display text via a format mask.
         ''' </summary>
         ''' <param name="prop">cProperty to deliver the cell value.</param>
         ''' <param name="strUnitMask">The format mask to apply. This mask must
@@ -115,7 +114,7 @@ Namespace Controls.EwEGrid
         ''' <see cref="cProperty">cProperty</see> and a series of
         ''' <see cref="cStyleGuide.eUnitType">system units</see>. 
         ''' Both the property value and the unit mask texts are inserted in the 
-        ''' cell display text via a <see cref="Strings.Format">format mask</see>.
+        ''' cell display text via a format mask.
         ''' </summary>
         ''' <param name="prop">cProperty to deliver the cell value.</param>
         ''' <param name="strUnitMask">The format mask to apply. This mask must
@@ -158,8 +157,7 @@ Namespace Controls.EwEGrid
         ''' <summary>
         ''' Constructor to create a row header cell that synchronizes 
         ''' its <see cref="DisplayText">display text</see> live with core data.
-        ''' The core value is inserted in the cell display text via a 
-        ''' <see cref="Strings.Format">format mask</see>.
+        ''' The core value is inserted in the cell display text via a format mask.
         ''' </summary>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
@@ -186,7 +184,7 @@ Namespace Controls.EwEGrid
         ''' its <see cref="DisplayText">display text</see> live with core data
         ''' and a <see cref="cStyleGuide.eUnitType">system unit</see>.
         ''' Both the core value and the unit text are inserted in the cell 
-        ''' display text via a <see cref="Strings.Format">format mask</see>.
+        ''' display text via a format mask.
         ''' </summary>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>
@@ -219,7 +217,7 @@ Namespace Controls.EwEGrid
         ''' its <see cref="DisplayText">display text</see> live with core data
         ''' and a series of<see cref="cStyleGuide.eUnitType">system units</see>.
         ''' Both the core value and the unit texts are inserted in the cell 
-        ''' display text via a <see cref="Strings.Format">format mask</see>.
+        ''' display text via a format mask.
         ''' </summary>
         ''' <param name="Source">The <see cref="cCoreInputOutputBase">cCoreInputOutputBase</see> 
         ''' object to deliver the core data.</param>

@@ -35,12 +35,12 @@ Imports EwEUtils.SystemUtilities
 ''' and messy .NET settings behaviours:</para>
 ''' <list type="bullet">
 ''' <item>All EwE settings are stored in the local roaming profile of the current
-''' user. There is no distiunction between application and user settings which
-''' traditionally end up in different directories on a system.</item>
+''' user. This class removes the distinction between application settings and user 
+''' settings which traditionally end up in different directories on a system.</item>
+''' <item>This class also ensures that all EwE settings are stored in one directory, 
+''' in one file only. This stops the proliferation of standard .NET versioned setting
+''' directories that become impossible to manage.</item>
 ''' </list>
-''' <item>All EwE settings are stored in one diretory, in one file only. This
-''' class stops the proliferation of standard .NET versioned settings directories 
-''' that become impossible to manage.</item>
 ''' </summary>
 ''' <remarks>
 ''' <para>The following code illustrates how to use this class to store settings

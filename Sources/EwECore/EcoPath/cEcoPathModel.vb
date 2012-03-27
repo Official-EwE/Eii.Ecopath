@@ -18,6 +18,7 @@
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEPlugin
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 Namespace Ecopath
 
@@ -218,7 +219,7 @@ Namespace Ecopath
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'Paraniod double checking for the release version
             'Is there a valid Ecopath data object. There is no messages for this as it should not happen in the release version. Just write to the log???????
-            If IsNothing(m_Data) Then
+            If m_Data Is Nothing Then
                 cLog.Write(Me.ToString + ".EstimateParameters() Datadource must be set before model is called. Ecopath could not be run.")
                 Return False
             End If
@@ -2601,7 +2602,7 @@ ONE:
                     Y(i, j) = -W(i, j)
                 Next j
             Next i
-            If Math.Abs(t - Int(t) - 1) >= d And Math.Abs(t - Int(t)) >= d Then GoTo ONE
+            If Math.Abs(t - CInt(t) - 1) >= d And Math.Abs(t - CInt(t)) >= d Then GoTo ONE
             'Repeat until T is an integer
 
             'P is the solutions to the equations
@@ -2713,7 +2714,7 @@ ONE:
 
             Try
                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PARAMESTIMATION_FAILED_MANYMISSING, _
-                                       Me.m_Data.GroupName(i), vbCrLf)
+                                       Me.m_Data.GroupName(i), Environment.NewLine)
                 msg = New cMessage(strMsg, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning)
                 msg.Suppressable = False
                 NotifyCore(msg)
@@ -2828,7 +2829,7 @@ ONE:
                         If m_Data.B(j) > MaxBio Then MaxBio = m_Data.B(j)
                     End If
                 Next
-                MaxBio = CDbl(IIf(MaxBio > 0, 10 * MaxBio, 100))
+                MaxBio = CDbl(IIF(MaxBio > 0, CSng(10 * MaxBio), 100))
                 DoIterationsToEstimateB = 0
                 NewSum = 0
                 OldSum = -1

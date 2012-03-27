@@ -21,6 +21,8 @@ Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
 ''' --------------------------------------------------------------------------
 ''' <summary>
 ''' <para>Database update 6.2.0.01:</para>

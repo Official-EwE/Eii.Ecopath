@@ -19,8 +19,9 @@
 
 Option Strict On
 
-Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

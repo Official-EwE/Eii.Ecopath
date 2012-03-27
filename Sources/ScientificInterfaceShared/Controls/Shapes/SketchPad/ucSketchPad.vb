@@ -20,18 +20,15 @@
 Option Explicit On
 Option Strict On
 
-Imports System.Drawing
-Imports System.Drawing.Drawing2D
 Imports System.ComponentModel
-Imports System.IO
-Imports System.Globalization
-Imports System.Threading
+Imports System.Drawing.Drawing2D
 Imports System.Drawing.Imaging
+Imports System.IO
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -745,7 +742,7 @@ Namespace Controls
 
         Protected Overridable Sub DragYMark(ByVal ptPrev As Point, ByVal ptCur As Point)
             Dim sYMax As Single = Me.YAxisMaxValue
-            Dim iXMax As Integer = CInt(IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue))
+            Dim iXMax As Integer = IIf(Me.Shape.IsSeasonal, cCore.N_MONTHS, Me.XAxisMaxValue)
             Dim ptfCur As PointF = cShapeImage.ToModelPoint(ptCur, Me.ClientRectangle, iXMax, sYMax)
             Me.YMarkValue = ptfCur.Y
         End Sub

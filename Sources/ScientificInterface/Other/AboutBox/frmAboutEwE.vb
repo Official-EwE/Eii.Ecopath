@@ -19,11 +19,9 @@
 
 Option Strict On
 Imports System.Reflection
-Imports System.Deployment
-Imports System.Text
-Imports EwEUtils.Utilities
 Imports EwECore
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports 
 
@@ -52,7 +50,7 @@ Namespace Other
 
             Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
-            Dim strBit As String = CStr(IIf(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
+            Dim strBit As String = IIf(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)

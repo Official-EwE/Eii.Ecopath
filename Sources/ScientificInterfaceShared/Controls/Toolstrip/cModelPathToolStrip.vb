@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports System.Text
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 

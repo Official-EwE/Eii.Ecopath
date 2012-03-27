@@ -22,6 +22,7 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Properties
@@ -385,7 +386,7 @@ Namespace Controls.EwEGrid
                         Catch ex As Exception
                         End Try
                     ElseIf TypeOf objValue Is Boolean Then
-                        Me.m_ttbValue.Text = CStr(IIf(CBool(objValue) = True, "1", "0"))
+                        Me.m_ttbValue.Text = IIf(CBool(objValue) = True, "1", "0")
                     End If
                 End If
             End If

@@ -109,7 +109,7 @@ Friend Class cDBUpdate6_00_04_00
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Adds Ecosim TimeseriesDataset table" + vbNewLine + _
+            Return "Adds Ecosim TimeseriesDataset table" + Environment.NewLine + _
                    "Migrates existing Time Series data to new Dataset table"
         End Get
     End Property
