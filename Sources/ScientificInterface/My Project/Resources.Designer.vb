@@ -3661,6 +3661,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Waiting for your input....
+        '''</summary>
+        Public ReadOnly Property STATUS_WAITING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_WAITING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath model
         '''Name: {0}
         '''Location: {1}.

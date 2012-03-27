@@ -404,6 +404,7 @@ Public Class cMessageHistory
         If bSet Then
             mh = New cMessageHandler(AddressOf AllMessagesHandler, src, eMessageType.Any, Me.UIContext.SyncObject)
 #If DEBUG Then
+            ' Name the message handler for profiling
             mh.Name = "cMessageHistory::All"
 #End If
             Me.m_dtMessageHanders(src) = mh
@@ -565,7 +566,14 @@ Public Class cMessageHistory
                 End If
             End If
         Else
-            dlr = MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
+            ' Invoke message box
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
+            Try
+                dlr = MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
+            Catch ex As Exception
+                cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
+            End Try
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
         End If
 
         ' Translate .NET MessageBox result into reply

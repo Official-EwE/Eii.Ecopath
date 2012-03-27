@@ -1516,4 +1516,7 @@ Description: {2}</value>
   <data name="PROMPT_DEFINE_PEDIGREE" xml:space="preserve">
     <value>Pedigree levels are not defined for one or more value types. Do you want to define these now?</value>
   </data>
+  <data name="STATUS_WAITING" xml:space="preserve">
+    <value>Waiting for your input...</value>
+  </data>
 </root>

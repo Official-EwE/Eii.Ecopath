@@ -59,29 +59,21 @@ Namespace Ecospace
             'm_scMain
             '
             Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_scMain.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_scMain.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
             Me.m_scMain.Name = "m_scMain"
-            Me.m_scMain.Orientation = System.Windows.Forms.Orientation.Horizontal
             '
             'm_scMain.Panel2
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_ucDatasets)
             Me.m_scMain.Panel2.Controls.Add(Me.m_tsDatasets)
-            Me.m_scMain.Size = New System.Drawing.Size(441, 442)
-            Me.m_scMain.SplitterDistance = 244
-            Me.m_scMain.TabIndex = 0
             '
             'm_ucDatasets
             '
             Me.m_ucDatasets.BackColor = System.Drawing.SystemColors.Window
-            Me.m_ucDatasets.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_ucDatasets.Location = New System.Drawing.Point(0, 25)
+            resources.ApplyResources(Me.m_ucDatasets, "m_ucDatasets")
             Me.m_ucDatasets.Name = "m_ucDatasets"
             Me.m_ucDatasets.SelectedDataset = Nothing
             Me.m_ucDatasets.SelectedIndex = -1
-            Me.m_ucDatasets.Size = New System.Drawing.Size(437, 165)
-            Me.m_ucDatasets.TabIndex = 1
             Me.m_ucDatasets.UIContext = Nothing
             Me.m_ucDatasets.VarName = EwEUtils.Core.eVarNameFlags.NotSet
             '
@@ -89,45 +81,38 @@ Namespace Ecospace
             '
             Me.m_tsDatasets.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsDatasets.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tscmTypes, Me.m_tslData, Me.m_tsbnConnections})
-            Me.m_tsDatasets.Location = New System.Drawing.Point(0, 0)
+            resources.ApplyResources(Me.m_tsDatasets, "m_tsDatasets")
             Me.m_tsDatasets.Name = "m_tsDatasets"
             Me.m_tsDatasets.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_tsDatasets.Size = New System.Drawing.Size(437, 25)
-            Me.m_tsDatasets.TabIndex = 0
             '
             'm_tscmTypes
             '
             Me.m_tscmTypes.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tscmTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_tscmTypes.Name = "m_tscmTypes"
-            Me.m_tscmTypes.Size = New System.Drawing.Size(121, 25)
+            resources.ApplyResources(Me.m_tscmTypes, "m_tscmTypes")
             '
             'm_tslData
             '
             Me.m_tslData.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
             Me.m_tslData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tslData.Name = "m_tslData"
-            Me.m_tslData.Size = New System.Drawing.Size(61, 22)
-            Me.m_tslData.Text = "View type:"
+            resources.ApplyResources(Me.m_tslData, "m_tslData")
             '
             'm_tsbnConnections
             '
             Me.m_tsbnConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbnConnections.Image = CType(resources.GetObject("m_tsbnConnections.Image"), System.Drawing.Image)
-            Me.m_tsbnConnections.ImageTransparentColor = System.Drawing.Color.Magenta
+            resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
             Me.m_tsbnConnections.Name = "m_tsbnConnections"
-            Me.m_tsbnConnections.Size = New System.Drawing.Size(87, 22)
-            Me.m_tsbnConnections.Text = "&Connections..."
+            Me.m_tsbnConnections.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+            Me.m_tsbnConnections.Image = ScientificInterfaceShared.My.Resources.Database
             '
             'frmSpatialTimeSeries
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(441, 442)
             Me.Controls.Add(Me.m_scMain)
-            Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
             Me.Name = "frmSpatialTimeSeries"
-            Me.Text = "Spatial time series"
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.Panel2.PerformLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()

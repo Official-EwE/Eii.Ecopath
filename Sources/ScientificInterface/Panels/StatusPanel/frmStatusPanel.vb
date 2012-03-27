@@ -34,8 +34,9 @@ Imports ScientificInterfaceShared.Commands
 
 ''' -----------------------------------------------------------------------
 ''' <summary>
-''' The status panel tracks core messages. Relevant messages are logged in
-''' the GUI. Feedback messages are handled by this class.
+''' The status panel tracks core messages, and relevant messages are displayed
+''' in the panel. Messages with hyperlinks are properly displayed, and hyperlink
+''' activation is dispatched via the regular command structure.
 ''' </summary>
 ''' -----------------------------------------------------------------------
 Public Class frmStatusPanel
@@ -135,6 +136,11 @@ Public Class frmStatusPanel
 
 #Region " Events "
 
+    ''' <summary>
+    ''' Add message to history (thread-safe)
+    ''' </summary>
+    ''' <param name="hist"></param>
+    ''' <param name="item"></param>
     Private Sub OnHistoryItemAdded(ByVal hist As cMessageHistory, _
                                    ByVal item As cMessageHistory.cHistoryItem)
         If Me.InvokeRequired Then
@@ -144,6 +150,10 @@ Public Class frmStatusPanel
         End If
     End Sub
 
+    ''' <summary>
+    ''' Refresh history (thread-safe)
+    ''' </summary>
+    ''' <param name="hist"></param>
     Private Sub OnHistoryRefreshed(ByVal hist As cMessageHistory)
         If Me.InvokeRequired Then
             Me.Invoke(New ClearHistoryItemsDelegate(AddressOf Me.RefreshHistoryItems), New Object() {})
@@ -416,6 +426,10 @@ Public Class frmStatusPanel
 #Region " Navigation "
 
     Private Sub OnNavigate(sender As Object, e As ScientificInterfaceShared.Controls.cNavigateTreeview.TreeViewNavigateEventArgs) Handles m_tvStatus.Navigate
+
+        ' User clicked a history item with a hyperlink. 
+        ' Fire off EwE navigation command with the link and let someone else deal with it.
+
         Try
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
