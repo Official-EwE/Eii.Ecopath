@@ -1191,7 +1191,9 @@ Public Class cCore
 
         Try
             Dim mh As New cMessageHandler(AddressOf Me.EcoPathMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj)
+#If DEBUG Then
             mh.Name = "cCore::Ecopath"
+#End If
 
             'build a new EcoPath Model object
             Me.m_EcoPath = New Ecopath.cEcoPathModel(Me.m_Functions)
@@ -1232,7 +1234,9 @@ Public Class cCore
     Private Function InitPSD() As Boolean
         Try
             Dim mh As New cMessageHandler(AddressOf Me.PSDMessage_Handler, eCoreComponentType.EcoPath, eMessageType.Any, Me.m_SyncObj)
+#If DEBUG Then
             mh.Name = "cCore::PSD"
+#End If
 
             Me.m_psdModel = New cPSDModel
             Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
@@ -5978,7 +5982,9 @@ Public Class cCore
             Me.m_EcoSim = New Ecosim.cEcoSimModel(Me.EcoFunction)
 
             Dim mh As New cMessageHandler(AddressOf Me.EcosimMessageHandler, eCoreComponentType.EcoSim, eMessageType.Any, Me.m_SyncObj)
+#If DEBUG Then
             mh.Name = "cCore::Ecosim"
+#End If
             Me.m_EcoSim.Messages.AddMessageHandler(mh)
 
             'set the output variables from EcoPath as the Input for EcoSim
