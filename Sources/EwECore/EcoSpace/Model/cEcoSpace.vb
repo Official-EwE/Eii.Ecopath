@@ -267,12 +267,6 @@ Public Class cEcoSpace
     ''' <remarks>computed in CalcHabitatArea()</remarks>
     Public ThabArea As Single
 
-    'timers
-    Private gridThreadWaitTimer As Single
-    Private ibmThreadWaitTimer As Single
-    Private ibmThreadWaitTimer2 As Single
-    Private spaceThreadWaitTimer As Single
-
     Private totalIterThread() As Integer 'total number of solvegrid iterations for each thread
 
     'grid solver for contaminant the tracer
@@ -844,34 +838,18 @@ Public Class cEcoSpace
         Dim BB() As Single
         Dim ebb() As Single 'abmpa
         Dim Wtr As Single
-
-        Dim steps_per_year As Integer = 1 / m_Data.TimeStep
         Dim bAccumulateData As Boolean
-
         Dim RelFopt() As Single
         Dim Fgear() As Single
+        Dim FtimeTotal(m_Data.NGroups) As Single
+        Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
+        Dim steps_per_year As Integer = 1 / m_Data.TimeStep
 
-        'Dim slvrTimer As Single
-        'Dim spaceTimer As Single
-        'Dim timeStepTimer As Single
-        'Dim effTimer As Single
-        'Dim IBMTimer As Single
-        'Dim tst1 As Single
-        gridThreadWaitTimer = 0
-        ibmThreadWaitTimer = 0
-        ibmThreadWaitTimer2 = 0
-        spaceThreadWaitTimer = 0
-
-        'used for timing threaded code
-        'Dim slvET2 As Single
-        'Dim slvET As Single
-
+        'timers
         Dim stpwchTotRunTime As New Stopwatch
         Dim stpwchSolver As New Stopwatch
-
-        Dim FtimeTotal(m_Data.NGroups) As Single
-
-        Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
+        Dim stpwchGrid As New Stopwatch
+        Dim stpwchEffort As New Stopwatch
 
         Try
 
@@ -887,14 +865,9 @@ Public Class cEcoSpace
             ReDim ebb(m_Data.nvartot)
             ReDim BB(m_Data.nvartot)
 
-            Dim tTimeLoop As Double
-            Dim bdump(,) As Single
-            ReDim bdump(m_Data.InRow, m_Data.InCol)
-
             'Initialize IBM 
             Me.InitIBM()
             m_Data.nIBMPacketsPerThread = (m_Stanza.Npackets + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
-
 
             itt = 0
 
@@ -974,13 +947,6 @@ Public Class cEcoSpace
                     CalcAdvection(m_Data.MonthNow)
                     SetMovementParameters()
                 End If
-                '****************END of Martell*****************
-                'CJW moved imonth line 2/10/03 to here, before varymovementparameters call
-                'ToDo_jb FindSpatial... Saving Time series data
-                '            'Save Timeseries data when at half a year
-                '            'VC060519: Trying to save at first month to use when not monthly time step
-                'jb storing of the time series data still  needs to be implemented
-                '            StoreTimeSeriesData = IIf(imonth = 1 And SpDatYear > 0, True, False)
 
                 VaryMovementParameters2(m_Data.MonthNow)
 
@@ -999,21 +965,19 @@ Public Class cEcoSpace
                     End If
                 Next
 
-                'Dim effT1 As Single = Microsoft.VisualBasic.Timer
                 If m_Data.PredictEffort Then
                     If its = 3 Then Me.AdjustTotalEffort()
+                    stpwchEffort.Start()
                     ' Me.PredictEffortDistribution(m_Data.MonthNow, its)
                     Me.runPredictEffortDistributionThreads(m_Data.MonthNow, its)
+                    stpwchEffort.Stop()
                 End If
 
-                'effTimer += (Microsoft.VisualBasic.Timer - effT1)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospacePostFishingEffortModTimestep(m_Data, itt)
 
                 ReDim Btime(m_Data.NGroups) 'this clears out btime
                 ReDim ConTotal(m_Data.NGroups)
-
-                'Debug.Assert(itt <= 43)
 
                 '*************
                 'UPDATE SOLVERS WITH NON REFERENCED TIMESTEP DATA (itt, etc)
@@ -1026,12 +990,12 @@ Public Class cEcoSpace
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 runSpaceSolverThreads()
                 stpwchSolver.Stop()
-                '  spaceTimer = spaceTimer + (Microsoft.VisualBasic.Timer - slvET2)
 
-                '  slvET = Microsoft.VisualBasic.Timer
+
                 'now solve the spatial grid
+                stpwchGrid.Start()
                 runGridSolverThreads()
-                '  slvrTimer = slvrTimer + (Microsoft.VisualBasic.Timer - slvET)
+                stpwchGrid.Stop()
 
                 'make sure none of the biomass cells are zero
                 For ip = 1 To m_Data.nvartot
@@ -1094,9 +1058,9 @@ Public Class cEcoSpace
                     Next isp
 
                 ElseIf m_Data.UseIBM Then
-                    '   slvET2 = Microsoft.VisualBasic.Timer
+                    'IBM model
                     runIBMSolverThreads()
-                    ' IBMTimer = IBMTimer + (Microsoft.VisualBasic.Timer - slvET2)
+
                 End If 'end of section to overwrite PDE biomasses with multistanza distributed biomasses if newmultistanza=true
 
                 'sum biomass after Multistanza updates
@@ -1108,7 +1072,6 @@ Public Class cEcoSpace
                         Next ip
                     Next j
                 Next i
-
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'contaminant tracing
@@ -1131,14 +1094,6 @@ Public Class cEcoSpace
 
                                 m_tracerData.TracerConcByRegion(m_Data.Region(i, j), ip, itt) = m_tracerData.TracerConcByRegion(m_Data.Region(i, j), ip, itt) + m_Data.Ccell(i, j, ip)
                                 m_tracerData.TracerCBRegion(m_Data.Region(i, j), ip, itt) = m_tracerData.TracerCBRegion(m_Data.Region(i, j), ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
-                                'sum of concentration by region
-                                'ewe5
-                                'If StoreTimeSeriesData Then
-                                '    SpaceTraceByRegion(iYear, ip, 0) = SpaceTraceByRegion(iYear, ip, 0) + Ccell(i, j, ip)
-                                '    SpaceTraceByRegion(iYear, ip, Region(i, j)) = SpaceTraceByRegion(iYear, ip, Region(i, j)) + Ccell(i, j, ip)
-                                '    SpaceTraceByRegionCount(iYear, ip, 0) = SpaceTraceByRegionCount(iYear, ip, 0) + 1
-                                '    SpaceTraceByRegionCount(iYear, ip, Region(i, j)) = SpaceTraceByRegionCount(iYear, ip, Region(i, j)) + 1
-                                'End If
 
                             Next ip
                         Next j
@@ -1165,15 +1120,13 @@ Public Class cEcoSpace
 
                 'post notification that a time step has been completed
                 marshallOnTimeStep(itt)
-                ' timeStepTimer += (Microsoft.VisualBasic.Timer - tst1)
 
                 If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceEndTimeStep(m_Data, itt)
 
-                System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver Run Time(sec) = " & stpwchSolver.Elapsed.TotalSeconds.ToString)
-                '  System.Console.WriteLine("FindSpatialEquilibrium() GridSolver Run Time = " & slvrTimer.ToString)
-                '  System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution Run Time = " & effTimer.ToString)
-
-                System.Console.WriteLine("FindSpatialEquilibrium() Total Run Time(min) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
+                'System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver run time(min.) = " & stpwchSolver.Elapsed.TotalMinutes.ToString)
+                'System.Console.WriteLine("FindSpatialEquilibrium() GridSolver run time(min.) = " & stpwchGrid.Elapsed.TotalMinutes.ToString)
+                'System.Console.WriteLine("FindSpatialEquilibrium() PredictEffortDistribution run time(min.) = " & stpwchEffort.Elapsed.TotalMinutes.ToString)
+                'System.Console.WriteLine("FindSpatialEquilibrium() Time step run time(min.) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
 
             Next m_Data.TimeNow
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1202,7 +1155,16 @@ Public Class cEcoSpace
             Next
 
             stpwchTotRunTime.Stop()
-            System.Console.WriteLine("FindSpatialEquilibrium() Run Time(min) = " & stpwchTotRunTime.Elapsed.TotalMinutes.ToString)
+            Dim totRunTime As Double = stpwchTotRunTime.Elapsed.TotalMinutes
+            Dim SpaceRunTime As Double = stpwchSolver.Elapsed.TotalMinutes
+            Dim GridRunTime As Double = stpwchGrid.Elapsed.TotalMinutes
+            Dim EffortRunTime As Double = stpwchEffort.Elapsed.TotalMinutes
+            System.Console.WriteLine("FindSpatialEquilibrium() Number of Time Steps = " & itt.ToString)
+            System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & totRunTime.ToString)
+            System.Console.WriteLine("FindSpatialEquilibrium() Average per Timestep(min.) = " & (totRunTime / itt).ToString)
+            System.Console.WriteLine("FindSpatialEquilibrium() Percent in Trophic = " & (SpaceRunTime / totRunTime * 100).ToString)
+            System.Console.WriteLine("FindSpatialEquilibrium() Percent in GridSolver = " & (GridRunTime / totRunTime * 100).ToString)
+            System.Console.WriteLine("FindSpatialEquilibrium() Percent in Effort distribution = " & (EffortRunTime / totRunTime * 100).ToString)
 
             'System.Console.WriteLine("FindSpatialEquilibrium() Number of Time Steps " & itt.ToString)
             'System.Console.WriteLine("FindSpatialEquilibrium() Run Time = " & CStr(Microsoft.VisualBasic.Timer - tTimeLoop))
