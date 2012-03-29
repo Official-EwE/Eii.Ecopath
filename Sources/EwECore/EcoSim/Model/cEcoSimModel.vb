@@ -2098,7 +2098,7 @@ Namespace Ecosim
 
         Private Function RandomNormal() As Single
             Dim i As Integer, X As Double
-            Dim rnd As New Random(CInt(Microsoft.VisualBasic.Timer * 1000))
+            Dim rnd As New Random(CInt(Date.Now.Ticks))
             X = -6
             For i = 1 To 12
                 X = X + rnd.NextDouble

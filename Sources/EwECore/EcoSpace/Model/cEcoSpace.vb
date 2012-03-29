@@ -891,7 +891,6 @@ Public Class cEcoSpace
             For m_Data.TimeNow = StartTime To (m_Data.TotalTime - m_Data.TimeStep) Step m_Data.TimeStep
 
                 Me.m_PauseSignal.WaitOne()
-                '  tst1 = Microsoft.VisualBasic.Timer
 
                 'set time step counters
                 its = Math.Truncate(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
@@ -1447,20 +1446,14 @@ Public Class cEcoSpace
 
             ' wait for all the threads to finish before starting the next time step
             Dim solvCtr As Integer = 1
-            Dim timerTemp As Single
             Dim iterTime As Single
             For Each solver In m_gridSolvers
-                '  If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
                 solver.SignalState.WaitOne()
                 totalIterThread(solvCtr) = totalIterThread(solvCtr) + solver.iterThread
                 iterTime = iterTime + solver.iterThread
                 solvCtr = solvCtr + 1
             Next
-            '    If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            'gridThreadWaitTimer = gridThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
 
-
-            '  System.Console.WriteLine("Solvegrid iterations = " & iterTime.ToString)
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
@@ -1535,15 +1528,12 @@ Public Class cEcoSpace
             Loop ' Do While iLstCell < iTotalCells
 
             Dim solvCtr As Integer = 1
-            Dim timerTemp As Single
+
             ' wait for all the threads to finish before starting the next time step
             For Each solver In m_spaceSolvers
-                '  If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
                 solver.SignalState.WaitOne()
                 solvCtr = solvCtr + 1
             Next
-            ' If solvCtr = 2 Then timerTemp = Microsoft.VisualBasic.Timer
-            'spaceThreadWaitTimer = spaceThreadWaitTimer + (Microsoft.VisualBasic.Timer - timerTemp)
 
             'Gather data from across all threads
             For Each solver In m_spaceSolvers

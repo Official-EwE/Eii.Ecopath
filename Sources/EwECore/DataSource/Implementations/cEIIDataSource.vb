@@ -24,8 +24,7 @@ Imports EwECore.DataSources
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
-Imports Microsoft.VisualBasic.FileIO
-
+'
 #End Region ' Imports
 
 ''' ===========================================================================
@@ -767,8 +766,11 @@ Public Class cEIIDataSource
 
         'Hack:jb LoadEcosim() set ngroups in EcoSim to same as EcoPath this is until we can read from the datasource
         ecosimDS.nGroups = ecopathDS.NumGroups
+        ecosimDS.nGear = ecopathDS.NumFleet
+        ecosimDS.NumYears = 50
 
         ecosimDS.RedimVars()
+        ecosimDS.RedimTime()
         ecosimDS.SetDefaultParameters()
 
         ecopathDS.ActiveEcosimScenario = 1
@@ -777,6 +779,18 @@ Public Class cEIIDataSource
         ecosimDS.InitForcingShapes()
         ecosimDS.BioMedData.ReDimMediation(ecopathDS.NumGroups, ecopathDS.NumFleet)
         ecosimDS.PriceMedData.ReDimMediation(ecopathDS.NumGroups, ecopathDS.NumFleet)
+
+        Me.m_core.m_MSEData.redimTime()
+        Me.m_core.m_MSEData.RedimVars()
+
+        For igrp As Integer = 1 To ecopathDS.NumGroups
+            Me.m_core.m_MSEData.DefaultBioBounds(igrp)
+            Me.m_core.m_MSEData.DefaultCatchBoundsGroup(igrp)
+        Next igrp
+
+        For iflt As Integer = 1 To ecopathDS.NumFleet
+            Me.m_core.m_MSEData.DefaultCatchBoundsFleet(iflt)
+        Next iflt
 
         'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
         'HACK WARNING this is a temp fix to populate SimDC so that it can be used be tempCreateForcingMediationShapes() to init some fake data
@@ -804,6 +818,11 @@ Public Class cEIIDataSource
         For i = 1 To ecosimDS.nGroups
             ecosimDS.GroupDBID(i) = i
         Next
+
+        For i = 1 To ecosimDS.nGear
+            ecosimDS.FleetDBID(i) = i
+        Next
+
 
         'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 

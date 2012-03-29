@@ -360,7 +360,6 @@ Public Class cEcosimMonteCarlo
         'Dim MCthreadList As New List(Of cMonteCarloThread)
         'Dim MCthread As cMonteCarloThread
 
-        Dim st As Double = Microsoft.VisualBasic.Timer
         System.Console.WriteLine("----------Starting Monte Carlo----------")
         Try
             initForRun()
@@ -486,8 +485,6 @@ Public Class cEcosimMonteCarlo
 
             'restore ecopath back to its original state
             Me.restoreOriginalState()
-
-            System.Console.WriteLine("Finished Monte Carlo. Run time = " & CStr(Microsoft.VisualBasic.Timer - st))
 
             Me.CompletedCallback()
 

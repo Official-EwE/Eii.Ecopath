@@ -101,8 +101,6 @@ Public Class cIBMSolver
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
         isOkToRun = False
-        'Dim timeTemp As Single = Microsoft.VisualBasic.Timer
-        '  Dim timeTemp2 As Single
         Try
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             SignalState.Reset()
@@ -112,16 +110,12 @@ Public Class cIBMSolver
             For iPacket = iFirstPacket To iLastPacket
                 'now do the computations
                 'GrowSurvivePackets(iGrp) 'this is called outside now
-                'timeTemp2 = timeTemp2 - Microsoft.VisualBasic.Timer
                 MovePackets(iPacket)
-                'timeTemp2 = timeTemp2 + Microsoft.VisualBasic.Timer
                 UpDateBcellIBM(iPacket)
             Next iPacket
 
             'thread has finished it is ok to run this again
             isOkToRun = True
-            'threadTime2 = threadTime2 + Microsoft.VisualBasic.Timer - timeTemp
-            'threadTimeMove = threadTimeMove + timeTemp2
             'set signal state to 'signaled' 
             'the processing has finished SignalState.WaitOne() will return immediately
             SignalState.Set()
@@ -151,7 +145,6 @@ Public Class cIBMSolver
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
         isOkToRun = False
-        'Dim timeTemp As Single = Microsoft.VisualBasic.Timer
         Try
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             SignalState.Reset()
@@ -165,7 +158,6 @@ Public Class cIBMSolver
 
             'thread has finished it is ok to run this again
             isOkToRun = True
-            'threadTime1 = threadTime1 + Microsoft.VisualBasic.Timer - timeTemp
             'set signal state to 'signaled' 
             'the processing has finished SignalState.WaitOne() will return immediately
             SignalState.Set()

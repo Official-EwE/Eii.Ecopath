@@ -18,7 +18,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports Microsoft.VisualBasic
+'Imports Microsoft.VisualBasic
 Imports EwEUtils.Core
 
 #End Region ' Imports

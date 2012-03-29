@@ -312,7 +312,6 @@ Namespace MSE
 
             Try
                 Dim igrp As Integer
-
                 'output
                 Me.m_output = Me.OutputWriterFactory
                 Me.m_output.Init()
@@ -328,7 +327,7 @@ Namespace MSE
                 Else
                     'No normal run
                     'create a new random seed for each run
-                    rndSeed = CInt(Microsoft.VisualBasic.Timer * 1000)
+                    rndSeed = CInt(Date.Now.Ticks)
                     'make sure Fmin(igroup) and EndYear have not been set somehow....
                     For igrp = 1 To Me.m_data.NGroups
                         Me.m_data.Fmin(igrp) = 0

@@ -158,7 +158,7 @@ Public Class cGridSolver
     Public Sub Solve(ByVal obParam As Object)
         'For our purposes here we are ignoring the obParam argument 
         'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
-        Dim timeTemp As Double = Microsoft.VisualBasic.Timer
+        ' Dim timeTemp As Double = Timer
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
         isOkToRunning = False
@@ -196,7 +196,7 @@ Public Class cGridSolver
 
             'set signal state to 'signaled' 
             'the processing has finished SignalState.WaitOne() will return immediately
-            threadTime = threadTime + Microsoft.VisualBasic.Timer - timeTemp
+            ' threadTime = threadTime + Microsoft.VisualBasic.Timer - timeTemp
             'thread has finished it is ok to run this again
             isOkToRunning = True
             SignalState.Set()
@@ -279,7 +279,6 @@ Public Class cGridSolver
         'jord(k) is which column j to do as k=1, k=2,...,k=n (iteration order)
         'w is SOR overrelaxation parameter-found 1.25 to be good for typical problems
         Dim iter As Integer, j As Integer, i As Integer, jj As Integer, ic As Integer
-        Dim xx As Double = Microsoft.VisualBasic.Timer
 
         Dim alfa(,) As Single
         Dim gam(,) As Single
@@ -480,7 +479,7 @@ iterate:
             'FOR i = 1 TO 20: PRINT USING "## "; i; : FOR j = 1 TO nomcols: PRINT USING " .##"; x(i, j); : NEXT: PRINT : NEXT
             'WHILE INKEY$ = "": WEND
 exitline:
-            xx = Microsoft.VisualBasic.Timer - xx
+
             Erase alfa, gam, rhs, G, Xold
             If alternateRowCol Then
                 iter = iter * 2
