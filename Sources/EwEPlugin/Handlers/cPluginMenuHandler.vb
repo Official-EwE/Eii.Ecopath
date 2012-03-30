@@ -181,8 +181,11 @@ Public Class cPluginMenuHandler
                     tsi.Tag = ip
 
                     ' try to insert menu item into strip
+                    Dim bFoundGroup As Boolean = False
                     For iItem = 0 To tsic.Count - 1
-                        If tsic(iItem).Name > tsi.Name Then
+                        If (tsi.Name.Contains(tsic(iItem).Name)) Then
+                            bFoundGroup = True
+                        ElseIf (bFoundGroup) Then
                             tsic.Insert(iItem, tsi)
                             Return ' Done
                         End If
