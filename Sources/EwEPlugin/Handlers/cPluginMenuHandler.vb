@@ -115,7 +115,8 @@ Public Class cPluginMenuHandler
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Place or remove a GUI plugin menu item.
+    ''' Place or remove a GUI plugin menu item. Menu items are inserted sorted by
+    ''' <see cref="MenuItem.Name">name</see>, ascending.
     ''' </summary>
     ''' <param name="p_ip">The <see cref="IGUIPlugin">IGUIPlugin</see> to place.</param>
     ''' <param name="bPlace">States whether the menu item should be placed (True)
@@ -178,6 +179,14 @@ Public Class cPluginMenuHandler
                     tsi.ToolTipText = ip.ControlTooltipText
                     ' Add tag
                     tsi.Tag = ip
+
+                    ' try to insert menu item into strip
+                    For iItem = 0 To tsic.Count - 1
+                        If tsic(iItem).Name > tsi.Name Then
+                            tsic.Insert(iItem, tsi)
+                            Return ' Done
+                        End If
+                    Next
                     ' Add new item to menu item strip
                     tsic.Add(tsi)
                 Else
