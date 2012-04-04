@@ -42,8 +42,8 @@ Public Class cSelectionMonitor
     Public Sub Detach()
         ' Sanity checks
         Debug.Assert(Me.m_cmdSelect IsNot Nothing)
-        Me.m_cmdSelect = Nothing
         RemoveHandler Me.m_cmdSelect.OnPostInvoke, AddressOf HandleSelectionChanged
+        Me.m_cmdSelect = Nothing
     End Sub
 
     Function Selection() As cProperty()
