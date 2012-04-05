@@ -327,7 +327,7 @@ Namespace MSE
                 Else
                     'No normal run
                     'create a new random seed for each run
-                    rndSeed = CInt(Date.Now.Ticks)
+                    rndSeed = CInt(CInt(Date.Now.Ticks Mod Integer.MaxValue))
                     'make sure Fmin(igroup) and EndYear have not been set somehow....
                     For igrp = 1 To Me.m_data.NGroups
                         Me.m_data.Fmin(igrp) = 0
@@ -354,11 +354,26 @@ Namespace MSE
                     Me.m_data.QGrowUsed(igrp) = m_data.Qgrow(igrp)
                 Next
 
+                ' B(t+1)=g(t)B(t)+Rt
+                ''growth
+                'g(t)=exp(-Zt)(alpha/wbar+rho)=exp(-Zt) * growth constant
+                'g(0)=1-R(0)/B(0) where user inputs R/B
+                'g(0)=exp(-Zo) * growth constant so growth constant = g(0)exp(Zo)
+                'g(t)=exp(-Zt) * growth constant =exp(-Zt)g(0)exp(Zo)
+                'g(t) = exp(-Ft + Fo) * g(0)
+                'g(t)=exp(-Zt+Zo) * g(0)
+
+                Dim BaB As Single
                 'init RstockPred from GstockPred
                 'GstockPred could have been altered by an interface
                 For igrp = 1 To Me.m_epdata.NumLiving
+                    'BaB is correct for Stanza groups because Ecopath.BA() gets updated with Stanza.BaBsplit()
+                    BaB = Me.m_core.m_EcoPathData.BA(igrp) / Me.m_core.m_EcoPathData.B(igrp)
+                    'gstockpred=exp(bab)-rstockratio, rather than 1-rstockratio.  Check to insure gstockpred>0
 
-                    Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
+                    'Me.m_data.GstockPred(igrp) = 1 - Me.m_data.RstockRatio(igrp)
+                    Me.m_data.GstockPred(igrp) = CSng(Math.Exp(BaB) - Me.m_data.RstockRatio(igrp))
+                    If Me.m_data.GstockPred(igrp) < 0 Then Me.m_data.GstockPred(igrp) = 0
                     Me.m_data.BhalfT(igrp) = Me.m_data.RHalfB0Ratio(igrp) * Me.m_epdata.B(igrp)
 
                     Me.m_data.RStock0(igrp) = Me.m_data.RstockRatio(igrp) * Me.m_esData.StartBiomass(igrp)
@@ -1367,8 +1382,13 @@ Namespace MSE
             Dim RstockPred As Single
             Dim vPred As Single
             Dim Best As Single
-
-            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) ' Me.m_Search.CatchYear(igroup)
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            ' What this correction basically does is to increase the year-to-year Biomass gain factor in the delaydifference model (effective GstockPred by year)
+            ' for situations where F has been reduced relative to ecopath base, and reduce the factor for years when F is higher than ecopath base.  
+            'In the original code, we were just doing a factor reduction based on current F (catchyeargroup/Blast), without correcting relative to the ecopath base value of GstockPred.
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast)) 
+            Me.m_data.BestimateLast(iGroup) = Blast * CSng(Math.Exp(-Me.m_Search.CatchYearGroup(iGroup) / Blast + Me.m_esData.Fish1(iGroup)))
             Me.m_data.CatchYearGroup(iGroup) = 0
 
             RstockPred = CSng(m_data.Rmax(iGroup) * Me.m_data.BestimateLast(iGroup) / (m_data.BhalfT(iGroup) + Me.m_data.BestimateLast(iGroup)))
@@ -1397,7 +1417,7 @@ Namespace MSE
             Dim Bobs() As Single
             ReDim Bobs(Me.m_epdata.NumGroups)
             For i As Integer = 1 To Me.m_data.nLiving
-                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal() - 0.5 * Me.m_data.CVbiomEst(i) ^ 2))
+                Bobs(i) = Biomass(i) * CSng(Math.Exp(Me.m_data.CVbiomEst(i) * Me.RandomNormal()))
                 Me.m_data.Bestimate(i) = Me.stockRecruitment(i, Biomass(i), Bobs(i), Me.m_data.Bestimate(i))
             Next i
 
