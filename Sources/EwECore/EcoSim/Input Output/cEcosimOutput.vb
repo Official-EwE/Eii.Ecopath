@@ -25,6 +25,8 @@ Public Class cEcosimOutput
     Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
 
+        Me.AllowValidation = False
+
         Me.DBID = cCore.NULL_VALUE
         Me.m_dataType = eDataTypes.EcosimOutput
         Me.m_coreComponent = eCoreComponentType.EcoSim
