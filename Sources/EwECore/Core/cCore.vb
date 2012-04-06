@@ -4884,9 +4884,9 @@ Public Class cCore
         '   BaBi is only non-zero when entered. Entering BaBi will update Ba. By
         '   checking BaBi for non-zero it can be deducted which value was
         '   originally entered: BaBi or Ba.
-        If sBAr > 0 Then
+        If sBAr <> 0 Then
             bLockBA = True : bClearBA = True
-        ElseIf sBA > 0 Then
+        ElseIf sBA <> 0 Then
             bLockBARate = True : bClearBARate = True
         End If
 
