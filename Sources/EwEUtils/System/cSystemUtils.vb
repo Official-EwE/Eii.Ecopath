@@ -424,7 +424,7 @@ Namespace SystemUtilities
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function Val(ByVal strValue As String) As Double
-            Dim m As Match = Regex.Match(strValue, "^[\d\s]+(\.?[\d\s]+|[\d\s]*)")
+            Dim m As Match = Regex.Match(strValue, "^-?[\d\s]*(\.[\d\s]+|[\d\s]*)")
             If (m.Value <> "") Then
                 Return Convert.ToDouble(Regex.Replace(m.Value, "\s+", ""))
             End If
