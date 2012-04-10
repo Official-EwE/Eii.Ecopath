@@ -101,7 +101,7 @@ Public Class cEIIXMLDataSource
                          Optional ByVal bReadOnly As Boolean = False) As eDatasourceAccessType _
                      Implements DataSources.IEwEDataSource.Open
 
-        If (Not String.IsNullOrEmpty(Me.m_strFilename)) Then Return eDatasourceAccessType.Failed_UnknownType
+        If (String.IsNullOrWhiteSpace(strName)) Then Return eDatasourceAccessType.Failed_UnknownType
         If Not File.Exists(strName) Then Return eDatasourceAccessType.Failed_FileNotFound
 
         Me.m_strFilename = strName
@@ -149,6 +149,8 @@ Public Class cEIIXMLDataSource
 
         Me.m_strFilename = ""
         Me.m_core = Nothing
+        Me.m_doc = Nothing
+
         Return True
 
     End Function
@@ -256,8 +258,6 @@ Public Class cEIIXMLDataSource
 
         If (Me.m_core Is Nothing) Then Return False
 
-        Me.m_core.DiscardChanges()
-        Me.m_core.CloseModel()
         Me.ClearChanged()
 
         Me.m_doc = New XmlDocument()
@@ -281,7 +281,7 @@ Public Class cEIIXMLDataSource
             bSucces = Me.LoadModelInfo()
             If bSucces = False Then Return False
 
-            'bSucces = bSucces And Me.LoadEcopathGroups()
+            bSucces = bSucces And Me.LoadEcopathGroups()
             'bSucces = bSucces And Me.LoadEcopathTaxon()
             'bSucces = bSucces And Me.LoadEcopathFleetInfo()
             'bSucces = bSucces And Me.LoadParticleSizeDistribution()
@@ -376,6 +376,166 @@ Public Class cEIIXMLDataSource
 
         Return bSucces
     End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads Ecopath Group information.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function LoadEcopathGroups() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim psdDS As cPSDDatastructures = Me.m_core.m_PSDData
+        Dim dt As DataTable = Me.ReadTable("EcopathGroup")
+        Dim iGroup As Integer = 1
+        Dim bSucces As Boolean = True
+
+        ' Init data structure
+        ecopathDS.NumGroups = dt.Rows.Count
+        ecopathDS.NumLiving = 0
+        For Each row As DataRow In dt.Rows
+            If (CInt(row("Type")) <= 1) Then ecopathDS.NumLiving += 1
+        Next
+        ecopathDS.NumDetrit = ecopathDS.NumGroups - ecopathDS.NumLiving
+
+        ' Allocate space
+        If (Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables()) Then
+            ' It would be quite remarkable to fail here... log message?
+            Return False
+        End If
+
+        For Each row As DataRow In dt.Rows
+
+            Try
+                ecopathDS.GroupDBID(iGroup) = CInt(row("GroupID"))
+                ecopathDS.GroupName(iGroup) = CStr(row("GroupName"))
+                ecopathDS.PP(iGroup) = CSng(row("Type"))
+                ecopathDS.Area(iGroup) = CSng(row("Area"))
+                ecopathDS.BH(iGroup) = ecopathDS.B(iGroup) / ecopathDS.Area(iGroup)
+                ecopathDS.BA(iGroup) = CSng(row("BiomAcc"))
+                ' VERIFY_JS: Check default value for BiomAccRate. 0 is assumed
+                ecopathDS.BaBi(iGroup) = CSng(row("BiomAccRate"))
+                ecopathDS.GS(iGroup) = CSng(row("Unassim"))
+                ecopathDS.DtImp(iGroup) = CSng(row("DtImports"))
+                ecopathDS.Ex(iGroup) = CSng(row("Export"))
+                ecopathDS.fCatch(iGroup) = CSng(row("Catch"))
+                ecopathDS.DCInput(iGroup, 0) = CSng(row("ImpVar"))
+                ecopathDS.GroupIsFish(iGroup) = ParseBoolean(CStr(row("GroupIsFish")))
+                ecopathDS.GroupIsInvert(iGroup) = ParseBoolean(CStr(row("GroupIsInvert")))
+                ecopathDS.Shadow(iGroup) = CSng(row("NonMarketValue"))
+                ecopathDS.Resp(iGroup) = CSng(row("Respiration"))
+                ecopathDS.Immig(iGroup) = CSng(row("Immigration"))
+                ecopathDS.Emigration(iGroup) = CSng(row("Emigration"))
+                ecopathDS.Emig(iGroup) = CSng(Me.ReadSafe(row, "EmigRate", 0.0!))
+
+                ' PSD
+                ecopathDS.vbK(iGroup) = CSng(Me.ReadSafe(row, "VBK", -1))
+                psdDS.AinLWInput(iGroup) = CSng(row("AinLW"))
+                psdDS.BinLWInput(iGroup) = CSng(row("BinLW"))
+                psdDS.LooInput(iGroup) = CSng(row("Loo"))
+                psdDS.WinfInput(iGroup) = CSng(row("Winf"))
+                psdDS.t0Input(iGroup) = CSng(row("t0"))
+                psdDS.TcatchInput(iGroup) = CSng(row("Tcatch"))
+                psdDS.TmaxInput(iGroup) = CSng(row("Tmax"))
+
+                'variables with input output pairs
+                ecopathDS.EEinput(iGroup) = CSng(row("EcoEfficiency"))
+                ecopathDS.OtherMortinput(iGroup) = CSng(Me.ReadSafe(row, "OtherMort", cCore.NULL_VALUE))
+                ecopathDS.PBinput(iGroup) = CSng(row("ProdBiom"))
+                ecopathDS.QBinput(iGroup) = CSng(row("ConsBiom"))
+                ecopathDS.GEinput(iGroup) = CSng(row("ProdCons"))
+                ecopathDS.Binput(iGroup) = CSng(row("Biomass"))
+                ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
+
+                ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(Me.ReadSafe(row, "PoolColor", "0")), Globalization.NumberStyles.HexNumber)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
+                bSucces = False
+            End Try
+
+            iGroup += 1
+
+        Next
+
+        Debug.Assert(iGroup - 1 = ecopathDS.NumGroups)
+
+        dt.Clear()
+        dt = Nothing
+
+        bSucces = bSucces And Me.LoadEcopathDietComp()
+        bSucces = bSucces And Me.LoadStanza()
+
+        Return bSucces
+
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads ecopath diet composition information.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function LoadEcopathDietComp() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim dt As DataTable = Me.ReadTable("EcopathDietComp")
+        Dim iPred As Integer = 0
+        Dim iPrey As Integer = 0
+        Dim sDiet As Single = 0.0!
+        Dim bSucces As Boolean = True
+
+        Try
+            For Each row As DataRow In dt.Rows
+
+                iPred = Array.IndexOf(ecopathDS.GroupDBID, CInt(row("PredID")))
+                iPrey = Array.IndexOf(ecopathDS.GroupDBID, CInt(row("PreyID")))
+
+                Debug.Assert(iPred >= 0 And iPrey >= 0)
+                sDiet = CSng(row("Diet"))
+
+                ' Set diet to 0 for non-living groups (fixes #878)
+                If (sDiet > 0) And (iPred > ecopathDS.NumLiving) Then sDiet = 0
+                ecopathDS.DCInput(iPred, iPrey) = sDiet
+
+                If iPrey > ecopathDS.NumLiving Then
+                    ecopathDS.DF(iPred, iPrey - ecopathDS.NumLiving) = CSng(row("DetritusFate"))
+                End If
+
+                ' 060528JS: ASSERT on "diet leftovers" from previous incarnations, including 041020VC fix for carbon groups
+                ' The actual data fix is performed once during EwE5 import, and should not reoccur when running EwE6.
+                If ecopathDS.PP(iPred) = 1 And ecopathDS.QB(iPred) <= 0 Then
+                    If (ecopathDS.DCInput(iPred, iPrey) <> 0) Then
+                        cLog.Write(String.Format("Database error on DCInput({0},{1})={2}, expected 0", iPred, iPrey, ecopathDS.DCInput(iPred, iPrey)))
+                    End If
+                End If
+
+                ' VERIFY_JS: check mapping for MTI with JB
+                ' ecopathDS.??(nPred, nPrey) = CSng(reader("MTI"))
+                ' VERIFY_JS: check mapping for Electivity with JB
+                ' ecopathDS.??(nPred, nPrey) = CSng(reader("Electivity"))
+            Next
+            dt.Clear()
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathDietComp {1}, {2}", ex.Message, ecopathDS.GroupName(iPred), ecopathDS.GroupName(iPrey)))
+            bSucces = False
+        End Try
+
+        ' Read 'Import'
+        dt = Me.ReadTable("EcopathGroup")
+        iPred = 1
+        For Each row As DataRow In dt.Rows
+            If CSng(row("ImpVar")) > 0 Then ecopathDS.DCInput(iPred, 0) = CSng(row("ImpVar"))
+            iPred += 1
+        Next
+        dt.Clear()
+
+        Return True
+
+    End Function
+
 #End Region ' Load
 
 #Region " Save "
@@ -475,8 +635,9 @@ Public Class cEIIXMLDataSource
     Private Function Field(rd As IDataReader, strCol As String) As String
         Dim data As Object = rd(strCol)
         If Convert.IsDBNull(data) Then Return ""
-        If (TypeOf data Is String) Then Return """" & CStr(data) & """"
-        Return data.ToString()
+        If (TypeOf data Is String) Then Return CStr(data).Replace(";"c, ":"c).Replace(","c, "."c)
+        If (TypeOf data Is Boolean) Then Return data.ToString()
+        Return cStringUtils.FormatNumber(data)
     End Function
 
     Private Function SaveTable(ByVal db As cEwEDatabase, ByVal strTable As String, ByVal doc As XmlDocument) As Boolean
@@ -1017,43 +1178,126 @@ Public Class cEIIXMLDataSource
 #Region " Stanza "
 
     Private Function LoadStanza() As Boolean
-        Dim m_stanzaData As cStanzaDatastructures = m_core.m_Stanza
 
-        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-        ''HACK WARNING
-        ''jb this is totaly bogus 
-        ''is is just to get the stanza variables initialized so that I can test the Stanza Groups interface
-        ''go with 2 stanza groups 
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim rdStanza As DataTable = Nothing
+        Dim rdLifeStage As DataTable = Nothing
+        Dim iStanza As Integer = 0
+        Dim iLifeStage As Integer = 0
+        Dim iGroup As Integer = 0
+        Dim sTemp As Single = 0.0
+        Dim bSucces As Boolean = True
 
-        ''init the cores stanza data structures
-        'm_stanzaData.MaxStanza = 3
-        'm_stanzaData.Nsplit = 2
-        'm_stanzaData.MaxAgeSplit = 400 '???? 
+        rdStanza = Me.ReadTable("Stanza")
+        rdLifeStage = Me.ReadTable("StanzaLifeStage")
 
-        'm_stanzaData.redimStanza()
+        ' Count the number of rows in StanzaInfo; this is the number of split groups that we're going to work with
+        stanzaDS.Nsplit = rdStanza.Rows.Count
+        ' Get max no of stanza
+        stanzaDS.MaxStanza = 0
 
-        ''populate the arrays
-        'm_stanzaData.Nstanza(1) = 2
-        'm_stanzaData.Nstanza(2) = 3
+        If (stanzaDS.Nsplit > 0) Then
+            'stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
+            Dim dic As New Dictionary(Of Integer, Integer)
+            For Each row As DataRow In rdLifeStage.Rows
+                iStanza = CInt(row("StanzaID"))
+                If dic.ContainsKey(iStanza) Then iLifeStage = dic(iStanza) Else iLifeStage = 0
+                iLifeStage += 1
+                dic(iStanza) = iLifeStage
+                stanzaDS.MaxStanza = Math.Max(stanzaDS.MaxStanza, iLifeStage)
+            Next
+        End If
 
-        ''stanza group 1
-        ''fish groups 2 and 3
-        'm_stanzaData.EcopathCode(1, 1) = 2
-        'm_stanzaData.EcopathCode(1, 2) = 3
+        ' Get the number of groups from ecopath
+        stanzaDS.nGroups = ecopathDS.NumGroups
 
-        ''stanza group 2
-        ''fish groups 5,6 and 7
-        'm_stanzaData.EcopathCode(2, 1) = 5
-        'm_stanzaData.EcopathCode(2, 2) = 6
-        'm_stanzaData.EcopathCode(2, 3) = 7
-        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        If stanzaDS.MaxAgeSplit < cCore.MAX_AGE Then
+            'VILLY: NEED TO REPLACE THIS WITH DYNAMIC CALCULATION ALLOWING FOR CHANGES IN K DURING EXECUTION
+            stanzaDS.MaxAgeSplit = cCore.MAX_AGE
+        End If
 
-        'fake a database ID for the EII datasource
-        For i As Integer = 1 To m_stanzaData.Nsplit
-            m_stanzaData.StanzaDBID(i) = 1
+        stanzaDS.redimStanza()
+
+        ' First read Stanza
+        iStanza = 0
+        For Each row As DataRow In rdStanza.Rows
+
+            ' JS 11May2010: Stanza configs without stanza groups are now loaded.
+            '               This *could* screw up the core calculations, but in a way
+            '               it already did by allowing empty stanza groups to be defined
+            '               in the system by allowing stanzaDS.nGroups to be non-zero,
+            '               even if stanzaDS.MaxStanza were 0. Based on this behaviour
+            '               there seems little harm by allowing the empty stanza group
+            '               names to be available in the core and to an interface.
+
+            ' Read this stanza
+            iStanza += 1
+
+            Try
+
+                stanzaDS.StanzaDBID(iStanza) = CInt(row("StanzaID"))
+                ' JS 20jun06: StanzaName array 1-dimensional. GroupNames only seem to matter to the EwE5 GUI.
+                '             EwE6 will resolve stanza group names via ICoreInputOutput objects to keep track of 'live' changes.
+                stanzaDS.StanzaName(iStanza) = CStr(row("StanzaName"))
+
+                stanzaDS.RecPowerSplit(iStanza) = CSng(row("RecPower"))
+                stanzaDS.BABsplit(iStanza) = CSng(row("BabSplit"))
+                stanzaDS.WmatWinf(iStanza) = CSng(row("WMatWinf"))
+                ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
+                stanzaDS.FixedFecundity(iStanza) = ParseBoolean(CStr(row("FixedFecundity")))
+                stanzaDS.EggAtSpawn(iStanza) = ParseBoolean(CStr(Me.ReadSafe(row, "EggAtSpawn", True)))
+
+                ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
+                ' JS 23nov10: Hah, three and a half years later these values are stored again
+                stanzaDS.BaseStanza(iStanza) = CInt(Me.ReadSafe(row, "LeadingLifeStage", cCore.NULL_VALUE))
+
+                ' Truncate
+                stanzaDS.BaseStanza(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanza(iStanza)))
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
+                bSucces = False
+            End Try
+
+            'rdLifeStage = Me.m_db.GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
+            rdLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
+            rdLifeStage.DefaultView.Sort = "AgeStart ASC"
+            iLifeStage = 0
+
+            For Each rowStage As DataRow In rdLifeStage.Rows
+                ' Next life stage in this stanza
+                iLifeStage += 1
+
+                ' Store Stanza configuration
+                Try
+
+                    ' Resolve group index
+                    iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(rowStage("GroupID")))
+                    ' JS 20jun06: Disabled (see comment above)
+                    ' ecosimDS.StanzaName(nStanza, nGroup) = ecopathDS.GroupName(iGroup)
+                    stanzaDS.EcopathCode(iStanza, iLifeStage) = iGroup
+                    stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rowStage("Mortality"))
+                    stanzaDS.SpeciesCode(iGroup, 0) = iStanza
+                    stanzaDS.Age1(iStanza, iLifeStage) = CInt(rowStage("AgeStart"))
+
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
+                    bSucces = False
+                End Try
+
+                ' Inform Ecopath
+                ecopathDS.StanzaGroup(iGroup) = True
+            Next
+            ' Update number of groups in this stanza
+            stanzaDS.Nstanza(iStanza) = iLifeStage
         Next
-        Return True
 
+        rdStanza.Clear()
+        rdLifeStage.Clear()
+
+        Return bSucces
     End Function
 
     ''' -------------------------------------------------------------------
@@ -1179,7 +1423,8 @@ Public Class cEIIXMLDataSource
         For Each strRow As String In cStringUtils.SplitQualified(xnData.InnerText, ";")
             If Not String.IsNullOrWhiteSpace(strRow) Then
                 Dim drow As DataRow = dt.NewRow()
-                Dim astrData As String() = cStringUtils.SplitQualified(strRow, ",")
+                Dim astrData As String() = Nothing
+                If strRow.Contains("""") Then astrData = cStringUtils.SplitQualified(strRow, ",") Else astrData = strRow.Split(","c)
                 For i As Integer = 0 To astrData.Length - 1
                     drow(astrCols(i)) = astrData(i)
                 Next
@@ -1277,6 +1522,13 @@ Public Class cEIIXMLDataSource
         'Console.WriteLine(strMessage)
 
     End Sub
+
+    Private Function ParseBoolean(strVal As String) As Boolean
+        If String.IsNullOrWhiteSpace(strVal) Then Return False
+        If strVal = "1" Then Return True
+        If strVal = "0" Then Return False
+        Return Boolean.Parse(strVal)
+    End Function
 
 #End Region ' Helper methods
 
