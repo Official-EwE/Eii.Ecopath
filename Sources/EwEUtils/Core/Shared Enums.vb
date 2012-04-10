@@ -2292,9 +2292,9 @@ Namespace Core
 #If DEBUG Then
         ''' <summary>Datasource capable of connection to SQL Server-like databases.</summary>
         SQLServer = 4
+#End If
         ''' <summary>Datasource capable of handling EIIXML formatted data.</summary>
         EIIXML = 5
-#End If
     End Enum
 
     ''' -------------------------------------------------------------------
