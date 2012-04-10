@@ -46,7 +46,9 @@ Namespace DataSources
         ''' the provided file name.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function GetSupportedType(ByVal strFile As String) As eDataSourceTypes
+
             Select Case Path.GetExtension(strFile).ToLower
+
                 Case ".eii"
                     Return eDataSourceTypes.EII
 
@@ -63,8 +65,12 @@ Namespace DataSources
                 Case ".mdf"
                     Return eDataSourceTypes.SQLServer
 #End If
+                Case ".eiixml"
+                    Return eDataSourceTypes.EIIXML
+
             End Select
             Return eDataSourceTypes.NotSet
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -83,6 +89,7 @@ Namespace DataSources
 #If DEBUG Then
                 Case eDataSourceTypes.SQLServer : Return ".mdf"
 #End If
+                Case eDataSourceTypes.EIIXML : Return ".eiixml"
             End Select
             Return ""
         End Function
@@ -125,7 +132,7 @@ Namespace DataSources
                     End If
 #End If
 
-                Case eDataSourceTypes.EII
+                Case eDataSourceTypes.EII, eDataSourceTypes.EIIXML
                     ' Is EII
                     comp = cEwEDatabase.eCompatibilityTypes.EwE6
                     access = eDatasourceAccessType.Opened
@@ -133,6 +140,7 @@ Namespace DataSources
                 Case eDataSourceTypes.NotSet
                     ' ?Que?
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
+
             End Select
 
             Return comp
@@ -176,6 +184,9 @@ Namespace DataSources
                 Case eDataSourceTypes.EII
                     Return New cEIIDataSource()
 
+                Case eDataSourceTypes.EIIXML
+                    Return New cEIIXMLDataSource()
+
                 Case eDataSourceTypes.Access2003, _
                      eDataSourceTypes.Access2007
                     ' Create a DB datasource on a MS Access database
@@ -206,7 +217,9 @@ Namespace DataSources
         ''' is requred.</remarks>
         ''' -------------------------------------------------------------------
         Public Shared Function Create(ByVal strFileName As String) As IEwEDataSource
+
             Return Create(GetSupportedType(strFileName))
+
         End Function
 
         ''' -------------------------------------------------------------------

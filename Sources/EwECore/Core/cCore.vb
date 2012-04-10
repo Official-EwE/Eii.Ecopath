@@ -1153,13 +1153,8 @@ Public Class cCore
 
         InitThreadedProcesses()
 
-        If bsuccess Then
-            m_bCoreIsInit = True
-            Return True
-        Else
-            m_bCoreIsInit = False
-            Return False
-        End If
+        m_bCoreIsInit = bsuccess
+        Return bsuccess
 
     End Function
 
@@ -13081,7 +13076,8 @@ Public Class cCore
     Private Sub m_pluginManager_AssemblyAdded(ByVal paAdded As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyAdded
 
-        Me.m_publisher.SendMessage(New cMessage(String.Format("Plug-in module '{0}' loaded", paAdded.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
+        Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_LOADED, paAdded.Filename), _
+                                                eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         'AddHandler paAdded.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
 
@@ -13094,7 +13090,8 @@ Public Class cCore
     Private Sub m_pluginManager_AssemblyRemoved(ByVal paRemoved As EwEPlugin.cPluginAssembly) _
         Handles m_pluginManager.AssemblyRemoved
 
-        m_publisher.SendMessage(New cMessage(String.Format("Plugin module '{0}' unloaded", paRemoved.Filename), eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
+        m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.STATUS_PLUGIN_UNLOADED, paRemoved.Filename), _
+                                             eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information))
         'RemoveHandler paRemoved.AssemblyEnabled, AddressOf OnPluginAssemblyStateChanged
     End Sub
 

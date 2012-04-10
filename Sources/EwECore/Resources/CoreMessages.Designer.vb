@@ -1995,6 +1995,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Plug-in module &apos;{0}&apos; loaded.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_PLUGIN_LOADED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_PLUGIN_LOADED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Plug-in module &apos;{0}&apos; unloaded.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_PLUGIN_UNLOADED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_PLUGIN_UNLOADED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Saving changes, please wait....
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SAVING_CHANGES() As String
