@@ -406,7 +406,8 @@ Public Class cEIIXMLDataSource
             Return False
         End If
 
-        For Each row As DataRow In dt.Rows
+        dt.DefaultView.Sort = "Sequence ASC"
+        For Each row As DataRow In dt.DefaultView.ToTable.Rows
 
             Try
                 ecopathDS.GroupDBID(iGroup) = CInt(row("GroupID"))
@@ -1897,8 +1898,9 @@ Public Class cEIIXMLDataSource
 
     Private Function SaveTable(ByVal db As cEwEDatabase, ByVal strTable As String, ByVal doc As XmlDocument) As Boolean
 
-        ' Skip system tables
-        If strTable.IndexOf("MSy") = 0 Then Return False
+        ' Skip system tables and bogus tables
+        If (strTable.IndexOf("MSy") = 0) Then Return False
+        If (strTable.IndexOfAny(New Char() {"_"c, " "c, "-"c, "."c}) > -1) Then Return False
 
         Dim astrCols As String() = Me.Columns(db, strTable)
 
