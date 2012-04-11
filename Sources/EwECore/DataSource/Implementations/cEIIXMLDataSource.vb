@@ -28,6 +28,7 @@ Imports System.Xml
 Imports System.Text
 Imports System.Data.OleDb
 Imports EwEUtils.Utilities
+Imports EwECore.MSE
 
 '
 #End Region ' Imports
@@ -282,21 +283,21 @@ Public Class cEIIXMLDataSource
             If bSucces = False Then Return False
 
             bSucces = bSucces And Me.LoadEcopathGroups()
-            'bSucces = bSucces And Me.LoadEcopathTaxon()
-            'bSucces = bSucces And Me.LoadEcopathFleetInfo()
+            bSucces = bSucces And Me.LoadEcopathTaxon()
+            bSucces = bSucces And Me.LoadEcopathFleetInfo()
             'bSucces = bSucces And Me.LoadParticleSizeDistribution()
-            'bSucces = bSucces And Me.LoadPedigreeLevels()
-            'bSucces = bSucces And Me.LoadPedigreeAssignments()
+            bSucces = bSucces And Me.LoadPedigreeLevels()
+            bSucces = bSucces And Me.LoadPedigreeAssignments()
 
             'bSucces = bSucces And Me.LoadAuxillaryData()
 
-            'ecopathDS.bInitialized = bSucces
-            'ecopathDS.onPostInitialization()
+            ecopathDS.bInitialized = bSucces
+            ecopathDS.onPostInitialization()
 
-            'bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
-            'bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
-            'bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
-            'bSucces = bSucces And Me.LoadTimeSeriesDatasets()
+            bSucces = bSucces And Me.LoadEcosimScenarioDefinitions()
+            bSucces = bSucces And Me.LoadEcospaceScenarioDefinitions()
+            bSucces = bSucces And Me.LoadEcotracerScenarioDefinitions()
+            bSucces = bSucces And Me.LoadTimeSeriesDatasets()
 
             ' Clear changed admin
             Me.ClearChanged()
@@ -448,7 +449,7 @@ Public Class cEIIXMLDataSource
                 ecopathDS.Binput(iGroup) = CSng(row("Biomass"))
                 ecopathDS.BHinput(iGroup) = ecopathDS.Binput(iGroup) / ecopathDS.Area(iGroup)
 
-                ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(Me.ReadSafe(row, "PoolColor", "0")), Globalization.NumberStyles.HexNumber)
+                'ecopathDS.GroupColor(iGroup) = Integer.Parse(CStr(Me.ReadSafe(row, "PoolColor", "0")), Globalization.NumberStyles.HexNumber)
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading group {1}", ex.Message, ecopathDS.GroupName(iGroup)))
@@ -512,9 +513,9 @@ Public Class cEIIXMLDataSource
                 End If
 
                 ' VERIFY_JS: check mapping for MTI with JB
-                ' ecopathDS.??(nPred, nPrey) = CSng(reader("MTI"))
+                ' ecopathDS.??(nPred, nPrey) = CSng(drow("MTI"))
                 ' VERIFY_JS: check mapping for Electivity with JB
-                ' ecopathDS.??(nPred, nPrey) = CSng(reader("Electivity"))
+                ' ecopathDS.??(nPred, nPrey) = CSng(drow("Electivity"))
             Next
             dt.Clear()
 
@@ -535,6 +536,1248 @@ Public Class cEIIXMLDataSource
         Return True
 
     End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads all fleet-related data.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' <remarks>
+    ''' If there is no <see cref="IsFishing">fishing</see>, the fleet data will not be loaded.
+    ''' This check is inherited from EwE5.
+    ''' </remarks>
+    ''' -------------------------------------------------------------------
+    Private Function LoadEcopathFleetInfo() As Boolean
+
+        Dim bSucces As Boolean = LoadEcopathFleets()
+        bSucces = bSucces And LoadEcopathCatch()
+        bSucces = bSucces And LoadEcopathDiscardFate()
+
+        Return bSucces
+
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads all Ecopath fleets.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function LoadEcopathFleets() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim dtFleets As DataTable = Me.ReadTable("EcopathFleet")
+        Dim iFleet As Integer = 1
+        Dim bSucces As Boolean = True
+
+        ecopathDS.NoGearData = Not IsFishing()
+        ecopathDS.NumFleet = dtFleets.Rows.Count()
+
+        If Not ecopathDS.RedimFleetVariables(True) Then Return False
+
+        Try
+            dtFleets.DefaultView.Sort = "Sequence ASC"
+            For Each drow As DataRow In dtFleets.DefaultView.ToTable.Rows
+
+                ecopathDS.FleetDBID(iFleet) = CInt(drow("FleetID"))
+                ecopathDS.FleetName(iFleet) = CStr(drow("FleetName"))
+                ecopathDS.CostPct(iFleet, eCostIndex.Fixed) = CSng(drow("FixedCost"))
+                ecopathDS.CostPct(iFleet, eCostIndex.Sail) = CSng(drow("SailingCost"))
+                ecopathDS.CostPct(iFleet, eCostIndex.CUPE) = CSng(drow("variableCost"))
+                'ecopathDS.FleetColor(iFleet) = Integer.Parse(CStr(drow("PoolColor")), Globalization.NumberStyles.HexNumber)
+                iFleet += 1
+
+            Next
+
+            dtFleets.Clear()
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading EcopathFleet {1}", ex.Message, iFleet))
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcopathCatch() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim dtCatch As DataTable = Me.ReadTable("EcopathCatch")
+        Dim iFleet As Integer = 0
+        Dim iGroup As Integer = 0
+        Dim bSucces As Boolean = True
+
+        Try
+
+            For Each drow As DataRow In dtCatch.Rows
+
+                iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(drow("GroupID")))
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(drow("FleetID")))
+
+                If (iGroup >= 1 And iFleet >= 1) Then
+                    ecopathDS.Landing(iFleet, iGroup) = CSng(drow("Landing"))
+                    ecopathDS.Discard(iFleet, iGroup) = CSng(drow("discards"))
+                    ecopathDS.Market(iFleet, iGroup) = CSng(drow("price"))
+                    ecopathDS.PropDiscardMort(iFleet, iGroup) = CSng(Me.ReadSafe(drow, "DiscardMortality", 0.0!))
+                Else
+                    Me.LogMessage(String.Format("Error {0} occurred while appending loading catch for group {0}, fleet {1}", iGroup, iFleet))
+                    bSucces = False
+                End If
+
+            Next
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading catch {1}, {2}", ex.Message, iGroup, iFleet))
+            bSucces = False
+        End Try
+
+        dtCatch.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcopathDiscardFate() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim dt As DataTable = Me.ReadTable("EcopathDiscardFate")
+        Dim iFleet As Integer = 0
+        Dim iGroup As Integer = 0
+        Dim bSucces As Boolean = True
+
+        Try
+            For Each drow As DataRow In dt.Rows
+
+                iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(drow("GroupID")))
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(drow("FleetID")))
+
+                If (iGroup > ecopathDS.NumLiving) Then
+                    ecopathDS.DiscardFate(iFleet, iGroup - ecopathDS.NumLiving) = CSng(drow("DiscardFate"))
+                End If
+
+            Next
+            dt.Clear()
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading DiscardFate {1}, {2}", ex.Message, iGroup, iFleet))
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the pedigree level definitions.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadPedigreeLevels() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+
+        ' Init data structure
+        ecopathDS.NumPedigreeLevels = 0
+        ecopathDS.RedimPedigree()
+        Return True
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the pedigree level assignments.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadPedigreeAssignments() As Boolean
+        Return True
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads Ecopath taxonomy information.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function LoadEcopathTaxon() As Boolean
+
+        Dim taxonDS As cTaxonDataStructures = Me.m_core.m_TaxonData
+        taxonDS.NumTaxon = 0
+        taxonDS.RedimTaxon()
+        Return True
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the list of available Ecosim scenarios.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' <remarks>
+    ''' Note that this will NOT load any actual Ecosim scenario. Scenario definitions 
+    ''' merely provide a preview of available Ecosim scenarios in the database.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadEcosimScenarioDefinitions() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim dt As DataTable = Me.ReadTable("EcosimScenario")
+        Dim iScenario As Integer = 1
+        Dim bSucces As Boolean = True
+
+        ecopathDS.NumEcosimScenarios = dt.Rows.Count
+        ecopathDS.RedimEcosimScenarios()
+        If (ecopathDS.NumEcosimScenarios = 0) Then Return bSucces
+
+        Try
+            For Each drow As DataRow In dt.Rows
+                ecopathDS.EcosimScenarioDBID(iScenario) = CInt(drow("ScenarioID"))
+                ecopathDS.EcosimScenarioName(iScenario) = CStr(drow("ScenarioName"))
+                ecopathDS.EcosimScenarioDescription(iScenario) = CStr(drow("Description"))
+                ecopathDS.EcosimScenarioAuthor(iScenario) = CStr(Me.ReadSafe(drow, "Author", ""))
+                ecopathDS.EcosimScenarioContact(iScenario) = CStr(Me.ReadSafe(drow, "Contact", ""))
+                ecopathDS.EcosimScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(drow, "LastSaved", 0))
+                iScenario += 1
+            Next
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading ecosim scenario definition {1}", ex.Message, iScenario))
+            bSucces = False
+        End Try
+
+        dt.Clear()
+
+        Return bSucces
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the list of available Ecospace scenarios.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' <remarks>
+    ''' Note that this will NOT load any actual Ecospace scenario. Scenario definitions 
+    ''' merely provide a preview of available Ecospace scenarios in the database.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadEcospaceScenarioDefinitions() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenario")
+        Dim iScenario As Integer = 1
+        Dim bSucces As Boolean = True
+
+        ecopathDS.NumEcospaceScenarios = dt.Rows.Count
+        ecopathDS.RedimEcospaceScenarios()
+        If (ecopathDS.NumEcospaceScenarios = 0) Then Return bSucces
+
+        Try
+            For Each drow As DataRow In dt.Rows
+                ecopathDS.EcospaceScenarioDBID(iScenario) = CInt(drow("ScenarioID"))
+                ecopathDS.EcospaceScenarioName(iScenario) = CStr(drow("ScenarioName"))
+                ecopathDS.EcospaceScenarioDescription(iScenario) = CStr(drow("Description"))
+                ecopathDS.EcospaceScenarioAuthor(iScenario) = CStr(Me.ReadSafe(drow, "Author", ""))
+                ecopathDS.EcospaceScenarioContact(iScenario) = CStr(Me.ReadSafe(drow, "Contact", ""))
+                ecopathDS.EcospaceScenarioLastSaved(iScenario) = CDbl(Me.ReadSafe(drow, "LastSaved", 0))
+                iScenario += 1
+            Next
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading ecospace scenario definition {1}", ex.Message, iScenario))
+            bSucces = False
+        End Try
+
+        dt.Clear()
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the list of available Ecotracer scenarios.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' <remarks>
+    ''' Note that this will NOT load any actual Ecotracer scenario. Scenario definitions 
+    ''' merely provide a preview of available Ecotracer scenarios in the database.
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadEcotracerScenarioDefinitions() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+
+        ecopathDS.NumEcotracerScenarios = 0
+        ecopathDS.RedimEcotracerScenarios()
+
+        Return True
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Load all time series dataset definitions for Ecopath.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' <remarks>Yeah, this is odd; time series can only be used with Ecosim
+    ''' but this logic just reads which time series will be available for Ecosim
+    ''' later on; it is convenient to know which data sets are provided with
+    ''' the model, just as it is convenient to know which scenarios are
+    ''' before they are loaded ;)</remarks>
+    ''' -------------------------------------------------------------------
+    Private Function LoadTimeSeriesDatasets() As Boolean
+
+        Dim tsDS As cTimeSeriesDataStructures = Me.m_core.m_TSData
+        Dim dt As DataTable = Me.ReadTable("EcosimTimeSeriesDataset")
+        Dim iDataset As Integer = 1
+        Dim bSucces As Boolean = True
+
+        tsDS.nDatasets = dt.Rows.Count
+
+        tsDS.RedimTimeSeriesDatasets()
+
+        Try
+            For Each drow As DataRow In dt.Rows
+                tsDS.iDatasetDBID(iDataset) = CInt(drow("DatasetID"))
+                tsDS.strDatasetNames(iDataset) = CStr(drow("DatasetName"))
+                tsDS.strDatasetDescription(iDataset) = CStr(Me.ReadSafe(drow, "Description", ""))
+                tsDS.strDatasetAuthor(iDataset) = CStr(Me.ReadSafe(drow, "Author", ""))
+                tsDS.strDatasetContact(iDataset) = CStr(Me.ReadSafe(drow, "Contact", ""))
+                tsDS.nDatasetFirstYear(iDataset) = CInt(drow("FirstYear"))
+                tsDS.nDatasetNumYears(iDataset) = CInt(drow("NumYears"))
+                tsDS.nDatasetNumTimeSeries(iDataset) = 0 ' CInt(Me.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", CInt(drow("DatasetID")))))
+                iDataset += 1
+            Next
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Loads an ecosim scenario from the DB.
+    ''' </summary>
+    ''' <param name="iScenarioID">Database ID of the scenario to load.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -------------------------------------------------------------------
+    Friend Function LoadEcosimScenario(ByVal iScenarioID As Integer) As Boolean _
+            Implements IEcosimDatasource.LoadEcosimScenario
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim dt As DataTable = Me.ReadTable("EcosimScenario")
+        Dim bSucces As Boolean = True
+
+        bSucces = Me.LoadEcosimModel()
+
+        ecosimDS.RedimVars()
+        ecosimDS.SetDefaultParameters()
+        mseDS.RedimVars()
+        mseDS.setDefaultRegValues()
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+
+            Try
+                ecosimDS.NumYears = CInt(drow("TotalTime"))
+                ecosimDS.StepSize = CSng(drow("StepSize"))
+                ecosimDS.EquilibriumStepSize = CSng(drow("EquilibriumStepSize"))
+                ecosimDS.EquilScaleMax = CSng(drow("EquilScaleMax"))
+                ecosimDS.SorWt = CSng(drow("sorwt"))
+                ecosimDS.SystemRecovery = CSng(drow("SystemRecovery"))
+                ecosimDS.Discount = CSng(drow("Discount"))
+
+                'ecosimDS.NudgeStart = CSng(drow("NudgeStart"))
+                'ecosimDS.NudgeEnd = CSng(drow("NudgeEnd"))
+                'ecosimDS.NudgeFactor = CSng(drow("NudgeFactor"))
+                'ecosimDS.DoInteg = CSng(drow("DoInteg"))
+                'ecosimDS.chkNudge = CBool(drow("UseNudge"))
+
+                'drow("NMed") = Me.FixValue(drow("NMed"))                        ' DISCONTINUED
+                'drow("NMedPoints") = Me.FixValue(drow("NMedPoints"))            ' DISCONTINUED
+
+                ecosimDS.NutBaseFreeProp = CSng(drow("NutBaseFreeProp"))
+                ecosimDS.NutPBmax = CSng(drow("NutPBmax"))
+
+                'ecosimDS.UseVarPQ = CBool(drow("UseVarPQ"))
+                'VC090403: the var P/Q was being set to true by default, It shouldn't be, this should be done in interface only
+                ecosimDS.UseVarPQ = False
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Scenario {1}", ex.Message, iScenarioID))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        'jb added to redim time variables in ecosim data structures
+        ecosimDS.RedimTime()
+
+        Me.m_core.m_MSEData.redimTime()
+
+        ' Set active scenario
+        ecopathDS.ActiveEcosimScenario = Array.IndexOf(ecopathDS.EcosimScenarioDBID, iScenarioID)
+
+        bSucces = bSucces And Me.LoadEcosimGroups(iScenarioID)
+        bSucces = bSucces And Me.LoadEcosimFleets(iScenarioID)
+        bSucces = bSucces And Me.LoadShapes()
+        'bSucces = bSucces And Me.LoadEcosimMSE(iScenarioID)
+        'bSucces = bSucces And Me.LoadAuxillaryData()
+
+        Me.ClearChanged()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimModel() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim dt As DataTable = Me.ReadTable("EcosimModel")
+        Dim bSuccess As Boolean = True
+
+        For Each drow As DataRow In dt.Rows
+            Try
+                ecosimDS.ForcePoints = CInt(Me.ReadSafe(drow, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS))
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+        Next
+
+        ecosimDS.nGroups = ecopathDS.NumGroups
+
+        dt.Clear()
+        Return bSuccess
+
+    End Function
+
+    Private Function LoadEcosimGroups(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioGroup")
+        Dim bSucces As Boolean = True
+        Dim iEcopathGroupID As Integer = 0
+        Dim iGroup As Integer = 0
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+
+            iEcopathGroupID = CInt(drow("EcopathGroupID"))
+            iGroup = Array.IndexOf(ecopathDS.GroupDBID, iEcopathGroupID)
+
+            Debug.Assert(iGroup > 0)
+
+            Try
+
+                ' Read fields
+                ecosimDS.GroupDBID(iGroup) = CInt(drow("GroupID"))
+                ecosimDS.PBmaxs(iGroup) = CSng(drow("pbmaxs"))
+                ecosimDS.FtimeMax(iGroup) = CSng(drow("FtimeMax"))
+                ecosimDS.FtimeAdjust(iGroup) = CSng(drow("FtimeAdjust"))
+                ecosimDS.MoPred(iGroup) = CSng(drow("MoPred"))
+                ecosimDS.FishRateMax(iGroup) = CSng(drow("FishRateMax"))
+                ' ecosimDS.ShowGroup(i) = CBool(drow("Show"))
+
+                ecosimDS.RiskTime(iGroup) = CSng(drow("RiskTime"))
+                ecosimDS.QmQo(iGroup) = CSng(drow("QmQo"))
+                ecosimDS.CmCo(iGroup) = CSng(drow("CmCo"))
+                ecosimDS.SwitchPower(iGroup) = CSng(drow("SwitchPower"))
+                ecosimDS.GroupFishRateNoDBID(iGroup) = CInt(drow("FishMortShapeID"))
+                ecosimDS.SalOpt(iGroup) = CSng(Me.ReadSafe(drow, "SalOpt", 35.0!))
+                ecosimDS.SdSalLeft(iGroup) = CSng(Me.ReadSafe(drow, "SdSalLeft", 1000.0!))
+                ecosimDS.SdSalRight(iGroup) = CSng(Me.ReadSafe(drow, "SdSalRight", 1000.0!))
+                ecosimDS.TempOpt(iGroup) = CSng(Me.ReadSafe(drow, "TempOpt", 10.0!))
+                ecosimDS.TempLeft(iGroup) = CSng(Me.ReadSafe(drow, "TempLeft", 1000.0!))
+                ecosimDS.TempRight(iGroup) = CSng(Me.ReadSafe(drow, "TempRight", 1000.0!))
+
+                mseDS.Blim(iGroup) = CSng(Me.ReadSafe(drow, "Blim", mseDS.Blim(iGroup), cCore.NULL_VALUE))
+                mseDS.Bbase(iGroup) = CSng(Me.ReadSafe(drow, "Bbase", mseDS.Bbase(iGroup), cCore.NULL_VALUE))
+                mseDS.Fopt(iGroup) = CSng(Me.ReadSafe(drow, "Fopt", mseDS.Fopt(iGroup), cCore.NULL_VALUE))
+                mseDS.FixedEscapement(iGroup) = CSng(Me.ReadSafe(drow, "FixedEscapement", 0.0!, cCore.NULL_VALUE))
+                mseDS.FixedF(iGroup) = CSng(Me.ReadSafe(drow, "FixedF", 0.0!, cCore.NULL_VALUE))
+
+                mseDS.CVbiomEst(iGroup) = CSng(Me.ReadSafe(drow, "BiomassCV", mseDS.CVbiomEst(iGroup), cCore.NULL_VALUE))
+                mseDS.BioRiskValue(iGroup, 0) = CSng(Me.ReadSafe(drow, "LowerRisk", mseDS.BioRiskValue(iGroup, 0), cCore.NULL_VALUE))
+                mseDS.BioRiskValue(iGroup, 1) = CSng(Me.ReadSafe(drow, "UpperRisk", mseDS.BioRiskValue(iGroup, 1), cCore.NULL_VALUE))
+
+                mseDS.DefaultBioBounds(iGroup)
+                mseDS.BioBounds(iGroup).Lower = CSng(Me.ReadSafe(drow, "BiomassRefLower", mseDS.BioBounds(iGroup).Lower, cCore.NULL_VALUE))
+                mseDS.BioBounds(iGroup).Upper = CSng(Me.ReadSafe(drow, "BiomassRefUpper", mseDS.BioBounds(iGroup).Upper, cCore.NULL_VALUE))
+
+                mseDS.DefaultCatchBoundsGroup(iGroup)
+                mseDS.CatchGroupBounds(iGroup).Lower = CSng(Me.ReadSafe(drow, "CatchRefLower", mseDS.CatchGroupBounds(iGroup).Lower, cCore.NULL_VALUE))
+                mseDS.CatchGroupBounds(iGroup).Upper = CSng(Me.ReadSafe(drow, "CatchRefUpper", mseDS.CatchGroupBounds(iGroup).Upper, cCore.NULL_VALUE))
+
+                mseDS.RstockRatio(iGroup) = CSng(Me.ReadSafe(drow, "RStockRatio", mseDS.RstockRatio(iGroup), cCore.NULL_VALUE))
+                mseDS.RHalfB0Ratio(iGroup) = CSng(Me.ReadSafe(drow, "RHalfB0Ratio", mseDS.RHalfB0Ratio(iGroup), cCore.NULL_VALUE))
+                mseDS.cvRec(iGroup) = CSng(Me.ReadSafe(drow, "RecruitmentCV", mseDS.cvRec(iGroup), cCore.NULL_VALUE))
+
+                ' Me.LoadFishMortShape(CInt(drow("FishMortShapeID")), iGroup)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcoSim group info for group {1}", ex.Message, iGroup))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        bSucces = bSucces And Me.LoadEcosimGroupYear(iScenarioID)
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimGroupYear(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioGroupYear")
+        Dim iGroupID As Integer = -1
+        Dim iGroup As Integer = -1
+        Dim iYear As Integer = -1
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+            Try
+                iGroupID = CInt(drow("GroupID"))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
+                iYear = CInt(drow("TimeYear"))
+                If (iGroup > 0) And (iGroup <= ecosimDS.nGroups) And _
+                   (iYear > 0) And (iYear <= mseDS.nYears) Then
+                    mseDS.CVBiomT(iGroup, iYear) = CSng(drow("CVBiom"))
+                End If
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimFleets(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioFleet")
+        Dim dtFishMort As DataTable = Me.ReadTable("EcosimShapeFishRate")
+        Dim iFleet As Integer = 0
+        Dim iFleetID As Integer = -1
+        Dim iShapeID As Integer = -1
+        Dim bSucces As Boolean = True
+        Dim asDummy(ecosimDS.NTimes) As Single
+
+        Dim dtNewFleetShapes As New Dictionary(Of Integer, Integer)
+
+        For iPt As Integer = 0 To ecosimDS.NTimes : asDummy(iPt) = 1.0 : Next
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        dt.DefaultView.Sort = "EcopathFleetID ASC"
+
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+
+            iFleetID = CInt(drow("EcopathFleetID"))
+            iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
+            Debug.Assert(iFleet > 0)
+
+            iShapeID = CInt(Me.ReadSafe(drow, "FishRateShapeID", -1))
+            Debug.Assert(iShapeID > 0, "No effort shape defined for fleet " & iFleet)
+
+            If iShapeID > -1 Then
+                ' JS 10Aug07: Don't fail in case FishRateShape is missing. Only those present are loaded, only those loaded are saved.
+                '             Since these shapes do not need to be present we can be somewhat forgiving in this particular case.
+                If Not LoadFishingRateShape(dtFishMort, iShapeID, iFleet) Then
+                    Me.LogMessage(String.Format("Warning: Fishing rate shape {0} is referenced but not present in database for EcoSim fleet {1} (ID {2})", iShapeID, iFleet, iFleetID))
+                End If
+            End If
+
+            Try
+                ecosimDS.FleetDBID(iFleet) = CInt(drow("FleetID"))
+                ecosimDS.Epower(iFleet) = CSng(Me.ReadSafe(drow, "Epower", 3))
+                ecosimDS.PcapBase(iFleet) = CSng(Me.ReadSafe(drow, "PCapBase", 0.5))
+                ecosimDS.CapDepreciate(iFleet) = CSng(Me.ReadSafe(drow, "CapDepreciate", 0.06))
+                ecosimDS.CapBaseGrowth(iFleet) = CSng(Me.ReadSafe(drow, "CapBaseGrowth", 0.2))
+                ecosimDS.EffortConversionFactor(iFleet) = CSng(Me.ReadSafe(drow, "EffortConversionFactor", 1.0!))
+
+                mseDS.MaxEffort(iFleet) = CSng(Me.ReadSafe(drow, "MaxEffort", cCore.NULL_VALUE))
+                mseDS.QuotaType(iFleet) = DirectCast(CInt(Me.ReadSafe(drow, "QuotaType", 0)), eQuotaTypes)
+                mseDS.CVFest(iFleet) = CSng(Me.ReadSafe(drow, "CV", mseDS.CVFest(iFleet)))
+                mseDS.Qgrow(iFleet) = CSng(Me.ReadSafe(drow, "QIncrease", mseDS.Qgrow(iFleet)))
+
+                mseDS.DefaultCatchBoundsFleet(iFleet)
+                mseDS.CatchFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(drow, "CatchRefLower", mseDS.CatchFleetBounds(iFleet).Lower))
+                mseDS.CatchFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(drow, "CatchRefUpper", mseDS.CatchFleetBounds(iFleet).Upper))
+                mseDS.EffortFleetBounds(iFleet).Lower = CSng(Me.ReadSafe(drow, "EffortRefLower", mseDS.EffortFleetBounds(iFleet).Lower))
+                mseDS.EffortFleetBounds(iFleet).Upper = CSng(Me.ReadSafe(drow, "EffortRefUpper", mseDS.EffortFleetBounds(iFleet).Upper))
+                'mseDS.MSYEvaluateFleet(iFleet) = (CInt(Me.ReadSafe(drow, "MSYEvaluateFleet", True)) = 1)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+        Next
+        dt.Clear()
+
+        bSucces = bSucces And Me.LoadEcosimFleetYear(iScenarioID)
+        bSucces = bSucces And Me.LoadEcosimQuota(iScenarioID)
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimFleetYear(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioFleetYear")
+        Dim iFleetID As Integer = -1
+        Dim iFleet As Integer = -1
+        Dim iYear As Integer = -1
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+            Try
+                iFleetID = CInt(drow("FleetID"))
+                iFleet = Array.IndexOf(ecosimDS.FleetDBID, iFleetID)
+                iYear = CInt(drow("TimeYear"))
+                If (iFleet > 0) And (iFleet <= ecosimDS.nGear) And _
+                   (iYear > 0) And (iYear <= mseDS.nYears) Then
+                    mseDS.CVFT(iFleet, iYear) = CSng(drow("CV"))
+                End If
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimQuota(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
+        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioQuota")
+        Dim iFleetID As Integer = -1
+        Dim iFleet As Integer = -1
+        Dim iGroupID As Integer = -1
+        Dim iGroup As Integer = -1
+        Dim bSucces As Boolean = True
+
+        For Each drow As DataRow In dt.Rows
+
+            Try
+                iFleetID = CInt(drow("FleetID"))
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, iFleetID)
+
+                iGroupID = CInt(drow("EcosimGroupID"))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, iGroupID)
+
+                If (iFleet > 0) And (iGroup > 0) Then
+                    mseDS.Quotashare(iFleet, iGroup) = CSng(Me.ReadSafe(drow, "QuotaShare", mseDS.Quotashare(iFleet, iGroup)))
+                    mseDS.Fweight(iFleet, iGroup) = CSng(Me.ReadSafe(drow, "FWeight", 1.0))
+                End If
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+        Return bSucces
+
+    End Function
+
+
+    Private Function LoadShapes() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim PredPreyMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.BioMedData
+        Dim LandingsMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.PriceMedData
+        Dim CapEnvResMedDS As cMediationDataStructures = Me.m_core.m_EcoSimData.CapEnvResData
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim dt As DataTable = Me.ReadTable("EcosimShape")
+        Dim iShapeID As Integer = 0
+        Dim shapeDataType As eDataTypes = eDataTypes.NotSet
+        Dim iForcingShape As Integer = 0
+        Dim iPredPreyMediationShape As Integer = 0
+        Dim iLandingsMediationShape As Integer = 0
+        Dim iCapEnvResMediationShape As Integer = 0
+        Dim iFishingMortShape As Integer = 0
+        Dim iFishRateShape As Integer = 0
+        Dim bSucces As Boolean = True
+
+        ecosimDS.ForcingShapes = 0
+        PredPreyMedDS.MediationShapes = 0
+        LandingsMedDS.MediationShapes = 0
+        CapEnvResMedDS.MediationShapes = 0
+
+        For Each drow As DataRow In dt.Rows
+            Select Case DirectCast(CInt(drow("ShapeType")), eDataTypes)
+                Case eDataTypes.EggProd, eDataTypes.Forcing : ecosimDS.ForcingShapes += 1
+                Case eDataTypes.Mediation : PredPreyMedDS.MediationShapes += 1
+                Case eDataTypes.PriceMediation : LandingsMedDS.MediationShapes += 1
+                Case eDataTypes.CapacityMediation : CapEnvResMedDS.MediationShapes += 1
+            End Select
+        Next
+
+        ecosimDS.DimForcingShapes()
+        ecosimDS.InitForcingShapes()
+        PredPreyMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
+        LandingsMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
+        CapEnvResMedDS.ReDimMediation(ecosimDS.nGroups, ecosimDS.nGear)
+
+        Dim dtEgg As DataTable = Me.ReadTable("EcosimShapeEggProd")
+        Dim dtTime As DataTable = Me.ReadTable("EcosimShapeTime")
+        Dim dtMed As DataTable = Me.ReadTable("EcosimShapeMediation")
+        For Each drow As DataRow In dt.Rows
+
+            Try
+
+                iShapeID = CInt(drow("ShapeID"))
+                shapeDataType = DirectCast(drow("ShapeType"), eDataTypes)
+
+                Select Case shapeDataType
+
+                    Case eDataTypes.EggProd
+                        iForcingShape += 1
+                        bSucces = bSucces And Me.LoadEggShape(dtEgg, iShapeID, iForcingShape, CInt(drow("IsSeasonal")) <> 0)
+
+                    Case eDataTypes.Forcing
+                        iForcingShape += 1
+                        bSucces = bSucces And Me.LoadTimeShape(dtTime, iShapeID, iForcingShape, CInt(drow("IsSeasonal")) <> 0)
+
+                    Case eDataTypes.Mediation
+                        iPredPreyMediationShape += 1
+                        bSucces = bSucces And Me.LoadMediationShape(dtMed, iShapeID, iPredPreyMediationShape, PredPreyMedDS)
+
+                    Case eDataTypes.PriceMediation
+                        iLandingsMediationShape += 1
+                        bSucces = bSucces And Me.LoadMediationShape(dtMed, iShapeID, iLandingsMediationShape, LandingsMedDS)
+
+                    Case eDataTypes.CapacityMediation
+                        iCapEnvResMediationShape += 1
+                        bSucces = bSucces And Me.LoadMediationShape(dtMed, iShapeID, iCapEnvResMediationShape, CapEnvResMedDS)
+
+                    Case eDataTypes.FishingEffort
+                        'iFishRateShape += 1
+                        'bSucces = bSucces And Me.LoadFishingRateShape(iShapeID, iFishRateShape)
+
+                    Case eDataTypes.FishMort
+                        'iFishingMortShape += 1
+                        'bSucces = bSucces And Me.LoadFishMortShape(iShapeID, iFishingMortShape)
+
+                    Case Else
+                        Debug.Assert(False, String.Format("Cannot load invalid shapetype {0} for shape ID {1}", shapeDataType, iShapeID))
+
+                End Select
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+
+        dt = Me.ReadTable("EcosimScenario")
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        Try
+            Dim drow As DataRow = dt.DefaultView.ToTable.Rows(0)
+            ' Read and assign scenario forcing shape number(s)
+            iForcingShape = CInt(Me.ReadSafe(drow, "NutForcingShapeID", 0))
+            ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+            iForcingShape = CInt(Me.ReadSafe(drow, "SalinityForcingShapeID", 0))
+            ecosimDS.SalinityForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+            iForcingShape = CInt(Me.ReadSafe(drow, "TemperatureForcingShapeID", 0))
+            ecosimDS.TemperatureForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+        Catch ex As Exception
+            bSucces = False
+        End Try
+        dt.Clear()
+
+        bSucces = bSucces And Me.LoadEcosimVulnerabilities()
+        bSucces = bSucces And Me.LoadPredPreyInteractions()
+        bSucces = bSucces And Me.LoadLandingInteractions()
+        bSucces = bSucces And Me.LoadMediationWeights()
+        bSucces = bSucces And Me.LoadStanzaShapeAssignments()
+
+        Return bSucces
+
+    End Function
+
+#Region " Shape load helpers "
+
+    Private Function LoadEggShape(ByVal dt As DataTable, _
+                                  ByVal iShapeID As Integer, _
+                                  ByVal iForcingShape As Integer, _
+            Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
+        Dim drow As DataRow = Nothing
+        Dim astrZScale() As String
+        Dim bSucces As Boolean = True
+
+        'readerShape = Me.GetReader(String.Format("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
+        dt.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
+        Try
+            drow = dt.DefaultView.ToTable.Rows(0)
+            shapeParms.YZero = CSng(drow("Yzero"))
+            shapeParms.YBase = CSng(drow("Ybase"))
+            shapeParms.YEnd = CSng(drow("Yend"))
+            shapeParms.Steep = CSng(drow("Steep"))
+            ' sp.ZScale = CInt(readerShape("ZScale"))
+            shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+
+            ' Read z-scale
+            astrZScale = Me.SplitNumberString(CStr(drow("Zscale")))
+            For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, astrZScale.Length)
+                ecosimDS.zscale(ipt, iForcingShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+            Next ipt
+            For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
+                ecosimDS.zscale(ipt, iForcingShape) = 1.0
+            Next
+
+            ecosimDS.ForcingShapeParams(iForcingShape) = shapeParms
+            ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
+            ecosimDS.ForcingTitles(iForcingShape) = CStr(drow("Title"))
+            ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.EggProd
+            ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading EggShape {1}", ex.Message, iShapeID))
+            bSucces = False
+        End Try
+        dt.DefaultView.RowFilter = ""
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadTimeShape(ByVal dtTime As DataTable, _
+                                   ByVal iShapeID As Integer, _
+                                   ByVal iForcingShape As Integer, _
+                                   Optional ByVal bIsSeasonal As Boolean = False) As Boolean
+
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
+        Dim drow As DataRow = Nothing
+        Dim astrZScale() As String
+        Dim bSucces As Boolean = True
+
+        dtTime.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
+        drow = dtTime.DefaultView.ToTable.Rows(0)
+        Try
+            ' Read shape parameters
+            shapeParms.YZero = CSng(drow("Yzero"))
+            shapeParms.YBase = CSng(drow("Ybase"))
+            shapeParms.YEnd = CSng(drow("Yend"))
+            shapeParms.Steep = CSng(drow("Steep"))
+            shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+
+            ' Read z-scale
+            Dim sLast As Single = 1.0!
+            astrZScale = Me.SplitNumberString(CStr(drow("Zscale")))
+            For ipt As Integer = 1 To Math.Min(ecosimDS.ForcePoints, astrZScale.Length)
+                sLast = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+                ecosimDS.zscale(ipt, iForcingShape) = sLast
+            Next ipt
+            For ipt As Integer = Math.Min(ecosimDS.ForcePoints, astrZScale.Length) + 1 To ecosimDS.ForcePoints
+                ecosimDS.zscale(ipt, iForcingShape) = sLast
+            Next
+
+            ecosimDS.ForcingShapeParams(iForcingShape) = shapeParms
+            ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
+            ecosimDS.ForcingTitles(iForcingShape) = CStr(drow("Title"))
+            ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.Forcing
+            ecosimDS.ForcingApplicationType(iForcingShape) = DirectCast(CInt(Me.ReadSafe(drow, "ApplicationType", eForcingApplicationTypes.NotSet)), eForcingApplicationTypes)
+            ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading TimeShape {1}", ex.Message, iShapeID))
+            bSucces = False
+        End Try
+        dtTime.DefaultView.RowFilter = ""
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadMediationShape(ByVal dtMed As DataTable, _
+                                        ByVal iShapeID As Integer, _
+                                        ByVal iMediationShape As Integer, _
+                                        ByVal medData As cMediationDataStructures) As Boolean
+
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim shapeParms As New cEcosimDatastructures.ShapeParameters()
+        Dim astrZScale() As String
+        Dim bSucces As Boolean = True
+
+        'readerShape = Me.GetReader(String.Format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
+        dtMed.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
+
+        Try
+            Dim drow As DataRow = dtMed.DefaultView.ToTable.Rows(0)
+
+            ' Init shapeParms
+            shapeParms.YZero = CSng(drow("Yzero"))
+            shapeParms.YBase = CSng(drow("Ybase"))
+            shapeParms.YEnd = CSng(drow("Yend"))
+            shapeParms.Steep = CSng(drow("Steep"))
+            ' shapeParms.ZScale = CInt(readerShape("ZScale"))
+            shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
+
+            ' Read z-scale
+            astrZScale = Me.SplitNumberString(CStr(drow("Zscale")))
+            ' Write points
+            For ipt As Integer = 1 To Math.Min(medData.NMedPoints, astrZScale.Length)
+                medData.Medpoints(ipt, iMediationShape) = cStringUtils.ConvertToSingle(astrZScale(ipt - 1), 0)
+            Next ipt
+            For ipt As Integer = Math.Min(medData.NMedPoints, astrZScale.Length) + 1 To medData.NMedPoints
+                medData.Medpoints(ipt, iMediationShape) = 1.0
+            Next
+
+            medData.MediationShapeParams(iMediationShape) = shapeParms
+            medData.MediationDBIDs(iMediationShape) = iShapeID
+            medData.MediationTitles(iMediationShape) = CStr(drow("Title"))
+            medData.IMedBase(iMediationShape) = CInt(Me.ReadSafe(drow, "IMedBase", 1200 / 3))
+            medData.XAxisMin(iMediationShape) = CSng(Me.ReadSafe(drow, "XAxisMin", 0))
+            medData.XAxisMax(iMediationShape) = CSng(Me.ReadSafe(drow, "XAxisMax", 1))
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
+            bSucces = False
+        End Try
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcosimVulnerabilities() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioForcingMatrix")
+        Dim iPredator As Integer = 0
+        Dim iPrey As Integer = 0
+        Dim bSucces As Boolean = True
+
+        For iPredator = 1 To Me.m_core.nGroups
+            For iPrey = 1 To Me.m_core.nGroups
+                ecosimDS.VulMult(iPrey, iPredator) = 2.0!
+            Next iPrey
+        Next iPredator
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+
+            Try
+                ' Find iPredator
+                iPredator = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredID")))
+                ' Find iPrey
+                iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PreyID")))
+
+                If (iPredator > -1 And iPrey > -1) Then
+                    ecosimDS.VulMult(iPrey, iPredator) = CSng(drow("vulnerability"))
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadPredPreyInteractions() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioPredPreyShape")
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim iPredator As Integer = 0
+        Dim iPrey As Integer = 0
+        Dim iShapeID As Integer = 0
+        Dim iShape As Integer = 0
+        Dim bSucces As Boolean = True
+        Dim iFNo(ecosimDS.nGroups, ecosimDS.nGroups) As Integer
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+
+            Try
+
+                ' Find iPredator
+                iPredator = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PredID")))
+                ' Find iPrey
+                iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("PreyID")))
+                ' Next shape
+                iFNo(iPrey, iPredator) += 1
+                ' Protect from data overflow
+                If (iFNo(iPrey, iPredator) <= cMediationDataStructures.MAXFUNCTIONS) Then
+                    ' Resolve shape ID
+                    iShapeID = CInt(drow("ShapeID"))
+                    ' Determine shape type
+                    iShape = Array.IndexOf(ecosimDS.BioMedData.MediationDBIDs, iShapeID)
+                    ' Is a mediation shape?
+                    If iShape <> -1 Then
+                        ' #Yes: flag as mediation shape
+                        ecosimDS.BioMedData.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = True
+                    Else
+                        ' #No: flag as other shape
+                        ecosimDS.BioMedData.IsMedFunction(iPrey, iPredator, iFNo(iPrey, iPredator)) = False
+                        ' Obtain forcing index
+                        iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, iShapeID)
+                    End If
+
+                    If iShape <> -1 Then
+                        ' Update sim fields
+                        ecosimDS.BioMedData.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
+                        Dim iFT As Integer = CInt(drow("FunctionType"))
+                        ' Fixes #980: eForcingFunctionApplication types ProductionRate and SearchRate are now synonymous.
+                        '             ProdRate = 6 is discontinued. If a 6 occurs and pred=prey (which indicates PP) a default of 1 is substituted.
+                        If (iFT = 6) And (iPredator = iPrey) Then iFT = eForcingFunctionApplication.ProductionRate
+                        ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = iFT
+                    Else
+                        Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
+                    End If
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading PredPreyInteraction", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadLandingInteractions() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioPredPreyShape")
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim iFleet As Integer = 0
+        Dim iGroup As Integer = 0
+        Dim iShapeID As Integer = 0
+        Dim iShape As Integer = 0
+        Dim bSucces As Boolean = True
+        Dim iFNo(ecosimDS.nGroups, ecosimDS.nGear) As Integer
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+
+            Try
+
+                ' Find iFleet
+                iFleet = Array.IndexOf(ecosimDS.FleetDBID, CInt(drow("FleetID")))
+                ' Find iGroup
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("GroupID")))
+                ' Next shape
+                iFNo(iGroup, iFleet) += 1
+                ' Resolve shape ID
+                iShapeID = CInt(drow("ShapeID"))
+                ' Resolve iShape
+                iShape = Array.IndexOf(ecosimDS.PriceMedData.MediationDBIDs, iShapeID)
+
+                If iShape > -1 Then
+                    ecosimDS.PriceMedData.PriceMedFuncNum(iGroup, iFleet, iFNo(iGroup, iFleet)) = iShape
+                Else
+                    Me.LogMessage(String.Format("Shape {0} cannot be used for landings interactions; assignment discarded", iShapeID))
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Landing interaction", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the mediation weights for the active scenario.
+    ''' </summary>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadMediationWeights() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim medData As cMediationDataStructures = Nothing
+        Dim dt As DataTable = Nothing
+        Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+        Dim iGroup As Integer = 0
+        Dim iFleet As Integer = 0
+        Dim iShape As Integer = 0
+        Dim bSucces As Boolean = True
+
+        ' === Pred/prey mediations ===
+        medData = ecosimDS.BioMedData
+        dt = Me.ReadTable("EcosimScenarioShapeMedWeightsGroup")
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+            Try
+                iShape = Array.IndexOf(medData.MediationDBIDs, drow("ShapeID"))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, drow("GroupID"))
+                If (iGroup <> -1 And iShape <> -1) Then
+                    medData.MedWeights(iGroup, iShape) = CSng(drow("MedWeights"))
+                End If
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading group MediationWeights", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+        dt = Nothing
+
+        dt = Me.ReadTable("EcosimScenarioShapeMedWeightsFleet")
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+            Try
+                iShape = Array.IndexOf(medData.MediationDBIDs, drow("ShapeID"))
+                ' Unfortunate legacy: fleet refers to Ecopath fleet, not Ecosim as it should have
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, drow("FleetID"))
+                If (iFleet <> -1 And iShape <> -1) Then
+                    medData.MedWeights(iFleet + ecosimDS.nGroups, iShape) = CSng(drow("MedWeights"))
+                End If
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading fleet MediationWeights", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+        dt = Nothing
+
+        ' === Landings mediations === 
+        medData = ecosimDS.PriceMedData
+        dt = Me.ReadTable("EcosimScenarioshapeMedWeightsLandings")
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows
+            Try
+                iShape = Array.IndexOf(medData.MediationDBIDs, drow("ShapeID"))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, drow("GroupID"))
+                iFleet = Array.IndexOf(ecosimDS.FleetDBID, drow("FleetID"))
+                If (iGroup > 0 And iShape > 0) Then
+                    iFleet = Math.Max(0, iFleet)
+                    medData.MedPriceWeights(iGroup, iFleet, iShape) = CSng(drow("MedWeights"))
+                End If
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading group MediationWeights", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+        dt = Nothing
+
+        Return True
+
+    End Function
+
+    Private Function LoadStanzaShapeAssignments() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioPredPreyShape")
+        Dim iStanza As Integer = 0
+        Dim iShape As Integer = 0
+        Dim bSucces As Boolean = True
+
+        For Each drow As DataRow In dt.Rows
+            Try
+                ' Get iStanza 
+                iStanza = Array.IndexOf(stanzaDS.StanzaDBID, CInt(drow("StanzaID")))
+                ' Is valid stanza?
+                If (iStanza > 0) Then
+                    ' #Yes: has egg production shape?
+                    If Not Convert.IsDBNull(drow("EggprodShapeID")) Then
+                        ' #Yes: resolve shape index iShape
+                        iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, CInt(drow("EggprodShapeID")))
+                        ' Is a valid shape index?
+                        If (iShape > 0) Then
+                            ' #Yes: assign
+                            stanzaDS.EggProdShapeSplit(iStanza) = iShape
+                        End If
+                    End If
+                    ' #Yes: has hatch code forcing shape?
+                    If Not Convert.IsDBNull(drow("HatchCodeShapeID")) Then
+                        ' #Yes: resolve shape index iShape
+                        iShape = Array.IndexOf(ecosimDS.ForcingDBIDs, CInt(drow("HatchCodeShapeID")))
+                        ' Is a valid shape index?
+                        If (iShape > 0) Then
+                            ' #Yes: assign
+                            stanzaDS.HatchCode(iStanza) = iShape
+                        End If
+                    End If
+                End If ' Is valid stanza
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading stanza shape assignments", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+    End Function
+
+    Private Function LoadFishingRateShape(ByVal dtFishRate As DataTable, _
+                                          ByVal iShapeID As Integer, _
+                                          ByVal iFishingRateShape As Integer) As Boolean
+
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim readerShape As IDataReader = Nothing
+        Dim strMemo As String = ""
+        Dim astrMemoBits() As String
+        Dim bSucces As Boolean = True
+
+        If iShapeID = 0 Then Return bSucces
+
+        dtFishRate.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
+        For Each drow As DataRow In dtFishRate.DefaultView.ToTable.Rows
+            Try
+                ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(readerShape("Title"))
+                strMemo = CStr(readerShape("zScale"))
+                astrMemoBits = strMemo.Trim.Split(CChar(" "))
+                For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
+                    ecosimDS.FishRateGear(iFishingRateShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
+                Next
+                ecosimDS.FishRateGearDBID(iFishingRateShape) = iShapeID
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading FishingRate {1}", ex.Message, iShapeID))
+                bSucces = False
+            End Try
+        Next
+
+        Return bSucces
+
+    End Function
+
+#End Region ' Shape load helpers
 
 #End Region ' Load
 
@@ -633,11 +1876,23 @@ Public Class cEIIXMLDataSource
     End Function
 
     Private Function Field(rd As IDataReader, strCol As String) As String
+
         Dim data As Object = rd(strCol)
+
         If Convert.IsDBNull(data) Then Return ""
-        If (TypeOf data Is String) Then Return CStr(data).Replace(";"c, ":"c).Replace(","c, "."c)
+
+        If (TypeOf data Is String) Then
+            Dim strData As String = CStr(data).Replace("""", "")
+            If (strData.IndexOfAny(New Char() {";"c, ","c}) > -1) Then
+                Return """" & strData & """"
+            End If
+            Return strData
+        End If
+
         If (TypeOf data Is Boolean) Then Return data.ToString()
+
         Return cStringUtils.FormatNumber(data)
+
     End Function
 
     Private Function SaveTable(ByVal db As cEwEDatabase, ByVal strTable As String, ByVal doc As XmlDocument) As Boolean
@@ -709,6 +1964,8 @@ Public Class cEIIXMLDataSource
     End Function
 
 #End Region ' Diagnostics
+
+#Region " Modifications not allowed by this type of DS "
 
 #Region " Groups "
 
@@ -841,6 +2098,8 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Taxon
 
+#End Region ' odifications not allowed by this type of DS
+
 #End Region ' Ecopath
 
 #Region " EcoSim "
@@ -863,100 +2122,6 @@ Public Class cEIIXMLDataSource
 
 #Region " Scenarios "
 
-    Private Function LoadEcosimScenarioDefinitions() As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        ecopathDS.NumEcosimScenarios = 1
-        ecopathDS.RedimEcosimScenarios()
-
-        ecopathDS.EcosimScenarioName(1) = My.Resources.CoreDefaults.CORE_DEFAULT_SCENARIO()
-        ecopathDS.EcosimScenarioDBID(1) = 1
-        ecopathDS.EcosimScenarioDescription(1) = "This is a dummy scenario, manually crafted in cEIIDataSource."
-
-        Return True
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Loads an ecosim scenario from the EII.
-    ''' </summary>
-    ''' <param name="iDBID">Database ID of the scenario to load.</param>
-    ''' <returns>True if succesful.</returns>
-    ''' -------------------------------------------------------------------
-    Function LoadScenario(ByVal iDBID As Integer) As Boolean _
-            Implements IEcosimDatasource.LoadEcosimScenario
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-
-        'ToDo_jb PopulateEcoSimInputVars this has to totaly change once there is a database
-        'this is just to get something working
-
-        'Hack:jb LoadEcosim() set ngroups in EcoSim to same as EcoPath this is until we can read from the datasource
-        ecosimDS.nGroups = ecopathDS.NumGroups
-        ecosimDS.nGear = ecopathDS.NumFleet
-        ecosimDS.NumYears = 50
-
-        ecosimDS.RedimVars()
-        ecosimDS.RedimTime()
-        ecosimDS.SetDefaultParameters()
-
-        ecopathDS.ActiveEcosimScenario = 1
-
-        ecosimDS.DimForcingShapes()
-        ecosimDS.InitForcingShapes()
-        ecosimDS.BioMedData.ReDimMediation(ecopathDS.NumGroups, ecopathDS.NumFleet)
-        ecosimDS.PriceMedData.ReDimMediation(ecopathDS.NumGroups, ecopathDS.NumFleet)
-
-        Me.m_core.m_MSEData.redimTime()
-        Me.m_core.m_MSEData.RedimVars()
-
-        For igrp As Integer = 1 To ecopathDS.NumGroups
-            Me.m_core.m_MSEData.DefaultBioBounds(igrp)
-            Me.m_core.m_MSEData.DefaultCatchBoundsGroup(igrp)
-        Next igrp
-
-        For iflt As Integer = 1 To ecopathDS.NumFleet
-            Me.m_core.m_MSEData.DefaultCatchBoundsFleet(iflt)
-        Next iflt
-
-        'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-        'HACK WARNING this is a temp fix to populate SimDC so that it can be used be tempCreateForcingMediationShapes() to init some fake data
-        'this will get overwritten by EcoSim in RemoveImportFromEcosim()
-        For iPred As Integer = 1 To ecosimDS.nGroups
-            For iPrey As Integer = 1 To ecosimDS.nGroups
-                ecosimDS.SimDC(iPred, iPrey) = ecopathDS.DC(iPred, iPrey)
-            Next iPrey
-        Next iPred
-
-        Dim i As Integer
-        'jb Temp Hack to build DBID for each shape 
-        For i = 1 To ecosimDS.ForcingShapes
-            ecosimDS.ForcingDBIDs(i) = i
-        Next
-        'jb Temp Hack to build DBID for each shape 
-        For i = 1 To ecosimDS.BioMedData.MediationShapes
-            ecosimDS.BioMedData.MediationDBIDs(i) = i
-        Next
-        For i = 1 To ecosimDS.PriceMedData.MediationShapes
-            ecosimDS.PriceMedData.MediationDBIDs(i) = i
-        Next
-
-        'fake database IDs
-        For i = 1 To ecosimDS.nGroups
-            ecosimDS.GroupDBID(i) = i
-        Next
-
-        For i = 1 To ecosimDS.nGear
-            ecosimDS.FleetDBID(i) = i
-        Next
-
-
-        'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
-        Return True
-    End Function
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -1199,7 +2364,7 @@ Public Class cEIIXMLDataSource
         stanzaDS.MaxStanza = 0
 
         If (stanzaDS.Nsplit > 0) Then
-            'stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
+            'stanzaDS.MaxStanza = CInt(Me..GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
             Dim dic As New Dictionary(Of Integer, Integer)
             For Each row As DataRow In rdLifeStage.Rows
                 iStanza = CInt(row("StanzaID"))
@@ -1261,12 +2426,12 @@ Public Class cEIIXMLDataSource
                 bSucces = False
             End Try
 
-            'rdLifeStage = Me.m_db.GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
+            'rdLifeStage = Me..GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
             rdLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
             rdLifeStage.DefaultView.Sort = "AgeStart ASC"
             iLifeStage = 0
 
-            For Each rowStage As DataRow In rdLifeStage.Rows
+            For Each rowStage As DataRow In rdLifeStage.DefaultView.ToTable.Rows
                 ' Next life stage in this stanza
                 iLifeStage += 1
 
@@ -1404,6 +2569,25 @@ Public Class cEIIXMLDataSource
         Return strData
     End Function
 
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' States if there is catch for at least one group.
+    ''' </summary>
+    ''' <returns>True if catch was found.</returns>
+    ''' -------------------------------------------------------------------
+    Private Function IsFishing() As Boolean
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim bIsFishing As Boolean = False
+        Dim iGroup As Integer = 1
+
+        While iGroup < ecopathDS.NumGroups And Not bIsFishing
+            bIsFishing = (ecopathDS.fCatch(iGroup) > 0.0)
+            iGroup += 1
+        End While
+
+        Return bIsFishing
+    End Function
+
     Private Function ReadTable(strTable As String) As DataTable
 
         If Not strTable.StartsWith("/") Then
@@ -1413,6 +2597,7 @@ Public Class cEIIXMLDataSource
         Dim xn As XmlNode = Me.m_doc.SelectSingleNode(strTable)
         Dim xnData As XmlCDataSection = DirectCast(xn.ChildNodes(0), XmlCDataSection)
         Dim xaCols As XmlAttribute = xn.Attributes("Columns")
+        Dim astrRows As String() = Nothing
         Dim astrCols As String() = xaCols.InnerText.Split(","c)
         Dim dt As New DataTable(xn.Name)
 
@@ -1420,17 +2605,21 @@ Public Class cEIIXMLDataSource
             dt.Columns.Add(astrCols(i), GetType(String))
         Next i
 
-        For Each strRow As String In cStringUtils.SplitQualified(xnData.InnerText, ";")
-            If Not String.IsNullOrWhiteSpace(strRow) Then
-                Dim drow As DataRow = dt.NewRow()
-                Dim astrData As String() = Nothing
-                If strRow.Contains("""") Then astrData = cStringUtils.SplitQualified(strRow, ",") Else astrData = strRow.Split(","c)
-                For i As Integer = 0 To astrData.Length - 1
-                    drow(astrCols(i)) = astrData(i)
-                Next
-                dt.Rows.Add(drow)
-            End If
-        Next
+        If (xnData IsNot Nothing) Then
+            astrRows = cStringUtils.SplitQualified(xnData.InnerText, ";")
+            For Each strRow As String In astrRows
+                If Not String.IsNullOrWhiteSpace(strRow) Then
+                    Dim drow As DataRow = dt.NewRow()
+                    Dim astrData As String() = Nothing
+                    If strRow.Contains("""") Then astrData = cStringUtils.SplitQualified(strRow, ",") Else astrData = strRow.Split(","c)
+                    For i As Integer = 0 To astrData.Length - 1
+                        drow(astrCols(i)) = astrData(i)
+                    Next
+                    dt.Rows.Add(drow)
+                End If
+            Next
+        End If
+
         Return dt
 
     End Function
@@ -1468,11 +2657,11 @@ Public Class cEIIXMLDataSource
             Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
         End Try
 
-        If (Object.ReferenceEquals(objResult, Nothing)) Then
+        If (Object.ReferenceEquals(objResult, Nothing) Or String.IsNullOrWhiteSpace(CStr(objResult))) Then
             objResult = objValueDefault
         ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) _
-            And Not (Convert.IsDBNull(objResult)) _
-            And Not (Convert.IsDBNull(objValueIgnore)) Then
+            And Not (String.IsNullOrWhiteSpace(CStr(objResult))) _
+            And Not (String.IsNullOrWhiteSpace(CStr(objValueIgnore))) Then
 
             ' Compare ignore values
             If TypeOf objResult Is String Then
@@ -1528,6 +2717,27 @@ Public Class cEIIXMLDataSource
         If strVal = "1" Then Return True
         If strVal = "0" Then Return False
         Return Boolean.Parse(strVal)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <para>Helper method, splits a string of numbers into an array of strings,
+    ''' each string representing a number. This method assumes that numbers are
+    ''' separated by a ASCII character 32, a single space.</para>
+    ''' </summary>
+    ''' <param name="strNumberString">A comma-seoarated string of numbers to split.</param>
+    ''' <returns>
+    ''' An array of strings, each representing a number in the string.
+    ''' </returns>
+    ''' <remarks>
+    ''' <para>This method tries to resolve number formatting issues, introduced
+    ''' in models written by systems with different locale settings.</para>
+    ''' </remarks>
+    ''' -----------------------------------------------------------------------
+    Private Function SplitNumberString(ByRef strNumberString As String) As String()
+        Dim charSeparators() As Char = {" "c}
+        If strNumberString.IndexOf(CChar(",")) > -1 Then strNumberString = strNumberString.Replace(CChar(","), CChar("."))
+        Return strNumberString.Trim().Split(charSeparators, StringSplitOptions.RemoveEmptyEntries)
     End Function
 
 #End Region ' Helper methods
