@@ -41,16 +41,16 @@ Partial Class frmStartPanel
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmStartPanel))
-        Me.m_tlp = New System.Windows.Forms.TableLayoutPanel
-        Me.m_browser = New System.Windows.Forms.WebBrowser
-        Me.m_ts1 = New ScientificInterfaceShared.Controls.cEwEToolstrip
-        Me.m_tsbnHome = New System.Windows.Forms.ToolStripButton
-        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton
-        Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton
-        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton
-        Me.m_tsbnRSS = New System.Windows.Forms.ToolStripButton
+        Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_browser = New System.Windows.Forms.WebBrowser()
+        Me.m_ts1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbnHome = New System.Windows.Forms.ToolStripButton()
+        Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton()
+        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnRSS = New System.Windows.Forms.ToolStripButton()
         Me.m_tlp.SuspendLayout()
         Me.m_ts1.SuspendLayout()
         Me.SuspendLayout()
@@ -68,6 +68,7 @@ Partial Class frmStartPanel
         resources.ApplyResources(Me.m_browser, "m_browser")
         Me.m_browser.MinimumSize = New System.Drawing.Size(20, 20)
         Me.m_browser.Name = "m_browser"
+        Me.m_browser.ScriptErrorsSuppressed = True
         '
         'm_ts1
         '
