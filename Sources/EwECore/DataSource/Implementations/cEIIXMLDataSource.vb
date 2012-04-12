@@ -236,9 +236,9 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Diagnostics
 
-#Region " Ecopath "
-
 #Region " Load "
+
+#Region " Ecopath "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -536,6 +536,129 @@ Public Class cEIIXMLDataSource
 
         Return True
 
+    End Function
+
+    Private Function LoadStanza() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim rdStanza As DataTable = Nothing
+        Dim rdLifeStage As DataTable = Nothing
+        Dim iStanza As Integer = 0
+        Dim iLifeStage As Integer = 0
+        Dim iGroup As Integer = 0
+        Dim sTemp As Single = 0.0
+        Dim bSucces As Boolean = True
+
+        rdStanza = Me.ReadTable("Stanza")
+        rdLifeStage = Me.ReadTable("StanzaLifeStage")
+
+        ' Count the number of rows in StanzaInfo; this is the number of split groups that we're going to work with
+        stanzaDS.Nsplit = rdStanza.Rows.Count
+        ' Get max no of stanza
+        stanzaDS.MaxStanza = 0
+
+        If (stanzaDS.Nsplit > 0) Then
+            'stanzaDS.MaxStanza = CInt(Me..GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
+            Dim dic As New Dictionary(Of Integer, Integer)
+            For Each row As DataRow In rdLifeStage.Rows
+                iStanza = CInt(row("StanzaID"))
+                If dic.ContainsKey(iStanza) Then iLifeStage = dic(iStanza) Else iLifeStage = 0
+                iLifeStage += 1
+                dic(iStanza) = iLifeStage
+                stanzaDS.MaxStanza = Math.Max(stanzaDS.MaxStanza, iLifeStage)
+            Next
+        End If
+
+        ' Get the number of groups from ecopath
+        stanzaDS.nGroups = ecopathDS.NumGroups
+
+        If stanzaDS.MaxAgeSplit < cCore.MAX_AGE Then
+            'VILLY: NEED TO REPLACE THIS WITH DYNAMIC CALCULATION ALLOWING FOR CHANGES IN K DURING EXECUTION
+            stanzaDS.MaxAgeSplit = cCore.MAX_AGE
+        End If
+
+        stanzaDS.redimStanza()
+
+        ' First read Stanza
+        iStanza = 0
+        For Each row As DataRow In rdStanza.Rows
+
+            ' JS 11May2010: Stanza configs without stanza groups are now loaded.
+            '               This *could* screw up the core calculations, but in a way
+            '               it already did by allowing empty stanza groups to be defined
+            '               in the system by allowing stanzaDS.nGroups to be non-zero,
+            '               even if stanzaDS.MaxStanza were 0. Based on this behaviour
+            '               there seems little harm by allowing the empty stanza group
+            '               names to be available in the core and to an interface.
+
+            ' Read this stanza
+            iStanza += 1
+
+            Try
+
+                stanzaDS.StanzaDBID(iStanza) = CInt(row("StanzaID"))
+                ' JS 20jun06: StanzaName array 1-dimensional. GroupNames only seem to matter to the EwE5 GUI.
+                '             EwE6 will resolve stanza group names via ICoreInputOutput objects to keep track of 'live' changes.
+                stanzaDS.StanzaName(iStanza) = CStr(row("StanzaName"))
+
+                stanzaDS.RecPowerSplit(iStanza) = CSng(row("RecPower"))
+                stanzaDS.BABsplit(iStanza) = CSng(row("BabSplit"))
+                stanzaDS.WmatWinf(iStanza) = CSng(row("WMatWinf"))
+                ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
+                stanzaDS.FixedFecundity(iStanza) = ParseBoolean(CStr(row("FixedFecundity")))
+                stanzaDS.EggAtSpawn(iStanza) = ParseBoolean(CStr(Me.ReadSafe(row, "EggAtSpawn", True)))
+
+                ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
+                ' JS 23nov10: Hah, three and a half years later these values are stored again
+                stanzaDS.BaseStanza(iStanza) = CInt(Me.ReadSafe(row, "LeadingLifeStage", cCore.NULL_VALUE))
+
+                ' Truncate
+                stanzaDS.BaseStanza(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanza(iStanza)))
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
+                bSucces = False
+            End Try
+
+            'rdLifeStage = Me..GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
+            rdLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
+            rdLifeStage.DefaultView.Sort = "AgeStart ASC"
+            iLifeStage = 0
+
+            For Each rowStage As DataRow In rdLifeStage.DefaultView.ToTable.Rows
+                ' Next life stage in this stanza
+                iLifeStage += 1
+
+                ' Store Stanza configuration
+                Try
+
+                    ' Resolve group index
+                    iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(rowStage("GroupID")))
+                    ' JS 20jun06: Disabled (see comment above)
+                    ' ecosimDS.StanzaName(nStanza, nGroup) = ecopathDS.GroupName(iGroup)
+                    stanzaDS.EcopathCode(iStanza, iLifeStage) = iGroup
+                    stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rowStage("Mortality"))
+                    stanzaDS.SpeciesCode(iGroup, 0) = iStanza
+                    stanzaDS.Age1(iStanza, iLifeStage) = CInt(rowStage("AgeStart"))
+
+                Catch ex As Exception
+                    Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
+                    bSucces = False
+                End Try
+
+                ' Inform Ecopath
+                ecopathDS.StanzaGroup(iGroup) = True
+            Next
+            ' Update number of groups in this stanza
+            stanzaDS.Nstanza(iStanza) = iLifeStage
+        Next
+
+        rdStanza.Clear()
+        rdLifeStage.Clear()
+
+        Return bSucces
     End Function
 
     ''' -------------------------------------------------------------------
@@ -856,6 +979,10 @@ Public Class cEIIXMLDataSource
         Return bSucces
 
     End Function
+
+#End Region ' Ecopath
+
+#Region " Ecosim "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -1779,6 +1906,8 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Shape load helpers
 
+#End Region ' Ecosim
+
 #End Region ' Load
 
 #Region " Save "
@@ -2092,6 +2221,62 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Fleets
 
+#Region " Stanza "
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Adds a stanza group to the EII.
+    ''' </summary>
+    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
+    ''' -------------------------------------------------------------------
+    Friend Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean _
+            Implements IEcopathDataSource.AppendStanza
+        Return False
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Removes a stanza group from the EII.
+    ''' </summary>
+    ''' <param name="iDBID">Database ID of the stanza group to remove.</param>
+    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
+    ''' -------------------------------------------------------------------
+    Function RemoveStanza(ByVal iDBID As Integer) As Boolean _
+            Implements IEcopathDataSource.RemoveStanza
+        Return False
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Adds a life stage to an existing stanza configuration.
+    ''' </summary>
+    ''' <param name="iStanzaDBID">Database ID of the stanza group to add the life stage to.</param>
+    ''' <param name="iGroupDBID">Group to add as a life stage.</param>
+    ''' <param name="iStartAge">Start age of this life stage.</param>
+    ''' <param name="sMortality">Mortality for this life stage.</param>
+    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, _
+                                       ByVal iStartAge As Integer, ByVal sMortality As Single) As Boolean _
+            Implements DataSources.IEcopathDataSource.AddStanzaLifestage
+        Return False
+    End Function
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Removes a life stage from an existing stanza configuration.
+    ''' </summary>
+    ''' <param name="iStanzaDBID">Database ID of the stanza group to remove the life stage from.</param>
+    ''' <param name="iGroupDBID">Group to remove as the life stage.</param>
+    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function RemoveStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer) As Boolean _
+            Implements DataSources.IEcopathDataSource.RemoveStanzaLifestage
+        Return False
+    End Function
+
+#End Region ' Stanza
+
 #Region " Pedigree "
 
     Public Function AddPedigreeLevel(iPosition As Integer, strName As String, iColor As Integer, strDescription As String, varName As eVarNameFlags, sIndexValue As Single, sConfidence As Single, ByRef iDBID As Integer) As Boolean _
@@ -2123,13 +2308,7 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Taxon
 
-#End Region ' odifications not allowed by this type of DS
-
-#End Region ' Ecopath
-
-#Region " EcoSim "
-
-#Region " Diagnostics "
+#Region " Scenarios "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -2142,11 +2321,6 @@ Public Class cEIIXMLDataSource
         Return False
 
     End Function
-
-#End Region ' Diagnostics
-
-#Region " Scenarios "
-
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -2363,186 +2537,7 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Time series
 
-#End Region ' EcoSim
-
-#Region " Stanza "
-
-    Private Function LoadStanza() As Boolean
-
-        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
-        Dim rdStanza As DataTable = Nothing
-        Dim rdLifeStage As DataTable = Nothing
-        Dim iStanza As Integer = 0
-        Dim iLifeStage As Integer = 0
-        Dim iGroup As Integer = 0
-        Dim sTemp As Single = 0.0
-        Dim bSucces As Boolean = True
-
-        rdStanza = Me.ReadTable("Stanza")
-        rdLifeStage = Me.ReadTable("StanzaLifeStage")
-
-        ' Count the number of rows in StanzaInfo; this is the number of split groups that we're going to work with
-        stanzaDS.Nsplit = rdStanza.Rows.Count
-        ' Get max no of stanza
-        stanzaDS.MaxStanza = 0
-
-        If (stanzaDS.Nsplit > 0) Then
-            'stanzaDS.MaxStanza = CInt(Me..GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
-            Dim dic As New Dictionary(Of Integer, Integer)
-            For Each row As DataRow In rdLifeStage.Rows
-                iStanza = CInt(row("StanzaID"))
-                If dic.ContainsKey(iStanza) Then iLifeStage = dic(iStanza) Else iLifeStage = 0
-                iLifeStage += 1
-                dic(iStanza) = iLifeStage
-                stanzaDS.MaxStanza = Math.Max(stanzaDS.MaxStanza, iLifeStage)
-            Next
-        End If
-
-        ' Get the number of groups from ecopath
-        stanzaDS.nGroups = ecopathDS.NumGroups
-
-        If stanzaDS.MaxAgeSplit < cCore.MAX_AGE Then
-            'VILLY: NEED TO REPLACE THIS WITH DYNAMIC CALCULATION ALLOWING FOR CHANGES IN K DURING EXECUTION
-            stanzaDS.MaxAgeSplit = cCore.MAX_AGE
-        End If
-
-        stanzaDS.redimStanza()
-
-        ' First read Stanza
-        iStanza = 0
-        For Each row As DataRow In rdStanza.Rows
-
-            ' JS 11May2010: Stanza configs without stanza groups are now loaded.
-            '               This *could* screw up the core calculations, but in a way
-            '               it already did by allowing empty stanza groups to be defined
-            '               in the system by allowing stanzaDS.nGroups to be non-zero,
-            '               even if stanzaDS.MaxStanza were 0. Based on this behaviour
-            '               there seems little harm by allowing the empty stanza group
-            '               names to be available in the core and to an interface.
-
-            ' Read this stanza
-            iStanza += 1
-
-            Try
-
-                stanzaDS.StanzaDBID(iStanza) = CInt(row("StanzaID"))
-                ' JS 20jun06: StanzaName array 1-dimensional. GroupNames only seem to matter to the EwE5 GUI.
-                '             EwE6 will resolve stanza group names via ICoreInputOutput objects to keep track of 'live' changes.
-                stanzaDS.StanzaName(iStanza) = CStr(row("StanzaName"))
-
-                stanzaDS.RecPowerSplit(iStanza) = CSng(row("RecPower"))
-                stanzaDS.BABsplit(iStanza) = CSng(row("BabSplit"))
-                stanzaDS.WmatWinf(iStanza) = CSng(row("WMatWinf"))
-                ' stanzaDS.HatchCode(iStanza) = CInt(rdStanza("HatchCode"))
-                stanzaDS.FixedFecundity(iStanza) = ParseBoolean(CStr(row("FixedFecundity")))
-                stanzaDS.EggAtSpawn(iStanza) = ParseBoolean(CStr(Me.ReadSafe(row, "EggAtSpawn", True)))
-
-                ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
-                ' JS 23nov10: Hah, three and a half years later these values are stored again
-                stanzaDS.BaseStanza(iStanza) = CInt(Me.ReadSafe(row, "LeadingLifeStage", cCore.NULL_VALUE))
-
-                ' Truncate
-                stanzaDS.BaseStanza(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanza(iStanza)))
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))
-                bSucces = False
-            End Try
-
-            'rdLifeStage = Me..GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
-            rdLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
-            rdLifeStage.DefaultView.Sort = "AgeStart ASC"
-            iLifeStage = 0
-
-            For Each rowStage As DataRow In rdLifeStage.DefaultView.ToTable.Rows
-                ' Next life stage in this stanza
-                iLifeStage += 1
-
-                ' Store Stanza configuration
-                Try
-
-                    ' Resolve group index
-                    iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(rowStage("GroupID")))
-                    ' JS 20jun06: Disabled (see comment above)
-                    ' ecosimDS.StanzaName(nStanza, nGroup) = ecopathDS.GroupName(iGroup)
-                    stanzaDS.EcopathCode(iStanza, iLifeStage) = iGroup
-                    stanzaDS.Stanza_Z(iStanza, iLifeStage) = CSng(rowStage("Mortality"))
-                    stanzaDS.SpeciesCode(iGroup, 0) = iStanza
-                    stanzaDS.Age1(iStanza, iLifeStage) = CInt(rowStage("AgeStart"))
-
-                Catch ex As Exception
-                    Me.LogMessage(String.Format("Error {0} occurred while reading StanzaLifeStage {1}", ex.Message, stanzaDS.StanzaName(iStanza), ecopathDS.GroupName(iGroup)))
-                    bSucces = False
-                End Try
-
-                ' Inform Ecopath
-                ecopathDS.StanzaGroup(iGroup) = True
-            Next
-            ' Update number of groups in this stanza
-            stanzaDS.Nstanza(iStanza) = iLifeStage
-        Next
-
-        rdStanza.Clear()
-        rdLifeStage.Clear()
-
-        Return bSucces
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Adds a stanza group to the EII.
-    ''' </summary>
-    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
-    ''' -------------------------------------------------------------------
-    Friend Function AppendStanza(ByVal strStanzaName As String, ByVal aiGroupID() As Integer, ByVal aiStartAge() As Integer, ByRef iDBID As Integer) As Boolean _
-            Implements IEcopathDataSource.AppendStanza
-        Return False
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Removes a stanza group from the EII.
-    ''' </summary>
-    ''' <param name="iDBID">Database ID of the stanza group to remove.</param>
-    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
-    ''' -------------------------------------------------------------------
-    Function RemoveStanza(ByVal iDBID As Integer) As Boolean _
-            Implements IEcopathDataSource.RemoveStanza
-        Return False
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Adds a life stage to an existing stanza configuration.
-    ''' </summary>
-    ''' <param name="iStanzaDBID">Database ID of the stanza group to add the life stage to.</param>
-    ''' <param name="iGroupDBID">Group to add as a life stage.</param>
-    ''' <param name="iStartAge">Start age of this life stage.</param>
-    ''' <param name="sMortality">Mortality for this life stage.</param>
-    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function AddStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer, _
-                                       ByVal iStartAge As Integer, ByVal sMortality As Single) As Boolean _
-            Implements DataSources.IEcopathDataSource.AddStanzaLifestage
-        Return False
-    End Function
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Removes a life stage from an existing stanza configuration.
-    ''' </summary>
-    ''' <param name="iStanzaDBID">Database ID of the stanza group to remove the life stage from.</param>
-    ''' <param name="iGroupDBID">Group to remove as the life stage.</param>
-    ''' <returns>Always false; mutli-stanza logis is not supported in the EII data format.</returns>
-    ''' -------------------------------------------------------------------
-    Public Function RemoveStanzaLifestage(ByVal iStanzaDBID As Integer, ByVal iGroupDBID As Integer) As Boolean _
-            Implements DataSources.IEcopathDataSource.RemoveStanzaLifestage
-        Return False
-    End Function
-
-#End Region ' Stanza
+#End Region ' Modifications not allowed by this type of DS
 
 #Region " Interface Implementations "
 
