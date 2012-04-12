@@ -53,7 +53,7 @@ Public Class cEIIXMLDataSource
         s_dtExcludedDBEntries("EcopathGroup") = New String() {"PoolColor"}
         s_dtExcludedDBEntries("EcopathFleet") = New String() {"PoolColor"}
         s_dtExcludedDBEntries("Auxillary") = New String() {}
-        s_dtExcludedDBEntries("Quotes") = New String() {}
+        s_dtExcludedDBEntries("Quote") = New String() {}
         s_dtExcludedDBEntries("UpdateLog") = New String() {}
         s_dtExcludedDBEntries("Pedigree") = New String() {}
         s_dtExcludedDBEntries("EcopathGroupPedigree") = New String() {}
@@ -1867,9 +1867,10 @@ Public Class cEIIXMLDataSource
 
         ' Summarize columns
         For Each drow As DataRow In dtTables.Rows
-            Dim strCol As String = CStr(drow(3))
-            If Array.IndexOf(astrExcl, strCol) = -1 Then
-                lstrColumns.Add(strCol)
+            Dim strColName As String = CStr(drow("COLUMN_NAME"))
+            Dim strColType As String = Me.DataType(CInt(drow("DATA_TYPE"))).ToString()
+            If Array.IndexOf(astrExcl, strColName) = -1 Then
+                lstrColumns.Add(strColName & ":" & strColType)
             End If
         Next
         Return lstrColumns.ToArray()
@@ -1879,7 +1880,7 @@ Public Class cEIIXMLDataSource
     Private Function Field(rd As IDataReader, strCol As String) As String
 
         Dim data As Object = rd(strCol)
-
+ 
         If Convert.IsDBNull(data) Then Return ""
 
         If (TypeOf data Is String) Then
@@ -1896,16 +1897,32 @@ Public Class cEIIXMLDataSource
 
     End Function
 
+    Private Function DataType(ByVal OLEDataType As Integer) As Type
+
+        Select Case OLEDataType
+            Case 2 : Return GetType(Integer)
+            Case 3 : Return GetType(Long)
+            Case 4 : Return GetType(Single)
+            Case 5 : Return GetType(Double)
+            Case 11 : Return GetType(Boolean)
+            Case 17 : Return GetType(Byte)
+            Case 131 : Return GetType(Decimal)
+            Case Else : Return GetType(String)
+        End Select
+        Return Nothing
+    End Function
+
     Private Function SaveTable(ByVal db As cEwEDatabase, ByVal strTable As String, ByVal doc As XmlDocument) As Boolean
 
         ' Skip system tables and bogus tables
         If (strTable.IndexOf("MSy") = 0) Then Return False
         If (strTable.IndexOfAny(New Char() {"_"c, " "c, "-"c, "."c}) > -1) Then Return False
 
-        Dim astrCols As String() = Me.Columns(db, strTable)
+        Dim astrColDefs As String() = Me.Columns(db, strTable)
+        Dim astrCols(astrColDefs.Length - 1) As String
 
         ' Skip table if nothing to write
-        If (astrCols.Length = 0) Then Return True
+        If (astrColDefs.Length = 0) Then Return True
 
         Dim row As IDataReader = db.GetReader("SELECT * FROM [" & strTable & "]")
         Dim xn As XmlNode = doc.CreateElement(strTable)
@@ -1914,9 +1931,11 @@ Public Class cEIIXMLDataSource
         Dim sb As New StringBuilder()
 
         ' - Columns
-        For Each strCol As String In astrCols
-            If sb.Length > 0 Then sb.Append(",")
-            sb.Append(strCol)
+        For i As Integer = 0 To astrColDefs.Length - 1
+            Dim astrColDef As String() = astrColDefs(i).Split(":"c)
+            astrCols(i) = astrColDef(0)
+            If (i > 0) Then sb.Append(",")
+            sb.Append(astrColDefs(i))
         Next
         xa = doc.CreateAttribute("Columns")
         xa.InnerText = sb.ToString
@@ -2600,11 +2619,16 @@ Public Class cEIIXMLDataSource
         Dim xnData As XmlCDataSection = DirectCast(xn.ChildNodes(0), XmlCDataSection)
         Dim xaCols As XmlAttribute = xn.Attributes("Columns")
         Dim astrRows As String() = Nothing
-        Dim astrCols As String() = xaCols.InnerText.Split(","c)
+        Dim astrColDefs As String() = xaCols.InnerText.Split(","c)
+        Dim astrCols(astrColDefs.Length - 1) As String
+        Dim atCols(astrColDefs.Length - 1) As Type
         Dim dt As New DataTable(xn.Name)
 
-        For i As Integer = 0 To astrCols.Length - 1
-            dt.Columns.Add(astrCols(i), GetType(String))
+        For i As Integer = 0 To astrColDefs.Length - 1
+            Dim astrColDef As String() = astrColDefs(i).Split(":"c)
+            astrCols(i) = astrColDef(0)
+            atCols(i) = Type.GetType(astrColDef(1))
+            dt.Columns.Add(astrCols(i), atCols(i))
         Next i
 
         If (xnData IsNot Nothing) Then
@@ -2615,7 +2639,9 @@ Public Class cEIIXMLDataSource
                     Dim astrData As String() = Nothing
                     If strRow.Contains("""") Then astrData = cStringUtils.SplitQualified(strRow, ",") Else astrData = strRow.Split(","c)
                     For i As Integer = 0 To astrData.Length - 1
-                        drow(astrCols(i)) = astrData(i)
+                        If Not String.IsNullOrWhiteSpace(astrData(i)) Or (atCols(i) Is GetType(String)) Then
+                            drow(astrCols(i)) = astrData(i)
+                        End If
                     Next
                     dt.Rows.Add(drow)
                 End If
@@ -2659,11 +2685,11 @@ Public Class cEIIXMLDataSource
             Console.WriteLine("DB: Exception {2} occurred while accessing field '{0}', returning provided default '{1}'", strField, objValueDefault, ex.ToString)
         End Try
 
-        If (Object.ReferenceEquals(objResult, Nothing) Or String.IsNullOrWhiteSpace(CStr(objResult))) Then
+        If (Object.ReferenceEquals(objResult, Nothing)) Then
             objResult = objValueDefault
         ElseIf (Not Object.ReferenceEquals(objValueIgnore, Nothing)) _
-            And Not (String.IsNullOrWhiteSpace(CStr(objResult))) _
-            And Not (String.IsNullOrWhiteSpace(CStr(objValueIgnore))) Then
+            And Not (Convert.IsDBNull(objResult)) _
+            And Not (Convert.IsDBNull(objValueIgnore)) Then
 
             ' Compare ignore values
             If TypeOf objResult Is String Then
