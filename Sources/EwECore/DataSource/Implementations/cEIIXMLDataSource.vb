@@ -1994,6 +1994,7 @@ Public Class cEIIXMLDataSource
         'this should help Out of Memory exceptions caused by heap fragmentation by doing the big stuff first
         Me.m_core.m_Ecospace.redimForRun()
         ecospaceDS.ReDimMapDims()
+        ecospaceDS.ReDimFleets()
 
         ' Set active scenario
         ecopathDS.ActiveEcospaceScenario = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, iScenarioID)
@@ -2002,11 +2003,11 @@ Public Class cEIIXMLDataSource
         bSucces = bSucces And Me.LoadEcospaceMap(dtScenario, iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceHabitats(iScenarioID)
         bSucces = bSucces And Me.LoadEcospaceMPAs(iScenarioID)
-        'bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
-        'bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
-        'bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
-        'bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
-        'bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
         'bSucces = bSucces And Me.LoadAuxillaryData()
 
         dtScenario.Clear()
@@ -2146,6 +2147,341 @@ Public Class cEIIXMLDataSource
         Next
         dtMPA.Clear()
 
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceGroups(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dtGroup As DataTable = Me.ReadTable("EcospaceScenarioGroup")
+        Dim bSucces As Boolean = True
+        Dim astrSplit As String() = Nothing
+        Dim strMap As String = ""
+        Dim iGroup As Integer = 0
+
+        ' Clear
+        For iGroup = 1 To Me.m_core.nGroups
+            For iRow As Integer = 0 To ecospaceDS.InRow
+                For iCol As Integer = 0 To ecospaceDS.InCol
+                    ecospaceDS.HabCapInput(iRow, iCol, iGroup) = 1.0
+                Next iCol
+            Next iRow
+        Next iGroup
+
+        dtGroup.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dtGroup.DefaultView.ToTable.Rows()
+            Try
+                ' Resolve group index
+                iGroup = Array.IndexOf(ecopathDS.GroupDBID, CInt(drow("EcopathGroupID")))
+                ' Sanity check
+                Debug.Assert(iGroup > -1)
+                ' Load the data
+                ecospaceDS.GroupDBID(iGroup) = CInt(drow("GroupID"))
+                ecospaceDS.EcopathGroupDBID(iGroup) = CInt(drow("EcopathGroupID"))
+                ecospaceDS.Mvel(iGroup) = CSng(drow("Mvel"))
+                ecospaceDS.RelMoveBad(iGroup) = CSng(drow("RelMoveBad"))
+                ecospaceDS.RelVulBad(iGroup) = CSng(drow("RelVulBad"))
+                ecospaceDS.EatEffBad(iGroup) = CSng(drow("EatEffBad"))
+                ' VERIFY_JS: RiskSens imported but not used in EwE5
+                ' ecospaceDS.RiskSens(i) = CSng(drow("RiskSens"))
+                ecospaceDS.IsAdvected(iGroup) = (CInt(drow("IsAdvected")) <> 0)
+                ecospaceDS.IsMigratory(iGroup) = (CInt(drow("IsMigratory")) <> 0)
+                ecospaceDS.MigConcRow(iGroup) = CSng(drow("MigConcRow"))
+                ecospaceDS.MigConcCol(iGroup) = CSng(drow("MigConcCol"))
+                ecospaceDS.barrierAvoidanceWeight(iGroup) = CSng(Me.ReadSafe(drow, "BarrierAvoidanceWeight", ecospaceDS.barrierAvoidanceWeight(iGroup)))
+                ' Monthly PrefRow
+                astrSplit = CStr(drow("PrefRow")).Split(CChar(" "))
+                For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
+                    ecospaceDS.PrefRow(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                Next
+                ' Monthly PrefCol
+                astrSplit = CStr(drow("PrefCol")).Split(CChar(" "))
+                For iMonth As Integer = 1 To Math.Min(cCore.N_MONTHS, astrSplit.Length)
+                    ecospaceDS.Prefcol(iGroup, iMonth) = cStringUtils.ConvertToInteger(astrSplit(iMonth - 1))
+                Next
+
+                strMap = CStr(Me.ReadSafe(drow, "CapacityMap", ""))
+                cStringUtils.StringToArray(strMap, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.HabCapInput, ecospaceDS.Depth)
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group {1}", ex.Message, iGroup))
+                bSucces = False
+            End Try
+        Next
+
+        dtGroup.Clear()
+
+        ' Load habitat preferences
+        bSucces = bSucces And Me.LoadEcospaceGroupHabitats(iScenarioID)
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceGroupHabitats(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dtGH As DataTable = Me.ReadTable("EcospaceScenarioGroupHabitat")
+        Dim iGroupID As Integer = 0
+        Dim iGroup As Integer = -1
+        Dim iHabitatID As Integer = 0
+        Dim iHabitat As Integer = -1
+        Dim sPreference As Single = 0.0!
+        Dim bSucces As Boolean = True
+
+        dtGH.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dtGH.DefaultView.ToTable.Rows()
+            Try
+                iGroupID = CInt(drow("GroupID"))
+                iGroup = Array.IndexOf(ecospaceDS.GroupDBID, iGroupID)
+
+                iHabitatID = CInt(drow("HabitatID"))
+                iHabitat = Array.IndexOf(ecospaceDS.HabitatDBID, iHabitatID)
+
+                sPreference = CSng(Me.ReadSafe(drow, "Preference", 1.0))
+                ' Sanity check
+                If (iGroup = -1) Or (iHabitat = -1) Then
+                    If (iGroup = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Group ID {0} no longer exist", iGroupID))
+                    If (iHabitat = -1) Then Me.LogMessage(String.Format("LoadEcospaceGroupHabitats: Habitat ID {1} no longer exist", iHabitatID))
+                Else
+                    ' Flag as preferred
+                    ecospaceDS.PrefHab(iGroup, 0) = 0
+                    ecospaceDS.PrefHab(iGroup, iHabitat) = sPreference
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace group preferred habitats", ex.Message))
+                bSucces = False
+            End Try
+        Next
+        dtGH.Clear()
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceFleets(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioFleet")
+        Dim strMap As String = ""
+        Dim bSucces As Boolean = True
+        Dim iFleet As Integer = 1
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                ecospaceDS.FleetDBID(iFleet) = CInt(drow("FleetID"))
+                ecospaceDS.EcopathFleetDBID(iFleet) = CInt(drow("EcopathFleetID"))
+                ecospaceDS.EffPower(iFleet) = CSng(drow("EffPower"))
+
+                ' Read port map for a given fleet and land cells only
+                strMap = CStr(Me.ReadSafe(drow, "PortMap", ""))
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, _
+                                                                 iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                 ecospaceDS.Port, ecospaceDS.Depth, False)
+
+                ' Read sailing cost map for a given fleet and water cells only
+                strMap = CStr(Me.ReadSafe(drow, "SailCostMap", ""))
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, _
+                                                                 iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                 ecospaceDS.Sail, ecospaceDS.Depth, True)
+                iFleet += 1
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace fleet {1}", ex.Message, iFleet))
+                bSucces = False
+            End Try
+        Next
+
+        dt.Clear()
+
+        bSucces = bSucces And Me.LoadEcospaceHabitatFishery(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceMPAFishery(iScenarioID)
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceHabitatFishery(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioHabitatFishery")
+        Dim iFleet As Integer = 0
+        Dim iHabitat As Integer = 0
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                iFleet = Array.IndexOf(ecospaceDS.FleetDBID, CInt(drow("FleetID")))
+                iHabitat = Array.IndexOf(ecospaceDS.HabitatDBID, CInt(drow("HabitatID")))
+                'jb habitats and fleets both use the zero index
+                If (iFleet >= 0 And iHabitat >= 0) Then
+                    ' Clear default 'all' habitat assignment
+                    ecospaceDS.GearHab(iFleet, 0) = False
+                    ecospaceDS.GearHab(iFleet, iHabitat) = True
+                End If
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioHabitatFishery for iFleet {1}, iHabitat {2}", ex.Message, iFleet, iHabitat))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceMPAFishery(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioMPAFishery")
+        Dim iFleet As Integer = 0
+        Dim iMPA As Integer = 0
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                iFleet = Array.IndexOf(ecospaceDS.FleetDBID, CInt(drow("FleetID")))
+                iMPA = Array.IndexOf(ecospaceDS.MPADBID, CInt(drow("MPAID")))
+                ' Crash prevention, should not be necessary but hey
+                If (iFleet >= 0 And iMPA > 0) Then
+                    ' Clear default 'all' habitat assignment
+                    ecospaceDS.MPAfishery(iFleet, 0) = False
+                    ecospaceDS.MPAfishery(iFleet, iMPA) = True
+                End If
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading ReadEcospaceMPAFishery for iFleet {1}, iMPA {2}", ex.Message, iFleet, iMPA))
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+    End Function
+
+    Private Function LoadEcospaceWeightLayers(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioWeightLayer")
+        Dim bSucces As Boolean = True
+        Dim iRow As Integer = 0
+        Dim iCol As Integer = 0
+        Dim iLayer As Integer = 0
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                iLayer += 1
+                ' Populate it
+                ecospaceDS.ImportanceLayerDBID(iLayer) = CInt(drow("LayerID"))
+                ecospaceDS.ImportanceLayerName(iLayer) = CStr(drow("Name"))
+                ecospaceDS.ImportanceLayerDescription(iLayer) = CStr(drow("Description"))
+                ecospaceDS.ImportanceLayerWeight(iLayer) = CSng(drow("Weight"))
+
+                Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.ImportanceLayerMap, ecospaceDS.Depth)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceDriverLayers(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDriverLayer")
+        Dim bSucces As Boolean = True
+        Dim iRow As Integer = 0
+        Dim iCol As Integer = 0
+        Dim iLayer As Integer = 0
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                iLayer += 1
+                ecospaceDS.EnvironmentalLayerDBID(iLayer) = CInt(drow("LayerID"))
+                ecospaceDS.EnvironmentalLayerName(iLayer) = CStr(drow("LayerName"))
+                ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(drow("LayerDescription"))
+
+                Dim strMap As String = CStr(Me.ReadSafe(drow, "LayerMap", ""))
+                bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.EnvironmentalLayerMap, ecospaceDS.Depth)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces And Me.LoadCapacityDrivers(iScenarioID)
+
+    End Function
+
+    Private Function LoadCapacityDrivers(ByVal iScenarioID As Integer) As Boolean
+
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioCapacitDrivers")
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(drow("GroupID")))
+                Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacitMapInteractionManager.MediationData.MediationDBIDs, CInt(drow("ShapeID")))
+                Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(drow("VarDBID")))
+                Dim varName As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
+
+                If (iGroup > 0) And (iShape > 0) And (varName <> eVarNameFlags.NotSet) Then
+                    ' Map pos 0 indicates Depth, any other ID indicates a Driver map
+                    ecospaceDS.CapMapFunctions(Math.Max(0, iMap), iGroup) = iShape
+                End If
+            Catch ex As Exception
+                bSucces = False
+            End Try
+        Next
+        dt.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceDataAdapters(iScenarioID As Integer) As Boolean
+
+        Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDataAdapters")
+        Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+        Dim var As eVarNameFlags = eVarNameFlags.NotSet
+        Dim iIndex As Integer = 0
+        Dim strDatasetGUID As String = ""
+        Dim strConverterType As String = ""
+        Dim strConverterCfg As String = ""
+        Dim bSucces As Boolean = True
+
+        dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
+            Try
+                var = cin.GetVarName(CStr(drow("VarName")))
+                iIndex = CInt(drow("LayerIndex"))
+                spatialDS.DatasetGUID(var, iIndex) = CStr(drow("Dataset"))
+                spatialDS.ConverterType(var, iIndex) = CStr(drow("Converter"))
+                spatialDS.ConverterConfiguration(var, iIndex) = CStr(drow("ConverterCfg"))
+            Catch ex As Exception
+                bSucces = False
+                cLog.Write(ex, "DBDataSource::LoadDataAdapters")
+            End Try
+
+            Return bSucces
+        Next
+        dt.Clear()
         Return bSucces
 
     End Function
