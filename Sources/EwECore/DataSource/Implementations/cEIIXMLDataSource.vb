@@ -29,6 +29,7 @@ Imports System.Text
 Imports System.Data.OleDb
 Imports EwEUtils.Utilities
 Imports EwECore.MSE
+Imports EwECore.SpatialData
 
 '
 #End Region ' Imports
@@ -42,6 +43,7 @@ Public Class cEIIXMLDataSource
     Implements IEwEDataSource
     Implements IEcopathDataSource
     Implements IEcosimDatasource
+    Implements IEcospaceDatasource
 
     Private m_strFilename As String = ""
     Private m_core As cCore = Nothing
@@ -622,7 +624,7 @@ Public Class cEIIXMLDataSource
                 bSucces = False
             End Try
 
-            'rdLifeStage = Me..GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
+            'rdLifeStage = Me..Getdrow(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
             rdLifeStage.DefaultView.RowFilter = "StanzaID=" & CInt(row("StanzaID"))
             rdLifeStage.DefaultView.Sort = "AgeStart ASC"
             iLifeStage = 0
@@ -1457,7 +1459,7 @@ Public Class cEIIXMLDataSource
         Dim astrZScale() As String
         Dim bSucces As Boolean = True
 
-        'readerShape = Me.GetReader(String.Format("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
+        'drowShape = Me.Getdrow(String.Format("SELECT * FROM EcosimShapeEggProd WHERE (ShapeID={0})", iShapeID))
         dt.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
         Try
             drow = dt.DefaultView.ToTable.Rows(0)
@@ -1465,7 +1467,7 @@ Public Class cEIIXMLDataSource
             shapeParms.YBase = CSng(drow("Ybase"))
             shapeParms.YEnd = CSng(drow("Yend"))
             shapeParms.Steep = CSng(drow("Steep"))
-            ' sp.ZScale = CInt(readerShape("ZScale"))
+            ' sp.ZScale = CInt(drowShape("ZScale"))
             shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
 
             ' Read z-scale
@@ -1552,7 +1554,7 @@ Public Class cEIIXMLDataSource
         Dim astrZScale() As String
         Dim bSucces As Boolean = True
 
-        'readerShape = Me.GetReader(String.Format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
+        'drowShape = Me.Getdrow(String.Format("SELECT * FROM EcosimShapeMediation WHERE (ShapeID={0})", iShapeID))
         dtMed.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
 
         Try
@@ -1563,7 +1565,7 @@ Public Class cEIIXMLDataSource
             shapeParms.YBase = CSng(drow("Ybase"))
             shapeParms.YEnd = CSng(drow("Yend"))
             shapeParms.Steep = CSng(drow("Steep"))
-            ' shapeParms.ZScale = CInt(readerShape("ZScale"))
+            ' shapeParms.ZScale = CInt(drowShape("ZScale"))
             shapeParms.ShapeFunctionType = CType(drow("FunctionType"), eShapeFunctionType)
 
             ' Read z-scale
@@ -1876,7 +1878,6 @@ Public Class cEIIXMLDataSource
                                           ByVal iFishingRateShape As Integer) As Boolean
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim readerShape As IDataReader = Nothing
         Dim strMemo As String = ""
         Dim astrMemoBits() As String
         Dim bSucces As Boolean = True
@@ -1886,8 +1887,8 @@ Public Class cEIIXMLDataSource
         dtFishRate.DefaultView.RowFilter = CStr("ShapeID=" & iShapeID)
         For Each drow As DataRow In dtFishRate.DefaultView.ToTable.Rows
             Try
-                ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(readerShape("Title"))
-                strMemo = CStr(readerShape("zScale"))
+                ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(drow("Title"))
+                strMemo = CStr(drow("zScale"))
                 astrMemoBits = strMemo.Trim.Split(CChar(" "))
                 For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
                     ecosimDS.FishRateGear(iFishingRateShape, j) = cStringUtils.ConvertToSingle(astrMemoBits(j - 1), 1)
@@ -1907,6 +1908,249 @@ Public Class cEIIXMLDataSource
 #End Region ' Shape load helpers
 
 #End Region ' Ecosim
+
+#Region " Ecospace "
+
+    Public Function LoadEcospaceScenario(ByVal iScenarioID As Integer) As Boolean _
+         Implements DataSources.IEcospaceDatasource.LoadEcospaceScenario
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim spatialDS As cSpatialDataStructures = Me.m_core.m_SpatialData
+        Dim drow As DataRow = Nothing
+        Dim bSucces As Boolean = True
+        Dim dtScenario As DataTable = Me.ReadTable("EcospaceScenario")
+
+        Dim dtImp As DataTable = Me.ReadTable("EcospaceScenarioWeightLayer")
+        dtImp.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        Dim dtDrv As DataTable = Me.ReadTable("EcospaceScenarioDriverLayer")
+        dtDrv.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        ecospaceDS.NGroups = ecopathDS.NumGroups
+        ecospaceDS.nFleets = ecopathDS.NumFleet
+        ecospaceDS.nLiving = ecopathDS.NumLiving
+        ecospaceDS.nImportanceLayers = dtImp.DefaultView.ToTable.Rows.Count()
+        ecospaceDS.nEnvironmentalLayers = dtDrv.DefaultView.ToTable.Rows.Count()
+
+        ' Next is a dangerous solution that may need to be revamped. It is assumed that
+        ' SetDefaults properly redimensions the ecospaceDS group variables, which
+        ' may wreck havoc if the implementation of SetDefaults were to change.
+        ecospaceDS.SetDefaults()
+        spatialDS.SetDefaults()
+
+        ' drow = Me.Getdrow(String.Format("SELECT * FROM EcospaceScenario WHERE (ScenarioID={0})", iScenarioID))
+        dtScenario.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        Try
+            ' Read the one record
+            drow = dtScenario.DefaultView.ToTable.Rows(0)
+            ' Remember link with Ecosim scenario, if any
+            ecospaceDS.EcosimScenarioDBID = CInt(Me.ReadSafe(drow, "EcosimScenarioID", cCore.NULL_VALUE))
+            ecospaceDS.InRow = CInt(drow("Inrow"))
+            ecospaceDS.InCol = CInt(drow("Incol"))
+            ecospaceDS.CellLength = CSng(drow("CellLength"))
+            ecospaceDS.CellSize = CSng(Me.ReadSafe(drow, "CellSize", cEcospaceBasemap.ToCellSize(ecospaceDS.CellLength)))
+            ecospaceDS.Lat1 = CSng(Me.ReadSafe(drow, "MinLat", 0))
+            ecospaceDS.Lon1 = CSng(Me.ReadSafe(drow, "MinLon", 0))
+            ecospaceDS.TimeStep = CSng(Me.ReadSafe(drow, "TimeStep", 0))
+            ecospaceDS.PredictEffort = (CInt(Me.ReadSafe(drow, "PredictEffort", True)) <> 0)
+
+            ' JS 05apr08: pragmatic fix to prevent mayhem
+            If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
+
+            ecospaceDS.TotalTime = CSng(drow("TotalTime"))
+            ecospaceDS.IFDPower = CSng(drow("IFDPower"))
+            ecospaceDS.nSpaceSolverThreads = CInt(drow("NumThreads"))
+            ecospaceDS.nGridSolverThreads = CInt(drow("NumThreads"))
+            ecospaceDS.nRegions = CInt(Me.ReadSafe(drow, "NumRegions", 0))
+            ecospaceDS.AdjustSpace = (CInt(drow("AdjustSpace")) <> 0)
+            ecospaceDS.UseExact = (CInt(drow("UseExact")) <> 0)
+            ecospaceDS.Tol = CSng(Me.ReadSafe(drow, "Tolerance", 0.01!))
+            ecospaceDS.CapCalType = DirectCast(CInt(Me.ReadSafe(drow, "CapacityCalType", eEcospaceCapacityCalType.Capacity)), eEcospaceCapacityCalType)
+
+            stanzaDS.NPacketsMultiplier = CSng(drow("NumPacketsMultiplier"))
+
+            Select Case CInt(drow("ModelType"))
+                Case 0
+                    ecospaceDS.NewMultiStanza = False
+                    ecospaceDS.UseIBM = False
+                Case 1
+                    ecospaceDS.UseIBM = True
+                    ecospaceDS.NewMultiStanza = False
+                Case Else
+                    ecospaceDS.UseIBM = False
+                    ecospaceDS.NewMultiStanza = True
+            End Select
+
+        Catch ex As Exception
+            Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace Scenario {1}", ex.Message, iScenarioID))
+            bSucces = False
+        End Try
+
+        'set the size of the variables that hold the map data to InRow and InCol
+        'Call cEcospace.redimForRun() First because it allocates bigger blocks of memory
+        'this should help Out of Memory exceptions caused by heap fragmentation by doing the big stuff first
+        Me.m_core.m_Ecospace.redimForRun()
+        ecospaceDS.ReDimMapDims()
+
+        ' Set active scenario
+        ecopathDS.ActiveEcospaceScenario = Array.IndexOf(ecopathDS.EcospaceScenarioDBID, iScenarioID)
+
+        ' Load base map first
+        bSucces = bSucces And Me.LoadEcospaceMap(dtScenario, iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceHabitats(iScenarioID)
+        bSucces = bSucces And Me.LoadEcospaceMPAs(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
+        'bSucces = bSucces And Me.LoadAuxillaryData()
+
+        dtScenario.Clear()
+
+        Me.ClearChanged()
+
+        Return bSucces
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Load the spatial data associated with an Ecospace scenario.
+    ''' </summary>
+    ''' <param name="iScenarioID">The scenario to load the data for.</param>
+    ''' <returns>True if succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function LoadEcospaceMap(dtScenario As DataTable, ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim drow As DataRow = Nothing
+        Dim bSucces As Boolean = True
+
+        dtScenario.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+
+        Try
+            drow = dtScenario.DefaultView.ToTable.Rows(0)
+
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthMap", "")), ecospaceDS.Depth)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelPPMap", "")), ecospaceDS.RelPP, ecospaceDS.Depth)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RelCinMap", "")), ecospaceDS.RelCin, ecospaceDS.Depth)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "XVelMap", "")), ecospaceDS.Xvel, ecospaceDS.Depth)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.Depth)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.Depth)
+            bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.ReadSafe(drow, "RegionMap", "")), ecospaceDS.Region)
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceHabitats(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dtHab As DataTable = Me.ReadTable("EcospaceScenarioHabitat")
+        Dim dtHabChange As DataTable = Me.ReadTable("EcospaceScenarioHabitatChange")
+        Dim strMap As String = ""
+        Dim i As Integer = 0
+        Dim iTime As Integer = 0
+        Dim iSequence As Integer = 0
+        Dim bSucces As Boolean = True
+
+        dtHab.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        dtHab.DefaultView.Sort = "Sequence ASC"
+        ecospaceDS.NoHabitats = dtHab.DefaultView.ToTable.Rows.Count()
+
+        dtHabChange.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        dtHabChange.DefaultView.Sort = "Time ASC"
+        ecospaceDS.NoHabChanges = dtHabChange.DefaultView.ToTable.Rows.Count()
+
+        ecospaceDS.RedimHabitatVariables(False)
+
+        For Each drow As DataRow In dtHab.DefaultView.ToTable.Rows
+            Try
+                ecospaceDS.HabitatDBID(i) = CInt(drow("HabitatID"))
+                ecospaceDS.HabitatText(i) = CStr(drow("HabitatName"))
+                strMap = CStr(Me.ReadSafe(drow, "HabitatMap", ""))
+                ' Read only water cells with values for this habitat index
+                cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.PHabType, ecospaceDS.Depth, True)
+                i += 1
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat for habitat {1}", ex.Message, i))
+                bSucces = False
+            End Try
+        Next
+
+        For Each drow As DataRow In dtHabChange.DefaultView.ToTable.Rows
+            Try
+                iTime = CInt(drow("Time"))
+                iSequence = CInt(drow("Sequence"))
+
+                ecospaceDS.HabTime(iSequence) = iTime
+                ecospaceDS.HabChange(0, iSequence) = CInt(drow("InCol"))
+                ecospaceDS.HabChange(1, iSequence) = CInt(drow("InRow"))
+                ecospaceDS.HabChange(2, iSequence) = CInt(drow("DrawMod"))
+                ecospaceDS.HabChange(3, iSequence) = CInt(drow("Change"))
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading Ecospace habitat changes for time {1}, Sequence {2}", ex.Message, iTime, iSequence))
+                bSucces = False
+            End Try
+        Next
+
+        dtHab.Clear()
+        dtHabChange.Clear()
+
+        Return bSucces
+
+    End Function
+
+    Private Function LoadEcospaceMPAs(ByVal iScenarioID As Integer) As Boolean
+
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim dtMPA As DataTable = Me.ReadTable("EcospaceScenarioMPA")
+        Dim strMPAMonth As String = ""
+        Dim strMPAMap As String = ""
+        Dim bSucces As Boolean = True
+        Dim iMPA As Integer = 1
+
+        dtMPA.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
+        dtMPA.DefaultView.Sort = "Sequence ASC"
+
+        ecospaceDS.MPAno = dtMPA.DefaultView.ToTable.Rows.Count()
+        ecospaceDS.RedimMPAVariables()
+
+        For Each drow As DataRow In dtMPA.DefaultView.ToTable.Rows
+            Try
+                ecospaceDS.MPADBID(iMPA) = CInt(drow("MPAID"))
+                ecospaceDS.MPAname(iMPA) = CStr(drow("MPAName"))
+                ' Read month '0' or '1' pattern (yeah yeah, could have been done with 12-bit bitflags LONG value)
+                strMPAMonth = CStr(drow("MPAMonth"))
+                For iMonth As Integer = 0 To Math.Min(cCore.N_MONTHS, strMPAMonth.Length) - 1
+                    ' MPAmonth is an array of boolean flags depicting wheter an MPA is open for fishing,
+                    ' where closed months are stored as 0, and open months are stored as 1
+                    ' EcospaceDS.MPAmonth: False if closed, True if open
+                    ecospaceDS.MPAmonth(iMonth + 1, iMPA) = (strMPAMonth.Substring(iMonth, 1) = "1")
+                Next iMonth
+                strMPAMap = CStr(Me.ReadSafe(drow, "MPAMap", ""))
+                bSucces = bSucces And cStringUtils.StringToArray(strMPAMap, ecospaceDS.MPA, ecospaceDS.Depth, True, iMPA)
+                iMPA += 1
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading EcospaceScenarioMPA {1}", ex.Message, iMPA))
+                bSucces = False
+            End Try
+        Next
+        dtMPA.Clear()
+
+        Return bSucces
+
+    End Function
+
+#End Region ' Ecospace
 
 #End Region ' Load
 
@@ -2008,7 +2252,7 @@ Public Class cEIIXMLDataSource
     Private Function Field(rd As IDataReader, strCol As String) As String
 
         Dim data As Object = rd(strCol)
- 
+
         If Convert.IsDBNull(data) Then Return ""
 
         If (TypeOf data Is String) Then
@@ -2308,7 +2552,7 @@ Public Class cEIIXMLDataSource
 
 #End Region ' Taxon
 
-#Region " Scenarios "
+#Region " Ecosim bits "
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -2317,9 +2561,7 @@ Public Class cEIIXMLDataSource
     ''' <returns>True if the datasource has pending changes for Ecosim.</returns>
     ''' -------------------------------------------------------------------
     Public Function IsEcosimModified() As Boolean Implements DataSources.IEcosimDatasource.IsEcosimModified
-
         Return False
-
     End Function
 
     ''' -------------------------------------------------------------------
@@ -2363,13 +2605,11 @@ Public Class cEIIXMLDataSource
         Return False
     End Function
 
-    Public Function SaveEcospaceScenarioAs(ByVal strScenarioName As String, ByVal strDescription As String, _
+    Public Function SaveEcosimScenarioAs(ByVal strScenarioName As String, ByVal strDescription As String, _
      ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean _
             Implements IEcosimDatasource.SaveEcosimScenarioAs
         Return False
     End Function
-
-#End Region ' Scenarios
 
 #Region " Forcing Shapes "
 
@@ -2536,6 +2776,72 @@ Public Class cEIIXMLDataSource
     End Function
 
 #End Region ' Time series
+
+#End Region ' Ecosim bits
+
+#Region " Ecospace bits "
+
+    Public Function AddEcospaceDriverLayer(strName As String, strDescription As String, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceDriverLayer
+        Return False
+    End Function
+
+    Public Function AddEcospaceHabitat(strHabitatName As String, ByRef iHabitatID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceHabitat
+        Return False
+    End Function
+
+    Public Function AppendEcospaceImportanceLayer(strName As String, strDescription As String, sWeight As Single, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AppendEcospaceImportanceLayer
+        Return False
+    End Function
+
+    Public Function AppendEcospaceMPA(strScenarioName As String, bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AppendEcospaceMPA
+        Return False
+    End Function
+
+    Public Function AppendEcospaceScenario(strScenarioName As String, strDescription As String, strAuthor As String, strContact As String, InRow As Integer, InCol As Integer, sOriginLat As Single, sOriginLon As Single, sCellLength As Single, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AppendEcospaceScenario
+        Return False
+    End Function
+
+    Public Overloads Function CopyTo(ds As DataSources.IEcospaceDatasource) As Boolean Implements DataSources.IEcospaceDatasource.CopyTo
+        Return False
+    End Function
+
+    Public Function IsEcospaceModified() As Boolean Implements DataSources.IEcospaceDatasource.IsEcospaceModified
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceDriverLayer(iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceDriverLayer
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceHabitat(iHabitatID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceHabitat
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceImportanceLayer(iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceImportanceLayer
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceMPA(iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceMPA
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceScenario(iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceScenario
+        Return False
+    End Function
+
+    Public Function ResizeEcospaceBasemap(InRow As Integer, InCol As Integer) As Boolean Implements DataSources.IEcospaceDatasource.ResizeEcospaceBasemap
+        Return False
+    End Function
+
+    Public Function SaveEcospaceScenario(iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.SaveEcospaceScenario
+        Return False
+    End Function
+
+    Public Function SaveEcospaceScenarioAs(strScenarioName As String, strDescription As String, strAuthor As String, strContact As String, ByRef iScenarioID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.SaveEcospaceScenarioAs
+        Return False
+    End Function
+
+#End Region ' Ecospace bits
 
 #End Region ' Modifications not allowed by this type of DS
 
