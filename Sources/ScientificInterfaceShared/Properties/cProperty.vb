@@ -158,6 +158,7 @@ Namespace Properties
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ID() As String
             Get
+                If (Me.m_key Is Nothing) Then Return ""
                 Return Me.m_key.ToString()
             End Get
         End Property

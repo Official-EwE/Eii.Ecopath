@@ -3797,7 +3797,7 @@ Public Class AppLauncher
             ' and whether any plug-in UI elements are still active. The plug-in is responsible for dealing
             ' with consecutive run requests.
 
-            cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_LOADINGPLUGIN)
+            cApplicationStatusNotifier.StartProgress(Me.Core, SharedResources.GENERIC_STATUS_RUNNINGPLUGIN)
             Try
                 pgcmd.RunPlugin()
             Catch ex As Exception
@@ -3855,7 +3855,9 @@ Public Class AppLauncher
     Private Sub OnMRUItemClicked(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim mnuItem As ToolStripMenuItem = DirectCast(sender, ToolStripMenuItem)
         Dim strFileName As String = CStr(mnuItem.Tag)
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOPATH_LOADING)
         Me.LoadEcopathModel(strFileName, eLoadSourceType.MRU)
+        cApplicationStatusNotifier.EndProgress(Me.Core)
     End Sub
 
     Private Sub OnLoadEcosimScenarioOrDataset(ByVal sender As Object, ByVal e As System.EventArgs)

@@ -1005,7 +1005,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb|Ecopath 5 text files|*.eii.
+        '''  Looks up a localized string similar to Ecopath model databases|*.mdb;*.accdb;*.EwEmdb;*.EwEaccdb;*.eii;*.eiixml.
         '''</summary>
         Public ReadOnly Property FILEFILTER_MODEL_OPEN() As String
             Get
@@ -1315,11 +1315,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Loading plug-in, please wait....
+        '''  Looks up a localized string similar to Executing plug-in....
         '''</summary>
-        Public ReadOnly Property GENERIC_STATUS_LOADINGPLUGIN() As String
+        Public ReadOnly Property GENERIC_STATUS_RUNNINGPLUGIN() As String
             Get
-                Return ResourceManager.GetString("GENERIC_STATUS_LOADINGPLUGIN", resourceCulture)
+                Return ResourceManager.GetString("GENERIC_STATUS_RUNNINGPLUGIN", resourceCulture)
             End Get
         End Property
         

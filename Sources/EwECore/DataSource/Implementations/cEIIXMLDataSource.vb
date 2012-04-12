@@ -962,7 +962,7 @@ Public Class cEIIXMLDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
-        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioGroup")
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioGroup")
         Dim bSucces As Boolean = True
         Dim iEcopathGroupID As Integer = 0
         Dim iGroup As Integer = 0
@@ -1069,7 +1069,7 @@ Public Class cEIIXMLDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
-        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioFleet")
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioFleet")
         Dim dtFishMort As DataTable = Me.ReadTable("EcosimShapeFishRate")
         Dim iFleet As Integer = 0
         Dim iFleetID As Integer = -1
@@ -1082,7 +1082,6 @@ Public Class cEIIXMLDataSource
         For iPt As Integer = 0 To ecosimDS.NTimes : asDummy(iPt) = 1.0 : Next
 
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
-        dt.DefaultView.Sort = "EcopathFleetID ASC"
 
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows
 
@@ -1139,7 +1138,7 @@ Public Class cEIIXMLDataSource
 
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
-        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioFleetYear")
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioFleetYear")
         Dim iFleetID As Integer = -1
         Dim iFleet As Integer = -1
         Dim iYear As Integer = -1
@@ -1171,7 +1170,7 @@ Public Class cEIIXMLDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim mseDS As cMSEDataStructures = Me.m_core.m_MSEData
-        Dim dt As DataTable = Me.ReadTable("EcoSimScenarioQuota")
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioQuota")
         Dim iFleetID As Integer = -1
         Dim iFleet As Integer = -1
         Dim iGroupID As Integer = -1
@@ -1249,7 +1248,7 @@ Public Class cEIIXMLDataSource
             Try
 
                 iShapeID = CInt(drow("ShapeID"))
-                shapeDataType = DirectCast(drow("ShapeType"), eDataTypes)
+                shapeDataType = DirectCast(CInt(drow("ShapeType")), eDataTypes)
 
                 Select Case shapeDataType
 
@@ -1575,7 +1574,7 @@ Public Class cEIIXMLDataSource
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim dt As DataTable = Me.ReadTable("EcosimScenarioPredPreyShape")
+        Dim dt As DataTable = Me.ReadTable("EcosimScenarioLandingsShape")
         Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
         Dim iFleet As Integer = 0
         Dim iGroup As Integer = 0
@@ -1674,7 +1673,7 @@ Public Class cEIIXMLDataSource
 
         ' === Landings mediations === 
         medData = ecosimDS.PriceMedData
-        dt = Me.ReadTable("EcosimScenarioshapeMedWeightsLandings")
+        dt = Me.ReadTable("EcosimScenarioShapeMedWeightsLandings")
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows
             Try
@@ -1693,7 +1692,7 @@ Public Class cEIIXMLDataSource
         dt.Clear()
         dt = Nothing
 
-        Return True
+        Return bSucces
 
     End Function
 
@@ -1702,7 +1701,7 @@ Public Class cEIIXMLDataSource
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
-        Dim dt As DataTable = Me.ReadTable("EcosimScenarioPredPreyShape")
+        Dim dt As DataTable = Me.ReadTable("EcosimStanzaShape")
         Dim iStanza As Integer = 0
         Dim iShape As Integer = 0
         Dim bSucces As Boolean = True
@@ -1925,10 +1924,15 @@ Public Class cEIIXMLDataSource
         If (astrColDefs.Length = 0) Then Return True
 
         Dim row As IDataReader = db.GetReader("SELECT * FROM [" & strTable & "]")
-        Dim xn As XmlNode = doc.CreateElement(strTable)
+        Dim xn As XmlNode = doc.CreateElement("Table")
         Dim xa As XmlAttribute = Nothing
         Dim iNum As Integer = 0
         Dim sb As New StringBuilder()
+
+        ' - Name
+        xa = doc.CreateAttribute("Name")
+        xa.InnerText = strTable
+        xn.Attributes.Append(xa)
 
         ' - Columns
         For i As Integer = 0 To astrColDefs.Length - 1
@@ -2611,11 +2615,7 @@ Public Class cEIIXMLDataSource
 
     Private Function ReadTable(strTable As String) As DataTable
 
-        If Not strTable.StartsWith("/") Then
-            strTable = "/EwEModel/" & strTable
-        End If
-
-        Dim xn As XmlNode = Me.m_doc.SelectSingleNode(strTable)
+        Dim xn As XmlNode = Me.m_doc.SelectSingleNode("/EwEModel/Table[translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + strTable.ToLower() + "']")
         Dim xnData As XmlCDataSection = DirectCast(xn.ChildNodes(0), XmlCDataSection)
         Dim xaCols As XmlAttribute = xn.Attributes("Columns")
         Dim astrRows As String() = Nothing
