@@ -27,6 +27,7 @@ Imports System.Windows.Forms
 Imports System.Globalization
 Imports Microsoft.VisualBasic
 Imports System.Security.Cryptography
+Imports System.Collections.Generic
 
 #End Region ' Imports
 
@@ -47,28 +48,68 @@ Namespace Utilities
         ''' <param name="strDelimiter">Delimiting character to split by.</param>
         ''' <param name="strQualifier">String qualifier, such as single or double quotes. Qualified string
         ''' segments will not be subdivided by delimiting characters.</param>
-        ''' <param name="bIgnoreCase">States whether delimiter and qualifier detection should be case-sensitive.</param>
         ''' <returns>An array of strings.</returns>
         ''' <remarks>
-        ''' Original code by Larry Steinle (http://www.codeproject.com/script/Articles/list_articles.asp?userid=2146039),
-        ''' obtained from "Split Function that Supports Text Qualifiers", http://www.codeproject.com/useritems/TextQualifyingSplit.asp
+        ''' Provided for backward compatibility reasons.
         ''' </remarks>
         ''' ---------------------------------------------------------------------------
-        Public Shared Function SplitQualified(ByVal strExpression As String, ByVal strDelimiter As String, _
-            Optional ByVal strQualifier As String = """", Optional ByVal bIgnoreCase As Boolean = True) As String()
+        Public Shared Function SplitQualified(ByVal strExpression As String, _
+                                              ByVal strDelimiter As String, _
+                                              Optional ByVal strQualifier As String = """") As String()
+            Return cStringUtils.SplitQualified(strExpression, strDelimiter(0), strQualifier(0))
+        End Function
+
+
+        ''' ---------------------------------------------------------------------------
+        ''' <summary>
+        ''' Split function that supports text qualifiers.
+        ''' </summary>
+        ''' <param name="strExpression">String to split.</param>
+        ''' <param name="cDelimiter">Delimiting character to split by.</param>
+        ''' <param name="cQualifier">String qualifier, such as single or double quotes. Qualified string
+        ''' segments will not be subdivided by delimiting characters.</param>
+        ''' <returns>An array of strings.</returns>
+        ''' <remarks>
+        ''' REgEx splitting is too slow. Replaced by a self-written, much faster method
+        ''' </remarks>
+        ''' ---------------------------------------------------------------------------
+        Public Shared Function SplitQualified(ByVal strExpression As String, _
+                                              ByVal cDelimiter As Char, _
+                                              Optional ByVal cQualifier As Char = """"c) As String()
+
+#If 0 Then
+            ' Original code by Larry Steinle (http://www.codeproject.com/script/Articles/list_articles.asp?userid=2146039),
+            ' obtained from "Split Function that Supports Text Qualifiers", http://www.codeproject.com/useritems/TextQualifyingSplit.asp
 
             Dim rxExpression As Regex = Nothing
             Dim strPattern As String = ""
             Dim rxo As RegexOptions = RegexOptions.Compiled Or RegexOptions.Multiline
 
             ' Build reg ex pattern
-            strPattern = String.Format("[{0}](?=(?:[^{1}]*[{1}][^{1}]*[{1}])*(?![^{1}]*[{1}]))", Regex.Escape(strDelimiter), Regex.Escape(strQualifier))
-            If bIgnoreCase Then rxo = rxo Or RegexOptions.IgnoreCase
+            strPattern = String.Format("[{0}](?=(?:[^{1}]*[{1}][^{1}]*[{1}])*(?![^{1}]*[{1}]))", Regex.Escape(cDelimiter), Regex.Escape(cQualifier))
             ' Build reg expression
             rxExpression = New Regex(strPattern, rxo)
             ' Execute
             Return rxExpression.Split(strExpression)
+#Else
+            Dim lstr As New List(Of String)
+            Dim i, j As Integer
+            Dim chrs() As Char = New Char() {cDelimiter, cQualifier}
 
+            j = strExpression.IndexOfAny(chrs)
+            While j > -1
+                If (strExpression(j) = cQualifier) Then
+                    j = strExpression.IndexOf(cQualifier, j + 1)
+                    If (j > -1) Then j = strExpression.IndexOfAny(chrs, j + 1)
+                Else
+                    lstr.Add(strExpression.Substring(i, j - i))
+                    i = j + 1
+                    j = strExpression.IndexOfAny(chrs, i)
+                End If
+            End While
+            lstr.Add(strExpression.Substring(i))
+            Return lstr.ToArray
+#End If
         End Function
 
         ''' -------------------------------------------------------------------
@@ -922,7 +963,7 @@ Namespace Utilities
 
         End Function
 
-      ''' -----------------------------------------------------------------------
+        ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Read a map from a string, and poulate a 3-dimensional array with this data.
         ''' </summary>
