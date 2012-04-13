@@ -53,7 +53,7 @@ Namespace Ecospace.Basemap
             ''' <summary>The field names to map upon.</summary>
             Private m_astrFields As String() = {}
             ''' <summary>Mappings. MAPPINGS!</summary>
-            Private m_dtLayerMapping As New Dictionary(Of cLayer, String)
+            Private m_dtLayerMapping As New Dictionary(Of cRasterLayer, String)
 
             Private Enum eColumnTypes As Integer
                 ColumnLayer = 0
@@ -74,11 +74,11 @@ Namespace Ecospace.Basemap
 
             Public Event MappingChanged()
 
-            Public Property Layers() As cLayer()
+            Public Property Layers() As cRasterLayer()
                 Get
                     Return Nothing
                 End Get
-                Set(ByVal value As cLayer())
+                Set(ByVal value As cRasterLayer())
                     Me.m_aLayers = value
                 End Set
             End Property
@@ -96,12 +96,12 @@ Namespace Ecospace.Basemap
                 End Set
             End Property
 
-            Public Function Mappings() As Dictionary(Of cLayer, String)
+            Public Function Mappings() As Dictionary(Of cRasterLayer, String)
                 Return Me.m_dtLayerMapping
             End Function
 
             Public Function HasMappings() As Boolean
-                For Each l As cLayer In Me.m_dtLayerMapping.Keys
+                For Each l As cRasterLayer In Me.m_dtLayerMapping.Keys
                     If Not String.IsNullOrWhiteSpace(Me.m_dtLayerMapping(l)) Then
                         Return True
                     End If
@@ -171,7 +171,7 @@ Namespace Ecospace.Basemap
             Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
                 Dim strField As String = Me.FieldAtRow(p.Row)
-                Dim layer As cLayer = Me.LayerAtRow(p.Row)
+                Dim layer As cRasterLayer = Me.LayerAtRow(p.Row)
 
                 Try
                     Me.m_dtLayerMapping(layer) = strField
@@ -185,7 +185,7 @@ Namespace Ecospace.Basemap
 
             Private Sub UpdateMappingsColumn()
 
-                Dim layer As cLayer = Nothing
+                Dim layer As cRasterLayer = Nothing
                 Dim strField As String = ""
                 Dim cmb As Cells.Real.ComboBox = Nothing
                 Dim dm As DataModels.EditorComboBox = Nothing
@@ -219,9 +219,9 @@ Namespace Ecospace.Basemap
                 End Try
             End Sub
 
-            Private Function LayerAtRow(ByVal iRow As Integer) As cLayer
+            Private Function LayerAtRow(ByVal iRow As Integer) As cRasterLayer
                 If iRow > 0 And iRow < Me.RowsCount Then
-                    Return DirectCast(Me.Rows(iRow).Tag, cLayer)
+                    Return DirectCast(Me.Rows(iRow).Tag, cRasterLayer)
                 End If
                 Return Nothing
             End Function
@@ -250,7 +250,7 @@ Namespace Ecospace.Basemap
 #Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
-        Private m_lLayers As New List(Of cLayer)
+        Private m_lLayers As New List(Of cRasterLayer)
         Private m_data As cEcospaceImportExportXYData = Nothing
 
 #End Region ' Private vars
@@ -266,11 +266,11 @@ Namespace Ecospace.Basemap
 
 #Region " Public properties "
 
-        Public Property Layers() As cLayer()
+        Public Property Layers() As cRasterLayer()
             Get
                 Return Me.m_lLayers.ToArray()
             End Get
-            Set(ByVal aLayers As cLayer())
+            Set(ByVal aLayers As cRasterLayer())
                 Me.m_lLayers.Clear()
 
                 If aLayers Is Nothing Then Return
@@ -421,7 +421,7 @@ Namespace Ecospace.Basemap
             Me.m_cmbRow.Items.AddRange(astrFields) : Me.m_cmbRow.SelectedIndex = Me.m_cmbRow.FindString("Row")
             Me.m_cmbCol.Items.AddRange(astrFields) : Me.m_cmbCol.SelectedIndex = Me.m_cmbCol.FindString("Col")
 
-            For Each l As cLayer In Me.m_lLayers
+            For Each l As cRasterLayer In Me.m_lLayers
                 If Array.IndexOf(astrFields, l.Name) > -1 Then
                     Me.m_grid.Mappings(l) = l.Name
                 End If
@@ -435,9 +435,9 @@ Namespace Ecospace.Basemap
 
         Private Function LoadMappedLayers() As Boolean
 
-            Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
+            Dim dtMappings As Dictionary(Of cRasterLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim layer As cLayer = Nothing
+            Dim layer As cRasterLayer = Nothing
             Dim strField As String = ""
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0

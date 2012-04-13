@@ -237,7 +237,8 @@
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
     <Compile Include="Controls\Map\Layers\cLayer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
-    <Compile Include="Controls\Map\Layers\cLayerBundle.vb" />
+    <Compile Include="Controls\Map\Layers\cRasterLayerBundle.vb" />
+    <Compile Include="Controls\Map\Layers\cRasterLayer.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />
@@ -329,15 +330,17 @@
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererArrow.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererBitmap.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererDepth.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererHatched.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererSymbol.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererText.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererUpwelling.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererValue.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRendererWindEwE5.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cVectorLayerRenderer.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererArrow.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererBitmap.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererDepth.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererHatched.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererSymbol.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererText.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererUpwelling.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererValue.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererWindEwE5.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cLayerRenderer.vb" />
     <Compile Include="Controls\Map\Layers\ucLayer.Designer.vb">
       <DependentUpon>ucLayer.vb</DependentUpon>
     </Compile>
@@ -390,7 +393,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Legend\cLegend.vb" />
-    <Compile Include="Controls\Map\Layers\Rendering\cLayerRenderer.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\cRasterLayerRenderer.vb" />
     <Compile Include="Controls\Map\ucMap.Designer.vb">
       <DependentUpon>ucMap.vb</DependentUpon>
     </Compile>
@@ -1025,6 +1028,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\ConfigPage\" />
+    <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
     <Folder Include="Controls\WebBrowser\" />
   </ItemGroup>
   <ItemGroup>

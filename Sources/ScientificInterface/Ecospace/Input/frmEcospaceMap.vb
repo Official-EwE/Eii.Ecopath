@@ -323,14 +323,21 @@ Namespace Ecospace.Basemap
                         Me.m_plEditor.Controls.Remove(Me.m_editorGUISelected)
                         Me.m_editorGUISelected = Nothing
                     End If
-                    Me.m_layerSelected.Editor.DestroyEditorControl()
+
+                    If (TypeOf Me.m_layerSelected Is cRasterLayer) Then
+                        DirectCast(Me.m_layerSelected, cRasterLayer).Editor.DestroyEditorControl()
+                    End If
                 End If
 
                 Me.m_layerSelected = layer
 
                 If (Me.m_layerSelected IsNot Nothing) Then
+
                     ' Add layer editor GUI
-                    Me.m_editorGUISelected = Me.m_layerSelected.Editor.CreateEditorControl()
+                    If (TypeOf Me.m_layerSelected Is cRasterLayer) Then
+                        Me.m_editorGUISelected = DirectCast(Me.m_layerSelected, cRasterLayer).Editor.CreateEditorControl()
+                    End If
+
                     If (Me.m_editorGUISelected IsNot Nothing) Then
                         Me.m_plEditor.Height = Me.m_editorGUISelected.Height
                         Me.m_editorGUISelected.Dock = DockStyle.Fill

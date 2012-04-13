@@ -195,7 +195,7 @@ Namespace Ecospace.Advection
             ' Sanity check
             If Me.UIContext Is Nothing Then Return
 
-            Dim layer As cLayer = Me.m_ucWind.DataLayer
+            Dim layer As cRasterLayer = Me.m_ucWind.DataLayer
             DirectCast(layer.Data, cEcospaceLayerWind).Month = (1 + Me.m_tscmMonth.SelectedIndex)
             layer.Update(cLayer.eChangeFlags.Map, False)
 
@@ -250,13 +250,13 @@ Namespace Ecospace.Advection
 
         Private Sub OnCalcProgress(ByVal iIter As Integer)
 
-            If iIter Mod 100 = 0 Then
+            If (iIter Mod 100 = 0) Then
                 ' Update app status
                 cApplicationStatusNotifier.UpdateProgress(Me.Core, String.Format(My.Resources.STATUS_ADVECTION_ITERATION, iIter), -1)
             End If
 
             ' Update data layer
-            Dim layer As cLayer = Me.m_ucMap.DataLayer
+            Dim layer As cRasterLayer = Me.m_ucMap.DataLayer
             layer.IsModified = True
             layer.Update(cLayer.eChangeFlags.Map, False)
 
@@ -378,7 +378,7 @@ Namespace Ecospace.Advection
 
         Private Sub Revert()
             If Me.m_manager.Revert Then
-                Dim layer As cLayer = Me.m_ucMap.DataLayer
+                Dim layer As cRasterLayer = Me.m_ucMap.DataLayer
                 layer.IsModified = True
                 layer.Update(cLayer.eChangeFlags.Map, False)
                 Me.m_bHasRun = False

@@ -99,9 +99,9 @@ Namespace Ecospace
         Private m_lLayers As New List(Of cLayer)
         ''' <summary>All layers that reflect search progress.</summary>
         ''' <remarks>The data for these layers orginates from the core.</remarks>
-        Private m_alayerFeedback() As cLayer = Nothing
-        Private m_layerSeed As cLayer = Nothing
-        Private m_alayerMPA() As cLayer = Nothing
+        Private m_alayerFeedback() As cRasterLayer = Nothing
+        Private m_layerSeed As cRasterLayer = Nothing
+        Private m_alayerMPA() As cRasterLayer = Nothing
         ''' <summary>Data structure to update with feedback data.</summary>
         Private m_aiFeedback As Integer(,) = Nothing
 
@@ -454,7 +454,7 @@ Namespace Ecospace
                                                      Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
                                                      String.Format(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
-                layerTmp = New cLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
+                layerTmp = New cRasterLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
                 ' Add the layer to the stash to save
                 lLayers.Add(layerTmp)
 
@@ -994,11 +994,11 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cLayer()
+        Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cRasterLayer()
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
-            Dim alayers As cLayer() = factory.GetLayers(Me.UIContext, varName)
+            Dim alayers As cRasterLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cLayer = Nothing
 
             ' Add group, and collapse and hide habitat layers
@@ -1024,9 +1024,9 @@ Namespace Ecospace
 
             Dim strGroup As String = ""
             Dim datalayerTemp As cEcospaceLayerInteger = Nothing
-            Dim l As cLayer = Nothing
-            Dim alayers As cLayer() = Nothing
-            Dim lRunStateLayers As New List(Of cLayer)
+            Dim l As cRasterLayer = Nothing
+            Dim alayers As cRasterLayer() = Nothing
+            Dim lRunStateLayers As New List(Of cRasterLayer)
             Dim factory As New cLayerFactoryInternal()
 
             Me.m_ucLayers.LockUpdates()

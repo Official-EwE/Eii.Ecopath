@@ -35,8 +35,8 @@ Namespace Controls.Map.Layers
 #Region " Private vars "
 
         ' === LAYER SUPPORT ===
-        ''' <summary>The layer to operate on.</summary>
-        Private m_layer As cLayer = Nothing
+        ''' <summary>The raster layer to operate on.</summary>
+        Private m_layer As cRasterLayer = Nothing
         ''' <summary>Flag stating whether the layer is editable.</summary>
         Private m_bEditable As Boolean = True
         ''' <summary>Flag stating whether the layer is read-only.</summary>
@@ -77,7 +77,7 @@ Namespace Controls.Map.Layers
         ''' <param name="layer">Layer to attach.</param>
         ''' -------------------------------------------------------------------
         Public Overridable Sub Initialize(ByVal uic As cUIContext, _
-                                          ByVal layer As cLayer)
+                                          ByVal layer As cRasterLayer)
             Me.UIContext = uic
             Me.Layer = layer
         End Sub
@@ -571,11 +571,11 @@ Namespace Controls.Map.Layers
         ''' Get/set the layer to attach to this Editor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Layer() As cLayer
+        Public Property Layer() As cRasterLayer
             Get
                 Return Me.m_layer
             End Get
-            Private Set(ByVal value As cLayer)
+            Private Set(ByVal value As cRasterLayer)
                 If Object.ReferenceEquals(value, Me.m_layer) Then Return
 
                 ' Already has a layer?

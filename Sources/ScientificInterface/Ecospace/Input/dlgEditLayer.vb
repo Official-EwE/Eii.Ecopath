@@ -51,12 +51,12 @@ Namespace Ecospace.Basemap.Layers
         Private m_qehGrid As cQuickEditHandler = Nothing
 
         ''' <summary>Original layer this dialog was invoked for.</summary>
-        Private m_layerOriginal As cLayer = Nothing
-        Private m_layerDepth As cLayer = Nothing
+        Private m_layerOriginal As cRasterLayer = Nothing
+        Private m_layerDepth As cRasterLayer = Nothing
         Private m_edittype As eLayerEditTypes
 
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
-        Private m_layerWork As cLayer = Nothing
+        Private m_layerWork As cRasterLayer = Nothing
         ''' <summary>Editor to transmogrify the representation of the layer.</summary>
         Private m_ucEditVisualStyle As ucEditVisualStyle = Nothing
 
@@ -77,7 +77,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="edittype"></param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByRef layer As cLayer, _
+                       ByRef layer As cRasterLayer, _
                        ByVal edittype As eLayerEditTypes)
 
             Debug.Assert(layer IsNot Nothing)
@@ -97,7 +97,7 @@ Namespace Ecospace.Basemap.Layers
             End If
             Me.m_edittype = edittype
 
-            Me.m_layerWork = New cLayer(uic, layer) ' Work on a clone
+            Me.m_layerWork = New cRasterLayer(uic, layer) ' Work on a clone
             Me.m_layerWork.AllowValidation = False
 
         End Sub
@@ -194,7 +194,7 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsbnImport.Click
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-                cmd.Invoke(New cLayer() {Me.m_layerWork})
+                cmd.Invoke(New cRasterLayer() {Me.m_layerWork})
             Catch ex As Exception
 
             End Try
@@ -204,7 +204,7 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsbnExport.Click
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-                cmd.Invoke(New cLayer() {Me.m_layerWork})
+                cmd.Invoke(New cRasterLayer() {Me.m_layerWork})
                 Me.UpdateControls()
             Catch ex As Exception
 

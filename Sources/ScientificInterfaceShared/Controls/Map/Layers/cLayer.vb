@@ -31,114 +31,23 @@ Imports ScientificInterfaceShared.Style
 Namespace Controls.Map.Layers
 
     ''' <summary>
-    ''' Class that wraps a single <see cref="cEcospaceLayer">Ecospace data layer</see> for 
-    ''' manipulation in a User Interface.
+    ''' Class that wraps spatial data for display in the UI.
     ''' </summary>
     ''' <remarks>
-    ''' <para>
-    ''' Ok, the UI layer thing has gotten so complex that a bit of an explanation would not hurt.
-    ''' </para>
-    ''' <para>
-    ''' The entire basemap chain consists of the following collaborating classes:
-    ''' <list>
-    ''' <item>
-    ''' <description>One <see cref="cEcospaceBasemap">basemap</see> which defines the size and other aspects
-    ''' of the map currently active in Ecospace. This class also provides access to individual data
-    ''' <see cref="cEcospaceLayer">layers</see>.
-    ''' </description></item>
-    ''' <item><description>
-    ''' <para>
-    ''' Several <see cref="cEcospaceLayer">data layers</see> which each expose 
-    ''' spatial array(s) of data. Basemap layers are two dimensional, allowing access to the array
-    ''' via cell(row, col) interaction. Poking around in a basemap layer in fact modifies Ecospace
-    ''' spatial cells of spatial data array that the the layer is connected to.
-    ''' </para>
-    ''' </description></item>
-    ''' <item><description>
-    ''' <para>
-    ''' GUI <see cref="cLayer">Layers</see> combine one or more <see cref="cEcospaceLayer">core
-    ''' basemap layers</see> as a single unit for display and interaction in the user interface. The GUI
-    ''' Layer uses a <see cref="cLayerRenderer">layer renderer</see> to decide how this assembly
-    ''' of core data is reflected.
-    ''' </para>
-    ''' </description></item>
-    ''' </list>
-    ''' </para>
     ''' </remarks>
     Public Class cLayer
         Implements IDisposable
 
-        ' ToDo_JS: build different name strategies, similar to property row header cells
-        '          1. Via fixed string
-        '          2. Via a property
-        '          3. Add support for units
-
-#Region " Private helper classes "
-
-        ''' ===================================================================
-        ''' <summary>
-        ''' Default editor class for layers without an editor.
-        ''' </summary>
-        ''' ===================================================================
-        Private Class cEditorLocked
-            Inherits cLayerEditor
-
-            Public Sub New()
-                MyBase.New(Nothing)
-            End Sub
-
-            Public Overrides Property IsReadOnly() As Boolean
-                Get
-                    Return True
-                End Get
-                Set(ByVal value As Boolean)
-                End Set
-            End Property
-
-        End Class
-
-#End Region ' Private helper classes
-
 #Region " Private vars "
 
-        Private m_uic As cUIContext = Nothing
-        Private m_mh As cMessageHandler = Nothing
-        Private m_bDisposed As Boolean = False
+        Protected m_uic As cUIContext = Nothing
+        Protected m_bDisposed As Boolean = False
 
-        Private m_strName As String = ""
-        Private m_source As cCoreInputOutputBase = Nothing
-        Private m_varName As eVarNameFlags = eVarNameFlags.NotSet
-        Private m_data As cEcospaceLayer = Nothing
-        Private m_valueType As Type = GetType(Single)
-        Private m_sValueSet As Single = cCore.NULL_VALUE
-        Private m_sValueClear As Single = cCore.NULL_VALUE
-        Private m_renderer As cLayerRenderer = Nothing
-        Private m_editor As cLayerEditor = Nothing
-
-        Private m_bAllowValidation As Boolean = True
-
-        Private m_bSelected As Boolean = False
-        Private m_bModified As Boolean = False
-        Private m_bInUpdate As Boolean = False
-
-        ''' <summary>
-        ''' The <see cref="cProperty">property</see> that simulates live map changes to sync different
-        ''' layer instances linked to the same data.
-        ''' </summary>
-        ''' <remarks>
-        ''' This is a hack solution. <see cref="cEcospaceLayer">Basemap layers</see> are not exposed as true
-        ''' <see cref="EwECore.ValueWrapper.cValue">core value objects</see>. To provide layers with common GUI issues
-        ''' such as remark feedback and broadcasted updates, as well as the ability to attach 
-        ''' <see cref="cVisualStyle">Visual Styles</see> to layers, this hidden property is used.
-        ''' </remarks>
-        Private m_propBacklink As cProperty = Nothing
-
-        Private m_aUnitTypes() As cStyleGuide.eUnitType = Nothing
-        Private m_strUnitMask As String = ""
-
-        ' --- shared defaults ---
-
-        Private Shared s_editorLocked As New cEditorLocked()
+        Protected m_strName As String = ""
+        Protected m_renderer As cLayerRenderer = Nothing
+        Protected m_bSelected As Boolean = False
+        Protected m_bInUpdate As Boolean = False
+        Private m_bAllowValidation As Boolean = False
 
 #End Region ' Private vars
 
@@ -148,60 +57,16 @@ Namespace Controls.Map.Layers
         ''' <summary>
         ''' Constructor.
         ''' </summary>
-        ''' <param name="data"></param>
         ''' <param name="renderer"></param>
-        ''' <param name="source">
-        ''' The core object that serves two purposes:
-        ''' <list type="number">
-        ''' <item><description>Provide the dynamic name for a layer</description></item>
-        ''' <item><description>Provide the definition for distributing data changes</description></item>
-        ''' </list>
-        ''' </param>
-        ''' <param name="varName">The name of the variable to associate data changes with</param>
-        ''' <param name="sValueSet"></param>
-        ''' <param name="sValueClear"></param>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByVal data As cEcospaceLayer, _
-                       ByVal renderer As cLayerRenderer, _
-                       ByVal editor As cLayerEditor, _
-                       Optional ByVal source As cCoreInputOutputBase = Nothing, _
-                       Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
-                       Optional ByVal sValueSet As Single = cCore.NULL_VALUE, _
-                       Optional ByVal sValueClear As Single = cCore.NULL_VALUE)
+                       ByVal renderer As cLayerRenderer)
 
             Debug.Assert(uic IsNot Nothing)
 
             Me.m_uic = uic
-
-            Me.m_mh = New cMessageHandler(AddressOf EcospaceMessageHandler, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
-#If DEBUG Then
-            Me.m_mh.Name = "UI::cLayer " & Me.m_varName.ToString
-#End If
-            Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mh)
-
-            '' Sanity checks
-            'Debug.Assert(Not Object.ReferenceEquals(data, Nothing))
-
-            If (editor Is Nothing) Then editor = cLayer.s_editorLocked
-
             Me.m_strName = ""
-            Me.m_source = source
-            Me.m_varName = varName
-            Me.m_data = data
             Me.m_renderer = renderer
-            Me.m_editor = editor
-            Me.m_sValueSet = sValueSet
-            Me.m_sValueClear = sValueClear
-            Me.m_valueType = data.ValueType
-            Me.m_propBacklink = Me.m_uic.PropertyManager.GetProperty(source, varName)
-
-            If (m_propBacklink IsNot Nothing) Then
-                AddHandler Me.m_propBacklink.PropertyChanged, AddressOf OnPropertyChanged
-            End If
-
-            '' Update editor
-            'Me.m_editor.Initialize(uic, Me)
 
         End Sub
 
@@ -213,7 +78,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, ByVal layer As cLayer)
 
-            Me.New(uic, layer.Data, layer.Renderer.Clone(), layer.Editor.Clone(), layer.Source, layer.VarName, layer.ValueSet, layer.ValueClear)
+            Me.New(uic, layer.Renderer.Clone())
             Me.Name = layer.Name
             Me.IsSelected = layer.IsSelected
 
@@ -226,23 +91,10 @@ Namespace Controls.Map.Layers
         ''' <param name="bDisposing"></param>
         ''' -----------------------------------------------------------------------
         Protected Overridable Sub Dispose(ByVal bDisposing As Boolean)
-            If Not Me.m_bDisposed Then
-                If bDisposing Then
-                    If Me.m_uic IsNot Nothing Then
-                        Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mh)
-                    End If
-                    If Me.m_propBacklink IsNot Nothing Then
-                        RemoveHandler Me.m_propBacklink.PropertyChanged, AddressOf OnPropertyChanged
-                        Me.m_propBacklink = Nothing
-                    End If
-                End If
-            End If
             Me.m_bDisposed = True
         End Sub
 
-        ' This code added by Visual Basic to correctly implement the disposable pattern.
         Public Sub Dispose() Implements IDisposable.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
             Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
@@ -286,36 +138,6 @@ Namespace Controls.Map.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Instructs the layer to incorporate units the layer name display.
-        ''' </summary>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
-        ''' contain a '{0}' field to place the layer name value, and a '{1}' field
-        ''' to place the unit value.</param>
-        ''' <param name="unitType">Definition of the unit to place in the layer
-        ''' display text.</param>
-        ''' -----------------------------------------------------------------------
-        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal unitType As cStyleGuide.eUnitType)
-            Me.SetUnitHeader(strUnitMask, New cStyleGuide.eUnitType() {unitType})
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Instructs the layer to incorporate units the layer name display.
-        ''' </summary>
-        ''' <param name="strUnitMask">The format mask to apply. This mask must
-        ''' contain a '{0}' field to place the layer name value, and placeholder
-        ''' fields for the units. The unit fields must be numbered '{1}', '{2}'
-        ''' etc. Units will be placed in the placeholder fields in the order that
-        ''' they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
-        ''' <param name="aUnitTypes">Definitions of units to place in the layer
-        ''' display text.</param>
-        ''' -----------------------------------------------------------------------
-        Public Sub SetUnitMask(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
-            Me.SetUnitHeader(strUnitMask, aUnitTypes)
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Call this whenever properties and visual aspects of the layer have changed.
         ''' </summary>
         ''' <param name="updateType">Bitwise <see cref="eChangeFlags">flag</see>
@@ -325,38 +147,15 @@ Namespace Controls.Map.Layers
         ''' to commit a layer data change to the core, and should be false if the 
         ''' layer is responding to a core layer change message.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub Update(ByVal updateType As eChangeFlags, _
-                          Optional ByVal bNotifyCore As Boolean = True)
+        Public Overridable Sub Update(ByVal updateType As eChangeFlags, _
+                                      Optional ByVal bNotifyCore As Boolean = True)
 
             ' Prevent looped updates
             If Me.m_bInUpdate = True Then Return
-
             Me.m_bInUpdate = True
 
             ' Assess changes
             Try
-                ' Map has changed via user drawing
-                If ((updateType And eChangeFlags.Map) = eChangeFlags.Map) Then
-                    ' Update visuals
-                    Me.Data.Invalidate()
-
-                    ' Is a core layer?
-                    If bNotifyCore Then
-                        If Me.Data.DataType <> eDataTypes.NotSet Then
-                            ' #Yes: inform the core
-                            If (Me.m_uic IsNot Nothing) And (Me.AllowValidation) Then
-                                Me.m_uic.Core.onChanged(Me.Data)
-                            End If
-                        Else
-                            ' #No: Fire off property change to make other copies of non-core layers respond
-                            If (Me.m_propBacklink IsNot Nothing) Then
-                                Me.m_propBacklink.FireChangeNotification(cProperty.eChangeFlags.Custom)
-                            End If
-                        End If
-                    End If
-
-                End If
-
                 If ((updateType And eChangeFlags.VisualStyle) = eChangeFlags.VisualStyle) Then
                     Me.m_renderer.Update()
                     If (Me.AllowValidation) Then
@@ -386,137 +185,12 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Overridable Property Name() As String
             Get
-                ' No overriding name defined?
-                If String.IsNullOrWhiteSpace(Me.m_strName) Then
-                    ' #Yes: is a backlink property provided?
-                    If (Me.m_propBacklink IsNot Nothing) Then
-                        ' #Yes: and is this property linked to a true name?
-                        If (Me.m_propBacklink.VarName = eVarNameFlags.Name) Then
-                            ' #Yes: return name property value
-                            Return CStr(Me.m_propBacklink.GetValue())
-                        End If
-                    End If
-                    ' Alternative: is data attached?
-                    If (Me.Data IsNot Nothing) Then
-                        ' #Yes: return data name)
-                        Return Me.Data.Name
-                    End If
-                End If
-                ' Return overriding name
-                Return Me.m_strName
+                 Return Me.m_strName
             End Get
             Set(ByVal value As String)
                 Me.m_strName = value
                 Me.Update(eChangeFlags.Descriptive)
             End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the source of this layer.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property Source() As cCoreInputOutputBase
-            Get
-                Return Me.m_source
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the variable of the source this layer applies to.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property VarName() As eVarNameFlags
-            Get
-                Return Me.m_varName
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the underlying core-exposed layer data.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property Data() As cEcospaceLayer
-            Get
-                Return Me.m_data
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the value that this layer interprets as relevant values.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property ValueSet() As Single
-            Get
-                Return Me.m_svalueSet
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the value that this layer interprets as clear values.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property ValueClear() As Single
-            Get
-                Return Me.m_svalueClear
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get whether a given cell position has a value.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Overridable ReadOnly Property IsValue(ByVal objValue As Object) As Boolean
-            Get
-                'If Object.ReferenceEquals(Me.m_sValueSet, Nothing) Then Return False
-
-                ' Composed value types are too horrendous to test - just assuma a value is there
-                ' until a better idea is conconcted.
-                If TypeOf (objValue) Is Array Then Return True
-
-                Dim sCellValue As Single = CSng(objValue)
-
-                If Me.m_sValueSet.Equals(cCore.NULL_VALUE) Then
-                    If Me.m_sValueClear.Equals(cCore.NULL_VALUE) Then
-                        Return (sCellValue <> cCore.NULL_VALUE)
-                    Else
-                        Return (sCellValue <> 0)
-                    End If
-                End If
-                Return Me.m_sValueSet.Equals(sCellValue)
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the value in the underlying data layer.
-        ''' </summary>
-        ''' <param name="iRow"></param>
-        ''' <param name="iCol"></param>
-        ''' -----------------------------------------------------------------------
-        Public Overridable Property Value(ByVal iRow As Integer, ByVal iCol As Integer) As Object
-            Get
-                Return Me.Data.Cell(iRow, iCol)
-            End Get
-            Set(ByVal value As Object)
-                Me.Data.Cell(iRow, iCol) = value
-            End Set
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the data type of values in the underlying data layer.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property ValueType() As Type
-            Get
-                Return Me.m_valueType
-            End Get
         End Property
 
         ''' -----------------------------------------------------------------------
@@ -527,21 +201,6 @@ Namespace Controls.Map.Layers
         Public ReadOnly Property Renderer() As cLayerRenderer
             Get
                 Return Me.m_renderer
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the layer <see cref="cLayerEditor">editor</see>.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Editor() As cLayerEditor
-            Get
-                ' Initialize editor upon request
-                If (Me.m_editor.UIContext Is Nothing) Then
-                    Me.m_editor.Initialize(Me.m_uic, Me)
-                End If
-                Return Me.m_editor
             End Get
         End Property
 
@@ -559,35 +218,6 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get whether the underlying data is 
-        ''' <see cref="cEcospaceLayer.IsExternalData">driven externally</see>.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property IsExternal As Boolean
-            Get
-                Return Me.Data.IsExternalData
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set whether the layer has been modified.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public Property IsModified() As Boolean
-            Get
-                Return Me.m_bModified
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bModified = value
-                If (value = True) Then
-                    Me.Data.Invalidate()
-                End If
-            End Set
-        End Property
-
         Public Property AllowValidation() As Boolean
             Get
                 Return Me.m_bAllowValidation
@@ -599,100 +229,13 @@ Namespace Controls.Map.Layers
 
 #End Region ' Public properties
 
-#Region " Events "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' For core layers, the regular core DataModified messages relay layer 
-        ''' updates.
-        ''' </summary>
-        ''' <param name="msg"></param>
-        ''' -------------------------------------------------------------------
-        Private Sub EcospaceMessageHandler(ByRef msg As cMessage)
-
-            If msg.DataType = Me.Data.DataType Then
-                ' Trigger update
-                Me.Update(eChangeFlags.Map, False)
-            End If
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' For non-core layers, a property change is used to trigger layer 
-        ''' updates among independent copies of layers.
-        ''' </summary>
-        ''' <param name="prop"></param>
-        ''' <param name="changeFlags"></param>
-        ''' -------------------------------------------------------------------
-        Private Sub OnPropertyChanged(ByVal prop As cProperty, ByVal changeFlags As cProperty.eChangeFlags)
-
-            ' Prevent looped updates
-            If Me.m_bInUpdate Then Return
-
-            ' Translate property change flags into layer change flags
-            Dim flag As cLayer.eChangeFlags = 0
-
-            ' Has the name or remark changed?
-            If (changeFlags And (cProperty.eChangeFlags.Value Or cProperty.eChangeFlags.Remarks)) > 0 Then
-                ' Send out layer name change event
-                flag = flag Or eChangeFlags.Descriptive
-            End If
-
-            ' Using the property hacK?
-            If (changeFlags And cProperty.eChangeFlags.Custom) > 0 Then
-                ' Not so sure!
-                flag = flag Or (eChangeFlags.All And (Not eChangeFlags.Map))
-            End If
-
-            If (flag <> 0) Then
-                ' Trigger update
-                Me.Update(flag)
-            End If
-
-        End Sub
-
-#End Region ' Events
-
 #Region " Internals "
-
-        Protected Sub SetUnitHeader(ByVal strUnitMask As String, ByVal aUnitTypes() As cStyleGuide.eUnitType)
-            Me.m_strUnitMask = strUnitMask
-            Me.m_aUnitTypes = aUnitTypes
-        End Sub
 
         Public Overridable ReadOnly Property DisplayText() As String
             Get
-                Dim strDisplayText As String = ""
-
-                If (m_aUnitTypes Is Nothing) Or (String.IsNullOrEmpty(Me.m_strUnitMask)) Then
-                    strDisplayText = Me.Name
-                Else
-                    Try
-                        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-
-                        Select Case m_aUnitTypes.Length
-                            Case 0
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name)
-                            Case 1
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name, _
-                                                               sg.GetUnitString(m_aUnitTypes(0)))
-                            Case 2
-                                strDisplayText = String.Format(Me.m_strUnitMask, Me.Name, _
-                                                               sg.GetUnitString(m_aUnitTypes(0)), _
-                                                               sg.GetUnitString(m_aUnitTypes(1)))
-                            Case Else
-                                Debug.Assert(False)
-                        End Select
-                    Catch ex As Exception
-                        Debug.Assert(False, "Failed to apply format mask, please check")
-                        strDisplayText = Me.Name
-                    End Try
-                End If
-                Return strDisplayText
+                Return Me.Name
             End Get
         End Property
-
 
 #End Region ' Internals
 

@@ -35,7 +35,7 @@ Namespace Commands
     Public Class cExportLayerCommand
         Inherits cCommand
 
-        Private m_alayers() As cLayer = Nothing
+        Private m_alayers() As cRasterLayer = Nothing
 
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~exportLayer"
@@ -55,17 +55,17 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="alayers">The layers to export data from.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cLayer)
+        Public Overloads Sub Invoke(ByVal alayers() As cRasterLayer)
             Me.m_alayers = alayers
             MyBase.Invoke()
         End Sub
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
-        ''' Get the layers the command was invoked for.
+        ''' Get the raster layers the command was invoked for.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property Layers() As cLayer()
+        Public ReadOnly Property Layers() As cRasterLayer()
             Get
                 Return Me.m_alayers
             End Get

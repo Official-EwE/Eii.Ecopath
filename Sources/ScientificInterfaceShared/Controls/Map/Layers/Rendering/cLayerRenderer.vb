@@ -135,23 +135,7 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public MustOverride Sub RenderPreview(ByVal g As Graphics, _
-                                              ByVal rc As Rectangle, _
-                                              ByVal layer As cEcospaceLayer)
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Render a cell of a layer.
-        ''' </summary>
-        ''' <param name="g">The graphics to render onto.</param>
-        ''' <param name="rc">Device area to render cell onto.</param>
-        ''' <param name="layer">Layer to render from</param>
-        ''' <param name="value">The value to render.</param>
-        ''' -----------------------------------------------------------------------
-        Public MustOverride Sub RenderCell(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle, _
-                                           ByVal layer As cEcospaceLayer, _
-                                           ByVal value As Object, _
-                                           ByVal style As cStyleGuide.eStyleFlags)
+                                              ByVal rc As Rectangle)
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -168,11 +152,11 @@ Namespace Controls.Map.Layers
             g.DrawLine(Pens.Red, rc.Left, rc.Bottom, rc.Right, rc.Top)
         End Sub
 
-        Public Overridable Function Clone() As cLayerRenderer
-            Dim minime As cLayerRenderer = Nothing
+        Public Overridable Function Clone() As cRasterLayerRenderer
+            Dim minime As cRasterLayerRenderer = Nothing
             Dim vs As cVisualStyle = Me.VisualStyle.Clone()
 
-            minime = DirectCast(Activator.CreateInstance(Me.GetType(), New Object() {vs}), cLayerRenderer)
+            minime = DirectCast(Activator.CreateInstance(Me.GetType(), New Object() {vs}), cRasterLayerRenderer)
             minime.VisualStyleFlags = Me.VisualStyleFlags
 
             Return minime

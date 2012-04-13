@@ -127,23 +127,28 @@ Namespace Controls.Map
                 ' Just redraw whenever there is time
                 Me.Invalidate()
 
-                Dim pm As cPropertyManager = Me.m_uic.PropertyManager
-                Dim prop As cProperty = pm.GetProperty(Me.Layer.Source, eVarNameFlags.Name)
+                If (TypeOf l Is cRasterLayer) Then
+                    Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                    Dim pm As cPropertyManager = Me.m_uic.PropertyManager
+                    Dim prop As cProperty = pm.GetProperty(rl.Source, eVarNameFlags.Name)
 
-                If prop IsNot Nothing Then
-                    cToolTipShared.GetInstance().SetToolTip(Me, prop.GetRemark)
+                    If prop IsNot Nothing Then
+                        cToolTipShared.GetInstance().SetToolTip(Me, prop.GetRemark)
+                    End If
                 End If
             End If
         End Sub
 
         Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
+            If (TypeOf Me.Layer Is cRasterLayer) Then
+                Try
+                    Dim rl As cRasterLayer = DirectCast(Me.Layer, cRasterLayer)
+                    Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
+                    cmd.Invoke(rl, Nothing, edittype)
+                Catch ex As Exception
 
-            Try
-                Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
-                cmd.Invoke(Me.Layer, Nothing, edittype)
-            Catch ex As Exception
-
-            End Try
+                End Try
+            End If
         End Sub
 
         ''' <summary>
@@ -247,7 +252,7 @@ Namespace Controls.Map
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
             Dim rcPreview As Rectangle = Nothing
-            Dim prop As cProperty = Me.m_uic.PropertyManager.GetProperty(Me.Layer.Source, eVarNameFlags.Name)
+            Dim prop As cProperty = Nothing
             Dim img As Image = Nothing
             Dim fmt As New StringFormat()
 
@@ -260,22 +265,28 @@ Namespace Controls.Map
                 e.Graphics.FillRectangle(SystemBrushes.Control, rcControl)
             End If
 
-            ' Draw editable indicator (only when selected or hovering)
-            If (Me.m_layer.IsExternal) Then
-                img = g_imgData
-            ElseIf (Me.m_layer.Editor.IsReadOnly) Then
-                img = g_imgLock
-            Else
-                If Me.m_bHovering Or Me.m_layer.IsSelected Then
-                    If Me.m_layer.Editor.IsEditable Then
-                        img = g_imgPen0
-                    Else
-                        img = g_imgPen1
+            If (TypeOf Me.m_layer Is cRasterLayer) Then
+                Dim rl As cRasterLayer = DirectCast(Me.m_layer, cRasterLayer)
+                ' Draw editable indicator (only when selected or hovering)
+                If (rl.IsExternal) Then
+                    img = g_imgData
+                ElseIf (rl.Editor.IsReadOnly) Then
+                    img = g_imgLock
+                Else
+                    If Me.m_bHovering Or Me.m_layer.IsSelected Then
+                        If rl.Editor.IsEditable Then
+                            img = g_imgPen0
+                        Else
+                            img = g_imgPen1
+                        End If
                     End If
                 End If
+                ' Extract property
+            Else
+                img = g_imgLock
             End If
 
-            If img IsNot Nothing Then e.Graphics.DrawImage(img, rcEditable)
+            If (img IsNot Nothing) Then e.Graphics.DrawImage(img, rcEditable)
 
             ' Draw visible indicator
             If Me.Layer.Renderer.IsVisible Then
@@ -297,9 +308,13 @@ Namespace Controls.Map
             ' Draw preview
             ' - Render representation
             e.Graphics.FillRectangle(Brushes.White, rcPreview)
-            Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview, Me.Layer.Data)
-            ' - Render remarks indicator
-            cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
+            Me.m_layer.Renderer.RenderPreview(e.Graphics, rcPreview)
+
+            If (prop IsNot Nothing) Then
+                ' - Render remarks indicator
+                cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
+            End If
+
             ' - Render border
             ControlPaint.DrawBorder3D(e.Graphics, rcPreview, Border3DStyle.Sunken, _
                 Border3DSide.Bottom Or Border3DSide.Left Or Border3DSide.Top Or Border3DSide.Right)
@@ -309,11 +324,6 @@ Namespace Controls.Map
                 ControlPaint.DrawBorder(e.Graphics, rcEditable, SystemColors.ControlDark, ButtonBorderStyle.Solid)
                 ControlPaint.DrawBorder(e.Graphics, rcVisible, SystemColors.ControlDark, ButtonBorderStyle.Solid)
             End If
-
-            '' Highlight line at the top
-            'e.Graphics.DrawLine(SystemPens.ButtonHighlight, 0, 0, rcControl.Width, 0)
-            ' '' Shadow line at the bottom
-            'e.Graphics.DrawLine(SystemPens.ButtonShadow, 0, rcControl.Height - 1, rcControl.Width, rcControl.Height - 1)
 
         End Sub
 
@@ -335,8 +345,11 @@ Namespace Controls.Map
                     Me.EditLayer(eLayerEditTypes.EditVisuals)
 
                 Case eAreaTypes.Editable
-                    Me.m_layer.Editor.IsEditable = Not Me.m_layer.Editor.IsEditable
-                    flag = flag Or cLayer.eChangeFlags.Editable
+                    If (TypeOf Me.m_layer Is cRasterLayer) Then
+                        Dim edt As cLayerEditor = DirectCast(Me.m_layer, cRasterLayer).Editor
+                        edt.IsEditable = Not edt.IsEditable
+                        flag = flag Or cLayer.eChangeFlags.Editable
+                    End If
 
                 Case eAreaTypes.Label
                 Case eAreaTypes.Background

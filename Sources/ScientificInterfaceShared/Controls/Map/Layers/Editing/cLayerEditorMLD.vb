@@ -54,7 +54,8 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cLayerEditor.Initialize"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Sub Initialize(ByVal uic As cUIContext, ByVal layer As cLayer)
+        Public Overrides Sub Initialize(ByVal uic As cUIContext, _
+                                        ByVal layer As cRasterLayer)
             MyBase.Initialize(uic, layer)
 
             Dim bm As cEcospaceBasemap = uic.Core.EcospaceBasemap

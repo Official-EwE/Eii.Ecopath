@@ -33,7 +33,7 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerRendererUpwelling
-        Inherits cLayerRenderer
+        Inherits cRasterLayerRenderer
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
@@ -58,7 +58,9 @@ Namespace Controls.Map.Layers
             Dim iG As Integer = 0
             Dim iB As Integer = 0
 
-            If layer.MaxValue > 0.0! Then sMax = layer.MaxValue
+            If (layer IsNot Nothing) Then
+                If (layer.MaxValue > 0.0!) Then sMax = layer.MaxValue
+            End If
 
             If TypeOf value Is Single Then
                 ' Get value to render
@@ -72,8 +74,8 @@ Namespace Controls.Map.Layers
                 ' Has a value to draw?
                 If (sValue <> 0.0!) Then
                     ' #Yes: render a Green (up) or Blue (down) upwelling arrow
-                    iG = IIf(sValue > 0, 150, 0)
-                    iB = IIf(sValue > 0, 0, 150)
+                    iG = IIF(sValue > 0, 150, 0)
+                    iB = IIF(sValue > 0, 0, 150)
                     Using p As New Pen(Color.FromArgb(255, iR, iG, iB), 0.001!)
                         g.DrawLine(p, _
                                    ptfCenter.X, ptfCenter.Y - sHalfArrow, _
@@ -98,11 +100,10 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle, _
-                                           ByVal layer As EwECore.cEcospaceLayer)
+                                           ByVal rc As Rectangle)
 
             If Me.IsStyleValid Then
-                Me.RenderCell(g, rc, layer, 42.0!, cStyleGuide.eStyleFlags.OK)
+                Me.RenderCell(g, rc, Nothing, 1.0!, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
             End If

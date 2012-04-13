@@ -308,7 +308,7 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Fire global selection command to allow users to manage remarks for
-        ''' the <see cref="cLayer.Source">source attached a layer</see>.
+        ''' a <see cref="EwECore.cCoreInputOutputBase">source</see> attached a layer.
         ''' </summary>
         ''' <param name="layer"><see cref="cLayer">Layer</see> that has been 
         ''' selected.</param>
@@ -321,11 +321,14 @@ Namespace Controls.Map
             Dim pm As cPropertyManager = Me.m_uic.PropertyManager
             Dim prop As cProperty = Nothing
 
-            If Not Object.ReferenceEquals(layer, Nothing) Then
-                prop = pm.GetProperty(layer.Source, layer.VarName)
+            If (Not Object.ReferenceEquals(layer, Nothing)) Then
+                If (TypeOf layer Is cRasterLayer) Then
+                    Dim rsl As cRasterLayer = DirectCast(layer, cRasterLayer)
+                    prop = pm.GetProperty(rsl.Source, rsl.VarName)
+                End If
             End If
 
-            If cmd IsNot Nothing Then
+            If (cmd IsNot Nothing) And (prop IsNot Nothing) Then
                 If (TypeOf cmd Is cPropertySelectionCommand) Then
                     sc = DirectCast(cmd, cPropertySelectionCommand)
                     sc.Invoke(prop)

@@ -35,18 +35,17 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerRendererArrow
-        Inherits cLayerRenderer
+        Inherits cRasterLayerRenderer
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle, _
-                                           ByVal layer As cEcospaceLayer)
+                                           ByVal rc As Rectangle)
             If Me.IsStyleValid Then
                 'g.FillRectangle(Brushes.White, rc)
-                Me.RenderCell(g, rc, layer, 45, cStyleGuide.eStyleFlags.OK)
+                Me.RenderCell(g, rc, Nothing, 45, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
             End If

@@ -53,17 +53,17 @@ Namespace Ecospace.Basemap.Layers
         ''' -------------------------------------------------------------------
         Public Overloads Function GetLayers(ByVal uic As cUIContext, _
                                             ByVal varName As eVarNameFlags, _
-                                            Optional ByVal layerData As cEcospaceLayer = Nothing) As cLayer()
+                                            Optional ByVal layerData As cEcospaceLayer = Nothing) As cRasterLayer()
 
-            Dim lLayers As New List(Of cLayer)
+            Dim lLayers As New List(Of cRasterLayer)
 
             Dim core As cCore = uic.Core
             Dim bmd As cEcospaceBasemap = core.EcospaceBasemap
-            Dim layer As cLayer = Nothing
+            Dim layer As cRasterLayer = Nothing
             Dim key As cValueID = Nothing
             Dim ad As cAuxiliaryData = Nothing
             Dim avs As cVisualStyle() = Nothing
-            Dim renderer As cLayerRenderer = Nothing
+            Dim renderer As cRasterLayerRenderer = Nothing
             Dim editor As cLayerEditor = Nothing
             Dim vs As cVisualStyle = Nothing
 
@@ -78,7 +78,7 @@ Namespace Ecospace.Basemap.Layers
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
                     If layerData Is Nothing Then layerData = bmd.LayerMPASeed
-                    layer = New cLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMPASeed, 1, 0)
+                    layer = New cRasterLayer(uic, layerData, renderer, editor, bmd, eVarNameFlags.LayerMPASeed, 1, 0)
 
                     lLayers.Add(layer)
 
@@ -92,7 +92,7 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-                    layer = New cLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.Name, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.Name, cECOSEED_LAYER_CURRENTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = My.Resources.ECOSPACE_LAYER_SEEDCURRENT ' Use local layer name
                     layer.Editor.IsReadOnly = True
 
@@ -109,7 +109,7 @@ Namespace Ecospace.Basemap.Layers
                     ' Represent MPA seeds as a solid colour
                     renderer = New cLayerRendererSymbol(vs)
                     editor = New cLayerEditorTwoState()
-                    layer = New cLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.NotSet, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
+                    layer = New cRasterLayer(uic, layerData, renderer, editor, Nothing, eVarNameFlags.NotSet, cECOSEED_LAYER_BESTVALUE, cECOSEED_LAYER_NOVALUE)
                     layer.Name = My.Resources.ECOSPACE_LAYER_SEEDBEST
                     layer.Editor.IsReadOnly = True
 
@@ -124,7 +124,7 @@ Namespace Ecospace.Basemap.Layers
 
                         renderer = New cLayerRendererValue(vs)
                         editor = New cLayerEditorRange()
-                        layer = New cLayer(uic, layerData, renderer, editor)
+                        layer = New cRasterLayer(uic, layerData, renderer, editor)
                         layer.Name = My.Resources.ECOSPACE_LAYER_RANDOMBEST
                         layer.Editor.IsReadOnly = True
 
@@ -169,9 +169,9 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="uic"></param>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
-        Public Function BaseRasterLayers(uic As cUIContext) As cLayer()
+        Public Function BaseRasterLayers(uic As cUIContext) As cRasterLayer()
 
-            Dim lLayers As New List(Of cLayer)
+            Dim lLayers As New List(Of cRasterLayer)
 
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerDepth))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerMPA))

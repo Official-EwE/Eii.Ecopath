@@ -54,11 +54,11 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property Fleet() As Integer
             Get
-                Dim layer As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
+                Dim layer As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
                 Return layer.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layer As cLayerBundle = DirectCast(Me.Layer, cLayerBundle)
+                Dim layer As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
                 ' Will fleet index change?
                 If value <> layer.iLayer Then
                     ' #Yes: update index in the underlying layer collector

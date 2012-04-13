@@ -18,6 +18,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Drawing.Drawing2D
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
@@ -28,35 +29,26 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer renderer that draws cells as a coloured symbol, using the 
-    ''' foreground colour in the attaced <see cref="cLayerRenderer.VisualStyle">visual style</see>
-    ''' to fill the symbol.
+    ''' Layer renderer that draws cells as a bitmap, provided in the attached
+    ''' <see cref="cLayerRenderer.VisualStyle">visual style</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerRendererSymbol
-        Inherits cLayerRenderer
+    Public Class cLayerRendererBitmap
+        Inherits cRasterLayerRenderer
 
         Public Sub New(ByVal vs As cVisualStyle)
-            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
+            MyBase.New(vs, cVisualStyle.eVisualStyleTypes.Image)
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle, _
-                                           ByVal layer As cEcospaceLayer)
-
-            If Me.IsStyleValid() Then
-                rc.Inflate(CInt(-rc.Width * 0.75), CInt(-rc.Height * 0.75))
-                Using p As New Pen(Color.White, 3)
-                    g.DrawEllipse(p, rc)
+                                           ByVal rc As Rectangle)
+            If (Me.IsStyleValid) Then
+                Using br As New TextureBrush(Me.VisualStyle.Image, WrapMode.Tile)
+                    g.FillRectangle(br, rc)
                 End Using
-                Using br As New SolidBrush(Me.VisualStyle.ForeColour)
-                    g.FillEllipse(br, rc)
-                End Using
-                g.DrawEllipse(Pens.Black, rc)
             Else
                 Me.RenderError(g, rc)
             End If
-
         End Sub
 
         Public Overrides Sub RenderCell(ByVal g As System.Drawing.Graphics, _
@@ -64,11 +56,19 @@ Namespace Controls.Map.Layers
                                         ByVal layer As cEcospaceLayer, _
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
-            Me.RenderPreview(g, rc, layer)
+            Me.RenderPreview(g, rc)
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean
-            Return True
+            Return (Me.VisualStyle.Image IsNot Nothing)
+        End Function
+
+        Public Overrides Function Clone() As cRasterLayerRenderer
+            Dim objClone As Object = Nothing
+            Dim vs As cVisualStyle = Me.VisualStyle.Clone()
+
+            objClone = Activator.CreateInstance(Me.GetType(), New Object() {vs})
+            Return DirectCast(objClone, cRasterLayerRenderer)
         End Function
 
     End Class

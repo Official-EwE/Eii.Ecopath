@@ -31,10 +31,10 @@ Imports ScientificInterfaceShared.Style
 Namespace Controls.Map.Layers
 
     ''' <summary>
-    ''' Layer that wraps a collection of <see cref="cLayer"/> for bundled display in the UI.
+    ''' Layer that wraps a collection of <see cref="cEcospaceLayer"/>s for bundled display in the UI.
     ''' </summary>
-    Public Class cLayerBundle
-        Inherits cLayer
+    Public Class cRasterLayerBundle
+        Inherits cRasterLayer
 
         Private m_layers As cEcospaceLayer()
         Private m_iLayer As Integer = 0

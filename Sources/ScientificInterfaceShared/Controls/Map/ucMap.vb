@@ -260,9 +260,11 @@ Namespace Controls.Map
 
             If (Me.CanEdit = False) Then Return
 
+            Dim rl As cRasterLayer = DirectCast(Me.m_layerSelected, cRasterLayer)
+
             If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
 
-                Me.m_layerSelected.Editor.Pickup(Me.GetCellIndex(e.Location))
+                rl.Editor.Pickup(Me.GetCellIndex(e.Location))
                 Me.Capture = False
 
             ElseIf ((e.Button And MouseButtons.Left) > 0) Then
@@ -273,7 +275,7 @@ Namespace Controls.Map
                 If Not bShiftPressed Then Me.m_ptScreenPrevious = Nothing
 
                 ' Start editing
-                Me.m_layerSelected.Editor.StartEdit(ptCellCur, e)
+                rl.Editor.StartEdit(ptCellCur, e)
 
                 Me.ProcessMouseInput(e)
             End If
@@ -304,11 +306,14 @@ Namespace Controls.Map
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
 
-            Me.m_layerSelected.Editor.EndEdit()
+            DirectCast(Me.m_layerSelected, cRasterLayer).Editor.EndEdit()
 
             ' Process pending layer changes
             For Each l As cLayer In m_layers
-                If l.IsModified Then l.Update(cLayer.eChangeFlags.Map) : l.IsModified = False
+                If (TypeOf l Is cRasterLayer) Then
+                    Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                    If rl.IsModified Then rl.Update(cLayer.eChangeFlags.Map) : rl.IsModified = False
+                End If
             Next
 
             Me.Capture = False
@@ -396,15 +401,16 @@ Namespace Controls.Map
             Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur)
             Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
             Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
+            Dim rl As cRasterLayer = DirectCast(Me.m_layerSelected, cRasterLayer)
 
-            Me.m_layerSelected.Editor.Edit(ptCellFrom, ptCellTo, _
+            rl.Editor.Edit(ptCellFrom, ptCellTo, _
                                            New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
                                            Me.GetCellSize(), _
                                            e, _
                                            ptUpdateMin, ptUpdateMax)
 
             ' Flag layer as changed
-            Me.m_layerSelected.IsModified = True
+            rl.IsModified = True
 
             Me.UpdateMap(Me.m_bmp, ptUpdateMin, ptUpdateMax)
 
@@ -481,37 +487,56 @@ Namespace Controls.Map
                     ptCell = New Point(X, Y)
                     rcScreen = Me.GetCellRect(ptCell)
 
-                    ' Draw layers in reverse order
+                    ' Draw raster layers in reverse order
                     For iLayer As Integer = Me.m_layers.Count - 1 To 0 Step -1
 
-                        ' Get layer
                         l = Me.m_layers(iLayer)
-                        ' Reset style flag
-                        style = cStyleGuide.eStyleFlags.OK
+                        If (TypeOf l Is cRasterLayer) Then
 
-                        Select Case l.Data.DataType
-                            Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort
-                                bDrawCell = True
-                            Case Else
-                                bDrawCell = (CInt(ldDepth.Cell(Y, X)) > 0)
-                        End Select
+                            Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                            style = cStyleGuide.eStyleFlags.OK
 
-                        If l.Renderer.IsVisible And bDrawCell Then
-                            Dim objValue As Object = l.Value(ptCell.Y, ptCell.X)
-                            If l.IsValue(objValue) Then
-                                ' Build style flags
-                                If l.IsSelected Then
-                                    style = (style Or cStyleGuide.eStyleFlags.Highlight)
+                            Select Case rl.Data.DataType
+                                Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort
+                                    bDrawCell = True
+                                Case Else
+                                    bDrawCell = (CInt(ldDepth.Cell(Y, X)) > 0)
+                            End Select
+
+                            If l.Renderer.IsVisible And bDrawCell Then
+                                Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
+                                If rl.IsValue(objValue) Then
+                                    ' Build style flags
+                                    If l.IsSelected Then
+                                        style = (style Or cStyleGuide.eStyleFlags.Highlight)
+                                    End If
+                                    ' Render cell
+                                    DirectCast(l.Renderer, cRasterLayerRenderer).RenderCell(g, rcScreen, rl.Data, objValue, style)
                                 End If
-                                ' Render cell
-                                l.Renderer.RenderCell(g, rcScreen, l.Data, objValue, style)
                             End If
                         End If
 
                     Next iLayer
-
                 Next Y
             Next X
+
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim ptTL As New PointF(bm.RowToLat(iYFrom), bm.ColToLon(iXFrom))
+            Dim ptBR As New PointF(bm.RowToLat(iYTo), bm.ColToLon(iXTo))
+
+            ' Draw all vector layers in reverse order
+            For iLayer As Integer = Me.m_layers.Count - 1 To 0 Step -1
+
+                ' Get layer
+                l = Me.m_layers(iLayer)
+
+                If l.Renderer.IsVisible And (TypeOf l.Renderer Is cVectorLayerRenderer) Then
+                    style = cStyleGuide.eStyleFlags.OK
+                    If l.IsSelected Then style = (style Or cStyleGuide.eStyleFlags.Highlight)
+                    DirectCast(l.Renderer, cVectorLayerRenderer).Render(g, rcScreen, ptTL, ptBR, style)
+                End If
+
+            Next iLayer
 
             g.Dispose()
 
@@ -543,7 +568,7 @@ Namespace Controls.Map
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
             If Me.CanEdit Then
-                Me.Cursor = Me.m_layerSelected.Editor.Cursor(Me.GetCellSize())
+                Me.Cursor = DirectCast(Me.m_layerSelected, cRasterLayer).Editor.Cursor(Me.GetCellSize())
             Else
                 Me.Cursor = Cursors.Default
             End If
@@ -578,8 +603,9 @@ Namespace Controls.Map
         Private Function CanEdit() As Boolean
             If (Me.Editable = False) Then Return False
             If (Me.m_layerSelected Is Nothing) Then Return False
-            If (Me.m_layerSelected.Editor.IsEditable = False) Then Return False
+            If Not (TypeOf Me.m_layerSelected Is cRasterLayer) Then Return False
             If (Me.m_layerSelected.Renderer.IsVisible = False) Then Return False
+            If (DirectCast(Me.m_layerSelected, cRasterLayer).Editor.IsEditable = False) Then Return False
             Return True
         End Function
 

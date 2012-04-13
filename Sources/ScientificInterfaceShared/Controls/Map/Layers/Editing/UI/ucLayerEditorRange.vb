@@ -104,10 +104,10 @@ Namespace Controls.Map.Layers
 
             Dim bmp As New Bitmap(Me.m_pbPreview.Width, Me.m_pbPreview.Height, Imaging.PixelFormat.Format32bppArgb)
             Dim g As Graphics = Graphics.FromImage(bmp)
-            Dim renderer As cLayerRenderer = Nothing
+            Dim renderer As cRasterLayerRenderer = Nothing
 
             If Me.Layer IsNot Nothing Then
-                renderer = Me.Layer.Renderer
+                renderer = DirectCast(Me.Layer.Renderer, cRasterLayerRenderer)
             End If
 
             If (renderer IsNot Nothing) Then

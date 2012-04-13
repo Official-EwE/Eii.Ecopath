@@ -34,15 +34,14 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerRendererHatch
-        Inherits cLayerRenderer
+        Inherits cRasterLayerRenderer
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor Or cVisualStyle.eVisualStyleTypes.BackColor Or cVisualStyle.eVisualStyleTypes.Hatch)
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle, _
-                                           ByVal layer As cEcospaceLayer)
+                                           ByVal rc As Rectangle)
             If Me.IsStyleValid Then
                 Using br As New HatchBrush(Me.VisualStyle.HatchStyle, Me.VisualStyle.ForeColour, Me.VisualStyle.BackColour)
                     g.FillRectangle(br, rc)
@@ -57,7 +56,7 @@ Namespace Controls.Map.Layers
                                         ByVal layer As cEcospaceLayer, _
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
-            Me.RenderPreview(g, rc, layer)
+            Me.RenderPreview(g, rc)
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean

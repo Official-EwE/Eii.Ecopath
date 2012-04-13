@@ -34,17 +34,16 @@ Namespace Controls.Map.Layers
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLayerRendererWindEwE5
-        Inherits cLayerRenderer
+        Inherits cRasterLayerRenderer
 
         Public Sub New(ByVal vs As cVisualStyle)
             MyBase.New(vs, cVisualStyle.eVisualStyleTypes.ForeColor)
         End Sub
 
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
-                                           ByVal rc As Rectangle, _
-                                           ByVal layer As cEcospaceLayer)
+                                           ByVal rc As Rectangle)
             If Me.IsStyleValid Then
-                Me.RenderCell(g, rc, layer, New Single() {5, 5}, cStyleGuide.eStyleFlags.OK)
+                Me.RenderCell(g, rc, Nothing, New Single() {5, 5}, cStyleGuide.eStyleFlags.OK)
             Else
                 Me.RenderError(g, rc)
             End If
@@ -74,7 +73,9 @@ Namespace Controls.Map.Layers
             Dim sScaleX As Single = 0.0!
             Dim sScaleY As Single = 0.0!
 
-            If (layer.MaxValue > 0) Then sMax = layer.MaxValue
+            If (layer IsNot Nothing) Then
+                If (layer.MaxValue > 0) Then sMax = layer.MaxValue
+            End If
 
             If TypeOf value Is Single() Then
                 asValues = DirectCast(value, Single())

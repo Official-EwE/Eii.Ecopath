@@ -371,7 +371,9 @@ Namespace Controls.Map
 
             For Each l As cLayer In Me.m_lLayers
                 bHasSelectedLayers = bHasSelectedLayers Or l.IsSelected
-                bHasEditableLayers = bHasEditableLayers Or (l.IsSelected And l.Editor.IsEditable)
+                If (TypeOf l Is cRasterLayer) Then
+                    bHasEditableLayers = bHasEditableLayers Or (l.IsSelected And DirectCast(l, cRasterLayer).Editor.IsEditable)
+                End If
             Next
 
             Me.m_tsbnImport.Visible = bHasEditableLayers And bHasSelectedLayers
@@ -385,15 +387,15 @@ Namespace Controls.Map
             Handles m_tsbnImport.Click
 
             Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-            Dim lLayers As New List(Of cLayer)
+            Dim lLayers As New List(Of cRasterLayer)
 
             For Each l As cLayer In Me.m_lLayers
-                If (l.IsSelected) Then
-                    lLayers.Add(l)
+                If (l.IsSelected) And (TypeOf l Is cRasterLayer) Then
+                    lLayers.Add(DirectCast(l, cRasterLayer))
                 End If
             Next
 
-            cmd.Invoke(lLayers.ToArray)
+            If (lLayers.Count > 0) Then cmd.Invoke(lLayers.ToArray)
 
         End Sub
 
@@ -401,15 +403,15 @@ Namespace Controls.Map
             Handles m_tsbnExport.Click
 
             Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-            Dim lLayers As New List(Of cLayer)
+            Dim lLayers As New List(Of cRasterLayer)
 
             For Each l As cLayer In Me.m_lLayers
-                If (l.IsSelected) Then
-                    lLayers.Add(l)
+                If (l.IsSelected) And (TypeOf l Is cRasterLayer) Then
+                    lLayers.Add(DirectCast(l, cRasterLayer))
                 End If
             Next
 
-            cmd.Invoke(lLayers.ToArray)
+            If (lLayers.Count > 0) Then cmd.Invoke(lLayers.ToArray)
 
         End Sub
 

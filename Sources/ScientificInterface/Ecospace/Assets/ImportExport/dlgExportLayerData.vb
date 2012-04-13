@@ -48,9 +48,9 @@ Namespace Ecospace.Basemap
 #Region " Private vars "
 
             ''' <summary>The layers to map upon.</summary>
-            Private m_aLayers As cLayer()
+            Private m_aLayers As cRasterLayer()
             ''' <summary>Mappings. MAPPINGS!</summary>
-            Private m_dtLayerMapping As New Dictionary(Of cLayer, String)
+            Private m_dtLayerMapping As New Dictionary(Of cRasterLayer, String)
 
             Private Enum eColumnTypes As Integer
                 ColumnLayer = 0
@@ -70,17 +70,17 @@ Namespace Ecospace.Basemap
 
 #Region " Public interfaces "
 
-            Public Property Layers() As cLayer()
+            Public Property Layers() As cRasterLayer()
                 Get
                     Return Nothing
                 End Get
-                Set(ByVal value As cLayer())
+                Set(ByVal value As cRasterLayer())
 
                     Me.m_aLayers = value
                     Me.m_dtLayerMapping.Clear()
 
                     If value IsNot Nothing Then
-                        For Each l As cLayer In value
+                        For Each l As cRasterLayer In value
                             Me.m_dtLayerMapping(l) = l.DisplayText.Trim()
                         Next
                     End If
@@ -89,7 +89,7 @@ Namespace Ecospace.Basemap
                 End Set
             End Property
 
-            Public Function Mappings() As Dictionary(Of cLayer, String)
+            Public Function Mappings() As Dictionary(Of cRasterLayer, String)
                 Return Me.m_dtLayerMapping
             End Function
 
@@ -121,7 +121,7 @@ Namespace Ecospace.Basemap
 
                 Me.RowsCount = 1
 
-                Dim layer As cLayer = Nothing
+                Dim layer As cRasterLayer = Nothing
                 Dim ewec As EwECell = Nothing
                 Dim cmb As Cells.Real.ComboBox = Nothing
 
@@ -154,7 +154,7 @@ Namespace Ecospace.Basemap
                 MyBase.OnCellValueChanged(p, cell)
 
                 Dim strField As String = Me.FieldAtRow(p.Row)
-                Dim layer As cLayer = Me.LayerAtRow(p.Row)
+                Dim layer As cRasterLayer = Me.LayerAtRow(p.Row)
 
                 Try
                     If String.IsNullOrWhiteSpace(strField) Then
@@ -170,9 +170,9 @@ Namespace Ecospace.Basemap
 
             End Function
 
-            Private Function LayerAtRow(ByVal iRow As Integer) As cLayer
+            Private Function LayerAtRow(ByVal iRow As Integer) As cRasterLayer
                 If iRow > 0 And iRow < Me.RowsCount Then
-                    Return DirectCast(Me.Rows(iRow).Tag, cLayer)
+                    Return DirectCast(Me.Rows(iRow).Tag, cRasterLayer)
                 End If
                 Return Nothing
             End Function
@@ -197,7 +197,7 @@ Namespace Ecospace.Basemap
 #Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
-        Private m_lLayers As New List(Of cLayer)
+        Private m_lLayers As New List(Of cRasterLayer)
         Private m_bDataValid As Boolean = False
         Private m_data As cEcospaceImportExportXYData = Nothing
 
@@ -214,11 +214,11 @@ Namespace Ecospace.Basemap
 
 #Region " Public properties "
 
-        Public Property Layers() As cLayer()
+        Public Property Layers() As cRasterLayer()
             Get
                 Return Me.m_lLayers.ToArray()
             End Get
-            Set(ByVal aLayers As cLayer())
+            Set(ByVal aLayers As cRasterLayer())
                 Me.m_lLayers.Clear()
 
                 If aLayers Is Nothing Then Return
@@ -258,7 +258,7 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            For Each layer As cLayer In Me.m_lLayers
+            For Each layer As cRasterLayer In Me.m_lLayers
                 If layer IsNot Nothing Then
                     layer.Dispose()
                 End If
@@ -309,12 +309,12 @@ Namespace Ecospace.Basemap
 
             ' ToDo: localize this method
 
-            Dim dtMappings As Dictionary(Of cLayer, String) = Me.m_grid.Mappings()
+            Dim dtMappings As Dictionary(Of cRasterLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim lstrFields As New List(Of String)
             Dim strField As String = ""
             Dim strFile As String = Me.m_tbTarget.Text
-            Dim layer As cLayer = Nothing
+            Dim layer As cRasterLayer = Nothing
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0

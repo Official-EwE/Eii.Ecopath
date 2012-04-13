@@ -198,23 +198,26 @@ Namespace Controls.Map
             Select Case Me.GetRenderStyle(l)
 
                 Case eLayerRenderStyle.Element
-                    l.Renderer.RenderPreview(g, rcPreview, l.Data)
+                    l.Renderer.RenderPreview(g, rcPreview)
                     g.DrawRectangle(Pens.Black, rcPreview)
                     g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
 
                 Case eLayerRenderStyle.Symbol
-                    l.Renderer.RenderPreview(g, rcPreview, l.Data)
+                    l.Renderer.RenderPreview(g, rcPreview)
                     g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
 
                 Case eLayerRenderStyle.Gradient
-                    l.Renderer.RenderPreview(g, rcPreview, l.Data)
+                    l.Renderer.RenderPreview(g, rcPreview)
                     g.DrawRectangle(Pens.Black, rcPreview)
-                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Data.MaxValue), _
-                                 ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
+                    If (TypeOf l Is cRasterLayer) Then
+                        Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(rl.Data.MaxValue), _
+                                     ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
+                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(rl.Data.MinValue), _
+                                     ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
+                    End If
                     g.DrawString(l.Name, _
                                  ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y + (szfBox.Height / 3))
-                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Data.MinValue), _
-                                 ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
             End Select
         End Sub
 

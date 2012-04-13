@@ -38,8 +38,8 @@ Namespace Controls.Map.Layers
 
         ''' <summary>Underlying editor.</summary>
         Private m_editor As cLayerEditor = Nothing
-        ''' <summary>Underlying editor.</summary>
-        Private m_layer As cLayer = Nothing
+        ''' <summary>Underlying raster layer.</summary>
+        Private m_layer As cRasterLayer = Nothing
         ''' <summary>Underlying UI context.</summary>
         Private m_uic As cUIContext = Nothing
 
@@ -58,7 +58,7 @@ Namespace Controls.Map.Layers
 
         Public Sub Attach(ByVal uic As cUIContext, _
                           ByVal editor As cLayerEditor, _
-                          ByVal layer As cLayer)
+                          ByVal layer As cRasterLayer)
             Me.UIContext = uic
             Me.Editor = editor
             Me.Layer = layer
@@ -101,11 +101,11 @@ Namespace Controls.Map.Layers
         ''' GUI to show editor previews.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Layer() As cLayer
+        Public Overridable Property Layer() As cRasterLayer
             Get
                 Return Me.m_layer
             End Get
-            Protected Set(ByVal layer As cLayer)
+            Protected Set(ByVal layer As cRasterLayer)
                 Me.m_layer = layer
                 Me.Invalidate(True)
             End Set
