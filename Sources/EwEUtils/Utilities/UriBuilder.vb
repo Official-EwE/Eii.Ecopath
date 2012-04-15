@@ -20,10 +20,9 @@
 Option Strict On
 
 Imports System
-Imports System.Web
-Imports System.Collections.Generic
 Imports System.Collections.Specialized
-Imports Microsoft.VisualBasic
+Imports System.Web
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -138,7 +137,7 @@ Namespace Utilities
 
             For Each s As String In astrPairs
                 Dim astrPair() As String = s.Split(New Char() {"="c})
-                Me.m_dtQuery(astrPair(0)) = CStr(IIf(astrPair.Length > 1, astrPair(1), String.Empty))
+                Me.m_dtQuery(astrPair(0)) = CStr(cSystemUtils.IIF(astrPair.Length > 1, astrPair(1), String.Empty))
             Next
         End Sub
 

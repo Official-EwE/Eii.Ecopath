@@ -33,6 +33,7 @@ Imports System.Reflection
 Imports System.IO
 Imports System.Drawing.Imaging
 Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -201,7 +202,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private Sub OnLoadFromFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiLoad.Click
 
-            Dim ifData As cINIFile = Nothing
+            Dim ifData As cXMLINIfile = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
 
@@ -209,7 +210,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             If (cmdFO.Result = DialogResult.OK) Then
                 Try
-                    ifData = New cINIFile(cmdFO.FileName)
+                    ifData = New cXMLINIfile(cmdFO.FileName)
                     m_doodler.LoadFromFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
@@ -223,7 +224,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private Sub OnSaveToFile(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiSave.Click
 
-            Dim ifData As cINIFile = Nothing
+            Dim ifData As cXMLINIfile = Nothing
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
@@ -231,7 +232,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
                 Try
-                    ifData = New cINIFile(cmdFS.FileName)
+                    ifData = New cXMLINIfile(cmdFS.FileName)
                     m_doodler.SaveToFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
                 Catch ex As Exception
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _

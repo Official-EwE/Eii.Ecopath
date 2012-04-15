@@ -252,7 +252,6 @@ Public Class cEIIXMLDataSource
         Implements IEcopathDataSource.LoadModel
 
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim i As Integer
 
         Dim strEwEVersion As String
         Dim sDBVersion As Single
@@ -3256,13 +3255,13 @@ Public Class cEIIXMLDataSource
         Dim xnData As XmlCDataSection = DirectCast(xn.ChildNodes(0), XmlCDataSection)
         Dim xaCols As XmlAttribute = xn.Attributes("Columns")
         Dim astrRows As String() = Nothing
-        Dim astrColDefs As String() = xaCols.InnerText.Split(","c)
+        Dim astrColDefs As String() = cStringUtils.SplitQualified(xaCols.InnerText, ","c)
         Dim astrCols(astrColDefs.Length - 1) As String
         Dim atCols(astrColDefs.Length - 1) As Type
         Dim dt As New DataTable(xn.Name)
 
         For i As Integer = 0 To astrColDefs.Length - 1
-            Dim astrColDef As String() = astrColDefs(i).Split(":"c)
+            Dim astrColDef As String() = cStringUtils.SplitQualified(astrColDefs(i), ":"c)
             astrCols(i) = astrColDef(0)
             atCols(i) = Type.GetType(astrColDef(1))
             dt.Columns.Add(astrCols(i), atCols(i))

@@ -21,7 +21,6 @@ Option Strict On
 Imports System
 Imports System.Diagnostics
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 Imports EwEUtils.Commands
 Imports System.Collections.Generic
 
@@ -157,7 +156,7 @@ Public Class cPluginMenuHandler
             While iItem < tsic.Count And Not bFound
                 If (TypeOf tsic.Item(iItem) Is ToolStripMenuItem) Then
                     tsi = DirectCast(tsic.Item(iItem), ToolStripMenuItem)
-                    bFound = (String.Compare(Trim(tsi.Name), Trim(aLocations(iLocation)), False) = 0)
+                    bFound = (String.Compare(tsi.Name.Trim(), aLocations(iLocation).Trim(), False) = 0)
                 End If
                 iItem += 1
             End While

@@ -21,7 +21,6 @@ Option Strict On
 Imports System
 Imports System.Security.Principal
 Imports System.IO
-Imports Microsoft.VisualBasic
 Imports EwEUtils.Win32Api
 Imports EwEUtils.Utilities
 Imports System.Security.AccessControl
@@ -114,7 +113,7 @@ Namespace SystemUtilities
         ''' </returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function ApplicationLaunchLocations() As String()
-            Return New String() {Mid(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase), 7), _
+            Return New String() {Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).Substring(7), _
                                  Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFiles) & "\Ecopath"}
         End Function
 

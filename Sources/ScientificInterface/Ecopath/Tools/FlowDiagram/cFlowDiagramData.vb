@@ -79,7 +79,10 @@ Namespace Ecopath.Controls.FlowDiagram
             End Get
         End Property
 
-        Public ReadOnly Property NumGroups() As Integer
+        Public Property NumGroups() As Integer
+            Set(value As Integer)
+
+            End Set
             Get
                 Return Me.m_uic.Core.nGroups
             End Get

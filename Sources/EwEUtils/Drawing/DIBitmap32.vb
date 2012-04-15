@@ -19,7 +19,6 @@ Option Strict On
 Imports System
 Imports System.Data
 Imports System.Drawing
-Imports Microsoft.VisualBasic
 
 Namespace Drawing
 
@@ -232,9 +231,9 @@ Namespace Drawing
             Dim fSrc As Single = CSng((Me.Alpha / 255) * (additionalAlpha / 255))
             Dim fDst As Single = 1 - fSrc
             With pxRet
-                .Red = CByte(Int((Me.Red * fSrc) + (.Red * fDst)))
-                .Green = CByte(Int((Me.Green * fSrc) + (.Green * fDst)))
-                .Blue = CByte(Int((Me.Blue * fSrc) + (.Blue * fDst)))
+                .Red = CByte(CInt((Me.Red * fSrc) + (.Red * fDst)))
+                .Green = CByte(CInt((Me.Green * fSrc) + (.Green * fDst)))
+                .Blue = CByte(CInt((Me.Blue * fSrc) + (.Blue * fDst)))
                 .Alpha = CByte(.Alpha + ((255 - .Alpha) * fSrc))
             End With
             Return pxRet

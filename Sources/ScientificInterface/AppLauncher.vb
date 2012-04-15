@@ -275,7 +275,7 @@ Public Class AppLauncher
 
     Private Sub ProcessCommandLine()
 
-        Dim astrCmd As String() = cStringUtils.SplitQualified(Microsoft.VisualBasic.Command(), " ")
+        Dim astrCmd As String() = cStringUtils.SplitQualified(Microsoft.VisualBasic.Command(), " "c)
 
         If (astrCmd.Length > 0) Then
             If Not String.IsNullOrEmpty(astrCmd(0)) Then

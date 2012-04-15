@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports System
-Imports Microsoft.VisualBasic
 Imports EwEUtils.Win32Api
 
 #End Region ' Imports
@@ -32,6 +31,7 @@ Namespace Win32Api
     ''' Written by Karl Moore, obtained May 26/05 from http://www.developer.com/net/asp/article.php/3287991
     ''' </summary>
     ''' -----------------------------------------------------------------------------
+    <Obsolete("This class uses Win32API methods that should be discontinued. Use SystemUtilities.cXMLini instead")> _
     Public Class cINIFile
 
         Private m_strFilename As String
@@ -72,7 +72,7 @@ Namespace Win32Api
             Dim intCharCount As Integer
             Dim objResult As New System.Text.StringBuilder(256)
             intCharCount = Kernel32.GetPrivateProfileString(strSection, strKey, strDefault, objResult, objResult.Capacity, Me.m_strFilename)
-            If intCharCount > 0 Then strOut = Left(objResult.ToString, intCharCount)
+            If intCharCount > 0 Then strOut = objResult.ToString().Substring(0, intCharCount)
             Return (strOut)
 
         End Function

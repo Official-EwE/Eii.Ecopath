@@ -20,7 +20,6 @@
 Option Strict On
 Imports System
 Imports System.Windows.Forms
-Imports Microsoft.VisualBasic
 Imports EwEUtils.Commands
 Imports System.Collections.Generic
 
@@ -160,7 +159,7 @@ Public Class cPluginNavTreeHandler
             ' Find node that matches this locations' name
             While iItem < tnc.Count And Not bFound
                 tn = DirectCast(tnc.Item(iItem), TreeNode)
-                bFound = (String.Compare(Trim(tn.Name), Trim(aLocations(iLocation)), True) = 0)
+                bFound = (String.Compare(tn.Name.Trim(), aLocations(iLocation).Trim(), True) = 0)
                 iItem += 1
             End While
             ' Found a node?

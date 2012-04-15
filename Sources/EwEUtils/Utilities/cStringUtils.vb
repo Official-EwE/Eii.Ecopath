@@ -25,9 +25,9 @@ Imports System.Text.RegularExpressions
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Globalization
-Imports Microsoft.VisualBasic
 Imports System.Security.Cryptography
 Imports System.Collections.Generic
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -183,7 +183,7 @@ Namespace Utilities
                         strNumber = astrItems(iItem).Substring(iMaskLeft, iItemLength - (iMaskLeft + iMaskRight))
                         Try
                             ' Conversion to Int may cause arithmic overflows etc so let's wear proper protection
-                            iMax = Math.Max(iMax, CInt(Val(strNumber)))
+                            iMax = Math.Max(iMax, Integer.Parse(strNumber))
                         Catch ex As Exception
                             ' Kaboom! Whoah, ignore this string, it's trouble.
                         End Try
@@ -224,7 +224,7 @@ Namespace Utilities
         Public Shared Function Shift(ByVal strIn As String) As String
             Dim strOut As String = ""
             For Each c As Char In strIn.ToCharArray
-                strOut += ChrW(AscW(c) - 1)
+                strOut += Convert.ToChar(Convert.ToByte(c) - 1)
             Next
             Return strOut
         End Function
@@ -671,7 +671,7 @@ Namespace Utilities
                 strValue = cStringUtils.FormatNumber(objValue)
             End If
 
-            If strValue.IndexOf(Chr(34)) > 0 Then
+            If strValue.IndexOf(""""c) > 0 Then
                 strValue = strValue.Replace("""", "")
             End If
             If strValue.IndexOfAny(CSV_SEPARATORCHARS) > 0 Then
@@ -737,7 +737,7 @@ Namespace Utilities
                         bUseCell = True
                     Else
                         ' #No: only use cell if land or water (depeding on bWaterOnly)
-                        bUseCell = CBool(IIf(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                        bUseCell = cSystemUtils.IIF(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly)
                     End If
 
                     If (bUseCell) Then
@@ -746,7 +746,7 @@ Namespace Utilities
                         ' Append value in correct type 
                         If tData Is GetType(Boolean) Then
                             ' #Boolean values are stored as 1 (true) and 0 (false)
-                            sbRow.Append(CStr(IIf(CBool(value), "1", "0")))
+                            sbRow.Append(cSystemUtils.IIF(CBool(value), "1", "0"))
                             bHasRowValues = bHasRowValues Or (CBool(value))
                         Else
                             ' Is an allowed value?
@@ -816,7 +816,7 @@ Namespace Utilities
                             bUseCell = True
                         Else
                             ' #No: only use cell if land or water (depeding on bWaterOnly)
-                            bUseCell = CBool(IIf(land(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                            bUseCell = cSystemUtils.IIF(land(i, j) > 0, bWaterOnly, Not bWaterOnly)
                         End If
 
                         ' Use cell and there is cell data?
@@ -929,7 +929,7 @@ Namespace Utilities
                         bUseCell = True
                     Else
                         ' #No: only use cell if land or water (depeding on bWaterOnly)
-                        bUseCell = CBool(IIf(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                        bUseCell = cSystemUtils.IIF(dataDepth(i, j) > 0, bWaterOnly, Not bWaterOnly)
                     End If
 
                     If bUseCell Then
@@ -942,7 +942,7 @@ Namespace Utilities
 
 
                         If tData Is GetType(Boolean) Then
-                            sbRow.Append(CStr(IIf(CBool(value), "1", "0")))
+                            sbRow.Append(cSystemUtils.IIF(CBool(value), "1", "0"))
                             bHasRowValues = bHasRowValues Or (CBool(value))
                         Else
                             ' Is not an allowed value?
@@ -1021,7 +1021,7 @@ Namespace Utilities
                             bUseValue = True
                         Else
                             ' #No: only use cell if land or water (depeding on bWaterOnly)
-                            bUseValue = CBool(IIf(land(i, j) > 0, bWaterOnly, Not bWaterOnly))
+                            bUseValue = cSystemUtils.IIF(land(i, j) > 0, bWaterOnly, Not bWaterOnly)
                         End If
 
                         ' Use cell and there is cell data?

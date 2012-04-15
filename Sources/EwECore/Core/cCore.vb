@@ -9590,7 +9590,6 @@ Public Class cCore
     Private Function UpdateEcospaceGroup(ByVal iDBID As Integer) As Boolean
 
         Dim grp As cEcospaceGroup = Nothing
-        Dim pt As Drawing.Point
         Dim iGroup As Integer
         Dim i As Integer
 

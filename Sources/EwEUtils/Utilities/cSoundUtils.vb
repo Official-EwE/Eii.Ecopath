@@ -17,9 +17,6 @@
 '
 #Region " Imports "
 
-Imports System.Threading
-Imports Microsoft.VisualBasic
-Imports EwEUtils.Utilities
 Imports System.Windows.Forms
 Imports Microsoft.Win32
 
@@ -83,16 +80,12 @@ Namespace Utilities
                     End Select
                 End With
 
-                If String.IsNullOrEmpty(strFileName) Then
+                If String.IsNullOrWhiteSpace(strFileName) Then
                     strFileName = s_sounds.[Default]
                 End If
             End If
 
-            If Not String.IsNullOrEmpty(strFileName) Then
-                My.Computer.Audio.Play(strFileName, AudioPlayMode.Background)
-            Else
-                Beep()
-            End If
+            My.Computer.Audio.Play(strFileName, 1)
 
         End Sub
 

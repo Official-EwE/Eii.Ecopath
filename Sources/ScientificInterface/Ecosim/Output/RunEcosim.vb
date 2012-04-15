@@ -21,15 +21,12 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Commands
-Imports ScientificInterfaceShared
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SAUPUtil.SAUPData.Mapping
-Imports ZedGraph
-Imports Microsoft.VisualBasic
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region
 
@@ -500,12 +497,14 @@ Namespace Ecosim
             Dim strValue As String = String.Empty
 
             ' Sanity check
-            If Me.m_sketchPad.Shape Is Nothing Then Return
+            If (Me.m_sketchPad.Shape Is Nothing) Then Return
 
-            strValue = Interaction.InputBox(strMessage, strCaption, strDefault)
+            Dim box As New frmInputBox()
+            If (box.Show(strMessage, strCaption, strDefault) = Windows.Forms.DialogResult.OK) Then
+                strValue = box.Value
+            End If
 
-            'User clicks OK
-            If strValue.Length <> 0 Then
+            If (strValue.Length <> 0) Then
 
                 Dim astrEntered As String() = strValue.Split(CChar(" "))
 
@@ -515,7 +514,7 @@ Namespace Ecosim
                     Try
                         If (Me.m_shapeGUIHandler IsNot Nothing) Then
                             Me.m_shapeGUIHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.Reset, _
-                                        New cShapeData() {Me.m_sketchPad.Shape}, CSng(Val(astrEntered(0))))
+                                        New cShapeData() {Me.m_sketchPad.Shape}, cSystemUtils.Val(astrEntered(0)))
                         End If
                     Catch ex As Exception
                     End Try
@@ -531,7 +530,7 @@ Namespace Ecosim
                     For i As Integer = 0 To shape.XMax
                         If (i < (astrEntered.Length - 1)) Then
                             Try
-                                sValue = CSng(Val(astrEntered(i)))
+                                sValue = CSng(cSystemUtils.Val(astrEntered(i)))
                             Catch ex As Exception
                                 sValue = -1
                             End Try
@@ -846,12 +845,12 @@ Namespace Ecosim
             ' Get data point value
             Select Case Me.m_plotData
                 Case ePlotData.Biomass
-                    Return CSng(IIf(Me.m_bIsCumulative, src.Biomass, 1))
+                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Biomass, 1))
                 Case ePlotData.GroupCatch
-                    Return CSng(IIf(Me.m_bIsCumulative, src.TcatchOutput, 1))
+                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.TcatchOutput, 1))
                 Case ePlotData.Value
                     ' ToDo: resolve group value
-                    Return CSng(IIf(Me.m_bIsCumulative, 0, 1))
+                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, 0, 1))
             End Select
 
             Return cCore.NULL_VALUE
@@ -873,11 +872,11 @@ Namespace Ecosim
             ' Get data point value
             Select Case Me.m_plotData
                 Case ePlotData.Biomass
-                    Return CSng(IIf(Me.m_bIsCumulative, src.Biomass(iTimeStep), src.BiomassRel(iTimeStep)))
+                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Biomass(iTimeStep), src.BiomassRel(iTimeStep)))
                 Case ePlotData.GroupCatch
-                    Return CSng(IIf(Me.m_bIsCumulative, src.Yield(iTimeStep), src.YieldRel(iTimeStep)))
+                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Yield(iTimeStep), src.YieldRel(iTimeStep)))
                 Case ePlotData.Value
-                    Return CSng(IIf(Me.m_bIsCumulative, src.Value(iTimeStep), src.ValueRel(iTimeStep)))
+                    Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Value(iTimeStep), src.ValueRel(iTimeStep)))
             End Select
 
             Return cCore.NULL_VALUE
@@ -1004,7 +1003,7 @@ Namespace Ecosim
             Me.m_bInUpdate = True
 
             ' Configure run/stop button
-            Me.m_btnRun.Text = CStr(IIf(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
+            Me.m_btnRun.Text = CStr(cSystemUtils.IIF(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
             Me.m_btnRun.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
             ' Reflect change immediately
             Me.m_btnRun.Update()

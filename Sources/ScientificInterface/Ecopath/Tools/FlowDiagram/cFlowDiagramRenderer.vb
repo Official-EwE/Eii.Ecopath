@@ -23,6 +23,7 @@ Imports System.Math
 Imports EwEUtils.Win32Api
 Imports SAUPUtil.SAUPData.Mapping
 Imports SAUPUtil.Misc.Colours
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -166,31 +167,28 @@ Namespace Ecopath.Controls.FlowDiagram
             Return iLabelAtPoint
         End Function
 
-        Public Sub SaveToFile(ByVal inifile As cINIFile, ByVal rc As Rectangle)
-            inifile.WriteInteger("Global", "NumGroups", Me.m_data.NumGroups)
+        Public Sub SaveToFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle)
+            inifile.SaveSetting("Global", "NumGroups", Me.m_data.NumGroups)
             For i As Integer = 1 To Me.m_data.NumGroups
-                inifile.WriteInteger("Locations", i.ToString + "x", CInt(Me.m_tree.NodeLocation(i, rc).X))
-                inifile.WriteInteger("Locations", i.ToString + "y", CInt(Me.m_tree.NodeLocation(i, rc).Y))
-                inifile.WriteInteger("Locations", i.ToString + "xlabel", CInt(Me.m_tree.LabelLocation(i, rc).X))
-                inifile.WriteInteger("Locations", i.ToString + "ylabel", CInt(Me.m_tree.LabelLocation(i, rc).Y))
+                inifile.SaveSetting("Locations", i.ToString + "x", CStr(Me.m_tree.NodeLocation(i, rc).X))
+                inifile.SaveSetting("Locations", i.ToString + "y", CStr(Me.m_tree.NodeLocation(i, rc).Y))
+                inifile.SaveSetting("Locations", i.ToString + "xlabel", CStr(Me.m_tree.LabelLocation(i, rc).X))
+                inifile.SaveSetting("Locations", i.ToString + "ylabel", CStr(Me.m_tree.LabelLocation(i, rc).Y))
             Next i
         End Sub
 
-        Public Function LoadFromFile(ByVal inifile As cINIFile, ByVal rc As Rectangle) As Boolean
+        Public Function LoadFromFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle) As Boolean
             Dim ptf As PointF
-            If Me.m_data.NumGroups = inifile.GetInteger("Global", "NumGroups", 0) Then
-                For i As Integer = 1 To Me.m_data.NumGroups
-                    ptf.X = inifile.GetInteger("Locations", i.ToString + "x", 0)
-                    ptf.Y = inifile.GetInteger("Locations", i.ToString + "y", 0)
-                    Me.m_tree.NodeLocation(i, rc) = ptf
-                    ptf.X = inifile.GetInteger("Locations", i.ToString + "xlabel", 10)
-                    ptf.Y = inifile.GetInteger("Locations", i.ToString + "ylabel", 10)
-                    Me.m_tree.LabelLocation(i, rc) = ptf
-                Next i
-                Return True
-            Else
-                Return False
-            End If
+            Dim iNumGroups As Integer = Math.Min(CInt(inifile.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumGroups)
+            For i As Integer = 1 To iNumGroups
+                ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "x", "0"))
+                ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "y", "0"))
+                Me.m_tree.NodeLocation(i, rc) = ptf
+                ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "xlabel", "10"))
+                ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "ylabel", "10"))
+                Me.m_tree.LabelLocation(i, rc) = ptf
+            Next i
+            Return True
 
         End Function
 
