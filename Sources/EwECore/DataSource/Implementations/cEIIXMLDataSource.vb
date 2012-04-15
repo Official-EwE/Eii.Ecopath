@@ -3273,8 +3273,7 @@ Public Class cEIIXMLDataSource
             For Each strRow As String In astrRows
                 If Not String.IsNullOrWhiteSpace(strRow) Then
                     Dim drow As DataRow = dt.NewRow()
-                    Dim astrData As String() = Nothing
-                    If strRow.Contains("""") Then astrData = cStringUtils.SplitQualified(strRow, ",") Else astrData = strRow.Split(","c)
+                    Dim astrData As String() = cStringUtils.SplitQualified(strRow, ",")
                     For i As Integer = 0 To astrData.Length - 1
                         If Not String.IsNullOrWhiteSpace(astrData(i)) Or (atCols(i) Is GetType(String)) Then
                             drow(astrCols(i)) = astrData(i)
