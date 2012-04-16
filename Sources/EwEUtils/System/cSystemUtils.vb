@@ -19,13 +19,10 @@
 
 Option Strict On
 Imports System
-Imports System.Security.Principal
 Imports System.IO
-Imports EwEUtils.Win32Api
-Imports EwEUtils.Utilities
-Imports System.Security.AccessControl
 Imports System.Net
-Imports System.Text.RegularExpressions
+Imports System.Security.Principal
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 

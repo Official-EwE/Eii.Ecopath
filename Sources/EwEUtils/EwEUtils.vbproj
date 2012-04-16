@@ -176,12 +176,6 @@
     </Compile>
     <Compile Include="Utilities\cStringUtils.vb" />
     <Compile Include="Utilities\UriBuilder.vb" />
-    <Compile Include="Win32 API\cINIFile.vb">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Win32 API\Kernel32.vb">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

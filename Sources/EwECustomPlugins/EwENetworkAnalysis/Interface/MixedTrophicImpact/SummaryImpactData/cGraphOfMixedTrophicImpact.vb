@@ -20,17 +20,16 @@
 Option Strict On
 Option Explicit On
 
-Imports ZedGraph
-Imports System.IO
 Imports System.Globalization
+Imports System.IO
+Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
-Imports System.Text
 Imports EwECore
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Win32Api
+Imports ScientificInterfaceShared.Style
+Imports ZedGraph
 
 #End Region ' Imports
 
@@ -139,7 +138,8 @@ Public Class cGraphOfMixedTrophicImpact
         Dim strPath As String = Path.Combine(strOutputFileDir, strOutputFileName)
         Dim strPath83 As String = Space(255)
         Dim strError As String = ""
-        Kernel32.GetShortPathName(strPath, strPath83, 255)
+
+        GetShortPathName(strPath, strPath83, 255)
 
         'Execute the external application through the general function on EwEUtils
         If Not cSystemUtils.AppExec("impacts.exe", strPath83, strError) Then
@@ -148,5 +148,10 @@ Public Class cGraphOfMixedTrophicImpact
             Me.NetworkManager.Core.Messages.SendMessage(msg)
         End If
     End Sub
+
+    <DllImport("kernel32.dll", CharSet:=CharSet.Auto)> _
+    <Obsolete("Kernel32 call should be eliminated for full MONO compliance")> _
+    Public Shared Function GetShortPathName(ByVal strLongPath As String, <MarshalAs(UnmanagedType.LPTStr)> ByVal strShortPath As String, <MarshalAs(UnmanagedType.U4)> ByVal bufferSize As Integer) As Integer
+    End Function
 
 End Class

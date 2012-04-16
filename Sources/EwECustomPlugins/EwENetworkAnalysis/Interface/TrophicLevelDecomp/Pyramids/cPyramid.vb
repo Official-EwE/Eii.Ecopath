@@ -20,15 +20,13 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
-Imports System.IO
-Imports ZedGraph
-Imports System.Text
 Imports System.Globalization
+Imports System.IO
+Imports System.Runtime.InteropServices
+Imports System.Text
+Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports EwEUtils.Win32Api
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -75,8 +73,7 @@ Public MustInherit Class cPyramid
             Return
         End If
 
-        ' Todo_JS: Reprogram pyramid logic as a .NET control, and get rid of the 16 bit apps once and for all.
-        Kernel32.GetShortPathName(strOutputFile, strOutputFile83, 255)
+        GetShortPathName(strOutputFile, strOutputFile83, 255)
 
         If Not cSystemUtils.AppExec("pyramid.exe", strOutputFile83, strError, "") Then
             Dim msg As New cMessage(String.Format(My.Resources.PROMPT_APPLAUNCH_FAILED, "pyramid.exe", strError), _
@@ -106,5 +103,10 @@ Public MustInherit Class cPyramid
     MustOverride Function WritePyramidFile(ByVal core As cCore, _
                                            ByVal sw As StreamWriter, _
                                            ByVal ci As CultureInfo) As Boolean
+
+    <DllImport("kernel32.dll", CharSet:=CharSet.Auto)> _
+    <Obsolete("Kernel32 call should be eliminated for full MONO compliance")> _
+    Public Shared Function GetShortPathName(ByVal strLongPath As String, <MarshalAs(UnmanagedType.LPTStr)> ByVal strShortPath As String, <MarshalAs(UnmanagedType.U4)> ByVal bufferSize As Integer) As Integer
+    End Function
 
 End Class

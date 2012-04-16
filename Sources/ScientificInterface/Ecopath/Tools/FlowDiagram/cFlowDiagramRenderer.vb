@@ -20,9 +20,6 @@
 Option Strict On
 
 Imports System.Math
-Imports EwEUtils.Win32Api
-Imports SAUPUtil.SAUPData.Mapping
-Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports

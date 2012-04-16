@@ -19,21 +19,15 @@
 
 Option Strict On
 
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
-Imports EwEUtils.Win32Api
-Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Drawing
-Imports System.Reflection
-Imports System.IO
 Imports System.Drawing.Imaging
-Imports ScientificInterfaceShared.Commands
+Imports System.IO
+Imports EwECore
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
