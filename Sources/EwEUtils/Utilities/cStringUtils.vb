@@ -95,6 +95,7 @@ Namespace Utilities
             Dim lstr As New List(Of String)
             Dim i, j As Integer
             Dim chrs() As Char = New Char() {cDelimiter, cQualifier}
+            Dim bQuoted As Boolean = False
 
             j = strExpression.IndexOfAny(chrs)
             While j > -1
@@ -794,7 +795,7 @@ Namespace Utilities
             ' Need 2 dim array
             Debug.Assert(data.Rank = 2)
 
-            Dim astrLines As String() = strData.Split(";"c)
+            Dim astrLines As String() = strData.Replace("""", "").Split(";"c)
             Dim astrValues As String() = Nothing
             Dim iColumn As Integer = 0
             Dim bUseCell As Boolean = False
@@ -988,7 +989,7 @@ Namespace Utilities
             ' Need 3 dim array
             Debug.Assert(data.Rank = 3)
 
-            Dim astrLines As String() = strData.Split(";"c)
+            Dim astrLines As String() = strData.Replace("""", "").Split(";"c)
             Dim astrValues As String() = Nothing
             Dim iColumn As Integer = 0
             Dim InRow As Integer = 0
