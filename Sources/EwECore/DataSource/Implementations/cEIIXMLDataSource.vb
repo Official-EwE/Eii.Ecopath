@@ -2544,7 +2544,7 @@ Public Class cEIIXMLDataSource
             Try
                 Me.SaveTable(db, CStr(drow(2)), doc)
             Catch ex As Exception
-
+                Debug.Assert(False, "Error saving table " & CStr(drow(2)) & ": " & ex.Message)
             End Try
         Next
 
@@ -3251,39 +3251,46 @@ Public Class cEIIXMLDataSource
 
     Private Function ReadTable(strTable As String) As DataTable
 
-        Dim xn As XmlNode = Me.m_doc.SelectSingleNode("/EwEModel/Table[translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + strTable.ToLower() + "']")
-        Dim xnData As XmlCDataSection = DirectCast(xn.ChildNodes(0), XmlCDataSection)
-        Dim xaCols As XmlAttribute = xn.Attributes("Columns")
-        Dim astrRows As String() = Nothing
-        Dim astrColDefs As String() = cStringUtils.SplitQualified(xaCols.InnerText, ","c)
-        Dim astrCols(astrColDefs.Length - 1) As String
-        Dim atCols(astrColDefs.Length - 1) As Type
-        Dim dt As New DataTable(xn.Name)
+        Try
 
-        For i As Integer = 0 To astrColDefs.Length - 1
-            Dim astrColDef As String() = cStringUtils.SplitQualified(astrColDefs(i), ":"c)
-            astrCols(i) = astrColDef(0)
-            atCols(i) = Type.GetType(astrColDef(1))
-            dt.Columns.Add(astrCols(i), atCols(i))
-        Next i
+            Dim xn As XmlNode = Me.m_doc.SelectSingleNode("/EwEModel/Table[translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + strTable.ToLower() + "']")
+            Dim xnData As XmlCDataSection = DirectCast(xn.ChildNodes(0), XmlCDataSection)
+            Dim xaCols As XmlAttribute = xn.Attributes("Columns")
+            Dim astrRows As String() = Nothing
+            Dim astrColDefs As String() = cStringUtils.SplitQualified(xaCols.InnerText, ","c)
+            Dim astrCols(astrColDefs.Length - 1) As String
+            Dim atCols(astrColDefs.Length - 1) As Type
+            Dim dt As New DataTable(xn.Name)
 
-        If (xnData IsNot Nothing) Then
-            astrRows = cStringUtils.SplitQualified(xnData.InnerText, ";")
-            For Each strRow As String In astrRows
-                If Not String.IsNullOrWhiteSpace(strRow) Then
-                    Dim drow As DataRow = dt.NewRow()
-                    Dim astrData As String() = cStringUtils.SplitQualified(strRow, ",")
-                    For i As Integer = 0 To astrData.Length - 1
-                        If Not String.IsNullOrWhiteSpace(astrData(i)) Or (atCols(i) Is GetType(String)) Then
-                            drow(astrCols(i)) = astrData(i)
-                        End If
-                    Next
-                    dt.Rows.Add(drow)
-                End If
-            Next
-        End If
+            For i As Integer = 0 To astrColDefs.Length - 1
+                Dim astrColDef As String() = cStringUtils.SplitQualified(astrColDefs(i), ":"c)
+                astrCols(i) = astrColDef(0)
+                atCols(i) = Type.GetType(astrColDef(1))
+                dt.Columns.Add(astrCols(i), atCols(i))
+            Next i
 
-        Return dt
+            If (xnData IsNot Nothing) Then
+                astrRows = cStringUtils.SplitQualified(xnData.InnerText, ";")
+                For Each strRow As String In astrRows
+                    If Not String.IsNullOrWhiteSpace(strRow) Then
+                        Dim drow As DataRow = dt.NewRow()
+                        Dim astrData As String() = cStringUtils.SplitQualified(strRow, ",")
+                        For i As Integer = 0 To astrData.Length - 1
+                            If Not String.IsNullOrWhiteSpace(astrData(i)) Or (atCols(i) Is GetType(String)) Then
+                                drow(astrCols(i)) = astrData(i)
+                            End If
+                        Next
+                        dt.Rows.Add(drow)
+                    End If
+                Next
+            End If
+
+            Return dt
+
+        Catch ex As Exception
+            Debug.Assert(False, "Exception loaded table " & strTable & ": " & ex.Message)
+        End Try
+        Return Nothing
 
     End Function
 
