@@ -301,6 +301,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Ecopath_doc() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath_doc", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Are you sure that you want to delete fleet &apos;{0}&apos;? This action cannot be undone..
         '''</summary>

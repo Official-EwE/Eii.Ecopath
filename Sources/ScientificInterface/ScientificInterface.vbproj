@@ -1621,12 +1621,12 @@
     <None Include="Resources\Ecotracer.ico" />
     <None Include="Resources\ewe_home.url.txt" />
     <None Include="Resources\certificate.png" />
-    <None Include="Resources\Ecopath_hohoho.ico" />
+    <DesignData Include="Resources\Ecopath_hohoho.ico" />
     <None Include="Resources\EditTaxa.png" />
     <Content Include="Resources\Computer.png" />
-    <Content Include="Resources\Ecopath_beta.ico" />
+    <EmbeddedResource Include="Resources\Ecopath_beta.ico" />
     <None Include="Resources\EWE_forever.jpg" />
-    <Content Include="Resources\Ecopath_beta.ico" />
+    <DesignDataWithDesignTimeCreatableTypes Include="Resources\Ecopath_doc.ico" />
     <Content Include="Resources\logo_EU.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\logo_FIMR.jpg" />
@@ -1745,7 +1745,7 @@
       <DependentUpon>frmRemarkPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Ecopath.ico" />
+    <Resource Include="Resources\Ecopath.ico" />
     <EmbeddedResource Include="Resources\Ecosim.ico" />
     <EmbeddedResource Include="Resources\Ecospace.ico" />
     <EmbeddedResource Include="Ecosim\Output\ShowAllFits\dlgChangeYScale.resx">
