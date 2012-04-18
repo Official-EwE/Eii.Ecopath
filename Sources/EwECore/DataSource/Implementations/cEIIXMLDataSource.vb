@@ -2631,11 +2631,11 @@ Public Class cEIIXMLDataSource
         ' Skip table if nothing to write
         If (astrColDefs.Length = 0) Then Return True
 
+        Dim sb As New StringBuilder()
         Dim row As IDataReader = db.GetReader("SELECT * FROM [" & strTable & "]")
         Dim xn As XmlNode = doc.CreateElement("Table")
         Dim xa As XmlAttribute = Nothing
         Dim iNum As Integer = 0
-        Dim sb As New StringBuilder()
 
         ' - Name
         xa = doc.CreateAttribute("Name")
@@ -2653,26 +2653,24 @@ Public Class cEIIXMLDataSource
         xa.InnerText = sb.ToString
         xn.Attributes.Append(xa)
 
-        sb.Length = 0
         While row.Read
-            Dim b As Boolean = False
-            For Each strCol As String In astrCols
-                If b Then sb.Append(",")
-                sb.Append(Me.Field(row, strCol))
-                b = True
+            Dim xnRow As XmlNode = doc.CreateElement("Row")
+            sb.Length = 0
+            For i As Integer = 0 To astrCols.Length - 1
+                If (i > 0) Then sb.Append(",")
+                Dim strValue As String = Me.Field(row, astrCols(i))
+                sb.Append(strValue)
+                iNum += 1
             Next
-            sb.Append(";")
-            iNum += 1
+            xnRow.InnerText = sb.ToString()
+            xn.AppendChild(xnRow)
+
         End While
 
         ' Num rows
         xa = doc.CreateAttribute("Num")
         xa.InnerText = CStr(iNum)
         xn.Attributes.Append(xa)
-
-        If (iNum > 0) Then
-            xn.AppendChild(doc.CreateCDataSection(sb.ToString))
-        End If
 
         doc.DocumentElement.AppendChild(xn)
 
@@ -3251,45 +3249,42 @@ Public Class cEIIXMLDataSource
 
     Private Function ReadTable(strTable As String) As DataTable
 
-        Try
+        Dim xn As XmlNode = Me.m_doc.SelectSingleNode("/EwEModel/Table[translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + strTable.ToLower() + "']")
+        Dim xnRow As XmlNode = Nothing
+        Dim xaCols As XmlAttribute = xn.Attributes("Columns")
+        Dim strRow As String = ""
+        Dim astrColDefs As String() = cStringUtils.SplitQualified(xaCols.InnerText, ","c)
+        Dim astrCols(astrColDefs.Length - 1) As String
+        Dim atCols(astrColDefs.Length - 1) As Type
+        Dim dt As New DataTable(xn.Name)
 
-            Dim xn As XmlNode = Me.m_doc.SelectSingleNode("/EwEModel/Table[translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" + strTable.ToLower() + "']")
-            Dim xnData As XmlCDataSection = DirectCast(xn.ChildNodes(0), XmlCDataSection)
-            Dim xaCols As XmlAttribute = xn.Attributes("Columns")
-            Dim astrRows As String() = Nothing
-            Dim astrColDefs As String() = cStringUtils.SplitQualified(xaCols.InnerText, ","c)
-            Dim astrCols(astrColDefs.Length - 1) As String
-            Dim atCols(astrColDefs.Length - 1) As Type
-            Dim dt As New DataTable(xn.Name)
+        For i As Integer = 0 To astrColDefs.Length - 1
+            Dim astrColDef As String() = cStringUtils.SplitQualified(astrColDefs(i), ":"c)
+            astrCols(i) = astrColDef(0)
+            atCols(i) = Type.GetType(astrColDef(1))
+            dt.Columns.Add(astrCols(i), atCols(i))
+        Next i
 
-            For i As Integer = 0 To astrColDefs.Length - 1
-                Dim astrColDef As String() = cStringUtils.SplitQualified(astrColDefs(i), ":"c)
-                astrCols(i) = astrColDef(0)
-                atCols(i) = Type.GetType(astrColDef(1))
-                dt.Columns.Add(astrCols(i), atCols(i))
-            Next i
-
-            If (xnData IsNot Nothing) Then
-                astrRows = cStringUtils.SplitQualified(xnData.InnerText, ";")
-                For Each strRow As String In astrRows
-                    If Not String.IsNullOrWhiteSpace(strRow) Then
-                        Dim drow As DataRow = dt.NewRow()
-                        Dim astrData As String() = cStringUtils.SplitQualified(strRow, ",")
-                        For i As Integer = 0 To astrData.Length - 1
-                            If Not String.IsNullOrWhiteSpace(astrData(i)) Or (atCols(i) Is GetType(String)) Then
-                                drow(astrCols(i)) = astrData(i)
-                            End If
-                        Next
-                        dt.Rows.Add(drow)
+        For Each xnRow In xn.ChildNodes
+            strRow = xnRow.InnerText
+            If Not String.IsNullOrWhiteSpace(strRow) Then
+                Dim drow As DataRow = dt.NewRow()
+                Dim astrData As String() = cStringUtils.SplitQualified(strRow, ",")
+                For i As Integer = 0 To astrData.Length - 1
+                    If Not String.IsNullOrWhiteSpace(astrData(i)) Or (atCols(i) Is GetType(String)) Then
+                        Try
+                            drow(astrCols(i)) = astrData(i)
+                        Catch ex As Exception
+                            Debug.Assert(False, "Exception loaded table " & strTable & ": " & ex.Message)
+                        End Try
                     End If
                 Next
+                dt.Rows.Add(drow)
             End If
+        Next
 
-            Return dt
+        Return dt
 
-        Catch ex As Exception
-            Debug.Assert(False, "Exception loaded table " & strTable & ": " & ex.Message)
-        End Try
         Return Nothing
 
     End Function
