@@ -8007,8 +8007,6 @@ Public Class cCore
         m_mapInteractionManager = New cMapResponseInteractionManager(Me)
         m_mapInteractionManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
 
-        m_spatialdataconnectionManager.CreateAdapters()
-
         Return True
 
     End Function

@@ -97,8 +97,8 @@ Namespace SpatialData
             Dim cv As ISpatialDataConverter = Me.Converter(iIndex)
             Dim ds As ISpatialDataSet = Me.Dataset(iIndex)
 
-            ' ToDo: check if both converter and dataset are configured?
-            Return (cv IsNot Nothing) And (ds IsNot Nothing)
+            If (cv Is Nothing) Or (ds Is Nothing) Then Return False
+            Return cv.IsConfigured And ds.IsEnabled
 
         End Function
 
@@ -264,12 +264,9 @@ Namespace SpatialData
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim msg As cMessage = Nothing
             Dim sValue As Single = 0
-            Dim sScale As Single = Me.LayerScale(bm, layer, dataExternal)
+            'Dim sScale As Single = Me.LayerScale(bm, layer, dataExternal)
             Dim bSuccess As Boolean = True ' Think positive. Really
 
-#If DEBUG Then
-            Dim sTot As Single = 0
-#End If
             Try
                 ' For all rows
                 For iRow As Integer = 1 To bm.InRow
@@ -282,11 +279,7 @@ Namespace SpatialData
                             ' Is a valid value?
                             If (sValue <> cCore.NULL_VALUE) Then
                                 ' #Yes: set value
-                                layer.Cell(iRow, iCol) = sValue * sScale
-#If DEBUG Then
-                                sTot += sValue * sScale
-#End If
-
+                                layer.Cell(iRow, iCol) = sValue
                             End If
                         End If
                     Next iCol
@@ -319,69 +312,69 @@ Namespace SpatialData
             Return bSuccess
         End Function
 
-        Protected Function LayerScale(ByVal bm As cEcospaceBasemap, _
-                                      ByVal layer As cEcospaceLayer, _
-                                      ByVal dataExternal As ISpatialRaster) As Single
+        'Protected Function LayerScale(ByVal bm As cEcospaceBasemap, _
+        '                              ByVal layer As cEcospaceLayer, _
+        '                              ByVal dataExternal As ISpatialRaster) As Single
 
-            ' To ensure proper usage by inherited classes
-            Debug.Assert(bm IsNot Nothing)
-            Debug.Assert(layer IsNot Nothing)
-            Debug.Assert(dataExternal IsNot Nothing)
+        '    ' To ensure proper usage by inherited classes
+        '    Debug.Assert(bm IsNot Nothing)
+        '    Debug.Assert(layer IsNot Nothing)
+        '    Debug.Assert(dataExternal IsNot Nothing)
 
-            Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
-            If ds.IsRelativeValues Then Return 1
+        '    Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
+        '    If ds.IsRelativeValues Then Return 1
 
-            Dim sScale As Single = Me.DataScale(layer.Index)
-            If (sScale <> cCore.NULL_VALUE) Then Return sScale
+        '    Dim sScale As Single = Me.DataScale(layer.Index)
+        '    If (sScale <> cCore.NULL_VALUE) Then Return sScale
 
-            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim msg As cMessage = Nothing
-            Dim sTot As Single = 0
-            Dim sValue As Single = 0
-            Dim iNum As Integer = 0
+        '    Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+        '    Dim msg As cMessage = Nothing
+        '    Dim sTot As Single = 0
+        '    Dim sValue As Single = 0
+        '    Dim iNum As Integer = 0
 
-            Try
-                ' For all rows
-                For iRow As Integer = 1 To bm.InRow
-                    ' For all columns
-                    For iCol As Integer = 1 To bm.InCol
-                        ' Is a water cell or is this layer affecting depth?
-                        If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
-                            ' #Yes: get value
-                            sValue = CSng(dataExternal.Cell(iRow, iCol))
-                            ' Is a valid value?
-                            If (sValue <> cCore.NULL_VALUE) Then
-                                ' #Yes: calc
-                                sTot += sValue : iNum += 1
-                            End If
-                        End If
-                    Next iCol
-                Next iRow
+        '    Try
+        '        ' For all rows
+        '        For iRow As Integer = 1 To bm.InRow
+        '            ' For all columns
+        '            For iCol As Integer = 1 To bm.InCol
+        '                ' Is a water cell or is this layer affecting depth?
+        '                If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
+        '                    ' #Yes: get value
+        '                    sValue = CSng(dataExternal.Cell(iRow, iCol))
+        '                    ' Is a valid value?
+        '                    If (sValue <> cCore.NULL_VALUE) Then
+        '                        ' #Yes: calc
+        '                        sTot += sValue : iNum += 1
+        '                    End If
+        '                End If
+        '            Next iCol
+        '        Next iRow
 
-                ' Calc scale, allowing for errors
-                If (sTot <= 0 Or iNum <= 0) Then    '(sBase <= 0) Or
-                    Debug.Assert(False)
-                    sScale = 1
-                Else
-                     Dim sAvg As Single = sTot / iNum
-                    sScale = 1 / sAvg ' Scale Ecopath total to map average
-                End If
-                Me.DataScale(layer.Index) = sScale
+        '        ' Calc scale, allowing for errors
+        '        If (sTot <= 0 Or iNum <= 0) Then    '(sBase <= 0) Or
+        '            Debug.Assert(False)
+        '            sScale = 1
+        '        Else
+        '             Dim sAvg As Single = sTot / iNum
+        '            sScale = 1 / sAvg ' Scale Ecopath total to map average
+        '        End If
+        '        Me.DataScale(layer.Index) = sScale
 
-                Console.WriteLine(">> Scaling factor for layer {0} is {1}", Me.VarName.ToString, sScale)
+        '        Console.WriteLine(">> Scaling factor for layer {0} is {1}", Me.VarName.ToString, sScale)
 
-            Catch ex As Exception
-                ' Whoah!
-                ' ToDo_JS: Globalize this message
-                msg = New cMessage(String.Format("Ecospace cacl scale for {0} into {1}. Exception {2}", Me.Name, layer.Name, ex.Message), _
-                                   eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
-                Me.m_core.Messages.SendMessage(msg)
-                sScale = 0
-                cLog.Write(ex, "cSpatialDataAdapter::LoadData")
-            End Try
+        '    Catch ex As Exception
+        '        ' Whoah!
+        '        ' ToDo_JS: Globalize this message
+        '        msg = New cMessage(String.Format("Ecospace cacl scale for {0} into {1}. Exception {2}", Me.Name, layer.Name, ex.Message), _
+        '                           eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+        '        Me.m_core.Messages.SendMessage(msg)
+        '        sScale = 0
+        '        cLog.Write(ex, "cSpatialDataAdapter::LoadData")
+        '    End Try
 
-            Return sScale
-        End Function
+        '    Return sScale
+        'End Function
 
 #End Region ' Basic bits
 

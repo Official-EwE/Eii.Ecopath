@@ -61,6 +61,8 @@ Namespace SpatialData
             Me.m_data = data
             Me.m_datasetManager = New cSpatialDataSetManager()
 
+            Me.CreateAdapters()
+
         End Sub
 
         Public Sub Dispose() Implements IDisposable.Dispose
@@ -72,22 +74,6 @@ Namespace SpatialData
         End Sub
 
 #End Region ' Construction/ destruction
-
-        Public Sub CreateAdapters()
-
-            Me.Clear()
-
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, eCoreCounterTypes.NotSet))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelCin, eCoreCounterTypes.NotSet))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerMPA, eCoreCounterTypes.NotSet))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
-            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalLayers))
-
-        End Sub
-
-        Public Sub Clear()
-            Me.m_data.DataAdapters.Clear()
-        End Sub
 
 #Region " Generic information "
 
@@ -358,6 +344,37 @@ Namespace SpatialData
 
 #Region " Internals "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create fixed data adapters for ecospace data layers.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CreateAdapters()
+
+            Me.Clear()
+
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, eCoreCounterTypes.NotSet))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerRelCin, eCoreCounterTypes.NotSet))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerMPA, eCoreCounterTypes.NotSet))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
+            Me.AddAdapter(New cSpatialDataAdapter(Me.m_core, eVarNameFlags.LayerDriver, eCoreCounterTypes.nEnvironmentalLayers))
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clear fixed data adapters.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub Clear()
+            Me.m_data.DataAdapters.Clear()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the count of configured adapters.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub UpdateNumConfigCount()
 
             Me.m_iNumConfigured = 0

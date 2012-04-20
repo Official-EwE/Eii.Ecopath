@@ -112,7 +112,7 @@ Namespace Ecospace.Controls
             Me.m_layer = layer
             ' Set initials
             If (adt IsNot Nothing) And (layer IsNot Nothing) Then
-                Me.SelectedDS = adt.Dataset(layer.Index)
+                Me.SelectedDataset = adt.Dataset(layer.Index)
                 Me.SelectedConverter = adt.Converter(layer.Index)
             End If
             ' Done
@@ -165,9 +165,9 @@ Namespace Ecospace.Controls
             Try
                 Dim obj As Object = Me.m_lbxExistingDS.SelectedItem
                 If String.Empty.Equals(obj) Then
-                    Me.SelectedDS = Nothing
+                    Me.SelectedDataset = Nothing
                 Else
-                    Me.SelectedDS = DirectCast(obj, ISpatialDataSet)
+                    Me.SelectedDataset = DirectCast(obj, ISpatialDataSet)
                 End If
                 Me.UpdateControls()
             Catch ex As Exception
@@ -183,7 +183,7 @@ Namespace Ecospace.Controls
 
             Me.Cursor = Cursors.WaitCursor
             Try
-                Me.ConfigDS(Me.SelectedDS)
+                Me.ConfigDS(Me.SelectedDataset)
                 Me.FillExistingDatasetBox()
             Catch ex As Exception
 
@@ -199,7 +199,7 @@ Namespace Ecospace.Controls
         Private Sub OnDeleteDS(sender As System.Object, e As System.EventArgs) _
             Handles m_btnDeleteDS.Click
             Try
-                Me.DeleteDS(Me.SelectedDS)
+                Me.DeleteDS(Me.SelectedDataset)
             Catch ex As Exception
 
             End Try
@@ -250,8 +250,8 @@ Namespace Ecospace.Controls
         ''' <summary>
         ''' Event handler for customizing how converters are displayed in this UI.
         ''' </summary>
-        Private Sub OnFormatCV(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-            Handles m_lbxExistingConv.Format
+        Private Sub OnFormatCV(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs)
+
             Dim fmt As New cSpatialConverterFormatter()
             If e.ListItem.Equals(String.Empty) Then
                 e.Value = fmt.GetDescriptor(Nothing)
@@ -276,9 +276,9 @@ Namespace Ecospace.Controls
         ''' User has selected a converter for the current adapter and layer.
         ''' </summary>
         Private Sub OnSelectCV(sender As System.Object, e As System.EventArgs) _
-            Handles m_lbxExistingConv.SelectedIndexChanged
+            Handles m_cmbConverter.SelectedIndexChanged
             Try
-                Dim obj As Object = Me.m_lbxExistingConv.SelectedItem
+                Dim obj As Object = Me.m_cmbConverter.SelectedItem
                 If String.Empty.Equals(obj) Then
                     Me.SelectedConverter = Nothing
                 Else
@@ -297,7 +297,7 @@ Namespace Ecospace.Controls
         Private Sub UpdateControls()
 
             Dim bIsConnected As Boolean = (Me.m_adt IsNot Nothing) And (Me.m_layer IsNot Nothing)
-            Dim ds As ISpatialDataSet = Me.SelectedDS
+            Dim ds As ISpatialDataSet = Me.SelectedDataset
             Dim cv As ISpatialDataConverter = Me.SelectedConverter
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
@@ -318,7 +318,7 @@ Namespace Ecospace.Controls
             End If
 
             Me.m_lbxExistingDS.Enabled = bIsConnected
-            Me.m_lbxExistingConv.Enabled = bIsConnected
+            Me.m_cmbConverter.Enabled = bIsConnected
 
         End Sub
 
@@ -336,23 +336,23 @@ Namespace Ecospace.Controls
 
         Private Sub FillExistingDatasetBox(Optional ds As ISpatialDataSet = Nothing)
 
-            If (ds Is Nothing) Then ds = Me.SelectedDS
+            If (ds Is Nothing) Then ds = Me.SelectedDataset
             Me.m_lbxExistingDS.Items.Clear()
             Me.m_lbxExistingDS.Items.Add("")
             For i As Integer = 0 To Me.m_manSets.Count - 1
                 Me.m_lbxExistingDS.Items.Add(Me.m_manSets(i))
             Next
-            Me.SelectedDS = ds
+            Me.SelectedDataset = ds
 
         End Sub
 
         Private Sub FillExistingConverterBox(Optional cv As ISpatialDataConverter = Nothing)
 
             If (cv Is Nothing) Then cv = Me.SelectedConverter
-            Me.m_lbxExistingConv.Items.Clear()
-            Me.m_lbxExistingConv.Items.Add("")
+            Me.m_cmbConverter.Items.Clear()
+            Me.m_cmbConverter.Items.Add("")
             For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates
-                Me.m_lbxExistingConv.Items.Add(cvTest)
+                Me.m_cmbConverter.Items.Add(cvTest)
             Next
             Me.SelectedConverter = cv
         End Sub
@@ -361,7 +361,7 @@ Namespace Ecospace.Controls
             ' NOP
         End Sub
 
-        Private Property SelectedDS As ISpatialDataSet
+        Private Property SelectedDataset As ISpatialDataSet
             Get
                 If (Me.m_adt Is Nothing) Then Return Nothing
                 Return Me.m_adt.Dataset(Me.m_layer.Index)
@@ -398,9 +398,13 @@ Namespace Ecospace.Controls
                 ' Update selection
                 Dim iIndex As Integer = 0
                 If (converter IsNot Nothing) Then
-                    iIndex = Me.m_lbxExistingConv.Items.IndexOf(converter)
+                    For Each item As Object In Me.m_cmbConverter.Items
+                        If converter.GetType().Equals(item) Then
+                            Me.m_cmbConverter.SelectedItem = item
+                            Exit For
+                        End If
+                    Next
                 End If
-                Me.m_lbxExistingConv.SelectedIndex = iIndex
 
                 ' Apply
                 If (Not Object.ReferenceEquals(Me.m_adt.Converter(Me.m_layer.Index), converter)) Then
@@ -446,7 +450,7 @@ Namespace Ecospace.Controls
         End Function
 
         Public Sub DeleteDS(ds As ISpatialDataSet)
-            Me.SelectedDS = Nothing
+            Me.SelectedDataset = Nothing
             Me.m_manSets.Remove(ds)
             Me.FillExistingDatasetBox()
         End Sub
