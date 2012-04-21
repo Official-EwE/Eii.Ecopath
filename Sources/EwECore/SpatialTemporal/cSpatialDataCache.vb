@@ -108,10 +108,33 @@ Namespace SpatialData
 
             Dim bSucces As Boolean = True
             For Each strCachePath As String In Me.GetCachePaths(man)
-                bSucces = bSucces And cFileUtils.DeleteDirectory(strCachePath)
+                Try
+                    bSucces = bSucces And cFileUtils.DeleteDirectory(strCachePath)
+                Catch ex As Exception
+                    cLog.Write(ex, String.Format("cSpatialDataCache::Clear {0}", strCachePath))
+                    bSucces = False
+                End Try
             Next strCachePath
             Return True
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Clear cached files for a given dataset.
+        ''' </summary>
+        ''' <param name="ds"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function Clear(ds As ISpatialDataSet) As Boolean
+            Dim strCachePath As String = Me.GetCacheFolder(ds)
+            Try
+                cFileUtils.DeleteDirectory(strCachePath)
+            Catch ex As Exception
+                cLog.Write(ex, String.Format("cSpatialDataCache::Clear {0}", strCachePath))
+                Return False
+            End Try
+            Return True
         End Function
 
 #End Region ' Maintenance
