@@ -59,6 +59,8 @@ Namespace SpatialData
         ''' </summary>
         ''' <returns>The mean value across all data values the raster. This
         ''' excludes cells with <see cref="NoData">no data</see>.</returns>
+        ''' <remarks>A return value of -9999 is expected to signal that an error 
+        ''' occurred and that no usable value is available.</remarks>
         ''' -------------------------------------------------------------------
         Function Mean() As Double
 
@@ -66,7 +68,9 @@ Namespace SpatialData
         ''' <summary>
         ''' Return the min value across all data values in the raster.
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>The min value across all data values in the raster.</returns>
+        ''' <remarks>A return value of -9999 is expected to signal that an error 
+        ''' occurred and that no usable value is available.</remarks>
         ''' -------------------------------------------------------------------
         Function Min() As Double
 
@@ -74,7 +78,9 @@ Namespace SpatialData
         ''' <summary>
         ''' Return the max value across all data values in the raster.
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>The max value across all data values in the raster.</returns>
+        ''' <remarks>A return value of -9999 is expected to signal that an error 
+        ''' occurred and that no usable value is available.</remarks>
         ''' -------------------------------------------------------------------
         Function Max() As Double
 
@@ -82,9 +88,22 @@ Namespace SpatialData
         ''' <summary>
         ''' Return the no data value in the raster.
         ''' </summary>
-        ''' <returns></returns>
+        ''' <returns>The no data value in the raster.</returns>
+        ''' <remarks>A return value of -9999 is expected to signal that an error 
+        ''' occurred and that no usable value is available.</remarks>
         ''' -------------------------------------------------------------------
         Function NoData() As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the number of data cells (e.g. cells that do not have 
+        ''' <see cref="NoData"/> values)
+        ''' </summary>
+        ''' <returns>The number of data cells.</returns>
+        ''' <remarks>A return value of -9999 is expected to signal that an error 
+        ''' occurred and that no usable value is available.</remarks>
+        ''' -------------------------------------------------------------------
+        Function NumValueCells() As Long
 
 #End Region 'Diagnostics
 

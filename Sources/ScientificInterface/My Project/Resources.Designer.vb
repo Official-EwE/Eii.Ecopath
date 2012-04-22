@@ -2498,6 +2498,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Do you wish to delete the definition of spatial data set &apos;{0}&apos;? This action cannot be undone. Note that this will not affect the actual spatial/temporal data that this definition refers to..
+        '''</summary>
+        Public ReadOnly Property PROMPT_DELETE_ECOSPACE_DATASET() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_DELETE_ECOSPACE_DATASET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to This system does not have to required drivers installed to work with files of this type.
         '''</summary>
         Public ReadOnly Property PROMPT_DRIVERERROR() As String
@@ -3191,7 +3200,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Removing existing Time Series dataset {0}.
+        '''  Looks up a localized string similar to Removing Time Series dataset &apos;{0}&apos;....
         '''</summary>
         Public ReadOnly Property STATUS_DATASET_REMOVING() As String
             Get

@@ -239,7 +239,7 @@ Namespace Ecospace.Advection
 
 #Region " Event handlers "
 
-        Private Sub OnVelocityChanged(ByVal sender As cEwEFormatProvider)
+        Private Sub OnVelocityChanged(ByVal sender As Object, args As EventArgs)
             Me.UpdateTransportVelocity()
         End Sub
 

@@ -1036,7 +1036,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
     <value>Cells that contain a summary of row(s) and/or column(s) in a grid</value>
   </data>
   <data name="STATUS_DATASET_REMOVING" xml:space="preserve">
-    <value>Removing existing Time Series dataset {0}</value>
+    <value>Removing Time Series dataset '{0}'...</value>
     <comment>{0}: dataset name</comment>
   </data>
   <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
@@ -1524,5 +1524,9 @@ Description: {2}</value>
   </data>
   <data name="Ecopath_doc" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecopath_doc.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PROMPT_DELETE_ECOSPACE_DATASET" xml:space="preserve">
+    <value>Do you wish to delete the definition of spatial data set '{0}'? This action cannot be undone. Note that this will not affect the actual spatial/temporal data that this definition refers to.</value>
+    <comment>{0}: dataset name</comment>
   </data>
 </root>

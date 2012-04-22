@@ -1254,7 +1254,7 @@ Namespace Controls
         ''' <summary>Event to notify that a value has changed.</summary>
         ''' <param name="sender">The format provider that sent the event.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnValueChanged(ByVal sender As cEwEFormatProvider)
+        Public Event OnValueChanged(ByVal sender As Object, args As EventArgs)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1409,7 +1409,7 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Protected Sub RaiseChangeEvent()
             Try
-                RaiseEvent OnValueChanged(Me)
+                RaiseEvent OnValueChanged(Me, Nothing)
             Catch ex As Exception
                 ' Wow
             End Try

@@ -240,14 +240,12 @@ Public Class dlgDefineMapResponseAssignments
         End Try
     End Sub
 
-    Private Sub OnMinMaxTextChanged(ByVal sender As cEwEFormatProvider)
-
+    Private Sub OnMinMaxTextChanged(ByVal sender As Object, args As EventArgs)
         ' Format providers changed: update the map
         Me.PlotGraph()
-
     End Sub
 
-    Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As System.EventArgs) _
+    Private Sub OnSetDefaultMinMax(ByVal sender As Object, ByVal e As EventArgs) _
         Handles m_btnDefaultMinMax.Click
         Me.setDefaultMinMax()
     End Sub

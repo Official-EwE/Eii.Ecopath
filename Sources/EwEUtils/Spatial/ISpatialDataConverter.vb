@@ -37,14 +37,14 @@ Namespace SpatialData
         ''' Get the name for displaying the converter in a user interface.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        ReadOnly Property DisplayName As String
+        Property DisplayName As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the description for displaying the converter in a user interface.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        ReadOnly Property Description As String
+        Property Description As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -93,7 +93,7 @@ Namespace SpatialData
         ''' Get whether the converter is configured and ready to operate.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        ReadOnly Property IsConfigured() As Boolean
+        Function IsConfigured() As Boolean
 
     End Interface
 

@@ -142,7 +142,7 @@ Namespace SpatialData
         ''' Load data for a given time and spatial extent.
         ''' </summary>
         ''' <param name="dateTime">The time to query data for. For practical
-        ''' purposes, time is assumed to be rounded to days.</param>
+        ''' purposes, time is assumed to be rounded to months.</param>
         ''' <param name="dCellSize">Map cell size that is requested.</param>
         ''' <param name="ptfNE">North-east corner of the area to load data for. 
         ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
@@ -156,6 +156,27 @@ Namespace SpatialData
                              ByVal dCellSize As Double, _
                              ByVal ptfNE As PointF, _
                              ByVal ptfSW As PointF) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the spatial extent of data at a given time.
+        ''' </summary>
+        ''' <param name="dateTime">The time to query data for. For practical
+        ''' purposes, time is assumed to be rounded to months.</param>
+        ''' <param name="ptfNE">Point to receive top-left extent value.</param>
+        ''' <param name="ptfSE">Point to receive bottom-right extent value.</param>
+        ''' <returns>True if valid values were retrieved.</returns>
+        ''' -------------------------------------------------------------------
+        Function GetExtentAtT(ByVal datetime As DateTime, _
+                              ByRef ptfNE As PointF, _
+                              ByRef ptfSE As PointF) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Build the spatial extent index for the dataset.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Sub BuildIndex()
 
         ''' -------------------------------------------------------------------
         ''' <summary>

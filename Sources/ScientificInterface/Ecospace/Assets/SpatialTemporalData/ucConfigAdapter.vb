@@ -40,12 +40,13 @@ Namespace Ecospace.Controls
 
 #Region " Private variables "
 
+        Private m_uic As cUIContext = Nothing
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
         Private m_adt As cSpatialDataAdapter = Nothing
         Private m_layer As cEcospaceLayer = Nothing
-        Private m_uic As cUIContext = Nothing
         Private m_bHasCachedData As Boolean = False
+        Private WithEvents m_fp As cEwEFormatProvider = Nothing
 
 #End Region ' Private variables
 
@@ -71,6 +72,7 @@ Namespace Ecospace.Controls
                     Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_man = Nothing
+                    Me.m_fp.Release()
                 End If
 
                 Me.m_uic = uic
@@ -78,19 +80,24 @@ Namespace Ecospace.Controls
                 If (Me.m_uic IsNot Nothing) Then
                     Me.m_man = Me.m_uic.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
+                    Me.m_fp = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScale, GetType(Single))
                 End If
             End Set
         End Property
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
+
             MyBase.OnLoad(e)
+
             If (Me.UIContext Is Nothing) Then Return
+
             ' Only evaluate cache on load
             Me.EvaluateCache()
             ' Populate all
             Me.FillTemplateDatasetBox()
             Me.FillExistingDatasetBox(Nothing)
             Me.FillExistingConverterBox()
+
             ' Done
             Me.UpdateControls()
         End Sub
@@ -107,16 +114,21 @@ Namespace Ecospace.Controls
         ''' <param name="layer"><see cref="cEcospaceLayer"/> to configure.</param>
         ''' -------------------------------------------------------------------
         Public Sub SetConnection(adt As cSpatialDataAdapter, layer As cEcospaceLayer)
+
             ' Store refs
             Me.m_adt = adt
             Me.m_layer = layer
+
             ' Set initials
             If (adt IsNot Nothing) And (layer IsNot Nothing) Then
                 Me.SelectedDataset = adt.Dataset(layer.Index)
                 Me.SelectedConverter = adt.Converter(layer.Index)
             End If
+
             ' Done
+            Me.PopulateAdapterControls()
             Me.UpdateControls()
+
         End Sub
 
 #End Region ' Public bits
@@ -152,7 +164,7 @@ Namespace Ecospace.Controls
             Try
                 Me.CreateDS()
             Catch ex As Exception
-
+                Debug.Assert(False, ex.Message)
             End Try
             Me.Cursor = Cursors.Default
         End Sub
@@ -171,7 +183,7 @@ Namespace Ecospace.Controls
                 End If
                 Me.UpdateControls()
             Catch ex As Exception
-
+                Debug.Assert(False, ex.Message)
             End Try
         End Sub
 
@@ -186,7 +198,7 @@ Namespace Ecospace.Controls
                 Me.ConfigDS(Me.SelectedDataset)
                 Me.FillExistingDatasetBox()
             Catch ex As Exception
-
+                Debug.Assert(False, ex.Message)
             End Try
             Me.Cursor = Cursors.Default
             Me.LayerChanged()
@@ -201,7 +213,7 @@ Namespace Ecospace.Controls
             Try
                 Me.DeleteDS(Me.SelectedDataset)
             Catch ex As Exception
-
+                Debug.Assert(False, ex.Message)
             End Try
         End Sub
 
@@ -250,7 +262,8 @@ Namespace Ecospace.Controls
         ''' <summary>
         ''' Event handler for customizing how converters are displayed in this UI.
         ''' </summary>
-        Private Sub OnFormatCV(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs)
+        Private Sub OnFormatCV(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_cmbConverter.Format
 
             Dim fmt As New cSpatialConverterFormatter()
             If e.ListItem.Equals(String.Empty) Then
@@ -268,7 +281,7 @@ Namespace Ecospace.Controls
             Try
                 Me.ConfigConverter(Me.SelectedConverter)
             Catch ex As Exception
-
+                Debug.Assert(False, ex.Message)
             End Try
         End Sub
 
@@ -286,7 +299,46 @@ Namespace Ecospace.Controls
                 End If
                 Me.UpdateControls()
             Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Sub
 
+        Private Sub OnDatScaleTypeChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_rbAbsolute.CheckedChanged, m_rbRelative.CheckedChanged
+
+            Try
+                If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
+                    Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+                    If (Me.m_rbAbsolute.Checked) Then
+                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Absolute
+                    Else
+                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Relative
+                    End If
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
+        Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
+            Handles m_tbxScale.TextChanged, m_fp.OnValueChanged
+            Try
+                If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
+                    Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+                    ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fp.Value)
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Sub
+
+        Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnCalculate.Click
+            Try
+                Me.CalculateScaleFromEcopathTimePeriod()
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
             End Try
         End Sub
 
@@ -301,6 +353,7 @@ Namespace Ecospace.Controls
             Dim cv As ISpatialDataConverter = Me.SelectedConverter
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
+            Dim bIsConfigured As Boolean = bIsConnected AndAlso Me.m_adt.IsConnected(Me.m_layer.Index)
 
             If (ds IsNot Nothing) Then bCanConfigDS = bIsConnected And (TypeOf ds Is IConfigurablePlugin)
             If (cv IsNot Nothing) Then bCanConfigCV = bIsConnected And (TypeOf cv Is IConfigurablePlugin)
@@ -319,6 +372,8 @@ Namespace Ecospace.Controls
 
             Me.m_lbxExistingDS.Enabled = bIsConnected
             Me.m_cmbConverter.Enabled = bIsConnected
+
+            Me.m_btnCalculate.Enabled = bIsConfigured
 
         End Sub
 
@@ -468,6 +523,119 @@ Namespace Ecospace.Controls
         Private Sub EvaluateCache()
             Me.m_bHasCachedData = (cSpatialDataCache.DefaultDataCache.GetSize > 0)
         End Sub
+
+#Region " Scalar data adapter "
+
+        Private Sub CalculateScaleFromEcopathTimePeriod()
+
+            If Not Me.m_adt.IsConnected(Me.m_layer.Index) Then Return
+
+            Dim ds As ISpatialDataSet = Me.m_adt.Dataset(Me.m_layer.Index)
+            Dim cv As ISpatialDataConverter = Me.m_adt.Converter(Me.m_layer.Index)
+            Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
+            Dim iNumYears As Integer = Me.m_uic.Core.EwEModel.NumYears
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+            Dim lSteps As New List(Of DateTime)
+            Dim rs As ISpatialRaster = Nothing
+
+            For i As Integer = 0 To iNumYears * cCore.N_MONTHS - 1
+                Dim dt As New DateTime(Math.Max(1, iYear + i \ cCore.N_MONTHS), 1 + i Mod cCore.N_MONTHS, 1)
+                If ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight) Then
+                    lSteps.Add(dt)
+                End If
+            Next
+
+            If (lSteps.Count = 0) Then
+                ' No data
+                ' ToDo: Globalize this
+                Dim msg As New cMessage(String.Format("No spatial data could be found for the ecopath model period (year {0}, {1} months); scaling factor could not be calculated.", iYear, iNumYears * cCore.N_MONTHS), _
+                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+                Return
+            End If
+
+            Dim rst As ISpatialRaster = Nothing
+            Dim dCellSize As Double = bm.CellSize
+            Dim dMean As Double = 0.0
+            Dim dTotal As Double = 0.0
+            Dim lNumValCells As Long = 0
+            Dim lTotal As Long = 0
+            Dim iNumErrors As Integer = 0
+
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+            Try
+
+                For i As Integer = 0 To lSteps.Count - 1
+                    Dim dt As DateTime = lSteps(i)
+
+                    ' ToDo: Globalize this
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, _
+                                                              String.Format("Calculating scaling factor step {0} of {1}...", i + 1, lSteps.Count), _
+                                                              CSng(i / lSteps.Count))
+
+                    If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                        rst = Me.m_adt.Dataset(Me.m_layer.Index).GetRaster(Me.m_adt.Converter(Me.m_layer.Index), Me.m_layer.Name)
+
+                        lNumValCells = rst.NumValueCells
+                        dMean = rst.Mean
+
+                        If (lNumValCells <> cCore.NULL_VALUE) And (dMean <> cCore.NULL_VALUE) Then
+                            dTotal += rst.Mean * rst.NumValueCells
+                            lTotal += rst.NumValueCells
+                        Else
+                            iNumErrors += 1
+                        End If
+                        ds.Unload()
+                    End If
+
+                Next
+            Catch ex As Exception
+
+            End Try
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+
+            If iNumErrors = lSteps.Count Then
+                ' ToDo: Globalize this
+                Dim msg As New cMessage("No valid scaling factor could be calculated. Please check if the model area overlaps with assigned spatial/temporal data.", _
+                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+            End If
+
+            Me.m_fp.Value = dTotal / Math.Max(1, lTotal)
+
+        End Sub
+
+        Private Sub PopulateAdapterControls()
+            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
+                Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+                Select Case ssda.DataScaleType(Me.m_layer.Index)
+                    Case cSpatialScalarDataAdapter.eScaleType.Absolute
+                        Me.m_rbAbsolute.Checked = True
+                    Case cSpatialScalarDataAdapter.eScaleType.Relative
+                        Me.m_rbRelative.Checked = True
+                End Select
+                Me.m_fp.Value = ssda.DataScale(Me.m_layer.Index)
+                Me.m_plScalarAdapter.Visible = True
+            Else
+                Me.m_plScalarAdapter.Visible = False
+            End If
+        End Sub
+
+        Private Sub ApplyAdapterControls()
+
+            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
+                Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+                If (Me.m_rbAbsolute.Checked) Then
+                    ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Absolute
+                Else
+                    ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Relative
+                End If
+                ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fp.Value)
+            End If
+
+        End Sub
+
+#End Region ' Scalar data adapter
 
 #End Region ' Internals
 

@@ -186,7 +186,7 @@ Namespace Ecospace
                 Me.m_config.SetConnection(Me.SelectedAdapter, Me.SelectedLayer)
             Catch ex As Exception
                 ' Whoopy
-                Debug.Assert(False, "Bing!")
+                Debug.Assert(False, ex.Message)
             End Try
 
         End Sub

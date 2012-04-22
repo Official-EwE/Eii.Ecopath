@@ -35,7 +35,7 @@ Namespace SpatialData
             Me.m_data.Clear()
 
             For Each adt As cSpatialDataAdapter In Me.DataAdapters
-                adt.SetDefaults()
+                adt.Initialize()
                 Dim iLen As Integer = adt.Length
                 Dim arr(iLen) As cData
                 For i As Integer = 0 To iLen - 1 : arr(i) = New cData() : Next
