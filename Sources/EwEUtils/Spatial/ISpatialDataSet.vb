@@ -159,7 +159,8 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the spatial extent of data at a given time.
+        ''' Get the cached spatial extent of data at a given time. Extent(s) should
+        ''' be gathered via <see cref="BuildIndex"/>
         ''' </summary>
         ''' <param name="dateTime">The time to query data for. For practical
         ''' purposes, time is assumed to be rounded to months.</param>
