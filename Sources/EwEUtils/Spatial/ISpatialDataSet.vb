@@ -172,12 +172,14 @@ Namespace SpatialData
                               ByRef ptfNE As PointF, _
                               ByRef ptfSE As PointF) As Boolean
 
+        Delegate Sub BuildIndexUpdateDelegate(dataset As ISpatialDataSet)
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Build the spatial extent index for the dataset.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Sub BuildIndex()
+        Sub BuildIndex(Optional updatedelegate As BuildIndexUpdateDelegate = Nothing)
 
         ''' -------------------------------------------------------------------
         ''' <summary>

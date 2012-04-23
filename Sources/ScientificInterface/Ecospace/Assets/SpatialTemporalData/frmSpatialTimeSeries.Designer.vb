@@ -72,7 +72,6 @@ Namespace Ecospace
             Me.m_ucDatasets.BackColor = System.Drawing.SystemColors.Window
             resources.ApplyResources(Me.m_ucDatasets, "m_ucDatasets")
             Me.m_ucDatasets.Name = "m_ucDatasets"
-            Me.m_ucDatasets.SelectedDataset = Nothing
             Me.m_ucDatasets.SelectedIndex = -1
             Me.m_ucDatasets.UIContext = Nothing
             Me.m_ucDatasets.VarName = EwEUtils.Core.eVarNameFlags.NotSet
@@ -91,6 +90,7 @@ Namespace Ecospace
             Me.m_tscmTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_tscmTypes.Name = "m_tscmTypes"
             resources.ApplyResources(Me.m_tscmTypes, "m_tscmTypes")
+            Me.m_tscmTypes.Sorted = True
             '
             'm_tslData
             '
@@ -101,11 +101,8 @@ Namespace Ecospace
             '
             'm_tsbnConnections
             '
-            Me.m_tsbnConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
             Me.m_tsbnConnections.Name = "m_tsbnConnections"
-            Me.m_tsbnConnections.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
-            Me.m_tsbnConnections.Image = ScientificInterfaceShared.My.Resources.Database
             '
             'frmSpatialTimeSeries
             '
