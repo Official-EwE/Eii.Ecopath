@@ -15,18 +15,24 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-Imports EwEUtils.SpatialData
-Imports EwEUtils.Core
-Imports EwECore.SpatialData
-Imports EwECore
+#Region " Imports "
+
+Option Strict On
 Imports System.Drawing.Drawing2D
+Imports EwECore
+Imports EwECore.SpatialData
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
+Imports EwEPlugin
+
+#End Region ' Imports
 
 Namespace Ecospace.Controls
 
-    Public Class ucExternalDataConnections
+    Public Class ucSpatialTimeSeriesToolbox
         Implements IUIElement
 
-        Private Const c_barheight As Integer = 18
+#Region " Private classes "
 
         Private Class cDatasetPos
             Public m_ds As ISpatialDataSet
@@ -36,11 +42,24 @@ Namespace Ecospace.Controls
             Public m_liData As New List(Of Integer) ' Time steps with data
         End Class
 
+#End Region ' Private classes
+
+#Region " Private vars "
+
+        Private Const c_headerheight As Integer = 18
+        Private Const c_barheight As Integer = 24
+        Private Const c_barlabelheight As Integer = 18
+        Private Const c_barmargin As Integer = 3
+        Private Const c_dotradius As Integer = 2
+
         Private m_uic As cUIContext = Nothing
         Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
         Private m_lPos As New List(Of cDatasetPos)
         Private m_iTimestepSize As Integer = 1
         Private m_iSelectedIndex As Integer = -1
+        Private m_iSelectedTimeStep As Integer = -1
+
+#End Region ' Private vars
 
 #Region " Construction "
 
@@ -74,6 +93,8 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        Public Event OnSelectedDatasetChanged(owner As Object, ds As ISpatialDataSet)
+
         Public Property SelectedIndex As Integer
             Get
                 Return Me.m_iSelectedIndex
@@ -81,6 +102,8 @@ Namespace Ecospace.Controls
             Set(value As Integer)
                 Me.m_iSelectedIndex = value
                 Me.Invalidate()
+
+                If (Me.UIContext Is Nothing) Then Return
 
                 Dim ds As ISpatialDataSet = Nothing
                 If (Me.m_iSelectedIndex >= 0) Then ds = Me.m_lPos(Me.m_iSelectedIndex).m_ds
@@ -92,7 +115,25 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
-        Public Event OnSelectedDatasetChanged(owner As Object, ds As ISpatialDataSet)
+        Public Event OnSelectedTimestepChanged(owner As Object, iTimeStep As Integer, dt As DateTime)
+
+        Public Property SelectedTimeStep As Integer
+            Get
+                Return Me.m_iSelectedTimeStep
+            End Get
+            Set(value As Integer)
+                Me.m_iSelectedTimeStep = value
+                Me.Invalidate()
+
+                If (Me.UIContext Is Nothing) Then Return
+
+                Try
+                    RaiseEvent OnSelectedTimestepChanged(Me, Me.m_iSelectedTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iSelectedTimeStep))
+                Catch ex As Exception
+
+                End Try
+            End Set
+        End Property
 
         Public Sub RefreshContent()
             Me.RecalcSize()
@@ -105,14 +146,9 @@ Namespace Ecospace.Controls
 #Region " Form overrides "
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
-
             MyBase.OnLoad(e)
-
-            ' Safety check
             If (Me.m_uic Is Nothing) Then Return
-
             Me.RefreshContent()
-
         End Sub
 
         Protected Overrides Sub OnResize(e As System.EventArgs)
@@ -126,20 +162,32 @@ Namespace Ecospace.Controls
             MyBase.OnScroll(se)
         End Sub
 
-        Protected Overrides Sub OnMouseDown(e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseClick(e As System.Windows.Forms.MouseEventArgs)
             Dim pos As cDatasetPos = Me.DatasetFromPoint(e.Location)
             If (pos IsNot Nothing) Then
                 Me.SelectedIndex = pos.m_iPosVert
             End If
-            MyBase.OnMouseDown(e)
+            Me.SelectedTimeStep = TimestepFromPoint(e.Location)
+            MyBase.OnMouseClick(e)
         End Sub
 
-        Protected Overrides Sub OnMouseClick(e As System.Windows.Forms.MouseEventArgs)
+        Protected Overrides Sub OnMouseDoubleClick(e As System.Windows.Forms.MouseEventArgs)
             Dim pos As cDatasetPos = Me.DatasetFromPoint(e.Location)
             If (pos IsNot Nothing) Then
-                ' Debug stuff
+                Dim ds As ISpatialDataSet = pos.m_ds
+                If (TypeOf ds Is IConfigurablePlugin) Then
+                    Dim dsConf As IConfigurablePlugin = DirectCast(ds, IConfigurablePlugin)
+                    Dim ctrl As Control = dsConf.GetConfigUI()
+
+                    If (ctrl IsNot Nothing) Then
+                        Dim dlg As New dlgConfig()
+                        dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
+                    End If
+
+                    Me.RecalcLayout()
+                End If
             End If
-            MyBase.OnMouseClick(e)
+            MyBase.OnMouseDoubleClick(e)
         End Sub
 
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
@@ -157,7 +205,7 @@ Namespace Ecospace.Controls
 
                 ' Paint matrix shifted to x and Y scroll position
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, AutoScrollPosition.Y)
-                Me.PaintGrid(e.Graphics)
+                Me.PaintGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
                 For i As Integer = 0 To Me.m_lPos.Count - 1
                     Me.PaintDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex, rmp.GetColor(i / Me.m_lPos.Count))
                 Next
@@ -165,7 +213,7 @@ Namespace Ecospace.Controls
 
                 ' Paint header at the top of the visible scroll area
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, 0)
-                Me.PaintHeader(e.Graphics, New Rectangle(0, 0, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_barheight))
+                Me.PaintHeader(e.Graphics, New Rectangle(0, 0, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_headerheight))
                 e.Graphics.ResetTransform()
 
             Catch ex As Exception
@@ -186,8 +234,10 @@ Namespace Ecospace.Controls
             ' Calc number of pixels per time step
             Me.m_iTimestepSize = CInt(Math.Max(2, Math.Floor(Me.Width / Me.m_uic.Core.nEcospaceTimeSteps)))
 
+            ' ToDo: put vert scrollbar UNDER header panel, not beside header panel
+
             Me.AutoScroll = True
-            Me.AutoScrollMinSize = New Size(Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, (Me.m_lPos.Count * c_barheight * 2) + c_barheight)
+            Me.AutoScrollMinSize = New Size(Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, (Me.m_lPos.Count * (c_barheight + 2 * c_barmargin) + c_headerheight))
             Me.AutoScrollMargin = New Size(0, 0)
             'Me.Invalidate()
         End Sub
@@ -210,7 +260,7 @@ Namespace Ecospace.Controls
             Dim ptfBR As PointF = bm.PosBottomRight
 
             ' Resolve varname
-            If Me.m_varname = eVarNameFlags.NotSet Then
+            If (Me.m_varname = eVarNameFlags.NotSet) Then
                 lAdt.AddRange(conn.Adapters)
             Else
                 lAdt.Add(conn.Adapter(Me.m_varname))
@@ -251,9 +301,16 @@ Namespace Ecospace.Controls
                     End If
                 Next
             Next
+            Me.Invalidate()
 
         End Sub
 
+        ''' <summary>
+        ''' Paint the header row
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="rc"></param>
+        ''' <remarks></remarks>
         Private Sub PaintHeader(g As Graphics, rc As Rectangle)
 
             g.FillRectangle(SystemBrushes.Control, rc)
@@ -266,13 +323,18 @@ Namespace Ecospace.Controls
                 For i As Integer = 0 To Me.m_uic.Core.nEcospaceYears Step 5
                     Dim sx As Single = i * sStepsPerYear * Me.m_iTimestepSize
                     g.DrawString(CStr(iYear + i), ft, SystemBrushes.ControlText, sx, 0.0!)
-                    g.DrawLine(SystemPens.ControlLightLight, rc.X + sx, rc.Y, rc.X + sx, rc.Y + c_barheight)
+                    g.DrawLine(SystemPens.ControlLightLight, rc.X + sx, rc.Y, rc.X + sx, rc.Y + rc.Height)
                 Next
             End Using
 
         End Sub
 
-        Private Sub PaintGrid(g As Graphics)
+        ''' <summary>
+        ''' Draw a grid of vertical lines for every 5 years
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="rc"></param>
+        Private Sub PaintGrid(g As Graphics, rc As Rectangle)
 
             Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
             Dim core As cCore = Me.m_uic.Core
@@ -282,8 +344,13 @@ Namespace Ecospace.Controls
                 p.DashStyle = DashStyle.Dot
                 For i As Integer = 0 To Me.m_uic.Core.nEcospaceYears Step 5
                     Dim sx As Single = i * sStepsPerYear * Me.m_iTimestepSize
-                    g.DrawLine(p, sx, c_barheight, sx, Me.ClientRectangle.Height)
+                    g.DrawLine(p, rc.X + sx, rc.Y, sx, rc.Y + rc.Height)
                 Next
+            End Using
+
+            Using p As New Pen(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT), 2)
+                Dim sx As Single = Me.m_iSelectedTimeStep * Me.m_iTimestepSize
+                g.DrawLine(p, rc.X + sx, rc.Y, sx, rc.Y + rc.Height)
             End Using
 
         End Sub
@@ -294,12 +361,15 @@ Namespace Ecospace.Controls
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
         ''' <remarks></remarks>
-        Private Sub PaintDataset(g As Graphics, pos As cDatasetPos, bSelected As Boolean, clr As Color)
+        Private Sub PaintDataset(ByVal g As Graphics, _
+                                 ByVal pos As cDatasetPos, _
+                                 ByVal bSelected As Boolean, _
+                                 ByVal clr As Color)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
-            Dim rcBack As Rectangle = New Rectangle(0, rcBar.Y - 2, Me.ClientRectangle.Width, rcBar.Height + 4)
-            Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barheight - 2)
-            Dim rcTimeStep As New Rectangle(rcBar.X - 2, rcBar.Y + CInt(c_barheight * 1.5) - 2, 4, 4)
+            Dim rcBack As Rectangle = New Rectangle(0, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
+            Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barlabelheight)
+            Dim rcTimeStep As New Rectangle(rcBar.X - c_dotradius, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
             Dim clrFill As Color = EwEUtils.Utilities.cColorUtils.GetVariant(clr, 0.5)
             Dim clrData As Color = EwEUtils.Utilities.cColorUtils.GetVariant(clr, -0.5)
             Dim clrText As Color = SystemColors.ControlText
@@ -327,10 +397,11 @@ Namespace Ecospace.Controls
                 g.FillRectangle(br, rcLabel)
             End Using
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
+                rcLabel.Width = rcBack.Width
                 g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, rcLabel, fmt)
             End Using
             Using br As New SolidBrush(clrData)
-                 For Each iStep As Integer In pos.m_liData
+                For Each iStep As Integer In pos.m_liData
                     rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize
                     g.FillEllipse(br, rcTimeStep)
                 Next
@@ -341,11 +412,16 @@ Namespace Ecospace.Controls
         Private Function DatasetArea(pos As cDatasetPos) As Rectangle
             Dim iStart As Integer = pos.m_iTimeStart * Me.m_iTimestepSize
             Dim iEnd As Integer = (pos.m_iTimeEnd + 1) * Me.m_iTimestepSize - 1
-            Return New Rectangle(iStart, c_barheight + pos.m_iPosVert * c_barheight * 2 + 2, iEnd - iStart, 2 * c_barheight - 4)
+            Return New Rectangle(iStart, c_headerheight + pos.m_iPosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
+        End Function
+
+        Private Function TimestepFromPoint(pt As Point) As Integer
+            If (Me.m_iTimestepSize = 0) Then Return -1
+            Return CInt(Math.Round(pt.X / Me.m_iTimestepSize))
         End Function
 
         Private Function DatasetFromPoint(pt As Point) As cDatasetPos
-            If (pt.Y < c_barheight) Then Return Nothing
+            If (pt.Y < c_headerheight) Then Return Nothing
             For Each pos As cDatasetPos In Me.m_lPos
                 If Me.DatasetArea(pos).Contains(pt) Then Return pos
             Next

@@ -15,10 +15,15 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.Commands
 Imports EwEUtils.SpatialData
 Imports EwECore.SpatialData
+
+#End Region ' Imports
 
 Namespace Ecospace
 
@@ -64,7 +69,8 @@ Namespace Ecospace
             End Get
             Set(value As ScientificInterfaceShared.Controls.cUIContext)
                 MyBase.UIContext = value
-                Me.m_ucDatasets.UIContext = value
+                Me.m_toolbox.UIContext = value
+                Me.m_map.UIContext = value
             End Set
         End Property
 
@@ -80,6 +86,7 @@ Namespace Ecospace
             For Each adt As cSpatialDataAdapter In Me.Core.SpatialDataConnectionManager.Adapters
                 Me.m_tscmTypes.Items.Add(New cSpatialDataAdapterItem(adt))
             Next
+            Me.m_tscmTypes.SelectedIndex = 0
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.External}
 
@@ -106,13 +113,13 @@ Namespace Ecospace
 #Region " Control events "
 
         Private Sub OnSelectedDatasetChanged(owner As Object, ds As EwEUtils.SpatialData.ISpatialDataSet) _
-            Handles m_ucDatasets.OnSelectedDatasetChanged
+            Handles m_toolbox.OnSelectedDatasetChanged
 
             If (Object.ReferenceEquals(ds, Me.m_ds)) Then Return
 
             If Me.HasThread Then
-                'Me.m_thread.Abort()
-                'Me.m_thread = Nothing
+                Me.m_thread.Abort()
+                Me.m_thread = Nothing
             End If
 
             If (Me.m_ds IsNot Nothing) Then
@@ -120,12 +127,29 @@ Namespace Ecospace
             End If
 
             Me.m_ds = ds
+            Me.m_map.SelectedDataset = ds
+
             If (Me.m_ds IsNot Nothing) Then
-                Me.IndexDataset()
-                'Me.m_thread = New Threading.Thread(AddressOf IndexDataset)
-                'Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                'Me.m_thread.Start()
+                Me.m_thread = New Threading.Thread(AddressOf IndexDataset)
+                Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
+                Me.m_thread.Start()
             End If
+
+        End Sub
+
+        Private Sub OnSelectType(sender As System.Object, e As System.EventArgs) _
+            Handles m_tscmTypes.SelectedIndexChanged
+
+            Dim t As cSpatialDataAdapterItem = DirectCast(Me.m_tscmTypes.SelectedItem, cSpatialDataAdapterItem)
+            Dim vn As eVarNameFlags = eVarNameFlags.NotSet
+
+            If (t IsNot Nothing) Then
+                If (t.Adapter IsNot Nothing) Then
+                    vn = t.Adapter.VarName
+                End If
+            End If
+
+            Me.m_toolbox.VarName = vn
 
         End Sub
 
@@ -138,14 +162,17 @@ Namespace Ecospace
 
             ' Dataset changes are passed on via core layer changes
             If (msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Then
-                Me.m_ucDatasets.RefreshContent()
+                Me.m_toolbox.RefreshContent()
+                Me.m_map.RefreshContent()
             End If
 
         End Sub
 
         Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
             If (Object.ReferenceEquals(ds, Me.m_ds)) Then
-                ' Got it
+                If Me.InvokeRequired Then
+
+                End If
             End If
         End Sub
 

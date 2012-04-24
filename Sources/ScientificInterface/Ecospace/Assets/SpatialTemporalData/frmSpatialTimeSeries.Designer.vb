@@ -45,12 +45,14 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSpatialTimeSeries))
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
-            Me.m_ucDatasets = New ScientificInterface.Ecospace.Controls.ucExternalDataConnections()
+            Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
+            Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tscmTypes = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
             Me.m_tsDatasets.SuspendLayout()
@@ -62,19 +64,31 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_scMain, "m_scMain")
             Me.m_scMain.Name = "m_scMain"
             '
+            'm_scMain.Panel1
+            '
+            Me.m_scMain.Panel1.Controls.Add(Me.m_map)
+            '
             'm_scMain.Panel2
             '
-            Me.m_scMain.Panel2.Controls.Add(Me.m_ucDatasets)
+            Me.m_scMain.Panel2.Controls.Add(Me.m_toolbox)
             Me.m_scMain.Panel2.Controls.Add(Me.m_tsDatasets)
             '
-            'm_ucDatasets
+            'm_map
             '
-            Me.m_ucDatasets.BackColor = System.Drawing.SystemColors.Window
-            resources.ApplyResources(Me.m_ucDatasets, "m_ucDatasets")
-            Me.m_ucDatasets.Name = "m_ucDatasets"
-            Me.m_ucDatasets.SelectedIndex = -1
-            Me.m_ucDatasets.UIContext = Nothing
-            Me.m_ucDatasets.VarName = EwEUtils.Core.eVarNameFlags.NotSet
+            resources.ApplyResources(Me.m_map, "m_map")
+            Me.m_map.Name = "m_map"
+            Me.m_map.SelectedDataset = Nothing
+            Me.m_map.UIContext = Nothing
+            '
+            'm_toolbox
+            '
+            Me.m_toolbox.BackColor = System.Drawing.SystemColors.Window
+            resources.ApplyResources(Me.m_toolbox, "m_toolbox")
+            Me.m_toolbox.Name = "m_toolbox"
+            Me.m_toolbox.SelectedIndex = -1
+            Me.m_toolbox.SelectedTimeStep = -1
+            Me.m_toolbox.UIContext = Nothing
+            Me.m_toolbox.VarName = EwEUtils.Core.eVarNameFlags.NotSet
             '
             'm_tsDatasets
             '
@@ -110,6 +124,7 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmSpatialTimeSeries"
+            Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.Panel2.PerformLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
@@ -120,11 +135,12 @@ Namespace Ecospace
 
         End Sub
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-        Private WithEvents m_ucDatasets As ScientificInterface.Ecospace.Controls.ucExternalDataConnections
+        Private WithEvents m_toolbox As ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox
         Private WithEvents m_tsDatasets As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_tscmTypes As System.Windows.Forms.ToolStripComboBox
         Private WithEvents m_tslData As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsbnConnections As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_map As ScientificInterface.Ecospace.ucSpatialTimeSeriesMap
     End Class
 
 End Namespace

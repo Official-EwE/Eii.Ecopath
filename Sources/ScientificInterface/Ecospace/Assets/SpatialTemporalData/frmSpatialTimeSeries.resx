@@ -128,6 +128,31 @@
   <data name="m_scMain.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
+  <data name="m_map.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_map.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_map.Size" type="System.Drawing.Size, System.Drawing">
+    <value>437, 240</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_map.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_map.Name" xml:space="preserve">
+    <value>m_map</value>
+  </data>
+  <data name="&gt;&gt;m_map.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecospace.ucSpatialTimeSeriesMap, EwE6, Version=6.3.7659.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+  </data>
+  <data name="&gt;&gt;m_map.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_map.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
@@ -140,29 +165,28 @@
   <data name="&gt;&gt;m_scMain.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_ucDatasets.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_toolbox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_ucDatasets.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_toolbox.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
   </data>
-  <data name="m_ucDatasets.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_toolbox.Size" type="System.Drawing.Size, System.Drawing">
     <value>437, 165</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_ucDatasets.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_toolbox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;m_ucDatasets.Name" xml:space="preserve">
-    <value>m_ucDatasets</value>
+  <data name="&gt;&gt;m_toolbox.Name" xml:space="preserve">
+    <value>m_toolbox</value>
   </data>
-  <data name="&gt;&gt;m_ucDatasets.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.ucExternalDataConnections, EwE6, Version=6.3.7659.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+  <data name="&gt;&gt;m_toolbox.Type" xml:space="preserve">
+    <value>ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox, EwE6, Version=6.3.7659.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
-  <data name="&gt;&gt;m_ucDatasets.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_toolbox.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
   </data>
-  <data name="&gt;&gt;m_ucDatasets.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_toolbox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="m_tsDatasets.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
