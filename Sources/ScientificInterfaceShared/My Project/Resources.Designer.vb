@@ -6404,7 +6404,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Depth.
+        '''  Looks up a localized string similar to Depth map.
         '''</summary>
         Public ReadOnly Property VARIABLE_LAYERDEPTH() As String
             Get
@@ -6413,7 +6413,34 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to C(rel)||Relative Cin|Relative contaminants.
+        '''  Looks up a localized string similar to Environmental driver map.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERDRIVER() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERDRIVER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to HabCap map||Habitat capacity map.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERHABITATCAPACITYINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERHABITATCAPACITYINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MPA map|||Marine Protected Area map.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERMPA() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERMPA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to C(rel) map||Relative C map|Relative contaminants map.
         '''</summary>
         Public ReadOnly Property VARIABLE_LAYERRELCIN() As String
             Get
@@ -6422,7 +6449,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to PP(rel)||Relative PP|Relative Primary Production.
+        '''  Looks up a localized string similar to PP(rel) map||Relative PP map|Relative Primary Production map.
         '''</summary>
         Public ReadOnly Property VARIABLE_LAYERRELPP() As String
             Get

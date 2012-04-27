@@ -29,6 +29,8 @@ Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
+    ' ToDo: save incrementally to make sure that configuration info that did not get resolved into classes is not lost on save
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Manager class for loading and saving globally shared spatial data sets.
@@ -165,6 +167,7 @@ Namespace SpatialData
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
             Dim bSuccess As Boolean = True
+
 
             ' Declaration
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))

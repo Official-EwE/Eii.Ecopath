@@ -38,11 +38,12 @@ Namespace Other
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgOptions))
-            Me.m_btnOk = New System.Windows.Forms.Button
-            Me.m_btnCancel = New System.Windows.Forms.Button
-            Me.m_tvOptions = New System.Windows.Forms.TreeView
-            Me.m_btnApply = New System.Windows.Forms.Button
-            Me.m_scContent = New System.Windows.Forms.SplitContainer
+            Me.m_btnOk = New System.Windows.Forms.Button()
+            Me.m_btnCancel = New System.Windows.Forms.Button()
+            Me.m_tvOptions = New System.Windows.Forms.TreeView()
+            Me.m_btnApply = New System.Windows.Forms.Button()
+            Me.m_scContent = New System.Windows.Forms.SplitContainer()
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.SuspendLayout()
             Me.SuspendLayout()
@@ -100,6 +101,7 @@ Namespace Other
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.m_scContent.Panel1.ResumeLayout(False)
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.ResumeLayout(False)
             Me.ResumeLayout(False)
 

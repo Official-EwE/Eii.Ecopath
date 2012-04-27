@@ -287,6 +287,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Other\cSelectionMonitor.vb" />
+    <Compile Include="Other\Options\ucOptionsMap.Designer.vb">
+      <DependentUpon>ucOptionsMap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsMap.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Other\Options\ucOptionsPlugins.Designer.vb">
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>
     </Compile>
@@ -867,6 +873,10 @@
     <EmbeddedResource Include="Ecospace\Output\RunEcospace.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RunEcospace.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsMap.resx">
+      <DependentUpon>ucOptionsMap.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsPlugins.resx">
       <DependentUpon>ucOptionsPlugins.vb</DependentUpon>

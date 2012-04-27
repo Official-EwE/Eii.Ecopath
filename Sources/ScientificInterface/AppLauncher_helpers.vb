@@ -214,7 +214,7 @@ Partial Public Class AppLauncher
     ''' On-board helper class that actively updates model-derived settings in the style guide.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Class StyleGuideUpdater
+    Private Class cStyleGuideUpdater
 
 #Region " Private vars "
 
@@ -389,6 +389,10 @@ Partial Public Class AppLauncher
                 .ShowLegends = DirectCast(My.Settings.ShowLegends, TriState)
                 .UseTransparentBackgrounds = My.Settings.UseTransparentBackgrounds
 
+                .MapReferenceLayerFile = My.Settings.MapLayerRefFile
+                .MapReferenceLayerTL = New PointF(My.Settings.MapLayerRefLonMin, My.Settings.MapLayerRefLatMax)
+                .MapReferenceLayerBR = New PointF(My.Settings.MapLayerRefLonMax, My.Settings.MapLayerRefLatMin)
+
             End With
 
             Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
@@ -429,6 +433,12 @@ Partial Public Class AppLauncher
                 My.Settings.ThumbnailSize = .ThumbnailSize
                 My.Settings.ShowLegends = .ShowLegends
                 My.Settings.UseTransparentBackgrounds = .UseTransparentBackgrounds
+
+                My.Settings.MapLayerRefFile = .MapReferenceLayerFile
+                My.Settings.MapLayerRefLonMin = .MapReferenceLayerTL.X
+                My.Settings.MapLayerRefLonMax = .MapReferenceLayerBR.X
+                My.Settings.MapLayerRefLatMin = .MapReferenceLayerBR.Y
+                My.Settings.MapLayerRefLatMax = .MapReferenceLayerTL.Y
 
             End With
 

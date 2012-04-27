@@ -140,5 +140,20 @@
     <Setting Name="ShowHostInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="MapLayerRefFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MapLayerRefLonMin" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">-180</Value>
+    </Setting>
+    <Setting Name="MapLayerRefLonMax" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">180</Value>
+    </Setting>
+    <Setting Name="MapLayerRefLatMin" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">-90</Value>
+    </Setting>
+    <Setting Name="MapLayerRefLatMax" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">90</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

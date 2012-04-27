@@ -67,6 +67,7 @@ Namespace Other
             Me.AddPage(GetType(ucOptionsGeneral))
             Me.AddPage(GetType(ucOptionsGraphs))
             Me.AddPage(GetType(ucOptionsColors))
+            Me.AddPage(GetType(ucOptionsMap))
             Me.AddPage(GetType(ucOptionsPresentation))
             Me.AddPage(GetType(ucOptionsPlugins))
             Me.SelectPage("")
@@ -151,6 +152,8 @@ Namespace Other
                     page = Me.GetPage(GetType(ucOptionsGraphs))
                 Case "ndPlugins"
                     page = Me.GetPage(GetType(ucOptionsPlugins))
+                Case "ndMap"
+                    page = Me.GetPage(GetType(ucOptionsMap))
                 Case Else
                     Debug.Assert(False, "Invalid node selected")
             End Select

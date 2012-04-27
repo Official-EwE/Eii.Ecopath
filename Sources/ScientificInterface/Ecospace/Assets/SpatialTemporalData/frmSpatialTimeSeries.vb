@@ -79,9 +79,11 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
+            ' Connect to edit command
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialTemporalDataConnections")
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnConnections)
 
+            ' Fill filter combo
             Me.m_tscmTypes.Items.Add(New cSpatialDataAdapterItem(Nothing))
             For Each adt As cSpatialDataAdapter In Me.Core.SpatialDataConnectionManager.Adapters
                 Me.m_tscmTypes.Items.Add(New cSpatialDataAdapterItem(adt))
@@ -106,6 +108,23 @@ Namespace Ecospace
 
             MyBase.OnFormClosed(e)
 
+        End Sub
+
+        Protected Overrides Sub OnStyleGuideChanged(ct As ScientificInterfaceShared.Style.cStyleGuide.eChangeType)
+            MyBase.OnStyleGuideChanged(ct)
+
+            If ((ct And cStyleGuide.eChangeType.Colours) > 0) Then
+                Me.m_map.Invalidate()
+                Me.m_toolbox.Invalidate()
+            End If
+
+        End Sub
+
+        Protected Overrides Sub UpdateControls()
+            MyBase.UpdateControls()
+            Me.m_tsbnZoomData.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Data)
+            Me.m_tsbnZoomMap.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Map)
+            Me.m_tsbnZoomBoth.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Both)
         End Sub
 
 #End Region ' Form overrides
@@ -153,6 +172,23 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnSelectedTimestepChanged(owner As Object, iTimeStep As Integer, dt As Date) _
+            Handles m_toolbox.OnSelectedTimestepChanged
+            Me.m_map.SelectedTimeStep = iTimeStep
+        End Sub
+
+        Private Sub OnZoom(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnZoomMap.Click, m_tsbnZoomData.Click, m_tsbnZoomBoth.Click
+            If (sender Is Me.m_tsbnZoomData) Then
+                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Data
+            ElseIf (sender Is Me.m_tsbnZoomMap) Then
+                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Map
+            Else
+                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Both
+            End If
+            Me.UpdateControls()
+        End Sub
+
 #End Region ' Control events
 
 #Region " Callbacks "
@@ -168,10 +204,15 @@ Namespace Ecospace
 
         End Sub
 
+        Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
+
         Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
             If (Object.ReferenceEquals(ds, Me.m_ds)) Then
                 If Me.InvokeRequired Then
-
+                    Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {ds})
+                Else
+                    Me.m_map.RefreshContent()
+                    Me.m_toolbox.Invalidate()
                 End If
             End If
         End Sub

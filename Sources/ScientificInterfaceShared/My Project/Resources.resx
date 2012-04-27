@@ -2186,13 +2186,13 @@
     <comment>{0}: sequential number</comment>
   </data>
   <data name="VARIABLE_LAYERDEPTH" xml:space="preserve">
-    <value>Depth</value>
+    <value>Depth map</value>
   </data>
   <data name="VARIABLE_LAYERRELCIN" xml:space="preserve">
-    <value>C(rel)||Relative Cin|Relative contaminants</value>
+    <value>C(rel) map||Relative C map|Relative contaminants map</value>
   </data>
   <data name="VARIABLE_LAYERRELPP" xml:space="preserve">
-    <value>PP(rel)||Relative PP|Relative Primary Production</value>
+    <value>PP(rel) map||Relative PP map|Relative Primary Production map</value>
   </data>
   <data name="HEADER_HISTOGRAM_TARGET" xml:space="preserve">
     <value>Histogram for '{0}'</value>
@@ -2465,5 +2465,14 @@
   </data>
   <data name="timeseries" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\timeseries.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VARIABLE_LAYERDRIVER" xml:space="preserve">
+    <value>Environmental driver map</value>
+  </data>
+  <data name="VARIABLE_LAYERHABITATCAPACITYINPUT" xml:space="preserve">
+    <value>HabCap map||Habitat capacity map</value>
+  </data>
+  <data name="VARIABLE_LAYERMPA" xml:space="preserve">
+    <value>MPA map|||Marine Protected Area map</value>
   </data>
 </root>

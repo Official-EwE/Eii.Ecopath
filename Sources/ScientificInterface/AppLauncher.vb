@@ -72,7 +72,7 @@ Public Class AppLauncher
     Private m_coreController As cCoreController = Nothing
     Private m_FormStateHelper As cEwEFormStateHelper = Nothing
     ''' <summary>Style guide updater.</summary>
-    Private m_styleguideupdater As StyleGuideUpdater = Nothing
+    Private m_styleguideupdater As cStyleGuideUpdater = Nothing
     Private m_MessageHistory As cMessageHistory = Nothing
     ''' <summary>Last used model directory.</summary>
     Private m_strLastModelPath As String = ""
@@ -621,7 +621,7 @@ Public Class AppLauncher
         Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
 
         ' Initialize style guide updater
-        Me.m_styleguideupdater = New StyleGuideUpdater(Me.UIContext)
+        Me.m_styleguideupdater = New cStyleGuideUpdater(Me.UIContext)
         Me.m_styleguideupdater.Load()
 
     End Sub

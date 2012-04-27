@@ -617,6 +617,66 @@ Partial Friend NotInheritable Class Settings
             Me("ShowHostInfo") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property MapLayerRefFile() As String
+        Get
+            Return CType(Me("MapLayerRefFile"),String)
+        End Get
+        Set
+            Me("MapLayerRefFile") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("-180")>  _
+    Public Property MapLayerRefLonMin() As Single
+        Get
+            Return CType(Me("MapLayerRefLonMin"),Single)
+        End Get
+        Set
+            Me("MapLayerRefLonMin") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("180")>  _
+    Public Property MapLayerRefLonMax() As Single
+        Get
+            Return CType(Me("MapLayerRefLonMax"),Single)
+        End Get
+        Set
+            Me("MapLayerRefLonMax") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("-90")>  _
+    Public Property MapLayerRefLatMin() As Single
+        Get
+            Return CType(Me("MapLayerRefLatMin"),Single)
+        End Get
+        Set
+            Me("MapLayerRefLatMin") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("90")>  _
+    Public Property MapLayerRefLatMax() As Single
+        Get
+            Return CType(Me("MapLayerRefLatMax"),Single)
+        End Get
+        Set
+            Me("MapLayerRefLatMax") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

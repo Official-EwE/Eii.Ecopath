@@ -15,7 +15,13 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
 Imports ScientificInterfaceShared.Forms
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region ' Imports
 
 Namespace Ecospace
 
@@ -46,6 +52,10 @@ Namespace Ecospace
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSpatialTimeSeries))
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
             Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
+            Me.m_tsMap = New cEwEToolstrip()
+            Me.m_tsbnZoomMap = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnZoomData = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnZoomBoth = New System.Windows.Forms.ToolStripButton()
             Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tscmTypes = New System.Windows.Forms.ToolStripComboBox()
@@ -55,6 +65,7 @@ Namespace Ecospace
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
+            Me.m_tsMap.SuspendLayout()
             Me.m_tsDatasets.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -67,6 +78,7 @@ Namespace Ecospace
             'm_scMain.Panel1
             '
             Me.m_scMain.Panel1.Controls.Add(Me.m_map)
+            Me.m_scMain.Panel1.Controls.Add(Me.m_tsMap)
             '
             'm_scMain.Panel2
             '
@@ -78,7 +90,40 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_map, "m_map")
             Me.m_map.Name = "m_map"
             Me.m_map.SelectedDataset = Nothing
+            Me.m_map.SelectedTimeStep = -1
             Me.m_map.UIContext = Nothing
+            '
+            'm_tsMap
+            '
+            Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnZoomMap, Me.m_tsbnZoomData, Me.m_tsbnZoomBoth})
+            resources.ApplyResources(Me.m_tsMap, "m_tsMap")
+            Me.m_tsMap.Name = "m_tsMap"
+            '
+            'm_tsbnZoomMap
+            '
+            Me.m_tsbnZoomMap.CheckOnClick = True
+            Me.m_tsbnZoomMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnZoomMap, "m_tsbnZoomMap")
+            Me.m_tsbnZoomMap.Image = SharedResources.map
+            Me.m_tsbnZoomMap.Name = "m_tsbnZoomMap"
+            '
+            'm_tsbnZoomData
+            '
+            Me.m_tsbnZoomData.CheckOnClick = True
+            Me.m_tsbnZoomData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnZoomData, "m_tsbnZoomData")
+            Me.m_tsbnZoomData.Image = SharedResources.Database
+            Me.m_tsbnZoomData.Name = "m_tsbnZoomData"
+            '
+            'm_tsbnZoomBoth
+            '
+            Me.m_tsbnZoomBoth.Checked = True
+            Me.m_tsbnZoomBoth.CheckOnClick = True
+            Me.m_tsbnZoomBoth.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsbnZoomBoth.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnZoomBoth, "m_tsbnZoomBoth")
+            Me.m_tsbnZoomBoth.Image = SharedResources.ZoomHS
+            Me.m_tsbnZoomBoth.Name = "m_tsbnZoomBoth"
             '
             'm_toolbox
             '
@@ -125,10 +170,13 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmSpatialTimeSeries"
             Me.m_scMain.Panel1.ResumeLayout(False)
+            Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.Panel2.PerformLayout()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
+            Me.m_tsMap.ResumeLayout(False)
+            Me.m_tsMap.PerformLayout()
             Me.m_tsDatasets.ResumeLayout(False)
             Me.m_tsDatasets.PerformLayout()
             Me.ResumeLayout(False)
@@ -141,6 +189,10 @@ Namespace Ecospace
         Private WithEvents m_tslData As System.Windows.Forms.ToolStripLabel
         Private WithEvents m_tsbnConnections As System.Windows.Forms.ToolStripButton
         Private WithEvents m_map As ScientificInterface.Ecospace.ucSpatialTimeSeriesMap
+        Private WithEvents m_tsMap As cEwEToolstrip
+        Private WithEvents m_tsbnZoomMap As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnZoomData As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnZoomBoth As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

@@ -108,6 +108,11 @@ Namespace Style
         ''' <summary>Size (width and height) of thumbnails in EwE6.</summary>
         Private m_iThumbnailSize As Integer = 48
 
+        ' -- maps --
+        Private m_strMapRefLayerFile As String = ""
+        Private m_ptMapRefLayerTL As PointF
+        Private m_ptMapRefLayerBR As PointF
+
         ' -- event locks --
         ''' <summary>Event lock count.</summary>
         Private m_nEventLock As Integer = 0
@@ -297,6 +302,7 @@ Namespace Style
             FleetVisibility = &H20
             Thumbnails = &H40
             Legends = &H80
+            Map = &H100
             All = &HFFFFFFFF
         End Enum
 
@@ -538,7 +544,7 @@ Namespace Style
             Dim nf As NumberFormatInfo = DirectCast(Thread.CurrentThread.CurrentCulture.NumberFormat.Clone, NumberFormatInfo)
             nf.NumberDecimalDigits = iNumDigits
 
-            Select tsGroupDigits
+            Select Case tsGroupDigits
                 Case TriState.True
                 Case TriState.False
                     nf.NumberGroupSeparator = ""
@@ -942,6 +948,47 @@ Namespace Style
                 End If
             End Set
         End Property
+
+        Public Sub MapChanged()
+            Me.FireChangeEvent(eChangeType.Map)
+        End Sub
+        Public Property MapReferenceLayerFile As String
+            Get
+                Return Me.m_strMapRefLayerFile
+            End Get
+            Set(value As String)
+                If (String.Compare(Me.m_strMapRefLayerFile, value) <> 0) Then
+                    Me.m_strMapRefLayerFile = value
+                    MapChanged()
+                End If
+            End Set
+        End Property
+
+        Public Property MapReferenceLayerTL As PointF
+            Get
+                Return Me.m_ptMapRefLayerTL
+            End Get
+            Set(value As PointF)
+                If Not Point.Equals(Me.m_ptMapRefLayerTL, value) Then
+                    Me.m_ptMapRefLayerTL = value
+                    MapChanged()
+                End If
+            End Set
+        End Property
+
+
+        Public Property MapReferenceLayerBR As PointF
+            Get
+                Return Me.m_ptMapRefLayerBR
+            End Get
+            Set(value As PointF)
+                If Not Point.Equals(Me.m_ptMapRefLayerBR, value) Then
+                    Me.m_ptMapRefLayerBR = value
+                    MapChanged()
+                End If
+            End Set
+        End Property
+
 
 #End Region ' Maps and charts
 
@@ -1727,7 +1774,7 @@ Namespace Style
                                                   HatchStyle.SmallGrid, _
                                                   HatchStyle.DashedVertical, _
                                                   HatchStyle.Plaid}
-  
+
         Private m_agrads As cARGBColorRamp() = { _
             New cARGBColorRamp(New Color() {Color.LightSkyBlue, Color.DarkBlue}, New Double() {0, 1}), _
             New cARGBColorRamp(New Color() {Color.LightSeaGreen, Color.DarkGreen}, New Double() {0, 1}), _

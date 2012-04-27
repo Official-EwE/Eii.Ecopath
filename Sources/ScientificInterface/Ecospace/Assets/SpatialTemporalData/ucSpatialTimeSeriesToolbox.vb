@@ -36,10 +36,13 @@ Namespace Ecospace.Controls
 
         Private Class cDatasetPos
             Public m_ds As ISpatialDataSet
+            Public m_var As eVarNameFlags
+            Public m_iIndex As Integer
             Public m_iTimeStart As Integer = 0
             Public m_iTimeEnd As Integer = 0
             Public m_iPosVert As Integer = 0
             Public m_liData As New List(Of Integer) ' Time steps with data
+            Public m_liTime As New List(Of DateTime) ' Translated time for time steps
         End Class
 
 #End Region ' Private classes
@@ -100,7 +103,8 @@ Namespace Ecospace.Controls
                 Return Me.m_iSelectedIndex
             End Get
             Set(value As Integer)
-                Me.m_iSelectedIndex = value
+
+                Me.m_iSelectedIndex = Math.Min(Me.m_lPos.Count - 1, Math.Max(-1, value))
                 Me.Invalidate()
 
                 If (Me.UIContext Is Nothing) Then Return
@@ -122,11 +126,11 @@ Namespace Ecospace.Controls
                 Return Me.m_iSelectedTimeStep
             End Get
             Set(value As Integer)
-                Me.m_iSelectedTimeStep = value
-                Me.Invalidate()
 
                 If (Me.UIContext Is Nothing) Then Return
 
+                Me.m_iSelectedTimeStep = Math.Max(0, Math.Min(value, Me.m_uic.Core.nEcospaceTimeSteps - 1))
+                Me.Invalidate()
                 Try
                     RaiseEvent OnSelectedTimestepChanged(Me, Me.m_iSelectedTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iSelectedTimeStep))
                 Catch ex As Exception
@@ -191,23 +195,19 @@ Namespace Ecospace.Controls
         End Sub
 
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
+
             MyBase.OnPaint(e)
 
-            ' Safety check
             If (Me.m_uic Is Nothing) Then Return
 
-            Dim rmp As New cEwEColorRamp()
-            rmp.ColorOffsetStart = 0.2
-
             e.Graphics.Clear(Me.BackColor)
-
             Try
 
                 ' Paint matrix shifted to x and Y scroll position
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, AutoScrollPosition.Y)
                 Me.PaintGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
                 For i As Integer = 0 To Me.m_lPos.Count - 1
-                    Me.PaintDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex, rmp.GetColor(i / Me.m_lPos.Count))
+                    Me.PaintDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex)
                 Next
                 e.Graphics.ResetTransform()
 
@@ -266,6 +266,16 @@ Namespace Ecospace.Controls
                 lAdt.Add(conn.Adapter(Me.m_varname))
             End If
 
+            ' Try to preserve selection
+            Dim var As eVarNameFlags = eVarNameFlags.NotSet
+            Dim iIndex As Integer = -1
+            Dim iSel As Integer = 0
+
+            If (Me.m_iSelectedIndex > 0) Then
+                var = Me.m_lPos(Me.m_iSelectedIndex).m_var
+                iIndex = Me.m_lPos(Me.m_iSelectedIndex).m_iIndex
+            End If
+
             Me.m_lPos.Clear()
 
             For Each adt As cSpatialDataAdapter In lAdt
@@ -276,6 +286,8 @@ Namespace Ecospace.Controls
 
                         Dim pos As New cDatasetPos()
                         pos.m_ds = ds
+                        pos.m_var = adt.VarName
+                        pos.m_iIndex = adt.Index
                         pos.m_iPosVert = iRow
 
                         If ds.TimeStart = Date.MinValue Then
@@ -291,17 +303,25 @@ Namespace Ecospace.Controls
                         End If
 
                         For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
-                            If ds.HasDataAtT(core.EcospaceTimestepToAbsoluteTime(iStep), ptfTL, ptfBR) Then
+                            Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
+                            If ds.HasDataAtT(tm, ptfTL, ptfBR) Then
                                 pos.m_liData.Add(iStep)
+                                pos.m_liTime.Add(tm)
                             End If
                         Next
 
                         Me.m_lPos.Add(pos)
+
+                        If pos.m_var = var And pos.m_iIndex = iIndex Then
+                            iSel = iRow
+                        End If
+
                         iRow += 1
                     End If
                 Next
             Next
-            Me.Invalidate()
+
+            Me.SelectedIndex = iSel
 
         End Sub
 
@@ -363,17 +383,17 @@ Namespace Ecospace.Controls
         ''' <remarks></remarks>
         Private Sub PaintDataset(ByVal g As Graphics, _
                                  ByVal pos As cDatasetPos, _
-                                 ByVal bSelected As Boolean, _
-                                 ByVal clr As Color)
+                                 ByVal bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
             Dim rcBack As Rectangle = New Rectangle(0, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
             Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barlabelheight)
-            Dim rcTimeStep As New Rectangle(rcBar.X - c_dotradius, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
-            Dim clrFill As Color = EwEUtils.Utilities.cColorUtils.GetVariant(clr, 0.5)
-            Dim clrData As Color = EwEUtils.Utilities.cColorUtils.GetVariant(clr, -0.5)
+            Dim rcTimeStep As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
+            Dim clrFill As Color = Color.LightGreen
+            Dim clrData As Color = Color.DarkGreen
             Dim clrText As Color = SystemColors.ControlText
-            Dim clrTextFill As Color = clr
+            Dim clrTextFill As Color = clrFill
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
             fmt.LineAlignment = StringAlignment.Center
@@ -390,9 +410,6 @@ Namespace Ecospace.Controls
             Using br As New SolidBrush(clrFill)
                 g.FillRectangle(br, rcBar)
             End Using
-            Using p As New Pen(clr)
-                g.DrawRectangle(p, rcBar)
-            End Using
             Using br As New SolidBrush(clrTextFill)
                 g.FillRectangle(br, rcLabel)
             End Using
@@ -400,12 +417,26 @@ Namespace Ecospace.Controls
                 rcLabel.Width = rcBack.Width
                 g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, rcLabel, fmt)
             End Using
-            Using br As New SolidBrush(clrData)
-                For Each iStep As Integer In pos.m_liData
-                    rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize
-                    g.FillEllipse(br, rcTimeStep)
-                Next
+            Using p As New Pen(clrData)
+                g.DrawRectangle(p, rcBar)
             End Using
+
+            Dim brIndexed As New SolidBrush(clrData)
+            Dim penFailed As New Pen(Brushes.Red, 0.001)
+            Dim pt1, pt2 As PointF
+
+            For i As Integer = 0 To pos.m_liData.Count - 1
+                Dim iStep As Integer = pos.m_liData(i)
+                rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_dotradius
+                If Not pos.m_ds.GetExtentAtT(pos.m_liTime(i), pt1, pt2) Then
+                    g.DrawEllipse(penFailed, rcTimeStep)
+                Else
+                    g.FillEllipse(brIndexed, rcTimeStep)
+                End If
+            Next
+
+            brIndexed.Dispose()
+            penFailed.Dispose()
 
         End Sub
 
