@@ -219,6 +219,9 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerPort)
             Me.AddData(eVarNameFlags.LayerSail, False)
+            Dim l As New cImageLayer(Me.UIContext)
+            l.Name = "Reference"
+            Me.AddLayer(l, l.Name)
             Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP, False)
             Me.AddData(eVarNameFlags.LayerRelCin, False)
