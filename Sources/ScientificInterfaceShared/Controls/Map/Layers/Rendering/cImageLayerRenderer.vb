@@ -32,8 +32,8 @@ Namespace Controls.Map.Layers
     ''' onto the base map.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public MustInherit Class cVectorLayerRenderer
-        Inherits cLayerRenderer
+    Public Class cImageLayerRenderer
+        Inherits cVectorLayerRenderer
 
 #Region " Construction / destruction "
 
@@ -57,13 +57,35 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' <param name="g">The graphics to render onto.</param>
         ''' <param name="rc">Device area to render cell onto.</param>
+        ''' <param name="layer">Layer to render.</param>
+        ''' <param name="ptfTL">Top-left corner (lon, lat) represented by <paramref name="rc"/>.</param>
+        ''' <param name="ptfBR">Bottom-right corner (lon, lat) represented by <paramref name="rc"/>.</param>
         ''' -----------------------------------------------------------------------
-        Public MustOverride Sub Render(ByVal g As Graphics, _
+        Public Overrides Sub Render(ByVal g As Graphics, _
                                        ByVal layer As cLayer, _
                                        ByVal rc As Rectangle, _
                                        ByVal ptfTL As PointF, _
-                                       ByVal ptBR As PointF, _
+                                       ByVal ptfBR As PointF, _
                                        ByVal style As cStyleGuide.eStyleFlags)
+
+            If (Not TypeOf layer Is cImageLayer) Then Return
+
+            Dim bml As cImageLayer = DirectCast(layer, cImageLayer)
+            Dim img As Image = bml.Image
+            Dim imgTL As PointF = bml.ImageTL
+            Dim imgBR As PointF = bml.ImageBR
+            Dim sScaleX As Single = (rc.Width / (ptfBR.X - ptfTL.X))
+            Dim sScaleY As Single = (rc.Height / (ptfTL.Y - ptfBR.Y))
+
+            g.ScaleTransform(sScaleX, sScaleY)
+            g.DrawImage(img, (imgTL.X - ptfTL.X), (ptfTL.Y - imgTL.Y), Math.Abs(imgBR.X - imgTL.X), Math.Abs(imgBR.Y - imgTL.Y))
+            g.ResetTransform()
+
+        End Sub
+
+        Public Overrides Sub RenderPreview(g As System.Drawing.Graphics, rc As System.Drawing.Rectangle)
+            g.DrawImage(My.Resources.map, rc)
+        End Sub
 
     End Class
 

@@ -338,6 +338,7 @@ Namespace Controls.Map
         End Sub
 
         Private Function FindGroup(ByVal strGroup As String) As ucLayerGroup
+            If (Not Me.m_dtGroups.ContainsKey(strGroup)) Then Return Nothing
             Return Me.m_dtGroups(strGroup)
         End Function
 
