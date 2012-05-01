@@ -85,7 +85,12 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' i.e. "Ecospace ASC 11-07-11 16-40-50" </remarks>
     Protected Overridable Sub CreateOutputDir(Optional bIncludeTime As Boolean = False)
 
-        m_TimeStampDirName = Path.Combine(Me.m_core.OutputPath, Path.GetDirectoryName(Me.m_core.EcospaceOutputFileLocation(bIncludeTime:=bIncludeTime)) & " " & Me.getSubDirName())
+        If Me.m_core.m_EcoSpaceData.bUseCoreOuputDir Then
+            m_TimeStampDirName = Path.Combine(Me.m_core.OutputPath, Path.GetDirectoryName(Me.m_core.EcospaceOutputFileLocation(bIncludeTime:=bIncludeTime)) & " " & Me.getSubDirName())
+        Else
+            'Use the output directroy set by the user
+            m_TimeStampDirName = Me.m_core.OutputPath ' 
+        End If
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() cannot create directory")

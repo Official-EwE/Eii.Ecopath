@@ -1431,7 +1431,9 @@ Public Class cEcoSpace
                     solver.SignalState.Reset()
 
                     solver.isOkToRunning = False
-                    ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                    Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                    worker.Start()
+                    'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
 
                     'iFstGrp += m_Data.nGroupsPerThread
                 Else
@@ -1489,6 +1491,9 @@ Public Class cEcoSpace
         iFrstCell = 1
         iLstCell = 0
 
+        Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+        Console.WriteLine("Ecospace ThreadID = " & thrdID.ToString)
+
         Try
             'this do loop should only execute once
             Do While iLstCell < m_Data.iTotalWaterCells 'm_data.iTotalCells
@@ -1504,8 +1509,9 @@ Public Class cEcoSpace
                         solver.SignalState.Reset()
 
                         solver.isOkToRun = False
-                        ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-
+                        'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                        Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                        worker.Start()
                         iFrstCell += m_Data.nCellsPerThread
 
                     Else
@@ -3417,7 +3423,7 @@ exitline:
         'used to wait for the routines to finish once all the worker threads have been started
         Dim lstOfCalls As List(Of WaitHandle) = New List(Of WaitHandle)
 
-        Dim nFltsPerThread As Integer = Me.m_Data.nFleets \ Me.m_Data.nGridSolverThreads + 1
+        Dim nFltsPerThread As Integer = Me.m_Data.nFleets \ Me.m_Data.nSpaceSolverThreads + 1
         Dim iFirstFleet As Integer = 1
         Dim ilastfleet As Integer
         Dim bDone As Boolean
@@ -3434,7 +3440,12 @@ exitline:
             End If
 
             Dim waitOb As WaitHandle = New AutoResetEvent(False)
-            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, ilastfleet, iMonth, iCumMonth))
+            'ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, ilastfleet, iMonth, iCumMonth))
+
+            Dim worker As Thread = New Thread(AddressOf Me.PredictEffortDistributionThreaded)
+            worker.Start(New cThreadedCallArgs(waitOb, iFirstFleet, ilastfleet, iMonth, iCumMonth))
+
+
             lstOfCalls.Add(waitOb)
 
             If bDone Then Exit For

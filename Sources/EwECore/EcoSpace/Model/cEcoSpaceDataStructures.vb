@@ -521,6 +521,16 @@ Public Class cEcospaceDataStructures
 
     Public bSaveAnnual As Boolean = True
 
+    ''' <summary>
+    ''' Use the Ecospace Output directory defined by the core. If True this path will include Model-name/Ecopath_6. Scenario-name/
+    ''' If False just the core output directory.
+    ''' </summary>
+    ''' <remarks>
+    ''' This allows you to set the Ecospace output directory from code. 
+    ''' You could loop over a bunch of different cases and set the output dir for each case.
+    ''' </remarks>
+    Public bUseCoreOuputDir As Boolean = True
+
     Public CapMapFunctions(,) As Integer
 
     ' Generate for each driver layer + 0 which is depth

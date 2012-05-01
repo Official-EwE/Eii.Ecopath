@@ -246,6 +246,8 @@ Public Class cSpaceSolver
         If m_TracerData.EcoSpaceConSimOn Then
             ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
         End If
+        Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+        Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T=" & DateTime.Now.ToLongTimeString)
 
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
@@ -254,6 +256,7 @@ Public Class cSpaceSolver
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             SignalState.Reset()
             Dim iGrp As Integer
+            ' Console.WriteLine()
 
             'do the processing here
             For iGrp = iFrstCell To iLastCell
@@ -266,6 +269,8 @@ Public Class cSpaceSolver
                 SolveCell(m_Data.iWaterCellIndex(iGrp), m_Data.jWaterCellIndex(iGrp))
 
             Next iGrp
+            Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", End T=" & DateTime.Now.ToLongTimeString)
+
 
             'thread has finished it is ok to run this again
             isOkToRun = True

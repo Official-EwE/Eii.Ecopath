@@ -690,6 +690,12 @@ Namespace Core
         ''' <summary>How Capacity is calculated in Ecospace.</summary>
         EcospaceCapCalType
 
+        ''' <summary>Use the default Ecospace output directory structure as defined by the core.</summary>
+        EcospaceUseCoreOutputDir
+
+        ''' <summary>Save Ecospace out annually only.</summary>
+        EcospaceUseAnnualOutput
+
         EcospaceIBMMovePacketOnStanza
 
         ''''''''''''''''''''''''''''
