@@ -203,6 +203,18 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            'Core Ouput Dir
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.EcospaceUseCoreOutputDir, eStatusFlags.Null, eValueTypes.Bool, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            ' Save Annual
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.EcospaceUseAnnualOutput, eStatusFlags.Null, eValueTypes.Bool, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
 
 
             'set status flags to default values
@@ -619,6 +631,30 @@ Public Class cEcospaceModelParameters
 
         Set(ByVal value As eEcospaceCapacityCalType)
             SetVariable(eVarNameFlags.EcospaceCapCalType, value)
+        End Set
+
+    End Property
+
+    Public Property UseAnnualOuput() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceUseAnnualOutput))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceUseAnnualOutput, value)
+        End Set
+
+    End Property
+
+    Public Property UseCoreOuputDirectory() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceUseCoreOutputDir))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceUseCoreOutputDir, value)
         End Set
 
     End Property
