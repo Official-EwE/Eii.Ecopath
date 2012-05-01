@@ -9217,11 +9217,13 @@ Public Class cCore
             m_EcospaceModelParams.NumberSummaryTimeSteps = m_EcoSpaceData.NumStep
             m_EcospaceModelParams.nRegions = m_EcoSpaceData.nRegions
 
+            'Grid threads
             m_EcospaceModelParams.nSolverThreads = m_EcoSpaceData.nGridSolverThreads
             m_EcospaceModelParams.nGroupsPerThread = m_EcoSpaceData.nGroupsPerThread
 
-            m_EcospaceModelParams.nMapCellsPerThread = m_EcoSpaceData.nCellsPerThread
+            'Group Threads
             m_EcospaceModelParams.nSpaceThreads = m_EcoSpaceData.nSpaceSolverThreads
+            m_EcospaceModelParams.nMapCellsPerThread = m_EcoSpaceData.nCellsPerThread
 
             m_EcospaceModelParams.IFDPower = m_EcoSpaceData.IFDPower
             m_EcospaceModelParams.UseIBM = m_EcoSpaceData.UseIBM
@@ -9235,6 +9237,9 @@ Public Class cCore
             m_EcospaceModelParams.SaveCSV = m_EcoSpaceData.bSaveCSV
             'SaveASC
             m_EcospaceModelParams.SaveASC = m_EcoSpaceData.bSaveASC
+
+            m_EcospaceModelParams.UseAnnualOuput = m_EcoSpaceData.bSaveAnnual
+            m_EcospaceModelParams.UseCoreOuputDirectory = m_EcoSpaceData.bUseCoreOuputDir
 
             m_EcospaceModelParams.IBMMovePacketOnStanza = m_EcoSpaceData.MovePacketsAtStanzaEntry
 
@@ -9289,6 +9294,9 @@ Public Class cCore
         m_EcoSpaceData.UseExact = m_EcospaceModelParams.UseExact
         m_EcoSpaceData.bSaveCSV = m_EcospaceModelParams.SaveCSV
         m_EcoSpaceData.bSaveASC = m_EcospaceModelParams.SaveASC
+
+        m_EcoSpaceData.bSaveAnnual = m_EcospaceModelParams.UseAnnualOuput
+        m_EcoSpaceData.bUseCoreOuputDir = m_EcospaceModelParams.UseCoreOuputDirectory
 
         m_EcoSpaceData.MovePacketsAtStanzaEntry = m_EcospaceModelParams.IBMMovePacketOnStanza
 
