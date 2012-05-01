@@ -36,6 +36,7 @@ Public Class cEIIDataSource
     Implements IEwEDataSource
     Implements IEcopathDataSource
     Implements IEcosimDatasource
+    Implements IEcospaceDatasource
 
     Private m_strFilename As String = ""
     Private m_core As cCore = Nothing
@@ -228,9 +229,11 @@ Public Class cEIIDataSource
             Me.LoadStanza()
             Me.LoadEcosimScenarioDefinitions()
 
+            Me.LoadSpaceScenarioDefinitions()
             ' Make sure that the core knows not to expect anything else
             ecopathDS.RedimEcospaceScenarios()
             ecopathDS.RedimEcotracerScenarios()
+
 
             ' Invoke plugin point
             If (Me.m_core.PluginManager IsNot Nothing) Then Me.m_core.PluginManager.LoadModel(Me)
@@ -683,16 +686,16 @@ Public Class cEIIDataSource
 
 #Region " Pedigree "
 
-    Public Function AddPedigreeLevel(iPosition As Integer, strName As String, iColor As Integer, strDescription As String, varName As eVarNameFlags, sIndexValue As Single, sConfidence As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AddPedigreeLevel(ByVal iPosition As Integer, ByVal strName As String, ByVal iColor As Integer, ByVal strDescription As String, ByVal varName As eVarNameFlags, ByVal sIndexValue As Single, ByVal sConfidence As Single, ByRef iDBID As Integer) As Boolean _
      Implements DataSources.IEcopathDataSource.AddPedigreeLevel
         Return False
     End Function
 
-    Public Function MovePedigreeLevel(iDBID As Integer, iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
+    Public Function MovePedigreeLevel(ByVal iDBID As Integer, ByVal iPosition As Integer) As Boolean Implements DataSources.IEcopathDataSource.MovePedigreeLevel
         Return False
     End Function
 
-    Public Function RemovePedigreeLevel(iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
+    Public Function RemovePedigreeLevel(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcopathDataSource.RemovePedigreeLevel
         Return False
     End Function
 
@@ -700,12 +703,12 @@ Public Class cEIIDataSource
 
 #Region " Taxon "
 
-    Public Function AddTaxon(iTargetDBID As Integer, bIsStanza As Boolean, data As ITaxonSearchData, sProportion As Single, ByRef iDBID As Integer) As Boolean _
+    Public Function AddTaxon(ByVal iTargetDBID As Integer, ByVal bIsStanza As Boolean, ByVal data As ITaxonSearchData, ByVal sProportion As Single, ByRef iDBID As Integer) As Boolean _
         Implements DataSources.IEcopathDataSource.AddTaxon
         Return False
     End Function
 
-    Public Function RemoveTaxon(iTaxonID As Integer) As Boolean _
+    Public Function RemoveTaxon(ByVal iTaxonID As Integer) As Boolean _
         Implements DataSources.IEcopathDataSource.RemoveTaxon
         Return False
     End Function
@@ -744,6 +747,19 @@ Public Class cEIIDataSource
         ecopathDS.EcosimScenarioName(1) = My.Resources.CoreDefaults.CORE_DEFAULT_SCENARIO()
         ecopathDS.EcosimScenarioDBID(1) = 1
         ecopathDS.EcosimScenarioDescription(1) = "This is a dummy scenario, manually crafted in cEIIDataSource."
+
+        Return True
+    End Function
+
+    Private Function LoadSpaceScenarioDefinitions() As Boolean
+
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        ecopathDS.NumEcospaceScenarios = 1
+
+        ecopathDS.RedimEcospaceScenarios()
+        ecopathDS.EcospaceScenarioName(1) = My.Resources.CoreDefaults.CORE_DEFAULT_SCENARIO()
+        ecopathDS.EcospaceScenarioDBID(1) = 1
+        ecopathDS.EcospaceScenarioDescription(1) = "This is a dummy scenario, manually crafted in cEIIDataSource."
 
         Return True
     End Function
@@ -1045,6 +1061,171 @@ Public Class cEIIDataSource
 #End Region ' Time series
 
 #End Region ' EcoSim
+
+#Region "Ecospace"
+
+    Public Function LoadEcospaceScenario(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.LoadEcospaceScenario
+        Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim spatialDS As SpatialData.cSpatialDataStructures = Me.m_core.m_SpatialData
+        'Dim reader As IDataReader = Nothing
+        Dim bSucces As Boolean = True
+
+        'jb Jan-17-07 moved SetDefaults to run before any data has been loaded
+        'this will load the default values into Ecospace before anything else is loaded
+        ecospaceDS.NGroups = ecopathDS.NumGroups
+        ecospaceDS.nFleets = ecopathDS.NumFleet
+        ecospaceDS.nLiving = ecopathDS.NumLiving
+        ecospaceDS.nImportanceLayers = 0 'CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID), 0))
+        ecospaceDS.nEnvironmentalLayers = 0 'CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
+
+        ' Next is a dangerous solution that may need to be revamped. It is assumed that
+        ' SetDefaults properly redimensions the ecospaceDS group variables, which
+        ' may wreck havoc if the implementation of SetDefaults were to change.
+        ecospaceDS.SetDefaults()
+        spatialDS.SetDefaults()
+
+        Try
+            ' Remember link with Ecosim scenario, if any
+            ecospaceDS.EcosimScenarioDBID = 1
+            ecospaceDS.InRow = 320
+            ecospaceDS.InCol = 720
+            ecospaceDS.CellLength = 100
+            ecospaceDS.CellSize = cCore.NULL_VALUE 'CSng(Me.m_db.ReadSafe(reader, "CellSize", cEcospaceBasemap.ToCellSize(ecospaceDS.CellLength)))
+            ecospaceDS.Lat1 = 0
+            ecospaceDS.Lon1 = 0
+            ecospaceDS.TimeStep = 1 / 12
+            ecospaceDS.PredictEffort = True
+
+            ' JS 05apr08: pragmatic fix to prevent mayhem
+            If ecospaceDS.TimeStep <= 0 Then ecospaceDS.TimeStep = 1.0! / cCore.N_MONTHS
+
+            ecospaceDS.TotalTime = 50
+            ecospaceDS.IFDPower = 0.5
+            ecospaceDS.nSpaceSolverThreads = 1
+            ecospaceDS.nGridSolverThreads = 1
+            ecospaceDS.nRegions = 0
+            ecospaceDS.AdjustSpace = True
+            ecospaceDS.UseExact = False
+            ' ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
+            ecospaceDS.CapCalType = eEcospaceCapacityCalType.Capacity
+
+            ecospaceDS.NewMultiStanza = False
+            ecospaceDS.UseIBM = False
+
+            
+
+        Catch ex As Exception
+            bSucces = False
+        End Try
+
+        'set the size of the variables that hold the map data to InRow and InCol
+        'Call cEcospace.redimForRun() First because it allocates bigger blocks of memory
+        'this should help Out of Memory exceptions caused by heap fragmentation by doing the big stuff first
+        Me.m_core.m_Ecospace.redimForRun()
+        ecospaceDS.ReDimMapDims()
+
+        ' Set active scenario
+        ecopathDS.ActiveEcospaceScenario = 1
+
+        For i As Integer = 1 To ecospaceDS.NGroups
+            ecospaceDS.GroupDBID(i) = i
+        Next
+
+        For i As Integer = 1 To ecospaceDS.nFleets
+            ecospaceDS.FleetDBID(i) = i
+        Next
+
+
+        For irow As Integer = 1 To ecospaceDS.InRow
+            For icol As Integer = 1 To ecospaceDS.InCol
+                For igrp As Integer = 1 To ecospaceDS.NGroups
+                    ecospaceDS.HabCapInput(irow, icol, igrp) = 1
+                Next
+            Next
+        Next
+
+
+
+
+        ' Load base map first
+        'bSucces = bSucces And Me.LoadEcospaceMap(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceHabitats(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceMPAs(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceGroups(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceFleets(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceWeightLayers(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceDriverLayers(iScenarioID)
+        'bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
+        'bSucces = bSucces And Me.LoadAuxillaryData()
+
+        'Me.ClearChanged(s_EcospaceComponents)
+
+        Return bSucces
+    End Function
+
+    Public Function AddEcospaceDriverLayer(ByVal strName As String, ByVal strDescription As String, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceDriverLayer
+        Return False
+    End Function
+
+    Public Function AddEcospaceHabitat(ByVal strHabitatName As String, ByRef iHabitatID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AddEcospaceHabitat
+        Return False
+    End Function
+
+    Public Function AppendEcospaceImportanceLayer(ByVal strName As String, ByVal strDescription As String, ByVal sWeight As Single, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AppendEcospaceImportanceLayer
+        Return False
+    End Function
+
+    Public Function AppendEcospaceMPA(ByVal strScenarioName As String, ByVal bMPAMonths() As Boolean, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AppendEcospaceMPA
+        Return False
+    End Function
+
+    Public Function AppendEcospaceScenario(ByVal strScenarioName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String, ByVal InRow As Integer, ByVal InCol As Integer, ByVal sOriginLat As Single, ByVal sOriginLon As Single, ByVal sCellLength As Single, ByRef iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.AppendEcospaceScenario
+        Return False
+    End Function
+
+    Public Overloads Function CopyTo(ByVal ds As DataSources.IEcospaceDatasource) As Boolean Implements DataSources.IEcospaceDatasource.CopyTo
+        Return False
+    End Function
+
+    Public Function IsEcospaceModified() As Boolean Implements DataSources.IEcospaceDatasource.IsEcospaceModified
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceDriverLayer(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceDriverLayer
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceHabitat(ByVal iHabitatID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceHabitat
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceImportanceLayer(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceImportanceLayer
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceMPA(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceMPA
+        Return False
+    End Function
+
+    Public Function RemoveEcospaceScenario(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.RemoveEcospaceScenario
+        Return False
+    End Function
+
+    Public Function ResizeEcospaceBasemap(ByVal InRow As Integer, ByVal InCol As Integer) As Boolean Implements DataSources.IEcospaceDatasource.ResizeEcospaceBasemap
+        Return False
+    End Function
+
+    Public Function SaveEcospaceScenario(ByVal iDBID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.SaveEcospaceScenario
+        Return False
+    End Function
+
+    Public Function SaveEcospaceScenarioAs1(ByVal strScenarioName As String, ByVal strDescription As String, ByVal strAuthor As String, ByVal strContact As String, ByRef iScenarioID As Integer) As Boolean Implements DataSources.IEcospaceDatasource.SaveEcospaceScenarioAs
+        Return False
+    End Function
+
+#End Region
 
 #Region " Stanza "
 
@@ -1435,5 +1616,6 @@ Public Class cEIIDataSource
 
 #End Region ' Methods replaced for Mono compatibility
 
+  
 End Class
 
