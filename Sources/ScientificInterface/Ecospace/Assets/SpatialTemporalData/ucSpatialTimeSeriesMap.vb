@@ -41,7 +41,6 @@ Namespace Ecospace
         Private m_rcMap As RectangleF
         Private m_lValidRects As New List(Of RectangleF)
         Private m_zoomlevel As eZoomLevel = eZoomLevel.Both
-        Private m_img As Image = Nothing
 
         Public Sub New()
             Me.InitializeComponent()
@@ -53,7 +52,6 @@ Namespace Ecospace
                 If disposing AndAlso components IsNot Nothing Then
                     components.Dispose()
                 End If
-                If Me.m_img IsNot Nothing Then Me.m_img.Dispose()
             Finally
                 MyBase.Dispose(disposing)
             End Try
@@ -134,12 +132,6 @@ Namespace Ecospace
                 End If
             Next
 
-            ' Draw ref image is needed
-            If (Not String.IsNullOrWhiteSpace(sg.MapReferenceLayerFile) AndAlso File.Exists(sg.MapReferenceLayerFile)) Then
-                If Me.m_img IsNot Nothing Then Me.m_img.Dispose()
-                Me.m_img = Image.FromFile(sg.MapReferenceLayerFile)
-            End If
-
             Me.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
             Me.Invalidate()
 
@@ -183,9 +175,10 @@ Namespace Ecospace
             g.TranslateTransform(dx, dy)
 
             ' Draw background
-            If (Me.m_img IsNot Nothing) Then
+            Dim img As Image = sg.MapReferenceImage
+            If (img IsNot Nothing) Then
                 Try
-                    g.DrawImage(Me.m_img, _
+                    g.DrawImage(img, _
                                 sg.MapReferenceLayerTL.X, -sg.MapReferenceLayerTL.Y, _
                                 (sg.MapReferenceLayerBR.X - sg.MapReferenceLayerTL.X), (sg.MapReferenceLayerTL.Y - sg.MapReferenceLayerBR.Y))
                 Catch ex As Exception

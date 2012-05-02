@@ -574,7 +574,7 @@ Namespace Ecospace.Controls
                                                               CSng(i / lSteps.Count))
 
                     If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-                        rst = Me.m_adt.Dataset(Me.m_layer.Index).GetRaster(Me.m_adt.Converter(Me.m_layer.Index), Me.m_layer.Name)
+                        rst = Me.m_adt.Dataset(Me.m_layer.Index).GetRaster(Nothing, "")
 
                         lNumValCells = rst.NumValueCells
                         dMean = rst.Mean

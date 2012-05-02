@@ -152,6 +152,10 @@ Namespace Style
 
             Me.m_dtApplicationColors.Clear()
 
+            If Me.m_img IsNot Nothing Then
+                Me.m_img.Dispose()
+                Me.m_img = Nothing
+            End If
         End Sub
 
 #End Region ' Construction & destruction
@@ -952,14 +956,19 @@ Namespace Style
         Public Sub MapChanged()
             Me.FireChangeEvent(eChangeType.Map)
         End Sub
+
         Public Property MapReferenceLayerFile As String
             Get
                 Return Me.m_strMapRefLayerFile
             End Get
             Set(value As String)
                 If (String.Compare(Me.m_strMapRefLayerFile, value) <> 0) Then
+                    If (Me.m_img IsNot Nothing) Then
+                        Me.m_img.Dispose()
+                        Me.m_img = Nothing
+                    End If
                     Me.m_strMapRefLayerFile = value
-                    MapChanged()
+                    Me.MapChanged()
                 End If
             End Set
         End Property
@@ -976,7 +985,6 @@ Namespace Style
             End Set
         End Property
 
-
         Public Property MapReferenceLayerBR As PointF
             Get
                 Return Me.m_ptMapRefLayerBR
@@ -989,6 +997,20 @@ Namespace Style
             End Set
         End Property
 
+        Private m_img As Image = Nothing
+
+        Public ReadOnly Property MapReferenceImage As Image
+            Get
+                If (Me.m_img Is Nothing) Then
+                    Try
+                        Me.m_img = Image.FromFile(Me.MapReferenceLayerFile)
+                    Catch ex As Exception
+
+                    End Try
+                End If
+                Return Me.m_img
+            End Get
+        End Property
 
 #End Region ' Maps and charts
 
