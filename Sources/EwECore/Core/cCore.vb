@@ -8065,7 +8065,7 @@ Public Class cCore
 
         ' Translate ecospace time step to year and month
         ' *** Note that time steps that are fractions of months are rounded up to the first of the month! ***
-        Dim sTimeStepYearFraction As Single = iTime * Me.m_EcoSpaceData.TimeStep
+        Dim sTimeStepYearFraction As Single = (iTime - 1) * Me.m_EcoSpaceData.TimeStep
         Dim iTimeStepYear As Integer = CInt(Math.Floor(sTimeStepYearFraction))
         Dim iTimeStepMonth As Integer = CInt(((sTimeStepYearFraction - iTimeStepYear) * 12))
 
