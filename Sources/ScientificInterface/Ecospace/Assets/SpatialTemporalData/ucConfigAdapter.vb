@@ -121,8 +121,8 @@ Namespace Ecospace.Controls
 
             ' Set initials
             If (adt IsNot Nothing) And (layer IsNot Nothing) Then
-                Me.SelectedDataset = adt.Dataset(layer.Index)
-                Me.SelectedConverter = adt.Converter(layer.Index)
+                Me.SelectDataset(adt.Dataset(layer.Index))
+                Me.SelectConverter(adt.Converter(layer.Index))
             End If
 
             ' Done
@@ -397,7 +397,7 @@ Namespace Ecospace.Controls
             For i As Integer = 0 To Me.m_manSets.Count - 1
                 Me.m_lbxExistingDS.Items.Add(Me.m_manSets(i))
             Next
-            Me.SelectedDataset = ds
+            Me.SelectDataset(ds)
 
         End Sub
 
@@ -409,11 +409,20 @@ Namespace Ecospace.Controls
             For Each cvTest As ISpatialDataConverter In Me.m_man.ConverterTemplates
                 Me.m_cmbConverter.Items.Add(cvTest)
             Next
-            Me.SelectedConverter = cv
+            Me.SelectConverter(cv)
         End Sub
 
         Private Sub ConfigConverter(cv As ISpatialDataConverter)
             ' NOP
+        End Sub
+
+        Private Sub SelectDataset(dataset As ISpatialDataSet)
+            ' Update selection
+            Dim iIndex As Integer = 0
+            If (dataset IsNot Nothing) Then
+                iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
+            End If
+            Me.m_lbxExistingDS.SelectedIndex = iIndex
         End Sub
 
         Private Property SelectedDataset As ISpatialDataSet
@@ -425,13 +434,6 @@ Namespace Ecospace.Controls
 
                 If (Me.m_adt Is Nothing) Then Return
 
-                ' Update selection
-                Dim iIndex As Integer = 0
-                If (dataset IsNot Nothing) Then
-                    iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
-                End If
-                Me.m_lbxExistingDS.SelectedIndex = iIndex
-
                 ' Apply
                 If (Not Object.ReferenceEquals(Me.m_adt.Dataset(Me.m_layer.Index), dataset)) Then
                     Me.m_adt.Dataset(Me.m_layer.Index) = dataset
@@ -441,6 +443,20 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        Private Sub SelectConverter(converter As ISpatialDataConverter)
+            ' Update selection
+            Dim iIndex As Integer = 0
+            If (converter IsNot Nothing) Then
+                For Each item As Object In Me.m_cmbConverter.Items
+                    If converter.GetType().Equals(item.GetType()) Then
+                        Me.m_cmbConverter.SelectedItem = item
+                        Return
+                    End If
+                Next
+            End If
+            Me.m_cmbConverter.SelectedItem = Nothing
+        End Sub
+
         Private Property SelectedConverter As ISpatialDataConverter
             Get
                 If (Me.m_adt Is Nothing) Then Return Nothing
@@ -449,17 +465,6 @@ Namespace Ecospace.Controls
             Set(converter As ISpatialDataConverter)
 
                 If (Me.m_adt Is Nothing) Then Return
-
-                ' Update selection
-                Dim iIndex As Integer = 0
-                If (converter IsNot Nothing) Then
-                    For Each item As Object In Me.m_cmbConverter.Items
-                        If converter.GetType().Equals(item) Then
-                            Me.m_cmbConverter.SelectedItem = item
-                            Exit For
-                        End If
-                    Next
-                End If
 
                 ' Apply
                 If (Not Object.ReferenceEquals(Me.m_adt.Converter(Me.m_layer.Index), converter)) Then
@@ -528,7 +533,9 @@ Namespace Ecospace.Controls
 
         Private Sub CalculateScaleFromEcopathTimePeriod()
 
-            If Not Me.m_adt.IsConnected(Me.m_layer.Index) Then Return
+            Dim iIndex As Integer = Me.m_layer.Index
+
+            If Not Me.m_adt.IsConnected(iIndex) Then Return
 
             Dim ds As ISpatialDataSet = Me.m_adt.Dataset(Me.m_layer.Index)
             Dim cv As ISpatialDataConverter = Me.m_adt.Converter(Me.m_layer.Index)
@@ -574,7 +581,7 @@ Namespace Ecospace.Controls
                                                               CSng(i / lSteps.Count))
 
                     If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-                        rst = Me.m_adt.Dataset(Me.m_layer.Index).GetRaster(Nothing, "")
+                        rst = Me.m_adt.Dataset(iIndex).GetRaster(Me.m_adt.Converter(iIndex), Me.m_layer.Name())
 
                         lNumValCells = rst.NumValueCells
                         dMean = rst.Mean
