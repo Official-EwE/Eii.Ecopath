@@ -48,12 +48,12 @@ Namespace SpatialData
         ''' <param name="ptfBR">Bottom-right location (in decimal degrees lon,lat) of the bounding box of the data.</param>
         ''' <param name="dCellSize">Cell size to obtain the cache path for.</param>
         ''' <param name="time">Time to create the file name for.</param>
-        ''' <param name="strExt">File extension tpo create the file name for.</param>
+        ''' <param name="strExt">File extension to create the file name for.</param>
         ''' <returns>A cache path.</returns>
         ''' -------------------------------------------------------------------
         Function GetFileName(ds As ISpatialDataSet, _
                              ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
-                             Optional strExt As String = ".tif") As String
+                             strExt As String) As String
     End Interface
 
 End Namespace

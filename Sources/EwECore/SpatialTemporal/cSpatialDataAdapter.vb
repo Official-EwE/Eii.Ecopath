@@ -113,9 +113,6 @@ Namespace SpatialData
         ''' Get/set a data converter for this 
         ''' </summary>
         ''' <param name="iIndex"></param>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public Property Converter(iIndex As Integer) As ISpatialDataConverter
             Get
                 Debug.Assert(iIndex < Me.Length, "Index out of range")

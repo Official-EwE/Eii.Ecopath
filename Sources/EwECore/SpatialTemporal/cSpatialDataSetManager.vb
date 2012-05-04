@@ -168,6 +168,7 @@ Namespace SpatialData
             Dim xaDataset As XmlAttribute = Nothing
             Dim bSuccess As Boolean = True
 
+            ' ToDo: merge datasets with existing XML file by GUID
 
             ' Declaration
             doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))

@@ -164,9 +164,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function GetFileName(ds As ISpatialDataSet, _
                                     ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
-                                    Optional strExt As String = ".tif") As String _
+                                    strExt As String) As String _
                                 Implements ISpatialDataCache.GetFileName
-
             Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strExt)
         End Function
 
@@ -245,7 +244,7 @@ Namespace SpatialData
                                           dt As DateTime, strExt As String) As String
 
             Dim strPath As String = GetCacheFolder(ds, ptfTL, ptfBR, dCellSize, True)
-            Dim strFileName As String = dt.ToString("yyyy-MM-dd") & cFileUtils.ToValidFileExt(strExt, ".tif")
+            Dim strFileName As String = dt.ToString("yyyy-MM-dd") & strExt
 
             Return System.IO.Path.Combine(strPath, strFileName)
 

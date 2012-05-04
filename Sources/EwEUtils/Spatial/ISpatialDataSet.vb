@@ -220,7 +220,6 @@ Namespace SpatialData
         ''' <param name="converter">Spatial data converter to perform the magic.</param>
         ''' <param name="strLayerName">Name of the layer data will be retrieved for.</param>
         ''' <returns>A <see cref="ISpatialRaster">spatial raster</see>.</returns>
-        ''' <remarks>If a converter is not specified, the original raster should be returned.</remarks>
         ''' -------------------------------------------------------------------
         Function GetRaster(ByVal converter As ISpatialDataConverter, _
                            ByVal strLayerName As String) As ISpatialRaster

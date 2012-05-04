@@ -175,25 +175,6 @@ Namespace Ecospace.Controls
             MyBase.OnMouseClick(e)
         End Sub
 
-        Protected Overrides Sub OnMouseDoubleClick(e As System.Windows.Forms.MouseEventArgs)
-            Dim pos As cDatasetPos = Me.DatasetFromPoint(e.Location)
-            If (pos IsNot Nothing) Then
-                Dim ds As ISpatialDataSet = pos.m_ds
-                If (TypeOf ds Is IConfigurablePlugin) Then
-                    Dim dsConf As IConfigurablePlugin = DirectCast(ds, IConfigurablePlugin)
-                    Dim ctrl As Control = dsConf.GetConfigUI()
-
-                    If (ctrl IsNot Nothing) Then
-                        Dim dlg As New dlgConfig()
-                        dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
-                    End If
-
-                    Me.RecalcLayout()
-                End If
-            End If
-            MyBase.OnMouseDoubleClick(e)
-        End Sub
-
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
 
             MyBase.OnPaint(e)
