@@ -47,6 +47,7 @@ Namespace Ecospace.Controls
         Private m_layer As cEcospaceLayer = Nothing
         Private m_bHasCachedData As Boolean = False
         Private WithEvents m_fp As cEwEFormatProvider = Nothing
+        Private m_bInUpdate As Boolean = False
 
 #End Region ' Private variables
 
@@ -119,6 +120,8 @@ Namespace Ecospace.Controls
             Me.m_adt = adt
             Me.m_layer = layer
 
+            Me.m_bInUpdate = True
+
             ' Set initials
             If (adt IsNot Nothing) And (layer IsNot Nothing) Then
                 Me.SelectDataset(adt.Dataset(layer.Index))
@@ -128,6 +131,8 @@ Namespace Ecospace.Controls
             ' Done
             Me.PopulateAdapterControls()
             Me.UpdateControls()
+
+            Me.m_bInUpdate = False
 
         End Sub
 
@@ -336,6 +341,7 @@ Namespace Ecospace.Controls
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
             Try
+                Me.m_rbRelative.Checked = True
                 Me.CalculateScaleFromEcopathTimePeriod()
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -519,6 +525,7 @@ Namespace Ecospace.Controls
 
             If (Me.m_uic Is Nothing) Then Return
             If (Me.m_adt Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
 
             Me.m_man.Update()
             Me.m_uic.Core.onChanged(Me.m_layer)
@@ -609,6 +616,7 @@ Namespace Ecospace.Controls
             End If
 
             Me.m_fp.Value = dTotal / Math.Max(1, lTotal)
+            Me.LayerChanged()
 
         End Sub
 
