@@ -1165,33 +1165,6 @@ Public Class cEcoSpace
             System.Console.WriteLine("FindSpatialEquilibrium() Percent in GridSolver = " & (GridRunTime / totRunTime * 100).ToString)
             System.Console.WriteLine("FindSpatialEquilibrium() Percent in Effort distribution = " & (EffortRunTime / totRunTime * 100).ToString)
 
-            'System.Console.WriteLine("FindSpatialEquilibrium() Number of Time Steps " & itt.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() Run Time = " & CStr(Microsoft.VisualBasic.Timer - tTimeLoop))
-            'System.Console.WriteLine("FindSpatialEquilibrium() GridSolver Run Time = " & slvrTimer.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() SpaceSolver Run Time = " & spaceTimer.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() processTimeStep Run Time = " & timeStepTimer.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() IBMsolver Run Time = " & IBMTimer.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() Grid Thread waiting Time = " & gridThreadWaitTimer.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() Space Thread waiting Time = " & spaceThreadWaitTimer.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() IBM1 Thread waiting Time = " & ibmThreadWaitTimer.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() IBM2 Thread waiting Time = " & ibmThreadWaitTimer2.ToString)
-            'System.Console.WriteLine("FindSpatialEquilibrium() SolveGrid total iterations = " & totalIter.ToString)
-            'Dim solver As cGridSolver
-            'For Each solver In m_gridSolvers
-            '    System.Console.WriteLine("Gridsolver Thread " + solver.ThreadID.ToString + " = " + solver.threadTime.ToString)
-            'Next
-            'If m_Data.UseIBM Then
-            '    Dim ibmsolver As cIBMSolver
-            '    For Each ibmsolver In m_IBMSolvers
-            '        System.Console.WriteLine("IBM1 Thread " + ibmsolver.ThreadID.ToString + " = " + ibmsolver.threadTime1.ToString)
-            '    Next
-            '    For Each ibmsolver In m_IBMSolvers
-            '        System.Console.WriteLine("IBM2 Thread " + ibmsolver.ThreadID.ToString + " = " + ibmsolver.threadTime2.ToString)
-            '    Next
-            '    For Each ibmsolver In m_IBMSolvers
-            '        System.Console.WriteLine("IBM MovePackets Thread " + ibmsolver.ThreadID.ToString + " = " + ibmsolver.threadTimeMove.ToString)
-            '    Next
-            'End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("FindSpatialEquilibrium() Error: " & ex.Message, ex)
@@ -2096,7 +2069,7 @@ Public Class cEcoSpace
 
             'redim new stanza stuff
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
-            System.Console.WriteLine(GC.CollectionCount(2).ToString)
+            'System.Console.WriteLine(GC.CollectionCount(2).ToString)
 
             Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
 
