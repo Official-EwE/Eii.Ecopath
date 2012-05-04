@@ -52,6 +52,10 @@ Namespace Other
 
             Me.m_uic = uic
             Me.InitializeComponent()
+            Me.m_fpNorth = New cEwEFormatProvider(Me.m_uic, Me.m_nudNorth, GetType(Single))
+            Me.m_fpSouth = New cEwEFormatProvider(Me.m_uic, Me.m_nudSouth, GetType(Single))
+            Me.m_fpEast = New cEwEFormatProvider(Me.m_uic, Me.m_nudEast, GetType(Single))
+            Me.m_fpWest = New cEwEFormatProvider(Me.m_uic, Me.m_nudWest, GetType(Single))
 
         End Sub
 
@@ -66,9 +70,7 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
-
             Me.UpdateControls()
-
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -109,10 +111,15 @@ Namespace Other
             ' Apply colors to the style guide
             sg.SuspendEvents()
 
-            sg.MapReferenceLayerFile = Me.m_tbxFile.Text
-            sg.MapReferenceLayerTL = New PointF(CSng(Me.m_fpWest.Value), CSng(Me.m_fpNorth.Value))
-            sg.MapReferenceLayerBR = New PointF(CSng(Me.m_fpEast.Value), CSng(Me.m_fpSouth.Value))
-       
+            Try
+                sg.MapReferenceLayerFile = Me.m_tbxFile.Text
+                sg.MapReferenceLayerTL = New PointF(CSng(Me.m_fpWest.Value), CSng(Me.m_fpNorth.Value))
+                sg.MapReferenceLayerBR = New PointF(CSng(Me.m_fpEast.Value), CSng(Me.m_fpSouth.Value))
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "ucOptionsMap::Apply")
+            End Try
+
             sg.ResumeEvents()
             Return IOptionsPage.eApplyResultType.Success
 
@@ -130,11 +137,6 @@ Namespace Other
         Private Sub UpdateControls()
 
             If (Me.m_uic Is Nothing) Then Return
-
-            Me.m_fpNorth = New cEwEFormatProvider(Me.m_uic, Me.m_nudNorth, GetType(Single))
-            Me.m_fpSouth = New cEwEFormatProvider(Me.m_uic, Me.m_nudSouth, GetType(Single))
-            Me.m_fpEast = New cEwEFormatProvider(Me.m_uic, Me.m_nudEast, GetType(Single))
-            Me.m_fpWest = New cEwEFormatProvider(Me.m_uic, Me.m_nudWest, GetType(Single))
 
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Me.m_tbxFile.Text = sg.MapReferenceLayerFile
