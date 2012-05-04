@@ -33,7 +33,7 @@ Namespace SpatialData
     Public Class cSpatialScalarDataAdapter
         Inherits cSpatialDataAdapter
 
-        Public Enum eScaleType As Integer
+        Public Enum eScaleType As Byte
             Absolute = 0
             Relative
         End Enum

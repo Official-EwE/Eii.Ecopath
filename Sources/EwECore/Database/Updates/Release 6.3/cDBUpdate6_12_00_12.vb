@@ -21,15 +21,15 @@ Imports EwEUtils.Utilities
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
-''' <para>Database update 6.120011:</para>
+''' <para>Database update 6.120012:</para>
 ''' <para>
 ''' <list type="bullet">
-''' <item><description>Added MSE max effort.</description></item>
+''' <item><description>Added data adapters scale.</description></item>
 ''' </list>
 ''' </para>
 ''' </summary>
 ''' --------------------------------------------------------------------------
-Friend Class cDBUpdate6_12_00011
+Friend Class cDBUpdate6_12_00012
     Inherits cDBUpdate
 
     ''' -----------------------------------------------------------------------
@@ -37,7 +37,7 @@ Friend Class cDBUpdate6_12_00011
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.120011!
+            Return 6.120012!
         End Get
     End Property
 
@@ -46,12 +46,18 @@ Friend Class cDBUpdate6_12_00011
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateDescription() As String
         Get
-            Return "Added MSE max effort"
+            Return "Added data adapters scale"
         End Get
     End Property
 
     Public Overrides Function ApplyUpdate(ByRef db As cEwEDatabase) As Boolean
-        Return db.Execute("ALTER TABLE EcoSimScenarioMSE ADD COLUMN MaxEffort SINGLE")
+
+        Dim bSuccess As Boolean = True
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioDataAdapters ADD COLUMN Scale SINGLE")
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioDataAdapters ADD COLUMN ScaleType BYTE")
+        Return bSuccess
+
     End Function
 
+    
 End Class

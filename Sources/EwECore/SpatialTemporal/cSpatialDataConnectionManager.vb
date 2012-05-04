@@ -82,6 +82,7 @@ Namespace SpatialData
             Dim guid As Guid
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
+            Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
             Dim t As Type = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
@@ -89,19 +90,31 @@ Namespace SpatialData
 
                     ds = Nothing
                     cv = Nothing
+                    cfg = Me.m_data.Item(adt.VarName, i)
 
-                    ' Try to resolve dataset
-                    If guid.TryParse(Me.m_data.DatasetGUID(adt.VarName, i), guid) Then
-                        ds = Me.m_datasetManager.ItemByGUID(guid)
+                    If (cfg IsNot Nothing) Then
+
+                        ' Try to resolve dataset
+                        If guid.TryParse(cfg.DatasetGUID, guid) Then
+                            ds = Me.m_datasetManager.ItemByGUID(guid)
+                        End If
+
+                        ' Try to create converter
+                        t = cTypeUtils.StringToType(cfg.Converter)
+                        If (t IsNot Nothing) Then
+                            cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
+                        End If
+
+                        ' Worry about converter configuration later
+
+                        If TypeOf (adt) Is cSpatialScalarDataAdapter Then
+                            With DirectCast(adt, cSpatialScalarDataAdapter)
+                                .DataScale(i) = cfg.Scale
+                                .DataScaleType(i) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapter.eScaleType)
+                            End With
+                        End If
+
                     End If
-
-                    ' Try to create converter
-                    t = cTypeUtils.StringToType(Me.m_data.ConverterType(adt.VarName, i))
-                    If (t IsNot Nothing) Then
-                        cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
-                    End If
-
-                    ' Worry about converter configuration later
 
                     adt.Dataset(i) = ds
                     adt.Converter(i) = cv
@@ -116,23 +129,36 @@ Namespace SpatialData
 
             Dim ds As ISpatialDataSet = Nothing
             Dim cv As ISpatialDataConverter = Nothing
+            Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
 
             For Each adt As cSpatialDataAdapter In Me.Adapters
                 For i As Integer = 0 To adt.Length - 1
 
                     ds = adt.Dataset(i)
                     cv = adt.Converter(i)
+                    cfg = Me.m_data.Item(adt.VarName, i)
 
-                    If (ds IsNot Nothing) Then
-                        Me.m_data.DatasetGUID(adt.VarName, i) = ds.GUID.ToString
-                    Else
-                        Me.m_data.DatasetGUID(adt.VarName, i) = ""
-                    End If
+                    If (cfg IsNot Nothing) Then
+                        If (ds IsNot Nothing) Then
+                            cfg.DatasetGUID = ds.GUID.ToString
+                        Else
+                            cfg.DatasetGUID = ""
+                        End If
 
-                    If (cv IsNot Nothing) Then
-                        Me.m_data.ConverterType(adt.VarName, i) = cTypeUtils.TypeToString(cv.GetType)
-                    Else
-                        Me.m_data.ConverterType(adt.VarName, i) = ""
+                        If (cv IsNot Nothing) Then
+                            cfg.Converter = cTypeUtils.TypeToString(cv.GetType)
+                        Else
+                            cfg.Converter = ""
+                        End If
+                        cfg.ConverterConfig = ""
+
+                        If TypeOf adt Is cSpatialScalarDataAdapter Then
+                            With DirectCast(adt, cSpatialScalarDataAdapter)
+                                cfg.Scale = .DataScale(i)
+                                cfg.ScaleType = CByte(.DataScaleType(i))
+                            End With
+                        End If
+
                     End If
                 Next
             Next

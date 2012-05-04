@@ -37,55 +37,43 @@ Namespace SpatialData
             For Each adt As cSpatialDataAdapter In Me.DataAdapters
                 adt.Initialize()
                 Dim iLen As Integer = adt.Length
-                Dim arr(iLen) As cData
-                For i As Integer = 0 To iLen - 1 : arr(i) = New cData() : Next
+                Dim arr(iLen) As cAdapaterConfiguration
+                For i As Integer = 0 To iLen - 1 : arr(i) = New cAdapaterConfiguration() : Next
                 Me.m_data(adt.VarName) = arr
             Next adt
 
         End Sub
 
+        Public ReadOnly Property Item(varname As eVarNameFlags, iIndex As Integer) As cAdapaterConfiguration
+            Get
+                If Me.m_data.ContainsKey(varname) Then
+                    Dim adata As cAdapaterConfiguration() = Me.m_data(varname)
+                    If iIndex >= 0 And iIndex < adata.Length Then
+                        Return adata(iIndex)
+                    End If
+                End If
+                Return Nothing
+            End Get
+        End Property
+
         Public ReadOnly Property NumItems(varname As eVarNameFlags) As Integer
             Get
+                Debug.Assert(Me.m_data.ContainsKey(varname))
                 Return Me.m_data(varname).Length
             End Get
         End Property
 
-        Public Property DatasetGUID(varname As eVarNameFlags, index As Integer) As String
-            Get
-                Return Me.m_data(varname)(index).DatasetGUID
-            End Get
-            Set(value As String)
-                Me.m_data(varname)(index).DatasetGUID = value
-            End Set
-        End Property
-
-        Public Property ConverterType(varname As eVarNameFlags, index As Integer) As String
-            Get
-                Return Me.m_data(varname)(index).ConverterName
-            End Get
-            Set(value As String)
-                Me.m_data(varname)(index).ConverterName = value
-            End Set
-        End Property
-
-        Public Property ConverterConfiguration(varname As eVarNameFlags, index As Integer) As String
-            Get
-                Return Me.m_data(varname)(index).ConverterConfig
-            End Get
-            Set(value As String)
-                Me.m_data(varname)(index).ConverterConfig = value
-            End Set
-        End Property
-
 #Region " Internals "
 
-        Private Class cData
+        Public Class cAdapaterConfiguration
             Public DatasetGUID As String = ""
-            Public ConverterName As String = ""
+            Public Converter As String = ""
             Public ConverterConfig As String = ""
+            Public Scale As Single = 1.0!
+            Public ScaleType As Byte = 0
         End Class
 
-        Private m_data As New Dictionary(Of eVarNameFlags, cData())
+        Private m_data As New Dictionary(Of eVarNameFlags, cAdapaterConfiguration())
 
 #End Region ' Internals
 

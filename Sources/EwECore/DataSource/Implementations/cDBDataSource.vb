@@ -9439,6 +9439,7 @@ Namespace DataSources
             Dim reader As IDataReader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioDataAdapters WHERE (ScenarioID={0})", iScenarioID))
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
             Dim var As eVarNameFlags = eVarNameFlags.NotSet
+            Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
             Dim iIndex As Integer = 0
             Dim strDatasetGUID As String = ""
             Dim strConverterType As String = ""
@@ -9449,9 +9450,15 @@ Namespace DataSources
                 Try
                     var = cin.GetVarName(CStr(reader("VarName")))
                     iIndex = CInt(reader("LayerIndex"))
-                    spatialDS.DatasetGUID(var, iIndex) = CStr(reader("Dataset"))
-                    spatialDS.ConverterType(var, iIndex) = CStr(reader("Converter"))
-                    spatialDS.ConverterConfiguration(var, iIndex) = CStr(reader("ConverterCfg"))
+                    cfg = spatialDS.Item(var, iIndex)
+
+                    If (cfg IsNot Nothing) Then
+                        cfg.DatasetGUID = CStr(reader("Dataset"))
+                        cfg.Converter = CStr(reader("Converter"))
+                        cfg.ConverterConfig = CStr(reader("ConverterCfg"))
+                        cfg.Scale = CSng(Me.m_db.ReadSafe(reader, "Scale", 1.0!))
+                        cfg.ScaleType = CByte(Me.m_db.ReadSafe(reader, "ScaleType", 0))
+                    End If
                 Catch ex As Exception
                     bSucces = False
                     cLog.Write(ex, "DBDataSource::LoadDataAdapters")
@@ -9470,6 +9477,7 @@ Namespace DataSources
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
+            Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
@@ -9487,8 +9495,9 @@ Namespace DataSources
 
                 For Each adt As cSpatialDataAdapter In spatialDS.DataAdapters
                     For i As Integer = 0 To adt.Length - 1
-                        Dim strDataset As String = spatialDS.DatasetGUID(adt.VarName, i)
-                        Dim strConverter As String = spatialDS.ConverterType(adt.VarName, i)
+                        cfg = spatialDS.Item(adt.VarName, i)
+                        Dim strDataset As String = cfg.DatasetGUID
+                        Dim strConverter As String = cfg.Converter
                         If Not String.IsNullOrWhiteSpace(strDataset) Or Not String.IsNullOrWhiteSpace(strConverter) Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
@@ -9496,7 +9505,9 @@ Namespace DataSources
                             drow("LayerIndex") = i
                             drow("Dataset") = strDataset
                             drow("Converter") = strConverter
-                            drow("ConverterCfg") = spatialDS.ConverterConfiguration(adt.VarName, i)
+                            drow("ConverterCfg") = cfg.ConverterConfig
+                            drow("Scale") = cfg.Scale
+                            drow("ScaleType") = cfg.ScaleType
                             writer.AddRow(drow)
                         End If
                     Next

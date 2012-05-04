@@ -2459,6 +2459,7 @@ Public Class cEIIXMLDataSource
         Dim dt As DataTable = Me.ReadTable("EcospaceScenarioDataAdapters")
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim var As eVarNameFlags = eVarNameFlags.NotSet
+        Dim cfg As cSpatialDataStructures.cAdapaterConfiguration = Nothing
         Dim iIndex As Integer = 0
         Dim strDatasetGUID As String = ""
         Dim strConverterType As String = ""
@@ -2470,9 +2471,15 @@ Public Class cEIIXMLDataSource
             Try
                 var = cin.GetVarName(CStr(drow("VarName")))
                 iIndex = CInt(drow("LayerIndex"))
-                spatialDS.DatasetGUID(var, iIndex) = CStr(drow("Dataset"))
-                spatialDS.ConverterType(var, iIndex) = CStr(drow("Converter"))
-                spatialDS.ConverterConfiguration(var, iIndex) = CStr(drow("ConverterCfg"))
+                cfg = spatialDS.Item(var, iIndex)
+
+                If (cfg IsNot Nothing) Then
+                    cfg.DatasetGUID = CStr(drow("Dataset"))
+                    cfg.Converter = CStr(drow("Converter"))
+                    cfg.ConverterConfig = CStr(drow("ConverterCfg"))
+                    cfg.Scale = CSng(Me.ReadSafe(drow, "Scale", 1.0!))
+                    cfg.ScaleType = CByte(Me.ReadSafe(drow, "ScaleType", 0))
+                End If
             Catch ex As Exception
                 bSucces = False
                 cLog.Write(ex, "DBDataSource::LoadDataAdapters")
