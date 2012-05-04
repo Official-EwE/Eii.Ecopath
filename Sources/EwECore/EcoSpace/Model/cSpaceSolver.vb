@@ -833,8 +833,8 @@ Public Class cSpaceSolver
 
     End Sub
     '***********************
-    'THIS FUNCTION IS COPIED from cSpaceSolver.vb
-    'Changes here will NOT copy over to there
+    'THIS FUNCTION IS COPIED from cEcosimModel.vb
+    'Changes here will NOT be copy over to there
     '***********************
     ''' <summary>
     ''' Apply the multi function mediation functions/modifiers to 'a'(searchrate) and 'v'(vulnerability)
