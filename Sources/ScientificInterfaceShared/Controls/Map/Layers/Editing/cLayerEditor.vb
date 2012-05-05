@@ -355,6 +355,7 @@ Namespace Controls.Map.Layers
                                                ByVal ptClick As Point)
             If (Not Me.IsEditable) Then Return
             Me.Layer.Value(ptSet.Y, ptSet.X) = value
+            Me.Layer.Update(cLayer.eChangeFlags.Map, True)
         End Sub
 
         Public ReadOnly Property CanSmooth() As Boolean
