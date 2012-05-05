@@ -228,8 +228,8 @@ Namespace Database
                         If Not update.RunAlways Then
                             msgImportance = eMessageImportance.Information
                         End If
-                        ' Do not publicly report updates taht always run
-                        Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion), _
+                        ' Do not publicly report updates that always run
+                        Me.ReportUpdateStatus(String.Format(My.Resources.CoreMessages.STATUS_DATABASE_UPDATE, update.UpdateVersion, update.UpdateDescription), _
                                               msgImportance)
 
                         Try

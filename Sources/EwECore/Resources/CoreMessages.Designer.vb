@@ -1986,7 +1986,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Executing database update {0}.
+        '''  Looks up a localized string similar to Executing database update {0}: &apos;{1}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_DATABASE_UPDATE() As String
             Get
