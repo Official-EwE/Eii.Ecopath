@@ -222,6 +222,7 @@ Namespace Ecospace.Basemap
             Dim l As New cImageLayer(Me.UIContext)
             l.Name = "Reference"
             Me.AddLayer(l, l.Name)
+            l.Renderer.IsVisible = False
             Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP, False)
             Me.AddData(eVarNameFlags.LayerRelCin, False)
