@@ -47,7 +47,8 @@ Namespace Controls.Map.Layers
         Protected m_renderer As cLayerRenderer = Nothing
         Protected m_bSelected As Boolean = False
         Protected m_bInUpdate As Boolean = False
-        Private m_bAllowValidation As Boolean = False
+        ''' <summary>By default allow core data validation</summary>
+        Private m_bAllowValidation As Boolean = True
 
 #End Region ' Private vars
 
