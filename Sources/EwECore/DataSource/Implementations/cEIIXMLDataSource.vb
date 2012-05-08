@@ -1768,8 +1768,8 @@ Public Class cEIIXMLDataSource
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows
             Try
-                iShape = Array.IndexOf(medData.MediationDBIDs, drow("ShapeID"))
-                iGroup = Array.IndexOf(ecosimDS.GroupDBID, drow("GroupID"))
+                iShape = Array.IndexOf(medData.MediationDBIDs, CInt(drow("ShapeID")))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("GroupID")))
                 If (iGroup <> -1 And iShape <> -1) Then
                     medData.MedWeights(iGroup, iShape) = CSng(drow("MedWeights"))
                 End If
@@ -1785,9 +1785,9 @@ Public Class cEIIXMLDataSource
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows
             Try
-                iShape = Array.IndexOf(medData.MediationDBIDs, drow("ShapeID"))
+                iShape = Array.IndexOf(medData.MediationDBIDs, CInt(drow("ShapeID")))
                 ' Unfortunate legacy: fleet refers to Ecopath fleet, not Ecosim as it should have
-                iFleet = Array.IndexOf(ecopathDS.FleetDBID, drow("FleetID"))
+                iFleet = Array.IndexOf(ecopathDS.FleetDBID, CInt(drow("FleetID")))
                 If (iFleet <> -1 And iShape <> -1) Then
                     medData.MedWeights(iFleet + ecosimDS.nGroups, iShape) = CSng(drow("MedWeights"))
                 End If
@@ -1805,9 +1805,9 @@ Public Class cEIIXMLDataSource
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows
             Try
-                iShape = Array.IndexOf(medData.MediationDBIDs, drow("ShapeID"))
-                iGroup = Array.IndexOf(ecosimDS.GroupDBID, drow("GroupID"))
-                iFleet = Array.IndexOf(ecosimDS.FleetDBID, drow("FleetID"))
+                iShape = Array.IndexOf(medData.MediationDBIDs, CInt(drow("ShapeID")))
+                iGroup = Array.IndexOf(ecosimDS.GroupDBID, CInt(drow("GroupID")))
+                iFleet = Array.IndexOf(ecosimDS.FleetDBID, CInt(drow("FleetID")))
                 If (iGroup > 0 And iShape > 0) Then
                     iFleet = Math.Max(0, iFleet)
                     medData.MedPriceWeights(iGroup, iFleet, iShape) = CSng(drow("MedWeights"))
