@@ -164,9 +164,9 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function GetFileName(ds As ISpatialDataSet, _
                                     ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
-                                    strExt As String) As String _
+                                    strFilter As String, strExt As String) As String _
                                 Implements ISpatialDataCache.GetFileName
-            Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strExt)
+            Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strFilter, strExt)
         End Function
 
 #End Region ' Cache access
@@ -241,10 +241,12 @@ Namespace SpatialData
         Private Function GetCacheFileName(ds As ISpatialDataSet, _
                                           ptfTL As PointF, ptfBR As PointF, _
                                           dCellSize As Double, _
-                                          dt As DateTime, strExt As String) As String
+                                          dt As DateTime, _
+                                          strFilter As String, _
+                                          strExt As String) As String
 
             Dim strPath As String = GetCacheFolder(ds, ptfTL, ptfBR, dCellSize, True)
-            Dim strFileName As String = dt.ToString("yyyy-MM-dd") & strExt
+            Dim strFileName As String = cFileUtils.ToValidFileName(String.Format("{0}[{1}]{2}", dt.ToString("yyyy-MM-dd"), strFilter, strExt), False)
 
             Return System.IO.Path.Combine(strPath, strFileName)
 
