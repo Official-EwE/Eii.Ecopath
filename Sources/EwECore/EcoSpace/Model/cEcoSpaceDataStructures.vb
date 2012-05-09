@@ -230,6 +230,13 @@ Public Class cEcospaceDataStructures
     Public MPA(,) As Integer
     Public RelPP(,) As Single
     Public RelCin(,) As Single
+
+    ''' <summary>
+    ''' Base value for relative PP when spatial temporal data is loaded
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public relPP0(,) As Single
+
     'Public DepthOrig(,) As Integer    'for use with habitat change
     'Public HabTypeorig(,) As Integer  'for use with habitat change
     'Public MPAorig(,) As Integer      'for use with habitat change
@@ -1253,6 +1260,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
 
+            Me.allocate(relPP0, InRow + 1, InCol + 1)
+           
             ' 
 
             'jb not used in 6
@@ -1754,6 +1763,12 @@ Public Class cEcospaceDataStructures
         If endIndex > Me.nTimeSteps Then endIndex = Me.nTimeSteps - Me.NumStep
         nIndexes = Me.NumStep
     End Sub
+
+
+    Public Sub setBaseRelPP()
+        Array.Copy(Me.RelPP, relPP0, RelPP.Length)
+    End Sub
+
 
 
     ''' <summary>

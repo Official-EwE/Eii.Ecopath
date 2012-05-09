@@ -8866,6 +8866,7 @@ Public Class cCore
             m_EcoSpaceData.IsFishRateSet = True
 
             m_EcoSpaceData.SetDefaultThreads()
+            m_EcoSpaceData.setBaseRelPP()
             m_Ecospace.redimForRun()
 
             ' JS30oct09: Spatial Equilibrium is ONLY required when starting an Ecospace run

@@ -40,6 +40,7 @@ Namespace SpatialData
 
         Private m_scales() As Single
         Private m_scaleType() As eScaleType
+        Private m_spaceData As cEcospaceDataStructures
 
 #Region " Constructor "
 
@@ -91,13 +92,26 @@ Namespace SpatialData
                 Me.m_scaleType(i) = eScaleType.Relative
             Next
 
+            Me.m_spaceData = Me.m_core.m_EcoSpaceData
+
         End Sub
 
-        Protected Overrides Function SetCell(layer As cEcospaceLayer, iRow As Integer, iCol As Integer, sValue As Single) As Boolean
+        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, ByVal iRow As Integer, ByVal iCol As Integer, ByVal ValueAtT As Single) As Boolean
+            Dim newValue As Single = ValueAtT
             If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
-                sValue *= Me.DataScale(layer.Index)
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'HACK WARNING
+                'This is for testing relPP Spatial Temporal scaling to base values from the DataBase
+                'The database relPP(static) provides the distribution of PP across the map
+                'When relPP is used by Ecospace it is scale relative to the Ecopath base pp(cell) = pp(cell) / meanPP(1 to ncells)
+                'So the average PP/km is the same as the Ecopath base PP/km
+                'The map provides the distribution of PP relative to the Ecopath base
+                'The Temporal values provide a relative change in time for the map ppt(cell) = pp(0) * pp(t) / meanPP(t=1)
+                'FOR TESTING HARDWIRED TO relPP0() static database PP at t=0
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                newValue = Me.m_spaceData.relPP0(iRow, iCol) * ValueAtT * Me.DataScale(layer.Index)
             End If
-            Return MyBase.SetCell(layer, iRow, iCol, sValue)
+            Return MyBase.SetCell(layer, iRow, iCol, newValue)
         End Function
 
 #End Region
