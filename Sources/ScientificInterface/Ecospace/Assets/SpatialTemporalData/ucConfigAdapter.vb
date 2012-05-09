@@ -615,7 +615,7 @@ Namespace Ecospace.Controls
                 Me.m_uic.Core.Messages.SendMessage(msg)
             End If
 
-            Me.m_fp.Value = dTotal / Math.Max(1, lTotal)
+            Me.m_fp.Value = 1 / (dTotal / Math.Max(1, lTotal))
             Me.LayerChanged()
 
         End Sub
