@@ -559,6 +559,16 @@ Public Class cEcospaceDataStructures
 
     Public MovePacketsAtStanzaEntry As Boolean
 
+    ''' <summary>
+    ''' Primary Production Scaler average value of relPP(row,col) for all water cells
+    ''' </summary>
+    ''' <remarks>computed by ScaleRelativePrimaryProductivityToEcopathLevel() set in InitSpatialEquilibrium. 
+    ''' In EwE5 this was local to FindSpatialEquilibrium. Here it has been move up in scope so that FindSpatialEquilibrium() can be split up into components.
+    ''' Init (InitSpatialEquilibrium), run (FindSpatialEquilibrium) ......
+    ''' 10-May-2012 Moved to cEcoSpaceDataStructures so PPScale can be set by the External PP Spatial Temporal data 
+    ''' </remarks>
+    Public PPScale As Single
+
 
 #End Region
 

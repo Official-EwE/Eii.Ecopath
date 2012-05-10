@@ -822,6 +822,7 @@ Namespace Ecospace
 
             Me.ClearResults()
 
+            Me.IsRunning = True
             Me.m_iTimeStepCur = 0
             Me.Core.RunEcoSpace(AddressOf onEcospaceTimeStep)
             Me.m_cbOverlay.Enabled = True

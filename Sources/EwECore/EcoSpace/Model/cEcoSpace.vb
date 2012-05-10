@@ -310,14 +310,6 @@ Public Class cEcoSpace
     'Variables that where local to FindSpatialEqulibrium() in EwE5
     'moved to the level of the class so that FindSpatialEqulibrium() could be split up into smaller pieces
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    ''' <summary>
-    ''' Primary Production Scaler
-    ''' </summary>
-    ''' <remarks>computed by ScaleRelativePrimaryProductivityToEcopathLevel() set in InitSpatialEquilibrium. 
-    ''' In EwE5 this was local to FindSpatialEquilibrium. Here it has been move up in scope so that FindSpatialEquilibrium() can be split up into components.
-    ''' Init (InitSpatialEquilibrium), run (FindSpatialEquilibrium) ......
-    ''' </remarks>
-    Private PPScale As Single
 
     Private Cper(,,) As Single
 
@@ -1691,7 +1683,7 @@ Public Class cEcoSpace
 
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
-            PPScale = ScaleRelativePrimaryProductivityToEcopathLevel()
+            Me.m_Data.PPScale = ScaleRelativePrimaryProductivityToEcopathLevel()
             ScaleSailingToUnity()
 
             'calculate exponential weights for time step updating
@@ -4826,7 +4818,7 @@ exitline:
                 ' solver.Tn = Tn
                 solver.nvar2 = nvar2
                 solver.itt = itt 'itimestep index to data stored by month
-                solver.PPScale = PPScale
+                solver.PPScale = Me.m_Data.PPScale
                 solver.TimeStep2 = m_Data.TimeStep / 2
                 solver.MinChange = MinChange
                 solver.Init()
@@ -4935,7 +4927,7 @@ exitline:
             For Each solver In m_spaceSolvers
                 solver.nvar2 = nvar2
                 solver.itt = itt 'itimestep index to data stored by month
-                solver.PPScale = PPScale
+                solver.PPScale = Me.m_Data.PPScale
                 solver.TimeStep2 = m_Data.TimeStep / 2
                 solver.MinChange = MinChange
                 solver.Btime = Btime

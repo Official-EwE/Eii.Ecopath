@@ -41,10 +41,9 @@ Namespace SpatialData
         Private m_scales() As Single
         Private m_scaleType() As eScaleType
         Private m_spaceData As cEcospaceDataStructures
-
 #Region " Constructor "
 
-        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, cc As eCoreCounterTypes)
+        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
             MyBase.New(core, varName, cc)
         End Sub
 
@@ -96,22 +95,26 @@ Namespace SpatialData
 
         End Sub
 
-        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, ByVal iRow As Integer, ByVal iCol As Integer, ByVal ValueAtT As Single) As Boolean
-            Dim newValue As Single = ValueAtT
-            If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'HACK WARNING
-                'This is for testing relPP Spatial Temporal scaling to base values from the DataBase
-                'The database relPP(static) provides the distribution of PP across the map
-                'When relPP is used by Ecospace it is scale relative to the Ecopath base pp(cell) = pp(cell) / meanPP(1 to ncells)
-                'So the average PP/km is the same as the Ecopath base PP/km
-                'The map provides the distribution of PP relative to the Ecopath base
-                'The Temporal values provide a relative change in time for the map ppt(cell) = pp(0) * pp(t) / meanPP(t=1)
-                'FOR TESTING HARDWIRED TO relPP0() static database PP at t=0
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                newValue = Me.m_spaceData.relPP0(iRow, iCol) * ValueAtT * Me.DataScale(layer.Index)
+        Protected Overrides Sub InitRun()
+            MyBase.InitRun()
+            
+            If Me.VarName = eVarNameFlags.LayerRelPP Then
+                'At the start of each Ecospace run it calculates the relative PP scaler as the mean PP (cEcospaceDataStructures.PPScale)
+                'From the current relPP(,) map/array see ScaleRelativePrimaryProductivityToEcopathLevel() 
+                'Then uses PPScale to scale the values in relPP(row,col) as they are passed into derivtRed()
+                'This is unavoidable
+                'We need to set PPScale to have no effect, then scale the spatial temporal data as it passes through the adapter 
+                'Alternativley 
+                'We could set PPScale to the scale set for the adapter and just let the data pass through
+                Me.m_spaceData.PPScale = 1
             End If
-            Return MyBase.SetCell(layer, iRow, iCol, newValue)
+        End Sub
+
+        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, ByVal iRow As Integer, ByVal iCol As Integer, ByVal ValueAtT As Single) As Boolean
+            If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
+                ValueAtT *= Me.DataScale(layer.Index)
+            End If
+            Return MyBase.SetCell(layer, iRow, iCol, ValueAtT)
         End Function
 
 #End Region
