@@ -107,6 +107,9 @@ Namespace SpatialData
                 'Alternativley 
                 'We could set PPScale to the scale set for the adapter and just let the data pass through
                 Me.m_spaceData.PPScale = 1
+
+                'HACK WARNING this will overwrite PPScale even if there is no data loaded!!!!
+                System.Console.WriteLine("HACK WARNING " & Me.ToString & " changed Ecospace PP Scaler. Even if no spatialtemporal data is configured!")
             End If
         End Sub
 
