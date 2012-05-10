@@ -2502,9 +2502,13 @@ Public Class cEcoSpace
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Function ScaleRelativePrimaryProductivityToEcopathLevel() As Single
-        Dim Factor As Single
+        Dim totPP As Single
         Dim i As Integer
         Dim j As Integer
+
+        'External data sources can change the value of RelPP
+        'Make sure it is set to the base value loaded from the database
+        Array.Copy(Me.m_Data.relPP0, Me.m_Data.RelPP, Me.m_Data.RelPP.Length)
 
         'This function is used to scale the relative primary productivity _
         'so that the total primary productivity is the same in Ecospace and Ecopath
@@ -2513,14 +2517,14 @@ Public Class cEcoSpace
         For i = 1 To m_Data.InRow
             For j = 1 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then 'Water
-                    Factor = Factor + m_Data.RelPP(i, j)
+                    totPP = totPP + m_Data.RelPP(i, j)
                     m_Data.nWaterCells = m_Data.nWaterCells + 1
                 End If
             Next
         Next
 
-        If m_Data.nWaterCells > 0 And Factor > 0 Then
-            Return Factor / m_Data.nWaterCells
+        If m_Data.nWaterCells > 0 And totPP > 0 Then
+            Return totPP / m_Data.nWaterCells
         Else
             Return 1
         End If

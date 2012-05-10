@@ -232,9 +232,9 @@ Public Class cEcospaceDataStructures
     Public RelCin(,) As Single
 
     ''' <summary>
-    ''' Base value for relative PP when spatial temporal data is loaded
+    ''' Base value for relative PP (relative PP at t=0). Set after PP has been read from the database.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' <remarks>RelPP can be changed by external data this is use to restore RelPP to its original value</remarks>
     Public relPP0(,) As Single
 
     'Public DepthOrig(,) As Integer    'for use with habitat change
