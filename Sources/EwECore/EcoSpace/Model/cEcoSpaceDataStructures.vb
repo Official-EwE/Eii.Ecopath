@@ -850,7 +850,7 @@ Public Class cEcospaceDataStructures
     Public Sub SetDefaultThreads()
         'multi threading defaults
         ' JS 08jun07: added 0 check since the datasource may have provided these values
-        If (Me.nGridSolverThreads = 0) Then
+        If (Me.nGridSolverThreads <= 0) Then
             Me.nGridSolverThreads = System.Environment.ProcessorCount
             Me.nSpaceSolverThreads = System.Environment.ProcessorCount
         End If

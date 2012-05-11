@@ -238,6 +238,13 @@ Public MustInherit Class cEcospaceLayer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get the number of value cells in the layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride ReadOnly Property NumValueCells As Integer
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Invalidates the content of a layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------

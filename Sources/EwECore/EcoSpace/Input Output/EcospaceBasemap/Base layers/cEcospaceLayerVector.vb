@@ -36,11 +36,13 @@ Public MustInherit Class cEcospaceLayerVector
 
     ''' <summary>Layer max vector value.</summary>
     Protected m_sMaxValue As Single = 0.0!
+    ''' <summary>Layer num of cells with a value.</summary>
+    Private m_iNumValueCells As Integer = 0
 
     ''' <summary>States whether layer max value should be recalculated.</summary>
     ''' <remarks>True at startup to make sure that the max vector size is properly 
     ''' calculated when first queried.</remarks>
-    Private m_bInvalidateMax As Boolean = True
+    Private m_bInvalidateStats As Boolean = True
 
 #End Region ' Private variables
 
@@ -122,7 +124,7 @@ Public MustInherit Class cEcospaceLayerVector
     ''' </summary>
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            If Me.m_bInvalidateMax Then Me.RecalcMax()
+            If Me.m_bInvalidateStats Then Me.RecalcStats()
             Return Me.m_sMaxValue
         End Get
     End Property
@@ -136,8 +138,16 @@ Public MustInherit Class cEcospaceLayerVector
         End Get
     End Property
 
+    ''' <inheritdocs cref="cEcospaceLayer.NumValueCells"/>
+    Public Overrides ReadOnly Property NumValueCells As Integer
+        Get
+            If Me.m_bInvalidateStats Then Me.RecalcStats()
+            Return Me.m_iNumValueCells
+        End Get
+    End Property
+
     Public Overrides Sub Invalidate()
-        Me.m_bInvalidateMax = True
+        Me.m_bInvalidateStats = True
     End Sub
 
 #End Region ' Cell interaction
@@ -149,7 +159,7 @@ Public MustInherit Class cEcospaceLayerVector
     ''' Calc max vector size in data layer.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Protected Overridable Sub RecalcMax()
+    Protected Overridable Sub RecalcStats()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
 
@@ -162,7 +172,7 @@ Public MustInherit Class cEcospaceLayerVector
                                                    Math.Abs(Me.YVelocity(iRow, iCol))))
             Next iCol
         Next iRow
-        Me.m_bInvalidateMax = False
+        Me.m_bInvalidateStats = False
 
     End Sub
 

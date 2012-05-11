@@ -15,15 +15,14 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 Imports EwECore.Ecopath
 Imports EwECore.EcoSim
-Imports System.Threading
 Imports EwEUtils.Core
 
-'vc sep 2008, using streamwriter from system.io:
-Imports System.IO
-
+#End Region ' Imports
 
 Public Enum eMCParams
     NotSet = -1

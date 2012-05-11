@@ -33,8 +33,6 @@ Namespace Controls.Map.Layers
     ''' <summary>
     ''' Class that wraps spatial data for display in the UI.
     ''' </summary>
-    ''' <remarks>
-    ''' </remarks>
     Public Class cLayer
         Implements IDisposable
 
@@ -47,6 +45,7 @@ Namespace Controls.Map.Layers
         Protected m_renderer As cLayerRenderer = Nothing
         Protected m_bSelected As Boolean = False
         Protected m_bInUpdate As Boolean = False
+
         ''' <summary>By default allow core data validation</summary>
         Private m_bAllowValidation As Boolean = True
 
@@ -186,7 +185,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public Overridable Property Name() As String
             Get
-                 Return Me.m_strName
+                Return Me.m_strName
             End Get
             Set(ByVal value As String)
                 Me.m_strName = value

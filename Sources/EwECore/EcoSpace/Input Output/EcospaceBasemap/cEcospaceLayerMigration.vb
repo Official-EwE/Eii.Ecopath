@@ -82,6 +82,12 @@ Public Class cEcospaceLayerMigration
         End Get
     End Property
 
+    Public Overrides ReadOnly Property NumValueCells As Integer
+        Get
+            Return cCore.N_MONTHS
+        End Get
+    End Property
+
 #End Region ' Cell interaction
 
 #Region " Private bits "

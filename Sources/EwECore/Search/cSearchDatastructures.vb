@@ -21,6 +21,10 @@ Imports EwECore.Ecosim
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
+''' <summary>
+''' Enumerated type, indicating the different search and optimization mode states that the 
+''' if the EwE core.
+''' </summary>
 Public Enum eSearchModes
     ''' <summary>Not in any kind of a search mode</summary>
     NotInSearch
@@ -28,18 +32,21 @@ Public Enum eSearchModes
     ''' All data will be initialized but the code will not go into specific search routines.
     ''' </summary>
     InitializingSearch
-
+    ''' <summary>Fit to time series search is active.</summary>
     FitToTimeSeries
+    ''' <summary>Fishing policy search is active.</summary>
     FishingPolicy
+    ''' <summary>Monte Carlo is active.</summary>
     MonteCarlo
+    ''' <summary>MSE search is active.</summary>
     MSE
+    ''' <summary>Spatial optimization is active.</summary>
     SpatialOpt
 End Enum
 
 ''' <summary>
 ''' Data used by Search and Optimization routines
 ''' </summary>
-''' <remarks></remarks>
 Public Class cSearchDatastructures
 
 #Region "Public data"
@@ -290,7 +297,7 @@ Public Class cSearchDatastructures
 
     Public Property SearchMode() As eSearchModes
         Get
-            Return m_Searchmode
+            Return m_SearchMode
         End Get
         Set(ByVal value As eSearchModes)
             Me.m_SearchMode = value
@@ -824,7 +831,7 @@ Public Class cSearchDatastructures
 
         'When Ecosim is run for a Fishing Policy Search it is run for 20 years past the end of the regular run length(cSearchDataStructures.ExtraYearsForSearch)
         'Constrain the year index to the Ecosim run length so the effort set by the FPS for the last year is used for the extra years
-        Dim iyf As Integer = CInt(IIf(iYear <= m_ecosimData.NumYears, iYear, m_ecosimData.NumYears))
+        Dim iyf As Integer = CInt(IIF(iYear <= m_ecosimData.NumYears, iYear, m_ecosimData.NumYears))
 
         Debug.Assert(Me.SearchMode = eSearchModes.FishingPolicy, "Ecosim BUG warning: setting fishing effort to values computed by Fishing Policy Search when not in search!")
 

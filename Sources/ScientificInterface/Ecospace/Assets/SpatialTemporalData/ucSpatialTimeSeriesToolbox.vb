@@ -293,7 +293,7 @@ Namespace Ecospace.Controls
 
                         Me.m_lPos.Add(pos)
 
-                        If pos.m_var = var And pos.m_iIndex = iIndex Then
+                        If (pos.m_var = var) And (pos.m_iIndex = iIndex) Then
                             iSel = iRow
                         End If
 

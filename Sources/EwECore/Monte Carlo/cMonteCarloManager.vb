@@ -15,27 +15,28 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
 Imports EwECore.Ecopath
 Imports EwECore.EcoSim
 Imports System
 Imports System.Threading
 Imports EwEUtils.Core
 
+#End Region ' Imports
+
 ''' <summary>
 ''' Manager to run the ecosim monte carlo object
 ''' </summary>
-''' <remarks>This object is a public interface to the monte carlo model.
-'''  It will be a public property of the core to run the monte carlo model. 
-'''  It will manage the interaction between the core, interface, monte carlo model and Ecopath/Ecoism. 
-'''  Creating any objects that are needed to run the monte carlo routine.
-'''  </remarks>
 Public Class cMonteCarloManager
     Inherits cThreadWaitBase
     Implements ICoreInterface
 
     Private Delegate Sub dlgSendMessages()
 
-    'ToDo_jb cMonteCarloManager FisForce flag in EwE5 the "Retain current Ecosim fishing rate pattern" check box sets fisforce to true for all groups
+    'ToDo_js: globalize the messages in this class
+    'ToDo_jb: cMonteCarloManager FisForce flag in EwE5 the "Retain current Ecosim fishing rate pattern" check box sets fisforce to true for all groups
     'this never gets set back to the value computed in DoDatValCalculations. It should be able to reset fisforce() by calling the EwE6 equivalent of DoDatValCalculations when False
 
 #Region "Private variables"
@@ -135,6 +136,16 @@ Public Class cMonteCarloManager
 
 #Region "Running"
 
+    Protected Overrides Sub SetWait()
+        Me.m_core.m_SearchData.SearchMode = eSearchModes.MonteCarlo
+        MyBase.SetWait()
+    End Sub
+
+    Protected Overrides Sub ReleaseWait()
+        Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+        MyBase.ReleaseWait()
+    End Sub
+
     ''' <summary>
     ''' Run the Monte Carlo trials with the current parameters
     ''' </summary>
@@ -148,7 +159,7 @@ Public Class cMonteCarloManager
 
             Try
                 If m_core.StateMonitor.HasEcosimLoaded Then
-                    If m_core.m_TSData.NdatType > 0 Then
+                    If (m_core.m_TSData.NdatType > 0) Then
 
                         Me.SetWait()
 

@@ -36,11 +36,13 @@ Public Class cEcospaceLayerSingle
     Private m_sMaxValue As Single = 0.0!
     ''' <summary>Layer min value.</summary>
     Private m_sMinValue As Single = 0.0!
+    ''' <summary>Layer num of cells with a value.</summary>
+    Private m_iNumValueCells As Integer = 0
 
-    ''' <summary>States whether the layer max value should be recalculated.</summary>
-    ''' <remarks>True at startup to make sure that min/max are properly calculated
+    ''' <summary>States whether cached statistics should be recalculated.</summary>
+    ''' <remarks>True at startup to make sure that stats are properly calculated
     ''' when first queried.</remarks>
-    Private m_bInvalidateMinMax As Boolean = True
+    Private m_bInvalidateStats As Boolean = True
 
 #End Region ' Private variables
 
@@ -106,6 +108,7 @@ Public Class cEcospaceLayerSingle
 
 #Region " Cell interaction "
 
+    ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
             Dim d As Single(,) = DirectCast(Me.Data, Single(,))
@@ -117,37 +120,47 @@ Public Class cEcospaceLayerSingle
             If Me.ValidateCellValue(value) Then
                 If Me.ValidateCellPosition(iRow, iCol) Then
                     d(iRow, iCol) = s
-                    If (Me.m_bInvalidateMinMax = False) Then
-                        Me.m_bInvalidateMinMax = (Math.Abs(s) > Me.m_sMaxValue)
+                    If (Me.m_bInvalidateStats = False) Then
+                        Me.m_bInvalidateStats = (Math.Abs(s) > Me.m_sMaxValue)
                     End If
                 End If
             End If
         End Set
     End Property
 
+    ''' <inheritdocs cref="cEcospaceLayer.MaxValue"/>
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
+            If Me.m_bInvalidateStats Then Me.RecalcStats()
             Return Me.m_sMaxValue
         End Get
     End Property
 
+    ''' <inheritdocs cref="cEcospaceLayer.MinValue"/>
     Public Overrides ReadOnly Property MinValue() As Single
         Get
-            If Me.m_bInvalidateMinMax Then Me.RecalcMinMax()
+            If Me.m_bInvalidateStats Then Me.RecalcStats()
             Return Me.m_sMinValue
         End Get
     End Property
 
+    ''' <inheritdocs cref="cEcospaceLayer.NumValueCells"/>
+    Public Overrides ReadOnly Property NumValueCells As Integer
+        Get
+            If Me.m_bInvalidateStats Then Me.RecalcStats()
+            Return Me.m_iNumValueCells
+        End Get
+    End Property
+
     Public Overrides Sub Invalidate()
-        Me.m_bInvalidateMinMax = True
+        Me.m_bInvalidateStats = True
     End Sub
 
 #End Region ' Cell interaction
 
 #Region " Internals "
 
-    Protected Overridable Sub RecalcMinMax()
+    Protected Overridable Sub RecalcStats()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
@@ -162,6 +175,7 @@ Public Class cEcospaceLayerSingle
                     If (s <> cCore.NULL_VALUE) Then
                         Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)
                         Me.m_sMinValue = Math.Min(s, Me.m_sMinValue)
+                        Me.m_iNumValueCells += 1
                     End If
                 End If
             Next iCol
@@ -171,7 +185,7 @@ Public Class cEcospaceLayerSingle
             Me.m_sMinValue = 0
         End If
 
-        Me.m_bInvalidateMinMax = False
+        Me.m_bInvalidateStats = False
 
     End Sub
 

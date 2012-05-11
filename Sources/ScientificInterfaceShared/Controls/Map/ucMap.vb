@@ -484,7 +484,6 @@ Namespace Controls.Map
             Dim ptTL As New PointF(bm.ColToLon(iXFrom), bm.RowToLat(iYFrom))
             Dim ptBR As New PointF(bm.ColToLon(iXTo), bm.RowToLat(iYTo))
 
-
             ' Draw raster layers in reverse order
             For iLayer As Integer = Me.m_layers.Count - 1 To 0 Step -1
 
@@ -494,35 +493,38 @@ Namespace Controls.Map
                     If (TypeOf l Is cRasterLayer) Then
 
                         Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                        If (rl.HasData) Then
 
-                        For X As Integer = iXFrom To iXTo
-                            For Y As Integer = iYFrom To iYTo
+                            For X As Integer = iXFrom To iXTo
+                                For Y As Integer = iYFrom To iYTo
 
-                                ptCell = New Point(X, Y)
-                                Dim rcCell As Rectangle = Me.GetCellRect(ptCell)
+                                    ptCell = New Point(X, Y)
+                                    Dim rcCell As Rectangle = Me.GetCellRect(ptCell)
 
-                                Select Case rl.Data.DataType
-                                    Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort
-                                        bDrawCell = True
-                                    Case Else
-                                        bDrawCell = (CInt(ldDepth.Cell(Y, X)) > 0)
-                                End Select
+                                    Select Case rl.Data.DataType
+                                        Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort
+                                            bDrawCell = True
+                                        Case Else
+                                            bDrawCell = (CInt(ldDepth.Cell(Y, X)) > 0)
+                                    End Select
 
-                                If bDrawCell Then
-                                    Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
-                                    If rl.IsValue(objValue) Then
-                                        ' Build style flags
-                                        style = cStyleGuide.eStyleFlags.OK
-                                        If l.IsSelected Then
-                                            style = (style Or cStyleGuide.eStyleFlags.Highlight)
+                                    If bDrawCell Then
+                                        Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
+                                        If rl.IsValue(objValue) Then
+                                            ' Build style flags
+                                            style = cStyleGuide.eStyleFlags.OK
+                                            If l.IsSelected Then
+                                                style = (style Or cStyleGuide.eStyleFlags.Highlight)
+                                            End If
+                                            ' Render cell
+                                            DirectCast(l.Renderer, cRasterLayerRenderer).RenderCell(g, rcCell, rl.Data, objValue, style)
                                         End If
-                                        ' Render cell
-                                        DirectCast(l.Renderer, cRasterLayerRenderer).RenderCell(g, rcCell, rl.Data, objValue, style)
                                     End If
-                                End If
 
-                            Next Y
-                        Next X
+                                Next Y
+                            Next X
+                        End If
+
                     ElseIf (TypeOf l.Renderer Is cVectorLayerRenderer) Then
                         style = cStyleGuide.eStyleFlags.OK
                         If l.IsSelected Then style = (style Or cStyleGuide.eStyleFlags.Highlight)

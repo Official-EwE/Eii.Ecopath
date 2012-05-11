@@ -489,6 +489,12 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
+        Public ReadOnly Property HasData As Boolean
+            Get
+                Return (Me.Data.NumValueCells > 0)
+            End Get
+        End Property
+
 #End Region ' Public properties
 
 #Region " Events "
