@@ -40,7 +40,6 @@ Namespace SpatialData
 
         Private m_scales() As Single
         Private m_scaleType() As eScaleType
-        Private m_spaceData As cEcospaceDataStructures
 #Region " Constructor "
 
         Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
@@ -91,26 +90,6 @@ Namespace SpatialData
                 Me.m_scaleType(i) = eScaleType.Relative
             Next
 
-            Me.m_spaceData = Me.m_core.m_EcoSpaceData
-
-        End Sub
-
-        Protected Overrides Sub InitRun()
-            MyBase.InitRun()
-            
-            If Me.VarName = eVarNameFlags.LayerRelPP Then
-                'At the start of each Ecospace run it calculates the relative PP scaler as the mean PP (cEcospaceDataStructures.PPScale)
-                'From the current relPP(,) map/array see ScaleRelativePrimaryProductivityToEcopathLevel() 
-                'Then uses PPScale to scale the values in relPP(row,col) as they are passed into derivtRed()
-                'This is unavoidable
-                'We need to set PPScale to have no effect, then scale the spatial temporal data as it passes through the adapter 
-                'Alternativley 
-                'We could set PPScale to the scale set for the adapter and just let the data pass through
-                Me.m_spaceData.PPScale = 1
-
-                'HACK WARNING this will overwrite PPScale even if there is no data loaded!!!!
-                System.Console.WriteLine("HACK WARNING " & Me.ToString & " changed Ecospace PP Scaler. Even if no spatialtemporal data is configured!")
-            End If
         End Sub
 
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, ByVal iRow As Integer, ByVal iCol As Integer, ByVal ValueAtT As Single) As Boolean
