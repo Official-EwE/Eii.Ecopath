@@ -124,15 +124,17 @@ Namespace Utilities
         Public Shared Function GetSummary(Optional bIncludeDotNet As Boolean = False) As AssemblyName()
 
             Dim ad As AppDomain = AppDomain.CurrentDomain
-            Dim aAssemblies() As Assembly = ad.GetAssemblies() '  entry.GetReferencedAssemblies()
+            Dim aAssemblies() As Assembly = ad.GetAssemblies()
             Dim hsh As New HashSet(Of String)
             Dim lSummary As New List(Of AssemblyName)
             Dim strFullName As String = ""
 
             For Each ass As Assembly In aAssemblies
+                'Console.WriteLine("{0} relies on:", ass.FullName)
                 For Each an As AssemblyName In GetSummary(ass, bIncludeDotNet)
                     strFullName = an.FullName
                     If Not hsh.Contains(strFullName) Then
+                        'Console.WriteLine("   {0}", an.FullName)
                         lSummary.Add(an)
                         hsh.Add(strFullName)
                     End If
