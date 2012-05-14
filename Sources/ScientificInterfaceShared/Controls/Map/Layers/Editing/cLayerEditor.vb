@@ -270,7 +270,7 @@ Namespace Controls.Map.Layers
                                     ByRef ptUpdateMin As Point, _
                                     ByRef ptUpdateMax As Point)
 
-            If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
+            If (Not Me.IsEditable) Then Return
 
             ' Calc positions between current and last draw point
             Dim iNumSteps As Integer = Math.Max(1, Math.Max(Math.Abs(ptFrom.X - ptTo.X), Math.Abs(ptFrom.Y - ptTo.Y)))
@@ -319,9 +319,11 @@ Namespace Controls.Map.Layers
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub EndEdit()
-            If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
+            ' Last-minute abort
+            If (Not Me.IsEditable) Then Return
             ' Notify the editor GUI, if any
-            Me.GUI.EndEdit(Me)
+            If (Me.GUI IsNot Nothing) Then Me.GUI.EndEdit(Me)
+            ' Update layer
             Me.Layer.Update(cLayer.eChangeFlags.Map)
         End Sub
 
