@@ -108,7 +108,8 @@ Namespace Other
 
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
-            If (Me.m_cbDownloadUpdates.Checked) Then
+            ' Only when toggling this option on
+            If (Me.m_cbDownloadUpdates.Checked And My.Settings.AutoUpdatePlugins = False) Then
                 If (Not cSystemUtils.IsAdministrator()) Then
                     result = IOptionsPage.eApplyResultType.Success_administrator
                 Else
