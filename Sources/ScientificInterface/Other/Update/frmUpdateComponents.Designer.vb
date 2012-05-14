@@ -76,9 +76,9 @@ Partial Class frmUpdateComponents
         '
         'm_pbLogo
         '
-        Me.m_pbLogo.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.ecopath_256x256
+        Me.m_pbLogo.BackgroundImage = Global.ScientificInterface.My.Resources.Resources.Ecopath_install
         resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
-        Me.m_pbLogo.InitialImage = Global.ScientificInterface.My.Resources.Resources.ecopath_256x256
+        Me.m_pbLogo.InitialImage = Global.ScientificInterface.My.Resources.Resources.Ecopath_install
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
         '

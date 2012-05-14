@@ -155,5 +155,8 @@
     <Setting Name="MapLayerRefLatMax" Type="System.Single" Scope="User">
       <Value Profile="(Default)">90</Value>
     </Setting>
+    <Setting Name="UpdatePluginsTimeout" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

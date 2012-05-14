@@ -91,7 +91,7 @@ Namespace Other
             Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
 
             Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
-            Me.m_cbClearSuppressedPrompts.Checked = False
+            Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(My.Settings.UpdatePluginsTimeout / 1000)))
             Me.m_cbShowHost.Checked = My.Settings.ShowHostInfo
             Me.m_cbShowTime.Checked = My.Settings.StatusShowTime
 
@@ -121,14 +121,11 @@ Namespace Other
                 My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
                 My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
                 My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
+                My.Settings.UpdatePluginsTimeout = CInt(Me.m_nudTimeOut.Value * 1000)
                 My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
                 My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
                 My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
                 My.Settings.ShowHostInfo = Me.m_cbShowHost.Checked
-
-                If Me.m_cbClearSuppressedPrompts.Checked Then
-                    My.Settings.SuppressedOverwritePrompts = ""
-                End If
 
             Catch ex As Exception
                 result = IOptionsPage.eApplyResultType.Failed
@@ -141,6 +138,11 @@ Namespace Other
 #End Region ' Public access
 
 #Region " Event handlers "
+
+        Private Sub btnClearOverwrite_click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnClearOVerwritePrompts.Click
+            My.Settings.SuppressedOverwritePrompts = ""
+        End Sub
 
         Private Sub btnClearMRU_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnClearMRU.Click
@@ -231,7 +233,7 @@ Namespace Other
             Dim bHasSuppressedPrompts As Boolean = (Not String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts))
             Dim bHasMRU As Boolean = (My.Settings.MdbRecentlyUsedList.Count > 0)
 
-            Me.m_cbClearSuppressedPrompts.Enabled = bHasSuppressedPrompts
+            Me.m_btnClearOVerwritePrompts.Enabled = bHasSuppressedPrompts
             Me.m_btnClearMRU.Enabled = bHasMRU
 
             Me.UpdateSample(Me.m_lblSampleOutput, Me.m_tbOutputMask.Text)

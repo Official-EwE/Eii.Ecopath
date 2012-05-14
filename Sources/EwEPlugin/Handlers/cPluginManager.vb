@@ -306,14 +306,16 @@ Public Class cPluginManager
     ''' <summary>
     ''' Attempt to update all plug-in assemblies.
     ''' </summary>
+    ''' <param name="iTimeOut">Number of miliseconds to wait before timing out.</param>
     ''' <param name="dlgOverwrite"><see cref="OnConfirmOverwrite">Delegate</see> 
     ''' for the calling process to implement an overwrite confirmation for possible 
     ''' conflicts.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function UpdatePlugins(Optional ByVal dlgOverwrite As OnConfirmOverwrite = Nothing) As Boolean
+    Public Function UpdatePlugins(ByVal iTimeOut As Integer, _
+                                  Optional ByVal dlgOverwrite As OnConfirmOverwrite = Nothing) As Boolean
 
-        Dim updater As cAutoUpdate = New cAutoUpdate(Me.m_core)
+        Dim updater As cAutoUpdate = New cAutoUpdate(Me.m_core, iTimeOut)
         Dim pluginAssembly As Assembly = Nothing
         Dim strPluginPath As String = ""
         Dim result As eAutoUpdateResultTypes = eAutoUpdateResultTypes.Success_NoActionRequired

@@ -139,7 +139,7 @@
     <value>m_fieldpickOutput</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickOutput.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -163,7 +163,7 @@
     <value>m_fieldpickBackup</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -346,7 +346,7 @@
     <value>m_nudMRU</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMRU.Parent" xml:space="preserve">
     <value>m_gpMRU</value>
@@ -514,7 +514,7 @@
     <value>m_nudMaxNumMessages</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMaxNumMessages.Parent" xml:space="preserve">
     <value>m_gpMsg</value>
@@ -579,6 +579,63 @@
   <data name="m_gbStartup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="m_lblStopTryingPost.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblStopTryingPost.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblStopTryingPost.Location" type="System.Drawing.Point, System.Drawing">
+    <value>200, 46</value>
+  </data>
+  <data name="m_lblStopTryingPost.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 13</value>
+  </data>
+  <data name="m_lblStopTryingPost.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_lblStopTryingPost.Text" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPost.Name" xml:space="preserve">
+    <value>m_lblStopTryingPost</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPost.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPost.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPost.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_lblStopTryingPre.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblStopTryingPre.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 46</value>
+  </data>
+  <data name="m_lblStopTryingPre.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 13</value>
+  </data>
+  <data name="m_lblStopTryingPre.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblStopTryingPre.Text" xml:space="preserve">
+    <value>Stop trying &amp;after</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPre.Name" xml:space="preserve">
+    <value>m_lblStopTryingPre</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPre.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPre.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_lblStopTryingPre.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_cbShowHost.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -592,7 +649,7 @@
     <value>333, 17</value>
   </data>
   <data name="m_cbShowHost.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_cbShowHost.Text" xml:space="preserve">
     <value>Show IP address in status bar when running via Remote Desktop</value>
@@ -607,34 +664,7 @@
     <value>m_gbStartup</value>
   </data>
   <data name="&gt;&gt;m_cbShowHost.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_cbClearSuppressedPrompts.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_cbClearSuppressedPrompts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 46</value>
-  </data>
-  <data name="m_cbClearSuppressedPrompts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 17</value>
-  </data>
-  <data name="m_cbClearSuppressedPrompts.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_cbClearSuppressedPrompts.Text" xml:space="preserve">
-    <value>Clear &amp;suppressed plug-in overwrite prompts</value>
-  </data>
-  <data name="&gt;&gt;m_cbClearSuppressedPrompts.Name" xml:space="preserve">
-    <value>m_cbClearSuppressedPrompts</value>
-  </data>
-  <data name="&gt;&gt;m_cbClearSuppressedPrompts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_cbClearSuppressedPrompts.Parent" xml:space="preserve">
-    <value>m_gbStartup</value>
-  </data>
-  <data name="&gt;&gt;m_cbClearSuppressedPrompts.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_cbDownloadUpdates.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -649,7 +679,7 @@
     <value>219, 17</value>
   </data>
   <data name="m_cbDownloadUpdates.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="m_cbDownloadUpdates.Text" xml:space="preserve">
     <value>&amp;Download updates for plug-ins at start up</value>
@@ -664,7 +694,58 @@
     <value>m_gbStartup</value>
   </data>
   <data name="&gt;&gt;m_cbDownloadUpdates.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_nudTimeOut.Location" type="System.Drawing.Point, System.Drawing">
+    <value>119, 44</value>
+  </data>
+  <data name="m_nudTimeOut.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 20</value>
+  </data>
+  <data name="m_nudTimeOut.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeOut.Name" xml:space="preserve">
+    <value>m_nudTimeOut</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeOut.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeOut.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_nudTimeOut.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_btnClearOVerwritePrompts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnClearOVerwritePrompts.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnClearOVerwritePrompts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>409, 19</value>
+  </data>
+  <data name="m_btnClearOVerwritePrompts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnClearOVerwritePrompts.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnClearOVerwritePrompts.Text" xml:space="preserve">
+    <value>&amp;Clear</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearOVerwritePrompts.Name" xml:space="preserve">
+    <value>m_btnClearOVerwritePrompts</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearOVerwritePrompts.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearOVerwritePrompts.Parent" xml:space="preserve">
+    <value>m_gbStartup</value>
+  </data>
+  <data name="&gt;&gt;m_btnClearOVerwritePrompts.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="m_gbStartup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 25</value>
@@ -715,7 +796,7 @@
     <value>m_hdrCaption</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrCaption.Parent" xml:space="preserve">
     <value>$this</value>

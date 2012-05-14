@@ -44,11 +44,13 @@ Public Class frmUpdateComponents
     Private m_uic As cUIContext = Nothing
     ''' <summary>The update thread.</summary>
     Private m_thrd As Thread = Nothing
+    ''' <summary>Web service timeout.</summary>
+    Private m_iTimeOut As Integer = 5000
 
+    ''' <summary>Update result message details.</summary>
+    Private m_lvs As New List(Of cVariableStatus)
     ''' <summary>Overall update result status.</summary>
     Private m_bSuccess As Boolean = True
-    ''' <summary>The update result message.</summary>
-    Private m_lvs As New List(Of cVariableStatus)
 
 #End Region ' Private vars
 
@@ -65,6 +67,7 @@ Public Class frmUpdateComponents
         Me.InitializeComponent()
         Me.m_pm = pm
         Me.m_uic = uic
+        Me.m_iTimeOut = Math.Max(1000, My.Settings.UpdatePluginsTimeout)
     End Sub
 
 #End Region ' Constructor
@@ -341,7 +344,7 @@ Public Class frmUpdateComponents
     ''' -----------------------------------------------------------------------
     Private Sub UpdatePluginsThread()
         ' Run updates
-        Me.m_pm.UpdatePlugins(New cPluginManager.OnConfirmOverwrite(AddressOf OverwriteConfirmCallback))
+        Me.m_pm.UpdatePlugins(Me.m_iTimeOut, New cPluginManager.OnConfirmOverwrite(AddressOf OverwriteConfirmCallback))
         ' Done, close form
         Me.Invoke(New CloseDelegate(AddressOf Me.Close))
     End Sub

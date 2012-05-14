@@ -50,15 +50,19 @@ Partial Class ucOptionsGeneral
             Me.m_nudMaxNumMessages = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label()
             Me.m_gbStartup = New System.Windows.Forms.GroupBox()
-            Me.m_cbClearSuppressedPrompts = New System.Windows.Forms.CheckBox()
+            Me.m_cbShowHost = New System.Windows.Forms.CheckBox()
             Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_cbShowHost = New System.Windows.Forms.CheckBox()
+            Me.m_lblStopTryingPre = New System.Windows.Forms.Label()
+            Me.m_nudTimeOut = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblStopTryingPost = New System.Windows.Forms.Label()
+            Me.m_btnClearOVerwritePrompts = New System.Windows.Forms.Button()
             Me.m_gpMRU.SuspendLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gpMsg.SuspendLayout()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbStartup.SuspendLayout()
+            CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_gpMRU
@@ -188,17 +192,20 @@ Partial Class ucOptionsGeneral
             'm_gbStartup
             '
             resources.ApplyResources(Me.m_gbStartup, "m_gbStartup")
+            Me.m_gbStartup.Controls.Add(Me.m_lblStopTryingPost)
+            Me.m_gbStartup.Controls.Add(Me.m_lblStopTryingPre)
             Me.m_gbStartup.Controls.Add(Me.m_cbShowHost)
-            Me.m_gbStartup.Controls.Add(Me.m_cbClearSuppressedPrompts)
             Me.m_gbStartup.Controls.Add(Me.m_cbDownloadUpdates)
+            Me.m_gbStartup.Controls.Add(Me.m_nudTimeOut)
+            Me.m_gbStartup.Controls.Add(Me.m_btnClearOVerwritePrompts)
             Me.m_gbStartup.Name = "m_gbStartup"
             Me.m_gbStartup.TabStop = False
             '
-            'm_cbClearSuppressedPrompts
+            'm_cbShowHost
             '
-            resources.ApplyResources(Me.m_cbClearSuppressedPrompts, "m_cbClearSuppressedPrompts")
-            Me.m_cbClearSuppressedPrompts.Name = "m_cbClearSuppressedPrompts"
-            Me.m_cbClearSuppressedPrompts.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_cbShowHost, "m_cbShowHost")
+            Me.m_cbShowHost.Name = "m_cbShowHost"
+            Me.m_cbShowHost.UseVisualStyleBackColor = True
             '
             'm_cbDownloadUpdates
             '
@@ -214,11 +221,29 @@ Partial Class ucOptionsGeneral
             Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
             '
-            'm_cbShowHost
+            'm_lblStopTryingPre
             '
-            resources.ApplyResources(Me.m_cbShowHost, "m_cbShowHost")
-            Me.m_cbShowHost.Name = "m_cbShowHost"
-            Me.m_cbShowHost.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_lblStopTryingPre, "m_lblStopTryingPre")
+            Me.m_lblStopTryingPre.Name = "m_lblStopTryingPre"
+            '
+            'm_nudTimeOut
+            '
+            resources.ApplyResources(Me.m_nudTimeOut, "m_nudTimeOut")
+            Me.m_nudTimeOut.Maximum = New Decimal(New Integer() {60, 0, 0, 0})
+            Me.m_nudTimeOut.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudTimeOut.Name = "m_nudTimeOut"
+            Me.m_nudTimeOut.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            '
+            'm_lblStopTryingPost
+            '
+            resources.ApplyResources(Me.m_lblStopTryingPost, "m_lblStopTryingPost")
+            Me.m_lblStopTryingPost.Name = "m_lblStopTryingPost"
+            '
+            'm_btnClearOVerwritePrompts
+            '
+            resources.ApplyResources(Me.m_btnClearOVerwritePrompts, "m_btnClearOVerwritePrompts")
+            Me.m_btnClearOVerwritePrompts.Name = "m_btnClearOVerwritePrompts"
+            Me.m_btnClearOVerwritePrompts.UseVisualStyleBackColor = True
             '
             'ucOptionsGeneral
             '
@@ -237,6 +262,7 @@ Partial Class ucOptionsGeneral
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_gbStartup.ResumeLayout(False)
             Me.m_gbStartup.PerformLayout()
+            CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -258,10 +284,13 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_fieldpickOutput As ScientificInterfaceShared.Controls.ucFieldPicker
         Private WithEvents m_btnDefaults As System.Windows.Forms.Button
         Private WithEvents m_lblSampleOutput As System.Windows.Forms.Label
-        Private WithEvents m_cbClearSuppressedPrompts As System.Windows.Forms.CheckBox
         Private WithEvents m_nudMaxNumMessages As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMRU As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_cbShowHost As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblStopTryingPost As System.Windows.Forms.Label
+        Private WithEvents m_lblStopTryingPre As System.Windows.Forms.Label
+        Private WithEvents m_nudTimeOut As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_btnClearOVerwritePrompts As System.Windows.Forms.Button
 
     End Class
 

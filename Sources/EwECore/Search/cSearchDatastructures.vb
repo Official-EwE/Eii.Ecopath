@@ -15,11 +15,13 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 Imports EwEUtils.Core
-Imports EwECore.Ecosim
-
 Imports EwEUtils.SystemUtilities.cSystemUtils
+
+#End Region ' Imports
 
 ''' <summary>
 ''' Enumerated type, indicating the different search and optimization mode states that the 
@@ -58,9 +60,13 @@ Public Class cSearchDatastructures
     '''' </summary>
     '''' <remarks>True search is on, False search is off.</remarks>
     ' Private m_bDoSearch As Boolean
+
+    ''' <summary>Current search mode</summary>
     Private m_SearchMode As eSearchModes
 
+    ''' <summary>Fishing policy search method</summary>
     Public SearchMethod As eSearchOptionTypes
+    ''' <summary>Fishing policy initialization method</summary>
     Public InitOption As eInitOption
     Public IncludeCompetitiveImpact As Boolean
 

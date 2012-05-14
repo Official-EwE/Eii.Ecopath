@@ -72,13 +72,15 @@ Friend Class cAutoUpdate
     ''' Constructor, initializes a new cAutoUpdate instance.
     ''' </summary>
     ''' <param name="core">The core assembly to download updates for.</param>
+    ''' <param name="iTimeOut">Number of miliseconds to wait before timing out.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal core As Object)
+    Public Sub New(ByVal core As Object, iTimeOut As Integer)
 
         Me.m_verCore = Me.CoreVersion(core)
         Me.m_cookiejar = New CookieContainer()
         Me.m_service = New EwEAutoUpdateRef.UpdateService()
         Me.m_service.CookieContainer = Me.m_cookiejar
+        Me.m_service.Timeout = iTimeOut
 
     End Sub
 

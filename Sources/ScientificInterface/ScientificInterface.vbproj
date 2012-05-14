@@ -804,6 +804,9 @@
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
+    <None Include="My Project\EwE6.exe.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
@@ -1646,6 +1649,7 @@
     <EmbeddedResource Include="Resources\Ecopath_beta.ico" />
     <None Include="Resources\EWE_forever.jpg" />
     <DesignDataWithDesignTimeCreatableTypes Include="Resources\Ecopath_doc.ico" />
+    <None Include="Resources\Ecopath_install.png" />
     <Content Include="Resources\logo_EU.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\logo_FIMR.jpg" />
