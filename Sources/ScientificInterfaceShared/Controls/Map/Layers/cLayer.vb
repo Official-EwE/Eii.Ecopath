@@ -188,8 +188,10 @@ Namespace Controls.Map.Layers
                 Return Me.m_strName
             End Get
             Set(ByVal value As String)
-                Me.m_strName = value
-                Me.Update(eChangeFlags.Descriptive)
+                If (String.Compare(value, Me.m_strName) <> 0) Then
+                    Me.m_strName = value
+                    Me.Update(eChangeFlags.Descriptive)
+                End If
             End Set
         End Property
 
@@ -214,7 +216,10 @@ Namespace Controls.Map.Layers
                 Return Me.m_bSelected
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bSelected = value
+                If (value <> Me.m_bSelected) Then
+                    Me.m_bSelected = value
+                    Me.Update(eChangeFlags.Selected)
+                End If
             End Set
         End Property
 
