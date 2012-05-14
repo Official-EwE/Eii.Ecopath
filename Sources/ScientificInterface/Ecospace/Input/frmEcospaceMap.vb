@@ -219,8 +219,8 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerMPA)
             Me.AddData(eVarNameFlags.LayerPort)
             Me.AddData(eVarNameFlags.LayerSail, False)
-            Dim l As New cImageLayer(Me.UIContext)
-            l.Name = "Reference"
+            Dim l As New cStyleguideImageLayer(Me.UIContext)
+            l.Name = ScientificInterfaceShared.My.Resources.HEADER_REFERENCE
             Me.AddLayer(l, l.Name)
             l.Renderer.IsVisible = False
             Me.AddData(eVarNameFlags.LayerMigration)

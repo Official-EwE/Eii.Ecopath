@@ -943,6 +943,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\urf.jpg" />
     <EmbeddedResource Include="Controls\cEwEStatusBar.resx">
       <DependentUpon>cEwEStatusBar.vb</DependentUpon>
       <SubType>Designer</SubType>

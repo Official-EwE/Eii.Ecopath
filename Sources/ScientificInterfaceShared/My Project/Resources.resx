@@ -2475,4 +2475,7 @@
   <data name="VARIABLE_LAYERMPA" xml:space="preserve">
     <value>MPA map|||Marine Protected Area map</value>
   </data>
+  <data name="HEADER_REFERENCE" xml:space="preserve">
+    <value>Reference</value>
+  </data>
 </root>

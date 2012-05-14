@@ -30,70 +30,51 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map.Layers
 
-    Public Class cImageLayer
-        Inherits cLayer
+    Public Class cStyleguideImageLayer
+        Inherits cImageLayer
 
-        Private m_img As Image = Nothing
-        Private m_bImageUpdated As Boolean = False
+        Private m_bStyleGuideChanged As Boolean = False
 
         Public Sub New(uic As cUIContext)
-            MyBase.New(uic, New cImageLayerRenderer(Nothing))
+            MyBase.New(uic)
             AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
         End Sub
 
         Protected Overrides Sub Dispose(bDisposing As Boolean)
-            If (Me.m_img IsNot Nothing) Then
-                Me.m_img.Dispose()
-                Me.m_img = Nothing
-            End If
+            ' Stop listening
             RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            ' Base class cleanup
             MyBase.Dispose(bDisposing)
         End Sub
 
-        Public ReadOnly Property Image As Image
+        Public Overrides Property Image As Image
             Get
-                If (Not m_bImageUpdated) Then Me.UpdateImage()
-                Return Me.m_img
+                Return Me.m_uic.StyleGuide.MapReferenceImage
             End Get
-        End Property
-
-        Public ReadOnly Property ImageTL As PointF
-            Get
-                Return Me.m_uic.StyleGuide.MapReferenceLayerTL
-            End Get
-        End Property
-
-        Public ReadOnly Property ImageBR As PointF
-            Get
-                Return Me.m_uic.StyleGuide.MapReferenceLayerBR
-            End Get
-        End Property
-
-        Public ReadOnly Property IsValid As Boolean
-            Get
-                If (Me.m_uic Is Nothing) Then Return False
-                Return not String.IsNullOrWhiteSpace(Me.m_uic.StyleGuide.MapReferenceLayerFile)
-            End Get
+            Set(value As Image)
+                ' NOP
+            End Set
         End Property
 
         Private Sub UpdateImage()
             Try
-                Me.m_img = Image.FromFile(Me.m_uic.StyleGuide.MapReferenceLayerFile)
+                With Me.m_uic.StyleGuide
+                    Me.Image = .MapReferenceImage
+                    Me.ImageTL = .MapReferenceLayerTL
+                    Me.ImageBR = .MapReferenceLayerBR
+                End With
             Catch ex As Exception
 
             End Try
-            Me.m_bImageUpdated = True
+            Me.m_bStyleGuideChanged = False
+            Me.Update(eChangeFlags.Map, False)
         End Sub
 
         Private Sub OnStyleGuideChanged(ct As cStyleGuide.eChangeType)
             If (ct And cStyleGuide.eChangeType.Map) > 0 Then
-                Me.m_img.Dispose()
-                Me.m_img = Nothing
-                Me.m_bImageUpdated = False
-                Me.Update(eChangeFlags.Map, False)
+                Me.UpdateImage()
             End If
         End Sub
-
     End Class
 
 End Namespace

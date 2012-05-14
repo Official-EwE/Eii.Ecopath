@@ -32,11 +32,6 @@ Namespace Other
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsMap))
-            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_nudWest = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblNorth = New System.Windows.Forms.Label()
             Me.m_lblWest = New System.Windows.Forms.Label()
             Me.m_lblEast = New System.Windows.Forms.Label()
@@ -44,49 +39,17 @@ Namespace Other
             Me.m_lblFile = New System.Windows.Forms.Label()
             Me.m_tbxFile = New System.Windows.Forms.TextBox()
             Me.m_btnChoose = New System.Windows.Forms.Button()
-            Me.m_pbPreview = New System.Windows.Forms.PictureBox()
+            Me.m_plPreview = New System.Windows.Forms.Panel()
+            Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudWest = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
-            '
-            'm_hdrCaption
-            '
-            Me.m_hdrCaption.CanCollapseParent = False
-            Me.m_hdrCaption.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
-            Me.m_hdrCaption.IsCollapsed = False
-            Me.m_hdrCaption.Name = "m_hdrCaption"
-            '
-            'm_nudEast
-            '
-            resources.ApplyResources(Me.m_nudEast, "m_nudEast")
-            Me.m_nudEast.Maximum = New Decimal(New Integer() {180, 0, 0, 0})
-            Me.m_nudEast.Minimum = New Decimal(New Integer() {180, 0, 0, -2147483648})
-            Me.m_nudEast.Name = "m_nudEast"
-            '
-            'm_nudSouth
-            '
-            resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
-            Me.m_nudSouth.Maximum = New Decimal(New Integer() {90, 0, 0, 0})
-            Me.m_nudSouth.Minimum = New Decimal(New Integer() {90, 0, 0, -2147483648})
-            Me.m_nudSouth.Name = "m_nudSouth"
-            '
-            'm_nudWest
-            '
-            resources.ApplyResources(Me.m_nudWest, "m_nudWest")
-            Me.m_nudWest.Maximum = New Decimal(New Integer() {180, 0, 0, 0})
-            Me.m_nudWest.Minimum = New Decimal(New Integer() {180, 0, 0, -2147483648})
-            Me.m_nudWest.Name = "m_nudWest"
-            '
-            'm_nudNorth
-            '
-            resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
-            Me.m_nudNorth.Maximum = New Decimal(New Integer() {90, 0, 0, 0})
-            Me.m_nudNorth.Minimum = New Decimal(New Integer() {90, 0, 0, -2147483648})
-            Me.m_nudNorth.Name = "m_nudNorth"
             '
             'm_lblNorth
             '
@@ -124,18 +87,57 @@ Namespace Other
             Me.m_btnChoose.Name = "m_btnChoose"
             Me.m_btnChoose.UseVisualStyleBackColor = True
             '
-            'm_pbPreview
+            'm_plPreview
             '
-            resources.ApplyResources(Me.m_pbPreview, "m_pbPreview")
-            Me.m_pbPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            Me.m_pbPreview.Name = "m_pbPreview"
-            Me.m_pbPreview.TabStop = False
+            resources.ApplyResources(Me.m_plPreview, "m_plPreview")
+            Me.m_plPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            Me.m_plPreview.Name = "m_plPreview"
+            '
+            'm_nudEast
+            '
+            resources.ApplyResources(Me.m_nudEast, "m_nudEast")
+            Me.m_nudEast.Maximum = New Decimal(New Integer() {180, 0, 0, 0})
+            Me.m_nudEast.Minimum = New Decimal(New Integer() {180, 0, 0, -2147483648})
+            Me.m_nudEast.Name = "m_nudEast"
+            Me.m_nudEast.Value = New Decimal(New Integer() {180, 0, 0, 0})
+            '
+            'm_nudSouth
+            '
+            resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
+            Me.m_nudSouth.Maximum = New Decimal(New Integer() {90, 0, 0, 0})
+            Me.m_nudSouth.Minimum = New Decimal(New Integer() {90, 0, 0, -2147483648})
+            Me.m_nudSouth.Name = "m_nudSouth"
+            Me.m_nudSouth.Value = New Decimal(New Integer() {90, 0, 0, -2147483648})
+            '
+            'm_nudWest
+            '
+            resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+            Me.m_nudWest.Maximum = New Decimal(New Integer() {180, 0, 0, 0})
+            Me.m_nudWest.Minimum = New Decimal(New Integer() {180, 0, 0, -2147483648})
+            Me.m_nudWest.Name = "m_nudWest"
+            Me.m_nudWest.Value = New Decimal(New Integer() {180, 0, 0, -2147483648})
+            '
+            'm_nudNorth
+            '
+            resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
+            Me.m_nudNorth.Maximum = New Decimal(New Integer() {90, 0, 0, 0})
+            Me.m_nudNorth.Minimum = New Decimal(New Integer() {90, 0, 0, -2147483648})
+            Me.m_nudNorth.Name = "m_nudNorth"
+            Me.m_nudNorth.Value = New Decimal(New Integer() {90, 0, 0, 0})
+            '
+            'm_hdrCaption
+            '
+            Me.m_hdrCaption.CanCollapseParent = False
+            Me.m_hdrCaption.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.IsCollapsed = False
+            Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'ucOptionsMap
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_pbPreview)
+            Me.Controls.Add(Me.m_plPreview)
             Me.Controls.Add(Me.m_btnChoose)
             Me.Controls.Add(Me.m_tbxFile)
             Me.Controls.Add(Me.m_lblFile)
@@ -153,7 +155,6 @@ Namespace Other
             CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbPreview, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -169,8 +170,8 @@ Namespace Other
         Private WithEvents m_lblSouth As System.Windows.Forms.Label
         Private WithEvents m_lblFile As System.Windows.Forms.Label
         Private WithEvents m_btnChoose As System.Windows.Forms.Button
-        Private WithEvents m_pbPreview As System.Windows.Forms.PictureBox
         Private WithEvents m_tbxFile As System.Windows.Forms.TextBox
+        Private WithEvents m_plPreview As System.Windows.Forms.Panel
 
     End Class
 End Namespace

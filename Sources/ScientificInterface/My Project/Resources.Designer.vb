@@ -1314,6 +1314,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Images with transparency|*.png;*.gif;*.emf;*.wmf.
+        '''</summary>
+        Public ReadOnly Property FILEFILTER_IMAGE_TRANSPARENT() As String
+            Get
+                Return ResourceManager.GetString("FILEFILTER_IMAGE_TRANSPARENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Run completed at {0}.
         '''</summary>
         Public ReadOnly Property FIT2TS_PROGRESS_RUNCOMPLETED() As String
@@ -2826,6 +2835,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Select reference image for maps.
+        '''</summary>
+        Public ReadOnly Property PROMPT_SELECT_REFIMAGE() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SELECT_REFIMAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to One or more stanza configurations do not have life stages assigned. Do you want to do this now?.
         '''</summary>
         Public ReadOnly Property PROMPT_STANZA_MISSING_LIFESTAGES() As String
@@ -3799,6 +3817,13 @@ Namespace My.Resources
         Public ReadOnly Property TS_CONSTANTTOTALMORTALITY_REMARKS() As String
             Get
                 Return ResourceManager.GetString("TS_CONSTANTTOTALMORTALITY_REMARKS", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property urf() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("urf", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

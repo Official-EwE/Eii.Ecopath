@@ -235,11 +235,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
-    <Compile Include="Controls\Map\Layers\cImageLayer.vb" />
-    <Compile Include="Controls\Map\Layers\cLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cImageLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cLayer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
-    <Compile Include="Controls\Map\Layers\cRasterLayerBundle.vb" />
-    <Compile Include="Controls\Map\Layers\cRasterLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cRasterLayerBundle.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cRasterLayer.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />
@@ -331,6 +331,7 @@
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorVector.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Controls\Map\Layers\Layer types\cStyleguideImageLayer.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cImageLayerRenderer.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\cVectorLayerRenderer.vb" />
     <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererArrow.vb" />
