@@ -820,6 +820,8 @@ Namespace Ecospace
             Me.m_ucLayers.UnlockUpdates()
             Me.m_ucZoom.Map.ResumeLayout()
 
+            Me.m_layerSeed.IsSelected = True
+
         End Sub
 
         Private Sub ReloadMPAChoices()
