@@ -19,10 +19,11 @@
 Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
-Imports EcoTroph.cEcotrophPlugin
+Imports EwEEcotroph.cEcotrophPlugin
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports Microsoft.VisualBasic
+Imports ScientificInterfaceShared
 
 ' ToDo: remove reference to Microsoft.VisualBasic
 
@@ -42,7 +43,7 @@ Public Class frmEcotroph
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Load_from_ecopath.Click
 
         'a retester ou alors tester si les données sont dispo
-        EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
+        EwEEcotroph.cEcotrophPlugin.etCore.RunEcoPath()
 
         If Not (IsNothing(ETinputdatafromEP.TL)) Then
 
@@ -78,9 +79,7 @@ Public Class frmEcotroph
             Button4.Enabled = True
 
         Else
-            ' ToDo: provide a better error
-            ' ToDo: globalize this
-            Me.ReportMessage("There is no model loaded, we can't find EcoTroph input data")
+            Me.ReportMessage(My.Resources.ERROR_NO_MODEL_LOADED)
         End If
 
         ' frmET.ETgridinput.DataSource = ETinput
@@ -90,11 +89,8 @@ Public Class frmEcotroph
     Private Sub Save_ETdata_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_ETdata.Click
         Dim saveFileDialog1 As New SaveFileDialog()
 
-        ' ToDo: globalize this method
-        ' ToDo: obtain file filter from resources
-
-        saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
-        saveFileDialog1.Title = "Save an EcoTroph input data file"
+        saveFileDialog1.Filter = My.Resources.FILEFILTER_XML
+        saveFileDialog1.Title = My.Resources.PROMPT_SAVE_ET
         saveFileDialog1.ShowDialog()
         ETinputdata.comments = commentaires.Text
         ETinputdata.ModelName = Modelname.Text
@@ -120,8 +116,8 @@ Public Class frmEcotroph
         Dim myStream As Stream = Nothing
         Dim openFileDialog1 As New OpenFileDialog()
         Dim reader As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
-        openFileDialog1.InitialDirectory = "c:\"
-        openFileDialog1.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*"
+        openFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+        openFileDialog1.Filter = My.Resources.FILEFILTER_XML_ALL
         openFileDialog1.FilterIndex = 2
         openFileDialog1.RestoreDirectory = True
 
@@ -133,8 +129,7 @@ Public Class frmEcotroph
                     ETinputdata = CType(reader.Deserialize(file), ETinputtot)
                 End If
             Catch Ex As Exception
-                ' ToDo: use core messages here!
-                MessageBox.Show("Cannot read file from disk. Original error: " & Ex.Message)
+                Me.ReportMessage(String.Format(My.Resources.ERROR_LOAD, Ex.Message))
             Finally
                 ' Check this again, since we need to make sure we didn't throw an exception on open.
                 If (myStream IsNot Nothing) Then
@@ -452,9 +447,7 @@ Public Class frmEcotroph
 
             charge_grid(recup, datasmooth)
         Else
-            ' ToDo: provide a better error
-            ' ToDo: globalize this
-            Me.ReportMessage("The procedure did not yield any results")
+            Me.ReportMessage(My.Resources.ERROR_NO_RESULTS)
         End If
 
         Cursor.Current = Cursors.Default
@@ -570,9 +563,7 @@ Public Class frmEcotroph
                     If (imat = 5) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_y)
                 Next
             Else
-                ' ToDo: provide a better error
-                ' ToDo: globalize this
-                Me.ReportMessage("The procedure did not yield any results.")
+             Me.ReportMessage(My.Resources.ERROR_NO_RESULTS)
             End If
 
         Catch ex As Exception
@@ -727,10 +718,9 @@ Public Class frmEcotroph
 
             Next
         Else
-            ' ToDo: provide a better error
-            ' ToDo: globalize this
-            Me.ReportMessage("The procedure did not yield any results")
+             Me.ReportMessage(My.Resources.ERROR_NO_RESULTS)
         End If
+
         Cursor.Current = Cursors.Default
 
     End Sub

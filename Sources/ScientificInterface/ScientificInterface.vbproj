@@ -1837,6 +1837,10 @@
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj">
+      <Project>{FEF1031B-9933-4364-AD29-C4F8B2E68382}</Project>
+      <Name>EwEEcotroph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
       <Name>EwEFlowDiagramPlugin</Name>
@@ -1851,11 +1855,11 @@
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
       <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
-      <Name>EwEShapeGridPlugin %28EwE custom plugins\EwEShapeGridPlugin\EwEShapeGridPlugin%29</Name>
+      <Name>EwEShapeGridPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
-      <Name>EwEValueChain %28EwE custom plugins\EwEValueChain\EwEValueChain%29</Name>
+      <Name>EwEValueChain</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>

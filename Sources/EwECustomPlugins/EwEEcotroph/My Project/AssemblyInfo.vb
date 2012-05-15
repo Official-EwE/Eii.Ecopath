@@ -8,17 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Passez en revue les valeurs des attributs de l'assembly
 
-<Assembly: AssemblyTitle("Ecotroph")> 
+<Assembly: AssemblyTitle("EwEEcotroph")> 
 <Assembly: AssemblyDescription("Ecotroph plug-in for EwE")> 
 <Assembly: AssemblyCompany("Agrocampus Ouest - Fisheries and Aquatic Sciences Center ")> 
-<Assembly: AssemblyProduct("Ecotroph")> 
+<Assembly: AssemblyProduct("EwEEcotroph")> 
 <Assembly: AssemblyCopyright("Copyright ©  2011")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
 
 'Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-<Assembly: Guid("c77dc03b-536d-4af1-82c4-a402cb56416b")> 
+<Assembly: Guid("5a92e53c-ccb8-491e-9ceb-23713a9d47bb")> 
 
 ' Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 '
