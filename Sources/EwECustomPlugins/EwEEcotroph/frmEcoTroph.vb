@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -15,11 +16,15 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+Option Strict On
+Imports System.IO
 Imports System.Windows.Forms
 Imports EcoTroph.cEcotrophPlugin
-Imports System.IO
 Imports EwECore
 Imports EwEUtils.Utilities
+Imports Microsoft.VisualBasic
+
+' ToDo: remove reference to Microsoft.VisualBasic
 
 ''' <summary>
 ''' ToDo: comment this class
@@ -85,7 +90,8 @@ Public Class frmEcotroph
     Private Sub Save_ETdata_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Save_ETdata.Click
         Dim saveFileDialog1 As New SaveFileDialog()
 
-        ' ToDo: globalize this!
+        ' ToDo: globalize this method
+        ' ToDo: obtain file filter from resources
 
         saveFileDialog1.Filter = "xml files (*.xml)|*.xml"
         saveFileDialog1.Title = "Save an EcoTroph input data file"
@@ -108,7 +114,9 @@ Public Class frmEcotroph
 
     Private Sub Button1_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
 
-        ' ToDo: globalize this!
+        ' ToDo: globalize this method
+        ' ToDo: obtain file filter from resources
+
         Dim myStream As Stream = Nothing
         Dim openFileDialog1 As New OpenFileDialog()
         Dim reader As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
@@ -208,14 +216,9 @@ Public Class frmEcotroph
 
     End Sub
 
-    Private Sub RadioButton1_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-    End Sub
-
     Private Sub RadioButton1_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles type_smooth1.CheckedChanged
         Me.GroupBox2.Visible = False
         Me.parameters_cst.Visible = True
-
     End Sub
 
     Private Sub RadioButton2_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles type_smooth2.CheckedChanged
@@ -243,7 +246,7 @@ Public Class frmEcotroph
         ' You can start any process, HelloWorld is a do-nothing example.
         'myProcess.StartInfo.FileName = "C:\Program Files\R\R-2.13.2\bin\i386\r.exe"
 
-        myProcess.StartInfo.FileName = CurDir() & "\R\bin\i386\r.exe"
+        myProcess.StartInfo.FileName = Environment.CurrentDirectory() & "\R\bin\i386\r.exe"
         myProcess.StartInfo.Arguments = "--slave"
         myProcess.StartInfo.CreateNoWindow = True
 
@@ -257,14 +260,10 @@ Public Class frmEcotroph
         Next
         myStreamWriter.Close()
 
-
         Dim Output As String = myProcess.StandardOutput.ReadToEnd()
         Dim output2 As String = myProcess.StandardError.ReadToEnd()
 
-
         myProcess.WaitForExit()
-
-
 
         Return (output2)
 
@@ -276,7 +275,7 @@ Public Class frmEcotroph
         Dim myProcess As New Process()
         myProcess.StartInfo.RedirectStandardInput = False
         myProcess.StartInfo.UseShellExecute = True ' A remettre à false
-        myProcess.StartInfo.FileName = CurDir() & "\R\bin\i386\r.exe"
+        myProcess.StartInfo.FileName = Environment.CurrentDirectory() & "\R\bin\i386\r.exe"
         myProcess.StartInfo.Arguments = "--slave"
         myProcess.StartInfo.CreateNoWindow = False
         myProcess.Start()
@@ -301,7 +300,6 @@ Public Class frmEcotroph
         Dim writer As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
         Dim file_data As New System.IO.StreamWriter(System.IO.Path.GetTempPath() & "\" & filename)
 
-
         writer.Serialize(file_data, ETinputdata)
         file_data.Close()
         Return True
@@ -325,10 +323,8 @@ Public Class frmEcotroph
         'Une astuce pour obtenir le sep décimal
         deci_sep = Mid$(CStr(1 / 2), 2, 1)
 
-
         ' La partie suivante est a mettre en fonction(donnees as data,sheet as )
         grille.ColumnCount = nbcol
-
 
         For igrp As Integer = 0 To nbl - 1
 
@@ -366,14 +362,10 @@ Public Class frmEcotroph
                 output2 = ",smooth_type=2,smooth_param=" & cStringUtils.FormatNumber(smooth_parameter) & ",shift=" & cStringUtils.FormatNumber(decalage)
             Case 3
                 output2 = ",smooth_type=3"
-
         End Select
-
-
         Return (output2)
 
     End Function
-
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
         'On commence par sauver le fichier de données 
@@ -488,103 +480,106 @@ Public Class frmEcotroph
         test = Replace(test, " ", "%20")
         If result_pdf.Url.AbsoluteUri = "file:///" & test Then fichierpdf = "2" & fichierpdf_init Else fichierpdf = fichierpdf_init
 
-
         result_pdf.GoHome()
 
+        ' ToDo: Use cApplicationStatusNotifier
         Cursor.Current = Cursors.WaitCursor
 
-
-        'Juste pour attendre que le composant web ne bloque pas le fichier qui doit être mis à jour
-        'on charge les différents paramètres du create.smooth
-        Dim param_pas As String
-
-        ' JS: Option strict on, make sure numbers are correctly parsed
         Try
-            If (type_smooth1.Checked) Then
-                param_pas = get_params(1, Double.Parse(smooth_param_1.Text))
-            ElseIf (type_smooth2.Checked) Then
-                param_pas = get_params(2, Double.Parse(smooth_param.Text), Double.Parse(decalage.Text))
-            Else
-                Debug.Assert(type_smooth3.Checked)
-                param_pas = get_params(3)
+
+            'Juste pour attendre que le composant web ne bloque pas le fichier qui doit être mis à jour
+            'on charge les différents paramètres du create.smooth
+            Dim param_pas As String
+
+            ' JS: Option strict on, make sure numbers are correctly parsed
+            Try
+                If (type_smooth1.Checked) Then
+                    param_pas = get_params(1, Double.Parse(smooth_param_1.Text))
+                ElseIf (type_smooth2.Checked) Then
+                    param_pas = get_params(2, Double.Parse(smooth_param.Text), Double.Parse(decalage.Text))
+                Else
+                    Debug.Assert(type_smooth3.Checked)
+                    param_pas = get_params(3)
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "Ecotroph.Button3_Click")
+            End Try
+
+            ' MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
+
+            If (My.Computer.FileSystem.FileExists(fichierpdf)) Then My.Computer.FileSystem.DeleteFile(Environment.CurrentDirectory() & "\" & fichierpdf)
+
+            sauve_datagrid_xml(ETinputdata, fichier_data_transfert)
+
+            'on charge les différents paramètres du create.smooth
+
+
+            'Le code R en lui même
+            Dim fichier As String = System.IO.Path.GetTempPath() & "\transfert.txt"
+            If My.Computer.FileSystem.FileExists(fichier) Then My.Computer.FileSystem.DeleteFile(fichier)
+
+            fichier = fichier.Replace("\", "\\")
+            Dim pathfile As String = Environment.CurrentDirectory()
+            ReDim commandes(21)
+            commandes(0) = "options(warn=0)"
+            commandes(1) = "library(EcoTroph)"
+            commandes(2) = "ecopath<-read.ecopath.model('" & CStr(System.IO.Path.GetTempPath() & "\" & fichier_data_transfert).Replace("\", "\\") & "')"
+            commandes(3) = "A<-create.ETmain(ecopath" & param_pas & ")"
+            commandes(4) = "write.table(A$ET_Main, file ='" & fichier & "', sep = '\t',quote=FALSE)"
+            commandes(5) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
+            commandes(6) = "write.table(A$biomass, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
+            commandes(7) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
+            commandes(8) = "write.table(A$biomass_acc, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
+            commandes(9) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
+            commandes(10) = "write.table(A$flowP, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
+            commandes(11) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
+            commandes(12) = "write.table(A$flowP_acc, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
+            commandes(13) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
+            commandes(14) = "write.table(A$Y, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
+            commandes(15) = "pdf(file='" & System.IO.Path.GetTempPath().Replace("\", "\\") & fichierpdf & "')"
+            commandes(16) = "plot_ETmain(A)"
+            commandes(17) = "dev.off()"
+
+            commandes(18) = " "
+            commandes(19) = " "
+            commandes(20) = " "
+            commandes(21) = " quit('yes')"
+
+            'on execute ce code R
+            Dim output2 As String = execute_r(commandes)
+
+            If (Len(output2) > 2) Then
+                ' MsgBox(output2)
             End If
+
+            result_pdf.Navigate(System.IO.Path.GetTempPath() & fichierpdf)
+
+            If My.Computer.FileSystem.FileExists(fichier) Then
+                Dim recup() As String = File.ReadAllLines(fichier)
+
+                Dim totales As String = Join(recup, vbNewLine)
+                Dim matrices() As String = Split(totales, "-----")
+
+                For imat As Integer = 0 To matrices.Count
+
+                    If (imat = 0) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_ET_main)
+                    If (imat = 1) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_biomass)
+                    If (imat = 2) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_biomass_acc)
+                    If (imat = 3) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_flow_p)
+                    If (imat = 4) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_flow_p_acc)
+                    If (imat = 5) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_y)
+                Next
+            Else
+                ' ToDo: provide a better error
+                ' ToDo: globalize this
+                Me.ReportMessage("The procedure did not yield any results.")
+            End If
+
         Catch ex As Exception
-            cLog.Write(ex, "Ecotroph.Button3_Click")
+            cLog.Write(ex)
         End Try
 
-        ' MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
-
-        If (My.Computer.FileSystem.FileExists(fichierpdf)) Then My.Computer.FileSystem.DeleteFile(CurDir() & "\" & fichierpdf)
-
-
-        sauve_datagrid_xml(ETinputdata, fichier_data_transfert)
-
-        'on charge les différents paramètres du create.smooth
-
-
-        'Le code R en lui même
-        Dim fichier As String = System.IO.Path.GetTempPath() & "\transfert.txt"
-        If My.Computer.FileSystem.FileExists(fichier) Then My.Computer.FileSystem.DeleteFile(fichier)
-
-        fichier = Replace(fichier, "\", "\\")
-        Dim pathfile As String = CurDir()
-        ReDim commandes(21)
-        commandes(0) = "options(warn=0)"
-        commandes(1) = "library(EcoTroph)"
-        commandes(2) = "ecopath<-read.ecopath.model('" & Replace(System.IO.Path.GetTempPath() & "\" & fichier_data_transfert, "\", "\\") & "')"
-        commandes(3) = "A<-create.ETmain(ecopath" & param_pas & ")"
-        commandes(4) = "write.table(A$ET_Main, file ='" & fichier & "', sep = '\t',quote=FALSE)"
-        commandes(5) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(6) = "write.table(A$biomass, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
-        commandes(7) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(8) = "write.table(A$biomass_acc, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
-        commandes(9) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(10) = "write.table(A$flowP, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
-        commandes(11) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(12) = "write.table(A$flowP_acc, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
-        commandes(13) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(14) = "write.table(A$Y, file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
-        commandes(15) = "pdf(file='" & Replace(System.IO.Path.GetTempPath(), "\", "\\") & fichierpdf & "')"
-        commandes(16) = "plot_ETmain(A)"
-        commandes(17) = "dev.off()"
-
-        commandes(18) = " "
-        commandes(19) = " "
-        commandes(20) = " "
-        commandes(21) = " quit('yes')"
-
-        'on execute ce code R
-        Dim output2 As String = execute_r(commandes)
-
-        If (Len(output2) > 2) Then
-            ' MsgBox(output2)
-        End If
-
-
-
-        result_pdf.Navigate(System.IO.Path.GetTempPath() & fichierpdf)
-
-        If My.Computer.FileSystem.FileExists(fichier) Then
-            Dim recup() As String = File.ReadAllLines(fichier)
-
-            Dim totales As String = Join(recup, vbNewLine)
-            Dim matrices() As String = Split(totales, "-----")
-
-            For imat As Integer = 0 To matrices.Count
-
-                If (imat = 0) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_ET_main)
-                If (imat = 1) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_biomass)
-                If (imat = 2) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_biomass_acc)
-                If (imat = 3) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_flow_p)
-                If (imat = 4) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_flow_p_acc)
-                If (imat = 5) Then charge_grid(matrices(imat).Split(New Char() {CChar(cStringUtils.vbNewline)}, StringSplitOptions.RemoveEmptyEntries), grille_y)
-            Next
-        Else
-            ' ToDo: provide a better error
-            ' ToDo: globalize this
-            Me.ReportMessage("The procedure did not yield any results.")
-        End If
-
+        ' ToDo: Use cApplicationStatusNotifier
         Cursor.Current = Cursors.Default
 
     End Sub
@@ -597,10 +592,10 @@ Public Class frmEcotroph
 
         sauve_datagrid_xml(ETinputdata, fichier_data_transfert)
 
-        result_pdf.Navigate(CurDir() & "\null.html")
+        result_pdf.Navigate(Environment.CurrentDirectory() & "\null.html")
 
         'MsgBox("attente")
-        My.Computer.FileSystem.DeleteFile(CurDir() & "\myplot.pdf")
+        My.Computer.FileSystem.DeleteFile(Environment.CurrentDirectory() & "\myplot.pdf")
         If (type_smooth1.Checked) Then type_smooth = 1
         If (type_smooth2.Checked) Then type_smooth = 2
         If (type_smooth3.Checked) Then type_smooth = 3
@@ -608,39 +603,38 @@ Public Class frmEcotroph
         Dim param_pas As String = get_params(type_smooth, Double.Parse(smooth_param.Text), Double.Parse(decalage.Text))
         'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas)
 
+        Try
+            ReDim commandes(9)
+            commandes(0) = "pdf(file='myplot.pdf')"
+            commandes(1) = "library(EcoTroph)"
+            commandes(2) = "ecopath<-read.ecopath.model('" & Replace(fichier_data_transfert, "\", "\\") & "')"
+            commandes(3) = "plot.ETmain(create.ETmain(ecopath))"
+            commandes(4) = "dev.off()"
+            commandes(5) = " "
+            commandes(6) = " "
+            commandes(7) = " "
+            commandes(8) = " "
+            commandes(9) = " quit('yes')"
+            Dim output2 As String = execute_r(commandes)
+            'myim = New Drawing.Bitmap(Environment.CurrentDirectory() & "\myplot.png")
 
-        ReDim commandes(9)
-        commandes(0) = "pdf(file='myplot.pdf')"
-        commandes(1) = "library(EcoTroph)"
-        commandes(2) = "ecopath<-read.ecopath.model('" & Replace(fichier_data_transfert, "\", "\\") & "')"
-        commandes(3) = "plot.ETmain(create.ETmain(ecopath))"
-        commandes(4) = "dev.off()"
-        commandes(5) = " "
-        commandes(6) = " "
-        commandes(7) = " "
-        commandes(8) = " "
-        commandes(9) = " quit('yes')"
-        Dim output2 As String = execute_r(commandes)
-        'myim = New Drawing.Bitmap(CurDir() & "\myplot.png")
-
-        'Process.Start(CurDir() & "\myplot.pdf")
-        'graph_results.Image = CType(myim, Drawing.Bitmap)
-        result_pdf.Navigate(CurDir() & "\myplot.pdf")
-
-    End Sub
-
-    Private Sub Process1_Exited(ByVal sender As System.Object, ByVal e As System.EventArgs)
+            'Process.Start(Environment.CurrentDirectory() & "\myplot.pdf")
+            'graph_results.Image = CType(myim, Drawing.Bitmap)
+            result_pdf.Navigate(Environment.CurrentDirectory() & "\myplot.pdf")
+        Catch ex As Exception
+            cLog.Write(ex, "")
+        End Try
 
     End Sub
 
     Private Sub getgraphs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles getgraphs.CheckedChanged
-        If getgraphs.Checked = True Then
-            result_pdf.Visible = True
-        Else : result_pdf.Visible = False
-        End If
-
+        'If getgraphs.Checked = True Then
+        '    result_pdf.Visible = True
+        'Else
+        '    result_pdf.Visible = False
+        'End If
+        result_pdf.Visible = getgraphs.Checked
     End Sub
-
 
     Private Sub Button4_Click_4(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim commandes() As String
@@ -688,7 +682,7 @@ Public Class frmEcotroph
         If My.Computer.FileSystem.FileExists(fichier) Then My.Computer.FileSystem.DeleteFile(fichier)
 
         fichier = Replace(fichier, "\", "\\")
-        Dim pathfile As String = CurDir()
+        Dim pathfile As String = Environment.CurrentDirectory()
         ReDim commandes(21)
         commandes(0) = "library(EcoTroph)"
         commandes(1) = "ecopath<-read.ecopath.model('" & Replace(System.IO.Path.GetTempPath() & "\" & fichier_data_transfert, "\", "\\") & "')"
@@ -717,16 +711,10 @@ Public Class frmEcotroph
             'MsgBox(output2)
         End If
 
-
-
         result_pdf_et_diag.Navigate(System.IO.Path.GetTempPath() & fichierpdf)
 
         If My.Computer.FileSystem.FileExists(fichier) Then
-
-
             Dim recup() As String = File.ReadAllLines(fichier)
-
-
             Dim totales As String = Join(recup, vbNewLine)
             Dim matrices() As String = Split(totales, "-----")
 
@@ -778,11 +766,13 @@ Public Class frmEcotroph
         mull_eff.Text = "0.0,0.2,0.4,0.7,1.0,1.5,2.0,2.5,3.0,4.0,5.0"
     End Sub
 
+    ''' <summary>
+    ''' Report a warning message to the EwE Core. The message will be shown to the user and will be logged in the status panel.
+    ''' </summary>
     Private Sub ReportMessage(strMessage As String)
 
         Dim core As cCore = cEcotrophPlugin.etCore
         If (core Is Nothing) Then Return
-
         Try
             core.Messages.SendMessage(New cMessage(strMessage, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning))
         Catch ex As Exception
@@ -790,4 +780,5 @@ Public Class frmEcotroph
         End Try
 
     End Sub
+
 End Class
