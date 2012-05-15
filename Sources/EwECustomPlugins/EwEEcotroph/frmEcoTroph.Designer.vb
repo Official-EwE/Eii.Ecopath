@@ -80,6 +80,7 @@ Partial Class frmEcotroph
         Me.smooth_pdf = New System.Windows.Forms.WebBrowser()
         Me.datasmooth = New System.Windows.Forms.DataGridView()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.result_pdf = New System.Windows.Forms.WebBrowser()
         Me.getgraphs = New System.Windows.Forms.CheckBox()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.panel_result = New System.Windows.Forms.TabControl()
@@ -118,7 +119,6 @@ Partial Class frmEcotroph
         Me.TabPage13 = New System.Windows.Forms.TabPage()
         Me.grille_flow_mf = New System.Windows.Forms.DataGridView()
         Me.result_pdf_et_diag = New System.Windows.Forms.WebBrowser()
-        Me.result_pdf = New System.Windows.Forms.WebBrowser()
         CType(Me.ETgridinput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.inputdata.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -401,6 +401,13 @@ Partial Class frmEcotroph
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
+        'result_pdf
+        '
+        resources.ApplyResources(Me.result_pdf, "result_pdf")
+        Me.result_pdf.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.result_pdf.Name = "result_pdf"
+        Me.result_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
+        '
         'getgraphs
         '
         resources.ApplyResources(Me.getgraphs, "getgraphs")
@@ -506,12 +513,12 @@ Partial Class frmEcotroph
         'TabPage9
         '
         resources.ApplyResources(Me.TabPage9, "TabPage9")
+        Me.TabPage9.Controls.Add(Me.result_pdf_et_diag)
         Me.TabPage9.Controls.Add(Me.reset_param_diag)
         Me.TabPage9.Controls.Add(Me.GroupBox3)
         Me.TabPage9.Controls.Add(Me.getgraph_diag)
         Me.TabPage9.Controls.Add(Me.Button4)
         Me.TabPage9.Controls.Add(Me.tabgrille_flow_mf)
-        Me.TabPage9.Controls.Add(Me.result_pdf_et_diag)
         Me.TabPage9.Name = "TabPage9"
         Me.TabPage9.UseVisualStyleBackColor = True
         '
@@ -656,13 +663,6 @@ Partial Class frmEcotroph
         Me.result_pdf_et_diag.MinimumSize = New System.Drawing.Size(20, 20)
         Me.result_pdf_et_diag.Name = "result_pdf_et_diag"
         Me.result_pdf_et_diag.Url = New System.Uri("about:blank", System.UriKind.Absolute)
-        '
-        'result_pdf
-        '
-        resources.ApplyResources(Me.result_pdf, "result_pdf")
-        Me.result_pdf.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.result_pdf.Name = "result_pdf"
-        Me.result_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         '
         'frmEcotroph
         '
