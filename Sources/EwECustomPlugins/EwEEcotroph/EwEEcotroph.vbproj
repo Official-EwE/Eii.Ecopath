@@ -142,6 +142,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmEcoTroph.fr.resx">
+      <DependentUpon>frmEcoTroph.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmEcoTroph.resx">
       <DependentUpon>frmEcoTroph.vb</DependentUpon>
     </EmbeddedResource>
