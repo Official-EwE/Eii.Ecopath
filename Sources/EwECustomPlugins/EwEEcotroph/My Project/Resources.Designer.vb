@@ -106,6 +106,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Agrocampus Ouest - Fisheries and Aquatic Sciences Center.
+        '''</summary>
+        Friend ReadOnly Property PLUGIN_AUTHOR() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_AUTHOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EcoTroph.
+        '''</summary>
+        Friend ReadOnly Property PLUGIN_CONTROLTEXT() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_CONTROLTEXT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EcoTroph (ET) is a modelling approach articulated around the idea that an ecosystem can be represented by its biomass distribution across trophic levels. Such an approach, wherein species as such disappear, may be regarded as the ultimate stage in the use of the trophic level metric for ecosystem modelling. By concentrating on biomass flow as a quasi-physical process, it allows aspects of ecosystem functioning to be explored which are complementary to EwE. It provides users with simple tools to quantify the [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property PLUGIN_DESCRIPTION() As String
+            Get
+                Return ResourceManager.GetString("PLUGIN_DESCRIPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Save an EcoTroph input data file.
         '''</summary>
         Friend ReadOnly Property PROMPT_SAVE_ET() As String

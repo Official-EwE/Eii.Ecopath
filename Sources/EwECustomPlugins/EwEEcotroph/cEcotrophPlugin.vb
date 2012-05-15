@@ -29,6 +29,8 @@ Public Class cEcotrophPlugin
     Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
 
+#Region " Internals "
+
     Structure ETinputtot
         Dim groupname() As String
         Dim TL() As Single
@@ -52,6 +54,10 @@ Public Class cEcotrophPlugin
 
     Private frmET As frmEcotroph = Nothing
 
+#End Region ' Internals
+
+#Region " Construction / destruction "
+
     Public Sub New()
         ' NOP
     End Sub
@@ -60,64 +66,99 @@ Public Class cEcotrophPlugin
         MyBase.Finalize()
     End Sub
 
+#End Region ' Construction / destruction
+
+#Region " Plugin points implementation "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.CoreInitialized"/>
+    ''' -----------------------------------------------------------------------
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         ' NOP
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Author"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Agrocampus Ouest - Fisheries and Aquatic Sciences Center"
+            Return My.Resources.PLUGIN_AUTHOR
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Contact"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
         Get
             Return "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php"
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
-            ' ToDo: globalize this
-            Return "EcoTroph (ET) is a modelling approach articulated around the idea that an ecosystem can be represented by its biomass distribution across trophic levels. Such an approach, wherein species as such disappear, may be regarded as the ultimate stage in the use of the trophic level metric for ecosystem modelling. By concentrating on biomass flow as a quasi-physical process, it allows aspects of ecosystem functioning to be explored which are complementary to EwE. It provides users with simple tools to quantify the impacts of fishing at an ecosystem scale and a new way of looking at ecosystems. It thus appears a useful complement to Ecopath."
+            Return My.Resources.PLUGIN_DESCRIPTION
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Initialize"/>
+    ''' -----------------------------------------------------------------------
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
         etCore = DirectCast(core, cCore)
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Author"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
             Return "ndEcotroph"
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.ControlImage"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.ControlText"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            ' ToDo: globalize this
-            Return "EcoTroph"
+            Return My.Resources.PLUGIN_CONTROLTEXT
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.ControlTooltipText"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
             Return Me.ControlText
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.EnabledState"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
+            Return EwEUtils.Core.eCoreExecutionState.Idle
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.OnControlClick"/>
+    ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         ' Test if form still exists
@@ -129,18 +170,18 @@ Public Class cEcotrophPlugin
         frmPlugin = frmET
     End Sub
 
-    Private Function HasInterface(ByVal theForm As System.Windows.Forms.Form) As Boolean
-        If theForm Is Nothing Then Return False
-        If theForm.IsDisposed Then Return False
-        Return True
-    End Function
-
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IMenuItemPlugin.MenuItemLocation"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property MenuItemLocation As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted"/>
+    ''' -----------------------------------------------------------------------
     Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
 
         Dim epdata As EwECore.cEcopathDataStructures = DirectCast(EcopathDataStructures, cEcopathDataStructures)
@@ -194,8 +235,20 @@ Public Class cEcotrophPlugin
 
     End Sub
 
+#End Region ' Plugin points implementation
+
+#Region " Internals "
+
+    Private Function HasInterface(ByVal theForm As System.Windows.Forms.Form) As Boolean
+        If theForm Is Nothing Then Return False
+        If theForm.IsDisposed Then Return False
+        Return True
+    End Function
+
     Private Function match(ByVal epdata As cEcopathDataStructures, ByVal p2 As String) As Array
         Throw New NotImplementedException
     End Function
+
+#End Region ' Internals
 
 End Class

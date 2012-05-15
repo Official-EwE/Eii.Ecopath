@@ -133,6 +133,15 @@
   <data name="FILEFILTER_XML_ALL" xml:space="preserve">
     <value>xml files (*.xml)|*.xml|All files (*.*)|*.*</value>
   </data>
+  <data name="PLUGIN_AUTHOR" xml:space="preserve">
+    <value>Agrocampus Ouest - Fisheries and Aquatic Sciences Center</value>
+  </data>
+  <data name="PLUGIN_CONTROLTEXT" xml:space="preserve">
+    <value>EcoTroph</value>
+  </data>
+  <data name="PLUGIN_DESCRIPTION" xml:space="preserve">
+    <value>EcoTroph (ET) is a modelling approach articulated around the idea that an ecosystem can be represented by its biomass distribution across trophic levels. Such an approach, wherein species as such disappear, may be regarded as the ultimate stage in the use of the trophic level metric for ecosystem modelling. By concentrating on biomass flow as a quasi-physical process, it allows aspects of ecosystem functioning to be explored which are complementary to EwE. It provides users with simple tools to quantify the impacts of fishing at an ecosystem scale and a new way of looking at ecosystems. It thus appears a useful complement to Ecopath.</value>
+  </data>
   <data name="PROMPT_SAVE_ET" xml:space="preserve">
     <value>Save an EcoTroph input data file</value>
   </data>
