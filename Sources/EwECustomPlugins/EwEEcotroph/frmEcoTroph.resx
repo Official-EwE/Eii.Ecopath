@@ -166,7 +166,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ETgridinput.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;ETgridinput.Name" xml:space="preserve">
     <value>ETgridinput</value>
@@ -193,7 +193,7 @@
     <value>278, 25</value>
   </data>
   <data name="Load_from_ecopath.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="Load_from_ecopath.Text" xml:space="preserve">
     <value>Load data from Ecopath</value>
@@ -220,7 +220,7 @@
     <value>275, 25</value>
   </data>
   <data name="Button1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="Button1.Text" xml:space="preserve">
     <value>Load data from file...</value>
@@ -250,7 +250,7 @@
     <value>279, 25</value>
   </data>
   <data name="Save_ETdata.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="Save_ETdata.Text" xml:space="preserve">
     <value>Save input data...</value>
@@ -283,7 +283,7 @@
     <value>844, 31</value>
   </data>
   <data name="TableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;TableLayoutPanel1.Name" xml:space="preserve">
     <value>TableLayoutPanel1</value>
@@ -310,7 +310,7 @@
     <value>143, 13</value>
   </data>
   <data name="Label3.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>1</value>
   </data>
   <data name="Label3.Text" xml:space="preserve">
     <value>Model name and description:</value>
@@ -337,7 +337,7 @@
     <value>228, 56</value>
   </data>
   <data name="modeldescription.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;modeldescription.Name" xml:space="preserve">
     <value>modeldescription</value>
@@ -358,7 +358,7 @@
     <value>228, 20</value>
   </data>
   <data name="Modelname.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;Modelname.Name" xml:space="preserve">
     <value>Modelname</value>
@@ -382,7 +382,7 @@
     <value>59, 13</value>
   </data>
   <data name="Label2.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="Label2.Text" xml:space="preserve">
     <value>Comments:</value>
@@ -412,7 +412,7 @@
     <value>610, 82</value>
   </data>
   <data name="commentaires.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;commentaires.Name" xml:space="preserve">
     <value>commentaires</value>
@@ -466,7 +466,7 @@
     <value>84, 17</value>
   </data>
   <data name="smooth_graph.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>1</value>
   </data>
   <data name="smooth_graph.Text" xml:space="preserve">
     <value>View graphs</value>
@@ -493,7 +493,7 @@
     <value>150, 28</value>
   </data>
   <data name="Reset_smooth.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>5</value>
   </data>
   <data name="Reset_smooth.Text" xml:space="preserve">
     <value>Reset parameters</value>
@@ -520,7 +520,7 @@
     <value>99, 13</value>
   </data>
   <data name="Label6.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>0</value>
   </data>
   <data name="Label6.Text" xml:space="preserve">
     <value>Smooth parameter :</value>
@@ -547,7 +547,7 @@
     <value>100, 20</value>
   </data>
   <data name="smooth_param_1.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="smooth_param_1.Text" xml:space="preserve">
     <value>012</value>
@@ -574,7 +574,7 @@
     <value>294, 102</value>
   </data>
   <data name="parameters_cst.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>4</value>
   </data>
   <data name="parameters_cst.Text" xml:space="preserve">
     <value>parameters</value>
@@ -601,7 +601,7 @@
     <value>109, 13</value>
   </data>
   <data name="Label4.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="Label4.Text" xml:space="preserve">
     <value>Decalage parameter :</value>
@@ -631,7 +631,7 @@
     <value>100, 20</value>
   </data>
   <data name="decalage.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>1</value>
   </data>
   <data name="decalage.Text" xml:space="preserve">
     <value>095</value>
@@ -745,7 +745,7 @@
     <value>223, 28</value>
   </data>
   <data name="Button2.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>3</value>
   </data>
   <data name="Button2.Text" xml:space="preserve">
     <value>Create smooth</value>
@@ -877,7 +877,7 @@
     <value>845, 420</value>
   </data>
   <data name="smooth_pdf.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>2</value>
   </data>
   <data name="smooth_pdf.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -945,6 +945,33 @@
   <data name="&gt;&gt;TabPage2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="result_pdf.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="result_pdf.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 43</value>
+  </data>
+  <data name="result_pdf.Size" type="System.Drawing.Size, System.Drawing">
+    <value>840, 547</value>
+  </data>
+  <data name="result_pdf.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="result_pdf.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;result_pdf.Name" xml:space="preserve">
+    <value>result_pdf</value>
+  </data>
+  <data name="&gt;&gt;result_pdf.Type" xml:space="preserve">
+    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;result_pdf.Parent" xml:space="preserve">
+    <value>TabPage3</value>
+  </data>
+  <data name="&gt;&gt;result_pdf.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="getgraphs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -973,7 +1000,7 @@
     <value>TabPage3</value>
   </data>
   <data name="&gt;&gt;getgraphs.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="Button3.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1000,7 +1027,7 @@
     <value>TabPage3</value>
   </data>
   <data name="&gt;&gt;Button3.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="panel_result.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -1012,7 +1039,7 @@
     <value>3, 3</value>
   </data>
   <data name="grille_ET_main.Size" type="System.Drawing.Size, System.Drawing">
-    <value>912, 500</value>
+    <value>831, 520</value>
   </data>
   <data name="grille_ET_main.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1029,33 +1056,6 @@
   <data name="&gt;&gt;grille_ET_main.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="result_pdf.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="result_pdf.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-4, -22</value>
-  </data>
-  <data name="result_pdf.Size" type="System.Drawing.Size, System.Drawing">
-    <value>926, 532</value>
-  </data>
-  <data name="result_pdf.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="result_pdf.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;result_pdf.Name" xml:space="preserve">
-    <value>result_pdf</value>
-  </data>
-  <data name="&gt;&gt;result_pdf.Type" xml:space="preserve">
-    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;result_pdf.Parent" xml:space="preserve">
-    <value>TabPage4</value>
-  </data>
-  <data name="&gt;&gt;result_pdf.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="TabPage4.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
@@ -1063,7 +1063,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="TabPage4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>918, 506</value>
+    <value>837, 526</value>
   </data>
   <data name="TabPage4.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1342,7 +1342,7 @@
     <value>8, 43</value>
   </data>
   <data name="panel_result.Size" type="System.Drawing.Size, System.Drawing">
-    <value>926, 532</value>
+    <value>845, 552</value>
   </data>
   <data name="panel_result.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1357,7 +1357,7 @@
     <value>TabPage3</value>
   </data>
   <data name="&gt;&gt;panel_result.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="TabPage3.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1726,7 +1726,7 @@
     <value>3, 3</value>
   </data>
   <data name="grille_ET_main_diagnose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 322</value>
+    <value>831, 430</value>
   </data>
   <data name="grille_ET_main_diagnose.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1743,33 +1743,6 @@
   <data name="&gt;&gt;grille_ET_main_diagnose.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="result_pdf_et_diag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="result_pdf_et_diag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-4, -22</value>
-  </data>
-  <data name="result_pdf_et_diag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>942, 354</value>
-  </data>
-  <data name="result_pdf_et_diag.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="result_pdf_et_diag.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;result_pdf_et_diag.Name" xml:space="preserve">
-    <value>result_pdf_et_diag</value>
-  </data>
-  <data name="&gt;&gt;result_pdf_et_diag.Type" xml:space="preserve">
-    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;result_pdf_et_diag.Parent" xml:space="preserve">
-    <value>TabPage10</value>
-  </data>
-  <data name="&gt;&gt;result_pdf_et_diag.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="TabPage10.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
@@ -1777,7 +1750,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="TabPage10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>934, 328</value>
+    <value>837, 436</value>
   </data>
   <data name="TabPage10.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1804,7 +1777,7 @@
     <value>3, 3</value>
   </data>
   <data name="grille_biom_mf.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 322</value>
+    <value>831, 430</value>
   </data>
   <data name="grille_biom_mf.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1828,7 +1801,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="TabPage11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>934, 328</value>
+    <value>837, 436</value>
   </data>
   <data name="TabPage11.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1855,7 +1828,7 @@
     <value>3, 3</value>
   </data>
   <data name="grille_catches.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 322</value>
+    <value>831, 430</value>
   </data>
   <data name="grille_catches.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1879,7 +1852,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="TabPage12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>934, 328</value>
+    <value>837, 436</value>
   </data>
   <data name="TabPage12.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1906,7 +1879,7 @@
     <value>3, 3</value>
   </data>
   <data name="grille_flow_mf.Size" type="System.Drawing.Size, System.Drawing">
-    <value>928, 322</value>
+    <value>831, 430</value>
   </data>
   <data name="grille_flow_mf.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1930,7 +1903,7 @@
     <value>3, 3, 3, 3</value>
   </data>
   <data name="TabPage13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>934, 328</value>
+    <value>837, 436</value>
   </data>
   <data name="TabPage13.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1954,7 +1927,7 @@
     <value>8, 135</value>
   </data>
   <data name="tabgrille_flow_mf.Size" type="System.Drawing.Size, System.Drawing">
-    <value>942, 354</value>
+    <value>845, 462</value>
   </data>
   <data name="tabgrille_flow_mf.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1970,6 +1943,33 @@
   </data>
   <data name="&gt;&gt;tabgrille_flow_mf.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="result_pdf_et_diag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="result_pdf_et_diag.Location" type="System.Drawing.Point, System.Drawing">
+    <value>-4, -22</value>
+  </data>
+  <data name="result_pdf_et_diag.Size" type="System.Drawing.Size, System.Drawing">
+    <value>942, 354</value>
+  </data>
+  <data name="result_pdf_et_diag.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="result_pdf_et_diag.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;result_pdf_et_diag.Name" xml:space="preserve">
+    <value>result_pdf_et_diag</value>
+  </data>
+  <data name="&gt;&gt;result_pdf_et_diag.Type" xml:space="preserve">
+    <value>System.Windows.Forms.WebBrowser, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;result_pdf_et_diag.Parent" xml:space="preserve">
+    <value>TabPage9</value>
+  </data>
+  <data name="&gt;&gt;result_pdf_et_diag.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="TabPage9.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -2008,7 +2008,7 @@
     <value>869, 629</value>
   </data>
   <data name="inputdata.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;inputdata.Name" xml:space="preserve">
     <value>inputdata</value>

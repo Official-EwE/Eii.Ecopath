@@ -85,7 +85,6 @@ Partial Class frmEcotroph
         Me.panel_result = New System.Windows.Forms.TabControl()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.grille_ET_main = New System.Windows.Forms.DataGridView()
-        Me.result_pdf = New System.Windows.Forms.WebBrowser()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
         Me.grille_biomass = New System.Windows.Forms.DataGridView()
         Me.TabPage6 = New System.Windows.Forms.TabPage()
@@ -112,13 +111,14 @@ Partial Class frmEcotroph
         Me.tabgrille_flow_mf = New System.Windows.Forms.TabControl()
         Me.TabPage10 = New System.Windows.Forms.TabPage()
         Me.grille_ET_main_diagnose = New System.Windows.Forms.DataGridView()
-        Me.result_pdf_et_diag = New System.Windows.Forms.WebBrowser()
         Me.TabPage11 = New System.Windows.Forms.TabPage()
         Me.grille_biom_mf = New System.Windows.Forms.DataGridView()
         Me.TabPage12 = New System.Windows.Forms.TabPage()
         Me.grille_catches = New System.Windows.Forms.DataGridView()
         Me.TabPage13 = New System.Windows.Forms.TabPage()
         Me.grille_flow_mf = New System.Windows.Forms.DataGridView()
+        Me.result_pdf_et_diag = New System.Windows.Forms.WebBrowser()
+        Me.result_pdf = New System.Windows.Forms.WebBrowser()
         CType(Me.ETgridinput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.inputdata.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -393,6 +393,7 @@ Partial Class frmEcotroph
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.result_pdf)
         Me.TabPage3.Controls.Add(Me.getgraphs)
         Me.TabPage3.Controls.Add(Me.Button3)
         Me.TabPage3.Controls.Add(Me.panel_result)
@@ -427,7 +428,6 @@ Partial Class frmEcotroph
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.grille_ET_main)
-        Me.TabPage4.Controls.Add(Me.result_pdf)
         resources.ApplyResources(Me.TabPage4, "TabPage4")
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -437,13 +437,6 @@ Partial Class frmEcotroph
         Me.grille_ET_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         resources.ApplyResources(Me.grille_ET_main, "grille_ET_main")
         Me.grille_ET_main.Name = "grille_ET_main"
-        '
-        'result_pdf
-        '
-        resources.ApplyResources(Me.result_pdf, "result_pdf")
-        Me.result_pdf.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.result_pdf.Name = "result_pdf"
-        Me.result_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         '
         'TabPage5
         '
@@ -518,6 +511,7 @@ Partial Class frmEcotroph
         Me.TabPage9.Controls.Add(Me.getgraph_diag)
         Me.TabPage9.Controls.Add(Me.Button4)
         Me.TabPage9.Controls.Add(Me.tabgrille_flow_mf)
+        Me.TabPage9.Controls.Add(Me.result_pdf_et_diag)
         Me.TabPage9.Name = "TabPage9"
         Me.TabPage9.UseVisualStyleBackColor = True
         '
@@ -607,7 +601,6 @@ Partial Class frmEcotroph
         'TabPage10
         '
         Me.TabPage10.Controls.Add(Me.grille_ET_main_diagnose)
-        Me.TabPage10.Controls.Add(Me.result_pdf_et_diag)
         resources.ApplyResources(Me.TabPage10, "TabPage10")
         Me.TabPage10.Name = "TabPage10"
         Me.TabPage10.UseVisualStyleBackColor = True
@@ -617,13 +610,6 @@ Partial Class frmEcotroph
         Me.grille_ET_main_diagnose.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         resources.ApplyResources(Me.grille_ET_main_diagnose, "grille_ET_main_diagnose")
         Me.grille_ET_main_diagnose.Name = "grille_ET_main_diagnose"
-        '
-        'result_pdf_et_diag
-        '
-        resources.ApplyResources(Me.result_pdf_et_diag, "result_pdf_et_diag")
-        Me.result_pdf_et_diag.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.result_pdf_et_diag.Name = "result_pdf_et_diag"
-        Me.result_pdf_et_diag.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         '
         'TabPage11
         '
@@ -663,6 +649,20 @@ Partial Class frmEcotroph
         Me.grille_flow_mf.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         resources.ApplyResources(Me.grille_flow_mf, "grille_flow_mf")
         Me.grille_flow_mf.Name = "grille_flow_mf"
+        '
+        'result_pdf_et_diag
+        '
+        resources.ApplyResources(Me.result_pdf_et_diag, "result_pdf_et_diag")
+        Me.result_pdf_et_diag.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.result_pdf_et_diag.Name = "result_pdf_et_diag"
+        Me.result_pdf_et_diag.Url = New System.Uri("about:blank", System.UriKind.Absolute)
+        '
+        'result_pdf
+        '
+        resources.ApplyResources(Me.result_pdf, "result_pdf")
+        Me.result_pdf.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.result_pdf.Name = "result_pdf"
+        Me.result_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         '
         'frmEcotroph
         '
@@ -751,8 +751,6 @@ Partial Class frmEcotroph
     Friend WithEvents grille_y As System.Windows.Forms.DataGridView
     Friend WithEvents TabPage9 As System.Windows.Forms.TabPage
     Friend WithEvents getgraphs As System.Windows.Forms.CheckBox
-    Friend WithEvents result_pdf As System.Windows.Forms.WebBrowser
-    Friend WithEvents result_pdf_et_diag As System.Windows.Forms.WebBrowser
     Friend WithEvents getgraph_diag As System.Windows.Forms.CheckBox
     Friend WithEvents Button4 As System.Windows.Forms.Button
     Friend WithEvents tabgrille_flow_mf As System.Windows.Forms.TabControl
@@ -791,4 +789,6 @@ Partial Class frmEcotroph
     Friend WithEvents reset_param_diag As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents grille_ET_main As System.Windows.Forms.DataGridView
+    Friend WithEvents result_pdf_et_diag As System.Windows.Forms.WebBrowser
+    Friend WithEvents result_pdf As System.Windows.Forms.WebBrowser
 End Class
