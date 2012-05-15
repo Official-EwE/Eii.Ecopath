@@ -1017,4 +1017,10 @@ System Error: {0}</value>
     <value>Plug-in module '{0}' unloaded</value>
     <comment>{0}=plugin module name</comment>
   </data>
+  <data name="MAP_INVALID_NOPP" xml:space="preserve">
+    <value>Your map does not have any primary production.</value>
+  </data>
+  <data name="MAP_INVALID_NOWATERCELLS" xml:space="preserve">
+    <value>Your map does not have any water cells.</value>
+  </data>
 </root>

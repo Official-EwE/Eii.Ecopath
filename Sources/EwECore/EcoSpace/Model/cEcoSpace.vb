@@ -2526,6 +2526,12 @@ Public Class cEcoSpace
         If m_Data.nWaterCells > 0 And totPP > 0 Then
             Return totPP / m_Data.nWaterCells
         Else
+            If (m_Data.nWaterCells = 0) Then
+                Me.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MAP_INVALID_NOWATERCELLS, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            End If
+            If (totPP = 0) Then
+                Me.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.MAP_INVALID_NOPP, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            End If
             Return 1
         End If
 

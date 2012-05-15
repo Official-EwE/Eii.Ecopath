@@ -1075,7 +1075,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace relative biomass.
+        '''  Looks up a localized string similar to Ecospace relative biomass (log10).
         '''</summary>
         Public ReadOnly Property ECOSPACE_HEADER_RELB() As String
             Get

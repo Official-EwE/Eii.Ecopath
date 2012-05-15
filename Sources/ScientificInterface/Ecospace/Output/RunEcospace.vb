@@ -301,6 +301,7 @@ Namespace Ecospace
             ' Start tracking core state monitor for Ecospace run states
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
+            Me.ClearResults()
             Me.UpdateStyleColors()
             Me.UpdateControls()
 

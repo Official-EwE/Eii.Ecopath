@@ -1274,7 +1274,7 @@ Description: {2}</value>
     <value>..\Resources\team.rtf;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="ECOSPACE_HEADER_RELB" xml:space="preserve">
-    <value>Ecospace relative biomass</value>
+    <value>Ecospace relative biomass (log10)</value>
   </data>
   <data name="ECOSPACE_HEADER_LOGBREL" xml:space="preserve">
     <value>Biomass (log, relative)</value>

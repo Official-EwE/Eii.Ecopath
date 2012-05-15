@@ -1793,7 +1793,12 @@ Namespace Controls
             cmdFS.Invoke(strFN, My.Resources.FILEFILTER_CSV, 0)
 
             If cmdFS.Result = DialogResult.OK Then
-                Return Me.WriteDataToCSV(cmdFS.FileName)
+                If Me.WriteDataToCSV(cmdFS.FileName) Then
+                    Dim msg As New cMessage(String.Format(My.Resources.STATUS_GRAPH_SAVED, cmdFS.FileName), _
+                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = cmdFS.FileName
+                    Me.m_uic.Core.Messages.SendMessage(msg)
+                End If
             End If
 
             Return True

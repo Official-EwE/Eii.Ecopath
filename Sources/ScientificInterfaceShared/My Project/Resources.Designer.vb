@@ -6043,6 +6043,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Saved graph data to &apos;{0}&apos;.
+        '''</summary>
+        Public ReadOnly Property STATUS_GRAPH_SAVED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_GRAPH_SAVED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Adding time series {0} ....
         '''</summary>
         Public ReadOnly Property STATUS_TIMESERIES_ADDING() As String
