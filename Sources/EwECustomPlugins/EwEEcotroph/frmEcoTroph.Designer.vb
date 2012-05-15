@@ -54,6 +54,7 @@ Partial Class frmEcotroph
         Me.Save_ETdata = New System.Windows.Forms.Button()
         Me.inputdata = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.modeldescription = New System.Windows.Forms.TextBox()
         Me.Modelname = New System.Windows.Forms.TextBox()
@@ -83,7 +84,6 @@ Partial Class frmEcotroph
         Me.Button3 = New System.Windows.Forms.Button()
         Me.panel_result = New System.Windows.Forms.TabControl()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.grille_ET_main = New System.Windows.Forms.DataGridView()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
         Me.grille_biomass = New System.Windows.Forms.DataGridView()
         Me.TabPage6 = New System.Windows.Forms.TabPage()
@@ -117,10 +117,11 @@ Partial Class frmEcotroph
         Me.grille_flow_mf = New System.Windows.Forms.DataGridView()
         Me.getgraph_diag = New System.Windows.Forms.CheckBox()
         Me.Button4 = New System.Windows.Forms.Button()
-        Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+        Me.grille_ET_main = New System.Windows.Forms.DataGridView()
         CType(Me.ETgridinput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.inputdata.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.TableLayoutPanel1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.datasmooth, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -129,7 +130,6 @@ Partial Class frmEcotroph
         Me.TabPage3.SuspendLayout()
         Me.panel_result.SuspendLayout()
         Me.TabPage4.SuspendLayout()
-        CType(Me.grille_ET_main, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage5.SuspendLayout()
         CType(Me.grille_biomass, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage6.SuspendLayout()
@@ -151,7 +151,7 @@ Partial Class frmEcotroph
         CType(Me.grille_catches, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage13.SuspendLayout()
         CType(Me.grille_flow_mf, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TableLayoutPanel1.SuspendLayout()
+        CType(Me.grille_ET_main, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'ETgridinput
@@ -164,7 +164,7 @@ Partial Class frmEcotroph
         Me.ETgridinput.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Group_name, Me.TTL, Me.Biomass, Me.Production, Me.accessibilty, Me.OI})
         Me.ETgridinput.Location = New System.Drawing.Point(6, 171)
         Me.ETgridinput.Name = "ETgridinput"
-        Me.ETgridinput.Size = New System.Drawing.Size(877, 396)
+        Me.ETgridinput.Size = New System.Drawing.Size(845, 423)
         Me.ETgridinput.TabIndex = 0
         '
         'Group_name
@@ -203,7 +203,7 @@ Partial Class frmEcotroph
         Me.Load_from_ecopath.Location = New System.Drawing.Point(0, 3)
         Me.Load_from_ecopath.Margin = New System.Windows.Forms.Padding(0, 3, 3, 3)
         Me.Load_from_ecopath.Name = "Load_from_ecopath"
-        Me.Load_from_ecopath.Size = New System.Drawing.Size(288, 25)
+        Me.Load_from_ecopath.Size = New System.Drawing.Size(278, 25)
         Me.Load_from_ecopath.TabIndex = 1
         Me.Load_from_ecopath.Text = "Load the data from Ecopath"
         Me.Load_from_ecopath.UseVisualStyleBackColor = True
@@ -211,9 +211,9 @@ Partial Class frmEcotroph
         'Button1
         '
         Me.Button1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Button1.Location = New System.Drawing.Point(294, 3)
+        Me.Button1.Location = New System.Drawing.Point(284, 3)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(285, 25)
+        Me.Button1.Size = New System.Drawing.Size(275, 25)
         Me.Button1.TabIndex = 2
         Me.Button1.Text = "Load the data from file"
         Me.Button1.UseVisualStyleBackColor = True
@@ -221,10 +221,10 @@ Partial Class frmEcotroph
         'Save_ETdata
         '
         Me.Save_ETdata.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Save_ETdata.Location = New System.Drawing.Point(585, 3)
+        Me.Save_ETdata.Location = New System.Drawing.Point(565, 3)
         Me.Save_ETdata.Margin = New System.Windows.Forms.Padding(3, 3, 0, 3)
         Me.Save_ETdata.Name = "Save_ETdata"
-        Me.Save_ETdata.Size = New System.Drawing.Size(291, 25)
+        Me.Save_ETdata.Size = New System.Drawing.Size(279, 25)
         Me.Save_ETdata.TabIndex = 3
         Me.Save_ETdata.Text = "Save the input data"
         Me.Save_ETdata.UseVisualStyleBackColor = True
@@ -239,7 +239,7 @@ Partial Class frmEcotroph
         Me.inputdata.Location = New System.Drawing.Point(0, 0)
         Me.inputdata.Name = "inputdata"
         Me.inputdata.SelectedIndex = 0
-        Me.inputdata.Size = New System.Drawing.Size(901, 602)
+        Me.inputdata.Size = New System.Drawing.Size(869, 629)
         Me.inputdata.TabIndex = 5
         '
         'TabPage1
@@ -254,10 +254,28 @@ Partial Class frmEcotroph
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(893, 576)
+        Me.TabPage1.Size = New System.Drawing.Size(861, 603)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Input data"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'TableLayoutPanel1
+        '
+        Me.TableLayoutPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TableLayoutPanel1.ColumnCount = 3
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.TableLayoutPanel1.Controls.Add(Me.Load_from_ecopath, 0, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Button1, 1, 0)
+        Me.TableLayoutPanel1.Controls.Add(Me.Save_ETdata, 2, 0)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(7, 13)
+        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+        Me.TableLayoutPanel1.RowCount = 1
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.TableLayoutPanel1.Size = New System.Drawing.Size(844, 31)
+        Me.TableLayoutPanel1.TabIndex = 9
         '
         'Label3
         '
@@ -300,19 +318,19 @@ Partial Class frmEcotroph
         Me.commentaires.Location = New System.Drawing.Point(241, 74)
         Me.commentaires.Multiline = True
         Me.commentaires.Name = "commentaires"
-        Me.commentaires.Size = New System.Drawing.Size(642, 82)
+        Me.commentaires.Size = New System.Drawing.Size(610, 82)
         Me.commentaires.TabIndex = 4
         '
         'TabPage2
         '
-        Me.TabPage2.Controls.Add(Me.smooth_pdf)
         Me.TabPage2.Controls.Add(Me.smooth_graph)
-        Me.TabPage2.Controls.Add(Me.datasmooth)
         Me.TabPage2.Controls.Add(Me.GroupBox1)
+        Me.TabPage2.Controls.Add(Me.smooth_pdf)
+        Me.TabPage2.Controls.Add(Me.datasmooth)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(893, 576)
+        Me.TabPage2.Size = New System.Drawing.Size(861, 603)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Smooth parameters"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -322,18 +340,19 @@ Partial Class frmEcotroph
         Me.smooth_pdf.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.smooth_pdf.Location = New System.Drawing.Point(8, 190)
+        Me.smooth_pdf.Location = New System.Drawing.Point(8, 175)
         Me.smooth_pdf.MinimumSize = New System.Drawing.Size(20, 20)
         Me.smooth_pdf.Name = "smooth_pdf"
-        Me.smooth_pdf.Size = New System.Drawing.Size(877, 378)
+        Me.smooth_pdf.Size = New System.Drawing.Size(845, 420)
         Me.smooth_pdf.TabIndex = 8
         Me.smooth_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         Me.smooth_pdf.Visible = False
         '
         'smooth_graph
         '
+        Me.smooth_graph.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.smooth_graph.AutoSize = True
-        Me.smooth_graph.Location = New System.Drawing.Point(783, 152)
+        Me.smooth_graph.Location = New System.Drawing.Point(753, 16)
         Me.smooth_graph.Name = "smooth_graph"
         Me.smooth_graph.Size = New System.Drawing.Size(102, 17)
         Me.smooth_graph.TabIndex = 7
@@ -342,15 +361,19 @@ Partial Class frmEcotroph
         '
         'datasmooth
         '
+        Me.datasmooth.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.datasmooth.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.datasmooth.Location = New System.Drawing.Point(25, 190)
+        Me.datasmooth.Location = New System.Drawing.Point(8, 175)
         Me.datasmooth.Name = "datasmooth"
-        Me.datasmooth.Size = New System.Drawing.Size(770, 352)
+        Me.datasmooth.Size = New System.Drawing.Size(845, 420)
         Me.datasmooth.TabIndex = 1
         '
         'GroupBox1
         '
-        Me.GroupBox1.BackColor = System.Drawing.Color.Gainsboro
+        Me.GroupBox1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GroupBox1.Controls.Add(Me.Reset_smooth)
         Me.GroupBox1.Controls.Add(Me.parameters_cst)
         Me.GroupBox1.Controls.Add(Me.GroupBox2)
@@ -360,7 +383,7 @@ Partial Class frmEcotroph
         Me.GroupBox1.Controls.Add(Me.type_smooth1)
         Me.GroupBox1.Location = New System.Drawing.Point(8, 6)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(591, 163)
+        Me.GroupBox1.Size = New System.Drawing.Size(737, 163)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Smooth type"
@@ -502,31 +525,34 @@ Partial Class frmEcotroph
         '
         'TabPage3
         '
-        Me.TabPage3.Controls.Add(Me.result_pdf)
         Me.TabPage3.Controls.Add(Me.getgraphs)
         Me.TabPage3.Controls.Add(Me.Button3)
         Me.TabPage3.Controls.Add(Me.panel_result)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(893, 576)
+        Me.TabPage3.Size = New System.Drawing.Size(942, 583)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "ET transpose"
         Me.TabPage3.UseVisualStyleBackColor = True
         '
         'result_pdf
         '
-        Me.result_pdf.Location = New System.Drawing.Point(24, 127)
+        Me.result_pdf.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.result_pdf.Location = New System.Drawing.Point(-4, -22)
         Me.result_pdf.MinimumSize = New System.Drawing.Size(20, 20)
         Me.result_pdf.Name = "result_pdf"
-        Me.result_pdf.Size = New System.Drawing.Size(789, 441)
+        Me.result_pdf.Size = New System.Drawing.Size(877, 525)
         Me.result_pdf.TabIndex = 6
         Me.result_pdf.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         Me.result_pdf.Visible = False
         '
         'getgraphs
         '
+        Me.getgraphs.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.getgraphs.AutoSize = True
-        Me.getgraphs.Location = New System.Drawing.Point(461, 3)
+        Me.getgraphs.Location = New System.Drawing.Point(832, 16)
         Me.getgraphs.Name = "getgraphs"
         Me.getgraphs.Size = New System.Drawing.Size(102, 17)
         Me.getgraphs.TabIndex = 6
@@ -536,7 +562,7 @@ Partial Class frmEcotroph
         'Button3
         '
         Me.Button3.Enabled = False
-        Me.Button3.Location = New System.Drawing.Point(3, 3)
+        Me.Button3.Location = New System.Drawing.Point(8, 9)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(407, 28)
         Me.Button3.TabIndex = 1
@@ -545,36 +571,32 @@ Partial Class frmEcotroph
         '
         'panel_result
         '
+        Me.panel_result.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.panel_result.Controls.Add(Me.TabPage4)
         Me.panel_result.Controls.Add(Me.TabPage5)
         Me.panel_result.Controls.Add(Me.TabPage6)
         Me.panel_result.Controls.Add(Me.TabPage7)
         Me.panel_result.Controls.Add(Me.TabPage8)
         Me.panel_result.Controls.Add(Me.Y)
-        Me.panel_result.Location = New System.Drawing.Point(24, 99)
+        Me.panel_result.Location = New System.Drawing.Point(8, 43)
         Me.panel_result.Name = "panel_result"
         Me.panel_result.SelectedIndex = 0
-        Me.panel_result.Size = New System.Drawing.Size(789, 426)
+        Me.panel_result.Size = New System.Drawing.Size(926, 532)
         Me.panel_result.TabIndex = 0
         '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.grille_ET_main)
+        Me.TabPage4.Controls.Add(Me.result_pdf)
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(781, 400)
+        Me.TabPage4.Size = New System.Drawing.Size(869, 499)
         Me.TabPage4.TabIndex = 0
         Me.TabPage4.Text = "ET_main"
         Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'grille_ET_main
-        '
-        Me.grille_ET_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_ET_main.Location = New System.Drawing.Point(6, 6)
-        Me.grille_ET_main.Name = "grille_ET_main"
-        Me.grille_ET_main.Size = New System.Drawing.Size(779, 388)
-        Me.grille_ET_main.TabIndex = 0
         '
         'TabPage5
         '
@@ -582,7 +604,7 @@ Partial Class frmEcotroph
         Me.TabPage5.Location = New System.Drawing.Point(4, 22)
         Me.TabPage5.Name = "TabPage5"
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage5.Size = New System.Drawing.Size(781, 400)
+        Me.TabPage5.Size = New System.Drawing.Size(918, 506)
         Me.TabPage5.TabIndex = 1
         Me.TabPage5.Text = "Biomass"
         Me.TabPage5.UseVisualStyleBackColor = True
@@ -590,9 +612,10 @@ Partial Class frmEcotroph
         'grille_biomass
         '
         Me.grille_biomass.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_biomass.Location = New System.Drawing.Point(6, 6)
+        Me.grille_biomass.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_biomass.Location = New System.Drawing.Point(3, 3)
         Me.grille_biomass.Name = "grille_biomass"
-        Me.grille_biomass.Size = New System.Drawing.Size(779, 388)
+        Me.grille_biomass.Size = New System.Drawing.Size(912, 500)
         Me.grille_biomass.TabIndex = 0
         '
         'TabPage6
@@ -601,7 +624,7 @@ Partial Class frmEcotroph
         Me.TabPage6.Location = New System.Drawing.Point(4, 22)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage6.Size = New System.Drawing.Size(781, 400)
+        Me.TabPage6.Size = New System.Drawing.Size(869, 499)
         Me.TabPage6.TabIndex = 2
         Me.TabPage6.Text = "Biomasse accessible"
         Me.TabPage6.UseVisualStyleBackColor = True
@@ -609,9 +632,10 @@ Partial Class frmEcotroph
         'grille_biomass_acc
         '
         Me.grille_biomass_acc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_biomass_acc.Location = New System.Drawing.Point(7, 7)
+        Me.grille_biomass_acc.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_biomass_acc.Location = New System.Drawing.Point(3, 3)
         Me.grille_biomass_acc.Name = "grille_biomass_acc"
-        Me.grille_biomass_acc.Size = New System.Drawing.Size(778, 387)
+        Me.grille_biomass_acc.Size = New System.Drawing.Size(863, 493)
         Me.grille_biomass_acc.TabIndex = 0
         '
         'TabPage7
@@ -620,7 +644,7 @@ Partial Class frmEcotroph
         Me.TabPage7.Location = New System.Drawing.Point(4, 22)
         Me.TabPage7.Name = "TabPage7"
         Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage7.Size = New System.Drawing.Size(781, 400)
+        Me.TabPage7.Size = New System.Drawing.Size(869, 499)
         Me.TabPage7.TabIndex = 3
         Me.TabPage7.Text = "Flow_p"
         Me.TabPage7.UseVisualStyleBackColor = True
@@ -628,9 +652,10 @@ Partial Class frmEcotroph
         'grille_flow_p
         '
         Me.grille_flow_p.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_flow_p.Location = New System.Drawing.Point(6, 6)
+        Me.grille_flow_p.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_flow_p.Location = New System.Drawing.Point(3, 3)
         Me.grille_flow_p.Name = "grille_flow_p"
-        Me.grille_flow_p.Size = New System.Drawing.Size(775, 388)
+        Me.grille_flow_p.Size = New System.Drawing.Size(863, 493)
         Me.grille_flow_p.TabIndex = 0
         '
         'TabPage8
@@ -639,7 +664,7 @@ Partial Class frmEcotroph
         Me.TabPage8.Location = New System.Drawing.Point(4, 22)
         Me.TabPage8.Name = "TabPage8"
         Me.TabPage8.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage8.Size = New System.Drawing.Size(781, 400)
+        Me.TabPage8.Size = New System.Drawing.Size(869, 499)
         Me.TabPage8.TabIndex = 4
         Me.TabPage8.Text = "Flow_P_acc"
         Me.TabPage8.UseVisualStyleBackColor = True
@@ -647,9 +672,10 @@ Partial Class frmEcotroph
         'grille_flow_p_acc
         '
         Me.grille_flow_p_acc.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_flow_p_acc.Location = New System.Drawing.Point(6, 6)
+        Me.grille_flow_p_acc.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_flow_p_acc.Location = New System.Drawing.Point(3, 3)
         Me.grille_flow_p_acc.Name = "grille_flow_p_acc"
-        Me.grille_flow_p_acc.Size = New System.Drawing.Size(779, 388)
+        Me.grille_flow_p_acc.Size = New System.Drawing.Size(863, 493)
         Me.grille_flow_p_acc.TabIndex = 0
         '
         'Y
@@ -658,7 +684,7 @@ Partial Class frmEcotroph
         Me.Y.Location = New System.Drawing.Point(4, 22)
         Me.Y.Name = "Y"
         Me.Y.Padding = New System.Windows.Forms.Padding(3)
-        Me.Y.Size = New System.Drawing.Size(781, 400)
+        Me.Y.Size = New System.Drawing.Size(869, 499)
         Me.Y.TabIndex = 5
         Me.Y.Text = "Y"
         Me.Y.UseVisualStyleBackColor = True
@@ -666,9 +692,10 @@ Partial Class frmEcotroph
         'grille_y
         '
         Me.grille_y.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_y.Location = New System.Drawing.Point(3, 6)
+        Me.grille_y.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_y.Location = New System.Drawing.Point(3, 3)
         Me.grille_y.Name = "grille_y"
-        Me.grille_y.Size = New System.Drawing.Size(782, 391)
+        Me.grille_y.Size = New System.Drawing.Size(863, 493)
         Me.grille_y.TabIndex = 0
         '
         'TabPage9
@@ -676,21 +703,20 @@ Partial Class frmEcotroph
         Me.TabPage9.AutoScroll = True
         Me.TabPage9.Controls.Add(Me.reset_param_diag)
         Me.TabPage9.Controls.Add(Me.GroupBox3)
-        Me.TabPage9.Controls.Add(Me.result_pdf_et_diag)
-        Me.TabPage9.Controls.Add(Me.tabgrille_flow_mf)
         Me.TabPage9.Controls.Add(Me.getgraph_diag)
         Me.TabPage9.Controls.Add(Me.Button4)
+        Me.TabPage9.Controls.Add(Me.tabgrille_flow_mf)
         Me.TabPage9.Location = New System.Drawing.Point(4, 22)
         Me.TabPage9.Name = "TabPage9"
         Me.TabPage9.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage9.Size = New System.Drawing.Size(893, 576)
+        Me.TabPage9.Size = New System.Drawing.Size(958, 497)
         Me.TabPage9.TabIndex = 3
         Me.TabPage9.Text = "ET diagnosis"
         Me.TabPage9.UseVisualStyleBackColor = True
         '
         'reset_param_diag
         '
-        Me.reset_param_diag.Location = New System.Drawing.Point(663, 3)
+        Me.reset_param_diag.Location = New System.Drawing.Point(421, 9)
         Me.reset_param_diag.Name = "reset_param_diag"
         Me.reset_param_diag.Size = New System.Drawing.Size(150, 28)
         Me.reset_param_diag.TabIndex = 11
@@ -700,7 +726,6 @@ Partial Class frmEcotroph
         '
         'GroupBox3
         '
-        Me.GroupBox3.BackColor = System.Drawing.Color.Gainsboro
         Me.GroupBox3.Controls.Add(Me.mull_eff)
         Me.GroupBox3.Controls.Add(Me.Label9)
         Me.GroupBox3.Controls.Add(Me.Label8)
@@ -709,18 +734,20 @@ Partial Class frmEcotroph
         Me.GroupBox3.Controls.Add(Me.beta)
         Me.GroupBox3.Controls.Add(Me.Label5)
         Me.GroupBox3.Controls.Add(Me.TopD)
-        Me.GroupBox3.Location = New System.Drawing.Point(16, 37)
+        Me.GroupBox3.Location = New System.Drawing.Point(8, 39)
         Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(797, 90)
+        Me.GroupBox3.Size = New System.Drawing.Size(563, 90)
         Me.GroupBox3.TabIndex = 11
         Me.GroupBox3.TabStop = False
         Me.GroupBox3.Text = "parameters"
         '
         'mull_eff
         '
+        Me.mull_eff.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.mull_eff.Location = New System.Drawing.Point(262, 54)
         Me.mull_eff.Name = "mull_eff"
-        Me.mull_eff.Size = New System.Drawing.Size(530, 20)
+        Me.mull_eff.Size = New System.Drawing.Size(295, 20)
         Me.mull_eff.TabIndex = 11
         Me.mull_eff.Text = "0.0,0.2,0.4,0.7,1.0,1.5,2.0,2.5,3.0,4.0,5.0"
         '
@@ -747,7 +774,7 @@ Partial Class frmEcotroph
         Me.formd.Location = New System.Drawing.Point(262, 18)
         Me.formd.Mask = "0.##"
         Me.formd.Name = "formd"
-        Me.formd.Size = New System.Drawing.Size(178, 20)
+        Me.formd.Size = New System.Drawing.Size(145, 20)
         Me.formd.TabIndex = 8
         Me.formd.Text = "05"
         Me.formd.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
@@ -792,33 +819,40 @@ Partial Class frmEcotroph
         '
         'result_pdf_et_diag
         '
-        Me.result_pdf_et_diag.Location = New System.Drawing.Point(25, 145)
+        Me.result_pdf_et_diag.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.result_pdf_et_diag.Location = New System.Drawing.Point(-4, -22)
         Me.result_pdf_et_diag.MinimumSize = New System.Drawing.Size(20, 20)
         Me.result_pdf_et_diag.Name = "result_pdf_et_diag"
-        Me.result_pdf_et_diag.Size = New System.Drawing.Size(788, 480)
+        Me.result_pdf_et_diag.Size = New System.Drawing.Size(877, 433)
         Me.result_pdf_et_diag.TabIndex = 8
         Me.result_pdf_et_diag.Url = New System.Uri("about:blank", System.UriKind.Absolute)
         Me.result_pdf_et_diag.Visible = False
         '
         'tabgrille_flow_mf
         '
+        Me.tabgrille_flow_mf.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tabgrille_flow_mf.Controls.Add(Me.TabPage10)
         Me.tabgrille_flow_mf.Controls.Add(Me.TabPage11)
         Me.tabgrille_flow_mf.Controls.Add(Me.TabPage12)
         Me.tabgrille_flow_mf.Controls.Add(Me.TabPage13)
-        Me.tabgrille_flow_mf.Location = New System.Drawing.Point(25, 145)
+        Me.tabgrille_flow_mf.Location = New System.Drawing.Point(8, 135)
         Me.tabgrille_flow_mf.Name = "tabgrille_flow_mf"
         Me.tabgrille_flow_mf.SelectedIndex = 0
-        Me.tabgrille_flow_mf.Size = New System.Drawing.Size(788, 392)
+        Me.tabgrille_flow_mf.Size = New System.Drawing.Size(942, 354)
         Me.tabgrille_flow_mf.TabIndex = 10
         '
         'TabPage10
         '
         Me.TabPage10.Controls.Add(Me.grille_ET_main_diagnose)
+        Me.TabPage10.Controls.Add(Me.result_pdf_et_diag)
         Me.TabPage10.Location = New System.Drawing.Point(4, 22)
         Me.TabPage10.Name = "TabPage10"
         Me.TabPage10.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage10.Size = New System.Drawing.Size(780, 366)
+        Me.TabPage10.Size = New System.Drawing.Size(869, 407)
         Me.TabPage10.TabIndex = 0
         Me.TabPage10.Text = "ET_Main_diagnose"
         Me.TabPage10.UseVisualStyleBackColor = True
@@ -826,9 +860,10 @@ Partial Class frmEcotroph
         'grille_ET_main_diagnose
         '
         Me.grille_ET_main_diagnose.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_ET_main_diagnose.Location = New System.Drawing.Point(6, 6)
+        Me.grille_ET_main_diagnose.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_ET_main_diagnose.Location = New System.Drawing.Point(3, 3)
         Me.grille_ET_main_diagnose.Name = "grille_ET_main_diagnose"
-        Me.grille_ET_main_diagnose.Size = New System.Drawing.Size(778, 388)
+        Me.grille_ET_main_diagnose.Size = New System.Drawing.Size(863, 401)
         Me.grille_ET_main_diagnose.TabIndex = 0
         '
         'TabPage11
@@ -837,7 +872,7 @@ Partial Class frmEcotroph
         Me.TabPage11.Location = New System.Drawing.Point(4, 22)
         Me.TabPage11.Name = "TabPage11"
         Me.TabPage11.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage11.Size = New System.Drawing.Size(780, 366)
+        Me.TabPage11.Size = New System.Drawing.Size(869, 407)
         Me.TabPage11.TabIndex = 1
         Me.TabPage11.Text = "BIOM_MF"
         Me.TabPage11.UseVisualStyleBackColor = True
@@ -845,9 +880,10 @@ Partial Class frmEcotroph
         'grille_biom_mf
         '
         Me.grille_biom_mf.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_biom_mf.Location = New System.Drawing.Point(6, 6)
+        Me.grille_biom_mf.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_biom_mf.Location = New System.Drawing.Point(3, 3)
         Me.grille_biom_mf.Name = "grille_biom_mf"
-        Me.grille_biom_mf.Size = New System.Drawing.Size(775, 388)
+        Me.grille_biom_mf.Size = New System.Drawing.Size(863, 401)
         Me.grille_biom_mf.TabIndex = 0
         '
         'TabPage12
@@ -856,7 +892,7 @@ Partial Class frmEcotroph
         Me.TabPage12.Location = New System.Drawing.Point(4, 22)
         Me.TabPage12.Name = "TabPage12"
         Me.TabPage12.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage12.Size = New System.Drawing.Size(780, 366)
+        Me.TabPage12.Size = New System.Drawing.Size(934, 328)
         Me.TabPage12.TabIndex = 2
         Me.TabPage12.Text = "Catches"
         Me.TabPage12.UseVisualStyleBackColor = True
@@ -864,9 +900,10 @@ Partial Class frmEcotroph
         'grille_catches
         '
         Me.grille_catches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_catches.Location = New System.Drawing.Point(7, 7)
+        Me.grille_catches.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_catches.Location = New System.Drawing.Point(3, 3)
         Me.grille_catches.Name = "grille_catches"
-        Me.grille_catches.Size = New System.Drawing.Size(777, 387)
+        Me.grille_catches.Size = New System.Drawing.Size(928, 322)
         Me.grille_catches.TabIndex = 0
         '
         'TabPage13
@@ -875,7 +912,7 @@ Partial Class frmEcotroph
         Me.TabPage13.Location = New System.Drawing.Point(4, 22)
         Me.TabPage13.Name = "TabPage13"
         Me.TabPage13.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage13.Size = New System.Drawing.Size(780, 366)
+        Me.TabPage13.Size = New System.Drawing.Size(869, 407)
         Me.TabPage13.TabIndex = 3
         Me.TabPage13.Text = "Flow_MF"
         Me.TabPage13.UseVisualStyleBackColor = True
@@ -883,15 +920,17 @@ Partial Class frmEcotroph
         'grille_flow_mf
         '
         Me.grille_flow_mf.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grille_flow_mf.Location = New System.Drawing.Point(6, 6)
+        Me.grille_flow_mf.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_flow_mf.Location = New System.Drawing.Point(3, 3)
         Me.grille_flow_mf.Name = "grille_flow_mf"
-        Me.grille_flow_mf.Size = New System.Drawing.Size(778, 388)
+        Me.grille_flow_mf.Size = New System.Drawing.Size(863, 401)
         Me.grille_flow_mf.TabIndex = 0
         '
         'getgraph_diag
         '
+        Me.getgraph_diag.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.getgraph_diag.AutoSize = True
-        Me.getgraph_diag.Location = New System.Drawing.Point(466, 3)
+        Me.getgraph_diag.Location = New System.Drawing.Point(850, 16)
         Me.getgraph_diag.Name = "getgraph_diag"
         Me.getgraph_diag.Size = New System.Drawing.Size(102, 17)
         Me.getgraph_diag.TabIndex = 9
@@ -901,44 +940,36 @@ Partial Class frmEcotroph
         'Button4
         '
         Me.Button4.Enabled = False
-        Me.Button4.Location = New System.Drawing.Point(3, 3)
+        Me.Button4.Location = New System.Drawing.Point(8, 9)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(407, 28)
         Me.Button4.TabIndex = 7
         Me.Button4.Text = "Launch ET diagnosis"
         Me.Button4.UseVisualStyleBackColor = True
         '
-        'TableLayoutPanel1
+        'grille_ET_main
         '
-        Me.TableLayoutPanel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TableLayoutPanel1.ColumnCount = 3
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
-        Me.TableLayoutPanel1.Controls.Add(Me.Load_from_ecopath, 0, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Button1, 1, 0)
-        Me.TableLayoutPanel1.Controls.Add(Me.Save_ETdata, 2, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(7, 13)
-        Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 1
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.TableLayoutPanel1.Size = New System.Drawing.Size(876, 31)
-        Me.TableLayoutPanel1.TabIndex = 9
+        Me.grille_ET_main.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.grille_ET_main.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.grille_ET_main.Location = New System.Drawing.Point(3, 3)
+        Me.grille_ET_main.Name = "grille_ET_main"
+        Me.grille_ET_main.Size = New System.Drawing.Size(863, 493)
+        Me.grille_ET_main.TabIndex = 0
         '
-        'autre
+        'frmEcotroph
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(901, 602)
+        Me.ClientSize = New System.Drawing.Size(869, 629)
         Me.Controls.Add(Me.inputdata)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Name = "autre"
+        Me.Name = "frmEcotroph"
         Me.Text = "EcoTroph plugin"
         CType(Me.ETgridinput, System.ComponentModel.ISupportInitialize).EndInit()
         Me.inputdata.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         CType(Me.datasmooth, System.ComponentModel.ISupportInitialize).EndInit()
@@ -952,7 +983,6 @@ Partial Class frmEcotroph
         Me.TabPage3.PerformLayout()
         Me.panel_result.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
-        CType(Me.grille_ET_main, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage5.ResumeLayout(False)
         CType(Me.grille_biomass, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage6.ResumeLayout(False)
@@ -976,7 +1006,7 @@ Partial Class frmEcotroph
         CType(Me.grille_catches, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage13.ResumeLayout(False)
         CType(Me.grille_flow_mf, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TableLayoutPanel1.ResumeLayout(False)
+        CType(Me.grille_ET_main, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1006,7 +1036,6 @@ Partial Class frmEcotroph
     Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
     Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
-    Friend WithEvents grille_ET_main As System.Windows.Forms.DataGridView
     Friend WithEvents grille_biomass As System.Windows.Forms.DataGridView
     Friend WithEvents grille_biomass_acc As System.Windows.Forms.DataGridView
     Friend WithEvents TabPage7 As System.Windows.Forms.TabPage
@@ -1056,4 +1085,5 @@ Partial Class frmEcotroph
     Friend WithEvents Reset_smooth As System.Windows.Forms.Button
     Friend WithEvents reset_param_diag As System.Windows.Forms.Button
     Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents grille_ET_main As System.Windows.Forms.DataGridView
 End Class
