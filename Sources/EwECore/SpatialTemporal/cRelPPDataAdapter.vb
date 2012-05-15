@@ -18,6 +18,7 @@ Namespace SpatialData
     Public Class cRelPPDataAdapter
         Inherits cSpatialScalarDataAdapter
 
+        Private m_sPreservedScale As Single = cCore.NULL_VALUE
         Private m_spaceData As cEcospaceDataStructures
 
 #Region " Constructor "
@@ -47,10 +48,11 @@ Namespace SpatialData
         ''' <param name="layer"></param>
         ''' <param name="iTime"></param>
         ''' <returns></returns>
-        ''' <remarks></remarks>
         Protected Overrides Function PreAdapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer, ByVal iTime As Integer) As Boolean
             Try
                 MyBase.PreAdapt(bm, layer, iTime)
+
+                Me.m_sPreservedScale = Me.m_spaceData.PPScale
                 Me.m_spaceData.PPScale = 1.0F
 
             Catch ex As Exception
@@ -59,6 +61,35 @@ Namespace SpatialData
             End Try
             Return True
         End Function
+
+        ''' <inheritdocs cref="cSpatialDataAdapter.EndRun"/>
+        ''' <summary>
+        ''' Overridden to initialize PP scale factor.
+        ''' </summary>
+        Public Overrides Sub InitRun()
+            MyBase.InitRun()
+
+            ' Reset preserved PP scale
+            Me.m_sPreservedScale = cCore.NULL_VALUE
+
+        End Sub
+
+        ''' <inheritdocs cref="cSpatialDataAdapter.EndRun"/>
+        ''' <summary>
+        ''' Overridden to restore PP scale factor.
+        ''' </summary>
+        Public Overrides Sub EndRun()
+            MyBase.EndRun()
+
+            ' Has preserved PP scale?
+            If (Me.m_sPreservedScale <> cCore.NULL_VALUE) Then
+                ' #Yes: Restore preserved PP scale
+                Me.m_spaceData.PPScale = Me.m_sPreservedScale
+                ' Not really necessary, but ok.
+                Me.m_sPreservedScale = cCore.NULL_VALUE
+            End If
+
+        End Sub
 
 #End Region
 

@@ -76,6 +76,9 @@ Namespace SpatialData
 
 #Region " Basic bits "
 
+        ''' <summary>
+        ''' Redimension when an Ecospace scenario has loaded. 
+        ''' </summary>
         Friend Overridable Sub Initialize()
             Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
             ReDim Me.m_converters(iNumItems)
@@ -141,7 +144,17 @@ Namespace SpatialData
             End Get
         End Property
 
-        Protected Overridable Sub InitRun()
+        ''' <summary>
+        ''' Perform pre-run initializations. 
+        ''' </summary>
+        Public Overridable Sub InitRun()
+            ' NOP
+        End Sub
+
+        ''' <summary>
+        ''' Perform post-run cleanup. 
+        ''' </summary>
+        Public Overridable Sub EndRun()
             ' NOP
         End Sub
 
@@ -162,6 +175,7 @@ Namespace SpatialData
             Dim dt As Date
             Dim bSuccess As Boolean = False
 
+            ' Perhaps this should be called by the core?
             If (iTime = 1) Then
                 Me.InitRun()
             End If
