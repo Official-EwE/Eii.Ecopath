@@ -13020,7 +13020,10 @@ Public Class cCore
                 Me.m_StateMonitor.UpdateDataState(DataSource)
             End If
 
-            Me.m_StateMonitor.UpdateExecutionState(obj.CoreComponent)
+            ' Do not interrupt executions
+            If (Not Me.m_StateMonitor.IsComputing) Then
+                Me.m_StateMonitor.UpdateExecutionState(obj.CoreComponent)
+            End If
 
             Try
                 If Not Object.ReferenceEquals(Me.PluginManager, Nothing) Then

@@ -231,8 +231,8 @@ Namespace SpatialData
                                     dataExternal.Dispose()
                                     dataExternal = Nothing
 
-                                    ' Notify core
-                                    Me.m_core.onChanged(layer)
+                                    ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
+                                    Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
 
                                 End If
 
