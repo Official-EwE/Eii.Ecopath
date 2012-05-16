@@ -41,6 +41,7 @@ Public Class cEcospaceCSVResultsWriter
             Me.CreateOutputDir()
             Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
         Catch ex As Exception
+            ' ToDo: globalize this
             Me.m_core.Messages.SendMessage(New cMessage("Failed to save Ecospace maps " & ex.Message, _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try

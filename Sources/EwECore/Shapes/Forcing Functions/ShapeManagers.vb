@@ -872,6 +872,7 @@ Public Class cEggProductionManager
     End Property
 
     Friend Sub validationFailedMessage()
+        ' ToDo: globalize this
         m_core.Messages.SendMessage(New cMessage("Validataion Failed. Egg Production no shape with this index.", eMessageType.DataValidation, _
                                     eCoreComponentType.ShapesManager, eMessageImportance.Information, eDataTypes.EggProd))
     End Sub

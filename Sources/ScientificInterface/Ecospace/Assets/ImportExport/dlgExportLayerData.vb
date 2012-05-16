@@ -358,6 +358,7 @@ Namespace Ecospace.Basemap
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             ' Log this
+            ' ToDo: globalize this
             Dim msg As New cMessage(String.Format("Layer data exported to '{0}'", strFile), eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
 

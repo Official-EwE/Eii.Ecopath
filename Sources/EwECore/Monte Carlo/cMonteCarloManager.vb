@@ -171,12 +171,14 @@ Public Class cMonteCarloManager
                     Else 'If m_core.m_TSData.NdatType > 0 Then
                         'm_core.m_TSData.NdatType = 0
                         'there must be at least one reference data set loaded
+                        ' ToDo: globalize this
                         m_core.Messages.SendMessage(New cMessage("Monte Carlo: No time series reference data has been loaded. Please load time series reference data and try again.", eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
                     End If
 
                 Else 'If m_core.StateMonitor.HasEcosimLoaded Then
 
                     'no ecosim scenario loaded
+                    ' ToDo: globalize this
                     m_core.Messages.SendMessage(New cMessage("Monte Carlo: Please load an Ecosim scenario before running Monte Carlo.", eMessageType.StateNotMet, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo))
 
                 End If
@@ -184,6 +186,7 @@ Public Class cMonteCarloManager
             Catch ex As Exception
                 cLog.Write(ex)
                 Me.ReleaseWait()
+                ' ToDo: globalize this
                 m_core.Messages.SendMessage(New cMessage("Error running the Monte Carlo trials.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Critical, eDataTypes.MonteCarlo))
             End Try
 
@@ -354,6 +357,7 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             Debug.Assert(False)
             cLog.Write(ex)
+            ' ToDo: globalize this
             m_core.Messages.SendMessage(New cMessage("Monte Carlo Error: Failed to apply best fits.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Critical))
         End Try
 

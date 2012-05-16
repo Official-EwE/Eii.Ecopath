@@ -449,7 +449,8 @@ Public Class cEcospaceBasemap
                 Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerImportance)(index - 1), cEcospaceLayerImportance)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".New(..) Unable to access importance layer of index:" & index & ". Error: " & ex.Message)
-                m_core.Messages.AddMessage(New cMessage("Unable to access importance layer of index", eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                ' ToDo: globalize this
+                m_core.Messages.AddMessage(New cMessage("Unable to access importance layer with index" & index, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
                 Return Nothing
             End Try
         End Get
@@ -467,7 +468,8 @@ Public Class cEcospaceBasemap
                 Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerDriver)(index - 1), cEcospaceLayerDriver)
             Catch ex As Exception
                 cLog.Write(Me.ToString & ".New(..) Unable to access driver layer of index:" & index & ". Error: " & ex.Message)
-                m_core.Messages.AddMessage(New cMessage("Unable to access driver layer of index", eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
+                ' ToDo: globalize this
+                m_core.Messages.AddMessage(New cMessage("Unable to access driver layer of index " & index, eMessageType.DataValidation, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.EcospaceBasemap))
                 Return Nothing
             End Try
         End Get

@@ -700,6 +700,7 @@ Namespace Ecosim
             Try
                 dlg.ShowDialog()
             Catch ex As Exception
+                ' ToDo: globalize this
                 msg = New cMessage("Unable to preview: " & ex.ToString, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
                 Me.Core.Messages.SendMessage(msg)
             End Try

@@ -200,6 +200,7 @@ Public Class cNetworkManager
             Catch ex As Exception
                 cLog.Write(ex)
                 Dim msg As String = Me.unravelExceptionMessage(ex)
+                ' ToDo: globalize this
                 m_publisher.SendMessage(New cMessage(Me.ToString & ".RunMainNetwork() Error " & msg, eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
                 'Debug.Assert(False, msg)
                 bSucces = False
@@ -248,6 +249,7 @@ Public Class cNetworkManager
 
         If m_econetwork Is Nothing Then
             'message of some sort
+            ' ToDo: globalize this
             Core.Messages.SendMessage(New cMessage("Network Analysis not initialized properly.", eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
             Return False
         End If
@@ -260,6 +262,7 @@ Public Class cNetworkManager
                     'implicitly run the network analysis if it has not been run
                     If Not Me.RunMainNetwork() Then
                         'ooopssss........
+                        ' ToDo: globalize this
                         Core.Messages.SendMessage(New cMessage("Required Primary Production could not be run because of a problem in Network Analysis.", _
                                                                  eMessageType.ErrorEncountered, eCoreComponentType.Plugin, eMessageImportance.Critical))
                         Return False
@@ -278,12 +281,14 @@ Public Class cNetworkManager
             Catch ex As Exception
                 cLog.Write(ex)
                 Dim msg As String = Me.unravelExceptionMessage(ex)
+                ' ToDo: globalize this
                 Core.Messages.SendMessage(New cMessage(Me.ToString & ".RunReguiredPrimaryProd() Error " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
 
                 bSuccess = False
             End Try
         Else
             'message of some sort
+            ' ToDo: globalize this
             Core.Messages.SendMessage(New cMessage("Required Primary Production can not be run.", eMessageType.StateNotMet, m_messagesource, eMessageImportance.Warning))
             bSuccess = False
         End If

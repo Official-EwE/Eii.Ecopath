@@ -592,6 +592,7 @@ Namespace FishingPolicy
             Try
 
                 If Me.IsRunning Then
+                    ' ToDo: globalize this
                     m_core.Messages.SendMessage(New cMessage("A Fishing Policy Search is already running. Only one search can be run at a time.", eMessageType.ErrorEncountered, _
                                                 eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.MonteCarlo))
                     Return False
@@ -613,6 +614,7 @@ Namespace FishingPolicy
                 'unblock the thread before doing anything incase something has called Wait()
 
                 search.SearchMode = eSearchModes.NotInSearch
+                ' ToDo: globalize this
                 m_core.Messages.SendMessage(New cMessage("Error running the Fishing Policy Search.", eMessageType.ErrorEncountered, _
                                             eCoreComponentType.FishingPolicySearch, eMessageImportance.Critical, eDataTypes.FishingPolicyManager))
 

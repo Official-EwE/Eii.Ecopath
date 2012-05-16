@@ -585,6 +585,7 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
+            ' ToDo: globalize this
             m_publisher.AddMessage(New cMessage("Ecospace Error: " & ex.Message, eMessageType.ErrorEncountered, _
                                         eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
             bsuccess = False
@@ -6272,6 +6273,7 @@ exitline:
             End If
 
         Catch ex As Exception
+            ' ToDo: globalize this
             Me.m_publisher.SendMessage(New cMessage("Ecospace failed to update map.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
 

@@ -4291,7 +4291,7 @@ Namespace Ecosim
                 For j = 1 To nGroups
                     If m_Data.Consumption(i, j) > 0 Then
                         If Tcon(i, j) < 1 Then
-
+                            ' ToDo: globalize this
                             Me.m_publisher.AddMessage(New cMessage("total predation on prey type " + m_EPData.GroupName(i) + "by predator " + m_EPData.GroupName(j) + " not accounted for, stopping", _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
 
@@ -4316,8 +4316,7 @@ Namespace Ecosim
             Next
 
             If m_Data.inlinks < m_Data.Narena Then
-                'jb throw an Error!!!!
-                '  MsgBox("feeding proportions by arenas not set properly")
+                ' ToDo: globalize this
                 Me.m_publisher.AddMessage(New cMessage("feeding proportions by arenas not set properly", _
                                             eMessageType.ErrorEncountered, eCoreComponentType.EcoSim, eMessageImportance.Warning))
                 Stop
@@ -4341,9 +4340,8 @@ Namespace Ecosim
                     m_Data.Qlink(Il) = m_Data.Consumption(i, K) * m_Data.PeatArena(ii, K)
                 End If
             Next
-
-
         End Sub
+
         Sub SetArenaVulandSearchRates()
             'this routine sets vulrates by arena and feeding a's by trophic link after arena and trophic link lists have been set
             'by routine DefineArenaVulandSearcRates
