@@ -161,8 +161,9 @@ Public Class cCore
     Friend m_FitToTimeSeriesData As cF2TSDataStructures = Nothing
     Friend m_tracerData As cContaminantTracerDataStructures = Nothing
 
-    Private m_spatialdataconnectionManager As SpatialData.cSpatialDataConnectionManager = Nothing
+    Private m_spatialdataconnectionManager As cSpatialDataConnectionManager = Nothing
     Friend m_SpatialData As cSpatialDataStructures = Nothing
+    Private m_spatialOperationLog As cSpatialOperationLog = Nothing
 
     ''' <summary>
     ''' List of all multi threaded models/processes <see cref="IThreadedProcess">IThreadedProcess</see> that the core can run.
@@ -7952,6 +7953,12 @@ Public Class cCore
         End Get
     End Property
 
+    Public ReadOnly Property SpatialOperationLog As cSpatialOperationLog
+        Get
+            Return Me.m_spatialOperationLog
+        End Get
+    End Property
+
     Private Function InitEcoSpace() As Boolean
 
         m_Ecospace = New cEcoSpace()
@@ -7970,6 +7977,7 @@ Public Class cCore
 
         m_spatialdataconnectionManager = New SpatialData.cSpatialDataConnectionManager()
         m_spatialdataconnectionManager.Init(Me, Me.m_SpatialData)
+        m_spatialOperationLog = New cSpatialOperationLog(Me)
 
         'counters needed 
         'this could change to get the counter from the above data structures

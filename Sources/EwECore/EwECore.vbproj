@@ -258,6 +258,7 @@
     <Compile Include="SpatialTemporal\cSpatialDataConnectionManager.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataSetManager.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataStructures.vb" />
+    <Compile Include="SpatialTemporal\cSpatialOperationLog.vb" />
     <Compile Include="SpatialTemporal\cSpatialScalarDataAdapter.vb" />
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Taxon\cTaxonSearchData.vb" />

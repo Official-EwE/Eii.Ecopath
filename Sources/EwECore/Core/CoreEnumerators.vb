@@ -236,6 +236,8 @@ Public Enum eMessageType
     ''' when it refreshed in response to edits. This prevents that by only updating when the message is of this type.
     ''' </remarks>
     MSEBatch_IterationDataUpdated
+    ''' <summary>A GIS operation was performed.</summary>
+    GISOperation
 
 End Enum
 

@@ -39,21 +39,21 @@ Namespace SpatialData
         End Sub
 
         ''' <summary>
-        ''' Called before data from an external source is copied into <see cref="cEcospaceDataStructures.RelPP"></see>
-        ''' EcoSpace uses an internal scaler to scale PP data to Ecopath levels. <see cref="cEcospaceDataStructures.PPScale"></see>
-        ''' This is the mean relative PP across all water cells computed from the currently loaded  <see cref="cEcospaceDataStructures.RelPP"></see> array.
-        ''' <see cref="cSpatialScalarDataAdapter.SetCell"></see> will scale external data to a the first timestep or a user defined value.
+        ''' Called before data from an external source is copied into <see cref="cEcospaceDataStructures.RelPP"/>
+        ''' EcoSpace uses an internal scaler to scale PP data to Ecopath levels. <see cref="cEcospaceDataStructures.PPScale"/>
+        ''' This is the mean relative PP across all water cells computed from the currently loaded  <see cref="cEcospaceDataStructures.RelPP"/> array.
+        ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
         ''' </summary>
         ''' <param name="bm"></param>
         ''' <param name="layer"></param>
         ''' <param name="iTime"></param>
         ''' <returns></returns>
-        Protected Overrides Function PreAdapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer, ByVal iTime As Integer) As Boolean
+        Protected Overrides Function PreAdapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer, ByVal iTime As Integer, dt As Date) As Boolean
             Try
-                MyBase.PreAdapt(bm, layer, iTime)
-
-                Me.m_sPreservedScale = Me.m_spaceData.PPScale
-                Me.m_spaceData.PPScale = 1.0F
+                If MyBase.PreAdapt(bm, layer, iTime, dt) Then
+                    Me.m_sPreservedScale = Me.m_spaceData.PPScale
+                    Me.m_spaceData.PPScale = 1.0F
+                End If
 
             Catch ex As Exception
                 System.Console.WriteLine("Exception: " & Me.ToString & ".PreAdapt() " & ex.Message)

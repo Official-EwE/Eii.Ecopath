@@ -203,6 +203,7 @@ Namespace SpatialData
 #If DEBUG Then
                                 Dim sw As Stopwatch = Stopwatch.StartNew()
 #End If
+                                Me.m_core.SpatialOperationLog.BeginProcessLayer(iTime, dt, layer.Name, Me.VarName, Me.Index)
 
                                 Try
                                     ' The raster returned here MUST have the extent and projection compatible with Ecospace
@@ -222,7 +223,7 @@ Namespace SpatialData
                                     layer.AllowValidation = False
 
                                     ' Integrate data
-                                    Me.Adapt(bm, layer, iTime, dataExternal)
+                                    Me.Adapt(bm, layer, iTime, dt, dataExternal)
 
                                     ' Restore layer validation
                                     layer.AllowValidation = bAllow
@@ -238,6 +239,8 @@ Namespace SpatialData
 
                                 ' Unload dataset
                                 ds.Unload()
+                                Me.m_core.SpatialOperationLog.EndProcessLayer()
+
 #If DEBUG Then
                                 sw.Stop()
                                 Console.WriteLine("SpatialDataAdapter {0}::{1} {2} ms", Me.Name, layer.Name, sw.ElapsedMilliseconds)
@@ -292,9 +295,10 @@ Namespace SpatialData
         Protected Friend Function Adapt(ByVal bm As cEcospaceBasemap, _
                                         ByVal layer As cEcospaceLayer, _
                                         ByVal iTime As Integer, _
+                                        ByVal dt As Date, _
                                         ByVal dataExternal As ISpatialRaster) As Boolean
 
-            If Not Me.PreAdapt(bm, layer, iTime) Then Return False
+            If Not Me.PreAdapt(bm, layer, iTime, dt) Then Return False
 
             ' To ensure proper usage by inherited classes
             Debug.Assert(bm IsNot Nothing)
@@ -359,8 +363,11 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Protected Overridable Function PreAdapt(ByVal bm As cEcospaceBasemap, _
                                                 ByVal layer As cEcospaceLayer, _
-                                                ByVal iTime As Integer) As Boolean
+                                                ByVal iTime As Integer, _
+                                                ByVal dt As Date) As Boolean
+
             Return True
+
         End Function
 
         ''' -------------------------------------------------------------------
@@ -377,7 +384,9 @@ Namespace SpatialData
                                                  ByVal layer As cEcospaceLayer, _
                                                  ByVal iTime As Integer, _
                                                  ByVal bSuccess As Boolean) As Boolean
+
             Return True
+
         End Function
 
         Protected Overridable Function SetCell(ByVal layer As cEcospaceLayer, _

@@ -59,7 +59,7 @@ Namespace SpatialData
 
             Me.m_core = core
             Me.m_data = data
-            Me.m_datasetManager = New cSpatialDataSetManager()
+            Me.m_datasetManager = New cSpatialDataSetManager(core)
 
             Me.CreateAdapters()
 
@@ -102,18 +102,22 @@ Namespace SpatialData
                         ' Try to create converter
                         t = cTypeUtils.StringToType(cfg.Converter)
                         If (t IsNot Nothing) Then
-                            cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
+                            Try
+                                cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
+
+                                If TypeOf (adt) Is cSpatialScalarDataAdapter Then
+                                    With DirectCast(adt, cSpatialScalarDataAdapter)
+                                        .DataScale(i) = cfg.Scale
+                                        .DataScaleType(i) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapter.eScaleType)
+                                    End With
+                                End If
+
+                                ' Properly initialuize
+                                If (TypeOf cv Is IPlugin) Then DirectCast(cv, IPlugin).Initialize(Me.m_core)
+                            Catch ex As Exception
+
+                            End Try
                         End If
-
-                        ' Worry about converter configuration later
-
-                        If TypeOf (adt) Is cSpatialScalarDataAdapter Then
-                            With DirectCast(adt, cSpatialScalarDataAdapter)
-                                .DataScale(i) = cfg.Scale
-                                .DataScaleType(i) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapter.eScaleType)
-                            End With
-                        End If
-
                     End If
 
                     adt.Dataset(i) = ds

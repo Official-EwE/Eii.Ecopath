@@ -24,12 +24,14 @@ Imports System.Xml
 Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports EwEPlugin
 
 #End Region ' Imports
 
 Namespace SpatialData
 
-    ' ToDo: save incrementally to make sure that configuration info that did not get resolved into classes is not lost on save
+    ' ToDo_JS: save incrementally to make sure that configuration info that did not get resolved into classes is not lost on save
+    ' ToDo_JS: keep spatial log file
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -46,16 +48,18 @@ Namespace SpatialData
 
         Private m_lDatasets As List(Of ISpatialDataSet) = Nothing
         Private m_fswSpy As FileSystemWatcher = Nothing
+        Private m_core As cCore = Nothing
         Private m_bReadOnly As Boolean = False
 
 #End Region ' Private vars
 
 #Region " Construction "
 
-        Public Sub New()
+        Public Sub New(core As cCore)
 
             ' Create list of datasets
             Me.m_lDatasets = New List(Of ISpatialDataSet)
+            Me.m_core = core
 
             ' Create folder watcher
             Me.m_fswSpy = New FileSystemWatcher()
@@ -129,6 +133,9 @@ Namespace SpatialData
                                 xa = xn.Attributes("GUID")
                                 ' Assign GUID
                                 ds.GUID = Guid.Parse(xa.InnerText)
+
+                                If TypeOf ds Is IPlugin Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+
                             Catch ex As Exception
                                 ds = Nothing
                             End Try
