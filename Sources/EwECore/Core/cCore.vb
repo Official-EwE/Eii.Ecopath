@@ -8173,18 +8173,15 @@ Public Class cCore
 
                 If checkHabitats() Then
 
+                    ' Write detailed info
+                    cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s)", cLog.eVerboseLevel.Detailed)
+
                     'Setup delegates for Ecospace to call 
-
-                    'Interface TimeStep delegate pass in as an argument
                     Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler
-
-                    'Core TimeStep delegate
                     m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
-
-                    'Core Run Completed delegate
                     Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
 
-                    'Tell the StateMonitor an run has started
+                    'Tell the StateMonitor a run has started
                     Me.m_StateMonitor.SetEcospaceRun()
                     Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 

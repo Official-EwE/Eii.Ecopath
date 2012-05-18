@@ -1151,6 +1151,7 @@ Public Class cEcoSpace
             Dim SpaceRunTime As Double = stpwchSolver.Elapsed.TotalMinutes
             Dim GridRunTime As Double = stpwchGrid.Elapsed.TotalMinutes
             Dim EffortRunTime As Double = stpwchEffort.Elapsed.TotalMinutes
+
             System.Console.WriteLine("FindSpatialEquilibrium() Number of Time Steps = " & itt.ToString)
             System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & totRunTime.ToString)
             System.Console.WriteLine("FindSpatialEquilibrium() Average per Timestep(min.) = " & (totRunTime / itt).ToString)
@@ -1159,6 +1160,7 @@ Public Class cEcoSpace
             System.Console.WriteLine("FindSpatialEquilibrium() Percent in Effort distribution = " & (EffortRunTime / totRunTime * 100).ToString)
 
         Catch ex As Exception
+            cLog.Write(ex, "cEcospace::FindSpatialEquilibrium")
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("FindSpatialEquilibrium() Error: " & ex.Message, ex)
         End Try
@@ -1180,10 +1182,9 @@ Public Class cEcoSpace
                 For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
                     If (src IsNot Nothing) Then
                         Try
-                            ' ToDo: add error feedback
                             src.Populate(itt)
                         Catch ex As Exception
-                            System.Console.WriteLine("Ecospace.BeginTimeStep() Exception populating external dataset.")
+                            cLog.Write(ex, "cEcospace::BeginTimeStep.Populate " & src.Name & "(" & src.Index & ")")
                         End Try
                     End If
                 Next
@@ -1209,9 +1210,10 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             Debug.Assert(False, ex.StackTrace)
-            cLog.Write(ex)
+            cLog.Write(ex, "cEcospace::BeginTimeStep")
             Throw New ApplicationException("EcoSpace.BeginTimeStep() error: " & ex.Message, ex)
         End Try
+
     End Sub
 
     Private Sub EcoseedBeginTimeStep(ByVal imonth As Integer, ByRef iYear As Integer, ByRef BiomassCellAvg() As Single)
