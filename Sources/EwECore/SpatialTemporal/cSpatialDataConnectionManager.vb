@@ -46,7 +46,7 @@ Namespace SpatialData
         Private m_data As cSpatialDataStructures = Nothing
 
         ''' <summary>Pre-determined number of configured data connections</summary>
-        Private m_iNumConfigured As Integer = 0
+        Private m_iNumConnected As Integer = cCore.NULL_VALUE
 
 #End Region ' Variables
 
@@ -125,7 +125,8 @@ Namespace SpatialData
                 Next
             Next
 
-            Me.UpdateNumConfigCount()
+            ' Invalidate connection count
+            Me.m_iNumConnected = cCore.NULL_VALUE
 
         End Sub
 
@@ -167,14 +168,24 @@ Namespace SpatialData
                 Next
             Next
 
-            Me.UpdateNumConfigCount()
+            ' Invalidate connection count
+            Me.m_iNumConnected = cCore.NULL_VALUE
+
             Me.m_core.onChanged(Me)
 
         End Sub
 
-        Public ReadOnly Property NumConfigured As Integer
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of <see cref="cSpatialDataAdapter.IsConnected">live data connections</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NumConnectedAdapters As Integer
             Get
-                Return Me.m_iNumConfigured
+                If (Me.m_iNumConnected = cCore.NULL_VALUE) Then
+                    Me.UpdateConnectionCount()
+                End If
+                Return Me.m_iNumConnected
             End Get
         End Property
 
@@ -404,12 +415,12 @@ Namespace SpatialData
         ''' Update the count of configured adapters.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub UpdateNumConfigCount()
+        Private Sub UpdateConnectionCount()
 
-            Me.m_iNumConfigured = 0
+            Me.m_iNumConnected = 0
             For Each adt As cSpatialDataAdapter In Me.Adapters
                 For i As Integer = 0 To adt.Length - 1
-                    If adt.IsConnected(i) Then m_iNumConfigured += 1
+                    If adt.IsConnected(i) Then m_iNumConnected += 1
                 Next
             Next
         End Sub

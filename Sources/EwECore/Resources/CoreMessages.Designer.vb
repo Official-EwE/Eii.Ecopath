@@ -2013,6 +2013,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to An internal error occurred. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_EXCEPTION() As String
+            Get
+                Return ResourceManager.GetString("STATUS_EXCEPTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Plug-in module &apos;{0}&apos; loaded.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_PLUGIN_LOADED() As String
@@ -2036,6 +2045,24 @@ Namespace My.Resources
         Friend Shared ReadOnly Property STATUS_SAVING_CHANGES() As String
             Get
                 Return ResourceManager.GetString("STATUS_SAVING_CHANGES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Inserted {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_INSERTED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_INSERTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Loading external data for &apos;{0}&apos; at time {1} ({2:yyyy/MM/dd}).
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_LOADING", resourceCulture)
             End Get
         End Property
         

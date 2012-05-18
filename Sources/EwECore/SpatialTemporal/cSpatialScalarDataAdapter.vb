@@ -27,19 +27,22 @@ Imports EwEUtils.Utilities
 Namespace SpatialData
 
     ''' <summary>
-    ''' Base spatial data adapter to insert external spatial/temporal map data into
-    ''' the Ecospace data structures at any given moment.
+    ''' Derived spatial data adapter to insert scaled external spatial/temporal map data into
+    ''' the Ecospace data structures at any given moment. This adapter maintains a scale
+    ''' for every map layer attached to the adapter, and will translate map values
+    ''' to relative values when <see cref="cSpatialScalarDataAdapter.DataScaleType"/> is set to
+    ''' <see cref="cSpatialScalarDataAdapter.eScaleType.Relative">relative</see>.
     ''' </summary>
     Public Class cSpatialScalarDataAdapter
         Inherits cSpatialDataAdapter
 
-        Public Enum eScaleType As Byte
-            Absolute = 0
-            Relative
-        End Enum
+#Region " Private variables "
 
         Private m_scales() As Single
         Private m_scaleType() As eScaleType
+
+#End Region ' Private variables
+
 #Region " Constructor "
 
         Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
@@ -50,6 +53,25 @@ Namespace SpatialData
 
 #Region " Public access "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Supported value conversion modes for a <see cref="cSpatialScalarDataAdapter"/>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eScaleType As Byte
+            ''' <summary>Values are applied as-is: no scaling is performed.</summary>
+            Absolute = 0
+            ''' <summary>Value are scaled before being applied.</summary>
+            Relative
+        End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the <see cref="eScaleType">scale type</see> for the layer identified by <paramref name="iIndex"/>.
+        ''' If set to <see cref="eScaleType.Relative"/>, external values are <see cref="DataScale">scaled</see>.
+        ''' </summary>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>]</param>
+        ''' -------------------------------------------------------------------
         Public Property DataScaleType(iIndex As Integer) As eScaleType
             Get
                 Debug.Assert(iIndex < Me.Length, "Index out of range")
@@ -61,6 +83,14 @@ Namespace SpatialData
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the external data scale value. Scaling occurs only when the
+        ''' <see cref="DataScaleType"/> for layer <paramref name="iIndex"/> is
+        ''' set to <see cref="eScaleType.Relative"/>.
+        ''' </summary>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>]</param>
+        ''' -------------------------------------------------------------------
         Public Property DataScale(iIndex As Integer) As Single
             Get
                 Debug.Assert(iIndex < Me.Length, "Index out of range")
@@ -76,6 +106,9 @@ Namespace SpatialData
 
 #Region " Overrides "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialDataAdapter.Initialize"/>.
+        ''' -------------------------------------------------------------------
         Friend Overrides Sub Initialize()
 
             MyBase.Initialize()
@@ -92,14 +125,24 @@ Namespace SpatialData
 
         End Sub
 
-        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, ByVal iRow As Integer, ByVal iCol As Integer, ByVal ValueAtT As Single) As Boolean
+       ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
+        ''' <remarks>Overridden to scale values prior to being set in the 
+        ''' Ecospace data structures.</remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
+                                             ByVal iRow As Integer, _
+                                             ByVal iCol As Integer, _
+                                             ByVal sValueAtT As Single) As Boolean
+
             If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
-                ValueAtT *= Me.DataScale(layer.Index)
+                sValueAtT *= Me.DataScale(layer.Index)
             End If
-            Return MyBase.SetCell(layer, iRow, iCol, ValueAtT)
+            Return MyBase.SetCell(layer, iRow, iCol, sValueAtT)
+
         End Function
 
-#End Region
+#End Region ' Overrides
 
     End Class
 

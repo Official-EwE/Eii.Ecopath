@@ -27,8 +27,8 @@ Imports EwEUtils.Utilities
 Namespace SpatialData
 
     ''' <summary>
-    ''' Base spatial data adapter to insert external spatial/temporal map data into
-    ''' the Ecospace data structures at any given moment.
+    ''' Base spatial data adapter for inserting external spatial/temporal raster data into
+    ''' Ecospace map data structures.
     ''' </summary>
     Public Class cSpatialDataAdapter
         Inherits cCoreInputOutputBase
@@ -76,13 +76,21 @@ Namespace SpatialData
 
 #Region " Basic bits "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Redimension when an Ecospace scenario has loaded. 
+        ''' Initialize the adapter in response to an Ecospace scenario (re)load.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Friend Overridable Sub Initialize()
+
+            Me.m_converters = Nothing
+            Me.m_datasets = Nothing
+
             Dim iNumItems As Integer = Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
+
             ReDim Me.m_converters(iNumItems)
             ReDim Me.m_datasets(iNumItems)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -112,10 +120,12 @@ Namespace SpatialData
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set a data converter for this 
+        ''' Get/set a <see cref="ISpatialDataSet">data set</see> for layer <paramref name="iIndex"/>.
         ''' </summary>
-        ''' <param name="iIndex"></param>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>].</param>
+        ''' -------------------------------------------------------------------
         Public Property Converter(iIndex As Integer) As ISpatialDataConverter
             Get
                 Debug.Assert(iIndex < Me.Length, "Index out of range")
@@ -127,6 +137,13 @@ Namespace SpatialData
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set a <see cref="ISpatialDataConverter">data converter</see> 
+        ''' for layer <paramref name="iIndex"/>.
+        ''' </summary>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>].</param>
+        ''' -------------------------------------------------------------------
         Public Property Dataset(iIndex As Integer) As ISpatialDataSet
             Get
                 Debug.Assert(iIndex < Me.Length, "Index out of range")
@@ -138,22 +155,32 @@ Namespace SpatialData
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="eVarNameFlags">variable name</see> for the type
+        ''' of layer that this adapter operates onto.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property VarName() As eVarNameFlags
             Get
                 Return Me.m_varName
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Perform pre-run initializations. 
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overridable Sub InitRun()
             ' NOP
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Perform post-run cleanup. 
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overridable Sub EndRun()
             ' NOP
         End Sub
@@ -162,7 +189,7 @@ Namespace SpatialData
         ''' <summary>
         ''' Populate the core data that this adapter is responsible for.
         ''' </summary>
-        ''' <param name="iTime">The Ecospace time step to populate data for.</param>
+        ''' <param name="iTime">The one-based Ecospace time step to populate data for.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Protected Friend Overridable Function Populate(ByVal iTime As Integer) As Boolean
@@ -179,8 +206,6 @@ Namespace SpatialData
             If (iTime = 1) Then
                 Me.InitRun()
             End If
-
-            If Not Me.PrePopulate(iTime) Then Return False
 
             ' For each layer for this adapter
             For Each layer In bm.Layers(Me.m_varName)
@@ -200,20 +225,13 @@ Namespace SpatialData
                             ' #Yes: Can load that data?
                             If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                                 ' #Yes: extract external data
-#If DEBUG Then
-                                Dim sw As Stopwatch = Stopwatch.StartNew()
-#End If
-                                Me.m_core.SpatialOperationLog.BeginProcessLayer(iTime, dt, layer.Name, Me.VarName, Me.Index)
+                                Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
 
                                 Try
                                     ' The raster returned here MUST have the extent and projection compatible with Ecospace
                                     dataExternal = ds.GetRaster(cv, layer.Name)
                                 Catch ex As Exception
-                                    ' ToDo_JS: Globalize this message
-                                    msg = New cMessage(String.Format("Ecospace obtain external data for {0} at time step {1}. Exception {2}", Me.Name, iTime, ex.Message), _
-                                                       eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
-                                    Me.m_core.Messages.SendMessage(msg)
-                                    cLog.Write(ex, "cSpatialDataAdapter::Populate@GetRaster")
+                                    Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                                 End Try
 
                                 If (dataExternal IsNot Nothing) Then
@@ -239,51 +257,21 @@ Namespace SpatialData
 
                                 ' Unload dataset
                                 ds.Unload()
-                                Me.m_core.SpatialOperationLog.EndProcessLayer()
+                                Me.m_core.SpatialOperationLog.EndLayerLog()
 
-#If DEBUG Then
-                                sw.Stop()
-                                Console.WriteLine("SpatialDataAdapter {0}::{1} {2} ms", Me.Name, layer.Name, sw.ElapsedMilliseconds)
-#End If
                             End If
-                        Else
-                            Console.WriteLine(">> SpatialDataAdapter {0}::{1} is disabled <<", Me.Name, layer.Name)
                         End If
                     End If
                 End If
             Next
 
-            Return bSuccess And Me.PostPopulate(iTime, bSuccess)
+            Return bSuccess
 
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Pre-population insertion point for inheriting classes.
-        ''' </summary>
-        ''' <param name="iTime">Ecospace time step.</param>
-        ''' <returns>Return false to abort the population process.</returns>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Function PrePopulate(iTime As Integer) As Boolean
-            Return True
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Pre-population insertion point for inheriting classes.
-        ''' </summary>
-        ''' <param name="iTime">Ecospace time step.</param>
-        ''' <param name="bSuccess">Flag stating whether the populate process was
-        ''' successful.</param>
-        ''' <returns>True by default.</returns>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Function PostPopulate(iTime As Integer, bSuccess As Boolean) As Boolean
-            Return True
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Adapt loaded external data into a target Ecospace array.
+        ''' Load data from an external data raster into an Ecospace array.
         ''' </summary>
         ''' <param name="bm">The <see cref="cEcospaceBasemap"/> for the scenario to load data into.</param>
         ''' <param name="layer">The <see cref="cEcospaceLayer"/> that will receive the data.</param>
@@ -292,13 +280,11 @@ Namespace SpatialData
         ''' <returns>True if successful.</returns>
         ''' <remarks>Note that this method writes values straight into the underlying data structures!</remarks>
         ''' -------------------------------------------------------------------
-        Protected Friend Function Adapt(ByVal bm As cEcospaceBasemap, _
-                                        ByVal layer As cEcospaceLayer, _
-                                        ByVal iTime As Integer, _
-                                        ByVal dt As Date, _
-                                        ByVal dataExternal As ISpatialRaster) As Boolean
-
-            If Not Me.PreAdapt(bm, layer, iTime, dt) Then Return False
+        Protected Friend Overridable Function Adapt(ByVal bm As cEcospaceBasemap, _
+                                                    ByVal layer As cEcospaceLayer, _
+                                                    ByVal iTime As Integer, _
+                                                    ByVal dt As Date, _
+                                                    ByVal dataExternal As ISpatialRaster) As Boolean
 
             ' To ensure proper usage by inherited classes
             Debug.Assert(bm IsNot Nothing)
@@ -308,7 +294,6 @@ Namespace SpatialData
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim msg As cMessage = Nothing
             Dim sValue As Single = 0
-            'Dim sScale As Single = Me.LayerScale(bm, layer, dataExternal)
             Dim bSuccess As Boolean = True ' Think positive. Really
 
             Try
@@ -329,137 +314,40 @@ Namespace SpatialData
                     Next iCol
                 Next iRow
 
-#If DEBUG Then
-                Console.WriteLine("Adapted raster " & VarName & " at " & iTime & ":")
-                Console.WriteLine("   Mean: " & dataExternal.Mean)
-                Console.WriteLine("   Min.: " & dataExternal.Min)
-                Console.WriteLine("   Max.: " & dataExternal.Max)
-                Console.WriteLine("   Num.: " & dataExternal.NumValueCells)
-#End If
+                Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_INSERTED, dataExternal.ToString()), eStatusFlags.OK)
 
             Catch ex As Exception
-                ' Whoah!
-                ' ToDo_JS: Globalize this message
-                msg = New cMessage(String.Format("Ecospace insert external data for {0} at time step {1} into {2}. Exception {3}", Me.Name, iTime, layer.Name, ex.Message), _
-                                   eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
-                Me.m_core.Messages.SendMessage(msg)
+                Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 bSuccess = False
-                cLog.Write(ex, "cSpatialDataAdapter::LoadData")
             End Try
 
-            bSuccess = bSuccess And Me.PostAdapt(bm, layer, iTime, bSuccess)
-
             Return bSuccess
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="bm"></param>
-        ''' <param name="layer"></param>
-        ''' <param name="iTime"></param>
-        ''' <returns>Return false to cancel the adaptation process.</returns>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Function PreAdapt(ByVal bm As cEcospaceBasemap, _
-                                                ByVal layer As cEcospaceLayer, _
-                                                ByVal iTime As Integer, _
-                                                ByVal dt As Date) As Boolean
-
-            Return True
 
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Called after a single layer has been adapted.
+        ''' Set a cell value into the underlying layer.
         ''' </summary>
-        ''' <param name="bm">Basemap</param>
-        ''' <param name="layer">Layer</param>
-        ''' <param name="iTime">Time step</param>
-        ''' <param name="bSuccess">Adaptation success</param>
+        ''' <param name="layer">The layer to set the value into.</param>
+        ''' <param name="iRow">One-based row index for setting the value.</param>
+        ''' <param name="iCol">One-based column index for setting the value.</param>
+        ''' <param name="sCellValueAtT">The value to set in the cell, as obtained from 
+        ''' external data.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Protected Overridable Function PostAdapt(ByVal bm As cEcospaceBasemap, _
-                                                 ByVal layer As cEcospaceLayer, _
-                                                 ByVal iTime As Integer, _
-                                                 ByVal bSuccess As Boolean) As Boolean
-
-            Return True
-
-        End Function
-
         Protected Overridable Function SetCell(ByVal layer As cEcospaceLayer, _
                                                ByVal iRow As Integer, _
                                                ByVal iCol As Integer, _
-                                               ByVal sValue As Single) As Boolean
-            layer.Cell(iRow, iCol) = sValue
+                                               ByVal sCellValueAtT As Single) As Boolean
+            Try
+                layer.Cell(iRow, iCol) = sCellValueAtT
+            Catch ex As Exception
+                Return False
+            End Try
             Return True
+
         End Function
-
-        'Protected Function LayerScale(ByVal bm As cEcospaceBasemap, _
-        '                              ByVal layer As cEcospaceLayer, _
-        '                              ByVal dataExternal As ISpatialRaster) As Single
-
-        '    ' To ensure proper usage by inherited classes
-        '    Debug.Assert(bm IsNot Nothing)
-        '    Debug.Assert(layer IsNot Nothing)
-        '    Debug.Assert(dataExternal IsNot Nothing)
-
-        '    Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
-        '    If ds.IsRelativeValues Then Return 1
-
-        '    Dim sScale As Single = Me.DataScale(layer.Index)
-        '    If (sScale <> cCore.NULL_VALUE) Then Return sScale
-
-        '    Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-        '    Dim msg As cMessage = Nothing
-        '    Dim sTot As Single = 0
-        '    Dim sValue As Single = 0
-        '    Dim iNum As Integer = 0
-
-        '    Try
-        '        ' For all rows
-        '        For iRow As Integer = 1 To bm.InRow
-        '            ' For all columns
-        '            For iCol As Integer = 1 To bm.InCol
-        '                ' Is a water cell or is this layer affecting depth?
-        '                If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
-        '                    ' #Yes: get value
-        '                    sValue = CSng(dataExternal.Cell(iRow, iCol))
-        '                    ' Is a valid value?
-        '                    If (sValue <> cCore.NULL_VALUE) Then
-        '                        ' #Yes: calc
-        '                        sTot += sValue : iNum += 1
-        '                    End If
-        '                End If
-        '            Next iCol
-        '        Next iRow
-
-        '        ' Calc scale, allowing for errors
-        '        If (sTot <= 0 Or iNum <= 0) Then    '(sBase <= 0) Or
-        '            Debug.Assert(False)
-        '            sScale = 1
-        '        Else
-        '             Dim sAvg As Single = sTot / iNum
-        '            sScale = 1 / sAvg ' Scale Ecopath total to map average
-        '        End If
-        '        Me.DataScale(layer.Index) = sScale
-
-        '        Console.WriteLine(">> Scaling factor for layer {0} is {1}", Me.VarName.ToString, sScale)
-
-        '    Catch ex As Exception
-        '        ' Whoah!
-        '        ' ToDo_JS: Globalize this message
-        '        msg = New cMessage(String.Format("Ecospace cacl scale for {0} into {1}. Exception {2}", Me.Name, layer.Name, ex.Message), _
-        '                           eMessageType.DataImport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
-        '        Me.m_core.Messages.SendMessage(msg)
-        '        sScale = 0
-        '        cLog.Write(ex, "cSpatialDataAdapter::LoadData")
-        '    End Try
-
-        '    Return sScale
-        'End Function
 
 #End Region ' Basic bits
 

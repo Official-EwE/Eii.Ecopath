@@ -18,8 +18,12 @@ Namespace SpatialData
     Public Class cRelPPDataAdapter
         Inherits cSpatialScalarDataAdapter
 
+#Region " Private vars "
+
         Private m_sPreservedScale As Single = cCore.NULL_VALUE
         Private m_spaceData As cEcospaceDataStructures
+
+#End Region ' Private vars
 
 #Region " Constructor "
 
@@ -31,6 +35,9 @@ Namespace SpatialData
 
 #Region " Overrides "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
+        ''' -------------------------------------------------------------------
         Friend Overrides Sub Initialize()
 
             MyBase.Initialize()
@@ -38,34 +45,12 @@ Namespace SpatialData
 
         End Sub
 
-        ''' <summary>
-        ''' Called before data from an external source is copied into <see cref="cEcospaceDataStructures.RelPP"/>
-        ''' EcoSpace uses an internal scaler to scale PP data to Ecopath levels. <see cref="cEcospaceDataStructures.PPScale"/>
-        ''' This is the mean relative PP across all water cells computed from the currently loaded  <see cref="cEcospaceDataStructures.RelPP"/> array.
-        ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
-        ''' </summary>
-        ''' <param name="bm"></param>
-        ''' <param name="layer"></param>
-        ''' <param name="iTime"></param>
-        ''' <returns></returns>
-        Protected Overrides Function PreAdapt(ByVal bm As cEcospaceBasemap, ByVal layer As cEcospaceLayer, ByVal iTime As Integer, dt As Date) As Boolean
-            Try
-                If MyBase.PreAdapt(bm, layer, iTime, dt) Then
-                    Me.m_sPreservedScale = Me.m_spaceData.PPScale
-                    Me.m_spaceData.PPScale = 1.0F
-                End If
-
-            Catch ex As Exception
-                System.Console.WriteLine("Exception: " & Me.ToString & ".PreAdapt() " & ex.Message)
-                Return False
-            End Try
-            Return True
-        End Function
-
-        ''' <inheritdocs cref="cSpatialDataAdapter.EndRun"/>
-        ''' <summary>
-        ''' Overridden to initialize PP scale factor.
-        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialDataAdapter.InitRun"/>
+        ''' <remarks>
+        ''' Overridden to clear the PP scale factor.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Public Overrides Sub InitRun()
             MyBase.InitRun()
 
@@ -74,10 +59,44 @@ Namespace SpatialData
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialScalarDataAdapter.Adapt"/>
+        ''' <remarks>
+        ''' Called before data from an external source is copied into <see cref="cEcospaceDataStructures.RelPP"/>
+        ''' EcoSpace uses an internal scaler to scale PP data to Ecopath levels. <see cref="cEcospaceDataStructures.PPScale"/>
+        ''' This is the mean relative PP across all water cells computed from the currently loaded  <see cref="cEcospaceDataStructures.RelPP"/> array.
+        ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, _
+                                                  ByVal layer As cEcospaceLayer, _
+                                                  ByVal iTime As Integer, _
+                                                  ByVal dt As Date, _
+                                                  ByVal dataExternal As ISpatialRaster) As Boolean
+
+            Try
+                ' Set PP scale value first time data is encountered for a run
+
+                ' Is PP scale factor (still) clear?
+                If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
+                    Me.m_sPreservedScale = Me.m_spaceData.PPScale
+                    Me.m_spaceData.PPScale = 1.0F
+                End If
+            Catch ex As Exception
+                System.Console.WriteLine("Exception: " & Me.ToString & ".PreAdapt() " & ex.Message)
+                Return False
+            End Try
+
+            Return MyBase.Adapt(bm, layer, iTime, dt, dataExternal)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.EndRun"/>
         ''' <summary>
         ''' Overridden to restore PP scale factor.
         ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overrides Sub EndRun()
             MyBase.EndRun()
 
@@ -85,7 +104,6 @@ Namespace SpatialData
             If (Me.m_sPreservedScale <> cCore.NULL_VALUE) Then
                 ' #Yes: Restore preserved PP scale
                 Me.m_spaceData.PPScale = Me.m_sPreservedScale
-                ' Not really necessary, but ok.
                 Me.m_sPreservedScale = cCore.NULL_VALUE
             End If
 

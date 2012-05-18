@@ -207,9 +207,9 @@ Public Class cEwEStatusBar
                                            spaceScenario.Name, _
                                            Me.ToTooltipLabel(spaceScenario.Description))
                 Dim man As cSpatialDataConnectionManager = core.SpatialDataConnectionManager
-                If man.NumConfigured > 0 Then
+                If man.NumConnectedAdapters > 0 Then
                     strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, spaceScenario.Name, _
-                                            String.Format("{0} connections", man.NumConfigured.ToString()))
+                                            String.Format("{0} connections", man.NumConnectedAdapters.ToString()))
                 Else
                     strName = spaceScenario.Name
                 End If

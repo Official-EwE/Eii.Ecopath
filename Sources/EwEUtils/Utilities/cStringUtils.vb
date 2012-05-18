@@ -536,6 +536,37 @@ Namespace Utilities
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Convert a number to decimal degrees
+        ''' </summary>
+        ''' <param name="dValue"></param>
+        ''' <returns></returns>
+        ''' <remarks>
+        ''' http://www.freevbcode.com/ShowCode.asp?ID=8179
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FormatDegrees(ByVal dValue As Double, _
+                                             Optional strDegreeSymbol As String = "°", _
+                                             Optional strMinuteSymbol As String = "’", _
+                                             Optional strSeconds As String = """") As String
+            dValue = Math.Abs(dValue)
+
+            Dim dMinutes As Double = (dValue - Math.Truncate(dValue)) * 60
+            Dim dSeconds As Double = (dMinutes - Math.Truncate(dMinutes)) * 60
+            Dim sbResult As New StringBuilder()
+
+            sbResult.Append(Math.Truncate(dValue).ToString())
+            sbResult.Append(strDegreeSymbol)
+            sbResult.Append(Math.Truncate(dMinutes).ToString())
+            sbResult.Append(strMinuteSymbol)
+            sbResult.Append(String.Format("{0:##.0000}", dSeconds))
+            sbResult.Append(strSeconds)
+
+            Return sbResult.ToString()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Method for determining if a string represents a valid email address.
         ''' </summary>
         ''' <param name="strEmail">Email address to validate</param>
