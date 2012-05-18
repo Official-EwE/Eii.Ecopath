@@ -282,20 +282,16 @@ Public Class cLog
             Optional ByVal bAppend As Boolean = False, Optional ByVal strHeader As String = "")
 
         Dim strm As System.IO.StreamWriter = Nothing
-        Dim strTarget As String = strFilename
 
         Try
-            If Not String.IsNullOrEmpty(Path.GetDirectoryName(strTarget)) Then
-                strTarget = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory(), strFilename)
-            End If
-
+            Dim strTarget As String = FixDirectory(strFilename)
             If bAppend Then
                 strm = System.IO.File.AppendText(strTarget)
             Else
                 strm = System.IO.File.CreateText(strTarget)
             End If
 
-            If strHeader <> "" Then
+            If Not String.IsNullOrWhiteSpace(strHeader) Then
                 strm.WriteLine(strHeader)
                 strm.WriteLine()
             End If
@@ -321,7 +317,8 @@ Public Class cLog
         Dim i As Integer
 
         Try
-            strm = System.IO.File.AppendText(System.AppDomain.CurrentDomain.BaseDirectory() + strFilename)
+            Dim strTarget As String = FixDirectory(strFilename)
+            strm = System.IO.File.AppendText(strFilename)
             If strHeader <> "" Then
                 strm.Write(strHeader)
                 strm.Write(", ")
@@ -357,7 +354,8 @@ Public Class cLog
         Dim i As Integer
 
         Try
-            strm = System.IO.File.AppendText(System.AppDomain.CurrentDomain.BaseDirectory() + strFilename)
+            Dim strTarget As String = FixDirectory(strFilename)
+            strm = System.IO.File.AppendText(strFilename)
             If strHeader <> "" Then
                 strm.Write(strHeader)
                 strm.Write(", ")
@@ -395,9 +393,8 @@ Public Class cLog
         Dim i As Integer, j As Integer
 
         Try
-            Dim hardwiredPath As String = "C:\Documents and Settings\Me\My Documents\Projects\EcoPath Ecosim\"
+          Dim strTarget As String = FixDirectory(strFilename)
             strm = System.IO.File.AppendText(strFilename)
-            ' strm = System.IO.File.AppendText(System.AppDomain.CurrentDomain.BaseDirectory() + filename)
 
             If strHeader <> "" Then
                 strm.WriteLine(strHeader)
@@ -440,8 +437,8 @@ Public Class cLog
         Dim i As Integer, j As Integer, k As Integer
 
         Try
-            Dim hardwiredPath As String = "C:\Documents and Settings\Me\My Documents\Projects\EcoPath Ecosim\"
-            strm = System.IO.File.AppendText(hardwiredPath + strFilename)
+            Dim strTarget As String = FixDirectory(strFilename)
+            strm = System.IO.File.AppendText(strFilename)
 
             If strHeader <> "" Then
                 strm.WriteLine(strHeader)
@@ -469,6 +466,23 @@ Public Class cLog
 
 
     End Sub
+
+    Private Shared Function FixDirectory(strFileName As String) As String
+
+        Dim strDir As String = Path.GetDirectoryName(strFileName)
+        If String.IsNullOrWhiteSpace(strDir) Then
+            strDir = System.AppDomain.CurrentDomain.BaseDirectory()
+            strFileName = Path.Combine(strDir, strFileName)
+        End If
+
+        If Not Directory.Exists(strDir) Then
+            Directory.CreateDirectory(strDir)
+        End If
+
+        Return strFileName
+
+    End Function
+
 #End Region
 
 End Class

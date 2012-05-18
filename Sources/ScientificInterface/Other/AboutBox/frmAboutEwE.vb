@@ -48,14 +48,13 @@ Namespace Other
 
             If (Me.m_uic Is Nothing) Then Return
 
-            Dim an As AssemblyName = Assembly.GetAssembly(GetType(cCore)).GetName
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
             Dim strBit As String = IIf(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, an.Version.ToString(), strBit)
+            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, cCore.Version, strBit)
             Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page

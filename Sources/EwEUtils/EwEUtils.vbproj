@@ -161,7 +161,6 @@
     <Compile Include="Utilities\cAssemblyNameUtils.vb" />
     <Compile Include="Net\cSocketWrapper.vb" />
     <Compile Include="Net\cSerializableObject.vb" />
-    <Compile Include="System\cAssemblyInfo.vb" />
     <Compile Include="System\cSystemUtils.vb" />
     <Compile Include="Utilities\cColorUtils.vb" />
     <Compile Include="Utilities\cDateUtils.vb" />

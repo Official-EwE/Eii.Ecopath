@@ -159,10 +159,14 @@ Public Class cEcospaceCSVResultsWriter
         Try
             Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
             Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
+            Dim ver As String = cCore.Version
 
-            strm.WriteLine("Model," & Me.m_delimiter(34) & Me.m_core.DataSource.FileName & Me.m_delimiter(34))
-            strm.WriteLine("EcoSim Scenario," & Me.m_delimiter(34) & simScen & Me.m_delimiter(34))
-            strm.WriteLine("EcoSpace Scenario," & Me.m_delimiter(34) & SpaceScen & Me.m_delimiter(34))
+            strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
+            strm.WriteLine("EwE version," & ver)
+            strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
+
+            strm.WriteLine("EcoSim Scenario," & cStringUtils.ToCSVField(simScen))
+            strm.WriteLine("EcoSpace Scenario," & cStringUtils.ToCSVField(SpaceScen))
             strm.WriteLine("Map rows," & Me.SpaceData.InRow)
             strm.WriteLine("Map cols," & Me.SpaceData.InCol)
             strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)
@@ -170,7 +174,7 @@ Public Class cEcospaceCSVResultsWriter
             strm.WriteLine("Map Longitude," & Me.SpaceData.Lon1)
             strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
             strm.WriteLine("Variable," & varname.ToString())
-            strm.WriteLine("Group name," & Me.m_delimiter(34) & Me.PathData.GroupName(igrp) & Me.m_delimiter(34))
+            strm.WriteLine("Group name," & cStringUtils.ToCSVField(Me.PathData.GroupName(igrp)))
 
             strm.WriteLine()
 

@@ -42,10 +42,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
     Protected m_core As cCore
     Protected m_TimeStampDirName As String
-    Protected m_delimiter As String
 
     Public Sub New()
-        Me.m_delimiter = Convert.ToChar(34).ToString
     End Sub
 
 #End Region

@@ -104,8 +104,8 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     Public Overridable ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Dim ai As New cAssemblyInfo(Assembly.GetAssembly(GetType(cEwENetworkAnalysisPlugin)))
-            Return ai.Description
+            ' ToDo: globalize this
+            Return "Network Analysis plug-in for Ecopath with Ecosim"
         End Get
     End Property
 

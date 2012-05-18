@@ -40,6 +40,7 @@ Imports EwEUtils.SpatialData
 Imports EwECore.SpatialData
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -668,6 +669,18 @@ Public Class cCore
         End If
         GC.SuppressFinalize(Me)
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Core assembly version.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Shared ReadOnly Property Version As String
+        Get
+            Dim an As Reflection.AssemblyName = Reflection.Assembly.GetAssembly(GetType(cCore)).GetName
+            Return an.Version.ToString
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -2455,6 +2468,7 @@ Public Class cCore
         If bIncludeTime Then
             strScenario = strScenario & " " & Date.Now.ToString("y-MM-dd HH-mm-ss")
         End If
+
         Return cFileUtils.ToOutputFilename(Me.DataSource.FileName, strComponent, strScenario, strExt, strFilter)
 
     End Function

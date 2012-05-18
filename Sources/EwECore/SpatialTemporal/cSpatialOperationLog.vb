@@ -16,6 +16,8 @@
 ' ===============================================================================
 '
 Imports EwEUtils.Core
+Imports System.Text
+Imports System.IO
 
 Namespace SpatialData
 
@@ -39,8 +41,7 @@ Namespace SpatialData
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class cSpatialOperationLog
-
-        ' ToDo: add auto-file generation: observe core messages, start log file for space scenario name, write messages, etc
+        Implements IDisposable
 
 #Region " Private vars "
 
@@ -49,6 +50,8 @@ Namespace SpatialData
         Private m_iIndex As Integer = cCore.NULL_VALUE
 
         Private m_msgCurrent As cMessage = Nothing
+        Private m_bLogStarted As Boolean = False
+        Private m_strLogFileName As String = ""
 
 #End Region ' Private vars
 
@@ -61,10 +64,25 @@ Namespace SpatialData
         ''' <param name="core">The core to use for sending messages.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(core As cCore)
+
             Me.m_core = core
+            AddHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+
+        End Sub
+
+        Public Sub Dispose() Implements IDisposable.Dispose
+
+            If (Me.m_core IsNot Nothing) Then
+                RemoveHandler Me.m_core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
+                Me.m_core = Nothing
+            End If
+            GC.SuppressFinalize(Me)
+
         End Sub
 
 #End Region ' Construction / destruction
+
+#Region " Public access "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -101,6 +119,7 @@ Namespace SpatialData
 
             If (Me.m_msgCurrent IsNot Nothing) And (bSendMessage = True) Then
                 Me.m_core.Messages.SendMessage(Me.m_msgCurrent)
+                Me.WriteMessage()
             End If
 
             Me.m_msgCurrent = Nothing
@@ -121,6 +140,48 @@ Namespace SpatialData
             End If
 
         End Sub
+
+#End Region ' Public access
+
+#Region " Internals "
+
+        Private Sub OnCoreStateChanged(csm As cCoreStateMonitor)
+            If Not csm.IsEcospaceRunning Then
+                If (Me.m_bLogStarted) Then
+                    Dim msg As New cMessage("Spatial log saved to " & Me.m_strLogFileName, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = Me.m_strLogFileName
+                    Me.m_core.Messages.SendMessage(msg)
+
+                    Me.m_bLogStarted = False
+                    Me.m_strLogFileName = ""
+                End If
+            End If
+        End Sub
+
+        Private Sub WriteMessage()
+
+            Dim sb As New StringBuilder()
+
+            If (Not Me.m_bLogStarted) Then
+                ' Write header
+                Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, Me.m_core.EcospaceOutputFileLocation("SpatialOperations", "", ".txt"))
+                sb.AppendLine("Ecospace spatial operations log")
+                sb.AppendLine("EwE version, " & cCore.Version)
+                sb.AppendLine("Run date, " & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
+                sb.AppendLine()
+            End If
+
+            sb.AppendLine(Me.m_msgCurrent.Message)
+            For Each vs As cVariableStatus In Me.m_msgCurrent.Variables
+                sb.AppendLine("   " & vs.Status.ToString & ", " & vs.Message)
+            Next
+
+            cLog.WriteTextToFile(Me.m_strLogFileName, sb, Me.m_bLogStarted)
+            Me.m_bLogStarted = True
+
+        End Sub
+
+#End Region ' Internals
 
     End Class
 

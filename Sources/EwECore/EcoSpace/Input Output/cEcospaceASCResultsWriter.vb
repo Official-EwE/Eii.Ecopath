@@ -114,15 +114,15 @@ Public Class cEcospaceASCResultsWriter
 
             Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
             Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
-            Dim ver As String = System.Reflection.Assembly.GetAssembly(GetType(cCore)).GetName.Version.ToString
+            Dim ver As String = cCore.Version
 
             strm.WriteLine("EcoSpace ASC map output")
             strm.WriteLine("EwE version," & ver)
             strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
 
-            strm.WriteLine("Model," & Me.m_delimiter & Me.m_core.DataSource.FileName & Me.m_delimiter)
-            strm.WriteLine("EcoSim Scenario," & Me.m_delimiter & simScen & Me.m_delimiter)
-            strm.WriteLine("EcoSpace Scenario," & Me.m_delimiter & SpaceScen & Me.m_delimiter)
+            strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
+            strm.WriteLine("EcoSim Scenario," & cStringUtils.ToCSVField(simScen))
+            strm.WriteLine("EcoSpace Scenario," & cStringUtils.ToCSVField(SpaceScen))
             strm.WriteLine("Map rows," & Me.SpaceData.InRow)
             strm.WriteLine("Map cols," & Me.SpaceData.InCol)
             strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)
