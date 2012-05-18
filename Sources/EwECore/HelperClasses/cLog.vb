@@ -23,42 +23,51 @@ Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 
 ''' <summary>
-''' Class encapsulating writing of messages to a log or the interface
+''' Class encapsulating writing of messages to a XML log file.
 ''' </summary>
-''' <remarks></remarks>
 Public Class cLog
 
 #Region "Private Data"
 
-    Private Shared m_xmlWriter As cXMLLogWriter
-    Private Shared m_logFilename As String
+    Private Shared m_xmlWriter As cXMLLogWriter = Nothing
+    Private Shared m_logFilename As String = ""
     Private Shared m_modelname As String = "No Model Loaded"
-    Private Shared m_lock As New ReaderWriterLock
+    Private Shared m_lock As New ReaderWriterLock()
+    Private Shared m_verboselevel As eVerboseLevel = eVerboseLevel.Standard
 
 #End Region
 
-#Region "Overloaded Write() methods"
+#Region " Constrants "
 
     ''' <summary>
-    ''' Singelton interface for creating a cXMLLogWriter object
+    ''' Supported levels of detail for the content of the log.
     ''' </summary>
-    ''' <returns>A cXMLLogWriter object that can be Opened and written to.</returns>
-    ''' <remarks>If cLog.IntLog(filename) has been call then the cXMLLogWriter will use this file. If not the default file will be used "EwELog.xml"</remarks>
-    Private Shared Function getWriter() As cXMLLogWriter
-        If m_xmlWriter Is Nothing Then
-            If String.IsNullOrEmpty(m_logFilename) Then
-                m_logFilename = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
-            End If
-            m_xmlWriter = New cXMLLogWriter(m_logFilename, m_modelname)
-        End If
-        Return m_xmlWriter
-    End Function
+    Public Enum eVerboseLevel As Byte
+        ''' <summary>Log all generic errors</summary>
+        Standard = 0
+        ''' <summary>Log details to track application flow in more detail.</summary>
+        Detailed = 1
+    End Enum
 
+#End Region ' Constrants
+
+#Region " Log methods "
+
+    Public Shared Property VerboseLevel As eVerboseLevel
+        Get
+            Return cLog.m_verboselevel
+        End Get
+        Set(value As eVerboseLevel)
+            cLog.m_verboselevel = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Start a new log file with the model name as part of the log file name
     ''' </summary>
     ''' <param name="strModelPath">File path to the model to create a log file for.</param>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Shared Sub InitLog(ByVal strModelPath As String)
 
         If Not String.IsNullOrEmpty(strModelPath) Then
@@ -73,48 +82,36 @@ Public Class cLog
         m_xmlWriter = Nothing
     End Sub
 
-    Private Shared Sub WriteSessionStarted()
-        Dim xmlStrm As cXMLLogWriter
-
-        Try
-
-            xmlStrm = getWriter()
-
-            If xmlStrm.Open() Then
-                xmlStrm.WriteElementString("Session_Started", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
-                xmlStrm.WriteEndDocument()
-
-                xmlStrm.Close()
-            End If
-
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-            If Not xmlStrm Is Nothing Then
-                xmlStrm.Close()
-            End If
-        End Try
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write an <see cref="Exception"/> to the log
+    ''' </summary>
+    ''' <param name="theException">Exception to write to the log.</param>
+    ''' <param name="level">Verbose level.</param>
+    ''' <param name="strMsg">Optional text to add.</param>
+    ''' -----------------------------------------------------------------------
+    Public Shared Sub Write(ByVal theException As Exception, level As eVerboseLevel, Optional ByVal strMsg As String = "")
+        If (level > cLog.m_verboselevel) Then Return
+        cLog.Write(theException, strMsg)
     End Sub
 
-
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write exception messages to the log
+    ''' Write an <see cref="Exception"/> to the log at 
+    ''' <see cref="eVerboseLevel.Standard">standard verbose level</see>.
     ''' </summary>
-    ''' <param name="theException">Exception to log </param>
-    ''' <param name="strMsg">Optional message to add</param>
-    ''' <remarks>Used to log all the messages in an exception. This is potentially hazardous as it assumes the xml file ends with the doc tag, which may not be the case.
+    ''' <param name="theException">Exception to write to the log.</param>
+    ''' <param name="strMsg">Optional text to add.</param>
+    ''' <remarks>
+    ''' This will log the exception text and all nested exceptions.
     '''</remarks>
+    ''' -----------------------------------------------------------------------
     Public Shared Sub Write(ByVal theException As Exception, Optional ByVal strMsg As String = "")
-        Dim xmlStrm As cXMLLogWriter
 
+        If Not AcquireWriterLock() Then Return
+
+        Dim xmlStrm As cXMLLogWriter = Nothing
         Try
-
-            'make this thread safe
-            If Not AcquireWriterLock() Then
-                'failed to get a lock on the file... just skip the file write
-                Exit Sub
-            End If
-
             xmlStrm = getWriter()
 
             'append to the end of the stream
@@ -156,20 +153,32 @@ Public Class cLog
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write a cMessage object to the log
+    ''' Write a <see cref="cMessage"/> to the log.
     ''' </summary>
-    ''' <param name="message"></param>
-    ''' <remarks></remarks>
+    ''' <param name="message">The <see cref="cMessage"/> to write.</param>
+    ''' <param name="level">Verbose level.</param>
+    ''' <param name="strMsg">Optional text to add.</param>
+    ''' -----------------------------------------------------------------------
+    Public Shared Sub Write(ByVal message As cMessage, level As eVerboseLevel, Optional ByVal strMsg As String = "")
+        If (level > cLog.m_verboselevel) Then Return
+        cLog.Write(message, strMsg)
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write a <see cref="cMessage"/> to the log at <see cref="eVerboseLevel.Standard"/> level.
+    ''' </summary>
+    ''' <param name="message">The <see cref="cMessage"/> to write.</param>
+    ''' <param name="strMsg">Optional text to add.</param>
+    ''' -----------------------------------------------------------------------
     Public Shared Sub Write(ByVal message As cMessage, Optional ByVal strMsg As String = "")
-        Dim xmlStrm As cXMLLogWriter
 
+        If Not AcquireWriterLock() Then Return
+
+        Dim xmlStrm As cXMLLogWriter = Nothing
         Try
-            If Not AcquireWriterLock() Then
-                'failed to get a lock on the file... just skip the file write
-                Exit Sub
-            End If
-
             xmlStrm = getWriter()
 
             'append to the end of the stream
@@ -203,21 +212,30 @@ Public Class cLog
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write a string to the application log
+    ''' Write a string to the application log.
     ''' </summary>
-    ''' <param name="msg">Message string to write</param>
-    ''' <remarks></remarks>
+    ''' <param name="msg">Message string to write.</param>
+    ''' <param name="level">Verbose level for this message.</param>
+    ''' -----------------------------------------------------------------------
+    Public Shared Sub Write(ByVal msg As String, level As eVerboseLevel)
+        If (level > cLog.m_verboselevel) Then Return
+        cLog.Write(msg)
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write a string to the application log.
+    ''' </summary>
+    ''' <param name="msg">Message string to write.</param>
+    ''' -----------------------------------------------------------------------
     Public Shared Sub Write(ByVal msg As String)
-        Dim xmlStrm As cXMLLogWriter
 
+        If Not AcquireWriterLock() Then Return
+
+        Dim xmlStrm As cXMLLogWriter = Nothing
         Try
-
-            If Not AcquireWriterLock() Then
-                'failed to get a lock on the file... just skip the file write
-                Exit Sub
-            End If
-
             xmlStrm = getWriter()
 
             'append to the end of the stream
@@ -244,6 +262,46 @@ Public Class cLog
 
     End Sub
 
+#End Region ' Log methods
+
+#Region " Internals "
+    ''' <summary>
+    ''' Singelton interface for creating a cXMLLogWriter object
+    ''' </summary>
+    ''' <returns>A cXMLLogWriter object that can be Opened and written to.</returns>
+    ''' <remarks>If cLog.IntLog(filename) has been call then the cXMLLogWriter will use this file. If not the default file will be used "EwELog.xml"</remarks>
+    Private Shared Function getWriter() As cXMLLogWriter
+        If m_xmlWriter Is Nothing Then
+            If String.IsNullOrEmpty(m_logFilename) Then
+                m_logFilename = Path.Combine(cSystemUtils.ApplicationSettingsPath(), "EwELog.xml")
+            End If
+            m_xmlWriter = New cXMLLogWriter(m_logFilename, m_modelname)
+        End If
+        Return m_xmlWriter
+    End Function
+
+    Private Shared Sub WriteSessionStarted()
+        Dim xmlStrm As cXMLLogWriter
+
+        Try
+
+            xmlStrm = getWriter()
+
+            If xmlStrm.Open() Then
+                xmlStrm.WriteElementString("Session_Started", String.Format("{0} {1}", DateTime.Now.ToLongTimeString(), DateTime.Now.ToLongDateString()))
+                xmlStrm.WriteEndDocument()
+
+                xmlStrm.Close()
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            If Not xmlStrm Is Nothing Then
+                xmlStrm.Close()
+            End If
+        End Try
+    End Sub
+
     ''' <summary>
     ''' ReaderWriterLock.AcquireWriterLock() will throw an exception if it times out! Bitch... this keeps the exception handling out of the main code
     ''' </summary>
@@ -258,6 +316,7 @@ Public Class cLog
             Return False
         End Try
     End Function
+
     Private Shared Sub ReleaseWriterLock()
         Try
             m_lock.ReleaseWriterLock()
@@ -266,8 +325,7 @@ Public Class cLog
         End Try
     End Sub
 
-
-#End Region
+#End Region ' Internals
 
 #Region "Interfaces for writting Debugging files"
 
@@ -393,7 +451,7 @@ Public Class cLog
         Dim i As Integer, j As Integer
 
         Try
-          Dim strTarget As String = FixDirectory(strFilename)
+            Dim strTarget As String = FixDirectory(strFilename)
             strm = System.IO.File.AppendText(strFilename)
 
             If strHeader <> "" Then
