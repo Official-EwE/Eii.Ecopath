@@ -42,7 +42,7 @@ Public Class cLog
     ''' <summary>
     ''' Supported levels of detail for the content of the log.
     ''' </summary>
-    Public Enum eVerboseLevel As Byte
+    Public Enum eVerboseLevel As Integer
         ''' <summary>Log all generic errors</summary>
         Standard = 0
         ''' <summary>Log details to track application flow in more detail.</summary>

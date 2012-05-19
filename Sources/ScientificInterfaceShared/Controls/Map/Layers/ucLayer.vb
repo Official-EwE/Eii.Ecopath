@@ -23,6 +23,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -312,7 +313,10 @@ Namespace Controls.Map
 
             If (prop IsNot Nothing) Then
                 ' - Render remarks indicator
-                cRemarksIndicator.Paint(Me.m_uic.StyleGuide, rcPreview, e.Graphics, prop.HasRemark())
+                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+                If (prop.HasRemark()) Then
+                    cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rcPreview, e.Graphics, True, sg.IsRightToLeft)
+                End If
             End If
 
             ' - Render border

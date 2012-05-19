@@ -119,7 +119,7 @@ Namespace Controls.EwEGrid
             ' Need to draw remarks indicator?
             If ((style And cStyleGuide.eStyleFlags.Remarks) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: draw remarks indicator
-                cRemarksIndicator.Paint(sg, rc, e.Graphics, True)
+                cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rc, e.Graphics, True, sg.IsRightToLeft)
             End If
 
         End Sub

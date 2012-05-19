@@ -32,7 +32,6 @@ Partial Class ucOptionsGeneral
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGeneral))
-            Me.m_gpMRU = New System.Windows.Forms.GroupBox()
             Me.m_fieldpickOutput = New ScientificInterfaceShared.Controls.ucFieldPicker()
             Me.m_fieldpickBackup = New ScientificInterfaceShared.Controls.ucFieldPicker()
             Me.m_lblSampleOutput = New System.Windows.Forms.Label()
@@ -45,43 +44,24 @@ Partial Class ucOptionsGeneral
             Me.m_btnDefaults = New System.Windows.Forms.Button()
             Me.m_btnClearMRU = New System.Windows.Forms.Button()
             Me.m_lblMRU = New System.Windows.Forms.Label()
-            Me.m_gpMsg = New System.Windows.Forms.GroupBox()
             Me.m_cbShowTime = New System.Windows.Forms.CheckBox()
             Me.m_nudMaxNumMessages = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label()
-            Me.m_gbStartup = New System.Windows.Forms.GroupBox()
+            Me.m_lblStopTryingPost = New System.Windows.Forms.Label()
+            Me.m_lblStopTryingPre = New System.Windows.Forms.Label()
             Me.m_cbShowHost = New System.Windows.Forms.CheckBox()
             Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox()
-            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lblStopTryingPre = New System.Windows.Forms.Label()
             Me.m_nudTimeOut = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_lblStopTryingPost = New System.Windows.Forms.Label()
             Me.m_btnClearOVerwritePrompts = New System.Windows.Forms.Button()
-            Me.m_gpMRU.SuspendLayout()
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrFile = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrStatusPanel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_cmbLogLevel = New System.Windows.Forms.ComboBox()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_gpMsg.SuspendLayout()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_gbStartup.SuspendLayout()
             CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
-            '
-            'm_gpMRU
-            '
-            resources.ApplyResources(Me.m_gpMRU, "m_gpMRU")
-            Me.m_gpMRU.Controls.Add(Me.m_fieldpickOutput)
-            Me.m_gpMRU.Controls.Add(Me.m_fieldpickBackup)
-            Me.m_gpMRU.Controls.Add(Me.m_lblSampleOutput)
-            Me.m_gpMRU.Controls.Add(Me.m_lblSampleBackup)
-            Me.m_gpMRU.Controls.Add(Me.m_tbOutputMask)
-            Me.m_gpMRU.Controls.Add(Me.m_tbBackupMask)
-            Me.m_gpMRU.Controls.Add(Me.m_lblOutput)
-            Me.m_gpMRU.Controls.Add(Me.m_lblBackupFolder)
-            Me.m_gpMRU.Controls.Add(Me.m_nudMRU)
-            Me.m_gpMRU.Controls.Add(Me.m_btnDefaults)
-            Me.m_gpMRU.Controls.Add(Me.m_btnClearMRU)
-            Me.m_gpMRU.Controls.Add(Me.m_lblMRU)
-            Me.m_gpMRU.Name = "m_gpMRU"
-            Me.m_gpMRU.TabStop = False
             '
             'm_fieldpickOutput
             '
@@ -107,14 +87,12 @@ Partial Class ucOptionsGeneral
             '
             resources.ApplyResources(Me.m_lblSampleOutput, "m_lblSampleOutput")
             Me.m_lblSampleOutput.BackColor = System.Drawing.SystemColors.Control
-            Me.m_lblSampleOutput.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_lblSampleOutput.ForeColor = System.Drawing.SystemColors.GrayText
             Me.m_lblSampleOutput.Name = "m_lblSampleOutput"
             '
             'm_lblSampleBackup
             '
             resources.ApplyResources(Me.m_lblSampleBackup, "m_lblSampleBackup")
-            Me.m_lblSampleBackup.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_lblSampleBackup.ForeColor = System.Drawing.SystemColors.GrayText
             Me.m_lblSampleBackup.Name = "m_lblSampleBackup"
             '
@@ -162,15 +140,6 @@ Partial Class ucOptionsGeneral
             resources.ApplyResources(Me.m_lblMRU, "m_lblMRU")
             Me.m_lblMRU.Name = "m_lblMRU"
             '
-            'm_gpMsg
-            '
-            resources.ApplyResources(Me.m_gpMsg, "m_gpMsg")
-            Me.m_gpMsg.Controls.Add(Me.m_cbShowTime)
-            Me.m_gpMsg.Controls.Add(Me.m_nudMaxNumMessages)
-            Me.m_gpMsg.Controls.Add(Me.m_lblMaxNumMessages)
-            Me.m_gpMsg.Name = "m_gpMsg"
-            Me.m_gpMsg.TabStop = False
-            '
             'm_cbShowTime
             '
             resources.ApplyResources(Me.m_cbShowTime, "m_cbShowTime")
@@ -189,17 +158,15 @@ Partial Class ucOptionsGeneral
             resources.ApplyResources(Me.m_lblMaxNumMessages, "m_lblMaxNumMessages")
             Me.m_lblMaxNumMessages.Name = "m_lblMaxNumMessages"
             '
-            'm_gbStartup
+            'm_lblStopTryingPost
             '
-            resources.ApplyResources(Me.m_gbStartup, "m_gbStartup")
-            Me.m_gbStartup.Controls.Add(Me.m_lblStopTryingPost)
-            Me.m_gbStartup.Controls.Add(Me.m_lblStopTryingPre)
-            Me.m_gbStartup.Controls.Add(Me.m_cbShowHost)
-            Me.m_gbStartup.Controls.Add(Me.m_cbDownloadUpdates)
-            Me.m_gbStartup.Controls.Add(Me.m_nudTimeOut)
-            Me.m_gbStartup.Controls.Add(Me.m_btnClearOVerwritePrompts)
-            Me.m_gbStartup.Name = "m_gbStartup"
-            Me.m_gbStartup.TabStop = False
+            resources.ApplyResources(Me.m_lblStopTryingPost, "m_lblStopTryingPost")
+            Me.m_lblStopTryingPost.Name = "m_lblStopTryingPost"
+            '
+            'm_lblStopTryingPre
+            '
+            resources.ApplyResources(Me.m_lblStopTryingPre, "m_lblStopTryingPre")
+            Me.m_lblStopTryingPre.Name = "m_lblStopTryingPre"
             '
             'm_cbShowHost
             '
@@ -213,19 +180,6 @@ Partial Class ucOptionsGeneral
             Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
             Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
             '
-            'm_hdrCaption
-            '
-            Me.m_hdrCaption.CanCollapseParent = False
-            Me.m_hdrCaption.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
-            Me.m_hdrCaption.IsCollapsed = False
-            Me.m_hdrCaption.Name = "m_hdrCaption"
-            '
-            'm_lblStopTryingPre
-            '
-            resources.ApplyResources(Me.m_lblStopTryingPre, "m_lblStopTryingPre")
-            Me.m_lblStopTryingPre.Name = "m_lblStopTryingPre"
-            '
             'm_nudTimeOut
             '
             resources.ApplyResources(Me.m_nudTimeOut, "m_nudTimeOut")
@@ -234,44 +188,89 @@ Partial Class ucOptionsGeneral
             Me.m_nudTimeOut.Name = "m_nudTimeOut"
             Me.m_nudTimeOut.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
-            'm_lblStopTryingPost
-            '
-            resources.ApplyResources(Me.m_lblStopTryingPost, "m_lblStopTryingPost")
-            Me.m_lblStopTryingPost.Name = "m_lblStopTryingPost"
-            '
             'm_btnClearOVerwritePrompts
             '
             resources.ApplyResources(Me.m_btnClearOVerwritePrompts, "m_btnClearOVerwritePrompts")
             Me.m_btnClearOVerwritePrompts.Name = "m_btnClearOVerwritePrompts"
             Me.m_btnClearOVerwritePrompts.UseVisualStyleBackColor = True
             '
+            'm_hdrCaption
+            '
+            Me.m_hdrCaption.CanCollapseParent = False
+            Me.m_hdrCaption.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.IsCollapsed = False
+            Me.m_hdrCaption.Name = "m_hdrCaption"
+            '
+            'm_hdrFile
+            '
+            resources.ApplyResources(Me.m_hdrFile, "m_hdrFile")
+            Me.m_hdrFile.CanCollapseParent = False
+            Me.m_hdrFile.CollapsedParentHeight = 0
+            Me.m_hdrFile.IsCollapsed = False
+            Me.m_hdrFile.Name = "m_hdrFile"
+            '
+            'm_hdrStatusPanel
+            '
+            resources.ApplyResources(Me.m_hdrStatusPanel, "m_hdrStatusPanel")
+            Me.m_hdrStatusPanel.CanCollapseParent = False
+            Me.m_hdrStatusPanel.CollapsedParentHeight = 0
+            Me.m_hdrStatusPanel.IsCollapsed = False
+            Me.m_hdrStatusPanel.Name = "m_hdrStatusPanel"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_cmbLogLevel
+            '
+            resources.ApplyResources(Me.m_cmbLogLevel, "m_cmbLogLevel")
+            Me.m_cmbLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbLogLevel.FormattingEnabled = True
+            Me.m_cmbLogLevel.Name = "m_cmbLogLevel"
+            '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_gbStartup)
-            Me.Controls.Add(Me.m_gpMsg)
+            Me.Controls.Add(Me.m_cmbLogLevel)
+            Me.Controls.Add(Me.m_nudMaxNumMessages)
+            Me.Controls.Add(Me.m_cbShowTime)
+            Me.Controls.Add(Me.m_btnDefaults)
+            Me.Controls.Add(Me.m_lblSampleBackup)
+            Me.Controls.Add(Me.m_lblMaxNumMessages)
+            Me.Controls.Add(Me.m_fieldpickBackup)
+            Me.Controls.Add(Me.m_fieldpickOutput)
+            Me.Controls.Add(Me.m_hdrStatusPanel)
+            Me.Controls.Add(Me.m_hdrFile)
+            Me.Controls.Add(Me.m_btnClearOVerwritePrompts)
+            Me.Controls.Add(Me.m_tbBackupMask)
+            Me.Controls.Add(Me.m_lblSampleOutput)
+            Me.Controls.Add(Me.m_cbShowHost)
+            Me.Controls.Add(Me.m_lblBackupFolder)
+            Me.Controls.Add(Me.m_btnClearMRU)
+            Me.Controls.Add(Me.m_lblStopTryingPost)
+            Me.Controls.Add(Me.m_tbOutputMask)
+            Me.Controls.Add(Me.m_lblStopTryingPre)
+            Me.Controls.Add(Me.m_nudTimeOut)
+            Me.Controls.Add(Me.m_lblOutput)
+            Me.Controls.Add(Me.m_nudMRU)
+            Me.Controls.Add(Me.m_cbDownloadUpdates)
             Me.Controls.Add(Me.m_hdrCaption)
-            Me.Controls.Add(Me.m_gpMRU)
+            Me.Controls.Add(Me.Label1)
+            Me.Controls.Add(Me.m_lblMRU)
             Me.Name = "ucOptionsGeneral"
-            Me.m_gpMRU.ResumeLayout(False)
-            Me.m_gpMRU.PerformLayout()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_gpMsg.ResumeLayout(False)
-            Me.m_gpMsg.PerformLayout()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_gbStartup.ResumeLayout(False)
-            Me.m_gbStartup.PerformLayout()
             CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_lblMRU As System.Windows.Forms.Label
         Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
         Private WithEvents m_btnClearMRU As System.Windows.Forms.Button
-        Private WithEvents m_gpMRU As System.Windows.Forms.GroupBox
-        Private WithEvents m_gpMsg As System.Windows.Forms.GroupBox
-        Private WithEvents m_gbStartup As System.Windows.Forms.GroupBox
         Private WithEvents m_cbDownloadUpdates As System.Windows.Forms.CheckBox
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
         Private WithEvents m_cbShowTime As System.Windows.Forms.CheckBox
@@ -291,6 +290,10 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_lblStopTryingPre As System.Windows.Forms.Label
         Private WithEvents m_nudTimeOut As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_btnClearOVerwritePrompts As System.Windows.Forms.Button
+        Private WithEvents m_hdrFile As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_hdrStatusPanel As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents Label1 As System.Windows.Forms.Label
+        Friend WithEvents m_cmbLogLevel As System.Windows.Forms.ComboBox
 
     End Class
 

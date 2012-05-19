@@ -42,6 +42,7 @@ Namespace Other
         Implements IOptionsPage
 
         Private m_uic As cUIContext = Nothing
+        Private m_fpVerboseLevel As cEwEFormatProvider = Nothing
 
 #Region " Constructors "
 
@@ -79,6 +80,8 @@ Namespace Other
 
             Me.m_nudMaxNumMessages.Value = CInt(Math.Min(Me.m_nudMaxNumMessages.Maximum, _
                                                 Math.Max(Me.m_nudMaxNumMessages.Minimum, My.Settings.StatusMaxMessages)))
+            Me.m_fpVerboseLevel = New cEwEFormatProvider(Me.m_uic, Me.m_cmbLogLevel, New cVerboseLevelTypeFormatter(), Nothing)
+            Me.m_fpVerboseLevel.Value = cLog.VerboseLevel
 
             ' Output path
             Me.m_fieldpickOutput.UIContext = Me.m_uic
@@ -127,6 +130,7 @@ Namespace Other
                 My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
                 My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
                 My.Settings.ShowHostInfo = Me.m_cbShowHost.Checked
+                My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, cLog.eVerboseLevel)
 
             Catch ex As Exception
                 result = IOptionsPage.eApplyResultType.Failed

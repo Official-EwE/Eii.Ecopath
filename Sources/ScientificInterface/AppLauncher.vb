@@ -3942,6 +3942,13 @@ Public Class AppLauncher
                 Case "BackupFileMask", "OutputPathMask"
                     Me.UpdateCorePaths(False)
 
+                Case "LogVerboseLevel"
+                    Try
+                        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, cLog.eVerboseLevel)
+                    Catch ex As Exception
+                        cLog.VerboseLevel = cLog.eVerboseLevel.Standard
+                    End Try
+
             End Select
 
             Me.m_ssMain.UpdateModelPanes()

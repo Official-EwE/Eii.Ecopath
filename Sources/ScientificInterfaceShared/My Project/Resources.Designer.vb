@@ -6511,6 +6511,24 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Detailed.
+        '''</summary>
+        Public ReadOnly Property VERBOSE_DETAILED() As String
+            Get
+                Return ResourceManager.GetString("VERBOSE_DETAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Standard.
+        '''</summary>
+        Public ReadOnly Property VERBOSE_STANDARD() As String
+            Get
+                Return ResourceManager.GetString("VERBOSE_STANDARD", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property Warning() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Warning", resourceCulture)

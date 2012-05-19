@@ -3835,5 +3835,14 @@ Namespace My.Resources
                 Return ResourceManager.GetString("VALUE_FILE_CONTENT", resourceCulture)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to AaBbCcYyZz.
+        '''</summary>
+        Public ReadOnly Property VALUE_PREVIEW() As String
+            Get
+                Return ResourceManager.GetString("VALUE_PREVIEW", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

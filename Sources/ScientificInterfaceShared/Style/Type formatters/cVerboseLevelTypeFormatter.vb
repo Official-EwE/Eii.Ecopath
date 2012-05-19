@@ -28,40 +28,27 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eTaxonLevelType"/>s.
+    ''' Class for providing a textual description of a <see cref="cLog.eVerboseLevel"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class cTaxonLevelTypeFormatter
+    Public Class cVerboseLevelTypeFormatter
         Implements ITypeFormatter
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(eTaxonLevelType)
+            Return GetType(cLog.eVerboseLevel)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
 
-            Dim val As eTaxonLevelType = DirectCast(value, eTaxonLevelType)
+            Dim val As cLog.eVerboseLevel = DirectCast(value, cLog.eVerboseLevel)
 
             Select Case val
-                Case eTaxonLevelType.Any
-                    Return My.Resources.GENERIC_VALUE_ALL
-                Case eTaxonLevelType.Common
-                    Return My.Resources.HEADER_COMMON_NAME
-                    'Case eTaxonLevelType.Kingdom
-                Case eTaxonLevelType.Phylum
-                    Return My.Resources.HEADER_PHYLUM
-                Case eTaxonLevelType.Order
-                    Return My.Resources.HEADER_ORDER
-                Case eTaxonLevelType.Class
-                    Return My.Resources.HEADER_CLASS
-                Case eTaxonLevelType.Family
-                    Return My.Resources.HEADER_FAMILY
-                Case eTaxonLevelType.Genus
-                    Return My.Resources.HEADER_GENUS
-                Case eTaxonLevelType.Species
-                    Return My.Resources.HEADER_SPECIES
+                Case cLog.eVerboseLevel.Standard
+                    Return My.Resources.VERBOSE_STANDARD
+                Case cLog.eVerboseLevel.Detailed
+                    Return My.Resources.VERBOSE_DETAILED
             End Select
 
             Return "?"

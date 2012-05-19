@@ -118,12 +118,12 @@ Namespace Controls
                 Return Me.m_objItem.ToString()
             End Function
 
-            Public Function CoreIndex() As Integer
+            Public Function CoreIndex(idef As Integer) As Integer
                 If TypeOf Me.m_objItem Is ICoreInterface Then
                     ' Always return TRUE index
                     Return DirectCast(Me.m_objItem, ICoreInterface).Index
                 End If
-                Return 0
+                Return idef
             End Function
         End Class
 
@@ -590,7 +590,7 @@ Namespace Controls
 
 #End Region ' Style guide events
 
-       End Class
+        End Class
 
 #End Region ' Class NumericUpDownWrapper
 
@@ -729,7 +729,7 @@ Namespace Controls
                     For iItem As Integer = 0 To Me.m_cmb.Items.Count - 1
                         objItem = Me.m_cmb.Items(iItem)
                         If (TypeOf objItem Is IndexedCollectionItem) Then
-                            If (CInt(objValue) = DirectCast(objItem, IndexedCollectionItem).CoreIndex) Then
+                            If (CInt(objValue) = DirectCast(objItem, IndexedCollectionItem).CoreIndex(iItem)) Then
                                 iValue = iItem
                                 Exit For
                             End If
@@ -756,7 +756,7 @@ Namespace Controls
                     iIndex = Me.m_cmb.SelectedIndex
 
                     If (TypeOf objItem Is IndexedCollectionItem) Then
-                        iIndex = DirectCast(objItem, IndexedCollectionItem).CoreIndex
+                        iIndex = DirectCast(objItem, IndexedCollectionItem).CoreIndex(iIndex)
                     End If
                 End If
                 Return iIndex

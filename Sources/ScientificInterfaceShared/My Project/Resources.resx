@@ -2482,4 +2482,10 @@
     <value>Saved graph data to '{0}'</value>
     <comment>{0}: file name</comment>
   </data>
+  <data name="VERBOSE_DETAILED" xml:space="preserve">
+    <value>Detailed</value>
+  </data>
+  <data name="VERBOSE_STANDARD" xml:space="preserve">
+    <value>Standard</value>
+  </data>
 </root>
