@@ -38,6 +38,7 @@ Namespace Controls.Map.Layers
         Public Sub New(uic As cUIContext)
             MyBase.New(uic)
             AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+            Me.UpdateImage()
         End Sub
 
         Protected Overrides Sub Dispose(bDisposing As Boolean)
