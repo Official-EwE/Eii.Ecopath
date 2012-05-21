@@ -43,6 +43,7 @@ Namespace Other
             Me.m_tvOptions = New System.Windows.Forms.TreeView()
             Me.m_btnApply = New System.Windows.Forms.Button()
             Me.m_scContent = New System.Windows.Forms.SplitContainer()
+            Me.m_btnSetDefaults = New System.Windows.Forms.Button()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.SuspendLayout()
@@ -82,6 +83,11 @@ Namespace Other
             '
             Me.m_scContent.Panel1.Controls.Add(Me.m_tvOptions)
             '
+            'm_btnSetDefaults
+            '
+            resources.ApplyResources(Me.m_btnSetDefaults, "m_btnSetDefaults")
+            Me.m_btnSetDefaults.Name = "m_btnSetDefaults"
+            '
             'dlgOptions
             '
             Me.AcceptButton = Me.m_btnOk
@@ -90,6 +96,7 @@ Namespace Other
             Me.CancelButton = Me.m_btnCancel
             Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_btnCancel)
+            Me.Controls.Add(Me.m_btnSetDefaults)
             Me.Controls.Add(Me.m_btnApply)
             Me.Controls.Add(Me.m_btnOk)
             Me.DoubleBuffered = True
@@ -111,6 +118,7 @@ Namespace Other
         Private WithEvents m_btnApply As System.Windows.Forms.Button
         Private WithEvents m_tvOptions As System.Windows.Forms.TreeView
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
+        Private WithEvents m_btnSetDefaults As System.Windows.Forms.Button
     End Class
 
 End Namespace

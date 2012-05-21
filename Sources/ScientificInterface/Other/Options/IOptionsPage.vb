@@ -48,4 +48,11 @@ Public Interface IOptionsPage
     ''' -----------------------------------------------------------------------
     Function Apply() As eApplyResultType
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Revert the current page to default values
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Sub SetDefaults()
+
 End Interface

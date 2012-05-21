@@ -41,7 +41,6 @@ Partial Class ucOptionsGeneral
             Me.m_lblOutput = New System.Windows.Forms.Label()
             Me.m_lblBackupFolder = New System.Windows.Forms.Label()
             Me.m_nudMRU = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_btnDefaults = New System.Windows.Forms.Button()
             Me.m_btnClearMRU = New System.Windows.Forms.Button()
             Me.m_lblMRU = New System.Windows.Forms.Label()
             Me.m_cbShowTime = New System.Windows.Forms.CheckBox()
@@ -122,12 +121,6 @@ Partial Class ucOptionsGeneral
             Me.m_nudMRU.Maximum = New Decimal(New Integer() {42, 0, 0, 0})
             Me.m_nudMRU.Name = "m_nudMRU"
             Me.m_nudMRU.Value = New Decimal(New Integer() {10, 0, 0, 0})
-            '
-            'm_btnDefaults
-            '
-            resources.ApplyResources(Me.m_btnDefaults, "m_btnDefaults")
-            Me.m_btnDefaults.Name = "m_btnDefaults"
-            Me.m_btnDefaults.UseVisualStyleBackColor = True
             '
             'm_btnClearMRU
             '
@@ -237,7 +230,6 @@ Partial Class ucOptionsGeneral
             Me.Controls.Add(Me.m_cmbLogLevel)
             Me.Controls.Add(Me.m_nudMaxNumMessages)
             Me.Controls.Add(Me.m_cbShowTime)
-            Me.Controls.Add(Me.m_btnDefaults)
             Me.Controls.Add(Me.m_lblSampleBackup)
             Me.Controls.Add(Me.m_lblMaxNumMessages)
             Me.Controls.Add(Me.m_fieldpickBackup)
@@ -281,7 +273,6 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_lblOutput As System.Windows.Forms.Label
         Private WithEvents m_fieldpickBackup As ScientificInterfaceShared.Controls.ucFieldPicker
         Private WithEvents m_fieldpickOutput As ScientificInterfaceShared.Controls.ucFieldPicker
-        Private WithEvents m_btnDefaults As System.Windows.Forms.Button
         Private WithEvents m_lblSampleOutput As System.Windows.Forms.Label
         Private WithEvents m_nudMaxNumMessages As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMRU As ScientificInterfaceShared.Controls.cEwENumericUpDown

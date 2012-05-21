@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnOk.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -263,7 +263,7 @@
     <value>1</value>
   </data>
   <data name="m_btnApply.Text" xml:space="preserve">
-    <value>Apply</value>
+    <value>&amp;Apply</value>
   </data>
   <data name="&gt;&gt;m_btnApply.Name" xml:space="preserve">
     <value>m_btnApply</value>
@@ -275,7 +275,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnApply.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_scContent.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -330,6 +330,36 @@
   </data>
   <data name="&gt;&gt;m_scContent.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="m_btnSetDefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnSetDefaults.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnSetDefaults.Location" type="System.Drawing.Point, System.Drawing">
+    <value>437, 470</value>
+  </data>
+  <data name="m_btnSetDefaults.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
+  <data name="m_btnSetDefaults.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_btnSetDefaults.Text" xml:space="preserve">
+    <value>&amp;Set to defaults</value>
+  </data>
+  <data name="&gt;&gt;m_btnSetDefaults.Name" xml:space="preserve">
+    <value>m_btnSetDefaults</value>
+  </data>
+  <data name="&gt;&gt;m_btnSetDefaults.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnSetDefaults.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_btnSetDefaults.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

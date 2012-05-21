@@ -103,10 +103,9 @@ Namespace Other
 #Region " Constructor "
 
         Public Sub New(ByVal uic As cUIContext)
-            Me.InitializeComponent()
-            Debug.Assert(uic IsNot Nothing)
             Me.m_uic = uic
             Me.m_pm = Me.m_uic.Core.PluginManager
+            Me.InitializeComponent()
         End Sub
 
 #End Region ' Constructor
@@ -171,7 +170,6 @@ Namespace Other
 #Region " Events "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
-            MyBase.OnLoad(e)
 
             Dim collPA As ICollection(Of cPluginAssembly) = Nothing
             Dim info As cPluginAssemblyInfo = Nothing
@@ -222,8 +220,9 @@ Namespace Other
                 Me.m_tvPlugins.SelectedNode = Me.m_tvPlugins.Nodes(0)
                 Me.UpdateDetails()
             End If
-
             Me.UpdateControls()
+
+            MyBase.OnLoad(e)
 
         End Sub
 
@@ -262,6 +261,7 @@ Namespace Other
                 info.Enabled = Me.m_cbEnablePlugin.Checked
                 Me.UpdatePluginImage(info)
             End If
+
         End Sub
 
 #End Region ' Events
@@ -367,6 +367,11 @@ Namespace Other
         End Sub
 
 #End Region ' Private implementations
+
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+
+        End Sub
 
     End Class
 

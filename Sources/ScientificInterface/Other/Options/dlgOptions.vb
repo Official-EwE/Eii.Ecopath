@@ -54,44 +54,61 @@ Namespace Other
         Public Sub New(ByVal uic As cUIContext)
 
             Me.m_uic = uic
-
             Me.InitializeComponent()
-            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_PLEASE_WAIT)
-
-            For Each nodeChild As TreeNode In Me.m_tvOptions.Nodes
-                Me.ExpandNode(nodeChild)
-            Next
-
-            Me.m_tvOptions.ExpandAll()
-
-            Me.AddPage(GetType(ucOptionsGeneral))
-            Me.AddPage(GetType(ucOptionsGraphs))
-            Me.AddPage(GetType(ucOptionsColors))
-            Me.AddPage(GetType(ucOptionsMap))
-            Me.AddPage(GetType(ucOptionsPresentation))
-            Me.AddPage(GetType(ucOptionsPlugins))
-            Me.SelectPage("")
-
-            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         End Sub
 
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            ''For Each nodeChild As TreeNode In Me.m_tvOptions.Nodes
+            ''    Me.ExpandNode(nodeChild)
+            ''Next
+            Me.m_tvOptions.ExpandAll()
+            Me.SelectPage("")
+
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+
+            ' Bye
+            Me.m_scContent.Panel2.Controls.Clear()
+            Me.m_pageCurrent = Nothing
+
+            ' Manually dispose
+            For Each optionspage As IOptionsPage In Me.m_lPages
+                DirectCast(optionspage, Control).Dispose()
+            Next
+            Me.m_lPages.Clear()
+
+            MyBase.OnFormClosed(e)
+
+        End Sub
 #End Region ' Constructor
 
 #Region " Internals "
 
-        Private Sub AddPage(ByVal t As Type)
+        Private Function CreatePage(ByVal t As Type) As IOptionsPage
 
             ' Sanity check
             Debug.Assert(GetType(IOptionsPage).IsAssignableFrom(t))
             Debug.Assert(GetType(Control).IsAssignableFrom(t))
 
-            Dim optionspage As IOptionsPage = DirectCast(Activator.CreateInstance(t, New Object() {Me.m_uic}), IOptionsPage)
-            DirectCast(optionspage, Control).Dock = DockStyle.Fill
+            Dim optionspage As IOptionsPage = Nothing
 
-            Me.m_lPages.Add(optionspage)
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+            Try
+                optionspage = DirectCast(Activator.CreateInstance(t, New Object() {Me.m_uic}), IOptionsPage)
+                DirectCast(optionspage, Control).Dock = DockStyle.Fill
+                Me.m_lPages.Add(optionspage)
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::CreatePage " & t.ToString())
+            End Try
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
-        End Sub
+            Return optionspage
+
+        End Function
 
         Private Function GetPage(ByVal t As Type) As IOptionsPage
 
@@ -100,9 +117,21 @@ Namespace Other
                     Return optionspage
                 End If
             Next
-            Return Nothing
+            Return Me.CreatePage(t)
 
         End Function
+
+        Private Sub SetDefaults()
+
+            Try
+                If Me.m_pageCurrent IsNot Nothing Then
+                    Me.m_pageCurrent.SetDefaults()
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions.SetDefaults(" & Me.m_pageCurrent.GetType().ToString & ")")
+            End Try
+
+        End Sub
 
         Private Sub Apply()
 
@@ -138,6 +167,7 @@ Namespace Other
         Private Sub SelectPage(ByVal strPage As String)
 
             Dim page As IOptionsPage = Me.GetPage(GetType(ucOptionsGeneral))
+            Dim ctrl As Control = Nothing
 
             Me.SuspendLayout()
 
@@ -183,16 +213,35 @@ Namespace Other
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOk.Click
 
-            Me.Apply()
+            Try
+                Me.Apply()
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnOK")
+            End Try
             Me.DialogResult = System.Windows.Forms.DialogResult.OK
             Me.Close()
+
+        End Sub
+
+        Private Sub OnSetDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_btnSetDefaults.Click
+
+            Try
+                Me.SetDefaults()
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnSetDefaults")
+            End Try
 
         End Sub
 
         Private Sub OnApply(ByVal sender As System.Object, ByVal e As System.EventArgs) _
                 Handles m_btnApply.Click
 
-            Me.Apply()
+            Try
+                Me.Apply()
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnApply")
+            End Try
 
         End Sub
 
@@ -207,22 +256,13 @@ Namespace Other
         Private Sub OnSelectedNode(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) _
             Handles m_tvOptions.AfterSelect
 
-            Me.SelectPage(e.Node.Name)
+            If (e.Node Is Nothing) Then Return
 
-        End Sub
-
-        Private Sub dlgOptions_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
-                Handles Me.FormClosing
-
-            ' Bye
-            Me.m_scContent.Panel2.Controls.Clear()
-            Me.m_pageCurrent = Nothing
-
-            ' Manually dispose
-            For Each optionspage As IOptionsPage In Me.m_lPages
-                DirectCast(optionspage, Control).Dispose()
-            Next
-            Me.m_lPages.Clear()
+            Try
+                Me.SelectPage(e.Node.Name)
+            Catch ex As Exception
+                cLog.Write(ex, "dlgOptions::OnSelectedNode(" & e.Node.Name & ")")
+            End Try
 
         End Sub
 

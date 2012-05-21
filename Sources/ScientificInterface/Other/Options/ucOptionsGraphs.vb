@@ -155,9 +155,6 @@ Namespace Other
         Public Sub New(ByVal uic As cUIContext)
 
             Me.InitializeComponent()
-
-            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-
             Me.m_uic = uic
 
             ' Invisible init
@@ -176,6 +173,7 @@ Namespace Other
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+
             MyBase.OnLoad(e)
 
             Me.m_nudThumbnailSize.Value = CDec(Math.Max(Me.m_nudThumbnailSize.Minimum, Math.Min(Me.m_nudThumbnailSize.Maximum, Me.m_uic.StyleGuide.ThumbnailSize)))
@@ -190,6 +188,7 @@ Namespace Other
             End Select
 
             Me.m_lbFontTypes.SelectedIndex = 0
+            Me.m_lblExample.Text = My.Resources.VALUE_PREVIEW
 
         End Sub
 
@@ -207,20 +206,6 @@ Namespace Other
 
             End If
             Me.UpdatePreview()
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler to reset font preferences. 
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnResetFonts(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnResetFonts.Click
-
-            Me.m_uic.StyleGuide.ResetApplicationFonts()
-            Me.FillFontTypesListBox()
-            Me.m_uic.StyleGuide.FontsChanged()
 
         End Sub
 
@@ -321,6 +306,13 @@ Namespace Other
             Return IOptionsPage.eApplyResultType.Success
 
         End Function
+
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+
+            Me.FillFontTypesListBox()
+
+        End Sub
 
 #End Region ' Public methods
 

@@ -112,23 +112,23 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdr1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_hdr1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="m_hdr1.Size" type="System.Drawing.Size, System.Drawing">
     <value>436, 18</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdr1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -142,19 +142,19 @@
     <value>m_hdr1</value>
   </data>
   <data name="&gt;&gt;m_hdr1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdr1.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>15</value>
   </data>
   <data name="m_lblThumbnailSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblThumbnailSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 21</value>
+    <value>9, 77</value>
   </data>
   <data name="m_lblThumbnailSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 13</value>
@@ -169,16 +169,16 @@
     <value>m_lblThumbnailSize</value>
   </data>
   <data name="&gt;&gt;m_lblThumbnailSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblThumbnailSize.Parent" xml:space="preserve">
-    <value>m_gbThumbnails</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblThumbnailSize.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="m_nudThumbnailSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 19</value>
+    <value>108, 75</value>
   </data>
   <data name="m_nudThumbnailSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>80, 20</value>
@@ -190,22 +190,19 @@
     <value>m_nudThumbnailSize</value>
   </data>
   <data name="&gt;&gt;m_nudThumbnailSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudThumbnailSize.Parent" xml:space="preserve">
-    <value>m_gbThumbnails</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudThumbnailSize.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_gbLegends.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>3</value>
   </data>
   <data name="m_rbLegendAlways.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbLegendAlways.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 42</value>
+    <value>12, 44</value>
   </data>
   <data name="m_rbLegendAlways.Size" type="System.Drawing.Size, System.Drawing">
     <value>176, 17</value>
@@ -220,19 +217,19 @@
     <value>m_rbLegendAlways</value>
   </data>
   <data name="&gt;&gt;m_rbLegendAlways.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbLegendAlways.Parent" xml:space="preserve">
-    <value>m_gbLegends</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbLegendAlways.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="m_rbLegendSelective.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_rbLegendSelective.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 19</value>
+    <value>12, 21</value>
   </data>
   <data name="m_rbLegendSelective.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 17</value>
@@ -247,40 +244,13 @@
     <value>m_rbLegendSelective</value>
   </data>
   <data name="&gt;&gt;m_rbLegendSelective.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbLegendSelective.Parent" xml:space="preserve">
-    <value>m_gbLegends</value>
-  </data>
-  <data name="&gt;&gt;m_rbLegendSelective.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_gbLegends.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 21</value>
-  </data>
-  <data name="m_gbLegends.Size" type="System.Drawing.Size, System.Drawing">
-    <value>435, 66</value>
-  </data>
-  <data name="m_gbLegends.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_gbLegends.Text" xml:space="preserve">
-    <value>&amp;Legends</value>
-  </data>
-  <data name="&gt;&gt;m_gbLegends.Name" xml:space="preserve">
-    <value>m_gbLegends</value>
-  </data>
-  <data name="&gt;&gt;m_gbLegends.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbLegends.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_gbLegends.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="m_gbThumbnails.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="&gt;&gt;m_rbLegendSelective.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="m_lblThumbnailUnit.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -289,7 +259,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblThumbnailUnit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>190, 21</value>
+    <value>194, 77</value>
   </data>
   <data name="m_lblThumbnailUnit.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -304,43 +274,19 @@
     <value>m_lblThumbnailUnit</value>
   </data>
   <data name="&gt;&gt;m_lblThumbnailUnit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblThumbnailUnit.Parent" xml:space="preserve">
-    <value>m_gbThumbnails</value>
-  </data>
-  <data name="&gt;&gt;m_lblThumbnailUnit.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_gbThumbnails.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 93</value>
-  </data>
-  <data name="m_gbThumbnails.Size" type="System.Drawing.Size, System.Drawing">
-    <value>433, 48</value>
-  </data>
-  <data name="m_gbThumbnails.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_gbThumbnails.Text" xml:space="preserve">
-    <value>Thumbnails</value>
-  </data>
-  <data name="&gt;&gt;m_gbThumbnails.Name" xml:space="preserve">
-    <value>m_gbThumbnails</value>
-  </data>
-  <data name="&gt;&gt;m_gbThumbnails.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbThumbnails.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_gbThumbnails.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="&gt;&gt;m_lblThumbnailUnit.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="m_nudFontSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_nudFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>359, 221</value>
+    <value>360, 179</value>
   </data>
   <data name="m_nudFontSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 20</value>
@@ -352,13 +298,13 @@
     <value>m_nudFontSize</value>
   </data>
   <data name="&gt;&gt;m_nudFontSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudFontSize.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_nudFontSize.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="m_lblFontSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -370,7 +316,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblFontSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>355, 205</value>
+    <value>356, 163</value>
   </data>
   <data name="m_lblFontSize.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 13</value>
@@ -385,16 +331,16 @@
     <value>m_lblFontSize</value>
   </data>
   <data name="&gt;&gt;m_lblFontSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblFontSize.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblFontSize.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>7</value>
   </data>
   <data name="m_lblExample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+    <value>Top, Right</value>
   </data>
   <data name="m_lblExample.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 12pt, style=Bold</value>
@@ -403,16 +349,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblExample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 16</value>
+    <value>232, 221</value>
   </data>
   <data name="m_lblExample.Size" type="System.Drawing.Size, System.Drawing">
-    <value>199, 29</value>
+    <value>204, 44</value>
   </data>
   <data name="m_lblExample.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="m_lblExample.Text" xml:space="preserve">
-    <value>AaBbCcXxYyZz</value>
   </data>
   <data name="m_lblExample.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -421,10 +364,10 @@
     <value>m_lblExample</value>
   </data>
   <data name="&gt;&gt;m_lblExample.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblExample.Parent" xml:space="preserve">
-    <value>m_gbxExample</value>
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblExample.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -432,14 +375,11 @@
   <data name="m_hdr2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="m_hdr2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
   <data name="m_hdr2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_hdr2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-2, 144</value>
+    <value>0, 102</value>
   </data>
   <data name="m_hdr2.Size" type="System.Drawing.Size, System.Drawing">
     <value>436, 18</value>
@@ -457,40 +397,13 @@
     <value>m_hdr2</value>
   </data>
   <data name="&gt;&gt;m_hdr2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdr2.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_gbxExample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_gbxExample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>230, 247</value>
-  </data>
-  <data name="m_gbxExample.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 48</value>
-  </data>
-  <data name="m_gbxExample.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="m_gbxExample.Text" xml:space="preserve">
-    <value>Example</value>
-  </data>
-  <data name="&gt;&gt;m_gbxExample.Name" xml:space="preserve">
-    <value>m_gbxExample</value>
-  </data>
-  <data name="&gt;&gt;m_gbxExample.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_gbxExample.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_gbxExample.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>8</value>
   </data>
   <data name="m_cbFontStyle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -508,7 +421,7 @@
     <value>Bold Italic</value>
   </data>
   <data name="m_cbFontStyle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>230, 220</value>
+    <value>231, 178</value>
   </data>
   <data name="m_cbFontStyle.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>17</value>
@@ -523,13 +436,13 @@
     <value>m_cbFontStyle</value>
   </data>
   <data name="&gt;&gt;m_cbFontStyle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbFontStyle.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbFontStyle.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="m_lblItemFontStyle.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -541,7 +454,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblItemFontStyle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>233, 204</value>
+    <value>228, 162</value>
   </data>
   <data name="m_lblItemFontStyle.Size" type="System.Drawing.Size, System.Drawing">
     <value>55, 13</value>
@@ -556,19 +469,19 @@
     <value>m_lblItemFontStyle</value>
   </data>
   <data name="&gt;&gt;m_lblItemFontStyle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblItemFontStyle.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblItemFontStyle.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>11</value>
   </data>
   <data name="m_cbFontFamily.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_cbFontFamily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>230, 181</value>
+    <value>231, 139</value>
   </data>
   <data name="m_cbFontFamily.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>17</value>
@@ -583,13 +496,13 @@
     <value>m_cbFontFamily</value>
   </data>
   <data name="&gt;&gt;m_cbFontFamily.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cbFontFamily.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbFontFamily.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>12</value>
   </data>
   <data name="lblItemForeColor.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -601,7 +514,7 @@
     <value>NoControl</value>
   </data>
   <data name="lblItemForeColor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 165</value>
+    <value>228, 123</value>
   </data>
   <data name="lblItemForeColor.Size" type="System.Drawing.Size, System.Drawing">
     <value>51, 13</value>
@@ -616,46 +529,13 @@
     <value>lblItemForeColor</value>
   </data>
   <data name="&gt;&gt;lblItemForeColor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lblItemForeColor.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lblItemForeColor.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="m_btnResetFonts.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_btnResetFonts.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
-  <data name="m_btnResetFonts.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnResetFonts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 319</value>
-  </data>
-  <data name="m_btnResetFonts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>204, 23</value>
-  </data>
-  <data name="m_btnResetFonts.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="m_btnResetFonts.Text" xml:space="preserve">
-    <value>&amp;Reset fonts</value>
-  </data>
-  <data name="&gt;&gt;m_btnResetFonts.Name" xml:space="preserve">
-    <value>m_btnResetFonts</value>
-  </data>
-  <data name="&gt;&gt;m_btnResetFonts.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnResetFonts.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnResetFonts.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>13</value>
   </data>
   <data name="m_lbFontTypes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -664,10 +544,10 @@
     <value>False</value>
   </data>
   <data name="m_lbFontTypes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 165</value>
+    <value>0, 123</value>
   </data>
   <data name="m_lbFontTypes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>226, 177</value>
+    <value>226, 219</value>
   </data>
   <data name="m_lbFontTypes.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -676,15 +556,48 @@
     <value>m_lbFontTypes</value>
   </data>
   <data name="&gt;&gt;m_lbFontTypes.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lbFontTypes.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lbFontTypes.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>14</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="Label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>228, 206</value>
+  </data>
+  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 13</value>
+  </data>
+  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Preview:</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -694,9 +607,9 @@
     <value>436, 342</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ucAppGraphs</value>
+    <value>ucOptionsGraphs</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

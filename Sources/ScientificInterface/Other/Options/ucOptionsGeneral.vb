@@ -140,6 +140,31 @@ Namespace Other
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Reset all values
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+
+            Try
+                Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
+                Me.m_nudMaxNumMessages.Value = CInt(My.Settings.GetDefaultValue("StatusMaxMessages"))
+                Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
+                Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
+                Me.m_cbDownloadUpdates.Checked = CBool(My.Settings.GetDefaultValue("AutoUpdatePlugins"))
+                Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(CDec(My.Settings.GetDefaultValue("UpdatePluginsTimeout")) / 1000)))
+                Me.m_cbShowHost.Checked = CBool(My.Settings.GetDefaultValue("ShowHostInfo"))
+                Me.m_cbShowTime.Checked = CBool(My.Settings.GetDefaultValue("StatusShowTime"))
+                Me.m_fpVerboseLevel.Value = My.Settings.GetDefaultValue("LogVerboseLevel")
+                Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
 #End Region ' Public access
 
 #Region " Event handlers "
@@ -196,20 +221,6 @@ Namespace Other
             Handles m_tbBackupMask.TextChanged, m_tbOutputMask.TextChanged
 
             Me.UpdateControls()
-
-        End Sub
-
-        Private Sub OnDefaults(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDefaults.Click
-
-            ' Better protect this code in case settings property names change
-            Try
-                Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
-                Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
-                Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
-            Catch ex As Exception
-
-            End Try
 
         End Sub
 

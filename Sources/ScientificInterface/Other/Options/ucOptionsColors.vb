@@ -501,7 +501,7 @@ Namespace Other
             MyBase.OnLoad(e)
 
             Me.FillColorItemsList()
- 
+
         End Sub
 
         Private Sub OnColorSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -581,8 +581,8 @@ Namespace Other
         ''' Event handler to set the color prefrence to default colors. 
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub btnUseDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnResetAll.Click
+        Private Sub btnUseDefault_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
 
             Dim sel As ListView.SelectedIndexCollection = Me.m_lvItems.SelectedIndices
             Me.m_uic.StyleGuide.ResetApplicationColors()
@@ -694,6 +694,23 @@ Namespace Other
             Return IOptionsPage.eApplyResultType.Success
 
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Reset all colours
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+
+            Dim sel As ListView.SelectedIndexCollection = Me.m_lvItems.SelectedIndices
+            Me.m_uic.StyleGuide.ResetApplicationColors()
+            Me.FillColorItemsList()
+            For Each i As Integer In sel
+                Me.m_lvItems.Items(i).Selected = True
+            Next
+
+        End Sub
 
 #End Region ' Public methods
 

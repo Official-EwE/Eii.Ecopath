@@ -41,35 +41,32 @@ Namespace Other
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGraphs))
-            Me.m_hdr1 = New cEwEHeaderLabel
-            Me.m_lblThumbnailSize = New System.Windows.Forms.Label
-            Me.m_nudThumbnailSize = New cEwENumericUpDown
-            Me.m_gbLegends = New System.Windows.Forms.GroupBox
-            Me.m_rbLegendAlways = New System.Windows.Forms.RadioButton
-            Me.m_rbLegendSelective = New System.Windows.Forms.RadioButton
-            Me.m_gbThumbnails = New System.Windows.Forms.GroupBox
-            Me.m_lblThumbnailUnit = New System.Windows.Forms.Label
-            Me.m_nudFontSize = New cEwENumericUpDown
-            Me.m_lblFontSize = New System.Windows.Forms.Label
-            Me.m_lblExample = New System.Windows.Forms.Label
-            Me.m_hdr2 = New cEwEHeaderLabel
-            Me.m_gbxExample = New System.Windows.Forms.GroupBox
-            Me.m_cbFontStyle = New System.Windows.Forms.ComboBox
-            Me.m_lblItemFontStyle = New System.Windows.Forms.Label
-            Me.m_cbFontFamily = New System.Windows.Forms.ComboBox
-            Me.lblItemForeColor = New System.Windows.Forms.Label
-            Me.m_btnResetFonts = New System.Windows.Forms.Button
-            Me.m_lbFontTypes = New System.Windows.Forms.ListBox
+            Me.m_hdr1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblThumbnailSize = New System.Windows.Forms.Label()
+            Me.m_nudThumbnailSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_rbLegendAlways = New System.Windows.Forms.RadioButton()
+            Me.m_rbLegendSelective = New System.Windows.Forms.RadioButton()
+            Me.m_lblThumbnailUnit = New System.Windows.Forms.Label()
+            Me.m_nudFontSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblFontSize = New System.Windows.Forms.Label()
+            Me.m_lblExample = New System.Windows.Forms.Label()
+            Me.m_hdr2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_cbFontStyle = New System.Windows.Forms.ComboBox()
+            Me.m_lblItemFontStyle = New System.Windows.Forms.Label()
+            Me.m_cbFontFamily = New System.Windows.Forms.ComboBox()
+            Me.lblItemForeColor = New System.Windows.Forms.Label()
+            Me.m_lbFontTypes = New System.Windows.Forms.ListBox()
+            Me.Label1 = New System.Windows.Forms.Label()
             CType(Me.m_nudThumbnailSize, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_gbLegends.SuspendLayout()
-            Me.m_gbThumbnails.SuspendLayout()
             CType(Me.m_nudFontSize, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_gbxExample.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_hdr1
             '
+            Me.m_hdr1.CanCollapseParent = False
+            Me.m_hdr1.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdr1, "m_hdr1")
+            Me.m_hdr1.IsCollapsed = False
             Me.m_hdr1.Name = "m_hdr1"
             '
             'm_lblThumbnailSize
@@ -85,14 +82,6 @@ Namespace Other
             Me.m_nudThumbnailSize.Name = "m_nudThumbnailSize"
             Me.m_nudThumbnailSize.Value = New Decimal(New Integer() {32, 0, 0, 0})
             '
-            'm_gbLegends
-            '
-            resources.ApplyResources(Me.m_gbLegends, "m_gbLegends")
-            Me.m_gbLegends.Controls.Add(Me.m_rbLegendAlways)
-            Me.m_gbLegends.Controls.Add(Me.m_rbLegendSelective)
-            Me.m_gbLegends.Name = "m_gbLegends"
-            Me.m_gbLegends.TabStop = False
-            '
             'm_rbLegendAlways
             '
             resources.ApplyResources(Me.m_rbLegendAlways, "m_rbLegendAlways")
@@ -106,15 +95,6 @@ Namespace Other
             Me.m_rbLegendSelective.Name = "m_rbLegendSelective"
             Me.m_rbLegendSelective.TabStop = True
             Me.m_rbLegendSelective.UseVisualStyleBackColor = True
-            '
-            'm_gbThumbnails
-            '
-            resources.ApplyResources(Me.m_gbThumbnails, "m_gbThumbnails")
-            Me.m_gbThumbnails.Controls.Add(Me.m_lblThumbnailUnit)
-            Me.m_gbThumbnails.Controls.Add(Me.m_lblThumbnailSize)
-            Me.m_gbThumbnails.Controls.Add(Me.m_nudThumbnailSize)
-            Me.m_gbThumbnails.Name = "m_gbThumbnails"
-            Me.m_gbThumbnails.TabStop = False
             '
             'm_lblThumbnailUnit
             '
@@ -138,19 +118,16 @@ Namespace Other
             'm_lblExample
             '
             resources.ApplyResources(Me.m_lblExample, "m_lblExample")
+            Me.m_lblExample.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_lblExample.Name = "m_lblExample"
             '
             'm_hdr2
             '
             resources.ApplyResources(Me.m_hdr2, "m_hdr2")
+            Me.m_hdr2.CanCollapseParent = False
+            Me.m_hdr2.CollapsedParentHeight = 0
+            Me.m_hdr2.IsCollapsed = False
             Me.m_hdr2.Name = "m_hdr2"
-            '
-            'm_gbxExample
-            '
-            resources.ApplyResources(Me.m_gbxExample, "m_gbxExample")
-            Me.m_gbxExample.Controls.Add(Me.m_lblExample)
-            Me.m_gbxExample.Name = "m_gbxExample"
-            Me.m_gbxExample.TabStop = False
             '
             'm_cbFontStyle
             '
@@ -179,65 +156,59 @@ Namespace Other
             resources.ApplyResources(Me.lblItemForeColor, "lblItemForeColor")
             Me.lblItemForeColor.Name = "lblItemForeColor"
             '
-            'm_btnResetFonts
-            '
-            resources.ApplyResources(Me.m_btnResetFonts, "m_btnResetFonts")
-            Me.m_btnResetFonts.Name = "m_btnResetFonts"
-            Me.m_btnResetFonts.UseVisualStyleBackColor = True
-            '
             'm_lbFontTypes
             '
             resources.ApplyResources(Me.m_lbFontTypes, "m_lbFontTypes")
             Me.m_lbFontTypes.Name = "m_lbFontTypes"
             '
-            'ucAppGraphs
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'ucOptionsGraphs
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_lblExample)
+            Me.Controls.Add(Me.m_lblThumbnailUnit)
+            Me.Controls.Add(Me.m_rbLegendAlways)
+            Me.Controls.Add(Me.m_nudThumbnailSize)
+            Me.Controls.Add(Me.m_lblThumbnailSize)
             Me.Controls.Add(Me.m_nudFontSize)
+            Me.Controls.Add(Me.m_rbLegendSelective)
             Me.Controls.Add(Me.m_lblFontSize)
             Me.Controls.Add(Me.m_hdr2)
-            Me.Controls.Add(Me.m_gbxExample)
             Me.Controls.Add(Me.m_cbFontStyle)
+            Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_lblItemFontStyle)
             Me.Controls.Add(Me.m_cbFontFamily)
             Me.Controls.Add(Me.lblItemForeColor)
-            Me.Controls.Add(Me.m_btnResetFonts)
             Me.Controls.Add(Me.m_lbFontTypes)
-            Me.Controls.Add(Me.m_gbThumbnails)
-            Me.Controls.Add(Me.m_gbLegends)
             Me.Controls.Add(Me.m_hdr1)
-            Me.Name = "ucAppGraphs"
+            Me.Name = "ucOptionsGraphs"
             CType(Me.m_nudThumbnailSize, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_gbLegends.ResumeLayout(False)
-            Me.m_gbLegends.PerformLayout()
-            Me.m_gbThumbnails.ResumeLayout(False)
-            Me.m_gbThumbnails.PerformLayout()
             CType(Me.m_nudFontSize, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_gbxExample.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_nudThumbnailSize As System.Windows.Forms.NumericUpDown
         Private WithEvents m_hdr1 As cEwEHeaderLabel
         Private WithEvents m_lblThumbnailSize As System.Windows.Forms.Label
-        Private WithEvents m_gbLegends As System.Windows.Forms.GroupBox
         Private WithEvents m_rbLegendAlways As System.Windows.Forms.RadioButton
         Private WithEvents m_rbLegendSelective As System.Windows.Forms.RadioButton
-        Private WithEvents m_gbThumbnails As System.Windows.Forms.GroupBox
         Private WithEvents m_lblThumbnailUnit As System.Windows.Forms.Label
-        Private WithEvents m_nudFontSize As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblFontSize As System.Windows.Forms.Label
         Private WithEvents m_lblExample As System.Windows.Forms.Label
         Private WithEvents m_hdr2 As cEwEHeaderLabel
-        Private WithEvents m_gbxExample As System.Windows.Forms.GroupBox
         Private WithEvents m_lblItemFontStyle As System.Windows.Forms.Label
         Private WithEvents m_cbFontFamily As System.Windows.Forms.ComboBox
         Private WithEvents lblItemForeColor As System.Windows.Forms.Label
-        Private WithEvents m_btnResetFonts As System.Windows.Forms.Button
         Private WithEvents m_lbFontTypes As System.Windows.Forms.ListBox
         Private WithEvents m_cbFontStyle As System.Windows.Forms.ComboBox
+        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_nudThumbnailSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudFontSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 End Namespace

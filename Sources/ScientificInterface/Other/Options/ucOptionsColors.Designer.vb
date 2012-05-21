@@ -41,7 +41,6 @@ Namespace Other
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsColors))
-            Me.m_btnResetAll = New System.Windows.Forms.Button()
             Me.m_lblItemForeColor = New System.Windows.Forms.Label()
             Me.m_cmbItemForeground = New System.Windows.Forms.ComboBox()
             Me.m_lblItemBackColor = New System.Windows.Forms.Label()
@@ -56,12 +55,6 @@ Namespace Other
             Me.m_colItem = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.m_colDesc = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
             Me.SuspendLayout()
-            '
-            'm_btnResetAll
-            '
-            resources.ApplyResources(Me.m_btnResetAll, "m_btnResetAll")
-            Me.m_btnResetAll.Name = "m_btnResetAll"
-            Me.m_btnResetAll.UseVisualStyleBackColor = True
             '
             'm_lblItemForeColor
             '
@@ -162,13 +155,11 @@ Namespace Other
             Me.Controls.Add(Me.m_cmbItemForeground)
             Me.Controls.Add(Me.m_lblColorItem)
             Me.Controls.Add(Me.m_lblItemForeColor)
-            Me.Controls.Add(Me.m_btnResetAll)
             Me.Name = "ucOptionsColors"
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_btnResetAll As System.Windows.Forms.Button
         Private WithEvents m_lblItemForeColor As System.Windows.Forms.Label
         Private WithEvents m_cmbItemForeground As System.Windows.Forms.ComboBox
         Private WithEvents m_lblItemBackColor As System.Windows.Forms.Label

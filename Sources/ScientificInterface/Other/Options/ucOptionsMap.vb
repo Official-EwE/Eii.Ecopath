@@ -215,6 +215,20 @@ Namespace Other
 
         End Function
 
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+
+            Try
+                Me.m_nudNorth.Value = CDec(My.Settings.GetDefaultValue("MapLayerRefLatMax"))
+                Me.m_nudSouth.Value = CDec(My.Settings.GetDefaultValue("MapLayerRefLatMin"))
+                Me.m_nudEast.Value = CDec(My.Settings.GetDefaultValue("MapLayerRefLonMax"))
+                Me.m_nudWest.Value = CDec(My.Settings.GetDefaultValue("MapLayerRefLonMin"))
+                Me.m_tbxFile.Text = CStr(My.Settings.GetDefaultValue("MapLayerRefFile"))
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Public methods
 
 #Region " Helper methods "

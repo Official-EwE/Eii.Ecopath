@@ -22,6 +22,7 @@ Option Strict On
 
 Imports System.IO
 Imports WeifenLuo.WinFormsUI
+Imports EwECore
 
 #End Region
 
@@ -72,6 +73,20 @@ Namespace Other
             Return IOptionsPage.eApplyResultType.Success
 
         End Function
+
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+
+            Try
+                Me.m_cbHideModelBar.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeHideModelBar"))
+                Me.m_cbHideMainMenu.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeHideMainMenu"))
+                Me.m_cbHideStatusBar.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeHideStatusBar"))
+                Me.m_cbCollapseNavPanel.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeCollapseNavPanel"))
+            Catch ex As Exception
+                cLog.Write(ex, "ucOptionsPresentation::SetDefaults")
+            End Try
+
+        End Sub
 
 #End Region ' Public access
 
