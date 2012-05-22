@@ -172,10 +172,22 @@ Namespace SpatialData
             If (Not Me.m_bLogStarted) Then
                 ' Write header
                 Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, Me.m_core.EcospaceOutputFileLocation("SpatialOperations", "", ".txt"))
+
+                Try
+                    Dim strPath As String = Path.GetDirectoryName(Me.m_strLogFileName)
+                    If Not Directory.Exists(strPath) Then
+                        Directory.CreateDirectory(strPath)
+                    End If
+                Catch ex As Exception
+                    cLog.Write(ex, "cSpatialOperationsLog::WriteMessage")
+                    Return
+                End Try
+
                 sb.AppendLine("Ecospace spatial operations log")
                 sb.AppendLine("EwE version, " & cCore.Version)
                 sb.AppendLine("Run date, " & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
                 sb.AppendLine()
+
             End If
 
             sb.AppendLine(Me.m_msgCurrent.Message)
