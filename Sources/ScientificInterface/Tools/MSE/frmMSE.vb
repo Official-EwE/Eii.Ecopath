@@ -53,7 +53,7 @@ Public Class frmMSE
 
     Private m_fpNTrials As cPropertyFormatProvider
     Private m_fpStartYear As cPropertyFormatProvider
-    Private m_fpSave As cPropertyFormatProvider
+    'Private m_fpSave As cPropertyFormatProvider
 
     Private m_paneMaster As MasterPane = Nothing
     Private m_curState As eMSEStates
@@ -69,42 +69,6 @@ Public Class frmMSE
         Me.InitializeComponent()
     End Sub
 
-    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
-        If Me.m_MSE.isConnected Then
-            Dim bstopped As Boolean
-            bstopped = Me.m_MSE.StopRun(10000)
-            ' Debug.Assert(bstopped, "MSE interface failed to stop a running MSE Model!")
-            Me.onMSECompleted()
-        End If
-
-        Me.m_plotter.Detach()
-
-        Me.m_fpNTrials.Release()
-        Me.m_fpStartYear.Release()
-        Me.m_fpSave.Release()
-
-        Me.m_fpNTrials = Nothing
-        Me.m_fpStartYear = Nothing
-        Me.m_fpSave = Nothing
-
-        ' Show/Hide Groups
-        Dim cmdh As cCommandHandler = Me.CommandHandler
-        Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
-        If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.RemoveControl(Me.m_btnShowHide)
-        End If
-
-        RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
-        RemoveHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
-
-        Me.m_MSE.Disconnect()
-        Me.m_coreMessage.Dispose() ' = Nothing
-
-        MyBase.OnFormClosed(e)
-
-    End Sub
-
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
@@ -114,11 +78,10 @@ Public Class frmMSE
 
         Me.m_fpNTrials = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumTrials, Me.m_MSE.ModelParameters, eVarNameFlags.MSENTrials)
         Me.m_fpStartYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudStartYear, Me.m_MSE.ModelParameters, eVarNameFlags.MSEStartYear)
-        Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.m_ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
 
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective, eCoreComponentType.Core}
 
-        Me.m_coreMessage = New cMSEEventSource
+        Me.m_coreMessage = New cMSEEventSource()
 
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
@@ -136,9 +99,43 @@ Public Class frmMSE
         Me.m_plotter.PlotType = ePlotTypes.Line
         Me.m_plotter.DataType = ePlotData.Biomass
 
+        Me.m_ckSave.Checked = Me.Core.Autosave(eAutosaveTypes.MSE)
         Me.UpdateControls(eMSEStates.InActive)
 
         Me.initGraphs()
+
+    End Sub
+
+    Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+
+        If Me.m_MSE.isConnected Then
+            Dim bstopped As Boolean
+            bstopped = Me.m_MSE.StopRun(10000)
+            ' Debug.Assert(bstopped, "MSE interface failed to stop a running MSE Model!")
+            Me.onMSECompleted()
+        End If
+
+        Me.m_plotter.Detach()
+
+        Me.m_fpNTrials.Release()
+        Me.m_fpNTrials = Nothing
+        Me.m_fpStartYear.Release()
+        Me.m_fpStartYear = Nothing
+
+        ' Show/Hide Groups
+        Dim cmdh As cCommandHandler = Me.CommandHandler
+        Dim cmd As cCommand = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+        If Not Object.ReferenceEquals(cmd, Nothing) Then
+            cmd.RemoveControl(Me.m_btnShowHide)
+        End If
+
+        RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
+        RemoveHandler Me.m_coreMessage.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
+
+        Me.m_MSE.Disconnect()
+        Me.m_coreMessage.Dispose() ' = Nothing
+
+        MyBase.OnFormClosed(e)
 
     End Sub
 
@@ -172,6 +169,11 @@ Public Class frmMSE
 
         Me.m_coreMessage.HandleCoreMessage(msg)
 
+        ' Ugh
+        If (msg.Source = eCoreComponentType.Core And msg.Type = eMessageType.GlobalSettingsChanged) Then
+            Me.m_ckSave.Checked = Me.Core.Autosave(eAutosaveTypes.MSE)
+        End If
+
     End Sub
 
 #End Region
@@ -182,7 +184,9 @@ Public Class frmMSE
 
         Try
             If Me.m_MSE.ValidateRun() Then
+
                 Me.m_MSE.Connect(AddressOf Me.onMSECallBack, Nothing)
+                Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopMSE))
 
                 cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_MSE_INITIALIZING)
 
@@ -199,11 +203,15 @@ Public Class frmMSE
 
     End Sub
 
+    Private Sub StopMSE()
+        Me.m_MSE.StopRun(0)
+    End Sub
 
     Private Sub onMSECompleted()
 
         cApplicationStatusNotifier.EndProgress(Me.Core)
         Me.m_MSE.Disconnect()
+        Me.Core.SetStopRunDelegate(Nothing)
 
     End Sub
 
@@ -305,10 +313,20 @@ Public Class frmMSE
 
     End Sub
 
-
     Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_btnStop.Click
-        Me.m_MSE.StopRun(0)
+        Try
+            Me.StopMSE()
+        Catch ex As Exception
+        End Try
+    End Sub
+
+    Private Sub OnSaveClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_ckSave.Click
+        Try
+            Me.Core.Autosave(eAutosaveTypes.MSE) = Me.m_ckSave.Checked
+        Catch ex As Exception
+        End Try
     End Sub
 
 #End Region

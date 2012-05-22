@@ -421,7 +421,7 @@ Namespace MSE
                     ds.EnableData(New cEcosimRunType) = Me.m_orgUsePlugin
                 End If
 
-                If Me.m_data.SaveOutput Then
+                If Me.m_core.Autosave(eAutosaveTypes.MSE) Then
                     If Me.m_lstData IsNot Nothing Then
                         Me.m_lstData.Clear()
                         Me.m_lstData = Nothing
@@ -440,7 +440,7 @@ Namespace MSE
 
         Private Sub InitResults()
             Try
-                If Not Me.m_data.SaveOutput Then Return
+                If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
                 If Me.m_lstData IsNot Nothing Then
                     Me.m_lstData.Clear()
@@ -1534,7 +1534,7 @@ Namespace MSE
         Private Sub StoreQuotas(ByVal QuotaT() As Single)
             Dim igrp As Integer
 
-            If Not Me.m_data.SaveOutput Then Exit Sub
+            If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
             Try
 

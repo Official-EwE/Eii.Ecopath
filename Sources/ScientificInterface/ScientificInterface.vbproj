@@ -296,6 +296,12 @@
     <Compile Include="Other\Options\ucOptionsPlugins.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Other\Options\ucOptionsAutosave.Designer.vb">
+      <DependentUpon>ucOptionsAutosave.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsAutosave.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Tools\MSEBatch\gridMSEBatchFixedFIter.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -901,6 +907,9 @@
     <EmbeddedResource Include="Ecosim\Output\RunEcosim.resx">
       <DependentUpon>RunEcosim.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsAutosave.resx">
+      <DependentUpon>ucOptionsAutosave.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\StatusPanel\frmStatusPanel.resx">
       <DependentUpon>frmStatusPanel.vb</DependentUpon>

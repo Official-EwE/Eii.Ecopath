@@ -43,7 +43,6 @@ Namespace Other
         Private m_lPages As New List(Of IOptionsPage)
         ''' <summary>Current page.</summary>
         Private m_pageCurrent As IOptionsPage = Nothing
-
         ' ToDo: track changes in pages, and only show prompts after changes occurred. Not very important right now.
         Private m_bHasFiredPrompt As Boolean = False
 
@@ -51,22 +50,17 @@ Namespace Other
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(ByVal uic As cUIContext, Optional opt As eApplicationOptionTypes = eApplicationOptionTypes.General)
 
             Me.m_uic = uic
             Me.InitializeComponent()
+            Me.SelectPage(Me.GetPage(ToPageType(opt)))
 
         End Sub
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
-
-            ''For Each nodeChild As TreeNode In Me.m_tvOptions.Nodes
-            ''    Me.ExpandNode(nodeChild)
-            ''Next
             Me.m_tvOptions.ExpandAll()
-            Me.SelectPage("")
-
         End Sub
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
@@ -84,6 +78,7 @@ Namespace Other
             MyBase.OnFormClosed(e)
 
         End Sub
+
 #End Region ' Constructor
 
 #Region " Internals "
@@ -111,6 +106,9 @@ Namespace Other
         End Function
 
         Private Function GetPage(ByVal t As Type) As IOptionsPage
+
+            ' Saniiy check - if this fails something is really wrong
+            Debug.Assert(t IsNot Nothing, "Page type not know, cannot continue")
 
             For Each optionspage As IOptionsPage In Me.m_lPages
                 If optionspage.GetType().Equals(t) Then
@@ -164,29 +162,9 @@ Namespace Other
 
         End Sub
 
-        Private Sub SelectPage(ByVal strPage As String)
+        Private Sub SelectPage(ByVal page As IOptionsPage)
 
-            Dim page As IOptionsPage = Me.GetPage(GetType(ucOptionsGeneral))
-            Dim ctrl As Control = Nothing
-
-            Me.SuspendLayout()
-
-            Select Case strPage
-                Case "", "ndGeneral"
-                    ' NOP
-                Case "ndPresentation"
-                    page = Me.GetPage(GetType(ucOptionsPresentation))
-                Case "ndDisplay", "ndColors"
-                    page = Me.GetPage(GetType(ucOptionsColors))
-                Case "ndGraphCharts"
-                    page = Me.GetPage(GetType(ucOptionsGraphs))
-                Case "ndPlugins"
-                    page = Me.GetPage(GetType(ucOptionsPlugins))
-                Case "ndMap"
-                    page = Me.GetPage(GetType(ucOptionsMap))
-                Case Else
-                    Debug.Assert(False, "Invalid node selected")
-            End Select
+             Me.SuspendLayout()
 
             ' Optimization
             If Object.ReferenceEquals(page, Me.m_pageCurrent) Then Return
@@ -197,6 +175,7 @@ Namespace Other
             Me.m_scContent.Panel2.Controls.Add(DirectCast(Me.m_pageCurrent, Control))
 
             Me.ResumeLayout()
+
         End Sub
 
         Private Sub ExpandNode(ByVal node As TreeNode)
@@ -257,9 +236,14 @@ Namespace Other
             Handles m_tvOptions.AfterSelect
 
             If (e.Node Is Nothing) Then Return
+            ' Suppress auto-select event when dialog initializes (indicated by unknown action), 
+            ' because this will switch away from the page that was selected at launch.
+            If (e.Action = TreeViewAction.Unknown) Then Return
 
             Try
-                Me.SelectPage(e.Node.Name)
+                Dim t As Type = Me.ToPageType(e.Node.Name)
+                Dim page As IOptionsPage = Me.GetPage(t)
+                Me.SelectPage(page)
             Catch ex As Exception
                 cLog.Write(ex, "dlgOptions::OnSelectedNode(" & e.Node.Name & ")")
             End Try
@@ -267,6 +251,69 @@ Namespace Other
         End Sub
 
 #End Region ' Event handlers
+
+#Region " Internals "
+
+        Private Function ToPageType(strNodeName As String) As Type
+
+            Dim t As Type = GetType(ucOptionsGeneral)
+            Select Case strNodeName
+                Case "", "ndGeneral" : t = GetType(ucOptionsGeneral)
+                Case "ndAutosave" : t = GetType(ucOptionsAutosave)
+                Case "ndPresentation" : t = GetType(ucOptionsPresentation)
+                Case "ndDisplay", "ndColors" : t = GetType(ucOptionsColors)
+                Case "ndGraphCharts" : t = GetType(ucOptionsGraphs)
+                Case "ndPlugins" : t = GetType(ucOptionsPlugins)
+                Case "ndMap" : t = GetType(ucOptionsMap)
+                Case Else
+                    Debug.Assert(False, "Node name not recognized")
+            End Select
+            Return t
+        End Function
+
+        Private Function ToPageType(opt As eApplicationOptionTypes) As Type
+
+            Dim t As Type = GetType(ucOptionsGeneral)
+            Dim strNode As String = "ndGeneral"
+
+            Select Case opt
+                Case eApplicationOptionTypes.General, _
+                     eApplicationOptionTypes.Messages
+
+                Case eApplicationOptionTypes.PresentationMode
+                    t = GetType(ucOptionsPresentation)
+                    strNode = "ndPresentation"
+
+                Case eApplicationOptionTypes.Colours
+                    t = GetType(ucOptionsColors)
+                    strNode = "ndColors"
+
+                Case eApplicationOptionTypes.Graphs, _
+                     eApplicationOptionTypes.Fonts
+                    t = GetType(ucOptionsGraphs)
+                    strNode = "ndGraphCharts"
+
+                Case eApplicationOptionTypes.Maps
+                    t = GetType(ucOptionsMap)
+                    strNode = "ndMap"
+
+                Case eApplicationOptionTypes.Autosave
+                    t = GetType(ucOptionsAutosave)
+                    strNode = "ndAutosave"
+
+                Case eApplicationOptionTypes.Plugins
+                    t = GetType(ucOptionsPlugins)
+                    strNode = "ndPlugins"
+
+                Case Else
+                    Debug.Assert(False, "Option not recognized")
+            End Select
+
+            Me.m_tvOptions.SelectedNode = Me.m_tvOptions.Nodes.Find(strNode, True)(0)
+            Return t
+        End Function
+
+#End Region ' Internals 
 
     End Class
 

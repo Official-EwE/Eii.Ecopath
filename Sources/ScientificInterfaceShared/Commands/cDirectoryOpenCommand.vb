@@ -27,7 +27,7 @@ Namespace Commands
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Generic command to launch an interface to select an 'open file' location.
+    ''' Command to launch a directory selection interface.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cDirectoryOpenCommand
@@ -53,6 +53,7 @@ Namespace Commands
         ''' <summary>
         ''' Constructor, initializes a new instance of the NavigationCommand class.
         ''' </summary>
+        ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal cmdh As cCommandHandler)
             MyBase.New(cmdh, COMMAND_NAME)

@@ -57,11 +57,7 @@ Namespace Ecospace
         Private m_fpUseExact As cEwEFormatProvider = Nothing
 
         Private m_fpMovePackets As cEwEFormatProvider = Nothing
-
         Private WithEvents m_bpConTracing As cBooleanProperty = Nothing
-
-        Private m_fpSaveCSV As cEwEFormatProvider = Nothing
-        Private m_fpSaveASC As cEwEFormatProvider = Nothing
 
         ' Properties to monitor for setting radio button check states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
@@ -82,7 +78,7 @@ Namespace Ecospace
             MyBase.OnLoad(e)
 
             Me.InitContent()
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -96,8 +92,6 @@ Namespace Ecospace
             Me.m_fpScenarioDescription.Release()
             Me.m_fpAuthor.Release()
             Me.m_fpContact.Release()
-            Me.m_fpSaveCSV.Release()
-            Me.m_fpSaveASC.Release()
 
             Me.m_fpNumThreads.Release()
             Me.m_fpNumThreads2.Release()
@@ -157,11 +151,6 @@ Namespace Ecospace
 
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, ecospaceModelParams, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
 
-            Me.m_fpSaveCSV = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveCSV, ecospaceModelParams, eVarNameFlags.EcospaceSaveCSV)
-            Me.m_fpSaveASC = New cPropertyFormatProvider(Me.UIContext, Me.m_cbSaveASC, ecospaceModelParams, eVarNameFlags.EcospaceSaveASC)
-
-            'Me.m_fpUseRelTime = New cPropertyFormatProvider(Me.UIContext, Me.m_chkUseRelativeTime, ecospaceModelParams, eVarNameFlags.UseRelativeTime)
-
             Me.UpdateScenarioFormatProviders()
 
         End Sub
@@ -214,6 +203,9 @@ Namespace Ecospace
             Me.m_rbCapHap.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.CapacityAndHabitat)
             Me.m_rbCap.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Capacity)
             Me.m_rbHab.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
+
+            Me.m_cbSaveASC.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceASC)
+            Me.m_cbSaveCSV.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceCSV)
 
         End Sub
 
@@ -347,6 +339,22 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnSaveCSVClicked(sender As Object, e As EventArgs) Handles m_cbSaveCSV.Click
+            Try
+                Me.Core.Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSaveCSV.Checked
+            Catch ex As Exception
+                ' Ouch
+            End Try
+        End Sub
+
+        Private Sub OnSaveASCIIClicked(sender As Object, e As EventArgs) Handles m_cbSaveASC.Click
+            Try
+                Me.Core.Autosave(eAutosaveTypes.EcospaceASC) = Me.m_cbSaveASC.Checked
+            Catch ex As Exception
+                ' Ouch
+            End Try
+        End Sub
+
 #End Region ' Control events
 
 #Region " Overrides "
@@ -355,6 +363,9 @@ Namespace Ecospace
             If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 ' Reload
                 Me.InitContent()
+            End If
+            If ((msg.Source = eCoreComponentType.Core) And (msg.Type = eMessageType.GlobalSettingsChanged)) Then
+                Me.UpdateControls()
             End If
         End Sub
 

@@ -209,7 +209,7 @@ Public Class cEwEStatusBar
                 Dim man As cSpatialDataConnectionManager = core.SpatialDataConnectionManager
                 If man.NumConnectedAdapters > 0 Then
                     strName = String.Format(SharedResources.GENERIC_LABEL_DETAILED, spaceScenario.Name, _
-                                            String.Format("{0} connections", man.NumConnectedAdapters.ToString()))
+                                            String.Format(My.Resources.STATUSSTRIP_ECOSPACE_CONNECTIONS, man.NumConnectedAdapters))
                 Else
                     strName = spaceScenario.Name
                 End If

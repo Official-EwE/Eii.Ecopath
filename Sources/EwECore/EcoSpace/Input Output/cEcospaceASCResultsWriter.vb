@@ -36,7 +36,6 @@ Public Class cEcospaceASCResultsWriter
 #Region "IEcospaceResultsWriter Implementation"
 
     Public Overrides Sub StartWrite()
-        If (Not Me.SpaceData.bSaveASC) Then Return
         Try
             Me.CreateOutputDir()
             Me.WriteInfoFile()
@@ -48,8 +47,6 @@ Public Class cEcospaceASCResultsWriter
     End Sub
 
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
-
-        If (Not Me.SpaceData.bSaveASC) Then Return
 
         Try
 
@@ -86,7 +83,6 @@ Public Class cEcospaceASCResultsWriter
     End Sub
 
     Public Overrides Sub EndWrite()
-        If (Not Me.SpaceData.bSaveASC) Then Return
     End Sub
 
 #End Region

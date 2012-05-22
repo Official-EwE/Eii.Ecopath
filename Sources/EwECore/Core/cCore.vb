@@ -41,6 +41,7 @@ Imports EwECore.SpatialData
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.SystemUtilities
+Imports EwECore.Ecosim
 
 #End Region ' Imports
 
@@ -120,6 +121,9 @@ Public Class cCore
     Private m_strOutputPath As String = ""
     ''' <summary>Path for the core to write backup files to.</summary>
     Private m_strBackupFileMask As String = ""
+    ''' <summary>Autosave flags</summary>
+    Private m_bAutosave() As Boolean
+
     ''' <summary>Core state monitor</summary>
     Private WithEvents m_StateMonitor As cCoreStateMonitor = Nothing
     ''' <summary>Core thread synchronization object for thread marshalling.</summary>
@@ -172,9 +176,7 @@ Public Class cCore
     ''' <remarks>This list is used by the core to stop all running models when something major happens. </remarks>
     Private m_ThreadedProcesses As New List(Of IThreadedProcess)
 
-    ''' <summary>
-    ''' Delegate to interrupt a run
-    ''' </summary>
+    ''' <summary>Delegate to interrupt a run.</summary>
     Private m_dgtStop As StopRunDelegate = Nothing
 
 #End Region ' Generic variables
@@ -706,7 +708,6 @@ Public Class cCore
         End Get
     End Property
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Exposes the MessagePublisher instance so that an interface can add message handlers to the message publisher
@@ -862,9 +863,9 @@ Public Class cCore
                 '                   In other words, adding or removing groups (batch level Ecopath) will NOT
                 '                   cause batch level Ecosim and higher to automatically reload because Ecopath 
                 '                   will most likely not run. This addresses issue #512
-                Dim iEcosimScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
-                Dim iEcospaceScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE))
-                Dim iEcotracerScenarioToLoad As Integer = CInt(IIf(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
+                Dim iEcosimScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
+                Dim iEcospaceScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE))
+                Dim iEcotracerScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
                 Dim iDatasetToReload As Integer = 0
 
                 If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
@@ -1151,7 +1152,8 @@ Public Class cCore
         m_bEcoSimIsInit = False
 
         'Ecofunctions is needed by Ecopath so make sure it is created before Ecopath
-        m_Functions = New cEcoFunctions
+        m_Functions = New cEcoFunctions()
+        ReDim m_bAutosave([Enum].GetValues(GetType(eAutosaveTypes)).Length)
 
         'initialize the models
         'each models initialization will handle its own messages and flags
@@ -2365,6 +2367,35 @@ Public Class cCore
         End Get
         Set(ByVal value As String)
             Me.m_strOutputPath = cFileUtils.ToValidFileName(value, True)
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether a <see cref="eAutosaveTypes">auto-save capable component</see>
+    ''' is allowed to auto-save.
+    ''' </summary>
+    ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save capable component</see>
+    ''' to access this setting for.</param>
+    ''' -----------------------------------------------------------------------
+    Public Property Autosave(savetype As eAutosaveTypes) As Boolean
+        Get
+            Try
+                Return Me.m_bAutosave(savetype)
+            Catch ex As Exception
+                cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
+            End Try
+            Return False
+        End Get
+        Set(value As Boolean)
+            Try
+                If (value <> Me.m_bAutosave(savetype)) Then
+                    Me.m_bAutosave(savetype) = value
+                    Me.Messages.SendMessage(New cMessage("Autosave settings have changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
+            End Try
         End Set
     End Property
 
@@ -4704,7 +4735,7 @@ Public Class cCore
                         'logic before Mono compatibility changes
                         ' DirectCast(IIF(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
                     End If
-                    End If
+                End If
 
             Next var
 
@@ -7442,7 +7473,7 @@ Public Class cCore
         'this will call  Me.EcoSimRunCompleted(Nothing) once Ecosim has completed the run
         Me.m_EcoSim.RunCompletedDelegate = Nothing
         If Me.m_EcoSimData.bMultiThreaded Then
-            Me.m_EcoSim.RunCompletedDelegate = AddressOf Me.EcoSimRunCompleted
+            Me.m_EcoSim.RunCompletedDelegate = AddressOf Me.onEcoSimRunCompleted
             Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcoSim))
         End If
 
@@ -7457,14 +7488,14 @@ Public Class cCore
         'do any processing to complete the run (populate objects, send any messages...)
         'if running in on a thread then Me.EcoSimRunCompleted(Nothing) will be called via the delegate set before the run
         If Not Me.m_EcoSimData.bMultiThreaded Then
-            Me.EcoSimRunCompleted(Nothing)
+            Me.onEcoSimRunCompleted(Nothing)
         End If
 
         Return True
 
     End Function
 
-    Private Sub EcoSimRunCompleted(ByVal obj As Object)
+    Private Sub onEcoSimRunCompleted(ByVal obj As Object)
         Try
 
             Me.m_TSData.Update()
@@ -7501,6 +7532,12 @@ Public Class cCore
             Me.m_StateMonitor.SetEcosimCompleted()
             ' Send messages after
             m_publisher.sendAllMessages()
+
+            ' Write results if needed
+            If Me.Autosave(eAutosaveTypes.EcosimRun) Then
+                Dim writer As New cEcosimResultWriter(Me)
+                writer.WriteResults()
+            End If
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".EcoSimRunCompleted() Exception: " & ex.Message)
@@ -8186,8 +8223,8 @@ Public Class cCore
                     Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
                     'Tell the Ecospace results writer that a run has started
-                    Me.m_EcospaceResultsCSVWriter.StartWrite()
-                    Me.m_EcospaceResultsASCWriter.StartWrite()
+                    If Me.Autosave(eAutosaveTypes.EcospaceCSV) Then Me.m_EcospaceResultsCSVWriter.StartWrite()
+                    If Me.Autosave(eAutosaveTypes.EcospaceASC) Then Me.m_EcospaceResultsASCWriter.StartWrite()
 
                     'make sure Ecospace is not paused
                     Me.m_Ecospace.isPaused = False
@@ -8233,13 +8270,12 @@ Public Class cCore
             End If
 
             Try
-                'the Ecospace Writer could have come from a Plugin so we can't guarantee that is will not throw an exception
-                m_EcospaceResultsCSVWriter.EndWrite()
-                m_EcospaceResultsASCWriter.EndWrite()
+                If Me.Autosave(eAutosaveTypes.EcospaceASC) Then m_EcospaceResultsASCWriter.EndWrite()
+                If Me.Autosave(eAutosaveTypes.EcospaceCSV) Then m_EcospaceResultsCSVWriter.EndWrite()
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
+                cLog.Write(ex, "cCore::onEcospaceRunCompleted SaveResults")
             End Try
-
 
             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                           eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
@@ -8383,19 +8419,21 @@ Public Class cCore
 
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
         Try
-            If m_EcospaceResultsCSVWriter IsNot Nothing Then
+            If (m_EcospaceResultsCSVWriter IsNot Nothing) And (Me.Autosave(eAutosaveTypes.EcospaceCSV)) Then
                 Try
                     Me.m_EcospaceResultsCSVWriter.WriteResults(Me.m_spaceresults)
                 Catch ex As Exception
                     System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
+                    cLog.Write(ex, cLog.eVerboseLevel.Detailed, "cCore::SaveEcospaceResults(CSV) #" & SpaceResults.iTimeStep)
                 End Try
             End If
 
-            If m_EcospaceResultsASCWriter IsNot Nothing Then
+            If (m_EcospaceResultsASCWriter IsNot Nothing) And (Me.Autosave(eAutosaveTypes.EcospaceASC)) Then
                 Try
                     Me.m_EcospaceResultsASCWriter.WriteResults(Me.m_spaceresults)
                 Catch ex As Exception
                     System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
+                    cLog.Write(ex, cLog.eVerboseLevel.Detailed, "cCore::SaveEcospaceResults(ASC) #" & SpaceResults.iTimeStep)
                 End Try
             End If
 
@@ -9254,9 +9292,6 @@ Public Class cCore
             m_EcospaceModelParams.SOR = m_EcoSpaceData.W
             m_EcospaceModelParams.MaxNumberOfIterations = m_EcoSpaceData.maxIter
             m_EcospaceModelParams.UseExact = m_EcoSpaceData.UseExact
-            m_EcospaceModelParams.SaveCSV = m_EcoSpaceData.bSaveCSV
-            'SaveASC
-            m_EcospaceModelParams.SaveASC = m_EcoSpaceData.bSaveASC
 
             m_EcospaceModelParams.UseAnnualOuput = m_EcoSpaceData.bSaveAnnual
             m_EcospaceModelParams.UseCoreOuputDirectory = m_EcoSpaceData.bUseCoreOuputDir
@@ -9312,8 +9347,6 @@ Public Class cCore
         m_EcoSpaceData.W = m_EcospaceModelParams.SOR
         m_EcoSpaceData.maxIter = m_EcospaceModelParams.MaxNumberOfIterations
         m_EcoSpaceData.UseExact = m_EcospaceModelParams.UseExact
-        m_EcoSpaceData.bSaveCSV = m_EcospaceModelParams.SaveCSV
-        m_EcoSpaceData.bSaveASC = m_EcospaceModelParams.SaveASC
 
         m_EcoSpaceData.bSaveAnnual = m_EcospaceModelParams.UseAnnualOuput
         m_EcoSpaceData.bUseCoreOuputDir = m_EcospaceModelParams.UseCoreOuputDirectory

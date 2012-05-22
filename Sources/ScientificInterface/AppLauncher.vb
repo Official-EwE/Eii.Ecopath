@@ -147,6 +147,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdViewModelBar As cCommand = Nothing
     Private WithEvents m_cmdViewStatusbar As cCommand = Nothing
     Private WithEvents m_cmdViewPresentationMode As cCommand = Nothing
+    Private WithEvents m_cmdAutosaveResults As cCommand = Nothing
     Private WithEvents m_cmdEditGroups As cCommand = Nothing
     Private WithEvents m_cmdEditMultiStanza As cCommand = Nothing
     Private WithEvents m_cmdEditFleets As cCommand = Nothing
@@ -164,6 +165,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdImportLayerData As cImportLayerCommand = Nothing
     Private WithEvents m_cmdExportLayerData As cExportLayerCommand = Nothing
     Private WithEvents m_cmdEditLayer As cEditLayerCommand = Nothing
+    Private WithEvents m_cmdShowOptions As cShowOptionsCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
@@ -441,6 +443,14 @@ Public Class AppLauncher
         'Create and configure 'presentation mode' command
         Me.m_cmdViewPresentationMode = New cCommand(cmdh, "ViewPresentationMode")
         Me.m_cmdViewPresentationMode.AddControl(Me.m_tsmiPresentation)
+
+        'Create and configure 'show options' command
+        Me.m_cmdShowOptions = New cShowOptionsCommand(cmdh)
+        Me.m_cmdShowOptions.AddControl(Me.m_tsmiOptions)
+
+        'Create and configure 'Autosave results' command
+        Me.m_cmdAutosaveResults = New cCommand(cmdh, "AutosaveResults")
+        Me.m_cmdAutosaveResults.AddControl(Me.m_tsbnAutosaveResults)
 
         'Create and configure EditGroups command
         Me.m_cmdEditGroups = New cCommand(cmdh, "EditGroups")
@@ -2821,6 +2831,19 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
+    ''' Command handler; toggles auto save results
+    ''' </summary>
+    Private Sub OnAutosaveResults(ByVal cmd As cCommand) Handles m_cmdAutosaveResults.OnInvoke
+        Me.m_cmdShowOptions.Invoke(eApplicationOptionTypes.Autosave)
+    End Sub
+
+    ''' <summary>
+    ''' Command update handler; enables and disables the <see cref="m_cmdAutosaveResults">Auto save results command</see>.
+    ''' </summary>
+    Private Sub OnUpdateAutosaveResults(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdAutosaveResults.OnUpdate
+    End Sub
+
+    ''' <summary>
     ''' Command handler; shows the start page.
     ''' </summary>
     Private Sub OnBrowseURI(ByVal cmd As cCommand) Handles m_cmdBrowseURI.OnInvoke
@@ -2924,17 +2947,15 @@ Public Class AppLauncher
 
 #Region " Tools commands "
 
-    ''' <summary>
-    ''' Open the EwE6 option dialog
-    ''' </summary>
-    Private Sub OptionsToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsmiOptions.Click
+    Private Sub OnShowOptions(ByVal cmd As cCommand) Handles m_cmdShowOptions.OnInvoke
 
-        Dim dlgOptions As New dlgOptions(Me.UIContext)
-        ' FG Nov 15, 2006: Should not use Show instead of using ShowDialog and specify its owner so it will
-        ' be displayed at the specified location
-        dlgOptions.ShowDialog(Me)
-        Me.SaveSettings()
+        Try
+            Dim dlgOptions As New dlgOptions(Me.UIContext, Me.m_cmdShowOptions.Option)
+            dlgOptions.ShowDialog(Me)
+            Me.SaveSettings()
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

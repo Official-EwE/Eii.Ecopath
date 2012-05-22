@@ -99,7 +99,14 @@ Public Class cEcosimMonteCarlo
     ''' <summary>
     ''' Save output to file
     ''' </summary>
-    Public bSaveOutput As Boolean
+    Public Property bSaveOutput As Boolean
+        Get
+            Return Me.m_core.Autosave(eAutosaveTypes.MonteCarlo)
+        End Get
+        Set(value As Boolean)
+            Me.m_core.Autosave(eAutosaveTypes.MonteCarlo) = value
+        End Set
+    End Property
 
     Private m_core As cCore
     Private m_ecopath As cEcoPathModel

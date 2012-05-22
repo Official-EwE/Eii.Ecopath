@@ -23,6 +23,12 @@ Imports EwEUtils.Commands
 
 Namespace Commands
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Command to launch a the interface to select which groups and fleets to
+    ''' display on graphs.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class cDisplayGroupsCommand
         Inherits cCommand
 
@@ -31,6 +37,12 @@ Namespace Commands
 
         Public Shared cCOMMAND_NAME As String = "~displaygroups"
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal cmdh As cCommandHandler)
             MyBase.New(cmdh, cDisplayGroupsCommand.cCOMMAND_NAME)
         End Sub

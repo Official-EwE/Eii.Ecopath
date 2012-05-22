@@ -29,14 +29,11 @@ Public Class cMonteCarloResultsWriter
 
     Private m_MC As cEcosimMonteCarlo
     Private m_core As cCore
-    Private _delimiter As String
 
     Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
 
         Me.m_MC = MonteCarlo
         Me.m_core = theCore
-        'coma
-        Me._delimiter = Convert.ToChar(34).ToString
 
     End Sub
 
@@ -133,11 +130,11 @@ Public Class cMonteCarloResultsWriter
             'save a bunch of crap here....
             'model name blaaaaaa
             header.AppendLine("EwE Monte Carlo version number," & ver) 'version number
-            header.AppendLine("Model name," & Me._delimiter & Me.ModelName & Me._delimiter)
-            header.AppendLine("Ecosim scenario," & Me._delimiter & Me.ScenarioName & Me._delimiter)
-            header.AppendLine("Timeseries," & Me._delimiter & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Me._delimiter)
+            header.AppendLine("Model name," & cStringUtils.ToCSVField(Me.ModelName))
+            header.AppendLine("Ecosim scenario," & cStringUtils.ToCSVField(Me.ScenarioName))
+            header.AppendLine("Timeseries," & cStringUtils.ToCSVField(Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name))
 
-            header.AppendLine("Run Date," & Me._delimiter & d.ToShortDateString & " " & d.ToShortTimeString & Me._delimiter)
+            header.AppendLine("Run Date," & cStringUtils.ToCSVField(d.ToShortDateString & " " & d.ToShortTimeString))
 
             strm = New StreamWriter(Filename, True)
             strm.WriteLine(header)
@@ -405,7 +402,7 @@ Public Class cMonteCarloResultsWriter
 
             For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff = buff & ","
-                buff = buff & Me._delimiter & Values(igrp) & Me._delimiter
+                buff = buff & cStringUtils.ToCSVField(Values(igrp))
             Next
 
         Catch ex As Exception
@@ -535,9 +532,9 @@ Public Class cMonteCarloResultsWriter
             'save a bunch of crap here....
             'model name blaaaaaa
             header.AppendLine("EwE Monte Carlo version number," & ver) 'version number
-            header.AppendLine("Model name," & Me._delimiter & Me.ModelName & Me._delimiter)
-            header.AppendLine("Ecosim scenario," & Me._delimiter & Me.ScenarioName & Me._delimiter)
-            header.AppendLine("Run Date," & Me._delimiter & d.ToShortDateString & " " & d.ToShortTimeString & Me._delimiter)
+            header.AppendLine("Model name," & cStringUtils.ToCSVField(Me.ModelName ))
+            header.AppendLine("Ecosim scenario," & cStringUtils.ToCSVField(Me.ScenarioName ))
+            header.AppendLine("Run Date," & cStringUtils.ToCSVField(d.ToShortDateString & " " & d.ToShortTimeString ))
 
             strm = New StreamWriter(Me.OuputFilename, True)
             strm.WriteLine(header)
@@ -725,7 +722,7 @@ Public Class cMonteCarloResultsWriter
 
             For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
                 If igrp > 1 Then buff = buff & ","
-                buff = buff & Me._delimiter & Values(igrp) & Me._delimiter
+                buff = buff & cStringUtils.ToCSVField(Values(igrp) & Me._delimiter
             Next
 
         Catch ex As Exception

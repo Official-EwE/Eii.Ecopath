@@ -156,7 +156,7 @@ Namespace Ecosim
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbGroups.SelectedIndex = 0
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Core}
 
         End Sub
 
@@ -484,6 +484,14 @@ Namespace Ecosim
 #End Region ' Run Trials
 
 #Region " Internals "
+
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
+            MyBase.OnCoreMessage(msg)
+
+            If (msg.Source = eCoreComponentType.Core And msg.Type = eMessageType.GlobalSettingsChanged) Then
+                Me.m_cbSave.Checked = Me.m_mcmanager.bSaveOutput
+            End If
+        End Sub
 
         Private Sub NewIteration()
 

@@ -184,8 +184,6 @@ Namespace MSE
 
         Public StopRun As Boolean
 
-        Public SaveOutput As Boolean
-
         ''' <summary>
         ''' Time index to start the MSY search at
         ''' </summary>

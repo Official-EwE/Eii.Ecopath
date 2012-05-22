@@ -170,9 +170,42 @@ Namespace Definitions
         Line
     End Enum
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Supported layer edit operations.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eLayerEditTypes As Byte
+        ''' <summary>Edit layer data.</summary>
         EditData
+        ''' <summary>Edit layer visual representation.</summary>
         EditVisuals
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Types of global, EwE-wide options to configure.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eApplicationOptionTypes As Integer
+        ''' <summary>General options.</summary>
+        General = 0
+        ''' <summary>Colour options.</summary>
+        Colours
+        ''' <summary>Font options.</summary>
+        Fonts
+        ''' <summary>Graph options.</summary>
+        Graphs
+        ''' <summary>Map options.</summary>
+        Maps
+        ''' <summary>Plug-in options.</summary>
+        Plugins
+        ''' <summary>Message history options.</summary>
+        Messages
+        ''' <summary>File location options.</summary>
+        Autosave
+        ''' <summary>Presentation mode options.</summary>
+        PresentationMode
     End Enum
 
 End Namespace

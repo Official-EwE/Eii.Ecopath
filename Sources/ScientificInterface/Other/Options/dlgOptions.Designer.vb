@@ -62,12 +62,13 @@ Namespace Other
             '
             'm_tvOptions
             '
+            Me.m_tvOptions.CausesValidation = False
             resources.ApplyResources(Me.m_tvOptions, "m_tvOptions")
             Me.m_tvOptions.FullRowSelect = True
             Me.m_tvOptions.HideSelection = False
             Me.m_tvOptions.LineColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
             Me.m_tvOptions.Name = "m_tvOptions"
-            Me.m_tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes2"), System.Windows.Forms.TreeNode)})
+            Me.m_tvOptions.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvOptions.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvOptions.Nodes3"), System.Windows.Forms.TreeNode)})
             '
             'm_btnApply
             '

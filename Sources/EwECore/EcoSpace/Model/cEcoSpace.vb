@@ -4177,21 +4177,6 @@ exitline:
 
     End Sub
 
-
-    Private Sub SaveResults(ByVal SpaceResults As cEcospaceTimestep)
-        Try
-            If Not Me.m_Data.bSaveCSV Then Return
-            Debug.Assert(Me.m_ResultsWriter IsNot Nothing, Me.ToString & ".SaveResults() Results writer has not been set!")
-            If Me.m_ResultsWriter Is Nothing Then Return
-
-
-
-
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
 #End Region
 
 #Region "Data summary"

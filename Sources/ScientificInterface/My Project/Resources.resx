@@ -119,18 +119,18 @@
   </resheader>
   <data name="FIT2TS_PROGRESS_RUNSTEP" xml:space="preserve">
     <value>Iteration {0},  SS =  {1}</value>
-    <comment>{0}: iteration #, {1}: SS value at iteration</comment>
+    <comment>{0}=iteration #, {1}= SS value at iteration</comment>
   </data>
   <data name="STATUS_TIMESERIES_UPDATING" xml:space="preserve">
     <value>Updating time series {0}...</value>
-    <comment>{0}: time series name</comment>
+    <comment>{0}=time series name</comment>
   </data>
   <data name="TS_CONSTANTTOTALMORTALITY_NAME" xml:space="preserve">
     <value>Z (Constant total mortality)</value>
   </data>
   <data name="ECOSPACE_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="STATUS_PREVIEW_LOADING" xml:space="preserve">
     <value>Loading preview...</value>
@@ -143,14 +143,14 @@
   </data>
   <data name="STATUS_DATA_SAVING_FAILURE" xml:space="preserve">
     <value>Data failed to save to '{0}': {1}</value>
-    <comment>{0}: save destination, {1}: reason</comment>
+    <comment>{0}=save destination, {1}=reason</comment>
   </data>
   <data name="CAPTION_PSD_GROUP_CONTRIB" xml:space="preserve">
     <value>Particle size distribution (group contribution)</value>
   </data>
   <data name="GENERIC_TOOLTIP_PREY" xml:space="preserve">
     <value>Prey {0}</value>
-    <comment>{0}: prey name</comment>
+    <comment>{0}=prey name</comment>
   </data>
   <data name="ECOSPACE_LAYER_RANDOMBEST" xml:space="preserve">
     <value>Best count</value>
@@ -169,7 +169,7 @@
   </data>
   <data name="SELECTION_SINGLEVAR" xml:space="preserve">
     <value>{0} ({1})</value>
-    <comment>{0}: selected object, {1}: selected variable name</comment>
+    <comment>{0}=selected object, {1}=selected variable name</comment>
   </data>
   <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
     <value>Failed to convert Ewe5 database to EwE6.</value>
@@ -188,7 +188,7 @@
   </data>
   <data name="STATUS_ADDTIMESERIES" xml:space="preserve">
     <value>Adding time series {0} ...</value>
-    <comment>{0}: time series name</comment>
+    <comment>{0}=time series name</comment>
   </data>
   <data name="STATUS_SEARCH_STOPPING" xml:space="preserve">
     <value>Stopping search, please wait...</value>
@@ -202,7 +202,7 @@
   </data>
   <data name="STATUS_ECOSPACE_CREATING" xml:space="preserve">
     <value>Creating Ecospace scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Ecopath" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -213,11 +213,11 @@
   </data>
   <data name="ECOSIM_SR_SLOPELABEL" xml:space="preserve">
     <value>({0}, {1}): slope={2}</value>
-    <comment>{0}: x coord, {1}: y coord, {2}:slope</comment>
+    <comment>{0}=x coord, {1}=y coord, {2}:slope</comment>
   </data>
   <data name="FLOWDIAGRAM_LABEL_BIOMASS" xml:space="preserve">
     <value>B: {0}</value>
-    <comment>{0}: biomass value</comment>
+    <comment>{0}=biomass value</comment>
   </data>
   <data name="SELECTION_NONE" xml:space="preserve">
     <value>(no selection)</value>
@@ -236,47 +236,47 @@ Description: {1}</value>
   </data>
   <data name="ECOSPACE_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOSIM_APPLYFF_FFTYPE_FORCING" xml:space="preserve">
     <value>F{0}</value>
-    <comment>{0}: forcing function index</comment>
+    <comment>{0}=forcing function index</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_MIGRATING" xml:space="preserve">
     <value>Migrating?</value>
   </data>
   <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete {0} habitat(s)? This action cannot be undone.</value>
-    <comment>{0}: habitat count</comment>
+    <comment>{0}=habitat count</comment>
   </data>
   <data name="FLOWDIAGRAM_NODE_TOUCHING" xml:space="preserve">
     <value>Touching node: {0} ({1})</value>
-    <comment>{0}: node number, {1}: group name</comment>
+    <comment>{0}=node number, {1}=group name</comment>
   </data>
   <data name="GENERIC_REPLY_YES" xml:space="preserve">
     <value>You answered 'Yes'</value>
   </data>
   <data name="ECOSPACE_EDITMPA_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete MPA '{0}? This action cannot be undone.</value>
-    <comment>{0}: MPA name</comment>
+    <comment>{0}=MPA name</comment>
   </data>
   <data name="MPA_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete MPA from {0} to {1}? This action cannot be undone.</value>
   </data>
   <data name="PSD_GRAPH_REGRESSION_LABEL_W_STDERR" xml:space="preserve">
     <value>Slope = {0} ({1} SE), Y-intercept = {2} ({3} SE), Correlation = {4}Wt. class range (g) = {5} to {6}, N = {7}</value>
-    <comment>{0}: slope value, {1}: slope standard error, {2}: intercept value, {3}: intercept standard error, {4}: correlation coefficient, {5}: lowest wt class, {6}: highest wt class, {7}: sample size</comment>
+    <comment>{0}=slope value, {1}=slope standard error, {2}=intercept value, {3}=intercept standard error, {4}=correlation coefficient, {5}=lowest wt class, {6}=highest wt class, {7}=sample size</comment>
   </data>
   <data name="ECOSPACE_DEFHABITATS_ALLHABITATS" xml:space="preserve">
     <value>All habitats (e.g., pelagic)</value>
   </data>
   <data name="GENERIC_PROMPT_INVALIDPATH" xml:space="preserve">
     <value>Cannot find file '{0}'. Make sure that the path is correct.</value>
-    <comment>{0}: file name</comment>
+    <comment>{0}=file name</comment>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_AGECONFLICT" xml:space="preserve">
     <value>Groups '{0}' and '{1}' in stanza '{2}' have the same start age. Please correct this.</value>
-    <comment>{0}: first conflicting group. {1}: second conflicting group. {2}: stanza name</comment>
+    <comment>{0}=first conflicting group. {1}=second conflicting group. {2}=stanza name</comment>
   </data>
   <data name="ECOSPACE_HEADER_HABITAT_AREA" xml:space="preserve">
     <value>Habitat area</value>
@@ -291,11 +291,11 @@ Description: {1}</value>
   </data>
   <data name="STATUS_ECOTRACER_CREATING" xml:space="preserve">
     <value>Creating Ecotracer scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOSIM_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="DATASOURCE_DUPLICATE_ERROR_NODATABASE" xml:space="preserve">
     <value>Only models stored in databases can be duplicated.</value>
@@ -305,14 +305,14 @@ Description: {1}</value>
   </data>
   <data name="PROMPT_ERROR_IMPORT_EWE5_TOO_NEW" xml:space="preserve">
     <value>This database is written by a newer version of Ecopath 5, which is not supported by this version of EwE6. Please download and install the latest version of EWE6 from '{0}'</value>
-    <comment>{0}: EwE home URL</comment>
+    <comment>{0}=EwE home URL</comment>
   </data>
   <data name="PROMPT_INVALIDMODEL_REMOVEMRU" xml:space="preserve">
     <value>'{0}' does not seem to be a valid Ecopath model. Do you wish to remove this from the recent file list?</value>
   </data>
   <data name="ABOUT_CAPTION" xml:space="preserve">
     <value>About {0}</value>
-    <comment>{0}: Application name</comment>
+    <comment>{0}=Application name</comment>
   </data>
   <data name="STATUS_MODEL_SAVE_404" xml:space="preserve">
     <value>Unable to save your model to location '{0}'.</value>
@@ -325,21 +325,21 @@ Description: {1}</value>
   </data>
   <data name="GENERIC_TOOLTIP_PREDPREY" xml:space="preserve">
     <value>Predator {0}, prey {1}</value>
-    <comment>{0}: predator name, {1}: prey name</comment>
+    <comment>{0}=predator name, {1}=prey name</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDRESULT" xml:space="preserve">
     <value>Model execution errors|Values that the model was unable to compute correctly due to a model failure</value>
   </data>
   <data name="ABOUT_COPYRIGHT" xml:space="preserve">
     <value>{0} {1}</value>
-    <comment>{0}: copyright, {1}: company name</comment>
+    <comment>{0}=copyright, {1}=company name</comment>
   </data>
   <data name="Raster1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Raster.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_TOOLTIP_PREDATOR" xml:space="preserve">
     <value>Predator {0}</value>
-    <comment>{0}: predator name</comment>
+    <comment>{0}=predator name</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_SUM" xml:space="preserve">
     <value>Summed values|Cells that contain a summary of row(s) and/or column(s) in a grid</value>
@@ -385,7 +385,7 @@ Description: {1}</value>
   </data>
   <data name="STATUS_DATA_SAVING_SUCCESS" xml:space="preserve">
     <value>Data successfully saved to '{0}'</value>
-    <comment>{0}: save destination</comment>
+    <comment>{0}=save destination</comment>
   </data>
   <data name="OPTIONS_FONTDLG_AXISSCALE_AND_VALUES" xml:space="preserve">
     <value>Scales and values|Font to render scales and values in graphs and figures</value>
@@ -411,7 +411,7 @@ Description: {1}</value>
   </data>
   <data name="PROMPT_MODELCREATED" xml:space="preserve">
     <value>New EwE6 model  '{0}' successfully created.</value>
-    <comment>{0}: model path</comment>
+    <comment>{0}=model path</comment>
   </data>
   <data name="STATUS_MODEL_ACCESS_READONLY" xml:space="preserve">
     <value>EwE6 will be unable to write to this model. Please check if you have correct permissions, or if the database is not read-only.</value>
@@ -421,18 +421,18 @@ Description: {1}</value>
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_POSITION" xml:space="preserve">
     <value>{0} lat, {1} lon</value>
-    <comment>{0}: lat of TL position of map, {1}:lon of TL position of map</comment>
+    <comment>{0}=lat of TL position of map, {1}:lon of TL position of map</comment>
   </data>
   <data name="ECOTRACER_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOSIM_GROUPINFO_SALSPREADRIGHT" xml:space="preserve">
     <value>Salinity tolerance above optimum(&gt;0)</value>
   </data>
   <data name="STATUS_ECOTRACER_SAVING" xml:space="preserve">
     <value>Saving Ecotracer scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="OPTIONS_FONTDLG_LEGEND" xml:space="preserve">
     <value>Legend|Font to render legends in graphs and figures</value>
@@ -442,7 +442,7 @@ Description: {1}</value>
   </data>
   <data name="PROMPT_FORCING_DELETE" xml:space="preserve">
     <value>You are about to delete forcing function '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
-    <comment>{0}: forcing function name</comment>
+    <comment>{0}=forcing function name</comment>
   </data>
   <data name="PROMPT_STANZA_MISSING_LIFESTAGES" xml:space="preserve">
     <value>One or more stanza configurations do not have life stages assigned. Do you want to do this now?</value>
@@ -476,14 +476,14 @@ Description: {1}</value>
   </data>
   <data name="FIT2TS_PROGRESS_RUNCOMPLETED" xml:space="preserve">
     <value>Run completed at {0}</value>
-    <comment>{0}: time run completed</comment>
+    <comment>{0}=time run completed</comment>
   </data>
   <data name="Habitat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Habitat.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSPACE_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_RELVUL" xml:space="preserve">
     <value>Rel. vul. to pred. in bad habitat (prop for PP)</value>
@@ -493,7 +493,7 @@ Description: {1}</value>
   </data>
   <data name="ECOSPACE_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecospace scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="STATUS_MODEL_COMPACTING" xml:space="preserve">
     <value>Compacting model...</value>
@@ -518,26 +518,26 @@ Description: {1}</value>
   </data>
   <data name="SELECTION_INDEXEDVAR" xml:space="preserve">
     <value>{0} ({1},  {2})</value>
-    <comment>{0}: selected object, {1}: selected variable name, {2}: selected secundary object</comment>
+    <comment>{0}=selected object, {1}=selected variable name, {2}=selected secundary object</comment>
   </data>
   <data name="PROMPT_INVALIDTARGETPATH" xml:space="preserve">
     <value>Unable to create EwE6 model at '{0}'. Please check if you have access rights to write to this location, or whether a file at this location is still in use</value>
-    <comment>{0}: model path</comment>
+    <comment>{0}=model path</comment>
   </data>
   <data name="ECOSIM_PLOT_CAPTION_MORT_PROD" xml:space="preserve">
     <value>P/B(black), pred.mort.(red), fish.mort.(blue)</value>
   </data>
   <data name="GENERIC_PROMPT_OVERWRITEFILE" xml:space="preserve">
     <value>File '{0}' already exists. Do you want to overwrite it?</value>
-    <comment>{0}: file name</comment>
+    <comment>{0}=file name</comment>
   </data>
   <data name="ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete {0} layer(s)? This action cannot be undone.</value>
-    <comment>{0}: layer count</comment>
+    <comment>{0}=layer count</comment>
   </data>
   <data name="GENERIC_ERROR_FILEOPEN" xml:space="preserve">
     <value>Cannot open file '{0}'</value>
-    <comment>{0}: file name, either relative or absolute</comment>
+    <comment>{0}=file name, either relative or absolute</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION" xml:space="preserve">
     <value>Model validation errors|Values indicating that the model rejected a recent input</value>
@@ -552,11 +552,11 @@ Description: {1}</value>
   </data>
   <data name="ECOSIM_SCENARIO_NEW_CAPTION" xml:space="preserve">
     <value>New Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete group '{0}? This action cannot be undone.</value>
-    <comment>{0}: group name</comment>
+    <comment>{0}=group name</comment>
   </data>
   <data name="OPTIONS_FEEDBACK_POPUP" xml:space="preserve">
     <value>As popup message</value>
@@ -565,7 +565,7 @@ Description: {1}</value>
     <value>This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from '{0}' and try again.
 
 EwE can attempt to continue and load the model in read-only mode, but this may not work. Do you wish to try this? You may need to grab a helmet.</value>
-    <comment>{0}: EwE home URL</comment>
+    <comment>{0}=EwE home URL</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM" xml:space="preserve">
     <value>Missing parameter|Values that are required by the model to run correctly.</value>
@@ -587,21 +587,21 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   </data>
   <data name="ECOSIM_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOSIM_PROMPT_SAVEANNUAL" xml:space="preserve">
     <value>Save averaged annual values?</value>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
     <value>'{0}' is succesfully saved to file '{1}'.</value>
-    <comment>{0}: item that saved. {1}: file dest</comment>
+    <comment>{0}=item that saved. {1}=file dest</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_BARRIERAVOIDANCEWT" xml:space="preserve">
     <value>Barrier avoidance weight</value>
   </data>
   <data name="STATUS_ECOTRACER_LOADING" xml:space="preserve">
     <value>Loading Ecotracer scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="REGION_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete the selected region? </value>
@@ -621,7 +621,7 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_SIZE" xml:space="preserve">
     <value>{0} rows x {1} cols</value>
-    <comment>{0}: # of rows, {1}: # of cols</comment>
+    <comment>{0}=# of rows, {1}=# of cols</comment>
   </data>
   <data name="PROMPT_MESSAGE_HIDE" xml:space="preserve">
     <value>Hide this type of message until a model is reloaded.</value>
@@ -631,25 +631,25 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   </data>
   <data name="PROMPT_PLUGIN_INCOMPATIBLE" xml:space="preserve">
     <value>The plug-in '{0}' uses outdated EwE components, and is likely to be incompatible with this version of EwE6. Do you wish to disable this plug-in?</value>
-    <comment>{0}: plug-in name</comment>
+    <comment>{0}=plug-in name</comment>
   </data>
   <data name="PROMPT_MODEL_COMPACT" xml:space="preserve">
     <value>To compact your database your model will need to be closed. Are you sure you want to compact your database?</value>
   </data>
   <data name="STATUS_ECOSPACE_LOADING" xml:space="preserve">
     <value>Loading Ecospace scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="STATUS_ECOSIM_SAVING" xml:space="preserve">
     <value>Saving Ecosim scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="GENERIC_PROMPT_SAVEDATATOCSV_CAPTION" xml:space="preserve">
     <value>Save data to .csv</value>
   </data>
   <data name="ECOSPACE_BASEMAP_SUMMARY_CELLLENGTH" xml:space="preserve">
     <value>{0} km</value>
-    <comment>{0}: cell length &amp; width</comment>
+    <comment>{0}=cell length &amp; width</comment>
   </data>
   <data name="REGION_BATCH_DELETE_CONFIRMATION" xml:space="preserve">
     <value>Do you want to delete region from {0} to {1}?</value>
@@ -672,7 +672,7 @@ EwE can attempt to continue and load the model in read-only mode, but this may n
   </data>
   <data name="ECOSIM_DEFAULT_NEWTIMESERIES" xml:space="preserve">
     <value>New time series {0}</value>
-    <comment>The default name for a new Ecosim time series. {0}: autonumber</comment>
+    <comment>The default name for a new Ecosim time series. {0}=autonumber</comment>
   </data>
   <data name="OPTIONS_FONTDLG_VALUES" xml:space="preserve">
     <value>Values|Font to render values</value>
@@ -697,7 +697,7 @@ Location: {1}</value>
   </data>
   <data name="ECOSIM_DEFAULT_NEWEGGPRODSHAPE" xml:space="preserve">
     <value>Egg production shape {0}</value>
-    <comment>The default name for a new Ecosim Egg production shape. {0}: autonumber</comment>
+    <comment>The default name for a new Ecosim Egg production shape. {0}=autonumber</comment>
   </data>
   <data name="MPA1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MPA.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -710,14 +710,14 @@ Location: {1}</value>
   </data>
   <data name="FIT2TS_PROGRESS_RUNSTARTED" xml:space="preserve">
     <value>Search started, base SS = {0}</value>
-    <comment>{0}: base SS value</comment>
+    <comment>{0}=base SS value</comment>
   </data>
   <data name="GENERIC_TEXT_OPTIONS" xml:space="preserve">
     <value>Options</value>
   </data>
   <data name="STATUS_ECOSIM_CREATING" xml:space="preserve">
     <value>Creating Ecosim scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
     <value>Please select or create a folder</value>
@@ -746,11 +746,11 @@ Location: {1}</value>
 Download and install a recent version of Ecopath 5 to update your database. Once updated, EwE6 will be able to import the database to its new database format.
 
 Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
-    <comment>{0}: EwE home URL</comment>
+    <comment>{0}=EwE home URL</comment>
   </data>
   <data name="ECOPATH_EDITGROUPSSTANZA_STANZAAGECORRECTED" xml:space="preserve">
     <value>The start age for stanza '{0}' has been corrected.</value>
-    <comment>{0}: stanza name</comment>
+    <comment>{0}=stanza name</comment>
   </data>
   <data name="ECOSIM_PROMPT_DELETE_TSDATASETS" xml:space="preserve">
     <value>You are about to remove Time Series datasets from the database. This action cannot be undone. Are you sure you want to do this?</value>
@@ -769,7 +769,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOSPACE_EDITREGION_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete {0} region(s)? This action cannot be undone.</value>
-    <comment>{0}: region count</comment>
+    <comment>{0}=region count</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_RELDISP" xml:space="preserve">
     <value>Rel. dispersal in bad habitat</value>
@@ -792,11 +792,11 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOSIM_APPLYFF_FFTYPE_MEDIATION" xml:space="preserve">
     <value>M{0}</value>
-    <comment>{0}: mediation function index</comment>
+    <comment>{0}=mediation function index</comment>
   </data>
   <data name="PSD_GRAPH_REGRESSION_LABEL_WO_STDERR" xml:space="preserve">
     <value>Slope = {0}, Y-intercept = {1}, Correlation = {2}Wt. class range (g) = {3} to {4}, N = {5}</value>
-    <comment>{0}: slope value, {1}: intercept value, {2}: correlation coefficient, {3}: lowest wt class, {4}: highest wt class, {5}: sample size</comment>
+    <comment>{0}=slope value, {1}=intercept value, {2}=correlation coefficient, {3}=lowest wt class, {4}=highest wt class, {5}=sample size</comment>
   </data>
   <data name="OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR" xml:space="preserve">
     <value>Plots and Graphs background|Background colour to use for plots and graphs</value>
@@ -840,7 +840,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="HEADERMASK_UNIT_ZEROTOONE" xml:space="preserve">
     <value>{0} [0, 1]</value>
-    <comment>{0}: value mask</comment>
+    <comment>{0}=value mask</comment>
   </data>
   <data name="ECOSIM_GROUPINFO_QBMAXQBO" xml:space="preserve">
     <value>QBmax/QBo (for handling time) [&gt;1]</value>
@@ -850,11 +850,11 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="PROMPT_MODELNOTFOUND_REMOVEMRU" xml:space="preserve">
     <value>Model '{0}' cannot be found. Do you wish to remove it from the recent file list?</value>
-    <comment>{0}: model path</comment>
+    <comment>{0}=model path</comment>
   </data>
   <data name="SCENARIO_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>You are about to delete scenario '{0}'. This cannot be undone. Are you sure you want to do this?</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="SR_PLOT_TITLE" xml:space="preserve">
     <value>S/R plot</value>
@@ -870,7 +870,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
     <value>'{0}' failed to save to file '{1}': {2}.</value>
-    <comment>{0}: item that saved. {1}: file dest. {2}: error message</comment>
+    <comment>{0}=item that saved. {1}=file dest. {2}=error message</comment>
   </data>
   <data name="STATUS_MODEL_COMPACT_RELOADFAIL" xml:space="preserve">
     <value>Your database was compacted correctly, but EwE was not able to reload the database. Please contact EwE technical support</value>
@@ -883,7 +883,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOSPACE_EDITREGION_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete region '{0}'? This action cannot be undone.</value>
-    <comment>{0}: region name</comment>
+    <comment>{0}=region name</comment>
   </data>
   <data name="PROMPT_ERROR_IMPORT_INVALIDDB" xml:space="preserve">
     <value>The selected database does not appear to be a valid EwE5 or EwE6 database.</value>
@@ -897,14 +897,14 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOSIM_LABEL_APPLY_SHAPES_PREY" xml:space="preserve">
     <value>For all pairs with group {0}: {1} as a prey</value>
-    <comment>{0}:prey name, {1}:predator name</comment>
+    <comment>{0}=prey name, {1}=predator name</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_DEFAULT" xml:space="preserve">
     <value>Default text|Colour scheme to use for default text</value>
   </data>
   <data name="SET_ROW_VUL_MSG" xml:space="preserve">
     <value>Enter new vulnerability setting for {0} as prey</value>
-    <comment>{0}: group name</comment>
+    <comment>{0}=group name</comment>
   </data>
   <data name="LABEL_STOP" xml:space="preserve">
     <value>&amp;Stop</value>
@@ -915,14 +915,14 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="PROMPT_INVALIDMODEL" xml:space="preserve">
     <value>'{0}' does not seem to be a valid Ecopath model.</value>
-    <comment>{0}: model path</comment>
+    <comment>{0}=model path</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_HIGHLIGHT" xml:space="preserve">
     <value>Highlighted values|Values that are highlighted by you, the user</value>
   </data>
   <data name="PROMPT_PLUGIN_CAUTION" xml:space="preserve">
     <value>The plug-in '{0}' uses older EwE components, and may be incompatible with this version of EwE6.</value>
-    <comment>{0}: plug-in name</comment>
+    <comment>{0}=plug-in name</comment>
   </data>
   <data name="PROMPT_ECOSIM_REQUIRED" xml:space="preserve">
     <value>Ecosim required</value>
@@ -935,18 +935,18 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="SCENARIO_CONFIRMOVERWRITE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to overwrite scenario {0}? This action cannot be undone.</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOSIM_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecosim scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="STATUS_MODEL_SAVING" xml:space="preserve">
     <value>Saving model...</value>
   </data>
   <data name="ECOTRACER_SCENARIO_SAVEAS_CAPTION" xml:space="preserve">
     <value>Save Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_CHECKED" xml:space="preserve">
     <value>Potential problem values|Computed values that may require extra attention</value>
@@ -956,7 +956,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete layer '{0}'? This action cannot be undone.</value>
-    <comment>{0}: layer name</comment>
+    <comment>{0}=layer name</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_COMPUTED" xml:space="preserve">
     <value>Computed values|Values that are computed by the program</value>
@@ -972,7 +972,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="PROMPT_PLUGIN_UNDETERMINED" xml:space="preserve">
     <value>The plug-in '{0}' cannot be diagnosed for compatibility with EwE6. It is advisable not to use this plug-in. Do you wish to disable this plug-in?</value>
-    <comment>{0}: plug-in name</comment>
+    <comment>{0}=plug-in name</comment>
   </data>
   <data name="GENERIC_REPLY_NO" xml:space="preserve">
     <value>You answered 'No'</value>
@@ -995,18 +995,18 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="STATUS_UPDATE_DOWNLOADING" xml:space="preserve">
     <value>Downloading '{0}'...</value>
-    <comment>{0}: component name</comment>
+    <comment>{0}=component name</comment>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_FUNCT_RESP" xml:space="preserve">
     <value>Functional response</value>
   </data>
   <data name="ECOSPACE_RUN_PROGRESS" xml:space="preserve">
     <value>{0} of {1} years</value>
-    <comment>{0}: current year, {1}: total years in an ecospace run</comment>
+    <comment>{0}=current year, {1}=total years in an ecospace run</comment>
   </data>
   <data name="STATUS_ECOSIM_LOADING" xml:space="preserve">
     <value>Loading Ecosim scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="MPAOPT_AXISLABEL_OBJECTIVEVALUE" xml:space="preserve">
     <value>Objective value</value>
@@ -1017,7 +1017,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete habitat '{0}'? This action cannot be undone.</value>
-    <comment>{0}: habitat name</comment>
+    <comment>{0}=habitat name</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_ADVECTED" xml:space="preserve">
     <value>Advected?</value>
@@ -1030,14 +1030,14 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="PROMPT_CREATE_GENERICERROR" xml:space="preserve">
     <value>A generic error occurred while trying to create an EwE6 model at '{0}'</value>
-    <comment>{0}: model path</comment>
+    <comment>{0}=model path</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_SUM_DESCRIPTION" xml:space="preserve">
     <value>Cells that contain a summary of row(s) and/or column(s) in a grid</value>
   </data>
   <data name="STATUS_DATASET_REMOVING" xml:space="preserve">
     <value>Removing Time Series dataset '{0}'...</value>
-    <comment>{0}: dataset name</comment>
+    <comment>{0}=dataset name</comment>
   </data>
   <data name="CAPTION_MSEFLEETREF" xml:space="preserve">
     <value>MSE fleet ref. levels</value>
@@ -1056,14 +1056,14 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="STATUS_ECOSPACE_SAVING" xml:space="preserve">
     <value>Saving Ecospace scenario '{0}'...</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_QPREY_BPRED" xml:space="preserve">
     <value>Q prey / B pred</value>
   </data>
   <data name="ECOTRACER_SCENARIO_LOAD_CAPTION" xml:space="preserve">
     <value>Load Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="FPS_FG_JOBS" xml:space="preserve">
     <value>Jobs / catch value</value>
@@ -1073,7 +1073,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="STATUS_ECOSPACE_PROGRESS" xml:space="preserve">
     <value>Computed {0} of {1} years</value>
-    <comment>{0}: computed #years, {1}: total #years</comment>
+    <comment>{0}=computed #years, {1}=total #years</comment>
   </data>
   <data name="STATUS_ECOPATH_LOADING" xml:space="preserve">
     <value>Loading model...</value>
@@ -1083,7 +1083,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOTRACER_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecotracer scenario - Ecopath model {0}</value>
-    <comment>{0}: scenario name</comment>
+    <comment>{0}=scenario name</comment>
   </data>
   <data name="SELECTION_DERIVED" xml:space="preserve">
     <value>(derived value selected)</value>
@@ -1103,7 +1103,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="GENERIC_DEFAULT_DESCRIPTION" xml:space="preserve">
     <value>Created: {0} {1}</value>
-    <comment>{0}: item creation date, {1}: item creation time</comment>
+    <comment>{0}=item creation date, {1}=item creation time</comment>
   </data>
   <data name="ECOSPACE_HEADER_FLEETHABUSE" xml:space="preserve">
     <value>Fleet \ habitat use:</value>
@@ -1133,15 +1133,15 @@ Description: {2}</value>
   </data>
   <data name="ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure that you want to delete fleet '{0}'? This action cannot be undone.</value>
-    <comment>{0}: fleet name</comment>
+    <comment>{0}=fleet name</comment>
   </data>
   <data name="PROMPT_TIMESERIES_DELETE" xml:space="preserve">
     <value>You are about to delete time series '{0}'. This action cannot be undone. Are you sure you want to do this?</value>
-    <comment>{0}: time series name</comment>
+    <comment>{0}=time series name</comment>
   </data>
   <data name="SET_COL_VUL_MSG" xml:space="preserve">
     <value>Enter new vulnerability setting for {0} as predator</value>
-    <comment>{0}: group name</comment>
+    <comment>{0}=group name</comment>
   </data>
   <data name="PROMPT_UPDATE_MIGRATION" xml:space="preserve">
     <value>A newer Ecopath plug-in is available that may apply to '{0}' on your system, but copies cannot be authenticated. Do you want EwE6 to overwrite your local file?</value>
@@ -1151,7 +1151,7 @@ Description: {2}</value>
   </data>
   <data name="PROMPT_GOOGLELOCATION_SEARCH" xml:space="preserve">
     <value>Found entry '{0}' with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this value?</value>
-    <comment>{0}: term, {1} to {4} extent N,W,S,E</comment>
+    <comment>{0}=term, {1} to {4} extent N,W,S,E</comment>
   </data>
   <data name="PROMPT_CHANGES_RESTART" xml:space="preserve">
     <value>Some of the changes that you made will only be effective after Ecopath with Ecosim has restarted.</value>
@@ -1161,7 +1161,7 @@ Description: {2}</value>
   </data>
   <data name="PROMPT_TIMESERIES_IMPORT_AS_MONTHLY" xml:space="preserve">
     <value>Do you wish to import '{0}' as monthly forcing data?</value>
-    <comment>{0}: name of dataset</comment>
+    <comment>{0}=name of dataset</comment>
   </data>
   <data name="PEDIGREE_DEFAULT_APPROX_INDIRECT" xml:space="preserve">
     <value>Approximate or indirect method|May include methods like remote sensing, etc.</value>
@@ -1259,7 +1259,7 @@ Description: {2}</value>
   </data>
   <data name="FR_PLOT_CAPTION" xml:space="preserve">
     <value>Consumer '{0}'</value>
-    <comment>{0}: group name</comment>
+    <comment>{0}=group name</comment>
   </data>
   <data name="FR_PLOT_X_AXIS" xml:space="preserve">
     <value>Prey biomass relative to Ecopath biomass</value>
@@ -1287,15 +1287,15 @@ Description: {2}</value>
   </data>
   <data name="MSE_EFFORT_VALUE" xml:space="preserve">
     <value>Effort {0}</value>
-    <comment>{0}: effort value</comment>
+    <comment>{0}=effort value</comment>
   </data>
   <data name="MSE_ITERATION_HEADER" xml:space="preserve">
     <value>Fleet{0}MSY effort</value>
-    <comment>{0}: tab</comment>
+    <comment>{0}=tab</comment>
   </data>
   <data name="MSE_ITERATION_LINE" xml:space="preserve">
     <value>{1}{0}{2}</value>
-    <comment>{0}: tab, {1}: fleet index, {2}: effort value</comment>
+    <comment>{0}=tab, {1}=fleet index, {2}=effort value</comment>
   </data>
   <data name="PROMPT_ADVECTION_INBALANCED" xml:space="preserve">
     <value>Inflows and outflows do not balance; it is recommend not using this velocity field for simulations if ecospace shows strange behavior. Do you wish to revert the advection data to the previous state?</value>
@@ -1311,23 +1311,23 @@ Description: {2}</value>
   </data>
   <data name="ECOPATH_ADDSTANZA_ERROR" xml:space="preserve">
     <value>Failed to add stanza configuration '{0}'</value>
-    <comment>{0}: stanza configuration name</comment>
+    <comment>{0}=stanza configuration name</comment>
   </data>
   <data name="ECOPATH_DELETEGROUP_ERROR" xml:space="preserve">
     <value>Failed to delete group '{0}'</value>
-    <comment>{0}: group name</comment>
+    <comment>{0}=group name</comment>
   </data>
   <data name="ECOPATH_DELETESTANZA_ERROR" xml:space="preserve">
     <value>Failed to delete stanza configuration '{0}'.</value>
-    <comment>{0}: stanza configuration name</comment>
+    <comment>{0}=stanza configuration name</comment>
   </data>
   <data name="ECOPATH_MOVEGROUP_ERROR" xml:space="preserve">
     <value>Failed to move group '{0}'</value>
-    <comment>{0}: group name</comment>
+    <comment>{0}=group name</comment>
   </data>
   <data name="ECOPATH_UPDATESTANZA_ERROR" xml:space="preserve">
     <value>Failed to update life stages for stanza '{0}'</value>
-    <comment>{0}: stanza configuration name</comment>
+    <comment>{0}=stanza configuration name</comment>
   </data>
   <data name="Ecopath_hohoho" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecopath_hohoho.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1337,22 +1337,22 @@ Description: {2}</value>
   </data>
   <data name="GENERIC_LABEL_TRIAL" xml:space="preserve">
     <value>Trial {0} - {1}</value>
-    <comment>{0}: trial number, {1} trial detail</comment>
+    <comment>{0}=trial number, {1} trial detail</comment>
   </data>
   <data name="PROMPT_ERROR_CONNECTION" xml:space="preserve">
     <value>An error occurred while trying to connect to '{0}': {1}</value>
-    <comment>{0}: connection target, {1}: error message</comment>
+    <comment>{0}=connection target, {1}=error message</comment>
   </data>
   <data name="TAXON_DELETE_CONFIRMATION" xml:space="preserve">
     <value>You are about to delete taxa. This action cannot be undone. Are you sure you want to do this?</value>
   </data>
   <data name="STATUS_MODEL_IMPORTING" xml:space="preserve">
     <value>Importing {0}...</value>
-    <comment>{0}: model name</comment>
+    <comment>{0}=model name</comment>
   </data>
   <data name="STATUS_ADVECTION_ITERATION" xml:space="preserve">
     <value>Advection running iteration {0}</value>
-    <comment>{0}: iteration number</comment>
+    <comment>{0}=iteration number</comment>
   </data>
   <data name="STATUS_ADVECTION_STARTED" xml:space="preserve">
     <value>Starting Advection computations...</value>
@@ -1365,11 +1365,11 @@ Description: {2}</value>
   </data>
   <data name="STATUS_TIMESERIES_LOADING" xml:space="preserve">
     <value>Loading time series '{0}'...</value>
-    <comment>{0}: time series dataset name</comment>
+    <comment>{0}=time series dataset name</comment>
   </data>
   <data name="ECOSIM_APPLYFF_FFTYPE_PRICEELASTICITY" xml:space="preserve">
     <value>{1}{0}</value>
-    <comment>{0}: price elasticity function index; {1}: currency symbol</comment>
+    <comment>{0}=price elasticity function index; {1}=currency symbol</comment>
   </data>
   <data name="ECOSIM_CAPTION_APPLYPRICEELASTICITY" xml:space="preserve">
     <value>Apply price elasticity</value>
@@ -1387,36 +1387,36 @@ Description: {2}</value>
   </data>
   <data name="CAPTION_PRICEELASTICITY_LANDING" xml:space="preserve">
     <value>Apply price elasticity to fleet {0}: {1} landing {2}: {3}</value>
-    <comment>{0}: fleet index, {1}: fleet name, {2} group index, {3}: group name</comment>
+    <comment>{0}=fleet index, {1}=fleet name, {2} group index, {3}=group name</comment>
   </data>
   <data name="STATUS_UPDATE_ERROR_CONNECTION" xml:space="preserve">
     <value>Error connection to update server</value>
   </data>
   <data name="STATUS_UPDATE_ERROR_DOWNLOAD" xml:space="preserve">
     <value>Unable to download update for '{0}'</value>
-    <comment>{0}: component name</comment>
+    <comment>{0}=component name</comment>
   </data>
   <data name="STATUS_UPDATE_ERROR_GENERIC" xml:space="preserve">
     <value>An unknown error occurred while trying to update '{0}'</value>
-    <comment>{0}: component name</comment>
+    <comment>{0}=component name</comment>
   </data>
   <data name="STATUS_UPDATE_ERROR_WRITE" xml:space="preserve">
     <value>Cannot write the update for '{0}' to its destination. Either the target file is in use, or you do not have sufficient privileges</value>
-    <comment>{0}: component name</comment>
+    <comment>{0}=component name</comment>
   </data>
   <data name="STATUS_UPDATE_FAILED" xml:space="preserve">
     <value>Components update check failed</value>
   </data>
   <data name="STATUS_UPDATE_NO_ACTION" xml:space="preserve">
     <value>Component '{0}' is up to date</value>
-    <comment>{0}: component name</comment>
+    <comment>{0}=component name</comment>
   </data>
   <data name="STATUS_UPDATE_SUCCESS" xml:space="preserve">
     <value>Components updated successfully</value>
   </data>
   <data name="STATUS_UPDATE_UPDATED" xml:space="preserve">
     <value>Component '{0}' has been updated</value>
-    <comment>{0}: component name</comment>
+    <comment>{0}=component name</comment>
   </data>
   <data name="ECOSPACE_PAUSE" xml:space="preserve">
     <value>Pause</value>
@@ -1483,7 +1483,7 @@ Description: {2}</value>
   </data>
   <data name="CAPTION_EXTERNAL_DATA_DETAIL" xml:space="preserve">
     <value>External data for '{0}'</value>
-    <comment>{0}: layer data name</comment>
+    <comment>{0}=layer data name</comment>
   </data>
   <data name="ABOUT_32BIT" xml:space="preserve">
     <value>32 bit</value>
@@ -1493,7 +1493,7 @@ Description: {2}</value>
   </data>
   <data name="ABOUT_VERSION" xml:space="preserve">
     <value>Version {0} ({1})</value>
-    <comment>{0}: ewe version, {1}:32 / 64 bit indicator</comment>
+    <comment>{0}=ewe version, {1}:32 / 64 bit indicator</comment>
   </data>
   <data name="CAPTION_EXTERNAL_DATASET_CONFIGURE" xml:space="preserve">
     <value>Configure data set</value>
@@ -1527,7 +1527,7 @@ Description: {2}</value>
   </data>
   <data name="PROMPT_DELETE_ECOSPACE_DATASET" xml:space="preserve">
     <value>Do you wish to delete the definition of spatial data set '{0}'? This action cannot be undone. Note that this will not affect the actual spatial/temporal data that this definition refers to.</value>
-    <comment>{0}: dataset name</comment>
+    <comment>{0}=dataset name</comment>
   </data>
   <data name="Ecopath_install" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecopath_install.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1544,5 +1544,9 @@ Description: {2}</value>
   <data name="VALUE_PREVIEW" xml:space="preserve">
     <value>AaBbCcYyZz</value>
     <comment>Preview text for color options page</comment>
+  </data>
+  <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
+    <value>{0} connection(s)</value>
+    <comment>{0}=connection count</comment>
   </data>
 </root>

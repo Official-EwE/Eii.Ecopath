@@ -48,11 +48,11 @@ Namespace Commands
             Me.m_dictHandlerTypes = New Dictionary(Of String, Type)
 
             ' Register predefined command handler types
-            Me.AddControlHandlerType("System.Windows.Forms.Button", GetType(ButtonControlHandler))
-            Me.AddControlHandlerType("System.Windows.Forms.ToolStripMenuItem", GetType(ToolStripMenuItemControlHandler))
-            Me.AddControlHandlerType("System.Windows.Forms.ToolStripButton", GetType(ToolStripButtonControlHandler))
+            Me.AddControlHandlerType("System.Windows.Forms.Button", GetType(cButtonControlHandler))
+            Me.AddControlHandlerType("System.Windows.Forms.ToolStripMenuItem", GetType(cToolStripMenuItemControlHandler))
+            Me.AddControlHandlerType("System.Windows.Forms.ToolStripButton", GetType(cToolStripButtonControlHandler))
             Me.AddControlHandlerType("System.Windows.Forms.ToolStripDropDownButton", GetType(ToolStripButtonDropDownControlHandler))
-            Me.AddControlHandlerType("System.Windows.Forms.ToolStripSplitButton", GetType(ToolStripSplitButtonHandler))
+            Me.AddControlHandlerType("System.Windows.Forms.ToolStripSplitButton", GetType(cToolStripSplitButtonHandler))
         End Sub
 
 #End Region ' Construction

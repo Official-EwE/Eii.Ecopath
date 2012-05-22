@@ -117,11 +117,6 @@ Namespace MSE
             'm_values.Add(val.varName, val)
 
             meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.MSESave, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSESave))
-            val.Stored = False
-            m_values.Add(val.varName, val)
-
-            meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.MSYRunSilent, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSYRunSilent))
             val.Stored = False
             m_values.Add(val.varName, val)
@@ -244,16 +239,6 @@ Namespace MSE
         '        SetVariable(eVarNameFlags.MSEStop, value)
         '    End Set
         'End Property
-
-        Public Property Save() As Boolean
-            Get
-                Return CBool(GetVariable(eVarNameFlags.MSESave))
-            End Get
-
-            Set(ByVal value As Boolean)
-                SetVariable(eVarNameFlags.MSESave, value)
-            End Set
-        End Property
 
         Public Property MSYStartTimeIndex() As Integer
             Get

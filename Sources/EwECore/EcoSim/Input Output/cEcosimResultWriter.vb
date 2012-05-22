@@ -53,15 +53,12 @@ Namespace Ecosim
             Value
         End Enum
 
-        Private m_delimiter As String
-
 #End Region ' Private vars
 
 #Region " Public interfaces "
 
         Public Sub New(ByVal core As cCore)
             Me.m_core = core
-            Me.m_delimiter = Convert.ToChar(34).ToString
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -87,7 +84,8 @@ Namespace Ecosim
 
             ' Try to make sure that the output path is there
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, "Output directory does not exist"), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_SAVE_FAILED, strPath, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING), _
+                                   eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 Me.m_core.Messages.SendMessage(msg)
                 Return False
             End If
@@ -97,18 +95,21 @@ Namespace Ecosim
                     Try
                         If Not Me.WriteResults(outputtype, strPath, True) Or Not Me.WriteResults(outputtype, strPath, False) Then
                             bSucces = False
-                            msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                            msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
+                                               eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+                            msg.Hyperlink = strPath
                             Me.m_core.Messages.SendMessage(msg)
                         End If
                     Catch ex As Exception
                         bSucces = False
-                        cLog.Write(String.Format("Exception in cEcosimResultWriter: {0}", ex.Message))
+                        cLog.Write(ex, "cEcosimResultWriter::WriteResults " & outputtype.ToString())
                     End Try
                 End If
             Next
 
             If bSucces Then
-                msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), _
+                                   eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 Me.m_core.Messages.SendMessage(msg)
             End If
             Return bSucces
@@ -213,7 +214,7 @@ Namespace Ecosim
                                     iNumPred += 1
                                 End If
                             Next
-                            strDataDetails = "Data, " & Me.m_delimiter & resulttype.ToString & " of " & grpOutput.Name & Me.m_delimiter
+                            strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
 
                             bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                                       bSaveAnnual, predData, _
@@ -252,7 +253,7 @@ Namespace Ecosim
                                 End If
                             Next
 
-                            strDataDetails = "Data, " & Me.m_delimiter & resulttype.ToString & " of " & grpOutput.Name & Me.m_delimiter
+                            strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
                             bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
                                                   bSaveAnnual, preyData, _
                                                   strModelDetails, strDataDetails, preyNames.ToString)
@@ -387,23 +388,21 @@ Namespace Ecosim
             Dim sb As New StringBuilder()
 
             ' File
-            sb.Append("ModelFile,")
-            sb.AppendLine(Me.m_core.DataSource.ToString)
+            sb.AppendLine("EwE version, " & cCore.Version)
+            sb.AppendLine("Date, " & Date.Now.ToString())
+            sb.AppendLine("ModelFile, " & Me.m_core.DataSource.ToString)
             'Add the model name
-            sb.Append("ModelName, ")
-            sb.AppendLine(Me.m_core.EwEModel.Name)
+            sb.AppendLine("ModelName, " & Me.m_core.EwEModel.Name)
             'Add the active scenario name
-            sb.Append("EcosimScenario,")
-            sb.AppendLine(Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
+            sb.AppendLine("EcosimScenario, " & Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
 
             ' Append time series name to scenario, if any
-            sb.Append("TimeSeries,")
+            sb.Append("TimeSeries, ")
             If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-                sb.Append(Me.m_delimiter & Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name & Me.m_delimiter)
+                sb.Append(cStringUtils.ToCSVField(Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name))
             Else
                 sb.Append("(none)")
             End If
-
             Return sb.ToString()
 
         End Function
@@ -413,7 +412,7 @@ Namespace Ecosim
             Dim str As New StringBuilder()
 
             For i As Integer = 1 To Me.m_core.nGroups
-                str.Append("""" & Me.m_core.EcoSimGroupOutputs(i).Name & """")
+                str.Append(cStringUtils.ToCSVField(Me.m_core.EcoSimGroupOutputs(i).Name))
                 If i <> Me.m_core.nGroups Then str.Append(",")
             Next
 

@@ -465,6 +465,7 @@
     </None>
     <None Include="Class Diagrams\Time Series.cd" />
     <EmbeddedResource Include="Resources\EwE6.accdb" />
+    <None Include="SpatialTemporal\~design~.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">

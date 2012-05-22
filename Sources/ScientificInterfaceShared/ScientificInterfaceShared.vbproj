@@ -129,6 +129,7 @@
     <Compile Include="Commands\cImportLayerCommand.vb" />
     <Compile Include="Commands\cExportLayerCommand.vb" />
     <Compile Include="Commands\cPrintCommand.vb" />
+    <Compile Include="Commands\cShowOptionsCommand.vb" />
     <Compile Include="Controls\ApplicationStatus\cApplicationStatusNotifier.vb" />
     <Compile Include="Controls\ColorDialog\cEwEColorDialog.vb">
       <SubType>Component</SubType>
@@ -889,6 +890,8 @@
     <Content Include="Includes\WeifenLuo.WinFormsUI.Docking.dll" />
     <Content Include="Includes\ZedGraph.dll" />
     <Content Include="Resources\Annual.png" />
+    <None Include="Resources\saveOutputHS.png" />
+    <None Include="Resources\openOutputHS.png" />
     <Content Include="Resources\timeseries.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\tag.png" />

@@ -129,7 +129,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsmiEcotracerSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
@@ -137,6 +136,9 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcospace = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcotracer = New System.Windows.Forms.ToolStripSplitButton()
+        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -393,8 +395,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         'm_tsmiOpenOutput
         '
-        Me.m_tsmiOpenOutput.Name = "m_tsmiOpenOutput"
         resources.ApplyResources(Me.m_tsmiOpenOutput, "m_tsmiOpenOutput")
+        Me.m_tsmiOpenOutput.Name = "m_tsmiOpenOutput"
         '
         'm_tsmiFileClose
         '
@@ -616,18 +618,12 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         resources.ApplyResources(Me.m_tsmiEcotracerDelete, "m_tsmiEcotracerDelete")
         Me.m_tsmiEcotracerDelete.Name = "m_tsmiEcotracerDelete"
         '
-        'm_ssMain
-        '
-        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
-        Me.m_ssMain.Name = "m_ssMain"
-        Me.m_ssMain.ShowItemToolTips = True
-        '
         'm_tsModel
         '
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, m_tssModel1})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, m_tssModel1, Me.ToolStripSeparator5, Me.m_tsbnAutosaveResults})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
@@ -667,6 +663,24 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
+        '
+        'ToolStripSeparator5
+        '
+        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
+        resources.ApplyResources(Me.ToolStripSeparator5, "ToolStripSeparator5")
+        '
+        'm_ssMain
+        '
+        resources.ApplyResources(Me.m_ssMain, "m_ssMain")
+        Me.m_ssMain.Name = "m_ssMain"
+        Me.m_ssMain.ShowItemToolTips = True
+        '
+        'm_tsbnAutosaveResults
+        '
+        Me.m_tsbnAutosaveResults.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsbnAutosaveResults.DoubleClickEnabled = True
+        resources.ApplyResources(Me.m_tsbnAutosaveResults, "m_tsbnAutosaveResults")
+        Me.m_tsbnAutosaveResults.Name = "m_tsbnAutosaveResults"
         '
         'AppLauncher
         '
@@ -770,6 +784,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
     Private WithEvents m_tssEcospace4 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiEcospaceDataConnections As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiOpenOutput As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnAutosaveResults As System.Windows.Forms.ToolStripButton
 
 End Class
 

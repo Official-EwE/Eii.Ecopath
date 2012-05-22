@@ -61,7 +61,7 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor, initializes a new instance of the NavigationCommand class.
+        ''' Constructor, initializes a new instance of this class.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Sub New(ByVal cmdh As cCommandHandler)
@@ -71,26 +71,6 @@ Namespace Commands
         Public Overrides Sub Invoke()
             Me.m_iResult = DialogResult.Cancel
             MyBase.Invoke()
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' </summary>
-        ''' <param name="strFileName"></param>
-        ''' <param name="strDirectory"></param>
-        ''' <param name="strFileFilter"></param>
-        ''' <param name="iFilter"></param>
-        ''' <param name="strTitle">
-        ''' Optional dialog title. If left empty, the .NET default is used.
-        ''' </param>
-        ''' -----------------------------------------------------------------------
-        <Obsolete("Directory management has changed. Please use Invoke(str, str, int, str) instead.")> _
-        Public Overloads Sub Invoke(ByVal strFileName As String, _
-                                    ByVal strDirectory As String, _
-                                    ByVal strFileFilter As String, _
-                                    Optional ByVal iFilter As Integer = 0, _
-                                    Optional ByVal strTitle As String = "")
-            Me.Invoke(Path.Combine(strDirectory, strFileName), strFileFilter, iFilter, strTitle)
         End Sub
 
         ''' -----------------------------------------------------------------------

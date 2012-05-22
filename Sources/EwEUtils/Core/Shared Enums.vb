@@ -681,12 +681,6 @@ Namespace Core
         ''' <summary>Ecospace maximum number of iterations.</summary>
         MaxIterations
 
-        ''' <summary>Ecospace save results to CSV file format.</summary>
-        EcospaceSaveCSV
-
-        ''' <summary>Ecospace save results to ASC file format.</summary>
-        EcospaceSaveASC
-
         ''' <summary>How Capacity is calculated in Ecospace.</summary>
         EcospaceCapCalType
 
@@ -1128,9 +1122,6 @@ Namespace Core
 
         ''' <summary>Stop the current MSE run</summary>
         MSEStop
-
-        ''' <summary>Save the output</summary>
-        MSESave
 
         ''' <summary>Effort type the MSE is to use.</summary>
         MSEEffortSource
@@ -2615,5 +2606,18 @@ Namespace Core
     End Enum
 
 #End Region ' TriState
+
+#Region " Autosave "
+
+    Public Enum eAutosaveTypes As Integer
+        EcosimRun = 0
+        MonteCarlo
+        MSE
+        EcospaceASC
+        EcospaceCSV
+        Ecotracer
+    End Enum
+
+#End Region ' Autosave
 
 End Namespace ' Core

@@ -36,7 +36,6 @@ Public Class cEcospaceCSVResultsWriter
 #Region "IEcospaceResultsWriter Implementation"
 
     Public Overrides Sub StartWrite()
-        If (Not Me.SpaceData.bSaveCSV) Then Return
         Try
             Me.CreateOutputDir()
             Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
@@ -48,8 +47,6 @@ Public Class cEcospaceCSVResultsWriter
     End Sub
 
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
-
-        If (Not Me.SpaceData.bSaveCSV) Then Return
 
         Try
             Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
@@ -78,7 +75,6 @@ Public Class cEcospaceCSVResultsWriter
     End Sub
 
     Public Overrides Sub EndWrite()
-        If (Not Me.SpaceData.bSaveCSV) Then Return
     End Sub
 
 #End Region

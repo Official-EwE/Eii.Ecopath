@@ -238,6 +238,8 @@ Public Enum eMessageType
     MSEBatch_IterationDataUpdated
     ''' <summary>A GIS operation was performed.</summary>
     GISOperation
+    ''' <summary>EwE-wide settings have changed.</summary>
+    GlobalSettingsChanged
 
 End Enum
 

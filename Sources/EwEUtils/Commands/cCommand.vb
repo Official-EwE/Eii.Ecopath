@@ -63,18 +63,15 @@ Namespace Commands
         ''' Constructor, initializes a new instance of this class.
         ''' </summary>
         ''' <param name="strName">The name to assign to the command.</param>
+        ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler, _
-                       ByVal strName As String, _
-                       Optional ByVal objTag As Object = Nothing)
+        Public Sub New(ByVal cmdh As cCommandHandler, ByVal strName As String)
 
             Me.m_cmdh = cmdh
             ' Store name
             Me.m_strName = strName
-            ' Store tag
-            Me.m_objTag = objTag
             ' Create storage for associated controls
-            Me.m_dictControls = New Dictionary(Of Object, ControlHandler)
+            Me.m_dictControls = New Dictionary(Of Object, cControlHandler)
 
             cmdh.Add(Me)
 
@@ -85,36 +82,39 @@ Namespace Commands
 #Region " Adding and removing GUI controls "
 
         ''' <summary>Controls connected to this command.</summary>
-        Private m_dictControls As Dictionary(Of Object, ControlHandler)
+        Private m_dictControls As Dictionary(Of Object, cControlHandler)
 
         ''' ----------------------------------------------------------------------
         ''' <summary>
         ''' Call to add a User Interface Control to a command.
         ''' </summary>
         ''' <param name="objGUI">The control to add.</param>
+        ''' <param name="objTag">Optional tag to launch with the command. Note that
+        ''' this tag will be available for handling code only via the <see cref="cCommand.Tag"/> property.</param>
         ''' <remarks>
-        ''' The <see cref="cCommandHandler">cCommandHandler</see> predefines a few
-        ''' <see cref="ControlHandler">ControlHandler</see> Types that implement
-        ''' GUI behaviour for specific User Interface Control classes. Ensure
-        ''' that the objGUI object has an associated ControlHandler available
+        ''' The <see cref="cCommandHandler"/> predefines a few <see cref="cControlHandler"/> 
+        ''' types that interact with specific User Interface control classes. Ensure
+        ''' that the objGUI object has an associated cControlHandler available,
         ''' otherwise the given Control will not be updated whenever the Command
         ''' state is changed.
         ''' </remarks>
         ''' ----------------------------------------------------------------------
-        Public Sub AddControl(ByVal objGUI As Object)
+        Public Sub AddControl(ByVal objGUI As Object, Optional objTag As Object = Nothing)
             Try
                 Dim cmdh As cCommandHandler = Me.m_cmdh
                 Dim t As Type = cmdh.GetControlHandlerType(objGUI)
                 Dim objControlHandler As Object = Nothing
-                Dim objParms() As Object = {Me, objGUI}
+                Dim objParms() As Object = {Me, objGUI, objTag}
 
-                If (t IsNot Nothing) Then
-                    objControlHandler = Activator.CreateInstance(t, objParms)
-                    If (TypeOf objControlHandler Is ControlHandler) Then
-                        Me.m_dictControls.Add(objGUI, DirectCast(objControlHandler, ControlHandler))
-                    End If
+                Debug.Assert(t IsNot Nothing, "Control type not supported for automatic command handling!")
+
+                objControlHandler = Activator.CreateInstance(t, objParms)
+                If (TypeOf objControlHandler Is cControlHandler) Then
+                    Me.m_dictControls.Add(objGUI, DirectCast(objControlHandler, cControlHandler))
                 End If
             Catch ex As Exception
+                ' Cannot log this!
+                Debug.Assert(False, "UI init error")
             End Try
         End Sub
 
@@ -126,8 +126,11 @@ Namespace Commands
         ''' ----------------------------------------------------------------------
         Public Sub RemoveControl(ByVal objGUI As Object)
             Try
+                Me.m_dictControls(objGUI).Dispose()
                 Me.m_dictControls.Remove(objGUI)
             Catch ex As Exception
+                ' Cannot log this!
+                Debug.Assert(False, "UI cleanup error")
             End Try
         End Sub
 
@@ -239,7 +242,7 @@ Namespace Commands
                 ' Call for changes
                 RaiseEvent OnUpdate(Me)
                 ' Dispatch changes
-                For Each ctrlh As ControlHandler In Me.m_dictControls.Values
+                For Each ctrlh As cControlHandler In Me.m_dictControls.Values
                     ctrlh.Update()
                 Next
                 ' Unlock

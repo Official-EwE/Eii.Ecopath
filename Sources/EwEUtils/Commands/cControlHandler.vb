@@ -15,27 +15,33 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 Imports System
 Imports System.Windows.Forms
 Imports System.Diagnostics
 
-' ToDo_JS: Make classes dispose correctly
+#End Region ' Imports
+
 ' ToDo_JS: Make menu items toggle automatically
 
 Namespace Commands
 
-#Region " ControlHandler base class "
+#Region " cControlHandler - base class "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Base class for connecting a Command to a User Interface Control
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public MustInherit Class ControlHandler
+    Public MustInherit Class cControlHandler
+        Implements IDisposable
 
         ''' <summary>The associated Command.</summary>
         Private m_cmd As cCommand = Nothing
+        ''' <summary>Optional tag</summary>
+        Private m_objTag As Object = Nothing
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
@@ -45,14 +51,26 @@ Namespace Commands
         ''' <param name="objCmd">The Command instance to attach.</param>
         ''' <param name="objGUI">The User Interface instance to attach.</param>
         ''' ---------------------------------------------------------------------------
-        Public Sub New(ByRef objCmd As Object, ByRef objGUI As Object)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
             Debug.Assert(TypeOf objCmd Is cCommand)
-            m_cmd = DirectCast(objCmd, cCommand)
+            Me.m_cmd = DirectCast(objCmd, cCommand)
+        End Sub
+
+        ''' ---------------------------------------------------------------------------
+        ''' <inheritdocs cref="IDisposable.Dispose"/>
+        ''' ---------------------------------------------------------------------------
+        Public Overridable Sub Dispose() _
+            Implements IDisposable.Dispose
+
+            Me.m_cmd = Nothing
+            Me.m_objTag = Nothing
+            GC.SuppressFinalize(Me)
+
         End Sub
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
-        ''' Helper method; exposes the attached Command to derived classes.
+        ''' Helper method; exposes the attached cCommand to derived classes.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Protected ReadOnly Property Command() As cCommand
@@ -60,6 +78,28 @@ Namespace Commands
                 Return Me.m_cmd
             End Get
         End Property
+
+        ''' ---------------------------------------------------------------------------
+        ''' <summary>
+        ''' Helper method; exposes an attached launch parameter to derived classes.
+        ''' </summary>
+        ''' ---------------------------------------------------------------------------
+        Protected ReadOnly Property Tag As Object
+            Get
+                Return Me.m_objTag
+            End Get
+        End Property
+
+        ''' ---------------------------------------------------------------------------
+        ''' <summary>
+        ''' Invoke the underlying command.
+        ''' </summary>
+        ''' ---------------------------------------------------------------------------
+        Protected Sub Invoke()
+            Me.m_cmd.Tag = Me.m_objTag
+            Me.m_cmd.Invoke()
+            Me.m_cmd.Tag = Nothing
+        End Sub
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
@@ -71,24 +111,30 @@ Namespace Commands
 
     End Class
 
-#End Region ' ControlHandler base class 
+#End Region ' cControlHandler 
 
-#Region " ToolStripMenuItemControlHandler "
+#Region " cToolStripMenuItemControlHandler "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Implementation of a connecting between a Command and a ToolStripMenuItem.
+    ''' Implementation of a connecting between a <see cref="cCommand"/> and a 
+    ''' <see cref="ToolStripMenuItem"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class ToolStripMenuItemControlHandler
-        Inherits ControlHandler
+    Public Class cToolStripMenuItemControlHandler
+        Inherits cControlHandler
 
         Private WithEvents m_tsi As ToolStripMenuItem = Nothing
 
-        Public Sub New(ByRef objCmd As Object, ByRef objGUI As Object)
-            MyBase.New(objCmd, objGUI)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal tag As Object)
+            MyBase.New(objCmd, objGUI, tag)
             Debug.Assert(TypeOf objGUI Is ToolStripMenuItem)
             Me.m_tsi = DirectCast(objGUI, ToolStripMenuItem)
+        End Sub
+
+        Public Overrides Sub Dispose()
+            Me.m_tsi = Nothing
+            MyBase.Dispose()
         End Sub
 
         Public Overrides Sub Update()
@@ -97,29 +143,39 @@ Namespace Commands
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsi.Click
-            Me.Command.Invoke()
+            Try
+                Me.Invoke()
+            Catch ex As Exception
+                ' Kaboom
+            End Try
         End Sub
 
     End Class
 
 #End Region ' ToolStripMenuItemControlHandler
 
-#Region " ToolStripButtonControlHandler "
+#Region " cToolStripButtonControlHandler "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Implementation of a connecting between a Command and a ToolStripButton.
+    ''' Implementation of a connecting between a <see cref="cCommand"/> and a 
+    ''' <see cref="ToolStripButton"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class ToolStripButtonControlHandler
-        Inherits ControlHandler
+    Public Class cToolStripButtonControlHandler
+        Inherits cControlHandler
 
         Private WithEvents m_tsb As ToolStripButton = Nothing
 
-        Public Sub New(ByRef objCmd As Object, ByRef objGUI As Object)
-            MyBase.New(objCmd, objGUI)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
+            MyBase.New(objCmd, objGUI, objTag)
             Debug.Assert(TypeOf objGUI Is ToolStripButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripButton)
+        End Sub
+
+        Public Overrides Sub Dispose()
+            Me.m_tsb = Nothing
+            MyBase.Dispose()
         End Sub
 
         Public Overrides Sub Update()
@@ -128,29 +184,39 @@ Namespace Commands
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.Click
-            Me.Command.Invoke()
+            Try
+                Me.Invoke()
+            Catch ex As Exception
+                ' Kaboom
+            End Try
         End Sub
 
     End Class
 
-#End Region ' ToolStripButtonControlHandler
+#End Region ' cToolStripButtonControlHandler
 
-#Region " ToolStripButtonDropDownControlHandler "
+#Region " cToolStripButtonDropDownControlHandler "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Implementation of a connecting between a Command and a ToolStripButton.
+    ''' Implementation of a connecting between a <see cref="cCommand"/> and a 
+    ''' <see cref="ToolStripButton"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class ToolStripButtonDropDownControlHandler
-        Inherits ControlHandler
+        Inherits cControlHandler
 
         Private WithEvents m_tsb As ToolStripDropDownButton = Nothing
 
-        Public Sub New(ByRef objCmd As Object, ByRef objGUI As Object)
-            MyBase.New(objCmd, objGUI)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, objTag As Object)
+            MyBase.New(objCmd, objGUI, objTag)
             Debug.Assert(TypeOf objGUI Is ToolStripDropDownButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripDropDownButton)
+        End Sub
+
+        Public Overrides Sub Dispose()
+            Me.m_tsb = Nothing
+            MyBase.Dispose()
         End Sub
 
         Public Overrides Sub Update()
@@ -158,29 +224,39 @@ Namespace Commands
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.Click
-            Me.Command.Invoke()
+            Try
+                Me.Invoke()
+            Catch ex As Exception
+                ' Kaboom
+            End Try
         End Sub
 
     End Class
 
-#End Region ' ToolStripButtonControlHandler
+#End Region ' cToolStripButtonDropDownControlHandler
 
 #Region " ToolStripSplitButtonHandler "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Implementation of a connecting between a Command and a ToolStripSplitButton.
+    ''' Implementation of a connecting between a <see cref="cCommand"/> and a 
+    ''' <see cref="ToolStripSplitButton"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class ToolStripSplitButtonHandler
-        Inherits ControlHandler
+    Public Class cToolStripSplitButtonHandler
+        Inherits cControlHandler
 
         Private WithEvents m_tsb As ToolStripSplitButton = Nothing
 
-        Public Sub New(ByRef objCmd As Object, ByRef objGUI As Object)
-            MyBase.New(objCmd, objGUI)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
+            MyBase.New(objCmd, objGUI, objTag)
             Debug.Assert(TypeOf objGUI Is ToolStripSplitButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripSplitButton)
+        End Sub
+
+        Public Overrides Sub Dispose()
+            Me.m_tsb = Nothing
+            MyBase.Dispose()
         End Sub
 
         Public Overrides Sub Update()
@@ -188,29 +264,38 @@ Namespace Commands
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_tsb.ButtonClick
-            Me.Command.Invoke()
+            Try
+                Me.Invoke()
+            Catch ex As Exception
+                ' Kaboom
+            End Try
         End Sub
 
     End Class
 
-#End Region ' ToolStripButtonControlHandler
+#End Region ' ToolStripSplitButtonHandler
 
-#Region " ButtonControlHandler "
+#Region " cButtonControlHandler "
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Implementation of a connecting between a Command and a Button.
+    ''' Implementation of a connecting between a <see cref="cCommand"/> and a <see cref="Button"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Class ButtonControlHandler
-        Inherits ControlHandler
+    Public Class cButtonControlHandler
+        Inherits cControlHandler
 
         Private WithEvents m_btn As Button = Nothing
 
-        Public Sub New(ByRef objCmd As Object, ByRef objGUI As Object)
-            MyBase.New(objCmd, objGUI)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
+            MyBase.New(objCmd, objGUI, objTag)
             Debug.Assert(TypeOf objGUI Is Button)
             Me.m_btn = DirectCast(objGUI, Button)
+        End Sub
+
+        Public Overrides Sub Dispose()
+            Me.m_btn = Nothing
+            MyBase.Dispose()
         End Sub
 
         Public Overrides Sub Update()
@@ -218,11 +303,15 @@ Namespace Commands
         End Sub
 
         Private Sub OnClick(ByVal sender As Object, ByVal e As EventArgs) Handles m_btn.Click
-            Me.Command.Invoke()
+            Try
+                Me.Invoke()
+            Catch ex As Exception
+                ' Kaboom
+            End Try
         End Sub
 
     End Class
 
-#End Region ' ButtonControlHandler
+#End Region ' cButtonControlHandler
 
 End Namespace

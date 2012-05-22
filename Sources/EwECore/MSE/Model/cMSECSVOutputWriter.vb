@@ -51,7 +51,7 @@ Friend Class cMSECSVOutputWriter
 
     Public Sub saveIteration(ByVal ListOfData As Dictionary(Of cMSE.eResultsData, Single(,))) Implements IMSEOutputWriter.saveIteration
 
-        If Not Me.m_MSEdata.SaveOutput Then Return
+        If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
         Dim buff As New StringBuilder()
         Dim strm As StreamWriter = Nothing
@@ -182,7 +182,7 @@ Friend Class cMSECSVOutputWriter
     Private Sub WriteOutputHeader(ByVal DataDescription As String, ByVal GroupFleet As String, ByVal DataFileName As String)
 
         Try
-            If Not Me.m_MSEdata.SaveOutput Then Exit Sub
+            If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
             Dim header As StringBuilder
             Dim strm As StreamWriter
@@ -212,7 +212,7 @@ Friend Class cMSECSVOutputWriter
 
     Public Sub Init() Implements IMSEOutputWriter.Init
 
-        If Not Me.m_MSEdata.SaveOutput Then Exit Sub
+        If Not Me.m_core.Autosave(eAutosaveTypes.MSE) Then Return
 
         Try
             Dim epData As cEcopathDataStructures = Me.m_core.m_EcoPathData

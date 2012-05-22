@@ -27,9 +27,7 @@ Namespace Commands
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' The NavigationCommand class implements a <see cref="cCommand">Command</see>
-    ''' that is used in EwE6 to navigate to embedded and plugin-provided 
-    ''' <see cref="System.Windows.Forms.Form">Forms</see>.
+    ''' Command to launch a hyperlink, which can be either a url or a file/folder path.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cBrowserCommand
@@ -41,13 +39,13 @@ Namespace Commands
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' <example>
-        ''' The folowing shows how to retrieve the one instance of the cNavigationCommand
+        ''' The folowing shows how to retrieve the one instance of the cBrowserCommand
         ''' from anywhere in the EwE6 user interface:
         ''' <code>
         ''' ' Get the one and only command 
         ''' Dim cdmH As CommandHandler = CommandHandler.GetInstance()
         ''' ' Get the one and only navigation command
-        ''' Dim cmd As NavigationCommand = DirectCast(GetCommand(NavigationCommand.COMMAND_NAME), NavigationCommand)
+        ''' Dim cmd As cBrowserCommand = DirectCast(GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
         ''' ' Invoke the command
         ''' ...
         ''' </code>

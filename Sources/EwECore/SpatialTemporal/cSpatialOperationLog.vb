@@ -145,10 +145,15 @@ Namespace SpatialData
 
 #Region " Internals "
 
+        Private Function AllowedToSave() As Boolean
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceASC) Or Me.m_core.Autosave(eAutosaveTypes.EcospaceCSV))
+        End Function
+
         Private Sub OnCoreStateChanged(csm As cCoreStateMonitor)
             If Not csm.IsEcospaceRunning Then
-                If (Me.m_bLogStarted) Then
-                    Dim msg As New cMessage("Spatial log saved to " & Me.m_strLogFileName, eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                If Me.m_bLogStarted And Me.AllowedToSave() Then
+                    Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_SAVED, Me.m_strLogFileName), _
+                                            eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Me.m_strLogFileName
                     Me.m_core.Messages.SendMessage(msg)
 
@@ -159,6 +164,8 @@ Namespace SpatialData
         End Sub
 
         Private Sub WriteMessage()
+
+            If (Not Me.AllowedToSave()) Then Return
 
             Dim sb As New StringBuilder()
 

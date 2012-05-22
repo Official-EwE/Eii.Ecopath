@@ -761,9 +761,7 @@ Namespace MSE
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
                 m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
                 m_parameters.EffortSource = Me.m_MSEdata.EffortSource
-                '  m_parameters.StopRun = Me.m_MSEdata.StopRun
-                m_parameters.Save = Me.m_MSEdata.SaveOutput
-
+   
                 m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
                 m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
                 m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
@@ -928,8 +926,6 @@ Namespace MSE
                         Me.m_MSEdata.NTrials = Me.m_parameters.NTrials()
                         Me.m_MSEdata.RegulationMode = Me.m_parameters.RegulatoryMode
                         Me.m_MSEdata.EffortSource = Me.m_parameters.EffortSource
-                        '         Me.m_MSEdata.StopRun = Me.m_parameters.StopRun
-                        Me.m_MSEdata.SaveOutput = Me.m_parameters.Save
                         Me.m_MSEdata.StartYear = Me.m_parameters.MSEStartYear
                         Me.m_MSEdata.MSYStartTimeIndex = Me.m_parameters.MSYStartTimeIndex
                         Me.m_MSEdata.ResultsStartYear = Me.m_parameters.MSEResultsStartYear

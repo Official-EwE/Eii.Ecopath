@@ -182,17 +182,6 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            'Save to file
-            meta = New cVariableMetaData()
-            val = New cValue(1, eVarNameFlags.EcospaceSaveCSV, eStatusFlags.Null, eValueTypes.Bool, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
-            meta = New cVariableMetaData()
-            val = New cValue(1, eVarNameFlags.EcospaceSaveASC, eStatusFlags.Null, eValueTypes.Bool, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
             meta = New cVariableMetaData(0, 2, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
             val = New cValue(1, eVarNameFlags.EcospaceCapCalType, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -214,8 +203,6 @@ Public Class cEcospaceModelParameters
             val = New cValue(1, eVarNameFlags.EcospaceUseAnnualOutput, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
-
-
 
             'set status flags to default values
             ResetStatusFlags()
@@ -564,49 +551,7 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-    ''' <summary>
-    ''' Save Ecospace results to CSV file format
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' This saves the cEcospaceTimeStep object to the current IEcospaceResultsWriter. 
-    ''' At this time there is only one EcospaceResultsWriter.
-    ''' </remarks>
-    Public Property SaveCSV() As Boolean
-
-        Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceSaveCSV))
-        End Get
-
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceSaveCSV, value)
-        End Set
-
-    End Property
-
-
-    ''' <summary>
-    ''' Save Ecospace results to CSV file format
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>
-    ''' This saves the cEcospaceTimeStep object to the current IEcospaceResultsWriter. 
-    ''' At this time there is only one EcospaceResultsWriter.
-    ''' </remarks>
-    Public Property SaveASC() As Boolean
-
-        Get
-            Return CBool(GetVariable(eVarNameFlags.EcospaceSaveASC))
-        End Get
-
-        Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.EcospaceSaveASC, value)
-        End Set
-
-    End Property
-
+  
     Public Property IBMMovePacketOnStanza() As Boolean
 
         Get

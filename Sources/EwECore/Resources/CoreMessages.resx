@@ -1027,12 +1027,19 @@ System Error: {0}</value>
     <value>An internal error occurred. {0}</value>
     <comment>{0}=error text</comment>
   </data>
-  <data name="STATUS_SPATIALTEMPORAL_INSERTED" xml:space="preserve">
-    <value>Inserted {0}</value>
-    <comment>{0}=value</comment>
+  <data name="STATUS_SPATIALTEMPORAL_APPLIED" xml:space="preserve">
+    <value>Applied {0}</value>
+    <comment>{0}=raster data summary</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_LOADING" xml:space="preserve">
     <value>Loading external data for '{0}' at time {1} ({2:yyyy/MM/dd})</value>
     <comment>{0}=layer name, {1}=time step, {2}=date (formatted)</comment>
+  </data>
+  <data name="OUTPUT_DIRECTORY_MISSING" xml:space="preserve">
+    <value>Output directory does not exist.</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_SAVED" xml:space="preserve">
+    <value>Spatial operations log saved to '{0}'</value>
+    <comment>{0}=file name</comment>
   </data>
 </root>

@@ -3743,6 +3743,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} connection(s).
+        '''</summary>
+        Public ReadOnly Property STATUSSTRIP_ECOSPACE_CONNECTIONS() As String
+            Get
+                Return ResourceManager.GetString("STATUSSTRIP_ECOSPACE_CONNECTIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace scenario
         '''Name: {0}
         '''Description: {1}.

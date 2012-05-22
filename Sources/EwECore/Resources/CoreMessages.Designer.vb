@@ -1779,6 +1779,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Output directory does not exist..
+        '''</summary>
+        Friend Shared ReadOnly Property OUTPUT_DIRECTORY_MISSING() As String
+            Get
+                Return ResourceManager.GetString("OUTPUT_DIRECTORY_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Output data are not editable..
         '''</summary>
         Friend Shared ReadOnly Property OUTPUT_NOT_EDITABLE() As String
@@ -2049,11 +2058,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Inserted {0}.
+        '''  Looks up a localized string similar to Applied {0}.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_INSERTED() As String
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_APPLIED() As String
             Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_INSERTED", resourceCulture)
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_APPLIED", resourceCulture)
             End Get
         End Property
         
@@ -2063,6 +2072,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_LOADING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial operations log saved to &apos;{0}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_SAVED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_SAVED", resourceCulture)
             End Get
         End Property
         

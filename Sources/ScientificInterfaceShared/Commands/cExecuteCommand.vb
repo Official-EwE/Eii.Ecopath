@@ -44,7 +44,7 @@ Namespace Commands
 #End Region ' Private vars
 
         Public Sub New(ByVal cmdh As cCommandHandler)
-            MyBase.New(cmdh, COMMAND_NAME, Nothing)
+            MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
 #Region " Public interfaces "

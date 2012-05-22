@@ -48,6 +48,9 @@ Namespace Commands
 
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
+        ''' <param name="layer">The layer to edit.</param>
+        ''' <param name="layerDepth">Depth reference layer.</param>
+        ''' <param name="edittype">Type of <see cref="eLayerEditTypes">edit operation</see>.</param>
         ''' ---------------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal layer As cRasterLayer, ByVal layerDepth As cRasterLayer, ByVal edittype As eLayerEditTypes)
             Me.m_layer = layer
@@ -58,7 +61,7 @@ Namespace Commands
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
-        ''' Get the layer that the command was invoked for.
+        ''' Get the layer to edit.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Public ReadOnly Property Layer() As cRasterLayer
@@ -69,7 +72,7 @@ Namespace Commands
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
-        ''' Get the reference depth layer that the command was invoked for.
+        ''' Get the reference depth layer to help with the edit operation.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Public ReadOnly Property LayerDepth() As cRasterLayer
@@ -80,7 +83,8 @@ Namespace Commands
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
-        ''' Get the reference depth layer that the command was invoked for.
+        ''' Get the <see cref="eLayerEditTypes">edit operation</see> to execute upon the
+        ''' selected <see cref="Layer"/>.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Public ReadOnly Property EditType() As eLayerEditTypes
