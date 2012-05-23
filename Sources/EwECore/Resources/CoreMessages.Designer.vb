@@ -2076,20 +2076,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed to update cell({0}, {1}) with value {2}. {3}.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_ADAPTERROR() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_ADAPTERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Applied {0}.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_APPLIED() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_APPLIED", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to An error occurred. {0}.
-        '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_ERROR() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_ERROR", resourceCulture)
             End Get
         End Property
         

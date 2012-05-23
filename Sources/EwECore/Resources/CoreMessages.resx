@@ -1050,8 +1050,8 @@ System Error: {0}</value>
     <value>Ecospace failed to save result maps. {0}</value>
     <comment>{0}=error text</comment>
   </data>
-  <data name="STATUS_SPATIALTEMPORAL_ERROR" xml:space="preserve">
-    <value>An error occurred. {0}</value>
-    <comment>{0}=error text</comment>
+  <data name="STATUS_SPATIALTEMPORAL_ADAPTERROR" xml:space="preserve">
+    <value>Failed to update cell({0}, {1}) with value {2}. {3}</value>
+    <comment>{0}=col, {1}=row, {2}=cell, {3}=error</comment>
   </data>
 </root>
