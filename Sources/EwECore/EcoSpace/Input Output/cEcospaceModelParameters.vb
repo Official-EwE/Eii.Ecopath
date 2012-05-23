@@ -235,6 +235,24 @@ Public Class cEcospaceModelParameters
 
 #Region " Variables by dot (.) operator "
 
+    Public Property SaveASC As Boolean
+        Get
+            Return Me.m_core.Autosave(eAutosaveTypes.EcospaceASC)
+        End Get
+        Set(value As Boolean)
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceASC) = value
+        End Set
+    End Property
+
+    Public Property SaveCSV As Boolean
+        Get
+            Return Me.m_core.Autosave(eAutosaveTypes.EcospaceCSV)
+        End Get
+        Set(value As Boolean)
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceCSV) = value
+        End Set
+    End Property
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the number of time steps per year for this model. Internally,
