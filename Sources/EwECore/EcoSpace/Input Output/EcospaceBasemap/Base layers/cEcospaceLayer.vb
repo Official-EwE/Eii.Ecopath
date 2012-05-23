@@ -267,5 +267,9 @@ Public MustInherit Class cEcospaceLayer
 
 #End Region ' Cell manipulation
 
+    Public Overrides Function ToString() As String
+        Return "cEcospaceLayer " & Me.Name & "(" & Me.Index & ")"
+    End Function
+
 End Class
 

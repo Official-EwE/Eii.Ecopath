@@ -99,10 +99,10 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the dataset is allowed to deliver data.
+        ''' Get/set whether the dataset is configured for delivering data.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property IsEnabled As Boolean
+        Function IsConfigured() As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

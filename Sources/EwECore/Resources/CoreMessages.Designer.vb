@@ -2085,6 +2085,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to An error occurred. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_ERROR() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Loading external data for &apos;{0}&apos; at time {1} ({2:yyyy/MM/dd}).
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String

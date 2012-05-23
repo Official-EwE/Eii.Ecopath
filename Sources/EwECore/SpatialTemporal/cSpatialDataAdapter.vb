@@ -116,7 +116,7 @@ Namespace SpatialData
             Dim ds As ISpatialDataSet = Me.Dataset(iIndex)
 
             If (cv Is Nothing) Or (ds Is Nothing) Then Return False
-            Return cv.IsConfigured And ds.IsEnabled
+            Return cv.IsConfigured() And ds.IsConfigured()
 
         End Function
 
@@ -217,7 +217,7 @@ Namespace SpatialData
                 ' Has both?
                 If (ds IsNot Nothing) And (cv IsNot Nothing) Then
                     ' #Yes: allowed to execute?
-                    If ds.IsEnabled Then
+                    If ds.IsConfigured And cv.IsConfigured Then
                         ' #Yes: has data for this time step?
                         dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
 
@@ -232,6 +232,7 @@ Namespace SpatialData
                                     dataExternal = ds.GetRaster(cv, layer.Name)
                                 Catch ex As Exception
                                     Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                                    cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
                                 End Try
 
                                 If (dataExternal IsNot Nothing) Then
@@ -253,15 +254,28 @@ Namespace SpatialData
                                     ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
                                     Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
 
+                                Else
+                                    Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) external data missing for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
+                                    cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize), cLog.eVerboseLevel.Detailed)
                                 End If
 
                                 ' Unload dataset
                                 ds.Unload()
                                 Me.m_core.SpatialOperationLog.EndLayerLog()
-
+                            Else
+                                Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} failed to load data for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"
+                                cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize), cLog.eVerboseLevel.Detailed)
                             End If
+                        Else
+                            Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} missing data for T{2}, ext({3},{4}) to ({5},{6})"
+                            cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), cLog.eVerboseLevel.Detailed)
                         End If
+                    Else
+                        Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} or converter {2} not configured"
+                        cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, cv.DisplayName()), cLog.eVerboseLevel.Detailed)
                     End If
+                Else
+                    'cLog.Write("cSpatialDataAdapter.Populate: layer " & layer.ToString() & " not connected", cLog.eVerboseLevel.Detailed)
                 End If
             Next
 
@@ -295,12 +309,16 @@ Namespace SpatialData
             Dim msg As cMessage = Nothing
             Dim sValue As Single = 0
             Dim bSuccess As Boolean = True ' Think positive. Really
+            Dim iRow As Integer
+            Dim iCol As Integer
 
             Try
                 ' For all rows
-                For iRow As Integer = 1 To bm.InRow
+                iRow = 1
+                While (iRow <= bm.InRow) And (bSuccess = True)
                     ' For all columns
-                    For iCol As Integer = 1 To bm.InCol
+                    iCol = 1
+                    While (iCol <= bm.InCol) And (bSuccess = True)
                         ' Is a water cell or is this layer affecting depth?
                         If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                             ' #Yes: get value
@@ -311,13 +329,17 @@ Namespace SpatialData
                                 bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, sValue)
                             End If
                         End If
-                    Next iCol
-                Next iRow
+                    End While ' iCol
+                    iRow += 1
+                End While ' iRow
 
-                Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), eStatusFlags.OK)
+                If bSuccess Then
+                    Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_APPLIED, dataExternal.ToString()), eStatusFlags.OK)
+                End If
 
             Catch ex As Exception
                 Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
+                cLog.Write(ex, "cSpatialDataAdapter::Adapt(" & layer.ToString() & ")")
                 bSuccess = False
             End Try
 
@@ -343,6 +365,11 @@ Namespace SpatialData
             Try
                 layer.Cell(iRow, iCol) = sCellValueAtT
             Catch ex As Exception
+
+                Dim strMsg As String = "cSpatialDataAdapter::SetCell({0}) at ({1},{2})={3}: exception {4}"
+                cLog.Write(ex, String.Format(strMsg, layer.ToString, iCol, iRow, sCellValueAtT))
+
+                Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                 Return False
             End Try
             Return True
