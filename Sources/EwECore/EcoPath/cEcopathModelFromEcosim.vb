@@ -65,7 +65,7 @@ Public Class cEcopathModelFromEcosim
             strFileName &= cDataSourceFactory.GetDefaultExtension(eDataSourceTypes.Access2007)
         End If
 
-        atResult = db.Create(strFileName, strModelName, True)
+        atResult = db.Create(strFileName, strModelName, True, strAuthor:=Me.m_core.DefaultAuthor)
         If (atResult <> eDatasourceAccessType.Created) Then Return atResult
 
         Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFileName)

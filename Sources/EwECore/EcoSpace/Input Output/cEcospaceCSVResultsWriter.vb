@@ -15,7 +15,7 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-#Region "Import"
+#Region " Imports "
 
 Option Strict On
 Imports System.IO
@@ -23,7 +23,7 @@ Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
-#End Region
+#End Region ' Imports
 
 ''' <summary>
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
@@ -40,8 +40,7 @@ Public Class cEcospaceCSVResultsWriter
             Me.CreateOutputDir()
             Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
         Catch ex As Exception
-            ' ToDo: globalize this
-            Me.m_core.Messages.SendMessage(New cMessage("Failed to save Ecospace maps " & ex.Message, _
+            Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
     End Sub

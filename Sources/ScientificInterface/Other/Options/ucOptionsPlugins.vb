@@ -136,6 +136,16 @@ Namespace Other
 
             Dim alDisabledPlugins As New ArrayList()
             Dim bChanged As Boolean = False
+            Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
+
+            ' Only when toggling this option on
+            If (Me.m_cbDownloadUpdates.Checked And My.Settings.AutoUpdatePlugins = False) Then
+                If (Not EwEUtils.SystemUtilities.cSystemUtils.IsAdministrator()) Then
+                    result = IOptionsPage.eApplyResultType.Success_administrator
+                Else
+                    result = IOptionsPage.eApplyResultType.Success_restart
+                End If
+            End If
 
             ' Build list of plugins to disable
             For Each info As cPluginAssemblyInfo In Me.m_dictPluginAssemblyInfo.Values
@@ -158,12 +168,21 @@ Namespace Other
 
             ' Update settings
             My.Settings.DisabledPlugins = alDisabledPlugins
+            My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
+            My.Settings.UpdatePluginsTimeout = CInt(Me.m_nudTimeOut.Value * 1000)
 
             ' Convey result
-            If bChanged Then Return IOptionsPage.eApplyResultType.Success_restart
-            Return IOptionsPage.eApplyResultType.Success
+            If bChanged Then result = DirectCast(Math.Max(result, IOptionsPage.eApplyResultType.Success_restart), IOptionsPage.eApplyResultType)
+
+            Return result
 
         End Function
+
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+            Me.m_cbDownloadUpdates.Checked = CBool(My.Settings.GetDefaultValue("AutoUpdatePlugins"))
+            Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(CDec(My.Settings.GetDefaultValue("UpdatePluginsTimeout")) / 1000)))
+        End Sub
 
 #End Region ' Public interfaces
 
@@ -179,6 +198,9 @@ Namespace Other
             Dim tnP As TreeNode = Nothing
 
             If (Me.m_pm Is Nothing) Then Return
+
+            Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
+            Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(My.Settings.UpdatePluginsTimeout / 1000)))
 
             ' Prepare image list
             Me.m_ilPlugins.Images.Add(SharedResources.nav8_ecopath)
@@ -262,6 +284,11 @@ Namespace Other
                 Me.UpdatePluginImage(info)
             End If
 
+        End Sub
+
+        Private Sub m_btnClear_Click(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnClear.Click
+            My.Settings.SuppressedOverwritePrompts = ""
         End Sub
 
 #End Region ' Events
@@ -352,6 +379,7 @@ Namespace Other
         Private Sub UpdateControls()
 
             Dim pa As cPluginAssembly = Me.SelectedPluginAssembly
+            Dim bHasSuppressedPrompts As Boolean = (Not String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts))
 
             Dim bEnabled As Boolean = False
             Dim bCanDisable As Boolean = False
@@ -363,15 +391,11 @@ Namespace Other
 
             Me.m_cbEnablePlugin.Enabled = bCanDisable
             Me.m_cbEnablePlugin.Checked = bEnabled
+            Me.m_btnClear.Enabled = bHasSuppressedPrompts
 
         End Sub
 
 #End Region ' Private implementations
-
-        Public Sub SetDefaults() _
-            Implements IOptionsPage.SetDefaults
-
-        End Sub
 
     End Class
 

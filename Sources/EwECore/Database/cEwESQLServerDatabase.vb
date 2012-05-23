@@ -77,7 +77,8 @@ Namespace Database
         Public Overrides Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal format As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+                Optional ByVal format As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                Optional ByVal strAuthor As String = "") As eDatasourceAccessType
 
             Return eDatasourceAccessType.Failed_CannotSave
 

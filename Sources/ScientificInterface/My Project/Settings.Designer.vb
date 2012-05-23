@@ -701,6 +701,30 @@ Partial Friend NotInheritable Class Settings
             Me("LogVerboseLevel") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property Author() As String
+        Get
+            Return CType(Me("Author"),String)
+        End Get
+        Set
+            Me("Author") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property Contact() As String
+        Get
+            Return CType(Me("Contact"),String)
+        End Get
+        Set
+            Me("Contact") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

@@ -1891,7 +1891,7 @@ Public Class AppLauncher
                     If fmsg.Reply = cFeedbackMessage.eReply.NO Then Return Nothing
                 End If
                 db = New cEwEAccessDatabase()
-                atResult = db.Create(strFileName, strModelName, True, format)
+                atResult = db.Create(strFileName, strModelName, True, format, Me.Core.DefaultAuthor)
 
             Case eDataSourceTypes.EII
                 atResult = eDatasourceAccessType.Failed_DeprecatedOperation
@@ -3935,6 +3935,10 @@ Public Class AppLauncher
             ' Kick the core
             Me.UpdateCorePaths(True)
 
+            If String.IsNullOrWhiteSpace(My.Settings.Author) Then
+                My.Settings.Author = EwEUtils.SystemUtilities.cSystemUtils.GetUserName()
+            End If
+
         Catch ex As Exception
 
         End Try
@@ -3969,6 +3973,12 @@ Public Class AppLauncher
                     Catch ex As Exception
                         cLog.VerboseLevel = cLog.eVerboseLevel.Standard
                     End Try
+
+                Case "Author"
+                    Me.Core.DefaultAuthor = My.Settings.Author
+
+                Case "Contact"
+                    Me.Core.DefaultContact = My.Settings.Contact
 
             End Select
 

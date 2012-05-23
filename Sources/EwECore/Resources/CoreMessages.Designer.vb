@@ -969,6 +969,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecospace failed to save result maps. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_SAVEMAP_FAILED() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_SAVEMAP_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace..
         '''</summary>
         Friend Shared ReadOnly Property ECOSPACE_SIM_INIT_FAILED() As String
@@ -1712,6 +1721,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property MONTECARLO_RESTORE_FAILED() As String
             Get
                 Return ResourceManager.GetString("MONTECARLO_RESTORE_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Failed to save Monte Carlo data to file. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property MONTECARLO_SAVE_FAILED() As String
+            Get
+                Return ResourceManager.GetString("MONTECARLO_SAVE_FAILED", resourceCulture)
             End Get
         End Property
         

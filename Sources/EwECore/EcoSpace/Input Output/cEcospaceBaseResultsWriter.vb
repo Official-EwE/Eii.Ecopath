@@ -92,7 +92,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
             Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() cannot create directory")
-            System.Console.WriteLine("Ecospace output writer failed to create directory " & Me.OutputDirectory)
+            cLog.Write("Ecospace output writer failed to create directory " & Me.OutputDirectory)
         End If
 
     End Sub

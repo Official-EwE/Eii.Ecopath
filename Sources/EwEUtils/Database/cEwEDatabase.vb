@@ -399,6 +399,8 @@ Namespace Database
         ''' </summary>
         ''' <param name="strDatabase">The database to create.</param>
         ''' <param name="strModelName">Name of the new model.</param>
+        ''' <param name="strAuthor">Name of the author to add. May be omitted.</param>
+        ''' <param name="databaseType">Type of the database to create. May be omitted.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
         ''' <returns>True of created succesfully.</returns>
         ''' <remarks>Note that this will NOT open the newly created database.</remarks>
@@ -406,7 +408,8 @@ Namespace Database
         Public MustOverride Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+                Optional ByVal databaseType As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                Optional strAuthor As String = "") As eDatasourceAccessType
 
         ''' -------------------------------------------------------------------
         ''' <summary>

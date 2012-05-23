@@ -259,7 +259,7 @@ Namespace Other
             Dim t As Type = GetType(ucOptionsGeneral)
             Select Case strNodeName
                 Case "", "ndGeneral" : t = GetType(ucOptionsGeneral)
-                Case "ndAutosave" : t = GetType(ucOptionsAutosave)
+                Case "ndAutosave" : t = GetType(ucOptionsFileManagement)
                 Case "ndPresentation" : t = GetType(ucOptionsPresentation)
                 Case "ndDisplay", "ndColors" : t = GetType(ucOptionsColors)
                 Case "ndGraphCharts" : t = GetType(ucOptionsGraphs)
@@ -298,7 +298,7 @@ Namespace Other
                     strNode = "ndMap"
 
                 Case eApplicationOptionTypes.Autosave
-                    t = GetType(ucOptionsAutosave)
+                    t = GetType(ucOptionsFileManagement)
                     strNode = "ndAutosave"
 
                 Case eApplicationOptionTypes.Plugins

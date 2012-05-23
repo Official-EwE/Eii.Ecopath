@@ -64,24 +64,23 @@ Public Class cMonteCarloResultsWriter
             End If
 
         Catch ex As Exception
-            'Me.MC.bSaveOutput = False
-            Dim msg As New cMessage("Error saving Monte Carlo data to file. " & ex.Message, eMessageType.ErrorEncountered, _
-                                    eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
+            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MONTECARLO_SAVE_FAILED, ex.Message), _
+                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
             Me.Core.Messages.SendMessage(msg)
-            cLog.Write(ex)
+            cLog.Write(ex, "cMonteCarloResultsWriter::Init")
         End Try
     End Sub
 
     Private ReadOnly Property OuputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("IterationData", "MonteCarlo", ".csv"))
+            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("IterationData", eAutosaveTypes.MonteCarlo.ToString, ".csv"))
         End Get
     End Property
 
 
     Private ReadOnly Property VulOuputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("Vulnerability", "MonteCarlo", ".csv"))
+            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("Vulnerability", eAutosaveTypes.MonteCarlo.ToString, ".csv"))
         End Get
     End Property
 

@@ -15,10 +15,9 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-Option Strict On
-
 #Region " Imports "
 
+Option Strict On
 Imports System.Drawing
 Imports EwECore.DataSources
 Imports EwECore.ValueWrapper
@@ -117,13 +116,7 @@ Public Class cCore
     Private m_DataSource As IEwEDataSource = Nothing
     ''' <summary>Plug-in manager.</summary>
     Private WithEvents m_pluginManager As cPluginManager = Nothing
-    ''' <summary>Path for EwE core processes to write output information to.</summary>
-    Private m_strOutputPath As String = ""
-    ''' <summary>Path for the core to write backup files to.</summary>
-    Private m_strBackupFileMask As String = ""
-    ''' <summary>Autosave flags</summary>
-    Private m_bAutosave() As Boolean
-
+ 
     ''' <summary>Core state monitor</summary>
     Private WithEvents m_StateMonitor As cCoreStateMonitor = Nothing
     ''' <summary>Core thread synchronization object for thread marshalling.</summary>
@@ -178,6 +171,8 @@ Public Class cCore
 
     ''' <summary>Delegate to interrupt a run.</summary>
     Private m_dgtStop As StopRunDelegate = Nothing
+
+    Private m_settings As New cCoreSettings()
 
 #End Region ' Generic variables
 
@@ -1153,7 +1148,6 @@ Public Class cCore
 
         'Ecofunctions is needed by Ecopath so make sure it is created before Ecopath
         m_Functions = New cEcoFunctions()
-        ReDim m_bAutosave([Enum].GetValues(GetType(eAutosaveTypes)).Length)
 
         'initialize the models
         'each models initialization will handle its own messages and flags
@@ -2358,15 +2352,15 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Property OutputPath() As String
         Get
-            If String.IsNullOrWhiteSpace(Me.m_strOutputPath) Then
+            If String.IsNullOrWhiteSpace(Me.m_settings.OutputPath) Then
                 If Me.DataSource IsNot Nothing Then
                     Return Path.Combine(Me.DataSource.Directory, "EwE output")
                 End If
             End If
-            Return Me.m_strOutputPath
+            Return Me.m_settings.OutputPath
         End Get
         Set(ByVal value As String)
-            Me.m_strOutputPath = cFileUtils.ToValidFileName(value, True)
+            Me.m_settings.OutputPath = cFileUtils.ToValidFileName(value, True)
         End Set
     End Property
 
@@ -2381,7 +2375,7 @@ Public Class cCore
     Public Property Autosave(savetype As eAutosaveTypes) As Boolean
         Get
             Try
-                Return Me.m_bAutosave(savetype)
+                Return Me.m_settings.Autosave(savetype)
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
             End Try
@@ -2389,13 +2383,43 @@ Public Class cCore
         End Get
         Set(value As Boolean)
             Try
-                If (value <> Me.m_bAutosave(savetype)) Then
-                    Me.m_bAutosave(savetype) = value
+                If (value <> Me.m_settings.Autosave(savetype)) Then
+                    Me.m_settings.Autosave(savetype) = value
                     Me.Messages.SendMessage(New cMessage("Autosave settings have changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
             End Try
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the default author name to use for EwE.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property DefaultAuthor As String
+        Get
+             Return Me.m_settings.Author
+        End Get
+        Set(value As String)
+            Me.m_settings.Author = value
+            Me.Messages.SendMessage(New cMessage("Default author has changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the default author contact information to use for EwE.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property DefaultContact As String
+        Get
+            Return Me.m_settings.Contact
+        End Get
+        Set(value As String)
+            Me.m_settings.Contact = value
+            Me.Messages.SendMessage(New cMessage("Default contact information has changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
         End Set
     End Property
 
@@ -2427,15 +2451,21 @@ Public Class cCore
     ''' <param name="strExt">Optional file extension to use.</param>
     ''' <param name="bIncludeTime">Flag indicating whether a time step should be added to the 
     ''' scenario part of the file location.</param>
+    ''' <param name="strScenarioName">Optional scenario name to use.</param>
     ''' <returns>A standardized output file location.</returns>
     ''' <remarks>For defaults of the various parameters refer to <see cref="cFileUtils.ToOutputFilename"/></remarks>
     ''' -----------------------------------------------------------------------
     Public Function EcosimOutputFileLocation(Optional ByVal strComponent As String = "", _
                                              Optional ByVal strFilter As String = "", _
                                              Optional ByVal strExt As String = "", _
-                                             Optional ByVal bIncludeTime As Boolean = False) As String
-        If Me.ActiveEcosimScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName(strComponent, "Ecosim_" & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name, bIncludeTime, strExt, strFilter)
+                                             Optional ByVal bIncludeTime As Boolean = False, _
+                                             Optional ByVal strScenarioName As String = "") As String
+        If (String.IsNullOrEmpty(strScenarioName)) Then
+            If (Me.ActiveEcosimScenarioIndex > -1) Then
+                strScenarioName = Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+            End If
+        End If
+        Return Me.OutputFileName(strComponent, "Ecosim_" & strScenarioName, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2453,9 +2483,14 @@ Public Class cCore
     Public Function EcospaceOutputFileLocation(Optional ByVal strComponent As String = "", _
                                                Optional ByVal strFilter As String = "", _
                                                Optional ByVal strExt As String = "", _
-                                               Optional ByVal bIncludeTime As Boolean = False) As String
-        If Me.ActiveEcospaceScenarioIndex = -1 Then Return ""
-        Return Me.OutputFileName(strComponent, "Ecospace_" & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name, bIncludeTime, strExt, strFilter)
+                                               Optional ByVal bIncludeTime As Boolean = False, _
+                                               Optional ByVal strScenarioName As String = "") As String
+        If (String.IsNullOrEmpty(strScenarioName)) Then
+            If (Me.ActiveEcospaceScenarioIndex > -1) Then
+                strScenarioName = Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+            End If
+        End If
+        Return Me.OutputFileName(strComponent, "Ecospace_" & strScenarioName, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2473,8 +2508,13 @@ Public Class cCore
     Public Function EcotracerOutputFileLocation(ByVal strComponent As String, _
                                                 Optional ByVal strFilter As String = "", _
                                                 Optional ByVal strExt As String = "", _
-                                                Optional ByVal bIncludeTime As Boolean = False) As String
-        If Me.ActiveEcotracerScenarioIndex = -1 Then Return ""
+                                                Optional ByVal bIncludeTime As Boolean = False, _
+                                                Optional ByVal strScenarioName As String = "") As String
+        If (String.IsNullOrEmpty(strScenarioName)) Then
+            If (Me.ActiveEcotracerScenarioIndex > -1) Then
+                strScenarioName = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
+            End If
+        End If
         Return Me.OutputFileName(strComponent, "Ecotracer_" & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name, bIncludeTime, strExt, strFilter)
     End Function
 
@@ -2494,13 +2534,16 @@ Public Class cCore
                                     ByVal strExt As String, _
                                     ByVal strFilter As String) As String
 
-        If (Me.DataSource Is Nothing) Then Return ""
+        Dim strFileName As String = "{model}"
+        If (Me.DataSource IsNot Nothing) Then
+            strFileName = Me.DataSource.FileName
+        End If
 
         If bIncludeTime Then
             strScenario = strScenario & " " & Date.Now.ToString("y-MM-dd HH-mm-ss")
         End If
 
-        Return cFileUtils.ToOutputFilename(Me.DataSource.FileName, strComponent, strScenario, strExt, strFilter)
+        Return cFileUtils.ToOutputFilename(strFileName, strComponent, strScenario, strExt, strFilter)
 
     End Function
 
@@ -2579,10 +2622,10 @@ Public Class cCore
 
     Public Property BackupFileMask() As String
         Get
-            Return Me.m_strBackupFileMask
+            Return Me.m_settings.BackupFileMask
         End Get
         Set(ByVal value As String)
-            Me.m_strBackupFileMask = value
+            Me.m_settings.BackupFileMask = value
         End Set
     End Property
 

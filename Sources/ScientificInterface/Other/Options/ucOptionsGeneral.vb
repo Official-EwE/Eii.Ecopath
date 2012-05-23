@@ -83,20 +83,10 @@ Namespace Other
             Me.m_fpVerboseLevel = New cEwEFormatProvider(Me.m_uic, Me.m_cmbLogLevel, New cVerboseLevelTypeFormatter(), Nothing)
             Me.m_fpVerboseLevel.Value = cLog.VerboseLevel
 
-            ' Output path
-            Me.m_fieldpickOutput.UIContext = Me.m_uic
-            Me.m_fieldpickOutput.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
-            Me.m_tbOutputMask.Text = My.Settings.OutputPathMask
-
-            ' Backup path masks
-            Me.m_fieldpickBackup.UIContext = Me.m_uic
-            Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
-            Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
-
-            Me.m_cbDownloadUpdates.Checked = My.Settings.AutoUpdatePlugins
-            Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(My.Settings.UpdatePluginsTimeout / 1000)))
             Me.m_cbShowHost.Checked = My.Settings.ShowHostInfo
             Me.m_cbShowTime.Checked = My.Settings.StatusShowTime
+            Me.m_tbxAuthor.Text = My.Settings.Author
+            Me.m_tbxContact.Text = My.Settings.Contact
 
             Me.UpdateControls()
 
@@ -111,26 +101,15 @@ Namespace Other
 
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
-            ' Only when toggling this option on
-            If (Me.m_cbDownloadUpdates.Checked And My.Settings.AutoUpdatePlugins = False) Then
-                If (Not cSystemUtils.IsAdministrator()) Then
-                    result = IOptionsPage.eApplyResultType.Success_administrator
-                Else
-                    result = IOptionsPage.eApplyResultType.Success_restart
-                End If
-            End If
-
             Try
 
                 My.Settings.MdbRecentlyUsedCount = CInt(Me.m_nudMRU.Value)
                 My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
-                My.Settings.AutoUpdatePlugins = Me.m_cbDownloadUpdates.Checked
-                My.Settings.UpdatePluginsTimeout = CInt(Me.m_nudTimeOut.Value * 1000)
                 My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
-                My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
-                My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
                 My.Settings.ShowHostInfo = Me.m_cbShowHost.Checked
                 My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, cLog.eVerboseLevel)
+                My.Settings.Author = Me.m_tbxAuthor.Text
+                My.Settings.Contact = Me.m_tbxContact.Text
 
             Catch ex As Exception
                 result = IOptionsPage.eApplyResultType.Failed
@@ -151,14 +130,12 @@ Namespace Other
             Try
                 Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
                 Me.m_nudMaxNumMessages.Value = CInt(My.Settings.GetDefaultValue("StatusMaxMessages"))
-                Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
-                Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
-                Me.m_cbDownloadUpdates.Checked = CBool(My.Settings.GetDefaultValue("AutoUpdatePlugins"))
-                Me.m_nudTimeOut.Value = CDec(Math.Max(1, Math.Round(CDec(My.Settings.GetDefaultValue("UpdatePluginsTimeout")) / 1000)))
                 Me.m_cbShowHost.Checked = CBool(My.Settings.GetDefaultValue("ShowHostInfo"))
                 Me.m_cbShowTime.Checked = CBool(My.Settings.GetDefaultValue("StatusShowTime"))
                 Me.m_fpVerboseLevel.Value = My.Settings.GetDefaultValue("LogVerboseLevel")
                 Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
+                Me.m_tbxAuthor.Text = cSystemUtils.GetUserName()
+                Me.m_tbxContact.Text = ""
             Catch ex As Exception
 
             End Try
@@ -169,57 +146,11 @@ Namespace Other
 
 #Region " Event handlers "
 
-        Private Sub btnClearOverwrite_click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnClearOVerwritePrompts.Click
-            My.Settings.SuppressedOverwritePrompts = ""
-        End Sub
-
-        Private Sub btnClearMRU_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnClearMRU(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnClearMRU.Click
+
             Me.ClearFileList(My.Settings.MdbRecentlyUsedList)
             Me.m_btnClearMRU.Enabled = False
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub OnOutputFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
-            Handles m_fieldpickOutput.OnFieldPicked
-
-            Me.InsertText(Me.m_tbOutputMask, "{" & value.ToString & "}")
-            Me.UpdateControls()
-
-        End Sub
-
-        Private Sub OnOutputDirectoryPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
-            Handles m_fieldpickOutput.OnDirectoryPicked
-
-            Me.m_tbOutputMask.SelectionStart = 0
-            Me.m_tbOutputMask.SelectionLength = Math.Max(0, Me.m_tbOutputMask.Text.LastIndexOf("\"c))
-            Me.InsertText(Me.m_tbOutputMask, strDirectory)
-            Me.UpdateControls()
-
-        End Sub
-
-        Private Sub OnBackupDirectoryPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal strDirectory As String) _
-            Handles m_fieldpickBackup.OnDirectoryPicked
-
-            Me.m_tbBackupMask.SelectionStart = 0
-            Me.m_tbBackupMask.SelectionLength = Math.Max(0, Me.m_tbBackupMask.Text.LastIndexOf("\"c))
-            Me.InsertText(Me.m_tbBackupMask, strDirectory)
-            Me.UpdateControls()
-
-        End Sub
-
-        Private Sub OnBackupFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
-            Handles m_fieldpickBackup.OnFieldPicked
-
-            Me.InsertText(Me.m_tbBackupMask, "{" & value.ToString & "}")
-            Me.UpdateControls()
-
-        End Sub
-
-        Private Sub OnMaskChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_tbBackupMask.TextChanged, m_tbOutputMask.TextChanged
-
             Me.UpdateControls()
 
         End Sub
@@ -246,52 +177,9 @@ Namespace Other
 
         Private Sub UpdateControls()
 
-            Dim bHasSuppressedPrompts As Boolean = (Not String.IsNullOrEmpty(My.Settings.SuppressedOverwritePrompts))
             Dim bHasMRU As Boolean = (My.Settings.MdbRecentlyUsedList.Count > 0)
-
-            Me.m_btnClearOVerwritePrompts.Enabled = bHasSuppressedPrompts
             Me.m_btnClearMRU.Enabled = bHasMRU
 
-            Me.UpdateSample(Me.m_lblSampleOutput, Me.m_tbOutputMask.Text)
-            Me.UpdateSample(Me.m_lblSampleBackup, Me.m_tbBackupMask.Text)
-
-        End Sub
-
-        Private Sub UpdateSample(ByVal lbl As Label, ByVal strMask As String)
-
-            Dim strVersion As String = Application.ProductVersion.ToString
-            Dim strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
-            Dim strSample As String = ""
-
-            If Not cPathUtility.ResolvePath(strMask, Me.m_uic.Core, strSample) Then
-                cPathUtility.ResolvePath(strMask, "model", strDocDir, ".eweaccdb", strVersion, strSample)
-            End If
-            lbl.Text = cStringUtils.CompactString(strSample, lbl.ClientRectangle.Width, lbl.Font, TextFormatFlags.PathEllipsis)
-
-        End Sub
-
-        Private Sub InsertText(ByVal tb As TextBox, ByVal strText As String)
-            Dim strSrc As String = tb.Text
-            Dim strDest As String
-            Dim iSelStart As Integer = tb.SelectionStart
-            Dim iSelLen As Integer = tb.SelectionLength
-            Dim iItemLen As Integer = strText.Length
-
-            If (iSelLen = 0) Then
-                strDest = strSrc & strText
-                iSelStart = strDest.Length
-            Else
-                strDest = strSrc.Substring(0, iSelStart) & strText & strSrc.Substring(iSelStart + iSelLen)
-                iSelStart += iItemLen
-            End If
-
-            tb.Text = strDest
-            tb.SelectionStart = iSelStart
-            tb.SelectionLength = 0
-        End Sub
-
-        Private Sub ReplaceText(ByVal tb As TextBox, ByVal strText As String)
-            tb.Text = strText
         End Sub
 
 #End Region ' Internals

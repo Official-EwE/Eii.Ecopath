@@ -15,13 +15,16 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
 
+Option Strict On
 Imports System.IO
 Imports System.Text
-
-Imports EwEUtils.Core
 Imports EwECore.MSE
+Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+
+#End Region ' Imports
 
 ''' <summary>
 ''' Helper class for writing MSE interations to file.
@@ -38,7 +41,7 @@ Friend Class cMSECSVOutputWriter
     End Sub
 
     Public Function getOutputFileName(ByVal strDataType As String, ByVal strDataName As String) As String
-        Dim strOutputFileName As String = Path.Combine(Me.DataDir, Me.m_core.EcosimOutputFileLocation(strDataType & " " & strDataName, "MSE", ".csv"))
+        Dim strOutputFileName As String = Path.Combine(Me.DataDir, Me.m_core.EcosimOutputFileLocation(strDataType & " " & strDataName, eAutosaveTypes.MSE.ToString(), ".csv"))
         cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strOutputFileName), True)
         Return strOutputFileName
     End Function

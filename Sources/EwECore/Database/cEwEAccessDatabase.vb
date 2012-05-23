@@ -73,6 +73,8 @@ Namespace Database
         ''' Create a new M$ Access database.
         ''' </summary>
         ''' <param name="strDatabase">The file name of the .MDB to create.</param>
+        ''' <param name="strAuthor">Name of the author to assign.</param>
+        ''' <param name="strModelName">Name of the model to use.</param>
         ''' <param name="bOverwrite">States whether an existing database may be overwritten.</param>
         ''' <param name="format">Database format type to use. If not set, the 
         ''' database type is deducted from the <paramref name="strDatabase">database</paramref>.</param>
@@ -82,7 +84,8 @@ Namespace Database
         Public Overrides Function Create(ByVal strDatabase As String, _
                 ByVal strModelName As String, _
                 Optional ByVal bOverwrite As Boolean = False, _
-                Optional ByVal format As eDataSourceTypes = eDataSourceTypes.NotSet) As eDatasourceAccessType
+                Optional ByVal format As eDataSourceTypes = eDataSourceTypes.NotSet, _
+                Optional strAuthor As String = "") As eDatasourceAccessType
 
             Dim strSource As String = ""
             Dim datResult As eDatasourceAccessType = eDatasourceAccessType.Success
@@ -112,7 +115,7 @@ Namespace Database
                         Dim db As New cEwEAccessDatabase()
                         datResult = db.Open(strDatabase, format)
                         If (datResult = eDatasourceAccessType.Opened) Then
-                            db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, cSystemUtils.GetUserName()))
+                            db.Execute(String.Format("UPDATE EcopathModel SET Name='{0}', Author='{1}' WHERE ModelID=1", strModelName, strAuthor))
                             Try
                                 ' Egg - over-easy but slightly obfuscated ;)
                                 If strModelName.ToLower().Contains(cStringUtils.Shift("Dbsm!Xbmufst").ToLower()) Then

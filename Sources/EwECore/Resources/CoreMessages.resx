@@ -292,15 +292,15 @@ System Error: {0}</value>
   </data>
   <data name="ECOSIM_SAVE_FAILED" xml:space="preserve">
     <value>Ecosim scenario '{0}' failed to save. {1}</value>
-    <comment>{0}= scenario name, {1} is optional error</comment>
+    <comment>{0}=scenario name, {1}=optional error</comment>
   </data>
   <data name="ECOSIM_SAVE_SUCCESS" xml:space="preserve">
     <value>Ecosim scenario '{0}' has been saved.</value>
-    <comment>{0} = scenario name</comment>
+    <comment>{0} =scenario name</comment>
   </data>
   <data name="ECOSPACE_LOAD_FAILED" xml:space="preserve">
     <value>Ecospace scenario '{0}' failed to load. {1}</value>
-    <comment>{0} = scenario name, {1} = text explaining the reason for the failure</comment>
+    <comment>{0} = scenario name, {1}=text explaining the reason for the failure</comment>
   </data>
   <data name="ECOSPACE_LOAD_SUCCESS" xml:space="preserve">
     <value>Ecospace scenario '{0}' loaded.</value>
@@ -308,7 +308,7 @@ System Error: {0}</value>
   </data>
   <data name="ECOSPACE_SAVE_FAILED" xml:space="preserve">
     <value>Ecospace scenario '{0}' failed to save. {1}</value>
-    <comment>{0} = scneario name, {1} = optional reason</comment>
+    <comment>{0}=scenario name, {1}=optional reason</comment>
   </data>
   <data name="ECOSPACE_SAVE_SUCCES" xml:space="preserve">
     <value>Ecospace scenario '{0}' has been saved.</value>
@@ -1041,5 +1041,13 @@ System Error: {0}</value>
   <data name="STATUS_SPATIALTEMPORAL_SAVED" xml:space="preserve">
     <value>Spatial operations log saved to '{0}'</value>
     <comment>{0}=file name</comment>
+  </data>
+  <data name="MONTECARLO_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save Monte Carlo data to file. {0}</value>
+    <comment>{0}=error text</comment>
+  </data>
+  <data name="ECOSPACE_SAVEMAP_FAILED" xml:space="preserve">
+    <value>Ecospace failed to save result maps. {0}</value>
+    <comment>{0}=error text</comment>
   </data>
 </root>

@@ -18,6 +18,7 @@
 Imports EwEUtils.Core
 Imports System.Text
 Imports System.IO
+Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
@@ -173,15 +174,10 @@ Namespace SpatialData
                 ' Write header
                 Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, Me.m_core.EcospaceOutputFileLocation("SpatialOperations", "", ".txt"))
 
-                Try
-                    Dim strPath As String = Path.GetDirectoryName(Me.m_strLogFileName)
-                    If Not Directory.Exists(strPath) Then
-                        Directory.CreateDirectory(strPath)
-                    End If
-                Catch ex As Exception
-                    cLog.Write(ex, "cSpatialOperationsLog::WriteMessage")
+                If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(Me.m_strLogFileName), True) Then
+                    cLog.Write("cSpatialOperationsLog: unable to create output directory " & Me.m_strLogFileName)
                     Return
-                End Try
+                End If
 
                 sb.AppendLine("Ecospace spatial operations log")
                 sb.AppendLine("EwE version, " & cCore.Version)

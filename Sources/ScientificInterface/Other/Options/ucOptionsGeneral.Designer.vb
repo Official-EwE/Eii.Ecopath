@@ -32,95 +32,25 @@ Partial Class ucOptionsGeneral
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsGeneral))
-            Me.m_fieldpickOutput = New ScientificInterfaceShared.Controls.ucFieldPicker()
-            Me.m_fieldpickBackup = New ScientificInterfaceShared.Controls.ucFieldPicker()
-            Me.m_lblSampleOutput = New System.Windows.Forms.Label()
-            Me.m_lblSampleBackup = New System.Windows.Forms.Label()
-            Me.m_tbOutputMask = New System.Windows.Forms.TextBox()
-            Me.m_tbBackupMask = New System.Windows.Forms.TextBox()
-            Me.m_lblOutput = New System.Windows.Forms.Label()
-            Me.m_lblBackupFolder = New System.Windows.Forms.Label()
-            Me.m_nudMRU = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_btnClearMRU = New System.Windows.Forms.Button()
             Me.m_lblMRU = New System.Windows.Forms.Label()
             Me.m_cbShowTime = New System.Windows.Forms.CheckBox()
-            Me.m_nudMaxNumMessages = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblMaxNumMessages = New System.Windows.Forms.Label()
-            Me.m_lblStopTryingPost = New System.Windows.Forms.Label()
-            Me.m_lblStopTryingPre = New System.Windows.Forms.Label()
             Me.m_cbShowHost = New System.Windows.Forms.CheckBox()
-            Me.m_cbDownloadUpdates = New System.Windows.Forms.CheckBox()
-            Me.m_nudTimeOut = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-            Me.m_btnClearOVerwritePrompts = New System.Windows.Forms.Button()
-            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_hdrFile = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_hdrStatusPanel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_cmbLogLevel = New System.Windows.Forms.ComboBox()
-            CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.Label2 = New System.Windows.Forms.Label()
+            Me.m_tbxAuthor = New System.Windows.Forms.TextBox()
+            Me.Label3 = New System.Windows.Forms.Label()
+            Me.m_tbxContact = New System.Windows.Forms.TextBox()
+            Me.m_nudMaxNumMessages = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_hdrAuthor = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrStatusPanel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_nudMRU = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
-            '
-            'm_fieldpickOutput
-            '
-            resources.ApplyResources(Me.m_fieldpickOutput, "m_fieldpickOutput")
-            Me.m_fieldpickOutput.Fields = Nothing
-            Me.m_fieldpickOutput.Label = "Fields"
-            Me.m_fieldpickOutput.Name = "m_fieldpickOutput"
-            Me.m_fieldpickOutput.ShowDirectoryPicker = True
-            Me.m_fieldpickOutput.TypeFormatter = Nothing
-            Me.m_fieldpickOutput.UIContext = Nothing
-            '
-            'm_fieldpickBackup
-            '
-            resources.ApplyResources(Me.m_fieldpickBackup, "m_fieldpickBackup")
-            Me.m_fieldpickBackup.Fields = Nothing
-            Me.m_fieldpickBackup.Label = "Fields"
-            Me.m_fieldpickBackup.Name = "m_fieldpickBackup"
-            Me.m_fieldpickBackup.ShowDirectoryPicker = True
-            Me.m_fieldpickBackup.TypeFormatter = Nothing
-            Me.m_fieldpickBackup.UIContext = Nothing
-            '
-            'm_lblSampleOutput
-            '
-            resources.ApplyResources(Me.m_lblSampleOutput, "m_lblSampleOutput")
-            Me.m_lblSampleOutput.BackColor = System.Drawing.SystemColors.Control
-            Me.m_lblSampleOutput.ForeColor = System.Drawing.SystemColors.GrayText
-            Me.m_lblSampleOutput.Name = "m_lblSampleOutput"
-            '
-            'm_lblSampleBackup
-            '
-            resources.ApplyResources(Me.m_lblSampleBackup, "m_lblSampleBackup")
-            Me.m_lblSampleBackup.ForeColor = System.Drawing.SystemColors.GrayText
-            Me.m_lblSampleBackup.Name = "m_lblSampleBackup"
-            '
-            'm_tbOutputMask
-            '
-            resources.ApplyResources(Me.m_tbOutputMask, "m_tbOutputMask")
-            Me.m_tbOutputMask.Name = "m_tbOutputMask"
-            '
-            'm_tbBackupMask
-            '
-            resources.ApplyResources(Me.m_tbBackupMask, "m_tbBackupMask")
-            Me.m_tbBackupMask.Name = "m_tbBackupMask"
-            '
-            'm_lblOutput
-            '
-            resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
-            Me.m_lblOutput.Name = "m_lblOutput"
-            '
-            'm_lblBackupFolder
-            '
-            resources.ApplyResources(Me.m_lblBackupFolder, "m_lblBackupFolder")
-            Me.m_lblBackupFolder.Name = "m_lblBackupFolder"
-            '
-            'm_nudMRU
-            '
-            resources.ApplyResources(Me.m_nudMRU, "m_nudMRU")
-            Me.m_nudMRU.Maximum = New Decimal(New Integer() {42, 0, 0, 0})
-            Me.m_nudMRU.Name = "m_nudMRU"
-            Me.m_nudMRU.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
             'm_btnClearMRU
             '
@@ -139,27 +69,10 @@ Partial Class ucOptionsGeneral
             Me.m_cbShowTime.Name = "m_cbShowTime"
             Me.m_cbShowTime.UseVisualStyleBackColor = True
             '
-            'm_nudMaxNumMessages
-            '
-            resources.ApplyResources(Me.m_nudMaxNumMessages, "m_nudMaxNumMessages")
-            Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
-            Me.m_nudMaxNumMessages.Name = "m_nudMaxNumMessages"
-            Me.m_nudMaxNumMessages.Value = New Decimal(New Integer() {10, 0, 0, 0})
-            '
             'm_lblMaxNumMessages
             '
             resources.ApplyResources(Me.m_lblMaxNumMessages, "m_lblMaxNumMessages")
             Me.m_lblMaxNumMessages.Name = "m_lblMaxNumMessages"
-            '
-            'm_lblStopTryingPost
-            '
-            resources.ApplyResources(Me.m_lblStopTryingPost, "m_lblStopTryingPost")
-            Me.m_lblStopTryingPost.Name = "m_lblStopTryingPost"
-            '
-            'm_lblStopTryingPre
-            '
-            resources.ApplyResources(Me.m_lblStopTryingPre, "m_lblStopTryingPre")
-            Me.m_lblStopTryingPre.Name = "m_lblStopTryingPre"
             '
             'm_cbShowHost
             '
@@ -167,41 +80,52 @@ Partial Class ucOptionsGeneral
             Me.m_cbShowHost.Name = "m_cbShowHost"
             Me.m_cbShowHost.UseVisualStyleBackColor = True
             '
-            'm_cbDownloadUpdates
+            'Label1
             '
-            resources.ApplyResources(Me.m_cbDownloadUpdates, "m_cbDownloadUpdates")
-            Me.m_cbDownloadUpdates.Name = "m_cbDownloadUpdates"
-            Me.m_cbDownloadUpdates.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
             '
-            'm_nudTimeOut
+            'm_cmbLogLevel
             '
-            resources.ApplyResources(Me.m_nudTimeOut, "m_nudTimeOut")
-            Me.m_nudTimeOut.Maximum = New Decimal(New Integer() {60, 0, 0, 0})
-            Me.m_nudTimeOut.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-            Me.m_nudTimeOut.Name = "m_nudTimeOut"
-            Me.m_nudTimeOut.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            Me.m_cmbLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbLogLevel.FormattingEnabled = True
+            resources.ApplyResources(Me.m_cmbLogLevel, "m_cmbLogLevel")
+            Me.m_cmbLogLevel.Name = "m_cmbLogLevel"
             '
-            'm_btnClearOVerwritePrompts
+            'Label2
             '
-            resources.ApplyResources(Me.m_btnClearOVerwritePrompts, "m_btnClearOVerwritePrompts")
-            Me.m_btnClearOVerwritePrompts.Name = "m_btnClearOVerwritePrompts"
-            Me.m_btnClearOVerwritePrompts.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.Label2, "Label2")
+            Me.Label2.Name = "Label2"
             '
-            'm_hdrCaption
+            'm_tbxAuthor
             '
-            Me.m_hdrCaption.CanCollapseParent = False
-            Me.m_hdrCaption.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
-            Me.m_hdrCaption.IsCollapsed = False
-            Me.m_hdrCaption.Name = "m_hdrCaption"
+            resources.ApplyResources(Me.m_tbxAuthor, "m_tbxAuthor")
+            Me.m_tbxAuthor.Name = "m_tbxAuthor"
             '
-            'm_hdrFile
+            'Label3
             '
-            resources.ApplyResources(Me.m_hdrFile, "m_hdrFile")
-            Me.m_hdrFile.CanCollapseParent = False
-            Me.m_hdrFile.CollapsedParentHeight = 0
-            Me.m_hdrFile.IsCollapsed = False
-            Me.m_hdrFile.Name = "m_hdrFile"
+            resources.ApplyResources(Me.Label3, "Label3")
+            Me.Label3.Name = "Label3"
+            '
+            'm_tbxContact
+            '
+            resources.ApplyResources(Me.m_tbxContact, "m_tbxContact")
+            Me.m_tbxContact.Name = "m_tbxContact"
+            '
+            'm_nudMaxNumMessages
+            '
+            resources.ApplyResources(Me.m_nudMaxNumMessages, "m_nudMaxNumMessages")
+            Me.m_nudMaxNumMessages.Maximum = New Decimal(New Integer() {2000, 0, 0, 0})
+            Me.m_nudMaxNumMessages.Name = "m_nudMaxNumMessages"
+            Me.m_nudMaxNumMessages.Value = New Decimal(New Integer() {10, 0, 0, 0})
+            '
+            'm_hdrAuthor
+            '
+            resources.ApplyResources(Me.m_hdrAuthor, "m_hdrAuthor")
+            Me.m_hdrAuthor.CanCollapseParent = False
+            Me.m_hdrAuthor.CollapsedParentHeight = 0
+            Me.m_hdrAuthor.IsCollapsed = False
+            Me.m_hdrAuthor.Name = "m_hdrAuthor"
             '
             'm_hdrStatusPanel
             '
@@ -211,51 +135,44 @@ Partial Class ucOptionsGeneral
             Me.m_hdrStatusPanel.IsCollapsed = False
             Me.m_hdrStatusPanel.Name = "m_hdrStatusPanel"
             '
-            'Label1
+            'm_nudMRU
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_nudMRU, "m_nudMRU")
+            Me.m_nudMRU.Maximum = New Decimal(New Integer() {42, 0, 0, 0})
+            Me.m_nudMRU.Name = "m_nudMRU"
+            Me.m_nudMRU.Value = New Decimal(New Integer() {10, 0, 0, 0})
             '
-            'm_cmbLogLevel
+            'm_hdrCaption
             '
-            resources.ApplyResources(Me.m_cmbLogLevel, "m_cmbLogLevel")
-            Me.m_cmbLogLevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbLogLevel.FormattingEnabled = True
-            Me.m_cmbLogLevel.Name = "m_cmbLogLevel"
+            Me.m_hdrCaption.CanCollapseParent = False
+            Me.m_hdrCaption.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrCaption, "m_hdrCaption")
+            Me.m_hdrCaption.IsCollapsed = False
+            Me.m_hdrCaption.Name = "m_hdrCaption"
             '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_tbxContact)
+            Me.Controls.Add(Me.m_tbxAuthor)
             Me.Controls.Add(Me.m_cmbLogLevel)
             Me.Controls.Add(Me.m_nudMaxNumMessages)
             Me.Controls.Add(Me.m_cbShowTime)
-            Me.Controls.Add(Me.m_lblSampleBackup)
             Me.Controls.Add(Me.m_lblMaxNumMessages)
-            Me.Controls.Add(Me.m_fieldpickBackup)
-            Me.Controls.Add(Me.m_fieldpickOutput)
+            Me.Controls.Add(Me.m_hdrAuthor)
             Me.Controls.Add(Me.m_hdrStatusPanel)
-            Me.Controls.Add(Me.m_hdrFile)
-            Me.Controls.Add(Me.m_btnClearOVerwritePrompts)
-            Me.Controls.Add(Me.m_tbBackupMask)
-            Me.Controls.Add(Me.m_lblSampleOutput)
             Me.Controls.Add(Me.m_cbShowHost)
-            Me.Controls.Add(Me.m_lblBackupFolder)
             Me.Controls.Add(Me.m_btnClearMRU)
-            Me.Controls.Add(Me.m_lblStopTryingPost)
-            Me.Controls.Add(Me.m_tbOutputMask)
-            Me.Controls.Add(Me.m_lblStopTryingPre)
-            Me.Controls.Add(Me.m_nudTimeOut)
-            Me.Controls.Add(Me.m_lblOutput)
             Me.Controls.Add(Me.m_nudMRU)
-            Me.Controls.Add(Me.m_cbDownloadUpdates)
+            Me.Controls.Add(Me.Label3)
             Me.Controls.Add(Me.m_hdrCaption)
+            Me.Controls.Add(Me.Label2)
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_lblMRU)
             Me.Name = "ucOptionsGeneral"
-            CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -263,28 +180,19 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_lblMRU As System.Windows.Forms.Label
         Private WithEvents m_lblMaxNumMessages As System.Windows.Forms.Label
         Private WithEvents m_btnClearMRU As System.Windows.Forms.Button
-        Private WithEvents m_cbDownloadUpdates As System.Windows.Forms.CheckBox
         Private WithEvents m_hdrCaption As cEwEHeaderLabel
         Private WithEvents m_cbShowTime As System.Windows.Forms.CheckBox
-        Private WithEvents m_lblBackupFolder As System.Windows.Forms.Label
-        Private WithEvents m_tbBackupMask As System.Windows.Forms.TextBox
-        Private WithEvents m_lblSampleBackup As System.Windows.Forms.Label
-        Private WithEvents m_tbOutputMask As System.Windows.Forms.TextBox
-        Private WithEvents m_lblOutput As System.Windows.Forms.Label
-        Private WithEvents m_fieldpickBackup As ScientificInterfaceShared.Controls.ucFieldPicker
-        Private WithEvents m_fieldpickOutput As ScientificInterfaceShared.Controls.ucFieldPicker
-        Private WithEvents m_lblSampleOutput As System.Windows.Forms.Label
         Private WithEvents m_nudMaxNumMessages As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudMRU As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_cbShowHost As System.Windows.Forms.CheckBox
-        Private WithEvents m_lblStopTryingPost As System.Windows.Forms.Label
-        Private WithEvents m_lblStopTryingPre As System.Windows.Forms.Label
-        Private WithEvents m_nudTimeOut As ScientificInterfaceShared.Controls.cEwENumericUpDown
-        Private WithEvents m_btnClearOVerwritePrompts As System.Windows.Forms.Button
-        Private WithEvents m_hdrFile As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_hdrStatusPanel As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents Label1 As System.Windows.Forms.Label
-        Friend WithEvents m_cmbLogLevel As System.Windows.Forms.ComboBox
+        Private WithEvents Label2 As System.Windows.Forms.Label
+        Private WithEvents m_hdrAuthor As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents Label3 As System.Windows.Forms.Label
+        Private WithEvents m_cmbLogLevel As System.Windows.Forms.ComboBox
+        Private WithEvents m_tbxContact As System.Windows.Forms.TextBox
+        Private WithEvents m_tbxAuthor As System.Windows.Forms.TextBox
 
     End Class
 
