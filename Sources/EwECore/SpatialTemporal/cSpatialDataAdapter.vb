@@ -332,6 +332,7 @@ Namespace SpatialData
                                 bSuccess = bSuccess And Me.SetCell(layer, iRow, iCol, sValue)
                             End If
                         End If
+                        iCol += 1
                     End While ' iCol
                     iRow += 1
                 End While ' iRow
