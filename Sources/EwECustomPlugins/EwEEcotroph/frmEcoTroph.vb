@@ -482,7 +482,7 @@ Public Class frmEcotroph
 
             'Juste pour attendre que le composant web ne bloque pas le fichier qui doit être mis à jour
             'on charge les différents paramètres du create.smooth
-            Dim param_pas As String
+            Dim param_pas As String = ""
 
             ' JS: Option strict on, make sure numbers are correctly parsed
             Try
@@ -633,7 +633,7 @@ Public Class frmEcotroph
         Dim fichier_data_transfert As String = "transfert_data.xml"
         Dim fichierpdf_init As String = "myplot_diag.pdf"
         Dim fichierpdf As String = ""
-        Dim type_smooth As Integer
+        'Dim type_smooth As Integer
 
         Cursor.Current = Cursors.WaitCursor
 
@@ -649,7 +649,7 @@ Public Class frmEcotroph
         sauve_datagrid_xml(ETinputdata, fichier_data_transfert)
 
         'on charge les différents paramètres du create.smooth
-        Dim param_pas As String
+        Dim param_pas As String = ""
         ' JS: Option strict on, make sure numbers are correctly parsed
         Try
             If (type_smooth1.Checked) Then
