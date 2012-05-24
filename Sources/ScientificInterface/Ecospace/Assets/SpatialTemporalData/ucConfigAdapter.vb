@@ -587,7 +587,7 @@ Namespace Ecospace.Controls
                                                               String.Format("Calculating scaling factor step {0} of {1}...", i + 1, lSteps.Count), _
                                                               CSng(i / lSteps.Count))
 
-                    If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                    If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                         rst = Me.m_adt.Dataset(iIndex).GetRaster(Me.m_adt.Converter(iIndex), Me.m_layer.Name())
 
                         lNumValCells = rst.NumValueCells
@@ -599,7 +599,7 @@ Namespace Ecospace.Controls
                         Else
                             iNumErrors += 1
                         End If
-                        ds.Unload()
+                        ds.Unlock()
                     End If
 
                 Next

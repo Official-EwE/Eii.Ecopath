@@ -103,7 +103,7 @@ Namespace Other
         End Sub
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IOptionsPage.Apply"/>.</inheritdocs>
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
         ''' -------------------------------------------------------------------
         Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
 
@@ -129,7 +129,7 @@ Namespace Other
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>.</inheritdocs>
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
         ''' -------------------------------------------------------------------
         Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
 

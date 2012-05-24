@@ -663,6 +663,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
         '
         resources.ApplyResources(Me.m_tsbEcotracer, "m_tsbEcotracer")
         Me.m_tsbEcotracer.Name = "m_tsbEcotracer"
+        Me.m_tsbEcotracer.Visible = False
         '
         'ToolStripSeparator5
         '

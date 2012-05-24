@@ -214,7 +214,7 @@ Namespace SpatialData
                 Dim ds As ISpatialDataSet = Me.Dataset(layer.Index)
                 Dim cv As ISpatialDataConverter = Me.Converter(layer.Index)
 
-                ' Has both?
+                ' Has both dataset and converter?
                 If (ds IsNot Nothing) And (cv IsNot Nothing) Then
                     ' #Yes: allowed to execute?
                     If ds.IsConfigured And cv.IsConfigured Then
@@ -222,10 +222,13 @@ Namespace SpatialData
                         dt = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
 
                         If (ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight)) Then
-                            ' #Yes: Can load that data?
-                            If (ds.LoadDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-                                ' #Yes: extract external data
+                            ' #Yes: Can lock that data?
+                            If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                                ' #Yes: start process of extracting external data
                                 Me.m_core.SpatialOperationLog.BeginLayerLog(iTime, dt, layer)
+
+                                ' Sanity check
+                                Debug.Assert(ds.IsLocked, "Dataset is not locked - something is wrong")
 
                                 Try
                                     ' The raster returned here MUST have the extent and projection compatible with Ecospace
@@ -259,8 +262,8 @@ Namespace SpatialData
                                     cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y, dCellSize))
                                 End If
 
-                                ' Unload dataset
-                                ds.Unload()
+                                ' Unlock dataset
+                                ds.Unlock()
                                 Me.m_core.SpatialOperationLog.EndLayerLog()
                             Else
                                 Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} failed to load data for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"

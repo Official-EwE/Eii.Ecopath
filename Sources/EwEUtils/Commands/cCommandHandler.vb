@@ -30,7 +30,7 @@ Namespace Commands
     ''' <summary>
     ''' The CommandHandler is the central repository for storing and retrieving
     ''' <see cref="cCommand">Commands</see> in a User Interface. Additionally, this
-    ''' class serves as a central registry point for <see cref="ControlHandler">ControlHandlers</see>.
+    ''' class serves as a central registry point for <see cref="cControlHandler">cControlHandlers</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cCommandHandler

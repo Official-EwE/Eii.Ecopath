@@ -139,9 +139,9 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Load data for a given time and spatial extent.
+        ''' Lock the dataset for a given time and spatial extent.
         ''' </summary>
-        ''' <param name="dateTime">The time to query data for. For practical
+        ''' <param name="dateTime">The time to lock data for. For practical
         ''' purposes, time is assumed to be rounded to months.</param>
         ''' <param name="dCellSize">Map cell size that is requested.</param>
         ''' <param name="ptfNE">North-east corner of the area to load data for. 
@@ -150,12 +150,28 @@ Namespace SpatialData
         ''' <param name="ptfSW">South-west corner of the area to load data for. 
         ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
         ''' <see cref="Point.Y"/> as latiude.</param>
-        ''' <returns>True if data was loaded.</returns>
+        ''' <returns>True if data was successfully locked.</returns>
         ''' -------------------------------------------------------------------
-        Function LoadDataAtT(ByVal datetime As DateTime, _
+        Function LockDataAtT(ByVal datetime As DateTime, _
                              ByVal dCellSize As Double, _
                              ByVal ptfNE As PointF, _
                              ByVal ptfSW As PointF) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether data has been <see cref="LockDataAtT">locked</see>.
+        ''' </summary>
+        ''' <returns>True if data has been <see cref="LockDataAtT">locked</see>.</returns>
+        ''' -------------------------------------------------------------------
+        Function IsLocked() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Release any <see cref="LockDataAtT">locked</see> data.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Function Unlock() As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -172,34 +188,28 @@ Namespace SpatialData
                               ByRef ptfNE As PointF, _
                               ByRef ptfSE As PointF) As Boolean
 
-        Delegate Sub BuildIndexUpdateDelegate(dataset As ISpatialDataSet)
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Build the spatial extent index for the dataset.
         ''' </summary>
+        ''' <param name="updatedelegate">
+        ''' Optional <see cref="BuildIndexUpdateDelegate">delegate</see> for reporting progress.
+        ''' </param>
         ''' -------------------------------------------------------------------
         Sub BuildIndex(Optional updatedelegate As BuildIndexUpdateDelegate = Nothing)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns whether data has been <see cref="LoadDataAtT">loaded</see>.
+        ''' Delegate callback for reporting <see cref="BuildIndex">index construction</see> 
+        ''' progress.
         ''' </summary>
-        ''' <returns>True if data has been <see cref="LoadDataAtT">loaded</see>.</returns>
+        ''' <param name="dataset"></param>
         ''' -------------------------------------------------------------------
-        Function IsLoaded() As Boolean
+        Delegate Sub BuildIndexUpdateDelegate(dataset As ISpatialDataSet)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Release any <see cref="LoadDataAtT">loaded</see> data.
-        ''' </summary>
-        ''' <returns>True if successful.</returns>
-        ''' -------------------------------------------------------------------
-        Function Unload() As Boolean
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Returns the names of all attributes for <see cref="LoadDataAtT">loaded</see> data. 
+        ''' Returns the names of all attributes for <see cref="LockDataAtT">locked</see> data. 
         ''' </summary>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
@@ -207,7 +217,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the attribute <see cref="DataTable"/> for the <see cref="LoadDataAtT">loaded</see> data.
+        ''' Returns the attribute <see cref="DataTable"/> for the <see cref="LockDataAtT">locked</see> data.
         ''' </summary>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
@@ -215,7 +225,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Obtains a <see cref="ISpatialRaster"/> from the <see cref="LoadDataAtT">loaded</see> data.
+        ''' Obtains a <see cref="ISpatialRaster"/> from the <see cref="LockDataAtT">locked</see> data.
         ''' </summary>
         ''' <param name="converter">Spatial data converter to perform the magic.</param>
         ''' <param name="strLayerName">Name of the layer data will be retrieved for.</param>
