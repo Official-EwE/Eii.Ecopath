@@ -268,7 +268,7 @@ Public MustInherit Class cEcospaceLayer
 #End Region ' Cell manipulation
 
     Public Overrides Function ToString() As String
-        Return "cEcospaceLayer " & Me.Name & "(" & Me.Index & ")"
+        Return "cEcospaceLayer " & Me.m_vnData.ToString() ' Cannot show any variables here - may cause deadlocks
     End Function
 
 End Class
