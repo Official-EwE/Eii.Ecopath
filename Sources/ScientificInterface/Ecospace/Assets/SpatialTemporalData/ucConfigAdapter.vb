@@ -21,6 +21,7 @@ Imports EwEUtils.SpatialData
 Imports EwEPlugin
 Imports EwECore.SpatialData
 Imports EwEUtils
+Imports System.Threading
 
 Namespace Ecospace.Controls
 
@@ -48,6 +49,7 @@ Namespace Ecospace.Controls
         Private m_bHasCachedData As Boolean = False
         Private WithEvents m_fp As cEwEFormatProvider = Nothing
         Private m_bInUpdate As Boolean = False
+        Private m_thread As Thread = Nothing
 
 #End Region ' Private variables
 
@@ -355,6 +357,7 @@ Namespace Ecospace.Controls
         Private Sub UpdateControls()
 
             Dim bIsConnected As Boolean = (Me.m_adt IsNot Nothing) And (Me.m_layer IsNot Nothing)
+            Dim bIsIndexing As Boolean = Me.IsIndexing()
             Dim ds As ISpatialDataSet = Me.SelectedDataset
             Dim cv As ISpatialDataConverter = Me.SelectedConverter
             Dim bCanConfigDS As Boolean = False
@@ -381,6 +384,15 @@ Namespace Ecospace.Controls
 
             Me.m_btnCalculate.Enabled = bIsConfigured
 
+            If ds IsNot Nothing Then
+                If bIsIndexing Then
+                    Me.m_pbAlert.Image = ScientificInterfaceShared.My.Resources.ani_loader
+                Else
+                    Me.m_pbAlert.Image = ScientificInterfaceShared.My.Resources.OK
+                End If
+            Else
+                Me.m_pbAlert.Image = Nothing
+            End If
         End Sub
 
         Private Sub FillTemplateDatasetBox()
@@ -423,12 +435,18 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub SelectDataset(dataset As ISpatialDataSet)
+
+            Me.StopIndexing()
+
             ' Update selection
             Dim iIndex As Integer = 0
             If (dataset IsNot Nothing) Then
                 iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
             End If
             Me.m_lbxExistingDS.SelectedIndex = iIndex
+
+            Me.StartIndexing()
+
         End Sub
 
         Private Property SelectedDataset As ISpatialDataSet
@@ -654,6 +672,48 @@ Namespace Ecospace.Controls
 #End Region ' Scalar data adapter
 
 #End Region ' Internals
+
+#Region " Threaded indexing of datasets "
+
+        Private Sub StopIndexing()
+            If Me.IsIndexing Then
+                Me.m_thread.Abort()
+            End If
+            Me.m_thread = Nothing
+        End Sub
+
+        Private Sub StartIndexing()
+            If (Me.SelectedDataset IsNot Nothing) Then
+                Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
+                Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
+                Me.m_thread.Start()
+                Me.UpdateControls()
+            End If
+        End Sub
+
+        Private Sub IndexDatasetThread()
+            Me.SelectedDataset.BuildIndex(AddressOf OnSpatialIndexUpdated)
+            ' Forget myself
+            Me.m_thread = Nothing
+            ' Invoke callback to clean up
+            Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {Nothing})
+        End Sub
+
+        Private Function IsIndexing() As Boolean
+            If (Me.m_thread Is Nothing) Then Return False
+            Return Me.m_thread.IsAlive
+        End Function
+
+        Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
+
+        Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
+            If Me.InvokeRequired Then
+                Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {ds})
+            End If
+            Me.UpdateControls()
+        End Sub
+
+#End Region ' Threaded indexing of datasets
 
     End Class
 

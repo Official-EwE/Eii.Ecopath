@@ -287,7 +287,7 @@ Namespace Ecospace.Advection
             Me.m_syncObject = SyncObject
 
             If Me.IsRunning Then
-                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.ADVECTION_ALREADY_RUNNING, _
+                Me.m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.COMPUTATION_ALREADY_RUNNING, _
                                                             eMessageType.ErrorEncountered, _
                                                             eCoreComponentType.EcoSpace, _
                                                             eMessageImportance.Warning, _

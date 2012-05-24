@@ -585,9 +585,8 @@ Public Class cEcoSpace
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            ' ToDo: globalize this
-            m_publisher.AddMessage(New cMessage("Ecospace Error: " & ex.Message, eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
+            m_publisher.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message), _
+                                                eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
             bsuccess = False
         End Try
 
@@ -644,8 +643,8 @@ Public Class cEcoSpace
         Catch ex As Exception
             started = False
             Debug.Assert(False, ex.Message)
-            m_publisher.AddMessage(New cMessage("Ecospace Error: " & ex.Message, eMessageType.ErrorEncountered, _
-                                        eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
+            m_publisher.AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR, ex.Message), _
+                                               eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical, eDataTypes.NotSet))
         End Try
 
         m_publisher.sendAllMessages()
@@ -1556,6 +1555,7 @@ Public Class cEcoSpace
                 'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
                 'inlinks is the number of prey/pred linkages
                 Me.m_Data.allocate(Me.m_Data.MPred, Me.m_Data.InRow + 1, Me.m_Data.InCol + 1, Me.m_SimData.inlinks)
+                cLog.Write("Ecospace allocated MPred data for model interoperability", cLog.eVerboseLevel.Detailed)
             End If
 
             ReDim totalIterThread(m_Data.nGridSolverThreads + 1)
@@ -6260,8 +6260,8 @@ exitline:
             End If
 
         Catch ex As Exception
-            ' ToDo: globalize this
-            Me.m_publisher.SendMessage(New cMessage("Ecospace failed to update map.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
+            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_HABCAP_COMPUTE_ERROR, ex.Message), _
+                                                    eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
 
         Return False

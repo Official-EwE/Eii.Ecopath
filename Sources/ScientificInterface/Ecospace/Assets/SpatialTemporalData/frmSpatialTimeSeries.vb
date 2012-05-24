@@ -136,10 +136,7 @@ Namespace Ecospace
 
             If (Object.ReferenceEquals(ds, Me.m_ds)) Then Return
 
-            If Me.HasThread Then
-                Me.m_thread.Abort()
-                Me.m_thread = Nothing
-            End If
+            Me.StopIndexing()
 
             If (Me.m_ds IsNot Nothing) Then
                 ' Clear selection
@@ -148,11 +145,7 @@ Namespace Ecospace
             Me.m_ds = ds
             Me.m_map.SelectedDataset = ds
 
-            If (Me.m_ds IsNot Nothing) Then
-                Me.m_thread = New Threading.Thread(AddressOf IndexDataset)
-                Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                Me.m_thread.Start()
-            End If
+            Me.StartIndexing()
 
         End Sub
 
@@ -204,6 +197,38 @@ Namespace Ecospace
 
         End Sub
 
+#End Region ' Callbacks
+
+#Region " Threaded indexing of datasets "
+
+        Private Sub StopIndexing()
+            If Me.HasThread Then
+                Me.m_thread.Abort()
+            End If
+            Me.m_thread = Nothing
+        End Sub
+
+        Private Sub StartIndexing()
+            If (Me.m_ds IsNot Nothing) Then
+                Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
+                Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
+                Me.m_thread.Start()
+            End If
+        End Sub
+
+        Private Sub IndexDatasetThread()
+            Me.m_ds.BuildIndex(AddressOf OnSpatialIndexUpdated)
+            ' Forget myself
+            Me.m_thread = Nothing
+            ' Invoke callback to clean up
+            Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {Me.m_ds})
+        End Sub
+
+        Private Function HasThread() As Boolean
+            If (Me.m_thread Is Nothing) Then Return False
+            Return Me.m_thread.IsAlive
+        End Function
+
         Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
 
         Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
@@ -216,19 +241,6 @@ Namespace Ecospace
                 End If
             End If
         End Sub
-
-#End Region ' Callbacks
-
-#Region " Threaded indexing of datasets "
-
-        Private Sub IndexDataset()
-            Me.m_ds.BuildIndex(AddressOf OnSpatialIndexUpdated)
-        End Sub
-
-        Private Function HasThread() As Boolean
-            If (Me.m_thread Is Nothing) Then Return False
-            Return Me.m_thread.IsAlive
-        End Function
 
 #End Region ' Threaded indexing of datasets
 

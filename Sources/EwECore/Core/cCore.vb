@@ -8254,7 +8254,7 @@ Public Class cCore
                 If checkHabitats() Then
 
                     ' Write detailed info
-                    cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s)", cLog.eVerboseLevel.Detailed)
+                    cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, cLog.eVerboseLevel.Detailed)
 
                     'Setup delegates for Ecospace to call 
                     Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler

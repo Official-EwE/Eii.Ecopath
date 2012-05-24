@@ -715,6 +715,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Data layers.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_DATA() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_DATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Bathymetry.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_DEPTH() As String
@@ -726,9 +735,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Environmental drivers.
         '''</summary>
-        Public ReadOnly Property ECOSPACE_LAYERGROUP_DRIVERS() As String
+        Public ReadOnly Property ECOSPACE_LAYERGROUP_ENVDRIVERS() As String
             Get
-                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_DRIVERS", resourceCulture)
+                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_ENVDRIVERS", resourceCulture)
             End Get
         End Property
         
@@ -765,15 +774,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOSPACE_LAYERGROUP_IMPORTANCE() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_IMPORTANCE", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Miscellaneous.
-        '''</summary>
-        Public ReadOnly Property ECOSPACE_LAYERGROUP_MISC() As String
-            Get
-                Return ResourceManager.GetString("ECOSPACE_LAYERGROUP_MISC", resourceCulture)
             End Get
         End Property
         

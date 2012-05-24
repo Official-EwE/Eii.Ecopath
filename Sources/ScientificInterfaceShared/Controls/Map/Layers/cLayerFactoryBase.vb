@@ -370,7 +370,7 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerRelPP, _
                      eVarNameFlags.LayerRelCin, _
                      eVarNameFlags.LayerMigration
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_MISC
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_DATA
 
                 Case eVarNameFlags.LayerPort, _
                       eVarNameFlags.LayerSail
@@ -380,7 +380,7 @@ Namespace Controls.Map
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_IMPORTANCE
 
                 Case eVarNameFlags.LayerDriver
-                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_DRIVERS
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_ENVDRIVERS
 
             End Select
             Return strGroup

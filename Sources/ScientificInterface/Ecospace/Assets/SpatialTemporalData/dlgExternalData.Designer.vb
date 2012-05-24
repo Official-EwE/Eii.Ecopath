@@ -46,10 +46,10 @@ Namespace Ecospace
             Me.components = New System.ComponentModel.Container()
             Me.m_btnOK = New System.Windows.Forms.Button()
             Me.m_sc = New System.Windows.Forms.SplitContainer()
+            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tvAdapters = New System.Windows.Forms.TreeView()
             Me.m_config = New ScientificInterface.Ecospace.Controls.ucConfigAdapter()
             Me.m_ilConnections = New System.Windows.Forms.ImageList(Me.components)
-            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
             Me.m_sc.Panel2.SuspendLayout()
@@ -59,7 +59,7 @@ Namespace Ecospace
             'm_btnOK
             '
             Me.m_btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnOK.Location = New System.Drawing.Point(576, 296)
+            Me.m_btnOK.Location = New System.Drawing.Point(608, 401)
             Me.m_btnOK.Name = "m_btnOK"
             Me.m_btnOK.Size = New System.Drawing.Size(75, 23)
             Me.m_btnOK.TabIndex = 2
@@ -82,9 +82,22 @@ Namespace Ecospace
             'm_sc.Panel2
             '
             Me.m_sc.Panel2.Controls.Add(Me.m_config)
-            Me.m_sc.Size = New System.Drawing.Size(639, 278)
-            Me.m_sc.SplitterDistance = 170
+            Me.m_sc.Size = New System.Drawing.Size(671, 383)
+            Me.m_sc.SplitterDistance = 178
             Me.m_sc.TabIndex = 0
+            '
+            'm_hdrLayers
+            '
+            Me.m_hdrLayers.CanCollapseParent = False
+            Me.m_hdrLayers.CollapsedParentHeight = 0
+            Me.m_hdrLayers.Dock = System.Windows.Forms.DockStyle.Top
+            Me.m_hdrLayers.IsCollapsed = False
+            Me.m_hdrLayers.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrLayers.Name = "m_hdrLayers"
+            Me.m_hdrLayers.Size = New System.Drawing.Size(178, 18)
+            Me.m_hdrLayers.TabIndex = 1
+            Me.m_hdrLayers.Text = "Layers"
+            Me.m_hdrLayers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tvAdapters
             '
@@ -96,7 +109,7 @@ Namespace Ecospace
             Me.m_tvAdapters.Location = New System.Drawing.Point(0, 21)
             Me.m_tvAdapters.Name = "m_tvAdapters"
             Me.m_tvAdapters.ShowLines = False
-            Me.m_tvAdapters.Size = New System.Drawing.Size(170, 257)
+            Me.m_tvAdapters.Size = New System.Drawing.Size(178, 362)
             Me.m_tvAdapters.TabIndex = 0
             '
             'm_config
@@ -104,7 +117,7 @@ Namespace Ecospace
             Me.m_config.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_config.Location = New System.Drawing.Point(0, 0)
             Me.m_config.Name = "m_config"
-            Me.m_config.Size = New System.Drawing.Size(465, 278)
+            Me.m_config.Size = New System.Drawing.Size(489, 383)
             Me.m_config.TabIndex = 0
             Me.m_config.UIContext = Nothing
             '
@@ -114,24 +127,11 @@ Namespace Ecospace
             Me.m_ilConnections.ImageSize = New System.Drawing.Size(16, 16)
             Me.m_ilConnections.TransparentColor = System.Drawing.Color.Transparent
             '
-            'm_hdrLayers
-            '
-            Me.m_hdrLayers.CanCollapseParent = False
-            Me.m_hdrLayers.CollapsedParentHeight = 0
-            Me.m_hdrLayers.Dock = System.Windows.Forms.DockStyle.Top
-            Me.m_hdrLayers.IsCollapsed = False
-            Me.m_hdrLayers.Location = New System.Drawing.Point(0, 0)
-            Me.m_hdrLayers.Name = "m_hdrLayers"
-            Me.m_hdrLayers.Size = New System.Drawing.Size(170, 18)
-            Me.m_hdrLayers.TabIndex = 1
-            Me.m_hdrLayers.Text = "Layers"
-            Me.m_hdrLayers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
             'dlgExternalData
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(663, 334)
+            Me.ClientSize = New System.Drawing.Size(695, 439)
             Me.ControlBox = False
             Me.Controls.Add(Me.m_sc)
             Me.Controls.Add(Me.m_btnOK)

@@ -65,15 +65,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to An advection computation is already running. Only one computation can run at a time..
-        '''</summary>
-        Friend Shared ReadOnly Property ADVECTION_ALREADY_RUNNING() As String
-            Get
-                Return ResourceManager.GetString("ADVECTION_ALREADY_RUNNING", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to An error occurred running the advection computations: {0}.
         '''</summary>
         Friend Shared ReadOnly Property ADVECTION_ERROR() As String
@@ -124,6 +115,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property BIOMASSAREA_RANGE() As String
             Get
                 Return ResourceManager.GetString("BIOMASSAREA_RANGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Only one computation can run at a time..
+        '''</summary>
+        Friend Shared ReadOnly Property COMPUTATION_ALREADY_RUNNING() As String
+            Get
+                Return ResourceManager.GetString("COMPUTATION_ALREADY_RUNNING", resourceCulture)
             End Get
         End Property
         
@@ -848,6 +848,24 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOSIM_SAVE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOSIM_SAVE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to An error occurred in Ecospace. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_GENERIC_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_GENERIC_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace failed to update capacity maps. {0}.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_HABCAP_COMPUTE_ERROR() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_HABCAP_COMPUTE_ERROR", resourceCulture)
             End Get
         End Property
         

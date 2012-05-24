@@ -2349,7 +2349,7 @@
   <data name="ECOSPACE_LAYERGROUP_DEPTH" xml:space="preserve">
     <value>Bathymetry</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_DRIVERS" xml:space="preserve">
+  <data name="ECOSPACE_LAYERGROUP_ENVDRIVERS" xml:space="preserve">
     <value>Environmental drivers</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_FISHING" xml:space="preserve">
@@ -2364,8 +2364,8 @@
   <data name="ECOSPACE_LAYERGROUP_IMPORTANCE" xml:space="preserve">
     <value>Importance</value>
   </data>
-  <data name="ECOSPACE_LAYERGROUP_MISC" xml:space="preserve">
-    <value>Miscellaneous</value>
+  <data name="ECOSPACE_LAYERGROUP_DATA" xml:space="preserve">
+    <value>Data layers</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
     <value>Marine Protected Areas</value>

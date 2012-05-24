@@ -42,6 +42,8 @@ Namespace Ecospace.Controls
         Private Sub InitializeComponent()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnectionConverter = New System.Windows.Forms.Panel()
+            Me.m_lblValid = New System.Windows.Forms.Label()
+            Me.m_pbAlert = New System.Windows.Forms.PictureBox()
             Me.m_cmbConverter = New System.Windows.Forms.ComboBox()
             Me.m_btnClearCache = New System.Windows.Forms.Button()
             Me.m_cmbNewDS = New System.Windows.Forms.ComboBox()
@@ -54,13 +56,14 @@ Namespace Ecospace.Controls
             Me.m_lblNewDS = New System.Windows.Forms.Label()
             Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plScalarAdapter = New System.Windows.Forms.Panel()
+            Me.m_lblScaling = New System.Windows.Forms.Label()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
             Me.m_tbxScale = New System.Windows.Forms.TextBox()
             Me.m_rbRelative = New System.Windows.Forms.RadioButton()
             Me.m_rbAbsolute = New System.Windows.Forms.RadioButton()
-            Me.m_lblScaling = New System.Windows.Forms.Label()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnectionConverter.SuspendLayout()
+            CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plScalarAdapter.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -77,11 +80,13 @@ Namespace Ecospace.Controls
             Me.m_tlpContent.RowCount = 2
             Me.m_tlpContent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlpContent.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlpContent.Size = New System.Drawing.Size(311, 316)
+            Me.m_tlpContent.Size = New System.Drawing.Size(538, 316)
             Me.m_tlpContent.TabIndex = 1
             '
             'm_plConnectionConverter
             '
+            Me.m_plConnectionConverter.Controls.Add(Me.m_lblValid)
+            Me.m_plConnectionConverter.Controls.Add(Me.m_pbAlert)
             Me.m_plConnectionConverter.Controls.Add(Me.m_cmbConverter)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnClearCache)
             Me.m_plConnectionConverter.Controls.Add(Me.m_cmbNewDS)
@@ -97,8 +102,27 @@ Namespace Ecospace.Controls
             Me.m_plConnectionConverter.Location = New System.Drawing.Point(0, 0)
             Me.m_plConnectionConverter.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plConnectionConverter.Name = "m_plConnectionConverter"
-            Me.m_plConnectionConverter.Size = New System.Drawing.Size(311, 237)
+            Me.m_plConnectionConverter.Size = New System.Drawing.Size(538, 244)
             Me.m_plConnectionConverter.TabIndex = 1
+            '
+            'm_lblValid
+            '
+            Me.m_lblValid.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblValid.Location = New System.Drawing.Point(92, 227)
+            Me.m_lblValid.Name = "m_lblValid"
+            Me.m_lblValid.Size = New System.Drawing.Size(365, 17)
+            Me.m_lblValid.TabIndex = 23
+            Me.m_lblValid.Text = "<status>"
+            '
+            'm_pbAlert
+            '
+            Me.m_pbAlert.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_pbAlert.Location = New System.Drawing.Point(70, 228)
+            Me.m_pbAlert.Name = "m_pbAlert"
+            Me.m_pbAlert.Size = New System.Drawing.Size(16, 16)
+            Me.m_pbAlert.TabIndex = 22
+            Me.m_pbAlert.TabStop = False
             '
             'm_cmbConverter
             '
@@ -106,15 +130,15 @@ Namespace Ecospace.Controls
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbConverter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbConverter.FormattingEnabled = True
-            Me.m_cmbConverter.Location = New System.Drawing.Point(70, 216)
+            Me.m_cmbConverter.Location = New System.Drawing.Point(70, 197)
             Me.m_cmbConverter.Name = "m_cmbConverter"
-            Me.m_cmbConverter.Size = New System.Drawing.Size(160, 21)
+            Me.m_cmbConverter.Size = New System.Drawing.Size(387, 21)
             Me.m_cmbConverter.TabIndex = 20
             '
             'm_btnClearCache
             '
             Me.m_btnClearCache.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClearCache.Location = New System.Drawing.Point(236, 168)
+            Me.m_btnClearCache.Location = New System.Drawing.Point(463, 166)
             Me.m_btnClearCache.Name = "m_btnClearCache"
             Me.m_btnClearCache.Size = New System.Drawing.Size(75, 23)
             Me.m_btnClearCache.TabIndex = 18
@@ -129,13 +153,13 @@ Namespace Ecospace.Controls
             Me.m_cmbNewDS.FormattingEnabled = True
             Me.m_cmbNewDS.Location = New System.Drawing.Point(70, 21)
             Me.m_cmbNewDS.Name = "m_cmbNewDS"
-            Me.m_cmbNewDS.Size = New System.Drawing.Size(160, 21)
+            Me.m_cmbNewDS.Size = New System.Drawing.Size(387, 21)
             Me.m_cmbNewDS.TabIndex = 13
             '
             'm_btnConfigureCV
             '
             Me.m_btnConfigureCV.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnConfigureCV.Location = New System.Drawing.Point(236, 215)
+            Me.m_btnConfigureCV.Location = New System.Drawing.Point(463, 195)
             Me.m_btnConfigureCV.Name = "m_btnConfigureCV"
             Me.m_btnConfigureCV.Size = New System.Drawing.Size(75, 23)
             Me.m_btnConfigureCV.TabIndex = 21
@@ -145,7 +169,7 @@ Namespace Ecospace.Controls
             'm_btnDeleteDS
             '
             Me.m_btnDeleteDS.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnDeleteDS.Location = New System.Drawing.Point(236, 77)
+            Me.m_btnDeleteDS.Location = New System.Drawing.Point(463, 77)
             Me.m_btnDeleteDS.Name = "m_btnDeleteDS"
             Me.m_btnDeleteDS.Size = New System.Drawing.Size(75, 23)
             Me.m_btnDeleteDS.TabIndex = 17
@@ -155,7 +179,7 @@ Namespace Ecospace.Controls
             'm_btnConfigDS
             '
             Me.m_btnConfigDS.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnConfigDS.Location = New System.Drawing.Point(236, 48)
+            Me.m_btnConfigDS.Location = New System.Drawing.Point(463, 48)
             Me.m_btnConfigDS.Name = "m_btnConfigDS"
             Me.m_btnConfigDS.Size = New System.Drawing.Size(75, 23)
             Me.m_btnConfigDS.TabIndex = 16
@@ -165,7 +189,7 @@ Namespace Ecospace.Controls
             'm_btnCreateDS
             '
             Me.m_btnCreateDS.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnCreateDS.Location = New System.Drawing.Point(236, 19)
+            Me.m_btnCreateDS.Location = New System.Drawing.Point(463, 19)
             Me.m_btnCreateDS.Name = "m_btnCreateDS"
             Me.m_btnCreateDS.Size = New System.Drawing.Size(75, 23)
             Me.m_btnCreateDS.TabIndex = 14
@@ -181,14 +205,14 @@ Namespace Ecospace.Controls
             Me.m_lbxExistingDS.IntegralHeight = False
             Me.m_lbxExistingDS.Location = New System.Drawing.Point(70, 48)
             Me.m_lbxExistingDS.Name = "m_lbxExistingDS"
-            Me.m_lbxExistingDS.Size = New System.Drawing.Size(160, 143)
+            Me.m_lbxExistingDS.Size = New System.Drawing.Size(387, 141)
             Me.m_lbxExistingDS.TabIndex = 15
             '
             'm_lblSelectCV
             '
             Me.m_lblSelectCV.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_lblSelectCV.AutoSize = True
-            Me.m_lblSelectCV.Location = New System.Drawing.Point(0, 219)
+            Me.m_lblSelectCV.Location = New System.Drawing.Point(3, 200)
             Me.m_lblSelectCV.Name = "m_lblSelectCV"
             Me.m_lblSelectCV.Size = New System.Drawing.Size(56, 13)
             Me.m_lblSelectCV.TabIndex = 19
@@ -212,7 +236,7 @@ Namespace Ecospace.Controls
             Me.m_hdrSource.IsCollapsed = False
             Me.m_hdrSource.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrSource.Name = "m_hdrSource"
-            Me.m_hdrSource.Size = New System.Drawing.Size(311, 18)
+            Me.m_hdrSource.Size = New System.Drawing.Size(538, 18)
             Me.m_hdrSource.TabIndex = 11
             Me.m_hdrSource.Text = "External data"
             Me.m_hdrSource.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -225,16 +249,26 @@ Namespace Ecospace.Controls
             Me.m_plScalarAdapter.Controls.Add(Me.m_rbRelative)
             Me.m_plScalarAdapter.Controls.Add(Me.m_rbAbsolute)
             Me.m_plScalarAdapter.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plScalarAdapter.Location = New System.Drawing.Point(0, 237)
+            Me.m_plScalarAdapter.Location = New System.Drawing.Point(0, 244)
             Me.m_plScalarAdapter.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plScalarAdapter.Name = "m_plScalarAdapter"
-            Me.m_plScalarAdapter.Size = New System.Drawing.Size(311, 79)
+            Me.m_plScalarAdapter.Size = New System.Drawing.Size(538, 72)
             Me.m_plScalarAdapter.TabIndex = 2
+            '
+            'm_lblScaling
+            '
+            Me.m_lblScaling.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_lblScaling.AutoSize = True
+            Me.m_lblScaling.Location = New System.Drawing.Point(0, 11)
+            Me.m_lblScaling.Name = "m_lblScaling"
+            Me.m_lblScaling.Size = New System.Drawing.Size(108, 13)
+            Me.m_lblScaling.TabIndex = 9
+            Me.m_lblScaling.Text = "External data scaling:"
             '
             'm_btnCalculate
             '
-            Me.m_btnCalculate.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnCalculate.Location = New System.Drawing.Point(236, 56)
+            Me.m_btnCalculate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnCalculate.Location = New System.Drawing.Point(463, 49)
             Me.m_btnCalculate.Name = "m_btnCalculate"
             Me.m_btnCalculate.Size = New System.Drawing.Size(75, 23)
             Me.m_btnCalculate.TabIndex = 8
@@ -243,17 +277,18 @@ Namespace Ecospace.Controls
             '
             'm_tbxScale
             '
-            Me.m_tbxScale.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_tbxScale.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxScale.Location = New System.Drawing.Point(123, 58)
+            Me.m_tbxScale.Location = New System.Drawing.Point(123, 51)
             Me.m_tbxScale.Name = "m_tbxScale"
-            Me.m_tbxScale.Size = New System.Drawing.Size(107, 20)
+            Me.m_tbxScale.Size = New System.Drawing.Size(334, 20)
             Me.m_tbxScale.TabIndex = 7
             '
             'm_rbRelative
             '
+            Me.m_rbRelative.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_rbRelative.AutoSize = True
-            Me.m_rbRelative.Location = New System.Drawing.Point(16, 59)
+            Me.m_rbRelative.Location = New System.Drawing.Point(16, 52)
             Me.m_rbRelative.Name = "m_rbRelative"
             Me.m_rbRelative.Size = New System.Drawing.Size(101, 17)
             Me.m_rbRelative.TabIndex = 6
@@ -263,8 +298,9 @@ Namespace Ecospace.Controls
             '
             'm_rbAbsolute
             '
+            Me.m_rbAbsolute.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
             Me.m_rbAbsolute.AutoSize = True
-            Me.m_rbAbsolute.Location = New System.Drawing.Point(16, 36)
+            Me.m_rbAbsolute.Location = New System.Drawing.Point(16, 29)
             Me.m_rbAbsolute.Name = "m_rbAbsolute"
             Me.m_rbAbsolute.Size = New System.Drawing.Size(199, 17)
             Me.m_rbAbsolute.TabIndex = 5
@@ -272,25 +308,17 @@ Namespace Ecospace.Controls
             Me.m_rbAbsolute.Text = "Use external data as &absolute values"
             Me.m_rbAbsolute.UseVisualStyleBackColor = True
             '
-            'm_lblScaling
-            '
-            Me.m_lblScaling.AutoSize = True
-            Me.m_lblScaling.Location = New System.Drawing.Point(0, 18)
-            Me.m_lblScaling.Name = "m_lblScaling"
-            Me.m_lblScaling.Size = New System.Drawing.Size(108, 13)
-            Me.m_lblScaling.TabIndex = 9
-            Me.m_lblScaling.Text = "External data scaling:"
-            '
             'ucConfigAdapter
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_tlpContent)
             Me.Name = "ucConfigAdapter"
-            Me.Size = New System.Drawing.Size(311, 316)
+            Me.Size = New System.Drawing.Size(538, 316)
             Me.m_tlpContent.ResumeLayout(False)
             Me.m_plConnectionConverter.ResumeLayout(False)
             Me.m_plConnectionConverter.PerformLayout()
+            CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plScalarAdapter.ResumeLayout(False)
             Me.m_plScalarAdapter.PerformLayout()
             Me.ResumeLayout(False)
@@ -315,6 +343,8 @@ Namespace Ecospace.Controls
         Private WithEvents m_rbRelative As System.Windows.Forms.RadioButton
         Private WithEvents m_rbAbsolute As System.Windows.Forms.RadioButton
         Private WithEvents m_lblScaling As System.Windows.Forms.Label
+        Private WithEvents m_lblValid As System.Windows.Forms.Label
+        Private WithEvents m_pbAlert As System.Windows.Forms.PictureBox
 
     End Class
 

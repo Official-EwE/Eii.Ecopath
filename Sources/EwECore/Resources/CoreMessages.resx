@@ -893,8 +893,8 @@ System Error: {0}</value>
   <data name="MONTECARLO_RESTORE_FAILED" xml:space="preserve">
     <value>Warning: Monte Carlo failed to set Ecopath back to its original state. You may need to close the model without saving to restore your original data.</value>
   </data>
-  <data name="ADVECTION_ALREADY_RUNNING" xml:space="preserve">
-    <value>An advection computation is already running. Only one computation can run at a time.</value>
+  <data name="COMPUTATION_ALREADY_RUNNING" xml:space="preserve">
+    <value>Only one computation can run at a time.</value>
   </data>
   <data name="ADVECTION_ERROR" xml:space="preserve">
     <value>An error occurred running the advection computations: {0}</value>
@@ -1053,5 +1053,13 @@ System Error: {0}</value>
   <data name="STATUS_SPATIALTEMPORAL_ADAPTERROR" xml:space="preserve">
     <value>Failed to update cell({0}, {1}) with value {2}. {3}</value>
     <comment>{0}=col, {1}=row, {2}=cell, {3}=error</comment>
+  </data>
+  <data name="ECOSPACE_GENERIC_ERROR" xml:space="preserve">
+    <value>An error occurred in Ecospace. {0}</value>
+    <comment>{0}=error message</comment>
+  </data>
+  <data name="ECOSPACE_HABCAP_COMPUTE_ERROR" xml:space="preserve">
+    <value>Ecospace failed to update capacity maps. {0}</value>
+    <comment>{0}=error message</comment>
   </data>
 </root>
