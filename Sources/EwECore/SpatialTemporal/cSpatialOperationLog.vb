@@ -146,13 +146,9 @@ Namespace SpatialData
 
 #Region " Internals "
 
-        Private Function AllowedToSave() As Boolean
-            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceASC) Or Me.m_core.Autosave(eAutosaveTypes.EcospaceCSV))
-        End Function
-
         Private Sub OnCoreStateChanged(csm As cCoreStateMonitor)
             If Not csm.IsEcospaceRunning Then
-                If Me.m_bLogStarted And Me.AllowedToSave() Then
+                If Me.m_bLogStarted Then
                     Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_SAVED, Me.m_strLogFileName), _
                                             eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Me.m_strLogFileName
@@ -166,8 +162,6 @@ Namespace SpatialData
 
         Private Sub WriteMessage()
 
-            If (Not Me.AllowedToSave()) Then Return
-
             Dim sb As New StringBuilder()
 
             If (Not Me.m_bLogStarted) Then
@@ -178,12 +172,14 @@ Namespace SpatialData
                     Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, Me.m_core.EcospaceOutputFileLocation("SpatialOperations", "", ".txt"))
                 Else
                     ' #No: use base output directory
-                    Me.m_strLogFileName = Me.m_core.OutputPath ' 
+                    Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, "SpatialOperations.txt")
                 End If
 
                 If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(Me.m_strLogFileName), True) Then
                     cLog.Write("cSpatialOperationsLog: unable to create output directory " & Me.m_strLogFileName)
                     Return
+                Else
+                    cLog.Write("cSpatialOperationsLog: saving to " & Me.m_strLogFileName, cLog.eVerboseLevel.Detailed)
                 End If
 
                 sb.AppendLine("Ecospace spatial operations log")
