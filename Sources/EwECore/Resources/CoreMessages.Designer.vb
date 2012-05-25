@@ -2112,7 +2112,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}% indexed, {1}% time steps covered with {2}% partial and {3}% total area overlap.
+        '''  Looks up a localized string similar to {0}% indexed, {1}% temporal overlap with {2}% partial and {3}% total area overlap.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_COMPATIBILITY() As String
             Get
