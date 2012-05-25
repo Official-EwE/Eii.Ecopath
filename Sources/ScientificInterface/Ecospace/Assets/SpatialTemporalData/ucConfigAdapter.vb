@@ -357,12 +357,12 @@ Namespace Ecospace.Controls
         Private Sub UpdateControls()
 
             Dim bIsConnected As Boolean = (Me.m_adt IsNot Nothing) And (Me.m_layer IsNot Nothing)
-            Dim bIsIndexing As Boolean = Me.IsIndexing()
             Dim ds As ISpatialDataSet = Me.SelectedDataset
             Dim cv As ISpatialDataConverter = Me.SelectedConverter
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
             Dim bIsConfigured As Boolean = bIsConnected AndAlso Me.m_adt.IsConnected(Me.m_layer.Index)
+            Dim bIsIndexing As Boolean = Me.IsIndexing()
 
             If (ds IsNot Nothing) Then bCanConfigDS = bIsConnected And (TypeOf ds Is IConfigurablePlugin)
             If (cv IsNot Nothing) Then bCanConfigCV = bIsConnected And (TypeOf cv Is IConfigurablePlugin)
@@ -381,8 +381,9 @@ Namespace Ecospace.Controls
 
             Me.m_lbxExistingDS.Enabled = bIsConnected
             Me.m_cmbConverter.Enabled = bIsConnected
-
             Me.m_btnCalculate.Enabled = bIsConfigured
+
+            ' -- Indexing status --
 
             Dim strValidate As String = ""
             Dim imgValidate As Image = Nothing
@@ -405,7 +406,6 @@ Namespace Ecospace.Controls
             If Not Object.ReferenceEquals(Me.m_pbCompatibility.Image, imgValidate) Then
                 Me.m_pbCompatibility.Image = imgValidate
             End If
-
             Me.m_lblCompatibility.Text = strValidate
 
         End Sub
@@ -449,9 +449,7 @@ Namespace Ecospace.Controls
             ' NOP
         End Sub
 
-        Private Sub SelectDataset(dataset As ISpatialDataSet)
-
-            Me.StopIndexing()
+          Private Sub SelectDataset(dataset As ISpatialDataSet)
 
             ' Update selection
             Dim iIndex As Integer = 0
@@ -459,8 +457,7 @@ Namespace Ecospace.Controls
                 iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
             End If
             Me.m_lbxExistingDS.SelectedIndex = iIndex
-
-            Me.StartIndexing()
+            Me.SelectedDataset = dataset
 
         End Sub
 
@@ -471,6 +468,7 @@ Namespace Ecospace.Controls
             End Get
             Set(dataset As ISpatialDataSet)
 
+                Me.StopIndexing()
                 If (Me.m_adt Is Nothing) Then Return
 
                 ' Apply
@@ -478,6 +476,7 @@ Namespace Ecospace.Controls
                     Me.m_adt.Dataset(Me.m_layer.Index) = dataset
                     Me.LayerChanged()
                 End If
+                Me.StartIndexing()
 
             End Set
         End Property
