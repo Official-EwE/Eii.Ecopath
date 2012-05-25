@@ -285,7 +285,7 @@ Namespace Ecospace.Controls
 
                         For iStep As Integer = pos.m_iTimeStart To pos.m_iTimeEnd
                             Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
-                            If ds.HasDataAtT(tm, ptfTL, ptfBR) Then
+                            If ds.HasDataAtT(tm) Then
                                 pos.m_liData.Add(iStep)
                                 pos.m_liTime.Add(tm)
                             End If

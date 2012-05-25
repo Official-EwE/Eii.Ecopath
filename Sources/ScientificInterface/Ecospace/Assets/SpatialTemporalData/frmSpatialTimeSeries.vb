@@ -90,6 +90,8 @@ Namespace Ecospace
             Next
             Me.m_tscmTypes.SelectedIndex = 0
 
+            Me.m_tsbnShowRefMap.Checked = Me.m_map.ShowReferenceMap
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.External}
 
         End Sub
@@ -210,10 +212,13 @@ Namespace Ecospace
 
         Private Sub StartIndexing()
             If (Me.m_ds IsNot Nothing) Then
-                Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
-                Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                Me.m_thread.Start()
+                If (Me.m_ds.FractionIndexed < 1.0!) Then
+                    Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
+                    Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
+                    Me.m_thread.Start()
+                End If
             End If
+            Me.OnSpatialIndexUpdated(Me.m_ds)
         End Sub
 
         Private Sub IndexDatasetThread()
@@ -244,6 +249,9 @@ Namespace Ecospace
 
 #End Region ' Threaded indexing of datasets
 
+        Private Sub OnToggleShowRefMap(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowRefMap.Click
+            Me.m_map.ShowReferenceMap = Me.m_tsbnShowRefMap.Checked
+        End Sub
     End Class
 
 End Namespace

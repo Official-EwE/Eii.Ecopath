@@ -122,7 +122,7 @@
     <comment>Time series type</comment>
   </data>
   <data name="MENU_SHOW_LEGEND" xml:space="preserve">
-    <value>&amp;Show legend</value>
+    <value>Show &amp;legend</value>
   </data>
   <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
     <value>Relative biomass</value>
@@ -176,7 +176,7 @@
   </data>
   <data name="GENERIC_LABEL_INDEXED" xml:space="preserve">
     <value>{0}: {1}</value>
-    <comment>{0}:index, {1}:name</comment>
+    <comment>{0}=index, {1}=name</comment>
   </data>
   <data name="TS_TYPE_FISHINGEFFORT" xml:space="preserve">
     <value>Fishing effort</value>
@@ -208,7 +208,7 @@
   </data>
   <data name="GENERIC_LABEL_POINT" xml:space="preserve">
     <value>{0} ({1}, {2})</value>
-    <comment>{0}: point value, {1}: X label, {2}: Y label</comment>
+    <comment>{0}=point value, {1}=X label, {2}=Y label</comment>
   </data>
   <data name="UNIT_CURRENCY_NITROGEN" xml:space="preserve">
     <value>mg N/m²</value>
@@ -493,9 +493,6 @@
   <data name="NotEditable" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NotEditable.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OK.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="openHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -558,7 +555,7 @@
   </data>
   <data name="GENERIC_LABEL_SCENARIODETAILS" xml:space="preserve">
     <value>{0} ({1} {2})</value>
-    <comment>{0}: scenario name, {1}: scenario save date, {2}: scenario save time</comment>
+    <comment>{0}=scenario name, {1}=scenario save date, {2}=scenario save time</comment>
   </data>
   <data name="GENERIC_LABEL_STEP_SIZE" xml:space="preserve">
     <value>Step size</value>
@@ -2003,16 +2000,13 @@
   <data name="HEADER_VULNERABILITY_INDEX" xml:space="preserve">
     <value>Vulnerability index [0, 100]</value>
   </data>
-  <data name="PieChart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\PieChart.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GENERIC_LABEL_PERUNIT" xml:space="preserve">
     <value>(/{0})</value>
-    <comment>{0}: single unit</comment>
+    <comment>{0}=single unit</comment>
   </data>
   <data name="GENERIC_LABEL_UNIT" xml:space="preserve">
     <value>({0})</value>
-    <comment>{0}: single unit</comment>
+    <comment>{0}=single unit</comment>
   </data>
   <data name="HEADER_BIOMASS" xml:space="preserve">
     <value>Biomass</value>
@@ -2493,5 +2487,20 @@
   </data>
   <data name="saveOutputHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\saveOutputHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GENERIC_LABEL_UNITPERUNIT" xml:space="preserve">
+    <value>({0}/{1})</value>
+  </data>
+  <data name="MENU_SHOW_AXISLABELS" xml:space="preserve">
+    <value>Show &amp;axis labels</value>
+  </data>
+  <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OK.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PieChart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PieChart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="synonym" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\synonym.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

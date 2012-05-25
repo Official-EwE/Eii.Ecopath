@@ -302,6 +302,10 @@ Namespace Controls
         ''' <summary>States whether this instance should show a legend if left to 'default'</summary>
         Private m_bShowLegend As Boolean = True
 
+        '== Axis labels ==
+        ''' <summary>States whether this instance should show axis labels.</summary>
+        Private m_bShowAxisLabels As Boolean = True
+
         ' == Cursor ==
         Private m_abShowCursor() As Boolean
         Private m_asCursorPos() As Single
@@ -347,7 +351,7 @@ Namespace Controls
                 Try
                     Me.Detach()
                 Catch ex As Exception
-
+                    Debug.Assert(False)
                 End Try
             End If
             ' Go ahead
@@ -411,12 +415,10 @@ Namespace Controls
             Me.AllowZoom = True
             Me.AllowPan = False
 
-            ' Initialize zoom menu state
-            Me.OnHoverMenuCommand(ucHoverMenu.eCommandTypes.ZoomReset)
-
             ' Configure graph control
             Me.UpdateStyle()
             Me.UpdateColours()
+            Me.UpdateHoverMenuItems()
 
         End Sub
 
@@ -720,6 +722,7 @@ Namespace Controls
                 .Chart.Border.IsVisible = True
 
                 Me.UpdateLegends(gp)
+                Me.UpdateAxisLabels(gp)
 
             End With
 
@@ -1123,7 +1126,28 @@ Namespace Controls
                 If (value <> Me.m_bShowLegend) Then
                     Me.m_bShowLegend = value
                     For i As Integer = 1 To Me.m_nPanels
-                        Me.UpdateLegends(Me.GetPane(i))
+                        Dim gp As GraphPane = Me.GetPane(i)
+                        Me.UpdateLegends(gp)
+                    Next
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether to display axis labels.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property IsAxisLabelsVisible() As Boolean
+            Get
+                Return Me.m_bShowAxisLabels
+            End Get
+            Set(ByVal value As Boolean)
+                If (value <> Me.m_bShowAxisLabels) Then
+                    Me.m_bShowAxisLabels = value
+                    For i As Integer = 1 To Me.m_nPanels
+                        Dim gp As GraphPane = Me.GetPane(i)
+                        Me.UpdateAxisLabels(gp)
                     Next
                 End If
             End Set
@@ -1884,8 +1908,9 @@ Namespace Controls
                 Me.RefreshAxisLabels()
             End If
 
-            If ((changeType And cStyleGuide.eChangeType.Legends) > 0) Then
+            If ((changeType And cStyleGuide.eChangeType.GraphStyle) > 0) Then
                 Me.UpdateLegends()
+                Me.UpdateAxisLabels()
             End If
         End Sub
 
@@ -2290,6 +2315,27 @@ Namespace Controls
 
         End Sub
 
+        Private Sub UpdateAxisLabels(Optional ByVal gp As GraphPane = Nothing)
+
+            Dim bShow As Boolean = (Me.StyleGuide.ShowAxisLabels = TriState.True) Or _
+                                   (Me.StyleGuide.ShowAxisLabels = TriState.UseDefault And Me.m_bShowAxisLabels = True)
+            If (gp Is Nothing) Then
+                For Each gp In Me.m_zgc.MasterPane.PaneList
+                    gp.XAxis.Title.IsVisible = bShow
+                    gp.X2Axis.Title.IsVisible = bShow
+                    gp.YAxis.Title.IsVisible = bShow
+                    gp.Y2Axis.Title.IsVisible = bShow
+                Next
+            Else
+                gp.XAxis.Title.IsVisible = bShow
+                gp.X2Axis.Title.IsVisible = bShow
+                gp.YAxis.Title.IsVisible = bShow
+                gp.Y2Axis.Title.IsVisible = bShow
+            End If
+            Me.m_zgc.Invalidate()
+
+        End Sub
+
 #End Region ' Styling
 
 #Region " Mouse support "
@@ -2421,6 +2467,12 @@ Namespace Controls
             item.Checked = Me.IsLegendVisible
             menuStrip.Items.Add(item)
 
+            item = New ToolStripMenuItem(My.Resources.MENU_SHOW_AXISLABELS, Nothing, AddressOf OnShowHideAxisLabels)
+            item.ShortcutKeys = Keys.Control Or Keys.A
+            item.ShowShortcutKeys = True
+            item.Checked = Me.IsAxisLabelsVisible
+            menuStrip.Items.Add(item)
+
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -2429,7 +2481,11 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Sub OnExtractToCSV(ByVal sender As Object, ByVal e As EventArgs)
-            Me.ExtractDataToCSV()
+            Try
+                Me.ExtractDataToCSV()
+            Catch ex As Exception
+                cLog.Write(ex, "ZedGraphHelper::OnExtractToCSV " & sender.ToString())
+            End Try
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -2438,7 +2494,24 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Sub OnShowHideLegend(ByVal sender As Object, ByVal e As EventArgs)
-            Me.IsLegendVisible = Not Me.IsLegendVisible
+            Try
+                Me.IsLegendVisible = Not Me.IsLegendVisible
+            Catch ex As Exception
+                cLog.Write(ex, "ZedGraphHelper::OnShowHideLegend " & sender.ToString())
+            End Try
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler for toggling axis label visibility.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Sub OnShowHideAxisLabels(ByVal sender As Object, ByVal e As EventArgs)
+            Try
+                Me.IsAxisLabelsVisible = Not Me.IsAxisLabelsVisible
+            Catch ex As Exception
+                cLog.Write(ex, "ZedGraphHelper::OnShowHideAxisLabels " & sender.ToString())
+            End Try
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -2447,7 +2520,11 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Sub OnExtractToClipboard(ByVal sender As Object, ByVal e As EventArgs)
-            Me.ExtractDataToClipboard()
+            Try
+                Me.ExtractDataToClipboard()
+            Catch ex As Exception
+                cLog.Write(ex, "ZedGraphHelper::OnExtractToClipboard " & sender.ToString())
+            End Try
         End Sub
 
 #End Region ' Context menu
@@ -2469,7 +2546,6 @@ Namespace Controls
             Dim gp As GraphPane = Nothing
             Dim zs As ZoomState = Nothing
             Dim sValueAvg As Single = 0.0
-            Dim bCanZoomOut As Boolean = False
 
             If Me.m_zgc.InvokeRequired Then
                 Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
@@ -2499,15 +2575,35 @@ Namespace Controls
                         End While
                     Case ucHoverMenu.eCommandTypes.Export
                         Me.ExtractDataToCSV()
+                    Case ucHoverMenu.eCommandTypes.ShowLegends
+                        Me.IsLegendVisible = Not Me.IsLegendVisible
+                    Case ucHoverMenu.eCommandTypes.ShowAxisLabels
+                        Me.IsAxisLabelsVisible = Not IsAxisLabelsVisible
                 End Select
-
-                bCanZoomOut = bCanZoomOut Or (gp.ZoomStack.Count > 0)
             Next
 
-            Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomIn) = True
-            Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomOut) = bCanZoomOut
+            Me.UpdateHoverMenuItems()
 
             Me.m_zgc.Refresh()
+
+        End Sub
+
+        Private Sub UpdateHoverMenuItems()
+
+            If (Me.m_hovermenu IsNot Nothing) Then
+
+                Dim bCanZoomOut As Boolean = False
+                For iPane As Integer = 1 To Me.NumPanes
+                    Dim gp As GraphPane = Me.GetPane(iPane)
+                    bCanZoomOut = bCanZoomOut Or (gp.ZoomStack.Count > 0)
+                Next
+
+                Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomIn) = True
+                Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomOut) = bCanZoomOut
+                Me.m_hovermenu.IsChecked(ucHoverMenu.eCommandTypes.ShowLegends) = Me.IsLegendVisible
+                Me.m_hovermenu.IsChecked(ucHoverMenu.eCommandTypes.ShowAxisLabels) = Me.IsAxisLabelsVisible
+
+            End If
 
         End Sub
 

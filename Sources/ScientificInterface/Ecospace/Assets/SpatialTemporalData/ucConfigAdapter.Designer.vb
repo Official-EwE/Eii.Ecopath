@@ -42,8 +42,8 @@ Namespace Ecospace.Controls
         Private Sub InitializeComponent()
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnectionConverter = New System.Windows.Forms.Panel()
-            Me.m_lblValid = New System.Windows.Forms.Label()
-            Me.m_pbAlert = New System.Windows.Forms.PictureBox()
+            Me.m_lblCompatibility = New System.Windows.Forms.Label()
+            Me.m_pbCompatibility = New System.Windows.Forms.PictureBox()
             Me.m_cmbConverter = New System.Windows.Forms.ComboBox()
             Me.m_btnClearCache = New System.Windows.Forms.Button()
             Me.m_cmbNewDS = New System.Windows.Forms.ComboBox()
@@ -63,7 +63,7 @@ Namespace Ecospace.Controls
             Me.m_rbAbsolute = New System.Windows.Forms.RadioButton()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnectionConverter.SuspendLayout()
-            CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbCompatibility, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plScalarAdapter.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -85,8 +85,8 @@ Namespace Ecospace.Controls
             '
             'm_plConnectionConverter
             '
-            Me.m_plConnectionConverter.Controls.Add(Me.m_lblValid)
-            Me.m_plConnectionConverter.Controls.Add(Me.m_pbAlert)
+            Me.m_plConnectionConverter.Controls.Add(Me.m_lblCompatibility)
+            Me.m_plConnectionConverter.Controls.Add(Me.m_pbCompatibility)
             Me.m_plConnectionConverter.Controls.Add(Me.m_cmbConverter)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnClearCache)
             Me.m_plConnectionConverter.Controls.Add(Me.m_cmbNewDS)
@@ -105,24 +105,25 @@ Namespace Ecospace.Controls
             Me.m_plConnectionConverter.Size = New System.Drawing.Size(538, 244)
             Me.m_plConnectionConverter.TabIndex = 1
             '
-            'm_lblValid
+            'm_lblCompatibility
             '
-            Me.m_lblValid.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Me.m_lblCompatibility.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblValid.Location = New System.Drawing.Point(92, 227)
-            Me.m_lblValid.Name = "m_lblValid"
-            Me.m_lblValid.Size = New System.Drawing.Size(365, 17)
-            Me.m_lblValid.TabIndex = 23
-            Me.m_lblValid.Text = "<status>"
+            Me.m_lblCompatibility.Location = New System.Drawing.Point(92, 227)
+            Me.m_lblCompatibility.Name = "m_lblCompatibility"
+            Me.m_lblCompatibility.Size = New System.Drawing.Size(365, 16)
+            Me.m_lblCompatibility.TabIndex = 23
+            Me.m_lblCompatibility.Text = "<status>"
+            Me.m_lblCompatibility.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
-            'm_pbAlert
+            'm_pbCompatibility
             '
-            Me.m_pbAlert.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_pbAlert.Location = New System.Drawing.Point(70, 228)
-            Me.m_pbAlert.Name = "m_pbAlert"
-            Me.m_pbAlert.Size = New System.Drawing.Size(16, 16)
-            Me.m_pbAlert.TabIndex = 22
-            Me.m_pbAlert.TabStop = False
+            Me.m_pbCompatibility.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_pbCompatibility.Location = New System.Drawing.Point(70, 228)
+            Me.m_pbCompatibility.Name = "m_pbCompatibility"
+            Me.m_pbCompatibility.Size = New System.Drawing.Size(16, 16)
+            Me.m_pbCompatibility.TabIndex = 22
+            Me.m_pbCompatibility.TabStop = False
             '
             'm_cmbConverter
             '
@@ -318,7 +319,7 @@ Namespace Ecospace.Controls
             Me.m_tlpContent.ResumeLayout(False)
             Me.m_plConnectionConverter.ResumeLayout(False)
             Me.m_plConnectionConverter.PerformLayout()
-            CType(Me.m_pbAlert, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbCompatibility, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plScalarAdapter.ResumeLayout(False)
             Me.m_plScalarAdapter.PerformLayout()
             Me.ResumeLayout(False)
@@ -343,8 +344,8 @@ Namespace Ecospace.Controls
         Private WithEvents m_rbRelative As System.Windows.Forms.RadioButton
         Private WithEvents m_rbAbsolute As System.Windows.Forms.RadioButton
         Private WithEvents m_lblScaling As System.Windows.Forms.Label
-        Private WithEvents m_lblValid As System.Windows.Forms.Label
-        Private WithEvents m_pbAlert As System.Windows.Forms.PictureBox
+        Private WithEvents m_lblCompatibility As System.Windows.Forms.Label
+        Private WithEvents m_pbCompatibility As System.Windows.Forms.PictureBox
 
     End Class
 

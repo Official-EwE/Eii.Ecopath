@@ -892,6 +892,9 @@
     <Content Include="Resources\Annual.png" />
     <None Include="Resources\saveOutputHS.png" />
     <None Include="Resources\openOutputHS.png" />
+    <None Include="Resources\OK.png" />
+    <None Include="Resources\PieChart.png" />
+    <None Include="Resources\synonym.png" />
     <Content Include="Resources\timeseries.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\tag.png" />
@@ -1002,7 +1005,6 @@
     <None Include="Resources\PrintHS.png" />
     <None Include="Resources\OptionsHS.png" />
     <None Include="Resources\openHS.png" />
-    <None Include="Resources\OK.bmp" />
     <None Include="Resources\NotEditable.png" />
     <None Include="Resources\NewDocumentHS.png" />
     <None Include="Resources\NavForward.png" />

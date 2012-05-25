@@ -627,7 +627,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mortality: total, fish.(blue), pred.(red).
+        '''  Looks up a localized string similar to Mortality: total, fishing, predation..
         '''</summary>
         Public ReadOnly Property ECOSIM_PLOT_CAPTION_MORT_CONS() As String
             Get
@@ -636,7 +636,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to P/B(black), pred.mort.(red), fish.mort.(blue).
+        '''  Looks up a localized string similar to P/B, predation.mort., fishing.mort..
         '''</summary>
         Public ReadOnly Property ECOSIM_PLOT_CAPTION_MORT_PROD() As String
             Get
@@ -3401,6 +3401,15 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_IMPORTING_MODEL_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("STATUS_IMPORTING_MODEL_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Building index....
+        '''</summary>
+        Public ReadOnly Property STATUS_INDEXING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_INDEXING", resourceCulture)
             End Get
         End Property
         

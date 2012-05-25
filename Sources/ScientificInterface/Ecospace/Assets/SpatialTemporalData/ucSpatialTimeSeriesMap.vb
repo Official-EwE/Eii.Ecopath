@@ -38,9 +38,10 @@ Namespace Ecospace
         Private m_ds As ISpatialDataSet = Nothing
         Private m_iTimeStep As Integer = -1
         Private m_uic As cUIContext = Nothing
-        Private m_rcMap As RectangleF
+        Private m_rcViewExtent As RectangleF
         Private m_lValidRects As New List(Of RectangleF)
         Private m_zoomlevel As eZoomLevel = eZoomLevel.Both
+        Private m_bShowRefMap As Boolean = False
 
         Public Sub New()
             Me.InitializeComponent()
@@ -64,6 +65,7 @@ Namespace Ecospace
             End Get
             Set(value As cUIContext)
                 Me.m_uic = value
+                Me.RefreshContent()
             End Set
         End Property
 
@@ -101,6 +103,16 @@ Namespace Ecospace
             End Set
         End Property
 
+        Public Property ShowReferenceMap As Boolean
+            Get
+                Return Me.m_bShowRefMap
+            End Get
+            Set(value As Boolean)
+                Me.m_bShowRefMap = value
+                Me.Invalidate()
+            End Set
+        End Property
+
         Public Sub RefreshContent()
 
             If (Me.m_uic Is Nothing) Then Return
@@ -108,7 +120,7 @@ Namespace Ecospace
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
 
-            Me.m_rcMap = Me.ToDisplayRect(bm.PosTopLeft, bm.PosBottomRight)
+            Me.m_rcViewExtent = Me.ToDisplayRect(bm.PosTopLeft, bm.PosBottomRight)
             Me.m_lValidRects.Clear()
 
             If (Me.m_ds Is Nothing) Then Return
@@ -150,40 +162,43 @@ Namespace Ecospace
 
             If (Me.m_uic Is Nothing) Then Return
 
-            Dim rcfView As RectangleF = Me.m_rcMap
+            Dim rcfViewExtent As RectangleF = Me.m_rcViewExtent
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim rc As Rectangle = Me.ClientRectangle
 
             If (Me.m_zoomlevel = eZoomLevel.Both) Or (Me.m_zoomlevel = eZoomLevel.Data) Then
                 If (Me.m_zoomlevel = eZoomLevel.Data) And (Me.m_lValidRects.Count > 0) Then
-                    rcfView = New Rectangle(180, 90, -360, -180)
+                    rcfViewExtent = New Rectangle(180, 90, -360, -180)
                 End If
 
                 For Each rcf As RectangleF In Me.m_lValidRects
-                    Dim ptfTL As New PointF(Math.Min(rcf.Left, rcfView.Left), Math.Min(rcf.Top, rcfView.Top))
-                    Dim ptfBR As New PointF(Math.Max(rcf.Right, rcfView.Right), Math.Max(rcf.Bottom, rcfView.Bottom))
-                    rcfView = New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y)
+                    Dim ptfTL As New PointF(Math.Min(rcf.Left, rcfViewExtent.Left), Math.Min(rcf.Top, rcfViewExtent.Top))
+                    Dim ptfBR As New PointF(Math.Max(rcf.Right, rcfViewExtent.Right), Math.Max(rcf.Bottom, rcfViewExtent.Bottom))
+                    rcfViewExtent = New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y)
                 Next
             End If
 
-            If (rcfView.Width = 0 Or rcfView.Height = 0) Then Return
+            If (rcfViewExtent.Width = 0 Or rcfViewExtent.Height = 0) Then Return
 
-            Dim sScale As Single = CSng(Math.Min(rc.Height / (rcfView.Height * 10), rc.Width / (rcfView.Width * 10)))
-            Dim dx As Single = rc.Width / (2.0! * sScale) + (rcfView.X + rcfView.Width / 2.0!)
-            Dim dy As Single = rc.Height / (2.0! * sScale) + (rcfView.Y + rcfView.Height / 2.0!)
+            Dim sScale As Single = CSng(Math.Min(rc.Height / (rcfViewExtent.Height * 10), rc.Width / (rcfViewExtent.Width * 10)))
+            Dim dx As Single = rc.Width / (2.0! * sScale) + (rcfViewExtent.X + rcfViewExtent.Width / 2.0!)
+            Dim dy As Single = rc.Height / (2.0! * sScale) + (rcfViewExtent.Y + rcfViewExtent.Height / 2.0!)
             g.ScaleTransform(sScale, sScale)
             g.TranslateTransform(dx, dy)
 
             ' Draw background
-            Dim img As Image = sg.MapReferenceImage
-            If (img IsNot Nothing) Then
-                Try
-                    g.DrawImage(img, _
-                                sg.MapReferenceLayerTL.X, -sg.MapReferenceLayerTL.Y, _
-                                (sg.MapReferenceLayerBR.X - sg.MapReferenceLayerTL.X), (sg.MapReferenceLayerTL.Y - sg.MapReferenceLayerBR.Y))
-                Catch ex As Exception
-                    Debug.Assert(False, ex.Message)
-                End Try
+            If (Me.ShowReferenceMap) Then
+
+                Dim img As Image = sg.MapReferenceImage
+                If (img IsNot Nothing) Then
+                    Try
+                        g.DrawImage(img, _
+                                    sg.MapReferenceLayerTL.X, -sg.MapReferenceLayerTL.Y, _
+                                    (sg.MapReferenceLayerBR.X - sg.MapReferenceLayerTL.X), (sg.MapReferenceLayerTL.Y - sg.MapReferenceLayerBR.Y))
+                    Catch ex As Exception
+                        Debug.Assert(False, ex.Message)
+                    End Try
+                End If
             End If
 
             Try
@@ -194,9 +209,9 @@ Namespace Ecospace
                     End Using
                 End If
 
-                g.FillRectangles(Brushes.LightGreen, New RectangleF() {Me.m_rcMap})
+                g.FillRectangles(Brushes.LightGreen, New RectangleF() {Me.m_rcViewExtent})
                 Using p As New Pen(Brushes.Green, 0.001)
-                    g.DrawRectangles(p, New RectangleF() {Me.m_rcMap})
+                    g.DrawRectangles(p, New RectangleF() {Me.m_rcViewExtent})
                 End Using
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)

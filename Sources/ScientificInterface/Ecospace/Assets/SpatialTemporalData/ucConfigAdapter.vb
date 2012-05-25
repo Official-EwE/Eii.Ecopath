@@ -16,12 +16,12 @@
 ' ===============================================================================
 '
 Option Strict On
-Imports EwECore
-Imports EwEUtils.SpatialData
-Imports EwEPlugin
-Imports EwECore.SpatialData
-Imports EwEUtils
 Imports System.Threading
+Imports EwECore
+Imports EwECore.Ecospace
+Imports EwECore.SpatialData
+Imports EwEPlugin
+Imports EwEUtils.SpatialData
 
 Namespace Ecospace.Controls
 
@@ -384,15 +384,29 @@ Namespace Ecospace.Controls
 
             Me.m_btnCalculate.Enabled = bIsConfigured
 
-            If ds IsNot Nothing Then
+            Dim strValidate As String = ""
+            Dim imgValidate As Image = Nothing
+
+            If (ds IsNot Nothing) Then
                 If bIsIndexing Then
-                    Me.m_pbAlert.Image = ScientificInterfaceShared.My.Resources.ani_loader
+                    imgValidate = ScientificInterfaceShared.My.Resources.ani_loader
+                    strValidate = My.Resources.STATUS_INDEXING
                 Else
-                    Me.m_pbAlert.Image = ScientificInterfaceShared.My.Resources.OK
+                    Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
+
+                    If (comp.TemporalCompatibility <> cDatasetCompatilibity.eCompatibilityTypes.NoOverlap) And _
+                       (comp.SpatialCompatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
+                        imgValidate = ScientificInterfaceShared.My.Resources.OK
+                    Else
+                        imgValidate = ScientificInterfaceShared.My.Resources.Warning
+                    End If
+                    strValidate = comp.ToString()
+
                 End If
-            Else
-                Me.m_pbAlert.Image = Nothing
             End If
+            Me.m_pbCompatibility.Image = imgValidate
+            Me.m_lblCompatibility.Text = strValidate
+
         End Sub
 
         Private Sub FillTemplateDatasetBox()
@@ -572,7 +586,7 @@ Namespace Ecospace.Controls
 
             For i As Integer = 0 To iNumYears * cCore.N_MONTHS - 1
                 Dim dt As New DateTime(Math.Max(1, iYear + i \ cCore.N_MONTHS), 1 + i Mod cCore.N_MONTHS, 1)
-                If ds.HasDataAtT(dt, bm.PosTopLeft, bm.PosBottomRight) Then
+                If ds.HasDataAtT(dt) Then
                     lSteps.Add(dt)
                 End If
             Next
@@ -683,12 +697,17 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub StartIndexing()
-            If (Me.SelectedDataset IsNot Nothing) Then
-                Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
-                Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                Me.m_thread.Start()
-                Me.UpdateControls()
+
+            Dim ds As ISpatialDataSet = Me.SelectedDataset
+            If (ds IsNot Nothing) Then
+                If (ds.FractionIndexed < 1.0!) Then
+                    Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
+                    Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
+                    Me.m_thread.Start()
+                End If
             End If
+            Me.UpdateControls()
+
         End Sub
 
         Private Sub IndexDatasetThread()

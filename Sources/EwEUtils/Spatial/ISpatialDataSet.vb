@@ -122,20 +122,13 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' States whether the data set has data for a given date and spatial extent.
+        ''' States whether the data set has data for a given date.
         ''' </summary>
         ''' <param name="dateTime">The time to query data for. For practical
         ''' purposes, time is assumed to be rounded to days.</param>
-        ''' <param name="ptfNE">North-east corner of the area to query data for. 
-        ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
-        ''' <see cref="Point.Y"/> as latiude.</param>
-        ''' <param name="ptfSW">South-west corner of the area to query data for. 
-        ''' Values are interpreted as decimal degrees, <see cref="Point.X"/> as longitude, 
-        ''' <see cref="Point.Y"/> as latiude.</param>
         ''' <returns>True if data is available.</returns>
         ''' -------------------------------------------------------------------
-        Function HasDataAtT(ByVal datetime As DateTime, _
-                            ByVal ptfNE As PointF, ByVal ptfSW As PointF) As Boolean
+        Function HasDataAtT(ByVal datetime As DateTime) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -175,7 +168,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the cached spatial extent of data at a given time. Extent(s) should
+        ''' Get the indexed spatial extent of data at a given time. Extent(s) should
         ''' be gathered via <see cref="BuildIndex"/>
         ''' </summary>
         ''' <param name="dateTime">The time to query data for. For practical
@@ -197,6 +190,15 @@ Namespace SpatialData
         ''' </param>
         ''' -------------------------------------------------------------------
         Sub BuildIndex(Optional updatedelegate As BuildIndexUpdateDelegate = Nothing)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the fraction of the dataset that is indexed.
+        ''' </summary>
+        ''' <returns>A value that indicates the fraction of the dataset that
+        ''' is indexed [0, 1].</returns>
+        ''' -------------------------------------------------------------------
+        Function FractionIndexed() As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>

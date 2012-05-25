@@ -31,7 +31,6 @@ Imports EwEPlugin
 Namespace SpatialData
 
     ' ToDo_JS: save incrementally to make sure that configuration info that did not get resolved into classes is not lost on save
-    ' ToDo_JS: keep spatial log file
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -1297,6 +1297,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to ({0}/{1}).
+        '''</summary>
+        Public ReadOnly Property GENERIC_LABEL_UNITPERUNIT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_LABEL_UNITPERUNIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Applying changes....
         '''</summary>
         Public ReadOnly Property GENERIC_STATUS_APPLYCHANGES() As String
@@ -5411,7 +5420,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &amp;Show legend.
+        '''  Looks up a localized string similar to Show &amp;axis labels.
+        '''</summary>
+        Public ReadOnly Property MENU_SHOW_AXISLABELS() As String
+            Get
+                Return ResourceManager.GetString("MENU_SHOW_AXISLABELS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show &amp;legend.
         '''</summary>
         Public ReadOnly Property MENU_SHOW_LEGEND() As String
             Get
@@ -6089,6 +6107,13 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_UPDATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_UPDATING", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property synonym() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("synonym", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

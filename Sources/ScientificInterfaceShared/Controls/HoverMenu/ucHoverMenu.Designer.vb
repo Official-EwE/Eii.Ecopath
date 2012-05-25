@@ -33,7 +33,11 @@ Namespace Controls
             Me.m_tsbnZoomIn = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomOut = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomReset = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnShowLegends = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnShowAxisLabels = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
+            Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -41,7 +45,7 @@ Namespace Controls
             '
             Me.m_ts.CanOverflow = False
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnZoomIn, Me.m_tsbnZoomOut, Me.m_tsbnZoomReset, Me.m_tsbnExport})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnZoomIn, Me.m_tsbnZoomOut, Me.m_tsbnZoomReset, Me.m_sep1, Me.m_tsbnShowLegends, Me.m_tsbnShowAxisLabels, Me.m_sep2, Me.m_tsbnExport})
             Me.m_ts.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
@@ -53,7 +57,6 @@ Namespace Controls
             '
             Me.m_tsbnZoomIn.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.m_tsbnZoomIn.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ZoomInHS
-            Me.m_tsbnZoomIn.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnZoomIn.Name = "m_tsbnZoomIn"
             Me.m_tsbnZoomIn.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
             Me.m_tsbnZoomIn.Size = New System.Drawing.Size(23, 20)
@@ -63,7 +66,6 @@ Namespace Controls
             '
             Me.m_tsbnZoomOut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.m_tsbnZoomOut.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ZoomOutHS
-            Me.m_tsbnZoomOut.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnZoomOut.Name = "m_tsbnZoomOut"
             Me.m_tsbnZoomOut.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
             Me.m_tsbnZoomOut.Size = New System.Drawing.Size(23, 20)
@@ -73,11 +75,30 @@ Namespace Controls
             '
             Me.m_tsbnZoomReset.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.m_tsbnZoomReset.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ZoomHS
-            Me.m_tsbnZoomReset.ImageTransparentColor = System.Drawing.Color.Magenta
             Me.m_tsbnZoomReset.Name = "m_tsbnZoomReset"
             Me.m_tsbnZoomReset.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
             Me.m_tsbnZoomReset.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbnZoomReset.Text = "Reset all zoom"
+            '
+            'm_tsbnShowLegends
+            '
+            Me.m_tsbnShowLegends.Checked = True
+            Me.m_tsbnShowLegends.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_tsbnShowLegends.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnShowLegends.Image = Global.ScientificInterfaceShared.My.Resources.Resources.LegendHS
+            Me.m_tsbnShowLegends.Name = "m_tsbnShowLegends"
+            Me.m_tsbnShowLegends.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_tsbnShowLegends.Size = New System.Drawing.Size(23, 20)
+            Me.m_tsbnShowLegends.Text = "Show legends"
+            '
+            'm_tsbnShowAxisLabels
+            '
+            Me.m_tsbnShowAxisLabels.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnShowAxisLabels.Image = Global.ScientificInterfaceShared.My.Resources.Resources.tag
+            Me.m_tsbnShowAxisLabels.Name = "m_tsbnShowAxisLabels"
+            Me.m_tsbnShowAxisLabels.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_tsbnShowAxisLabels.Size = New System.Drawing.Size(32, 19)
+            Me.m_tsbnShowAxisLabels.Text = "Show axis labels"
             '
             'm_tsbnExport
             '
@@ -88,6 +109,22 @@ Namespace Controls
             Me.m_tsbnExport.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
             Me.m_tsbnExport.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbnExport.Text = "Export to CSV..."
+            '
+            'm_sep2
+            '
+            Me.m_sep2.AutoSize = False
+            Me.m_sep2.Name = "m_sep2"
+            Me.m_sep2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_sep2.Size = New System.Drawing.Size(6, 23)
+            Me.m_sep2.Visible = False
+            '
+            'm_sep1
+            '
+            Me.m_sep1.AutoSize = False
+            Me.m_sep1.Name = "m_sep1"
+            Me.m_sep1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_sep1.Size = New System.Drawing.Size(6, 23)
+            Me.m_sep1.Visible = False
             '
             'ucHoverMenu
             '
@@ -107,6 +144,10 @@ Namespace Controls
         Private WithEvents m_tsbnZoomOut As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnZoomReset As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnExport As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnShowLegends As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnShowAxisLabels As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
     End Class
 
 End Namespace ' Controls

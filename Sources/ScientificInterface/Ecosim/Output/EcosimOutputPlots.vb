@@ -205,7 +205,7 @@ Namespace Ecosim
                             Case ePlot.FeedingTime
                                 aResults.Add(cEcosimResultWriter.eResultTypes.FeedingTime)
                             Case ePlot.FleetFishingMortality
-                                ' Not supported by result writer
+                                aResults.Add(cEcosimResultWriter.eResultTypes.Mortality)
                             Case ePlot.Mortality
                                 aResults.Add(cEcosimResultWriter.eResultTypes.Mortality)
                             Case ePlot.PredationMortality
@@ -276,7 +276,7 @@ Namespace Ecosim
                 Dim sbSettings As New StringBuilder()
                 Dim iNumPlots As Integer = [Enum].GetValues(GetType(ePlot)).Length
                 For iPlot As Integer = 0 To iNumPlots - 1
-                    sbSettings.Append(IIf(Me.m_abPlotVisible(DirectCast(iPlot, ePlot)), "1", "0"))
+                    sbSettings.Append(IIF(Me.m_abPlotVisible(DirectCast(iPlot, ePlot)), "1", "0"))
                 Next
                 Return sbSettings.ToString()
             End Get
@@ -331,8 +331,9 @@ Namespace Ecosim
 
             For Each data As ePlot In [Enum].GetValues(GetType(ePlot))
                 Dim strTitle As String = Me.GetPlotTitle(data)
+                Dim strYAaxisLabel As String = Me.GetPlotYAxisLabel(data)
                 Dim dAxisMax As Double = Me.GetPlotAxisMax(data)
-                Me.ConfigurePane(data, strTitle, dAxisMax)
+                Me.ConfigurePane(data, strTitle, strYAaxisLabel, dAxisMax)
             Next
 
         End Sub
@@ -342,17 +343,17 @@ Namespace Ecosim
         ''' Configure a plot on the main graph
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ConfigurePane(ByVal plot As ePlot, ByVal strTitle As String, Optional ByVal dYAxisMax As Double = 0)
+        Private Sub ConfigurePane(ByVal plot As ePlot, ByVal strTitle As String, strYAxisLabel As String, Optional ByVal dYAxisMax As Double = 0)
 
             If Not Me.m_abPlotVisible(plot) Then Return
             ' Sanity check
             Debug.Assert(Me.m_aiPlotPane(plot) > 0)
             ' Configure pane
             Me.m_zgh.ConfigurePane(strTitle, _
-                       "", _
+                       SharedResources.HEADER_TIME, _
                        CDbl(Me.UIContext.Core.EcosimFirstYear), _
                        CDbl(Me.UIContext.Core.EcosimFirstYear + (Me.UIContext.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                       "", 0, dYAxisMax, _
+                       strYAxisLabel, 0, dYAxisMax, _
                        False, LegendPos.Top, Me.m_aiPlotPane(plot))
 
         End Sub
@@ -399,13 +400,6 @@ Namespace Ecosim
             'Set the master pane title
             Me.m_zgh.Configure(groupSimOut.Name)
             Me.m_bContainsAggregatedFleet = groupSimOut.isCatchAggregated()
-
-            ' Configure mort pane caption
-            If group.IsConsumer Then
-                Me.ConfigurePane(ePlot.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS)
-            Else
-                Me.ConfigurePane(ePlot.Mortality, My.Resources.ECOSIM_PLOT_CAPTION_MORT_PROD)
-            End If
 
             ' Clear all panes
             For Each pane As GraphPane In Me.m_graph.MasterPane.PaneList
@@ -767,8 +761,62 @@ Namespace Ecosim
 
         Private Function GetPlotTitle(ByVal data As ePlot) As String
 
-            Dim tfm As New cSimPlotFormatter()
-            Return tfm.GetDescriptor(data)
+            Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
+            Dim group As cEcosimGroupOutput = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
+
+            ' Configure mort pane caption
+            If (data = ePlot.Mortality) Then
+                If group.IsConsumer Then
+                    Return My.Resources.ECOSIM_PLOT_CAPTION_MORT_CONS
+                Else
+                    Return My.Resources.ECOSIM_PLOT_CAPTION_MORT_PROD
+                End If
+            End If
+
+            Dim fmt As New cSimPlotFormatter()
+            Return fmt.GetDescriptor(data)
+
+        End Function
+
+        Private Function GetPlotYAxisLabel(data As ePlot) As String
+
+            Dim iGroup As Integer = Math.Max(1, Me.m_lbGroups.SelectedGroupIndex)
+            Dim group As cEcosimGroupOutput = Me.UIContext.Core.EcoSimGroupOutputs(iGroup)
+
+            Select Case data
+
+                Case ePlot.AvgWeightOrProdCons
+                    If group.isMultiStanza() Then
+                        Return StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency)
+                    Else
+                        Return ""
+                    End If
+
+                Case ePlot.Biomass
+                    Return String.Format(SharedResources.GENERIC_LABEL_UNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency))
+
+                Case ePlot.FeedingTime
+                    Return ""
+
+                Case ePlot.ConsumptionBiomass, _
+                     ePlot.FleetFishingMortality, _
+                     ePlot.Mortality, _
+                     ePlot.PredationMortality
+                    Return String.Format(SharedResources.GENERIC_LABEL_PERUNIT, StyleGuide.GetUnitString(cStyleGuide.eUnitType.Time))
+
+                Case ePlot.Prey
+                    Return SharedResources.HEADER_PREY_PERCENTAGE
+
+                Case ePlot.Value
+                    Return String.Format(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
+                                       StyleGuide.GetUnitString(cStyleGuide.eUnitType.Monetary), StyleGuide.GetUnitString(cStyleGuide.eUnitType.Biomass))
+
+                Case ePlot.[Catch]
+                    Return String.Format(SharedResources.GENERIC_LABEL_UNITPERUNIT, _
+                                         StyleGuide.GetUnitString(cStyleGuide.eUnitType.Currency), StyleGuide.GetUnitString(cStyleGuide.eUnitType.Time))
+            End Select
+
+            Return ""
 
         End Function
 

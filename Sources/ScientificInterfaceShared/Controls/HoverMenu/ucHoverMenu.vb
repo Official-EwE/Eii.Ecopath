@@ -19,6 +19,7 @@
 
 Option Strict On
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwECore
 
 #End Region ' Imports
 
@@ -98,6 +99,10 @@ Namespace Controls
             ZoomReset = &H4
             ''' <summary>User wants to export a graph to CSV.</summary>
             Export = &H8
+            ''' <summary>User wants to show legends.</summary>
+            ShowLegends = &H10
+            ''' <summary>User wants to show axis labels.</summary>
+            ShowAxisLabels = &H20
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -114,7 +119,7 @@ Namespace Controls
             Me.Detach()
 
             Me.m_ctrlTarget = target
-            Me.m_ctrlParent = DirectCast(IIf(target.Parent Is Nothing, target, target.Parent), Control)
+            Me.m_ctrlParent = DirectCast(IIF(target.Parent Is Nothing, target, target.Parent), Control)
 
             Me.m_ctrlParent.Controls.Add(Me)
             Me.BringToFront()
@@ -126,7 +131,14 @@ Namespace Controls
             Next
 
             ' Fit entire control to the preferred size of the toolstrip.
-            Me.Size = Me.m_ts.PreferredSize
+            ' JS 25may12: preferred size not calculated correctly when separators are in place
+            Dim szToolstrip As New Size(Me.m_ts.PreferredSize.Width, Me.m_ts.PreferredSize.Height)
+            For Each item As ToolStripItem In Me.m_ts.Items
+                If TypeOf item Is ToolStripSeparator Then
+                    szToolstrip.Width += item.Width
+                End If
+            Next
+            Me.Size = szToolstrip
 
             ' Set up mouse movement message filter
             Me.m_filter = New cMouseHoverFilter(Me)
@@ -180,6 +192,30 @@ Namespace Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the checked stated of a hover menu <see cref="eCommandTypes">command</see>,
+        ''' if applicable. This only works on button items.
+        ''' </summary>
+        ''' <param name="cmd">The <see cref="eCommandTypes">command</see> to
+        ''' access the enabled state for.</param>
+        ''' -------------------------------------------------------------------
+        Public Property IsChecked(ByVal cmd As eCommandTypes) As Boolean
+            Get
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                If (TypeOf tsi Is ToolStripButton) Then
+                    Return DirectCast(tsi, ToolStripButton).Checked
+                End If
+                Return False
+            End Get
+            Set(ByVal value As Boolean)
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                If (TypeOf tsi Is ToolStripButton) Then
+                    DirectCast(tsi, ToolStripButton).Checked = value
+                End If
+            End Set
+        End Property
+
 #End Region ' Public interfaces
 
 #Region " Event handling "
@@ -194,7 +230,7 @@ Namespace Controls
             Try
                 Me.InvokeCallback(eCommandTypes.ZoomIn)
             Catch ex As Exception
-                ' Woops
+                cLog.Write(ex, "ucHoverMenu::OnZoomIn(" & Me.m_ctrlTarget.ToString & ")")
             End Try
         End Sub
 
@@ -208,7 +244,7 @@ Namespace Controls
             Try
                 Me.InvokeCallback(eCommandTypes.ZoomOut)
             Catch ex As Exception
-                ' Woops
+                cLog.Write(ex, "ucHoverMenu::OnZoomOut(" & Me.m_ctrlTarget.ToString & ")")
             End Try
         End Sub
 
@@ -222,7 +258,7 @@ Namespace Controls
             Try
                 Me.InvokeCallback(eCommandTypes.ZoomReset)
             Catch ex As Exception
-                ' Woops
+                cLog.Write(ex, "ucHoverMenu::OnZoomReset(" & Me.m_ctrlTarget.ToString & ")")
             End Try
         End Sub
 
@@ -236,7 +272,25 @@ Namespace Controls
             Try
                 Me.InvokeCallback(eCommandTypes.Export)
             Catch ex As Exception
-                ' Woops
+                cLog.Write(ex, "ucHoverMenu::OnExport(" & Me.m_ctrlTarget.ToString & ")")
+            End Try
+        End Sub
+
+        Private Sub OnShowLegends(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowLegends.Click
+            Try
+                Me.InvokeCallback(eCommandTypes.ShowLegends)
+            Catch ex As Exception
+                cLog.Write(ex, "ucHoverMenu::OnShowLegends(" & Me.m_ctrlTarget.ToString & ")")
+            End Try
+        End Sub
+
+        Private Sub OnShowAxisLabels(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowAxisLabels.Click
+            Try
+                Me.InvokeCallback(eCommandTypes.ShowAxisLabels)
+            Catch ex As Exception
+                cLog.Write(ex, "ucHoverMenu::OnShowAxisLabels(" & Me.m_ctrlTarget.ToString & ")")
             End Try
         End Sub
 
@@ -328,6 +382,8 @@ Namespace Controls
                     Case eCommandTypes.ZoomOut : Return Me.m_tsbnZoomOut
                     Case eCommandTypes.ZoomReset : Return Me.m_tsbnZoomReset
                     Case eCommandTypes.Export : Return Me.m_tsbnExport
+                    Case eCommandTypes.ShowLegends : Return m_tsbnShowLegends
+                    Case eCommandTypes.ShowAxisLabels : Return m_tsbnShowAxisLabels
                 End Select
                 Debug.Assert(False)
                 Return Nothing

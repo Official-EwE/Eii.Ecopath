@@ -253,14 +253,15 @@
     <Compile Include="Shapes\TimeSeries\Readers\cTimeSeriesCSVReader.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesTextReader.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeries.vb" />
-    <Compile Include="SpatialTemporal\cRelPPDataAdapter.vb" />
-    <Compile Include="SpatialTemporal\cSpatialDataAdapter.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cRelPPDataAdapter.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cSpatialDataAdapter.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataCache.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataConnectionManager.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataSetManager.vb" />
-    <Compile Include="SpatialTemporal\cSpatialDataStructures.vb" />
-    <Compile Include="SpatialTemporal\cSpatialOperationLog.vb" />
-    <Compile Include="SpatialTemporal\cSpatialScalarDataAdapter.vb" />
+    <Compile Include="SpatialTemporal\HelperClasses\cDatasetCompatilibity.vb" />
+    <Compile Include="SpatialTemporal\Model\cSpatialDataStructures.vb" />
+    <Compile Include="SpatialTemporal\Model\cSpatialOperationLog.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cSpatialScalarDataAdapter.vb" />
     <Compile Include="Taxon\cTaxonAnalysis.vb" />
     <Compile Include="Taxon\cTaxonSearchData.vb" />
     <Compile Include="Validators\cValidatorBase.vb" />
@@ -466,7 +467,7 @@
     </None>
     <None Include="Class Diagrams\Time Series.cd" />
     <EmbeddedResource Include="Resources\EwE6.accdb" />
-    <None Include="SpatialTemporal\~design~.cd" />
+    <None Include="SpatialTemporal\Design\~design~.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">

@@ -126,11 +126,11 @@ Namespace Commands
         ''' ----------------------------------------------------------------------
         Public Sub RemoveControl(ByVal objGUI As Object)
             Try
-                Me.m_dictControls(objGUI).Dispose()
-                Me.m_dictControls.Remove(objGUI)
+                If (Me.m_dictControls.ContainsKey(objGUI)) Then
+                    Me.m_dictControls.Remove(objGUI)
+                End If
             Catch ex As Exception
-                ' Cannot log this!
-                Debug.Assert(False, "UI cleanup error")
+                ' Hmm, command already detached?!
             End Try
         End Sub
 

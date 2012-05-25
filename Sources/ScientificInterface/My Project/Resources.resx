@@ -525,7 +525,7 @@ Description: {1}</value>
     <comment>{0}=model path</comment>
   </data>
   <data name="ECOSIM_PLOT_CAPTION_MORT_PROD" xml:space="preserve">
-    <value>P/B(black), pred.mort.(red), fish.mort.(blue)</value>
+    <value>P/B, predation.mort., fishing.mort.</value>
   </data>
   <data name="GENERIC_PROMPT_OVERWRITEFILE" xml:space="preserve">
     <value>File '{0}' already exists. Do you want to overwrite it?</value>
@@ -965,7 +965,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
     <value>For stanza groups only, partial series are acceptable</value>
   </data>
   <data name="ECOSIM_PLOT_CAPTION_MORT_CONS" xml:space="preserve">
-    <value>Mortality: total, fish.(blue), pred.(red)</value>
+    <value>Mortality: total, fishing, predation.</value>
   </data>
   <data name="RUN_ECOSIM_F_VALUE_CAPTION" xml:space="preserve">
     <value>Change F</value>
@@ -1548,5 +1548,8 @@ Description: {2}</value>
   <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
     <value>{0} connection(s)</value>
     <comment>{0}=connection count</comment>
+  </data>
+  <data name="STATUS_INDEXING" xml:space="preserve">
+    <value>Building index...</value>
   </data>
 </root>

@@ -93,6 +93,9 @@ Namespace Style
         ''' <summary>Usage of legends.</summary>
         ''' <remarks>UseDefault = selective, True or False</remarks>
         Private m_tsShowLegends As TriState = TriState.UseDefault
+        ''' <summary>Usage of axis labels.</summary>
+        ''' <remarks>UseDefault = selective, True or False</remarks>
+        Private m_tsShowAxisLabels As TriState = TriState.UseDefault
         ''' <summary>Show transparent backgrounds where applicable</summary>
         Private m_bTransparentBackgrounds As Boolean = False
 
@@ -305,7 +308,7 @@ Namespace Style
             GroupVisibility = &H10
             FleetVisibility = &H20
             Thumbnails = &H40
-            Legends = &H80
+            GraphStyle = &H80
             Map = &H100
             All = &HFFFFFFFF
         End Enum
@@ -919,17 +922,32 @@ Namespace Style
             End Get
             Set(ByVal value As TriState)
                 Me.m_tsShowLegends = value
-                Me.LegendsChanged()
+                Me.GraphStyleChanged()
             End Set
         End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Broadcast a <see cref="eChangeType.Legends">legends changed event</see>.
+        ''' Get/set how graphs should show axis labels.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Sub LegendsChanged()
-            Me.FireChangeEvent(eChangeType.Legends)
+        Public Property ShowAxisLabels() As TriState
+            Get
+                Return Me.m_tsShowAxisLabels
+            End Get
+            Set(ByVal value As TriState)
+                Me.m_tsShowAxisLabels = value
+                Me.GraphStyleChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Broadcast a <see cref="eChangeType.GraphStyle">graph style changed event</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub GraphStyleChanged()
+            Me.FireChangeEvent(eChangeType.GraphStyle)
         End Sub
 
         ''' -------------------------------------------------------------------
