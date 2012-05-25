@@ -295,7 +295,6 @@ Namespace Ecospace
 
             ' Protect against improper use
             If (core.ActiveEcospaceScenarioIndex = -1) Then Return False
-            If (Not ds.FractionIndexed = 0) Then Return False
             If (iNumTimeSteps = 0) Then Return False
 
             Dim iTimeEnd As Integer = iTimeStart + iNumTimeSteps
