@@ -1062,4 +1062,15 @@ System Error: {0}</value>
     <value>Ecospace failed to update capacity maps. {0}</value>
     <comment>{0}=error message</comment>
   </data>
+  <data name="STATUS_SPATIALTEMPORAL_COMPATIBILITY" xml:space="preserve">
+    <value>{0}% indexed, {1}% time steps covered with {2}% partial and {3}% total area overlap</value>
+    <comment>{0}=% indexed of dataset, {1}=% overlapping time steps, {2}=% steps with partial spatial overlap, {3}=% steps with full spatial overlap</comment>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_NOASSESSMENT" xml:space="preserve">
+    <value>Unable to assess compatibility</value>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_NOOVERLAP" xml:space="preserve">
+    <value>{0}% indexed, no external data found for the Ecospace run time</value>
+    <comment>{0}=% of external data that is indexed</comment>
+  </data>
 </root>

@@ -388,23 +388,24 @@ Namespace Ecospace.Controls
             Dim imgValidate As Image = Nothing
 
             If (ds IsNot Nothing) Then
+                Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
+
                 If bIsIndexing Then
                     imgValidate = ScientificInterfaceShared.My.Resources.ani_loader
-                    strValidate = My.Resources.STATUS_INDEXING
+                ElseIf (comp.TemporalCompatibility <> cDatasetCompatilibity.eCompatibilityTypes.NoOverlap) And _
+                   (comp.SpatialCompatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
+                    imgValidate = ScientificInterfaceShared.My.Resources.OK
                 Else
-                    Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-
-                    If (comp.TemporalCompatibility <> cDatasetCompatilibity.eCompatibilityTypes.NoOverlap) And _
-                       (comp.SpatialCompatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
-                        imgValidate = ScientificInterfaceShared.My.Resources.OK
-                    Else
-                        imgValidate = ScientificInterfaceShared.My.Resources.Warning
-                    End If
-                    strValidate = comp.ToString()
-
+                    imgValidate = ScientificInterfaceShared.My.Resources.Warning
                 End If
+                strValidate = comp.ToString()
+
             End If
-            Me.m_pbCompatibility.Image = imgValidate
+
+            If Not Object.ReferenceEquals(Me.m_pbCompatibility.Image, imgValidate) Then
+                Me.m_pbCompatibility.Image = imgValidate
+            End If
+
             Me.m_lblCompatibility.Text = strValidate
 
         End Sub
@@ -728,8 +729,9 @@ Namespace Ecospace.Controls
         Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
             If Me.InvokeRequired Then
                 Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {ds})
+            Else
+                Me.UpdateControls()
             End If
-            Me.UpdateControls()
         End Sub
 
 #End Region ' Threaded indexing of datasets

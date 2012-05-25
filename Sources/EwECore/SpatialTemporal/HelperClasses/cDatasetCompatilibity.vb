@@ -27,21 +27,26 @@ Imports System.Drawing
 
 Namespace Ecospace
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Class to assess compatibility of a dataset with the current spatial and temporal extent.
+    ''' <para>Helper class for assessing the compatibility of a <see cref="ISpatialDataSet"/> 
+    ''' with the spatial and temporal extent of the currently loaded Ecospace scenario.</para>
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class cDatasetCompatilibity
 
 #Region " Private vars "
 
         ''' <summary>Number of time steps in assessment period.</summary>
         Private m_iNumTimeSteps As Integer = 0
+        ''' <summary>Percentage if dataset indexed.</summary>
+        Private m_iPercIndexed As Integer = 0
         ''' <summary>Number of time steps with data.</summary>
-        Private m_iNumTimeOverlap As Single = 0
-        ''' <summary>Number of time steps with full spatial overlap.</summary>
-        Private m_iNumFullSpatialOverlap As Single = 0
-        ''' <summary>Number of time steps with partial spatial overlap.</summary>
-        Private m_iNumPartialSpatialOverlap As Single = 0
+        Private m_iNumTimeOverlap As Integer = 0
+        ''' <summary>Number of data time steps with full spatial overlap.</summary>
+        Private m_iNumFullSpatialOverlap As Integer = 0
+        ''' <summary>Number of data time steps with partial spatial overlap.</summary>
+        Private m_iNumPartialSpatialOverlap As Integer = 0
 
 #End Region ' Private vars
 
@@ -54,6 +59,9 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="core">The core with a loaded Ecospace scenario.</param>
         ''' <param name="ds">The <see cref="ISpatialDataSet"/>to assess.</param>
+        ''' <remarks>
+        ''' This method will make an assessment of the full Ecospace run time.
+        ''' </remarks>
         ''' -------------------------------------------------------------------
         Public Sub New(core As cCore, ds As ISpatialDataSet)
             ' Sanity checks
@@ -86,13 +94,40 @@ Namespace Ecospace
 
 #Region " Public access "
 
+        ''' <summary>Compatibility levels.</summary>
         Public Enum eCompatibilityTypes As Integer
+            ''' <summary>Unknown compatiblity.</summary>
             Unknown
-            TotalOverlap
-            PartialOverlap
+            ''' <summary>No overlap.</summary>
             NoOverlap
+            ''' <summary>Patial overlap.</summary>
+            PartialOverlap
+            ''' <summary>Total overlap.</summary>
+            TotalOverlap
         End Enum
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>
+        ''' Get a measure of temporal compatibility between a dataset and a
+        ''' loaded Ecospace scenario. Values are to be interpreted as follows:
+        ''' </para>
+        ''' <list type="table">
+        ''' <listheader>
+        ''' <term>Value</term><description>Meaning</description>
+        ''' </listheader>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.Unknown"/></term>
+        ''' <description>Assessment failed; this happens when there is no Ecospace scenario loaded, or an assessment was made for 0 time steps.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.NoOverlap"/></term>
+        ''' <description>The dataset does not contain any data for the time steps in the assessment period.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.PartialOverlap"/></term>
+        ''' <description>The dataset contains data for one or more but not all time steps in the assessment period.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap"/></term>
+        ''' <description>The dataset contains data for all time steps in the assessment period.</description></item>
+        ''' </list>
+        ''' <seealso cref="SpatialCompatibility"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property TemporalCompatibility As eCompatibilityTypes
             Get
                 If (Me.m_iNumTimeSteps = 0) Then Return eCompatibilityTypes.Unknown
@@ -102,6 +137,26 @@ Namespace Ecospace
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a measure of spatial compatibility between a dataset and a
+        ''' loaded Ecospace scenario. Values are to be interpreted as follows:
+        ''' <list type="table">
+        ''' <listheader>
+        ''' <term>Value</term><description>Meaning</description>
+        ''' </listheader>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.Unknown"/></term>
+        ''' <description>Assessment failed; this happens when there is no Ecospace scenario loaded, or an assessment was made for 0 time steps.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.NoOverlap"/></term>
+        ''' <description>No data in the dataset spatially overlaps with the Ecospace scenario for the assessment period.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.PartialOverlap"/></term>
+        ''' <description>Not all of the data in the dataset entirely covers the Ecospace scenario area for the assessment period.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap"/></term>
+        ''' <description>All of the data in the dataset entirely covers the Ecospace scenario area for the assessment period.</description></item>
+        ''' </list>
+        ''' <seealso cref="TemporalCompatibility"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property SpatialCompatibility As eCompatibilityTypes
             Get
                 If (Me.m_iNumTimeSteps = 0) Then Return eCompatibilityTypes.Unknown
@@ -112,25 +167,119 @@ Namespace Ecospace
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Percentage of the dataset that is indexed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property PercentIndexed As Integer
+            Get
+                Return Me.m_iPercIndexed
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of assessed Ecospace time steps. If this method
+        ''' returns 0 an error occurred and the assessment is invalid.
+        ''' <seealso cref="NumOverlappingTimeSteps"/>
+        ''' <seealso cref="NumFullSpatialOverlap"/>
+        ''' <seealso cref="NumPartialSpatialOverlap"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NumAssessedTimeSteps As Integer
+            Get
+                Return Me.m_iNumTimeSteps
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of assessed time steps for which the data set
+        ''' contains external data.
+        ''' <seealso cref="NumAssessedTimeSteps"/>
+        ''' <seealso cref="NumFullSpatialOverlap"/>
+        ''' <seealso cref="NumPartialSpatialOverlap"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NumOverlappingTimeSteps As Integer
+            Get
+                Return Me.m_iNumTimeOverlap
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of assessed time steps for which the data set
+        ''' contains external data that partially - not fully - overlaps
+        ''' the area of the Ecospace scenario.
+        ''' <seealso cref="NumOverlappingTimeSteps"/>
+        ''' <seealso cref="NumFullSpatialOverlap"/>
+        ''' <seealso cref="NumAssessedTimeSteps"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NumPartialSpatialOverlap As Integer
+            Get
+                Return Me.m_iNumPartialSpatialOverlap
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the number of assessed time steps for which the data set
+        ''' contains external data that fully - not partially - overlaps
+        ''' the area of the Ecospace scenario.
+        ''' <seealso cref="NumOverlappingTimeSteps"/>
+        ''' <seealso cref="NumAssessedTimeSteps"/>
+        ''' <seealso cref="NumPartialSpatialOverlap"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NumFullSpatialOverlap As Integer
+            Get
+                Return Me.m_iNumFullSpatialOverlap
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert the dataset compatibility assessment to a string.
+        ''' </summary>
+        ''' <returns>The dataset compatibility assessment, converted to a string.</returns>
+        ''' -------------------------------------------------------------------
         Public Overrides Function ToString() As String
 
-            ' ToDo_JS: globalize this method
-
             Select Case Me.TemporalCompatibility
-                Case eCompatibilityTypes.Unknown : Return "Unable to determine compatibility"
-                Case eCompatibilityTypes.NoOverlap : Return "Dataset has no data for the given Ecospace run time"
+
+                Case eCompatibilityTypes.Unknown
+                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOASSESSMENT
+
+                Case eCompatibilityTypes.NoOverlap
+                    Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOOVERLAP, Me.m_iPercIndexed)
+
             End Select
-            Return String.Format("{0}% time steps covered; of which {1}% partial and {2}% total area overlap", _
+            Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_COMPATIBILITY, _
+                                 Me.m_iPercIndexed, _
                                  CInt(100 * Me.m_iNumTimeOverlap / Me.m_iNumTimeSteps), _
-                                 CInt(Me.m_iNumPartialSpatialOverlap / Me.m_iNumTimeOverlap), _
-                                 CInt(Me.m_iNumFullSpatialOverlap / Me.m_iNumTimeOverlap))
+                                 CInt(100 * Me.m_iNumPartialSpatialOverlap / Me.m_iNumTimeOverlap), _
+                                 CInt(100 * Me.m_iNumFullSpatialOverlap / Me.m_iNumTimeOverlap))
         End Function
 
 #End Region ' Public access
 
 #Region " Internals "
 
-        Private Function Assess(core As cCore, ds As ISpatialDataSet, iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Perform assessment.
+        ''' </summary>
+        ''' <param name="core"></param>
+        ''' <param name="ds"></param>
+        ''' <param name="iTimeStart"></param>
+        ''' <param name="iNumTimeSteps"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function Assess(core As cCore, ds As ISpatialDataSet, _
+                                iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
 
             ' Special case for datasets without temporal range
             If (ds.TimeStart = Date.MinValue) And (ds.TimeEnd = Date.MaxValue) Then
@@ -138,6 +287,7 @@ Namespace Ecospace
             End If
 
             ' Initialize counters
+            Me.m_iPercIndexed = CInt(ds.FractionIndexed * 100)
             Me.m_iNumTimeSteps = iNumTimeSteps
             Me.m_iNumTimeOverlap = 0
             Me.m_iNumFullSpatialOverlap = 0
@@ -173,12 +323,14 @@ Namespace Ecospace
 
         End Function
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Convert a lat/lon area into a vertically flipped rectangle for easy comparison.
         ''' </summary>
         ''' <param name="ptfTL"></param>
         ''' <param name="ptfBR"></param>
         ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Private Function ToRect(ptfTL As PointF, ptfBR As PointF) As RectangleF
             Return New RectangleF(ptfTL.X, ptfBR.Y, (ptfBR.X - ptfTL.X + 360) Mod 360, (ptfTL.Y - ptfBR.Y + 180) Mod 180)
         End Function

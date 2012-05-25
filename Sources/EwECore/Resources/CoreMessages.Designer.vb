@@ -2112,11 +2112,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0}% indexed, {1}% time steps covered with {2}% partial and {3}% total area overlap.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_COMPATIBILITY() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_COMPATIBILITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Loading external data for &apos;{0}&apos; at time {1} ({2:yyyy/MM/dd}).
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_LOADING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unable to assess compatibility.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOASSESSMENT() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOASSESSMENT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0}% indexed, no external data found for the Ecospace run time.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOOVERLAP() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOOVERLAP", resourceCulture)
             End Get
         End Property
         
