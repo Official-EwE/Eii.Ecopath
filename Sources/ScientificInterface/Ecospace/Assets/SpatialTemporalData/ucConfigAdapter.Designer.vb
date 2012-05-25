@@ -54,13 +54,13 @@ Namespace Ecospace.Controls
             Me.m_lbxExistingDS = New System.Windows.Forms.ListBox()
             Me.m_lblSelectCV = New System.Windows.Forms.Label()
             Me.m_lblNewDS = New System.Windows.Forms.Label()
-            Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plScalarAdapter = New System.Windows.Forms.Panel()
             Me.m_lblScaling = New System.Windows.Forms.Label()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
             Me.m_tbxScale = New System.Windows.Forms.TextBox()
             Me.m_rbRelative = New System.Windows.Forms.RadioButton()
             Me.m_rbAbsolute = New System.Windows.Forms.RadioButton()
+            Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnectionConverter.SuspendLayout()
             CType(Me.m_pbCompatibility, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -102,16 +102,16 @@ Namespace Ecospace.Controls
             Me.m_plConnectionConverter.Location = New System.Drawing.Point(0, 0)
             Me.m_plConnectionConverter.Margin = New System.Windows.Forms.Padding(0)
             Me.m_plConnectionConverter.Name = "m_plConnectionConverter"
-            Me.m_plConnectionConverter.Size = New System.Drawing.Size(538, 244)
+            Me.m_plConnectionConverter.Size = New System.Drawing.Size(538, 248)
             Me.m_plConnectionConverter.TabIndex = 1
             '
             'm_lblCompatibility
             '
             Me.m_lblCompatibility.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblCompatibility.Location = New System.Drawing.Point(92, 227)
+            Me.m_lblCompatibility.Location = New System.Drawing.Point(92, 232)
             Me.m_lblCompatibility.Name = "m_lblCompatibility"
-            Me.m_lblCompatibility.Size = New System.Drawing.Size(365, 16)
+            Me.m_lblCompatibility.Size = New System.Drawing.Size(446, 16)
             Me.m_lblCompatibility.TabIndex = 23
             Me.m_lblCompatibility.Text = "<status>"
             Me.m_lblCompatibility.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -119,7 +119,7 @@ Namespace Ecospace.Controls
             'm_pbCompatibility
             '
             Me.m_pbCompatibility.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_pbCompatibility.Location = New System.Drawing.Point(70, 228)
+            Me.m_pbCompatibility.Location = New System.Drawing.Point(70, 232)
             Me.m_pbCompatibility.Name = "m_pbCompatibility"
             Me.m_pbCompatibility.Size = New System.Drawing.Size(16, 16)
             Me.m_pbCompatibility.TabIndex = 22
@@ -228,6 +228,73 @@ Namespace Ecospace.Controls
             Me.m_lblNewDS.TabIndex = 12
             Me.m_lblNewDS.Text = "&Connection:"
             '
+            'm_plScalarAdapter
+            '
+            Me.m_plScalarAdapter.Controls.Add(Me.m_lblScaling)
+            Me.m_plScalarAdapter.Controls.Add(Me.m_btnCalculate)
+            Me.m_plScalarAdapter.Controls.Add(Me.m_tbxScale)
+            Me.m_plScalarAdapter.Controls.Add(Me.m_rbRelative)
+            Me.m_plScalarAdapter.Controls.Add(Me.m_rbAbsolute)
+            Me.m_plScalarAdapter.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plScalarAdapter.Location = New System.Drawing.Point(0, 248)
+            Me.m_plScalarAdapter.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_plScalarAdapter.Name = "m_plScalarAdapter"
+            Me.m_plScalarAdapter.Size = New System.Drawing.Size(538, 68)
+            Me.m_plScalarAdapter.TabIndex = 2
+            '
+            'm_lblScaling
+            '
+            Me.m_lblScaling.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_lblScaling.AutoSize = True
+            Me.m_lblScaling.Location = New System.Drawing.Point(0, 7)
+            Me.m_lblScaling.Name = "m_lblScaling"
+            Me.m_lblScaling.Size = New System.Drawing.Size(108, 13)
+            Me.m_lblScaling.TabIndex = 9
+            Me.m_lblScaling.Text = "External data scaling:"
+            '
+            'm_btnCalculate
+            '
+            Me.m_btnCalculate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnCalculate.Location = New System.Drawing.Point(463, 45)
+            Me.m_btnCalculate.Name = "m_btnCalculate"
+            Me.m_btnCalculate.Size = New System.Drawing.Size(75, 23)
+            Me.m_btnCalculate.TabIndex = 8
+            Me.m_btnCalculate.Text = "Calculate"
+            Me.m_btnCalculate.UseVisualStyleBackColor = True
+            '
+            'm_tbxScale
+            '
+            Me.m_tbxScale.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxScale.Location = New System.Drawing.Point(123, 47)
+            Me.m_tbxScale.Name = "m_tbxScale"
+            Me.m_tbxScale.Size = New System.Drawing.Size(334, 20)
+            Me.m_tbxScale.TabIndex = 7
+            '
+            'm_rbRelative
+            '
+            Me.m_rbRelative.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_rbRelative.AutoSize = True
+            Me.m_rbRelative.Location = New System.Drawing.Point(16, 48)
+            Me.m_rbRelative.Name = "m_rbRelative"
+            Me.m_rbRelative.Size = New System.Drawing.Size(101, 17)
+            Me.m_rbRelative.TabIndex = 6
+            Me.m_rbRelative.TabStop = True
+            Me.m_rbRelative.Text = "&Scale values to:"
+            Me.m_rbRelative.UseVisualStyleBackColor = True
+            '
+            'm_rbAbsolute
+            '
+            Me.m_rbAbsolute.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_rbAbsolute.AutoSize = True
+            Me.m_rbAbsolute.Location = New System.Drawing.Point(16, 25)
+            Me.m_rbAbsolute.Name = "m_rbAbsolute"
+            Me.m_rbAbsolute.Size = New System.Drawing.Size(199, 17)
+            Me.m_rbAbsolute.TabIndex = 5
+            Me.m_rbAbsolute.TabStop = True
+            Me.m_rbAbsolute.Text = "Use external data as &absolute values"
+            Me.m_rbAbsolute.UseVisualStyleBackColor = True
+            '
             'm_hdrSource
             '
             Me.m_hdrSource.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -241,73 +308,6 @@ Namespace Ecospace.Controls
             Me.m_hdrSource.TabIndex = 11
             Me.m_hdrSource.Text = "External data"
             Me.m_hdrSource.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-            '
-            'm_plScalarAdapter
-            '
-            Me.m_plScalarAdapter.Controls.Add(Me.m_lblScaling)
-            Me.m_plScalarAdapter.Controls.Add(Me.m_btnCalculate)
-            Me.m_plScalarAdapter.Controls.Add(Me.m_tbxScale)
-            Me.m_plScalarAdapter.Controls.Add(Me.m_rbRelative)
-            Me.m_plScalarAdapter.Controls.Add(Me.m_rbAbsolute)
-            Me.m_plScalarAdapter.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plScalarAdapter.Location = New System.Drawing.Point(0, 244)
-            Me.m_plScalarAdapter.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_plScalarAdapter.Name = "m_plScalarAdapter"
-            Me.m_plScalarAdapter.Size = New System.Drawing.Size(538, 72)
-            Me.m_plScalarAdapter.TabIndex = 2
-            '
-            'm_lblScaling
-            '
-            Me.m_lblScaling.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_lblScaling.AutoSize = True
-            Me.m_lblScaling.Location = New System.Drawing.Point(0, 11)
-            Me.m_lblScaling.Name = "m_lblScaling"
-            Me.m_lblScaling.Size = New System.Drawing.Size(108, 13)
-            Me.m_lblScaling.TabIndex = 9
-            Me.m_lblScaling.Text = "External data scaling:"
-            '
-            'm_btnCalculate
-            '
-            Me.m_btnCalculate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnCalculate.Location = New System.Drawing.Point(463, 49)
-            Me.m_btnCalculate.Name = "m_btnCalculate"
-            Me.m_btnCalculate.Size = New System.Drawing.Size(75, 23)
-            Me.m_btnCalculate.TabIndex = 8
-            Me.m_btnCalculate.Text = "Calculate"
-            Me.m_btnCalculate.UseVisualStyleBackColor = True
-            '
-            'm_tbxScale
-            '
-            Me.m_tbxScale.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxScale.Location = New System.Drawing.Point(123, 51)
-            Me.m_tbxScale.Name = "m_tbxScale"
-            Me.m_tbxScale.Size = New System.Drawing.Size(334, 20)
-            Me.m_tbxScale.TabIndex = 7
-            '
-            'm_rbRelative
-            '
-            Me.m_rbRelative.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_rbRelative.AutoSize = True
-            Me.m_rbRelative.Location = New System.Drawing.Point(16, 52)
-            Me.m_rbRelative.Name = "m_rbRelative"
-            Me.m_rbRelative.Size = New System.Drawing.Size(101, 17)
-            Me.m_rbRelative.TabIndex = 6
-            Me.m_rbRelative.TabStop = True
-            Me.m_rbRelative.Text = "&Scale values to:"
-            Me.m_rbRelative.UseVisualStyleBackColor = True
-            '
-            'm_rbAbsolute
-            '
-            Me.m_rbAbsolute.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_rbAbsolute.AutoSize = True
-            Me.m_rbAbsolute.Location = New System.Drawing.Point(16, 29)
-            Me.m_rbAbsolute.Name = "m_rbAbsolute"
-            Me.m_rbAbsolute.Size = New System.Drawing.Size(199, 17)
-            Me.m_rbAbsolute.TabIndex = 5
-            Me.m_rbAbsolute.TabStop = True
-            Me.m_rbAbsolute.Text = "Use external data as &absolute values"
-            Me.m_rbAbsolute.UseVisualStyleBackColor = True
             '
             'ucConfigAdapter
             '
