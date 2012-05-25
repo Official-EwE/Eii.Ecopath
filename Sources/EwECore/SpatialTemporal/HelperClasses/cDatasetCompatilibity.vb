@@ -309,9 +309,9 @@ Namespace Ecospace
                     Me.m_iNumTimeOverlap += 1
                     If ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
                         rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
-                        If rcfEcospace.Contains(rcfMap) Then
+                        If rcfMap.Contains(rcfEcospace) Then
                             Me.m_iNumFullSpatialOverlap += 1
-                        ElseIf rcfEcospace.Contains(rcfMap) Then
+                        ElseIf rcfMap.IntersectsWith(rcfEcospace) Then
                             Me.m_iNumPartialSpatialOverlap += 1
                         End If
                     End If
