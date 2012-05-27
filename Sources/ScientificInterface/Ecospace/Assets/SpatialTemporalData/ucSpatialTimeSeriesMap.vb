@@ -38,8 +38,8 @@ Namespace Ecospace
         Private m_ds As ISpatialDataSet = Nothing
         Private m_iTimeStep As Integer = -1
         Private m_uic As cUIContext = Nothing
-        Private m_rcViewExtent As RectangleF
-        Private m_lValidRects As New List(Of RectangleF)
+        Private m_rcfEcospaceExtent As RectangleF
+        Private m_lExternalDataMapExtents As New List(Of RectangleF)
         Private m_zoomlevel As eZoomLevel = eZoomLevel.Both
         Private m_bShowRefMap As Boolean = False
 
@@ -120,8 +120,8 @@ Namespace Ecospace
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
 
-            Me.m_rcViewExtent = Me.ToDisplayRect(bm.PosTopLeft, bm.PosBottomRight)
-            Me.m_lValidRects.Clear()
+            Me.m_rcfEcospaceExtent = Me.ToDisplayRect(bm.PosTopLeft, bm.PosBottomRight)
+            Me.m_lExternalDataMapExtents.Clear()
 
             If (Me.m_ds Is Nothing) Then Return
 
@@ -140,7 +140,7 @@ Namespace Ecospace
 
             For iStep As Integer = iTimeStart To iTimeEnd
                 If Me.m_ds.GetExtentAtT(Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep), ptfTL, ptfBR) Then
-                    Me.m_lValidRects.Add(ToDisplayRect(ptfTL, ptfBR))
+                    Me.m_lExternalDataMapExtents.Add(ToDisplayRect(ptfTL, ptfBR))
                 End If
             Next
 
@@ -155,36 +155,40 @@ Namespace Ecospace
 
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
-            Me.DoPaint(e.Graphics)
+            Me.DoPaint(e.Graphics, Me.ClientRectangle)
         End Sub
 
-        Private Sub DoPaint(g As Graphics)
+        Private Sub DoPaint(g As Graphics, rc As Rectangle)
 
             If (Me.m_uic Is Nothing) Then Return
 
-            Dim rcfViewExtent As RectangleF = Me.m_rcViewExtent
+            Dim rcfViewExtent As RectangleF = Me.m_rcfEcospaceExtent
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-            Dim rc As Rectangle = Me.ClientRectangle
 
+            ' Is data zoom involved?
             If (Me.m_zoomlevel = eZoomLevel.Both) Or (Me.m_zoomlevel = eZoomLevel.Data) Then
-                If (Me.m_zoomlevel = eZoomLevel.Data) And (Me.m_lValidRects.Count > 0) Then
+                ' #Yes: only zoom to data? (and has data to zoom to)
+                If (Me.m_zoomlevel = eZoomLevel.Data) And (Me.m_lExternalDataMapExtents.Count > 0) Then
+                    ' #Yes: ok, then base zoom exclusively on data
                     rcfViewExtent = New Rectangle(180, 90, -360, -180)
                 End If
 
-                For Each rcf As RectangleF In Me.m_lValidRects
+                ' Find biggest display rect
+                For Each rcf As RectangleF In Me.m_lExternalDataMapExtents
                     Dim ptfTL As New PointF(Math.Min(rcf.Left, rcfViewExtent.Left), Math.Min(rcf.Top, rcfViewExtent.Top))
                     Dim ptfBR As New PointF(Math.Max(rcf.Right, rcfViewExtent.Right), Math.Max(rcf.Bottom, rcfViewExtent.Bottom))
                     rcfViewExtent = New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y)
                 Next
             End If
 
+            ' Abort if nothing to display
             If (rcfViewExtent.Width = 0 Or rcfViewExtent.Height = 0) Then Return
 
-            Dim sScale As Single = CSng(Math.Min(rc.Height / (rcfViewExtent.Height * 10), rc.Width / (rcfViewExtent.Width * 10)))
-            Dim dx As Single = rc.Width / (2.0! * sScale) + (rcfViewExtent.X + rcfViewExtent.Width / 2.0!)
-            Dim dy As Single = rc.Height / (2.0! * sScale) + (rcfViewExtent.Y + rcfViewExtent.Height / 2.0!)
-            g.ScaleTransform(sScale, sScale)
+            Dim sScale As Single = CSng(Math.Min(rc.Height / (rcfViewExtent.Height * 3), rc.Width / (rcfViewExtent.Width * 3)))
+            Dim dx As Single = rc.Width / 2.0! - (rcfViewExtent.X + rcfViewExtent.Width / 2.0!) * sScale
+            Dim dy As Single = rc.Height / 2.0! - (rcfViewExtent.Y + rcfViewExtent.Height / 2.0!) * sScale
             g.TranslateTransform(dx, dy)
+            g.ScaleTransform(sScale, sScale)
 
             ' Draw background
             If (Me.ShowReferenceMap) Then
@@ -202,16 +206,16 @@ Namespace Ecospace
             End If
 
             Try
-                If (Me.m_lValidRects.Count > 0) Then
-                    g.FillRectangles(Brushes.LightBlue, Me.m_lValidRects.ToArray)
+                If (Me.m_lExternalDataMapExtents.Count > 0) Then
+                    g.FillRectangles(Brushes.LightBlue, Me.m_lExternalDataMapExtents.ToArray)
                     Using p As New Pen(Brushes.Blue, 0.001)
-                        g.DrawRectangles(p, Me.m_lValidRects.ToArray)
+                        g.DrawRectangles(p, Me.m_lExternalDataMapExtents.ToArray)
                     End Using
                 End If
 
-                g.FillRectangles(Brushes.LightGreen, New RectangleF() {Me.m_rcViewExtent})
+                g.FillRectangles(Brushes.LightGreen, New RectangleF() {Me.m_rcfEcospaceExtent})
                 Using p As New Pen(Brushes.Green, 0.001)
-                    g.DrawRectangles(p, New RectangleF() {Me.m_rcViewExtent})
+                    g.DrawRectangles(p, New RectangleF() {Me.m_rcfEcospaceExtent})
                 End Using
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)

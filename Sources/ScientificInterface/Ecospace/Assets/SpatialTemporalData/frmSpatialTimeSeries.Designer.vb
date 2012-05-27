@@ -56,13 +56,14 @@ Namespace Ecospace
             Me.m_tsbnZoomMap = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomData = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomBoth = New System.Windows.Forms.ToolStripButton()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnShowRefMap = New System.Windows.Forms.ToolStripButton()
             Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tscmTypes = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
-            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsbnShowRefMap = New System.Windows.Forms.ToolStripButton()
+            Me.m_tslZoom = New System.Windows.Forms.ToolStripLabel()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -93,13 +94,14 @@ Namespace Ecospace
             Me.m_map.Name = "m_map"
             Me.m_map.SelectedDataset = Nothing
             Me.m_map.SelectedTimeStep = -1
+            Me.m_map.ShowReferenceMap = False
             Me.m_map.UIContext = Nothing
             Me.m_map.ZoomLevel = ScientificInterface.Ecospace.ucSpatialTimeSeriesMap.eZoomLevel.Both
             '
             'm_tsMap
             '
             Me.m_tsMap.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnZoomMap, Me.m_tsbnZoomData, Me.m_tsbnZoomBoth, Me.ToolStripSeparator1, Me.m_tsbnShowRefMap})
+            Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslZoom, Me.m_tsbnZoomMap, Me.m_tsbnZoomData, Me.m_tsbnZoomBoth, Me.ToolStripSeparator1, Me.m_tsbnShowRefMap})
             resources.ApplyResources(Me.m_tsMap, "m_tsMap")
             Me.m_tsMap.Name = "m_tsMap"
             Me.m_tsMap.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -123,9 +125,22 @@ Namespace Ecospace
             Me.m_tsbnZoomBoth.Checked = True
             Me.m_tsbnZoomBoth.CheckOnClick = True
             Me.m_tsbnZoomBoth.CheckState = System.Windows.Forms.CheckState.Checked
-            Me.m_tsbnZoomBoth.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnZoomBoth.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsbnZoomBoth, "m_tsbnZoomBoth")
             Me.m_tsbnZoomBoth.Name = "m_tsbnZoomBoth"
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'm_tsbnShowRefMap
+            '
+            Me.m_tsbnShowRefMap.CheckOnClick = True
+            Me.m_tsbnShowRefMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnShowRefMap.Image = Global.ScientificInterface.My.Resources.Resources.Basemap
+            resources.ApplyResources(Me.m_tsbnShowRefMap, "m_tsbnShowRefMap")
+            Me.m_tsbnShowRefMap.Name = "m_tsbnShowRefMap"
             '
             'm_toolbox
             '
@@ -165,18 +180,10 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
             Me.m_tsbnConnections.Name = "m_tsbnConnections"
             '
-            'ToolStripSeparator1
+            'm_tslZoom
             '
-            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
-            '
-            'm_tsbnShowRefMap
-            '
-            Me.m_tsbnShowRefMap.CheckOnClick = True
-            Me.m_tsbnShowRefMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbnShowRefMap.Image = Global.ScientificInterface.My.Resources.Resources.Basemap
-            resources.ApplyResources(Me.m_tsbnShowRefMap, "m_tsbnShowRefMap")
-            Me.m_tsbnShowRefMap.Name = "m_tsbnShowRefMap"
+            Me.m_tslZoom.Name = "m_tslZoom"
+            resources.ApplyResources(Me.m_tslZoom, "m_tslZoom")
             '
             'frmSpatialTimeSeries
             '
@@ -210,6 +217,7 @@ Namespace Ecospace
         Private WithEvents m_tsbnZoomBoth As System.Windows.Forms.ToolStripButton
         Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnShowRefMap As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tslZoom As System.Windows.Forms.ToolStripLabel
     End Class
 
 End Namespace
