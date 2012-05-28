@@ -139,6 +139,23 @@ Namespace Controls.Map.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Render a layer onto a graphics context
+        ''' </summary>
+        ''' <param name="g">The graphics to render onto.</param>
+        ''' <param name="rc">Device area to render cell onto.</param>
+        ''' <param name="layer">The layer to render.</param>
+        ''' <param name="ptfTL">Top-left coordinate represented by the device area.</param>
+        ''' <param name="ptfBR">Bottom-right coordinate represented by the device area.</param>
+        ''' <param name="style">Layer style to use when rendering/</param>
+        ''' -----------------------------------------------------------------------
+        Public MustOverride Sub Render(ByVal g As Graphics, _
+                                       ByVal layer As cLayer, _
+                                       ByVal rc As Rectangle, _
+                                       ByVal ptfTL As PointF, _
+                                       ByVal ptfBR As PointF, _
+                                       ByVal style As cStyleGuide.eStyleFlags)
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' States whether the current visual style is valid
         ''' </summary>
         ''' -----------------------------------------------------------------------

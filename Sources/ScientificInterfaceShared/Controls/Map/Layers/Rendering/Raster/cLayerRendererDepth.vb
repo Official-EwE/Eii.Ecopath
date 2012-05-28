@@ -83,8 +83,8 @@ Namespace Controls.Map.Layers
                                 g.FillRectangle(br, rc)
                             End Using
                         End If
-                        ' Draw value
-                        g.DrawString(String.Format("{0}", value), Me.m_ft, Me.m_brFore, rc)
+                        '' Draw value
+                        'g.DrawString(String.Format("{0}", value), Me.m_ft, Me.m_brFore, rc)
                     End If
                 End If
 

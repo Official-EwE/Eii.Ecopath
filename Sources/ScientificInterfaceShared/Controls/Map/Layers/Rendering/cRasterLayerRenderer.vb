@@ -52,6 +52,18 @@ Namespace Controls.Map.Layers
 #End Region ' Construction / destruction
 
         ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="cLayerRenderer.Render"/>
+        ''' -----------------------------------------------------------------------
+        Public Overrides Sub Render(ByVal g As System.Drawing.Graphics, _
+                                    ByVal layer As cLayer, _
+                                    ByVal rc As System.Drawing.Rectangle, _
+                                    ByVal ptfTL As System.Drawing.PointF, _
+                                    ByVal ptfBR As System.Drawing.PointF, _
+                                    ByVal style As Style.cStyleGuide.eStyleFlags)
+            Throw New NotImplementedException("ToDo: use this system instead of rendering individual cells")
+        End Sub
+
+        ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Render a cell of a layer.
         ''' </summary>

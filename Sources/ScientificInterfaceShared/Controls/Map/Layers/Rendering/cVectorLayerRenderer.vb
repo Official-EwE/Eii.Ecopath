@@ -51,20 +51,6 @@ Namespace Controls.Map.Layers
 
 #End Region ' Construction / destruction
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Render a cell of a layer.
-        ''' </summary>
-        ''' <param name="g">The graphics to render onto.</param>
-        ''' <param name="rc">Device area to render cell onto.</param>
-        ''' -----------------------------------------------------------------------
-        Public MustOverride Sub Render(ByVal g As Graphics, _
-                                       ByVal layer As cLayer, _
-                                       ByVal rc As Rectangle, _
-                                       ByVal ptfTL As PointF, _
-                                       ByVal ptBR As PointF, _
-                                       ByVal style As cStyleGuide.eStyleFlags)
-
     End Class
 
 End Namespace
