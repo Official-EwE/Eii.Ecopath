@@ -49,6 +49,7 @@ Namespace Ecospace
         Private m_iCurrentTimeStepExtent As Integer = -1
         Private m_zoomlevel As eZoomLevel = eZoomLevel.Both
         Private m_bShowRefMap As Boolean = False
+        Private m_bShowGrid As Boolean = False
 
         Public Sub New()
             Me.InitializeComponent()
@@ -122,6 +123,16 @@ Namespace Ecospace
             End Set
         End Property
 
+        Public Property ShowGrid As Boolean
+            Get
+                Return Me.m_bShowGrid
+            End Get
+            Set(value As Boolean)
+                Me.m_bShowGrid = value
+                Me.Invalidate()
+            End Set
+        End Property
+
         Public Sub RefreshContent()
 
             If (Me.m_uic Is Nothing) Then Return
@@ -182,30 +193,32 @@ Namespace Ecospace
 
             If (Me.m_uic Is Nothing) Then Return
 
-            Dim rcfViewExtent As RectangleF = Me.m_rcfEcospaceExtent
+            Dim rcfFocusExtent As RectangleF = Me.m_rcfEcospaceExtent
 
             ' Is data zoom involved?
             If (Me.m_zoomlevel = eZoomLevel.Both) Or (Me.m_zoomlevel = eZoomLevel.Data) Then
                 ' #Yes: only zoom to data? (and has data to zoom to)
                 If (Me.m_zoomlevel = eZoomLevel.Data) And (Me.m_lExternalDataMapExtents.Count > 0) Then
                     ' #Yes: ok, then base zoom exclusively on data
-                    rcfViewExtent = New Rectangle(180, 90, -360, -180)
+                    rcfFocusExtent = New Rectangle(180, 90, -360, -180)
                 End If
 
                 ' Find biggest display rect
                 For Each rcf As RectangleF In Me.m_lExternalDataMapExtents
-                    Dim ptfTL As New PointF(Math.Min(rcf.Left, rcfViewExtent.Left), Math.Min(rcf.Top, rcfViewExtent.Top))
-                    Dim ptfBR As New PointF(Math.Max(rcf.Right, rcfViewExtent.Right), Math.Max(rcf.Bottom, rcfViewExtent.Bottom))
-                    rcfViewExtent = New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y)
+                    Dim ptfTL As New PointF(Math.Min(rcf.Left, rcfFocusExtent.Left), Math.Min(rcf.Top, rcfFocusExtent.Top))
+                    Dim ptfBR As New PointF(Math.Max(rcf.Right, rcfFocusExtent.Right), Math.Max(rcf.Bottom, rcfFocusExtent.Bottom))
+                    rcfFocusExtent = New RectangleF(ptfTL.X, ptfTL.Y, ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y)
                 Next
             End If
 
             ' Abort if nothing to display
-            If (rcfViewExtent.Width = 0 Or rcfViewExtent.Height = 0) Then Return
+            If (rcfFocusExtent.Width = 0 Or rcfFocusExtent.Height = 0) Then Return
 
-            Dim sScale As Single = CSng(Math.Min(rc.Height / (rcfViewExtent.Height * 3), rc.Width / (rcfViewExtent.Width * 3)))
-            Dim dx As Single = rc.Width / 2.0! - (rcfViewExtent.X + rcfViewExtent.Width / 2.0!) * sScale
-            Dim dy As Single = rc.Height / 2.0! - (rcfViewExtent.Y + rcfViewExtent.Height / 2.0!) * sScale
+            Dim sScale As Single = CSng(Math.Min(rc.Height / (rcfFocusExtent.Height * 3), rc.Width / (rcfFocusExtent.Width * 3)))
+            Dim dx As Single = rc.Width / 2.0! - (rcfFocusExtent.X + rcfFocusExtent.Width / 2.0!) * sScale
+            Dim dy As Single = rc.Height / 2.0! - (rcfFocusExtent.Y + rcfFocusExtent.Height / 2.0!) * sScale
+            Dim rcfViewExtent As New RectangleF(rcfFocusExtent.X - rc.Width / 2.0! / sScale, rcfFocusExtent.Y - rc.Height / 2.0! / sScale, rc.Width / sScale, rc.Height / sScale)
+
             g.TranslateTransform(dx, dy)
             g.ScaleTransform(sScale, sScale)
 
@@ -214,6 +227,7 @@ Namespace Ecospace
                 Me.DrawReferenceImage(g)
                 Me.DrawDataRectangles(g)
                 Me.DrawMap(g)
+                Me.DrawGridLines(g, rc, rcfViewExtent)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -311,6 +325,34 @@ Namespace Ecospace
                 strLabel = String.Format(My.Resources.CAPTION_DATASET, sdf.GetDescriptor(Me.m_ds))
                 g.DrawString(strLabel, tmpFont, brTmp, rc.Width / 2.0!, 33, fmt)
             End If
+
+        End Sub
+
+        Private Sub DrawGridLines(g As Graphics, rc As Rectangle, rcfView As RectangleF)
+
+            If (Not Me.m_bShowGrid) Then Return
+
+            Dim x As Integer = CInt(Math.Floor(rcfView.X))
+            Dim y As Integer = CInt(Math.Floor(rcfView.Y))
+            Dim dx As Integer = CInt(Math.Ceiling(rcfView.Width)) + 2
+            Dim dy As Integer = CInt(Math.Ceiling(rcfView.Height)) + 2
+
+            Dim pMinor As New Pen(Color.FromArgb(64, 0, 0, 0), 0.00001)
+            Dim pMajor As New Pen(Color.FromArgb(148, 0, 0, 0), 0.001)
+            Dim p As Pen = Nothing
+
+            For i As Integer = 0 To dx
+                If ((i + x) Mod 5) = 0 Then p = pMajor Else p = pMinor
+                g.DrawLine(p, x + i, y, x + i, y + dy)
+            Next i
+            For j As Integer = 0 To dy
+                If ((j + x) Mod 5) = 0 Then p = pMajor Else p = pMinor
+                g.DrawLine(p, x, y + j, x + dx, y + j)
+            Next j
+
+            p = Nothing
+            pMinor.Dispose()
+            pMajor.Dispose()
 
         End Sub
 

@@ -145,7 +145,7 @@
     <value>m_map</value>
   </data>
   <data name="&gt;&gt;m_map.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.ucSpatialTimeSeriesMap, EwE6, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.ucSpatialTimeSeriesMap, EwE6, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_map.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -219,17 +219,17 @@
   <data name="m_tsbnZoomBoth.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIvSURBVDhPpdPda1JhHAdwi/6ErrruLrooImgEhQODTM80
-        2wsERSxZK2pz2YJRR6WyGtJq7qViYjqLVitxL1CuOdFqzaVrc83JciyZlvNl6vGYuvh27KqLsxn1g+fm
-        efk8z/eBH4fDFEnatswvBPnDY64HncZBx83OvnnZte7lllbDqN7sFRb3bFiv7B5Fh9489dI6nrW6PsPq
-        DaDb4sClNhPEUlX02Dn18XWB6rO3trXpzB/eOD0/IxSNEJ1DIEXDHaFg8S5DoRsCr6Y5z5M0bmdFrA63
-        zmAeSQdXVkHlC0jmCohk8piLZWBbTKLXFULddR32iy+oWAGt3jI77PQwh3JI59dAFdYQpwvwx2jYA6t4
-        6oniimEMZaKGBCvQqOyC0x9EIJnFCp1H/EcBoXQOM98pjC4kYJoIQ/V4EgckMrACijvGL70jHzH5jcJc
-        nIY/kcU0k//t1xQGZqPocQQh0w5hL7/ezQqQGqOhRduffb2Ygn0pzYwUrMzTLb4YjK4w1P0zqGq6B8kJ
-        KcUKSMn7W0W1qmTrMzv6PkXxYjqOJ0xu3fswblt8OKV8BG6lDKb2WvYIRfXomRs8wUll5rSyB1cNNubW
-        KTR1DKJG3o6DkvO4qyCQ8KlLIHXqXZc1zx9yK+Xj+4QN6fLqZlTVa5YOHzkk5+7ZiXddO0ojLBk3FecE
-        FQIxUSH4Z+S3+18ISXI2/4kMaHbjorR8/U/dqPMIgigjCMGEUMgXlWrSv1r/BSlMdH0yewBJAAAAAElF
-        TkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIwSURBVDhPpdPdT1JhHAdwa/0JXXXdXeui1svW2mq40Sbh
+        EcLUra2tETNrhSjZ1uoAq6iMaflaTVKQWpbFENyKEhlmJAammOgMZ0wp5EXgcAiwfTt01cVRWv225+Z5
+        +TzP99l+RUVMkaRty+x8gDc47HrQrjc7brb3zUqvdS5dbtQNdRu9pfk9G9Yru0fR1m2ceGl2pq2uz7B6
+        /eg0OXCx2QChmAyXn1OfWBeoPHtrW7PW+OGtzfkzRNFYpjPwJ2i4QxRM3iUotBZwhQ1Zrqh2Oytidbi1
+        j4yWZGBlFVQ2h3gmh1Aqi5lICraFOHpdy6i+rsVB4QUVK9DabZoeHPEwhzJIZtdA5dYQpXOYi9Cw+1fx
+        1BPGFd0w9gukMVagVtmBkbkA/PE0Vugsoj9yWE5mMPWdwtB8DIaxIFSPx3FIJAMroGjq+dL75iPGv1GY
+        idKYi6UxyeR/9zWBgekwuhwByFot2MercbMCpEavq2/qT79eSMC+mGRGAlbm6SZfBHpXEOr+KVTU3YPg
+        pIRiBSTk/a0CsSre+MyOvk9hvJiM4gmTW/s+iNsmH04pe8A5LoOhRcweIa8eO3ODy69Spk4ru3BVZ2Nu
+        nUBdmxlV8hYcFp3HXQWBmE9dAKlW77qkef6QUy537i2RJosrG1BRc2ex5OgROWfPTox27CiMsGTclJ/j
+        l/GFRBn/n5Hf7n8hJFm0+U9kQLMb9ZLi9T91o84jCOIAQfDHSkt5gkJN+lfrvwBIG3QtlVXZrAAAAABJ
+        RU5ErkJggg==
 </value>
   </data>
   <data name="m_tsbnZoomBoth.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -246,6 +246,30 @@
   </data>
   <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
+  </data>
+  <data name="m_tsbnShowGrid.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIISURBVDhPpZP7S1NxGMbPPxKaXVUkMEq8IpKUCoY/hGgI
+        ymqkDYYXcCjDZOANURSjCNGFQUTsl4GXVMxKk62YU4fXQpaIlygHQxBRH8/zwvyaIAYe+HLgnPN8nue9
+        HA3nvDTq63oW/jm13XOwvPTB3DYFY5MH+bXfcN8ygfTSMSSXfESicQDxBqdYHwH29g9w2tnZ3UcguIvN
+        rR3417exuBJE5N1n/wfwLgXEOc38Bc6xNRHb+/y4nm49G0Bnit2zf9H6bkliE/jKuYxrd6oVgDWfjB+K
+        TWeKMyrGEVfowITvD9re/9ABVQrAhh0HHK+ZselMMaN/mvwtDb+aVqkA7HYIwIj3ysfluPTorJnP6Ezx
+        oHsD1s5ZXEktUwCOioB5f1CEPR9+wTG6iuiserTo8dkwng7HT/R+XUPF8xlcTjErAOdMcW6NW8STiwG8
+        7vej8oUPN/PsEv3t8Ao0TZP3T1u8uJRkUgAuSYHtO97oLxmXd5t9Ho8aPTK+GzntqNfrLm2fFoihwYOI
+        xGIF4KjoGBLzY1OrF9k6OOFxnwDC4wxIMX1G0pMhgVyMNyoA13PAtS7OrJk1PrC69LUdQWxuF6IybHrX
+        LRI7JrtZdoDAo1XmbjMyD+tjSXxGcXRmnYg5ttD9QuxDhN0uUgDOmbvNTpPOJaGAo2K36cyaGZvOFIfd
+        KlSA8/zRh9ABIDUG+1JpAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_tsbnShowGrid.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnShowGrid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsbnShowGrid.Text" xml:space="preserve">
+    <value>Show grid</value>
   </data>
   <data name="m_tsbnShowRefMap.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -272,7 +296,7 @@
     <value>m_tsMap</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMap.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -308,7 +332,7 @@
     <value>m_toolbox</value>
   </data>
   <data name="&gt;&gt;m_toolbox.Type" xml:space="preserve">
-    <value>ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox, EwE6, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox, EwE6, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
   </data>
   <data name="&gt;&gt;m_toolbox.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -365,7 +389,7 @@
     <value>m_tsDatasets</value>
   </data>
   <data name="&gt;&gt;m_tsDatasets.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsDatasets.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -409,6 +433,9 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>52</value>
+  </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -418,8 +445,17 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Spatial time series</value>
+    <value>External temporal data </value>
+  </data>
+  <data name="&gt;&gt;m_tslZoom.Name" xml:space="preserve">
+    <value>m_tslZoom</value>
+  </data>
+  <data name="&gt;&gt;m_tslZoom.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsbnZoomMap.Name" xml:space="preserve">
     <value>m_tsbnZoomMap</value>
@@ -469,16 +505,16 @@
   <data name="&gt;&gt;m_tsbnConnections.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tslZoom.Name" xml:space="preserve">
-    <value>m_tslZoom</value>
+  <data name="&gt;&gt;m_tsbnShowGrid.Name" xml:space="preserve">
+    <value>m_tsbnShowGrid</value>
   </data>
-  <data name="&gt;&gt;m_tslZoom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_tsbnShowGrid.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmSpatialTimeSeries</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7703.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

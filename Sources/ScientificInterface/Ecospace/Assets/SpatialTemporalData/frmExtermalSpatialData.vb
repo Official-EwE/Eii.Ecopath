@@ -91,6 +91,7 @@ Namespace Ecospace
             Me.m_tscmTypes.SelectedIndex = 0
 
             Me.m_tsbnShowRefMap.Checked = Me.m_map.ShowReferenceMap
+            Me.m_tsbnShowGrid.Checked = Me.m_map.ShowGrid
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.External}
 
@@ -252,6 +253,11 @@ Namespace Ecospace
         Private Sub OnToggleShowRefMap(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowRefMap.Click
             Me.m_map.ShowReferenceMap = Me.m_tsbnShowRefMap.Checked
         End Sub
+
+        Private Sub OnToggleShowGrid(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowGrid.Click
+            Me.m_map.ShowGrid = Me.m_tsbnShowGrid.Checked
+        End Sub
+
     End Class
 
 End Namespace

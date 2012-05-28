@@ -236,10 +236,10 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmSpatialTimeSeries.Designer.vb">
-      <DependentUpon>frmSpatialTimeSeries.vb</DependentUpon>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmExtermalSpatialData.Designer.vb">
+      <DependentUpon>frmExtermalSpatialData.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmSpatialTimeSeries.vb">
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\frmExtermalSpatialData.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.Designer.vb">
@@ -780,8 +780,8 @@
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\dlgExternalData.resx">
       <DependentUpon>dlgExternalData.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\frmSpatialTimeSeries.resx">
-      <DependentUpon>frmSpatialTimeSeries.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\frmExtermalSpatialData.resx">
+      <DependentUpon>frmExtermalSpatialData.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\SpatialTemporalData\ucConfigAdapter.resx">
       <DependentUpon>ucConfigAdapter.vb</DependentUpon>
