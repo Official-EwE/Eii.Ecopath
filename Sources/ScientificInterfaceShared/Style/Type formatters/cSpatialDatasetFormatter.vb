@@ -42,22 +42,29 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
-            ' ToDo: localize this
-
             Try
                 If (value IsNot Nothing) Then
                     Dim obj As ISpatialDataSet = DirectCast(value, ISpatialDataSet)
                     Select Case descriptor
                         Case eDescriptorTypes.Name
-                            If obj.TimeStart <> DateTime.MaxValue Then
-                                If obj.TimeEnd <> DateTime.MinValue Then
-                                    Return String.Format("{0} ({1} - {2})", obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
+                            If (obj.TimeStart = DateTime.MinValue) Then
+                                If (obj.TimeEnd = DateTime.MaxValue) Then
+                                    Return obj.DisplayName
+                                Else
+                                    Return String.Format(My.Resources.LABEL_VALUE_UPTO, obj.DisplayName, obj.TimeEnd.ToShortDateString)
                                 End If
-                                Return String.Format("{0} ({1}-)", obj.DisplayName, obj.TimeStart.ToShortDateString)
+                            Else
+                                If (obj.TimeEnd = DateTime.MaxValue) Then
+                                    Return String.Format(My.Resources.LABEL_VALUE_FROM, obj.DisplayName, obj.TimeStart.ToShortDateString)
+                                Else
+                                    Return String.Format(My.Resources.LABEL_VALUE_RANGE, obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
+                                End If
                             End If
+
                         Case eDescriptorTypes.Description
                             Return obj.Description
                     End Select
+
                     Return obj.DisplayName
                 End If
 

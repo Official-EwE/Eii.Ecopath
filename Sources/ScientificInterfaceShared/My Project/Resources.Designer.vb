@@ -1403,15 +1403,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} ({1} time series).
-        '''</summary>
-        Public ReadOnly Property GENERIC_VALUE_DATASET_INFORMATION() As String
-            Get
-                Return ResourceManager.GetString("GENERIC_VALUE_DATASET_INFORMATION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Fleet {0} of {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_FLEET_OF_N() As String
@@ -5364,6 +5355,33 @@ Namespace My.Resources
         Public ReadOnly Property LABEL_STEEPNESS() As String
             Get
                 Return ResourceManager.GetString("LABEL_STEEPNESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1} -).
+        '''</summary>
+        Public ReadOnly Property LABEL_VALUE_FROM() As String
+            Get
+                Return ResourceManager.GetString("LABEL_VALUE_FROM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} ({1} - {2}).
+        '''</summary>
+        Public ReadOnly Property LABEL_VALUE_RANGE() As String
+            Get
+                Return ResourceManager.GetString("LABEL_VALUE_RANGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {0} (- {1}).
+        '''</summary>
+        Public ReadOnly Property LABEL_VALUE_UPTO() As String
+            Get
+                Return ResourceManager.GetString("LABEL_VALUE_UPTO", resourceCulture)
             End Get
         End Property
         

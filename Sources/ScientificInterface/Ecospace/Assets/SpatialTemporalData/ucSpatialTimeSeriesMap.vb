@@ -297,16 +297,18 @@ Namespace Ecospace
             Dim brTmp As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
             Dim penTmp As New Pen(System.Drawing.Color.FromArgb(128, 0, 0, 0))
             Dim strLabel As String = ""
-            Dim fmt As New StringFormat
+            Dim fmt As New StringFormat()
 
             fmt.Alignment = StringAlignment.Center
             fmt.LineAlignment = StringAlignment.Center
 
-            strLabel = String.Format("Time step {0} ({1})", Me.m_iTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStep).ToShortDateString())
+            strLabel = String.Format(My.Resources.CAPTION_TIMESTEP, _
+                                     Me.m_iTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStep).ToShortDateString())
             g.DrawString(strLabel, tmpFont, brTmp, rc.Width / 2.0!, 15, fmt)
 
             If (Me.m_ds IsNot Nothing) Then
-                strLabel = String.Format("Dataset: '{0}'", Me.m_ds.DisplayName)
+                Dim sdf As New cSpatialDatasetFormatter()
+                strLabel = String.Format(My.Resources.CAPTION_DATASET, sdf.GetDescriptor(Me.m_ds))
                 g.DrawString(strLabel, tmpFont, brTmp, rc.Width / 2.0!, 33, fmt)
             End If
 

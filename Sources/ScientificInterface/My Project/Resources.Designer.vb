@@ -123,6 +123,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to External data set {0}.
+        '''</summary>
+        Public ReadOnly Property CAPTION_DATASET() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_DATASET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to External data.
         '''</summary>
         Public ReadOnly Property CAPTION_EXTERNAL_DATA() As String
@@ -218,6 +227,15 @@ Namespace My.Resources
         Public ReadOnly Property CAPTION_SIZEWT() As String
             Get
                 Return ResourceManager.GetString("CAPTION_SIZEWT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Time step {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property CAPTION_TIMESTEP() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_TIMESTEP", resourceCulture)
             End Get
         End Property
         
