@@ -161,7 +161,7 @@ Namespace Ecospace
             Get
                 If (Me.m_iNumTimeSteps = 0) Then Return eCompatibilityTypes.Unknown
                 If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.Unknown
-                If (Me.m_iNumPartialSpatialOverlap = 0) Or (Me.m_iNumFullSpatialOverlap = 0) Then Return eCompatibilityTypes.NoOverlap
+                If (Me.m_iNumPartialSpatialOverlap = 0) And (Me.m_iNumFullSpatialOverlap = 0) Then Return eCompatibilityTypes.NoOverlap
                 If (Me.m_iNumFullSpatialOverlap < Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.PartialOverlap
                 Return eCompatibilityTypes.TotalOverlap
             End Get
