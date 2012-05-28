@@ -58,7 +58,7 @@ Namespace Ecospace.Controls
         Private m_uic As cUIContext = Nothing
         Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
         Private m_lPos As New List(Of cDatasetPos)
-        Private m_iTimestepSize As Integer = 1
+        Private m_iTimestepSize As Integer = 0 ' Will be calculated, should perhaps be configurable
         Private m_iSelectedIndex As Integer = -1
         Private m_iSelectedTimeStep As Integer = -1
 
@@ -96,6 +96,11 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Selection changed notification
+        ''' </summary>
+        ''' <param name="owner">The sender of this event</param>
+        ''' <param name="ds">The selected datasets</param>
         Public Event OnSelectedDatasetChanged(owner As Object, ds As ISpatialDataSet)
 
         Public Property SelectedIndex As Integer
@@ -167,11 +172,12 @@ Namespace Ecospace.Controls
         End Sub
 
         Protected Overrides Sub OnMouseClick(e As System.Windows.Forms.MouseEventArgs)
-            Dim pos As cDatasetPos = Me.DatasetFromPoint(e.Location)
+            Dim ptClick As New Point(e.Location.X - Me.AutoScrollPosition.X, e.Location.Y - Me.AutoScrollPosition.Y)
+            Dim pos As cDatasetPos = Me.DatasetFromPoint(ptClick)
             If (pos IsNot Nothing) Then
                 Me.SelectedIndex = pos.m_iPosVert
             End If
-            Me.SelectedTimeStep = TimestepFromPoint(e.Location)
+            Me.SelectedTimeStep = TimestepFromPoint(ptClick)
             MyBase.OnMouseClick(e)
         End Sub
 
@@ -184,17 +190,17 @@ Namespace Ecospace.Controls
             e.Graphics.Clear(Me.BackColor)
             Try
 
-                ' Paint matrix shifted to x and Y scroll position
+                ' Paint matrix shifted to X and Y scroll position
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, AutoScrollPosition.Y)
-                Me.PaintGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
+                Me.DrawGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
                 For i As Integer = 0 To Me.m_lPos.Count - 1
-                    Me.PaintDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex)
+                    Me.DrawDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex)
                 Next
                 e.Graphics.ResetTransform()
 
                 ' Paint header at the top of the visible scroll area
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, 0)
-                Me.PaintHeader(e.Graphics, New Rectangle(0, 0, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_headerheight))
+                Me.DrawGridHeader(e.Graphics, New Rectangle(0, 0, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, c_headerheight))
                 e.Graphics.ResetTransform()
 
             Catch ex As Exception
@@ -213,7 +219,7 @@ Namespace Ecospace.Controls
             ' Safety check
             If (Me.m_uic Is Nothing) Then Return
             ' Calc number of pixels per time step
-            Me.m_iTimestepSize = CInt(Math.Max(2, Math.Floor(Me.Width / Me.m_uic.Core.nEcospaceTimeSteps)))
+            Me.m_iTimestepSize = CInt(Math.Max(4, Math.Floor(Me.Width / Me.m_uic.Core.nEcospaceTimeSteps)))
 
             ' ToDo: put vert scrollbar UNDER header panel, not beside header panel
 
@@ -312,7 +318,7 @@ Namespace Ecospace.Controls
         ''' <param name="g"></param>
         ''' <param name="rc"></param>
         ''' <remarks></remarks>
-        Private Sub PaintHeader(g As Graphics, rc As Rectangle)
+        Private Sub DrawGridHeader(g As Graphics, rc As Rectangle)
 
             g.FillRectangle(SystemBrushes.Control, rc)
 
@@ -335,7 +341,7 @@ Namespace Ecospace.Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="rc"></param>
-        Private Sub PaintGrid(g As Graphics, rc As Rectangle)
+        Private Sub DrawGrid(g As Graphics, rc As Rectangle)
 
             Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
             Dim core As cCore = Me.m_uic.Core
@@ -362,12 +368,12 @@ Namespace Ecospace.Controls
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
         ''' <remarks></remarks>
-        Private Sub PaintDataset(ByVal g As Graphics, _
-                                 ByVal pos As cDatasetPos, _
-                                 ByVal bSelected As Boolean)
+        Private Sub DrawDataset(ByVal g As Graphics, _
+                                ByVal pos As cDatasetPos, _
+                                ByVal bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
-            Dim rcBack As Rectangle = New Rectangle(0, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
+            Dim rcBack As Rectangle = New Rectangle(-Me.AutoScrollPosition.X, rcBar.Y - c_barmargin, Me.ClientRectangle.Width, rcBar.Height + 2 * c_barmargin)
             Dim rcLabel As New Rectangle(rcBar.X, rcBar.Y, rcBar.Width, c_barlabelheight)
             Dim rcTimeStep As New Rectangle(rcBar.X, rcBar.Y + c_barheight - CInt((c_barheight - c_barlabelheight) / 2) - c_dotradius, 2 * c_dotradius, 2 * c_dotradius)
             Dim clrFill As Color = Color.LightGreen
@@ -382,8 +388,8 @@ Namespace Ecospace.Controls
             If bSelected Then
                 clrText = SystemColors.HighlightText
                 clrTextFill = SystemColors.Highlight
-                Using br As New SolidBrush(SystemColors.MenuHighlight)
-                    g.FillRectangle(br, rcBar)
+                Using br As New HatchBrush(HatchStyle.BackwardDiagonal, SystemColors.MenuHighlight, Color.Transparent)
+                    g.FillRectangle(br, rcBack)
                 End Using
             End If
 

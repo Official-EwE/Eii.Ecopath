@@ -31,6 +31,11 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map
 
+    ' ToDo_JS: overhaul map drawing
+    '          - Map should no longer try to access individual cells. This logic has to move inside the individual raster layers
+    '          - All map layers should use the method Render instead. This enables chached drawing, etc
+    '          - Layers can then render in individual threads, and layer images are rendered by this class.
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Control that provides an interface to a series core data map layers.

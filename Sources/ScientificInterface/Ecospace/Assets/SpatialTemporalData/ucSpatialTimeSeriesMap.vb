@@ -21,6 +21,9 @@ Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
+Imports System.Drawing.Drawing2D
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -28,6 +31,9 @@ Namespace Ecospace
 
     Public Class ucSpatialTimeSeriesMap
         Implements IUIElement
+
+        ' ToDo: listen to style guide changes
+        ' ToDo: make multi-select
 
         Public Enum eZoomLevel As Integer
             Both = 0
@@ -40,6 +46,7 @@ Namespace Ecospace
         Private m_uic As cUIContext = Nothing
         Private m_rcfEcospaceExtent As RectangleF
         Private m_lExternalDataMapExtents As New List(Of RectangleF)
+        Private m_iCurrentTimeStepExtent As Integer = -1
         Private m_zoomlevel As eZoomLevel = eZoomLevel.Both
         Private m_bShowRefMap As Boolean = False
 
@@ -57,6 +64,8 @@ Namespace Ecospace
                 MyBase.Dispose(disposing)
             End Try
         End Sub
+
+#Region " Public access "
 
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
@@ -89,7 +98,7 @@ Namespace Ecospace
             End Get
             Set(value As Integer)
                 Me.m_iTimeStep = value
-                Me.Invalidate()
+                Me.RefreshContent()
             End Set
         End Property
 
@@ -130,7 +139,7 @@ Namespace Ecospace
             Dim ptfTL As PointF = Nothing
             Dim ptfBR As PointF = Nothing
 
-            If Me.m_ds.TimeStart <> Date.MinValue Then
+            If Me.m_ds.TimeStart > Date.MinValue Then
                 iTimeStart = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.m_ds.TimeStart)
             End If
 
@@ -138,8 +147,15 @@ Namespace Ecospace
                 iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.m_ds.TimeEnd)
             End If
 
+            Me.m_iCurrentTimeStepExtent = -1
             For iStep As Integer = iTimeStart To iTimeEnd
                 If Me.m_ds.GetExtentAtT(Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep), ptfTL, ptfBR) Then
+                    ' Is data is for current time step?
+                    If (iStep = Me.m_iTimeStep) Then
+                        ' #Yes: remember current time step index
+                        Me.m_iCurrentTimeStepExtent = Me.m_lExternalDataMapExtents.Count
+                    End If
+                    ' Add map extent
                     Me.m_lExternalDataMapExtents.Add(ToDisplayRect(ptfTL, ptfBR))
                 End If
             Next
@@ -149,21 +165,24 @@ Namespace Ecospace
 
         End Sub
 
-        Private Function ToDisplayRect(ptfTL As PointF, ptfBR As PointF) As RectangleF
-            Return New RectangleF(ptfTL.X, -ptfTL.Y, ptfBR.X - ptfTL.X, ptfTL.Y - ptfBR.Y)
-        End Function
+#End Region ' Public access
+
+#Region " Overrides "
 
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
             Me.DoPaint(e.Graphics, Me.ClientRectangle)
         End Sub
 
+#End Region ' Overrides
+
+#Region " Rendering "
+
         Private Sub DoPaint(g As Graphics, rc As Rectangle)
 
             If (Me.m_uic Is Nothing) Then Return
 
             Dim rcfViewExtent As RectangleF = Me.m_rcfEcospaceExtent
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
 
             ' Is data zoom involved?
             If (Me.m_zoomlevel = eZoomLevel.Both) Or (Me.m_zoomlevel = eZoomLevel.Data) Then
@@ -190,40 +209,90 @@ Namespace Ecospace
             g.TranslateTransform(dx, dy)
             g.ScaleTransform(sScale, sScale)
 
-            ' Draw background
-            If (Me.ShowReferenceMap) Then
-
-                Dim img As Image = sg.MapReferenceImage
-                If (img IsNot Nothing) Then
-                    Try
-                        g.DrawImage(img, _
-                                    sg.MapReferenceLayerTL.X, -sg.MapReferenceLayerTL.Y, _
-                                    (sg.MapReferenceLayerBR.X - sg.MapReferenceLayerTL.X), (sg.MapReferenceLayerTL.Y - sg.MapReferenceLayerBR.Y))
-                    Catch ex As Exception
-                        Debug.Assert(False, ex.Message)
-                    End Try
-                End If
-            End If
-
             Try
-                If (Me.m_lExternalDataMapExtents.Count > 0) Then
-                    g.FillRectangles(Brushes.LightBlue, Me.m_lExternalDataMapExtents.ToArray)
-                    Using p As New Pen(Brushes.Blue, 0.001)
-                        g.DrawRectangles(p, Me.m_lExternalDataMapExtents.ToArray)
-                    End Using
-                End If
-
-                g.FillRectangles(Brushes.LightGreen, New RectangleF() {Me.m_rcfEcospaceExtent})
-                Using p As New Pen(Brushes.Green, 0.001)
-                    g.DrawRectangles(p, New RectangleF() {Me.m_rcfEcospaceExtent})
-                End Using
+                ' Draw content
+                Me.DrawReferenceImage(g)
+                Me.DrawDataRectangles(g)
+                Me.DrawMap(g)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
 
             g.ResetTransform()
 
-            ' Draw labels
+            Try
+                Me.DrawLabels(g, rc)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
+        Private Sub DrawDataRectangles(g As Graphics)
+
+            If (Me.m_lExternalDataMapExtents.Count = 0) Then Return
+
+            Dim clrFillFull As Color = Color.FromKnownColor(KnownColor.LightBlue)
+            Dim clrFillLight As Color = cColorUtils.GetVariant(clrFillFull, 0.5!)
+            Dim clrOutlineFull As Color = Color.FromKnownColor(KnownColor.Blue)
+            Dim clrOutlineLight As Color = cColorUtils.GetVariant(clrOutlineFull, 0.5!)
+
+            ' - Fills -
+            Using br As New HatchBrush(HatchStyle.DarkDownwardDiagonal, clrFillLight, Color.Transparent)
+                g.FillRectangles(br, Me.m_lExternalDataMapExtents.ToArray)
+            End Using
+            If (Me.m_iCurrentTimeStepExtent >= 0) Then
+                Using br As New HatchBrush(HatchStyle.DarkUpwardDiagonal, clrFillLight, Color.Transparent)
+                    g.FillRectangle(br, Me.m_lExternalDataMapExtents(Me.m_iCurrentTimeStepExtent))
+                End Using
+            End If
+
+            ' - Outlines -
+            'Using p As New Pen(clrOutlineLight, 0.001)
+            '    g.DrawRectangles(p, Me.m_lExternalDataMapExtents.ToArray)
+            'End Using
+            If (Me.m_iCurrentTimeStepExtent >= 0) Then
+                Using p As New Pen(clrOutlineFull, 0.001)
+                    g.DrawRectangles(p, New RectangleF() {Me.m_lExternalDataMapExtents(Me.m_iCurrentTimeStepExtent)})
+                End Using
+            End If
+
+        End Sub
+
+        Private Sub DrawMap(g As Graphics)
+
+            ' ToDo: draw depth layer preview
+            Using br As New HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.LightGreen, Color.Transparent)
+                g.FillRectangles(br, New RectangleF() {Me.m_rcfEcospaceExtent})
+            End Using
+            Using p As New Pen(Brushes.Green, 0.001)
+                g.DrawRectangles(p, New RectangleF() {Me.m_rcfEcospaceExtent})
+            End Using
+
+        End Sub
+
+        Private Sub DrawReferenceImage(g As Graphics)
+
+            If (Not Me.ShowReferenceMap) Then Return
+
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim img As Image = sg.MapReferenceImage
+
+            If (img IsNot Nothing) Then
+                Try
+                    g.DrawImage(img, _
+                                sg.MapReferenceLayerTL.X, -sg.MapReferenceLayerTL.Y, _
+                                (sg.MapReferenceLayerBR.X - sg.MapReferenceLayerTL.X), (sg.MapReferenceLayerTL.Y - sg.MapReferenceLayerBR.Y))
+                Catch ex As Exception
+                    Debug.Assert(False, ex.Message)
+                End Try
+            End If
+
+        End Sub
+
+        Private Sub DrawLabels(g As Graphics, rc As Rectangle)
+
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim tmpFont As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
             Dim brTmp As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
             Dim penTmp As New Pen(System.Drawing.Color.FromArgb(128, 0, 0, 0))
@@ -242,6 +311,16 @@ Namespace Ecospace
             End If
 
         End Sub
+
+#End Region ' Rendering
+
+#Region " Helper methods "
+
+        Private Function ToDisplayRect(ptfTL As PointF, ptfBR As PointF) As RectangleF
+            Return New RectangleF(ptfTL.X, -ptfTL.Y, ptfBR.X - ptfTL.X, ptfTL.Y - ptfBR.Y)
+        End Function
+
+#End Region ' Helper methods
 
     End Class
 

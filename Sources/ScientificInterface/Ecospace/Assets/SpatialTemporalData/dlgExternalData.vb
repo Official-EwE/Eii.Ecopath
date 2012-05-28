@@ -24,6 +24,7 @@ Imports EwECore.SpatialData
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
 Imports ScientificInterface.Ecospace.Basemap.Layers
+Imports EwECore.Ecospace
 
 #End Region ' Imports
 
@@ -75,7 +76,7 @@ Namespace Ecospace
 
         Public Sub New(ByVal uic As cUIContext)
             MyBase.New()
-            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+            Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint, True)
             Me.InitializeComponent()
             Me.UIContext = uic
         End Sub
@@ -149,6 +150,9 @@ Namespace Ecospace
             ' Create image list
             Me.m_ilConnections.Images.Add(SharedResources.database_NA)
             Me.m_ilConnections.Images.Add(SharedResources.Database)
+            Me.m_ilConnections.Images.Add(SharedResources.database_warning)
+            Me.m_ilConnections.Images.Add(SharedResources.ani_loader)
+
             Me.m_tvAdapters.ImageList = Me.m_ilConnections
 
             ' Update images
@@ -258,7 +262,16 @@ Namespace Ecospace
                     Dim l As cEcospaceLayer = link.Layer
                     If l.IsExternalData Then
                         iNumConnected += 1
-                        ndLayer.ImageIndex = 1
+                        Dim ds As ISpatialDataSet = link.Adapter.Dataset(l.Index)
+                        Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
+                        Select Case comp.SpatialCompatibility
+                            Case cDatasetCompatilibity.eCompatibilityTypes.NoOverlap, cDatasetCompatilibity.eCompatibilityTypes.PartialOverlap
+                                ndLayer.ImageIndex = 2
+                            Case cDatasetCompatilibity.eCompatibilityTypes.Unknown
+                                ndLayer.ImageIndex = 3
+                            Case Else
+                                ndLayer.ImageIndex = 1
+                        End Select
                     Else
                         ndLayer.ImageIndex = 0
                     End If

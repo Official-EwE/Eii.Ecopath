@@ -895,6 +895,7 @@
     <None Include="Resources\OK.png" />
     <None Include="Resources\PieChart.png" />
     <None Include="Resources\synonym.png" />
+    <None Include="Resources\database_warning.png" />
     <Content Include="Resources\timeseries.png" />
     <None Include="Resources\Warning.png" />
     <None Include="Resources\tag.png" />

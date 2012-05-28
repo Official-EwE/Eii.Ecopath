@@ -393,8 +393,7 @@ Namespace Ecospace.Controls
 
                 If bIsIndexing Then
                     imgValidate = ScientificInterfaceShared.My.Resources.ani_loader
-                ElseIf (comp.TemporalCompatibility <> cDatasetCompatilibity.eCompatibilityTypes.NoOverlap) And _
-                   (comp.SpatialCompatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
+                ElseIf (comp.SpatialCompatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
                     imgValidate = ScientificInterfaceShared.My.Resources.OK
                 Else
                     imgValidate = ScientificInterfaceShared.My.Resources.Warning
@@ -730,6 +729,7 @@ Namespace Ecospace.Controls
                 Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {ds})
             Else
                 Me.UpdateControls()
+                Me.m_uic.Core.Messages.SendMessage(New cMessage("Index update", eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
             End If
         End Sub
 
