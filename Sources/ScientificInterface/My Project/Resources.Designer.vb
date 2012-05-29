@@ -868,6 +868,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Edit layer &apos;{0}&apos;.
+        '''</summary>
+        Public ReadOnly Property ECOSPACE_CAPTION_EDITLAYER() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_CAPTION_EDITLAYER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Import layer image.
         '''</summary>
         Public ReadOnly Property ECOSPACE_CAPTION_IMPORTLAYERIMAGE() As String
@@ -3590,6 +3599,15 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_PREVIEW_LOADING() As String
             Get
                 Return ResourceManager.GetString("STATUS_PREVIEW_LOADING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Remarks are not supported for this data.
+        '''</summary>
+        Public ReadOnly Property STATUS_REMARKS_NOT_SUPPORTED() As String
+            Get
+                Return ResourceManager.GetString("STATUS_REMARKS_NOT_SUPPORTED", resourceCulture)
             End Get
         End Property
         

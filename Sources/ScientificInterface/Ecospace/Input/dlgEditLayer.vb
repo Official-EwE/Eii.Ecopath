@@ -19,20 +19,11 @@
 
 Option Explicit On
 Option Strict On
-
-Imports System.Windows.Forms
-Imports System.IO
-Imports System.Text
-Imports SAUPUtil.SAUPFile
-Imports SAUPUtil.SAUPData.Mapping
-Imports SAUPUtil.SAUPData
 Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
 Imports EwECore.Auxiliary
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared.Controls.Map
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls.Map.Layers
 
 #End Region ' Imports
 
@@ -99,6 +90,7 @@ Namespace Ecospace.Basemap.Layers
 
             Me.m_layerWork = New cRasterLayer(uic, layer) ' Work on a clone
             Me.m_layerWork.AllowValidation = False
+            Me.m_layerWork.IsSelected = True ' Select layer, otherwise its content may not be rendered
 
         End Sub
 
@@ -268,8 +260,7 @@ Namespace Ecospace.Basemap.Layers
                 End If
             Else
                 Me.m_fpName.Enabled = False
-                ' ToDo: globalize this
-                Me.m_tbRemarks.Text = "Remarks not supported for this layer"
+                Me.m_tbRemarks.Text = My.Resources.STATUS_REMARKS_NOT_SUPPORTED
                 Me.m_tbRemarks.Enabled = False
             End If
 
@@ -303,8 +294,7 @@ Namespace Ecospace.Basemap.Layers
             End If
 
             Me.m_tsbnImport.Enabled = bEditable
-            ' ToDo: globalize this
-            Me.Text = String.Format("Edit layer '{0}'", Me.m_tbNameValue.Text)
+            Me.Text = String.Format(My.Resources.ECOSPACE_CAPTION_EDITLAYER, Me.m_tbNameValue.Text)
 
         End Sub
 

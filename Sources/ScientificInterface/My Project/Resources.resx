@@ -1013,7 +1013,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="ECOSIM_LABEL_APPLY_SHAPES_PRED" xml:space="preserve">
     <value>For all pairs with group {0}: {1} as a predator</value>
-    <comment>{0}:prey name, {1}:predator name</comment>
+    <comment>{0}=prey name, {1}=predator name</comment>
   </data>
   <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete habitat '{0}'? This action cannot be undone.</value>
@@ -1379,11 +1379,11 @@ Description: {2}</value>
   </data>
   <data name="CAPTION_PRICEELASTICITY_FLEET" xml:space="preserve">
     <value>Apply price elasticity to all landings by fleet {0}: {1}</value>
-    <comment>{0}:prey name, {1}:predator name</comment>
+    <comment>{0}=prey name, {1}=predator name</comment>
   </data>
   <data name="CAPTION_PRICEELASTICITY_GROUP" xml:space="preserve">
     <value>Apply price elasticity to all landings of {0}: {1}</value>
-    <comment>{0}:prey name, {1}:predator name</comment>
+    <comment>{0}=prey name, {1}=predator name</comment>
   </data>
   <data name="CAPTION_PRICEELASTICITY_LANDING" xml:space="preserve">
     <value>Apply price elasticity to fleet {0}: {1} landing {2}: {3}</value>
@@ -1483,7 +1483,7 @@ Description: {2}</value>
   </data>
   <data name="CAPTION_EXTERNAL_DATA_DETAIL" xml:space="preserve">
     <value>External data for '{0}'</value>
-    <comment>{0}=layer data name</comment>
+    <comment>{0}=layer name</comment>
   </data>
   <data name="ABOUT_32BIT" xml:space="preserve">
     <value>32 bit</value>
@@ -1559,5 +1559,12 @@ Description: {2}</value>
   <data name="CAPTION_TIMESTEP" xml:space="preserve">
     <value>Time step {0} ({1})</value>
     <comment>{0}=time step, {1}=date</comment>
+  </data>
+  <data name="ECOSPACE_CAPTION_EDITLAYER" xml:space="preserve">
+    <value>Edit layer '{0}'</value>
+    <comment>{0}=layer name</comment>
+  </data>
+  <data name="STATUS_REMARKS_NOT_SUPPORTED" xml:space="preserve">
+    <value>Remarks are not supported for this data</value>
   </data>
 </root>
