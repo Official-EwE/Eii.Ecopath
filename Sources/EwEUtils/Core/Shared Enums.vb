@@ -2547,6 +2547,8 @@ Namespace Core
 
         ''' <summary>All good. Blue skies, happy children, money in the bank; the works - no need to leave the couch.</summary>
         Success_NoActionRequired = 0
+        ''' <summary>Indicated component is not part of the auto-update structure.</summary>
+        Success_NoEwEComponent
         ''' <summary>Component successfully updated.</summary>
         Success_Updated
         ''' <summary>A migration is available.</summary>
