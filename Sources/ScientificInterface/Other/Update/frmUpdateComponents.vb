@@ -125,6 +125,7 @@ Public Class frmUpdateComponents
         Handles m_btnAbort.Click
         If Me.m_thrd IsNot Nothing Then
             Try
+                Me.m_lvs.Add(New cVariableStatus(eStatusFlags.OK, My.Resources.GENERIC_REPLY_CANCEL, eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0))
                 Me.m_thrd.Abort()
             Catch ex As Exception
 
