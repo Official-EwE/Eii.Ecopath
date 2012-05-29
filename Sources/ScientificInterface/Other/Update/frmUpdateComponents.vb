@@ -221,33 +221,41 @@ Public Class frmUpdateComponents
         Select Case result
 
             Case eAutoUpdateResultTypes.Error_Connection
-                If Me.m_lvs.Count = 0 Then
-                    vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
                                              My.Resources.STATUS_UPDATE_ERROR_CONNECTION, _
                                              eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
-                End If
+                Me.m_bSuccess = False
+
             Case eAutoUpdateResultTypes.Error_Download
-                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
                                         String.Format(My.Resources.STATUS_UPDATE_ERROR_DOWNLOAD, strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                Me.m_bSuccess = False
+
             Case eAutoUpdateResultTypes.Error_Generic
-                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
                                         String.Format(My.Resources.STATUS_UPDATE_ERROR_GENERIC, strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                Me.m_bSuccess = False
+
             Case eAutoUpdateResultTypes.Error_Replace
-                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                vs = New cVariableStatus(eStatusFlags.ErrorEncountered, _
                                          String.Format(My.Resources.STATUS_UPDATE_ERROR_WRITE, strName), _
                                          eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+                Me.m_bSuccess = False
+
             Case eAutoUpdateResultTypes.Success_NoActionRequired
-                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                vs = New cVariableStatus(eStatusFlags.OK, _
                                         String.Format(My.Resources.STATUS_UPDATE_NO_ACTION, strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
+
             Case eAutoUpdateResultTypes.Success_Updated
-                vs = New cVariableStatus(eStatusFlags.NotEditable, _
+                vs = New cVariableStatus(eStatusFlags.OK, _
                                         String.Format(".", strName), _
                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.External, 0)
 
         End Select
+
         If (vs IsNot Nothing) Then Me.m_lvs.Add(vs)
 
     End Sub
@@ -260,7 +268,7 @@ Public Class frmUpdateComponents
         If (Me.m_bSuccess) Then
             msg = New cMessage(My.Resources.STATUS_UPDATE_SUCCESS, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
         Else
-            msg = New cMessage(My.Resources.STATUS_UPDATE_SUCCESS, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
+            msg = New cMessage(My.Resources.STATUS_UPDATE_FAILED, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
         End If
         For Each vs As cVariableStatus In Me.m_lvs
             msg.AddVariable(vs)
@@ -343,8 +351,12 @@ Public Class frmUpdateComponents
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub UpdatePluginsThread()
-        ' Run updates
-        Me.m_pm.UpdatePlugins(Me.m_iTimeOut, New cPluginManager.OnConfirmOverwrite(AddressOf OverwriteConfirmCallback))
+
+        Dim result As eAutoUpdateResultTypes = Me.m_pm.UpdatePlugins(Me.m_iTimeOut, New cPluginManager.OnConfirmOverwrite(AddressOf OverwriteConfirmCallback))
+
+        If result <> eAutoUpdateResultTypes.Success_Updated Then
+            Me.Invoke(New UpdateStatusDelegate(AddressOf UpdateStatus), New Object() {"", result})
+        End If
         ' Done, close form
         Me.Invoke(New CloseDelegate(AddressOf Me.Close))
     End Sub

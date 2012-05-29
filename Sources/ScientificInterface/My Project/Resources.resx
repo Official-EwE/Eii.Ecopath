@@ -1390,7 +1390,7 @@ Description: {2}</value>
     <comment>{0}=fleet index, {1}=fleet name, {2} group index, {3}=group name</comment>
   </data>
   <data name="STATUS_UPDATE_ERROR_CONNECTION" xml:space="preserve">
-    <value>Error connection to update server</value>
+    <value>Unable to connect to the Ecopath update server</value>
   </data>
   <data name="STATUS_UPDATE_ERROR_DOWNLOAD" xml:space="preserve">
     <value>Unable to download update for '{0}'</value>

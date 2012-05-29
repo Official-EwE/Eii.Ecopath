@@ -3666,7 +3666,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Error connection to update server.
+        '''  Looks up a localized string similar to Unable to connect to the Ecopath update server.
         '''</summary>
         Public ReadOnly Property STATUS_UPDATE_ERROR_CONNECTION() As String
             Get
