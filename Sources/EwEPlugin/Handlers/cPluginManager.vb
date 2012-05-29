@@ -313,7 +313,7 @@ Public Class cPluginManager
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function UpdatePlugins(ByVal iTimeOut As Integer, _
-                                  Optional ByVal dlgOverwrite As OnConfirmOverwrite = Nothing) As Boolean
+                                  Optional ByVal dlgOverwrite As OnConfirmOverwrite = Nothing) As eAutoUpdateResultTypes
 
         Dim updater As cAutoUpdate = New cAutoUpdate(Me.m_core, iTimeOut)
         Dim pluginAssembly As Assembly = Nothing
@@ -379,7 +379,7 @@ Public Class cPluginManager
 
                         Case eAutoUpdateResultTypes.Error_Connection
                             ' #No connection: abort process to save time
-                            Return False
+                            Return eAutoUpdateResultTypes.Error_Connection
 
                         Case Else
                             ' #Other status: either plug-in already up to date, or
@@ -422,10 +422,10 @@ Public Class cPluginManager
 
         Catch ex As Exception
             ' Kaboom
-            Return False
+            Return eAutoUpdateResultTypes.Error_Generic
         End Try
 
-        Return True
+        Return eAutoUpdateResultTypes.Success_Updated
 
     End Function
 
