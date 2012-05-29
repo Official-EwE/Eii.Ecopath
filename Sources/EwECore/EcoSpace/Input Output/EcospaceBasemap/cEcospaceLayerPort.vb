@@ -76,6 +76,33 @@ Public Class cEcospaceLayerPort
         End Get
     End Property
 
+    Protected Overrides Sub RecalcStats()
+
+        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
+        Dim data As Boolean(,,) = DirectCast(Me.Data, Boolean(,,))
+
+        Me.m_iMaxValue = Integer.MinValue
+        Me.m_iMinValue = Integer.MaxValue
+        Me.m_iNumValueCells = 0
+
+        Me.m_bInvalidateStats = False
+
+        For iRow As Integer = 1 To bm.InRow
+            For iCol As Integer = 1 To bm.InCol
+                If layerDepth.IsWaterCell(iRow, iCol) Then
+                    For iFleet As Integer = 1 To Me.m_core.nFleets
+                        If data(iFleet, iRow, iCol) Then
+                            Me.m_iNumValueCells = 1
+                            Return
+                        End If
+                    Next iFleet
+                End If
+            Next iCol
+        Next iRow
+
+    End Sub
+
 #End Region ' Cell interaction
 
 End Class

@@ -32,16 +32,16 @@ Public Class cEcospaceLayerInteger
 #Region " Private variables "
 
     ''' <summary>Layer max value.</summary>
-    Private m_iMaxValue As Integer = 0
+    Protected m_iMaxValue As Integer = 0
     ''' <summary>Layer min value.</summary>
-    Private m_iMinValue As Integer = 0
+    Protected m_iMinValue As Integer = 0
     ''' <summary>Layer num of cells with a value.</summary>
-    Private m_iNumValueCells As Integer = 0
+    Protected m_iNumValueCells As Integer = 0
 
     ''' <summary>States whether cached statistics should be recalculated.</summary>
     ''' <remarks>True at startup to make sure that stats are properly calculated
     ''' when first queried.</remarks>
-    Private m_bInvalidateStats As Boolean = True
+    Protected m_bInvalidateStats As Boolean = True
 
 #End Region ' Private variables
 
