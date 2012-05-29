@@ -341,15 +341,19 @@ Friend Class cAutoUpdate
         Debug.Assert(Me.m_verCore IsNot Nothing, "Something is VERY wrong")
         Debug.Assert(Me.m_verPlugin IsNot Nothing, "Something is VERY wrong")
 
+        Dim result As eAutoUpdateResultTypes = eAutoUpdateResultTypes.Success_NoActionRequired
         Try
             If Me.m_service.CheckPluginUpdate(Me.m_verCore.ToString, Me.m_strPluginName, Me.m_strPluginToken, Me.m_verPlugin.ToString) Then
-                Return eAutoUpdateResultTypes.Info_CanUpdate
+                result = eAutoUpdateResultTypes.Info_CanUpdate
             End If
-            Return eAutoUpdateResultTypes.Success_NoActionRequired
-        Catch ex As Exception
+        Catch ex As WebException
             ' Unable to connect to server
-            Return eAutoUpdateResultTypes.Error_Connection
+            result = eAutoUpdateResultTypes.Error_Connection
+        Catch ex As Exception
+            ' Something was strange, but not to worry
+            result = eAutoUpdateResultTypes.Success_NoEwEComponent
         End Try
+        Return result
 
     End Function
 
