@@ -55,9 +55,7 @@ Namespace Ecosim
             Me.m_tsbnSetTo0 = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnSetToValue = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnResetFs = New System.Windows.Forms.ToolStripButton()
-            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
             Me.m_spContainer = New System.Windows.Forms.SplitContainer()
-            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel()
@@ -94,6 +92,7 @@ Namespace Ecosim
             Me.m_lbRuns = New System.Windows.Forms.ListBox()
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
             ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
             ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
             ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
@@ -102,7 +101,6 @@ Namespace Ecosim
             Me.m_spContainer.Panel1.SuspendLayout()
             Me.m_spContainer.Panel2.SuspendLayout()
             Me.m_spContainer.SuspendLayout()
-            Me.m_tlpMain.SuspendLayout()
             Me.m_ts.SuspendLayout()
             CType(Me.m_scGraph, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scGraph.Panel1.SuspendLayout()
@@ -132,7 +130,6 @@ Namespace Ecosim
             'm_btnRun
             '
             resources.ApplyResources(Me.m_btnRun, "m_btnRun")
-            Me.m_btnRun.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.m_btnRun.Name = "m_btnRun"
             Me.m_btnRun.UseVisualStyleBackColor = True
             '
@@ -189,34 +186,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_tsbnResetFs, "m_tsbnResetFs")
             Me.m_tsbnResetFs.Name = "m_tsbnResetFs"
             '
-            'm_sketchPad
-            '
-            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
-            Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
-            Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
-            Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.m_sketchPad.DisplayAxis = True
-            Me.m_sketchPad.Editable = True
-            Me.m_sketchPad.Handler = Nothing
-            Me.m_sketchPad.IsSeasonal = False
-            Me.m_sketchPad.Name = "m_sketchPad"
-            Me.m_sketchPad.NumDataPoints = 0
-            Me.m_sketchPad.Shape = Nothing
-            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
-            Me.m_sketchPad.ShowValueTooltip = True
-            Me.m_sketchPad.ShowXMark = False
-            Me.m_sketchPad.ShowYMark = False
-            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.UIContext = Nothing
-            Me.m_sketchPad.XAxisMaxValue = -9999
-            Me.m_sketchPad.XMarkValue = -9999.0!
-            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
-            Me.m_sketchPad.YAxisMinValue = 1.0!
-            Me.m_sketchPad.YMarkLabel = ""
-            Me.m_sketchPad.YMarkValue = -9999.0!
-            '
             'm_spContainer
             '
             resources.ApplyResources(Me.m_spContainer, "m_spContainer")
@@ -225,20 +194,12 @@ Namespace Ecosim
             '
             'm_spContainer.Panel1
             '
-            Me.m_spContainer.Panel1.Controls.Add(Me.m_tlpMain)
+            Me.m_spContainer.Panel1.Controls.Add(Me.m_graph)
             '
             'm_spContainer.Panel2
             '
-            Me.m_spContainer.Panel2.Controls.Add(Me.m_tsMain)
-            Me.m_spContainer.Panel2.Controls.Add(Me.m_btnRun)
             Me.m_spContainer.Panel2.Controls.Add(Me.m_sketchPad)
-            '
-            'm_tlpMain
-            '
-            resources.ApplyResources(Me.m_tlpMain, "m_tlpMain")
-            Me.m_tlpMain.Controls.Add(Me.m_ts, 0, 0)
-            Me.m_tlpMain.Controls.Add(Me.m_scGraph, 0, 1)
-            Me.m_tlpMain.Name = "m_tlpMain"
+            Me.m_spContainer.Panel2.Controls.Add(Me.m_tsMain)
             '
             'm_ts
             '
@@ -270,7 +231,7 @@ Namespace Ecosim
             '
             Me.m_tsdrpdnbtnContent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsdrpdnbtnContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiBiomassAbs, Me.m_tsmiBiomassRel, Me.ToolStripSeparator6, Me.m_tsmiCatchAbs, Me.m_tsmiCatchRel, Me.ToolStripSeparator7, Me.m_tsmiValueAbs, Me.m_tsmiValueRel})
-            Me.m_tsdrpdnbtnContent.Image = Global.ScientificInterface.My.Resources.Importance
+            Me.m_tsdrpdnbtnContent.Image = Global.ScientificInterface.My.Resources.Resources.Importance
             resources.ApplyResources(Me.m_tsdrpdnbtnContent, "m_tsdrpdnbtnContent")
             Me.m_tsdrpdnbtnContent.Name = "m_tsdrpdnbtnContent"
             '
@@ -422,11 +383,12 @@ Namespace Ecosim
             '
             'm_scGraph.Panel1
             '
-            Me.m_scGraph.Panel1.Controls.Add(Me.m_graph)
+            Me.m_scGraph.Panel1.Controls.Add(Me.m_spContainer)
             '
             'm_scGraph.Panel2
             '
             Me.m_scGraph.Panel2.Controls.Add(Me.m_scOptions)
+            Me.m_scGraph.Panel2.Controls.Add(Me.m_btnRun)
             '
             'm_graph
             '
@@ -496,11 +458,41 @@ Namespace Ecosim
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
             '
+            'm_sketchPad
+            '
+            Me.m_sketchPad.AllowedEdits = ScientificInterfaceShared.Controls.ucSketchPad.eMouseInteractionMode.DrawShape
+            Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
+            Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
+            Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
+            Me.m_sketchPad.DisplayAxis = True
+            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
+            Me.m_sketchPad.Editable = True
+            Me.m_sketchPad.Handler = Nothing
+            Me.m_sketchPad.IsSeasonal = False
+            Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.NumDataPoints = 0
+            Me.m_sketchPad.Shape = Nothing
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowValueTooltip = True
+            Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.ShowYMark = False
+            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.UIContext = Nothing
+            Me.m_sketchPad.XAxisMaxValue = -9999
+            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMinValue = 1.0!
+            Me.m_sketchPad.YMarkLabel = ""
+            Me.m_sketchPad.YMarkValue = -9999.0!
+            '
             'RunEcosim
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_spContainer)
+            Me.Controls.Add(Me.m_scGraph)
+            Me.Controls.Add(Me.m_ts)
             Me.Name = "RunEcosim"
             Me.m_tsMain.ResumeLayout(False)
             Me.m_tsMain.PerformLayout()
@@ -509,8 +501,6 @@ Namespace Ecosim
             Me.m_spContainer.Panel2.PerformLayout()
             CType(Me.m_spContainer, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_spContainer.ResumeLayout(False)
-            Me.m_tlpMain.ResumeLayout(False)
-            Me.m_tlpMain.PerformLayout()
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.m_scGraph.Panel1.ResumeLayout(False)
@@ -522,20 +512,19 @@ Namespace Ecosim
             CType(Me.m_scOptions, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scOptions.ResumeLayout(False)
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
 
         Private WithEvents m_btnRun As System.Windows.Forms.Button
-        Private WithEvents m_sketchPad As ucForcingSketchPad
-        Private WithEvents m_tsMain As cEwEToolStrip
+        Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tscbTarget As System.Windows.Forms.ToolStripComboBox
         Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnResetFs As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnSetTo0 As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnSetToValue As System.Windows.Forms.ToolStripButton
         Private WithEvents m_spContainer As System.Windows.Forms.SplitContainer
-        Private WithEvents m_tlpMain As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_ts As cEwEToolStrip
+        Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents tslblSSValue As System.Windows.Forms.ToolStripLabel
         Private WithEvents tsblbSS As System.Windows.Forms.ToolStripLabel
@@ -573,6 +562,7 @@ Namespace Ecosim
         Private WithEvents m_tsbnShowMultipleRuns As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnFleet As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnGroup As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_sketchPad As ScientificInterfaceShared.Controls.ucForcingSketchPad
 
     End Class
 End Namespace

@@ -24,6 +24,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
+Imports EwECore
 
 #End Region ' Imports
 
@@ -147,7 +148,19 @@ Namespace Controls.Map
                     Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                     cmd.Invoke(rl, Nothing, edittype)
                 Catch ex As Exception
+                    cLog.Write(ex, cLog.eVerboseLevel.Detailed, "ucLayer::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
+                End Try
+            End If
+        End Sub
 
+        Public Sub EditLayerConnection()
+            If (TypeOf Me.Layer Is cRasterLayer) Then
+                Try
+                    Dim rl As cRasterLayer = DirectCast(Me.Layer, cRasterLayer)
+                    Dim cmd As cEcospaceExternalDataCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME), cEcospaceExternalDataCommand)
+                    cmd.Invoke(rl.Data)
+                Catch ex As Exception
+                    cLog.Write(ex, cLog.eVerboseLevel.Detailed, "ucLayer::EditLayerConnection " & Me.Layer.Name)
                 End Try
             End If
         End Sub
@@ -371,7 +384,13 @@ Namespace Controls.Map
         End Sub
 
         Private Sub ucLayer_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.DoubleClick
-            Me.EditLayer(eLayerEditTypes.EditData)
+            Select Case Me.GetArea(Me.PointToClient(MousePosition))
+                Case eAreaTypes.Editable
+                    Me.EditLayerConnection()
+                Case Else
+                    Me.EditLayer(eLayerEditTypes.EditData)
+            End Select
+
         End Sub
 
         Private Sub ucLayer_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove

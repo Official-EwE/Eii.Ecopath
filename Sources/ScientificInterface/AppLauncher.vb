@@ -174,7 +174,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdEstimateVs As cCommand = Nothing
     Private WithEvents m_cmdExportEcosimResultsToCSV As cEcosimSaveDataCommand = Nothing
     Private WithEvents m_cmdPrint As cCommand = Nothing
-    Private WithEvents m_cmdEcospaceDataConnections As cCommand = Nothing
+    Private WithEvents m_cmdEcospaceDataConnections As cEcospaceExternalDataCommand = Nothing
 
 #End Region ' Commands
 
@@ -485,7 +485,7 @@ Public Class AppLauncher
         Me.m_cmdDefineInputLayers = New cCommand(cmdh, "EditInputMaps")
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
 
-        Me.m_cmdEcospaceDataConnections = New cCommand(cmdh, "EditSpatialTemporalDataConnections")
+        Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)
         Me.m_cmdEcospaceDataConnections.AddControl(Me.m_tsmiEcospaceDataConnections)
 
         Me.m_cmdImportLayerData = New cImportLayerCommand(cmdh)
@@ -3557,7 +3557,7 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnInvokeEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnInvoke
-        Dim dlg As New dlgExternalData(Me.UIContext)
+        Dim dlg As New dlgExternalData(Me.UIContext, Me.m_cmdEcospaceDataConnections.Layer)
         dlg.ShowDialog(Me)
     End Sub
 

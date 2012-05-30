@@ -18,10 +18,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports EwEUtils.SpatialData
 Imports EwECore.SpatialData
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -80,7 +81,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             ' Connect to edit command
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialTemporalDataConnections")
+            Dim cmd As cEcospaceExternalDataCommand = DirectCast(Me.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME), cEcospaceExternalDataCommand)
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnConnections)
 
             ' Fill filter combo
@@ -101,7 +102,7 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditSpatialTemporalDataConnections")
+            Dim cmd As cCommand = Me.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME)
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnConnections)
 
             If Me.HasThread Then

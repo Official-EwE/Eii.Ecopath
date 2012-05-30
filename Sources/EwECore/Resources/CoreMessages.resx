@@ -1073,4 +1073,8 @@ System Error: {0}</value>
     <value>{0}% indexed, no external data found for the Ecospace run time</value>
     <comment>{0}=% of external data that is indexed</comment>
   </data>
+  <data name="STATUS_SPATIALTEMPORAL_NODATA" xml:space="preserve">
+    <value>Data for {0}% time steps could not be loaded</value>
+    <comment>{0}=% of time step data that could not be loaded</comment>
+  </data>
 </root>

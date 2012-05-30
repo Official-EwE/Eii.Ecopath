@@ -47,6 +47,8 @@ Namespace Ecospace
         Private m_iNumFullSpatialOverlap As Integer = 0
         ''' <summary>Number of data time steps with partial spatial overlap.</summary>
         Private m_iNumPartialSpatialOverlap As Integer = 0
+        ''' <summary>Number of files that could not be loaded.</summary>
+        Private m_iNumError As Integer = 0
 
 #End Region ' Private vars
 
@@ -130,8 +132,8 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Public ReadOnly Property TemporalCompatibility As eCompatibilityTypes
             Get
-                If (Me.m_iNumTimeSteps = 0) Then Return eCompatibilityTypes.Unknown
-                If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.NoOverlap
+                If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.Unknown
+                If (Me.m_iNumError = Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.Unknown
                 If (Me.m_iNumTimeOverlap < Me.m_iNumTimeSteps) Then Return eCompatibilityTypes.PartialOverlap
                 Return eCompatibilityTypes.TotalOverlap
             End Get
@@ -159,8 +161,8 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Public ReadOnly Property SpatialCompatibility As eCompatibilityTypes
             Get
-                If (Me.m_iNumTimeSteps = 0) Then Return eCompatibilityTypes.Unknown
                 If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.Unknown
+                If (Me.m_iNumError = Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.Unknown
                 If (Me.m_iNumPartialSpatialOverlap = 0) And (Me.m_iNumFullSpatialOverlap = 0) Then Return eCompatibilityTypes.NoOverlap
                 If (Me.m_iNumFullSpatialOverlap < Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.PartialOverlap
                 Return eCompatibilityTypes.TotalOverlap
@@ -242,11 +244,33 @@ Namespace Ecospace
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get the number of assessed time steps for which no data could be
+        ''' loaded.
+        ''' <seealso cref="NumOverlappingTimeSteps"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property NumError As Integer
+            Get
+                Return Me.m_iNumFullSpatialOverlap
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Convert the dataset compatibility assessment to a string.
         ''' </summary>
         ''' <returns>The dataset compatibility assessment, converted to a string.</returns>
         ''' -------------------------------------------------------------------
         Public Overrides Function ToString() As String
+
+            ' Avoid divisions by zero
+            Dim iNumTS As Integer = Math.Max(Me.m_iNumTimeSteps, 1)
+            Dim iNumOverlap As Integer = Math.Max(Me.m_iNumTimeOverlap, 1)
+
+            ' Errors first!
+            If (Me.m_iNumError > 0) Then
+                Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NODATA, CInt(100 * Me.m_iNumError / iNumOverlap))
+            End If
 
             Select Case Me.TemporalCompatibility
 
@@ -257,11 +281,12 @@ Namespace Ecospace
                     Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOOVERLAP, Me.m_iPercIndexed)
 
             End Select
+
             Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_COMPATIBILITY, _
                                  Me.m_iPercIndexed, _
-                                 CInt(100 * Me.m_iNumTimeOverlap / Me.m_iNumTimeSteps), _
-                                 CInt(100 * Me.m_iNumPartialSpatialOverlap / Me.m_iNumTimeOverlap), _
-                                 CInt(100 * Me.m_iNumFullSpatialOverlap / Me.m_iNumTimeOverlap))
+                                 CInt(100 * Me.m_iNumTimeOverlap / iNumTS), _
+                                 CInt(100 * Me.m_iNumPartialSpatialOverlap / iNumOverlap), _
+                                 CInt(100 * Me.m_iNumFullSpatialOverlap / iNumOverlap))
         End Function
 
 #End Region ' Public access
@@ -282,8 +307,8 @@ Namespace Ecospace
                                 iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
 
             ' Special case for datasets without temporal range
-            If (ds.TimeStart = Date.MinValue) And (ds.TimeEnd = Date.MaxValue) Then
-                iNumTimeSteps = 1
+            If (ds.TimeStart = Date.MinValue) Or (ds.TimeEnd = Date.MaxValue) Then
+                iNumTimeSteps = 0
             End If
 
             ' Initialize counters
@@ -295,7 +320,7 @@ Namespace Ecospace
 
             ' Protect against improper use
             If (core.ActiveEcospaceScenarioIndex = -1) Then Return False
-            If (iNumTimeSteps = 0) Then Return False
+            If (iNumTimeSteps < 0) Then Return False
 
             Dim iTimeEnd As Integer = iTimeStart + iNumTimeSteps
             Dim rcfEcospace As RectangleF = Me.ToRect(core.EcospaceBasemap.PosTopLeft, core.EcospaceBasemap.PosBottomRight)
@@ -314,6 +339,8 @@ Namespace Ecospace
                         ElseIf rcfMap.IntersectsWith(rcfEcospace) Then
                             Me.m_iNumPartialSpatialOverlap += 1
                         End If
+                    Else
+                        Me.m_iNumError += 1
                     End If
                 End If
             Next

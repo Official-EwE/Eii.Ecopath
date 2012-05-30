@@ -69,16 +69,24 @@ Namespace Ecospace
         Private m_uic As cUIContext = Nothing
         ''' <summary>Ecospace message handler to respond to.</summary>
         Private m_mhEcospace As cMessageHandler = Nothing
+        Private m_layerStartup As cEcospaceLayer = Nothing
 
 #End Region ' Private vars
 
 #Region " Construction / destruction "
 
-        Public Sub New(ByVal uic As cUIContext)
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="uic"></param>
+        ''' <param name="layer"></param>
+        ''' <remarks></remarks>
+        Public Sub New(ByVal uic As cUIContext, Optional layer As cEcospaceLayer = Nothing)
             MyBase.New()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint, True)
             Me.InitializeComponent()
             Me.UIContext = uic
+            Me.m_layerStartup = layer
         End Sub
 
 #End Region ' Construction / destruction
@@ -103,6 +111,7 @@ Namespace Ecospace
             Dim tnLayer As TreeNode = Nothing
             Dim layers() As cEcospaceLayer = Nothing
             Dim bHasExternalLayer As Boolean = False
+            Dim tnSelect As TreeNode = Nothing
 
             Debug.Assert(man IsNot Nothing)
 
@@ -134,6 +143,13 @@ Namespace Ecospace
                         tnAdapter.Nodes.Add(tnLayer)
                         ' Check whether any layer is connected to external data
                         bHasExternalLayer = bHasExternalLayer Or layer.IsExternalData
+
+                        ' Selection
+                        If (Me.m_layerStartup IsNot Nothing) Then
+                            If (Object.ReferenceEquals(Me.m_layerStartup, layer)) Then
+                                tnSelect = tnLayer
+                            End If
+                        End If
                     Next
 
                     ' Group layer not added yet?
@@ -157,6 +173,11 @@ Namespace Ecospace
 
             ' Update images
             Me.UpdateNodeImages()
+
+            ' Initialize selection
+            If (tnSelect IsNot Nothing) Then
+                Me.m_tvAdapters.SelectedNode = tnSelect
+            End If
 
             ' Ooh!
             Me.CenterToParent()

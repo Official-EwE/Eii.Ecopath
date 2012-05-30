@@ -2139,6 +2139,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Data for {0}% time steps could not be loaded.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NODATA() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NODATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0}% indexed, no external data found for the Ecospace run time.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOOVERLAP() As String
