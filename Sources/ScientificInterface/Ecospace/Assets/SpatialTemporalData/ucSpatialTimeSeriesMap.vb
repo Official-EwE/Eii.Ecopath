@@ -24,6 +24,7 @@ Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports System.Drawing.Drawing2D
 Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports EwECore.Ecospace
 
 #End Region ' Imports
 
@@ -214,7 +215,9 @@ Namespace Ecospace
             ' Abort if nothing to display
             If (rcfFocusExtent.Width = 0 Or rcfFocusExtent.Height = 0) Then Return
 
-            Dim sScale As Single = CSng(Math.Min(rc.Height / (rcfFocusExtent.Height * 3), rc.Width / (rcfFocusExtent.Width * 3)))
+            ' Scale to 120% of the focus area OR the focus area + 3 degrees, whatever is largest
+            Dim sScale As Single = CSng(Math.Min(rc.Height / (Math.Max(rcfFocusExtent.Height + 3, rcfFocusExtent.Height * 1.2)), _
+                                                 rc.Width / (Math.Max(rcfFocusExtent.Width + 3, rcfFocusExtent.Width * 1.2))))
             Dim dx As Single = rc.Width / 2.0! - (rcfFocusExtent.X + rcfFocusExtent.Width / 2.0!) * sScale
             Dim dy As Single = rc.Height / 2.0! - (rcfFocusExtent.Y + rcfFocusExtent.Height / 2.0!) * sScale
             Dim rcfViewExtent As New RectangleF(rcfFocusExtent.X - rc.Width / 2.0! / sScale, rcfFocusExtent.Y - rc.Height / 2.0! / sScale, rc.Width / sScale, rc.Height / sScale)
@@ -246,9 +249,20 @@ Namespace Ecospace
 
             If (Me.m_lExternalDataMapExtents.Count = 0) Then Return
 
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, Me.m_ds)
             Dim clrFillFull As Color = Color.FromKnownColor(KnownColor.LightBlue)
-            Dim clrFillLight As Color = cColorUtils.GetVariant(clrFillFull, 0.5!)
             Dim clrOutlineFull As Color = Color.FromKnownColor(KnownColor.Blue)
+            Dim bError As Boolean = False
+
+            Select Case comp.SpatialCompatibility
+                Case cDatasetCompatilibity.eCompatibilityTypes.Unknown, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoOverlap
+                    clrFillFull = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    clrOutlineFull = clrFillFull
+            End Select
+
+            Dim clrFillLight As Color = cColorUtils.GetVariant(clrFillFull, 0.5!)
             Dim clrOutlineLight As Color = cColorUtils.GetVariant(clrOutlineFull, 0.5!)
 
             ' - Fills -

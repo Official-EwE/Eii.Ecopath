@@ -24,6 +24,7 @@ Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEPlugin
+Imports EwECore.Ecospace
 
 #End Region ' Imports
 
@@ -379,8 +380,16 @@ Namespace Ecospace.Controls
             Dim clrFill As Color = Color.LightGreen
             Dim clrData As Color = Color.DarkGreen
             Dim clrText As Color = SystemColors.ControlText
-            Dim clrTextFill As Color = clrFill
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
+
+            Select Case comp.SpatialCompatibility
+                Case cDatasetCompatilibity.eCompatibilityTypes.Unknown, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoOverlap
+                    clrData = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+                    clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            End Select
+            Dim clrTextFill As Color = clrFill
 
             Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
             fmt.LineAlignment = StringAlignment.Center
