@@ -264,8 +264,10 @@ Friend Class cDBUpdate6_02_00_01
                 iRow = CInt(reader("InRow"))
                 iCol = CInt(reader("InCol"))
 
-                dataPort(i, iRow, iCol) = CInt(IIf(CInt(reader("PortID")) > 0, 1, 0))
-                dataSailingCost(i, iRow, iCol) = CSng(reader("SailCost"))
+                If (iRow <= InRow) And (iCol <= InCol) Then
+                    dataPort(i, iRow, iCol) = CInt(IIF(CInt(reader("PortID")) > 0, 1, 0))
+                    dataSailingCost(i, iRow, iCol) = CSng(reader("SailCost"))
+                End If
 
             End While
             db.ReleaseReader(reader)
@@ -279,7 +281,9 @@ Friend Class cDBUpdate6_02_00_01
 
                 iRow = CInt(reader("InRow"))
                 iCol = CInt(reader("InCol"))
-                dataHabCap(iRow, iCol, i) = CSng(reader("Capacity"))
+                If (iRow <= InRow) And (iCol <= InCol) Then
+                    dataHabCap(iRow, iCol, i) = CSng(reader("Capacity"))
+                End If
 
             End While
             db.ReleaseReader(reader)
@@ -293,7 +297,9 @@ Friend Class cDBUpdate6_02_00_01
 
                 iRow = CInt(reader("InRow"))
                 iCol = CInt(reader("InCol"))
-                dataImportance(iRow, iCol, i) = CSng(reader("Weight"))
+                If (iRow <= InRow) And (iCol <= InCol) Then
+                    dataImportance(iRow, iCol, i) = CSng(reader("Weight"))
+                End If
 
             End While
             db.ReleaseReader(reader)
