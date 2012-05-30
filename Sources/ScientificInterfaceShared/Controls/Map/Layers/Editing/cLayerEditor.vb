@@ -57,6 +57,8 @@ Namespace Controls.Map.Layers
         ''' <summary>UI context to operate on.</summary>
         Private m_uic As cUIContext = Nothing
 
+        Private m_bEditing As Boolean = False
+
         ' === FEEDBACK SUPPORT ===
         Private Shared s_iCursorSize As Integer = 1
 
@@ -242,6 +244,7 @@ Namespace Controls.Map.Layers
         Public Overridable Sub StartEdit(ByVal ptClick As Point, ByVal args As MouseEventArgs)
 
             If (Me.GUI Is Nothing) Or (Not Me.IsEditable) Then Return
+            Me.m_bEditing = True
             ' Notify the editor GUI, if any
             Me.GUI.StartEdit(Me)
 
@@ -357,7 +360,9 @@ Namespace Controls.Map.Layers
                                                ByVal ptClick As Point)
             If (Not Me.IsEditable) Then Return
             Me.Layer.Value(ptSet.Y, ptSet.X) = value
-            Me.Layer.Update(cLayer.eChangeFlags.Map, True)
+            If Not Me.m_bEditing Then
+                Me.Layer.Update(cLayer.eChangeFlags.Map, True)
+            End If
         End Sub
 
         Public ReadOnly Property CanSmooth() As Boolean
