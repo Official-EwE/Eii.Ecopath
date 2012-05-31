@@ -2868,7 +2868,13 @@ Public Class cCore
         Me.m_EwEModel.AllowValidation = True
 
         ' Update relevant unit(s) in Ecopath
-        Me.m_EcoPathData.ModelUnitCurrency = DirectCast(Me.m_EcoPathData.currUnitIndex, eUnitCurrencyType)
+        '  Me.m_EcoPathData.ModelUnitCurrency = DirectCast(Me.m_EcoPathData.currUnitIndex, eUnitCurrencyType)
+
+        'HACK BUG FIX 30-May-2012 Changing the units did not effect the respiration output in the interface
+        'The interface and database use Me.m_EcoPathData.ModelUnitCurrency the Ecopath Codes uses Me.m_EcoPathData.currUnitIndex
+        'These where not in sync currUnitIndex was never updated to ModelUnitCurrency
+        'This should be fixed by removing ModelUnitCurrency and just using currUnitIndex
+        Me.m_EcoPathData.currUnitIndex = Me.m_EcoPathData.ModelUnitCurrency
 
         Me.m_EwEModel.ResetStatusFlags()
         Return True
@@ -2899,6 +2905,11 @@ Public Class cCore
         ' Do not update LastSaved; exclusively set by core
 
         ' Update relevant unit(s) in Ecopath
+        'HACK BUG FIX 30-May-2012 Changing the units did not effect the respiration output in the interface
+        'The interface and database use Me.m_EcoPathData.ModelUnitCurrency the Ecopath Codes uses Me.m_EcoPathData.currUnitIndex
+        'These where not in sync currUnitIndex was never updated
+        'This should be fixed by removing ModelUnitCurrency
+        Me.m_EcoPathData.currUnitIndex = Me.m_EcoPathData.ModelUnitCurrency
 
         Me.m_EcoPathData.isEcospaceModelCoupled = Me.m_EwEModel.isEcoSpaceModelCoupled
 
@@ -4442,6 +4453,10 @@ Public Class cCore
 
             Dim sTroughput As Single = Me.m_EcoPathData.Consum + Me.m_EcoPathData.SumEx + Me.m_EcoPathData.Dt + Me.m_EcoPathData.RTZ
 
+            Dim bNutrientUnits As Boolean = (m_EcoPathData.currUnitIndex = eUnitCurrencyType.Nitrogen Or _
+                                            m_EcoPathData.currUnitIndex = eUnitCurrencyType.Phosporous Or _
+                                            m_EcoPathData.currUnitIndex = eUnitCurrencyType.CustomNutrient)
+
             Me.m_EcopathStats.TotalConsumption = Me.m_EcoPathData.Consum
             Me.m_EcopathStats.TotalExports = Me.m_EcoPathData.SumEx
             Me.m_EcopathStats.TotalRespFlow = Me.m_EcoPathData.RTZ
@@ -4477,6 +4492,12 @@ Public Class cCore
 
                 Me.m_EcopathStats.NetSystemProduction = Me.m_EcoPathData.PProd - Me.m_EcoPathData.RTZ
                 Me.m_EcopathStats.TotalPB = Me.m_EcoPathData.PProd / Me.m_EcoPathData.SumBio
+            End If
+
+            'No Respiration if the Ecopath units are nutrients 
+            If bNutrientUnits Then
+                Me.m_EcopathStats.TotalPResp = cCore.NULL_VALUE
+                Me.m_EcopathStats.NetSystemProduction = cCore.NULL_VALUE
             End If
 
             If (sTroughput > 0) Then
