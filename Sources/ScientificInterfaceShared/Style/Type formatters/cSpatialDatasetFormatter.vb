@@ -47,18 +47,23 @@ Namespace Style
                     Dim obj As ISpatialDataSet = DirectCast(value, ISpatialDataSet)
                     Select Case descriptor
                         Case eDescriptorTypes.Name
-                            If (obj.TimeStart = DateTime.MinValue) Then
-                                If (obj.TimeEnd = DateTime.MaxValue) Then
-                                    Return obj.DisplayName
+                            If (obj.IsConfigured) Then
+
+                                If (obj.TimeStart = DateTime.MinValue) Then
+                                    If (obj.TimeEnd = DateTime.MaxValue) Then
+                                        Return obj.DisplayName
+                                    Else
+                                        Return String.Format(My.Resources.LABEL_VALUE_UPTO, obj.DisplayName, obj.TimeEnd.ToShortDateString)
+                                    End If
                                 Else
-                                    Return String.Format(My.Resources.LABEL_VALUE_UPTO, obj.DisplayName, obj.TimeEnd.ToShortDateString)
+                                    If (obj.TimeEnd = DateTime.MaxValue) Then
+                                        Return String.Format(My.Resources.LABEL_VALUE_FROM, obj.DisplayName, obj.TimeStart.ToShortDateString)
+                                    Else
+                                        Return String.Format(My.Resources.LABEL_VALUE_RANGE, obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
+                                    End If
                                 End If
                             Else
-                                If (obj.TimeEnd = DateTime.MaxValue) Then
-                                    Return String.Format(My.Resources.LABEL_VALUE_FROM, obj.DisplayName, obj.TimeStart.ToShortDateString)
-                                Else
-                                    Return String.Format(My.Resources.LABEL_VALUE_RANGE, obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
-                                End If
+                                Return obj.DisplayName()
                             End If
 
                         Case eDescriptorTypes.Description
