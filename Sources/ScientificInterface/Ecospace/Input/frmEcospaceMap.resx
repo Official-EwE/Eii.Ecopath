@@ -145,7 +145,7 @@
     <value>m_zoomToolbar</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.3.7313.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -172,7 +172,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.3.7313.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -194,42 +194,6 @@
   </data>
   <data name="m_tlpControls.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
-  </data>
-  <data name="m_hdrLayers.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_hdrLayers.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_hdrLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 63</value>
-  </data>
-  <data name="m_hdrLayers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_hdrLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 21</value>
-  </data>
-  <data name="m_hdrLayers.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="m_hdrLayers.Text" xml:space="preserve">
-    <value>Layers</value>
-  </data>
-  <data name="m_hdrLayers.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrLayers.Name" xml:space="preserve">
-    <value>m_hdrLayers</value>
-  </data>
-  <data name="&gt;&gt;m_hdrLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7313.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrLayers.Parent" xml:space="preserve">
-    <value>m_tlpControls</value>
-  </data>
-  <data name="&gt;&gt;m_hdrLayers.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="m_tsEditBasemapThingies.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
@@ -298,19 +262,49 @@
     <value>m_tsEditBasemapThingies</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7313.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_ucLayers.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_ucLayers.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_ucLayers.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 40</value>
+  </data>
+  <data name="m_ucLayers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_ucLayers.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 525</value>
+  </data>
+  <data name="m_ucLayers.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;m_ucLayers.Name" xml:space="preserve">
+    <value>m_ucLayers</value>
+  </data>
+  <data name="&gt;&gt;m_ucLayers.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_ucLayers.Parent" xml:space="preserve">
+    <value>m_tlpControls</value>
+  </data>
+  <data name="&gt;&gt;m_ucLayers.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_plEditor.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <data name="m_plEditor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 40</value>
+    <value>0, 565</value>
   </data>
   <data name="m_plEditor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -333,36 +327,6 @@
   <data name="&gt;&gt;m_plEditor.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_ucLayers.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_ucLayers.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_ucLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 84</value>
-  </data>
-  <data name="m_ucLayers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_ucLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 504</value>
-  </data>
-  <data name="m_ucLayers.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;m_ucLayers.Name" xml:space="preserve">
-    <value>m_ucLayers</value>
-  </data>
-  <data name="&gt;&gt;m_ucLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.3.7313.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_ucLayers.Parent" xml:space="preserve">
-    <value>m_tlpControls</value>
-  </data>
-  <data name="&gt;&gt;m_ucLayers.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="m_tlpControls.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -370,7 +334,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_tlpControls.RowCount" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_tlpControls.Size" type="System.Drawing.Size, System.Drawing">
     <value>184, 588</value>
@@ -391,7 +355,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpControls.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_hdrLayers" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_tsEditBasemapThingies" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plEditor" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_ucLayers" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_tsEditBasemapThingies" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_ucLayers" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plEditor" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,Percent,100,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;SplitContainer1.Panel2.Name" xml:space="preserve">
     <value>SplitContainer1.Panel2</value>
@@ -466,6 +430,6 @@
     <value>frmEcospaceMap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7313.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

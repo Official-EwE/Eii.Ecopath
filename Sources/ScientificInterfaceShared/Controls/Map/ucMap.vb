@@ -91,7 +91,10 @@ Namespace Controls.Map
 
         Public Function SaveToBitmap(ByVal strFileName As String, ByVal format As System.Drawing.Imaging.ImageFormat) As Boolean
 
-            Dim szCellSize As SizeF = Me.GetCellSize()
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim InRow As Integer = bm.InRow
+            Dim InCol As Integer = bm.InCol
+            Dim szCellSize As SizeF = Me.GetCellSize(InRow, InCol)
             Try
                 Dim bmp As New Bitmap(CInt(Me.Basemap.InCol * szCellSize.Width), CInt(Me.Basemap.InRow * szCellSize.Height))
                 Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
@@ -260,8 +263,11 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
 
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim InRow As Integer = bm.InRow
+            Dim InCol As Integer = bm.InCol
             Dim bShiftPressed As Boolean = (Control.ModifierKeys = Keys.Shift)
-            Dim ptCellCur As Point = Me.GetCellIndex(New Point(e.X, e.Y))
+            Dim ptCellCur As Point = Me.GetCellIndex(New Point(e.X, e.Y), InRow, InCol)
 
             If (Me.CanEdit = False) Then Return
 
@@ -269,7 +275,7 @@ Namespace Controls.Map
 
             If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
 
-                rl.Editor.Pickup(Me.GetCellIndex(e.Location))
+                rl.Editor.Pickup(Me.GetCellIndex(e.Location, InRow, InCol))
                 Me.Capture = False
 
             ElseIf ((e.Button And MouseButtons.Left) > 0) Then
@@ -402,15 +408,18 @@ Namespace Controls.Map
 
             If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
 
-            Dim ptCellFrom As Point = Me.GetCellIndex(Me.m_ptScreenPrevious)
-            Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim InRow As Integer = bm.InRow
+            Dim InCol As Integer = bm.InCol
+            Dim ptCellFrom As Point = Me.GetCellIndex(Me.m_ptScreenPrevious, InRow, InCol)
+            Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur, InRow, InCol)
             Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
             Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
             Dim rl As cRasterLayer = DirectCast(Me.m_layerSelected, cRasterLayer)
 
             rl.Editor.Edit(ptCellFrom, ptCellTo, _
                                            New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
-                                           Me.GetCellSize(), _
+                                           Me.GetCellSize(InRow, InCol), _
                                            e, _
                                            ptUpdateMin, ptUpdateMax)
 
@@ -456,18 +465,21 @@ Namespace Controls.Map
             ' Sanity check
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim InRow As Integer = bm.InRow
+            Dim InCol As Integer = bm.InCol
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim l As cLayer = Nothing
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-            Dim ldDepth As cEcospaceLayer = Me.Basemap.LayerDepth()
-            Dim szCell As SizeF = Me.GetCellSize()
+            Dim ldDepth As cEcospaceLayerDepth = Me.Basemap.LayerDepth()
+            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
             Dim ptCell As Point = Nothing
             Dim rcScreen As Rectangle = Nothing
             Dim bDrawCell As Boolean = False
 
             ' Calc area to invalidate
-            Dim p1 As Point = Me.GetCellPos(ptCellFrom)
-            Dim p2 As Point = Me.GetCellPos(ptCellTo)
+            Dim p1 As Point = Me.GetCellPos(ptCellFrom, InRow, InCol)
+            Dim p2 As Point = Me.GetCellPos(ptCellTo, InRow, InCol)
 
             ' Sort coords
             Dim iXFrom As Integer = Math.Min(p1.X, p2.X)
@@ -485,7 +497,6 @@ Namespace Controls.Map
             iXTo = Math.Min(Me.Basemap.InCol, Math.Max(ptCellFrom.X, ptCellTo.X) + 1)
             iYTo = Math.Min(Me.Basemap.InRow, Math.Max(ptCellFrom.Y, ptCellTo.Y) + 1)
 
-            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim ptTL As New PointF(bm.ColToLon(iXFrom), bm.RowToLat(iYFrom))
             Dim ptBR As New PointF(bm.ColToLon(iXTo), bm.RowToLat(iYTo))
 
@@ -504,13 +515,13 @@ Namespace Controls.Map
                                 For Y As Integer = iYFrom To iYTo
 
                                     ptCell = New Point(X, Y)
-                                    Dim rcCell As Rectangle = Me.GetCellRect(ptCell)
+                                    Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)
 
                                     Select Case rl.Data.DataType
                                         Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort
                                             bDrawCell = True
                                         Case Else
-                                            bDrawCell = (CInt(ldDepth.Cell(Y, X)) > 0)
+                                            bDrawCell = ldDepth.IsWaterCell(Y, X)
                                     End Select
 
                                     If bDrawCell Then
@@ -567,8 +578,11 @@ Namespace Controls.Map
             ' Sanity check
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
 
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim InRow As Integer = bm.InRow
+            Dim InCol As Integer = bm.InCol
             If Me.CanEdit Then
-                Me.Cursor = DirectCast(Me.m_layerSelected, cRasterLayer).Editor.Cursor(Me.GetCellSize())
+                Me.Cursor = DirectCast(Me.m_layerSelected, cRasterLayer).Editor.Cursor(Me.GetCellSize(bm.InRow, bm.InCol))
             Else
                 Me.Cursor = Cursors.Default
             End If
@@ -576,20 +590,21 @@ Namespace Controls.Map
 
         Private Sub SetBrushCursor(ByVal iBrushSize As Integer)
 
-            Dim szCell As SizeF = Me.GetCellSize()
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim szCell As SizeF = Me.GetCellSize(bm.InRow, bm.InCol)
             Dim ptIconSize As New Size(CInt(szCell.Width * iBrushSize), CInt(szCell.Height * iBrushSize))
 
             If iBrushSize = 0 Then
                 Me.Cursor = Cursors.Default
             Else
                 Try
-                    Dim bm As New Bitmap(ptIconSize.Width + 1, ptIconSize.Height + 1)
-                    Dim g As Graphics = Graphics.FromImage(bm)
+                    Dim bmp As New Bitmap(ptIconSize.Width + 1, ptIconSize.Height + 1)
+                    Dim g As Graphics = Graphics.FromImage(bmp)
 
                     g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
-                    g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bm.Width, bm.Height))
+                    g.FillRectangle(Brushes.Transparent, New Rectangle(0, 0, bmp.Width, bmp.Height))
                     g.DrawEllipse(Pens.Gray, 0, 0, ptIconSize.Width, ptIconSize.Height)
-                    Me.Cursor = New Cursor(bm.GetHicon())
+                    Me.Cursor = New Cursor(bmp.GetHicon())
                     g.Dispose()
                     bm.Dispose()
 
@@ -716,8 +731,8 @@ Namespace Controls.Map
         ''' Calculate the width and height of a cell.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellSize() As SizeF
-            Return New SizeF(CSng(Me.Width / Me.Basemap.InCol), CSng(Me.Height / Me.Basemap.InRow))
+        Private Function GetCellSize(InRow As Integer, InCol As Integer) As SizeF
+            Return New SizeF(CSng(Me.Width / InCol), CSng(Me.Height / InRow))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -725,10 +740,10 @@ Namespace Controls.Map
         ''' Calculate the cell screen rectangle of a cell, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellRect(ByVal ptCellIndex As Point) As Rectangle
+        Private Function GetCellRect(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Rectangle
 
-            Dim ptCell As Point = Me.GetCellPos(ptCellIndex)
-            Dim szCell As SizeF = Me.GetCellSize()
+            Dim ptCell As Point = Me.GetCellPos(ptCellIndex, InRow, InCol)
+            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
 
             Return New Rectangle( _
                     ptCell.X, _
@@ -744,9 +759,9 @@ Namespace Controls.Map
         ''' Calculate the top left screen coordinates of a cell, given its index.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellPos(ByVal ptCellIndex As Point) As Point
+        Private Function GetCellPos(ByVal ptCellIndex As Point, InRow As Integer, InCol As Integer) As Point
 
-            Dim szCell As SizeF = Me.GetCellSize()
+            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
             Return New Point( _
                     CInt(Math.Floor((ptCellIndex.X - 1) * szCell.Width)), _
                     CInt(Math.Floor((ptCellIndex.Y - 1) * szCell.Height)) _
@@ -759,9 +774,9 @@ Namespace Controls.Map
         ''' Calculate the index of a cell, based on a given screen point.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Function GetCellIndex(ByVal ptScreen As Point) As Point
+        Private Function GetCellIndex(ByVal ptScreen As Point, InRow As Integer, InCol As Integer) As Point
 
-            Dim szCell As SizeF = Me.GetCellSize()
+            Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
             Dim iColIndex As Integer = CInt((ptScreen.X + 0.5 * szCell.Width) / szCell.Width)
             Dim iRowIndex As Integer = CInt((ptScreen.Y + 0.5 * szCell.Height) / szCell.Height)
 

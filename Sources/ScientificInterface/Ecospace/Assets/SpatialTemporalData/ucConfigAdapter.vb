@@ -15,6 +15,8 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 Imports System.Threading
 Imports EwECore
@@ -22,6 +24,8 @@ Imports EwECore.Ecospace
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.SpatialData
+
+#End Region ' Imports
 
 Namespace Ecospace.Controls
 
@@ -600,6 +604,7 @@ Namespace Ecospace.Controls
             End If
 
             Dim rst As ISpatialRaster = Nothing
+            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
             Dim dCellSize As Double = bm.CellSize
             Dim dMean As Double = 0.0
             Dim dTotal As Double = 0.0
@@ -621,15 +626,26 @@ Namespace Ecospace.Controls
                     If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                         rst = Me.m_adt.Dataset(iIndex).GetRaster(Me.m_adt.Converter(iIndex), Me.m_layer.Name())
 
-                        lNumValCells = rst.NumValueCells
-                        dMean = rst.Mean
+                        For iRow As Integer = 1 To bm.InRow
+                            For iCol As Integer = 1 To bm.InCol
+                                If depth.IsWaterCell(iRow, iCol) Then
+                                    Dim dval As Double = rst.Cell(iRow, iCol)
+                                    If (dval <> cCore.NULL_VALUE And dval <> rst.NoData) Then
+                                        lTotal += 1
+                                        dTotal += dval
+                                    End If
+                                End If
+                            Next
+                        Next
+                        'lNumValCells = rst.NumValueCells
+                        'dMean = rst.Mean
 
-                        If (lNumValCells <> cCore.NULL_VALUE) And (dMean <> cCore.NULL_VALUE) Then
-                            dTotal += rst.Mean * rst.NumValueCells
-                            lTotal += rst.NumValueCells
-                        Else
-                            iNumErrors += 1
-                        End If
+                        'If (lNumValCells <> cCore.NULL_VALUE) And (dMean <> cCore.NULL_VALUE) Then
+                        '    dTotal += rst.Mean * rst.NumValueCells
+                        '    lTotal += rst.NumValueCells
+                        'Else
+                        '    iNumErrors += 1
+                        'End If
                         ds.Unlock()
                     End If
 
@@ -646,8 +662,7 @@ Namespace Ecospace.Controls
                 Me.m_uic.Core.Messages.SendMessage(msg)
             End If
 
-            Me.m_fp.Value = 1 / (dTotal / Math.Max(1, lTotal))
-            ' Me.m_fp.Value = (dTotal / Math.Max(1, lTotal))
+            Me.m_fp.Value = (dTotal / Math.Max(1, lTotal))
             Me.LayerChanged()
 
         End Sub

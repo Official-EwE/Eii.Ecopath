@@ -46,7 +46,6 @@ Namespace Ecospace.Basemap
             Me.m_zoomToolbar = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
             Me.m_zoomContainer = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
             Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tsEditBasemapThingies = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.tsbEditBasemap = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbDefineHabitats = New System.Windows.Forms.ToolStripButton()
@@ -95,19 +94,10 @@ Namespace Ecospace.Basemap
             'm_tlpControls
             '
             resources.ApplyResources(Me.m_tlpControls, "m_tlpControls")
-            Me.m_tlpControls.Controls.Add(Me.m_hdrLayers, 0, 2)
             Me.m_tlpControls.Controls.Add(Me.m_tsEditBasemapThingies, 0, 0)
-            Me.m_tlpControls.Controls.Add(Me.m_plEditor, 0, 1)
-            Me.m_tlpControls.Controls.Add(Me.m_ucLayers, 0, 3)
+            Me.m_tlpControls.Controls.Add(Me.m_ucLayers, 0, 1)
+            Me.m_tlpControls.Controls.Add(Me.m_plEditor, 0, 2)
             Me.m_tlpControls.Name = "m_tlpControls"
-            '
-            'm_hdrLayers
-            '
-            Me.m_hdrLayers.CanCollapseParent = False
-            Me.m_hdrLayers.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrLayers, "m_hdrLayers")
-            Me.m_hdrLayers.IsCollapsed = False
-            Me.m_hdrLayers.Name = "m_hdrLayers"
             '
             'm_tsEditBasemapThingies
             '
@@ -143,6 +133,7 @@ Namespace Ecospace.Basemap
             'm_ucLayers
             '
             resources.ApplyResources(Me.m_ucLayers, "m_ucLayers")
+            Me.m_ucLayers.BackColor = System.Drawing.SystemColors.Control
             Me.m_ucLayers.Name = "m_ucLayers"
             Me.m_ucLayers.UIContext = Nothing
             '
@@ -175,7 +166,6 @@ Namespace Ecospace.Basemap
         Private WithEvents m_tsbDefineMPA As System.Windows.Forms.ToolStripButton
         Private WithEvents m_plEditor As System.Windows.Forms.Panel
         Private WithEvents m_zoomContainer As ucMapZoom
-        Private WithEvents m_hdrLayers As cEwEHeaderLabel
         Private WithEvents m_zoomToolbar As ucMapZoomToolbar
         Private WithEvents m_ucLayers As ScientificInterfaceShared.Controls.Map.ucLayersControl
 
