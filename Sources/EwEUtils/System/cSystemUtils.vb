@@ -240,6 +240,19 @@ Namespace SystemUtilities
 
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the system is running on battery power.
+        ''' </summary>
+        ''' <returns>True if the system is running on battery power.</returns>
+        ''' <remarks>
+        ''' http://stackoverflow.com/questions/241142/c-sharp-net-how-to-check-if-were-running-on-battery
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsBatteryPower() As Boolean
+            Return System.Windows.Forms.SystemInformation.PowerStatus.PowerLineStatus = Windows.Forms.PowerLineStatus.Offline
+        End Function
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the path for storing application settings
