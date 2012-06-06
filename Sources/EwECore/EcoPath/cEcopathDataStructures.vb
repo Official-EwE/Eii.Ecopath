@@ -138,6 +138,10 @@ Public Class cEcopathDataStructures
     ''' <remarks>Fraction of the food that is not assimilated.</remarks>
     Public GS() As Single
 
+    ''' <summary>Unassimilation / consumption (ratio) for Energy Currency units ONLY</summary>
+    ''' <remarks>Fraction of the food that is not assimilated.</remarks>
+    Public GSEng() As Single
+
     'Input Values are user entered values.
     'Inputs are the values that can be edited by a user, get saved to the database and displayed as basic inputs
     'each array will have a companion used for modeling that does not have 'input' i.e. EEinput() and EE() 
@@ -727,6 +731,7 @@ Public Class cEcopathDataStructures
         End If
 
     End Sub
+
     '''<summary>
     '''     Computes
     '''M2(): Predator mortality for group i.
@@ -746,9 +751,6 @@ Public Class cEcopathDataStructures
         Dim strMsg As String = ""
         Dim i As Integer, j As Integer
         Dim b_resp_below_zero As Boolean = False
-
-        'jb variable from v-5 not used here
-        'Dim pt As Integer, DetC As Integer
 
         RTZ = 0
         Consum = 0
@@ -771,7 +773,7 @@ Public Class cEcopathDataStructures
                     Prod = EE(i) * B(i) * PB(i) + FlowToDet(i)
 
                     ' FlowToDet(i) is the total flow to Detritus
-                    If currUnitIndex = eUnitCurrencyType.Nitrogen Or currUnitIndex = eUnitCurrencyType.Phosporous Or currUnitIndex = eUnitCurrencyType.CustomNutrient Then
+                    If Me.areUnitCurrencyNutrients() Then
                         Resp(i) = 0 'Nutrient       B(i) * QB(i) - prod
                     ElseIf PP(i) < 1 Then
                         Resp(i) = B(i) * QB(i) - (1 - PP(i)) * Prod
@@ -789,9 +791,6 @@ Public Class cEcopathDataStructures
 
             If Resp(i) < 0 Then b_resp_below_zero = True 'pt = 2
 
-            'jb 7-dec-04 DetC never used
-            'If det(0, i) < 0 Then DetC = 1
-
         Next i
 
         'jb min_B_QB was called min
@@ -804,9 +803,7 @@ Public Class cEcopathDataStructures
         Next i
 
         If b_resp_below_zero Then
-            strMsg = "WARNING : Respiration cannot be negative. Summary statistics for the system"
-            strMsg = strMsg & " are suppressed. Please check parameters and rerun program."
-
+            strMsg = My.Resources.CoreMessages.ECOPATH_NEGATIVE_RESPIR_WARNING
             Me.m_messages.AddMessage(New cMessage(strMsg, eMessageType.ErrorEncountered, _
                                                     eCoreComponentType.EcoPath, eMessageImportance.Warning))
         End If
@@ -1043,6 +1040,14 @@ Public Class cEcopathDataStructures
         Next iPred
     End Sub
 
+
+    Public Function areUnitCurrencyNutrients() As Boolean
+
+        Return Me.currUnitIndex = eUnitCurrencyType.Nitrogen Or _
+                                                    Me.currUnitIndex = eUnitCurrencyType.Phosporous Or _
+                                                    Me.currUnitIndex = eUnitCurrencyType.CustomNutrient
+    End Function
+
 #End Region
 
 #Region "Debugging stuff"
@@ -1112,16 +1117,59 @@ Public Class cEcopathDataStructures
     ''' The core can then access the logic via a different interface.
     '''  </remarks>
     Public Sub onPostInitialization()
-        'not much at this time
-
+        Dim igrp As Integer
+        Dim bGSWarning As Boolean = False
         'GS = zero if group is Primary producer
-        For iGroup As Integer = 1 To NumGroups
-            If PP(iGroup) = 1 Then
-                GS(iGroup) = 0
+        For igrp = 1 To NumGroups
+            If PP(igrp) = 1 Then
+                GS(igrp) = 0
             End If
-        Next
+
+            'Constrain GS to a percentage
+            'This should not happen in EwE6 
+            'This check was in a bunch of places in EwE5 it is centralized here
+            'In EwE6 GS() should be constrained by the interface or the importer
+            If GS(igrp) > 1 Then
+                GS(igrp) = GS(igrp) / 100
+                bGSWarning = True
+            End If
+
+        Next 'For iGroup As Integer = 1 To NumGroups
+
+        'Make backup copy of GS() 
+        'that can be used to swap GS if currUnitIndex is changed
+        ReDim Me.GSEng(Me.NumGroups)
+        If Me.areUnitCurrencyNutrients Then
+            'Model Currency is Nurtient
+            'set GSEng(0) to default values
+            For igrp = 1 To NumLiving
+                GSEng(igrp) = 0.2
+                If PP(igrp) = 1 Then
+                    GS(igrp) = 0
+                End If
+            Next
+
+        Else
+            'Energy Currency Units
+            'Make a copy of the original GS values 
+            Array.Copy(GS, GSEng, GS.Length)
+
+        End If
+
+        Try
+            If bGSWarning Then
+                Dim strmsg As String = My.Resources.CoreMessages.ECOPATH_GS_WARNING
+                Me.m_messages.AddMessage(New cMessage(strmsg, eMessageType.ErrorEncountered, _
+                                                eCoreComponentType.EcoPath, eMessageImportance.Warning))
+            End If
+
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
+
 
 #End Region
 
@@ -1138,7 +1186,6 @@ Public Class cEcopathDataStructures
             End If
 
             dest.bInitialized = bInitialized
-
 
             GroupName.CopyTo(dest.GroupName, 0)    'was Specie()
             'GroupDBID.CopyTo(dest.GroupDBID, 0)        'Do not copy IDs!

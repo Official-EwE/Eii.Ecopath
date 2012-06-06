@@ -347,6 +347,47 @@ Namespace Ecopath
         End Function
 
         ''' <summary>
+        ''' Set GS Unassimilated Consumption based on the Model Currency Units <see cref="cEcopathDataStructures.currUnitIndex"> currUnitIndex </see>
+        ''' </summary>
+        ''' <remarks>
+        ''' If Currency is Nutrient then GS has a default of (1 - Me.GE(igrp))
+        ''' Otherwise it is defined by the user with a default of 0.2.
+        ''' </remarks>
+        Public Sub onModelUnitCurrencyChanged()
+
+            Try
+
+                If Me.m_Data.areUnitCurrencyNutrients Then
+                    'NUTRIENT units set GS to default
+
+                    'GE is not usually supplied by the user so make sure it has some values
+                    Me.EstimateGE()
+
+                    'Model Currency Unit are Nutrients 
+                    'Set default for GS = (1 - production / consumption) 
+                    'In this case GS is not editable
+                    For igrp As Integer = 1 To Me.m_Data.NumLiving
+                        Me.m_Data.GS(igrp) = CSng(IIF(Me.m_Data.GE(igrp) > 0, (1 - Me.m_Data.GE(igrp)), -99))
+                        If Me.m_Data.PP(igrp) = 1 Then
+                            Me.m_Data.GS(igrp) = 0
+                        End If
+                    Next igrp
+
+                Else
+                    'ENERGY Currency Units
+                    'Restore GS to its original values 
+                    'these could be default or values from the database
+                    Array.Copy(Me.m_Data.GSEng, Me.m_Data.GS, Me.m_Data.GS.Length)
+
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+
+        End Sub
+
+        ''' <summary>
         ''' Set the EstimateWhat(iGroup) in response to user input
         ''' </summary>
         ''' <remarks></remarks>
@@ -418,8 +459,8 @@ Namespace Ecopath
             Dim vs As cVariableStatus = Nothing
 
             For i = 1 To m_Data.NumLiving
-                Sum = CSng(IIf(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
-                Sum = Sum + CSng(IIf(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
+                Sum = CSng(IIF(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
+                Sum = Sum + CSng(IIF(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
                 Sum = CSng(Sum * m_Data.B(i))
 
                 MM2 = 0
@@ -459,7 +500,7 @@ Namespace Ecopath
 
                     Case eEstimateTypes.Migration
 
-                        Sum = CSng(IIf(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.B(i) * m_Data.BaBi(i), 0))
+                        Sum = CSng(IIF(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.B(i) * m_Data.BaBi(i), 0))
                         Sum = CSng(m_Data.B(i) * m_Data.PB(i) * m_Data.EE(i) - Sum - m_Data.BA(i) - m_Data.fCatch(i) - MM2)
                         If Sum < 0 Then
                             If (m_Data.Immig(i) <> -Sum) Then
@@ -490,6 +531,8 @@ Namespace Ecopath
 
         Friend Sub DetritusCalculations()
 
+            ' Me.m_Data.setGSForModelCurrency()
+
             CalcGS_Det_FlowToDet()            'det ij is flow of det from i to j
             Array.Clear(m_Data.DetEaten, 0, m_Data.NumGroups + 1)
             CalcDetEaten()
@@ -503,6 +546,7 @@ Namespace Ecopath
 
         Private Sub CalcGS_Det_FlowToDet()
             Dim i As Integer, j As Integer
+            ' Dim gs As Single
 
             For i = 0 To m_Data.NumGroups + m_Data.NumFleet
                 For j = 1 To m_Data.NumGroups + m_Data.NumFleet
@@ -511,13 +555,24 @@ Namespace Ecopath
             Next i
 
             For i = 1 To m_Data.NumLiving
+
                 m_Data.FlowToDet(i) = 0
-                If m_Data.currUnitIndex = eUnitCurrencyType.Nitrogen Or m_Data.currUnitIndex = eUnitCurrencyType.Phosporous Or m_Data.currUnitIndex = eUnitCurrencyType.CustomNutrient Then
-                    m_Data.GS(i) = CSng(IIf(m_Data.GE(i) > 0, (1 - m_Data.GE(i)), -99))
-                Else
-                    'modified 053196 eli.
-                    If m_Data.GS(i) > 1 Then m_Data.GS(i) = m_Data.GS(i) / 100
-                End If
+                'xxxxxxxxxxxxxxxxxx
+                'jb 5-June-2012 Bug fix if the Unit Currency got switched GS was mangled this caused issues when GS was used by other routines
+                'Use a local variable for GS
+                'gs = m_Data.GS(i)
+                'If m_Data.areUnitCurrencyNutrients() Then
+                '    'EwE5 Globaly changed GS if Unit Currency was nutrient 
+                '    'this causes a bug if the units are switched back
+                '    gs = CSng(IIF(m_Data.GE(i) > 0, (1 - m_Data.GE(i)), -99))
+                'End If
+                'If m_Data.currUnitIndex = eUnitCurrencyType.Nitrogen Or m_Data.currUnitIndex = eUnitCurrencyType.Phosporous Or m_Data.currUnitIndex = eUnitCurrencyType.CustomNutrient Then
+                '    m_Data.GS(i) = CSng(IIf(m_Data.GE(i) > 0, (1 - m_Data.GE(i)), -99))
+                'Else
+                '    'modified 053196 eli.
+                '    If m_Data.GS(i) > 1 Then m_Data.GS(i) = m_Data.GS(i) / 100
+                'End If
+                'xxxxxxxxxxxxxxxxxxxxxx
 
                 For j = m_Data.NumLiving + 1 To m_Data.NumGroups
                     m_Data.det(i, j) = m_Data.B(i) * m_Data.PB(i) * (1 - m_Data.EE(i)) * m_Data.DF(i, j - m_Data.NumLiving)
@@ -838,7 +893,7 @@ Namespace Ecopath
             m_Data.fCatch(Group) = sumValue
             m_Data.Ex(Group) = m_Data.fCatch(Group)
 
-            Sum = CSng(IIf(m_Data.Emig(Group) > 0 And m_Data.Emigration(Group) = 0 And m_Data.B(Group) > 0, m_Data.Emig(Group) * m_Data.B(Group), 0))
+            Sum = CSng(IIF(m_Data.Emig(Group) > 0 And m_Data.Emigration(Group) = 0 And m_Data.B(Group) > 0, m_Data.Emig(Group) * m_Data.B(Group), 0))
 
             If Group <= m_Data.NumLiving Then
                 m_Data.Ex(Group) = m_Data.Ex(Group) - m_Data.Immig(Group) + m_Data.Emigration(Group) + Sum
@@ -1020,15 +1075,15 @@ Namespace Ecopath
 
             For i = 1 To m_Data.NumLiving
                 If m_Data.QB(i) < 0 And m_Data.PP(i) = 1 Then m_Data.QB(i) = 0
-                missing(i, 1) = CBool(IIf(m_Data.BH(i) <= 0, True, False))
-                missing(i, 2) = CBool(IIf(m_Data.PB(i) < 0 And m_Data.GE(i) < 0, True, False))
-                missing(i, 3) = CBool(IIf(m_Data.QB(i) < 0 And m_Data.GE(i) < 0, True, False))
+                missing(i, 1) = CBool(IIF(m_Data.BH(i) <= 0, True, False))
+                missing(i, 2) = CBool(IIF(m_Data.PB(i) < 0 And m_Data.GE(i) < 0, True, False))
+                missing(i, 3) = CBool(IIF(m_Data.QB(i) < 0 And m_Data.GE(i) < 0, True, False))
 
                 'If i = 1 And m_Data.EE(i) > 0 Then
                 '    System.Console.WriteLine("EE ")
                 'End If
 
-                missing(i, 4) = CBool(IIf(m_Data.EE(i) < 0, True, False))
+                missing(i, 4) = CBool(IIF(m_Data.EE(i) < 0, True, False))
             Next i
         End Function
 
@@ -1444,7 +1499,7 @@ LoopCalc:
                 '040112VC: In case B is missing, BABi is entered, then estimate BA(i) again
                 For ji = 1 To m_Data.NumLiving
                     If m_Data.BA(ji) = 0 Then
-                        m_Data.BA(ji) = CSng(IIf(m_Data.BaBi(ji) <> 0 And m_Data.B(ji) > 0, m_Data.BaBi(ji) * m_Data.B(ji), m_Data.BA(ji)))
+                        m_Data.BA(ji) = CSng(IIF(m_Data.BaBi(ji) <> 0 And m_Data.B(ji) > 0, m_Data.BaBi(ji) * m_Data.B(ji), m_Data.BA(ji)))
                         'jb was m_data.BA(ji) = IIf(m_data.BaBi(ji) <> 0 And m_data.B(ji) > 0, m_data.BaBi(ji) * m_data.B(ji), m_data.BAi(ji))
                     End If
 
@@ -1873,8 +1928,8 @@ NextPivot:
                         If i = m_Data.NumLiving Then
                             If (m_Data.B(j) * m_Data.EE(j)) <> 0 Then
                                 '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
-                                Sum = CSng(IIf(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                                Sum = Sum + CSng(IIf(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
+                                Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
+                                Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
                                 Sum = Sum * m_Data.B(j)
                                 m_Data.PB(j) = CSng((MM2 + Sum + m_Data.BA(j) + m_Data.Emigration(j) - m_Data.Immig(j) + m_Data.fCatch(j)) / (m_Data.B(j) * m_Data.EE(j)))
                                 'Added mig above 15022000 per discussion with Kerim / Villy
@@ -1914,8 +1969,8 @@ NextPivot:
                         '031220VC Now has Emigi and BABi as rates, won't have values if Emigration and BA have.
                         '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
                     Next i
-                    Sum = CSng(IIf(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(IIf(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
+                    Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
                     Sum = Sum * m_Data.B(j)
 
                     If m_Data.B(j) * m_Data.PB(j) > 0 Then
@@ -1965,8 +2020,8 @@ nextJ:
                     Next i
                     If m_Data.QB(j) < 0 And m_Data.PP(j) < 0 Then GoTo nextJ '1680
                     '031220VC: Either BABi or BA is zero; Either Emigration or Emig is zero
-                    Sum = CSng(IIf(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(IIf(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
+                    Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
                     Only = m_Data.PB(j) * m_Data.EE(j) - m_Data.QB(j) * m_Data.DC(j, j) - Sum
                     ' There may be too much cannibalism when e.g. the biomass
                     ' of a group is changed and the EE is kept constant in the
@@ -2209,8 +2264,8 @@ nextJ:
                         If m_Data.DC(j, i) > 0 And SumQ >= 0 Then
                             If m_Data.B(i) > 0 And m_Data.PB(i) > 0 And m_Data.EE(i) >= 0 Then
                                 '031220VC:
-                                Sum = CSng(IIf(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
-                                Sum = Sum + CSng(IIf(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
+                                Sum = CSng(IIF(m_Data.BaBi(i) <> 0 And m_Data.BA(i) = 0, m_Data.BaBi(i), 0))
+                                Sum = Sum + CSng(IIF(m_Data.Emig(i) > 0 And m_Data.Emigration(i) = 0, m_Data.Emig(i), 0))
                                 Sum = Sum * m_Data.B(i)
                                 SumMi = m_Data.BA(i) + Sum + m_Data.Emigration(i) + m_Data.Immig(i) + m_Data.fCatch(i) + (1 - m_Data.EE(i)) * m_Data.PB(i) * m_Data.B(i)
                                 'Added mig above 15022000 per discussion with Kerim / Villy
@@ -2350,8 +2405,8 @@ nextJ:
                         If NoBQB(j) = 1 And i <> j Then AUL(i, j) = -m_Data.QB(j) * m_Data.DC(j, i)
                         'No QB
                         '031220VC Emigi and BABi now included as rates, will be zero if there are flows (Emigration and BA)
-                        Sum = CSng(IIf(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                        Sum = Sum + CSng(IIf(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
+                        Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
+                        Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
                         Sum = Sum * m_Data.B(j)
                         If NoBQB(j) = 10 Then AUL(i, j) = -m_Data.B(j) * m_Data.DC(j, i)
                         If NoBQB(j) = 0 And i <> j Then Q(i) = Q(i) + (m_Data.B(j) * m_Data.QB(j) * m_Data.DC(j, i)) + Sum
@@ -2462,8 +2517,8 @@ nextJ:
             End If
 
             '031220VC: rates or flows,
-            sum = CSng(IIf(m_Data.BaBi(kc) <> 0 And m_Data.BA(kc) = 0, m_Data.BaBi(kc), 0))
-            sum = sum + CSng(IIf(m_Data.Emig(kc) > 0 And m_Data.Emigration(kc) = 0, m_Data.Emig(kc), 0))
+            sum = CSng(IIF(m_Data.BaBi(kc) <> 0 And m_Data.BA(kc) = 0, m_Data.BaBi(kc), 0))
+            sum = sum + CSng(IIF(m_Data.Emig(kc) > 0 And m_Data.Emigration(kc) = 0, m_Data.Emig(kc), 0))
             sum = sum * m_Data.B(kc)
 
             BQBDC = m_Data.B(kc) * m_Data.PB(kc) * m_Data.EE(kc) - m_Data.fCatch(kc) - m_Data.BA(kc) - m_Data.Emigration(kc) + m_Data.Immig(kc) - sum
@@ -2501,8 +2556,8 @@ nextJ:
 
             '031220VC, either use BaBi or BA and either Emigi or Emigration
             If (m_Data.DC(kq, kc)) > 0 And (m_Data.PB(kq) * m_Data.EE(kq)) > 0 Then
-                sum = CSng(IIf(m_Data.BaBi(kq) <> 0 And m_Data.BA(kq) = 0, m_Data.BaBi(kq), 0))
-                sum = sum + CSng(IIf(m_Data.Emig(kq) > 0 And m_Data.Emigration(kq) = 0, m_Data.Emig(kq), 0))
+                sum = CSng(IIF(m_Data.BaBi(kq) <> 0 And m_Data.BA(kq) = 0, m_Data.BaBi(kq), 0))
+                sum = sum + CSng(IIF(m_Data.Emig(kq) > 0 And m_Data.Emigration(kq) = 0, m_Data.Emig(kq), 0))
                 'Sum is the combined migration and biomass.acc instantaneous mortality rate, will only be non-zero if these are entered
                 'B.PB.EE = Pred + NM.B + BAB.B + Catch, hence B = (Pred + Catch)/(PB.EE-NM-BAB)
                 m_Data.B(kq) = (PartM2 + m_Data.BA(kq) + m_Data.Emigration(kq) - m_Data.Immig(kq) + m_Data.fCatch(kq) + m_Data.DC(kq, kq) * BQBDC / m_Data.DC(kq, kc)) / (m_Data.PB(kq) * m_Data.EE(kq) - sum)
@@ -2636,8 +2691,8 @@ ONE:
                 Cnt = 0
                 If m_Data.B(j) > 0 And m_Data.PB(j) > 0 And m_Data.EE(j) > 0 Then
                     '031220VC, emig and ba as rates
-                    Sum = CSng(IIf(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                    Sum = Sum + CSng(IIf(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
+                    Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
+                    Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
                     Sum = Sum * m_Data.B(j)
 
                     LeftProd = m_Data.B(j) * m_Data.PB(j) * m_Data.EE(j) - m_Data.fCatch(j) - Sum - m_Data.BA(j) - m_Data.Emigration(j) + m_Data.Immig(j)
@@ -2854,8 +2909,8 @@ ONE:
                                 End If
                             Next i
                             '031220VC: modified to incorporate that BioAcc and emigration can be rates
-                            Sum = CSng(IIf(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
-                            Sum = Sum + CSng(IIf(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
+                            Sum = CSng(IIF(m_Data.BaBi(j) <> 0 And m_Data.BA(j) = 0, m_Data.BaBi(j), 0))
+                            Sum = Sum + CSng(IIF(m_Data.Emig(j) > 0 And m_Data.Emigration(j) = 0, m_Data.Emig(j), 0))
                             Sum = Sum * m_Data.B(j)
                             Only = m_Data.PB(j) * m_Data.EE(j) - m_Data.QB(j) * m_Data.DC(j, j) - Sum
                             If Only > 0 Then

@@ -3566,7 +3566,6 @@ Public Class cCore
 
                 m_EcoPathData.GroupName(iGroup) = Input.Name
                 m_EcoPathData.Area(iGroup) = Input.Area
-                m_EcoPathData.GS(iGroup) = Input.GS
                 m_EcoPathData.DtImp(iGroup) = Input.DetImport
                 'jb 17/mar/06 removed biomass from input
                 'mEcoPathData.B(iGroup) = input.Biomass
@@ -3596,14 +3595,24 @@ Public Class cCore
                 m_EcoPathData.Shadow(iGroup) = Input.NonMarketValue()
 
                 'from the original code MakeUnknownUnknown
-                m_EcoPathData.BA(iGroup) = CSng(IIf(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, _
+                m_EcoPathData.BA(iGroup) = CSng(IIF(m_EcoPathData.BaBi(iGroup) <> 0 And m_EcoPathData.B(iGroup) > 0, _
                                                 m_EcoPathData.BaBi(iGroup) * m_EcoPathData.B(iGroup), m_EcoPathData.BA(iGroup)))
 
                 'Emigi(igroup) = inputVars.EmigRate
                 'if  Emigration = 0 then compute Emigration as EmigRate * biomass for this group
                 'from original code
-                m_EcoPathData.Emigration(iGroup) = CSng(IIf(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0, _
+                m_EcoPathData.Emigration(iGroup) = CSng(IIF(m_EcoPathData.Emig(iGroup) > 0 And m_EcoPathData.B(iGroup) > 0 And m_EcoPathData.Emigration(iGroup) = 0, _
                                                          m_EcoPathData.Emig(iGroup) * m_EcoPathData.B(iGroup), Input.Emigration))
+
+                'GS Unassimilated Consumption changes with Model Currency Units
+                m_EcoPathData.GS(iGroup) = Input.GS
+                If Not Me.m_EcoPathData.areUnitCurrencyNutrients Then
+                    'Model Currency Units are Energy (NOT Nutrient)
+                    'keep a copy of the GS edits incase the user switches Currency types
+                    'GS will change 
+                    m_EcoPathData.GSEng(iGroup) = m_EcoPathData.GS(iGroup)
+                End If
+
                 For i As Integer = 1 To m_EcoPathData.NumGroups
                     'Diet Comp is stored by Pred/Prey
                     'so this is the Prey for Predator iGroup
@@ -4453,10 +4462,6 @@ Public Class cCore
 
             Dim sTroughput As Single = Me.m_EcoPathData.Consum + Me.m_EcoPathData.SumEx + Me.m_EcoPathData.Dt + Me.m_EcoPathData.RTZ
 
-            Dim bNutrientUnits As Boolean = (m_EcoPathData.currUnitIndex = eUnitCurrencyType.Nitrogen Or _
-                                            m_EcoPathData.currUnitIndex = eUnitCurrencyType.Phosporous Or _
-                                            m_EcoPathData.currUnitIndex = eUnitCurrencyType.CustomNutrient)
-
             Me.m_EcopathStats.TotalConsumption = Me.m_EcoPathData.Consum
             Me.m_EcopathStats.TotalExports = Me.m_EcoPathData.SumEx
             Me.m_EcopathStats.TotalRespFlow = Me.m_EcoPathData.RTZ
@@ -4495,7 +4500,7 @@ Public Class cCore
             End If
 
             'No Respiration if the Ecopath units are nutrients 
-            If bNutrientUnits Then
+            If Me.m_EcoPathData.areUnitCurrencyNutrients() Then
                 Me.m_EcopathStats.TotalPResp = cCore.NULL_VALUE
                 Me.m_EcopathStats.NetSystemProduction = cCore.NULL_VALUE
             End If
@@ -5083,11 +5088,14 @@ Public Class cCore
         ' See EwE5 frmInputData.LockInputForProducers(..)
         obj.AllowValidation = False
 
-        If (obj.PP >= 1.0) Then
-            obj.SetStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable Or eStatusFlags.Null)
-            obj.GS = 0
+        If (obj.PP >= 1.0 Or Me.m_EcoPathData.areUnitCurrencyNutrients()) Then
+            ' obj.SetStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable Or eStatusFlags.Null)
+            obj.SetStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable)
+            'obj.GS = 0
         Else
-            obj.ClearStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable Or eStatusFlags.Null)
+            obj.ClearStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable)
+            ' obj.ClearStatusFlags(eVarNameFlags.GS, eStatusFlags.NotEditable)
+
         End If
 
         If bSendMessage Then
@@ -12656,6 +12664,25 @@ Public Class cCore
 
         ' First update core data from object
         Select Case obj.DataType
+
+            Case eDataTypes.EwEModel
+                Select Case value.varName
+
+                    Case eVarNameFlags.UnitCurrency
+                        'Tell Ecopath that the Model Unit Currency has changed
+                        'Ecopath will set GS to the correct values
+                        Me.m_EcoPath.onModelUnitCurrencyChanged()
+
+                        'Ecopath GS has changed populate the input objects
+                        'this will set the Status flags for the interface which will have changed
+                        Me.LoadEcopathInputs()
+
+                        'Tell the interface
+                        Dim gsMsg As New cMessage("", eMessageType.DataModified, _
+                                                       eCoreComponentType.EcoPath, eMessageImportance.Maintenance, eDataTypes.EcoPathGroupInput)
+                        Me.m_publisher.AddMessage(gsMsg)
+
+                End Select
 
             Case eDataTypes.EcoPathGroupInput
 

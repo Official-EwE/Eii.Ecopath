@@ -380,6 +380,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to WARNING: Please check your data Unassimilated Consumption (GS) cannot be greater than one. Your data has been modified!.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_GS_WARNING() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_GS_WARNING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Your model has {0} group(s) for which the Detritus fate (DF) sum to more than 1.You should go back to your input data, and make sure the DF&apos;s sum to max 1 only..
         '''</summary>
         Friend Shared ReadOnly Property ECOPATH_INVALIDMODEL_DFLARGERTHANONE() As String
@@ -595,6 +604,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOPATH_MODEL_UPDATE_SUCCESS() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_MODEL_UPDATE_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to WARNING : Respiration cannot be negative. Summary statistics for the system are suppressed. Please check parameters and rerun program..
+        '''</summary>
+        Friend Shared ReadOnly Property ECOPATH_NEGATIVE_RESPIR_WARNING() As String
+            Get
+                Return ResourceManager.GetString("ECOPATH_NEGATIVE_RESPIR_WARNING", resourceCulture)
             End Get
         End Property
         

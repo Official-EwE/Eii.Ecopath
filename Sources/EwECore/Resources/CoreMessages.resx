@@ -1077,4 +1077,10 @@ System Error: {0}</value>
     <value>Data for {0}% time steps could not be loaded</value>
     <comment>{0}=% of time step data that could not be loaded</comment>
   </data>
+  <data name="ECOPATH_GS_WARNING" xml:space="preserve">
+    <value>WARNING: Please check your data Unassimilated Consumption (GS) cannot be greater than one. Your data has been modified!</value>
+  </data>
+  <data name="ECOPATH_NEGATIVE_RESPIR_WARNING" xml:space="preserve">
+    <value>WARNING : Respiration cannot be negative. Summary statistics for the system are suppressed. Please check parameters and rerun program.</value>
+  </data>
 </root>
