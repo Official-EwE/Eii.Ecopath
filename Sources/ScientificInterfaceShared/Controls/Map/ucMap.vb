@@ -288,7 +288,7 @@ Namespace Controls.Map
                 ' Start editing
                 rl.Editor.StartEdit(ptCellCur, e)
 
-                Me.ProcessMouseInput(e)
+                Me.ProcessMouseInput(e, InRow, InCol)
             End If
 
         End Sub
@@ -303,7 +303,11 @@ Namespace Controls.Map
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
 
-            Me.ProcessMouseInput(e)
+            Dim bm As cEcospaceBasemap = Me.Basemap
+            Dim InRow As Integer = bm.InRow
+            Dim InCol As Integer = bm.InCol
+
+            Me.ProcessMouseInput(e, InRow, InCol)
 
         End Sub
 
@@ -399,7 +403,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="e"></param>
         ''' -------------------------------------------------------------------
-        Private Sub ProcessMouseInput(ByVal e As MouseEventArgs)
+        Private Sub ProcessMouseInput(ByVal e As MouseEventArgs, InRow As Integer, InCol As Integer)
 
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
@@ -408,9 +412,6 @@ Namespace Controls.Map
 
             If (Me.m_ptScreenPrevious = Nothing) Then Me.m_ptScreenPrevious = ptScreenCur
 
-            Dim bm As cEcospaceBasemap = Me.Basemap
-            Dim InRow As Integer = bm.InRow
-            Dim InCol As Integer = bm.InCol
             Dim ptCellFrom As Point = Me.GetCellIndex(Me.m_ptScreenPrevious, InRow, InCol)
             Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur, InRow, InCol)
             Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
