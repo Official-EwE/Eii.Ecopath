@@ -22,6 +22,7 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports SAUPUtil.Misc.Colours
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region 'Imports
 
@@ -84,6 +85,13 @@ Namespace Controls.Map.Layers
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
 
+            Dim sValue As Single = CSng(value)
+
+            If Not cNumberUtils.IsFinite(sValue) Then
+                Me.RenderError(g, rc)
+                Return
+            End If
+
             Dim sValMax As Single = Me.ScaleMax
             Dim sValMin As Single = Me.ScaleMin
 
@@ -100,7 +108,6 @@ Namespace Controls.Map.Layers
 
                     If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
 
-                        Dim sValue As Single = CSng(value)
                         Dim sValRange As Single = (sValMax - sValMin)
 
                         ' Has a range? draw background
