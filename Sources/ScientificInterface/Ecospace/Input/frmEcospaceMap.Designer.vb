@@ -50,8 +50,8 @@ Namespace Ecospace.Basemap
             Me.tsbEditBasemap = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbDefineHabitats = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbDefineMPA = New System.Windows.Forms.ToolStripButton()
-            Me.m_plEditor = New System.Windows.Forms.Panel()
             Me.m_ucLayers = New ScientificInterfaceShared.Controls.Map.ucLayersControl()
+            Me.m_plEditor = New System.Windows.Forms.Panel()
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SplitContainer1.Panel1.SuspendLayout()
             Me.SplitContainer1.Panel2.SuspendLayout()
@@ -125,17 +125,19 @@ Namespace Ecospace.Basemap
             resources.ApplyResources(Me.m_tsbDefineMPA, "m_tsbDefineMPA")
             Me.m_tsbDefineMPA.Name = "m_tsbDefineMPA"
             '
-            'm_plEditor
-            '
-            resources.ApplyResources(Me.m_plEditor, "m_plEditor")
-            Me.m_plEditor.Name = "m_plEditor"
-            '
             'm_ucLayers
             '
             resources.ApplyResources(Me.m_ucLayers, "m_ucLayers")
             Me.m_ucLayers.BackColor = System.Drawing.SystemColors.Control
             Me.m_ucLayers.Name = "m_ucLayers"
             Me.m_ucLayers.UIContext = Nothing
+            '
+            'm_plEditor
+            '
+            Me.m_plEditor.BackColor = System.Drawing.SystemColors.Window
+            Me.m_plEditor.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            resources.ApplyResources(Me.m_plEditor, "m_plEditor")
+            Me.m_plEditor.Name = "m_plEditor"
             '
             'frmEcospaceMap
             '
