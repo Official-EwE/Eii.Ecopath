@@ -1546,7 +1546,7 @@ Description: {2}</value>
     <comment>Preview text for color options page</comment>
   </data>
   <data name="STATUSSTRIP_ECOSPACE_CONNECTIONS" xml:space="preserve">
-    <value>{0} connection(s)</value>
+    <value>{0} connection/s</value>
     <comment>{0}=connection count</comment>
   </data>
   <data name="STATUS_INDEXING" xml:space="preserve">
@@ -1566,5 +1566,20 @@ Description: {2}</value>
   </data>
   <data name="STATUS_REMARKS_NOT_SUPPORTED" xml:space="preserve">
     <value>Remarks are not supported for this data</value>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NODATA" xml:space="preserve">
+    <value>No spatial data could be found for the ecopath model period (year {0}, {1} months). Average could not be calculated.</value>
+    <comment>{0}=year, {1}=number of months</comment>
+  </data>
+  <data name="PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP" xml:space="preserve">
+    <value>There is no spatial overlap with your model area and the external data for the ecopath model period (year {0}, {1} months). Annual average could not be calculated.</value>
+    <comment>{0}=year, {1}=number of months</comment>
+  </data>
+  <data name="STATUS_SPATIALTEMPORAL_CALCULATING" xml:space="preserve">
+    <value>Calculating annual average for layer {0}, data connection {1}...</value>
+    <comment>{0}-layer name, {1}=dataset name</comment>
+  </data>
+  <data name="STATUS_CLEANUP_TEMPFILES" xml:space="preserve">
+    <value>Removing temporary files</value>
   </data>
 </root>

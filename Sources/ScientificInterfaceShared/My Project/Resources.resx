@@ -2514,4 +2514,8 @@
     <value>{0} (- {1})</value>
     <comment>{0}=value, {1}=upper range</comment>
   </data>
+  <data name="CAPTION_EDITING_LAYER" xml:space="preserve">
+    <value>Editing {0}</value>
+    <comment>{0}=layer name</comment>
+  </data>
 </root>

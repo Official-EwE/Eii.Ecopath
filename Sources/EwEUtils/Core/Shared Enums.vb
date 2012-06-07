@@ -2009,8 +2009,6 @@ Namespace Core
         ''' </summary>
         MSEValueTotalStats = 94
 
-        SpatialDataSource = 95
-
         ''' <summary>
         ''' Data belongs to a taxonomy definition.
         ''' </summary>
@@ -2047,6 +2045,7 @@ Namespace Core
 
         EcospaceLayerDriver = 106
         EcospaceSpatialDataConnection = 107
+        EcospaceSpatialDataSource = 108
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

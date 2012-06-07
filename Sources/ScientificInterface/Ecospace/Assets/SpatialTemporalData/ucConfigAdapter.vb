@@ -354,6 +354,7 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
+
 #End Region ' Control events
 
 #Region " Internals "
@@ -452,7 +453,7 @@ Namespace Ecospace.Controls
             ' NOP
         End Sub
 
-          Private Sub SelectDataset(dataset As ISpatialDataSet)
+        Private Sub SelectDataset(dataset As ISpatialDataSet)
 
             ' Update selection
             Dim iIndex As Integer = 0
@@ -577,6 +578,7 @@ Namespace Ecospace.Controls
 
             Dim iIndex As Integer = Me.m_layer.Index
 
+            ' Early bail-out
             If Not Me.m_adt.IsConnected(iIndex) Then Return
 
             Dim ds As ISpatialDataSet = Me.m_adt.Dataset(Me.m_layer.Index)
@@ -584,21 +586,38 @@ Namespace Ecospace.Controls
             Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
             Dim iNumYears As Integer = Me.m_uic.Core.EwEModel.NumYears
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim lSteps As New List(Of DateTime)
+            Dim ldtData As New List(Of DateTime)
+            Dim iTSMin As Integer
+            Dim iTSMax As Integer
             Dim rs As ISpatialRaster = Nothing
 
+            ' Determine time steps with overlap
             For i As Integer = 0 To iNumYears * cCore.N_MONTHS - 1
-                Dim dt As New DateTime(Math.Max(1, iYear + i \ cCore.N_MONTHS), 1 + i Mod cCore.N_MONTHS, 1)
+                Dim dt As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(i)
                 If ds.HasDataAtT(dt) Then
-                    lSteps.Add(dt)
+                    iTSMin = Math.Min(iTSMin, i)
+                    iTSMax = Math.Max(iTSMax, i)
+                    ldtData.Add(dt)
                 End If
             Next
 
-            If (lSteps.Count = 0) Then
-                ' No data
-                ' ToDo: Globalize this
-                Dim msg As New cMessage(String.Format("No spatial data could be found for the ecopath model period (year {0}, {1} months); scaling factor could not be calculated.", iYear, iNumYears * cCore.N_MONTHS), _
-                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+            ' Determine compatibility
+            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds, iTSMin, iTSMax - iTSMin)
+            Dim msg As cMessage = Nothing
+
+            Select Case comp.SpatialCompatibility
+                Case cDatasetCompatilibity.eCompatibilityTypes.Unknown
+                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear, iNumYears * cCore.N_MONTHS), _
+                                       eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                Case cDatasetCompatilibity.eCompatibilityTypes.NoOverlap
+                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear, iNumYears * cCore.N_MONTHS), _
+                                       eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+
+            End Select
+
+            ' Got compatibility error message?
+            If (msg IsNot Nothing) Then
+                ' #Yes: abort
                 Me.m_uic.Core.Messages.SendMessage(msg)
                 Return
             End If
@@ -607,45 +626,38 @@ Namespace Ecospace.Controls
             Dim depth As cEcospaceLayerDepth = bm.LayerDepth
             Dim dCellSize As Double = bm.CellSize
             Dim dMean As Double = 0.0
-            Dim dTotal As Double = 0.0
+            Dim MapTotValue As Double = 0.0
             Dim lNumValCells As Long = 0
-            Dim lTotal As Long = 0
-            Dim iNumErrors As Integer = 0
+            Dim NumWaterCells As Long = 0
+            Dim iInRow As Integer = bm.InRow
+            Dim iInCol As Integer = bm.InCol
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
             Try
 
-                For i As Integer = 0 To lSteps.Count - 1
-                    Dim dt As DateTime = lSteps(i)
+                For i As Integer = 0 To ldtData.Count - 1
+                    Dim dt As DateTime = ldtData(i)
 
-                    ' ToDo: Globalize this
                     cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, _
-                                                              String.Format("Calculating scaling factor step {0} of {1}...", i + 1, lSteps.Count), _
-                                                              CSng(i / lSteps.Count))
+                                                              String.Format(My.Resources.STATUS_SPATIALTEMPORAL_CALCULATING, m_layer.Name, ds.DisplayName), _
+                                                              CSng(i / ldtData.Count))
 
+                    ' Do the spatial magics
                     If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
                         rst = Me.m_adt.Dataset(iIndex).GetRaster(Me.m_adt.Converter(iIndex), Me.m_layer.Name())
 
-                        For iRow As Integer = 1 To bm.InRow
-                            For iCol As Integer = 1 To bm.InCol
+                        For iRow As Integer = 1 To iInRow
+                            For iCol As Integer = 1 To iInCol
                                 If depth.IsWaterCell(iRow, iCol) Then
                                     Dim dval As Double = rst.Cell(iRow, iCol)
                                     If (dval <> cCore.NULL_VALUE And dval <> rst.NoData) Then
-                                        lTotal += 1
-                                        dTotal += dval
+                                        NumWaterCells += 1
+                                        MapTotValue += dval
                                     End If
                                 End If
                             Next
                         Next
-                        'lNumValCells = rst.NumValueCells
-                        'dMean = rst.Mean
 
-                        'If (lNumValCells <> cCore.NULL_VALUE) And (dMean <> cCore.NULL_VALUE) Then
-                        '    dTotal += rst.Mean * rst.NumValueCells
-                        '    lTotal += rst.NumValueCells
-                        'Else
-                        '    iNumErrors += 1
-                        'End If
                         ds.Unlock()
                     End If
 
@@ -655,14 +667,11 @@ Namespace Ecospace.Controls
             End Try
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
-            If iNumErrors = lSteps.Count Then
-                ' ToDo: Globalize this
-                Dim msg As New cMessage("No valid scaling factor could be calculated. Please check if the model area overlaps with assigned spatial/temporal data.", _
-                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
-                Me.m_uic.Core.Messages.SendMessage(msg)
-            End If
+            If MapTotValue = 0 Then MapTotValue = 1
 
-            Me.m_fp.Value = (dTotal / Math.Max(1, lTotal))
+            ' Update format provider
+            Me.m_fp.Value = NumWaterCells / MapTotValue
+            ' Notify the world
             Me.LayerChanged()
 
         End Sub

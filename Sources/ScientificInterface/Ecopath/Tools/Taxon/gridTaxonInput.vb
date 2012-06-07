@@ -79,7 +79,7 @@ Namespace Ecopath.Input
             Me.Redim(1, [Enum].GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.Hierarchy) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_COMMON_NAME)
+            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_SPECIES)
             Me(0, eColumnTypes.Ecology) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOLOGY)
             Me(0, eColumnTypes.Organism) = New EwEColumnHeaderCell(SharedResources.HEADER_ORGANISM)
             Me(0, eColumnTypes.PropBiomass) = New EwEColumnHeaderCell(SharedResources.HEADER_PROPORTION_B)
@@ -200,8 +200,10 @@ Namespace Ecopath.Input
             Me.Rows.Insert(iRow)
             Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(CStr(taxon.Index))
 
-            Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, taxon, eVarNameFlags.Name)
-            Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
+            cell = New PropertyRowHeaderChildCell(Me.PropertyManager, taxon, eVarNameFlags.Species)
+            cell.Style = cStyleGuide.eStyleFlags.TaxonItalics
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.Name) = cell
 
             Me(iRow, eColumnTypes.Ecology) = New SourceGrid2.Cells.Real.Cell(taxon.EcologyType, Me.m_editorEcology)
             Me(iRow, eColumnTypes.Ecology).Behaviors.Add(Me.EwEEditHandler)

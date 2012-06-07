@@ -234,6 +234,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Editing {0}.
+        '''</summary>
+        Public ReadOnly Property CAPTION_EDITING_LAYER() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_EDITING_LAYER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Select file.
         '''</summary>
         Public ReadOnly Property CAPTION_SELECT_FILE() As String

@@ -2000,8 +2000,7 @@ Public Class AppLauncher
             ' Take out the trash
             GC.Collect()
 
-            ' ToDo: globalize this
-            cApplicationStatusNotifier.StartProgress(Me.Core, "Removing temporary files")
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_CLEANUP_TEMPFILES)
             cFileUtils.PurgeTempFiles()
             cApplicationStatusNotifier.EndProgress(Me.Core)
 

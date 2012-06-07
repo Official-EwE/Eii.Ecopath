@@ -2871,6 +2871,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to No spatial data could be found for the ecopath model period (year {0}, {1} months). Average could not be calculated..
+        '''</summary>
+        Public ReadOnly Property PROMPT_SPATIALTEMPORAL_CALC_NODATA() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SPATIALTEMPORAL_CALC_NODATA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to There is no spatial overlap with your model area and the external data for the ecopath model period (year {0}, {1} months). Annual average could not be calculated..
+        '''</summary>
+        Public ReadOnly Property PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to One or more stanza configurations do not have life stages assigned. Do you want to do this now?.
         '''</summary>
         Public ReadOnly Property PROMPT_STANZA_MISSING_LIFESTAGES() As String
@@ -3221,6 +3239,15 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_CACHECLEARED() As String
             Get
                 Return ResourceManager.GetString("STATUS_CACHECLEARED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Removing temporary files.
+        '''</summary>
+        Public ReadOnly Property STATUS_CLEANUP_TEMPFILES() As String
+            Get
+                Return ResourceManager.GetString("STATUS_CLEANUP_TEMPFILES", resourceCulture)
             End Get
         End Property
         
@@ -3648,6 +3675,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Calculating annual average for layer {0}, data connection {1}....
+        '''</summary>
+        Public ReadOnly Property STATUS_SPATIALTEMPORAL_CALCULATING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_CALCULATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Loading time series &apos;{0}&apos;....
         '''</summary>
         Public ReadOnly Property STATUS_TIMESERIES_LOADING() As String
@@ -3788,7 +3824,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} connection(s).
+        '''  Looks up a localized string similar to {0} connection/s.
         '''</summary>
         Public ReadOnly Property STATUSSTRIP_ECOSPACE_CONNECTIONS() As String
             Get

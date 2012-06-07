@@ -63,7 +63,7 @@ Namespace SpatialData
 
             MyBase.New(core)
 
-            Me.m_dataType = eDataTypes.SpatialDataSource
+            Me.m_dataType = eDataTypes.EcospaceSpatialDataSource
             Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.m_coreCounter = cc
             Me.m_varName = varName
@@ -198,7 +198,7 @@ Namespace SpatialData
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
             Dim layer As cEcospaceLayer = Nothing
             Dim dataExternal As ISpatialRaster = Nothing
-            Dim dCellSize As Double = CDbl(bm.CellSize)
+            Dim dCellSize As Double = Math.Round(CDbl(bm.CellSize), 8)
             Dim dt As Date
             Dim bSuccess As Boolean = False
 

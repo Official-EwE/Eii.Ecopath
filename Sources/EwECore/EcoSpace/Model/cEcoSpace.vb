@@ -2498,12 +2498,13 @@ Public Class cEcoSpace
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' This function is used to scale the relative primary productivity _
-    ''' so that the total primary productivity is the same in Ecospace and Ecopath
+    ''' Returns a scaling factor to ensure that the total primary productivity 
+    ''' is the same in Ecospace and Ecopath.
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <returns>The average PP value for all cells in the RelPP map.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function ScaleRelativePrimaryProductivityToEcopathLevel() As Single
         Dim totPP As Single
         Dim i As Integer
