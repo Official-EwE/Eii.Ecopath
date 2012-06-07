@@ -69,8 +69,15 @@ Namespace Ecospace
             ' Sanity checks
             Debug.Assert(core IsNot Nothing)
             Debug.Assert(ds IsNot Nothing)
+
+            Dim iNumTimeSteps As Integer = core.nEcospaceTimeSteps
+            ' Special case for datasets without temporal range
+            If (ds.TimeStart = Date.MinValue) Or (ds.TimeEnd = Date.MaxValue) Then
+                iNumTimeSteps = 0
+            End If
+
             ' Assess the entire Ecospace run time
-            Me.Assess(core, ds, 1, core.nEcospaceTimeSteps)
+            Me.Assess(core, ds, 1, iNumTimeSteps)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -305,11 +312,6 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Function Assess(core As cCore, ds As ISpatialDataSet, _
                                 iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
-
-            ' Special case for datasets without temporal range
-            If (ds.TimeStart = Date.MinValue) Or (ds.TimeEnd = Date.MaxValue) Then
-                iNumTimeSteps = 0
-            End If
 
             ' Initialize counters
             Me.m_iPercIndexed = CInt(ds.FractionIndexed * 100)

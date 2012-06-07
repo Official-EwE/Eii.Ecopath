@@ -587,12 +587,12 @@ Namespace Ecospace.Controls
             Dim iNumYears As Integer = Me.m_uic.Core.EwEModel.NumYears
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim ldtData As New List(Of DateTime)
-            Dim iTSMin As Integer
-            Dim iTSMax As Integer
+            Dim iTSMin As Integer = 1
+            Dim iTSMax As Integer = 1
             Dim rs As ISpatialRaster = Nothing
 
             ' Determine time steps with overlap
-            For i As Integer = 0 To iNumYears * cCore.N_MONTHS - 1
+            For i As Integer = 1 To iNumYears * cCore.N_MONTHS
                 Dim dt As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(i)
                 If ds.HasDataAtT(dt) Then
                     iTSMin = Math.Min(iTSMin, i)
