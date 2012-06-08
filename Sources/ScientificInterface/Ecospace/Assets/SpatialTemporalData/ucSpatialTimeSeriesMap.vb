@@ -25,6 +25,7 @@ Imports EwEUtils.Utilities
 Imports System.Drawing.Drawing2D
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports EwECore.Ecospace
+Imports System.Text
 
 #End Region ' Imports
 
@@ -323,23 +324,32 @@ Namespace Ecospace
 
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim tmpFont As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
-            Dim brTmp As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
-            Dim penTmp As New Pen(System.Drawing.Color.FromArgb(128, 0, 0, 0))
-            Dim strLabel As String = ""
+            Dim brText As New SolidBrush(System.Drawing.Color.FromArgb(160, 0, 0, 0))
+            Dim brBack As New SolidBrush(Color.FromArgb(128, 255, 255, 255))
+            Dim sbText As New StringBuilder()
             Dim fmt As New StringFormat()
 
             fmt.Alignment = StringAlignment.Center
             fmt.LineAlignment = StringAlignment.Center
 
-            strLabel = String.Format(My.Resources.CAPTION_TIMESTEP, _
-                                     Me.m_iTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStep).ToShortDateString())
-            g.DrawString(strLabel, tmpFont, brTmp, rc.Width / 2.0!, 15, fmt)
+            sbText.AppendLine(String.Format(My.Resources.CAPTION_TIMESTEP, _
+                                            Me.m_iTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStep).ToShortDateString()))
+            'g.DrawString(strLabel, tmpFont, brTmp, rc.Width / 2.0!, 15, fmt)
 
             If (Me.m_ds IsNot Nothing) Then
                 Dim sdf As New cSpatialDatasetFormatter()
-                strLabel = String.Format(My.Resources.CAPTION_DATASET, sdf.GetDescriptor(Me.m_ds))
-                g.DrawString(strLabel, tmpFont, brTmp, rc.Width / 2.0!, 33, fmt)
+                sbText.AppendLine(String.Format(My.Resources.CAPTION_DATASET, sdf.GetDescriptor(Me.m_ds)))
             End If
+
+            Dim szfTextSize As SizeF = g.MeasureString(sbText.ToString, tmpFont, rc.Size, fmt)
+            g.FillRectangle(brBack, CInt(rc.Width / 2 - szfTextSize.Width / 2) - 4, 27, CInt(szfTextSize.Width + 8), CInt(szfTextSize.Height) + 8)
+            g.DrawString(sbText.ToString, tmpFont, brText, _
+                         New RectangleF(rc.Width / 2.0! - szfTextSize.Width / 2.0!, 31, szfTextSize.Width, szfTextSize.Height), _
+                         fmt)
+
+
+            brText.Dispose()
+            brBack.Dispose()
 
         End Sub
 

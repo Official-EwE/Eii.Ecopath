@@ -93,6 +93,7 @@ Namespace Ecospace
 
             Me.m_tsbnShowRefMap.Checked = Me.m_map.ShowReferenceMap
             Me.m_tsbnShowGrid.Checked = Me.m_map.ShowGrid
+            Me.m_toolbox.SelectedTimeStep = 0
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.External}
 
