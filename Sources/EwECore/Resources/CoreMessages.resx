@@ -1066,12 +1066,11 @@ System Error: {0}</value>
     <value>{0}% indexed, {1}% temporal overlap with {2}% partial and {3}% total area overlap</value>
     <comment>{0}=% indexed of dataset, {1}=% overlapping time steps, {2}=% steps with partial spatial overlap, {3}=% steps with full spatial overlap</comment>
   </data>
-  <data name="STATUS_SPATIALTEMPORAL_NOASSESSMENT" xml:space="preserve">
-    <value>Unable to assess compatibility</value>
+  <data name="STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP" xml:space="preserve">
+    <value>External data does not spatilly overlap your the model area</value>
   </data>
-  <data name="STATUS_SPATIALTEMPORAL_NOOVERLAP" xml:space="preserve">
-    <value>{0}% indexed, no external data found for the Ecospace run time</value>
-    <comment>{0}=% of external data that is indexed</comment>
+  <data name="STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP" xml:space="preserve">
+    <value>No external data found for the Ecospace run time</value>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_NODATA" xml:space="preserve">
     <value>Data for {0}% time steps could not be loaded</value>

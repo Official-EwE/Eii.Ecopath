@@ -255,9 +255,10 @@ Namespace Ecospace
             Dim clrOutlineFull As Color = Color.FromKnownColor(KnownColor.Blue)
             Dim bError As Boolean = False
 
-            Select Case comp.SpatialCompatibility
-                Case cDatasetCompatilibity.eCompatibilityTypes.Unknown, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoOverlap
+            Select Case comp.Compatibility
+                Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                     clrFillFull = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                     clrOutlineFull = clrFillFull
             End Select

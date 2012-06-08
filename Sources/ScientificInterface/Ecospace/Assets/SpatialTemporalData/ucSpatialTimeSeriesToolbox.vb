@@ -383,9 +383,10 @@ Namespace Ecospace.Controls
             Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, pos.m_ds)
 
-            Select Case comp.SpatialCompatibility
-                Case cDatasetCompatilibity.eCompatibilityTypes.Unknown, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoOverlap
+            Select Case comp.Compatibility
+                Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                     clrData = sg.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
                     clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
             End Select

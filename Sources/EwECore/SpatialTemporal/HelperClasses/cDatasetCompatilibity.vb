@@ -105,13 +105,16 @@ Namespace Ecospace
 
         ''' <summary>Compatibility levels.</summary>
         Public Enum eCompatibilityTypes As Integer
-            ''' <summary>Unknown compatiblity.</summary>
-            Unknown
-            ''' <summary>No overlap.</summary>
-            NoOverlap
-            ''' <summary>Patial overlap.</summary>
-            PartialOverlap
-            ''' <summary>Total overlap.</summary>
+            ''' <summary>Errors occurred while assessing the compatibility.</summary>
+            ''' <remarks>The number of erroneous data sets can be checked via <see cref="NumError"/>.</remarks>
+            Errors
+            ''' <summary>No temporal overlap.</summary>
+            NoTemporal
+            ''' <summary>Temporal overlap, but no spatial overlap.</summary>
+            NoSpatial
+            ''' <summary>Temporal overlap, but patial overlap.</summary>
+            PartialSpatial
+            ''' <summary>Temporal and total spatial overlap.</summary>
             TotalOverlap
         End Enum
 
@@ -125,53 +128,25 @@ Namespace Ecospace
         ''' <listheader>
         ''' <term>Value</term><description>Meaning</description>
         ''' </listheader>
-        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.Unknown"/></term>
-        ''' <description>Assessment failed; this happens when there is no Ecospace scenario loaded, or an assessment was made for 0 time steps.</description></item>
-        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.NoOverlap"/></term>
-        ''' <description>The dataset does not contain any data for the time steps in the assessment period.</description></item>
-        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.PartialOverlap"/></term>
-        ''' <description>The dataset contains data for one or more but not all time steps in the assessment period.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.Errors"/></term>
+        ''' <description>Assessment failed; this happens when there is no Ecospace scenario loaded, or any external data could not be accessed.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.NoTemporal"/></term>
+        ''' <description>Thew dataset does not contain any data for the Ecospace run time period.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.NoSpatial"/></term>
+        ''' <description>The dataset contains data for Ecospace time steps, but the data does not spatially overlap.</description></item>
+        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial"/></term>
+        ''' <description>The dataset contains data for Ecospace time steps, but the data partially spatially overlaps.</description></item>
         ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap"/></term>
-        ''' <description>The dataset contains data for all time steps in the assessment period.</description></item>
+        ''' <description>The dataset contains data for Ecospace time steps, and all data spatially overlaps.</description></item>
         ''' </list>
-        ''' <seealso cref="SpatialCompatibility"/>
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property TemporalCompatibility As eCompatibilityTypes
+        Public ReadOnly Property Compatibility As eCompatibilityTypes
             Get
-                If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.Unknown
-                If (Me.m_iNumError = Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.Unknown
-                If (Me.m_iNumTimeOverlap < Me.m_iNumTimeSteps) Then Return eCompatibilityTypes.PartialOverlap
-                Return eCompatibilityTypes.TotalOverlap
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get a measure of spatial compatibility between a dataset and a
-        ''' loaded Ecospace scenario. Values are to be interpreted as follows:
-        ''' <list type="table">
-        ''' <listheader>
-        ''' <term>Value</term><description>Meaning</description>
-        ''' </listheader>
-        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.Unknown"/></term>
-        ''' <description>Assessment failed; this happens when there is no Ecospace scenario loaded, or an assessment was made for 0 time steps.</description></item>
-        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.NoOverlap"/></term>
-        ''' <description>No data in the dataset spatially overlaps with the Ecospace scenario for the assessment period.</description></item>
-        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.PartialOverlap"/></term>
-        ''' <description>Not all of the data in the dataset entirely covers the Ecospace scenario area for the assessment period.</description></item>
-        ''' <item><term><see cref="cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap"/></term>
-        ''' <description>All of the data in the dataset entirely covers the Ecospace scenario area for the assessment period.</description></item>
-        ''' </list>
-        ''' <seealso cref="TemporalCompatibility"/>
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property SpatialCompatibility As eCompatibilityTypes
-            Get
-                If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.Unknown
-                If (Me.m_iNumError = Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.Unknown
-                If (Me.m_iNumPartialSpatialOverlap = 0) And (Me.m_iNumFullSpatialOverlap = 0) Then Return eCompatibilityTypes.NoOverlap
-                If (Me.m_iNumFullSpatialOverlap < Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.PartialOverlap
+                If (Me.m_iNumError > 0) Then Return eCompatibilityTypes.Errors
+                If (Me.m_iNumTimeOverlap = 0) Then Return eCompatibilityTypes.NoTemporal
+                If (Me.m_iNumFullSpatialOverlap = 0 And Me.m_iNumPartialSpatialOverlap = 0) Then Return eCompatibilityTypes.NoSpatial
+                If (Me.m_iNumFullSpatialOverlap < Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.PartialSpatial
                 Return eCompatibilityTypes.TotalOverlap
             End Get
         End Property
@@ -276,24 +251,26 @@ Namespace Ecospace
 
             ' Errors first!
             If (Me.m_iNumError > 0) Then
-                Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NODATA, CInt(100 * Me.m_iNumError / iNumOverlap))
             End If
 
-            Select Case Me.TemporalCompatibility
+            Select Case Me.Compatibility
 
-                Case eCompatibilityTypes.Unknown
-                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOASSESSMENT
+                Case eCompatibilityTypes.Errors
+                    Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NODATA, CInt(Math.Ceiling(100 * Me.m_iNumError / iNumOverlap)))
 
-                Case eCompatibilityTypes.NoOverlap
-                    Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOOVERLAP, Me.m_iPercIndexed)
+                Case eCompatibilityTypes.NoTemporal
+                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP
+
+                Case eCompatibilityTypes.NoSpatial
+                    Return My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP
 
             End Select
 
             Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_COMPATIBILITY, _
                                  Me.m_iPercIndexed, _
-                                 CInt(100 * Me.m_iNumTimeOverlap / iNumTS), _
-                                 CInt(100 * Me.m_iNumPartialSpatialOverlap / iNumOverlap), _
-                                 CInt(100 * Me.m_iNumFullSpatialOverlap / iNumOverlap))
+                                 CInt(Math.Ceiling(100 * Me.m_iNumTimeOverlap / iNumTS)), _
+                                 CInt(Math.Ceiling(100 * Me.m_iNumPartialSpatialOverlap / iNumOverlap)), _
+                                 CInt(Math.Ceiling(100 * Me.m_iNumFullSpatialOverlap / iNumOverlap)))
         End Function
 
 #End Region ' Public access

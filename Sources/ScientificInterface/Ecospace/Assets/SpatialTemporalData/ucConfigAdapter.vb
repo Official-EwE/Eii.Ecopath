@@ -398,7 +398,7 @@ Namespace Ecospace.Controls
 
                 If bIsIndexing Then
                     imgValidate = ScientificInterfaceShared.My.Resources.ani_loader
-                ElseIf (comp.SpatialCompatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
+                ElseIf (comp.Compatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
                     imgValidate = ScientificInterfaceShared.My.Resources.OK
                 Else
                     imgValidate = ScientificInterfaceShared.My.Resources.Warning
@@ -605,11 +605,12 @@ Namespace Ecospace.Controls
             Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds, iTSMin, iTSMax - iTSMin)
             Dim msg As cMessage = Nothing
 
-            Select Case comp.SpatialCompatibility
-                Case cDatasetCompatilibity.eCompatibilityTypes.Unknown
+            Select Case comp.Compatibility
+                Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
                     msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear, iNumYears * cCore.N_MONTHS), _
                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
-                Case cDatasetCompatilibity.eCompatibilityTypes.NoOverlap
+                Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
                     msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear, iNumYears * cCore.N_MONTHS), _
                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
 
@@ -713,10 +714,16 @@ Namespace Ecospace.Controls
 #Region " Threaded indexing of datasets "
 
         Private Sub StopIndexing()
-            If Me.IsIndexing Then
-                Me.m_thread.Abort()
-            End If
-            Me.m_thread = Nothing
+            Try
+                If Me.IsIndexing Then
+                    Me.m_thread.Abort()
+                End If
+                Me.m_thread = Nothing
+            Catch ex As Exception
+                ' Whoah
+                Debug.Assert(False)
+            End Try
+            Me.UpdateControls()
         End Sub
 
         Private Sub StartIndexing()
@@ -724,13 +731,13 @@ Namespace Ecospace.Controls
             Dim ds As ISpatialDataSet = Me.SelectedDataset
             If (ds IsNot Nothing) Then
                 If (ds.FractionIndexed < 1.0!) Then
-                    Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
-                    Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                    Me.m_thread.Start()
+                    'Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
+                    'Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
+                    'Me.m_thread.Start()
+                    Me.IndexDatasetThread()
                 End If
             End If
             Me.UpdateControls()
-
         End Sub
 
         Private Sub IndexDatasetThread()

@@ -285,13 +285,16 @@ Namespace Ecospace
                         iNumConnected += 1
                         Dim ds As ISpatialDataSet = link.Adapter.Dataset(l.Index)
                         Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-                        Select Case comp.SpatialCompatibility
-                            Case cDatasetCompatilibity.eCompatibilityTypes.NoOverlap, cDatasetCompatilibity.eCompatibilityTypes.PartialOverlap
+                        Select Case comp.Compatibility
+                            Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
+                                cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, _
+                                cDatasetCompatilibity.eCompatibilityTypes.Errors
                                 ndLayer.ImageIndex = 2
-                            Case cDatasetCompatilibity.eCompatibilityTypes.Unknown
-                                ndLayer.ImageIndex = 3
-                            Case Else
+                            Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial, _
+                                cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
                                 ndLayer.ImageIndex = 1
+                            Case Else
+                                Debug.Assert(False, "Flag unknown: " & comp.Compatibility)
                         End Select
                     Else
                         ndLayer.ImageIndex = 0

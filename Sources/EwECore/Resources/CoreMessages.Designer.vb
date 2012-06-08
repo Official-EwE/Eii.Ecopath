@@ -2148,15 +2148,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Unable to assess compatibility.
-        '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOASSESSMENT() As String
-            Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOASSESSMENT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to Data for {0}% time steps could not be loaded.
         '''</summary>
         Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NODATA() As String
@@ -2166,11 +2157,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0}% indexed, no external data found for the Ecospace run time.
+        '''  Looks up a localized string similar to External data does not spatilly overlap your the model area.
         '''</summary>
-        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOOVERLAP() As String
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP() As String
             Get
-                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOOVERLAP", resourceCulture)
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No external data found for the Ecospace run time.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTEMPORAL_NOTIMEOVERLAP", resourceCulture)
             End Get
         End Property
         
