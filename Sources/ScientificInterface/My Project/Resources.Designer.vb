@@ -2871,7 +2871,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to No spatial data could be found for the ecopath model period (year {0}, {1} months). Average could not be calculated..
+        '''  Looks up a localized string similar to No spatial data could be found for year {0}. Average could not be calculated..
         '''</summary>
         Public ReadOnly Property PROMPT_SPATIALTEMPORAL_CALC_NODATA() As String
             Get
@@ -2880,7 +2880,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to There is no spatial overlap with your model area and the external data for the ecopath model period (year {0}, {1} months). Annual average could not be calculated..
+        '''  Looks up a localized string similar to There is no spatial overlap with your model area and the external data for year {0}. Annual average could not be calculated..
         '''</summary>
         Public ReadOnly Property PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP() As String
             Get

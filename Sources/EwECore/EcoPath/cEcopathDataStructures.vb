@@ -43,7 +43,8 @@ Public Class cEcopathDataStructures
     Public ModelGroupDigits As Boolean = False
     Public ModelUnitTime As eUnitTimeType = 0
     Public ModelUnitTimeCustom As String = ""
-    Public ModelUnitCurrency As eUnitCurrencyType = eUnitCurrencyType.NotSet
+    ''' <summary>Index of current selected currency units.</summary>
+    Public ModelUnitCurrency As Integer = eUnitCurrencyType.WetWeight
     Public ModelUnitCurrencyCustom As String = ""
     Public ModelUnitMonetary As String = ""
     Public ModelUnitArea As eUnitAreaType = 0
@@ -175,8 +176,6 @@ Public Class cEcopathDataStructures
     Public NumDetrit As Integer
     ''' <summary>Total number of fleets.</summary>
     Public NumFleet As Integer
-    ''' <summary>Index of current selected currency units.</summary>
-    Public currUnitIndex As Integer = eUnitCurrencyType.WetWeight
     ''' <summary>User-provided name for time units.</summary>
     Public TimeUnitName As String
     ''' <summary>Index of current selected time unit.</summary>
@@ -1040,12 +1039,16 @@ Public Class cEcopathDataStructures
         Next iPred
     End Sub
 
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether Ecopath is set to use Nutrient-based currency units.
+    ''' </summary>
+    ''' <returns>True if Ecopath is set to use Nutrient-based currency units.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function areUnitCurrencyNutrients() As Boolean
-
-        Return Me.currUnitIndex = eUnitCurrencyType.Nitrogen Or _
-                                                    Me.currUnitIndex = eUnitCurrencyType.Phosporous Or _
-                                                    Me.currUnitIndex = eUnitCurrencyType.CustomNutrient
+        Return Me.ModelUnitCurrency = eUnitCurrencyType.Nitrogen Or _
+               Me.ModelUnitCurrency = eUnitCurrencyType.Phosporous Or _
+               Me.ModelUnitCurrency = eUnitCurrencyType.CustomNutrient
     End Function
 
 #End Region
@@ -1226,7 +1229,7 @@ Public Class cEcopathDataStructures
             dest.DC = DC.Clone
 
             'dest.currUnitName = currUnitName
-            dest.currUnitIndex = currUnitIndex
+            dest.ModelUnitCurrency = ModelUnitCurrency
             dest.TimeUnitName = TimeUnitName
             dest.TimeUnitIndex = TimeUnitIndex
             dest.DietsModified = DietsModified

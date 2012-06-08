@@ -1568,12 +1568,12 @@ Description: {2}</value>
     <value>Remarks are not supported for this data</value>
   </data>
   <data name="PROMPT_SPATIALTEMPORAL_CALC_NODATA" xml:space="preserve">
-    <value>No spatial data could be found for the ecopath model period (year {0}, {1} months). Average could not be calculated.</value>
-    <comment>{0}=year, {1}=number of months</comment>
+    <value>No spatial data could be found for year {0}. Average could not be calculated.</value>
+    <comment>{0}=year</comment>
   </data>
   <data name="PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP" xml:space="preserve">
-    <value>There is no spatial overlap with your model area and the external data for the ecopath model period (year {0}, {1} months). Annual average could not be calculated.</value>
-    <comment>{0}=year, {1}=number of months</comment>
+    <value>There is no spatial overlap with your model area and the external data for year {0}. Annual average could not be calculated.</value>
+    <comment>{0}=year</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_CALCULATING" xml:space="preserve">
     <value>Calculating annual average for layer {0}, data connection {1}...</value>

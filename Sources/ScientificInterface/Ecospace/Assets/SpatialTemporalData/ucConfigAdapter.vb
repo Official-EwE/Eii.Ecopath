@@ -584,7 +584,6 @@ Namespace Ecospace.Controls
             Dim ds As ISpatialDataSet = Me.m_adt.Dataset(Me.m_layer.Index)
             Dim cv As ISpatialDataConverter = Me.m_adt.Converter(Me.m_layer.Index)
             Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
-            Dim iNumYears As Integer = Me.m_uic.Core.EwEModel.NumYears
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim ldtData As New List(Of DateTime)
             Dim iTSMin As Integer = 1
@@ -592,7 +591,7 @@ Namespace Ecospace.Controls
             Dim rs As ISpatialRaster = Nothing
 
             ' Determine time steps with overlap
-            For i As Integer = 1 To iNumYears * cCore.N_MONTHS
+            For i As Integer = 1 To CInt(Me.m_uic.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
                 Dim dt As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(i)
                 If ds.HasDataAtT(dt) Then
                     iTSMin = Math.Min(iTSMin, i)
@@ -608,10 +607,10 @@ Namespace Ecospace.Controls
             Select Case comp.Compatibility
                 Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
                      cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear, iNumYears * cCore.N_MONTHS), _
+                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear), _
                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                 Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear, iNumYears * cCore.N_MONTHS), _
+                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear), _
                                        eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
 
             End Select

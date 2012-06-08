@@ -2849,7 +2849,7 @@ Public Class cCore
         Me.m_EwEModel.Contact = Me.m_EcoPathData.ModelContact
         Me.m_EwEModel.NumDigits = Me.m_EcoPathData.ModelNumDigits
         Me.m_EwEModel.GroupDigits = Me.m_EcoPathData.ModelGroupDigits
-        Me.m_EwEModel.UnitCurrency = Me.m_EcoPathData.ModelUnitCurrency
+        Me.m_EwEModel.UnitCurrency = DirectCast(Me.m_EcoPathData.ModelUnitCurrency, eUnitCurrencyType)
         Me.m_EwEModel.UnitCurrencyCustomText = Me.m_EcoPathData.ModelUnitCurrencyCustom
         Me.m_EwEModel.UnitTime = Me.m_EcoPathData.ModelUnitTime
         Me.m_EwEModel.UnitTimeCustomText = Me.m_EcoPathData.ModelUnitTimeCustom
@@ -2866,15 +2866,6 @@ Public Class cCore
         Me.m_EwEModel.LastSaved = Me.m_EcoPathData.ModelLastSaved
         Me.m_EwEModel.isEcoSpaceModelCoupled = Me.m_EcoPathData.isEcospaceModelCoupled
         Me.m_EwEModel.AllowValidation = True
-
-        ' Update relevant unit(s) in Ecopath
-        '  Me.m_EcoPathData.ModelUnitCurrency = DirectCast(Me.m_EcoPathData.currUnitIndex, eUnitCurrencyType)
-
-        'HACK BUG FIX 30-May-2012 Changing the units did not effect the respiration output in the interface
-        'The interface and database use Me.m_EcoPathData.ModelUnitCurrency the Ecopath Codes uses Me.m_EcoPathData.currUnitIndex
-        'These where not in sync currUnitIndex was never updated to ModelUnitCurrency
-        'This should be fixed by removing ModelUnitCurrency and just using currUnitIndex
-        Me.m_EcoPathData.currUnitIndex = Me.m_EcoPathData.ModelUnitCurrency
 
         Me.m_EwEModel.ResetStatusFlags()
         Return True
@@ -2906,10 +2897,10 @@ Public Class cCore
 
         ' Update relevant unit(s) in Ecopath
         'HACK BUG FIX 30-May-2012 Changing the units did not effect the respiration output in the interface
-        'The interface and database use Me.m_EcoPathData.ModelUnitCurrency the Ecopath Codes uses Me.m_EcoPathData.currUnitIndex
+        'The interface and database use Me.m_EcoPathData.currUnitIndex the Ecopath Codes uses Me.m_EcoPathData.currUnitIndex
         'These where not in sync currUnitIndex was never updated
-        'This should be fixed by removing ModelUnitCurrency
-        Me.m_EcoPathData.currUnitIndex = Me.m_EcoPathData.ModelUnitCurrency
+        'This should be fixed by removing currUnitIndex
+        Me.m_EcoPathData.ModelUnitCurrency = Me.m_EcoPathData.ModelUnitCurrency
 
         Me.m_EcoPathData.isEcospaceModelCoupled = Me.m_EwEModel.isEcoSpaceModelCoupled
 
@@ -8282,38 +8273,41 @@ Public Class cCore
 
                 If checkHabitats() Then
 
-                    ' Write detailed info
-                    cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, cLog.eVerboseLevel.Detailed)
+                    If CheckSpatialDataTimeSteps() Then
 
-                    'Setup delegates for Ecospace to call 
-                    Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler
-                    m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
-                    Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
+                        ' Write detailed info
+                        cLog.Write("Started Ecospace run with " & Me.SpatialDataConnectionManager.NumConnectedAdapters & " configured connection(s), start year " & Me.EcosimFirstYear, cLog.eVerboseLevel.Detailed)
 
-                    'Tell the StateMonitor a run has started
-                    Me.m_StateMonitor.SetEcospaceRun()
-                    Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
+                        'Setup delegates for Ecospace to call 
+                        Me.m_SpaceInterfaceCallBack = EcospaceTimeStepHandler
+                        m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
+                        Me.m_Ecospace.RunCompletedDelegate = AddressOf Me.onEcoSpaceRunCompleted
 
-                    'Tell the Ecospace results writer that a run has started
-                    If Me.Autosave(eAutosaveTypes.EcospaceCSV) Then Me.m_EcospaceResultsCSVWriter.StartWrite()
-                    If Me.Autosave(eAutosaveTypes.EcospaceASC) Then Me.m_EcospaceResultsASCWriter.StartWrite()
+                        'Tell the StateMonitor a run has started
+                        Me.m_StateMonitor.SetEcospaceRun()
+                        Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
-                    'make sure Ecospace is not paused
-                    Me.m_Ecospace.isPaused = False
+                        'Tell the Ecospace results writer that a run has started
+                        If Me.Autosave(eAutosaveTypes.EcospaceCSV) Then Me.m_EcospaceResultsCSVWriter.StartWrite()
+                        If Me.Autosave(eAutosaveTypes.EcospaceASC) Then Me.m_EcospaceResultsASCWriter.StartWrite()
 
-                    If RunOnThread Then
-                        'Run Ecospace
-                        breturn = Me.m_Ecospace.RunThreaded()
-                    Else
-                        breturn = Me.m_Ecospace.Run()
-                        If EcospaceTimeStepHandler Is Nothing Then
-                            'if no RunCompleted call back then makes sure the onEcoSpaceRunCompleted() is called
-                            Me.onEcoSpaceRunCompleted(breturn)
+                        'make sure Ecospace is not paused
+                        Me.m_Ecospace.isPaused = False
+
+                        If RunOnThread Then
+                            'Run Ecospace
+                            breturn = Me.m_Ecospace.RunThreaded()
+                        Else
+                            breturn = Me.m_Ecospace.Run()
+                            If EcospaceTimeStepHandler Is Nothing Then
+                                'if no RunCompleted call back then makes sure the onEcoSpaceRunCompleted() is called
+                                Me.onEcoSpaceRunCompleted(breturn)
+                            End If
+
                         End If
+                    End If ' If CheckSpatialDataTimeSteps() Then
 
-                    End If
-
-                End If 'If GroupsMissingHabitat() Then
+                End If 'If checkHabitats() Then
 
             Else 'If Me.m_StateMonitor.HasEcospaceLoaded Then
                 Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_NO_SPACE_SCENARIO, _
@@ -8399,13 +8393,13 @@ Public Class cCore
 
         'send a message if there are groups that failed the HabCap test
         If FailedGroups.Count > 0 Then
-            Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_AREA
+            Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
             msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
                                                                 cFeedbackMessage.eReplyStyle.YES_NO, , cFeedbackMessage.eReply.YES)
 
             For Each igrp In FailedGroups
                 ' Connect variable status to group preferred habitat
-                strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_AREA_GROUP, Me.m_EcoPathData.GroupName(igrp), Me.m_EcoSpaceData.MaxHabCap(igrp))
+                strMsg = String.Format(My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP_GROUP, Me.m_EcoPathData.GroupName(igrp), Me.m_EcoSpaceData.MaxHabCap(igrp))
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, strMsg, _
                                          eVarNameFlags.NotSet, eDataTypes.EcospaceLayerHabitatCapacity, eCoreComponentType.EcoSpace, igrp)
 
@@ -8420,6 +8414,35 @@ Public Class cCore
 
         End If
 
+        Return True
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Check whether the spatial/temporal data set-up is valid.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Function CheckSpatialDataTimeSteps() As Boolean
+
+        If (Me.m_spatialdataconnectionManager.NumConnectedAdapters = 0) Then Return True
+
+        ' Allow a bit of room for rounding errors
+        If (Math.Round(1 / Me.m_EcoSpaceData.TimeStep, 5) > cCore.N_MONTHS) Then
+            Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS, _
+                                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
+            fmsg.ReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO
+            fmsg.Suppressable = True
+            fmsg.Reply = cFeedbackMessage.eReply.YES
+
+            Me.m_publisher.SendMessage(fmsg)
+
+            If (fmsg.Reply = cFeedbackMessage.eReply.NO) Then
+                Return False
+            End If
+
+        End If
         Return True
 
     End Function

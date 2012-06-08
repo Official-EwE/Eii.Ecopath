@@ -917,18 +917,18 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to The following group(s) have a low maximun habitat capacity. Do you want to continue?.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_AREA() As String
+        Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP() As String
             Get
-                Return ResourceManager.GetString("ECOSPACE_LOWHABITAT_AREA", resourceCulture)
+                Return ResourceManager.GetString("ECOSPACE_LOWHABITAT_CAP", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Group &apos;{0}&apos; area is {1}.
         '''</summary>
-        Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_AREA_GROUP() As String
+        Friend Shared ReadOnly Property ECOSPACE_LOWHABITAT_CAP_GROUP() As String
             Get
-                Return ResourceManager.GetString("ECOSPACE_LOWHABITAT_AREA_GROUP", resourceCulture)
+                Return ResourceManager.GetString("ECOSPACE_LOWHABITAT_CAP_GROUP", resourceCulture)
             End Get
         End Property
         
@@ -1019,6 +1019,15 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ECOSPACE_SIM_INIT_FAILED() As String
             Get
                 Return ResourceManager.GetString("ECOSPACE_SIM_INIT_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace is set to run with more than twelve time steps per year, while external data can only be delivered for the first day of a month. Your model may not be able to obtain the correct data for every time step. Do you want to continue?.
+        '''</summary>
+        Friend Shared ReadOnly Property ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS() As String
+            Get
+                Return ResourceManager.GetString("ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS", resourceCulture)
             End Get
         End Property
         

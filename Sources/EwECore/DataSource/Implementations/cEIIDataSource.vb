@@ -288,7 +288,7 @@ Public Class cEIIDataSource
             Integer.TryParse(recs(0), ecopathDS.NumGroups)
             Integer.TryParse(recs(1), ecopathDS.NumLiving)
             ecopathDS.ModelUnitCurrencyCustom = recs(2)
-            Integer.TryParse(recs(3), ecopathDS.currUnitIndex)
+            Integer.TryParse(recs(3), ecopathDS.ModelUnitCurrency)
 
             If Not ecopathDS.redimGroupVariables() Or Not psdDS.redimGroupVariables() Then
                 cLog.Write(Me.ToString + ".LoadModel(...) Failed to Re-Dimension group parameter arrays.")
