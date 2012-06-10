@@ -43,7 +43,6 @@ Partial Class frmModelDescription
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmModelDescription))
-        Dim CGoogleMapsLookup2 As SAUPUtil.Misc.GeoCode.cGoogleMapsLookup = New SAUPUtil.Misc.GeoCode.cGoogleMapsLookup()
         Me.m_udNumDigits = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.lbNumDigits = New System.Windows.Forms.Label()
         Me.m_lblOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -89,8 +88,6 @@ Partial Class frmModelDescription
         Me.m_tbDescription = New System.Windows.Forms.RichTextBox()
         Me.m_hdrExecution = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_nudFirstYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
-        Me.m_lblNumYears = New System.Windows.Forms.Label()
-        Me.m_nudNumYears = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_lblLocation = New System.Windows.Forms.Label()
         Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
         Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -114,7 +111,6 @@ Partial Class frmModelDescription
         Me.m_gbMonetaryUnits.SuspendLayout()
         Me.m_gbNumFormatting.SuspendLayout()
         CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -415,16 +411,6 @@ Partial Class frmModelDescription
         resources.ApplyResources(Me.m_nudFirstYear, "m_nudFirstYear")
         Me.m_nudFirstYear.Name = "m_nudFirstYear"
         '
-        'm_lblNumYears
-        '
-        resources.ApplyResources(Me.m_lblNumYears, "m_lblNumYears")
-        Me.m_lblNumYears.Name = "m_lblNumYears"
-        '
-        'm_nudNumYears
-        '
-        resources.ApplyResources(Me.m_nudNumYears, "m_nudNumYears")
-        Me.m_nudNumYears.Name = "m_nudNumYears"
-        '
         'm_lblLocation
         '
         resources.ApplyResources(Me.m_lblLocation, "m_lblLocation")
@@ -473,7 +459,7 @@ Partial Class frmModelDescription
         'm_cmbModelAreaName
         '
         resources.ApplyResources(Me.m_cmbModelAreaName, "m_cmbModelAreaName")
-        Me.m_cmbModelAreaName.LookupEngine = CGoogleMapsLookup2
+        Me.m_cmbModelAreaName.LookupEngine = Nothing
         Me.m_cmbModelAreaName.Name = "m_cmbModelAreaName"
         '
         'm_pbSearching
@@ -488,7 +474,6 @@ Partial Class frmModelDescription
         Me.m_plDescr.Controls.Add(Me.m_pbSearching)
         Me.m_plDescr.Controls.Add(Me.m_lbAuthor)
         Me.m_plDescr.Controls.Add(Me.m_lblModel)
-        Me.m_plDescr.Controls.Add(Me.m_nudNumYears)
         Me.m_plDescr.Controls.Add(Me.m_lbScenarioName)
         Me.m_plDescr.Controls.Add(Me.m_nudEast)
         Me.m_plDescr.Controls.Add(Me.m_lbDescription)
@@ -507,7 +492,6 @@ Partial Class frmModelDescription
         Me.m_plDescr.Controls.Add(Me.m_lblNorth)
         Me.m_plDescr.Controls.Add(Me.m_lblAreaUnit)
         Me.m_plDescr.Controls.Add(Me.m_lblWest)
-        Me.m_plDescr.Controls.Add(Me.m_lblNumYears)
         Me.m_plDescr.Controls.Add(Me.m_lblEast)
         Me.m_plDescr.Controls.Add(Me.m_lblArea)
         Me.m_plDescr.Controls.Add(Me.m_lblSouth)
@@ -560,7 +544,6 @@ Partial Class frmModelDescription
         Me.m_gbNumFormatting.ResumeLayout(False)
         Me.m_gbNumFormatting.PerformLayout()
         CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
@@ -617,7 +600,6 @@ Partial Class frmModelDescription
     Private WithEvents m_tbContact As System.Windows.Forms.RichTextBox
     Private WithEvents m_tbDescription As System.Windows.Forms.RichTextBox
     Private WithEvents m_hdrExecution As cEwEHeaderLabel
-    Private WithEvents m_lblNumYears As System.Windows.Forms.Label
     Private WithEvents m_lblLocation As System.Windows.Forms.Label
     Private WithEvents m_lblNorth As System.Windows.Forms.Label
     Private WithEvents m_lblWest As System.Windows.Forms.Label
@@ -633,7 +615,6 @@ Partial Class frmModelDescription
     Friend WithEvents m_chkIsCoupled As System.Windows.Forms.CheckBox
     Private WithEvents m_udNumDigits As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudFirstYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
-    Private WithEvents m_nudNumYears As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudNorth As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudSouth As ScientificInterfaceShared.Controls.cEwENumericUpDown
     Private WithEvents m_nudWest As ScientificInterfaceShared.Controls.cEwENumericUpDown

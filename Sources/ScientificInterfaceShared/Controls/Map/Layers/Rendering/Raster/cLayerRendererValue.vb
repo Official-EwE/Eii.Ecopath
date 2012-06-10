@@ -20,9 +20,8 @@
 Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports SAUPUtil.Misc.Colours
-Imports ScientificInterfaceShared.Style
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Style
 
 #End Region 'Imports
 

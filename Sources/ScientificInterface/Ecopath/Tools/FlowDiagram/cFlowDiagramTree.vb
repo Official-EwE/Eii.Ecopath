@@ -21,7 +21,6 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.Drawing.Color
 Imports System.Math
-Imports SAUPUtil.SAUPData.Mapping
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports

@@ -1439,7 +1439,6 @@ Namespace Core
         KemptonsQPM
 
         EcopathFirstYear
-        EcopathNumYears
         South
         North
         West

@@ -352,7 +352,6 @@ Public Class cEIIXMLDataSource
                 ecopathDS.ModelUnitMonetary = DirectCast(Me.ReadSafe(row, "UnitMonetary", "EUR"), String)
                 'ecopathDS.m_EwEModelUnitMonetaryCustom = CStr(Me.ReadSafe(row, "UnitTimeCustom", ""))
                 ecopathDS.FirstYear = CInt(Me.ReadSafe(row, "FirstYear", 0))
-                ecopathDS.NumYears = Math.Max(1, CInt(Me.ReadSafe(row, "NumYears", 1)))
                 'ecopathDS.ModelUnitArea = DirectCast(Me.ReadSafe(row, "UnitArea", eUnitAreaType.Km2), eUnitAreaType)
                 'ecopathDS.ModelUnitAreaCustom = CStr(Me.ReadSafe(row, "UnitAreaCustom", ""))
 

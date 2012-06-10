@@ -15,11 +15,14 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-Option Strict On
+#Region " Imports "
 
+Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
-Imports SAUPUtil.Misc.GeoCode
+Imports ScientificInterfaceShared.GeoCode
+
+#End Region ' Imports
 
 Public Class frmModelDescription
 
@@ -32,7 +35,6 @@ Public Class frmModelDescription
     Private m_fpGroupDigits As cEwEFormatProvider = Nothing
     Private m_fpPSD As cEwEFormatProvider = Nothing
     Private m_fpFirstYear As cEwEFormatProvider = Nothing
-    Private m_fpNumYears As cEwEFormatProvider = Nothing
     Private m_fpAreaName As cEwEFormatProvider = Nothing
     Private m_fpSouth As cEwEFormatProvider = Nothing
     Private m_fpNorth As cEwEFormatProvider = Nothing
@@ -71,7 +73,6 @@ Public Class frmModelDescription
         Me.m_fpNumDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_udNumDigits, eweModel, eVarNameFlags.NumDigits)
         Me.m_fpGroupDigits = New cPropertyFormatProvider(Me.UIContext, Me.m_cbGroupDigits, eweModel, eVarNameFlags.GroupDigits)
         Me.m_fpFirstYear = New cPropertyFormatProvider(Me.UIContext, Me.m_nudFirstYear, eweModel, eVarNameFlags.EcopathFirstYear)
-        Me.m_fpNumYears = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumYears, eweModel, eVarNameFlags.EcopathNumYears)
         Me.m_fpAreaName = New cPropertyFormatProvider(Me.UIContext, Me.m_cmbModelAreaName, eweModel, eVarNameFlags.AreaName)
         Me.m_fpNorth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNorth, eweModel, eVarNameFlags.North)
         Me.m_fpSouth = New cPropertyFormatProvider(Me.UIContext, Me.m_nudSouth, eweModel, eVarNameFlags.South)
@@ -115,6 +116,8 @@ Public Class frmModelDescription
         Me.OnUnitTimeTextChanged(Me.m_propUnitTimeText, cProperty.eChangeFlags.All)
         Me.OnUnitMonetaryChanged(Me.m_propUnitMonetary, cProperty.eChangeFlags.All)
 
+        Me.m_cmbModelAreaName.LookupEngine = New cGoogleMapsLookup()
+
         Me.UpdateControls()
 
     End Sub
@@ -129,7 +132,6 @@ Public Class frmModelDescription
         Me.m_fpNumDigits.Release()
         Me.m_fpGroupDigits.Release()
         Me.m_fpFirstYear.Release()
-        Me.m_fpNumYears.Release()
         Me.m_fpAreaName.Release()
         Me.m_fpNorth.Release()
         Me.m_fpSouth.Release()
@@ -317,17 +319,13 @@ Public Class frmModelDescription
         Dim location As cGeoCodeLocation = Me.m_cmbModelAreaName.SelectedLocation
         If location Is Nothing Then Return
 
-        Me.m_fpNorth.Value = Location.North
-        Me.m_fpEast.Value = Location.East
-        Me.m_fpSouth.Value = Location.South
-        Me.m_fpWest.Value = Location.West
+        Me.m_fpNorth.Value = location.North
+        Me.m_fpEast.Value = location.East
+        Me.m_fpSouth.Value = location.South
+        Me.m_fpWest.Value = location.West
 
     End Sub
 
 #End Region ' Events
-
-#Region " Internal implementation "
-
-#End Region ' Internal implementation
 
 End Class

@@ -20,11 +20,7 @@
 Option Explicit On
 Option Strict On
 
-Imports System.IO
 Imports EwECore
-Imports SAUPUtil.SAUPData
-Imports SAUPUtil.SAUPData.Mapping
-Imports SAUPUtil.Misc.Colours
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers

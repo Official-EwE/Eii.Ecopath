@@ -18,8 +18,8 @@
 #Region " Imports "
 
 Option Strict On
-Imports SAUPUtil.Misc.GeoCode
 Imports System.Threading
+Imports ScientificInterfaceShared.GeoCode
 
 #End Region ' Imports
 
@@ -37,7 +37,7 @@ Namespace Controls
 
 #Region " Private variables "
 
-        Private m_lookup As cGeoCodeLookup = Nothing
+        Private m_lookup As IGeoCodeLookup = Nothing
         Private m_searchThread As Thread = Nothing
         Private m_bIsSearching As Boolean = False
 
@@ -92,11 +92,11 @@ Namespace Controls
             End Get
         End Property
 
-        Public Property LookupEngine() As cGeoCodeLookup
+        Public Property LookupEngine() As IGeoCodeLookup
             Get
                 Return Me.m_lookup
             End Get
-            Set(ByVal value As cGeoCodeLookup)
+            Set(ByVal value As IGeoCodeLookup)
                 Me.Search("")
                 Me.m_lookup = value
             End Set

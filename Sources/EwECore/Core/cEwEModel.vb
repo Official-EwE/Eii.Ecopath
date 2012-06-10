@@ -76,11 +76,6 @@ Public Class cEwEModel
             val = New cValue(New Integer, eVarNameFlags.EcopathFirstYear, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
             m_values.Add(val.varName, val)
 
-            ' NumYears
-            meta = New cVariableMetaData(0, 10000, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
-            val = New cValue(New Integer, eVarNameFlags.EcopathNumYears, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NumDigits))
-            m_values.Add(val.varName, val)
-
             ' North
             meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -316,19 +311,6 @@ Public Class cEwEModel
 
         Set(ByVal value As Integer)
             Me.SetVariable(eVarNameFlags.EcopathFirstYear, value)
-        End Set
-    End Property
-
-    ''' <summary>
-    ''' Get/set the number of years that a model represents.
-    ''' </summary>
-    Public Property NumYears() As Integer
-        Get
-            Return CInt(Me.GetVariable(eVarNameFlags.EcopathNumYears))
-        End Get
-
-        Set(ByVal value As Integer)
-            Me.SetVariable(eVarNameFlags.EcopathNumYears, value)
         End Set
     End Property
 

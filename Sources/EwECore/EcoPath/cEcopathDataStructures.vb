@@ -58,7 +58,6 @@ Public Class cEcopathDataStructures
     Public ModelWest As Single = 0
     Public ModelEast As Single = 0
     Public FirstYear As Integer = Date.Now.Year
-    Public NumYears As Integer = 1
 
     ''' <summary>Group names.</summary>
     ''' <remarks>In EwE5, group names were used to identify groups. In EwE6 this 
@@ -1332,7 +1331,6 @@ Public Class cEcopathDataStructures
             dest.ModelUnitTimeCustom = Me.ModelUnitTimeCustom
             dest.ModelWest = Me.ModelWest
             dest.FirstYear = Me.FirstYear
-            dest.NumYears = Me.NumYears
 
         Catch ex2 As Exception
             Debug.Assert(False, ex2.Message)
