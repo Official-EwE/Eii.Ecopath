@@ -1,4 +1,21 @@
-﻿#Region " Imports "
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
 
 Option Strict On
 Imports System.Web
@@ -14,7 +31,7 @@ Imports System.Globalization
 Namespace GeoCode
 
     ''' <summary>
-    ''' Google Maps based <see cref="cGeoCodeLookup">geo location lookup</see>.
+    ''' Google Maps based <see cref="IGeoCodeLookup">geo location lookup</see>.
     ''' </summary>
     ''' <remarks>
     ''' Usage example:
@@ -36,10 +53,10 @@ Namespace GeoCode
     Public Class cGoogleMapsLookup
         Implements IGeoCodeLookup
 
-        ''' <summary>Google geocode api v2 - deprecated</summary>
-        Private Const SERVICE_URL_DPER As String = "http://maps.google.com/maps/geo?q={0}&output=xml&key=ABQIAAAAuXdMTY5VIU1FvkgOOP1dNBTsILMTMKRV-aJhd94IQkaJhVJ0YBS2qNSZGm8TaefqbXBT6lUXeMZ6tA"
-        ''' <summary>Google geocode api v3 - per nov 2010</summary>
-        Private Const SERVICE_URL As String = "http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false&key=ABQIAAAAuXdMTY5VIU1FvkgOOP1dNBTsILMTMKRV-aJhd94IQkaJhVJ0YBS2qNSZGm8TaefqbXBT6lUXeMZ6tA"
+        ''' <summary>Google API key, registered to EwEDevTeam@gmail.com</summary>
+        Private Const SERVICE_KEY As String = "AIzaSyCobpg4vqw870S1Xi2zRzAjXvEunOc2a88"
+          ''' <summary>Google geocode api v3 - per nov 2010</summary>
+        Private Const SERVICE_URL As String = "http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false"
 
         Private m_strSearchTerm As String = ""
 
