@@ -26,7 +26,7 @@ Imports ScientificInterfaceShared.BingMapsGeoLocatorService
 Namespace GeoCode
 
     ''' <summary>
-    ''' Google Maps based <see cref="cGeoCodeLookup">geo location lookup</see>.
+    ''' Google Maps based <see cref="IGeoCodeLookup">geo location lookup</see>.
     ''' </summary>
     ''' <remarks>
     ''' Usage example:
@@ -49,7 +49,9 @@ Namespace GeoCode
         Implements IGeoCodeLookup
         Private m_strSearchTerm As String = ""
 
+        <Obsolete("Do not use this class yet; web service geocoding not hooked up yet")> _
         Public Sub New()
+            Throw New NotImplementedException("Do not use this class yet; web service geocoding not hooked up yet")
         End Sub
 
         Public Property Term As String Implements IGeoCodeLookup.Term

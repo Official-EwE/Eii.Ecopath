@@ -347,7 +347,7 @@ Namespace Ecopath
         End Function
 
         ''' <summary>
-        ''' Set GS Unassimilated Consumption based on the Model Currency Units <see cref="cEcopathDataStructures.currUnitIndex"> currUnitIndex </see>
+        ''' Set GS Unassimilated Consumption based on the Model Currency Units <see cref="cEcopathDataStructures.ModelUnitCurrency"/>
         ''' </summary>
         ''' <remarks>
         ''' If Currency is Nutrient then GS has a default of (1 - Me.GE(igrp))
