@@ -53,9 +53,7 @@ Namespace GeoCode
     Public Class cGoogleMapsLookup
         Implements IGeoCodeLookup
 
-        ''' <summary>Google API key, registered to EwEDevTeam@gmail.com</summary>
-        Private Const SERVICE_KEY As String = "AIzaSyCobpg4vqw870S1Xi2zRzAjXvEunOc2a88"
-          ''' <summary>Google geocode api v3 - per nov 2010</summary>
+           ''' <summary>Google geocode api v3 - per nov 2010</summary>
         Private Const SERVICE_URL As String = "http://maps.googleapis.com/maps/api/geocode/xml?address={0}&sensor=false"
 
         Private m_strSearchTerm As String = ""
