@@ -35,7 +35,6 @@ Public Class cTaxon
         Dim val As cValue = Nothing
         Dim meta As cVariableMetaData = Nothing
         Dim cbuf() As Char
-        Dim validator As cValidatorDefault
 
         Me.AllowValidation = False
 
@@ -54,80 +53,80 @@ Public Class cTaxon
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.Class, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.Class, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.Class))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.Phylum, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.Phylum, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.Phylum))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.Order, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.Order, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.Order))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.Family, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.Family, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.Family))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.Genus, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.Genus, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.Genus))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.Species, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.Species))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
-        val = New cValue(New Integer, eVarNameFlags.CodeSAUP, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        val = New cValue(New Integer, eVarNameFlags.CodeSAUP, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.CodeSAUP))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
-        val = New cValue(New Integer, eVarNameFlags.CodeFB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        val = New cValue(New Integer, eVarNameFlags.CodeFB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.CodeFB))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
-        val = New cValue(New Integer, eVarNameFlags.CodeSLB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, validator)
+        val = New cValue(New Integer, eVarNameFlags.CodeSLB, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.CodeSLB))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeLSID, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.CodeLSID))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(13)
-        val = New cValue(New String(cbuf), eVarNameFlags.CodeFAO, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.CodeFAO, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.CodeFAO))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(250)
-        val = New cValue(New String(cbuf), eVarNameFlags.Source, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.Source, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.Source))
         m_values.Add(val.varName, val)
 
         meta = New cVariableMetaData(1024)
-        val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, validator)
+        val = New cValue(New String(cbuf), eVarNameFlags.SourceKey, eStatusFlags.NotEditable Or eStatusFlags.Null, eValueTypes.Str, meta, m_core.m_validators.getValidator(eVarNameFlags.SourceKey))
         m_values.Add(val.varName, val)
 
         ' North
         meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-        val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.North, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.North))
         m_values.Add(val.varName, val)
 
         ' South
         meta = New cVariableMetaData(-90, 90, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-        val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.South, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.South))
         m_values.Add(val.varName, val)
 
         ' East
         meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-        val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.East, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.East))
         m_values.Add(val.varName, val)
 
         ' West
         meta = New cVariableMetaData(-180, 180, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
-        val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Single, eVarNameFlags.West, eStatusFlags.OK, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.West))
         m_values.Add(val.varName, val)
 
         ' Search fields
         meta = New cVariableMetaData(0, Long.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
-        val = New cValue(New Long, eVarNameFlags.TaxonSearchFields, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+        val = New cValue(New Long, eVarNameFlags.TaxonSearchFields, eStatusFlags.OK, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.TaxonSearchFields))
         m_values.Add(val.varName, val)
 
         ' Proportion
