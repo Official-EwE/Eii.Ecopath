@@ -58,14 +58,14 @@ Public Class gridDefineTaxonomy
         Hierarchy = 0
         Name
         Proportion
-        Species
         Genus
+        Species
         Family
         Order
         [Class]
         Phylum
         Status
-        'Code
+        ' - Codes -
         CodeSAUP
         CodeFB
         CodeSLB
@@ -1186,7 +1186,7 @@ Public Class gridDefineTaxonomy
         If (Me.m_lTaxonInfoRemoved.Count > 0) Then
 
             Dim fmsg As New cFeedbackMessage(My.Resources.TAXON_DELETE_CONFIRMATION, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
-            Me.UIContext.Core.Messages.AddMessage(fmsg)
+            Me.UIContext.Core.Messages.SendMessage(fmsg)
 
             Select Case fmsg.Reply
                 Case cFeedbackMessage.eReply.NO

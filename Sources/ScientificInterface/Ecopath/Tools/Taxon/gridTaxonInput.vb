@@ -24,6 +24,7 @@ Imports EwEUtils.Core
 Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -196,14 +197,16 @@ Namespace Ecopath.Input
         Private Sub AddTaxonRow(ByVal taxon As cTaxon, ByVal iRow As Integer, ByVal hgcParent As EwEHierarchyGridCell)
 
             Dim cell As EwECellBase = Nothing
+            Dim propScName As cScientificNameProperty = New cScientificNameProperty(Me.PropertyManager, taxon)
 
             Me.Rows.Insert(iRow)
             Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(CStr(taxon.Index))
 
-            cell = New PropertyRowHeaderChildCell(Me.PropertyManager, taxon, eVarNameFlags.Species)
+            cell = New PropertyRowHeaderChildCell(propScName)
             cell.Style = cStyleGuide.eStyleFlags.TaxonItalics
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Name) = cell
+            Me.RegisterLocalProperty(propScName)
 
             Me(iRow, eColumnTypes.Ecology) = New SourceGrid2.Cells.Real.Cell(taxon.EcologyType, Me.m_editorEcology)
             Me(iRow, eColumnTypes.Ecology).Behaviors.Add(Me.EwEEditHandler)
@@ -246,6 +249,80 @@ Namespace Ecopath.Input
             Me.Taxon(iRow) = taxon
 
         End Sub
+
+
+        Private Class cScientificNameProperty
+            Inherits cStringProperty
+
+            Private m_src As cTaxon = Nothing
+            Private m_pm As cPropertyManager = Nothing
+
+            Private m_propName As cStringProperty = Nothing
+            Private m_propSpecies As cStringProperty = Nothing
+            Private m_propGenus As cStringProperty = Nothing
+
+            Public Sub New(ByVal pm As cPropertyManager, ByVal src As cTaxon)
+                MyBase.New()
+
+                ' Do not connect to baseclass PropertyManager; this property is totally superficial!
+                Me.m_pm = pm
+                Me.m_src = src
+
+                Me.m_propName = Me.Register(eVarNameFlags.Name)
+                Me.m_propSpecies = Me.Register(eVarNameFlags.Species)
+                Me.m_propGenus = Me.Register(eVarNameFlags.Genus)
+
+            End Sub
+
+            Protected Overrides Sub Dispose(bDisposing As Boolean)
+                Me.Unregister(Me.m_propName)
+                Me.Unregister(Me.m_propSpecies)
+                Me.Unregister(Me.m_propGenus)
+                MyBase.Dispose(bDisposing)
+            End Sub
+
+            Protected Overrides Property Value(Optional bHonourNull As Boolean = True) As Object
+                Get
+                    ' Do not try to properly capitalize; .NET has no built-in function for this that works under for all languages!
+                    ' Better not try to be too smart
+                    Return CStr(Me.m_propGenus.GetValue()) & " " & CStr(Me.m_propSpecies.GetValue())
+                End Get
+                Set(value As Object)
+                    ' NOP
+                End Set
+            End Property
+
+            ''' <summary>
+            ''' Reroute remarks to Name property
+            ''' </summary>
+            Protected Overrides Property Remark As String
+                Get
+                    Return Me.m_pm.GetProperty(Me.m_src, eVarNameFlags.Name).GetRemark
+                End Get
+                Set(value As String)
+                    Me.m_pm.GetProperty(Me.m_src, eVarNameFlags.Name).SetRemark(value)
+                End Set
+            End Property
+
+#Region " Internals "
+
+            Private Sub OnPropertyChanged(ByVal prop As cProperty, cf As cProperty.eChangeFlags)
+                ' Pass it on!
+                Me.OnPropertyChanged(Me, cf)
+            End Sub
+
+            Private Function Register(vn As eVarNameFlags) As cStringProperty
+                Dim prop As cStringProperty = DirectCast(Me.m_pm.GetProperty(Me.m_src, vn), cStringProperty)
+                AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+                Return prop
+            End Function
+
+            Private Sub Unregister(prop As cStringProperty)
+                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+            End Sub
+
+#End Region ' Internals
+        End Class
 
     End Class
 

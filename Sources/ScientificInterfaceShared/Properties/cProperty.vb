@@ -136,7 +136,7 @@ Namespace Properties
             Me.m_SourceSec = Nothing
         End Sub
 
-        Friend Sub Dispose() Implements IDisposable.Dispose
+        Protected Friend Sub Dispose() Implements IDisposable.Dispose
             If Not Me.m_bDisposed Then Dispose(True)
             GC.SuppressFinalize(Me)
         End Sub
@@ -224,7 +224,7 @@ Namespace Properties
             Get
                 Return Me.m_pm
             End Get
-            Friend Set(ByVal pm As cPropertyManager)
+            Protected Friend Set(ByVal pm As cPropertyManager)
                 Me.m_pm = pm
             End Set
         End Property

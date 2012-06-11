@@ -351,8 +351,9 @@ Namespace Controls.EwEGrid
         ''' <summary>Generic edit behaviour.</summary>
         Private m_bm As cEwEGridBacklinkModel = Nothing
 
-        ''' <summary>Bin of formula properties.</summary>
-        Private m_lpropertyFormula As List(Of cFormulaProperty) = Nothing
+        ''' <summary>Bin of local properties that will need disposing. Add locally crafted
+        ''' formula properties and other non propertymanager-delivered properties here.</summary>
+        Private m_lpropLocal As List(Of cProperty) = Nothing
 
         ''' <summary>Helper flag, states whether a batch cell edit is active</summary>
         Private m_bInBatchEdit As Boolean = False
@@ -898,12 +899,12 @@ Namespace Controls.EwEGrid
                 Me.ClearRow(iRow)
             Next
             ' Clear orphaned properties
-            If (Me.m_lpropertyFormula IsNot Nothing) Then
-                For Each prop As cProperty In Me.m_lpropertyFormula
+            If (Me.m_lpropLocal IsNot Nothing) Then
+                For Each prop As cProperty In Me.m_lpropLocal
                     prop.Dispose()
                 Next
-                Me.m_lpropertyFormula.Clear()
-                Me.m_lpropertyFormula = Nothing
+                Me.m_lpropLocal.Clear()
+                Me.m_lpropLocal = Nothing
             End If
             If Not Me.Disposing Then
                 ' Remove all rows
@@ -984,12 +985,24 @@ Namespace Controls.EwEGrid
         <Browsable(False)> _
         Protected Function Formula(ByVal exp As cExpression) As cFormulaProperty
             Dim fp As New cFormulaProperty(exp)
-            If Me.m_lpropertyFormula Is Nothing Then
-                Me.m_lpropertyFormula = New List(Of cFormulaProperty)
-            End If
-            Me.m_lpropertyFormula.Add(fp)
+            Me.RegisterLocalProperty(fp)
             Return fp
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Register a <see cref="cProperty"/> that is to be automatically disposed 
+        ''' when the grid no longer needs it.
+        ''' </summary>
+        ''' <param name="prop">The property to register.</param>
+        ''' -------------------------------------------------------------------
+        <Browsable(False)> _
+        Protected Sub RegisterLocalProperty(ByVal prop As cProperty)
+            If Me.m_lpropLocal Is Nothing Then
+                Me.m_lpropLocal = New List(Of cProperty)
+            End If
+            Me.m_lpropLocal.Add(prop)
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>

@@ -90,6 +90,7 @@ Namespace Properties
             RemoveHandler m_formula.OnValueChanged, AddressOf OnFormulaChanged
             Me.m_formula.Dispose()
             Me.m_formula = Nothing
+            MyBase.Dispose(bDisposing)
         End Sub
 
         ''' -------------------------------------------------------------------
