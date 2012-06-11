@@ -730,10 +730,9 @@ Namespace Ecospace.Controls
             Dim ds As ISpatialDataSet = Me.SelectedDataset
             If (ds IsNot Nothing) Then
                 If (ds.FractionIndexed < 1.0!) Then
-                    'Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
-                    'Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                    'Me.m_thread.Start()
-                    Me.IndexDatasetThread()
+                    Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
+                    Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
+                    Me.m_thread.Start()
                 End If
             End If
             Me.UpdateControls()
@@ -743,8 +742,13 @@ Namespace Ecospace.Controls
             Me.SelectedDataset.BuildIndex(AddressOf OnSpatialIndexUpdated)
             ' Forget myself
             Me.m_thread = Nothing
+
             ' Invoke callback to clean up
-            Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {Nothing})
+            Try
+                Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {Nothing})
+            Catch ex As Exception
+                ' Chomp
+            End Try
         End Sub
 
         Private Function IsIndexing() As Boolean

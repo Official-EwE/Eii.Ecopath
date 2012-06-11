@@ -20,11 +20,10 @@
 Option Strict On
 
 Imports EwECore
+Imports EwEPlugin.Data
 Imports EwEUtils.Core
-Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
-Imports EwEUtils.Utilities
 
 #End Region ' Imports 
 
@@ -39,12 +38,85 @@ Namespace Ecopath.Input
     Public Class gridTaxonInput
         : Inherits EwEGrid
 
+#Region " Private class "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Local property to format scientific names
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Class cScientificNameProperty
+            Inherits cStringProperty
+
+            Private m_src As cTaxon = Nothing
+            Private m_pm As cPropertyManager = Nothing
+
+            Private m_propName As cStringProperty = Nothing
+            Private m_propSpecies As cStringProperty = Nothing
+            Private m_propGenus As cStringProperty = Nothing
+
+            Public Sub New(ByVal pm As cPropertyManager, ByVal src As cTaxon)
+                MyBase.New()
+
+                ' Do not connect to baseclass PropertyManager; this property is totally superficial!
+                Me.m_pm = pm
+                Me.m_src = src
+
+                Me.m_propName = Me.Register(eVarNameFlags.Name)
+                Me.m_propSpecies = Me.Register(eVarNameFlags.Species)
+                Me.m_propGenus = Me.Register(eVarNameFlags.Genus)
+
+            End Sub
+
+            Protected Overrides Sub Dispose(bDisposing As Boolean)
+                Me.Unregister(Me.m_propName)
+                Me.Unregister(Me.m_propSpecies)
+                Me.Unregister(Me.m_propGenus)
+                MyBase.Dispose(bDisposing)
+            End Sub
+
+            Protected Overrides Property Value(Optional bHonourNull As Boolean = True) As Object
+                Get
+                    ' Do not try to properly capitalize; .NET has no built-in function for this that works under for all languages! Better not try to be too smart
+                    ' Do not localize the genus + species formatting; keep it fixed here
+                    Return CStr(Me.m_propGenus.GetValue()) & " " & CStr(Me.m_propSpecies.GetValue())
+                End Get
+                Set(value As Object)
+                    ' NOP
+                End Set
+            End Property
+
+#Region " Internals "
+
+            Private Sub OnPropertyChanged(ByVal prop As cProperty, cf As cProperty.eChangeFlags)
+                ' Pass it on!
+                Me.OnPropertyChanged(Me, cf)
+            End Sub
+
+            Private Function Register(vn As eVarNameFlags) As cStringProperty
+                Dim prop As cStringProperty = DirectCast(Me.m_pm.GetProperty(Me.m_src, vn), cStringProperty)
+                AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+                Return prop
+            End Function
+
+            Private Sub Unregister(prop As cStringProperty)
+                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
+            End Sub
+
+#End Region ' Internals
+
+        End Class
+
+#End Region ' Private class
+
+#Region " Private vars "
+
         Private m_editorEcology As EwEComboBoxCellEditor = Nothing
         Private m_editorConservation As EwEComboBoxCellEditor = Nothing
         Private m_editorOrganism As EwEComboBoxCellEditor = Nothing
         Private m_editorOccurrence As EwEComboBoxCellEditor = Nothing
 
-        Enum eColumnTypes As Integer
+        Private Enum eColumnTypes As Integer
             Hierarchy = 0
             Name
             Organism
@@ -59,6 +131,8 @@ Namespace Ecopath.Input
             MeanWeight
             MeanLifeSpan
         End Enum
+
+#End Region ' Private vars
 
         Public Sub New()
             MyBase.New()
@@ -174,6 +248,18 @@ Namespace Ecopath.Input
             End Get
         End Property
 
+        Public Function SelectedTaxa() As cTaxon()
+            Dim lTaxa As New List(Of cTaxon)
+            Dim taxon As cTaxon = Nothing
+            For Each row As RowInfo In Me.Selection.SelectedRows
+                taxon = Me.Taxon(row.Index)
+                If (taxon IsNot Nothing) Then
+                    lTaxa.Add(taxon)
+                End If
+            Next
+            Return lTaxa.ToArray()
+        End Function
+
         Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
             Dim taxon As cTaxon = Me.Taxon(p.Row)
 
@@ -249,80 +335,6 @@ Namespace Ecopath.Input
             Me.Taxon(iRow) = taxon
 
         End Sub
-
-
-        Private Class cScientificNameProperty
-            Inherits cStringProperty
-
-            Private m_src As cTaxon = Nothing
-            Private m_pm As cPropertyManager = Nothing
-
-            Private m_propName As cStringProperty = Nothing
-            Private m_propSpecies As cStringProperty = Nothing
-            Private m_propGenus As cStringProperty = Nothing
-
-            Public Sub New(ByVal pm As cPropertyManager, ByVal src As cTaxon)
-                MyBase.New()
-
-                ' Do not connect to baseclass PropertyManager; this property is totally superficial!
-                Me.m_pm = pm
-                Me.m_src = src
-
-                Me.m_propName = Me.Register(eVarNameFlags.Name)
-                Me.m_propSpecies = Me.Register(eVarNameFlags.Species)
-                Me.m_propGenus = Me.Register(eVarNameFlags.Genus)
-
-            End Sub
-
-            Protected Overrides Sub Dispose(bDisposing As Boolean)
-                Me.Unregister(Me.m_propName)
-                Me.Unregister(Me.m_propSpecies)
-                Me.Unregister(Me.m_propGenus)
-                MyBase.Dispose(bDisposing)
-            End Sub
-
-            Protected Overrides Property Value(Optional bHonourNull As Boolean = True) As Object
-                Get
-                    ' Do not try to properly capitalize; .NET has no built-in function for this that works under for all languages!
-                    ' Better not try to be too smart
-                    Return CStr(Me.m_propGenus.GetValue()) & " " & CStr(Me.m_propSpecies.GetValue())
-                End Get
-                Set(value As Object)
-                    ' NOP
-                End Set
-            End Property
-
-            ''' <summary>
-            ''' Reroute remarks to Name property
-            ''' </summary>
-            Protected Overrides Property Remark As String
-                Get
-                    Return Me.m_pm.GetProperty(Me.m_src, eVarNameFlags.Name).GetRemark
-                End Get
-                Set(value As String)
-                    Me.m_pm.GetProperty(Me.m_src, eVarNameFlags.Name).SetRemark(value)
-                End Set
-            End Property
-
-#Region " Internals "
-
-            Private Sub OnPropertyChanged(ByVal prop As cProperty, cf As cProperty.eChangeFlags)
-                ' Pass it on!
-                Me.OnPropertyChanged(Me, cf)
-            End Sub
-
-            Private Function Register(vn As eVarNameFlags) As cStringProperty
-                Dim prop As cStringProperty = DirectCast(Me.m_pm.GetProperty(Me.m_src, vn), cStringProperty)
-                AddHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-                Return prop
-            End Function
-
-            Private Sub Unregister(prop As cStringProperty)
-                RemoveHandler prop.PropertyChanged, AddressOf OnPropertyChanged
-            End Sub
-
-#End Region ' Internals
-        End Class
 
     End Class
 

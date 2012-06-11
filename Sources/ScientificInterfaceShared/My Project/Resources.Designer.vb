@@ -5903,6 +5903,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Refresh() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Refresh", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property RelationshipsHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("RelationshipsHS", resourceCulture)

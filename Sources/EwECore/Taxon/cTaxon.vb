@@ -685,7 +685,6 @@ Public Class cTaxon
         End Set
     End Property
 
-
     ''' <summary>
     ''' Get/set the asymptotic weight for a taxon.
     ''' </summary>

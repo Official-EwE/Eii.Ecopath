@@ -193,6 +193,16 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Returns whether data at a given time is indexed.
+        ''' </summary>
+        ''' <param name="dateTime">The time to query data for. For practical
+        ''' purposes, time is assumed to be rounded to months.</param>
+        ''' <returns>True if data at a given time is indexed.</returns>
+        ''' -------------------------------------------------------------------
+        Function IsIndexed(ByVal datetime As DateTime) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Returns the fraction of the dataset that is indexed.
         ''' </summary>
         ''' <returns>A value that indicates the fraction of the dataset that

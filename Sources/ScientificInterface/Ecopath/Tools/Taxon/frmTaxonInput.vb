@@ -18,13 +18,22 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwEPlugin
+Imports EwEPlugin.Data
 Imports EwEUtils.Commands
-Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Core
+Imports EwECore
+
 #End Region ' Imports 
 
 Namespace Ecopath.Input
 
+    ''' <summary>
+    ''' Form implementing an interface to provide taxonomy input data.
+    ''' </summary>
     Public Class frmTaxonInput
+
+        Private m_bHasSearchEngines As Boolean = False
 
         Public Sub New()
             MyBase.New()
@@ -40,6 +49,35 @@ Namespace Ecopath.Input
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTaxa")
             If (cmd IsNot Nothing) Then cmd.AddControl(Me.m_tsbnEditTaxa)
 
+            Dim pm As cPluginManager = Me.Core.PluginManager
+            Dim pi As IPlugin = Nothing
+            Dim dpi As IDataSearchProducerPlugin = Nothing
+            Dim coll As ICollection(Of IPlugin) = Nothing
+
+            Me.m_bHasSearchEngines = False
+
+            If (pm Is Nothing) Then Return
+
+            coll = pm.GetPlugins(GetType(IDataSearchProducerPlugin))
+
+            ' Only show data producers that provide taxon data
+            For Each pi In coll
+                Try
+                    dpi = DirectCast(pi, IDataSearchProducerPlugin)
+                    If (dpi.IsDataAvailable(GetType(ITaxonSearchData))) Then
+                        Dim img As Image = Nothing
+                        If (TypeOf dpi Is IGUIPlugin) Then
+                            img = DirectCast(dpi, IGUIPlugin).ControlImage
+                        End If
+                        Dim tsi As ToolStripItem = Me.m_tscmbUpdate.DropDownItems.Add(dpi.Name, img, AddressOf OnClickEngine)
+                        tsi.Tag = dpi
+                        Me.m_bHasSearchEngines = True
+                    End If
+                Catch ex As Exception
+
+                End Try
+            Next
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -49,7 +87,142 @@ Namespace Ecopath.Input
             Dim cmd As cCommand = Me.CommandHandler.GetCommand("EditTaxa")
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnEditTaxa)
 
+            Me.StopRefreshTaxa()
+
             MyBase.OnFormClosed(e)
+
+        End Sub
+
+        Protected Overrides Sub UpdateControls()
+
+            MyBase.UpdateControls()
+            Me.m_tscmbUpdate.Enabled = Me.m_bHasSearchEngines
+
+        End Sub
+
+        Private Sub OnClickEngine(sender As Object, args As EventArgs)
+
+            Dim item As ToolStripItem = DirectCast(sender, ToolStripItem)
+            Dim engine As IDataSearchProducerPlugin = DirectCast(item.Tag, IDataSearchProducerPlugin)
+            Dim taxa() As cTaxon = Me.m_grid.SelectedTaxa()
+
+            If (engine Is Nothing) Then Return
+            If (taxa Is Nothing) Then Return
+            If (taxa.Count = 0) Then Return
+
+            ' If Not engine.IsEnabled Then Return
+            If Not Me.ConfigureProducer(engine) Then Return
+
+            Me.RefreshTaxa(engine, Me.m_grid.SelectedTaxa)
+
+        End Sub
+
+        Private Function ConfigureProducer(prod As IDataSearchProducerPlugin) As Boolean
+
+            Dim ui As Control = Nothing
+            If (prod Is Nothing) Then Return False
+            If Not (TypeOf prod Is IConfigurablePlugin) Then Return True
+            Dim cfg As IConfigurablePlugin = DirectCast(prod, IConfigurablePlugin)
+
+            If cfg.IsConfigured Then Return True
+
+            Try
+                ui = DirectCast(prod, IConfigurablePlugin).GetConfigUI()
+            Catch ex As Exception
+                ui = Nothing
+            End Try
+
+            If (ui Is Nothing) Then Return True
+
+            Try
+                Dim frm As Form = Nothing
+
+                If TypeOf (ui) Is Form Then
+                    frm = DirectCast(ui, Form)
+                Else
+                    frm = New Form()
+                    frm.AutoSize = True
+                    frm.AutoSizeMode = Windows.Forms.AutoSizeMode.GrowAndShrink
+                    ui.Dock = DockStyle.Fill
+                    frm.Controls.Add(ui)
+                End If
+
+                frm.ShowInTaskbar = False
+                frm.ShowIcon = False
+                frm.ShowDialog(Me)
+
+            Catch ex As Exception
+                ' Send an error
+                Dim msg As New cMessage(String.Format(My.Resources.PROMPT_ERROR_CONNECTION, prod.Name, ex.Message), _
+                                        eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.Core.Messages.SendMessage(msg)
+            End Try
+            Return True
+
+        End Function
+
+        Private m_taxaRefresh As cTaxon() = Nothing
+        Private m_taxaRefreshEngine As IDataSearchProducerPlugin = Nothing
+        Private m_thread As Threading.Thread = Nothing
+
+        Private Sub RefreshTaxa(engine As IDataSearchProducerPlugin, taxa As cTaxon())
+
+            Me.StopRefreshTaxa()
+
+            Me.m_taxaRefresh = taxa
+            Me.m_taxaRefreshEngine = engine
+
+            If (engine Is Nothing) Then Return
+            If (taxa Is Nothing) Then Return
+            If (taxa.Count = 0) Then Return
+
+            Me.m_thread = New Threading.Thread(AddressOf RefreshTaxaThreaded)
+            Me.m_thread.Start()
+
+        End Sub
+
+        Private Sub RefreshTaxaThreaded()
+
+            Dim i As Integer = 1
+
+            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopRefreshTaxa))
+            Try
+                cApplicationStatusNotifier.StartProgress(Me.Core, "Refreshing taxa...")
+                For Each taxon As cTaxon In Me.m_taxaRefresh
+                    cApplicationStatusNotifier.UpdateProgress(Me.Core, "Refreshing taxon " & i, CSng(1 / Me.m_taxaRefresh.Count))
+                    If Me.m_taxaRefreshEngine.StartSearch(taxon, 1) Then
+                        ' plop
+                        For j As Integer = 1 To 1000000
+                            Dim k As Double = Math.Log10(j) * Math.Log(i)
+                        Next
+                    End If
+                    i += 1
+                Next
+            Catch ex As Exception
+
+            End Try
+
+            Me.m_thread = Nothing
+            Me.StopRefreshTaxa()
+
+        End Sub
+
+        Private Sub StopRefreshTaxa()
+
+            Try
+                If (Me.m_thread IsNot Nothing) Then
+                    Me.m_thread.Abort()
+                    Me.m_thread = Nothing
+                End If
+            Catch ex As Exception
+                ' Hiepa
+            End Try
+
+            cApplicationStatusNotifier.EndProgress(Me.Core)
+            Me.m_taxaRefreshEngine = Nothing
+            Me.m_taxaRefresh = Nothing
+            Me.Core.SetStopRunDelegate(Nothing)
+
         End Sub
 
     End Class

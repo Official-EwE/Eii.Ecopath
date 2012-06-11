@@ -39,8 +39,6 @@ Namespace Ecospace
 
         ''' <summary>Number of time steps in assessment period.</summary>
         Private m_iNumTimeSteps As Integer = 0
-        ''' <summary>Percentage if dataset indexed.</summary>
-        Private m_iPercIndexed As Integer = 0
         ''' <summary>Number of time steps with data.</summary>
         Private m_iNumTimeOverlap As Integer = 0
         ''' <summary>Number of data time steps with full spatial overlap.</summary>
@@ -49,6 +47,8 @@ Namespace Ecospace
         Private m_iNumPartialSpatialOverlap As Integer = 0
         ''' <summary>Number of files that could not be loaded.</summary>
         Private m_iNumError As Integer = 0
+        ''' <summary>Number of indexed files</summary>
+        Private m_iNumIndexed As Integer = 0
 
 #End Region ' Private vars
 
@@ -148,17 +148,6 @@ Namespace Ecospace
                 If (Me.m_iNumFullSpatialOverlap = 0 And Me.m_iNumPartialSpatialOverlap = 0) Then Return eCompatibilityTypes.NoSpatial
                 If (Me.m_iNumFullSpatialOverlap < Me.m_iNumTimeOverlap) Then Return eCompatibilityTypes.PartialSpatial
                 Return eCompatibilityTypes.TotalOverlap
-            End Get
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Percentage of the dataset that is indexed.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public ReadOnly Property PercentIndexed As Integer
-            Get
-                Return Me.m_iPercIndexed
             End Get
         End Property
 
@@ -267,7 +256,7 @@ Namespace Ecospace
             End Select
 
             Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_COMPATIBILITY, _
-                                 Me.m_iPercIndexed, _
+                                 CInt(Math.Ceiling(100 * Me.m_iNumIndexed / Me.m_iNumTimeOverlap)), _
                                  CInt(Math.Ceiling(100 * Me.m_iNumTimeOverlap / iNumTS)), _
                                  CInt(Math.Ceiling(100 * Me.m_iNumPartialSpatialOverlap / iNumOverlap)), _
                                  CInt(Math.Ceiling(100 * Me.m_iNumFullSpatialOverlap / iNumOverlap)))
@@ -291,9 +280,9 @@ Namespace Ecospace
                                 iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
 
             ' Initialize counters
-            Me.m_iPercIndexed = CInt(ds.FractionIndexed * 100)
             Me.m_iNumTimeSteps = iNumTimeSteps
             Me.m_iNumTimeOverlap = 0
+            Me.m_iNumIndexed = 0
             Me.m_iNumFullSpatialOverlap = 0
             Me.m_iNumPartialSpatialOverlap = 0
 
@@ -311,15 +300,18 @@ Namespace Ecospace
                 Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
                 If ds.HasDataAtT(tm) Then
                     Me.m_iNumTimeOverlap += 1
-                    If ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
-                        rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
-                        If rcfMap.Contains(rcfEcospace) Then
-                            Me.m_iNumFullSpatialOverlap += 1
-                        ElseIf rcfMap.IntersectsWith(rcfEcospace) Then
-                            Me.m_iNumPartialSpatialOverlap += 1
+                    If ds.IsIndexed(tm) Then
+                        Me.m_iNumIndexed += 1
+                        If ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
+                            rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
+                            If rcfMap.Contains(rcfEcospace) Then
+                                Me.m_iNumFullSpatialOverlap += 1
+                            ElseIf rcfMap.IntersectsWith(rcfEcospace) Then
+                                Me.m_iNumPartialSpatialOverlap += 1
+                            End If
+                        Else
+                            Me.m_iNumError += 1
                         End If
-                    Else
-                        Me.m_iNumError += 1
                     End If
                 End If
             Next
