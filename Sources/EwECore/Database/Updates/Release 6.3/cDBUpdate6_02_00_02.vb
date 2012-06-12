@@ -17,6 +17,7 @@
 '
 Option Strict On
 Imports EwEUtils.Database
+Imports EwEUtils.Core
 
 ''' --------------------------------------------------------------------------
 ''' <summary>
@@ -139,7 +140,11 @@ Friend Class cDBUpdate6_02_00_02
 
     Private Function UpdateEcospaceParmsTable(ByVal db As cEwEDatabase) As Boolean
 
-        Return db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalType SHORT")
+        Dim bSuccess As Boolean = True
+        bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalType SHORT")
+        bSuccess = bSuccess And db.Execute(String.Format("UPDATE EcospaceScenario SET CapacityCalType={0}", CInt(eEcospaceCapacityCalType.CapacityAndHabitat)))
+        Me.LogProgress("Updated table EcospaceScenario", True)
+        Return bSuccess
 
     End Function
 
