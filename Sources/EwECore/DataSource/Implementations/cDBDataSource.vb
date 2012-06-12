@@ -7158,7 +7158,7 @@ Namespace DataSources
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
-                ecospaceDS.CapCalType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.Habitat)), eEcospaceCapacityCalType)
+                ecospaceDS.CapCalType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.CapacityAndHabitat)), eEcospaceCapacityCalType)
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
