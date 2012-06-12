@@ -142,7 +142,7 @@ Friend Class cDBUpdate6_02_00_02
 
         Dim bSuccess As Boolean = True
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN CapacityCalType SHORT")
-        bSuccess = bSuccess And db.Execute(String.Format("UPDATE EcospaceScenario SET CapacityCalType={0}", CInt(eEcospaceCapacityCalType.CapacityAndHabitat)))
+        bSuccess = bSuccess And db.Execute(String.Format("UPDATE EcospaceScenario SET CapacityCalType={0}", CInt(eEcospaceCapacityCalType.Habitat)))
         Me.LogProgress("Updated table EcospaceScenario", True)
         Return bSuccess
 
