@@ -177,6 +177,7 @@ Namespace Ecospace.Controls
 
                 Me.m_iSelectedTimeStep = Math.Max(0, Math.Min(value, Me.m_uic.Core.nEcospaceTimeSteps - 1))
                 Me.Invalidate()
+
                 Try
                     RaiseEvent OnSelectedTimestepChanged(Me, Me.m_iSelectedTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iSelectedTimeStep))
                 Catch ex As Exception
@@ -213,6 +214,34 @@ Namespace Ecospace.Controls
             MyBase.OnResize(e)
             Me.RecalcSize()
             Me.Invalidate(True)
+        End Sub
+
+        Protected Overrides Function IsInputKey(keyData As System.Windows.Forms.Keys) As Boolean
+            Select Case keyData
+                Case Keys.Right, Keys.Left
+                    Return True
+            End Select
+            Return MyBase.IsInputKey(keyData)
+        End Function
+
+        Protected Overrides Sub OnKeyDown(e As System.Windows.Forms.KeyEventArgs)
+            Dim iInc As Integer = 0
+            Select Case e.KeyCode
+                Case Keys.Left
+                    iInc = -1
+                Case Keys.Right
+                    iInc = 1
+            End Select
+
+            If ((e.Modifiers And Keys.Control) <> 0) Then
+                Dim sStepsPerYear As Single = CSng(Me.m_uic.Core.nEcospaceTimeSteps / Math.Max(1, Me.m_uic.Core.nEcospaceYears))
+                iInc = CInt(iInc * sStepsPerYear)
+            End If
+
+            If (iInc <> 0) Then
+                Me.SelectedTimeStep = Math.Min(Me.m_uic.Core.nEcospaceTimeSteps, Math.Max(1, Me.m_iSelectedTimeStep + iInc))
+            End If
+            MyBase.OnKeyDown(e)
         End Sub
 
         Protected Overrides Sub OnScroll(se As System.Windows.Forms.ScrollEventArgs)

@@ -3675,6 +3675,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Assessment from {0} to {1}, {2}% indexed:{4}{3}.
+        '''</summary>
+        Public ReadOnly Property STATUS_SPATIALCOMPATIBILITY() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALCOMPATIBILITY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Calculating annual average for layer {0}, data connection {1}....
         '''</summary>
         Public ReadOnly Property STATUS_SPATIALTEMPORAL_CALCULATING() As String

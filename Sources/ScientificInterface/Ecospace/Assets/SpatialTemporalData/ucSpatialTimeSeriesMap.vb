@@ -158,6 +158,9 @@ Namespace Ecospace
             Me.m_rcfEcospaceExtent = Me.ToDisplayRect(bm.PosTopLeft, bm.PosBottomRight)
             Me.m_lExternalDataMapExtents.Clear()
 
+            Me.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+            Me.Invalidate()
+
             If (Me.m_ds Is Nothing) Then Return
 
             Dim iTimeStart As Integer = 1
@@ -185,9 +188,6 @@ Namespace Ecospace
                     Me.m_lExternalDataMapExtents.Add(ToDisplayRect(ptfTL, ptfBR))
                 End If
             Next
-
-            Me.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
-            Me.Invalidate()
 
         End Sub
 

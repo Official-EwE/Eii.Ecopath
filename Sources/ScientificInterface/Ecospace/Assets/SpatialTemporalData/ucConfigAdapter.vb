@@ -24,6 +24,7 @@ Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.SpatialData
 Imports System.Text
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -423,16 +424,18 @@ Namespace Ecospace.Controls
 
             ' -- Indexing status --
 
-            ' ToDo: integrate this differently in the UI - string concats are not the way to go!!
-            Dim sb As New StringBuilder()
+            Dim strValidate As String = ""
             Dim imgValidate As Image = Nothing
 
             If (ds IsNot Nothing) Then
+
                 Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-                sb.AppendLine(String.Format("Assessment from {0} to {1}, {2}% indexed:", _
+                strValidate = String.Format(My.Resources.STATUS_SPATIALCOMPATIBILITY, _
                                             Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(comp.FirstTimeStep).ToShortDateString, _
                                             Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(comp.LastTimeStep).ToShortDateString, _
-                                            CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps)))))
+                                            CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps))), _
+                                            comp.ToString, _
+                                            cStringUtils.vbNewline)
                 If bIsIndexing Then
                     imgValidate = ScientificInterfaceShared.My.Resources.ani_loader
                 ElseIf (comp.Compatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
@@ -440,12 +443,11 @@ Namespace Ecospace.Controls
                 Else
                     imgValidate = ScientificInterfaceShared.My.Resources.Warning
                 End If
-                sb.Append(comp.ToString())
 
             End If
 
             Me.m_pbCompatibility.Image = imgValidate
-            Me.m_lblCompatibility.Text = sb.ToString
+            Me.m_lblCompatibility.Text = strValidate
 
         End Sub
 

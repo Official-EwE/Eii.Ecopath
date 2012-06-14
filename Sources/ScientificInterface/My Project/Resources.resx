@@ -1582,4 +1582,8 @@ Description: {2}</value>
   <data name="STATUS_CLEANUP_TEMPFILES" xml:space="preserve">
     <value>Removing temporary files</value>
   </data>
+  <data name="STATUS_SPATIALCOMPATIBILITY" xml:space="preserve">
+    <value>Assessment from {0} to {1}, {2}% indexed:{4}{3}</value>
+    <comment>{0}=start data, {1}=end date, {2}=% indexed,{3}=compatibility text,{4}=newline</comment>
+  </data>
 </root>
