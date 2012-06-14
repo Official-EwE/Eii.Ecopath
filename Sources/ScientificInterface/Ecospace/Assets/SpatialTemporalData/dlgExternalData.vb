@@ -75,12 +75,13 @@ Namespace Ecospace
 
 #Region " Construction / destruction "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Constructor.
         ''' </summary>
-        ''' <param name="uic"></param>
-        ''' <param name="layer"></param>
-        ''' <remarks></remarks>
+        ''' <param name="uic"><see cref="cUIContext"/> to operate onto.</param>
+        ''' <param name="layer"><see cref="cEcospaceLayer">Ecospace data layer</see> to configure, if any.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, Optional layer As cEcospaceLayer = Nothing)
             MyBase.New()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.AllPaintingInWmPaint, True)
@@ -115,7 +116,7 @@ Namespace Ecospace
 
             Debug.Assert(man IsNot Nothing)
 
-            ' For all adapters
+            ' Build data adapter treeview
             For Each adt As cSpatialDataAdapter In man.Adapters
 
                 ' Get group name for the adapter
@@ -169,9 +170,10 @@ Namespace Ecospace
             Me.m_ilConnections.Images.Add(SharedResources.database_warning)
             Me.m_ilConnections.Images.Add(SharedResources.ani_loader)
 
+            ' Connect image list
             Me.m_tvAdapters.ImageList = Me.m_ilConnections
 
-            ' Update images
+            ' Update displayed images
             Me.UpdateNodeImages()
 
             ' Initialize selection
@@ -189,6 +191,7 @@ Namespace Ecospace
             ' Release config screen
             Me.m_tvAdapters.Nodes.Clear()
             Me.UIContext = Nothing
+
             ' Dome
             MyBase.OnFormClosed(e)
 
@@ -217,7 +220,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub OnEcospaceMessage(ByRef msg As cMessage)
-            If msg.Type = eMessageType.DataModified Then
+            If (msg.Type = eMessageType.DataModified) Then
                 Me.UpdateNodeImages()
             End If
         End Sub
@@ -226,6 +229,9 @@ Namespace Ecospace
 
 #Region " Internals "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
         Private Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
             Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
             Get
@@ -248,10 +254,20 @@ Namespace Ecospace
                     Me.m_config.UIContext = Me.m_uic
                     Me.m_mhEcospace = New cMessageHandler(AddressOf OnEcospaceMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
+
+#If DEBUG Then
+                    Me.m_mhEcospace.Name = "dlgExternalData::m_mhEcospace"
+#End If
                 End If
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cSpatialDataAdapter"/> selected in the 
+        ''' data adapter treeview.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private ReadOnly Property SelectedAdapter As cSpatialDataAdapter
             Get
                 Dim tag As Object = Me.m_tvAdapters.SelectedNode.Tag
@@ -263,6 +279,12 @@ Namespace Ecospace
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="cEcospaceLayer"/> selected in the 
+        ''' data adapter treeview.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private ReadOnly Property SelectedLayer As cEcospaceLayer
             Get
                 Dim tag As Object = Me.m_tvAdapters.SelectedNode.Tag
@@ -274,13 +296,24 @@ Namespace Ecospace
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Refresh node images in the data adapter treeview, based on the current 
+        ''' external data configuration.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub UpdateNodeImages()
 
             For Each ndAdt As TreeNode In Me.m_tvAdapters.Nodes
                 Dim iNumConnected As Integer = 0
+                Dim iImg As Integer = 0
+
                 For Each ndLayer As TreeNode In ndAdt.Nodes
                     Dim link As cLayerLink = DirectCast(ndLayer.Tag, cLayerLink)
                     Dim l As cEcospaceLayer = link.Layer
+
+                    ' Calc display image
+                    iImg = 0
                     If l.IsExternalData Then
                         iNumConnected += 1
                         Dim ds As ISpatialDataSet = link.Adapter.Dataset(l.Index)
@@ -289,24 +322,32 @@ Namespace Ecospace
                             Case cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
                                 cDatasetCompatilibity.eCompatibilityTypes.NoSpatial, _
                                 cDatasetCompatilibity.eCompatibilityTypes.Errors
-                                ndLayer.ImageIndex = 2
+                                iImg = 2
                             Case cDatasetCompatilibity.eCompatibilityTypes.PartialSpatial, _
                                 cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap
-                                ndLayer.ImageIndex = 1
+                                iImg = 1
                             Case Else
-                                Debug.Assert(False, "Flag unknown: " & comp.Compatibility)
+                                ' NOP
                         End Select
-                    Else
-                        ndLayer.ImageIndex = 0
                     End If
-                    ndLayer.SelectedImageIndex = ndLayer.ImageIndex
+
+                    ' Update image
+                    If (iImg <> ndLayer.ImageIndex) Then
+                        ndLayer.ImageIndex = iImg
+                        ndLayer.SelectedImageIndex = iImg
+                    End If
+
                 Next
-                If (iNumConnected > 0) Then
-                    ndAdt.ImageIndex = 1
-                Else
-                    ndAdt.ImageIndex = 0
+
+                ' Calc display image
+                iImg = Math.Min(1, iNumConnected)
+                ' Img has changed?
+                If (iImg <> ndAdt.ImageIndex) Then
+                    ' Update image
+                    ndAdt.ImageIndex = iImg
+                    ndAdt.SelectedImageIndex = iImg
                 End If
-                ndAdt.SelectedImageIndex = ndAdt.ImageIndex
+
             Next
         End Sub
 

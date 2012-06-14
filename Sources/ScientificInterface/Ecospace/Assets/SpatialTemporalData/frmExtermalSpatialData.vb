@@ -32,8 +32,8 @@ Namespace Ecospace
 
 #Region " Private vars "
 
-        Private m_thread As Threading.Thread = Nothing
         Private m_ds As ISpatialDataSet = Nothing
+        Private m_manDS As cSpatialDataSetManager = Nothing
 
 #End Region ' Private vars
 
@@ -69,9 +69,22 @@ Namespace Ecospace
                 Return MyBase.UIContext
             End Get
             Set(value As ScientificInterfaceShared.Controls.cUIContext)
+
+                ' Cleanup
+                If (Me.UIContext IsNot Nothing) Then
+                    Me.m_manDS = Nothing
+                End If
+
+                ' Set
                 MyBase.UIContext = value
                 Me.m_toolbox.UIContext = value
                 Me.m_map.UIContext = value
+
+                ' Config
+                If (value IsNot Nothing) Then
+                    Me.m_manDS = value.Core.SpatialDataConnectionManager.DatasetManager
+                End If
+
             End Set
         End Property
 
@@ -103,13 +116,11 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Me.m_manDS.IndexDataset(Nothing) ' Stop indexing
+            Me.m_manDS.Save()
+
             Dim cmd As cCommand = Me.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME)
             If (cmd IsNot Nothing) Then cmd.RemoveControl(Me.m_tsbnConnections)
-
-            If Me.HasThread Then
-                Me.m_thread.Abort()
-                Me.m_thread = Nothing
-            End If
 
             MyBase.OnFormClosed(e)
 
@@ -127,8 +138,8 @@ Namespace Ecospace
 
         Protected Overrides Sub UpdateControls()
             MyBase.UpdateControls()
-            Me.m_tsbnZoomData.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Data)
-            Me.m_tsbnZoomMap.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Map)
+            Me.m_tsbnZoomData.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.ExternalData)
+            Me.m_tsbnZoomMap.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Basemap)
             Me.m_tsbnZoomBoth.Checked = (Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Both)
         End Sub
 
@@ -141,16 +152,13 @@ Namespace Ecospace
 
             If (Object.ReferenceEquals(ds, Me.m_ds)) Then Return
 
-            Me.StopIndexing()
-
             If (Me.m_ds IsNot Nothing) Then
                 ' Clear selection
             End If
 
             Me.m_ds = ds
             Me.m_map.SelectedDataset = ds
-
-            Me.StartIndexing()
+            Me.m_manDS.IndexDataset(ds)
 
         End Sub
 
@@ -178,13 +186,21 @@ Namespace Ecospace
         Private Sub OnZoom(sender As System.Object, e As System.EventArgs) _
             Handles m_tsbnZoomMap.Click, m_tsbnZoomData.Click, m_tsbnZoomBoth.Click
             If (sender Is Me.m_tsbnZoomData) Then
-                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Data
+                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.ExternalData
             ElseIf (sender Is Me.m_tsbnZoomMap) Then
-                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Map
+                Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Basemap
             Else
                 Me.m_map.ZoomLevel = ucSpatialTimeSeriesMap.eZoomLevel.Both
             End If
             Me.UpdateControls()
+        End Sub
+
+        Private Sub OnToggleShowRefMap(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowRefMap.Click
+            Me.m_map.ShowReferenceMap = Me.m_tsbnShowRefMap.Checked
+        End Sub
+
+        Private Sub OnToggleShowGrid(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowGrid.Click
+            Me.m_map.ShowGrid = Me.m_tsbnShowGrid.Checked
         End Sub
 
 #End Region ' Control events
@@ -195,70 +211,20 @@ Namespace Ecospace
             MyBase.OnCoreMessage(msg)
 
             ' Dataset changes are passed on via core layer changes
-            If (msg.DataType = eDataTypes.EcospaceSpatialDataConnection) Then
-                Me.m_toolbox.RefreshContent()
-                Me.m_map.RefreshContent()
-            End If
+            Select Case msg.DataType
+
+                Case eDataTypes.EcospaceBasemap
+                    Me.m_map.RefreshContent()
+
+                Case eDataTypes.EcospaceSpatialDataConnection
+                    Me.m_toolbox.RefreshContent()
+                    Me.m_map.RefreshContent()
+
+            End Select
 
         End Sub
 
 #End Region ' Callbacks
-
-#Region " Threaded indexing of datasets "
-
-        Private Sub StopIndexing()
-            If Me.HasThread Then
-                Me.m_thread.Abort()
-            End If
-            Me.m_thread = Nothing
-        End Sub
-
-        Private Sub StartIndexing()
-            If (Me.m_ds IsNot Nothing) Then
-                If (Me.m_ds.FractionIndexed < 1.0!) Then
-                    Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
-                    Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                    Me.m_thread.Start()
-                End If
-            End If
-            Me.OnSpatialIndexUpdated(Me.m_ds)
-        End Sub
-
-        Private Sub IndexDatasetThread()
-            Me.m_ds.BuildIndex(AddressOf OnSpatialIndexUpdated)
-            ' Forget myself
-            Me.m_thread = Nothing
-            ' Invoke callback to clean up
-            Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {Me.m_ds})
-        End Sub
-
-        Private Function HasThread() As Boolean
-            If (Me.m_thread Is Nothing) Then Return False
-            Return Me.m_thread.IsAlive
-        End Function
-
-        Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
-
-        Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
-            If (Object.ReferenceEquals(ds, Me.m_ds)) Then
-                If Me.InvokeRequired Then
-                    Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {ds})
-                Else
-                    Me.m_map.RefreshContent()
-                    Me.m_toolbox.Invalidate()
-                End If
-            End If
-        End Sub
-
-#End Region ' Threaded indexing of datasets
-
-        Private Sub OnToggleShowRefMap(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowRefMap.Click
-            Me.m_map.ShowReferenceMap = Me.m_tsbnShowRefMap.Checked
-        End Sub
-
-        Private Sub OnToggleShowGrid(sender As System.Object, e As System.EventArgs) Handles m_tsbnShowGrid.Click
-            Me.m_map.ShowGrid = Me.m_tsbnShowGrid.Checked
-        End Sub
 
     End Class
 

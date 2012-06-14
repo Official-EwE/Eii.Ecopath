@@ -38,6 +38,7 @@ Namespace SpatialData
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cSpatialDataSetManager
+        Inherits cThreadWaitBase
         Implements IList(Of ISpatialDataSet)
         Implements IDisposable
 
@@ -74,14 +75,13 @@ Namespace SpatialData
         Public Sub Dispose() _
             Implements IDisposable.Dispose
 
+            Me.IndexDataset(Nothing)
+
             ' Cleanup
             If (Me.m_lDatasets IsNot Nothing) Then
-
                 RemoveHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
                 Me.m_fswSpy = Nothing
-
                 Me.m_lDatasets = Nothing
-
             End If
             GC.SuppressFinalize(Me)
 
@@ -229,6 +229,128 @@ Namespace SpatialData
 
 #End Region ' Persistent storage
 
+#Region " Dataset indexing "
+
+        Private m_threadIndex As Threading.Thread = Nothing
+        Private m_dsIndex As ISpatialDataSet = Nothing
+
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
+            Dim result As Boolean = True
+            Try
+                Me.IndexDataset(Nothing)
+                result = Me.Wait(WaitTimeInMillSec)
+            Catch ex As Exception
+                result = False
+            End Try
+            Return result
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Starts indexing a dataset.
+        ''' </summary>
+        ''' <param name="ds">The dataset to index. If left empty any running
+        ''' index thread is aborted.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub IndexDataset(ds As ISpatialDataSet)
+
+            If Object.ReferenceEquals(ds, Me.m_dsIndex) Then Return
+
+            Try
+                If (Me.m_threadIndex IsNot Nothing) Then
+                    If (Me.m_threadIndex.IsAlive) Then
+                        Try
+                            Me.m_threadIndex.Abort()
+                        Catch ex As Exception
+                            ' All good
+                        End Try
+                    End If
+                    Me.m_threadIndex = Nothing
+                    Me.m_dsIndex = Nothing
+                End If
+            Catch ex As Exception
+                ' Whoah
+                cLog.Write(ex, "cSpatialDataSetManager::UpdateIndex")
+            End Try
+
+            Me.m_dsIndex = ds
+
+            If (ds IsNot Nothing) Then
+                If (ds.FractionIndexed() < 1.0!) Then
+                    Me.m_dsIndex = ds
+                    Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
+                    Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
+                    Me.m_threadIndex.Start()
+                End If
+            End If
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether a dataset is being indexed.
+        ''' </summary>
+        ''' <param name="ds">The dataset to check. If this parameter is omitted 
+        ''' this method will return whether any dataset is being indexed.</param>
+        ''' <returns>True if a dataset is being indexed.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function IsIndexing(Optional ds As ISpatialDataSet = Nothing) As Boolean
+
+            If (ds Is Nothing) Then ds = Me.m_dsIndex
+            If (Me.m_threadIndex IsNot Nothing) Then
+                If (Me.m_threadIndex.IsAlive) Then
+                    Return Object.ReferenceEquals(Me.m_dsIndex, ds)
+                End If
+            End If
+            Return False
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Private indexing thread 
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub IndexDatasetThread()
+            Dim ds As ISpatialDataSet = Me.m_dsIndex
+            Try
+                ' Start building index at first time step
+                Me.m_dsIndex.BuildIndex(Me.m_core.EcospaceTimestepToAbsoluteTime(1), AddressOf OnSpatialIndexUpdated)
+                Me.OnSpatialIndexUpdated(Nothing)
+                If (Object.ReferenceEquals(Me.m_dsIndex, ds)) Then
+                    Me.m_dsIndex = Nothing
+                    Me.m_threadIndex = Nothing
+                End If
+                Console.WriteLine("Done indexing " & ds.DisplayName)
+            Catch ex As Threading.ThreadAbortException
+                ' Ok, we're being expired
+                Console.WriteLine("Indexing terminated")
+            Catch ex As Exception
+                cLog.Write(ex, "cSpatialDatasetManager::IndexDatasetThread(" & ds.DisplayName & ")")
+                Console.WriteLine(ex.Message)
+            End Try
+        End Sub
+
+        Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
+
+        Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
+            If (Me.m_core IsNot Nothing And Me.IsIndexing()) Then
+                Try
+                    Me.m_core.Messages.SendMessage(New cMessage("Index updated", eMessageType.DataModified,
+                                                                EwEUtils.Core.eCoreComponentType.EcoSpace, _
+                                                                eMessageImportance.Maintenance, _
+                                                                EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection))
+                Catch ex As Threading.ThreadAbortException
+                    ' Ssst
+                Catch ex As Exception
+                    ' Hmm
+                    Debug.Assert(False, ex.Message)
+                End Try
+            End If
+        End Sub
+
+#End Region ' Dataset indexing
+
 #Region " Dataset list interface "
 
         ''' -------------------------------------------------------------------
@@ -248,6 +370,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub Clear() _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Clear
+            If (Me.IsIndexing(Me.m_dsIndex)) Then Me.IndexDataset(Nothing)
             Me.m_lDatasets.Clear()
         End Sub
 
@@ -292,6 +415,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Remove(ByVal item As ISpatialDataSet) As Boolean _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Remove
+            If (Me.IsIndexing(item)) Then Me.IndexDataset(Nothing)
             Return Me.m_lDatasets.Remove(item)
         End Function
 
@@ -300,7 +424,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub RemoveAt(ByVal index As Integer) _
             Implements IList(Of ISpatialDataSet).RemoveAt
-            Me.m_lDatasets.RemoveAt(index)
+            Me.Remove(Me.m_lDatasets(index))
         End Sub
 
         ''' -------------------------------------------------------------------

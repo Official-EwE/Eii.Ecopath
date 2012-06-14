@@ -34,13 +34,16 @@ Namespace Ecospace
     Public Class ucSpatialTimeSeriesMap
         Implements IUIElement
 
-        ' ToDo: listen to style guide changes
         ' ToDo: make multi-select
 
+        ''' <summary>Map zoom level</summary>
         Public Enum eZoomLevel As Integer
+            ''' <summary>Zoom to the extent that encompasses both the basemap and external data.</summary>
             Both = 0
-            Map
-            Data
+            ''' <summary>Zoom to the extent of the basemap.</summary>
+            Basemap
+            ''' <summary>Zoom to the extent of external data.</summary>
+            ExternalData
         End Enum
 
         Private m_ds As ISpatialDataSet = Nothing
@@ -60,7 +63,7 @@ Namespace Ecospace
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
-                If disposing AndAlso components IsNot Nothing Then
+                If disposing And components IsNot Nothing Then
                     components.Dispose()
                 End If
             Finally
@@ -76,8 +79,21 @@ Namespace Ecospace
                 Return Me.m_uic
             End Get
             Set(value As cUIContext)
+
+                ' Cleanup
+                If (Me.m_uic IsNot Nothing) Then
+                    RemoveHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                End If
+
+                ' Set
                 Me.m_uic = value
-                Me.RefreshContent()
+
+                ' Update
+                If (Me.m_uic IsNot Nothing) Then
+                    AddHandler Me.m_uic.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
+                    Me.RefreshContent()
+                End If
+
             End Set
         End Property
 
@@ -87,10 +103,7 @@ Namespace Ecospace
             End Get
             Set(value As ISpatialDataSet)
                 Me.m_ds = value
-                Try
-                    Me.RefreshContent()
-                Catch ex As Exception
-                End Try
+                Me.RefreshContent()
                 Me.Invalidate()
             End Set
         End Property
@@ -180,14 +193,20 @@ Namespace Ecospace
 
 #End Region ' Public access
 
-#Region " Overrides "
+#Region " Events "
 
         Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
             MyBase.OnPaint(e)
             Me.DoPaint(e.Graphics, Me.ClientRectangle)
         End Sub
 
-#End Region ' Overrides
+        Private Sub OnStyleGuideChanged(change As cStyleGuide.eChangeType)
+            If ((change And (cStyleGuide.eChangeType.Colours Or cStyleGuide.eChangeType.Fonts Or cStyleGuide.eChangeType.Map)) > 0) Then
+                Me.Invalidate()
+            End If
+        End Sub
+
+#End Region ' Events
 
 #Region " Rendering "
 
@@ -198,10 +217,10 @@ Namespace Ecospace
             Dim rcfFocusExtent As RectangleF = Me.m_rcfEcospaceExtent
 
             ' Is data zoom involved?
-            If (Me.m_zoomlevel = eZoomLevel.Both) Or (Me.m_zoomlevel = eZoomLevel.Data) Then
+            If (Me.m_zoomlevel = eZoomLevel.Both) Or (Me.m_zoomlevel = eZoomLevel.ExternalData) Then
                 ' #Yes: only zoom to data? (and has data to zoom to)
-                If (Me.m_zoomlevel = eZoomLevel.Data) And (Me.m_lExternalDataMapExtents.Count > 0) Then
-                    ' #Yes: ok, then base zoom exclusively on data
+                If (Me.m_zoomlevel = eZoomLevel.ExternalData) And (Me.m_lExternalDataMapExtents.Count > 0) Then
+                    ' #Yes: ok, then base zoom exclusively to data
                     rcfFocusExtent = New Rectangle(180, 90, -360, -180)
                 End If
 
@@ -217,8 +236,9 @@ Namespace Ecospace
             If (rcfFocusExtent.Width = 0 Or rcfFocusExtent.Height = 0) Then Return
 
             ' Scale to 120% of the focus area OR the focus area + 3 degrees, whatever is largest
-            Dim sScale As Single = CSng(Math.Min(rc.Height / (Math.Max(rcfFocusExtent.Height + 3, rcfFocusExtent.Height * 1.2)), _
-                                                 rc.Width / (Math.Max(rcfFocusExtent.Width + 3, rcfFocusExtent.Width * 1.2))))
+            ' .. BUT limit extent to width 360, height 180!
+            Dim sScale As Single = CSng(Math.Min(rc.Height / (Math.Min(180, Math.Max(rcfFocusExtent.Height + 3, rcfFocusExtent.Height * 1.2))), _
+                                                 rc.Width / (Math.Min(360, Math.Max(rcfFocusExtent.Width + 3, rcfFocusExtent.Width * 1.2)))))
             Dim dx As Single = rc.Width / 2.0! - (rcfFocusExtent.X + rcfFocusExtent.Width / 2.0!) * sScale
             Dim dy As Single = rc.Height / 2.0! - (rcfFocusExtent.Y + rcfFocusExtent.Height / 2.0!) * sScale
             Dim rcfViewExtent As New RectangleF(rcfFocusExtent.X - rc.Width / 2.0! / sScale, rcfFocusExtent.Y - rc.Height / 2.0! / sScale, rc.Width / sScale, rc.Height / sScale)

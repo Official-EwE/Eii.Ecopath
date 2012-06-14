@@ -181,7 +181,7 @@ Namespace Ecospace
             Me.m_toolbox.BackColor = System.Drawing.SystemColors.Window
             resources.ApplyResources(Me.m_toolbox, "m_toolbox")
             Me.m_toolbox.Name = "m_toolbox"
-            Me.m_toolbox.SelectedIndex = -1
+            Me.m_toolbox.SelectedDatasetIndex = -1
             Me.m_toolbox.SelectedTimeStep = -1
             Me.m_toolbox.UIContext = Nothing
             Me.m_toolbox.VarName = EwEUtils.Core.eVarNameFlags.NotSet

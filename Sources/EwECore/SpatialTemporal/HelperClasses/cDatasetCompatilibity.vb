@@ -37,6 +37,10 @@ Namespace Ecospace
 
 #Region " Private vars "
 
+        ' -- Time step assessment period --
+        Private m_iFirstTimeStep As Integer = 0
+        Private m_iLastTimeStep As Integer = 0
+
         ''' <summary>Number of time steps in assessment period.</summary>
         Private m_iNumTimeSteps As Integer = 0
         ''' <summary>Number of time steps with data.</summary>
@@ -238,10 +242,6 @@ Namespace Ecospace
             Dim iNumTS As Integer = Math.Max(Me.m_iNumTimeSteps, 1)
             Dim iNumOverlap As Integer = Math.Max(Me.m_iNumTimeOverlap, 1)
 
-            ' Errors first!
-            If (Me.m_iNumError > 0) Then
-            End If
-
             Select Case Me.Compatibility
 
                 Case eCompatibilityTypes.Errors
@@ -256,11 +256,28 @@ Namespace Ecospace
             End Select
 
             Return String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_COMPATIBILITY, _
-                                 CInt(Math.Ceiling(100 * Me.m_iNumIndexed / Me.m_iNumTimeOverlap)), _
                                  CInt(Math.Ceiling(100 * Me.m_iNumTimeOverlap / iNumTS)), _
                                  CInt(Math.Ceiling(100 * Me.m_iNumPartialSpatialOverlap / iNumOverlap)), _
                                  CInt(Math.Ceiling(100 * Me.m_iNumFullSpatialOverlap / iNumOverlap)))
         End Function
+
+        Public ReadOnly Property NumIndexed As Integer
+            Get
+                Return Me.m_iNumIndexed
+            End Get
+        End Property
+
+        Public ReadOnly Property FirstTimeStep As Integer
+            Get
+                Return Me.m_iFirstTimeStep
+            End Get
+        End Property
+
+        Public ReadOnly Property LastTimeStep As Integer
+            Get
+                Return Me.m_iLastTimeStep
+            End Get
+        End Property
 
 #End Region ' Public access
 
@@ -278,6 +295,10 @@ Namespace Ecospace
         ''' -------------------------------------------------------------------
         Private Function Assess(core As cCore, ds As ISpatialDataSet, _
                                 iTimeStart As Integer, iNumTimeSteps As Integer) As Boolean
+
+            ' Store assessment period
+            Me.m_iFirstTimeStep = iTimeStart
+            Me.m_iLastTimeStep = iTimeStart + iNumTimeSteps
 
             ' Initialize counters
             Me.m_iNumTimeSteps = iNumTimeSteps
@@ -300,19 +321,27 @@ Namespace Ecospace
                 Dim tm As DateTime = core.EcospaceTimestepToAbsoluteTime(iStep)
                 If ds.HasDataAtT(tm) Then
                     Me.m_iNumTimeOverlap += 1
-                    If ds.IsIndexed(tm) Then
-                        Me.m_iNumIndexed += 1
-                        If ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
-                            rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
-                            If rcfMap.Contains(rcfEcospace) Then
-                                Me.m_iNumFullSpatialOverlap += 1
-                            ElseIf rcfMap.IntersectsWith(rcfEcospace) Then
-                                Me.m_iNumPartialSpatialOverlap += 1
-                            End If
-                        Else
+                    Select Case ds.IndexStatusAtT(tm)
+
+                        Case ISpatialDataSet.eIndexStatus.NotIndexed
+                            ' NOP
+
+                        Case ISpatialDataSet.eIndexStatus.Failed
                             Me.m_iNumError += 1
-                        End If
-                    End If
+
+                        Case ISpatialDataSet.eIndexStatus.Indexed
+                            Me.m_iNumIndexed += 1
+                            If ds.GetExtentAtT(tm, ptfMapTL, ptfMapBR) Then
+                                rcfMap = Me.ToRect(ptfMapTL, ptfMapBR)
+                                If rcfMap.Contains(rcfEcospace) Then
+                                    Me.m_iNumFullSpatialOverlap += 1
+                                ElseIf rcfMap.IntersectsWith(rcfEcospace) Then
+                                    Me.m_iNumPartialSpatialOverlap += 1
+                                End If
+                            Else
+                                Me.m_iNumError += 1
+                            End If
+                    End Select
                 End If
             Next
 
@@ -329,7 +358,7 @@ Namespace Ecospace
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Private Function ToRect(ptfTL As PointF, ptfBR As PointF) As RectangleF
-            Return New RectangleF(ptfTL.X, ptfBR.Y, (ptfBR.X - ptfTL.X + 360) Mod 360, (ptfTL.Y - ptfBR.Y + 180) Mod 180)
+            Return New RectangleF(ptfTL.X, ptfBR.Y, ptfBR.X - ptfTL.X, ptfTL.Y - ptfBR.Y)
         End Function
 
 #End Region ' Internals

@@ -185,11 +185,17 @@ Namespace SpatialData
         ''' <summary>
         ''' Build the spatial extent index for the dataset.
         ''' </summary>
-        ''' <param name="updatedelegate">
-        ''' Optional <see cref="BuildIndexUpdateDelegate">delegate</see> for reporting progress.
-        ''' </param>
+        ''' <param name="datetime">Index start date.</param>
+        ''' <param name="updatedelegate">Optional <see cref="BuildIndexUpdateDelegate">delegate</see> for reporting progress.</param>
         ''' -------------------------------------------------------------------
-        Sub BuildIndex(Optional updatedelegate As BuildIndexUpdateDelegate = Nothing)
+        Sub BuildIndex(ByVal datetime As DateTime, _
+                       Optional ByVal updatedelegate As BuildIndexUpdateDelegate = Nothing)
+
+        Enum eIndexStatus As Integer
+            NotIndexed
+            Indexed
+            Failed
+        End Enum
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -199,7 +205,7 @@ Namespace SpatialData
         ''' purposes, time is assumed to be rounded to months.</param>
         ''' <returns>True if data at a given time is indexed.</returns>
         ''' -------------------------------------------------------------------
-        Function IsIndexed(ByVal datetime As DateTime) As Boolean
+        Function IndexStatusAtT(ByVal datetime As DateTime) As eIndexStatus
 
         ''' -------------------------------------------------------------------
         ''' <summary>

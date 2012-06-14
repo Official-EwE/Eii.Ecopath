@@ -40,6 +40,7 @@ Namespace Ecospace.Controls
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucConfigAdapter))
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnectionConverter = New System.Windows.Forms.Panel()
             Me.m_lblCompatibility = New System.Windows.Forms.Label()
@@ -69,19 +70,10 @@ Namespace Ecospace.Controls
             '
             'm_tlpContent
             '
-            Me.m_tlpContent.ColumnCount = 1
-            Me.m_tlpContent.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
             Me.m_tlpContent.Controls.Add(Me.m_plConnectionConverter, 0, 0)
             Me.m_tlpContent.Controls.Add(Me.m_plScalarAdapter, 0, 1)
-            Me.m_tlpContent.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_tlpContent.Location = New System.Drawing.Point(0, 0)
-            Me.m_tlpContent.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tlpContent.Name = "m_tlpContent"
-            Me.m_tlpContent.RowCount = 2
-            Me.m_tlpContent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpContent.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlpContent.Size = New System.Drawing.Size(538, 316)
-            Me.m_tlpContent.TabIndex = 1
             '
             'm_plConnectionConverter
             '
@@ -98,149 +90,87 @@ Namespace Ecospace.Controls
             Me.m_plConnectionConverter.Controls.Add(Me.m_lblSelectCV)
             Me.m_plConnectionConverter.Controls.Add(Me.m_lblNewDS)
             Me.m_plConnectionConverter.Controls.Add(Me.m_hdrSource)
-            Me.m_plConnectionConverter.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plConnectionConverter.Location = New System.Drawing.Point(0, 0)
-            Me.m_plConnectionConverter.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_plConnectionConverter, "m_plConnectionConverter")
             Me.m_plConnectionConverter.Name = "m_plConnectionConverter"
-            Me.m_plConnectionConverter.Size = New System.Drawing.Size(538, 242)
-            Me.m_plConnectionConverter.TabIndex = 0
             '
             'm_lblCompatibility
             '
-            Me.m_lblCompatibility.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_lblCompatibility.Location = New System.Drawing.Point(92, 195)
+            resources.ApplyResources(Me.m_lblCompatibility, "m_lblCompatibility")
             Me.m_lblCompatibility.Name = "m_lblCompatibility"
-            Me.m_lblCompatibility.Size = New System.Drawing.Size(446, 16)
-            Me.m_lblCompatibility.TabIndex = 7
-            Me.m_lblCompatibility.Text = "<status>"
-            Me.m_lblCompatibility.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_pbCompatibility
             '
-            Me.m_pbCompatibility.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_pbCompatibility.Location = New System.Drawing.Point(70, 195)
+            resources.ApplyResources(Me.m_pbCompatibility, "m_pbCompatibility")
             Me.m_pbCompatibility.Name = "m_pbCompatibility"
-            Me.m_pbCompatibility.Size = New System.Drawing.Size(16, 16)
-            Me.m_pbCompatibility.TabIndex = 24
             Me.m_pbCompatibility.TabStop = False
             '
             'm_cmbConverter
             '
-            Me.m_cmbConverter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_cmbConverter, "m_cmbConverter")
             Me.m_cmbConverter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbConverter.FormattingEnabled = True
-            Me.m_cmbConverter.Location = New System.Drawing.Point(70, 221)
             Me.m_cmbConverter.Name = "m_cmbConverter"
-            Me.m_cmbConverter.Size = New System.Drawing.Size(342, 21)
-            Me.m_cmbConverter.TabIndex = 10
             '
             'm_btnClearCache
             '
-            Me.m_btnClearCache.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnClearCache.Location = New System.Drawing.Point(418, 169)
+            resources.ApplyResources(Me.m_btnClearCache, "m_btnClearCache")
             Me.m_btnClearCache.Name = "m_btnClearCache"
-            Me.m_btnClearCache.Size = New System.Drawing.Size(120, 23)
-            Me.m_btnClearCache.TabIndex = 8
-            Me.m_btnClearCache.Text = "&Clear cache"
             Me.m_btnClearCache.UseVisualStyleBackColor = True
             '
             'm_cmbNewDS
             '
-            Me.m_cmbNewDS.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_cmbNewDS, "m_cmbNewDS")
             Me.m_cmbNewDS.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbNewDS.FormattingEnabled = True
-            Me.m_cmbNewDS.Location = New System.Drawing.Point(70, 21)
             Me.m_cmbNewDS.Name = "m_cmbNewDS"
-            Me.m_cmbNewDS.Size = New System.Drawing.Size(342, 21)
-            Me.m_cmbNewDS.TabIndex = 2
             '
             'm_btnConfigureCV
             '
-            Me.m_btnConfigureCV.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnConfigureCV.Location = New System.Drawing.Point(418, 219)
+            resources.ApplyResources(Me.m_btnConfigureCV, "m_btnConfigureCV")
             Me.m_btnConfigureCV.Name = "m_btnConfigureCV"
-            Me.m_btnConfigureCV.Size = New System.Drawing.Size(120, 23)
-            Me.m_btnConfigureCV.TabIndex = 11
-            Me.m_btnConfigureCV.Text = "C&onfigure..."
             Me.m_btnConfigureCV.UseVisualStyleBackColor = True
             '
             'm_btnDeleteDS
             '
-            Me.m_btnDeleteDS.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnDeleteDS.Location = New System.Drawing.Point(418, 77)
+            resources.ApplyResources(Me.m_btnDeleteDS, "m_btnDeleteDS")
             Me.m_btnDeleteDS.Name = "m_btnDeleteDS"
-            Me.m_btnDeleteDS.Size = New System.Drawing.Size(120, 23)
-            Me.m_btnDeleteDS.TabIndex = 6
-            Me.m_btnDeleteDS.Text = "&Delete..."
             Me.m_btnDeleteDS.UseVisualStyleBackColor = True
             '
             'm_btnConfigDS
             '
-            Me.m_btnConfigDS.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnConfigDS.Location = New System.Drawing.Point(418, 48)
+            resources.ApplyResources(Me.m_btnConfigDS, "m_btnConfigDS")
             Me.m_btnConfigDS.Name = "m_btnConfigDS"
-            Me.m_btnConfigDS.Size = New System.Drawing.Size(120, 23)
-            Me.m_btnConfigDS.TabIndex = 5
-            Me.m_btnConfigDS.Text = "C&onfigure..."
             Me.m_btnConfigDS.UseVisualStyleBackColor = True
             '
             'm_btnCreateDS
             '
-            Me.m_btnCreateDS.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnCreateDS.Location = New System.Drawing.Point(418, 19)
+            resources.ApplyResources(Me.m_btnCreateDS, "m_btnCreateDS")
             Me.m_btnCreateDS.Name = "m_btnCreateDS"
-            Me.m_btnCreateDS.Size = New System.Drawing.Size(120, 23)
-            Me.m_btnCreateDS.TabIndex = 3
-            Me.m_btnCreateDS.Text = "&Create new..."
             Me.m_btnCreateDS.UseVisualStyleBackColor = True
             '
             'm_lbxExistingDS
             '
-            Me.m_lbxExistingDS.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_lbxExistingDS, "m_lbxExistingDS")
             Me.m_lbxExistingDS.FormattingEnabled = True
-            Me.m_lbxExistingDS.IntegralHeight = False
-            Me.m_lbxExistingDS.Location = New System.Drawing.Point(70, 48)
             Me.m_lbxExistingDS.Name = "m_lbxExistingDS"
-            Me.m_lbxExistingDS.Size = New System.Drawing.Size(342, 141)
-            Me.m_lbxExistingDS.TabIndex = 4
             '
             'm_lblSelectCV
             '
-            Me.m_lblSelectCV.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_lblSelectCV.AutoSize = True
-            Me.m_lblSelectCV.Location = New System.Drawing.Point(3, 224)
+            resources.ApplyResources(Me.m_lblSelectCV, "m_lblSelectCV")
             Me.m_lblSelectCV.Name = "m_lblSelectCV"
-            Me.m_lblSelectCV.Size = New System.Drawing.Size(56, 13)
-            Me.m_lblSelectCV.TabIndex = 9
-            Me.m_lblSelectCV.Text = "&Converter:"
             '
             'm_lblNewDS
             '
-            Me.m_lblNewDS.AutoSize = True
-            Me.m_lblNewDS.Location = New System.Drawing.Point(0, 24)
+            resources.ApplyResources(Me.m_lblNewDS, "m_lblNewDS")
             Me.m_lblNewDS.Name = "m_lblNewDS"
-            Me.m_lblNewDS.Size = New System.Drawing.Size(64, 13)
-            Me.m_lblNewDS.TabIndex = 1
-            Me.m_lblNewDS.Text = "&Connection:"
             '
             'm_hdrSource
             '
-            Me.m_hdrSource.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_hdrSource, "m_hdrSource")
             Me.m_hdrSource.CanCollapseParent = False
             Me.m_hdrSource.CollapsedParentHeight = 0
             Me.m_hdrSource.IsCollapsed = False
-            Me.m_hdrSource.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrSource.Name = "m_hdrSource"
-            Me.m_hdrSource.Size = New System.Drawing.Size(538, 18)
-            Me.m_hdrSource.TabIndex = 0
-            Me.m_hdrSource.Text = "External data"
-            Me.m_hdrSource.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_plScalarAdapter
             '
@@ -249,76 +179,48 @@ Namespace Ecospace.Controls
             Me.m_plScalarAdapter.Controls.Add(Me.m_tbxScale)
             Me.m_plScalarAdapter.Controls.Add(Me.m_rbRelative)
             Me.m_plScalarAdapter.Controls.Add(Me.m_rbAbsolute)
-            Me.m_plScalarAdapter.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plScalarAdapter.Location = New System.Drawing.Point(0, 242)
-            Me.m_plScalarAdapter.Margin = New System.Windows.Forms.Padding(0)
+            resources.ApplyResources(Me.m_plScalarAdapter, "m_plScalarAdapter")
             Me.m_plScalarAdapter.Name = "m_plScalarAdapter"
-            Me.m_plScalarAdapter.Size = New System.Drawing.Size(538, 74)
-            Me.m_plScalarAdapter.TabIndex = 1
             '
             'm_hdrScaling
             '
             Me.m_hdrScaling.CanCollapseParent = False
             Me.m_hdrScaling.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrScaling, "m_hdrScaling")
             Me.m_hdrScaling.IsCollapsed = False
-            Me.m_hdrScaling.Location = New System.Drawing.Point(0, 11)
-            Me.m_hdrScaling.Margin = New System.Windows.Forms.Padding(0)
             Me.m_hdrScaling.Name = "m_hdrScaling"
-            Me.m_hdrScaling.Size = New System.Drawing.Size(538, 18)
-            Me.m_hdrScaling.TabIndex = 1
-            Me.m_hdrScaling.Text = "External data scaling"
-            Me.m_hdrScaling.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_btnCalculate
             '
-            Me.m_btnCalculate.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnCalculate.Location = New System.Drawing.Point(418, 51)
+            resources.ApplyResources(Me.m_btnCalculate, "m_btnCalculate")
             Me.m_btnCalculate.Name = "m_btnCalculate"
-            Me.m_btnCalculate.Size = New System.Drawing.Size(120, 23)
-            Me.m_btnCalculate.TabIndex = 0
-            Me.m_btnCalculate.Text = "Calculate &scale"
             Me.m_btnCalculate.UseVisualStyleBackColor = True
             '
             'm_tbxScale
             '
-            Me.m_tbxScale.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxScale.Location = New System.Drawing.Point(123, 53)
+            resources.ApplyResources(Me.m_tbxScale, "m_tbxScale")
             Me.m_tbxScale.Name = "m_tbxScale"
-            Me.m_tbxScale.Size = New System.Drawing.Size(289, 20)
-            Me.m_tbxScale.TabIndex = 4
             '
             'm_rbRelative
             '
-            Me.m_rbRelative.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_rbRelative.AutoSize = True
-            Me.m_rbRelative.Location = New System.Drawing.Point(16, 54)
+            resources.ApplyResources(Me.m_rbRelative, "m_rbRelative")
             Me.m_rbRelative.Name = "m_rbRelative"
-            Me.m_rbRelative.Size = New System.Drawing.Size(101, 17)
-            Me.m_rbRelative.TabIndex = 3
             Me.m_rbRelative.TabStop = True
-            Me.m_rbRelative.Text = "&Scale values to:"
             Me.m_rbRelative.UseVisualStyleBackColor = True
             '
             'm_rbAbsolute
             '
-            Me.m_rbAbsolute.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-            Me.m_rbAbsolute.AutoSize = True
-            Me.m_rbAbsolute.Location = New System.Drawing.Point(16, 31)
+            resources.ApplyResources(Me.m_rbAbsolute, "m_rbAbsolute")
             Me.m_rbAbsolute.Name = "m_rbAbsolute"
-            Me.m_rbAbsolute.Size = New System.Drawing.Size(199, 17)
-            Me.m_rbAbsolute.TabIndex = 2
             Me.m_rbAbsolute.TabStop = True
-            Me.m_rbAbsolute.Text = "Use external data as &absolute values"
             Me.m_rbAbsolute.UseVisualStyleBackColor = True
             '
             'ucConfigAdapter
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_tlpContent)
             Me.Name = "ucConfigAdapter"
-            Me.Size = New System.Drawing.Size(538, 316)
             Me.m_tlpContent.ResumeLayout(False)
             Me.m_plConnectionConverter.ResumeLayout(False)
             Me.m_plConnectionConverter.PerformLayout()

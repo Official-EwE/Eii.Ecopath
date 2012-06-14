@@ -18,12 +18,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Threading
 Imports EwECore
 Imports EwECore.Ecospace
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.SpatialData
+Imports System.Text
 
 #End Region ' Imports
 
@@ -48,12 +48,23 @@ Namespace Ecospace.Controls
         Private m_uic As cUIContext = Nothing
         Private m_man As cSpatialDataConnectionManager = Nothing
         Private m_manSets As cSpatialDataSetManager = Nothing
+
+        ''' <summary>Selected data adapter</summary>
         Private m_adt As cSpatialDataAdapter = Nothing
+        ''' <summary>Selected layer</summary>
         Private m_layer As cEcospaceLayer = Nothing
-        Private m_bHasCachedData As Boolean = False
-        Private WithEvents m_fp As cEwEFormatProvider = Nothing
+        ''' <summary>Data scale format provider.</summary>
+        Private WithEvents m_fpScale As cEwEFormatProvider = Nothing
+
+        ''' <summary>Flag to break looped layer change updates/notifications</summary>
         Private m_bInUpdate As Boolean = False
-        Private m_thread As Thread = Nothing
+        ''' <summary>Flag that states whether indexing is in place</summary>
+        Private m_bIndexing As Boolean = False
+
+        ''' <summary>Flag that states whether there is any data in the cache</summary>
+        Private m_bHasCachedData As Boolean = False
+
+        Private m_mhEcospace As cMessageHandler = Nothing
 
 #End Region ' Private variables
 
@@ -65,29 +76,42 @@ Namespace Ecospace.Controls
 
 #End Region ' Constructor
 
-#Region " Mandatory overrides etc "
+#Region " Mandatory overrides "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
             Get
                 Return Me.m_uic
             End Get
             Set(uic As cUIContext)
+
                 If (Me.m_uic IsNot Nothing) Then
+                    Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
+                    Me.m_mhEcospace = Nothing
+
                     Me.m_adt = Nothing
                     Me.m_layer = Nothing
+                    Me.m_manSets.IndexDataset(Nothing) ' Stop indexing
                     Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_man = Nothing
-                    Me.m_fp.Release()
+                    Me.m_fpScale.Release()
                 End If
 
                 Me.m_uic = uic
 
                 If (Me.m_uic IsNot Nothing) Then
+                    ' Set new
                     Me.m_man = Me.m_uic.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
-                    Me.m_fp = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScale, GetType(Single))
+                    Me.m_fpScale = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScale, GetType(Single))
+
+                    Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+                    Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
+
                 End If
             End Set
         End Property
@@ -107,6 +131,7 @@ Namespace Ecospace.Controls
 
             ' Done
             Me.UpdateControls()
+
         End Sub
 
 #End Region ' Mandatory overrides etc
@@ -115,7 +140,7 @@ Namespace Ecospace.Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Set the connection to configure.
+        ''' Set the connection (adapter + layer) to configure.
         ''' </summary>
         ''' <param name="adt"><see cref="cSpatialDataAdapter"/> to configure.</param>
         ''' <param name="layer"><see cref="cEcospaceLayer"/> to configure.</param>
@@ -148,6 +173,7 @@ Namespace Ecospace.Controls
 
         Private Sub OnDatasetTemplateSelected(sender As Object, e As System.EventArgs) _
             Handles m_cmbNewDS.SelectedIndexChanged
+            ' A new data set template has been selected. Make UI respond
             Me.UpdateControls()
         End Sub
 
@@ -333,11 +359,11 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
-            Handles m_tbxScale.TextChanged, m_fp.OnValueChanged
+            Handles m_tbxScale.TextChanged, m_fpScale.OnValueChanged
             Try
                 If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
                     Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
-                    ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fp.Value)
+                    ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fpScale.Value)
                 End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -354,6 +380,13 @@ Namespace Ecospace.Controls
             End Try
         End Sub
 
+        Private Sub OnCoreMessage(ByRef msg As cMessage)
+
+            If msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection Then
+                Me.UpdateControls()
+            End If
+
+        End Sub
 
 #End Region ' Control events
 
@@ -367,7 +400,7 @@ Namespace Ecospace.Controls
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
             Dim bIsConfigured As Boolean = bIsConnected AndAlso Me.m_adt.IsConnected(Me.m_layer.Index)
-            Dim bIsIndexing As Boolean = Me.IsIndexing()
+            Dim bIsIndexing As Boolean = Me.m_manSets.IsIndexing(ds)
 
             If (ds IsNot Nothing) Then bCanConfigDS = bIsConnected And (TypeOf ds Is IConfigurablePlugin)
             If (cv IsNot Nothing) Then bCanConfigCV = bIsConnected And (TypeOf cv Is IConfigurablePlugin)
@@ -390,12 +423,16 @@ Namespace Ecospace.Controls
 
             ' -- Indexing status --
 
-            Dim strValidate As String = ""
+            ' ToDo: integrate this differently in the UI - string concats are not the way to go!!
+            Dim sb As New StringBuilder()
             Dim imgValidate As Image = Nothing
 
             If (ds IsNot Nothing) Then
                 Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-
+                sb.AppendLine(String.Format("Assessment from {0} to {1}, {2}% indexed:", _
+                                            Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(comp.FirstTimeStep).ToShortDateString, _
+                                            Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(comp.LastTimeStep).ToShortDateString, _
+                                            CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps)))))
                 If bIsIndexing Then
                     imgValidate = ScientificInterfaceShared.My.Resources.ani_loader
                 ElseIf (comp.Compatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
@@ -403,14 +440,12 @@ Namespace Ecospace.Controls
                 Else
                     imgValidate = ScientificInterfaceShared.My.Resources.Warning
                 End If
-                strValidate = comp.ToString()
+                sb.Append(comp.ToString())
 
             End If
 
-            If Not Object.ReferenceEquals(Me.m_pbCompatibility.Image, imgValidate) Then
-                Me.m_pbCompatibility.Image = imgValidate
-            End If
-            Me.m_lblCompatibility.Text = strValidate
+            Me.m_pbCompatibility.Image = imgValidate
+            Me.m_lblCompatibility.Text = sb.ToString
 
         End Sub
 
@@ -472,7 +507,6 @@ Namespace Ecospace.Controls
             End Get
             Set(dataset As ISpatialDataSet)
 
-                Me.StopIndexing()
                 If (Me.m_adt Is Nothing) Then Return
 
                 ' Apply
@@ -480,7 +514,7 @@ Namespace Ecospace.Controls
                     Me.m_adt.Dataset(Me.m_layer.Index) = dataset
                     Me.LayerChanged()
                 End If
-                Me.StartIndexing()
+                Me.m_manSets.IndexDataset(dataset)
 
             End Set
         End Property
@@ -632,6 +666,9 @@ Namespace Ecospace.Controls
             Dim iInRow As Integer = bm.InRow
             Dim iInCol As Integer = bm.InCol
 
+            ' Stop any indexing
+            Me.m_manSets.IndexDataset(Nothing)
+
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
             Try
 
@@ -667,10 +704,13 @@ Namespace Ecospace.Controls
             End Try
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
+            ' Resume indexing
+            Me.m_manSets.IndexDataset(Me.SelectedDataset)
+
             If MapTotValue = 0 Then MapTotValue = 1
 
             ' Update format provider
-            Me.m_fp.Value = NumWaterCells / MapTotValue
+            Me.m_fpScale.Value = NumWaterCells / MapTotValue
             ' Notify the world
             Me.LayerChanged()
 
@@ -685,7 +725,7 @@ Namespace Ecospace.Controls
                     Case cSpatialScalarDataAdapter.eScaleType.Relative
                         Me.m_rbRelative.Checked = True
                 End Select
-                Me.m_fp.Value = ssda.DataScale(Me.m_layer.Index)
+                Me.m_fpScale.Value = ssda.DataScale(Me.m_layer.Index)
                 Me.m_plScalarAdapter.Visible = True
             Else
                 Me.m_plScalarAdapter.Visible = False
@@ -701,7 +741,7 @@ Namespace Ecospace.Controls
                 Else
                     ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Relative
                 End If
-                ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fp.Value)
+                ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fpScale.Value)
             End If
 
         End Sub
@@ -709,65 +749,6 @@ Namespace Ecospace.Controls
 #End Region ' Scalar data adapter
 
 #End Region ' Internals
-
-#Region " Threaded indexing of datasets "
-
-        Private Sub StopIndexing()
-            Try
-                If Me.IsIndexing Then
-                    Me.m_thread.Abort()
-                End If
-                Me.m_thread = Nothing
-            Catch ex As Exception
-                ' Whoah
-                Debug.Assert(False)
-            End Try
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub StartIndexing()
-
-            Dim ds As ISpatialDataSet = Me.SelectedDataset
-            If (ds IsNot Nothing) Then
-                If (ds.FractionIndexed < 1.0!) Then
-                    Me.m_thread = New Threading.Thread(AddressOf IndexDatasetThread)
-                    Me.m_thread.Priority = Threading.ThreadPriority.BelowNormal
-                    Me.m_thread.Start()
-                End If
-            End If
-            Me.UpdateControls()
-        End Sub
-
-        Private Sub IndexDatasetThread()
-            Me.SelectedDataset.BuildIndex(AddressOf OnSpatialIndexUpdated)
-            ' Forget myself
-            Me.m_thread = Nothing
-
-            ' Invoke callback to clean up
-            Try
-                Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {Nothing})
-            Catch ex As Exception
-                ' Chomp
-            End Try
-        End Sub
-
-        Private Function IsIndexing() As Boolean
-            If (Me.m_thread Is Nothing) Then Return False
-            Return Me.m_thread.IsAlive
-        End Function
-
-        Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
-
-        Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
-            If Me.InvokeRequired Then
-                Me.Invoke(New OnSpatialIndexUpdatedDelegate(AddressOf OnSpatialIndexUpdated), New Object() {ds})
-            Else
-                Me.UpdateControls()
-                Me.m_uic.Core.Messages.SendMessage(New cMessage("Index update", eMessageType.DataModified, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Maintenance))
-            End If
-        End Sub
-
-#End Region ' Threaded indexing of datasets
 
     End Class
 

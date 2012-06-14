@@ -20,11 +20,10 @@
 Option Strict On
 Imports System.Drawing.Drawing2D
 Imports EwECore
+Imports EwECore.Ecospace
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
-Imports EwEPlugin
-Imports EwECore.Ecospace
 
 #End Region ' Imports
 
@@ -35,7 +34,10 @@ Namespace Ecospace.Controls
 
 #Region " Private classes "
 
-        Private Class cDatasetPos
+        ''' <summary>
+        ''' Helper administration class for a data set in the toolbox
+        ''' </summary>
+        Private Class cDatasetInfo
             Public m_ds As ISpatialDataSet
             Public m_var As eVarNameFlags
             Public m_iIndex As Integer
@@ -44,12 +46,14 @@ Namespace Ecospace.Controls
             Public m_iPosVert As Integer = 0
             Public m_liData As New List(Of Integer) ' Time steps with data
             Public m_liTime As New List(Of DateTime) ' Translated time for time steps
+            Public m_liError As New List(Of Boolean) ' Data error states
         End Class
 
 #End Region ' Private classes
 
 #Region " Private vars "
 
+        ' Formatting constants
         Private Const c_headerheight As Integer = 18
         Private Const c_barheight As Integer = 24
         Private Const c_barlabelheight As Integer = 18
@@ -58,10 +62,12 @@ Namespace Ecospace.Controls
 
         Private m_uic As cUIContext = Nothing
         Private m_varname As eVarNameFlags = eVarNameFlags.NotSet
-        Private m_lPos As New List(Of cDatasetPos)
+        Private m_lInfo As New List(Of cDatasetInfo)
         Private m_iTimestepSize As Integer = 0 ' Will be calculated, should perhaps be configurable
         Private m_iSelectedIndex As Integer = -1
         Private m_iSelectedTimeStep As Integer = -1
+
+        Private m_mhSpace As cMessageHandler = Nothing
 
 #End Region ' Private vars
 
@@ -76,13 +82,33 @@ Namespace Ecospace.Controls
 
 #Region " Properties "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
             Get
                 Return Me.m_uic
             End Get
             Set(value As ScientificInterfaceShared.Controls.cUIContext)
+
+                ' Clean up
+                If (Me.m_uic IsNot Nothing) Then
+                    Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhSpace)
+                    Me.m_mhSpace = Nothing
+                End If
+
+                ' Update
                 Me.m_uic = value
+
+                ' Config
+                If (Me.m_uic IsNot Nothing) Then
+                    Me.m_mhSpace = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
+                    Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhSpace)
+#If DEBUG Then
+                    Me.m_mhSpace.Name = "ucSpatialTimeSeriesToolbox::m_mhSpace"
+#End If
+                End If
             End Set
         End Property
 
@@ -97,26 +123,34 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Selection changed notification
+        ''' Selection changed notification event
         ''' </summary>
         ''' <param name="owner">The sender of this event</param>
         ''' <param name="ds">The selected datasets</param>
+        ''' -------------------------------------------------------------------
         Public Event OnSelectedDatasetChanged(owner As Object, ds As ISpatialDataSet)
 
-        Public Property SelectedIndex As Integer
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the zero-based index of the selected <see cref="ISpatialDataSet"/>. 
+        ''' This value cannot be equal to or exceed <see cref="cSpatialDataSetManager.Count"/>
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property SelectedDatasetIndex As Integer
             Get
                 Return Me.m_iSelectedIndex
             End Get
             Set(value As Integer)
 
-                Me.m_iSelectedIndex = Math.Min(Me.m_lPos.Count - 1, Math.Max(-1, value))
+                Me.m_iSelectedIndex = Math.Min(Me.m_lInfo.Count - 1, Math.Max(-1, value))
                 Me.Invalidate()
 
                 If (Me.UIContext Is Nothing) Then Return
 
                 Dim ds As ISpatialDataSet = Nothing
-                If (Me.m_iSelectedIndex >= 0) Then ds = Me.m_lPos(Me.m_iSelectedIndex).m_ds
+                If (Me.m_iSelectedIndex >= 0) Then ds = Me.m_lInfo(Me.m_iSelectedIndex).m_ds
                 Try
                     RaiseEvent OnSelectedDatasetChanged(Me, ds)
                 Catch ex As Exception
@@ -127,6 +161,12 @@ Namespace Ecospace.Controls
 
         Public Event OnSelectedTimestepChanged(owner As Object, iTimeStep As Integer, dt As DateTime)
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the one-based index of the selected Ecospace time step. 
+        ''' This value cannot exceed <see cref="cCore.nEcospaceTimeSteps"/>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property SelectedTimeStep As Integer
             Get
                 Return Me.m_iSelectedTimeStep
@@ -145,6 +185,11 @@ Namespace Ecospace.Controls
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Entirely refresh the content of the toolbox.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub RefreshContent()
             Me.RecalcSize()
             Me.RecalcLayout()
@@ -156,9 +201,12 @@ Namespace Ecospace.Controls
 #Region " Form overrides "
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
+
             MyBase.OnLoad(e)
             If (Me.m_uic Is Nothing) Then Return
+
             Me.RefreshContent()
+
         End Sub
 
         Protected Overrides Sub OnResize(e As System.EventArgs)
@@ -174,9 +222,9 @@ Namespace Ecospace.Controls
 
         Protected Overrides Sub OnMouseClick(e As System.Windows.Forms.MouseEventArgs)
             Dim ptClick As New Point(e.Location.X - Me.AutoScrollPosition.X, e.Location.Y - Me.AutoScrollPosition.Y)
-            Dim pos As cDatasetPos = Me.DatasetFromPoint(ptClick)
+            Dim pos As cDatasetInfo = Me.DatasetFromPoint(ptClick)
             If (pos IsNot Nothing) Then
-                Me.SelectedIndex = pos.m_iPosVert
+                Me.SelectedDatasetIndex = pos.m_iPosVert
             End If
             Me.SelectedTimeStep = TimestepFromPoint(ptClick)
             MyBase.OnMouseClick(e)
@@ -194,8 +242,8 @@ Namespace Ecospace.Controls
                 ' Paint matrix shifted to X and Y scroll position
                 e.Graphics.Transform = New Matrix(1, 0, 0, 1, AutoScrollPosition.X, AutoScrollPosition.Y)
                 Me.DrawGrid(e.Graphics, New Rectangle(0, c_headerheight, Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, Me.ClientRectangle.Height - c_headerheight))
-                For i As Integer = 0 To Me.m_lPos.Count - 1
-                    Me.DrawDataset(e.Graphics, Me.m_lPos(i), i = Me.m_iSelectedIndex)
+                For i As Integer = 0 To Me.m_lInfo.Count - 1
+                    Me.DrawDataset(e.Graphics, Me.m_lInfo(i), i = Me.m_iSelectedIndex)
                 Next
                 e.Graphics.ResetTransform()
 
@@ -212,22 +260,38 @@ Namespace Ecospace.Controls
 
 #End Region ' Form overrides
 
+#Region " Events "
+
+        Private Sub OnCoreMessage(ByRef msg As cMessage)
+
+            If (msg.Source <> eCoreComponentType.EcoSpace) Then Return
+            If (msg.Type = eMessageType.DataModified) Then
+                Select Case msg.DataType
+                    Case eDataTypes.EcospaceSpatialDataConnection
+                        Me.Invalidate()
+                    Case eDataTypes.EcotracerScenario
+                        Me.RefreshContent()
+                End Select
+            End If
+
+        End Sub
+
+#End Region ' Events
+
 #Region " Internals "
 
-        ' ToDo: respond to core messages to update ecospace run time, dataset changes
-
         Protected Sub RecalcSize()
+
             ' Safety check
             If (Me.m_uic Is Nothing) Then Return
             ' Calc number of pixels per time step
             Me.m_iTimestepSize = CInt(Math.Max(4, Math.Floor(Me.Width / Me.m_uic.Core.nEcospaceTimeSteps)))
 
             ' ToDo: put vert scrollbar UNDER header panel, not beside header panel
-
             Me.AutoScroll = True
-            Me.AutoScrollMinSize = New Size(Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, (Me.m_lPos.Count * (c_barheight + 2 * c_barmargin) + c_headerheight))
+            Me.AutoScrollMinSize = New Size(Me.m_iTimestepSize * Me.m_uic.Core.nEcospaceTimeSteps, (Me.m_lInfo.Count * (c_barheight + 2 * c_barmargin) + c_headerheight))
             Me.AutoScrollMargin = New Size(0, 0)
-            'Me.Invalidate()
+
         End Sub
 
         ''' <summary>
@@ -260,11 +324,11 @@ Namespace Ecospace.Controls
             Dim iSel As Integer = 0
 
             If (Me.m_iSelectedIndex > 0) Then
-                var = Me.m_lPos(Me.m_iSelectedIndex).m_var
-                iIndex = Me.m_lPos(Me.m_iSelectedIndex).m_iIndex
+                var = Me.m_lInfo(Me.m_iSelectedIndex).m_var
+                iIndex = Me.m_lInfo(Me.m_iSelectedIndex).m_iIndex
             End If
 
-            Me.m_lPos.Clear()
+            Me.m_lInfo.Clear()
 
             For Each adt As cSpatialDataAdapter In lAdt
                 For i As Integer = 0 To adt.Length - 1
@@ -272,7 +336,7 @@ Namespace Ecospace.Controls
 
                         ds = adt.Dataset(i)
 
-                        Dim pos As New cDatasetPos()
+                        Dim pos As New cDatasetInfo()
                         pos.m_ds = ds
                         pos.m_var = adt.VarName
                         pos.m_iIndex = adt.Index
@@ -295,10 +359,11 @@ Namespace Ecospace.Controls
                             If ds.HasDataAtT(tm) Then
                                 pos.m_liData.Add(iStep)
                                 pos.m_liTime.Add(tm)
+                                pos.m_liError.Add(ds.IndexStatusAtT(tm) = ISpatialDataSet.eIndexStatus.Failed)
                             End If
                         Next
 
-                        Me.m_lPos.Add(pos)
+                        Me.m_lInfo.Add(pos)
 
                         If (pos.m_var = var) And (pos.m_iIndex = iIndex) Then
                             iSel = iRow
@@ -309,7 +374,7 @@ Namespace Ecospace.Controls
                 Next
             Next
 
-            Me.SelectedIndex = iSel
+            Me.SelectedDatasetIndex = iSel
 
         End Sub
 
@@ -318,7 +383,6 @@ Namespace Ecospace.Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="rc"></param>
-        ''' <remarks></remarks>
         Private Sub DrawGridHeader(g As Graphics, rc As Rectangle)
 
             g.FillRectangle(SystemBrushes.Control, rc)
@@ -368,9 +432,8 @@ Namespace Ecospace.Controls
         ''' </summary>
         ''' <param name="g"></param>
         ''' <param name="pos"></param>
-        ''' <remarks></remarks>
         Private Sub DrawDataset(ByVal g As Graphics, _
-                                ByVal pos As cDatasetPos, _
+                                ByVal pos As cDatasetInfo, _
                                 ByVal bSelected As Boolean)
 
             Dim rcBar As Rectangle = Me.DatasetArea(pos)
@@ -392,9 +455,6 @@ Namespace Ecospace.Controls
             End Select
             Dim clrTextFill As Color = clrFill
 
-            Dim fmt As New StringFormat(StringFormatFlags.NoWrap)
-            fmt.LineAlignment = StringAlignment.Center
-
             If bSelected Then
                 clrText = SystemColors.HighlightText
                 clrTextFill = SystemColors.Highlight
@@ -412,32 +472,40 @@ Namespace Ecospace.Controls
             End Using
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
                 rcLabel.Width = rcBack.Width
-                g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, rcLabel, fmt)
+                g.DrawString(pos.m_ds.DisplayName, ft, SystemBrushes.ControlText, Math.Max(rcBack.X, rcLabel.X), rcLabel.Y)
             End Using
             Using p As New Pen(clrData)
                 g.DrawRectangle(p, rcBar)
             End Using
 
             Dim brIndexed As New SolidBrush(clrData)
-            Dim penFailed As New Pen(Brushes.Red, 0.001)
+            Dim penPending As New Pen(clrData, 0.001)
+            Dim brFailed As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT))
+
             Dim pt1, pt2 As PointF
 
             For i As Integer = 0 To pos.m_liData.Count - 1
                 Dim iStep As Integer = pos.m_liData(i)
                 rcTimeStep.X = rcBar.X + (iStep - pos.m_iTimeStart) * Me.m_iTimestepSize - c_dotradius
-                If Not pos.m_ds.GetExtentAtT(pos.m_liTime(i), pt1, pt2) Then
-                    g.DrawEllipse(penFailed, rcTimeStep)
+
+                If pos.m_liError(i) Then
+                    g.FillEllipse(brFailed, rcTimeStep)
                 Else
-                    g.FillEllipse(brIndexed, rcTimeStep)
+                    If Not pos.m_ds.GetExtentAtT(pos.m_liTime(i), pt1, pt2) Then
+                        g.DrawEllipse(penPending, rcTimeStep)
+                    Else
+                        g.FillEllipse(brIndexed, rcTimeStep)
+                    End If
                 End If
             Next
 
             brIndexed.Dispose()
-            penFailed.Dispose()
+            penPending.Dispose()
+            brFailed.Dispose()
 
         End Sub
 
-        Private Function DatasetArea(pos As cDatasetPos) As Rectangle
+        Private Function DatasetArea(pos As cDatasetInfo) As Rectangle
             Dim iStart As Integer = pos.m_iTimeStart * Me.m_iTimestepSize
             Dim iEnd As Integer = (pos.m_iTimeEnd + 1) * Me.m_iTimestepSize - 1
             Return New Rectangle(iStart, c_headerheight + pos.m_iPosVert * (c_barheight + 2 * c_barmargin) + c_barmargin, iEnd - iStart, c_barheight)
@@ -448,9 +516,9 @@ Namespace Ecospace.Controls
             Return CInt(Math.Round(pt.X / Me.m_iTimestepSize))
         End Function
 
-        Private Function DatasetFromPoint(pt As Point) As cDatasetPos
+        Private Function DatasetFromPoint(pt As Point) As cDatasetInfo
             If (pt.Y < c_headerheight) Then Return Nothing
-            For Each pos As cDatasetPos In Me.m_lPos
+            For Each pos As cDatasetInfo In Me.m_lInfo
                 If Me.DatasetArea(pos).Contains(pt) Then Return pos
             Next
             Return Nothing

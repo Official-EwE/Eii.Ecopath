@@ -1188,6 +1188,9 @@ Public Class cCore
             'but does implements the IThreadedProcess 
             Me.m_ThreadedProcesses.Add(Me.m_MonteCarlo)
 
+            ' Datasets are indexed in separate threads
+            Me.m_ThreadedProcesses.Add(Me.SpatialDataConnectionManager.DatasetManager)
+
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
@@ -8427,7 +8430,7 @@ Public Class cCore
         If (Me.m_spatialdataconnectionManager.NumConnectedAdapters = 0) Then Return True
 
         ' Allow a bit of room for rounding errors
-        If (Math.Round(1 / Me.m_EcoSpaceData.TimeStep, 5) > cCore.N_MONTHS) Then
+        If (Math.Round(1 / Me.m_EcoSpaceData.TimeStep, 3) > cCore.N_MONTHS) Then
             Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS, _
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
             fmsg.ReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO

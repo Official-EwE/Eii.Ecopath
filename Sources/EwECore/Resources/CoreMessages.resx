@@ -1063,8 +1063,8 @@ System Error: {0}</value>
     <comment>{0}=error message</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_COMPATIBILITY" xml:space="preserve">
-    <value>{0}% indexed, {1}% temporal overlap with {2}% partial and {3}% total area overlap</value>
-    <comment>{0}=% indexed of dataset, {1}=% overlapping time steps, {2}=% steps with partial spatial overlap, {3}=% steps with full spatial overlap</comment>
+    <value>{0}% temporal overlap with {1}% partial and {2}% total area overlap.</value>
+    <comment>{0}=% overlapping time steps, {1}=% steps with partial spatial overlap, {2}=% steps with full spatial overlap</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_NOSPATIALOVERLAP" xml:space="preserve">
     <value>External data does not spatilly overlap your the model area</value>
