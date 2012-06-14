@@ -23,7 +23,6 @@ Imports EwECore.Ecospace
 Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.SpatialData
-Imports System.Text
 Imports EwEUtils.Utilities
 
 #End Region ' Imports
@@ -54,8 +53,6 @@ Namespace Ecospace.Controls
         Private m_adt As cSpatialDataAdapter = Nothing
         ''' <summary>Selected layer</summary>
         Private m_layer As cEcospaceLayer = Nothing
-        ''' <summary>Data scale format provider.</summary>
-        Private WithEvents m_fpScale As cEwEFormatProvider = Nothing
 
         ''' <summary>Flag to break looped layer change updates/notifications</summary>
         Private m_bInUpdate As Boolean = False
@@ -99,7 +96,6 @@ Namespace Ecospace.Controls
                     Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_man = Nothing
-                    Me.m_fpScale.Release()
                 End If
 
                 Me.m_uic = uic
@@ -108,7 +104,6 @@ Namespace Ecospace.Controls
                     ' Set new
                     Me.m_man = Me.m_uic.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
-                    Me.m_fpScale = New cEwEFormatProvider(Me.m_uic, Me.m_tbxScale, GetType(Single))
 
                     Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
                     Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
@@ -360,11 +355,11 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
-            Handles m_tbxScale.TextChanged, m_fpScale.OnValueChanged
+            Handles m_tbxScale.TextChanged
             Try
                 If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
                     Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
-                    ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fpScale.Value)
+                    Single.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
                 End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -712,7 +707,7 @@ Namespace Ecospace.Controls
             If MapTotValue = 0 Then MapTotValue = 1
 
             ' Update format provider
-            Me.m_fpScale.Value = NumWaterCells / MapTotValue
+            Me.m_tbxScale.Text = (NumWaterCells / MapTotValue).ToString
             ' Notify the world
             Me.LayerChanged()
 
@@ -727,25 +722,11 @@ Namespace Ecospace.Controls
                     Case cSpatialScalarDataAdapter.eScaleType.Relative
                         Me.m_rbRelative.Checked = True
                 End Select
-                Me.m_fpScale.Value = ssda.DataScale(Me.m_layer.Index)
+                Me.m_tbxScale.Text = ssda.DataScale(Me.m_layer.Index).ToString
                 Me.m_plScalarAdapter.Visible = True
             Else
                 Me.m_plScalarAdapter.Visible = False
             End If
-        End Sub
-
-        Private Sub ApplyAdapterControls()
-
-            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
-                Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
-                If (Me.m_rbAbsolute.Checked) Then
-                    ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Absolute
-                Else
-                    ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Relative
-                End If
-                ssda.DataScale(Me.m_layer.Index) = CSng(Me.m_fpScale.Value)
-            End If
-
         End Sub
 
 #End Region ' Scalar data adapter
