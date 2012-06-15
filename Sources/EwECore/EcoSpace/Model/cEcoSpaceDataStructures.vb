@@ -467,9 +467,9 @@ Public Class cEcospaceDataStructures
     'JS Nov 2011: consider how this logic interoperates with the new Driver layers.
     'it should eventually (perhaps) be dimensioned with time steps as well. 
     Public SpatialField(,,) As Single               'row, col, index
-    Public SpatialFieldOptimum(,) As Boolean   ' group, index
-    Public SpatialFieldStdLeft(,) As Boolean   ' group, index   = left side of normal distribution
-    Public SpatialFieldStdRight(,) As Boolean  ' group, index   = right side of normal dist
+    Public SpatialFieldOptimum(,) As Single   ' group, index
+    Public SpatialFieldStdLeft(,) As Single   ' group, index   = left side of normal distribution
+    Public SpatialFieldStdRight(,) As Single  ' group, index   = right side of normal dist
     Public nSpatialFields As Integer      'this is to be read from the init file when connecting to other
     'models, or when we have interface for this it will be read from Ecosim info
     Public SpatialFieldsInUse As Boolean   'Use this to turn on the processing of spatial fields in SpaceSolver
