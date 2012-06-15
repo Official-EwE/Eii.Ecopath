@@ -2511,7 +2511,7 @@ Public Class cEcoSpace
         Dim j As Integer
 
         'External data sources can change the value of RelPP
-        'Make sure it is set to the base value loaded from the database
+        'Make a copy that can be used to restore RelPP to its original value
         Array.Copy(Me.m_Data.relPP0, Me.m_Data.RelPP, Me.m_Data.RelPP.Length)
 
         'This function is used to scale the relative primary productivity _
