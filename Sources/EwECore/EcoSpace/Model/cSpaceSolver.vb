@@ -15,6 +15,9 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+Option Explicit On
+Option Strict On
+
 Imports System
 Imports System.Threading
 
@@ -307,7 +310,7 @@ Public Class cSpaceSolver
         Try
 
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actuall different, it's a multiplier
-            TimeStep2 = m_Data.TimeStep * 0.66667
+            TimeStep2 = m_Data.TimeStep * 0.66667F
 
             If m_TracerData.EcoSpaceConSimOn Then
                 m_ConTracer.ConcTr(0) = m_Data.Ccell(i, j, 0)
@@ -332,7 +335,7 @@ Public Class cSpaceSolver
 
                 If (m_SimData.NoIntegrate(iGrp) = iGrp Or m_SimData.NoIntegrate(iGrp) < 0) And m_SimData.SimGE(iGrp) > 0 Then
                     If (Cper(i, j, iGrp) > 0 And m_SimData.FtimeAdjust(iGrp) > 0) Then
-                        FtimeCell(i, j, iGrp) = FtimeCell(i, j, iGrp) * (0.7 + 0.3 * m_SimData.Cbase(iGrp) / Cper(i, j, iGrp))
+                        FtimeCell(i, j, iGrp) = FtimeCell(i, j, iGrp) * (0.7F + 0.3F * m_SimData.Cbase(iGrp) / Cper(i, j, iGrp))
                     End If
                     '  FtimeCell(i, j, ip) = Cbase(ip) / Cper(i, j, ip)
                     If FtimeCell(i, j, iGrp) > m_SimData.FtimeMax(iGrp) Then FtimeCell(i, j, iGrp) = m_SimData.FtimeMax(iGrp)
@@ -421,7 +424,7 @@ Public Class cSpaceSolver
                 If pred(iGrp) > 1.0E-30 Then
                     RelFitness(i, j, iGrp) = (m_SimData.SimGE(iGrp) * Eatenby(iGrp) - loss(iGrp)) / pred(iGrp) + FishTime(iGrp)
                 Else
-                    RelFitness(i, j, iGrp) = -2.0# * m_PathData.PB(iGrp)
+                    RelFitness(i, j, iGrp) = -2.0F * m_PathData.PB(iGrp)
                 End If
             Next
 
@@ -437,15 +440,15 @@ Public Class cSpaceSolver
                 If m_Data.SpaceTime Then
                     AMm(i, j, iGrp) = AMm(i, j, iGrp) - 1 / TimeStep2
                     'this is for new 2nd order BDF numerical sceme (replacing backwards euler)
-                    F(i, j, iGrp) = F(i, j, iGrp) + (1.3333 * m_Data.Bcell(i, j, iGrp) - 0.3333 * m_Data.Blast(i, j, iGrp)) / TimeStep2
+                    F(i, j, iGrp) = F(i, j, iGrp) + (1.3333F * m_Data.Bcell(i, j, iGrp) - 0.3333F * m_Data.Blast(i, j, iGrp)) / TimeStep2
                     m_Data.Blast(i, j, iGrp) = m_Data.Bcell(i, j, iGrp)
                 End If
 
                 If m_SimData.SimGE(iGrp) > 0 Then
-                    Cper(i, j, iGrp) = Eatenby(iGrp) / (m_Data.Bcell(i, j, iGrp) + 1.0E-20)
+                    Cper(i, j, iGrp) = Eatenby(iGrp) / (m_Data.Bcell(i, j, iGrp) + 1.0E-20F)
                 End If
                 If Cper(i, j, iGrp) < 0.001 * m_SimData.Cbase(iGrp) Then
-                    Cper(i, j, iGrp) = 0.001 * m_SimData.Cbase(iGrp)
+                    Cper(i, j, iGrp) = 0.001F * m_SimData.Cbase(iGrp)
                 End If
 
             Next iGrp
@@ -487,29 +490,29 @@ Public Class cSpaceSolver
                             TotIFDweightThread(ieco) = TotIFDweightThread(ieco) + m_Data.IFDweight(i, j, ieco)
                         End If
                     ElseIf m_Data.UseIBM Then
-                        m_Stanza.Zcell(i, j, ieco) = loss(ieco) / (m_Data.Bcell(i, j, ieco) + 1.0E-30)
+                        m_Stanza.Zcell(i, j, ieco) = loss(ieco) / (m_Data.Bcell(i, j, ieco) + 1.0E-30F)
                         If m_Data.Bcell(i, j, ieco) = 0 Then
                             m_Stanza.Zcell(i, j, ieco) = 0
                         End If
-                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.PredCell(i, j, ieco) + 1.0E-30)
+                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.PredCell(i, j, ieco) + 1.0E-30F)
                         If m_Data.PredCell(i, j, ieco) = 0 Then
                             Cper(i, j, ieco) = m_SimData.Cbase(ieco)
                         End If
                     End If
-                    SurvRat = Math.Exp(-FlowoutRate(ieco) * Tstanza(isc))
+                    SurvRat = CSng(Math.Exp(-FlowoutRate(ieco) * Tstanza(isc)))
                     RelRS = RelR * SurvRat 'Math.Exp(-FlowoutRate(ieco) * Tstanza(isc))
                     If ist = 1 Then '< m_Stanza.Nstanza(isp) Then
                         Rflow = RelR - RelRS
                     Else
                         Rflow = RtoNext
                     End If
-                    RtoNext = m_Data.Bcell(i, j, nvar2 + isc) * FlowoutRate(ieco) / (1 / (SurvRat + 1.0E-20) - 1)
+                    RtoNext = m_Data.Bcell(i, j, nvar2 + isc) * FlowoutRate(ieco) / (1 / (SurvRat + 1.0E-20F) - 1)
                     RelR = RelRS
                     If m_Data.NewMultiStanza Then
-                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.PredCell(i, j, ieco) + 1.0E-30)
+                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.PredCell(i, j, ieco) + 1.0E-30F)
                         If ist > 1 Then Rflow = m_Data.Bcell(i, j, m_Stanza.EcopathCode(isp, ist - 1))
                     ElseIf m_Data.UseIBM = False And m_Data.NewMultiStanza = False Then
-                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.Bcell(i, j, nvar2 + isc) * PconSplit(isc) + 1.0E-30)
+                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.Bcell(i, j, nvar2 + isc) * PconSplit(isc) + 1.0E-30F)
                     End If
 
                     F(i, j, nvar2 + isc) = Rflow
@@ -520,7 +523,7 @@ Public Class cSpaceSolver
                     'm_Data.deriv(i, j, nvar2 + isc) = AMm(i, j, nvar2 + isc) * m_Data.Bcell(i, j, nvar2 + isc) + F(i, j, nvar2 + isc) + Bcw(i, j, nvar2 + isc) * m_Data.Bcell(i - 1, j, nvar2 + isc) + C(i, j, nvar2 + isc) * m_Data.Bcell(i + 1, j, nvar2 + isc) + d(i, j - 1, nvar2 + isc) * m_Data.Bcell(i, j - 1, nvar2 + isc) + e(i, j + 1, nvar2 + isc) * m_Data.Bcell(i, j + 1, nvar2 + isc)
 
                     If m_Data.SpaceTime Then
-                        F(i, j, nvar2 + isc) = F(i, j, nvar2 + isc) + (1.3333 * m_Data.Bcell(i, j, nvar2 + isc) - 0.3333 * m_Data.Blast(i, j, nvar2 + isc)) / TimeStep2
+                        F(i, j, nvar2 + isc) = F(i, j, nvar2 + isc) + (1.3333F * m_Data.Bcell(i, j, nvar2 + isc) - 0.3333F * m_Data.Blast(i, j, nvar2 + isc)) / TimeStep2
                         'F(i, j, nvar2 + isc) = F(i, j, nvar2 + isc) + m_Data.Bcell(i, j, nvar2 + isc) / m_Data.TimeStep
                         AMm(i, j, nvar2 + isc) = AMm(i, j, nvar2 + isc) - 1 / TimeStep2
                         m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
@@ -545,7 +548,7 @@ Public Class cSpaceSolver
 
     End Function
 
-    Private Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProd As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+    Private Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProd As Double, ByVal iRow As Integer, ByVal iCol As Integer)
         'reduced derivatives for MPA equilibration procedure
         Dim i As Integer, j As Integer, ii As Integer
         Dim eat As Single, Pmult As Single
@@ -584,7 +587,7 @@ Public Class cSpaceSolver
                 NutBiom = NutBiom + Biomass(i)
             Next
 
-            NutFree = m_SimData.NutTot * RelProd - NutBiom
+            NutFree = CSng(m_SimData.NutTot * RelProd - NutBiom)
             If NutFree < m_SimData.NutMin Then NutFree = m_SimData.NutMin
 
             '*************
@@ -619,7 +622,7 @@ Public Class cSpaceSolver
                 i = m_SimData.Iarena(ia)
                 If m_SimData.BoutFeeding Then
                     If Vdenom(ia) > 0 Then
-                        Vbiom(ia) = Veff(ia) * Biomass(i) * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia)
+                        Vbiom(ia) = Veff(ia) * Biomass(i) * (1 - CSng(Math.Exp(-Vdenom(ia)))) / Vdenom(ia)
                     Else
                         Vbiom(ia) = Veff(ia) * Biomass(i)
                     End If
@@ -650,7 +653,7 @@ Public Class cSpaceSolver
                 i = m_SimData.Iarena(ia)
                 If m_SimData.BoutFeeding Then
                     If Vdenom(ia) > 0 Then
-                        Vbiom(ia) = Veff(ia) * Biomass(i) * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia)
+                        Vbiom(ia) = Veff(ia) * Biomass(i) * (1 - CSng(Math.Exp(-Vdenom(ia)))) / Vdenom(ia)
                     Else
                         Vbiom(ia) = Veff(ia) * Biomass(i)
                     End If
@@ -687,7 +690,7 @@ Public Class cSpaceSolver
 
                 If Me.m_PathData.isEcospaceModelCoupled Then
                     'predation mort by link
-                    m_Data.MPred(iRow, iCol, ii) = eat / (Bprey + 1.0E-20)
+                    m_Data.MPred(iRow, iCol, ii) = eat / (Bprey + 1.0E-20F)
                 End If
 
                 '******** 
@@ -788,7 +791,7 @@ Public Class cSpaceSolver
             If m_SimData.SwitchPower(j) = 0.0# Then
                 RelaSwitch(ii) = 1
             Else
-                RelaSwitch(ii) = m_Ecosim.A(i, j) * B(i) ^ m_SimData.SwitchPower(j) / (PredDen(j) + 1.0E-20) / m_SimData.BaseTimeSwitch(ii)
+                RelaSwitch(ii) = CSng(m_Ecosim.A(i, j) * B(i) ^ m_SimData.SwitchPower(j) / (PredDen(j) + 1.0E-20) / m_SimData.BaseTimeSwitch(ii))
             End If
         Next
 
@@ -883,9 +886,9 @@ Public Class cSpaceSolver
                 Case 2 'multiply vulnerability
                     v = v * Mult
                 Case 3 'multiply foraging area
-                    A = A / (Mult + 0.0000000001)
+                    A = A / (Mult + 1.0E-10F)
                 Case 4 ' multiply foraging area and vulnerability
-                    A = A / (Mult + 0.0000000001)
+                    A = A / (Mult + 1.0E-10F)
                     v = v * Mult
             End Select
 
