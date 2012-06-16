@@ -2193,6 +2193,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Calculating scaling factor for &apos;{0}&apos; using data set &apos;{1}&apos;, converter &apos;{2}&apos;.
+        '''</summary>
+        Friend Shared ReadOnly Property STATUS_SPATIALTERMPORAL_CALCULATING() As String
+            Get
+                Return ResourceManager.GetString("STATUS_SPATIALTERMPORAL_CALCULATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to One or more cv values cannot be read.
         '''</summary>
         Friend Shared ReadOnly Property TIMESERIES_ERROR_CVFORMAT() As String

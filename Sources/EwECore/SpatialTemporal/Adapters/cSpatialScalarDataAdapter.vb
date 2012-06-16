@@ -155,12 +155,12 @@ Namespace SpatialData
             Me.m_core.SpatialDataConnectionManager.DatasetManager.IndexDataset(Nothing)
 
             Try
-
+                Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Start, 1.0!, 0.0!, "", eMessageType.Progress))
                 For i As Integer = 0 To ldtData.Count - 1
 
                     Dim dt As DateTime = ldtData(i)
-                    msg = New cProgressMessage(CSng(i / ldtData.Count), _
-                                               String.Format("Calculating scaling factor for '{0}' using '{1}'", strName, ds.DisplayName), _
+                    msg = New cProgressMessage(eProgressState.Running, 1.0!, CSng((i + 1) / ldtData.Count), _
+                                               String.Format(My.Resources.CoreMessages.STATUS_SPATIALTERMPORAL_CALCULATING, strName, ds.DisplayName, cv.DisplayName), _
                                                eMessageType.Progress, eDataTypes.EcospaceSpatialDataConnection)
                     Me.m_core.Messages.SendMessage(msg)
 
@@ -187,7 +187,7 @@ Namespace SpatialData
             Catch ex As Exception
 
             End Try
-            Me.m_core.Messages.SendMessage(New cProgressMessage(0, "", eMessageType.Progress))
+            Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Finished, 1.0!, 1.0!, "", eMessageType.Progress))
 
             If dMapTotValue = 0 Then dMapTotValue = 1
             Me.DataScale(Me.Index) = CSng(iNumWaterCells / dMapTotValue)

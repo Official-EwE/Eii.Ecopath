@@ -51,8 +51,7 @@ Namespace Controls
             ' Provide default
             If (String.IsNullOrWhiteSpace(strText)) Then strText = My.Resources.GENERIC_STATUS_BUSY
 
-            Dim pmsg As New cProgressMessage(sProgress, strText, eMessageType.Progress)
-            pmsg.ProgressState = eProgressState.Start
+            Dim pmsg As New cProgressMessage(eProgressState.Start, 1.0!, sProgress, strText, eMessageType.Progress)
             core.Messages.SendMessage(pmsg, True)
 
         End Sub
@@ -67,12 +66,10 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Shared Sub UpdateProgress(ByVal core As cCore, ByVal strText As String, ByVal sProgress As Single)
 
-
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return
 
-            Dim pmsg As New cProgressMessage(sProgress, strText, eMessageType.Progress)
-            pmsg.ProgressState = eProgressState.Running
+            Dim pmsg As New cProgressMessage(eProgressState.Running, 1.0!, sProgress, strText, eMessageType.Progress)
             core.Messages.SendMessage(pmsg, True)
 
         End Sub
@@ -84,12 +81,10 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Shared Sub EndProgress(ByVal core As cCore)
 
-
             If (core Is Nothing) Then Return
             If (core.Messages Is Nothing) Then Return
 
-            Dim pmsg As New cProgressMessage(0, "", eMessageType.Progress)
-            pmsg.ProgressState = eProgressState.Finished
+            Dim pmsg As New cProgressMessage(eProgressState.Finished, 1, 1, "", eMessageType.Progress)
             core.Messages.SendMessage(pmsg, True)
 
         End Sub

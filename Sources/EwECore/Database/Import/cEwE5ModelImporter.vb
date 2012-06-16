@@ -304,7 +304,7 @@ Namespace Database
             ' Public to core if possible
             If (Me.m_core IsNot Nothing) Then
                 ' Send progress message
-                Me.m_core.Messages.SendMessage(New cProgressMessage(sProgress, strMessage, eMessageType.DataImport))
+                Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Running, 1.0!, sProgress, strMessage, eMessageType.DataImport))
             End If
 
         End Sub

@@ -1035,6 +1035,7 @@ Public Class AppLauncher
                     ' #Yes: restore default cursor
                     Me.Cursor = Cursors.Default
                     strText = ""
+                    sProgress = 0
                 End If
 
             Case eProgressState.Running

@@ -1085,4 +1085,8 @@ System Error: {0}</value>
   <data name="ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS" xml:space="preserve">
     <value>Ecospace is set to run with more than twelve time steps per year, while external data can only be delivered for the first day of a month. Your model may not be able to obtain the correct data for every time step. Do you want to continue?</value>
   </data>
+  <data name="STATUS_SPATIALTERMPORAL_CALCULATING" xml:space="preserve">
+    <value>Calculating scaling factor for '{0}' using data set '{1}', converter '{2}'</value>
+    <comment>{0}=layer name, {1}=dataset name, {2}=converter name</comment>
+  </data>
 </root>

@@ -21,60 +21,71 @@ Imports EwEUtils.Core
 Public Class cProgressMessage
     Inherits cMessage
 
-    Private m_sProgress As Single
+    Private m_sMaxProgress As Single = 1.0!
+    Private m_sProgress As Single = 0.0!
     'jb added state to identify what state the process is in
-    Private m_state As eProgressState
-    Private m_max As Single
+    Private m_state As eProgressState = eProgressState.Start
 
-    Sub New(ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a new progress message.
+    ''' </summary>
+    ''' <param name="state"><see cref="eProgressState">State</see> of a process.</param>
+    ''' <param name="sMaxValue">Maximum progress scale.</param>
+    ''' <param name="sProgress">Current progress value [0, <paramref name="sMaxValue"/>]</param>
+    ''' <param name="strMessage">Message text.</param>
+    ''' <param name="msgType">Optional <see cref="eMessageType">type</see> of the message.</param>
+    ''' <param name="msgDataType">Optional <see cref="eDataTypes">data type</see> associated with the message.</param>
+    ''' -----------------------------------------------------------------------
+    Sub New(ByVal state As eProgressState, ByVal sMaxValue As Single, ByVal sProgress As Single, ByVal strMessage As String, _
+            Optional ByVal msgType As eMessageType = eMessageType.Progress, _
+            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+
+        Me.m_state = state
+        Me.m_sMaxProgress = sMaxValue
         Me.m_sProgress = sProgress
-        Me.Message = msgStr
+        Me.Message = strMessage
         Me.Type = msgType
-        Me.Source = eCoreComponentType.External
         Me.DataType = msgDataType
         Me.Importance = eMessageImportance.Progress
-    End Sub
-
-
-    Sub New(ByVal State As eProgressState, ByVal MaxValue As Single, ByVal sProgress As Single, ByVal msgStr As String, ByVal msgType As eMessageType, _
-            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
-        Me.New(sProgress, msgStr, msgType, msgDataType)
-
-        Me.m_state = State
-        Me.m_max = MaxValue
+        Me.Source = eCoreComponentType.External
 
     End Sub
 
-
-    Public Property Progress() As Single
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the progress [0, <see cref="MaxProgress"/>] of the operation that this message
+    ''' reports on.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Progress() As Single
         Get
             Return Me.m_sProgress
         End Get
-        Set(ByVal value As Single)
-            m_sProgress = value
-        End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' State of the process
+    ''' Get the <see cref="eProgressState">state</see> of the operation that this
+    ''' message reports on.
     ''' </summary>
-    ''' <remarks>The State can be Start, Running or Finished</remarks>
-    Public Property ProgressState() As eProgressState
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ProgressState() As eProgressState
         Get
             Return Me.m_state
         End Get
-        Set(ByVal value As eProgressState)
-            m_state = value
-        End Set
     End Property
 
-    Public Property Max() As Single
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the maximum progress level of the operation that this
+    ''' message reports on.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property MaxProgress() As Single
         Get
-            Return Me.m_max
+            Return Me.m_sMaxProgress
         End Get
-        Set(ByVal value As Single)
-            m_max = value
-        End Set
     End Property
 
 

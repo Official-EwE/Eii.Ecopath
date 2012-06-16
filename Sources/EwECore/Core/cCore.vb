@@ -2247,7 +2247,7 @@ Public Class cCore
             End If
 
             ' Send progress message
-            msg = New cProgressMessage(0, My.Resources.CoreMessages.STATUS_SAVING_CHANGES, eMessageType.DataExport)
+            msg = New cProgressMessage(eProgressState.Start, 0, 0, My.Resources.CoreMessages.STATUS_SAVING_CHANGES, eMessageType.DataExport)
             Me.Messages.SendMessage(msg, True)
 
             ' Hmm...
@@ -2318,7 +2318,7 @@ Public Class cCore
 
             End Select
 
-            msg = New cProgressMessage(0, "", eMessageType.DataExport)
+            msg = New cProgressMessage(eProgressState.Finished, 0, 0, "", eMessageType.DataExport)
             Me.Messages.SendMessage(msg, True)
         End If
 
