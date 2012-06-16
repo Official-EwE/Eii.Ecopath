@@ -18,14 +18,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
+Imports System.Drawing.Drawing2D
+Imports System.Text
 Imports EwECore
+Imports EwECore.SpatialData
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports System.Drawing.Drawing2D
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports EwECore.Ecospace
-Imports System.Text
 
 #End Region ' Imports
 

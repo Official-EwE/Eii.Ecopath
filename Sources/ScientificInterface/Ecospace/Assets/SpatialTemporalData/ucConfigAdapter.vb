@@ -369,8 +369,31 @@ Namespace Ecospace.Controls
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
             Try
-                Me.m_rbRelative.Checked = True
-                Me.CalculateScaleFromEcopathTimePeriod()
+
+                Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+                Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
+                Dim msg As cMessage = Nothing
+
+                Select Case ssda.CalculateScaleFromEcopathTimePeriod(1)
+                    Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+                         cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear), _
+                                           eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                    Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear), _
+                                           eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+
+                End Select
+
+                ' Got compatibility error message?
+                If (msg IsNot Nothing) Then
+                    ' #Yes: abort
+                    Me.m_uic.Core.Messages.SendMessage(msg)
+                    Return
+                End If
+
+                Me.PopulateAdapterControls()
+
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
@@ -605,113 +628,113 @@ Namespace Ecospace.Controls
 
 #Region " Scalar data adapter "
 
-        Private Sub CalculateScaleFromEcopathTimePeriod()
+        'Private Sub CalculateScaleFromEcopathTimePeriod()
 
-            Dim iIndex As Integer = Me.m_layer.Index
+        '    Dim iIndex As Integer = Me.m_layer.Index
 
-            ' Early bail-out
-            If Not Me.m_adt.IsConnected(iIndex) Then Return
+        '    ' Early bail-out
+        '    If Not Me.m_adt.IsConnected(iIndex) Then Return
 
-            Dim ds As ISpatialDataSet = Me.m_adt.Dataset(Me.m_layer.Index)
-            Dim cv As ISpatialDataConverter = Me.m_adt.Converter(Me.m_layer.Index)
-            Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim ldtData As New List(Of DateTime)
-            Dim iTSMin As Integer = 1
-            Dim iTSMax As Integer = 1
-            Dim rs As ISpatialRaster = Nothing
+        '    Dim ds As ISpatialDataSet = Me.m_adt.Dataset(Me.m_layer.Index)
+        '    Dim cv As ISpatialDataConverter = Me.m_adt.Converter(Me.m_layer.Index)
+        '    Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
+        '    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+        '    Dim ldtData As New List(Of DateTime)
+        '    Dim iTSMin As Integer = 1
+        '    Dim iTSMax As Integer = 1
+        '    Dim rs As ISpatialRaster = Nothing
 
-            ' Determine time steps with overlap
-            For i As Integer = 1 To CInt(Me.m_uic.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
-                Dim dt As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(i)
-                If ds.HasDataAtT(dt) Then
-                    iTSMin = Math.Min(iTSMin, i)
-                    iTSMax = Math.Max(iTSMax, i)
-                    ldtData.Add(dt)
-                End If
-            Next
+        '    ' Determine time steps with overlap
+        '    For i As Integer = 1 To CInt(Me.m_uic.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+        '        Dim dt As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(i)
+        '        If ds.HasDataAtT(dt) Then
+        '            iTSMin = Math.Min(iTSMin, i)
+        '            iTSMax = Math.Max(iTSMax, i)
+        '            ldtData.Add(dt)
+        '        End If
+        '    Next
 
-            ' Determine compatibility
-            Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds, iTSMin, iTSMax - iTSMin)
-            Dim msg As cMessage = Nothing
+        '    ' Determine compatibility
+        '    Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds, iTSMin, iTSMax - iTSMin)
+        '    Dim msg As cMessage = Nothing
 
-            Select Case comp.Compatibility
-                Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear), _
-                                       eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
-                Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                    msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear), _
-                                       eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+        '    Select Case comp.Compatibility
+        '        Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
+        '             cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
+        '            msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear), _
+        '                               eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+        '        Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
+        '            msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear), _
+        '                               eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
 
-            End Select
+        '    End Select
 
-            ' Got compatibility error message?
-            If (msg IsNot Nothing) Then
-                ' #Yes: abort
-                Me.m_uic.Core.Messages.SendMessage(msg)
-                Return
-            End If
+        '    ' Got compatibility error message?
+        '    If (msg IsNot Nothing) Then
+        '        ' #Yes: abort
+        '        Me.m_uic.Core.Messages.SendMessage(msg)
+        '        Return
+        '    End If
 
-            Dim rst As ISpatialRaster = Nothing
-            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim dCellSize As Double = bm.CellSize
-            Dim dMean As Double = 0.0
-            Dim MapTotValue As Double = 0.0
-            Dim lNumValCells As Long = 0
-            Dim NumWaterCells As Long = 0
-            Dim iInRow As Integer = bm.InRow
-            Dim iInCol As Integer = bm.InCol
+        '    Dim rst As ISpatialRaster = Nothing
+        '    Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+        '    Dim dCellSize As Double = bm.CellSize
+        '    Dim dMean As Double = 0.0
+        '    Dim MapTotValue As Double = 0.0
+        '    Dim lNumValCells As Long = 0
+        '    Dim NumWaterCells As Long = 0
+        '    Dim iInRow As Integer = bm.InRow
+        '    Dim iInCol As Integer = bm.InCol
 
-            ' Stop any indexing
-            Me.m_manSets.IndexDataset(Nothing)
+        '    ' Stop any indexing
+        '    Me.m_manSets.IndexDataset(Nothing)
 
-            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
-            Try
+        '    cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+        '    Try
 
-                For i As Integer = 0 To ldtData.Count - 1
-                    Dim dt As DateTime = ldtData(i)
+        '        For i As Integer = 0 To ldtData.Count - 1
+        '            Dim dt As DateTime = ldtData(i)
 
-                    cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, _
-                                                              String.Format(My.Resources.STATUS_SPATIALTEMPORAL_CALCULATING, m_layer.Name, ds.DisplayName), _
-                                                              CSng(i / ldtData.Count))
+        '            cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, _
+        '                                                      String.Format(My.Resources.STATUS_SPATIALTEMPORAL_CALCULATING, m_layer.Name, ds.DisplayName), _
+        '                                                      CSng(i / ldtData.Count))
 
-                    ' Do the spatial magics
-                    If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-                        rst = Me.m_adt.Dataset(iIndex).GetRaster(Me.m_adt.Converter(iIndex), Me.m_layer.Name())
+        '            ' Do the spatial magics
+        '            If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+        '                rst = Me.m_adt.Dataset(iIndex).GetRaster(Me.m_adt.Converter(iIndex), Me.m_layer.Name())
 
-                        For iRow As Integer = 1 To iInRow
-                            For iCol As Integer = 1 To iInCol
-                                If depth.IsWaterCell(iRow, iCol) Then
-                                    Dim dval As Double = rst.Cell(iRow, iCol)
-                                    If (dval <> cCore.NULL_VALUE And dval <> rst.NoData) Then
-                                        NumWaterCells += 1
-                                        MapTotValue += dval
-                                    End If
-                                End If
-                            Next
-                        Next
+        '                For iRow As Integer = 1 To iInRow
+        '                    For iCol As Integer = 1 To iInCol
+        '                        If depth.IsWaterCell(iRow, iCol) Then
+        '                            Dim dval As Double = rst.Cell(iRow, iCol)
+        '                            If (dval <> cCore.NULL_VALUE And dval <> rst.NoData) Then
+        '                                NumWaterCells += 1
+        '                                MapTotValue += dval
+        '                            End If
+        '                        End If
+        '                    Next
+        '                Next
 
-                        ds.Unlock()
-                    End If
+        '                ds.Unlock()
+        '            End If
 
-                Next
-            Catch ex As Exception
+        '        Next
+        '    Catch ex As Exception
 
-            End Try
-            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+        '    End Try
+        '    cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
-            ' Resume indexing
-            Me.m_manSets.IndexDataset(Me.SelectedDataset)
+        '    ' Resume indexing
+        '    Me.m_manSets.IndexDataset(Me.SelectedDataset)
 
-            If MapTotValue = 0 Then MapTotValue = 1
+        '    If MapTotValue = 0 Then MapTotValue = 1
 
-            ' Update format provider
-            Me.m_tbxScale.Text = (NumWaterCells / MapTotValue).ToString
-            ' Notify the world
-            Me.LayerChanged()
+        '    ' Update format provider
+        '    Me.m_tbxScale.Text = (NumWaterCells / MapTotValue).ToString
+        '    ' Notify the world
+        '    Me.LayerChanged()
 
-        End Sub
+        'End Sub
 
         Private Sub PopulateAdapterControls()
             If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then

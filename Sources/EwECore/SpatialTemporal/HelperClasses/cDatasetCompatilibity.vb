@@ -25,7 +25,7 @@ Imports System.Drawing
 
 #End Region ' Imports
 
-Namespace Ecospace
+Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
