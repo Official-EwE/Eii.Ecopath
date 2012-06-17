@@ -8187,15 +8187,14 @@ Public Class cCore
     Public Function EcospaceTimestepToAbsoluteTime(ByVal iTime As Integer) As DateTime
 
         ' Translate ecospace time step to year and month
-        ' *** Note that time steps that are fractions of months are rounded up to the first of the month! ***
         Dim sTimeStepYearFraction As Single = (iTime - 1) * Me.m_EcoSpaceData.TimeStep
         Dim iTimeStepYear As Integer = CInt(Math.Floor(sTimeStepYearFraction))
-        Dim iTimeStepMonth As Integer = CInt(((sTimeStepYearFraction - iTimeStepYear) * 12))
+        Dim iTimeStepMonth As Integer = CInt(((sTimeStepYearFraction - iTimeStepYear) * cCore.N_MONTHS))
 
         ' Fix potential rounding oddness
-        While (iTimeStepMonth >= 12)
+        While (iTimeStepMonth >= cCore.N_MONTHS)
             iTimeStepYear += 1
-            iTimeStepMonth -= 12
+            iTimeStepMonth -= cCore.N_MONTHS
         End While
 
         ' Return absolute date
@@ -8217,7 +8216,7 @@ Public Class cCore
 
         Dim dtStart As New Date(Math.Max(Me.EcosimFirstYear, 1), 1, 1)
         Dim sTime As Single = (dt.Year - dtStart.Year) + CSng((dt.Month - dtStart.Month) / cCore.N_MONTHS)
-        Return CInt(sTime / Me.m_EcoSpaceData.TimeStep)
+        Return CInt(sTime / Me.m_EcoSpaceData.TimeStep) + 1 ' Timesteps are one-based!
 
     End Function
 

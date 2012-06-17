@@ -902,7 +902,6 @@ Namespace Database
                         ' JS 070328: HatchCode is now scenario dependent, handled in table EcosimStanzaShapes.
                         ' drow("HatchCode") = Me.FixValue(readerStanzaNames, "HatchCode")
 
-                        ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                         writerStanza.AddRow(drow)
                         writerStanza.Commit()
 
@@ -943,6 +942,29 @@ Namespace Database
                     'drow("Prepo") = Me.FixValue(reader,"Prepo")
                     'drow("Spare") = Me.FixValue(reader,"spare")
                     'drow("FixAge") = Me.FixValue(reader,"FixAge")
+
+                    ' ToDo_JS: add to stanza table row, not life stage table
+
+                    If (CSng(Me.FixValue(readerStanza, "Biomass", 0)) > 0) Then
+                        Try
+                            Dim drowLead As DataRow = writerStanza.GetDataTable.Select("StanzaID=" & Me.HashKey(eDataTypes.Stanza, strStanzaName))(0)
+                            drowLead.BeginEdit()
+                            drowLead("LeadingLifeStage") = iSequence
+                            drowLead.EndEdit()
+                        Catch ex As Exception
+
+                        End Try
+                    End If
+                    If (CSng(Me.FixValue(readerStanza, "QB", 0)) > 0) Then
+                        Try
+                            Dim drowLead As DataRow = writerStanza.GetDataTable.Select("StanzaID=" & Me.HashKey(eDataTypes.Stanza, strStanzaName))(0)
+                            drowLead.BeginEdit()
+                            drowLead("LeadingCB") = iSequence
+                            drowLead.EndEdit()
+                        Catch ex As Exception
+
+                        End Try
+                    End If
 
                     writerLifeStages.AddRow(drow)
 

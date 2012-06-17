@@ -369,27 +369,36 @@ Namespace Ecospace.Controls
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
             Try
+                ' Stop any indexing
+                Me.m_manSets.IndexDataset(Nothing)
+                Me.UpdateControls()
 
                 Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
-                Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
+                Dim iStartTimeStep As Integer = Math.Max(1, Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.SelectedDataset.TimeStart))
+                Dim dtStartDate As DateTime = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStartTimeStep)
+                Dim dScale As Double = 1.0
                 Dim msg As cMessage = Nothing
 
-                Select Case ssda.CalculateScaleFromEcopathTimePeriod(1)
+                ' Perform calculation
+                Select Case ssda.CalculateScaleFromEcopathTimePeriod(iStartTimeStep, dScale)
+
                     Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
                          cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear), _
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, dtStartDate.ToShortDateString()), _
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear), _
+                        msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, dtStartDate.ToShortDateString()), _
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                    Case Else
+                        ' Only when ok
+                        ssda.DataScale(Me.m_layer.Index) = CSng(dScale)
+                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Relative
 
                 End Select
 
                 ' Got compatibility error message?
                 If (msg IsNot Nothing) Then
-                    ' #Yes: abort
                     Me.m_uic.Core.Messages.SendMessage(msg)
-                    Return
                 End If
 
                 Me.PopulateAdapterControls()

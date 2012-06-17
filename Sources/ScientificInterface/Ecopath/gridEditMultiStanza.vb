@@ -38,10 +38,11 @@ Public Class gridEditMultiStanza
         Index = 0
         Name
         StartAge
-        Leading
+        LeadingB
         Biomass
         PBInput
-        QBInput
+        LeadingCB
+        CBInput
     End Enum
 
 #End Region
@@ -83,10 +84,11 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
         Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
         Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
-        Me(0, eColumnTypes.Leading) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
+        Me(0, eColumnTypes.LeadingB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
         Me(0, eColumnTypes.Biomass) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
         Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
-        Me(0, eColumnTypes.QBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
+        Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
 
         Me.Selection.SelectionMode = GridSelectionMode.Row
         Me.FixedColumnWidths = False
@@ -125,9 +127,9 @@ Public Class gridEditMultiStanza
             Me(iRow, eColumnTypes.StartAge) = ewec
             Me(iRow, eColumnTypes.StartAge).Behaviors.Add(Me.EwEEditHandler)
 
-            ' Leading
-            Me(iRow, eColumnTypes.Leading) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingB = iStanza)
-            Me(iRow, eColumnTypes.Leading).Behaviors.Add(Me.EwEEditHandler)
+            ' LeadingB
+            Me(iRow, eColumnTypes.LeadingB) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingB = iStanza)
+            Me(iRow, eColumnTypes.LeadingB).Behaviors.Add(Me.EwEEditHandler)
 
             'Biomass
             ewec = New EwECell(0, GetType(Single))
@@ -143,15 +145,20 @@ Public Class gridEditMultiStanza
             Me(iRow, eColumnTypes.PBInput) = ewec
             Me(iRow, eColumnTypes.PBInput).Behaviors.Add(Me.EwEEditHandler)
 
+            ' LeadingCB
+            Me(iRow, eColumnTypes.LeadingCB) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingCB = iStanza)
+            Me(iRow, eColumnTypes.LeadingCB).Behaviors.Add(Me.EwEEditHandler)
+
             'Consumption/Biomass
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.CB(iStanza)
-            Me(iRow, eColumnTypes.QBInput) = ewec
-            Me(iRow, eColumnTypes.QBInput).Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.CBInput) = ewec
+            Me(iRow, eColumnTypes.CBInput).Behaviors.Add(Me.EwEEditHandler)
         Next
 
-        Me.SetLeadingGroup(Me.m_stanzagroup.LeadingB)
+        Me.SetLeadingGroup(Me.m_stanzagroup.LeadingB, eColumnTypes.LeadingB)
+        Me.SetLeadingGroup(Me.m_stanzagroup.LeadingCB, eColumnTypes.LeadingCB)
 
     End Sub
 
@@ -159,7 +166,7 @@ Public Class gridEditMultiStanza
 
         Dim iLeading As Integer = Me.m_stanzagroup.LeadingB
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
-            If CBool(Me(iStanza, eColumnTypes.Leading).Value) Then
+            If CBool(Me(iStanza, eColumnTypes.LeadingB).Value) Then
                 iLeading = iStanza
             End If
         Next
@@ -175,7 +182,7 @@ Public Class gridEditMultiStanza
             'Total Mortality
             Me.m_stanzagroup.Mortality(iStanza) = CSng(Me(iStanza, eColumnTypes.PBInput).Value)
             'Consumption/Biomass
-            Me.m_stanzagroup.CB(iStanza) = CSng(Me(iStanza, eColumnTypes.QBInput).Value)
+            Me.m_stanzagroup.CB(iStanza) = CSng(Me(iStanza, eColumnTypes.CBInput).Value)
         Next
 
         If bApplyToCore Then
@@ -193,7 +200,7 @@ Public Class gridEditMultiStanza
 
     Private m_bInUpdate As Boolean = False
 
-    Private Sub SetLeadingGroup(ByVal iRow As Integer)
+    Private Sub SetLeadingGroup(ByVal iRow As Integer, col As eColumnTypes)
 
         Me.m_bInUpdate = True
 
@@ -204,9 +211,8 @@ Public Class gridEditMultiStanza
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
             bLeading = (iRow = iStanza)
             If bLeading Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable
-            Me(iStanza, eColumnTypes.Leading).Value = (iRow = iStanza)
-            DirectCast(Me(iStanza, eColumnTypes.Biomass), EwECell).Style = style
-            DirectCast(Me(iStanza, eColumnTypes.QBInput), EwECell).Style = style
+            Me(iStanza, col).Value = (iRow = iStanza)
+            DirectCast(Me(iStanza, col + 1), EwECell).Style = style
         Next
 
         Me.InvalidateCells()
@@ -240,8 +246,10 @@ Public Class gridEditMultiStanza
         If Me.m_bInUpdate Then Return True
 
         Select Case DirectCast(p.Column, eColumnTypes)
-            Case eColumnTypes.Leading
-                Me.SetLeadingGroup(p.Row)
+            Case eColumnTypes.LeadingB
+                Me.SetLeadingGroup(p.Row, eColumnTypes.LeadingB)
+            Case eColumnTypes.LeadingCB
+                Me.SetLeadingGroup(p.Row, eColumnTypes.LeadingCB)
         End Select
         Return MyBase.OnCellValueChanged(p, cell)
 

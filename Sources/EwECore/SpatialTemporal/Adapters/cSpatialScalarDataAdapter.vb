@@ -102,7 +102,19 @@ Namespace SpatialData
             End Set
         End Property
 
-        Public Function CalculateScaleFromEcopathTimePeriod(Optional iFirstTimeStep As Integer = 1) As cDatasetCompatilibity.eCompatibilityTypes
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Calculate the average of a dataset for a year, starting at a given
+        ''' Ecospace time step.
+        ''' </summary>
+        ''' <param name="iFirstTimeStep">The time step that the calculation
+        ''' is requested for.</param>
+        ''' <param name="dScale">The calculated scale.</param>
+        ''' <returns>A <see cref="cDatasetCompatilibity.Compatibility"/> result
+        ''' indicating the outcome of the calculation.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function CalculateScaleFromEcopathTimePeriod(ByVal iFirstTimeStep As Integer, _
+                                                            ByRef dScale As Double) As cDatasetCompatilibity.eCompatibilityTypes
 
             Dim result As cDatasetCompatilibity.eCompatibilityTypes = cDatasetCompatilibity.eCompatibilityTypes.Errors
 
@@ -112,67 +124,52 @@ Namespace SpatialData
             Dim ds As ISpatialDataSet = Me.Dataset(Me.Index)
             Dim cv As ISpatialDataConverter = Me.Converter(Me.Index)
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Dim iInRow As Integer = bm.InRow
+            Dim iInCol As Integer = bm.InCol
+            Dim dCellSize As Double = bm.CellSize
             Dim layer As cEcospaceLayer = bm.Layer(Me.VarName, Me.Index)
-            Dim strName As String = layer.Name
+            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+            Dim strLayerName As String = layer.Name
             Dim ldtData As New List(Of DateTime)
             Dim iTSMin As Integer = Integer.MaxValue
             Dim iTSMax As Integer = 1
             Dim rs As ISpatialRaster = Nothing
+            Dim dMapTotValue As Double = 0.0
+            Dim iNumWaterCells As Long = 0
+            Dim msg As cProgressMessage = Nothing
 
             ' Determine time steps with overlap
-            For i As Integer = iFirstTimeStep To CInt(Me.m_core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
+            'Console.Write("Calculating map average for ")
+            For i As Integer = iFirstTimeStep To iFirstTimeStep + CInt(Me.m_core.EcospaceModelParameters.NumberOfTimeStepsPerYear) - 1
                 Dim dt As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(i)
                 If ds.HasDataAtT(dt) Then
                     iTSMin = Math.Min(iTSMin, i)
                     iTSMax = Math.Max(iTSMax, i)
                     ldtData.Add(dt)
+                    'Console.Write(dt.ToShortDateString & ", ")
                 End If
             Next
+            'Console.WriteLine()
 
-            ' Determine compatibility
-            Dim comp As New cDatasetCompatilibity(Me.m_core, ds, iTSMin, iTSMax - iTSMin)
-            result = comp.Compatibility
-
-            Select Case result
-                Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoTemporal, _
-                     cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-                    Return result
-            End Select
-
-            Dim rst As ISpatialRaster = Nothing
-            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim dCellSize As Double = bm.CellSize
-            Dim dMean As Double = 0.0
-            Dim dMapTotValue As Double = 0.0
-            Dim lNumValCells As Long = 0
-            Dim iNumWaterCells As Long = 0
-            Dim iInRow As Integer = bm.InRow
-            Dim iInCol As Integer = bm.InCol
-            Dim msg As cProgressMessage = Nothing
-
-            ' Stop any indexing
-            Me.m_core.SpatialDataConnectionManager.DatasetManager.IndexDataset(Nothing)
-
+            Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Start, 1.0!, 0.0!, "", eMessageType.Progress))
             Try
-                Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Start, 1.0!, 0.0!, "", eMessageType.Progress))
                 For i As Integer = 0 To ldtData.Count - 1
 
                     Dim dt As DateTime = ldtData(i)
                     msg = New cProgressMessage(eProgressState.Running, 1.0!, CSng((i + 1) / ldtData.Count), _
-                                               String.Format(My.Resources.CoreMessages.STATUS_SPATIALTERMPORAL_CALCULATING, strName, ds.DisplayName, cv.DisplayName), _
+                                               String.Format(My.Resources.CoreMessages.STATUS_SPATIALTERMPORAL_CALCULATING, strLayerName, ds.DisplayName, cv.DisplayName), _
                                                eMessageType.Progress, eDataTypes.EcospaceSpatialDataConnection)
                     Me.m_core.Messages.SendMessage(msg)
 
                     ' Do the spatial magics
                     If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-                        rst = ds.GetRaster(cv, strName)
+                        rs = ds.GetRaster(cv, strLayerName)
 
                         For iRow As Integer = 1 To iInRow
                             For iCol As Integer = 1 To iInCol
                                 If depth.IsWaterCell(iRow, iCol) Then
-                                    Dim dval As Double = rst.Cell(iRow, iCol)
-                                    If (dval <> cCore.NULL_VALUE And dval <> rst.NoData) Then
+                                    Dim dval As Double = rs.Cell(iRow, iCol)
+                                    If (dval <> cCore.NULL_VALUE And dval <> rs.NoData) Then
                                         iNumWaterCells += 1
                                         dMapTotValue += dval
                                     End If
@@ -190,9 +187,11 @@ Namespace SpatialData
             Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Finished, 1.0!, 1.0!, "", eMessageType.Progress))
 
             If dMapTotValue = 0 Then dMapTotValue = 1
-            Me.DataScale(Me.Index) = CSng(iNumWaterCells / dMapTotValue)
+            dScale = (iNumWaterCells / dMapTotValue)
 
-            Return result
+            ' Report for the calculation period
+            Dim comp As New cDatasetCompatilibity(Me.m_core, ds, iTSMin, iTSMax - iTSMin)
+            Return comp.Compatibility
 
         End Function
 

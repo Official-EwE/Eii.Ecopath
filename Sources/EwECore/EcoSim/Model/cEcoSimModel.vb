@@ -3420,11 +3420,13 @@ Namespace Ecosim
 
                     ' Make sure default base group is specified
                     If (m_stanza.BaseStanza(isp) <= 0) Then
-                        ' JS 070428: set leading group for B, QB to the oldest group
                         m_stanza.BaseStanza(isp) = m_stanza.Nstanza(isp) 'last lifestage for this stanza group
                     End If
+                    ' Make sure default base group is specified
+                    If (m_stanza.BaseStanzaCB(isp) <= 0) Then
+                        m_stanza.BaseStanzaCB(isp) = m_stanza.Nstanza(isp) 'last lifestage for this stanza group
+                    End If
 
-                    m_stanza.BaseStanzaCB(isp) = m_stanza.BaseStanza(isp) 'leading (oldest) b and CB have to be the same
                     ieco = m_stanza.EcopathCode(isp, m_stanza.BaseStanza(isp))
 
                     CalculateStanzaParameters(isp, m_stanza.Nstanza(isp), m_stanza.BaseStanza(isp), first, second, Bio, _
