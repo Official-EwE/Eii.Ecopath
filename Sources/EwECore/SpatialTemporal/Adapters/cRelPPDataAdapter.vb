@@ -20,7 +20,7 @@ Namespace SpatialData
 
 #Region " Private vars "
 
-        Private m_sPreservedScale As Single = cCore.NULL_VALUE
+        Private m_sPreservedScale As Double = cCore.NULL_VALUE
         Private m_spaceData As cEcospaceDataStructures
 
 #End Region ' Private vars

@@ -226,7 +226,7 @@ Namespace SpatialData
         Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
-                                             ByVal sValueAtT As Single) As Boolean
+                                             ByVal sValueAtT As Double) As Boolean
 
             If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
                 sValueAtT *= Me.DataScale(layer.Index)

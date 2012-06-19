@@ -310,7 +310,7 @@ Namespace SpatialData
 
             Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
             Dim msg As cMessage = Nothing
-            Dim sValue As Single = 0
+            Dim sValue As Double = 0
             Dim bSuccess As Boolean = True ' Think positive. Really
             Dim iRow As Integer
             Dim iCol As Integer
@@ -325,7 +325,7 @@ Namespace SpatialData
                         ' Is a water cell or is this layer affecting depth?
                         If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                             ' #Yes: get value
-                            sValue = CSng(dataExternal.Cell(iRow, iCol))
+                            sValue = dataExternal.Cell(iRow, iCol)
                             ' Is a valid value?
                             If (sValue <> cCore.NULL_VALUE) Then
                                 ' #Yes: set value
@@ -365,7 +365,7 @@ Namespace SpatialData
         Protected Overridable Function SetCell(ByVal layer As cEcospaceLayer, _
                                                ByVal iRow As Integer, _
                                                ByVal iCol As Integer, _
-                                               ByVal sCellValueAtT As Single) As Boolean
+                                               ByVal sCellValueAtT As Double) As Boolean
             Try
                 layer.Cell(iRow, iCol) = sCellValueAtT
             Catch ex As Exception
