@@ -2503,15 +2503,18 @@ Public Class cEcoSpace
     ''' Returns a scaling factor to ensure that the total primary productivity 
     ''' is the same in Ecospace and Ecopath.
     ''' </summary>
-    ''' <returns>The average PP value for all cells in the RelPP map.</returns>
+    ''' <returns>
+    ''' The average PP value for all cells in the RelPP map.
+    ''' Calculated from the base value of RelPP(row,col).
+    ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function ScaleRelativePrimaryProductivityToEcopathLevel() As Single
-        Dim totPP As Single
+    Public Function ScaleRelativePrimaryProductivityToEcopathLevel() As Double
+        Dim totPP As Double
         Dim i As Integer
         Dim j As Integer
 
-        'External data sources can change the value of RelPP
-        'Make a copy that can be used to restore RelPP to its original value
+        'Restore RelPP to its base value
+        'External data sources may have changed the value of RelPP during a run
         Array.Copy(Me.m_Data.relPP0, Me.m_Data.RelPP, Me.m_Data.RelPP.Length)
 
         'This function is used to scale the relative primary productivity _

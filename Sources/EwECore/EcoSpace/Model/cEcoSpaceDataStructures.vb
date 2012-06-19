@@ -555,7 +555,7 @@ Public Class cEcospaceDataStructures
     ''' Init (InitSpatialEquilibrium), run (FindSpatialEquilibrium) ......
     ''' 10-May-2012 Moved to cEcoSpaceDataStructures so PPScale can be set by the External PP Spatial Temporal data 
     ''' </remarks>
-    Public PPScale As Single
+    Public PPScale As Double
 
 
 #End Region

@@ -82,7 +82,7 @@ Public Class cSpaceSolver
     'Public Tn As Integer
     Public nvar2 As Integer
     Public itt As Integer
-    Public PPScale As Single
+    Public PPScale As Double
     Public TimeStep2 As Single
     Public MinChange As Single
 
