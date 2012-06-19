@@ -30,8 +30,6 @@ Imports EwEPlugin
 
 Namespace SpatialData
 
-    ' ToDo_JS: save incrementally to make sure that configuration info that did not get resolved into classes is not lost on save
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Manager class for loading and saving globally shared spatial data sets.
@@ -46,7 +44,8 @@ Namespace SpatialData
 
         Private Shared cCONFIG_FILE As String = "ewe_datasets.xml"
 
-        Private m_lDatasets As List(Of ISpatialDataSet) = Nothing
+        Private m_lAvailable As List(Of ISpatialDataSet) = Nothing
+        Private m_lDeleted As List(Of Guid) = Nothing
         Private m_fswSpy As FileSystemWatcher = Nothing
         Private m_core As cCore = Nothing
         Private m_bReadOnly As Boolean = False
@@ -54,11 +53,12 @@ Namespace SpatialData
 #End Region ' Private vars
 
 #Region " Construction "
+        Dim m_lxnPreserved As Object
 
         Public Sub New(core As cCore)
 
-            ' Create list of datasets
-            Me.m_lDatasets = New List(Of ISpatialDataSet)
+            Me.m_lAvailable = New List(Of ISpatialDataSet)
+            Me.m_lDeleted = New List(Of Guid)
             Me.m_core = core
 
             ' Create folder watcher
@@ -78,11 +78,12 @@ Namespace SpatialData
             Me.IndexDataset(Nothing)
 
             ' Cleanup
-            If (Me.m_lDatasets IsNot Nothing) Then
+            If (Me.m_fswSpy IsNot Nothing) Then
                 RemoveHandler Me.m_fswSpy.Changed, AddressOf OnConfigFileChanged
                 Me.m_fswSpy = Nothing
-                Me.m_lDatasets = Nothing
             End If
+            Me.m_lAvailable = Nothing
+            Me.m_lDeleted = Nothing
             GC.SuppressFinalize(Me)
 
         End Sub
@@ -120,6 +121,7 @@ Namespace SpatialData
 
             For Each xnRoot In doc.GetElementsByTagName("Datasets")
                 For Each xn As XmlNode In xnRoot.ChildNodes
+                    ds = Nothing
                     If (xn.Name = "Dataset") Then
                         xa = xn.Attributes("Type")
                         If (xa IsNot Nothing) Then
@@ -147,7 +149,6 @@ Namespace SpatialData
                                 End If
                             End If
                             If bAdd Then Me.Add(ds)
-
                         End If
                     End If
                 Next ' xn
@@ -167,23 +168,53 @@ Namespace SpatialData
         Public Function Save() As Boolean
 
             Dim doc As New XmlDocument()
-            Dim lNodes As New List(Of XmlNode)
             Dim xnRoot As XmlNode = Nothing
             Dim xnDataset As XmlNode = Nothing
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
+            Dim bChanged As Boolean = False
             Dim bSuccess As Boolean = True
 
-            ' ToDo: merge datasets with existing XML file by GUID
+            Try
+                doc.Load(cSpatialDataSetManager.ConfigFileName())
+                xnRoot = doc.GetElementsByTagName("Datasets")(0)
+            Catch ex As Exception
+                bSuccess = False
+            End Try
 
-            ' Declaration
-            doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))
+            If (bSuccess = False) Or (xnRoot Is Nothing) Then
+                ' Wipe and recreate
+                doc.RemoveAll()
+                doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))
+                xnRoot = doc.CreateElement("Datasets")
+                doc.AppendChild(xnRoot)
+            End If
 
-            xnRoot = doc.CreateElement("Datasets")
-            doc.AppendChild(xnRoot)
+            ' Remove all deleted or current datasets
+            Dim lDelete As New List(Of XmlNode)
+            For Each xnDataset In xnRoot.ChildNodes
+                Dim guid As Guid
+                Dim xa As XmlAttribute = xnDataset.Attributes("GUID")
+                Dim bDelete As Boolean = False
+                If (xa IsNot Nothing) Then
+                    Try
+                        guid = guid.Parse(xa.InnerText)
+                    Catch ex As Exception
+                        guid = guid.Empty
+                    End Try
+                End If
+                For Each gTest As Guid In Me.m_lDeleted : bDelete = bDelete Or gTest.Equals(gTest) : Next
+                For Each ds As ISpatialDataSet In Me.m_lAvailable : bDelete = bDelete Or guid.Equals(ds.GUID) : Next
+                If bDelete Then lDelete.Add(xnDataset)
+            Next
+            For Each xnDataset In lDelete
+                xnRoot.RemoveChild(xnDataset)
+                bChanged = True
+            Next
+            lDelete.Clear()
 
             ' Gather dataset config nodes, but do not add to the doc until all done
-            For Each ds As ISpatialDataSet In Me.m_lDatasets
+            For Each ds As ISpatialDataSet In Me.m_lAvailable
 
                 xnDataset = doc.CreateElement("Dataset")
 
@@ -205,19 +236,17 @@ Namespace SpatialData
                     xnDataset.AppendChild(xnDetails)
                 End If
 
-                lNodes.Add(xnDataset)
-
-            Next
-
-            ' Add dataset nodes
-            For Each xnDataset In lNodes
+                ' Add dataset nodes
                 xnRoot.AppendChild(xnDataset)
+                bChanged = True
             Next
 
             ' Save
             Me.m_fswSpy.EnableRaisingEvents = False
             Try
-                doc.Save(ConfigFileName)
+                If bChanged Then
+                    doc.Save(ConfigFileName)
+                End If
             Catch ex As Exception
                 bSuccess = False
             End Try
@@ -358,7 +387,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub Add(ByVal item As ISpatialDataSet) _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Add
-            Me.m_lDatasets.Add(item)
+            Me.m_lAvailable.Add(item)
             ' Assign ID if necessary
             If (item.GUID = Nothing) Then
                 item.GUID = Guid.NewGuid()
@@ -368,10 +397,11 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ICollection(Of ISpatialDataSet).Clear"/>
         ''' -------------------------------------------------------------------
-        Public Sub Clear() _
+        Private Sub Clear() _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Clear
             If (Me.IsIndexing(Me.m_dsIndex)) Then Me.IndexDataset(Nothing)
-            Me.m_lDatasets.Clear()
+            Me.m_lAvailable.Clear()
+            Me.m_lDeleted.Clear()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -379,7 +409,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Contains(ByVal item As ISpatialDataSet) As Boolean _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Contains
-            Return Me.m_lDatasets.Contains(item)
+            Return Me.m_lAvailable.Contains(item)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -387,7 +417,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub CopyTo(ByVal array() As ISpatialDataSet, ByVal arrayIndex As Integer) _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).CopyTo
-            Me.m_lDatasets.CopyTo(array, arrayIndex)
+            Me.m_lAvailable.CopyTo(array, arrayIndex)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -396,7 +426,7 @@ Namespace SpatialData
         Public ReadOnly Property Count As Integer _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Count
             Get
-                Return Me.m_lDatasets.Count
+                Return Me.m_lAvailable.Count
             End Get
         End Property
 
@@ -415,8 +445,10 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function Remove(ByVal item As ISpatialDataSet) As Boolean _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Remove
+            If (item Is Nothing) Then Return False
             If (Me.IsIndexing(item)) Then Me.IndexDataset(Nothing)
-            Return Me.m_lDatasets.Remove(item)
+            Me.m_lDeleted.Add(item.GUID)
+            Return Me.m_lAvailable.Remove(item)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -424,7 +456,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub RemoveAt(ByVal index As Integer) _
             Implements IList(Of ISpatialDataSet).RemoveAt
-            Me.Remove(Me.m_lDatasets(index))
+            Me.Remove(Me.m_lAvailable(index))
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -432,7 +464,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function GetEnumerator() As System.Collections.Generic.IEnumerator(Of ISpatialDataSet) _
             Implements System.Collections.Generic.IEnumerable(Of ISpatialDataSet).GetEnumerator
-            Return Me.m_lDatasets.GetEnumerator
+            Return Me.m_lAvailable.GetEnumerator
         End Function
 
         Private Function InaccessibleGetEnumerator() As System.Collections.IEnumerator _
@@ -445,7 +477,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Function IndexOf(ByVal item As ISpatialDataSet) As Integer _
              Implements IList(Of ISpatialDataSet).IndexOf
-            Return Me.m_lDatasets.IndexOf(item)
+            Return Me.m_lAvailable.IndexOf(item)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -453,7 +485,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub InaccessibleInsert(ByVal index As Integer, ByVal item As ISpatialDataSet) _
             Implements IList(Of ISpatialDataSet).Insert
-            Me.m_lDatasets.Insert(index, item)
+            Me.m_lAvailable.Insert(index, item)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -462,10 +494,10 @@ Namespace SpatialData
         Default Public Property Item(ByVal index As Integer) As ISpatialDataSet _
             Implements IList(Of ISpatialDataSet).Item
             Get
-                Return Me.m_lDatasets.Item(index)
+                Return Me.m_lAvailable.Item(index)
             End Get
             Protected Set(ByVal value As ISpatialDataSet)
-                Me.m_lDatasets.Item(index) = value
+                Me.m_lAvailable.Item(index) = value
             End Set
         End Property
 
@@ -478,7 +510,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public ReadOnly Property ItemByGUID(ByVal guidDS As Guid) As ISpatialDataSet
             Get
-                For Each ds As ISpatialDataSet In Me.m_lDatasets
+                For Each ds As ISpatialDataSet In Me.m_lAvailable
                     If (guidDS.Equals(ds.GUID)) Then Return ds
                 Next
                 Return Nothing
