@@ -46,6 +46,7 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -639,6 +640,7 @@ Public Class AppLauncher
     Private Sub InitEventHandlers()
 
         AddHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
+        AddHandler My.Settings.SettingsSaving, AddressOf OnSettingsSaving
         AddHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
         ' JS 27Apr10: ActiveContent seems to track much more accurately than ActiveDocument
@@ -837,6 +839,7 @@ Public Class AppLauncher
         RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
         RemoveHandler Me.m_DockPanel.ActiveContentChanged, AddressOf OnTabFocusChanged
         RemoveHandler My.Settings.SettingsLoaded, AddressOf OnSettingsLoaded
+        RemoveHandler My.Settings.SettingsSaving, AddressOf OnSettingsSaving
         RemoveHandler My.Settings.PropertyChanged, AddressOf OnSettingsChanged
 
         Me.m_FormStateHelper.Dispose()
@@ -1075,7 +1078,6 @@ Public Class AppLauncher
         End Try
 
         My.Settings.DisabledPlugins = Me.m_pluginManager.DisabledPlugins
-        Me.SaveSettings()
 
     End Sub
 
@@ -1419,22 +1421,20 @@ Public Class AppLauncher
 
         If (alMDBmru Is Nothing) Then Return
 
-        ' Remove first occurrence from down the list
-        For iEntry As Integer = iStartPos To alMDBmru.Count - 2
-            ' Valid entry?
-            If (TypeOf alMDBmru(iEntry) Is String) Then
+        ' Remove all occurrences from the list
+        While iStartPos < alMDBmru.Count - 2
+            If (TypeOf alMDBmru(iStartPos) Is String) Then
                 ' Get entry
-                Dim strEntry As String = CStr(alMDBmru(iEntry))
+                Dim strEntry As String = CStr(alMDBmru(iStartPos))
                 ' Is same file?
-                If strEntry.StartsWith(strFileName) Then
+                If (String.Compare(strEntry, strFileName, True) = 0) Then
                     ' #Yes: remove 
-                    alMDBmru.RemoveAt(iEntry)
-                    ' Done
-                    Exit For
+                    alMDBmru.RemoveAt(iStartPos)
+                    iStartPos -= 1
                 End If
             End If
-        Next iEntry
-
+            iStartPos += 1
+        End While
         ' Update system settings
         My.Settings.MdbRecentlyUsedList = alMDBmru
         Me.SaveSettings()
@@ -2841,6 +2841,12 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the <see cref="m_cmdAutosaveResults">Auto save results command</see>.
     ''' </summary>
     Private Sub OnUpdateAutosaveResults(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdAutosaveResults.OnUpdate
+        ' Check if any autosave option set
+        Dim bIsAutosaving As Boolean = False
+        For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
+            bIsAutosaving = bIsAutosaving Or Me.Core.Autosave(setting)
+        Next
+        cmd.Checked = bIsAutosaving
     End Sub
 
     ''' <summary>
@@ -3939,6 +3945,13 @@ Public Class AppLauncher
                 My.Settings.Author = EwEUtils.SystemUtilities.cSystemUtils.GetUserName()
             End If
 
+            Dim strAutosave As String = My.Settings.AutoSave
+            For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
+                If strAutosave.Length > setting Then
+                    Me.Core.Autosave(setting) = (strAutosave(setting) = "1"c)
+                End If
+            Next
+
         Catch ex As Exception
 
         End Try
@@ -3987,6 +4000,18 @@ Public Class AppLauncher
         Catch ex As Exception
 
         End Try
+
+    End Sub
+
+    Private Sub OnSettingsSaving(ByVal sender As Object, args As CancelEventArgs)
+
+        Dim strAutosave As String = ""
+        For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
+            strAutosave = strAutosave & CChar(cSystemUtils.IIF(Me.Core.Autosave(setting), "1"c, "0"c))
+        Next
+        My.Settings.AutoSave = strAutosave
+
+        args.Cancel = False
 
     End Sub
 

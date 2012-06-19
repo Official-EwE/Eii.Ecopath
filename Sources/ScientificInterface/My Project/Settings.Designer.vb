@@ -725,6 +725,18 @@ Partial Friend NotInheritable Class Settings
             Me("Contact") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+    Public Property AutoSave() As String
+        Get
+            Return CType(Me("AutoSave"),String)
+        End Get
+        Set
+            Me("AutoSave") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

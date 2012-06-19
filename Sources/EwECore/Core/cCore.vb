@@ -2508,7 +2508,7 @@ Public Class cCore
     ''' <returns>A standardized output file location.</returns>
     ''' <remarks>For defaults of the various parameters refer to <see cref="cFileUtils.ToOutputFilename"/></remarks>
     ''' -----------------------------------------------------------------------
-    Public Function EcotracerOutputFileLocation(ByVal strComponent As String, _
+    Public Function EcotracerOutputFileLocation(Optional ByVal strComponent As String = "", _
                                                 Optional ByVal strFilter As String = "", _
                                                 Optional ByVal strExt As String = "", _
                                                 Optional ByVal bIncludeTime As Boolean = False, _
@@ -2518,7 +2518,7 @@ Public Class cCore
                 strScenarioName = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
             End If
         End If
-        Return Me.OutputFileName(strComponent, "Ecotracer_" & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name, bIncludeTime, strExt, strFilter)
+        Return Me.OutputFileName(strComponent, "Ecotracer_" & strScenarioName, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------

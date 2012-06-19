@@ -184,6 +184,12 @@ Namespace SpatialData
 
                 sb.AppendLine("Ecospace spatial operations log")
                 sb.AppendLine("EwE version, " & cCore.Version)
+                sb.AppendLine("EwE model, " & Me.m_core.DataSource.ToString)
+                sb.AppendLine("Ecosim scenario," & Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name)
+                If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
+                    sb.AppendLine("Ecosim timeseries," & Me.m_core.EcosimTimeSeries(Me.m_core.ActiveTimeSeriesDatasetIndex).Name)
+                End If
+                sb.AppendLine("Ecospace scenario," & Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name)
                 sb.AppendLine("Run date, " & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
                 sb.AppendLine()
 

@@ -484,9 +484,11 @@ Namespace Ecospace.Controls
             For Each ds As ISpatialDataSet In Me.m_man.DatasetTemplates
                 Me.m_cmbNewDS.Items.Add(ds)
             Next
-            If (Me.m_cmbNewDS.Items.Count > 0) Then
-                Me.m_cmbNewDS.SelectedIndex = 0
+
+            If (Me.m_cmbNewDS.Items.Count = 0) Then
+                Me.m_cmbNewDS.Items.Add("")
             End If
+            Me.m_cmbNewDS.SelectedIndex = 0
 
         End Sub
 

@@ -58,10 +58,11 @@ Namespace Other
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Dim core As cCore = Me.m_uic.Core
+            ' ToDo: globalize this
             Dim strEcosimScenarioName As String = "{scenario}"
             Dim strEcospaceScenarioName As String = "{scenario}"
             Dim strEcotracerScenarioName As String = "{scenario}"
+            Dim core As cCore = Me.m_uic.Core
 
             If (core.ActiveEcosimScenarioIndex > -1) Then
                 strEcosimScenarioName = core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name
@@ -78,17 +79,17 @@ Namespace Other
             Me.m_tbxMC.Text = core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MonteCarlo.ToString(), strScenarioName:=strEcosimScenarioName)
             Me.m_tbxMSE.Text = core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MSE.ToString(), strScenarioName:=strEcosimScenarioName)
 
-            Me.m_tbxASCII.Text = core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName)
-            Me.m_tbxCSV.Text = core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName)
+            Me.m_tbxASCII.Text = core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".asc")
+            Me.m_tbxCSV.Text = core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".csv")
 
-            With Me.m_uic.Core
-                Me.m_cbEcosimRun.Checked = .Autosave(eAutosaveTypes.EcosimRun)
-                Me.m_cbMonteCarlo.Checked = .Autosave(eAutosaveTypes.MonteCarlo)
-                Me.m_cbMSE.Checked = .Autosave(eAutosaveTypes.MSE)
-                Me.m_cbSpaceCSV.Checked = .Autosave(eAutosaveTypes.EcospaceCSV)
-                Me.m_cbSpaceASCII.Checked = .Autosave(eAutosaveTypes.EcospaceASC)
-                Me.m_cbEcotracer.Checked = .Autosave(eAutosaveTypes.Ecotracer)
-            End With
+            Me.m_tbxTracer.Text = core.EcotracerOutputFileLocation(strScenarioName:=strEcotracerScenarioName)
+
+            Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.EcosimRun)
+            Me.m_cbMonteCarlo.Checked = core.Autosave(eAutosaveTypes.MonteCarlo)
+            Me.m_cbMSE.Checked = core.Autosave(eAutosaveTypes.MSE)
+            Me.m_cbSpaceCSV.Checked = core.Autosave(eAutosaveTypes.EcospaceCSV)
+            Me.m_cbSpaceASCII.Checked = core.Autosave(eAutosaveTypes.EcospaceASC)
+            Me.m_cbEcotracer.Checked = core.Autosave(eAutosaveTypes.Ecotracer)
 
             ' Output path
             Me.m_fieldpickOutput.UIContext = Me.m_uic
@@ -107,16 +108,18 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
 
+            Dim core As cCore = Me.m_uic.Core
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
+
             Try
-                With Me.m_uic.Core
-                    .Autosave(eAutosaveTypes.EcosimRun) = Me.m_cbEcosimRun.Checked
-                    .Autosave(eAutosaveTypes.MonteCarlo) = Me.m_cbMonteCarlo.Checked
-                    .Autosave(eAutosaveTypes.MSE) = Me.m_cbMSE.Checked
-                    .Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSpaceCSV.Checked
-                    .Autosave(eAutosaveTypes.EcospaceASC) = Me.m_cbSpaceASCII.Checked
-                    .Autosave(eAutosaveTypes.Ecotracer) = Me.m_cbEcotracer.Checked
-                End With
+
+                core.Autosave(eAutosaveTypes.EcosimRun) = Me.m_cbEcosimRun.Checked
+                core.Autosave(eAutosaveTypes.MonteCarlo) = Me.m_cbMonteCarlo.Checked
+                core.Autosave(eAutosaveTypes.MSE) = Me.m_cbMSE.Checked
+                core.Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSpaceCSV.Checked
+                core.Autosave(eAutosaveTypes.EcospaceASC) = Me.m_cbSpaceASCII.Checked
+                core.Autosave(eAutosaveTypes.Ecotracer) = Me.m_cbEcotracer.Checked
+
                 My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
                 My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
 
@@ -124,6 +127,7 @@ Namespace Other
                 cLog.Write(ex, "ucOptionsAutosave::Apply")
                 result = IOptionsPage.eApplyResultType.Failed
             End Try
+
             Return result
 
         End Function
