@@ -224,10 +224,9 @@ Public Class cMessagePublisher
     Public Function RemoveMessageHandler(ByVal MessageHandler As cMessageHandler) As Boolean
 
         ' Pre
-        Debug.Assert(MessageHandler IsNot Nothing)
+        Debug.Assert(MessageHandler IsNot Nothing, "Need valid message handler")
 
         Try
-            Debug.Assert(MessageHandler IsNot Nothing, "Need valid message handler")
             Return m_handlers.Remove(MessageHandler)
         Catch ex As Exception
             Return False
