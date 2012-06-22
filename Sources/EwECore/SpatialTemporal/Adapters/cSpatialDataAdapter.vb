@@ -392,6 +392,14 @@ Namespace SpatialData
 
 #Region " Layer rescue "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the content of an externally driven layer should be
+        ''' preserved. If set to true, the content of any layer that is configured 
+        ''' to receive external data will be preserved in a temporary file,
+        ''' from which the content is restored at the end of a run.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property PreserveLayerContent As Boolean
             Get
                 Return Me.m_bPreserveLayerContent
@@ -401,73 +409,129 @@ Namespace SpatialData
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save the content of adapter-managed layers to a temporary file.
+        ''' <seealso cref="RestoreLayerData"/>
+        ''' <seealso cref="PreserveLayerContent"/>
+        ''' </summary>
+        ''' <param name="bm">Ecospace base map that states the size of the layer grid.</param>
+        ''' <remarks>
+        ''' Note that only the content of layers <see cref="cEcospaceLayer.IsExternalData">configured to receive external data</see>
+        ''' will be preserved, and only for layers of type single, integer or boolean.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         Private Sub SaveLayerData(bm As cEcospaceBasemap)
+
+            ' Wipe, just in case
+            For i As Integer = 0 To Me.m_astrLayerFiles.Length - 1
+                Me.m_astrLayerFiles(i) = String.Empty
+            Next
+
+            ' Early bail out
+            If (Not Me.PreserveLayerContent) Then Return
 
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
+            Dim strFileName As String = ""
             Dim sw As StreamWriter = Nothing
-            Dim strFile As String = ""
+            Dim valtype As ValueWrapper.eValueTypes = bm.ValueDescriptor(Me.VarName).varType
 
+            Select Case valtype
+                Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.Sng, ValueWrapper.eValueTypes.Bool
+                    ' ok
+                Case Else
+                    Return ' Value type not supported
+            End Select
+
+            ' For all layers
             For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
-
-                strFile = cFileUtils.MakeTempFile(".ewetmp")
+                ' Is driven by external data?
                 If (layer.IsExternalData) Then
-
-                    Console.WriteLine("Adapter " & Me.ToString & " preserving layer " & layer.ToString & " to " & strFile)
-
+                    ' #Yes: set up a temp file and save the layer content to the file
                     Try
-                        sw = New StreamWriter(strFile)
+                        strFileName = cFileUtils.MakeTempFile(".ewetmp")
+                        sw = New StreamWriter(strFileName)
                         For iRow As Integer = 1 To iNumRow
                             For iCol As Integer = 1 To iNumCol
                                 If (iCol > 1) Then sw.Write(",")
-                                sw.Write(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
+                                Select Case valtype
+                                    Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.Sng
+                                        sw.Write(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
+                                    Case ValueWrapper.eValueTypes.Bool
+                                        If CBool(layer.Cell(iRow, iCol)) Then sw.Write("1"c) Else sw.Write("0"c)
+                                End Select
                             Next iCol
                             sw.WriteLine()
                         Next iRow
+
+                        ' Clean up
+                        sw.Flush()
                         sw.Close()
                         sw = Nothing
-                        ' Store ref
-                        Me.m_astrLayerFiles(layer.Index) = strFile
+
+                        ' Store temp file name for restoration later on
+                        Me.m_astrLayerFiles(layer.Index) = strFileName
+
+                        Console.WriteLine("Adapter " & Me.ToString & " saved content of layer " & layer.ToString & " to " & strFileName)
+
                     Catch ex As Exception
-                        ' Whoah!
-                        Debug.Assert(False, ex.Message)
+                        ' Log failure, plod along
+                        cLog.Write(ex, "cSpatialDataAdapter::SaveLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
                     End Try
+
                 End If
+
             Next layer
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Restore the content of layers from a temporary file.
+        ''' <seealso cref="SaveLayerData"/>
+        ''' <seealso cref="PreserveLayerContent"/>
+        ''' </summary>
+        ''' <param name="bm">Ecospace base map that states the size of the layer grid.</param>
+        ''' -------------------------------------------------------------------
         Private Sub RestoreLayerData(bm As cEcospaceBasemap)
 
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
             Dim tData As Type = Nothing
             Dim sr As StreamReader = Nothing
-            Dim strFile As String = ""
+            Dim strFileName As String = ""
+            Dim valtype As ValueWrapper.eValueTypes = bm.ValueDescriptor(Me.VarName).varType
 
             For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
 
-                strFile = Me.m_astrLayerFiles(layer.Index)
+                strFileName = Me.m_astrLayerFiles(layer.Index)
                 tData = layer.ValueType
 
-                If (Not String.IsNullOrWhiteSpace(strFile) And layer.IsExternalData) Then
+                If (Not String.IsNullOrWhiteSpace(strFileName) And layer.IsExternalData) Then
                     Try
-                        Console.WriteLine("Adapter " & Me.ToString & " restoring layer " & layer.ToString & " from " & strFile)
-                        sr = New StreamReader(strFile)
+                        Console.WriteLine("Adapter " & Me.ToString & " restoring layer " & layer.ToString & " from " & strFileName)
+                        sr = New StreamReader(strFileName)
                         For iRow As Integer = 1 To iNumRow
                             Dim strLine As String = sr.ReadLine
                             Dim astrFields As String() = strLine.Split(","c)
                             For iCol As Integer = 1 To iNumCol
-                                layer.Cell(iRow, iCol) = cStringUtils.ConvertToNumber(astrFields(iCol - 1), tData)
+                                Select Case valtype
+                                    Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.Sng
+                                        layer.Cell(iRow, iCol) = cStringUtils.ConvertToNumber(astrFields(iCol - 1), tData)
+                                    Case ValueWrapper.eValueTypes.Bool
+                                        layer.Cell(iRow, iCol) = (astrFields(iCol - 1) = "1")
+                                End Select
                             Next iCol
                         Next iRow
                         sr.Close()
                         sr = Nothing
                     Catch ex As Exception
                         ' Whoah!
+                        cLog.Write(ex, "cSpatialDataAdapter::RestoreLayerData " & Me.ToString & ", layer " & layer.ToString & ", file " & strFileName)
                     End Try
                     Me.m_astrLayerFiles(layer.Index) = ""
-                    cFileUtils.PurgeTempFile(strFile)
+                    cFileUtils.PurgeTempFile(strFileName)
                 End If
 
             Next layer
