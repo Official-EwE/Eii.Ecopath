@@ -21,6 +21,7 @@ Option Strict On
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports System.IO
 
 #End Region ' Imports
 
@@ -44,6 +45,14 @@ Namespace SpatialData
         Protected m_varName As eVarNameFlags = Nothing
         ''' <summary>Core counter that this adapter operates onto.</summary>
         Protected m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
+
+        ''' <summary>Flag, indicating whether the content of input layers needs
+        ''' to be preserved: layer data is then preserved on first overwrite,
+        ''' and restored when a run finished. Preserved layer data is maintained
+        ''' in temporary files.</summary>
+        Private m_bPreserveLayerContent As Boolean = True
+        ''' <summary>File names of preserved layers.</summary>
+        Private m_astrLayerFiles() As String
 
 #End Region ' Private vars
 
@@ -90,6 +99,7 @@ Namespace SpatialData
 
             ReDim Me.m_converters(iNumItems)
             ReDim Me.m_datasets(iNumItems)
+            ReDim Me.m_astrLayerFiles(iNumItems)
 
         End Sub
 
@@ -100,6 +110,7 @@ Namespace SpatialData
         ''' <returns>The number of layers for this adapter.</returns>
         ''' -------------------------------------------------------------------
         Public Function Length() As Integer
+            ' Why not return Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))?
             Return Me.m_converters.Length
         End Function
 
@@ -173,7 +184,8 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub InitRun()
-            ' NOP
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Me.SaveLayerData(bm)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -182,7 +194,8 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Sub EndRun()
-            ' NOP
+            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+            Me.RestoreLayerData(bm)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -201,11 +214,6 @@ Namespace SpatialData
             Dim dCellSize As Double = Math.Round(CDbl(bm.CellSize), 8)
             Dim dt As Date
             Dim bSuccess As Boolean = False
-
-            ' Perhaps this should be called by the core?
-            If (iTime = 1) Then
-                Me.InitRun()
-            End If
 
             ' For each layer for this adapter
             For Each layer In bm.Layers(Me.m_varName)
@@ -381,6 +389,92 @@ Namespace SpatialData
         End Function
 
 #End Region ' Basic bits
+
+#Region " Layer rescue "
+
+        Public Property PreserveLayerContent As Boolean
+            Get
+                Return Me.m_bPreserveLayerContent
+            End Get
+            Set(value As Boolean)
+                Me.m_bPreserveLayerContent = value
+            End Set
+        End Property
+
+        Private Sub SaveLayerData(bm As cEcospaceBasemap)
+
+            Dim iNumRow As Integer = bm.InRow
+            Dim iNumCol As Integer = bm.InCol
+            Dim sw As StreamWriter = Nothing
+            Dim strFile As String = ""
+
+            For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
+
+                strFile = cFileUtils.MakeTempFile(".ewetmp")
+                If (layer.IsExternalData) Then
+
+                    Console.WriteLine("Adapter " & Me.ToString & " preserving layer " & layer.ToString & " to " & strFile)
+
+                    Try
+                        sw = New StreamWriter(strFile)
+                        For iRow As Integer = 1 To iNumRow
+                            For iCol As Integer = 1 To iNumCol
+                                If (iCol > 1) Then sw.Write(",")
+                                sw.Write(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
+                            Next iCol
+                            sw.WriteLine()
+                        Next iRow
+                        sw.Close()
+                        sw = Nothing
+                        ' Store ref
+                        Me.m_astrLayerFiles(layer.Index) = strFile
+                    Catch ex As Exception
+                        ' Whoah!
+                        Debug.Assert(False, ex.Message)
+                    End Try
+                End If
+            Next layer
+
+        End Sub
+
+        Private Sub RestoreLayerData(bm As cEcospaceBasemap)
+
+            Dim iNumRow As Integer = bm.InRow
+            Dim iNumCol As Integer = bm.InCol
+            Dim tData As Type = Nothing
+            Dim sr As StreamReader = Nothing
+            Dim strFile As String = ""
+
+            For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
+
+                strFile = Me.m_astrLayerFiles(layer.Index)
+                tData = layer.ValueType
+
+                If (Not String.IsNullOrWhiteSpace(strFile) And layer.IsExternalData) Then
+                    Try
+                        Console.WriteLine("Adapter " & Me.ToString & " restoring layer " & layer.ToString & " from " & strFile)
+                        sr = New StreamReader(strFile)
+                        For iRow As Integer = 1 To iNumRow
+                            Dim strLine As String = sr.ReadLine
+                            Dim astrFields As String() = strLine.Split(","c)
+                            For iCol As Integer = 1 To iNumCol
+                                layer.Cell(iRow, iCol) = cStringUtils.ConvertToNumber(astrFields(iCol - 1), tData)
+                            Next iCol
+                        Next iRow
+                        sr.Close()
+                        sr = Nothing
+                    Catch ex As Exception
+                        ' Whoah!
+                    End Try
+                    Me.m_astrLayerFiles(layer.Index) = ""
+                    cFileUtils.PurgeTempFile(strFile)
+                End If
+
+            Next layer
+
+        End Sub
+
+#End Region ' Layer rescue
 
     End Class
 

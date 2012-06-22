@@ -109,7 +109,7 @@ Namespace SpatialData
 
         End Sub
 
-#End Region
+#End Region ' Overrides
 
     End Class
 

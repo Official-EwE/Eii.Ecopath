@@ -576,8 +576,32 @@ Public Class cEcoSpace
             'redim all 
             If redimForRun() Then
 
+                If (Me.m_SpatialData IsNot Nothing) Then
+                    For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
+                        If (src IsNot Nothing) Then
+                            Try
+                                src.InitRun()
+                            Catch ex As Exception
+                                cLog.Write(ex, "cEcospace::BeginTimeStep.Populate " & src.Name & "(" & src.Index & ")")
+                            End Try
+                        End If
+                    Next
+                End If
+
                 Me.initSpatialEquilibrium()
                 Me.FindSpatialEquilibrium()
+
+                If (Me.m_SpatialData IsNot Nothing) Then
+                    For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
+                        If (src IsNot Nothing) Then
+                            Try
+                                src.EndRun()
+                            Catch ex As Exception
+                                cLog.Write(ex, "cEcospace::BeginTimeStep.Populate " & src.Name & "(" & src.Index & ")")
+                            End Try
+                        End If
+                    Next
+                End If
 
             Else
                 bsuccess = False
