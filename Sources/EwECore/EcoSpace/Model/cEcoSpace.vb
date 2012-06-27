@@ -582,7 +582,7 @@ Public Class cEcoSpace
                             Try
                                 src.InitRun()
                             Catch ex As Exception
-                                cLog.Write(ex, "cEcospace::BeginTimeStep.Populate " & src.Name & "(" & src.Index & ")")
+                                cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
                             End Try
                         End If
                     Next
@@ -597,7 +597,7 @@ Public Class cEcoSpace
                             Try
                                 src.EndRun()
                             Catch ex As Exception
-                                cLog.Write(ex, "cEcospace::BeginTimeStep.Populate " & src.Name & "(" & src.Index & ")")
+                                cLog.Write(ex, "cEcospace::Run.CleanAdapters " & src.Name & "(" & src.Index & ")")
                             End Try
                         End If
                     Next
