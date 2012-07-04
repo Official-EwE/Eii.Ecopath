@@ -20,6 +20,9 @@ Imports EwEUtils.Core
 
 #Region "cCoreEnumNamesIndex"
 
+' Singleton classes should not implement IDisposable; on core destruct 
+' these classes will not re-initate and will thus be invalid when a new
+' core attempts to use them.
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -33,7 +36,7 @@ Imports EwEUtils.Core
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cCoreEnumNamesIndex
-    Implements IDisposable
+    'Implements IDisposable
 
     ''' <summary>Singleton instance</summary>
     Private Shared __inst__ As cCoreEnumNamesIndex = New cCoreEnumNamesIndex()
@@ -47,19 +50,19 @@ Public Class cCoreEnumNamesIndex
         Return cCoreEnumNamesIndex.__inst__
     End Function
 
-    Public Sub Dispose() Implements IDisposable.Dispose
-        If (Me.m_dictDataTypeEnumToName IsNot Nothing) Then
-            Me.m_dictDataTypeEnumToName.Clear()
-            Me.m_dictDataTypeEnumToName = Nothing
-            Me.m_dictDataTypeNameToEnum.Clear()
-            Me.m_dictDataTypeNameToEnum = Nothing
-            Me.m_dictVarEnumToName.Clear()
-            Me.m_dictVarEnumToName = Nothing
-            Me.m_dictVarNameToEnum.Clear()
-            Me.m_dictVarNameToEnum = Nothing
-        End If
-        GC.SuppressFinalize(Me)
-    End Sub
+    'Public Sub Dispose() Implements IDisposable.Dispose
+    '    If (Me.m_dictDataTypeEnumToName IsNot Nothing) Then
+    '        Me.m_dictDataTypeEnumToName.Clear()
+    '        Me.m_dictDataTypeEnumToName = Nothing
+    '        Me.m_dictDataTypeNameToEnum.Clear()
+    '        Me.m_dictDataTypeNameToEnum = Nothing
+    '        Me.m_dictVarEnumToName.Clear()
+    '        Me.m_dictVarEnumToName = Nothing
+    '        Me.m_dictVarNameToEnum.Clear()
+    '        Me.m_dictVarNameToEnum = Nothing
+    '    End If
+    '    GC.SuppressFinalize(Me)
+    'End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
