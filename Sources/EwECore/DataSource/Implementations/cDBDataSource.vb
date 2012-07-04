@@ -3503,16 +3503,18 @@ Namespace DataSources
             Dim reader As IDataReader = Me.m_db.GetReader("SELECT * FROM EcosimModel")
             Dim bSuccess As Boolean = True
 
-            Try
-                reader.Read()
-                ecosimDS.ForcePoints = CInt(Me.m_db.ReadSafe(reader, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS))
-            Catch ex As Exception
-                bSuccess = False
-            End Try
+            If (reader IsNot Nothing) Then
+                Try
+                    reader.Read()
+                    ecosimDS.ForcePoints = CInt(Me.m_db.ReadSafe(reader, "ForcePoints", cEcosimDatastructures.DEFAULT_N_FORCINGPOINTS))
+                Catch ex As Exception
+                    bSuccess = False
+                End Try
 
-            ecosimDS.nGroups = ecopathDS.NumGroups
+                ecosimDS.nGroups = ecopathDS.NumGroups
 
-            Me.m_db.ReleaseReader(reader)
+                Me.m_db.ReleaseReader(reader)
+            End If
             Return bSuccess
 
         End Function
