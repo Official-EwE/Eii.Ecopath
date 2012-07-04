@@ -657,7 +657,7 @@ Public Class cCore
                 End If
 
                 Me.Messages.Dispose()
-                cCoreEnumNamesIndex.GetInstance.Dispose()
+                'cCoreEnumNamesIndex.GetInstance.Dispose()
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".Dispose() Exception: " & ex.Message)
