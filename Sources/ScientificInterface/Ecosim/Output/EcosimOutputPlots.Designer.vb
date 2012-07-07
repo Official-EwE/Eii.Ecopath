@@ -183,6 +183,7 @@ Namespace Ecosim
             '
             Me.m_tsDDShowHidePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsDDShowHidePlots, "m_tsDDShowHidePlots")
+            Me.m_tsDDShowHidePlots.Overflow = ToolStripItemOverflow.Never
             Me.m_tsDDShowHidePlots.Name = "m_tsDDShowHidePlots"
             '
             'm_plGroups

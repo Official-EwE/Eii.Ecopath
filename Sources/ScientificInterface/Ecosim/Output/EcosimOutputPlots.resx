@@ -316,7 +316,7 @@
     <value>121, 22</value>
   </data>
   <data name="m_tsDDShowHidePlots.Text" xml:space="preserve">
-    <value>Show or hide plots</value>
+    <value>Show plots</value>
   </data>
   <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
