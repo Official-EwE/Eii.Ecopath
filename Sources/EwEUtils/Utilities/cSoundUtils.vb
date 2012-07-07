@@ -19,6 +19,7 @@
 
 Imports System.Windows.Forms
 Imports Microsoft.Win32
+Imports System
 
 #End Region ' Imports
 
@@ -56,36 +57,37 @@ Namespace Utilities
 
         Public Shared Sub PlaySound(ByVal icon As MessageBoxIcon, Optional ByVal strFileName As String = "")
 
-            If String.IsNullOrEmpty(strFileName) Then
+            cSoundUtilities.InitSounds()
 
-                cSoundUtilities.InitSounds()
+            If String.IsNullOrWhiteSpace(strFileName) Then
 
-                With s_sounds
-                    Select Case icon
-                        Case MessageBoxIcon.Asterisk
-                            strFileName = .Asterisk
-                        Case MessageBoxIcon.Exclamation
-                            strFileName = .Exclamation
-                        Case MessageBoxIcon.Hand, _
-                             MessageBoxIcon.Stop
-                            strFileName = .Hand
-                        Case MessageBoxIcon.Information
-                            strFileName = .Notification
-                        Case MessageBoxIcon.Question
-                            strFileName = .Question
-                        Case MessageBoxIcon.Warning
-                            strFileName = .[Default]
-                        Case Else
-                            strFileName = .[Default]
-                    End Select
-                End With
+                strFileName = s_sounds.[Default]
 
-                If String.IsNullOrWhiteSpace(strFileName) Then
-                    strFileName = s_sounds.[Default]
-                End If
+                Select Case icon
+                    Case MessageBoxIcon.Asterisk
+                        strFileName = s_sounds.Asterisk
+                    Case MessageBoxIcon.Exclamation
+                        strFileName = s_sounds.Exclamation
+                    Case MessageBoxIcon.Hand, _
+                         MessageBoxIcon.Stop
+                        strFileName = s_sounds.Hand
+                    Case MessageBoxIcon.Information
+                        strFileName = s_sounds.Notification
+                    Case MessageBoxIcon.Question
+                        strFileName = s_sounds.Question
+                    Case MessageBoxIcon.Warning
+                        strFileName = s_sounds.[Default]
+                End Select
+
             End If
 
-            My.Computer.Audio.Play(strFileName, 1)
+            If Not String.IsNullOrWhiteSpace(strFileName) Then
+                Try
+                    My.Computer.Audio.Play(strFileName, 1)
+                Catch ex As Exception
+                    ' Whoah
+                End Try
+            End If
 
         End Sub
 
