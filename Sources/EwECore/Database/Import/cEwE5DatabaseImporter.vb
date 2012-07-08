@@ -895,7 +895,12 @@ Namespace Database
                         drow("BABsplit") = Me.FixValue(readerStanza, "BABsplit")
                         drow("WmatWinf") = Me.FixValue(readerStanza, "WmatWinf")
                         drow("RecPower") = Me.FixValue(readerStanza, "RecPower")
-                        drow("FixedFecundity") = Me.FixValue(readerStanza, "FixedFecundity")
+
+                        If (Me.m_dbEwE5.GetVersion >= 1.67) Then
+                            drow("FixedFecundity") = Me.FixValue(readerStanza, "FixedFecundity")
+                        Else
+                            drow("FixedFecundity") = 0
+                        End If
 
                         ' JS 060615: EggProd shapes are now scenario dependent, handled in table EcosimStanzaShapes.
                         ' drow("EggProdShape") = Me.FixValue(reader("EggProdShape"))
@@ -1269,7 +1274,7 @@ Namespace Database
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
-            Dim iTemp As Integer = 0
+            Dim clrTemp As Color
             Dim nFleetID As Integer = 1
             Dim nSequence As Integer = 1 ' Renumber sequence field
 
@@ -1291,9 +1296,9 @@ Namespace Database
                 drow("FixedCost") = Me.FixValue(reader, "fixedCost")
                 drow("VariableCost") = Me.FixValue(reader, "variableCost")
                 drow("SailingCost") = Me.FixValue(reader, "SailingCost")
-                ' JS070412: Poolcolor (was GearColor) converted to 8-digit hexadecimal string
-                'iTemp = CInt(Me.FixValue(reader, "PoolColor", Me.FixValue(reader, "CapBaseGrowth", nSequence Mod 14)))
-                'drow("PoolColor") = String.Format("{0:x8}", iTemp)
+
+                clrTemp = Color.FromArgb(CInt(Me.FixValue(reader, "PoolColor", &H0)))
+                drow("Poolcolor") = String.Format("{0:x8}", &HFF000000 + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
 
                 writer.AddRow(drow)
                 writer.Commit()
@@ -1729,7 +1734,9 @@ Namespace Database
                         drow("RiskTime") = Me.FixValue(reader, "RiskTime")
                         drow("QmQo") = Me.FixValue(reader, "QmQo")
                         drow("CmCo") = Me.FixValue(reader, "CmCo")
-                        drow("SwitchPower") = Me.FixValue(reader, "SwitchPower")
+                        If (Me.m_dbEwE5.GetVersion >= 1.65) Then
+                            drow("SwitchPower") = Me.FixValue(reader, "SwitchPower")
+                        End If
                         If (Me.m_dbEwE5.GetVersion() >= 1.725) Then
                             drow("SalOpt") = Me.FixValue(reader, "SalOpt", 35.0!)
                             drow("SdSalLeft") = Me.FixValue(reader, "SdSal", 1000.0!)
@@ -2520,7 +2527,10 @@ Namespace Database
             Try
                 While reader.Read()
                     iEggShape = CInt(Me.FixValue(reader, "EggProdShape", 0))
-                    iHatchShape = CInt(Me.FixValue(reader, "HatchCode", 0))
+
+                    If (Me.m_dbEwE5.GetVersion >= 1.66) Then
+                        iHatchShape = CInt(Me.FixValue(reader, "HatchCode", 0))
+                    End If
 
                     ' Has shape assignments?
                     If (iEggShape + iHatchShape > 0) Then

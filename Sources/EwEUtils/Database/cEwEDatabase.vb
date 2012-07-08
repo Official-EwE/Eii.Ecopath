@@ -383,7 +383,7 @@ Namespace Database
         Private m_strDirectory As String = ""
 
         ''' <summary>Oldest EwE5 version number supported</summary>
-        Private Const cDBVERSION_EWE5_MIN As Single = 1.67
+        Private Const cDBVERSION_EWE5_MIN As Single = 1.63
         ''' <summary>Newest EwE5 version number supported</summary>
         Private Const cDBVERSION_EWE5_MAX As Single = 1.73
         ''' <summary>Oldest EwE6 version number supported</summary>
