@@ -462,9 +462,9 @@ Public Class cArrayGraphRenderer
                                                  CInt(asData(x, y) * szCellSize.Width), _
                                                  CInt(asData(x, y) * szCellSize.Height))
                         If asData(x, y) > 0.0 Then
-                            g.FillEllipse(Brushes.Black, rcCircle)
-                        Else
                             g.FillEllipse(Brushes.White, rcCircle)
+                        Else
+                            g.FillEllipse(Brushes.Black, rcCircle)
                         End If
                         g.DrawEllipse(Pens.Black, rcCircle)
 
