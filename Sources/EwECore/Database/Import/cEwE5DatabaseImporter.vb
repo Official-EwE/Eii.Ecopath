@@ -1640,7 +1640,8 @@ Namespace Database
                 drow("DoInteg") = Me.FixValue(reader, "DoInteg")
                 drow("NutBaseFreeProp") = Me.FixValue(reader, "NutBaseFreeProp")
                 drow("NutPBmax") = Me.FixValue(reader, "NutPBmax")
-                drow("UseVarPQ") = Me.FixValue(reader, "UseVarPQ")
+                'VC090403: UseVarPQ flag is no longer saved 
+                'drow("UseVarPQ") = Me.FixValue(reader, "UseVarPQ")
                 drow("LastSaved") = Me.ExtractLastSavedJulianDate(CStr(Me.FixValue(reader, "remarks", "")))
 
                 nMaxForcePoints = Math.Max(nMaxForcePoints, CInt(drow("TotalTime")) * 12)
@@ -2901,7 +2902,12 @@ Namespace Database
             Dim eType As eTimeSeriesType = 0
             Dim strMemo As String = ""
 
-            reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Time Series] where modelName='{0}' ORDER BY SequenceNo ASC", Me.m_strModelName))
+            If (Me.m_dbEwE5.GetVersion >= 1.62) Then
+                reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Time Series] where modelName='{0}' ORDER BY SequenceNo ASC", Me.m_strModelName))
+            Else
+                reader = m_dbEwE5.GetReader(String.Format("SELECT * from [Time Series] where modelName='{0}'", Me.m_strModelName))
+            End If
+
             If Object.ReferenceEquals(reader, Nothing) Then Return
 
             ' Time series are scenario-independent
@@ -3011,7 +3017,13 @@ Namespace Database
                             'drow("NumYears") = CInt(strMemo.Length / 10)
 
                             ' JS 06Nov07: Time series imported with weight of 1 (not 0!)
-                            drow("WtType") = 1.0! ' Me.FixValue(reader, "WtType", 1.0!)
+                            If (Me.m_dbEwE5.GetVersion() >= 1.61) Then
+                                Dim sWeight As Single = CSng(Me.FixValue(reader, "WtType", 1.0!))
+                                If sWeight <= 0.0! Then sWeight = 1.0!
+                                drow("WtType") = sWeight
+                            Else
+                                drow("WtType") = 1.0!
+                            End If
                             writerTimeSeries.AddRow(drow)
 
                             drow = writerFleet.NewRow()
@@ -3023,49 +3035,49 @@ Namespace Database
 
                     Case eTimeSeriesCategoryType.Group
 
-                        iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
-                        iGroupID = Me.PoolCodeID(eDataTypes.EcoPathGroupInput, CInt(reader("Pool")))
+                            iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
+                            iGroupID = Me.PoolCodeID(eDataTypes.EcoPathGroupInput, CInt(reader("Pool")))
 
-                        ' Is this group missing?
-                        If (iGroupID = 0) Then
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
-                                    Me.FixValue(reader, "DatName", ""), _
-                                    Me.FixValue(reader, "Dataset", ""), _
-                                    CInt(reader("Pool"))), _
-                                    eMessageType.DataImport, eMessageImportance.Information, True)
-                        Else
-                            iTimeSeriesID += 1
+                            ' Is this group missing?
+                            If (iGroupID = 0) Then
+                                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
+                                        Me.FixValue(reader, "DatName", ""), _
+                                        Me.FixValue(reader, "Dataset", ""), _
+                                        CInt(reader("Pool"))), _
+                                        eMessageType.DataImport, eMessageImportance.Information, True)
+                            Else
+                                iTimeSeriesID += 1
 
-                            drow = writerTimeSeries.NewRow()
-                            drow("TimeSeriesID") = iTimeSeriesID
-                            drow("Sequence") = iTimeSeriesID
-                            drow("DatasetID") = iDatasetID
-                            drow("DatType") = eType
-                            drow("DatName") = Me.FixValue(reader, "DatName", "")
-                            'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
+                                drow = writerTimeSeries.NewRow()
+                                drow("TimeSeriesID") = iTimeSeriesID
+                                drow("Sequence") = iTimeSeriesID
+                                drow("DatasetID") = iDatasetID
+                                drow("DatType") = eType
+                                drow("DatName") = Me.FixValue(reader, "DatName", "")
+                                'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
 
-                            strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
-                            drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
-                            'drow("NumYears") = CInt(strMemo.Length / 10)
+                                strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
+                                drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
+                                'drow("NumYears") = CInt(strMemo.Length / 10)
 
-                            ' JS 29Nov07: Time series imported with weight of 1 (not 0!)
-                            drow("WtType") = 1.0! ' Me.FixValue(reader, "WtType", 1.0!)
-                            writerTimeSeries.AddRow(drow)
+                                ' JS 29Nov07: Time series imported with weight of 1 (not 0!)
+                                drow("WtType") = 1.0! ' Me.FixValue(reader, "WtType", 1.0!)
+                                writerTimeSeries.AddRow(drow)
 
-                            drow = writerGroup.NewRow()
-                            drow("TimeSeriesID") = iTimeSeriesID
-                            drow("GroupID") = iGroupID
-                            drow("VariableName") = ""
-                            writerGroup.AddRow(drow)
-                        End If
+                                drow = writerGroup.NewRow()
+                                drow("TimeSeriesID") = iTimeSeriesID
+                                drow("GroupID") = iGroupID
+                                drow("VariableName") = ""
+                                writerGroup.AddRow(drow)
+                            End If
 
                     Case eTimeSeriesCategoryType.NotSet
-                        'Trying to import unkown time series type - ignore this TS
-                        Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
-                                Me.FixValue(reader, "DatName", ""), _
-                                Me.FixValue(reader, "Dataset", ""), _
-                                eType.ToString()), _
-                                eMessageType.DataImport, eMessageImportance.Information, True)
+                            'Trying to import unkown time series type - ignore this TS
+                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
+                                    Me.FixValue(reader, "DatName", ""), _
+                                    Me.FixValue(reader, "Dataset", ""), _
+                                    eType.ToString()), _
+                                    eMessageType.DataImport, eMessageImportance.Information, True)
 
                 End Select
 

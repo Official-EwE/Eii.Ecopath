@@ -383,11 +383,11 @@ Namespace Database
         Private m_strDirectory As String = ""
 
         ''' <summary>Oldest EwE5 version number supported</summary>
-        Private Const cDBVERSION_EWE5_MIN As Single = 1.63
+        Private Const cDBVERSION_EWE5_MIN As Single = 1.6!
         ''' <summary>Newest EwE5 version number supported</summary>
-        Private Const cDBVERSION_EWE5_MAX As Single = 1.73
+        Private Const cDBVERSION_EWE5_MAX As Single = 1.73!
         ''' <summary>Oldest EwE6 version number supported</summary>
-        Private Const cDBVERSION_EWE6_MIN As Single = 6.0
+        Private Const cDBVERSION_EWE6_MIN As Single = 6.0!
 
 #End Region ' Private vars and consts
 
