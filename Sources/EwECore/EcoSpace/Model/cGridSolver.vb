@@ -825,20 +825,20 @@ exitline:
         Next
     End Sub
 
-    Private Function randMatrix(ByVal M As Integer, ByVal N As Integer) As Double(,)
-        Dim a(,) As Double
-        Dim i As Integer
-        ReDim a(M * N, 2 * N + 1)
-        For i = 1 To M * N
-            a(i, 1) = Me.m_rand.NextDouble()
-            a(i, N) = Me.m_rand.NextDouble()
-            a(i, N + 2) = Me.m_rand.NextDouble()
-            a(i, 2 * N + 1) = Me.m_rand.NextDouble()
-            a(i, N + 1) = (-1.0 - Me.m_rand.NextDouble() / 10) * (a(i, 2 * N + 1) + a(i, N + 2) + a(i, N) + a(i, 1)) 'Rnd()
-        Next
-        displaymatrix(a, M, N)
-        randMatrix = a
-    End Function
+    'Private Function randMatrix(ByVal M As Integer, ByVal N As Integer) As Double(,)
+    '    Dim a(,) As Double
+    '    Dim i As Integer
+    '    ReDim a(M * N, 2 * N + 1)
+    '    For i = 1 To M * N
+    '        a(i, 1) = Me.m_rand.NextDouble()
+    '        a(i, N) = Me.m_rand.NextDouble()
+    '        a(i, N + 2) = Me.m_rand.NextDouble()
+    '        a(i, 2 * N + 1) = Me.m_rand.NextDouble()
+    '        a(i, N + 1) = (-1.0 - Me.m_rand.NextDouble() / 10) * (a(i, 2 * N + 1) + a(i, N + 2) + a(i, N) + a(i, 1)) 'Rnd()
+    '    Next
+    '    displaymatrix(a, M, N)
+    '    randMatrix = a
+    'End Function
 #End Region
 
 End Class

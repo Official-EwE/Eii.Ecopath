@@ -2103,7 +2103,7 @@ Namespace Ecosim
             For i = 1 To 12
                 X = X + rnd.NextDouble
             Next
-            RandomNormal = CSng(X)
+            Return CSng(X)
         End Function
 
         ''' <summary>
