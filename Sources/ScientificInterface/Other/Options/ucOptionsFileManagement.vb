@@ -68,7 +68,10 @@ Namespace Other
                 strEcosimScenarioName = core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name
             End If
             If (core.ActiveEcospaceScenarioIndex > -1) Then
-                strEcosimScenarioName = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex).Name
+                strEcospaceScenarioName = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex).Name
+            End If
+            If (core.ActiveEcotracerScenarioIndex > -1) Then
+                strEcotracerScenarioName = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex).Name
             End If
 
             Me.m_cbAutosaveAll.CheckState = CheckState.Indeterminate
