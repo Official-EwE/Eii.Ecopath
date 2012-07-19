@@ -2363,7 +2363,15 @@ Public Class cCore
             Return Me.m_settings.OutputPath
         End Get
         Set(ByVal value As String)
-            Me.m_settings.OutputPath = cFileUtils.ToValidFileName(value, True)
+            Try
+                Dim strPath As String = cFileUtils.ToValidFileName(value, True)
+                If (String.Compare(strPath, Me.m_settings.OutputPath) <> 0) Then
+                    Me.m_settings.OutputPath = strPath
+                    Me.Messages.SendMessage(New cMessage("Output path has changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "cCore::OutputPath(" & value & ")")
+            End Try
         End Set
     End Property
 
@@ -2441,8 +2449,9 @@ Public Class cCore
     Public Function EcopathOutputFileLocation(Optional ByVal strComponent As String = "", _
                                               Optional ByVal strFilter As String = "", _
                                               Optional ByVal strExt As String = "", _
-                                              Optional ByVal bIncludeTime As Boolean = False) As String
-        Return Me.OutputFileName(strComponent, "Ecopath", bIncludeTime, strExt, strFilter)
+                                              Optional ByVal bIncludeTime As Boolean = False, _
+                                              Optional ByVal strPrefix As String = "Ecopath") As String
+        Return Me.OutputFileName(strComponent, strPrefix, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2462,13 +2471,14 @@ Public Class cCore
                                              Optional ByVal strFilter As String = "", _
                                              Optional ByVal strExt As String = "", _
                                              Optional ByVal bIncludeTime As Boolean = False, _
-                                             Optional ByVal strScenarioName As String = "") As String
+                                             Optional ByVal strScenarioName As String = "", _
+                                             Optional ByVal strPrefix As String = "Ecosim_") As String
         If (String.IsNullOrEmpty(strScenarioName)) Then
             If (Me.ActiveEcosimScenarioIndex > -1) Then
                 strScenarioName = Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
             End If
         End If
-        Return Me.OutputFileName(strComponent, "Ecosim_" & strScenarioName, bIncludeTime, strExt, strFilter)
+        Return Me.OutputFileName(strComponent, strPrefix & strScenarioName, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2487,13 +2497,14 @@ Public Class cCore
                                                Optional ByVal strFilter As String = "", _
                                                Optional ByVal strExt As String = "", _
                                                Optional ByVal bIncludeTime As Boolean = False, _
-                                               Optional ByVal strScenarioName As String = "") As String
+                                               Optional ByVal strScenarioName As String = "", _
+                                               Optional ByVal strPrefix As String = "Ecospace_") As String
         If (String.IsNullOrEmpty(strScenarioName)) Then
             If (Me.ActiveEcospaceScenarioIndex > -1) Then
                 strScenarioName = Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
             End If
         End If
-        Return Me.OutputFileName(strComponent, "Ecospace_" & strScenarioName, bIncludeTime, strExt, strFilter)
+        Return Me.OutputFileName(strComponent, strPrefix & strScenarioName, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -2512,13 +2523,14 @@ Public Class cCore
                                                 Optional ByVal strFilter As String = "", _
                                                 Optional ByVal strExt As String = "", _
                                                 Optional ByVal bIncludeTime As Boolean = False, _
-                                                Optional ByVal strScenarioName As String = "") As String
+                                                Optional ByVal strScenarioName As String = "", _
+                                               Optional ByVal strPrefix As String = "Ecotracer_") As String
         If (String.IsNullOrEmpty(strScenarioName)) Then
             If (Me.ActiveEcotracerScenarioIndex > -1) Then
                 strScenarioName = Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
             End If
         End If
-        Return Me.OutputFileName(strComponent, "Ecotracer_" & strScenarioName, bIncludeTime, strExt, strFilter)
+        Return Me.OutputFileName(strComponent, strPrefix & strScenarioName, bIncludeTime, strExt, strFilter)
     End Function
 
     ''' -----------------------------------------------------------------------
