@@ -1422,7 +1422,7 @@ Public Class AppLauncher
         If (alMDBmru Is Nothing) Then Return
 
         ' Remove all occurrences from the list
-        While iStartPos < alMDBmru.Count - 2
+        While iStartPos < alMDBmru.Count - 1
             If (TypeOf alMDBmru(iStartPos) Is String) Then
                 ' Get entry
                 Dim strEntry As String = CStr(alMDBmru(iStartPos))
@@ -4029,22 +4029,22 @@ Public Class AppLauncher
         Dim strPath As String = ""
 
         If cPathUtility.ResolvePath(My.Settings.BackupFileMask, Me.Core, strPath) Then
-            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
+            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath), True) Then
                 ' Pass MASK in because the core will need to substitute fields into the mask
                 Me.Core.BackupFileMask = My.Settings.BackupFileMask
             End If
         End If
 
         If cPathUtility.ResolvePath(My.Settings.OutputPathMask, Me.Core, strPath) Then
-            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath)) Then
+            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath), True) Then
                 ' Pass actual formatted path because the core will not change this further.
-                Me.Core.OutputPath = strPath
+                Me.Core.OutputPath = Path.GetDirectoryName(strPath)
 
                 If (bResetUI) Then
                     ' Also reset file and directory commands to use output dir by default
-                    Me.m_cmdFileOpen.Directory = strPath
-                    Me.m_cmdFileSave.Directory = strPath
-                    Me.m_cmdDirectoryOpen.Directory = strPath
+                    Me.m_cmdFileOpen.Directory = Me.Core.OutputPath
+                    Me.m_cmdFileSave.Directory = Me.Core.OutputPath
+                    Me.m_cmdDirectoryOpen.Directory = Me.Core.OutputPath
                 End If
             End If
         End If
@@ -4113,7 +4113,7 @@ Public Class AppLauncher
             Me.PopulateMRUDropdown()
             Me.PopulateScenarioDropdowns()
         Catch ex As Exception
-
+            cLog.Write(ex, "AppLauncher::OnCoreExecutionStateChanged(" & csm.CoreExecutionState.ToString() & ")")
         End Try
 
     End Sub
@@ -4129,7 +4129,7 @@ Public Class AppLauncher
                 End If
             End If
         Catch ex As Exception
-
+            cLog.Write(ex, "AppLauncher::OnCoreMessage(" & msg.Message & ")")
         End Try
     End Sub
 
@@ -4140,7 +4140,7 @@ Public Class AppLauncher
             Dim pmsg As cProgressMessage = DirectCast(msg, cProgressMessage)
             Me.ShowProgress(pmsg.ProgressState, pmsg.Message, pmsg.Progress)
         Catch ex As Exception
-
+            cLog.Write(ex, "AppLauncher::OnProgressMessage(" & msg.Message & ")")
         End Try
     End Sub
 

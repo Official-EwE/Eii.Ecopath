@@ -19,8 +19,9 @@
 
 Option Strict On
 Imports EwECore.Ecopath
-Imports EwECore.EcoSim
+Imports EwECore.Ecosim
 Imports EwEUtils.Core
+Imports EwEPlugin
 
 #End Region ' Imports
 
@@ -115,7 +116,7 @@ Public Class cEcosimMonteCarlo
     Private m_esdata As cEcosimDatastructures
     Private m_stanza As cStanzaDatastructures 'needs to come in from the core
     Private m_tracerData As cContaminantTracerDataStructures
-
+    Private m_pluginmanager As cPluginManager
 
     Private AbortRun As Boolean
 
@@ -169,6 +170,7 @@ Public Class cEcosimMonteCarlo
 
         Try
             redimVariables()
+            m_pluginmanager = Me.m_core.PluginManager
 
             'vc sep 2008: adding vulnerability to MC: changed first dimension from 5 to 6
             ReDim Pmean(Me.NumParams(), m_core.nGroups)
@@ -187,6 +189,13 @@ Public Class cEcosimMonteCarlo
                 Pmean(eMCParams.OtherMort, igrp) = m_epdata.OtherMortinput(igrp)
             Next
             CalculateUpperLowerLimits(False)
+
+            ' Fire plug-in point
+            If Me.m_pluginmanager IsNot Nothing Then
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.MonteCarlo
+                Me.m_pluginmanager.SearchInitialized(Me.m_core.m_SearchData)
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
+            End If
 
             Return True
         Catch ex As Exception
@@ -372,6 +381,15 @@ Public Class cEcosimMonteCarlo
 
             Me.m_ouputWriter.Init()
 
+            ' Fire plug-in point
+            If Me.m_pluginmanager IsNot Nothing Then
+                Try
+                    Me.m_pluginmanager.SearchIterationsStarting()
+                Catch ex As Exception
+                    cLog.Write(ex, "cEcosimMonteCarlo::Run(SearchIterationsStarting)")
+                End Try
+            End If
+
             'nThreads = System.Environment.ProcessorCount
             'nThreads = 1
             'NtrialsPerThread = (Ntrials + nThreads - 1) \ nThreads
@@ -402,7 +420,7 @@ Public Class cEcosimMonteCarlo
                 RunsSinceLastWithLowerSS += 1
 
                 If Not BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
-                    'Ecopath failed to run stop the trials loop
+                    'Ecopath failed to run; stop the trials loop
                     Exit For
                 End If
 
@@ -486,6 +504,14 @@ Public Class cEcosimMonteCarlo
 
                 Me.m_ouputWriter.Save(False)
 
+                ' Fire plug-in point
+                If Me.m_pluginmanager IsNot Nothing Then
+                    Try
+                        Me.m_pluginmanager.PostRunSearchResults(Me.m_core.m_SearchData)
+                    Catch ex As Exception
+                        cLog.Write(ex, "cEcosimMonteCarlo::Run(" & iTrial & ")")
+                    End Try
+                End If
                 If RunsSinceLastWithLowerSS > 2000 Then Exit For
             Next iTrial
 

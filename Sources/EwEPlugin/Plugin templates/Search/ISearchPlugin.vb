@@ -27,7 +27,7 @@ Public Interface ISearchPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Fishing Policy search has been initialized by the core.
+    ''' Search has been initialized by the core.
     ''' </summary>
     ''' <param name="SearchDatastructures">cSearchDataStructures</param>
     ''' -----------------------------------------------------------------------
