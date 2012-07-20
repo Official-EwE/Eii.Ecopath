@@ -584,7 +584,7 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("{MyDocuments}\EwE6 backup\{ModelFile}_{Date}-{Time}.{ModelExt}")>  _
+     Global.System.Configuration.DefaultSettingValueAttribute("{MyDocuments}\EwE backup\{ModelFile}_{Date}-{Time}.{ModelExt}")>  _
     Public Property BackupFileMask() As String
         Get
             Return CType(Me("BackupFileMask"),String)
@@ -596,7 +596,7 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("{MyDocuments}\EwE6 output\{ModelFile}\")>  _
+     Global.System.Configuration.DefaultSettingValueAttribute("{MyDocuments}\EwE output\")>  _
     Public Property OutputPathMask() As String
         Get
             Return CType(Me("OutputPathMask"),String)

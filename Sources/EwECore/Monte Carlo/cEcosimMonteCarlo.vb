@@ -350,11 +350,7 @@ Public Class cEcosimMonteCarlo
             m_ecopath.ParameterEstimationType = eEstimateParameterFor.Sensitivity
 
             'set the ecosim time step delegate for plotting
-            If bShowPlot Then
-                m_ecosim.TimeStepDelegate = EcosimTimeStep
-            Else
-                m_ecosim.TimeStepDelegate = Nothing
-            End If
+            m_ecosim.TimeStepDelegate = EcosimTimeStep
 
         Catch ex As Exception
             cLog.Write(ex)

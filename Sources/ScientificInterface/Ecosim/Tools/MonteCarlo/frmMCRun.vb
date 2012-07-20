@@ -116,7 +116,6 @@ Namespace Ecosim
             Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSBest, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
-            Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
 
@@ -197,13 +196,6 @@ Namespace Ecosim
             Me.m_mcmanager.ApplyBestFits()
         End Sub
 
-        Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cbShowBioTraj.CheckedChanged
-            If Not Me.m_mcmanager Is Nothing Then
-                Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
-            End If
-        End Sub
-
         Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbRetainCurPattern.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
@@ -258,12 +250,9 @@ Namespace Ecosim
         Private Sub MonteCarloStepHandler()
 
             Try
-                ' Be conservative in providing status feedback
-                If (Me.m_mcmanager.nTrialIterations Mod cCore.N_MONTHS = 0) Then
-                    cApplicationStatusNotifier.UpdateProgress(Me.Core, _
-                                                              My.Resources.STATUS_SEARCH_SEARCHING, _
-                                                              Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
-                End If
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, _
+                                                          My.Resources.STATUS_SEARCH_SEARCHING, _
+                                                          Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
 
                 Me.m_fpTrial.Value = Me.m_mcmanager.nTrialIterations
                 Me.m_fpSS.Value = Me.m_mcmanager.SS
@@ -362,7 +351,7 @@ Namespace Ecosim
             Me.m_btnTS.Enabled = False
             Me.m_cbSave.Enabled = False
 
-            If Me.m_mcmanager.bShowPlot Then
+            If Me.m_cbShowBioTraj.Checked Then
                 ' Select biomass plot page.
                 Me.m_tcOutput.SelectedTab = Me.m_tbpBPlot
             End If
@@ -374,7 +363,7 @@ Namespace Ecosim
             Me.m_fpSSBest.Value = 0.0!
             Me.m_sYMax = 1.0!
 
-            cApplicationStatusNotifier.EndProgress(Me.Core)
+            cApplicationStatusNotifier.StartProgress(Me.Core)
 
             ' Clear out the old data
             Me.m_plothelper.Clear()
@@ -465,7 +454,7 @@ Namespace Ecosim
         Private Sub UpdateGraphHighlights()
 
             'Only Highlight if the graphs are drawing
-            If Me.m_mcmanager.bShowPlot Then
+            If Me.m_cbShowBioTraj.Checked Then
 
                 ' Start setting highlights
                 Me.m_plothelper.ClearHighlights()
@@ -501,7 +490,7 @@ Namespace Ecosim
             Me.m_plothelper.CreateRun(String.Format(SharedResources.GENERIC_VALUE_ITERATION, Me.m_nTrials))
             Me.m_lpplIteration.Clear()
 
-            If (Me.m_mcmanager.bShowPlot = True) Then
+            If (Me.m_cbShowBioTraj.Checked) Then
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     Me.m_lpplIteration.Add(New PointPairList())
