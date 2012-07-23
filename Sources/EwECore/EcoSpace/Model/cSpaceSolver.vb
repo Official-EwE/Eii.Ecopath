@@ -249,8 +249,8 @@ Public Class cSpaceSolver
         If m_TracerData.EcoSpaceConSimOn Then
             ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
         End If
-        Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
-        Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T=" & DateTime.Now.ToLongTimeString)
+        'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+        ' Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T=" & DateTime.Now.ToLongTimeString)
 
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
@@ -272,7 +272,7 @@ Public Class cSpaceSolver
                 SolveCell(m_Data.iWaterCellIndex(iGrp), m_Data.jWaterCellIndex(iGrp))
 
             Next iGrp
-            Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", End T=" & DateTime.Now.ToLongTimeString)
+            'Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", End T=" & DateTime.Now.ToLongTimeString)
 
 
             'thread has finished it is ok to run this again
@@ -409,9 +409,11 @@ Public Class cSpaceSolver
 
             If RelPPupwell < 1 Then RelPPupwell = 1
 
+            ' Dim relPP As Double = Math.Round((m_Data.RelPP(i, j) / PPScale * RelPPupwell), 3)
+            Dim relPPScaler As Double = (m_Data.RelPP(i, j) / PPScale)
 
             'jb compute Flowin() and FlowoutRate() for all groups for this row/col
-            derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, m_Data.RelPP(i, j) / PPScale * RelPPupwell, i, j)
+            derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, relPPScaler, i, j)
 
             If m_TracerData.EcoSpaceConSimOn Then
                 m_ConTracer.loss = loss 'set loss to ecospace loss for this cell
@@ -548,7 +550,7 @@ Public Class cSpaceSolver
 
     End Function
 
-    Private Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProd As Double, ByVal iRow As Integer, ByVal iCol As Integer)
+    Private Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProdScaler As Double, ByVal iRow As Integer, ByVal iCol As Integer)
         'reduced derivatives for MPA equilibration procedure
         Dim i As Integer, j As Integer, ii As Integer
         Dim eat As Single, Pmult As Single
@@ -587,7 +589,7 @@ Public Class cSpaceSolver
                 NutBiom = NutBiom + Biomass(i)
             Next
 
-            NutFree = CSng(m_SimData.NutTot * RelProd - NutBiom)
+            NutFree = CSng(m_SimData.NutTot * RelProdScaler - NutBiom)
             If NutFree < m_SimData.NutMin Then NutFree = m_SimData.NutMin
 
             '*************
