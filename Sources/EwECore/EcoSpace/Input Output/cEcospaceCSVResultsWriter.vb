@@ -140,7 +140,9 @@ Public Class cEcospaceCSVResultsWriter
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
             fn = Me.getGroupFileName(varname, igrp, "CSV")
-            strm = New StreamWriter(fn, True)
+            'Create a new file when writting the header
+            'this overwrites the data in the current directory
+            strm = New StreamWriter(fn)
             Me.WriteHeader(strm, igrp, varname)
             strm.Close()
             strm = Nothing
