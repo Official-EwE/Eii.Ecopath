@@ -1839,10 +1839,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ecopath6_internal\Sources\EwECustomPlugins\EwEBioDivIndicatorsPlugin\EwEBioDiversityIndicatorsPlugin.vbproj">
-      <Project>{ADA9F604-2A16-4816-9FE5-31487778902D}</Project>
-      <Name>EwEBioDiversityIndicatorsPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>

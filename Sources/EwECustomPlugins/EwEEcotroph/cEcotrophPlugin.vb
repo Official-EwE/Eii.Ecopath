@@ -71,7 +71,7 @@ Public Class cEcotrophPlugin
 #Region " Plugin points implementation "
 
     ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="EwEPlugin.IPlugin.CoreInitialized"/>
+    ''' <inheritdocs cref="EwEPlugin.ICorePlugin.CoreInitialized"/>
     ''' -----------------------------------------------------------------------
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
         ' NOP

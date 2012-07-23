@@ -101,7 +101,11 @@ Namespace Ecospace
             Dim fleet As cEcospaceFleetOutput = Nothing
             For i As Integer = 0 To Me.Core.nFleets
                 fleet = Me.Core.EcospaceFleetOutput(i)
-                Me.m_cmbGears.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, i, fleet.Name))
+                If (i = 0) Then
+                    Me.m_cmbGears.Items.Add(fleet.Name)
+                Else
+                    Me.m_cmbGears.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, i, fleet.Name))
+                End If
             Next
             Me.m_cmbGears.SelectedIndex = 0
 
@@ -109,7 +113,11 @@ Namespace Ecospace
             Dim region As cEcospaceRegionOutput = Nothing
             For i As Integer = 0 To Me.Core.nRegions
                 region = Me.Core.EcospaceRegionOutput(i)
-                m_cmbRegions.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, i, region.Name))
+                If (i = 0) Then
+                    m_cmbRegions.Items.Add(region.Name)
+                Else
+                    m_cmbRegions.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, i, region.Name))
+                End If
             Next
             m_cmbRegions.SelectedIndex = 0
 

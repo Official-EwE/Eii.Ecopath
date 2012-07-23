@@ -21,6 +21,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -35,6 +36,8 @@ Namespace Other
         Implements IOptionsPage
 
         Private m_uic As cUIContext = Nothing
+        Private m_strVersion As String = Application.ProductVersion.ToString
+        Private m_strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
 
 #Region " Constructors "
 
@@ -58,10 +61,11 @@ Namespace Other
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            ' ToDo: globalize this
-            Dim strEcosimScenarioName As String = "{scenario}"
-            Dim strEcospaceScenarioName As String = "{scenario}"
-            Dim strEcotracerScenarioName As String = "{scenario}"
+            Dim strScenarioDefault As String = ("{" & SharedResources.HEADER_SCENARIO & "}").ToLower()
+            Dim strEcosimScenarioName As String = strScenarioDefault
+            Dim strEcospaceScenarioName As String = strScenarioDefault
+            Dim strEcotracerScenarioName As String = strScenarioDefault
+            Dim strOutput As String = ("{" & SharedResources.HEADER_OUTPUT_LOCATION & "}").ToLower() & IO.Path.DirectorySeparatorChar
             Dim core As cCore = Me.m_uic.Core
 
             If (core.ActiveEcosimScenarioIndex > -1) Then
@@ -78,14 +82,14 @@ Namespace Other
             Me.m_cbEcosim.CheckState = CheckState.Indeterminate
             Me.m_cbEcospace.CheckState = CheckState.Indeterminate
 
-            Me.m_tbxEcosim.Text = core.EcosimOutputFileLocation(strScenarioName:=strEcosimScenarioName)
-            Me.m_tbxMC.Text = core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MonteCarlo.ToString(), strScenarioName:=strEcosimScenarioName)
-            Me.m_tbxMSE.Text = core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MSE.ToString(), strScenarioName:=strEcosimScenarioName)
+            Me.m_tbxEcosim.Text = strOutput & core.EcosimOutputFileLocation(strScenarioName:=strEcosimScenarioName)
+            Me.m_tbxMC.Text = strOutput & core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MonteCarlo.ToString(), strScenarioName:=strEcosimScenarioName)
+            Me.m_tbxMSE.Text = strOutput & core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MSE.ToString(), strScenarioName:=strEcosimScenarioName)
 
-            Me.m_tbxASCII.Text = core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".asc")
-            Me.m_tbxCSV.Text = core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".csv")
+            Me.m_tbxASCII.Text = strOutput & core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".asc")
+            Me.m_tbxCSV.Text = strOutput & core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".csv")
 
-            Me.m_tbxTracer.Text = core.EcotracerOutputFileLocation(strScenarioName:=strEcotracerScenarioName)
+            Me.m_tbxTracer.Text = strOutput & core.EcotracerOutputFileLocation(strScenarioName:=strEcotracerScenarioName)
 
             Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.EcosimRun)
             Me.m_cbMonteCarlo.Checked = core.Autosave(eAutosaveTypes.MonteCarlo)
@@ -153,18 +157,18 @@ Namespace Other
 
 #Region " Event handlers "
 
-        Private Sub SaveAllClicked(sender As System.Object, e As System.EventArgs) _
+        Private Sub OnSaveAllClicked(sender As System.Object, e As System.EventArgs) _
             Handles m_cbAutosaveAll.Click
 
             Me.m_cbEcosim.Checked = Me.m_cbAutosaveAll.Checked
             Me.m_cbEcospace.Checked = Me.m_cbAutosaveAll.Checked
             Me.m_cbEcotracer.Checked = Me.m_cbAutosaveAll.Checked
-            Me.EcosimClicked(sender, e)
-            Me.EcospaceClicked(sender, e)
+            Me.OnEcosimClicked(sender, e)
+            Me.OnEcospaceClicked(sender, e)
 
         End Sub
 
-        Private Sub EcosimClicked(sender As System.Object, e As System.EventArgs) _
+        Private Sub OnEcosimClicked(sender As System.Object, e As System.EventArgs) _
             Handles m_cbEcosim.Click
 
             Me.m_cbEcosimRun.Checked = Me.m_cbEcosim.Checked
@@ -173,7 +177,7 @@ Namespace Other
 
         End Sub
 
-        Private Sub EcospaceClicked(sender As System.Object, e As System.EventArgs) _
+        Private Sub OnEcospaceClicked(sender As System.Object, e As System.EventArgs) _
             Handles m_cbEcospace.Click
 
             Me.m_cbSpaceASCII.Checked = Me.m_cbEcospace.Checked
@@ -237,12 +241,10 @@ Namespace Other
 
         Private Sub UpdateSample(ByVal tbx As TextBox, ByVal strMask As String)
 
-            Dim strVersion As String = Application.ProductVersion.ToString
-            Dim strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
             Dim strSample As String = ""
 
             If Not cPathUtility.ResolvePath(strMask, Me.m_uic.Core, strSample) Then
-                cPathUtility.ResolvePath(strMask, "{model}", strDocDir, ".eweaccdb", strVersion, strSample)
+                cPathUtility.ResolvePath(strMask, "{model}", m_strDocDir, ".eweaccdb", m_strVersion, strSample)
             End If
             tbx.Text = cStringUtils.CompactString(strSample, tbx.ClientRectangle.Width, tbx.Font, TextFormatFlags.PathEllipsis)
 

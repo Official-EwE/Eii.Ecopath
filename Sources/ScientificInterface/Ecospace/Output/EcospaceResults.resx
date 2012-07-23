@@ -112,23 +112,23 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_plResultsGrid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_plResultsGrid.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 110</value>
   </data>
   <data name="m_plResultsGrid.Size" type="System.Drawing.Size, System.Drawing">
     <value>692, 416</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_plResultsGrid.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
@@ -136,7 +136,7 @@
     <value>m_plResultsGrid</value>
   </data>
   <data name="&gt;&gt;m_plResultsGrid.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_plResultsGrid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -145,7 +145,7 @@
     <value>13</value>
   </data>
   <data name="m_nudSumLength.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 84</value>
+    <value>150, 81</value>
   </data>
   <data name="m_nudSumLength.Size" type="System.Drawing.Size, System.Drawing">
     <value>49, 20</value>
@@ -157,7 +157,7 @@
     <value>m_nudSumLength</value>
   </data>
   <data name="&gt;&gt;m_nudSumLength.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudSumLength.Parent" xml:space="preserve">
     <value>$this</value>
@@ -178,7 +178,7 @@
     <value>m_tbSumEndTime</value>
   </data>
   <data name="&gt;&gt;m_tbSumEndTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbSumEndTime.Parent" xml:space="preserve">
     <value>$this</value>
@@ -199,7 +199,7 @@
     <value>m_tbSumStartTime</value>
   </data>
   <data name="&gt;&gt;m_tbSumStartTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tbSumStartTime.Parent" xml:space="preserve">
     <value>$this</value>
@@ -217,19 +217,19 @@
     <value>12, 33</value>
   </data>
   <data name="m_lblSumStartTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 13</value>
+    <value>55, 13</value>
   </data>
   <data name="m_lblSumStartTime.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="m_lblSumStartTime.Text" xml:space="preserve">
-    <value>&amp;Begin:</value>
+    <value>&amp;Start year:</value>
   </data>
   <data name="&gt;&gt;m_lblSumStartTime.Name" xml:space="preserve">
     <value>m_lblSumStartTime</value>
   </data>
   <data name="&gt;&gt;m_lblSumStartTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblSumStartTime.Parent" xml:space="preserve">
     <value>$this</value>
@@ -247,19 +247,19 @@
     <value>12, 59</value>
   </data>
   <data name="m_lblSumEndTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
+    <value>52, 13</value>
   </data>
   <data name="m_lblSumEndTime.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="m_lblSumEndTime.Text" xml:space="preserve">
-    <value>&amp;End:</value>
+    <value>&amp;End year:</value>
   </data>
   <data name="&gt;&gt;m_lblSumEndTime.Name" xml:space="preserve">
     <value>m_lblSumEndTime</value>
   </data>
   <data name="&gt;&gt;m_lblSumEndTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblSumEndTime.Parent" xml:space="preserve">
     <value>$this</value>
@@ -280,7 +280,7 @@
     <value>m_cmbRegions</value>
   </data>
   <data name="&gt;&gt;m_cmbRegions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cmbRegions.Parent" xml:space="preserve">
     <value>$this</value>
@@ -301,7 +301,7 @@
     <value>m_cmbGears</value>
   </data>
   <data name="&gt;&gt;m_cmbGears.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cmbGears.Parent" xml:space="preserve">
     <value>$this</value>
@@ -331,7 +331,7 @@
     <value>m_rbGroup</value>
   </data>
   <data name="&gt;&gt;m_rbGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbGroup.Parent" xml:space="preserve">
     <value>$this</value>
@@ -361,7 +361,7 @@
     <value>m_rbRegion</value>
   </data>
   <data name="&gt;&gt;m_rbRegion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbRegion.Parent" xml:space="preserve">
     <value>$this</value>
@@ -391,7 +391,7 @@
     <value>m_rbFleet</value>
   </data>
   <data name="&gt;&gt;m_rbFleet.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbFleet.Parent" xml:space="preserve">
     <value>$this</value>
@@ -399,34 +399,34 @@
   <data name="&gt;&gt;m_rbFleet.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="m_hdrYear.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrSummary.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_hdrYear.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrSummary.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 9</value>
   </data>
-  <data name="m_hdrYear.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrSummary.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 18</value>
   </data>
-  <data name="m_hdrYear.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrSummary.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="m_hdrYear.Text" xml:space="preserve">
-    <value>Year</value>
+  <data name="m_hdrSummary.Text" xml:space="preserve">
+    <value>Summaration  period</value>
   </data>
-  <data name="m_hdrYear.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrSummary.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;m_hdrYear.Name" xml:space="preserve">
-    <value>m_hdrYear</value>
+  <data name="&gt;&gt;m_hdrSummary.Name" xml:space="preserve">
+    <value>m_hdrSummary</value>
   </data>
-  <data name="&gt;&gt;m_hdrYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_hdrSummary.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;m_hdrYear.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSummary.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_hdrYear.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrSummary.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_hdrShow.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -454,7 +454,7 @@
     <value>m_hdrShow</value>
   </data>
   <data name="&gt;&gt;m_hdrShow.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrShow.Parent" xml:space="preserve">
     <value>$this</value>
@@ -481,7 +481,7 @@
     <value>m_lblNumSteps</value>
   </data>
   <data name="&gt;&gt;m_lblNumSteps.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblNumSteps.Parent" xml:space="preserve">
     <value>$this</value>
@@ -489,7 +489,7 @@
   <data name="&gt;&gt;m_lblNumSteps.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -511,6 +511,6 @@
     <value>cFormEcospaceResults</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.1.0.519, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

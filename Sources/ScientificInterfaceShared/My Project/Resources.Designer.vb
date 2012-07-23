@@ -4001,6 +4001,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Output location.
+        '''</summary>
+        Public ReadOnly Property HEADER_OUTPUT_LOCATION() As String
+            Get
+                Return ResourceManager.GetString("HEADER_OUTPUT_LOCATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Parameter.
         '''</summary>
         Public ReadOnly Property HEADER_PARAMETER() As String
@@ -4492,6 +4501,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_SCALEDVALUES() As String
             Get
                 Return ResourceManager.GetString("HEADER_SCALEDVALUES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Scenario.
+        '''</summary>
+        Public ReadOnly Property HEADER_SCENARIO() As String
+            Get
+                Return ResourceManager.GetString("HEADER_SCENARIO", resourceCulture)
             End Get
         End Property
         
@@ -5005,6 +5023,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_TOTEFFMULTI() As String
             Get
                 Return ResourceManager.GetString("HEADER_TOTEFFMULTI", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Trial.
+        '''</summary>
+        Public ReadOnly Property HEADER_TRIAL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TRIAL", resourceCulture)
             End Get
         End Property
         

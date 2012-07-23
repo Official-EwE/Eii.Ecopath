@@ -41,20 +41,20 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cFormEcospaceResults))
-            Me.m_plResultsGrid = New System.Windows.Forms.Panel
-            Me.m_nudSumLength = New cEwENumericUpDown
-            Me.m_tbSumEndTime = New System.Windows.Forms.TextBox
-            Me.m_tbSumStartTime = New System.Windows.Forms.TextBox
-            Me.m_lblSumStartTime = New System.Windows.Forms.Label
-            Me.m_lblSumEndTime = New System.Windows.Forms.Label
-            Me.m_cmbRegions = New System.Windows.Forms.ComboBox
-            Me.m_cmbGears = New System.Windows.Forms.ComboBox
-            Me.m_rbGroup = New System.Windows.Forms.RadioButton
-            Me.m_rbRegion = New System.Windows.Forms.RadioButton
-            Me.m_rbFleet = New System.Windows.Forms.RadioButton
-            Me.m_hdrYear = New cEwEHeaderLabel
-            Me.m_hdrShow = New cEwEHeaderLabel
-            Me.m_lblNumSteps = New System.Windows.Forms.Label
+            Me.m_plResultsGrid = New System.Windows.Forms.Panel()
+            Me.m_nudSumLength = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_tbSumEndTime = New System.Windows.Forms.TextBox()
+            Me.m_tbSumStartTime = New System.Windows.Forms.TextBox()
+            Me.m_lblSumStartTime = New System.Windows.Forms.Label()
+            Me.m_lblSumEndTime = New System.Windows.Forms.Label()
+            Me.m_cmbRegions = New System.Windows.Forms.ComboBox()
+            Me.m_cmbGears = New System.Windows.Forms.ComboBox()
+            Me.m_rbGroup = New System.Windows.Forms.RadioButton()
+            Me.m_rbRegion = New System.Windows.Forms.RadioButton()
+            Me.m_rbFleet = New System.Windows.Forms.RadioButton()
+            Me.m_hdrSummary = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrShow = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblNumSteps = New System.Windows.Forms.Label()
             CType(Me.m_nudSumLength, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -123,15 +123,20 @@ Namespace Ecospace
             Me.m_rbFleet.TabStop = True
             Me.m_rbFleet.UseVisualStyleBackColor = True
             '
-            'm_hdrYear
+            'm_hdrSummary
             '
-            Me.m_hdrYear.BackColor = System.Drawing.SystemColors.ButtonShadow
-            resources.ApplyResources(Me.m_hdrYear, "m_hdrYear")
-            Me.m_hdrYear.Name = "m_hdrYear"
+            Me.m_hdrSummary.CanCollapseParent = False
+            Me.m_hdrSummary.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrSummary, "m_hdrSummary")
+            Me.m_hdrSummary.IsCollapsed = False
+            Me.m_hdrSummary.Name = "m_hdrSummary"
             '
             'm_hdrShow
             '
             resources.ApplyResources(Me.m_hdrShow, "m_hdrShow")
+            Me.m_hdrShow.CanCollapseParent = False
+            Me.m_hdrShow.CollapsedParentHeight = 0
+            Me.m_hdrShow.IsCollapsed = False
             Me.m_hdrShow.Name = "m_hdrShow"
             '
             'm_lblNumSteps
@@ -145,7 +150,7 @@ Namespace Ecospace
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_lblNumSteps)
             Me.Controls.Add(Me.m_hdrShow)
-            Me.Controls.Add(Me.m_hdrYear)
+            Me.Controls.Add(Me.m_hdrSummary)
             Me.Controls.Add(Me.m_cmbRegions)
             Me.Controls.Add(Me.m_cmbGears)
             Me.Controls.Add(Me.m_rbGroup)
@@ -164,19 +169,19 @@ Namespace Ecospace
 
         End Sub
         Private WithEvents m_plResultsGrid As System.Windows.Forms.Panel
-        Private WithEvents m_nudSumLength As System.Windows.Forms.NumericUpDown
         Private WithEvents m_tbSumEndTime As System.Windows.Forms.TextBox
         Private WithEvents m_lblSumStartTime As System.Windows.Forms.Label
         Private WithEvents m_lblSumEndTime As System.Windows.Forms.Label
         Private WithEvents m_cmbRegions As System.Windows.Forms.ComboBox
         Private WithEvents m_cmbGears As System.Windows.Forms.ComboBox
         Private WithEvents m_rbGroup As System.Windows.Forms.RadioButton
-        Private WithEvents m_hdrYear As cEwEHeaderLabel
+        Private WithEvents m_hdrSummary As cEwEHeaderLabel
         Private WithEvents m_hdrShow As cEwEHeaderLabel
         Private WithEvents m_lblNumSteps As System.Windows.Forms.Label
         Private WithEvents m_rbFleet As System.Windows.Forms.RadioButton
         Private WithEvents m_tbSumStartTime As System.Windows.Forms.TextBox
         Private WithEvents m_rbRegion As System.Windows.Forms.RadioButton
+        Private WithEvents m_nudSumLength As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 
 End Namespace
