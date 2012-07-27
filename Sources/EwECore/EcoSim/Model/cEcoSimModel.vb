@@ -1307,7 +1307,7 @@ Namespace Ecosim
             'runge-kutta integration from Press et al 1992 ed p 707
             'jb the runge-kutta integration method looks like it came directly from Numerical Recipies in C
             Dim dh As Single, d6 As Single, th As Single
-            Dim EatenbySt(Me.m_Data.nGroups) As Single, LossSt(Me.m_Data.nGroups) As Single
+            Dim LossSt(Me.m_Data.nGroups) As Single
             Dim i As Integer
 
             '090905VC&JB: discussion with Carl:
@@ -1352,7 +1352,6 @@ Namespace Ecosim
             SaveEiiDataFromEcosim(B)
 
             For i = 1 To nGroups
-                EatenbySt(i) = m_Data.Eatenby(i)
                 LossSt(i) = m_Data.loss(i)
 
                 'averages use to update Ftime() at end of month
