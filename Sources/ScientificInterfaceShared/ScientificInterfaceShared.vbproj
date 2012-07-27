@@ -115,6 +115,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
     <Compile Include="GeoCode\cGeoCodeLookup.vb" />
     <Compile Include="GeoCode\cGoogleMapsLookup.vb" />
     <Compile Include="Commands\cDirectoryOpenCommand.vb" />
