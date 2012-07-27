@@ -398,6 +398,51 @@ Public Class cLog
 
     End Sub
 
+
+    ''' <summary>
+    ''' Append the contents of a 3 "map" array to file. The data will be written row, col, group. Each call is a new block in the file.
+    ''' </summary>
+    ''' <param name="strFilename">Name of the file to append</param>
+    ''' <param name="array">Array whose contents get written to new line in the file</param>
+    ''' <remarks>Used for debugging to test the contents of an array against the original code
+    ''' the data is appended so that it can be written to multiple time each call is a new block
+    ''' </remarks>
+    <CLSCompliant(False)> _
+    Public Shared Sub WriteGroupMapToFile(ByVal strFilename As String, ByVal array(,,) As Single, Optional ByVal strHeader As String = "")
+        Dim strm As System.IO.StreamWriter
+        Dim n1 As Integer = array.GetUpperBound(0)
+        Dim n2 As Integer = array.GetUpperBound(1)
+        Dim n3 As Integer = array.GetUpperBound(2)
+        Dim i As Integer, j As Integer, igrp As Integer
+
+        Try
+            Dim strTarget As String = FixDirectory(strFilename)
+            strm = System.IO.File.AppendText(strFilename)
+
+            If strHeader <> "" Then
+                strm.WriteLine(strHeader)
+            End If
+
+            For igrp = 1 To n3
+                For i = 1 To n1
+                    For j = 1 To n2
+                        strm.Write(array(i, j, igrp).ToString())
+                        strm.Write(",")
+                    Next j
+                    strm.WriteLine("")
+                Next i
+                strm.WriteLine("")
+                strm.WriteLine(igrp.ToString)
+            Next igrp
+            strm.Close()
+
+        Catch ex As Exception
+            cLog.Write("Error in WriteArrayToFile(...) Error: " + ex.Message)
+        End Try
+
+
+    End Sub
+
     ''' <summary>
     ''' Append the contents of a singly dimensioned array to a csv file. Each call is a new line in the file.
     ''' </summary>
