@@ -263,7 +263,7 @@ Namespace SpatialData
                                     dataExternal = Nothing
 
                                     ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
-                                    Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
+                                    ' Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
 
                                 Else
                                     Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) external data missing for T{2}, ext({3},{4}) to ({5},{6}), cell size {7}"

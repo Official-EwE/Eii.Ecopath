@@ -13,10 +13,11 @@ Namespace SpatialData
     ''' Data Adapter specific to Relative PP
     ''' </summary>
     ''' <remarks>
-    ''' Clears the Ecospace RelPP scaler if data is loaded
+    ''' Does not actually scale the data rather it sets <see cref="cEcospaceDataStructures.PPScale"> EcoSpace PPScale</see> 
+    ''' which is used by <see cref="cSpaceSolver"> cSpaceSolver.deritvRed </see> to scale RelPP.
     ''' </remarks>
     Public Class cRelPPDataAdapter
-        Inherits cSpatialScalarDataAdapter
+        Inherits cSpatialScalarDataAdapterBase
 
 #Region " Private vars "
 
@@ -76,17 +77,18 @@ Namespace SpatialData
 
             Try
                 ' Set PP scale value first time data is encountered for a run
-
                 ' Is PP scale factor (still) clear?
                 If (Me.m_sPreservedScale = cCore.NULL_VALUE) And (Me.m_spaceData.PPScale <> cCore.NULL_VALUE) Then
                     Me.m_sPreservedScale = Me.m_spaceData.PPScale
-                    Me.m_spaceData.PPScale = 1.0F
+                    'Me.m_spaceData.PPScale = 1.0F
+                    Me.m_spaceData.PPScale = Me.DataScale(layer.Index)
                 End If
             Catch ex As Exception
                 System.Console.WriteLine("Exception: " & Me.ToString & ".PreAdapt() " & ex.Message)
                 Return False
             End Try
 
+            'Return True
             Return MyBase.Adapt(bm, layer, iTime, dt, dataExternal)
 
         End Function

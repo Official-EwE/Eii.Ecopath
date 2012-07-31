@@ -26,6 +26,50 @@ Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
+#Region "cSpatialScalarDataAdapter"
+    ''' <summary>
+    ''' Implementation of <see cref="cSpatialScalarDataAdapterBase">cSpatialScalarDataAdapterBase</see> to scale data by <see cref="cSpatialScalarDataAdapterBase.DataScale"> DataScale</see>
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Class cSpatialScalarDataAdapter
+        Inherits cSpatialScalarDataAdapterBase
+
+#Region " Constructor "
+
+        Public Sub New(ByVal core As cCore, ByVal varName As eVarNameFlags, ByVal cc As eCoreCounterTypes)
+            MyBase.New(core, varName, cc)
+        End Sub
+
+#End Region ' Constructor
+
+#Region "Overrides"
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
+        ''' <remarks>Overridden to scale values prior to being set in the 
+        ''' Ecospace data structures.</remarks>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
+                                             ByVal iRow As Integer, _
+                                             ByVal iCol As Integer, _
+                                             ByVal sValueAtT As Double) As Boolean
+
+            If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
+                sValueAtT /= Me.DataScale(layer.Index)
+            End If
+
+            Return MyBase.SetCell(layer, iRow, iCol, sValueAtT)
+
+        End Function
+
+#End Region
+
+    End Class
+
+#End Region
+
+#Region "Base Class"
+
     ''' <summary>
     ''' Derived spatial data adapter to insert scaled external spatial/temporal map data into
     ''' the Ecospace data structures at any given moment. This adapter maintains a scale
@@ -33,13 +77,14 @@ Namespace SpatialData
     ''' to relative values when <see cref="cSpatialScalarDataAdapter.DataScaleType"/> is set to
     ''' <see cref="cSpatialScalarDataAdapter.eScaleType.Relative">relative</see>.
     ''' </summary>
-    Public Class cSpatialScalarDataAdapter
+    Public MustInherit Class cSpatialScalarDataAdapterBase
         Inherits cSpatialDataAdapter
+
 
 #Region " Private variables "
 
-        Private m_scales() As Single
-        Private m_scaleType() As eScaleType
+        Protected m_scales() As Double
+        Protected m_scaleType() As eScaleType
 
 #End Region ' Private variables
 
@@ -91,12 +136,12 @@ Namespace SpatialData
         ''' </summary>
         ''' <param name="iIndex">Layer index [0, <see cref="Length"/>]</param>
         ''' -------------------------------------------------------------------
-        Public Property DataScale(iIndex As Integer) As Single
+        Public Property DataScale(iIndex As Integer) As Double
             Get
                 Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Return Me.m_scales(Math.Max(0, iIndex))
             End Get
-            Set(value As Single)
+            Set(value As Double)
                 Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Me.m_scales(Math.Max(0, iIndex)) = value
             End Set
@@ -187,7 +232,14 @@ Namespace SpatialData
             Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Finished, 1.0!, 1.0!, "", eMessageType.Progress))
 
             If dMapTotValue = 0 Then dMapTotValue = 1
-            dScale = (iNumWaterCells / dMapTotValue)
+            If iNumWaterCells = 0 Then iNumWaterCells = 1
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'jb 30-July-2012 changed DataScale to be used as a divider
+            'to be compatiable with RellPP scaler cEcospaceDataStructures.PPScale
+            'this makes debugging easier
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            ' dScale = (iNumWaterCells / dMapTotValue)
+            dScale = (dMapTotValue / iNumWaterCells) 'mean across all the applicable cells
 
             ' Report for the calculation period
             Dim comp As New cDatasetCompatilibity(Me.m_core, ds, iTSMin, iTSMax - iTSMin)
@@ -218,25 +270,10 @@ Namespace SpatialData
 
         End Sub
 
-       ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
-        ''' <remarks>Overridden to scale values prior to being set in the 
-        ''' Ecospace data structures.</remarks>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Function SetCell(ByVal layer As cEcospaceLayer, _
-                                             ByVal iRow As Integer, _
-                                             ByVal iCol As Integer, _
-                                             ByVal sValueAtT As Double) As Boolean
-
-            If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
-                sValueAtT *= Me.DataScale(layer.Index)
-            End If
-            Return MyBase.SetCell(layer, iRow, iCol, sValueAtT)
-
-        End Function
-
 #End Region ' Overrides
 
     End Class
+
+#End Region
 
 End Namespace
