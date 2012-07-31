@@ -8044,7 +8044,7 @@ Public Class cCore
 #Region " Variables "
 
     Friend m_Ecospace As cEcoSpace
-    Friend m_EcoSpaceData As cEcospaceDataStructures
+    Public m_EcoSpaceData As cEcospaceDataStructures
     Private m_EcoSpaceGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceGroup, 1)
     Private m_EcoSpaceFleets As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcospaceFleet, 1)
     Private m_EcoSpaceScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSpaceScenario, 1)
@@ -8501,7 +8501,7 @@ Public Class cCore
 
             'Save to the current writer always (saveannual = false) or once per year (saveannual=true)
             'Default is to save every time step
-            If (iTime Mod EcospaceModelParameters.NumberOfTimeStepsPerYear = 0) Or (Me.m_EcoSpaceData.bSaveAnnual = False) Then
+            If (iTime Mod CInt(EcospaceModelParameters.NumberOfTimeStepsPerYear) = 0) Or (Me.m_EcoSpaceData.bSaveAnnual = False) Then
                 Me.SaveEcospaceResults(Me.m_spaceresults)
             End If
             'Call the interface delegate
