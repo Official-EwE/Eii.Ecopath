@@ -340,12 +340,12 @@ Namespace Ecospace.Controls
             Handles m_rbAbsolute.CheckedChanged, m_rbRelative.CheckedChanged
 
             Try
-                If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
-                    Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+                If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
+                    Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
                     If (Me.m_rbAbsolute.Checked) Then
-                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Absolute
+                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Absolute
                     Else
-                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Relative
+                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Relative
                     End If
                 End If
             Catch ex As Exception
@@ -354,17 +354,26 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
-            Handles m_tbxScale.TextChanged
-            Try
-                If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
-                    Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
-                    Single.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
-                End If
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
+        Private Sub m_tbxScale_LostFocus(sender As Object, e As System.EventArgs) Handles m_tbxScale.LostFocus
+            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
+                Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
+            End If
+
         End Sub
+
+        'Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
+        '    Handles m_tbxScale.TextChanged
+        '    Try
+        '        Debug.Assert(False, "Warning removed m_tbxScale.TextChanged handler for debugging.")
+        '        'If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
+        '        '    Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+        '        '    Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
+        '        'End If
+        '    Catch ex As Exception
+        '        Debug.Assert(False, ex.Message)
+        '    End Try
+        'End Sub
 
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
@@ -373,7 +382,7 @@ Namespace Ecospace.Controls
                 Me.m_manSets.IndexDataset(Nothing)
                 Me.UpdateControls()
 
-                Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+                Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
                 Dim iStartTimeStep As Integer = Math.Max(1, Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.SelectedDataset.TimeStart))
                 Dim dtStartDate As DateTime = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStartTimeStep)
                 Dim dScale As Double = 1.0
@@ -391,8 +400,8 @@ Namespace Ecospace.Controls
                                            eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
                     Case Else
                         ' Only when ok
-                        ssda.DataScale(Me.m_layer.Index) = CSng(dScale)
-                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapter.eScaleType.Relative
+                        ssda.DataScale(Me.m_layer.Index) = dScale
+                        ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Relative
 
                 End Select
 
@@ -629,7 +638,7 @@ Namespace Ecospace.Controls
             If (Me.m_bInUpdate) Then Return
 
             Me.m_man.Update()
-            Me.m_uic.Core.onChanged(Me.m_layer)
+            ' Me.m_uic.Core.onChanged(Me.m_layer)
 
         End Sub
 
@@ -748,12 +757,12 @@ Namespace Ecospace.Controls
         'End Sub
 
         Private Sub PopulateAdapterControls()
-            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
-                Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
+            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
+                Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
                 Select Case ssda.DataScaleType(Me.m_layer.Index)
-                    Case cSpatialScalarDataAdapter.eScaleType.Absolute
+                    Case cSpatialScalarDataAdapterBase.eScaleType.Absolute
                         Me.m_rbAbsolute.Checked = True
-                    Case cSpatialScalarDataAdapter.eScaleType.Relative
+                    Case cSpatialScalarDataAdapterBase.eScaleType.Relative
                         Me.m_rbRelative.Checked = True
                 End Select
                 Me.m_tbxScale.Text = ssda.DataScale(Me.m_layer.Index).ToString
