@@ -105,10 +105,10 @@ Namespace SpatialData
                             Try
                                 cv = DirectCast(Activator.CreateInstance(t), ISpatialDataConverter)
 
-                                If TypeOf (adt) Is cSpatialScalarDataAdapter Then
-                                    With DirectCast(adt, cSpatialScalarDataAdapter)
+                                If TypeOf (adt) Is cSpatialScalarDataAdapterBase Then
+                                    With DirectCast(adt, cSpatialScalarDataAdapterBase)
                                         .DataScale(i) = cfg.Scale
-                                        .DataScaleType(i) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapter.eScaleType)
+                                        .DataScaleType(i) = DirectCast(cfg.ScaleType, cSpatialScalarDataAdapterBase.eScaleType)
                                     End With
                                 End If
 
@@ -157,9 +157,9 @@ Namespace SpatialData
                         End If
                         cfg.ConverterConfig = ""
 
-                        If TypeOf adt Is cSpatialScalarDataAdapter Then
-                            With DirectCast(adt, cSpatialScalarDataAdapter)
-                                cfg.Scale = .DataScale(i)
+                        If TypeOf adt Is cSpatialScalarDataAdapterBase Then
+                            With DirectCast(adt, cSpatialScalarDataAdapterBase)
+                                cfg.Scale = CSng(.DataScale(i))
                                 cfg.ScaleType = CByte(.DataScaleType(i))
                             End With
                         End If
