@@ -409,11 +409,10 @@ Public Class cSpaceSolver
 
             If RelPPupwell < 1 Then RelPPupwell = 1
 
-            ' Dim relPP As Double = Math.Round((m_Data.RelPP(i, j) / PPScale * RelPPupwell), 3)
-            Dim relPPScaler As Double = (m_Data.RelPP(i, j) / PPScale)
+            Dim scaledPP As Double = (m_Data.RelPP(i, j) / PPScale)
 
             'jb compute Flowin() and FlowoutRate() for all groups for this row/col
-            derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, relPPScaler, i, j)
+            derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, scaledPP, i, j)
 
             If m_TracerData.EcoSpaceConSimOn Then
                 m_ConTracer.loss = loss 'set loss to ecospace loss for this cell
