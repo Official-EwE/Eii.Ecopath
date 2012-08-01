@@ -214,14 +214,25 @@ Public Class cMonteCarloGroup
                     Case eValueTypes.Sng
                         value.Status = eStatusFlags.OK
 
-                        If value.varName = eVarNameFlags.mcB Or value.varName = eVarNameFlags.mcBA _
-                        Or value.varName = eVarNameFlags.mcEE Or value.varName = eVarNameFlags.mcPB _
-                        Or value.varName = eVarNameFlags.mcBbf Or value.varName = eVarNameFlags.mcBAbf _
-                        Or value.varName = eVarNameFlags.mcEEbf Or value.varName = eVarNameFlags.mcPBbf Or value.varName = eVarNameFlags.mcQBbf Then
+                        ' JS 13Feb12: added QB
+                        If (value.varName = eVarNameFlags.mcB Or value.varName = eVarNameFlags.mcBbf) Or _
+                           (value.varName = eVarNameFlags.mcBA Or value.varName = eVarNameFlags.mcBAbf) Or _
+                           (value.varName = eVarNameFlags.mcEE Or value.varName = eVarNameFlags.mcEEbf) Or _
+                           (value.varName = eVarNameFlags.mcPB Or value.varName = eVarNameFlags.mcPBbf) Or _
+                           (value.varName = eVarNameFlags.mcQB Or value.varName = eVarNameFlags.mcQBbf) Then
 
                             value.Status = eStatusFlags.NotEditable
 
                         End If
+
+                        '    If value.varName = eVarNameFlags.mcB Or value.varName = eVarNameFlags.mcBA _
+                        '    Or value.varName = eVarNameFlags.mcEE Or value.varName = eVarNameFlags.mcPB _
+                        '    Or value.varName = eVarNameFlags.mcBbf Or value.varName = eVarNameFlags.mcBAbf _
+                        '    Or value.varName = eVarNameFlags.mcEEbf Or value.varName = eVarNameFlags.mcPBbf Or value.varName = eVarNameFlags.mcQBbf Then
+
+                        '        value.Status = eStatusFlags.NotEditable
+
+                        '    End If
 
                     Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.BoolArray
                         Debug.Assert(False, "cMonteCarloGroup should not contain array values.")

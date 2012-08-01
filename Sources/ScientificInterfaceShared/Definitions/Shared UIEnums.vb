@@ -41,6 +41,7 @@ Namespace Definitions
     Public Enum eMCRunDisplayInputValueTypes As Integer
         B = 0
         PB
+        QB
         EE
         BA
         VU

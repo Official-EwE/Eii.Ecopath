@@ -95,6 +95,9 @@ Namespace Ecosim
                     Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcBAcv, eVarNameFlags.mcBALower, eVarNameFlags.mcBA, eVarNameFlags.mcBAUpper})
                 Case eMCRunDisplayInputValueTypes.VU
                     Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcVUcv, eVarNameFlags.mcVULower, eVarNameFlags.mcVU, eVarNameFlags.mcVUUpper})
+                Case eMCRunDisplayInputValueTypes.QB
+                    Me.FillValue(New eVarNameFlags() {eVarNameFlags.mcQBcv, eVarNameFlags.mcQBLower, eVarNameFlags.mcQB, eVarNameFlags.mcQBUpper})
+
             End Select
 
         End Sub

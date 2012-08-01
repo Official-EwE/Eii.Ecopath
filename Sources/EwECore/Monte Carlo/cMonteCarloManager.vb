@@ -132,6 +132,15 @@ Public Class cMonteCarloManager
 
     End Sub
 
+    Public Sub setDefaultTol()
+        Try
+            Me.m_mc.setDefaults()
+        Catch ex As Exception
+            Debug.Assert(False, "setDefaultTol() Exception: " & ex.Message)
+        End Try
+    End Sub
+
+
 #End Region
 
 #Region "Running"
@@ -197,6 +206,11 @@ Public Class cMonteCarloManager
 
     End Sub
 
+
+    Public Function selectNewEcopathParameters() As Boolean
+
+        Return True
+    End Function
 
 
     ''' <summary>
@@ -624,6 +638,25 @@ Public Class cMonteCarloManager
 
     End Sub
 
+
+    Public Property EcopathEETolerance() As Single
+        Get
+            Return Me.m_mc.EcopathEETol
+        End Get
+        Set(ByVal value As Single)
+            Me.m_mc.EcopathEETol = value
+        End Set
+    End Property
+
+
+    Public Property bShowPlot() As Boolean
+        Get
+            Return m_mc.bShowPlot
+        End Get
+        Set(ByVal value As Boolean)
+            m_mc.bShowPlot = value
+        End Set
+    End Property
 #End Region
 
 #Region "Private methods"

@@ -61,10 +61,7 @@ Public Delegate Sub MonteCarloSendMessageDelegate(ByRef Message As cMessage)
 ''' </summary>
 Friend Class cEcosimMonteCarlo
 
-    'ToDo jb 18-Nov-2011 Monte Carlo Vulnerabilities if the vulnerabilities are changed in the vulnerability grid interface 
-    'the ParLimit() array will not contain the new values.
-    'ParLimit() is only set during Initailization me.Init() 
-    'the model has to be saved then reloaded for the new limits to be set
+    Public Const EE_TOL As Single = 0.0005
 
     Public CVpar(,) As Single
     Public ParLimit(,,) As Single
@@ -121,6 +118,10 @@ Friend Class cEcosimMonteCarlo
     ''' </summary>
     Public SSorg As Single
 
+    Public EcopathEETol As Single
+
+
+    Public bShowPlot As Boolean
     ''' <summary>
     ''' Get/set whether output should be saved to file automatically.
     ''' </summary>
@@ -183,6 +184,7 @@ Friend Class cEcosimMonteCarlo
         m_tracerData = m_ecosim.TracerData
 
         Ntrials = 20 'default number of trials
+        EcopathEETol = 0.0005 '0.05%
 
         m_rand = New Random(CInt(Date.Now.Ticks Mod Integer.MaxValue))
 
@@ -205,6 +207,9 @@ Friend Class cEcosimMonteCarlo
             For igrp As Integer = 1 To m_core.nGroups
                 Pmean(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
                 Pmean(eMCParams.PB, igrp) = m_epdata.PB(igrp)
+                ' JS13feb12 added
+                Pmean(eMCParams.QB, igrp) = m_epdata.QB(igrp)
+
                 Pmean(eMCParams.EE, igrp) = m_epdata.EE(igrp)
                 Pmean(eMCParams.BA, igrp) = m_epdata.BA(igrp)
                 'vc sep 2008: adding vulnerability to MC
@@ -309,19 +314,21 @@ Friend Class cEcosimMonteCarlo
             m_core.m_EcoSimData.bTimestepOutput = True
             m_ecosim.TimeStepDelegate = Nothing
 
-            'Set the all vulnerabilities to a predator to the max across all prey
-            'This is the same as setting all the columns in the Vulnerabiltiy matrix to the same value
-            For iPred As Integer = 1 To m_core.nGroups
-                Dim vul As Single = 0
-                For iPrey As Integer = 1 To m_core.nGroups
-                    'jb 18-Nov-2011 Changed from first non zero vulnerability 
-                    'To max vulnerability across all prey for this pred  
-                    vul = Math.Max(vul, m_core.m_EcoSimData.VulMult(iPrey, iPred))
-                    'If m_core.m_EcoSimData.VulMult(iPrey, iPred) > 0 Then vul = m_core.m_EcoSimData.VulMult(iPrey, iPred) : Exit For
-                Next
-                'Max vulnerability to this predator
-                m_core.m_EcoSimData.VulnerabilityPredator(iPred) = vul
-            Next
+            'jb remove vulnerabilities until there is a proper interface
+            'if it is left in place it causes problem because it changes the vulnerabilities
+            ''Set the all vulnerabilities to a predator to the max across all prey
+            ''This is the same as setting all the columns in the Vulnerabiltiy matrix to the same value
+            'For iPred As Integer = 1 To m_core.nGroups
+            '    Dim vul As Single = 0
+            '    For iPrey As Integer = 1 To m_core.nGroups
+            '        'jb 18-Nov-2011 Changed from first non zero vulnerability 
+            '        'To max vulnerability across all prey for this pred  
+            '        vul = Math.Max(vul, m_core.m_EcoSimData.VulMult(iPrey, iPred))
+            '        'If m_core.m_EcoSimData.VulMult(iPrey, iPred) > 0 Then vul = m_core.m_EcoSimData.VulMult(iPrey, iPred) : Exit For
+            '    Next
+            '    'Max vulnerability to this predator
+            '    m_core.m_EcoSimData.VulnerabilityPredator(iPred) = vul
+            'Next
 
             'run ecosim to get the fit (SS) of the ref data to the current ecopath parameters
             m_ecosim.Run()
@@ -332,7 +339,7 @@ Friend Class cEcosimMonteCarlo
                 Pmean(eMCParams.EE, iGrp) = m_epdata.EE(iGrp)
                 Pmean(eMCParams.BA, iGrp) = m_epdata.BA(iGrp)
                 'vc sep 2008: adding vulnerability to MC
-                Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
+                'Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
                 'js feb 2011: added other mort
                 Pmean(eMCParams.OtherMort, iGrp) = m_epdata.OtherMortinput(iGrp)
             Next
@@ -343,7 +350,7 @@ Friend Class cEcosimMonteCarlo
             Array.Copy(Pmean, startValues, Pmean.Length)
 
             'vulnerabilities 
-            Array.Copy(m_core.m_EcoSimData.VulMult, Me.orgVul, m_core.m_EcoSimData.VulMult.Length)
+            'Array.Copy(m_core.m_EcoSimData.VulMult, Me.orgVul, m_core.m_EcoSimData.VulMult.Length)
 
             'jb Mar-24-2011 Do NOT reset Upper and Lower Parameter Limits 
             'they may have been edited by a user and this will overwrite the edits with defaults
@@ -374,7 +381,11 @@ Friend Class cEcosimMonteCarlo
             m_ecopath.ParameterEstimationType = eEstimateParameterFor.Sensitivity
 
             'set the ecosim time step delegate for plotting
-            m_ecosim.TimeStepDelegate = EcosimTimeStep
+            If bShowPlot Then
+                m_ecosim.TimeStepDelegate = EcosimTimeStep
+            Else
+                m_ecosim.TimeStepDelegate = Nothing
+            End If
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -440,7 +451,7 @@ Friend Class cEcosimMonteCarlo
                 RunsSinceLastWithLowerSS += 1
 
                 If Not BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
-                    'Ecopath failed to run; stop the trials loop
+                    'Ecopath failed to run stop the trials
                     Exit For
                 End If
 
@@ -453,7 +464,7 @@ Friend Class cEcosimMonteCarlo
                     'VC Sep 2008 found that it would increase vulnerabilities to get certain groups to increase initially,
                     'while instead it should have increased the initial biomass, so letting it get started before 
                     'changing vulnerabilities
-                    ChangeVulnerabilities(Pmean, CVpar)
+                    'ChangeVulnerabilities(Pmean, CVpar)
 
                     'For Each MCthread In MCthreadList
                     '    Itertot = Itertot + iter
@@ -468,8 +479,10 @@ Friend Class cEcosimMonteCarlo
 
                     m_ecosim.Init(True) 'StartEcoSimAgain())
 
+                    System.Console.WriteLine("Monte Carlo start Ecosim")
                     'the ecosim time step delegate was set before the loop
                     m_ecosim.Run()
+                    System.Console.WriteLine("Monte Carlo finished Ecosim")
 
                     'For Each MCthread In MCthreadList
                     '    MCthread.signalState.WaitOne()
@@ -492,16 +505,15 @@ Friend Class cEcosimMonteCarlo
 
                         CheckWhoIsCrashed()
                         For igrp As Integer = 1 To m_core.nGroups
-                            'If isCrashed(igrp) Then
-                            '    BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp) * 1.2
-                            'Else
                             BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
-                            'End If
+                            ' JS13feb12 added
+                            BestFit(eMCParams.QB, igrp) = m_epdata.QB(igrp)
+
                             BestFit(eMCParams.PB, igrp) = m_epdata.PB(igrp)
                             BestFit(eMCParams.EE, igrp) = m_epdata.EE(igrp)
                             BestFit(eMCParams.BA, igrp) = m_epdata.BA(igrp)
                             'vc sep 2008: adding vulnerability to MC
-                            BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
+                            '  BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
                         Next
 
                         If bRetainBiomass Then
@@ -550,6 +562,10 @@ Friend Class cEcosimMonteCarlo
         End Try
     End Sub
 
+    Public Sub setDefaults()
+        Me.EcopathEETol = EE_TOL
+    End Sub
+
     ''' <summary>
     ''' Restore Ecopath to its original state
     ''' </summary>
@@ -564,16 +580,18 @@ Friend Class cEcosimMonteCarlo
             For i As Integer = 1 To Me.m_epdata.NumLiving
                 If m_epdata.Binput(i) > 0 Then m_epdata.Binput(i) = startValues(eMCParams.Biomass, i)
                 If m_epdata.PBinput(i) > 0 Then m_epdata.PBinput(i) = startValues(eMCParams.PB, i)
+                ' JS13feb12 added
+                If m_epdata.QBinput(i) > 0 Then m_epdata.QBinput(i) = startValues(eMCParams.QB, i)
                 If m_epdata.EEinput(i) > 0 Then m_epdata.EEinput(i) = startValues(eMCParams.EE, i)
                 If m_epdata.OtherMortinput(i) > 0 Then m_epdata.OtherMortinput(i) = startValues(eMCParams.OtherMort, i)
 
                 m_epdata.BA(i) = startValues(eMCParams.BA, i)
                 'vc sep 2008: adding vulnerability to MC
-                m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
+                ' m_esdata.VulnerabilityPredator(i) = startValues(eMCParams.Vulnerability, i)
             Next
 
             'set vulnerabilities back 
-            Array.Copy(Me.orgVul, m_core.m_EcoSimData.VulMult, m_core.m_EcoSimData.VulMult.Length)
+            'Array.Copy(Me.orgVul, m_core.m_EcoSimData.VulMult, m_core.m_EcoSimData.VulMult.Length)
 
             'copy the data from the input parameters into the modeling parameters
             Me.m_epdata.CopyInputToModelArrays()
@@ -686,6 +704,16 @@ Friend Class cEcosimMonteCarlo
                                                               ParLimit(1, eMCParams.PB, igrp), _
                                                               False)
                     End If
+
+                    ' JS13feb12 added
+                    If m_ecopath.missing(igrp, 3) = False Then                   ' Then QB is an input par
+                        m_epdata.QB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.QB, igrp), _
+                                                              CVpar(eMCParams.QB, igrp), _
+                                                              ParLimit(0, eMCParams.QB, igrp), _
+                                                              ParLimit(1, eMCParams.QB, igrp), _
+                                                              False)
+                    End If
+
                     If m_ecopath.missing(igrp, 4) = False Then                   ' Then EE is an input par
                         m_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.EE, igrp), _
                                                               CVpar(4, igrp), _
@@ -716,7 +744,7 @@ Friend Class cEcosimMonteCarlo
 
                 bEcopathNeedsBalancing = False
                 For igrp = 1 To m_core.nGroups
-                    If m_epdata.EE(igrp) > 1.0005 Or m_epdata.EE(igrp) < 0 Then
+                    If m_epdata.EE(igrp) > 1.0 + Me.EcopathEETol Or m_epdata.EE(igrp) < 0 Then
                         'this loop did not balance Ecopath
                         bEcopathNeedsBalancing = True
                         Exit For
@@ -765,6 +793,12 @@ Friend Class cEcosimMonteCarlo
             If m_ecopath.missing(iPred, 2) = False Then
                 m_epdata.PBinput(iPred) = BestFit(eMCParams.PB, iPred)
             End If
+
+            ' JS13feb12 added
+            If m_ecopath.missing(iPred, 3) = False Then
+                m_epdata.QBinput(iPred) = BestFit(eMCParams.QB, iPred)
+            End If
+
             If m_ecopath.missing(iPred, 4) = False Then
                 m_epdata.EEinput(iPred) = BestFit(eMCParams.EE, iPred)
             End If
@@ -859,15 +893,20 @@ Friend Class cEcosimMonteCarlo
                 'Lower
                 ParLimit(0, 1, i) = m_epdata.B(i) * (1 - factor * CVpar(1, i)) : If ParLimit(0, 1, i) < 0 Then ParLimit(0, 1, i) = 0.0000000001
                 ParLimit(0, 2, i) = m_epdata.PB(i) * (1 - factor * CVpar(2, i)) : If ParLimit(0, 2, i) < 0 Then ParLimit(0, 2, i) = 0.0000000001
+
+                ' JS13feb12 added
+                ParLimit(0, 3, i) = m_epdata.QB(i) * (1 - factor * CVpar(3, i)) : If ParLimit(0, 3, i) < 0 Then ParLimit(0, 3, i) = 0.0000000001
                 ParLimit(0, 4, i) = m_epdata.EE(i) * (1 - factor * CVpar(4, i)) : If ParLimit(0, 4, i) < 0 Then ParLimit(0, 4, i) = 0
                 'BA is +- relative to B not to BA (which is usually zero)
                 ParLimit(0, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (-factor * CVpar(5, i))
                 'Vul is from 1 up
-                ParLimit(0, 6, i) = m_esdata.VulnerabilityPredator(i) * (1 - factor * CVpar(6, i)) : If ParLimit(0, 6, i) < 1.01 Then ParLimit(0, 6, i) = 1.01
+                '  ParLimit(0, 6, i) = m_esdata.VulnerabilityPredator(i) * (1 - factor * CVpar(6, i)) : If ParLimit(0, 6, i) < 1.01 Then ParLimit(0, 6, i) = 1.01
 
                 'upper
                 ParLimit(1, 1, i) = m_epdata.B(i) * (1 + factor * CVpar(1, i)) : If ParLimit(1, 1, i) <= ParLimit(0, 1, i) Then ParLimit(1, 1, i) = 10 * ParLimit(0, 1, i)
                 ParLimit(1, 2, i) = m_epdata.PB(i) * (1 + factor * CVpar(2, i)) : If ParLimit(1, 2, i) <= ParLimit(0, 2, i) Then ParLimit(1, 2, i) = 10 * ParLimit(0, 2, i)
+                ' JS13feb12 added
+                ParLimit(1, 3, i) = m_epdata.QB(i) * (1 + factor * CVpar(3, i)) : If ParLimit(1, 3, i) <= ParLimit(0, 3, i) Then ParLimit(1, 3, i) = 10 * ParLimit(0, 3, i)
                 ParLimit(1, 4, i) = m_epdata.EE(i) * (1 + factor * CVpar(4, i)) : If ParLimit(1, 4, i) > 1 Then ParLimit(1, 4, i) = 1
                 'BA is +- relative to B not to BA (which is usually zero)
                 ParLimit(1, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (factor * CVpar(5, i))
@@ -935,20 +974,20 @@ Friend Class cEcosimMonteCarlo
         Return X
     End Function
 
-    Private Sub ChangeVulnerabilities(ByVal ParCurVal(,) As Single, ByVal CVpar(,) As Single)
+    'Private Sub ChangeVulnerabilities(ByVal ParCurVal(,) As Single, ByVal CVpar(,) As Single)
 
-        For iPred As Integer = 1 To m_core.nLivingGroups
-            m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred), _
-                                                                     CVpar(6, iPred), _
-                                                                     ParLimit(0, eMCParams.Vulnerability, iPred), _
-                                                                     ParLimit(1, eMCParams.Vulnerability, iPred), _
-                                                                     False)
-            For iPrey As Integer = 1 To m_core.nGroups
-                m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
-            Next
-        Next
+    '    For iPred As Integer = 1 To m_core.nLivingGroups
+    '        m_esdata.VulnerabilityPredator(iPred) = ChooseFeasiblePar(ParCurVal(eMCParams.Vulnerability, iPred), _
+    '                                                                 CVpar(6, iPred), _
+    '                                                                 ParLimit(0, eMCParams.Vulnerability, iPred), _
+    '                                                                 ParLimit(1, eMCParams.Vulnerability, iPred), _
+    '                                                                 False)
+    '        For iPrey As Integer = 1 To m_core.nGroups
+    '            m_esdata.VulMult(iPrey, iPred) = m_esdata.VulnerabilityPredator(iPred)
+    '        Next
+    '    Next
 
-    End Sub
+    'End Sub
 
     Private Sub CheckWhoIsCrashed()
         Dim EndTime As Integer = (m_core.EcoSimModelParameters.NumberYears - 1) * 12

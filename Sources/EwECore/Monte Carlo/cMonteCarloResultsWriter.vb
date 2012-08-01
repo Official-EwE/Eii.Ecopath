@@ -44,6 +44,316 @@ Friend Class cMonteCarloResultsWriter
 
         Try
 
+            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(OutputFilename), True) Then
+
+                If File.Exists(OutputFilename) Then
+                    File.Delete(Me.OutputFilename)
+                End If
+
+                Me.WriteHeader()
+
+                'save the baseline data
+                Me.Save(True)
+
+            End If
+
+        Catch ex As Exception
+            'Me.MC.bSaveOutput = False
+            Dim msg As New cMessage("Error saving Monte Carlo data to file. " & ex.Message, eMessageType.ErrorEncountered, _
+                                    eCoreComponentType.EcoSimMonteCarlo, eMessageImportance.Warning, eDataTypes.MonteCarlo)
+            Me.Core.Messages.SendMessage(msg)
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+    Private ReadOnly Property OutputFilename() As String
+        Get
+            Return Path.Combine(Me.DataDir, Me.Core.OutputFileLocation(eAutosaveTypes.MonteCarlo, "MonteCarloTrials", eAutosaveTypes.MonteCarlo.ToString, ".csv"))
+        End Get
+    End Property
+
+
+    Private Function DataDir() As String
+        Return Me.Core.OutputPath
+    End Function
+
+
+    Private ReadOnly Property ModelName() As String
+        Get
+            Return Me.Core.DataSource.FileName
+        End Get
+    End Property
+
+
+    Private Function ScenarioName() As String
+        Return Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+    End Function
+
+    Private ReadOnly Property MC() As cEcosimMonteCarlo
+        Get
+            Return Me.m_MC
+        End Get
+    End Property
+
+
+    Private ReadOnly Property Core() As cCore
+        Get
+            Return Me.m_core
+        End Get
+    End Property
+
+
+    Private Sub WriteHeader()
+        Try
+            If Not Me.MC.bSaveOutput Then Exit Sub
+
+            Dim header As StringBuilder
+            Dim strm As StreamWriter
+            Dim ver As String = System.Reflection.Assembly.GetAssembly(GetType(cCore)).GetName.Version.ToString
+            Dim d As Date = Date.Now
+
+            header = New StringBuilder()
+
+            'save a bunch of crap here....
+            'model name blaaaaaa
+            header.AppendLine(cStringUtils.ToCSVField("EwE Monte Carlo version number") & "," & ver) 'version number
+            header.AppendLine(cStringUtils.ToCSVField("Model name") & "," & cStringUtils.ToCSVField(Me.ModelName))
+            header.AppendLine(cStringUtils.ToCSVField("Ecosim scenario") & "," & cStringUtils.ToCSVField(Me.ScenarioName))
+            header.AppendLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
+            header.AppendLine(cStringUtils.ToCSVField("Run Date") & "," & cStringUtils.ToCSVField(d.ToShortDateString & " " & d.ToShortTimeString))
+
+            'strm = New StreamWriter(Me.OuputFilename, True)
+            'Create a new file if this one already exists!
+            strm = New StreamWriter(Me.OutputFilename)
+            strm.WriteLine(header)
+            strm.Close()
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString & ".WriteHeader() Exception: " & ex.Message)
+        End Try
+
+    End Sub
+
+    ''' <summary>
+    ''' Save both iteration and baseline data to file
+    ''' </summary>
+    ''' <param name="isBaseLineData"></param>
+    ''' <remarks></remarks>
+    Public Sub Save(ByVal isBaseLineData As Boolean)
+        Dim strm As StreamWriter
+
+        Try
+
+            If Not Me.MC.bSaveOutput Then Exit Sub
+
+            strm = New StreamWriter(Me.OutputFilename, True)
+
+            'empty line at the start of a new data block
+            strm.WriteLine("")
+
+            If isBaseLineData Then
+                strm.WriteLine(Me.getParameterVariance)
+            End If
+
+            If isBaseLineData Then
+                strm.WriteLine(cStringUtils.ToCSVField("Base line data"))
+            Else
+                strm.WriteLine(cStringUtils.ToCSVField("Trial number") & "," & Me.MC.nTrialIterations.ToString)
+            End If
+
+            strm.WriteLine(cStringUtils.ToCSVField("Original SS") & "," & cStringUtils.ToCSVField(Me.MC.SSorg))
+            strm.WriteLine(cStringUtils.ToCSVField("Current SS") & "," & cStringUtils.ToCSVField(Me.MC.SSCurrent))
+            strm.WriteLine(cStringUtils.ToCSVField("Ecopath parameters"))
+
+            strm.WriteLine(cStringUtils.ToCSVField("Group Name") & "," & Me.ToCSVString(Core.m_EcoPathData.GroupName))
+
+            strm.WriteLine("Biomass," & Me.ToCSVString(Core.m_EcoPathData.B))
+            strm.WriteLine("PB," & Me.ToCSVString(Core.m_EcoPathData.PB))
+            strm.WriteLine("EE," & Me.ToCSVString(Core.m_EcoPathData.EE))
+            strm.WriteLine("QB," & Me.ToCSVString(Core.m_EcoPathData.QB))
+            strm.WriteLine("BA," & Me.ToCSVString(Core.m_EcoPathData.BA))
+
+            strm.Write(cStringUtils.ToCSVField("Ecosim biomass"))
+            For it As Integer = 1 To Me.Core.m_EcoSimData.NTimes
+                strm.Write(",")
+                strm.Write(cStringUtils.ToCSVField(it))
+            Next
+            strm.WriteLine()
+
+            'biomass at T from Ecosim results
+            For igrp As Integer = 1 To Me.Core.m_EcoPathData.NumGroups
+                strm.Write(cStringUtils.ToCSVField(igrp) & "," & cStringUtils.ToCSVField(Core.m_EcoPathData.GroupName(igrp)) & ",")
+                strm.WriteLine(Me.ToCSVString(Me.Core.m_EcoSimData.ResultsOverTime, cEcosimDatastructures.eEcosimResults.Biomass, igrp))
+            Next
+
+            strm.Close()
+            strm = Nothing
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".SaveIteration(...) Exception: " & ex.Message)
+        End Try
+
+        'Make sure the stream did not get left open somehow
+        Try
+            If strm IsNot Nothing Then
+                strm.Close()
+            End If
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Function getParameterVariance() As String
+        Dim buff As New StringBuilder
+
+        'Group name
+        buff.AppendLine(cStringUtils.ToCSVField("Group Name") & "," & Me.ToCSVString(Core.m_EcoPathData.GroupName))
+
+        'CV's
+        buff.AppendLine(cStringUtils.ToCSVField("Biomass CV") & "," & Me.ToCSVString(Me.MC.CVpar, eMCParams.Biomass))
+        buff.AppendLine(cStringUtils.ToCSVField("Biomass lower limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.Biomass))
+        buff.AppendLine(cStringUtils.ToCSVField("Biomass upper limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.Biomass))
+
+        buff.AppendLine(cStringUtils.ToCSVField("P/B CV") & "," & Me.ToCSVString(Me.MC.CVpar, eMCParams.PB))
+        buff.AppendLine(cStringUtils.ToCSVField("P/B lower limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.PB))
+        buff.AppendLine(cStringUtils.ToCSVField("P/B upper limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.PB))
+
+        buff.AppendLine(cStringUtils.ToCSVField("QB CV") & "," & Me.ToCSVString(Me.MC.CVpar, eMCParams.QB))
+        buff.AppendLine(cStringUtils.ToCSVField("QB lower limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.QB))
+        buff.AppendLine(cStringUtils.ToCSVField("QB upper limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.QB))
+
+        buff.AppendLine(cStringUtils.ToCSVField("EE CV") & "," & Me.ToCSVString(Me.MC.CVpar, eMCParams.EE))
+        buff.AppendLine(cStringUtils.ToCSVField("EE lower limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.EE))
+        buff.AppendLine(cStringUtils.ToCSVField("EE upper limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.EE))
+
+        buff.AppendLine(cStringUtils.ToCSVField("BA CV") & "," & Me.ToCSVString(Me.MC.CVpar, eMCParams.BA))
+        buff.AppendLine(cStringUtils.ToCSVField("BA lower limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 0, eMCParams.BA))
+        buff.AppendLine(cStringUtils.ToCSVField("BA upper limit") & "," & Me.ToCSVString(Me.MC.ParLimit, 1, eMCParams.BA))
+
+        Return buff.ToString
+
+    End Function
+
+
+
+    Private Function ToCSVString(ByVal Values(,,) As Single, ByVal FirstFixedIndex As Integer, ByVal SecondFixedIndex As Integer) As String
+        Dim buff As String
+        Try
+
+            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+                If igrp > 1 Then buff = buff & ","
+                buff = buff & cStringUtils.FormatSingle(Values(FirstFixedIndex, SecondFixedIndex, igrp))
+            Next
+
+        Catch ex As Exception
+            Debug.Assert("ArrayToString() Exception: " & ex.Message)
+        End Try
+
+        Return buff
+
+    End Function
+
+
+
+    Private Function ToCSVString(ByVal Values(,) As Single, ByVal FixedIndex As Integer) As String
+        Dim buff As String
+        Try
+
+            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+                If igrp > 1 Then buff = buff & ","
+                buff = buff & cStringUtils.FormatSingle(Values(FixedIndex, igrp))
+            Next
+
+        Catch ex As Exception
+            Debug.Assert("ArrayToString() Exception: " & ex.Message)
+        End Try
+
+        Return buff
+
+    End Function
+
+
+    Private Function ToCSVString(ByVal Values(,,) As Single, ByVal Variable As cEcosimDatastructures.eEcosimResults, ByVal iGroup As Integer) As String
+        Dim buff As String
+        Try
+
+            For it As Integer = 1 To Me.Core.m_EcoSimData.NTimes
+                If it > 1 Then buff = buff & ","
+                buff = buff & cStringUtils.FormatSingle(Values(Variable, iGroup, it))
+            Next
+
+        Catch ex As Exception
+            Debug.Assert("ArrayToString() Exception: " & ex.Message)
+        End Try
+
+        Return buff
+
+    End Function
+
+
+
+    Private Function ToCSVString(ByVal Values() As String) As String
+        Dim buff As String
+        Try
+
+            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+                If igrp > 1 Then buff = buff & ","
+                buff = buff & Values(igrp)
+            Next
+
+        Catch ex As Exception
+            Debug.Assert("ArrayToString() Exception: " & ex.Message)
+        End Try
+
+        Return buff
+
+    End Function
+
+
+    Private Function ToCSVString(ByVal values() As Single) As String
+        Dim buff As String
+        Try
+
+            For igrp As Integer = 1 To Core.m_EcoPathData.NumGroups
+                If igrp > 1 Then buff = buff & ","
+                buff = buff & cStringUtils.FormatSingle(values(igrp))
+            Next
+
+        Catch ex As Exception
+            Debug.Assert("ArrayToString() Exception: " & ex.Message)
+        End Try
+
+        Return buff
+
+    End Function
+
+End Class
+
+
+#Region "cMonteCarloResultsWriter Before Lingbo update"
+
+#If 0 Then
+
+Public Class cMonteCarloResultsWriter
+
+    Private m_MC As cEcosimMonteCarlo
+    Private m_core As cCore
+
+    Public Sub New(ByVal MonteCarlo As cEcosimMonteCarlo, ByVal theCore As cCore)
+
+        Me.m_MC = MonteCarlo
+        Me.m_core = theCore
+
+    End Sub
+
+
+    Public Sub Init()
+
+        If Not Me.MC.bSaveOutput Then Exit Sub
+
+        Try
+
             If cFileUtils.IsDirectoryAvailable(Me.Core.OutputPath, True) Then
 
                 If File.Exists(OutputFilename) Then
@@ -431,9 +741,6 @@ Friend Class cMonteCarloResultsWriter
 
 End Class
 
-
-
-
 #Region "Old Monte Carlo Results Writer"
 
 #If 0 Then
@@ -751,6 +1058,10 @@ Public Class cMonteCarloResultsWriter
 
 End Class
 
+
+#End If
+
+#End Region
 
 #End If
 

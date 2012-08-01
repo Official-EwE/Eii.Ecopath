@@ -1,20 +1,3 @@
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
-' ===============================================================================
-'
 #Region " Imports "
 
 Option Explicit On
@@ -116,6 +99,7 @@ Namespace Ecosim
             Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSBest, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
+            Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
             Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
 
@@ -128,13 +112,14 @@ Namespace Ecosim
             Me.m_plothelper.ShowMultipleRuns = True
 
             Me.m_plothelper.ConfigurePane(SharedResources.HEADER_MCTRIALS, SharedResources.HEADER_TIME, SharedResources.HEADER_BIOMASS, False)
-            Me.m_plothelper.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.Both
+            Me.m_plothelper.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
 
             ' Configure grids
             Me.m_gridB.UIContext = Me.UIContext
             Me.m_gridBA.UIContext = Me.UIContext
             Me.m_gridEE.UIContext = Me.UIContext
             Me.m_gridPB.UIContext = Me.UIContext
+            Me.m_gridQB.UIContext = Me.UIContext
             Me.m_gridBestFit.UIContext = Me.UIContext
 
             Me.m_cmdRunMonteCarlo = New cCommand(Me.CommandHandler, "RunMonteCarlo")
@@ -155,6 +140,8 @@ Namespace Ecosim
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbGroups.SelectedIndex = 0
 
+            Me.m_txTol.Text = Me.m_mcmanager.EcopathEETolerance.ToString
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Core}
 
         End Sub
@@ -163,6 +150,13 @@ Namespace Ecosim
 
             Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
             Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
+
+            Me.m_gridB.UIContext = Nothing
+            Me.m_gridBA.UIContext = Nothing
+            Me.m_gridEE.UIContext = Nothing
+            Me.m_gridPB.UIContext = Nothing
+            Me.m_gridQB.UIContext = Nothing
+            Me.m_gridBestFit.UIContext = Nothing
 
             'jb the 'WeightTimeSeries' command was not loaded during OnLoad() 
             ' Disconnect from ApplyTS command
@@ -194,6 +188,13 @@ Namespace Ecosim
 
         Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApply.Click
             Me.m_mcmanager.ApplyBestFits()
+        End Sub
+
+        Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbShowBioTraj.CheckedChanged
+            If Not Me.m_mcmanager Is Nothing Then
+                Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
+            End If
         End Sub
 
         Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -243,6 +244,20 @@ Namespace Ecosim
             Me.m_mcmanager.LoadFromPedigree()
         End Sub
 
+
+        Private Sub OntxTolValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles m_txTol.Validating
+            Dim tol As Single
+            If Single.TryParse(Me.m_txTol.Text, tol) Then
+                Me.m_mcmanager.EcopathEETolerance = tol
+            End If
+        End Sub
+
+
+        Private Sub m_btDefaultTol_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btDefaultTol.Click
+            Me.m_mcmanager.setDefaultTol()
+            Me.m_txTol.Text = Me.m_mcmanager.EcopathEETolerance.ToString
+        End Sub
+
 #End Region ' Events
 
 #Region " MC Run callbacks "
@@ -250,9 +265,12 @@ Namespace Ecosim
         Private Sub MonteCarloStepHandler()
 
             Try
-                cApplicationStatusNotifier.UpdateProgress(Me.Core, _
-                                                          My.Resources.STATUS_SEARCH_SEARCHING, _
-                                                          Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
+                ' Be conservative in providing status feedback
+                If (Me.m_mcmanager.nTrialIterations Mod cCore.N_MONTHS = 0) Then
+                    cApplicationStatusNotifier.UpdateProgress(Me.Core, _
+                                                              My.Resources.STATUS_SEARCH_SEARCHING, _
+                                                              Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
+                End If
 
                 Me.m_fpTrial.Value = Me.m_mcmanager.nTrialIterations
                 Me.m_fpSS.Value = Me.m_mcmanager.SS
@@ -315,20 +333,20 @@ Namespace Ecosim
             Dim ppl As PointPairList = Nothing
 
             If (Me.m_lpplIteration.Count = 0) Then Return
-
+            '  System.Console.WriteLine("Interface Ecosim handler Start.")
             Try
 
                 ' Store results
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     ppl = Me.m_lpplIteration(iGroup - 1)
                     ppl.Add(New PointPair(Me.Core.EcosimFirstYear + CSng(lTime / cCore.N_MONTHS), results.Biomass(iGroup)))
-                    Me.m_sYMax = Math.Max(Me.m_sYMax, results.Biomass(iGroup))
+                    Me.m_sYMax = Math.Max(Me.m_sYMax, results.Biomass(iGroup) * 1.1!)
                 Next
 
             Catch ex As Exception
 
             End Try
-
+            '  System.Console.WriteLine("Interface Ecosim handler End.")
         End Sub
 
 #End Region ' MC Run callbacks
@@ -351,7 +369,7 @@ Namespace Ecosim
             Me.m_btnTS.Enabled = False
             Me.m_cbSave.Enabled = False
 
-            If Me.m_cbShowBioTraj.Checked Then
+            If Me.m_mcmanager.bShowPlot Then
                 ' Select biomass plot page.
                 Me.m_tcOutput.SelectedTab = Me.m_tbpBPlot
             End If
@@ -363,7 +381,7 @@ Namespace Ecosim
             Me.m_fpSSBest.Value = 0.0!
             Me.m_sYMax = 1.0!
 
-            cApplicationStatusNotifier.StartProgress(Me.Core)
+            cApplicationStatusNotifier.EndProgress(Me.Core)
 
             ' Clear out the old data
             Me.m_plothelper.Clear()
@@ -400,7 +418,9 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub m_cmdStopMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnInvoke
-            m_mcmanager.StopRun(0)
+            'jb 1-Aug-2012 this call to StopRun was causing a deadlock in the interface making it impossible for the MC to complete
+            'I have no idea when it was added or what it is supposed to do???
+            ' m_mcmanager.StopRun()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -454,7 +474,7 @@ Namespace Ecosim
         Private Sub UpdateGraphHighlights()
 
             'Only Highlight if the graphs are drawing
-            If Me.m_cbShowBioTraj.Checked Then
+            If Me.m_mcmanager.bShowPlot Then
 
                 ' Start setting highlights
                 Me.m_plothelper.ClearHighlights()
@@ -490,7 +510,7 @@ Namespace Ecosim
             Me.m_plothelper.CreateRun(String.Format(SharedResources.GENERIC_VALUE_ITERATION, Me.m_nTrials))
             Me.m_lpplIteration.Clear()
 
-            If (Me.m_cbShowBioTraj.Checked) Then
+            If (Me.m_mcmanager.bShowPlot = True) Then
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     Me.m_lpplIteration.Add(New PointPairList())
@@ -511,7 +531,6 @@ Namespace Ecosim
 
 #End Region ' Internals
 
-        
     End Class
 
 End Namespace
