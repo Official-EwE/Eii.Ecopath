@@ -662,6 +662,32 @@ Friend Class cEcosimMonteCarlo
 
     End Sub
 
+    ''' <summary>
+    ''' Wrapper around <see cref="cEcosimMonteCarlo.BalanceEcopathWithNewPars">BalanceEcopathWithNewPars</see>  
+    ''' so the MonteCarloManager can expose this functionality via <see cref="cMonteCarloManager.selectNewEcopathParameters">selectNewEcopathParameters()</see>
+    ''' </summary>
+    ''' <param name="MaxIters">Maximum number of tries to find a balanced Ecopath Model.</param>
+    ''' <returns>True if successful. False otherwise.</returns>
+    ''' <remarks></remarks>
+    Friend Function selectNewEcopathParameters(Optional MaxIters As Integer = 10000) As Boolean
+        Try
+            Dim nIters As Integer
+            BalanceEcopathWithNewPars(Pmean, CVpar, nIters, MaxIters)
+            If nIters < MaxIters Then
+                Return True
+            Else
+                Return False
+            End If
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, Me.ToString & ".selectNewEcopathParameters() Exception: " & ex.Message)
+        End Try
+
+        'throw an error
+        Return False
+
+    End Function
+
 
     Private Function BalanceEcopathWithNewPars(ByVal ParCurVal(,) As Single, _
                                                ByVal CVpar(,) As Single, _
@@ -679,25 +705,25 @@ Friend Class cEcosimMonteCarlo
                 iter = iter + 1
                 m_epdata.CopyInputToModelArrays() 'MakeUnknownUnknown())
 
-                For igrp = 1 To m_core.nLivingGroups                               ' Using default if not
-                    If m_ecopath.missing(igrp, 1) = False Then                   ' Then B is an input par
-                        'If isCrashed(igrp) Then
-                        '    BBar = 1.2 * ParCurVal(eMCParams.Biomass, igrp)
-                        'Else
-                        '    BBar = ParCurVal(eMCParams.Biomass, igrp)
-                        'End If
+                For igrp = 1 To m_core.nLivingGroups
+
+                    'B and BA
+                    If m_ecopath.missing(igrp, 1) = False Then
+
                         m_epdata.B(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.Biomass, igrp), _
                                                              CVpar(eMCParams.Biomass, igrp), _
                                                              ParLimit(0, eMCParams.Biomass, igrp), _
                                                              ParLimit(1, eMCParams.Biomass, igrp), _
                                                              isCrashed(igrp))
+
                         m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), _
                                                              ParCurVal(eMCParams.BA, igrp), _
                                                              CVpar(eMCParams.BA, igrp), _
                                                              ParLimit(0, eMCParams.BA, igrp), _
                                                              ParLimit(1, eMCParams.BA, igrp))
                     End If
-                    If m_ecopath.missing(igrp, 2) = False Then                   ' Then PB is an input par
+                    'PB
+                    If m_ecopath.missing(igrp, 2) = False Then
                         m_epdata.PB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.PB, igrp), _
                                                               CVpar(eMCParams.PB, igrp), _
                                                               ParLimit(0, eMCParams.PB, igrp), _
@@ -706,15 +732,16 @@ Friend Class cEcosimMonteCarlo
                     End If
 
                     ' JS13feb12 added
-                    If m_ecopath.missing(igrp, 3) = False Then                   ' Then QB is an input par
+                    'GB
+                    If m_ecopath.missing(igrp, 3) = False Then
                         m_epdata.QB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.QB, igrp), _
                                                               CVpar(eMCParams.QB, igrp), _
                                                               ParLimit(0, eMCParams.QB, igrp), _
                                                               ParLimit(1, eMCParams.QB, igrp), _
                                                               False)
                     End If
-
-                    If m_ecopath.missing(igrp, 4) = False Then                   ' Then EE is an input par
+                    'EE
+                    If m_ecopath.missing(igrp, 4) = False Then
                         m_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.EE, igrp), _
                                                               CVpar(4, igrp), _
                                                               ParLimit(0, eMCParams.EE, igrp), _
