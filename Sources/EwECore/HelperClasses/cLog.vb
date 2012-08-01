@@ -21,13 +21,14 @@ Imports System.Xml
 Imports System.Threading
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 ''' <summary>
 ''' Class encapsulating writing of messages to a XML log file.
 ''' </summary>
 Public Class cLog
 
-#Region "Private Data"
+#Region " Private Data "
 
     Private Shared m_xmlWriter As cXMLLogWriter = Nothing
     Private Shared m_logFilename As String = ""
@@ -36,20 +37,6 @@ Public Class cLog
     Private Shared m_verboselevel As eVerboseLevel = eVerboseLevel.Standard
 
 #End Region
-
-#Region " Constrants "
-
-    ''' <summary>
-    ''' Supported levels of detail for the content of the log.
-    ''' </summary>
-    Public Enum eVerboseLevel As Integer
-        ''' <summary>Log all generic errors</summary>
-        Standard = 0
-        ''' <summary>Log details to track application flow in more detail.</summary>
-        Detailed = 1
-    End Enum
-
-#End Region ' Constrants
 
 #Region " Log methods "
 
@@ -60,6 +47,15 @@ Public Class cLog
         Set(value As eVerboseLevel)
             cLog.m_verboselevel = value
         End Set
+    End Property
+
+    ''' <summary>
+    ''' Get the name of the current log file.
+    ''' </summary>
+    Public Shared ReadOnly Property LogFile As String
+        Get
+            Return cLog.m_logFilename
+        End Get
     End Property
 
     ''' -----------------------------------------------------------------------
@@ -265,6 +261,7 @@ Public Class cLog
 #End Region ' Log methods
 
 #Region " Internals "
+
     ''' <summary>
     ''' Singelton interface for creating a cXMLLogWriter object
     ''' </summary>

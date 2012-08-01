@@ -1331,7 +1331,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Please wait....
+        '''  Looks up a localized string similar to Please wait a moment....
         '''</summary>
         Public ReadOnly Property GENERIC_STATUS_BUSY() As String
             Get

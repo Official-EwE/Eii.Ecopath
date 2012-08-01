@@ -514,7 +514,7 @@ Public Class cEcospaceDataStructures
 
     Public Width() As Single
 
-    Public bSaveAnnual As Boolean = True
+    Public SaveAnnual As Boolean = True
 
     ''' <summary>
     ''' Use the Ecospace Output directory defined by the core. If True this path will include Model-name/Ecopath_6. Scenario-name/
@@ -524,7 +524,7 @@ Public Class cEcospaceDataStructures
     ''' This allows you to set the Ecospace output directory from code. 
     ''' You could loop over a bunch of different cases and set the output dir for each case.
     ''' </remarks>
-    Public bUseCoreOuputDir As Boolean = True
+    Public UseCoreOutputDir As Boolean = True
 
     Public CapMapFunctions(,) As Integer
 

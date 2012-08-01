@@ -1576,7 +1576,7 @@ Public Class cEcoSpace
                 'redim MPred at the start of each run because we have no way of knowing when EcoSimDataStructures.inlinks has changed
                 'inlinks is the number of prey/pred linkages
                 Me.m_Data.allocate(Me.m_Data.MPred, Me.m_Data.InRow + 1, Me.m_Data.InCol + 1, Me.m_SimData.inlinks)
-                cLog.Write("Ecospace allocated MPred data for model interoperability", cLog.eVerboseLevel.Detailed)
+                cLog.Write("Ecospace allocated MPred data for model interoperability", eVerboseLevel.Detailed)
             End If
 
             ReDim totalIterThread(m_Data.nGridSolverThreads + 1)

@@ -57,7 +57,7 @@ Public Class cEcospaceASCResultsWriter
             For Each varname As eVarNameFlags In vars
 
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-                    fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName(), tsData.iTimeStep)
+                    fn = Me.getGroupFileName(varname, igrp, Me.GetFileExtension(), tsData.iTimeStep)
                     strm = New StreamWriter(fn, False)
 
                     saveASC(strm, tsData, igrp, varname)
@@ -68,7 +68,7 @@ Public Class cEcospaceASCResultsWriter
             Next
 
             ' Sum space effort
-            fn = Me.getFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.getSubDirName(), tsData.iTimeStep)
+            fn = Me.getFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.GetFileExtension(), tsData.iTimeStep)
             strm = New StreamWriter(fn, False)
             saveASC(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
             strm.Close()
@@ -82,15 +82,21 @@ Public Class cEcospaceASCResultsWriter
     End Sub
 
     Public Overrides Sub EndWrite()
+        ' ToDo_JS: globalize this message
+        Dim msg As New cMessage("Ecospace result ASCII files have been written to " & Me.m_TimeStampDirName, _
+                                eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+        ' Provide hyperlink to the directory with the files
+        msg.Hyperlink = Me.m_TimeStampDirName
+        Me.m_core.Messages.SendMessage(msg)
     End Sub
 
 #End Region
 
 #Region "Private methods"
 
-    Protected Overrides ReadOnly Property OuputType() As cEcospaceBaseResultsWriter.eSpaceOutputType
+    Protected Overrides ReadOnly Property OuputType() As eAutosaveTypes
         Get
-            Return eSpaceOutputType.ASC
+            Return eAutosaveTypes.EcospaceASC
         End Get
     End Property
 
@@ -111,7 +117,7 @@ Public Class cEcospaceASCResultsWriter
             Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
             Dim ver As String = cCore.Version
 
-            strm.WriteLine("EcoSpace ASC map output")
+            strm.WriteLine("EcoSpace .asc map output")
             strm.WriteLine("EwE version," & ver)
             strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
 

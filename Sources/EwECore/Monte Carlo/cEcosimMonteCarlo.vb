@@ -56,13 +56,10 @@ Public Delegate Sub MonteCarloCompletedDelegate()
 
 Public Delegate Sub MonteCarloSendMessageDelegate(ByRef Message As cMessage)
 
-
-
 ''' <summary>
 ''' This class wraps the Ecosim monte carlo routines
 ''' </summary>
-''' <remarks></remarks>
-Public Class cEcosimMonteCarlo
+Friend Class cEcosimMonteCarlo
 
     'ToDo jb 18-Nov-2011 Monte Carlo Vulnerabilities if the vulnerabilities are changed in the vulnerability grid interface 
     'the ParLimit() array will not contain the new values.
@@ -74,15 +71,37 @@ Public Class cEcosimMonteCarlo
 
     Public Ntrials As Integer
     Public StopTrial As Boolean
-    Public bShowPlot As Boolean
     Public bRetainBiomass As Boolean
-    Public EcosimTimeStep As EcoSimTimeStepDelegate
 
-    Public dlgEcopathIterationHandler As MonteCarloEcopathProgressDelegate
-    Public dlgTrialStepHandler As MonteCarloTrialProgressDelegate
-    Public dlgMonteCarloCompletedHandler As MonteCarloCompletedDelegate
-    Public dlgMonteCarloMessageHandler As MonteCarloSendMessageDelegate
-    '  publc 
+    ''' <summary>
+    ''' Optional <see cref="EcoSimTimeStepDelegate">delegate</see> that will be called after a 
+    ''' trial has been computed.
+    ''' </summary>
+    Friend EcosimTimeStep As EcoSimTimeStepDelegate
+
+    ''' <summary>
+    ''' Optional <see cref="MonteCarloEcopathProgressDelegate">delegate</see> that will be called 
+    ''' each attempt to find a balanced Ecopath model.
+    ''' </summary>
+    Friend dlgEcopathIterationHandler As MonteCarloEcopathProgressDelegate
+
+    ''' <summary>
+    ''' Optional <see cref="MonteCarloTrialProgressDelegate">delegate</see> that will be called after a 
+    ''' trial has been completed.
+    ''' </summary>
+    Friend dlgTrialStepHandler As MonteCarloTrialProgressDelegate
+
+    ''' <summary>
+    ''' Optional <see cref="MonteCarloCompletedDelegate">delegate</see> that will be called after a 
+    ''' Monte Carlo run has completed.
+    ''' </summary>
+    Friend dlgMonteCarloCompletedHandler As MonteCarloCompletedDelegate
+
+    ''' <summary>
+    ''' Optional <see cref="MonteCarloSendMessageDelegate">delegate</see> that allows Monte Carlo
+    ''' to send <see cref="cMessage">messages</see>.
+    ''' </summary>
+    Friend dlgMonteCarloMessageHandler As MonteCarloSendMessageDelegate
 
     Public nEcopathIterations As Integer
     Public nTrialIterations As Integer
@@ -90,15 +109,20 @@ Public Class cEcosimMonteCarlo
     ''' <summary>
     ''' Best fitting Sum of Squares computed by Ecosim
     ''' </summary>
-    ''' <remarks></remarks>
     Public SSBestFit As Single
 
+    ''' <summary>
+    ''' Sum of Squares computed by Ecosim of the current iteration.
+    ''' </summary>
     Public SSCurrent As Single
 
+    ''' <summary>
+    ''' Sum of Squares prior to the Monte Carlo run.
+    ''' </summary>
     Public SSorg As Single
 
     ''' <summary>
-    ''' Save output to file
+    ''' Get/set whether output should be saved to file automatically.
     ''' </summary>
     Public Property bSaveOutput As Boolean
         Get

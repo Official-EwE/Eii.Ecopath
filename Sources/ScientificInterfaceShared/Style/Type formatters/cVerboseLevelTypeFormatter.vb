@@ -28,7 +28,7 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of a <see cref="cLog.eVerboseLevel"/>.
+    ''' Class for providing a textual description of a <see cref="eVerboseLevel"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cVerboseLevelTypeFormatter
@@ -36,18 +36,18 @@ Namespace Style
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(cLog.eVerboseLevel)
+            Return GetType(eVerboseLevel)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
             Implements ITypeFormatter.GetDescriptor
 
-            Dim val As cLog.eVerboseLevel = DirectCast(value, cLog.eVerboseLevel)
+            Dim val As eVerboseLevel = DirectCast(value, eVerboseLevel)
 
             Select Case val
-                Case cLog.eVerboseLevel.Standard
+                Case eVerboseLevel.Standard
                     Return My.Resources.VERBOSE_STANDARD
-                Case cLog.eVerboseLevel.Detailed
+                Case eVerboseLevel.Detailed
                     Return My.Resources.VERBOSE_DETAILED
             End Select
 

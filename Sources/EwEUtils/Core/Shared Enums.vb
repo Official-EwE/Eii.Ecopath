@@ -2396,6 +2396,11 @@ Namespace Core
 
 #Region " Forcing application types "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating supported forcing function application targets.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eForcingApplicationTypes As Integer
         ''' <summary>No application specified.</summary>
         NotSet = 0
@@ -2434,12 +2439,14 @@ Namespace Core
 
 #Region " IUCN threat classifications "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' IUCN Red List of Threatened Species conservation categories.
+    ''' Enumerated type stating the IUCN Red List of Threatened Species conservation categories.
     ''' </summary>
     ''' <remarks>
     ''' http://www.eoearth.org/article/IUCN_Red_List_Criteria_for_Endangered
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Enum eIUCNConservationStatusTypes As Integer
         ''' <summary>Conservation status has not been specified.</summary>
         NotSet = 0
@@ -2467,12 +2474,15 @@ Namespace Core
 
 #Region " Ecology types "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Habitat classifications where taxa prefer to dwell. Not necessarily related to Ecospace habitats.
+    ''' Enumerated type stating supported taxonomy Habitat classifications, where 
+    ''' taxa prefer to dwell. Not necessarily related to Ecospace habitats.
     ''' </summary>
     ''' <remarks>
     ''' As defined in FishBase (http://www.fishbase.org)
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Enum eEcologyTypes As Integer
         ''' <summary>Ecology type has not been specified.</summary>
         NotSet = 0
@@ -2494,12 +2504,14 @@ Namespace Core
 
 #Region " Occurrence status types "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Occurrence classifications.
+    ''' Enumerated type stating supported taxonomy Occurrence classifications.
     ''' </summary>
     ''' <remarks>
     ''' As defined in FishBase (http://www.fishbase.org)
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Enum eOccurrenceStatusTypes As Integer
         ''' <summary>Occurrence status has not been specified.</summary>
         NotSet = 0
@@ -2513,9 +2525,11 @@ Namespace Core
 
 #Region " Organism types "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Organism category types.
+    ''' Enumerated type stating supported taxonomy Organism classifications.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eOrganismTypes As Integer
         ''' <summary>Organism type has not been specified.</summary>
         NotSet = 0
@@ -2542,7 +2556,6 @@ Namespace Core
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eAutoUpdateResultTypes As Integer
-
         ''' <summary>All good. Blue skies, happy children, money in the bank; the works - no need to leave the couch.</summary>
         Success_NoActionRequired = 0
         ''' <summary>Indicated component is not part of the auto-update structure.</summary>
@@ -2567,9 +2580,11 @@ Namespace Core
 
 #Region " Ecospace Capacity and Habitat "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Enumerated type, indicating capacity calculation methods.
+    ''' Enumerated type stating supported Ecospace habitat foraging capacity calculation methods.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eEcospaceCapacityCalType As Integer
         ''' <summary>Both capacity inputs and habitats are used to calculate capacity.</summary>
         CapacityAndHabitat = 0
@@ -2581,24 +2596,33 @@ Namespace Core
 
 #End Region ' Ecospace Capacity and Habitat
 
-#Region "MSE Batch"
+#Region " MSE Batch "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating supported types of MSE Batch runs.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eMSEBatchIterCalcTypes As Integer
+        ''' <summary>To document.</summary>
         Percent
+        ''' <summary>To document.</summary>
         UpperLowerValues
     End Enum
 
-#End Region
+#End Region ' MSE Batch
 
-#Region "TriState"
+#Region " TriState "
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' TriState added for Mono compatibility.
+    ''' Alternative enumerator to Microsoft.VisualBasic.TriState, added for Mono compatibility.
     ''' </summary>
     ''' <remarks>
-    ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono.
-    ''' This definition of TriState should be used instead.
+    ''' The Microsoft.VisualBasic assembly is known to cause problems under Mono and should not be used.
+    ''' For full Mono compliance this definition of TriState should be used instead.
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Enum TriState As Integer
         UseDefault = -2
         [False] = -1
@@ -2609,15 +2633,42 @@ Namespace Core
 
 #Region " Autosave "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating aspects of EwE that can save automatically.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Enum eAutosaveTypes As Integer
-        EcosimRun = 0
+        ''' <summary>Ecopath run results</summary>
+        Ecopath = 0
+        ''' <summary>Ecosim run results</summary>
+        Ecosim
+        ''' <summary>Monte Carlo results</summary>
         MonteCarlo
+        ''' <summary>MSE results</summary>
         MSE
+        ''' <summary>Ecospace run results, in ASCII format</summary>
         EcospaceASC
+        ''' <summary>Ecospace run results, in CSV format</summary>
         EcospaceCSV
+        ''' <summary>Ecotracer run results</summary>
         Ecotracer
     End Enum
 
 #End Region ' Autosave
+
+#Region " Log levels "
+
+    ''' <summary>
+    ''' Enumerated type stating supported levels of detail for the content of log files.
+    ''' </summary>
+    Public Enum eVerboseLevel As Integer
+        ''' <summary>Log all generic errors</summary>
+        Standard = 0
+        ''' <summary>Log details to track application flow in more detail.</summary>
+        Detailed = 1
+    End Enum
+
+#End Region ' Log levels
 
 End Namespace ' Core

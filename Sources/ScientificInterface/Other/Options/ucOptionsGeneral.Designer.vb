@@ -48,6 +48,7 @@ Partial Class ucOptionsGeneral
             Me.m_hdrStatusPanel = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_nudMRU = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_hdrCaption = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnViewLogFileDir = New System.Windows.Forms.Button()
             CType(Me.m_nudMaxNumMessages, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMRU, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -150,6 +151,12 @@ Partial Class ucOptionsGeneral
             Me.m_hdrCaption.IsCollapsed = False
             Me.m_hdrCaption.Name = "m_hdrCaption"
             '
+            'm_btnViewLogFileDir
+            '
+            resources.ApplyResources(Me.m_btnViewLogFileDir, "m_btnViewLogFileDir")
+            Me.m_btnViewLogFileDir.Name = "m_btnViewLogFileDir"
+            Me.m_btnViewLogFileDir.UseVisualStyleBackColor = True
+            '
             'ucOptionsGeneral
             '
             resources.ApplyResources(Me, "$this")
@@ -163,6 +170,7 @@ Partial Class ucOptionsGeneral
             Me.Controls.Add(Me.m_hdrAuthor)
             Me.Controls.Add(Me.m_hdrStatusPanel)
             Me.Controls.Add(Me.m_cbShowHost)
+            Me.Controls.Add(Me.m_btnViewLogFileDir)
             Me.Controls.Add(Me.m_btnClearMRU)
             Me.Controls.Add(Me.m_nudMRU)
             Me.Controls.Add(Me.Label3)
@@ -193,6 +201,7 @@ Partial Class ucOptionsGeneral
         Private WithEvents m_cmbLogLevel As System.Windows.Forms.ComboBox
         Private WithEvents m_tbxContact As System.Windows.Forms.TextBox
         Private WithEvents m_tbxAuthor As System.Windows.Forms.TextBox
+        Private WithEvents m_btnViewLogFileDir As System.Windows.Forms.Button
 
     End Class
 

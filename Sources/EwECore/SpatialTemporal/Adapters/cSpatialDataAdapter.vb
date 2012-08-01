@@ -279,14 +279,14 @@ Namespace SpatialData
                             End If
                         Else
                             Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} missing data for T{2}, ext({3},{4}) to ({5},{6})"
-                            cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), cLog.eVerboseLevel.Detailed)
+                            cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, iTime, bm.PosTopLeft.X, bm.PosTopLeft.Y, bm.PosBottomRight.X, bm.PosBottomRight.Y), eVerboseLevel.Detailed)
                         End If
                     Else
                         Dim strMsg As String = "cSpatialDataAdapter::Populate({0}) dataset {1} or converter {2} not configured"
-                        cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, cv.DisplayName()), cLog.eVerboseLevel.Detailed)
+                        cLog.Write(String.Format(strMsg, layer.ToString(), ds.DisplayName, cv.DisplayName()), eVerboseLevel.Detailed)
                     End If
                 Else
-                    'cLog.Write("cSpatialDataAdapter.Populate: layer " & layer.ToString() & " not connected", cLog.eVerboseLevel.Detailed)
+                    'cLog.Write("cSpatialDataAdapter.Populate: layer " & layer.ToString() & " not connected", eVerboseLevel.Detailed)
                 End If
             Next
 

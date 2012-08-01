@@ -151,7 +151,7 @@ Namespace SpatialData
                 If Me.m_bLogStarted Then
                     Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STATUS_SPATIALTEMPORAL_SAVED, Me.m_strLogFileName), _
                                             eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = Me.m_strLogFileName
+                    msg.Hyperlink = Path.GetDirectoryName(Me.m_strLogFileName)
                     Me.m_core.Messages.SendMessage(msg)
 
                     Me.m_bLogStarted = False
@@ -167,9 +167,9 @@ Namespace SpatialData
             If (Not Me.m_bLogStarted) Then
 
                 ' Allowed to use smart directory>
-                If Me.m_core.m_EcoSpaceData.bUseCoreOuputDir Then
+                If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
                     ' #Yes: use core smartness
-                    Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, Me.m_core.EcospaceOutputFileLocation("SpatialOperations", "", ".txt"))
+                    Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, Me.m_core.EcospaceOutputFileName("SpatialOperations", "", ".txt"))
                 Else
                     ' #No: use base output directory
                     Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, "SpatialOperations.txt")
@@ -179,7 +179,7 @@ Namespace SpatialData
                     cLog.Write("cSpatialOperationsLog: unable to create output directory " & Me.m_strLogFileName)
                     Return
                 Else
-                    cLog.Write("cSpatialOperationsLog: saving to " & Me.m_strLogFileName, cLog.eVerboseLevel.Detailed)
+                    cLog.Write("cSpatialOperationsLog: saving to " & Me.m_strLogFileName, eVerboseLevel.Detailed)
                 End If
 
                 sb.AppendLine("Ecospace spatial operations log")

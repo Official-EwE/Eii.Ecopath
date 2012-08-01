@@ -57,7 +57,7 @@ Public Class cEcospaceCSVResultsWriter
 
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
 
-                    fn = Me.getGroupFileName(varname, igrp, Me.getSubDirName())
+                    fn = Me.getGroupFileName(varname, igrp, Me.GetFileExtension())
                     strm = New StreamWriter(fn, True)
                     saveCSV(strm, tsData, igrp, varname)
 
@@ -74,15 +74,21 @@ Public Class cEcospaceCSVResultsWriter
     End Sub
 
     Public Overrides Sub EndWrite()
+        ' ToDo_JS: globalize this message
+        Dim msg As New cMessage("Ecospace result CSV files have been written to " & Me.m_TimeStampDirName, _
+                                eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+        ' Provide hyperlink to the directory with the files
+        msg.Hyperlink = Me.m_TimeStampDirName
+        Me.m_core.Messages.SendMessage(msg)
     End Sub
 
 #End Region
 
 #Region "Private methods"
 
-    Protected Overrides ReadOnly Property OuputType() As cEcospaceBaseResultsWriter.eSpaceOutputType
+    Protected Overrides ReadOnly Property OuputType() As eAutosaveTypes
         Get
-            Return eSpaceOutputType.CSV
+            Return eAutosaveTypes.EcospaceCSV
         End Get
     End Property
 

@@ -2448,7 +2448,7 @@
     <value>Applying changes...</value>
   </data>
   <data name="GENERIC_STATUS_BUSY" xml:space="preserve">
-    <value>Please wait...</value>
+    <value>Please wait a moment...</value>
   </data>
   <data name="GENERIC_STATUS_RUNNINGPLUGIN" xml:space="preserve">
     <value>Executing plug-in...</value>

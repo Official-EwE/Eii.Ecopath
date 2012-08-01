@@ -235,6 +235,12 @@ Public Class cEcospaceModelParameters
 
 #Region " Variables by dot (.) operator "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Ecospace should automatically save ASC files for every
+    ''' time step.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property SaveASC As Boolean
         Get
             Return Me.m_core.Autosave(eAutosaveTypes.EcospaceASC)
@@ -244,6 +250,12 @@ Public Class cEcospaceModelParameters
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Ecospace should automatically save CSV files for every
+    ''' time step.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property SaveCSV As Boolean
         Get
             Return Me.m_core.Autosave(eAutosaveTypes.EcospaceCSV)
@@ -271,7 +283,6 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the number of regions for this scenario.
@@ -289,10 +300,12 @@ Public Class cEcospaceModelParameters
 
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Ecospace initialization biomass to Habitat adjusted or Ecopath base
     ''' </summary>
     ''' <remarks>True = Habitat adjusted, False = Ecopath base</remarks>
+    ''' -----------------------------------------------------------------------
     Public Property AdjustSpace() As Boolean
 
         Get
@@ -424,10 +437,11 @@ Public Class cEcospaceModelParameters
     End Property
 
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Use the Individual Behavior Model
+    ''' Get/set whether Ecospace should use its Individual Based Model.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Property UseIBM() As Boolean
 
         Get
@@ -441,10 +455,12 @@ Public Class cEcospaceModelParameters
     End Property
 
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Ecospace initialization biomass to Habitat adjusted or Ecopath base
     ''' </summary>
     ''' <remarks>True = Habitat adjusted, False = Ecopath base</remarks>
+    ''' -----------------------------------------------------------------------
     Public Property UseNewMultiStanza() As Boolean
 
         Get
@@ -569,7 +585,6 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-  
     Public Property IBMMovePacketOnStanza() As Boolean
 
         Get
@@ -582,10 +597,11 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Set the <see cref="eEcospaceCapacityCalType">inputs</see> that Ecospace uses to calculate capacity.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property CapacityCalculationType() As eEcospaceCapacityCalType
 
         Get
@@ -598,6 +614,11 @@ Public Class cEcospaceModelParameters
 
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether data should be written as annual average values.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property UseAnnualOuput() As Boolean
 
         Get
@@ -610,7 +631,15 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-    Public Property UseCoreOuputDirectory() As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether Ecospace should save its data to the standard core output
+    ''' directory and scenario-dependent subdirectories. If false, data will be saved
+    ''' directly to the core output path ignoring the scenario-dependent subdirectory
+    ''' structures.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property UseCoreOutputDirectory() As Boolean
 
         Get
             Return CBool(GetVariable(eVarNameFlags.EcospaceUseCoreOutputDir))

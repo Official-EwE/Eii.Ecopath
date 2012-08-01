@@ -97,7 +97,6 @@ Namespace Ecosim
                             bSucces = False
                             msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
                                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
-                            msg.Hyperlink = strPath
                             Me.m_core.Messages.SendMessage(msg)
                         End If
                     Catch ex As Exception
@@ -110,6 +109,8 @@ Namespace Ecosim
             If bSucces Then
                 msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), _
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+                ' Provide hyperlink to the directory with the files
+                msg.Hyperlink = Path.GetDirectoryName(Me.GetOutputFileName(strPath, True, eResultTypes.Biomass))
                 Me.m_core.Messages.SendMessage(msg)
             End If
             Return bSucces
@@ -276,48 +277,48 @@ Namespace Ecosim
             If bSaveAnnual Then
                 Select Case outputtype
                     Case eResultTypes.Biomass
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Biomass_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Biomass_annual", "", strExt)
                     Case eResultTypes.Mortality
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Mortality_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Mortality_annual", "", strExt)
                     Case eResultTypes.Yield
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Yield_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Yield_annual", "", strExt)
                     Case eResultTypes.ConsumptionBiomass
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Cons_biom_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Cons_biom_annual", "", strExt)
                     Case eResultTypes.FeedingTime
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Feedingtime_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("FeedingTime_annual", "", strExt)
                     Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Weight_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Weight_annual", "", strExt)
                     Case eResultTypes.PredationMortality
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Predation_annual " & GroupName, "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Predation_annual " & GroupName, "", strExt)
                     Case eResultTypes.Prey
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Prey_annual " & GroupName, "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Prey_annual " & GroupName, "", strExt)
                     Case eResultTypes.TL
-                        strFileName = Me.m_core.EcosimOutputFileLocation("TL_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("TL_annual", "", strExt)
                     Case eResultTypes.Value
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Value_annual", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Value_annual", "", strExt)
                 End Select
             Else
                 Select Case outputtype
                     Case eResultTypes.Biomass
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Biomass", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Biomass", "", strExt)
                     Case eResultTypes.Mortality
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Mortality", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Mortality", "", strExt)
                     Case eResultTypes.Yield
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Yield", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Yield", "", strExt)
                     Case eResultTypes.ConsumptionBiomass
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Cons_biom", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Cons_biom", "", strExt)
                     Case eResultTypes.FeedingTime
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Feedingtime", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("FeedingTime", "", strExt)
                     Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Weight", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Weight", "", strExt)
                     Case eResultTypes.PredationMortality
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Predation " & GroupName, "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Predation " & GroupName, "", strExt)
                     Case eResultTypes.Prey
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Prey " & GroupName, "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Prey " & GroupName, "", strExt)
                     Case eResultTypes.TL
-                        strFileName = Me.m_core.EcosimOutputFileLocation("TL", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("TL", "", strExt)
                     Case eResultTypes.Value
-                        strFileName = Me.m_core.EcosimOutputFileLocation("Value", "", strExt)
+                        strFileName = Me.m_core.EcosimOutputFileName("Value", "", strExt)
                 End Select
             End If
 

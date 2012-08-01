@@ -52,10 +52,10 @@ Public Class cMonteCarloManager
     'Time step handler for ecosim 
     Private m_EcosimTimeStepHandler As EcoSimTimeStepDelegate
 
-    'Delegates supplied by the interface to call in responce to an Monte Carlo delagate
+    'Delegates supplied by the interface to call in responce to an Monte Carlo delegate
     Private m_dlgMCCompletedHandler As MonteCarloCompletedDelegate
     Private m_dlgMCEcopathStepHandler As MonteCarloEcopathProgressDelegate
-    Public m_dlgMCTrialStepHandler As MonteCarloTrialProgressDelegate
+    Private m_dlgMCTrialStepHandler As MonteCarloTrialProgressDelegate
 
     Private m_lstMessages As New List(Of cMessage)
 
@@ -521,7 +521,8 @@ Public Class cMonteCarloManager
 
 
     ''' <summary>
-    ''' MonteCarloEcopathDelegate to call at each attempt to find a balanced Ecopath model
+    ''' Set the <see cref="MonteCarloEcopathProgressDelegate">delegate</see> to call at each attempt 
+    ''' to find a balanced Ecopath model.
     ''' </summary>
     ''' <remarks>Call to update an interface when Ecopath has been run</remarks>
     Public WriteOnly Property MonteCarloEcopathStepHandler() As MonteCarloEcopathProgressDelegate
@@ -531,9 +532,10 @@ Public Class cMonteCarloManager
     End Property
 
     ''' <summary>
-    ''' MonteCarloTrialDelegate to call at each Monte Carlo trial
+    ''' <see cref="MonteCarloTrialProgressDelegate"/> to call at the completion of each Monte Carlo trial.
     ''' </summary>
-    ''' <remarks>This delegate is supplied by a user interface and will be called by the Monte Carlo object at the end of each Monte Carlo trial. 
+    ''' <remarks>This delegate is supplied by a user interface and will be called 
+    ''' by the Monte Carlo routines at the end of each Monte Carlo trial.
     ''' It will tell an interface that a single trial has completed. </remarks>
     Public WriteOnly Property MonteCarloStepHandler() As MonteCarloTrialProgressDelegate
         Set(ByVal value As MonteCarloTrialProgressDelegate)

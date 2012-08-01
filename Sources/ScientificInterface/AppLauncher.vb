@@ -2874,7 +2874,7 @@ Public Class AppLauncher
         Else
             Try
                 ' Launch folder via Explorer
-                Process.Start("explorer.exe", Path.GetDirectoryName(bcmd.URL))
+                Process.Start("explorer.exe", bcmd.URL)
             Catch ex As Exception
                 ' No need to panic
             End Try
@@ -3982,9 +3982,9 @@ Public Class AppLauncher
 
                 Case "LogVerboseLevel"
                     Try
-                        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, cLog.eVerboseLevel)
+                        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
                     Catch ex As Exception
-                        cLog.VerboseLevel = cLog.eVerboseLevel.Standard
+                        cLog.VerboseLevel = eVerboseLevel.Standard
                     End Try
 
                 Case "Author"

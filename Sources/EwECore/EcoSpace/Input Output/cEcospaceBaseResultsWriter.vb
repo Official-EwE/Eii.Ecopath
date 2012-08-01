@@ -32,12 +32,6 @@ Imports EwEUtils.Core
 Public MustInherit Class cEcospaceBaseResultsWriter
     Implements EwEUtils.Core.IEcospaceResultsWriter
 
-    Enum eSpaceOutputType
-        NA
-        ASC
-        CSV
-    End Enum
-
 #Region "Protected data "
 
     Protected m_core As cCore
@@ -67,8 +61,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <summary>
     ''' Implementation must provide an OutputType
     ''' </summary>
-    ''' <remarks>Used by <see cref="getSubDirName">getSubDirName()</see> to build the output directory by output type</remarks>
-    Protected MustOverride ReadOnly Property OuputType() As eSpaceOutputType
+    Protected MustOverride ReadOnly Property OuputType() As eAutosaveTypes
 
 #End Region
 
@@ -83,8 +76,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' i.e. "Ecospace ASC 11-07-11 16-40-50" </remarks>
     Protected Overridable Sub CreateOutputDir(Optional bIncludeTime As Boolean = False)
 
-        If Me.m_core.m_EcoSpaceData.bUseCoreOuputDir Then
-            m_TimeStampDirName = Path.Combine(Me.m_core.OutputPath, Path.GetDirectoryName(Me.m_core.EcospaceOutputFileLocation(bIncludeTime:=bIncludeTime)) & " " & Me.getSubDirName())
+        If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
+            m_TimeStampDirName = Path.Combine(Me.m_core.OutputPath, Path.GetDirectoryName(Me.m_core.OutputFileLocation(Me.OuputType, bIncludeTime:=bIncludeTime)))
         Else
             'Use the output directroy set by the user
             m_TimeStampDirName = Me.m_core.OutputPath ' 
@@ -102,14 +95,12 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Protected Function getSubDirName() As String
+    Protected Function GetFileExtension() As String
 
         Select Case Me.OuputType
-            Case eSpaceOutputType.NA
-                Return ""
-            Case eSpaceOutputType.ASC
+            Case eAutosaveTypes.EcospaceASC
                 Return "ASC"
-            Case eSpaceOutputType.CSV
+            Case eAutosaveTypes.EcospaceCSV
                 Return "CSV"
         End Select
         Return ""

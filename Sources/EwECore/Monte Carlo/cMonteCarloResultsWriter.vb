@@ -25,7 +25,7 @@ Imports EwEUtils.Utilities
 'Error handling could set the bSaveOutput flag to false if there is an error
 'this is problematic as the interface now has to be updated but the MonteCarlo is not a proper CoreInputOutput object...
 
-Public Class cMonteCarloResultsWriter
+Friend Class cMonteCarloResultsWriter
 
     Private m_MC As cEcosimMonteCarlo
     Private m_core As cCore
@@ -46,17 +46,17 @@ Public Class cMonteCarloResultsWriter
 
             If cFileUtils.IsDirectoryAvailable(Me.Core.OutputPath, True) Then
 
-                If File.Exists(OuputFilename) Then
-                    File.Delete(Me.OuputFilename)
+                If File.Exists(OutputFilename) Then
+                    File.Delete(Me.OutputFilename)
                 End If
 
                 'Vulnerabitlies file
-                If File.Exists(Me.VulOuputFilename) Then
-                    File.Delete(Me.VulOuputFilename)
+                If File.Exists(Me.VulOutputFilename) Then
+                    File.Delete(Me.VulOutputFilename)
                 End If
 
-                Me.WriteHeader(Me.OuputFilename)
-                Me.WriteHeader(Me.VulOuputFilename)
+                Me.WriteHeader(Me.OutputFilename)
+                Me.WriteHeader(Me.VulOutputFilename)
 
                 'save the baseline data
                 Me.Save(True)
@@ -71,16 +71,15 @@ Public Class cMonteCarloResultsWriter
         End Try
     End Sub
 
-    Private ReadOnly Property OuputFilename() As String
+    Private ReadOnly Property OutputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("IterationData", eAutosaveTypes.MonteCarlo.ToString, ".csv"))
+            Return Path.Combine(Me.DataDir, Me.Core.OutputFileLocation(eAutosaveTypes.MonteCarlo, "Trials", ".csv"))
         End Get
     End Property
 
-
-    Private ReadOnly Property VulOuputFilename() As String
+    Private ReadOnly Property VulOutputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, Me.Core.EcosimOutputFileLocation("Vulnerability", eAutosaveTypes.MonteCarlo.ToString, ".csv"))
+            Return Path.Combine(Me.DataDir, Me.Core.OutputFileLocation(eAutosaveTypes.MonteCarlo, "Vulnerability", ".csv"))
         End Get
     End Property
 
@@ -92,7 +91,7 @@ Public Class cMonteCarloResultsWriter
 
     Private ReadOnly Property ModelName() As String
         Get
-            Return Me.Core.DataSource.Filename
+            Return Me.Core.DataSource.FileName
         End Get
     End Property
 
@@ -176,7 +175,7 @@ Public Class cMonteCarloResultsWriter
 
             If Not Me.MC.bSaveOutput Then Exit Sub
 
-            strm = New StreamWriter(Me.OuputFilename, True)
+            strm = New StreamWriter(Me.OutputFilename, True)
 
             'empty line at the start of a new data block
             strm.WriteLine("")
@@ -261,7 +260,7 @@ Public Class cMonteCarloResultsWriter
 
             If Not Me.MC.bSaveOutput Then Exit Sub
 
-            strm = New StreamWriter(Me.VulOuputFilename, True)
+            strm = New StreamWriter(Me.VulOutputFilename, True)
 
             strm.WriteLine()
 

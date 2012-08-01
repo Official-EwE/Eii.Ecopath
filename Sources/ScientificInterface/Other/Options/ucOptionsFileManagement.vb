@@ -38,6 +38,7 @@ Namespace Other
         Private m_uic As cUIContext = Nothing
         Private m_strVersion As String = Application.ProductVersion.ToString
         Private m_strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
+        Private m_cbh As cCheckboxHierarchy = Nothing
 
 #Region " Constructors "
 
@@ -61,37 +62,33 @@ Namespace Other
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Dim strScenarioDefault As String = ("{" & SharedResources.HEADER_SCENARIO & "}").ToLower()
-            Dim strEcosimScenarioName As String = strScenarioDefault
-            Dim strEcospaceScenarioName As String = strScenarioDefault
-            Dim strEcotracerScenarioName As String = strScenarioDefault
+            Dim strDefault As String = ("{" & SharedResources.HEADER_SCENARIO & "}").ToLower()
+            Dim strEcosimScenario As String = strDefault
+            Dim strEcospaceScenario As String = strDefault
+            Dim strEcotracerScenario As String = strDefault
             Dim strOutput As String = ("{" & SharedResources.HEADER_OUTPUT_LOCATION & "}").ToLower() & IO.Path.DirectorySeparatorChar
             Dim core As cCore = Me.m_uic.Core
 
             If (core.ActiveEcosimScenarioIndex > -1) Then
-                strEcosimScenarioName = core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name
+                strEcosimScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name
             End If
             If (core.ActiveEcospaceScenarioIndex > -1) Then
-                strEcospaceScenarioName = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex).Name
+                strEcospaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex).Name
             End If
             If (core.ActiveEcotracerScenarioIndex > -1) Then
-                strEcotracerScenarioName = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex).Name
+                strEcotracerScenario = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex).Name
             End If
 
-            Me.m_cbAutosaveAll.CheckState = CheckState.Indeterminate
-            Me.m_cbEcosim.CheckState = CheckState.Indeterminate
-            Me.m_cbEcospace.CheckState = CheckState.Indeterminate
+            Me.m_tbxEcosim.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.Ecosim, strScenario:=strEcosimScenario)
+            Me.m_tbxMC.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.MonteCarlo, strScenario:=strEcosimScenario)
+            Me.m_tbxMSE.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.MSE, strScenario:=strEcosimScenario)
 
-            Me.m_tbxEcosim.Text = strOutput & core.EcosimOutputFileLocation(strScenarioName:=strEcosimScenarioName)
-            Me.m_tbxMC.Text = strOutput & core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MonteCarlo.ToString(), strScenarioName:=strEcosimScenarioName)
-            Me.m_tbxMSE.Text = strOutput & core.EcosimOutputFileLocation(strFilter:=eAutosaveTypes.MSE.ToString(), strScenarioName:=strEcosimScenarioName)
+            Me.m_tbxASCII.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.EcospaceASC, strScenario:=strEcospaceScenario, strExt:=".asc")
+            Me.m_tbxCSV.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.EcospaceCSV, strScenario:=strEcospaceScenario, strExt:=".csv")
 
-            Me.m_tbxASCII.Text = strOutput & core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".asc")
-            Me.m_tbxCSV.Text = strOutput & core.EcospaceOutputFileLocation(strScenarioName:=strEcospaceScenarioName, strExt:=".csv")
+            Me.m_tbxTracer.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.Ecotracer, strScenario:=strEcotracerScenario)
 
-            Me.m_tbxTracer.Text = strOutput & core.EcotracerOutputFileLocation(strScenarioName:=strEcotracerScenarioName)
-
-            Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.EcosimRun)
+            Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.Ecosim)
             Me.m_cbMonteCarlo.Checked = core.Autosave(eAutosaveTypes.MonteCarlo)
             Me.m_cbMSE.Checked = core.Autosave(eAutosaveTypes.MSE)
             Me.m_cbSpaceCSV.Checked = core.Autosave(eAutosaveTypes.EcospaceCSV)
@@ -108,6 +105,18 @@ Namespace Other
             Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
             Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
 
+            ' Configure checkbox hierarchy
+            Me.m_cbh = New cCheckboxHierarchy(Me.m_cbAutosaveAll)
+            Me.m_cbh.Add(Me.m_cbEcosim, Me.m_cbAutosaveAll)
+            Me.m_cbh.Add(Me.m_cbEcosimRun, Me.m_cbEcosim)
+            Me.m_cbh.Add(Me.m_cbMonteCarlo, Me.m_cbEcosim)
+            Me.m_cbh.Add(Me.m_cbMSE, Me.m_cbEcosim)
+            Me.m_cbh.Add(Me.m_cbEcospace, Me.m_cbAutosaveAll)
+            Me.m_cbh.Add(Me.m_cbSpaceASCII, Me.m_cbEcospace)
+            Me.m_cbh.Add(Me.m_cbSpaceCSV, Me.m_cbEcospace)
+            Me.m_cbh.Add(Me.m_cbEcotracer, Me.m_cbAutosaveAll)
+            Me.m_cbh.ManageCheckedStates = True
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -120,7 +129,7 @@ Namespace Other
 
             Try
 
-                core.Autosave(eAutosaveTypes.EcosimRun) = Me.m_cbEcosimRun.Checked
+                core.Autosave(eAutosaveTypes.Ecosim) = Me.m_cbEcosimRun.Checked
                 core.Autosave(eAutosaveTypes.MonteCarlo) = Me.m_cbMonteCarlo.Checked
                 core.Autosave(eAutosaveTypes.MSE) = Me.m_cbMSE.Checked
                 core.Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSpaceCSV.Checked
@@ -156,34 +165,6 @@ Namespace Other
 #End Region ' Overrides
 
 #Region " Event handlers "
-
-        Private Sub OnSaveAllClicked(sender As System.Object, e As System.EventArgs) _
-            Handles m_cbAutosaveAll.Click
-
-            Me.m_cbEcosim.Checked = Me.m_cbAutosaveAll.Checked
-            Me.m_cbEcospace.Checked = Me.m_cbAutosaveAll.Checked
-            Me.m_cbEcotracer.Checked = Me.m_cbAutosaveAll.Checked
-            Me.OnEcosimClicked(sender, e)
-            Me.OnEcospaceClicked(sender, e)
-
-        End Sub
-
-        Private Sub OnEcosimClicked(sender As System.Object, e As System.EventArgs) _
-            Handles m_cbEcosim.Click
-
-            Me.m_cbEcosimRun.Checked = Me.m_cbEcosim.Checked
-            Me.m_cbMonteCarlo.Checked = Me.m_cbEcosim.Checked
-            Me.m_cbMSE.Checked = Me.m_cbEcosim.Checked
-
-        End Sub
-
-        Private Sub OnEcospaceClicked(sender As System.Object, e As System.EventArgs) _
-            Handles m_cbEcospace.Click
-
-            Me.m_cbSpaceASCII.Checked = Me.m_cbEcospace.Checked
-            Me.m_cbSpaceCSV.Checked = Me.m_cbEcospace.Checked
-
-        End Sub
 
         Private Sub OnOutputFieldPicked(ByVal sender As ScientificInterfaceShared.Controls.ucFieldPicker, ByVal value As Object) _
             Handles m_fieldpickOutput.OnFieldPicked

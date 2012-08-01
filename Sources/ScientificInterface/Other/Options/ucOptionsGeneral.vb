@@ -28,6 +28,7 @@ Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Utilities
 Imports System.Configuration
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Core
 
 #End Region
 
@@ -107,7 +108,7 @@ Namespace Other
                 My.Settings.StatusMaxMessages = CInt(Me.m_nudMaxNumMessages.Value)
                 My.Settings.StatusShowTime = Me.m_cbShowTime.Checked
                 My.Settings.ShowHostInfo = Me.m_cbShowHost.Checked
-                My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, cLog.eVerboseLevel)
+                My.Settings.LogVerboseLevel = DirectCast(Me.m_fpVerboseLevel.Value, eVerboseLevel)
                 My.Settings.Author = Me.m_tbxAuthor.Text
                 My.Settings.Contact = Me.m_tbxContact.Text
 
@@ -152,6 +153,21 @@ Namespace Other
             Me.ClearFileList(My.Settings.MdbRecentlyUsedList)
             Me.m_btnClearMRU.Enabled = False
             Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnViewLogFileDir(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnViewLogFileDir.Click
+
+            Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+            If (cmd Is Nothing) Then Return
+
+            Try
+                ' Open directory with the log files
+                cmd.Invoke(Path.GetDirectoryName(cLog.LogFile))
+            Catch ex As Exception
+
+            End Try
 
         End Sub
 

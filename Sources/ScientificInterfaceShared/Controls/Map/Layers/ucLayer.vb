@@ -148,7 +148,7 @@ Namespace Controls.Map
                     Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                     cmd.Invoke(rl, Nothing, edittype)
                 Catch ex As Exception
-                    cLog.Write(ex, cLog.eVerboseLevel.Detailed, "ucLayer::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
+                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayer " & Me.Layer.Name & "(" & edittype.ToString & ")")
                 End Try
             End If
         End Sub
@@ -160,7 +160,7 @@ Namespace Controls.Map
                     Dim cmd As cEcospaceExternalDataCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME), cEcospaceExternalDataCommand)
                     cmd.Invoke(rl.Data)
                 Catch ex As Exception
-                    cLog.Write(ex, cLog.eVerboseLevel.Detailed, "ucLayer::EditLayerConnection " & Me.Layer.Name)
+                    cLog.Write(ex, eVerboseLevel.Detailed, "ucLayer::EditLayerConnection " & Me.Layer.Name)
                 End Try
             End If
         End Sub

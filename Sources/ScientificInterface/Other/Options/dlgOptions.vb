@@ -136,9 +136,16 @@ Namespace Other
             Dim msg As cMessage = Nothing
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
-            For Each optionspage As IOptionsPage In Me.m_lPages
-                result = DirectCast(Math.Max(result, optionspage.Apply()), IOptionsPage.eApplyResultType)
-            Next
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+            Try
+                For Each optionspage As IOptionsPage In Me.m_lPages
+                    result = DirectCast(Math.Max(result, optionspage.Apply()), IOptionsPage.eApplyResultType)
+                Next
+            Catch ex As Exception
+                ' Whoah
+                cLog.Write(ex, "dlgOptions::Apply")
+            End Try
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             Select Case result
                 Case IOptionsPage.eApplyResultType.Success

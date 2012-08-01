@@ -317,20 +317,35 @@ Namespace Utilities
         ''' <param name="strDirectory">The directory to check.</param>
         ''' <param name="bCreate">Optional flag, stating whether the directory 
         ''' should be created if it does not exist yet.</param>
+        ''' <param name="bClear">Optional flag, stating whether any content of
+        ''' the directory should be cleared out.</param>
         ''' <returns>True if the directory is available.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function IsDirectoryAvailable(ByVal strDirectory As String, _
-                                                    Optional ByVal bCreate As Boolean = False) As Boolean
+                                                    Optional ByVal bCreate As Boolean = False, _
+                                                    Optional ByVal bClear As Boolean = False) As Boolean
 
-            If Not Directory.Exists(strDirectory) Then
+            Dim bExists As Boolean = Directory.Exists(strDirectory)
+
+            If bExists And bClear Then
                 Try
-                    If bCreate Then Return (Directory.CreateDirectory(strDirectory) IsNot Nothing)
+                    Directory.Delete(strDirectory, True)
+                    bCreate = True
+                    bExists = False
+                Catch ex As Exception
+                    ' Ouch
+                End Try
+            End If
+
+            If Not bExists Then
+                Try
+                    If bCreate Then bExists = (Directory.CreateDirectory(strDirectory) IsNot Nothing)
                 Catch ex As Exception
                     ' Whoah
                 End Try
-                Return False
             End If
-            Return True
+
+            Return bExists
 
         End Function
 
@@ -349,7 +364,8 @@ Namespace Utilities
                                                 ByVal strComponentName As String, _
                                                 ByVal strScenarioName As String, _
                                                 ByVal strExt As String, _
-                                                Optional ByVal strFilter As String = "") As String
+                                                Optional ByVal strFilter As String = "", _
+                                                Optional ByVal strSubDir As String = "") As String
 
             ' Sanity checks
             Debug.Assert(Not String.IsNullOrEmpty(strModelName), "Model Name required")
@@ -368,6 +384,12 @@ Namespace Utilities
             ' Add entire scenario name as directory, if provided
             If (Not String.IsNullOrWhiteSpace(strScenarioName)) Then
                 sb.Append(cFileUtils.ToValidFileName(strScenarioName, False))
+                sb.Append(Path.DirectorySeparatorChar)
+            End If
+
+            ' Add subdir, if provided
+            If (Not String.IsNullOrWhiteSpace(strSubDir)) Then
+                sb.Append(cFileUtils.ToValidFileName(strSubDir, False))
                 sb.Append(Path.DirectorySeparatorChar)
             End If
 
