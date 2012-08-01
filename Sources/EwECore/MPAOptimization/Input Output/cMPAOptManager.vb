@@ -20,7 +20,6 @@ Imports EwECore.EcoSeed
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
-Imports EwEPlugin
 
 #Region "Enums"
 
