@@ -159,7 +159,9 @@ Namespace FishingPolicy
 
             ' Fire plug-in point
             If Me.m_pluginManager IsNot Nothing Then
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.FishingPolicy
                 Me.m_pluginManager.SearchInitialized(Me.m_searchData)
+                Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
             End If
 
         End Sub
