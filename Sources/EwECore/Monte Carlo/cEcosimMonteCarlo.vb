@@ -713,8 +713,7 @@ Friend Class cEcosimMonteCarlo
                         m_epdata.B(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.Biomass, igrp), _
                                                              CVpar(eMCParams.Biomass, igrp), _
                                                              ParLimit(0, eMCParams.Biomass, igrp), _
-                                                             ParLimit(1, eMCParams.Biomass, igrp), _
-                                                             isCrashed(igrp))
+                                                             ParLimit(1, eMCParams.Biomass, igrp))
 
                         m_epdata.BA(igrp) = ChooseFeasibleBA(m_epdata.B(igrp), _
                                                              ParCurVal(eMCParams.BA, igrp), _
@@ -727,8 +726,7 @@ Friend Class cEcosimMonteCarlo
                         m_epdata.PB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.PB, igrp), _
                                                               CVpar(eMCParams.PB, igrp), _
                                                               ParLimit(0, eMCParams.PB, igrp), _
-                                                              ParLimit(1, eMCParams.PB, igrp), _
-                                                              False)
+                                                              ParLimit(1, eMCParams.PB, igrp))
                     End If
 
                     ' JS13feb12 added
@@ -737,16 +735,14 @@ Friend Class cEcosimMonteCarlo
                         m_epdata.QB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.QB, igrp), _
                                                               CVpar(eMCParams.QB, igrp), _
                                                               ParLimit(0, eMCParams.QB, igrp), _
-                                                              ParLimit(1, eMCParams.QB, igrp), _
-                                                              False)
+                                                              ParLimit(1, eMCParams.QB, igrp))
                     End If
                     'EE
                     If m_ecopath.missing(igrp, 4) = False Then
                         m_epdata.EE(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.EE, igrp), _
                                                               CVpar(4, igrp), _
                                                               ParLimit(0, eMCParams.EE, igrp), _
-                                                              ParLimit(1, eMCParams.EE, igrp), _
-                                                              False)
+                                                              ParLimit(1, eMCParams.EE, igrp))
                     End If
                 Next igrp
 
@@ -891,32 +887,10 @@ Friend Class cEcosimMonteCarlo
         Dim i As Integer
         Try
             'jb set the Upper and Lower Limits to 2*CV
-            'CV = SD/Mean So upper and lower limits are 2 standard deviations
             Dim factor As Integer = 2
 
             'We want a wide range for searching, cv will still limit the steps
             For i = 1 To m_core.nLivingGroups
-                'If IsCrashEvaluated Then factor = IIf(isCrashed(i), 4, 2)
-                'VC Sep 2008 changed it to use best fit for calculating limits:
-                ''Lower
-                'ParLimit(0, 1, i) = BestFit(eMCParams.Biomass, i) * (1 - factor * CVpar(1, i)) : If ParLimit(0, 1, i) < 0 Then ParLimit(0, 1, i) = 0
-                'ParLimit(0, 2, i) = BestFit(eMCParams.PB, i) * (1 - factor * CVpar(2, i)) : If ParLimit(0, 2, i) < 0 Then ParLimit(0, 2, i) = 0
-                'ParLimit(0, 4, i) = BestFit(eMCParams.EE, i) * (1 - factor * CVpar(4, i)) : If ParLimit(0, 4, i) < 0 Then ParLimit(0, 4, i) = 0
-                ''BA is +- relative to B not to BA (which is usually zero)
-                'ParLimit(0, 5, i) = BestFit(eMCParams.BA, i) + m_epdata.B(i) * (-factor * CVpar(5, i))
-                ''Vul is from 1 up
-                'ParLimit(0, 6, i) = BestFit(eMCParams.Vulnerability, i) * (1 - factor * CVpar(6, i)) : If ParLimit(0, 6, i) < 1.01 Then ParLimit(0, 6, i) = 1.01
-
-                ''upper
-                ''factor = IIf(isExploded(i), 0.1, 2)
-                'ParLimit(1, 1, i) = m_epdata.B(i) * (1 + factor * CVpar(1, i))
-                'ParLimit(1, 2, i) = m_epdata.PB(i) * (1 + factor * CVpar(2, i))
-                'ParLimit(1, 4, i) = m_epdata.EE(i) * (1 + factor * CVpar(4, i)) : If ParLimit(1, 4, i) > 1 Then ParLimit(1, 4, i) = 1
-                ''BA is +- relative to B not to BA (which is usually zero)
-                'ParLimit(1, 5, i) = 1.001 'm_epdata.BA(i) + m_epdata.B(i) * (factor * CVpar(5, i))
-                'ParLimit(1, 6, i) = 1000 ' m_esdata.VulnerabilityPredator(i) * (1 + factor * CVpar(6, i)) 'no upper limit for vulmult : If ParLimit(1, 6, i) > 1 Then ParLimit(1, 6, i) = 1
-
-
                 'Lower
                 ParLimit(0, 1, i) = m_epdata.B(i) * (1 - factor * CVpar(1, i)) : If ParLimit(0, 1, i) < 0 Then ParLimit(0, 1, i) = 0.0000000001
                 ParLimit(0, 2, i) = m_epdata.PB(i) * (1 - factor * CVpar(2, i)) : If ParLimit(0, 2, i) < 0 Then ParLimit(0, 2, i) = 0.0000000001
@@ -937,7 +911,7 @@ Friend Class cEcosimMonteCarlo
                 ParLimit(1, 4, i) = m_epdata.EE(i) * (1 + factor * CVpar(4, i)) : If ParLimit(1, 4, i) > 1 Then ParLimit(1, 4, i) = 1
                 'BA is +- relative to B not to BA (which is usually zero)
                 ParLimit(1, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (factor * CVpar(5, i))
-                ParLimit(1, 6, i) = 1000 ' m_esdata.VulnerabilityPredator(i) * (1 + factor * CVpar(6, i)) 'no upper limit for vulmult : If ParLimit(1, 6, i) > 1 Then ParLimit(1, 6, i) = 1
+                ' ParLimit(1, 6, i) = 1000 ' m_esdata.VulnerabilityPredator(i) * (1 + factor * CVpar(6, i)) 'no upper limit for vulmult : If ParLimit(1, 6, i) > 1 Then ParLimit(1, 6, i) = 1
 
             Next
 
@@ -951,7 +925,7 @@ Friend Class cEcosimMonteCarlo
 
     End Sub
 
-    Private Function ChooseFeasiblePar(ByVal xbar As Single, ByVal CV As Single, ByVal ParMin As Single, ByVal ParMax As Single, ByVal isCrashed As Boolean) As Single
+    Private Function ChooseFeasiblePar(ByVal xbar As Single, ByVal CV As Single, ByVal ParMin As Single, ByVal ParMax As Single) As Single
         Dim X As Single, ict As Integer
 
         Do
@@ -960,8 +934,7 @@ Friend Class cEcosimMonteCarlo
             X = xbar * (1 + CV * RandomNormal())
 
             If X >= ParMin And X <= ParMax Then
-                ChooseFeasiblePar = X
-                Exit Function
+                Return X
             End If
             ict = ict + 1
             If ict > 10000 Then
@@ -969,8 +942,7 @@ Friend Class cEcosimMonteCarlo
                 '    Answer = MsgBox("Can't find acceptable parameter, using mean", vbOKCancel)
                 'End If
                 System.Console.WriteLine("ChooseFeasiblePar() Can't find acceptable parameter, using mean")
-                ChooseFeasiblePar = xbar
-                Exit Function
+                Return xbar
             End If
         Loop
     End Function
