@@ -21,27 +21,32 @@ Public Class cCEFASMonteCarloSamplePlugin
         Dim nLiving As Integer = Core.nLivingGroups
         Dim MonteCarlo As cMonteCarloManager = Core.EcosimMonteCarlo
 
+        'The makes sure Ecopath does not make a fuss, popping up message boxes, when it fails to balance a model
         _ecopath.suppressMessages = True
 
+        'Init some of the Monte Carlo parameters
         If Me.InitMonteCarloParameters() Then
             'Succeeded in intitializing Monte Carlo Parameters
 
             'Dump out the Limits on Biomass
+            'for debuging to make sure it worked
             System.Console.WriteLine("Upper and Lower bounds")
             For igrp = 1 To nLiving
                 Dim mcGrp As cMonteCarloGroup = MonteCarlo.Groups(igrp)
                 System.Console.Write("grp=" & igrp.ToString & ", " & mcGrp.BLower & ", " & mcGrp.BUpper & ", ")
             Next
 
+            'Loop over the new Ecopath parameters and run Ecosim 
             For iter As Integer = 1 To 10
 
                 'Set the Ecopath parameters using the Monte Carlo input parameters set above
                 If MonteCarlo.selectNewEcopathParameters() Then
 
                     'write some of the new Ecopath parameters to the console window
+                    'Again for debugging
                     Me.dumpEcopathParameters(iter)
 
-                    'This runs Ecosim
+                    'This runs Ecosim without core support
                     If Me.RunEcosim() Then
                         'dumps out some Ecosim results
                         Me.getEcosimResults()
