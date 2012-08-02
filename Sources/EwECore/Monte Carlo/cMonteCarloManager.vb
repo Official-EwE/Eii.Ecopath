@@ -660,6 +660,8 @@ Public Class cMonteCarloManager
     ''' <remarks>This functionality was added to simplify external process that want to run there own Monte Carlo style models. </remarks>
     Public Function selectNewEcopathParameters(Optional MaxEcopathIteration As Integer = 10000) As Boolean
         Try
+            'force the interface objects to update the underlying data
+            Me.update()
             If Me.m_mc.selectNewEcopathParameters(MaxEcopathIteration) Then
                 'BalanceEcopathWithNewPars() updated the core arrays 
                 'Now load the new values into the MonteCarloManagers Input/Output objects
