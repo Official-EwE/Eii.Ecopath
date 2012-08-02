@@ -30,10 +30,10 @@ Public Class cCEFASMonteCarloSamplePlugin
 
             'Dump out the Limits on Biomass
             'for debuging to make sure it worked
-            System.Console.WriteLine("Upper and Lower bounds")
+            System.Console.WriteLine("Group, Mean, Lower, upper")
             For igrp = 1 To nLiving
                 Dim mcGrp As cMonteCarloGroup = MonteCarlo.Groups(igrp)
-                System.Console.Write("grp=" & igrp.ToString & ", " & mcGrp.BLower & ", " & mcGrp.BUpper & ", ")
+                System.Console.Write("grp=" & igrp.ToString & ", " & mcGrp.B & ", " & mcGrp.BLower & ", " & mcGrp.BUpper & ", ")
             Next
 
             'Loop over the new Ecopath parameters and run Ecosim 
@@ -60,7 +60,6 @@ Public Class cCEFASMonteCarloSamplePlugin
 
         End If 'Me.InitMonteCarloParameters()
 
-
     End Sub
 
 
@@ -72,7 +71,7 @@ Public Class cCEFASMonteCarloSamplePlugin
             'Initialize Monte Carlo parameters for B, PB, QB, EE and BA
             'These are the group parameters in the EwE Monte Carlo runs form
             'CV Lower and Upper Limit
-            'Mean is set to default as the Ecopath value and probable should not be changed here?
+            'Mean is the Ecopath value and probable should not be changed here?
 
             For igrp = 1 To Core.nLivingGroups
                 MCGroup = MonteCarlo.Groups(igrp)
@@ -90,7 +89,14 @@ Public Class cCEFASMonteCarloSamplePlugin
                 'EE CV
                 MCGroup.EEcv = 0.05
 
-                'Ok Set a lower and upper limit on Biomass after CV
+            Next
+
+            'Ok now that all the CV have been set 
+            'set the upper and lower limits
+            For igrp = 1 To Core.nLivingGroups
+                MCGroup = MonteCarlo.Groups(igrp)
+
+                'Set a lower and upper limit on Biomass after CV
                 MCGroup.BLower = MCGroup.B - MCGroup.B * 0.5F
                 MCGroup.BUpper = MCGroup.B + MCGroup.B * 0.5F
 
