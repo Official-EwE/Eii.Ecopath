@@ -17,7 +17,6 @@ Public Class cCEFASMonteCarloSamplePlugin
 #Region "Sample MonteCarlo"
 
 
-
     Private Sub TestMonteCarlo()
         Dim nLiving As Integer = Core.nLivingGroups
         Dim MonteCarlo As cMonteCarloManager = Core.EcosimMonteCarlo
@@ -34,8 +33,9 @@ Public Class cCEFASMonteCarloSamplePlugin
                 System.Console.Write("grp=" & igrp.ToString & ", " & mcGrp.BLower & ", " & mcGrp.BUpper & ", ")
             Next
 
-            For iter As Integer = 1 To 100
+            For iter As Integer = 1 To 10
 
+                'Set the Ecopath parameters using the Monte Carlo input parameters set above
                 If MonteCarlo.selectNewEcopathParameters() Then
 
                     'write some of the new Ecopath parameters to the console window
@@ -158,7 +158,7 @@ Public Class cCEFASMonteCarloSamplePlugin
         Dim MonteCarlo As cMonteCarloManager = Me.Core.EcosimMonteCarlo
 
         System.Console.WriteLine("Iteration = " & iteration.ToString)
-        For igrp = 1 To nLiving
+        For igrp = 1 To nliving
             Dim mcGrp As cMonteCarloGroup = MonteCarlo.Groups(igrp)
             System.Console.Write(mcGrp.Name & " = " & mcGrp.B & " , ")
             'Other parameters...  mcGrp.PB
@@ -200,8 +200,6 @@ Public Class cCEFASMonteCarloSamplePlugin
             If TypeOf core Is cCore Then
                 _core = DirectCast(core, cCore)
             End If
-
-            MsgBox(Me.Name & " loaded")
 
         Catch ex As Exception
 
