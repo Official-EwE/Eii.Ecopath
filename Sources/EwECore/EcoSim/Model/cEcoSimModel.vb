@@ -522,7 +522,7 @@ Namespace Ecosim
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Friend Property TimeStepDelegate() As EcoSimTimeStepDelegate
+        Public Property TimeStepDelegate() As EcoSimTimeStepDelegate
             Get
                 Return m_OnTimeStepDelegate
             End Get
@@ -531,7 +531,7 @@ Namespace Ecosim
             End Set
         End Property
 
-        Friend Property RunCompletedDelegate() As EcoSimRunCompletedDelegate
+        Public Property RunCompletedDelegate() As EcoSimRunCompletedDelegate
             Get
                 Return Me.m_OnRunCompletedDelegate
             End Get
