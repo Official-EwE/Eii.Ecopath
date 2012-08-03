@@ -531,38 +531,6 @@ Namespace Ecosim
 
 #End Region ' Internals
 
-        Private Sub btTest_Click(sender As System.Object, e As System.EventArgs) Handles btTest.Click
-            Dim igrp As Integer
-            Dim ngrps As Integer = Me.UIContext.Core.nLivingGroups
-
-            For igrp = 1 To ngrps
-                Me.m_mcmanager.Groups(igrp).Bcv = 0.0666
-            Next
-
-            System.Console.WriteLine("Upper and Lower bounds")
-            For igrp = 1 To ngrps
-                Dim mcGrp As cMonteCarloGroup = Me.m_mcmanager.Groups(igrp)
-                System.Console.Write("grp=" & igrp.ToString & ", " & mcGrp.BLower & ", " & mcGrp.BUpper & ", ")
-            Next
-
-            For iter As Integer = 1 To 100
-
-                If Me.m_mcmanager.selectNewEcopathParameters() Then
-                    System.Console.WriteLine("Iteration = " & iter.ToString)
-                    For igrp = 1 To ngrps
-                        Dim mcGrp As cMonteCarloGroup = Me.m_mcmanager.Groups(igrp)
-                        System.Console.Write(mcGrp.Name & " = " & mcGrp.B & " , ")
-
-                    Next igrp
-                    System.Console.WriteLine()
-                Else
-                    System.Console.WriteLine("Failed to find balanced Ecopath model")
-                End If
-
-            Next iter
-
-        End Sub
-
     End Class
 
 End Namespace

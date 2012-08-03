@@ -70,7 +70,6 @@ Namespace Ecosim
             Me.m_txTol = New System.Windows.Forms.TextBox()
             Me.Label1 = New System.Windows.Forms.Label()
             Me.m_btDefaultTol = New System.Windows.Forms.Button()
-            Me.btTest = New System.Windows.Forms.Button()
             Me.m_tcOutput.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
             Me.m_tbpBP.SuspendLayout()
@@ -543,17 +542,10 @@ Namespace Ecosim
             Me.m_btDefaultTol.Name = "m_btDefaultTol"
             Me.m_btDefaultTol.UseVisualStyleBackColor = True
             '
-            'btTest
-            '
-            resources.ApplyResources(Me.btTest, "btTest")
-            Me.btTest.Name = "btTest"
-            Me.btTest.UseVisualStyleBackColor = True
-            '
             'MCRun
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.btTest)
             Me.Controls.Add(Me.m_btDefaultTol)
             Me.Controls.Add(Me.Label1)
             Me.Controls.Add(Me.m_txTol)
@@ -638,7 +630,6 @@ Namespace Ecosim
         Friend WithEvents m_txTol As System.Windows.Forms.TextBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_btDefaultTol As System.Windows.Forms.Button
-        Friend WithEvents btTest As System.Windows.Forms.Button
     End Class
 
 End Namespace
