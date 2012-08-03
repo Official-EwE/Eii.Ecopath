@@ -1195,7 +1195,7 @@ Public Class cSearchDatastructures
 
         End If
 
-        System.Console.WriteLine("LTV = " & LTV.ToString)
+        'System.Console.WriteLine("LTV = " & LTV.ToString)
         Return LTV
     End Function
 
