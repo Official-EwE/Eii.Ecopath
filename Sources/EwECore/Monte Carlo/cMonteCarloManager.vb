@@ -825,13 +825,12 @@ Public Class cMonteCarloManager
                 grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, grp.Index)
                 grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, grp.Index)
 
+                grp.ResetStatusFlags()
 
                 'validation for monte carlo groups should be handled by the manager
                 'the manager and the monte carlo model know what to do in response to an edit
                 'this is not setup yet
-                grp.AllowValidation = False
-
-                grp.ResetStatusFlags()
+                grp.AllowValidation = True
 
             Next 'For Each grp As cMonteCarloGroup
 
