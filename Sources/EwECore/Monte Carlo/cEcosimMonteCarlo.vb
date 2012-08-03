@@ -483,10 +483,8 @@ Friend Class cEcosimMonteCarlo
 
                     m_ecosim.Init(True) 'StartEcoSimAgain())
 
-                    System.Console.WriteLine("Monte Carlo start Ecosim")
                     'the ecosim time step delegate was set before the loop
                     m_ecosim.Run()
-                    System.Console.WriteLine("Monte Carlo finished Ecosim")
 
                     'For Each MCthread In MCthreadList
                     '    MCthread.signalState.WaitOne()
@@ -823,16 +821,17 @@ Friend Class cEcosimMonteCarlo
                 m_epdata.EEinput(iPred) = BestFit(eMCParams.EE, iPred)
             End If
 
-
             m_epdata.BA(iPred) = BestFit(eMCParams.BA, iPred)
+
+
             'vc sep 2008: adding vulnerability to MC
-            m_esdata.VulnerabilityPredator(iPred) = BestFit(eMCParams.Vulnerability, iPred)
+            'm_esdata.VulnerabilityPredator(iPred) = BestFit(eMCParams.Vulnerability, iPred)
             'Also transfer to vulmult
-            For iPrey As Integer = 1 To m_core.nGroups
-                m_esdata.VulMult(iPrey, iPred) = BestFit(eMCParams.Vulnerability, iPred)
-                'jb this is done by the manager in ApplyBestFits core.onChanged() 
-                m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
-            Next
+            'For iPrey As Integer = 1 To m_core.nGroups
+            '    m_esdata.VulMult(iPrey, iPred) = BestFit(eMCParams.Vulnerability, iPred)
+            '    'jb this is done by the manager in ApplyBestFits core.onChanged() 
+            '    m_core.EcoSimGroupInputs(iPrey).VulMult(iPred) = BestFit(eMCParams.Vulnerability, iPred)
+            'Next
 
 
             'ToDo_jb cEcosimMonteCarlo.Run something is wrong here
