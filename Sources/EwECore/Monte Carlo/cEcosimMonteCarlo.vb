@@ -300,7 +300,7 @@ Friend Class cEcosimMonteCarlo
 
     End Sub
 
-    Friend Sub initForRun()
+    Public Sub initForRun()
 
         Try
 
@@ -564,7 +564,7 @@ Friend Class cEcosimMonteCarlo
     ''' Restore Ecopath to its original state
     ''' </summary>
     ''' <remarks>The Monte Carlo changed to basic input data of Ecopath this will set it back to the state it was in when the Monte Carlo was run.</remarks>
-    Private Sub restoreOriginalState()
+    Public Sub restoreOriginalState()
         Dim bSuccess As Boolean
 
         Try
@@ -596,7 +596,7 @@ Friend Class cEcosimMonteCarlo
             'init stanza groups back to the original values
             Me.m_ecosim.InitStanza()
 
-            Me.m_ecosim.Init(True)
+            'Me.m_ecosim.Init(True)
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)

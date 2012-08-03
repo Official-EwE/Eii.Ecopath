@@ -682,6 +682,15 @@ Public Class cMonteCarloManager
         Return False
 
     End Function
+
+    Public Function RestoreOriginalValues() As Boolean
+        Me.m_mc.restoreOriginalState()
+        Return True
+    End Function
+
+    Public Sub SaveOriginalValues()
+        Me.m_mc.initForRun()
+    End Sub
 #End Region
 
 #Region "Private methods"

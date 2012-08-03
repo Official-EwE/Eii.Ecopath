@@ -14,6 +14,8 @@ Public Class cCEFASMonteCarloSamplePlugin
     Private _simdata As cEcosimDatastructures
     Private _ecopath As Ecopath.cEcoPathModel
 
+    Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
+
 #Region "Sample MonteCarlo"
 
 
@@ -21,44 +23,54 @@ Public Class cCEFASMonteCarloSamplePlugin
         Dim nLiving As Integer = Core.nLivingGroups
         Dim MonteCarlo As cMonteCarloManager = Core.EcosimMonteCarlo
 
-        'The makes sure Ecopath does not make a fuss, popping up message boxes, when it fails to balance a model
-        _ecopath.suppressMessages = True
+        'cMonteCarloManager.selectNewEcopathParameters() will alter the Ecopath Input parameters
+        'We need to save the original state of Ecopath so it can be restored when we are done
+        Me.SaveOriginalState()
 
-        'Init some of the Monte Carlo parameters
-        If Me.InitMonteCarloParameters() Then
-            'Succeeded in intitializing Monte Carlo Parameters
+        Try
 
-            'Dump out the Limits on Biomass
-            'for debuging to make sure it worked
-            System.Console.WriteLine("Group, Mean, Lower, upper")
-            For igrp = 1 To nLiving
-                Dim mcGrp As cMonteCarloGroup = MonteCarlo.Groups(igrp)
-                System.Console.Write("grp=" & igrp.ToString & ", " & mcGrp.B & ", " & mcGrp.BLower & ", " & mcGrp.BUpper & ", ")
-            Next
+            'Init some of the Monte Carlo parameters
+            If Me.InitMonteCarloParameters() Then
+                'Succeeded in intitializing Monte Carlo Parameters
 
-            'Loop over the new Ecopath parameters and run Ecosim 
-            For iter As Integer = 1 To 10
+                'Dump out the Limits on Biomass
+                'for debuging to make sure InitMonteCarloParameters worked
+                System.Console.WriteLine("Group, Mean, Lower, upper")
+                For igrp = 1 To nLiving
+                    Dim mcGrp As cMonteCarloGroup = MonteCarlo.Groups(igrp)
+                    System.Console.Write("grp=" & igrp.ToString & ", " & mcGrp.B & ", " & mcGrp.BLower & ", " & mcGrp.BUpper & ", ")
+                Next
 
-                'Set the Ecopath parameters using the Monte Carlo input parameters set above
-                If MonteCarlo.selectNewEcopathParameters() Then
+                'Loop over the new Ecopath parameters and run Ecosim 
+                For iter As Integer = 1 To 10
 
-                    'write some of the new Ecopath parameters to the console window
-                    'Again for debugging
-                    Me.dumpEcopathParameters(iter)
+                    'Set the Ecopath parameters using the Monte Carlo input parameters set above
+                    If MonteCarlo.selectNewEcopathParameters() Then
 
-                    'This runs Ecosim without core support
-                    If Me.RunEcosim() Then
-                        'dumps out some Ecosim results
-                        Me.getEcosimResults()
-                    End If
+                        'write some of the new Ecopath parameters to the console window
+                        'Again for debugging
+                        Me.dumpEcopathParameters(iter)
 
-                Else
-                    System.Console.WriteLine("Failed to find balanced Ecopath model")
-                End If
+                        'This runs Ecosim without core support
+                        If Me.RunEcosim() Then
+                            'dumps out some Ecosim results
+                            Me.getEcosimResults()
+                        End If 'RunEcosim
 
-            Next iter
+                    Else
+                        System.Console.WriteLine("Failed to find balanced Ecopath model")
+                    End If ' MonteCarlo.selectNewEcopathParameters()
 
-        End If 'Me.InitMonteCarloParameters()
+                Next iter
+
+            End If 'Me.InitMonteCarloParameters()
+
+        Catch ex As Exception
+
+        End Try
+
+        Me.RestoreOriginalState()
+
 
     End Sub
 
@@ -175,6 +187,65 @@ Public Class cCEFASMonteCarloSamplePlugin
             'Other parameters...  mcGrp.PB
         Next igrp
         System.Console.WriteLine()
+
+    End Sub
+
+    ''' <summary>
+    ''' Save any variable that will be changed so the model can be restore to it's original state 
+    ''' </summary>
+    ''' <remarks>This just stores a sub set of variable as an example</remarks>
+    Private Sub SaveOriginalState()
+        Try
+            'Have the MonteCarloManager save the values it will alter
+            Core.EcosimMonteCarlo.SaveOriginalValues()
+
+            'Now store the variables that this app will change so they can be restored in RestoreOriginalState()
+
+            'The makes sure Ecopath does not make a fuss, popping up message boxes, when it fails to balance a model
+            Me._ecopath.suppressMessages = True
+
+            'Make sure nothing is listening to Ecosim when we run it
+            Me._EcosimTimeStepDelegate = Me._ecosim.TimeStepDelegate
+            Me._EcosimTimeStepDelegate = Nothing
+
+            'Save any parameters that we are going to change 
+            'This has not been implemented here but...
+            'For igrp = 1 To Core.nLivingGroups
+            '    MCGroup = MonteCarlo.Groups(igrp)
+            '   _orgB(igrp) =  MCGroup.Bcv 
+            '    'PB, QB...               
+            'Next
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    ''' <summary>
+    ''' Restore the currently loaded model back to it's original state so that it can be run in the interface.
+    ''' </summary>
+    ''' <remarks>In some cases you may want to save changes you made to the model.</remarks>
+    Private Sub RestoreOriginalState()
+        Try
+            'Have the MonteCarloManager restore it's variables to the original state
+            Core.EcosimMonteCarlo.RestoreOriginalValues()
+
+            'Set the State variables that we changed back to their original state
+            Me._ecopath.suppressMessages = False
+            Me._ecosim.TimeStepDelegate = Me._EcosimTimeStepDelegate
+
+            'Not included here but we should also set any Monte Carlo Parameters back to their original state
+            'For example
+            'For igrp = 1 To Core.nLivingGroups
+            '    MCGroup = MonteCarlo.Groups(igrp)
+            '    MCGroup.Bcv = _orgB(igrp)
+            '    'PB, QB...               
+            'Next
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
