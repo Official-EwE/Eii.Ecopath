@@ -438,7 +438,7 @@ Friend Class cEcosimMonteCarlo
             If m_esdata.SS > 0 Then
                 SSBestFit = m_esdata.SS
             Else
-                SSBestFit = 10000000000000000
+                SSBestFit = Single.MaxValue
             End If
 
             Dim maxEcopathTries As Integer = 10000
@@ -459,12 +459,16 @@ Friend Class cEcosimMonteCarlo
 
                 If iter < maxEcopathTries Then
 
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'jb removed the vulnerability until there is an iterface
+                    'this was causeing the results to vary in groups that had all variablity turned off 
                     'VC Sep 2008 adding vulnerability to MC routine
                     ' The Ecopath balancing above does not need to consider the vulnerabilities, so just set them now before returning:
                     'VC Sep 2008 found that it would increase vulnerabilities to get certain groups to increase initially,
                     'while instead it should have increased the initial biomass, so letting it get started before 
                     'changing vulnerabilities
                     'ChangeVulnerabilities(Pmean, CVpar)
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                     'For Each MCthread In MCthreadList
                     '    Itertot = Itertot + iter
@@ -499,11 +503,9 @@ Friend Class cEcosimMonteCarlo
                         'SSBestFit = MCthread.ESdata.SS
                         SSBestFit = m_esdata.SS
                         Console.WriteLine("Total trials: " & iTrial.ToString & ", " & SSBestFit.ToString & ", to fit last Ecopath: " & iter.ToString) '& ", total: " & Itertot.ToString)
-                        'sw.WriteLine(iTrial.ToString & ", " & SSBestFit.ToString)
-
-                        'keep the best fits for applying later
 
                         CheckWhoIsCrashed()
+                        'keep the best fits for applying later
                         For igrp As Integer = 1 To m_core.nGroups
                             BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
                             ' JS13feb12 added
@@ -521,16 +523,10 @@ Friend Class cEcosimMonteCarlo
                             'VC 2008 don't want it to stop just as it found a better fit so:
                             iTrial = Math.Min(iTrial, CInt(0.9 * Ntrials))
 
-                            'we also need to change the upper and lower limits, and will do this based on new parameters 
-                            'CheckWhoIsCrashed()
-                            'CalculateUpperLowerLimits()
-                        End If
-                        'm_core.Save()
+                        End If 'bRetainBiomass
+                    End If ' m_esdata.SS < SSBestFit
+                End If 'iter < maxEcopathTries 
 
-                    End If
-                    'Next
-                End If
-                'TrialProgress(itrial * nThreads, iter)
                 TrialProgress(iTrial, iter)
                 EcopathIterationsProgress(iter)
 
@@ -626,7 +622,7 @@ Friend Class cEcosimMonteCarlo
                 Me.dlgTrialStepHandler()
             End If
         Catch ex As Exception
-            'Bogus Dude.....the interface through an error 
+            'Bogus Dude.....the interface has thrown an error 
             'just keep ploughing on
             cLog.Write(ex)
         End Try
@@ -642,7 +638,7 @@ Friend Class cEcosimMonteCarlo
                 dlgEcopathIterationHandler()
             End If
         Catch ex As Exception
-            'Bogus Dude.....the interface through an error 
+            'Bogus Dude.....the interface has thrown an error 
             'just keep plowing on
             cLog.Write(ex)
         End Try
@@ -672,18 +668,23 @@ Friend Class cEcosimMonteCarlo
     Friend Function selectNewEcopathParameters(Optional MaxIters As Integer = 10000) As Boolean
         Try
             Dim nIters As Integer
-            BalanceEcopathWithNewPars(Pmean, CVpar, nIters, MaxIters)
-            If nIters < MaxIters Then
-                Return True
-            Else
-                Return False
+            If BalanceEcopathWithNewPars(Pmean, CVpar, nIters, MaxIters) Then
+                If nIters < MaxIters Then
+                    Return True
+                Else
+                    Dim msg As String = Me.ToString & ".selectNewEcopathParameters() Exceeded maximum number of iterations. Failed to find balanced Ecopath model."
+                    System.Console.WriteLine(msg)
+                    cLog.Write(msg)
+                    Return False
+                End If
             End If
+
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".selectNewEcopathParameters() Exception: " & ex.Message)
         End Try
 
-        'throw an error
+        'An error has been thrown some place along the line
         Return False
 
     End Function
@@ -786,10 +787,6 @@ Friend Class cEcosimMonteCarlo
                 End If
 
             Loop
-
-
-            'change 
-
 
         Catch ex As Exception
             Debug.Assert(False, ex.StackTrace)
