@@ -271,7 +271,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_gridPB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>818, 83</value>
+    <value>717, 135</value>
   </data>
   <data name="m_gridPB.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -319,7 +319,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_gridQB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>818, 83</value>
+    <value>717, 135</value>
   </data>
   <data name="m_gridQB.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -367,7 +367,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_gridEE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>818, 83</value>
+    <value>717, 135</value>
   </data>
   <data name="m_gridEE.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -415,7 +415,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_gridBA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>818, 83</value>
+    <value>717, 135</value>
   </data>
   <data name="m_gridBA.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -469,7 +469,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>646, 83</value>
+    <value>566, 135</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -511,7 +511,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 65</value>
+    <value>146, 117</value>
   </data>
   <data name="m_lbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -535,10 +535,10 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>3, 0</value>
   </data>
   <data name="m_lblGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 18</value>
+    <value>143, 18</value>
   </data>
   <data name="m_lblGroups.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -553,7 +553,7 @@
     <value>m_lblGroups</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblGroups.Parent" xml:space="preserve">
     <value>m_spPlot.Panel2</value>
@@ -574,10 +574,10 @@
     <value>1</value>
   </data>
   <data name="m_spPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>818, 83</value>
+    <value>717, 135</value>
   </data>
   <data name="m_spPlot.SplitterDistance" type="System.Int32, mscorlib">
-    <value>646</value>
+    <value>566</value>
   </data>
   <data name="m_spPlot.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -625,7 +625,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_gridBestFit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>818, 83</value>
+    <value>717, 135</value>
   </data>
   <data name="m_gridBestFit.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -984,9 +984,6 @@
   <data name="m_btnTS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnTS.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
   <data name="m_btnTS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1335,9 +1332,6 @@
   <data name="m_btnFromPedigree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnFromPedigree.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
   <data name="m_btnFromPedigree.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1446,9 +1440,6 @@
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_btDefaultTol.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Popup</value>
-  </data>
   <data name="m_btDefaultTol.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1490,6 +1481,9 @@
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>751, 325</value>
