@@ -1,4 +1,21 @@
-﻿Imports EwEPlugin
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+Imports EwEPlugin
 Imports EwECore
 
 Public Class cPlugin
@@ -17,7 +34,7 @@ Public Class cPlugin
         Implements EwEPlugin.IEcosimEndTimestepPlugin.EcosimEndTimeStep
 
         If iTime = 42 Then
-            MsgBox("Group 1 has biomass " & BiomassAtTimestep(1) & " at time step " & iTime)
+            MsgBox("Ecosim run: Group 1 has biomass " & BiomassAtTimestep(1) & " at time step " & iTime)
         End If
 
     End Sub
@@ -25,7 +42,7 @@ Public Class cPlugin
     Public ReadOnly Property Author() As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Bill Jobs"
+            Return "Carl Christensen"
         End Get
     End Property
 
@@ -46,7 +63,7 @@ Public Class cPlugin
     Public ReadOnly Property Name() As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "EwE25 years: Ecosim plug-in example"
+            Return "Ecosim plug-in example"
         End Get
     End Property
 
@@ -56,7 +73,7 @@ Public Class cPlugin
         If iTime = 13 Then
 
             Dim data As cEcospaceDataStructures = CType(EcospaceDatastructures, cEcospaceDataStructures)
-            MsgBox("Group 1 has a biomass of " & data.Bcell(1, 1, 1) & " in cell (1, 1)")
+            MsgBox("Ecospace run: Group 1 has a biomass of " & data.Bcell(1, 1, 1) & " in cell (1, 1) at time step " & iTime)
 
         End If
 

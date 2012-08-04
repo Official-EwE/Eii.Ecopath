@@ -1,3 +1,20 @@
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
 
 Imports EwECore
 Imports EwEPlugin
@@ -6,132 +23,47 @@ Public Class PluginPoint
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
 
+#Region " Private variables "
 
-    Private m_core As EwECore.cCore
-    Private m_bInitOK As Boolean
-    Private m_PluginInterface As frmEwEPlugin
+    Private m_bInitOK As Boolean = False
+    Private m_core As EwECore.cCore = Nothing
+    Private m_PluginInterface As frmEwEPlugin = Nothing
 
+#End Region ' Private variables
 
+#Region " Plug-in implementation "
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Initialize the Plugin. This is called when the core loads the Plugin. It will only be called once.
+    ''' Initialize the plug-in. This is called only once when the EwE6 first 
+    ''' loads the plug-in.
     ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        Debug.Assert(TypeOf core Is EwECore.cCore, Me.ToString & ".Initialize() argument core is not a cCore object.")
-        m_bInitOK = False
-        Try
-            If TypeOf core Is EwECore.cCore Then
-                m_core = DirectCast(core, EwECore.cCore)
-                m_PluginInterface = New frmEwEPlugin(m_core)
-                m_bInitOK = True
-                System.Console.WriteLine(Me.ToString & ".Initialize() Successfull.")
-            Else
-                'some kind of a message
-                System.Console.WriteLine(Me.ToString & ".Initialize() Failed.")
-                Return
-            End If
-        Catch ex As Exception
-            cLog.Write(ex)
-            System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
-            Debug.Assert(False, ex.Message)
-            Return
-        End Try
+
+        ' Store reference to the core. We may need this later
+        m_core = DirectCast(core, EwECore.cCore)
+        ' Plug-in has been initialized and is ready for use
+        m_bInitOK = True
+
     End Sub
 
-#Region "Plugin implementation"
-    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
-        Get
-            Return My.Resources.MenuItem1
-        End Get
-    End Property
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Text to be displayed for the plugin
+    ''' Provide the internal name of the plug-in to EwE6. This name will not be 
+    ''' shown to the user, but will be used tosort plug-in items in containing 
+    ''' user interface structures such as the EwE6 main menu and navigation tree.
     ''' </summary>
-    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
-        Get
-            Return "EwE Examples Plug-in"
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Menu Item or Tree node clicked
-    ''' </summary>
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
-        ' Flag stating whether form is ready to be used. If so, we don't need to create it, do we?
-        Dim bIsFormReady As Boolean = False
-
-        'Interface item has been clicked
-        'Show the Ecotroph interface
-        If m_bInitOK Then
-            ' Test if form still exists
-
-            If Me.m_PluginInterface IsNot Nothing And Me.m_PluginInterface.IsDisposed Then
-                Me.m_PluginInterface = New frmEwEPlugin(m_core)
-            End If
-
-
-            ' Activate the form
-            Me.m_PluginInterface.Show()
-
-            ' Pass form reference back to calling app
-            f = Me.m_PluginInterface
-
-            If TypeOf sender Is System.Windows.Forms.TreeView Then
-                'from the navigation panel
-
-            ElseIf TypeOf sender Is System.Windows.Forms.ToolStripMenuItem Then
-                'from the menu
-
-            End If
-        Else
-            Debug.Assert(False, "Plugin was not initialized properly.")
-        End If
-    End Sub
-
-    ''' <summary>
-    ''' Location where the menu item should go
-    ''' </summary>
-    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
-        Get
-            Return ""
-        End Get
-    End Property
-
-    Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
-        Get
-            Return ""
-        End Get
-    End Property
-
-    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
-        Get
-            Return "EwE Example Plug-in"
-        End Get
-    End Property
-
-    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
-        Get
-            Return EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
-        End Get
-    End Property
-
-    Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
-        Get
-            'this will put the navigation item at the end of the tree as top level node 
-            'Not the best place there should be a Plugins node and all plugins should go under it
-            Return "ndTools"
-        End Get
-    End Property
-
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "EwE Plugin Examples"
+            Return "pluginExample"
         End Get
     End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Author">IPlugin.Author</see> implementation.
+    ''' Provide EwE6 with author information to display for the plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
@@ -142,14 +74,141 @@ Public Class PluginPoint
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Generic <see cref="EwEPlugin.IPlugin.Contact">IPlugin.Contact</see> implementation.
+    ''' Provide EwE6 with contact information to display for the plug-in.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "mailto:s.lai@fisheries.ubc.ca"
+            Return "mailto:ewedevteam@gmail.com"
         End Get
     End Property
-#End Region 'Plugin implementation
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tell EwE6 what text to display in controls that provide access to 
+    ''' this plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
+        Get
+            Return "EwE Examples Plug-in"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tell EwE6 what image to show for this plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
+        Get
+            Return My.Resources.MenuItem1
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tell EwE6 what text to display when the user hovers the mouse cursor
+    ''' over a user interface element for this plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property ControlTooltipText() As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
+        Get
+            ' Show the description as a tooltip text
+            Return Me.Description
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tell EwE6 what text to display for describing the plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
+        Get
+            Return "An example of nesting plug-ins in EwE6 interface"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Provide EwE6 with a method to execute when a user interface control for 
+    ''' this plug-in is clicked by the user.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+
+        Dim bHasInterface As Boolean = False
+
+        ' Initialized ok?
+        If m_bInitOK Then
+
+            ' Test if form still exists. This is a two-step test: the interface needs to be defined, and has not been closed previously.
+            If Me.m_PluginInterface IsNot Nothing Then
+                If Not Me.m_PluginInterface.IsDisposed Then
+                    bHasInterface = True
+                End If
+            End If
+
+            ' Create the interface if needed
+            If Not bHasInterface Then
+                Me.m_PluginInterface = New frmEwEPlugin(m_core)
+            End If
+
+            ' Activate the interface
+            Me.m_PluginInterface.Show()
+
+            ' Pass interface reference back to calling app
+            f = Me.m_PluginInterface
+
+            ' Just to show what can be done: test where this function was invoked from
+            If TypeOf sender Is System.Windows.Forms.TreeNode Then
+                ' Plug-in was invoked from the EwE6 navigation panel
+            ElseIf TypeOf sender Is System.Windows.Forms.ToolStripMenuItem Then
+                ' Plug-in was invoked from the EwE6 main menu
+            End If
+        Else
+            Debug.Assert(False, "Plugin was not initialized properly.")
+        End If
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tell EwE6 where to place an item in its main menu.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property MenuItemLocation() As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
+        Get
+            ' For example, a plug-in menu item should be placed in the main the 'Tools' menu. 
+            Return "MenuTools"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tell EwE6 when during application execution this plug-in should be accessible 
+    ''' to users.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
+        Get
+            ' As an example, this plug-in is only accessible when Ecosim has loaded.
+            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Tell EwE6 where to place an item in its navigation tree.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property NavigationTreeItemLocation() As String Implements EwEPlugin.INavigationTreeItemPlugin.NavigationTreeItemLocation
+        Get
+            ' As an example, place a navigation tree item under the main 'tools' node.
+            Return "ndTools"
+        End Get
+    End Property
+
+#End Region ' Plug-in implementation
 
 End Class

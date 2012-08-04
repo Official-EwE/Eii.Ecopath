@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4B07F90B-3811-416D-A8D5-B9069D325C8D}</ProjectGuid>
+    <ProjectGuid>{E9C828AF-AB65-4541-8EEB-3861B6D19C5D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>EwEEcosimPluginExample</RootNamespace>
     <AssemblyName>EwEEcosimPluginExample</AssemblyName>
@@ -145,6 +145,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Ecopath6_internal\Sources_Int_Functionalities\License\EwE.licenseheader">
+      <Link>EwE.licenseheader</Link>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
