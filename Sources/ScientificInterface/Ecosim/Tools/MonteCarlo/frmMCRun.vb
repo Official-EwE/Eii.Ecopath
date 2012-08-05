@@ -148,6 +148,12 @@ Namespace Ecosim
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
+            If (Me.UIContext Is Nothing) Then Return
+
+            If Me.m_mcmanager.IsRunning Then
+                Me.m_mcmanager.StopRun(0)
+            End If
+
             Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
             Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
 
@@ -266,11 +272,11 @@ Namespace Ecosim
 
             Try
                 ' Be conservative in providing status feedback
-                If (Me.m_mcmanager.nTrialIterations Mod cCore.N_MONTHS = 0) Then
-                    cApplicationStatusNotifier.UpdateProgress(Me.Core, _
-                                                              My.Resources.STATUS_SEARCH_SEARCHING, _
-                                                              Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
-                End If
+                'If (Me.m_mcmanager.nTrialIterations Mod cCore.N_MONTHS = 0) Then
+                cApplicationStatusNotifier.UpdateProgress(Me.Core, _
+                                                          My.Resources.STATUS_SEARCH_SEARCHING, _
+                                                          Me.m_mcmanager.nTrialIterations / Me.m_mcmanager.nTrials)
+                'End If
 
                 Me.m_fpTrial.Value = Me.m_mcmanager.nTrialIterations
                 Me.m_fpSS.Value = Me.m_mcmanager.SS
@@ -381,7 +387,7 @@ Namespace Ecosim
             Me.m_fpSSBest.Value = 0.0!
             Me.m_sYMax = 1.0!
 
-            cApplicationStatusNotifier.EndProgress(Me.Core)
+            cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_SEARCH_INITIALIZING, -1.0)
 
             ' Clear out the old data
             Me.m_plothelper.Clear()
@@ -413,18 +419,6 @@ Namespace Ecosim
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Command handler; executes the 
-        ''' <see cref="m_cmdStopMonteCarlo">Stop Monte Carlo command</see>.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub m_cmdStopMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdStopMonteCarlo.OnInvoke
-            'jb 1-Aug-2012 this call to StopRun was causing a deadlock in the interface making it impossible for the MC to complete
-            'I have no idea when it was added or what it is supposed to do???
-            ' m_mcmanager.StopRun()
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
         ''' Command update handler; enables and disables the 
         ''' <see cref="m_cmdStopMonteCarlo">Stop Monte Carlo command</see>.
         ''' </summary>
@@ -443,7 +437,7 @@ Namespace Ecosim
             'this means the time series data could have changed
             'reload the data into the manager
             'jb 14-Mar-2011 MonteCarlo manager does not need to reload if timeseries is loaded
-            'Infact this will overwrite user edited Parameter Limit values
+            'In fact, this will overwrite user edited Parameter Limit values
             'Me.m_mcmanager.Load()
             Me.UpdateGraphXAxis()
         End Sub

@@ -887,30 +887,45 @@ Friend Class cEcosimMonteCarlo
 
             'We want a wide range for searching, cv will still limit the steps
             For i = 1 To m_core.nLivingGroups
+
                 'Lower
-                ParLimit(0, 1, i) = m_epdata.B(i) * (1 - factor * CVpar(1, i)) : If ParLimit(0, 1, i) < 0 Then ParLimit(0, 1, i) = 0.0000000001
-                ParLimit(0, 2, i) = m_epdata.PB(i) * (1 - factor * CVpar(2, i)) : If ParLimit(0, 2, i) < 0 Then ParLimit(0, 2, i) = 0.0000000001
+                ParLimit(0, eMCParams.Biomass, i) = Me.m_epdata.B(i) * (1 - factor * CVpar(eMCParams.Biomass, i))
+                If ParLimit(0, eMCParams.Biomass, i) < 0 Then ParLimit(0, eMCParams.Biomass, i) = 1.0E-10!
+
+                ParLimit(0, eMCParams.PB, i) = Me.m_epdata.PB(i) * (1 - factor * CVpar(eMCParams.PB, i))
+                If ParLimit(0, eMCParams.PB, i) < 0 Then ParLimit(0, eMCParams.PB, i) = 1.0E-10!
 
                 ' JS13feb12 added
-                ParLimit(0, 3, i) = m_epdata.QB(i) * (1 - factor * CVpar(3, i)) : If ParLimit(0, 3, i) < 0 Then ParLimit(0, 3, i) = 0.0000000001
-                ParLimit(0, 4, i) = m_epdata.EE(i) * (1 - factor * CVpar(4, i)) : If ParLimit(0, 4, i) < 0 Then ParLimit(0, 4, i) = 0
+                ParLimit(0, eMCParams.QB, i) = Me.m_epdata.QB(i) * (1 - factor * CVpar(eMCParams.QB, i))
+                If ParLimit(0, eMCParams.QB, i) < 0 Then ParLimit(0, eMCParams.QB, i) = 1.0E-10!
+
+                ParLimit(0, eMCParams.EE, i) = Me.m_epdata.EE(i) * (1 - factor * CVpar(eMCParams.EE, i))
+                If ParLimit(0, eMCParams.EE, i) < 0 Then ParLimit(0, eMCParams.EE, i) = 0
+
                 'BA is +- relative to B not to BA (which is usually zero)
-                ParLimit(0, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (-factor * CVpar(5, i))
+                ParLimit(0, eMCParams.BA, i) = Me.m_epdata.BA(i) + Me.m_epdata.B(i) * (-factor * CVpar(eMCParams.BA, i))
                 'Vul is from 1 up
-                '  ParLimit(0, 6, i) = m_esdata.VulnerabilityPredator(i) * (1 - factor * CVpar(6, i)) : If ParLimit(0, 6, i) < 1.01 Then ParLimit(0, 6, i) = 1.01
+                '  ParLimit(0, eMCParams.Vulnerability, i) = m_esdata.VulnerabilityPredator(i) * (1 - factor * CVpar(eMCParams.Vulnerability, i)) : If ParLimit(0, eMCParams.Vulnerability, i) < 1.01 Then ParLimit(0, eMCParams.Vulnerability, i) = 1.01
 
                 'upper
-                ParLimit(1, 1, i) = m_epdata.B(i) * (1 + factor * CVpar(1, i)) : If ParLimit(1, 1, i) <= ParLimit(0, 1, i) Then ParLimit(1, 1, i) = 10 * ParLimit(0, 1, i)
-                ParLimit(1, 2, i) = m_epdata.PB(i) * (1 + factor * CVpar(2, i)) : If ParLimit(1, 2, i) <= ParLimit(0, 2, i) Then ParLimit(1, 2, i) = 10 * ParLimit(0, 2, i)
+                ParLimit(1, eMCParams.Biomass, i) = Me.m_epdata.B(i) * (1 + factor * CVpar(eMCParams.Biomass, i))
+                If ParLimit(1, eMCParams.Biomass, i) <= ParLimit(0, eMCParams.Biomass, i) Then ParLimit(1, eMCParams.Biomass, i) = 10 * ParLimit(0, eMCParams.Biomass, i)
+
+                ParLimit(1, eMCParams.PB, i) = Me.m_epdata.PB(i) * (1 + factor * CVpar(eMCParams.PB, i))
+                If ParLimit(1, eMCParams.PB, i) <= ParLimit(0, eMCParams.PB, i) Then ParLimit(1, eMCParams.PB, i) = 10 * ParLimit(0, eMCParams.PB, i)
+
                 ' JS13feb12 added
-                ParLimit(1, 3, i) = m_epdata.QB(i) * (1 + factor * CVpar(3, i)) : If ParLimit(1, 3, i) <= ParLimit(0, 3, i) Then ParLimit(1, 3, i) = 10 * ParLimit(0, 3, i)
-                ParLimit(1, 4, i) = m_epdata.EE(i) * (1 + factor * CVpar(4, i)) : If ParLimit(1, 4, i) > 1 Then ParLimit(1, 4, i) = 1
+                ParLimit(1, eMCParams.QB, i) = Me.m_epdata.QB(i) * (1 + factor * CVpar(eMCParams.QB, i))
+                If ParLimit(1, eMCParams.QB, i) <= ParLimit(0, eMCParams.QB, i) Then ParLimit(1, eMCParams.QB, i) = 10 * ParLimit(0, eMCParams.QB, i)
+
+                ParLimit(1, eMCParams.EE, i) = Me.m_epdata.EE(i) * (1 + factor * CVpar(eMCParams.EE, i))
+                If ParLimit(1, eMCParams.EE, i) > 1 Then ParLimit(1, eMCParams.EE, i) = 1
+
                 'BA is +- relative to B not to BA (which is usually zero)
-                ParLimit(1, 5, i) = m_epdata.BA(i) + m_epdata.B(i) * (factor * CVpar(5, i))
-                ' ParLimit(1, 6, i) = 1000 ' m_esdata.VulnerabilityPredator(i) * (1 + factor * CVpar(6, i)) 'no upper limit for vulmult : If ParLimit(1, 6, i) > 1 Then ParLimit(1, 6, i) = 1
+                ParLimit(1, eMCParams.BA, i) = m_epdata.BA(i) + m_epdata.B(i) * (factor * CVpar(eMCParams.BA, i))
+                ' ParLimit(1, eMCParams.Vulnerability, i) = 1000 ' m_esdata.VulnerabilityPredator(i) * (1 + factor * CVpar(eMCParams.Vulnerability, i)) 'no upper limit for vulmult : If ParLimit(1, eMCParams.Vulnerability, i) > 1 Then ParLimit(1, eMCParams.Vulnerability, i) = 1
 
             Next
-
 
         Catch ex As Exception
             cLog.Write(ex)
