@@ -68,7 +68,7 @@ Public Class cLog
 
         If Not String.IsNullOrEmpty(strModelPath) Then
             m_modelname = cFileUtils.ToValidFileName(Path.GetFileNameWithoutExtension(strModelPath), False)
-            m_logFilename = Path.Combine(Path.GetDirectoryName(strModelPath), "EwELog_" & m_modelname & ".xml")
+            m_logFilename = Path.Combine(Path.GetDirectoryName(strModelPath), m_modelname & "_log.xml")
         Else
             m_modelname = ""
             m_logFilename = ""
