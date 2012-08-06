@@ -389,6 +389,20 @@ Namespace ValueWrapper
             ' Test whether provided value is empty
             Dim bNeedDefault As Boolean = (newValue Is Nothing) Or (TypeOf newValue Is System.DBNull)
 
+            ' Convert enums to storage types
+            If newValue.GetType.IsEnum Then
+                Select Case Me.m_varType
+                    Case eValueTypes.Int
+                        newValue = CInt(newValue)
+                    Case eValueTypes.Bool
+                        newValue = CBool(newValue)
+                    Case eValueTypes.Sng
+                        newValue = CSng(newValue)
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+            End If
+
             ' Not an empty value?
             If Not bNeedDefault Then
                 ' #Yes: is a numerical variable being set?
