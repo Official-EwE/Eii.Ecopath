@@ -24,37 +24,69 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Monitor class for currently selected data.
+''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cSelectionMonitor
 
     Private m_cmdSelect As cPropertySelectionCommand = Nothing
 
     Public Sub New()
-
+        ' NOP
     End Sub
 
     Public Sub Attach(uic As cUIContext)
+
         ' Sanity checks
         Debug.Assert(Me.m_cmdSelect Is Nothing)
+        Debug.Assert(uic IsNot Nothing)
+
+        ' Start monitoring
         Me.m_cmdSelect = DirectCast(uic.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
         AddHandler Me.m_cmdSelect.OnPostInvoke, AddressOf HandleSelectionChanged
+
     End Sub
 
     Public Sub Detach()
+
         ' Sanity checks
         Debug.Assert(Me.m_cmdSelect IsNot Nothing)
+
+        ' Stop monitoring
         RemoveHandler Me.m_cmdSelect.OnPostInvoke, AddressOf HandleSelectionChanged
         Me.m_cmdSelect = Nothing
+
     End Sub
 
-    Function Selection() As cProperty()
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns an array of currently selected properties.
+    ''' </summary>
+    ''' <returns>An array of currently selected <see cref="cProperty">properties</see>.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function Selection() As cProperty()
         If (Me.m_cmdSelect IsNot Nothing) Then
             Return Me.m_cmdSelect.Selection
         End If
         Return New cProperty() {}
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Selection change notification
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' -----------------------------------------------------------------------
     Event OnSelectionChanged(sender As cSelectionMonitor)
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a string representation of the current selection.
+    ''' </summary>
+    ''' <returns>A string representation of the <see cref="Selection">current selection</see>.</returns>
+    ''' -----------------------------------------------------------------------
     Public Overrides Function ToString() As String
 
         Dim strSelection As String = My.Resources.SELECTION_NONE
@@ -73,23 +105,19 @@ Public Class cSelectionMonitor
                 Case 1
                     ' Get selection text
                     If (Not Object.ReferenceEquals(props(0).Source, Nothing)) Then
-                        If (Not props(0).Source.Disposed) Then
 
-                            ' Get variable descriptor
-                            Dim var As eVarNameFlags = props(0).VarName
-                            ' Format message
-                            If Not Object.ReferenceEquals(props(0).SourceSec, Nothing) Then
-                                strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
-                                                             props(0).Source.Name, _
-                                                             vd.GetDescriptor(var, eDescriptorTypes.Name), _
-                                                             props(0).SourceSec.Name)
-                            Else
-                                strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
-                                                             props(0).Source.Name, _
-                                                             vd.GetDescriptor(var, eDescriptorTypes.Description))
-                            End If
+                        ' Get variable descriptor
+                        Dim var As eVarNameFlags = props(0).VarName
+                        ' Format message
+                        If Not Object.ReferenceEquals(props(0).SourceSec, Nothing) Then
+                            strSelection = String.Format(My.Resources.SELECTION_INDEXEDVAR, _
+                                                         props(0).Source.Name, _
+                                                         vd.GetDescriptor(var, eDescriptorTypes.Name), _
+                                                         props(0).SourceSec.Name)
                         Else
-                            ' NOP: property gone
+                            strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, _
+                                                         props(0).Source.Name, _
+                                                         vd.GetDescriptor(var, eDescriptorTypes.Description))
                         End If
                     Else
                         strSelection = My.Resources.SELECTION_DERIVED
@@ -116,6 +144,11 @@ Public Class cSelectionMonitor
         Return strSelection
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <see cref="OnSelectionChanged">Selection change event</see> dispatch.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Private Sub HandleSelectionChanged(cmd As EwEUtils.Commands.cCommand)
         Try
             RaiseEvent OnSelectionChanged(Me)

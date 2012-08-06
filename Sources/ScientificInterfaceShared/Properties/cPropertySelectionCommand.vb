@@ -136,7 +136,7 @@ Namespace Properties
         ''' </summary>
         ''' <param name="lprop">List of <see cref="cProperty">cProperty</see> 
         ''' instances that were selected.</param>
-        ''' <param name="event">The Sourcegrid event that fired this command.</param>
+        ''' <param name="event">The <see cref="SelectionChangeEventType">event</see> that fired this command.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal lprop As List(Of cProperty), _
                                     ByVal [event] As SelectionChangeEventType)
@@ -154,18 +154,36 @@ Namespace Properties
         ''' Get and array of currently selected <see cref="cProperty">cProperty</see> 
         ''' instances.
         ''' </summary>
+        ''' <remarks>
+        ''' Note that only properties are returned that have not been <see cref="cProperty.IsDisposed">disposed</see> yet.
+        ''' The EwE6 UI does not know disposal events, and adding this type of event
+        ''' would be beneficial to the application but requires some thorough rethinking.
+        ''' The Disposal test is a simple work-around for bug #1105.
+        ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Selection() As cProperty()
             Get
-                Return Me.m_lprop.ToArray()
+                Dim lSelection As New List(Of cProperty)
+                For Each prop As cProperty In Me.m_lprop
+                    If Not prop.IsDisposed Then
+                        lSelection.Add(prop)
+                    End If
+                Next
+                Return lSelection.ToArray()
             End Get
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="SelectionChangeEventType">event</see> that fired this command.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public ReadOnly Property EventType() As SelectionChangeEventType
             Get
                 Return Me.m_event
             End Get
         End Property
+
     End Class
 
 End Namespace ' Properties

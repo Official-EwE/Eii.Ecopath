@@ -141,6 +141,10 @@ Namespace Properties
             GC.SuppressFinalize(Me)
         End Sub
 
+        Public Function IsDisposed() As Boolean
+            Return Me.m_bDisposed
+        End Function
+
 #End Region ' Construction 
 
 #Region " Properties of this property (are you confused yet?)"
