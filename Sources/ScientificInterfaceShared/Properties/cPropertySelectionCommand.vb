@@ -164,8 +164,14 @@ Namespace Properties
         Public ReadOnly Property Selection() As cProperty()
             Get
                 Dim lSelection As New List(Of cProperty)
+
                 For Each prop As cProperty In Me.m_lprop
-                    If Not prop.IsDisposed Then
+                    Dim bValid As Boolean = True
+
+                    If (prop.IsDisposed) Then bValid = False
+                    If (prop.Source IsNot Nothing) Then bValid = Not prop.Source.Disposed
+
+                    If bValid Then
                         lSelection.Add(prop)
                     End If
                 Next
