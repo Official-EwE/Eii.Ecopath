@@ -983,7 +983,6 @@ Public Class cEcoSpace
                 If m_Data.PredictEffort Then
                     If its = 3 Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
-                    ' Me.PredictEffortDistribution(m_Data.MonthNow, its)
                     Me.runPredictEffortDistributionThreads(m_Data.MonthNow, its)
                     stpwchEffort.Stop()
                 End If
@@ -1667,10 +1666,6 @@ Public Class cEcoSpace
             ReDim m_Data.SpatialFieldStdLeft(m_Data.nLiving, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldStdRight(m_Data.nLiving, m_Data.nSpatialFields)
 
-            'SetHabGrad()
-
-            m_Data.PredictEffort = True 'from EwE5
-
             'jb 12-Ma7-2010 do a full initialization of Ecosim. This should have been handled by the framework...but sometimes it gets dropped
             Me.m_Ecosim.Init(True)
 
@@ -2001,33 +1996,9 @@ Public Class cEcoSpace
 
             m_Ecosim.InitializeDataInfo()
 
-
-            'TotalTime = m_ESData.NumYears
-            'jb maxtime is set by the size of the time step in Ecosim one month max time steps per year
-            'MaxTime = m_Data.TotalTime * (1 / m_Data.TimeStep) '* 12 '1200  'TotalTime
-            'MaxTime = m_Data.TotalTime * 12 '1200  'TotalTime
-
-
-            '        If SpDatYear > 0 Then  'there are timeseries
-            '            ReDim SpaceBiomassByRegion(TotalTime, m_data.nGroups, NoRegions)
-            '            ReDim SpaceBiomassByRegionCount(TotalTime, m_data.nGroups, NoRegions)
-            '            ReDim SpaceCatchByRegion(TotalTime, m_data.nGroups, NoRegions)
-            '            ReDim SpaceCatchByRegionCount(TotalTime, m_data.nGroups, NoRegions)
-            '            ReDim SpaceEffortByRegionFleet(TotalTime, NumGear, NoRegions)
-            '            ReDim SpaceEffortByRegionFleetCount(TotalTime, NumGear, NoRegions)
-            '            If ConSimOn Then 'only if there are tracer data
-            '                ReDim SpaceTraceByRegion(TotalTime, m_data.nGroups, NoRegions)
-            '                ReDim SpaceTraceByRegionCount(TotalTime, m_data.nGroups, NoRegions)
-            '            End If
-            '        End If
-
             'm_Data.nGroupsPerThread = (m_Data.totalIntegratedGroups + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads 'm_Data.nvartot \ m_Data.nGridSolverThreads + 1
             m_Data.nCellsPerThread = (m_Data.iTotalWaterCells + m_Data.nSpaceSolverThreads - 1) \ m_Data.nSpaceSolverThreads
             m_Data.nIBMGroupsPerThread = (m_Stanza.Nsplit + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
-
-            'Adjust the total effort base on the biomass (BCell()) 
-            'in the cells after the habitat bases biomass adjustment
-            Me.AdjustTotalEffort()
 
             Return True
 
@@ -3463,11 +3434,14 @@ exitline:
 
     End Sub
 
-
+    ''' <summary>
+    ''' This is a modified version of PredictEffortDistribution, to be called only once at around simulation
+    ''' month 2 or 3; it resets totaleffort(gear) so as to avoid overfishing (relative to ecopath base) on concentrated species
+    ''' modifications to PredictEffortDistribution are ahown as '***
+    ''' </summary>
+    ''' <remarks></remarks>
     Sub AdjustTotalEffort()
-        'this is a modified version of PredictEffortDistribution, to be called only once at around simulation
-        'month 2 or 3; it resets totaleffort(gear) so as to avoid overfishing (relative to ecopath base) on concentrated species
-        'modifications to PredictEffortDistribution are ahown as '***
+        
         Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
         Dim Valt As Single, isp As Integer
         Dim Effort() As Single
@@ -3476,9 +3450,14 @@ exitline:
         Dim CatGear As Single, CatLoc(,) As Single, WtCat As Single
         Dim Attract(,) As Single
 
+        'Is Effort predicted
+        If Not Me.m_Data.PredictEffort Then
+            'No Effort is not being predicted 
+            'In this case Ecospace Effort = Ecosim Effort in all cells
+            Return
+        End If
+
         ReDim Effort(m_Data.nFleets)
-        'ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
-        'ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
 
         For ig = 1 To m_Data.nFleets
             'jb Attract() gets cleared out for each fleet
