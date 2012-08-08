@@ -1566,7 +1566,7 @@ Public Class cEcospaceDataStructures
         sFishEffort = sFishEffort / nts
 
         For it As Integer = et To et + nts - 1
-            eSailEffort = eSailEffort + Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFleet, it)
+            eSailEffort += Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFleet, it)
             eFishEffort += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFleet, it)
         Next
         eFishEffort = eFishEffort / nts
@@ -1574,6 +1574,9 @@ Public Class cEcospaceDataStructures
         'cost = [fixed cost] + ([fishing effort] * [ecopath effort cost] + [sailing effort] * [ecopath sailing cost])
         startCost = EcopathCost(iFleet, 1) + (sFishEffort * EcopathCost(iFleet, 2) + sSailEffort * EcopathCost(iFleet, 3))
         endCost = EcopathCost(iFleet, 1) + (eFishEffort * EcopathCost(iFleet, 2) + eSailEffort * EcopathCost(iFleet, 3))
+
+        Console.WriteLine("Effort Fleet = " & iFleet.ToString & ", Start = " & sFishEffort.ToString & ", End = " & eFishEffort.ToString)
+        Console.WriteLine("Sail Fleet = " & iFleet.ToString & ", Start = " & sSailEffort.ToString & ", End = " & eSailEffort.ToString)
 
     End Sub
 
