@@ -324,7 +324,6 @@ Public Class cSpaceSolver
 
                 If m_Data.Depth(i, j) = 0 Then m_Data.Bcell(i, j, iGrp) = 0
                 BB(iGrp) = m_Data.Bcell(i, j, iGrp)
-                'Debug.Assert(Not Single.IsNaN(BB(iGrp)))
 
                 If m_TracerData.EcoSpaceConSimOn Then m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
 
@@ -344,11 +343,11 @@ Public Class cSpaceSolver
                 End If
 
                 Hden(iGrp) = HdenCell(i, j, iGrp)
-                'VC20Aug98: This should consider fleets which can fish in the MPA
-                ' The variable MPAfishery(gear, habitattype)=true indicates that
-                ' the specific gear can fish in the specified habitattype
+
+                'Set FishTime() (F, fishing mortality) for this timestep cell
                 If m_Data.Depth(i, j) > 0 Then
                     If m_Data.PredictEffort Then
+                        'F set by cEcospace.PredictEffortDistributionThreaded()
                         FishTime(iGrp) = m_Data.Ftot(iGrp, i, j)
                         '****Following lines set fishrategear for Simdetritus
                         For ig = 1 To m_Data.nFleets
@@ -356,9 +355,14 @@ Public Class cSpaceSolver
                             'effortspace should be 1.0 for cell with "average" effort by gear type ig
                         Next
                     Else
+                        'Not Predicting Effort
+                        'F = Ecopath base F
                         FishTime(iGrp) = Fish1(iGrp)
-                        '****Following lines set fishrategear for Simdetritus
+
                         For ig = 1 To m_Data.nFleets
+                            'Effort used to calculate Catch and Value in cEcospace.accumCatchData
+                            m_Data.EffortSpace(ig, i, j) = 1.0
+                            'fishrategear for Simdetritus
                             FishRateGear(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
                         Next
                     End If 'If m_Data.PredictEffort > 0 Then
@@ -376,19 +380,11 @@ Public Class cSpaceSolver
                 EatEff(iGrp) = 1
                 VulPred(iGrp) = 1
 
-                ' If m_Data.PrefHab(iGrp, m_Data.HabType(i, j)) = False And m_Data.PrefHab(iGrp, 0) = False Then
                 If m_Data.HabCap(i, j, iGrp) < 0.1 Then
                     VulPred(iGrp) = m_Data.RelVulBad(iGrp)
                 End If
 
                 EatEff(iGrp) = m_Data.HabCap(i, j, iGrp) 'm_Data.EatEffBad(iGrp)
-                ' End If
-
-                'jb moved to cEcoSpace.accumCatchData()
-                'If Search.bInSearch Then
-                '    Search.calcEcoSpaceMonthlyCatch(iGrp, BB, m_Data.EffortSpace, i, j, iYear, m_Data.TimeStep)
-                'End If
-                ' m_EcospaceModel.summarizeCatchData(Tn, itt, ip, BB, i, j)
 
             Next iGrp
 
