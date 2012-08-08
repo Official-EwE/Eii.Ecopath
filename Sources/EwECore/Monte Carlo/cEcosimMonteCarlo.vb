@@ -895,7 +895,6 @@ Friend Class cEcosimMonteCarlo
                 ParLimit(0, eMCParams.PB, i) = Me.m_epdata.PB(i) * (1 - factor * CVpar(eMCParams.PB, i))
                 If ParLimit(0, eMCParams.PB, i) < 0 Then ParLimit(0, eMCParams.PB, i) = 1.0E-10!
 
-                ' JS13feb12 added
                 ParLimit(0, eMCParams.QB, i) = Me.m_epdata.QB(i) * (1 - factor * CVpar(eMCParams.QB, i))
                 If ParLimit(0, eMCParams.QB, i) < 0 Then ParLimit(0, eMCParams.QB, i) = 1.0E-10!
 
@@ -909,14 +908,13 @@ Friend Class cEcosimMonteCarlo
 
                 'upper
                 ParLimit(1, eMCParams.Biomass, i) = Me.m_epdata.B(i) * (1 + factor * CVpar(eMCParams.Biomass, i))
-                If ParLimit(1, eMCParams.Biomass, i) <= ParLimit(0, eMCParams.Biomass, i) Then ParLimit(1, eMCParams.Biomass, i) = 10 * ParLimit(0, eMCParams.Biomass, i)
+                If ParLimit(1, eMCParams.Biomass, i) < ParLimit(0, eMCParams.Biomass, i) Then ParLimit(1, eMCParams.Biomass, i) = 10 * ParLimit(0, eMCParams.Biomass, i)
 
                 ParLimit(1, eMCParams.PB, i) = Me.m_epdata.PB(i) * (1 + factor * CVpar(eMCParams.PB, i))
-                If ParLimit(1, eMCParams.PB, i) <= ParLimit(0, eMCParams.PB, i) Then ParLimit(1, eMCParams.PB, i) = 10 * ParLimit(0, eMCParams.PB, i)
+                If ParLimit(1, eMCParams.PB, i) < ParLimit(0, eMCParams.PB, i) Then ParLimit(1, eMCParams.PB, i) = 10 * ParLimit(0, eMCParams.PB, i)
 
-                ' JS13feb12 added
                 ParLimit(1, eMCParams.QB, i) = Me.m_epdata.QB(i) * (1 + factor * CVpar(eMCParams.QB, i))
-                If ParLimit(1, eMCParams.QB, i) <= ParLimit(0, eMCParams.QB, i) Then ParLimit(1, eMCParams.QB, i) = 10 * ParLimit(0, eMCParams.QB, i)
+                If ParLimit(1, eMCParams.QB, i) < ParLimit(0, eMCParams.QB, i) Then ParLimit(1, eMCParams.QB, i) = 10 * ParLimit(0, eMCParams.QB, i)
 
                 ParLimit(1, eMCParams.EE, i) = Me.m_epdata.EE(i) * (1 + factor * CVpar(eMCParams.EE, i))
                 If ParLimit(1, eMCParams.EE, i) > 1 Then ParLimit(1, eMCParams.EE, i) = 1
