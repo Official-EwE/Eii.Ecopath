@@ -330,7 +330,7 @@ Namespace Ecopath.Controls.FlowDiagram
             If bVisible Then
                 clrPen = Me.m_data.TextColor
             Else
-                clrPen = LightGray
+                clrPen = Color.Gray
             End If
 
             Me.m_node.DrawLabel(g, _
