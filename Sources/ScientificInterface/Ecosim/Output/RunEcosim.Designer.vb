@@ -56,6 +56,8 @@ Namespace Ecosim
             Me.m_tsbnSetToValue = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnResetFs = New System.Windows.Forms.ToolStripButton()
             Me.m_spContainer = New System.Windows.Forms.SplitContainer()
+            Me.m_graph = New ZedGraph.ZedGraphControl()
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.tslblSSValue = New System.Windows.Forms.ToolStripLabel()
@@ -86,13 +88,11 @@ Namespace Ecosim
             Me.m_tslChangeAmount = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tstbChangeAmount = New System.Windows.Forms.ToolStripTextBox()
             Me.m_scGraph = New System.Windows.Forms.SplitContainer()
-            Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_scOptions = New System.Windows.Forms.SplitContainer()
             Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lbRuns = New System.Windows.Forms.ListBox()
             Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
-            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucForcingSketchPad()
             ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
             ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
             ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
@@ -200,6 +200,47 @@ Namespace Ecosim
             '
             Me.m_spContainer.Panel2.Controls.Add(Me.m_sketchPad)
             Me.m_spContainer.Panel2.Controls.Add(Me.m_tsMain)
+            '
+            'm_graph
+            '
+            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
+            '
+            'm_sketchPad
+            '
+            Me.m_sketchPad.AllowedEdits = ScientificInterfaceShared.Controls.ucSketchPad.eMouseInteractionMode.DrawShape
+            Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
+            Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
+            Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
+            Me.m_sketchPad.DisplayAxis = True
+            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
+            Me.m_sketchPad.Editable = True
+            Me.m_sketchPad.Handler = Nothing
+            Me.m_sketchPad.IsSeasonal = False
+            Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.NumDataPoints = 0
+            Me.m_sketchPad.Shape = Nothing
+            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowValueTooltip = True
+            Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.ShowYMark = False
+            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_sketchPad.UIContext = Nothing
+            Me.m_sketchPad.XAxisMaxValue = -9999
+            Me.m_sketchPad.XMarkValue = -9999.0!
+            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
+            Me.m_sketchPad.YAxisMaxValue = 0.0!
+            Me.m_sketchPad.YAxisMinValue = 1.0!
+            Me.m_sketchPad.YMarkLabel = ""
+            Me.m_sketchPad.YMarkValue = -9999.0!
             '
             'm_ts
             '
@@ -390,18 +431,6 @@ Namespace Ecosim
             Me.m_scGraph.Panel2.Controls.Add(Me.m_scOptions)
             Me.m_scGraph.Panel2.Controls.Add(Me.m_btnRun)
             '
-            'm_graph
-            '
-            resources.ApplyResources(Me.m_graph, "m_graph")
-            Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
-            '
             'm_scOptions
             '
             resources.ApplyResources(Me.m_scOptions, "m_scOptions")
@@ -457,35 +486,6 @@ Namespace Ecosim
             Me.m_lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
-            '
-            'm_sketchPad
-            '
-            Me.m_sketchPad.AllowedEdits = ScientificInterfaceShared.Controls.ucSketchPad.eMouseInteractionMode.DrawShape
-            Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
-            Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
-            Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Hand
-            Me.m_sketchPad.DisplayAxis = True
-            resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
-            Me.m_sketchPad.Editable = True
-            Me.m_sketchPad.Handler = Nothing
-            Me.m_sketchPad.IsSeasonal = False
-            Me.m_sketchPad.Name = "m_sketchPad"
-            Me.m_sketchPad.NumDataPoints = 0
-            Me.m_sketchPad.Shape = Nothing
-            Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
-            Me.m_sketchPad.ShowValueTooltip = True
-            Me.m_sketchPad.ShowXMark = False
-            Me.m_sketchPad.ShowYMark = False
-            Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
-            Me.m_sketchPad.UIContext = Nothing
-            Me.m_sketchPad.XAxisMaxValue = -9999
-            Me.m_sketchPad.XMarkValue = -9999.0!
-            Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
-            Me.m_sketchPad.YAxisMaxValue = 0.0!
-            Me.m_sketchPad.YAxisMinValue = 1.0!
-            Me.m_sketchPad.YMarkLabel = ""
-            Me.m_sketchPad.YMarkValue = -9999.0!
             '
             'RunEcosim
             '

@@ -67,25 +67,30 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Public Sub DrawFlowDiagram(ByVal g As Graphics, ByVal rc As Rectangle)
 
+            Dim hl As cFlowDiagramTree.eHighlightType = cFlowDiagramTree.eHighlightType.None
+
             ' Draw the objects
             Me.m_tree.DrawBackground(g, rc)
 
             ' Draw the connections
             For iPred As Integer = 1 To Me.m_data.NumLivingGroups()
                 For iPrey As Integer = 1 To Me.m_data.NumGroups()
+                    ' Determine highlight state
+                    hl = cFlowDiagramTree.eHighlightType.None
                     If Me.m_data.GroupVisible(iPred) And Me.m_data.GroupVisible(iPrey) Then
-                        Me.m_tree.DrawConnection(g, rc, iPred, iPrey, Me.HighlightNode = iPred, Me.HighlightNode = iPrey)
+                        If (Me.HighlightNode = iPred) Then hl = cFlowDiagramTree.eHighlightType.Predator
+                        If (Me.HighlightNode = iPrey) Then hl = cFlowDiagramTree.eHighlightType.Prey
+                    Else
+                        hl = cFlowDiagramTree.eHighlightType.Hidden
                     End If
+                    Me.m_tree.DrawConnection(g, rc, iPred, iPrey, hl)
                 Next
             Next
 
             ' Draw the nodes
             For j As Integer = 1 To Me.m_data.NumGroups()
                 ' Draw each node
-                'clr = colorramp.GetColor(Me.m_data.Biomass(j), sBiomassMax)
-                If Me.m_data.GroupVisible(j) Then
-                    Me.m_tree.DrawNode(g, rc, j)
-                End If
+                Me.m_tree.DrawNode(g, rc, j, Me.m_data.GroupVisible(j))
             Next j
 
         End Sub

@@ -67,15 +67,15 @@ Namespace Ecopath.Controls.FlowDiagram
             End Get
         End Property
 
-        Public ReadOnly Property HighlightEatsColor() As Color
+        Public ReadOnly Property PreyColor() As Color
             Get
-                Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
             End Get
         End Property
 
-        Public ReadOnly Property HighlightIsEatenColor() As Color
+        Public ReadOnly Property PredatorColor() As Color
             Get
-                Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
+                Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
             End Get
         End Property
 

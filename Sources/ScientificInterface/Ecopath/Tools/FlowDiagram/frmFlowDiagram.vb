@@ -59,6 +59,9 @@ Namespace Ecopath.Controls.FlowDiagram
         Private WithEvents m_tsmiLoad As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsmiSaveToImage As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tss1 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsbtnShowHideGroups As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tslLayout As System.Windows.Forms.ToolStripLabel
+        Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsmiSettings As System.Windows.Forms.ToolStripButton
 
 #End Region ' Private variables
@@ -93,6 +96,9 @@ Namespace Ecopath.Controls.FlowDiagram
 
             If (Me.UIContext Is Nothing) Then Return
 
+            Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim cmd As cCommand = Nothing
+
             Me.m_data = New cFlowDiagramData(Me.UIContext)
             Me.m_tree = New cFlowDiagramTree(Me.m_data)
             Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
@@ -103,10 +109,26 @@ Namespace Ecopath.Controls.FlowDiagram
 
             AddHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
 
+            ' Display Groups
+            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.AddControl(Me.m_tsbtnShowHideGroups)
+            End If
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
             RemoveHandler Me.m_tree.OnChanged, AddressOf OnTreeChanged
+
+            Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim cmd As cCommand = Nothing
+
+            ' Display Groups
+            cmd = cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
+            If Not Object.ReferenceEquals(cmd, Nothing) Then
+                cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
+            End If
+
             MyBase.OnFormClosed(e)
         End Sub
 
@@ -120,6 +142,12 @@ Namespace Ecopath.Controls.FlowDiagram
                 Me.m_pbFlowDiagram.Invalidate()
             End If
 
+        End Sub
+
+        Protected Overrides Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
+            If (ct And cStyleGuide.eChangeType.GroupVisibility) > 0 Then
+                Me.m_pbFlowDiagram.Invalidate()
+            End If
         End Sub
 
         Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
@@ -314,16 +342,20 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmFlowDiagram))
-            Me.m_pbFlowDiagram = New System.Windows.Forms.PictureBox
-            Me.m_scContent = New System.Windows.Forms.SplitContainer
-            Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid
-            Me.m_tsFlowDiagram = New cEwEToolstrip
-            Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton
-            Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton
-            Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton
-            Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton
+            Me.m_pbFlowDiagram = New System.Windows.Forms.PictureBox()
+            Me.m_scContent = New System.Windows.Forms.SplitContainer()
+            Me.m_pgFlowDiagram = New System.Windows.Forms.PropertyGrid()
+            Me.m_tsFlowDiagram = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
+            Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
+            Me.m_tslLayout = New System.Windows.Forms.ToolStripLabel()
+            Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.Panel2.SuspendLayout()
             Me.m_scContent.SuspendLayout()
@@ -357,25 +389,26 @@ Namespace Ecopath.Controls.FlowDiagram
             '
             'm_tsFlowDiagram
             '
-            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiLoad, Me.m_tsmiSave, Me.m_tsmiSaveToImage, Me.m_tss1, Me.m_tsmiSettings})
+            Me.m_tsFlowDiagram.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsFlowDiagram.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbtnShowHideGroups, Me.m_tsmiSettings, Me.m_tss1, Me.m_tslLayout, Me.m_tsmiLoad, Me.m_tsmiSave, Me.ToolStripSeparator1, Me.m_tsmiSaveToImage})
             resources.ApplyResources(Me.m_tsFlowDiagram, "m_tsFlowDiagram")
             Me.m_tsFlowDiagram.Name = "m_tsFlowDiagram"
+            Me.m_tsFlowDiagram.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsmiLoad
             '
-            Me.m_tsmiLoad.Image = SharedResources.openHS
+            Me.m_tsmiLoad.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsmiLoad, "m_tsmiLoad")
             Me.m_tsmiLoad.Name = "m_tsmiLoad"
             '
             'm_tsmiSave
             '
-            Me.m_tsmiSave.Image = SharedResources.saveHS
+            Me.m_tsmiSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
             Me.m_tsmiSave.Name = "m_tsmiSave"
             '
             'm_tsmiSaveToImage
             '
-            Me.m_tsmiSaveToImage.Image = SharedResources.saveHS
             resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
             Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
             '
@@ -387,19 +420,35 @@ Namespace Ecopath.Controls.FlowDiagram
             'm_tsmiSettings
             '
             Me.m_tsmiSettings.CheckOnClick = True
-            Me.m_tsmiSettings.Image = SharedResources.OptionsHS
+            Me.m_tsmiSettings.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             resources.ApplyResources(Me.m_tsmiSettings, "m_tsmiSettings")
             Me.m_tsmiSettings.Name = "m_tsmiSettings"
             '
-            'FlowDiagram
+            'm_tsbtnShowHideGroups
+            '
+            resources.ApplyResources(Me.m_tsbtnShowHideGroups, "m_tsbtnShowHideGroups")
+            Me.m_tsbtnShowHideGroups.Name = "m_tsbtnShowHideGroups"
+            '
+            'm_tslLayout
+            '
+            Me.m_tslLayout.Name = "m_tslLayout"
+            resources.ApplyResources(Me.m_tslLayout, "m_tslLayout")
+            '
+            'ToolStripSeparator1
+            '
+            Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+            resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+            '
+            'frmFlowDiagram
             '
             resources.ApplyResources(Me, "$this")
             Me.Controls.Add(Me.m_tsFlowDiagram)
             Me.Controls.Add(Me.m_scContent)
-            Me.Name = "FlowDiagram"
+            Me.Name = "frmFlowDiagram"
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel2.ResumeLayout(False)
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.ResumeLayout(False)
             Me.m_tsFlowDiagram.ResumeLayout(False)
             Me.m_tsFlowDiagram.PerformLayout()

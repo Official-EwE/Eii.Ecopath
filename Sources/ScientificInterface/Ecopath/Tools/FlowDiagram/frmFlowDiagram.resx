@@ -112,23 +112,23 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_pbFlowDiagram.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_pbFlowDiagram.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="m_pbFlowDiagram.Size" type="System.Drawing.Size, System.Drawing">
     <value>531, 432</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_pbFlowDiagram.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
@@ -136,7 +136,7 @@
     <value>m_pbFlowDiagram</value>
   </data>
   <data name="&gt;&gt;m_pbFlowDiagram.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_pbFlowDiagram.Parent" xml:space="preserve">
     <value>m_scContent.Panel1</value>
@@ -157,7 +157,7 @@
     <value>m_scContent.Panel1</value>
   </data>
   <data name="&gt;&gt;m_scContent.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scContent.Panel1.Parent" xml:space="preserve">
     <value>m_scContent</value>
@@ -184,7 +184,7 @@
     <value>m_pgFlowDiagram</value>
   </data>
   <data name="&gt;&gt;m_pgFlowDiagram.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.PropertyGrid, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_pgFlowDiagram.Parent" xml:space="preserve">
     <value>m_scContent.Panel2</value>
@@ -196,7 +196,7 @@
     <value>m_scContent.Panel2</value>
   </data>
   <data name="&gt;&gt;m_scContent.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scContent.Panel2.Parent" xml:space="preserve">
     <value>m_scContent</value>
@@ -217,7 +217,7 @@
     <value>m_scContent</value>
   </data>
   <data name="&gt;&gt;m_scContent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scContent.Parent" xml:space="preserve">
     <value>$this</value>
@@ -225,47 +225,114 @@
   <data name="&gt;&gt;m_scContent.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="m_tsFlowDiagram.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_tsFlowDiagram.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>13, 4</value>
   </metadata>
-  <data name="m_tsmiLoad.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="m_tsbtnShowHideGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
-  <data name="m_tsmiLoad.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 22</value>
+  <data name="m_tsbtnShowHideGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 22</value>
   </data>
-  <data name="m_tsmiLoad.Text" xml:space="preserve">
-    <value>&amp;Load layout...</value>
-  </data>
-  <data name="m_tsmiSave.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsmiSave.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 22</value>
-  </data>
-  <data name="m_tsmiSave.Text" xml:space="preserve">
-    <value>&amp;Save layout...</value>
-  </data>
-  <data name="m_tsmiSaveToImage.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsmiSaveToImage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 22</value>
-  </data>
-  <data name="m_tsmiSaveToImage.Text" xml:space="preserve">
-    <value>Save to &amp;image...</value>
-  </data>
-  <data name="m_tss1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+  <data name="m_tsbtnShowHideGroups.Text" xml:space="preserve">
+    <value>Show &amp;groups...</value>
   </data>
   <data name="m_tsmiSettings.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="m_tsmiSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 22</value>
+    <value>53, 22</value>
   </data>
   <data name="m_tsmiSettings.Text" xml:space="preserve">
-    <value>S&amp;ettings</value>
+    <value>&amp;Options</value>
+  </data>
+  <data name="m_tss1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="m_tslLayout.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 22</value>
+  </data>
+  <data name="m_tslLayout.Text" xml:space="preserve">
+    <value>Layout:</value>
+  </data>
+  <data name="m_tsmiLoad.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ0SURBVDhPvZNJSBRgGIbn0KFLFplRCUmWiAViYEh1CDGk
+        XClXUHKhcqPMUMxxacZtHGdzm1LRZtRp1NFqSjGsEApFIrRcKDE1C4pKMTVUcnsaR5AsO3Tph/fy873P
+        937/IhD8j5VTUuMmLtRzTVqFRG0gVaZN+6e+4Ylq/GIUoSumSymVVpkmWFK2JiAssQRBo04VZBK/q6VO
+        ovhblxhhqbd/nALfmAIzgMFeLXOTDWb9mNCzMKbBUKXAqMvK3AjiF6vEN7oQr6hiBA3VSmYnateZlz6X
+        stCfQO0tKTVluWhKMikvyOCmXEhxXjLroHVaGbNftWudl01mBoXQH7Wh/gDcrsjj+6dyc+wVc2ujzKyH
+        hnya9Hncq8nFoMlCXy6mSn2dysI0ypRC1LKU1TQ15blMvy9iJfZIuwhjrZKlETGMZq/XO9PecCoMJMLr
+        OHrqA4mP8KkWaNRZTA1J4YOc+3UKOh/JV4t+HeFVGHT5s9jhydxjV95WOxJ3zn3qynnvQ4KKQhHf3ogZ
+        7UjHqJezPCyCvuhVQE+kyRjMYqcPc23uTLccZ7zxMOIYO4LdLAvMh1mqTGe8N4U7Ohndz0xJBhJMgAvQ
+        Hcry8zPMPz3NTOsJJozOfKlzoCtnGyGetjjbb7E3A9T5QvraMriry4ehDHhpivsigPl2L2aeuDLZ5MKY
+        wZGP2gP0yy0RRe3H6eCe5rWrLJIk01Alpf9BLF0qwZo65Ztoy9tMc+ZW6tOs0CRbc+OqDSEe+5ZdnGw8
+        1gCq7CRUootIUsJJvRxEfKQPEYEnOXvqKG7HHDniaIeDrTV7d+9g53YLdllarH9I//SrNij+Ceu95QwI
+        aRE4AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="m_tsmiLoad.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsmiLoad.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsmiLoad.Text" xml:space="preserve">
+    <value>Load layout...</value>
+  </data>
+  <data name="m_tsmiSave.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAItSURBVDhPrZPdS5NxFMf9F7zvJvCi25oaw7VYDZ5yDmXZ
+        MKyIUp/wNU2X+UKKpWnU8gWyFS6dtFpNwklFvoApYiKLpWhl5oqmOHxFJ4LBt9/5Rc8v07rJH5zLz+c8
+        55zvExa2E+/F8xCoPO0raHMv45FzAS3NQdyzzaCh/hust/y4XjWJ8rKPKC4aQ0H+CC7k+KD0JrCnG6iv
+        W8e/3tr6BgxJPTiR9IyXInA/XeKCmurFv/IEBxfWcND0EiqVDPNxlxA4H85zQXnZ9LaCX/DnwBIijR4U
+        XZ7CMVOrENibZrngkuXTFsHv8LuJIPZIbuTljiMh3i4EjXcCXJCdNbJJ8Cc84Atgl84JWR6G0WgTgrra
+        r1wgpw0rgu3g7qEvCI9pxslTrxEb2yAEN2qm0NUJdkrgzLk3MJ/u59umhdHM9NnU+Sfci0TzK0iSVQiu
+        VkygwwOWAaDV8Z3dfRVVlXN8qbQwmjkzw6fAcQnt0OurhaCkeByux8AD+wYLTgiG5NxNZTprQXJ6Ke8c
+        F8/goy7odBVCYCkYZTBQezvEO5OAhQSRGgneD7MYnZyDnH8Nhw1tHNYcckCrLRUCiqXtLpTPJgHB5wtv
+        4r1/Hv6ZZVy8YkWUzsHgFkQduA9NTKEQZGa8ZXOv8Jkj9C7s3ifhSUcfPJ0D6OodQv+gF0eMZqi0TYhm
+        8F51I9TqPCHISvcmpqb08XhSwigkdGc6FW2bFkYzU1cqgvdHZwvB//zRPwBCVjq+3Cul5wAAAABJRU5E
+        rkJggg==
+</value>
+  </data>
+  <data name="m_tsmiSave.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsmiSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsmiSave.Text" xml:space="preserve">
+    <value>&amp;Save layout...</value>
+  </data>
+  <data name="ToolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <data name="m_tsmiSaveToImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAItSURBVDhPrZPdS5NxFMf9F7zvJvCi25oaw7VYDZ5yDmXZ
+        MKyIUp/wNU2X+UKKpWnU8gWyFS6dtFpNwklFvoApYiKLpWhl5oqmOHxFJ4LBt9/5Rc8v07rJH5zLz+c8
+        55zvExa2E+/F8xCoPO0raHMv45FzAS3NQdyzzaCh/hust/y4XjWJ8rKPKC4aQ0H+CC7k+KD0JrCnG6iv
+        W8e/3tr6BgxJPTiR9IyXInA/XeKCmurFv/IEBxfWcND0EiqVDPNxlxA4H85zQXnZ9LaCX/DnwBIijR4U
+        XZ7CMVOrENibZrngkuXTFsHv8LuJIPZIbuTljiMh3i4EjXcCXJCdNbJJ8Cc84Atgl84JWR6G0WgTgrra
+        r1wgpw0rgu3g7qEvCI9pxslTrxEb2yAEN2qm0NUJdkrgzLk3MJ/u59umhdHM9NnU+Sfci0TzK0iSVQiu
+        VkygwwOWAaDV8Z3dfRVVlXN8qbQwmjkzw6fAcQnt0OurhaCkeByux8AD+wYLTgiG5NxNZTprQXJ6Ke8c
+        F8/goy7odBVCYCkYZTBQezvEO5OAhQSRGgneD7MYnZyDnH8Nhw1tHNYcckCrLRUCiqXtLpTPJgHB5wtv
+        4r1/Hv6ZZVy8YkWUzsHgFkQduA9NTKEQZGa8ZXOv8Jkj9C7s3ifhSUcfPJ0D6OodQv+gF0eMZqi0TYhm
+        8F51I9TqPCHISvcmpqb08XhSwigkdGc6FW2bFkYzU1cqgvdHZwvB//zRPwBCVjq+3Cul5wAAAABJRU5E
+        rkJggg==
+</value>
+  </data>
+  <data name="m_tsmiSaveToImage.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsmiSaveToImage.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 22</value>
+  </data>
+  <data name="m_tsmiSaveToImage.Text" xml:space="preserve">
+    <value>Save to &amp;image...</value>
   </data>
   <data name="m_tsFlowDiagram.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -283,7 +350,7 @@
     <value>m_tsFlowDiagram</value>
   </data>
   <data name="&gt;&gt;m_tsFlowDiagram.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsFlowDiagram.Parent" xml:space="preserve">
     <value>$this</value>
@@ -291,10 +358,10 @@
   <data name="&gt;&gt;m_tsFlowDiagram.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>37</value>
   </metadata>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
@@ -307,36 +374,54 @@
     <value>m_tsmiLoad</value>
   </data>
   <data name="&gt;&gt;m_tsmiLoad.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiSave.Name" xml:space="preserve">
     <value>m_tsmiSave</value>
   </data>
   <data name="&gt;&gt;m_tsmiSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiSaveToImage.Name" xml:space="preserve">
     <value>m_tsmiSaveToImage</value>
   </data>
   <data name="&gt;&gt;m_tsmiSaveToImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tss1.Name" xml:space="preserve">
     <value>m_tss1</value>
   </data>
   <data name="&gt;&gt;m_tss1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiSettings.Name" xml:space="preserve">
     <value>m_tsmiSettings</value>
   </data>
   <data name="&gt;&gt;m_tsmiSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tsbtnShowHideGroups.Name" xml:space="preserve">
+    <value>m_tsbtnShowHideGroups</value>
+  </data>
+  <data name="&gt;&gt;m_tsbtnShowHideGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tslLayout.Name" xml:space="preserve">
+    <value>m_tslLayout</value>
+  </data>
+  <data name="&gt;&gt;m_tslLayout.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator1.Name" xml:space="preserve">
+    <value>ToolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;ToolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>FlowDiagram</value>
+    <value>frmFlowDiagram</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterface.frmEwE, EwE6, Version=6.0.6.619, Culture=neutral, PublicKeyToken=null</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

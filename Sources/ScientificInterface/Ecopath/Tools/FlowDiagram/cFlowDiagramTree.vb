@@ -62,21 +62,22 @@ Namespace Ecopath.Controls.FlowDiagram
                                 ByVal ptf As PointF, _
                                 ByVal nodetype As eNodeTypes, _
                                 ByVal iSize As Integer, _
-                                ByVal clr As Color)
+                                ByVal clrLine As Color, _
+                                ByVal clrFill As Color)
 
-                Using brush As New SolidBrush(clr)
-
-                    Select Case nodetype
-                        Case eNodeTypes.Circle
-                            g.FillEllipse(brush, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
-                            g.DrawEllipse(Pens.Black, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
-                        Case eNodeTypes.Rectangle
-                            g.FillRectangle(brush, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
-                            g.DrawRectangle(Pens.Black, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
-                        Case Else
-                            Debug.Assert(False)
-                    End Select
-
+                Using br As New SolidBrush(clrFill)
+                    Using p As New Pen(clrLine)
+                        Select Case nodetype
+                            Case eNodeTypes.Circle
+                                g.FillEllipse(br, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
+                                g.DrawEllipse(p, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
+                            Case eNodeTypes.Rectangle
+                                g.FillRectangle(br, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
+                                g.DrawRectangle(p, ptf.X - CInt(iSize / 2), ptf.Y - CInt(iSize / 2), iSize, iSize)
+                            Case Else
+                                Debug.Assert(False)
+                        End Select
+                    End Using
                 End Using
 
             End Sub
@@ -230,6 +231,13 @@ Namespace Ecopath.Controls.FlowDiagram
             Flow
         End Enum
 
+        Public Enum eHighlightType As Integer
+            None
+            Hidden
+            Predator
+            Prey
+        End Enum
+
         Public Event OnChanged(ByVal sender As cFlowDiagramTree)
 
 #Region " Constructor "
@@ -285,38 +293,50 @@ Namespace Ecopath.Controls.FlowDiagram
 
         Friend Sub DrawNode(ByRef g As Graphics, _
                             ByVal rc As Rectangle, _
-                            ByVal iGroup As Integer)
+                            ByVal iGroup As Integer, _
+                            ByVal bVisible As Boolean)
 
             Dim strGroupName As String = Me.m_data.GroupName(iGroup)
             Dim sBiomass As Single = Me.m_data.Biomass(iGroup)
             Dim sBiomassMax As Single = Me.m_data.BiomassMax
             Dim strBiomassLabel As String = ""
-            Dim clrNode As Color
+            Dim clrPen As Color = Color.Black
+            Dim clrFill As Color = Color.LightGray
 
             If Me.m_bIsNodeDrawBiomass And sBiomass > 0.0! Then
                 strBiomassLabel = Me.m_data.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK)
             End If
 
-            Select Case m_colorusagetype
-                Case eColorUsageTypes.Groups
-                    clrNode = Me.m_data.GroupColor(iGroup)
-                Case eColorUsageTypes.Biomass
-                    clrNode = Me.m_colorramp.GetColor(sBiomass, sBiomassMax)
-                Case Else
-                    clrNode = Me.m_clrNode
-            End Select
+            If bVisible Then
+                Select Case m_colorusagetype
+                    Case eColorUsageTypes.Groups
+                        clrFill = Me.m_data.GroupColor(iGroup)
+                    Case eColorUsageTypes.Biomass
+                        clrFill = Me.m_colorramp.GetColor(sBiomass, sBiomassMax)
+                    Case Else
+                        clrFill = Me.m_clrNode
+                End Select
+            Else
+                clrPen = Color.LightGray
+                clrFill = Color.White
+            End If
 
             Me.m_node.DrawNode(g, _
                                Me.NodeLocation(iGroup, rc), _
                                Me.NodeType, _
                                Me.CalcNodeSize(sBiomass, sBiomassMax), _
-                               clrNode)
+                               clrPen, clrFill)
 
+            If bVisible Then
+                clrPen = Me.m_data.TextColor
+            Else
+                clrPen = LightGray
+            End If
 
             Me.m_node.DrawLabel(g, _
                                 Me.LabelLocation(iGroup, rc), _
                                 Me.m_data.RenderFont, _
-                                Me.m_data.TextColor, _
+                                clrPen, _
                                 strGroupName, _
                                 strBiomassLabel)
 
@@ -326,8 +346,7 @@ Namespace Ecopath.Controls.FlowDiagram
                                   ByVal rc As Rectangle, _
                                   ByVal iPred As Integer, _
                                   ByVal iPrey As Integer, _
-                                  ByVal bHighlightAsPredator As Boolean, _
-                                  ByVal bHighlightAsPrey As Boolean)
+                                  ByVal highlight As eHighlightType)
 
             Dim clrLine As Color = Me.m_clrLine
             Dim sDiet As Single = Me.m_data.Diet(iPred, iPrey)
@@ -336,20 +355,23 @@ Namespace Ecopath.Controls.FlowDiagram
 
             If sDiet <= 0 Then Return
 
-            If bHighlightAsPredator Then
-                clrLine = Me.m_data.HighlightEatsColor
-                sLineWidth = 2.0!
-            ElseIf bHighlightAsPrey Then
-                clrLine = Me.m_data.HighlightIsEatenColor
-                sLineWidth = 2.0!
-            Else
-                Select Case Me.m_colorusagetype
-                    Case eColorUsageTypes.Flow
-                        clrLine = Me.m_colorramp.GetColor(sDiet, sDietMax)
-                    Case Else
-                        ' NOP
-                End Select
-            End If
+            Select Case highlight
+                Case eHighlightType.None
+                    Select Case Me.m_colorusagetype
+                        Case eColorUsageTypes.Flow
+                            clrLine = Me.m_colorramp.GetColor(sDiet, sDietMax)
+                        Case Else
+                            ' Normal
+                    End Select
+                Case eHighlightType.Hidden
+                    clrLine = LightGray
+                Case eHighlightType.Predator
+                    clrLine = Me.m_data.PreyColor
+                    sLineWidth = 2.0!
+                Case eHighlightType.Prey
+                    clrLine = Me.m_data.PredatorColor
+                    sLineWidth = 2.0!
+            End Select
 
             sLineWidth *= Me.CalcLineWidth(sDiet, sDietMax)
 
@@ -471,7 +493,7 @@ Namespace Ecopath.Controls.FlowDiagram
              Category("Node"), _
              DisplayName("Custom node color"), _
              Description("Custom color to use for nodes if nodes are not auto-colored.")> _
-         Public Property CustomNodeColor() As Color
+        Public Property CustomNodeColor() As Color
             Get
                 Return Me.m_clrNode
             End Get

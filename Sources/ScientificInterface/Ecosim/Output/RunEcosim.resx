@@ -174,6 +174,27 @@
   <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
+  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 25</value>
+  </data>
+  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
+    <value>m_tsMain</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
+    <value>m_spContainer.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="m_tsbnFleet.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -198,19 +219,19 @@
   <data name="m_tsbnGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKlSURBVDhPvZNrSNNhFMZHHyKIxA+FdvMShrdyuU1pTpmm
-        U3dzF2fTTc3pjKYI85K5FLsLFZiT5gWpELMSjGoaFWl5QVOKSlqJiXkpL7lwKJjLy//pP8US6oNf6oGH
-        A4dzfof3fc9LofwrEbPEDmkgf84WCTNpMq5r1hzgYiUIdypTRoSL08FgxRChEckg5bIKAEwbYXljT+Y2
-        /AH13s+ajohSQa4qgESZi2hFDrjCY6D6Bs+uLbY1A4ObfuVYHE3V3sCMBzR5qWWfqha74m/BK60ROxXV
-        EJztAi2uhKBxtD/+egx3N3azWFGwIFBfBVdbh+DjT+CpaQAtqwmuSbexO7oSjuw8xGZUwI8ZO2KDxLFC
-        asK9fR4uAz0i1SOJRXXwzygDTVcLr9MNYBhewT7zDnyudMIh7x7skvXYIinEc8CeoSisDkvK14fEnwDF
-        m5s6mpBfDnFeFZxiCsEuMsLzlBEuZx4j9GY/Dui74Ki7D+o5I1xTS+EQlQPVxXrEZhfDja0gAQImUs5n
-        QnfjEpwiaUgxnAQ9TQhapgyMXCVEhnwoakrANxQhpb4WosoKcIoN4Fwux1bFUVDospCm/sWv+AgzWiZN
-        MH7pBjs3Dk/nB3DXYgJddwTXx01owxIal77DMzsLwrJrYF/QgxImxvIdBDH92nt7OgDCQnoCMh4VWo0A
-        ifIA8rXGMDk1gHdDHyBN1aB1aHL7ZiqXUOuN43tE2hVAolJmtM6Moe9t6zIgIfogsPCJbP6MxYVBWBfN
-        4MmFaHvfh4DDyc2jgIcdKx5ukqwVgE3Ods5mnj+3JV2mfmYdnsZEzzCmesfBZYR2RwWJHknDFe3fRubB
-        CVZ2zswQ22wmJ/xepFUQj37opYQl6JAy+S+E/hHdaxeH5ct/va7/8F+LfgLFSICCdu8b1gAAAABJRU5E
-        rkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKmSURBVDhPvZNrSJNhFMdHHyKIxA+FdvMShqnlbJviXDJN
+        p+6mm86m79SczmiK5C1zLewuVKBOmiZSIWYlGOU0KtLygqYUlbQSE/NSXnLhUDCXl/ffO8US6oNf6g9/
+        DhzO+R2e5zkPjfavRM6Q26Qc4aw1kibKVFzTrFnAyUKSrnS2jAyRpIHFiSaDQpNAyWkFABjXw/zGlsqt
+        +wPqsY8zFRquhFx5ClJFLqKIHPDFR+HpxZ1ZXWxtBgY2/MpxeOqK3QfS6xjyEvNeZTV2xN2Ge2oDthOV
+        EJ3rBCO2iGQEH/vx12O4unCbJIR2XqS6Cn5GDQKOP4Gbuh6MrEY4J97Bzqhy2HPzEJN+Dd7smGErJJYT
+        WBXi4flwCegaphpOKKiBT3opGJpquJ+pB0v/CraZd+FZ1AG7vPuwSdJhkzQfzwFbFpFfGZyo1QXGnQDN
+        g58yEq8tgySvAg7R+eAWGOB22gCns48RdKsPXrpO2GsegH7eAOeUEtiF50B5qRYx2YVw4RIUQMRG8oVM
+        aG5ehkMYA8n6k2CmisHIlIGVq0CEXguiqhhCfQGSa6sRUX4NvEI9eFfKsJk4AhpTFtjYt/AVH2FC84QR
+        hi9d4ObG4ulcP+6ZjWBqDuPGmBGtWETD4ne4ZWdBXHod3Is60IIlWLoDf7Z3W093O0CaKY9DJqAjQy1C
+        gtyPeq1RTEz2493gB0SmqNEyOLF1I51PqorrxnZFZCwDEhQyg2V6FL1vW5YA8VG+wPwnqvkzFuYHYFkw
+        QSAXo/V9L/wOJTWNAHtsOHFwkWYtA6xytHE0CXz4zWky1TPL0BTGu4cw2TMGPiuoK9w/4lFkCNH2bXgO
+        vABFx/Q0ucVqasLvRVoBCZgHX0o5ovZIX+ELsU9o1+rF4ewXvl7Tf/ivRT8Bo1uAdRZ5vmwAAAAASUVO
+        RK5CYII=
 </value>
   </data>
   <data name="m_tsbnGroup.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -306,27 +327,6 @@
   <data name="m_tsbnResetFs.Text" xml:space="preserve">
     <value>Reset &amp;All</value>
   </data>
-  <data name="m_tsMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_tsMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>837, 25</value>
-  </data>
-  <data name="m_tsMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Name" xml:space="preserve">
-    <value>m_tsMain</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
-    <value>m_spContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;m_tsMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_spContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -388,7 +388,7 @@
     <value>m_sketchPad</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.ucForcingSketchPad, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_sketchPad.Parent" xml:space="preserve">
     <value>m_spContainer.Panel2</value>
@@ -432,20 +432,11 @@
   <metadata name="m_ts.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="m_tsbtnShowHideGroups.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACTSURBVDhPY2AYtuAC0GfomCjPgjVdu3YbBaMZhtsgmEZ0
-        27GI4zQE7IK4lMgLSVAMYsMM3L3zwAUQxqX7wsePH8GKQZqR2SAxGB+nAc+ePIMrAilesnIW3DCYASA1
-        UNdgOgLZAGxeABn6BGjAqlVbcXqBAaQI5lTkgEQTxxudYCfCNGAxkKi0AFJEViIi2vTBpRAAzWKqeA7v
-        H3MAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="m_tsbtnShowHideGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="m_tsbtnShowHideGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 22</value>
+    <value>89, 22</value>
   </data>
   <data name="m_tsbtnShowHideGroups.Text" xml:space="preserve">
     <value>Show &amp;groups...</value>
@@ -458,48 +449,6 @@
   </data>
   <data name="tsblbSS.Text" xml:space="preserve">
     <value>Sum of Squares:</value>
-  </data>
-  <data name="m_tsmiBiomassAbs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiBiomassAbs.Text" xml:space="preserve">
-    <value>&amp;Biomass (absolute)</value>
-  </data>
-  <data name="m_tsmiBiomassRel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiBiomassRel.Text" xml:space="preserve">
-    <value>Biomass (relative)</value>
-  </data>
-  <data name="ToolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 6</value>
-  </data>
-  <data name="m_tsmiCatchAbs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiCatchAbs.Text" xml:space="preserve">
-    <value>&amp;Catch (absolute)</value>
-  </data>
-  <data name="m_tsmiCatchRel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiCatchRel.Text" xml:space="preserve">
-    <value>Catch (relative)</value>
-  </data>
-  <data name="ToolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 6</value>
-  </data>
-  <data name="m_tsmiValueAbs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiValueAbs.Text" xml:space="preserve">
-    <value>Value (absolute)</value>
-  </data>
-  <data name="m_tsmiValueRel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 22</value>
-  </data>
-  <data name="m_tsmiValueRel.Text" xml:space="preserve">
-    <value>Value (relative)</value>
   </data>
   <data name="m_tsdrpdnbtnContent.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
@@ -567,6 +516,91 @@
   </data>
   <data name="m_tsbnExplore.ToolTipText" xml:space="preserve">
     <value>Check to explore the Ecosim results graph with a cursor</value>
+  </data>
+  <data name="m_tsddGraphOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGDSURBVDhPrdNLSwJRFAdwP0tY9AWKonatiloFrYMi8Vu0
+        C6pFEjYZKuEY5SMNH5mGjx6iZmOJCuETgwyzTCtTS/vXXLBFzVgLDxwul8v53XPPMAJBp8J0fIWfaXBF
+        obFfQG0OgDYHltrexRbzhVznQf/YbHvE6I7xAlK1HQ5vlCAqk3+ZsxPdYZgXWFXZSHErOYHt/XMCKNV6
+        CLt7od+zfoONZhMWNwOdzUcQToA2+UlBl7AHDMNgcmqa7KWKHUhkNKhNLTRWL/pGZ7gBpeGEFGiNFgwN
+        j8Dm8JB9PHWNy2gSwXACcq2TH9jQuH7NoNH8wFOljlzhBfFsEa1ZcD5hbctBgFAoBLFYjHQ6jWrtHYXH
+        V2RuSogkClB8dTAwPsf9BFZnQyQSkZWiKJSea1hZp7EgUWB+kcLuQQCDE38AyWQSMpkM+bsC8g8VMNEM
+        ToNxOH1x0MYj/hm0OmBvr781UCxXkb0tI5a6RyCSg/MsS2bA+xVaALu2y7YAe/if7NQPTJxP30LZU/lg
+        BaoAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="m_tsddGraphOptions.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsddGraphOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 22</value>
+  </data>
+  <data name="m_tsddGraphOptions.Text" xml:space="preserve">
+    <value>&amp;Options</value>
+  </data>
+  <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
+    <value>970, 25</value>
+  </data>
+  <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
+    <value>m_ts</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tsmiBiomassAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiBiomassAbs.Text" xml:space="preserve">
+    <value>&amp;Biomass (absolute)</value>
+  </data>
+  <data name="m_tsmiBiomassRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiBiomassRel.Text" xml:space="preserve">
+    <value>Biomass (relative)</value>
+  </data>
+  <data name="ToolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 6</value>
+  </data>
+  <data name="m_tsmiCatchAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiCatchAbs.Text" xml:space="preserve">
+    <value>&amp;Catch (absolute)</value>
+  </data>
+  <data name="m_tsmiCatchRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiCatchRel.Text" xml:space="preserve">
+    <value>Catch (relative)</value>
+  </data>
+  <data name="ToolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 6</value>
+  </data>
+  <data name="m_tsmiValueAbs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiValueAbs.Text" xml:space="preserve">
+    <value>Value (absolute)</value>
+  </data>
+  <data name="m_tsmiValueRel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 22</value>
+  </data>
+  <data name="m_tsmiValueRel.Text" xml:space="preserve">
+    <value>Value (relative)</value>
   </data>
   <data name="m_tsmiAutoscale.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 22</value>
@@ -637,49 +671,6 @@
   <data name="m_tstbChangeAmount.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 23</value>
   </data>
-  <data name="m_tsddGraphOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGDSURBVDhPrdNLSwJRFAdwP0tY9AWKonatiloFrYMi8Vu0
-        C6pFEjYZKuEY5SMNH5mGjx6iZmOJCuETgwyzTCtTS/vXXLBFzVgLDxwul8v53XPPMAJBp8J0fIWfaXBF
-        obFfQG0OgDYHltrexRbzhVznQf/YbHvE6I7xAlK1HQ5vlCAqk3+ZsxPdYZgXWFXZSHErOYHt/XMCKNV6
-        CLt7od+zfoONZhMWNwOdzUcQToA2+UlBl7AHDMNgcmqa7KWKHUhkNKhNLTRWL/pGZ7gBpeGEFGiNFgwN
-        j8Dm8JB9PHWNy2gSwXACcq2TH9jQuH7NoNH8wFOljlzhBfFsEa1ZcD5hbctBgFAoBLFYjHQ6jWrtHYXH
-        V2RuSogkClB8dTAwPsf9BFZnQyQSkZWiKJSea1hZp7EgUWB+kcLuQQCDE38AyWQSMpkM+bsC8g8VMNEM
-        ToNxOH1x0MYj/hm0OmBvr781UCxXkb0tI5a6RyCSg/MsS2bA+xVaALu2y7YAe/if7NQPTJxP30LZU/lg
-        BaoAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_tsddGraphOptions.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsddGraphOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 22</value>
-  </data>
-  <data name="m_tsddGraphOptions.Text" xml:space="preserve">
-    <value>&amp;Options</value>
-  </data>
-  <data name="m_ts.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_ts.Size" type="System.Drawing.Size, System.Drawing">
-    <value>970, 25</value>
-  </data>
-  <data name="m_ts.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Name" xml:space="preserve">
-    <value>m_ts</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_ts.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="m_scGraph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -732,7 +723,7 @@
     <value>m_hdrRuns</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRuns.Parent" xml:space="preserve">
     <value>m_scOptions.Panel1</value>
@@ -807,7 +798,7 @@
     <value>m_hdrGroups</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -837,7 +828,7 @@
     <value>m_lbGroups</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGroupListBox, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lbGroups.Parent" xml:space="preserve">
     <value>m_scOptions.Panel2</value>
@@ -1155,6 +1146,6 @@
     <value>RunEcosim</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

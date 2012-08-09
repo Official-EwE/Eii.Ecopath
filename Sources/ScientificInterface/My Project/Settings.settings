@@ -170,5 +170,11 @@
     <Setting Name="AutoSave" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ColorPrey" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">LimeGreen</Value>
+    </Setting>
+    <Setting Name="ColorPredator" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">IndianRed</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

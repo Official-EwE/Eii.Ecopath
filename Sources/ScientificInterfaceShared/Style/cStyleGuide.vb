@@ -1286,6 +1286,8 @@ Namespace Style
             IMAGE_BACKGROUND
             PLOT_BACKGROUND
             MAP_BACKGROUND
+            PREY
+            PREDATOR
         End Enum
 
         ''' -------------------------------------------------------------------

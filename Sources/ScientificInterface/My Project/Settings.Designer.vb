@@ -737,6 +737,30 @@ Partial Friend NotInheritable Class Settings
             Me("AutoSave") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("LimeGreen")>  _
+    Public Property ColorPrey() As Global.System.Drawing.Color
+        Get
+            Return CType(Me("ColorPrey"),Global.System.Drawing.Color)
+        End Get
+        Set
+            Me("ColorPrey") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("IndianRed")>  _
+    Public Property ColorPredator() As Global.System.Drawing.Color
+        Get
+            Return CType(Me("ColorPredator"),Global.System.Drawing.Color)
+        End Get
+        Set
+            Me("ColorPredator") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

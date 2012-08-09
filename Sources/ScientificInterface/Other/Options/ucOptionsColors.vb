@@ -241,6 +241,8 @@ Namespace Other
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_CHECKED, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.CHECKED_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_HIGHLIGHT, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.HIGHLIGHT)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_PREDATOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PREDATOR)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_PREY, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PREY)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.MAP_BACKGROUND)

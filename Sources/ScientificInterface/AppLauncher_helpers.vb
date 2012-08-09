@@ -382,6 +382,8 @@ Partial Public Class AppLauncher
                 .ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND) = My.Settings.ColorImageBackground
                 .ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND) = My.Settings.ColorPlotsBackground
                 .ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
+                .ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR) = My.Settings.ColorPredator
+                .ApplicationColor(cStyleGuide.eApplicationColorType.PREY) = My.Settings.ColorPrey
 
                 .ThumbnailSize = My.Settings.ThumbnailSize
                 ' Fix: do not allow disabling of legend viz
@@ -429,6 +431,8 @@ Partial Public Class AppLauncher
                 My.Settings.ColorImageBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
                 My.Settings.ColorPlotsBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
                 My.Settings.ColorMapBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
+                My.Settings.ColorPredator = .ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
+                My.Settings.ColorPrey = .ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
 
                 My.Settings.ThumbnailSize = .ThumbnailSize
                 My.Settings.ShowLegends = .ShowLegends

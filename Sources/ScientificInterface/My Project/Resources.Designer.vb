@@ -2199,6 +2199,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Predation|Color to indicate a predator (flow diagram only).
+        '''</summary>
+        Public ReadOnly Property OPTIONS_COLORDLG_PROMPT_PREDATOR() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_COLORDLG_PROMPT_PREDATOR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prey|Color to indicate a prey (flow diagram only).
+        '''</summary>
+        Public ReadOnly Property OPTIONS_COLORDLG_PROMPT_PREY() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_COLORDLG_PROMPT_PREY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Read-only values|Values that cannot be edited by you, the user.
         '''</summary>
         Public ReadOnly Property OPTIONS_COLORDLG_PROMPT_READONLY() As String
