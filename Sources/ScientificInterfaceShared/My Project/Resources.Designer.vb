@@ -1385,6 +1385,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (All fleets).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_ALLFLEETS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_ALLFLEETS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to (All groups).
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ALLGROUPS() As String

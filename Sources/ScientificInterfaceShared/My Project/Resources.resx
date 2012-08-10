@@ -2530,4 +2530,7 @@
   <data name="HEADER_TRIAL" xml:space="preserve">
     <value>Trial</value>
   </data>
+  <data name="GENERIC_VALUE_ALLFLEETS" xml:space="preserve">
+    <value>(All fleets)</value>
+  </data>
 </root>
