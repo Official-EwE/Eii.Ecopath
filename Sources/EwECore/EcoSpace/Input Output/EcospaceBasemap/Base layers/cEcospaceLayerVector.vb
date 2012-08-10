@@ -50,8 +50,8 @@ Public MustInherit Class cEcospaceLayerVector
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for an NxN layer that derives its data and identity from 
-    ''' a manager.
+    ''' Constructor for an NxN layer of vectors that derives its data and identity 
+    ''' from a manager.
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
@@ -68,8 +68,8 @@ Public MustInherit Class cEcospaceLayerVector
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for a NxN layer that derives its data from a manager, but
-    ''' that is a unique data entity in the EwE core.
+    ''' Constructor for a NxN layer of Vector values that derives its data from 
+    ''' a manager, but that is a unique data entity in the EwE core.
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="iDBID"></param>

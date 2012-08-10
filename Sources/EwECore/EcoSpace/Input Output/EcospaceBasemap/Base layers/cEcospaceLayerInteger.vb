@@ -49,8 +49,8 @@ Public Class cEcospaceLayerInteger
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for a migration layer that derives its data and identity from 
-    ''' a manager.
+    ''' Constructor for a NxN layer of integer values that derives its data and 
+    ''' identity from a manager.
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="manager"></param>
@@ -67,8 +67,8 @@ Public Class cEcospaceLayerInteger
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for a NxN layer that derives its data from a manager, but
-    ''' that is a unique data entity in the EwE core.
+    ''' Constructor for a NxN layer of integer values that derives its data and 
+    ''' identity from a manager, but that is a unique data entity in the EwE core.
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="iDBID"></param>
