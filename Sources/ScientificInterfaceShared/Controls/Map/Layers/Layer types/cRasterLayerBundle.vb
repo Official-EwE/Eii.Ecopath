@@ -40,18 +40,23 @@ Namespace Controls.Map.Layers
         Private m_iLayer As Integer = 0
         Private m_cc As eCoreCounterTypes = eCoreCounterTypes.NotSet
 
-        Public Sub New(uic As cUIContext, _
-                       data As cEcospaceLayer(), _
-                       renderer As cLayerRenderer, _
-                       editor As cLayerEditor, _
-                       cc As eCoreCounterTypes, _
+        Public Sub New(ByVal uic As cUIContext, _
+                       ByVal data As cEcospaceLayer(), _
+                       ByVal renderer As cLayerRenderer, _
+                       ByVal editor As cLayerEditor, _
+                       ByVal cc As eCoreCounterTypes, _
                        ByVal source As cCoreInputOutputBase, _
                        Optional ByVal varName As eVarNameFlags = eVarNameFlags.Name, _
                        Optional ByVal sValueSet As Single = cCore.NULL_VALUE, _
                        Optional ByVal sValueClear As Single = cCore.NULL_VALUE)
 
             MyBase.New(uic, data(0), renderer, editor, source, varName, sValueSet, sValueClear)
+
+            ' Sanity check
+            Debug.Assert(cc <> eCoreCounterTypes.NotSet, "Cannot declare a layer bundle without providing a core counter that this bundle uses")
+
             Me.m_layers = data
+            Me.m_cc = cc
 
         End Sub
 
