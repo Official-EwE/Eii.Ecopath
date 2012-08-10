@@ -41,14 +41,11 @@ Namespace Controls.Map.Layers
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
             Dim grp As cCoreGroupBase = Nothing
-            Dim fmt As New cCoreInterfaceFormatter()
 
             Me.m_cmbGroup.Items.Clear()
-
-            ' ToDo: this control will not respond to dynamic name changes
             For iGroup As Integer = 1 To core.nGroups
                 grp = core.EcoPathGroupInputs(iGroup)
-                Me.m_cmbGroup.Items.Add(fmt.GetDescriptor(grp))
+                Me.m_cmbGroup.Items.Add(grp)
             Next iGroup
 
             ' Update control
@@ -94,6 +91,13 @@ Namespace Controls.Map.Layers
         Private Sub OnSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbGroup.SelectedIndexChanged
             Me.GroupIndex = Me.m_cmbGroup.SelectedIndex + 1
+        End Sub
+
+        Private Sub OnFormatItemText(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_cmbGroup.Format
+            Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
+            Dim fmt As New cCoreInterfaceFormatter()
+            e.Value = fmt.GetDescriptor(io)
         End Sub
 
     End Class

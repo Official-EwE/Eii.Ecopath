@@ -37,13 +37,12 @@ Namespace Controls.Map.Layers
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
             Dim group As cCoreGroupBase = Nothing
-            Dim fmt As New cCoreInterfaceFormatter()
 
             Me.m_cmbGroups.Items.Clear()
 
             For iGroup As Integer = 1 To core.nGroups
                 group = core.EcoPathGroupInputs(iGroup)
-                Me.m_cmbGroups.Items.Add(fmt.GetDescriptor(group))
+                Me.m_cmbGroups.Items.Add(group)
             Next iGroup
 
             ' Update control
@@ -89,6 +88,13 @@ Namespace Controls.Map.Layers
         Private Sub OnGroupSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbGroups.SelectedIndexChanged
             Me.GroupIndex = Me.m_cmbGroups.SelectedIndex + 1
+        End Sub
+
+        Private Sub OnFormatItemText(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_cmbGroups.Format
+            Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
+            Dim fmt As New cCoreInterfaceFormatter()
+            e.Value = fmt.GetDescriptor(io)
         End Sub
 
     End Class

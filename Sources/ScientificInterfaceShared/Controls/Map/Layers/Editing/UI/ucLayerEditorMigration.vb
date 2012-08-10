@@ -66,14 +66,13 @@ Namespace Controls.Map.Layers
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
             Dim group As cEcoPathGroupInput = Nothing
-            Dim fmt As New cCoreInterfaceFormatter()
 
             Me.m_cmbGroup.Items.Clear()
 
             ' ToDo: this control will not respond to dynamic group name changes
             For iGroup As Integer = 1 To core.nLivingGroups
                 group = core.EcoPathGroupInputs(iGroup)
-                Me.m_cmbGroup.Items.Add(fmt.GetDescriptor(group))
+                Me.m_cmbGroup.Items.Add(group)
             Next iGroup
 
             Me.UpdateContent(Me.Editor)
@@ -112,6 +111,13 @@ Namespace Controls.Map.Layers
                 MyBase.Editor = editor
             End Set
         End Property
+
+        Private Sub OnFormatItemText(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_cmbGroup.Format
+            Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
+            Dim fmt As New cCoreInterfaceFormatter()
+            e.Value = fmt.GetDescriptor(io)
+        End Sub
 
     End Class
 

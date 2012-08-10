@@ -41,15 +41,13 @@ Namespace Controls.Map.Layers
             ' Initialize group combo 
             Dim core As cCore = Me.UIContext.Core
             Dim fleet As cFleetInput = Nothing
-            Dim fmt As New cCoreInterfaceFormatter()
 
             Me.m_cmbFleet.Items.Clear()
 
-            ' ToDo: this control will not respond to dynamic fleet name changes
-            Me.m_cmbFleet.Items.Add(SharedResources.GENERIC_VALUE_ALL)
+            Me.m_cmbFleet.Items.Add(My.Resources.GENERIC_VALUE_ALLFLEETS)
             For iGroup As Integer = 1 To core.nFleets
                 fleet = core.FleetInputs(iGroup)
-                Me.m_cmbFleet.Items.Add(fmt.GetDescriptor(fleet))
+                Me.m_cmbFleet.Items.Add(fleet)
             Next iGroup
 
             ' Update control
@@ -90,9 +88,26 @@ Namespace Controls.Map.Layers
             End Set
         End Property
 
+        Private Sub OnFormatItemText(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_cmbFleet.Format
+
+            If (TypeOf e.ListItem Is String) Then
+                e.Value = CStr(e.ListItem)
+            Else
+                Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
+                Dim fmt As New cCoreInterfaceFormatter()
+                e.Value = fmt.GetDescriptor(io)
+            End If
+        End Sub
+
         Private Sub OnFleetSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cmbFleet.SelectedIndexChanged
-            Me.FleetIndex = Me.m_cmbFleet.SelectedIndex
+            Dim item As Object = Me.m_cmbFleet.SelectedItem
+            If (TypeOf item Is cCoreInputOutputBase) Then
+                Me.FleetIndex = DirectCast(item, cCoreInputOutputBase).Index
+            Else
+                Me.FleetIndex = 0
+            End If
         End Sub
 
     End Class
