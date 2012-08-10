@@ -3146,7 +3146,8 @@ Namespace Database
                 drow("MinLon") = CSng((lUDH_UL - Math.Truncate(lUDH_UL / 10000) * 10000) / 10 - 180)
 
                 drow("TimeStep") = Me.FixValue(reader, "TimeStep", 0.25)
-                drow("PredictEffort") = Me.FixValue(reader, "PredictEffort")
+                ' PredictEffort could not be set in the EwE5 UI. Should be set true, 'cause False is going to screw up your model run
+                drow("PredictEffort") = True ' Me.FixValue(reader, "PredictEffort", True)
                 drow("LastSaved") = Me.ExtractLastSavedJulianDate(CStr(Me.FixValue(reader, "remarks", "")))
 
                 ' JS 28nov06: habitats now db-linked in EcospaceScenarioHabitat table to allow any number of habitats
@@ -3556,100 +3557,100 @@ Namespace Database
                             ' drow("MPAfishery") = Me.FixValue(reader, "MPAFishery", "T")
                         End If
 
-                        If bHasFleet Then
-                            astrPort = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Port", "0")), CChar(" "), 1)
-                            astrSail = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Sail", "0")), CChar(" "), 6)
+                        'If bHasFleet Then
+                        astrPort = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Port", "0")), CChar(" "), 1)
+                        astrSail = Me.SplitNumberListString(CStr(Me.FixValue(reader, "Sail", "0")), CChar(" "), 6)
 
-                            ' Port data found?
-                            If (astrPort.Length = 0) Then
-                                ' #No: Try to read port data from old table [EcoSpace GearxNxN]
-                                ReDim astrPort(nRows * nCols)
-                                For iRow As Integer = 0 To nRows : For iCol As Integer = 0 To nCols : astrPort(iRow * nCols + iCol) = "" : Next : Next
-                                Try
-                                    readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
-                                                                                 Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
+                        ' Port data found?
+                        If (astrPort.Length = 0) Then
+                            ' #No: Try to read port data from old table [EcoSpace GearxNxN]
+                            ReDim astrPort(nRows * nCols)
+                            For iRow As Integer = 0 To nRows : For iCol As Integer = 0 To nCols : astrPort(iRow * nCols + iCol) = "" : Next : Next
+                            Try
+                                readerSub = m_dbEwE5.GetReader(String.Format("SELECT * FROM [EcoSpace GearxNxN] WHERE modelName='{0}' AND Scenario='{1}' AND GearName='{2}'", _
+                                                                             Me.m_strModelName, strEcospaceScenario, strEcopathFleet))
 
-                                    If readerSub IsNot Nothing Then
-                                        While readerSub.Read()
-                                            Try
-                                                astrPort((CInt(reader("InCol")) - 1) * nCols + (CInt(reader("InCol")) - 1)) = CStr(Me.FixValue(readerSub, "Port", "0"))
-                                            Catch ex As Exception
-                                                ' Swallow
-                                            End Try
-                                        End While
-                                        Me.m_dbEwE5.ReleaseReader(readerSub)
-                                        readerSub = Nothing
-                                    End If
-                                Catch ex As Exception
-                                    ' Swallow
-                                End Try
-                            End If
+                                If readerSub IsNot Nothing Then
+                                    While readerSub.Read()
+                                        Try
+                                            astrPort((CInt(reader("InCol")) - 1) * nCols + (CInt(reader("InCol")) - 1)) = CStr(Me.FixValue(readerSub, "Port", "0"))
+                                        Catch ex As Exception
+                                            ' Swallow
+                                        End Try
+                                    End While
+                                    Me.m_dbEwE5.ReleaseReader(readerSub)
+                                    readerSub = Nothing
+                                End If
+                            Catch ex As Exception
+                                ' Swallow
+                            End Try
+                        End If
 
-                            iCell = 0
-                            For iRow As Integer = 1 To nRows
-                                For iCol As Integer = 1 To nCols
+                        iCell = 0
+                        For iRow As Integer = 1 To nRows
+                            For iCol As Integer = 1 To nCols
 
-                                    Dim bPort As Boolean = False
-                                    Dim sCost As Single = 0.0!
+                                Dim bPort As Boolean = False
+                                Dim sCost As Single = 0.0!
 
-                                    bPort = False
-                                    If (astrPort.Length > iCell) Then bPort = (astrPort(iCell) = "1")
-                                    If (astrSail.Length > iCell) Then
-                                        sCost = cStringUtils.ConvertToSingle(astrSail(iCell), 0.0!)
-                                    End If
+                                bPort = False
+                                If (astrPort.Length > iCell) Then bPort = (astrPort(iCell) = "1")
+                                If (astrSail.Length > iCell) Then
+                                    sCost = cStringUtils.ConvertToSingle(astrSail(iCell), 0.0!)
+                                End If
 
-                                    dataPort(iRow, iCol) = bPort
-                                    dataSailCost(iRow, iCol) = sCost
+                                dataPort(iRow, iCol) = bPort
+                                dataSailCost(iRow, iCol) = sCost
 
-                                    iCell += 1
-                                Next
+                                iCell += 1
                             Next
+                        Next
 
-                            drow("SailCostMap") = cStringUtils.ArrayToString(dataSailCost, Me.m_dicDepthMaps(iScenarioID), True)
-                            drow("PortMap") = cStringUtils.ArrayToString(dataPort, Me.m_dicDepthMaps(iScenarioID), False)
+                        drow("SailCostMap") = cStringUtils.ArrayToString(dataSailCost, Me.m_dicDepthMaps(iScenarioID), True)
+                        drow("PortMap") = cStringUtils.ArrayToString(dataPort, Me.m_dicDepthMaps(iScenarioID), False)
 
-                            writer.AddRow(drow)
-                            writer.Commit()
+                        writer.AddRow(drow)
+                        writer.Commit()
 
-                            Dim writerHabFish As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitatFishery")
-                            ' Write GearHab flag field to proper table combining (ScenarioID, FleetID, HabitatID)
-                            strFlags = CStr(Me.FixValue(reader, "GearHab", ""))
-                            ' For all habitats (including habitat '0')
-                            For iHabitat As Integer = 0 To strFlags.Length - 1
-                                If (strFlags.Substring(iHabitat, 1) = "1") Then
-                                    iHabitatID = Me.HashKey(eDataTypes.EcospaceHabitat, CStr(iHabitat), eDataTypes.EcoSpaceScenario, iScenarioID)
-                                    ' Is this a valid habitat?
-                                    If (iHabitatID > 0) Then
-                                        drow = writerHabFish.NewRow()
-                                        drow("ScenarioID") = iScenarioID
-                                        drow("FleetID") = iFleetID
-                                        drow("HabitatID") = iHabitatID
-                                        writerHabFish.AddRow(drow)
-                                    End If
+                        Dim writerHabFish As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioHabitatFishery")
+                        ' Write GearHab flag field to proper table combining (ScenarioID, FleetID, HabitatID)
+                        strFlags = CStr(Me.FixValue(reader, "GearHab", ""))
+                        ' For all habitats (including habitat '0')
+                        For iHabitat As Integer = 0 To strFlags.Length - 1
+                            If (strFlags.Substring(iHabitat, 1) = "1") Then
+                                iHabitatID = Me.HashKey(eDataTypes.EcospaceHabitat, CStr(iHabitat), eDataTypes.EcoSpaceScenario, iScenarioID)
+                                ' Is this a valid habitat?
+                                If (iHabitatID > 0) Then
+                                    drow = writerHabFish.NewRow()
+                                    drow("ScenarioID") = iScenarioID
+                                    drow("FleetID") = iFleetID
+                                    drow("HabitatID") = iHabitatID
+                                    writerHabFish.AddRow(drow)
                                 End If
-                            Next iHabitat
-                            Me.m_dbEwE6.ReleaseWriter(writerHabFish)
+                            End If
+                        Next iHabitat
+                        Me.m_dbEwE6.ReleaseWriter(writerHabFish)
 
-                            Dim writerMPAFish As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioMPAFishery")
-                            ' Write MPAfish flag field to proper table combining (ScenarioID, FleetID, MPAID)
-                            strFlags = CStr(Me.FixValue(reader, "MPAFish", ""))
-                            ' For all MPAs
-                            For iMPA As Integer = 1 To strFlags.Length
-                                If (strFlags.Substring(iMPA - 1, 1) = "T") Then
-                                    iMPAID = Me.HashKey(eDataTypes.EcospaceMPA, CStr(iMPA), eDataTypes.EcoSpaceScenario, iScenarioID)
-                                    ' Is this a valid MPA?
-                                    If (iMPAID > 0) Then
-                                        drow = writerMPAFish.NewRow()
-                                        drow("ScenarioID") = iScenarioID
-                                        drow("FleetID") = iFleetID
-                                        drow("MPAID") = iMPAID
-                                        writerMPAFish.AddRow(drow)
-                                    End If
+                        Dim writerMPAFish As cEwEDatabase.cEwEDbWriter = Me.m_dbEwE6.GetWriter("EcospaceScenarioMPAFishery")
+                        ' Write MPAfish flag field to proper table combining (ScenarioID, FleetID, MPAID)
+                        strFlags = CStr(Me.FixValue(reader, "MPAFish", ""))
+                        ' For all MPAs
+                        For iMPA As Integer = 1 To strFlags.Length
+                            If (strFlags.Substring(iMPA - 1, 1) = "T") Then
+                                iMPAID = Me.HashKey(eDataTypes.EcospaceMPA, CStr(iMPA), eDataTypes.EcoSpaceScenario, iScenarioID)
+                                ' Is this a valid MPA?
+                                If (iMPAID > 0) Then
+                                    drow = writerMPAFish.NewRow()
+                                    drow("ScenarioID") = iScenarioID
+                                    drow("FleetID") = iFleetID
+                                    drow("MPAID") = iMPAID
+                                    writerMPAFish.AddRow(drow)
                                 End If
-                            Next iMPA
-                            Me.m_dbEwE6.ReleaseWriter(writerMPAFish)
+                            End If
+                        Next iMPA
+                        Me.m_dbEwE6.ReleaseWriter(writerMPAFish)
 
-                            ' Import Remarks
+                        If bHasFleet Then
                             Me.AddRemark(reader("remark"), eDataTypes.EcospaceFleet, iFleetID, eVarNameFlags.Name)
                         Else
                             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_FIX_CREATEECOSPACEFLEET, _
