@@ -625,6 +625,7 @@ Partial Class dlgManageTimeSeries
         'dlgManageTimeSeries
         '
         Me.AcceptButton = Me.m_btnOk
+        Me.AllowDrop = True
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel

@@ -323,6 +323,39 @@ Public Class dlgManageTimeSeries
 
 #End Region ' Delete
 
+#Region " Drag and drop "
+
+    Protected Overrides Sub OnDragOver(e As System.Windows.Forms.DragEventArgs)
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+            If astrFiles.Length > 0 Then
+                If IO.Path.GetExtension(astrFiles(0)).ToLower = ".csv" Then
+                    e.Effect = DragDropEffects.All
+                End If
+            End If
+        End If
+        MyBase.OnDragOver(e)
+    End Sub
+
+    Protected Overrides Sub OnDragDrop(e As System.Windows.Forms.DragEventArgs)
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            Try
+                Dim astrFiles() As String = CType(e.Data.GetData(DataFormats.FileDrop), String())
+                If astrFiles.Length > 0 Then
+                    Me.m_tbImportFileName.Text = astrFiles(0)
+                    Me.m_tcMain.SelectTab(Me.m_tpImport)
+                    Me.SetSource(cTimeSeriesReaderFactory.eTimeSeriesReaderTypes.CSV)
+                    Me.ReloadTimeSeries()
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "DropTS")
+            End Try
+        End If
+        MyBase.OnDragDrop(e)
+    End Sub
+
+#End Region ' Drag and drop
+
 #End Region ' Events
 
 #Region " Internal implementation "
