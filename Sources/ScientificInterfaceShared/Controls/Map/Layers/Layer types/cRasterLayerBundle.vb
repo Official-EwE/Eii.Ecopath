@@ -55,21 +55,32 @@ Namespace Controls.Map.Layers
             ' Sanity check
             Debug.Assert(cc <> eCoreCounterTypes.NotSet, "Cannot declare a layer bundle without providing a core counter that this bundle uses")
 
-            Me.m_layers = data
             Me.m_cc = cc
 
+            ReDim Me.m_layers(uic.Core.GetCoreCounter(cc))
+            For Each l As cEcospaceLayer In data
+                Try
+                    Me.m_layers(l.Index) = l
+                Catch ex As Exception
+
+                End Try
+            Next
+
+            For i As Integer = 0 To Me.m_layers.Length - 1
+                If Me.m_layers(i) IsNot Nothing Then Me.m_iLayer = i : Exit For
+            Next
         End Sub
 
         Public Property iLayer As Integer
             Get
                 Dim i As Integer = Me.m_iLayer
-                ' Fleets include the 0 'All' fleet
-                If (Me.m_cc <> eCoreCounterTypes.nFleets) Then i += 1
+                '' Fleets include the 0 'All' fleet
+                'If (Me.m_cc <> eCoreCounterTypes.nFleets) Then i += 1
                 Return i
             End Get
             Set(value As Integer)
-                ' Fleets include the 0 'All' fleet
-                If (Me.m_cc <> eCoreCounterTypes.nFleets) Then value -= 1
+                '' Fleets include the 0 'All' fleet
+                'If (Me.m_cc <> eCoreCounterTypes.nFleets) Then value -= 1
                 Me.m_iLayer = Math.Max(0, value)
             End Set
         End Property

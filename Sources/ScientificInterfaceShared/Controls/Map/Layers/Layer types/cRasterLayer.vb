@@ -468,7 +468,9 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property IsExternal As Boolean
             Get
-                Return Me.Data.IsExternalData
+                Dim l As cEcospaceLayer = Me.Data
+                If (l Is Nothing) Then Return False
+                Return l.IsExternalData
             End Get
         End Property
 
@@ -482,15 +484,18 @@ Namespace Controls.Map.Layers
                 Return Me.m_bModified
             End Get
             Set(ByVal value As Boolean)
+                Dim l As cEcospaceLayer = Me.Data
+                If (l Is Nothing) Then Return
                 Me.m_bModified = value
                 If (value = True) Then
-                    Me.Data.Invalidate()
+                    l.Invalidate()
                 End If
             End Set
         End Property
 
-        Public ReadOnly Property HasData As Boolean
+        Public Overridable ReadOnly Property HasData As Boolean
             Get
+                If (Me.Data Is Nothing) Then Return False
                 Return (Me.Data.NumValueCells > 0)
             End Get
         End Property
@@ -508,7 +513,9 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Private Sub EcospaceMessageHandler(ByRef msg As cMessage)
 
-            If msg.DataType = Me.Data.DataType Then
+            If (Me.Data Is Nothing) Then Return
+
+            If (msg.DataType = Me.Data.DataType) Then
                 ' Trigger update
                 Me.Update(eChangeFlags.Map, False)
             End If

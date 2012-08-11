@@ -281,7 +281,7 @@ Namespace Controls.Map
                     vs = ad.VisualStyle
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererSymbol(vs)
-                    editor = New cLayerEditorFleet(GetType(ucLayerEditorPort))
+                    editor = New cLayerEditorPorts(GetType(ucLayerEditorPort))
                     layer = New cRasterLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerPort), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerPort, 1.0!, 0.0!)
                     lLayers.Add(layer)
 
@@ -294,7 +294,7 @@ Namespace Controls.Map
                     If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                     renderer = New cLayerRendererValue(vs)
                     renderer.ScaleMin = 0
-                    editor = New cLayerEditorFleet(GetType(ucLayerEditorSailCost))
+                    editor = New cLayerEditorSailCost(GetType(ucLayerEditorSailCost))
                     layer = New cRasterLayerBundle(uic, bmd.Layers(eVarNameFlags.LayerSail), renderer, editor, eCoreCounterTypes.nFleets, bmd, eVarNameFlags.LayerSail)
 
                     lLayers.Add(layer)

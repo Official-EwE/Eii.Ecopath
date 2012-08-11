@@ -19,7 +19,7 @@ Namespace Controls.Map.Layers
 
     <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucLayerEditorPort
-        Inherits ucLayerEditorFleet
+        Inherits ucLayerEditor
 
         'UserControl overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -41,9 +41,11 @@ Namespace Controls.Map.Layers
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel
-            Me.m_btnClear = New System.Windows.Forms.Button
-            Me.m_btnSet = New System.Windows.Forms.Button
+            Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_btnClear = New System.Windows.Forms.Button()
+            Me.m_btnSet = New System.Windows.Forms.Button()
+            Me.m_cmbFleet = New System.Windows.Forms.ComboBox()
+            Me.m_lblFleet = New System.Windows.Forms.Label()
             Me.m_tlpButtons.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -83,14 +85,40 @@ Namespace Controls.Map.Layers
             Me.m_btnSet.Text = "&All coasts"
             Me.m_btnSet.UseVisualStyleBackColor = True
             '
+            'm_cmbFleet
+            '
+            Me.m_cmbFleet.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_cmbFleet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbFleet.FormattingEnabled = True
+            Me.m_cmbFleet.Location = New System.Drawing.Point(49, 21)
+            Me.m_cmbFleet.MaxDropDownItems = 12
+            Me.m_cmbFleet.Name = "m_cmbFleet"
+            Me.m_cmbFleet.Size = New System.Drawing.Size(148, 21)
+            Me.m_cmbFleet.TabIndex = 5
+            '
+            'm_lblFleet
+            '
+            Me.m_lblFleet.AutoSize = True
+            Me.m_lblFleet.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_lblFleet.Location = New System.Drawing.Point(0, 24)
+            Me.m_lblFleet.Name = "m_lblFleet"
+            Me.m_lblFleet.Size = New System.Drawing.Size(33, 13)
+            Me.m_lblFleet.TabIndex = 4
+            Me.m_lblFleet.Text = "&Fleet:"
+            '
             'ucLayerEditorPort
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_cmbFleet)
+            Me.Controls.Add(Me.m_lblFleet)
             Me.Controls.Add(Me.m_tlpButtons)
             Me.Name = "ucLayerEditorPort"
             Me.Size = New System.Drawing.Size(200, 77)
             Me.Controls.SetChildIndex(Me.m_tlpButtons, 0)
+            Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
+            Me.Controls.SetChildIndex(Me.m_cmbFleet, 0)
             Me.m_tlpButtons.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
@@ -99,6 +127,8 @@ Namespace Controls.Map.Layers
         Private WithEvents m_tlpButtons As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_btnClear As System.Windows.Forms.Button
         Private WithEvents m_btnSet As System.Windows.Forms.Button
+        Private WithEvents m_cmbFleet As System.Windows.Forms.ComboBox
+        Private WithEvents m_lblFleet As System.Windows.Forms.Label
 
     End Class
 

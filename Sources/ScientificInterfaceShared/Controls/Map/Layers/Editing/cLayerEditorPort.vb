@@ -26,16 +26,16 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports selections of groups.
+    ''' Layer editor that supports selections of ports for fleets.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorGroup
-        Inherits cLayerEditorRange
+    Public Class cLayerEditorPorts
+        Inherits cLayerEditorTwoState
 
 #Region " Construction "
 
         Public Sub New()
-            Me.New(GetType(ucLayerEditorGroup))
+            Me.New(GetType(ucLayerEditorPort))
         End Sub
 
         Public Sub New(ByVal t As Type)
@@ -49,20 +49,20 @@ Namespace Controls.Map.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the index of the Ecopath group to filter by.
+        ''' Get/set the index of the Ecopath fleet to filter by.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Group() As Integer
+        Public Property Fleet() As Integer
             Get
-                Dim layerCore As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
-                Return layerCore.iLayer
+                Dim layer As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
+                Return layer.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layerCore As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
-                ' Will Group index change?
-                If value <> layerCore.iLayer Then
-                    ' #Yes: update Group index in the underlying Ecospace layer
-                    layerCore.iLayer = value
+                Dim layer As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
+                ' Will fleet index change?
+                If value <> layer.iLayer Then
+                    ' #Yes: update index in the underlying layer collector
+                    layer.iLayer = value
                     ' Force map update
                     Me.Layer.Update(cLayer.eChangeFlags.Map, False)
                 End If

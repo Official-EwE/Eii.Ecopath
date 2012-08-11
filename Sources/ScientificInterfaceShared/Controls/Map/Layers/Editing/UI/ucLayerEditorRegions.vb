@@ -133,9 +133,7 @@ Namespace Controls.Map.Layers
 
 #End Region ' Event handlers
 
-        ' ToDo: move to core (want anybody to be able to do this
 
-     
     End Class
 
 End Namespace

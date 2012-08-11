@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
     <Compile Include="GeoCode\cGeoCodeLookup.vb" />
     <Compile Include="GeoCode\cGoogleMapsLookup.vb" />
     <Compile Include="Commands\cDirectoryOpenCommand.vb" />
@@ -247,7 +248,7 @@
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />
-    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorFleet.vb" />
+    <Compile Include="Controls\Map\Layers\Editing\cLayerEditorPort.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorGroup.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMigration.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorMLD.vb" />
@@ -279,12 +280,6 @@
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
     </Compile>
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.vb">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorFleet.Designer.vb">
-      <DependentUpon>ucLayerEditorFleet.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorFleet.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.Designer.vb">
@@ -691,10 +686,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorDepth.resx">
       <DependentUpon>ucLayerEditorDepth.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorFleet.resx">
-      <DependentUpon>ucLayerEditorFleet.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Map\Layers\Editing\UI\ucLayerEditorGroup.resx">

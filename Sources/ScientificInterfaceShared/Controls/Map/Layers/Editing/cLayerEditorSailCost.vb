@@ -26,16 +26,16 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor that supports selections of fleets.
+    ''' Layer editor that supports selections of ports for fleets.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorFleet
-        Inherits cLayerEditorTwoState
+    Public Class cLayerEditorSailCost
+        Inherits cLayerEditorRange
 
 #Region " Construction "
 
         Public Sub New()
-            Me.New(GetType(ucLayerEditorFleet))
+            Me.New(GetType(ucLayerEditorPort))
         End Sub
 
         Public Sub New(ByVal t As Type)
