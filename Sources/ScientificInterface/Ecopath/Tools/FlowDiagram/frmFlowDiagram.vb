@@ -318,7 +318,15 @@ Namespace Ecopath.Controls.FlowDiagram
 
                 Try
                     bmp.Save(cmdFS.FileName, fmt)
+
+                    ' ToDo: globalize this
+                    Dim msg As New cMessage(String.Format("Flow diagram image saved to {0}", cmdFS.FileName), _
+                                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
+                    Me.Core.Messages.SendMessage(msg)
+
                 Catch ex As Exception
+                    cLog.Write(ex, "frmFlowDiagram::SaveImage(" & cmdFS.FileName & ")")
                     Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
                                 eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
                     Me.Core.Messages.SendMessage(msg)
@@ -438,6 +446,7 @@ Namespace Ecopath.Controls.FlowDiagram
             '
             resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
             Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
+            m_tsmiSaveToImage.Image = SharedResources.InsertPictureHS
             '
             'frmFlowDiagram
             '
