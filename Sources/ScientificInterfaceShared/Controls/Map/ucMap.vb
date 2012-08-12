@@ -95,19 +95,27 @@ Namespace Controls.Map
             Dim InRow As Integer = bm.InRow
             Dim InCol As Integer = bm.InCol
             Dim szCellSize As SizeF = Me.GetCellSize(InRow, InCol)
+            Dim strFilenameLegend As String = ""
+
             Try
                 Dim bmp As New Bitmap(CInt(Me.Basemap.InCol * szCellSize.Width), CInt(Me.Basemap.InRow * szCellSize.Height))
                 Me.UpdateMap(bmp, New Point(1, 1), New Point(Me.Basemap.InCol, Me.Basemap.InRow))
                 bmp.Save(strFileName, format)
+
+                Dim lgd As cLegend = cLegend.FromMap(Me)
+                Dim strExt As String = Path.GetExtension(strFileName)
+
+                strFilenameLegend = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName) & "_legend" & strExt)
+                lgd.SaveAsBitmap(strFilenameLegend, format)
+
+                ' ToDo: globalize this
+                Dim msg As New cMessage(String.Format("Map image has been saved to {0}, legend to {1}", strFileName, strFilenameLegend), _
+                                        eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strFileName)
+                Me.m_uic.Core.Messages.SendMessage(msg)
             Catch ex As Exception
-                Return False
+                cLog.Write(ex, "ucMap(" & Me.Name & ")::SaveToBitmap(" & strFileName & ")")
             End Try
-
-            Dim lgd As cLegend = cLegend.FromMap(Me)
-            Dim strExt As String = Path.GetExtension(strFileName)
-
-            strFileName = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName) & "_legend" & strExt)
-            lgd.SaveAsBitmap(strFileName, format)
 
             Return True
 
