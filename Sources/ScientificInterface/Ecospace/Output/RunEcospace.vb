@@ -411,6 +411,7 @@ Namespace Ecospace
 
                 'Set the image format
                 Dim imgFormat As Drawing.Imaging.ImageFormat = Drawing.Imaging.ImageFormat.Bmp
+                Dim msg As cMessage = Nothing
 
                 Select Case cmdFS.FilterIndex
                     Case 0
@@ -432,18 +433,25 @@ Namespace Ecospace
                 br = New SolidBrush(Color.White)
                 g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
 
+                ' ToDo: globalize this
                 Try
                     Me.PlotMap(g)
                     bmp.Save(cmdFS.FileName, imgFormat)
-                    ' ToDo: throw succes
+                    msg = New cMessage(String.Format("Map image saved to {0}", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    msg.Hyperlink = IO.Path.GetDirectoryName(cmdFS.FileName)
                 Catch ex As Exception
-                    ' ToDo: throw error
+                    msg = New cMessage(String.Format("Failed to map image to {0}", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
                 Finally
                     g.Dispose()
                     g = Nothing
                     br.Dispose()
                     br = Nothing
                 End Try
+
+                If (msg IsNot Nothing) Then
+                    Me.Core.Messages.SendMessage(msg)
+                End If
+
             End If
 
         End Sub
