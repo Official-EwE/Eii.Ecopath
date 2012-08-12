@@ -27,6 +27,10 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports EwECore.Auxiliary
+Imports System.IO
 
 #End Region
 
@@ -405,7 +409,7 @@ Namespace Ecospace
             Dim g As Graphics = Nothing
             Dim br As SolidBrush = Nothing
 
-            cmdFS.Invoke(Me.Core.EcospaceOutputFileName("map"), SharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke("EcospaceResultsMap", SharedResources.FILEFILTER_IMAGE)
 
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
@@ -437,6 +441,23 @@ Namespace Ecospace
                 Try
                     Me.PlotMap(g)
                     bmp.Save(cmdFS.FileName, imgFormat)
+
+#If 0 Then
+                    ' Hack legend saving
+                    Dim strExt As String = IO.Path.GetExtension(cmdFS.FileName)
+                    Dim strFilenameLegend As String = Path.Combine(Path.GetDirectoryName(cmdFS.FileName), Path.GetFileNameWithoutExtension(cmdFS.FileName) & "_legend" & strExt)
+                    Dim sdummy(Me.Core.EcospaceBasemap.InRow, Me.Core.EcospaceBasemap.InCol) As Single
+                    sdummy(1, 1) = -1
+                    sdummy(1, 2) = 1
+                    Dim lgd As New cLegend(Me.UIContext, "Relative biomass (log10)")
+                    Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
+                    Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, "Data")
+                    Dim l As New cRasterLayer(Me.UIContext, data, r, Nothing)
+                    lgd.AddLayer(l)
+
+                    lgd.SaveAsBitmap(strFilenameLegend, imgFormat)
+#End If
+
                     msg = New cMessage(String.Format("Map image saved to {0}", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = IO.Path.GetDirectoryName(cmdFS.FileName)
                 Catch ex As Exception
