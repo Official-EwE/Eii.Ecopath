@@ -261,8 +261,8 @@
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
-    <value>'{0}' is succesfully saved to file '{1}'.</value>
-    <comment>{0}: item that saved. {1}: file dest</comment>
+    <value>'{0}' saved to '{1}'.</value>
+    <comment>{0}: item that saved. {1}: file/folder dest</comment>
   </data>
   <data name="HEADER_YEAR" xml:space="preserve">
     <value>Year</value>
@@ -279,8 +279,8 @@
     <comment>{0}: value part 1, {1}: value part 2</comment>
   </data>
   <data name="GENERIC_FILESAVE_FAILURE" xml:space="preserve">
-    <value>'{0}' failed to save to file '{1}': {2}.</value>
-    <comment>{0}: item that saved. {1}: file dest. {2}: error reason</comment>
+    <value>'{0}' failed to save to '{1}': {2}.</value>
+    <comment>{0}: item that saved. {1}: file/folder dest. {2}: error reason</comment>
   </data>
   <data name="GENERIC_CHAR_COLON" xml:space="preserve">
     <value>: (colon)</value>
@@ -2532,5 +2532,26 @@
   </data>
   <data name="GENERIC_VALUE_ALLFLEETS" xml:space="preserve">
     <value>(All fleets)</value>
+  </data>
+  <data name="AUTOSAVE_ECOPATH" xml:space="preserve">
+    <value>Ecopath results</value>
+  </data>
+  <data name="AUTOSAVE_ECOSIM" xml:space="preserve">
+    <value>Ecosim run results</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACEASC" xml:space="preserve">
+    <value>Ecospace result maps (ASCII format)</value>
+  </data>
+  <data name="AUTOSAVE_ECOSPACECSV" xml:space="preserve">
+    <value>Ecospace result maps (CSV format)</value>
+  </data>
+  <data name="AUTOSAVE_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer results</value>
+  </data>
+  <data name="AUTOSAVE_MONTECARLO" xml:space="preserve">
+    <value>Monte Carlo trial results</value>
+  </data>
+  <data name="AUTOSAVE_MSE" xml:space="preserve">
+    <value>MSE results</value>
   </data>
 </root>

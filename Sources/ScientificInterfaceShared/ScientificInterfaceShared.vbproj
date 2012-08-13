@@ -639,6 +639,7 @@
     <Compile Include="Style\Type formatters\cOccurrenceTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cClimateTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cFFApplicationTypeFormatter.vb" />
+    <Compile Include="Style\Type formatters\cAutosaveTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cVerboseLevelTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cSpatialDataAdapterFormatter.vb" />
     <Compile Include="Style\Type formatters\cSpatialConverterFormatter.vb" />

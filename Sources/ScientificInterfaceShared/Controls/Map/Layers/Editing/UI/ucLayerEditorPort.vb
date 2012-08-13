@@ -35,10 +35,10 @@ Namespace Controls.Map.Layers
             Me.m_cmbFleet.Items.Clear()
 
             Me.m_cmbFleet.Items.Add(My.Resources.GENERIC_VALUE_ALLFLEETS)
-            For iGroup As Integer = 1 To core.nFleets
-                fleet = core.FleetInputs(iGroup)
+            For i As Integer = 1 To core.nFleets
+                fleet = core.FleetInputs(i)
                 Me.m_cmbFleet.Items.Add(fleet)
-            Next iGroup
+            Next i
 
             ' Update control
             Me.m_cmbFleet.SelectedIndex = Me.FleetIndex

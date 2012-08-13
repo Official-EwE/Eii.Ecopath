@@ -88,6 +88,69 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Ecopath results.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOPATH() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim run results.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOSIM() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace result maps (ASCII format).
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOSPACEASC() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOSPACEASC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace result maps (CSV format).
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOSPACECSV() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOSPACECSV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer results.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOTRACER() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOTRACER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Monte Carlo trial results.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_MONTECARLO() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_MONTECARLO", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSE results.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_MSE() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_MSE", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property Back() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Back", resourceCulture)
@@ -1169,7 +1232,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &apos;{0}&apos; failed to save to file &apos;{1}&apos;: {2}..
+        '''  Looks up a localized string similar to &apos;{0}&apos; failed to save to &apos;{1}&apos;: {2}..
         '''</summary>
         Public ReadOnly Property GENERIC_FILESAVE_FAILURE() As String
             Get
@@ -1178,7 +1241,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &apos;{0}&apos; is succesfully saved to file &apos;{1}&apos;..
+        '''  Looks up a localized string similar to &apos;{0}&apos; saved to &apos;{1}&apos;..
         '''</summary>
         Public ReadOnly Property GENERIC_FILESAVE_SUCCES() As String
             Get

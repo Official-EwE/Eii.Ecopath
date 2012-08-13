@@ -44,8 +44,8 @@ Namespace Controls.Map
             Me.m_tsbZoomOut = New System.Windows.Forms.ToolStripButton()
             Me.m_tscbZoomPercent = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tsbZoomReset = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnImport = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_cmsZoom = New System.Windows.Forms.ContextMenuStrip(Me.components)
             Me.m_tsmiViewCenter2 = New System.Windows.Forms.ToolStripMenuItem()
             Me.m_tsmiViewStretch2 = New System.Windows.Forms.ToolStripMenuItem()
@@ -140,16 +140,6 @@ Namespace Controls.Map
             Me.m_tsbZoomReset.Size = New System.Drawing.Size(55, 22)
             Me.m_tsbZoomReset.Text = "Reset"
             '
-            'm_tsbnExport
-            '
-            Me.m_tsbnExport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbnExport.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ExportXMLHS
-            Me.m_tsbnExport.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbnExport.Name = "m_tsbnExport"
-            Me.m_tsbnExport.Size = New System.Drawing.Size(23, 22)
-            Me.m_tsbnExport.Text = "Export layer to file"
-            '
             'm_tsbnImport
             '
             Me.m_tsbnImport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
@@ -159,6 +149,16 @@ Namespace Controls.Map
             Me.m_tsbnImport.Name = "m_tsbnImport"
             Me.m_tsbnImport.Size = New System.Drawing.Size(23, 22)
             Me.m_tsbnImport.Text = "Import layer from file"
+            '
+            'm_tsbnExport
+            '
+            Me.m_tsbnExport.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+            Me.m_tsbnExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            Me.m_tsbnExport.Image = Global.ScientificInterfaceShared.My.Resources.Resources.ExportXMLHS
+            Me.m_tsbnExport.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnExport.Name = "m_tsbnExport"
+            Me.m_tsbnExport.Size = New System.Drawing.Size(23, 22)
+            Me.m_tsbnExport.Text = "Export layer to file"
             '
             'm_cmsZoom
             '

@@ -38,9 +38,10 @@ Namespace Controls.Map
             Gradient
         End Enum
 
-        Private m_map As ucMap = Nothing
+        'Private m_map As ucMap = Nothing
         Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cLayer)
+        Private m_strTitle As String = ""
 
         Private m_bShowTitle As Boolean = True
         Private m_iTitleVSpacing As Integer = 8
@@ -52,12 +53,14 @@ Namespace Controls.Map
 
 #End Region ' Private vars
 
+#Region " Constructors "
+
         Private Sub New(ByVal map As ucMap)
 
-            Me.m_map = map
+            Me.m_strTitle = map.Title
             Me.m_uic = map.UIContext
 
-            Dim al As cLayer() = Me.m_map.Layers
+            Dim al As cLayer() = map.Layers
             Dim l As cLayer = Nothing
             Dim r As cLayerRenderer = Nothing
 
@@ -75,15 +78,34 @@ Namespace Controls.Map
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor, create a new legend with a fixed name.
+        ''' </summary>
+        ''' <param name="uic"><see cref="cUIContext"/> to use.</param>
+        ''' <param name="strTitle">Map title.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub New(uic As cUIContext, strTitle As String)
+            Me.m_uic = uic
+            Me.m_strTitle = strTitle
+        End Sub
+
+#End Region ' Constructors
+
 #Region " Shared interfaces "
 
         Public Shared Function FromMap(ByVal map As ucMap) As cLegend
+            Debug.Assert(map IsNot Nothing)
             Return New cLegend(map)
         End Function
 
 #End Region ' Shared interfaces
 
 #Region " Public interfaces "
+
+        Public Sub AddLayer(l As cLayer)
+            Me.m_lLayers.Add(l)
+        End Sub
 
         Public Function SaveAsBitmap(ByVal strFileName As String, ByVal format As ImageFormat) As Boolean
 
@@ -168,11 +190,11 @@ Namespace Controls.Map
 #Region " Internals "
 
         Private Function RenderTitleSize(ByVal g As Graphics, ByVal ft As Font) As SizeF
-            Return g.MeasureString(Me.m_map.Title, ft)
+            Return g.MeasureString(Me.m_strTitle, ft)
         End Function
 
         Private Sub RenderTitle(ByVal g As Graphics, ByVal ft As Font, ByVal ptLocation As Point)
-            g.DrawString(Me.m_map.Title, ft, Brushes.Black, ptLocation)
+            g.DrawString(Me.m_strTitle, ft, Brushes.Black, ptLocation)
         End Sub
 
         Private Function RenderLayerSize(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLayer) As SizeF

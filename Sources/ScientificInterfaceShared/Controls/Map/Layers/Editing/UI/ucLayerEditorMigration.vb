@@ -68,12 +68,10 @@ Namespace Controls.Map.Layers
             Dim group As cEcoPathGroupInput = Nothing
 
             Me.m_cmbGroup.Items.Clear()
-
-            ' ToDo: this control will not respond to dynamic group name changes
-            For iGroup As Integer = 1 To core.nLivingGroups
-                group = core.EcoPathGroupInputs(iGroup)
+            For i As Integer = 1 To core.nLivingGroups
+                group = core.EcoPathGroupInputs(i)
                 Me.m_cmbGroup.Items.Add(group)
-            Next iGroup
+            Next i
 
             Me.UpdateContent(Me.Editor)
         End Sub
