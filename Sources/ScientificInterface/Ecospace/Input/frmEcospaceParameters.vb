@@ -53,7 +53,6 @@ Namespace Ecospace
         Private m_fpTolerance As cEwEFormatProvider = Nothing
         Private m_fpSOR As cEwEFormatProvider = Nothing
         Private m_fpMaxIterations As cEwEFormatProvider = Nothing
-        Private m_fpPredictEffort As cEwEFormatProvider = Nothing
         Private m_fpUseExact As cEwEFormatProvider = Nothing
 
         Private m_fpMovePackets As cEwEFormatProvider = Nothing
@@ -63,7 +62,7 @@ Namespace Ecospace
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
         Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
-
+        Private WithEvents m_bpEffort As cBooleanProperty = Nothing
 
 #End Region ' Private vars
 
@@ -87,6 +86,7 @@ Namespace Ecospace
             Me.m_bpUseNewStanza = Nothing
             Me.m_bpAdjustSpace = Nothing
             Me.m_bpConTracing = Nothing
+            Me.m_bpEffort = Nothing
  
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
@@ -101,7 +101,6 @@ Namespace Ecospace
             Me.m_fpTolerance.Release()
             Me.m_fpSOR.Release()
             Me.m_fpMaxIterations.Release()
-            Me.m_fpPredictEffort.Release()
             Me.m_fpUseExact.Release()
             Me.m_fpMovePackets.Release()
 
@@ -117,22 +116,10 @@ Namespace Ecospace
             Me.m_bpUseIBM = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
             Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
             Me.m_bpAdjustSpace = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
+            Me.m_bpEffort = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
 
             Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
 
-
-
-            ' Initialize
-            ' OK, the positioning of this code requires some explanation. Consider the following facts:
-            ' - Form.Load sets the focus to the first control in the tab order.
-            ' - Setting the checked state of a radio button will give it the focus.
-            ' - EwE format providers typically update code data via a Control.Leave event. 
-            ' If UpdateControls were called AFTER the format providers were initialized, and the first control 
-            ' in the tab order were EwEFormatProvider controller, this control looses its focus as a result of
-            ' the UpdateControls call. This will then result in a data change in the core, flagging the
-            ' underlying Ecospace model as dirty.
-            ' 
-            ' This is not allowed. Therefore, all format providers are initialized last in this method.
             Me.UpdateControls()
 
             ' Hmm, connecting one control to two live properties - this could be dangerous
@@ -146,7 +133,6 @@ Namespace Ecospace
             Me.m_fpTolerance = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
             Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
             Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
-            Me.m_fpPredictEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_cbPredictEffort, ecospaceModelParams, eVarNameFlags.PredictEffort)
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
 
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, ecospaceModelParams, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
@@ -171,12 +157,19 @@ Namespace Ecospace
             OldSchool
         End Enum
 
+        Private m_bInUpdate As Boolean = False
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update and enable controls that cannot be managed any other way.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub UpdateControls()
+
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+
+            Me.m_bInUpdate = True
 
             Dim threadingModel As eThreadingModelType = eThreadingModelType.OldSchool
             Dim bUseIBM As Boolean = CBool(Me.m_bpUseIBM.GetValue())
@@ -207,6 +200,11 @@ Namespace Ecospace
             Me.m_cbSaveASC.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceASC)
             Me.m_cbSaveCSV.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceCSV)
 
+            Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
+            Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
+
+            Me.m_bInUpdate = False
+
         End Sub
 
 #End Region ' Form content handling
@@ -236,74 +234,51 @@ Namespace Ecospace
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub OnRunIBM(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_rbIBM.CheckedChanged
+            Handles m_rbIBM.CheckedChanged, m_rbNewStanzaModel.CheckedChanged, m_rbOldSchool.CheckedChanged
 
-            If Me.UIContext Is Nothing Then Return
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
 
             If Me.m_rbIBM.Checked Then
-                ' Set the value, let property value cascades do the rest
                 Me.m_bpUseNewStanza.SetValue(False)
                 Me.m_bpUseIBM.SetValue(True)
-            End If
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; called when the New Stanza mode radio button is checked.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnRunNewStanza(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_rbNewStanzaModel.CheckedChanged
-
-            If Me.UIContext Is Nothing Then Return
-
-            If Me.m_rbNewStanzaModel.Checked Then
-                ' Set the value, let property value cascades do the rest
+            ElseIf Me.m_rbNewStanzaModel.Checked Then
                 Me.m_bpUseIBM.SetValue(False)
                 Me.m_bpUseNewStanza.SetValue(True)
-            End If
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; called when the 'Old School' radio button is checked.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnRunOldSchool(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_rbOldSchool.CheckedChanged
-
-            If Me.UIContext Is Nothing Then Return
-
-            If Me.m_rbOldSchool.Checked Then
-                ' Set the value, let property value cascades do the rest
+            ElseIf Me.m_rbOldSchool.Checked Then
                 Me.m_bpUseNewStanza.SetValue(False)
                 Me.m_bpUseIBM.SetValue(False)
             End If
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; called when the Ecopath habitat radio button is checked.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub rbBaseBiomass_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbBaseBiomass.Validated
-            ' Set the value, let property value cascades do the rest
-            Me.m_bpAdjustSpace.SetValue(False)
+        Private Sub OnBiomassOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_rbBaseBiomass.CheckedChanged, m_rbAdjustedBiomass.CheckedChanged
+
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+
+            Me.m_bpAdjustSpace.SetValue(Me.m_rbAdjustedBiomass.Checked)
+
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler; called when the Ecopath habitat radio button is checked.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub rbAdjustedBiomass_Validated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbAdjustedBiomass.Validated
-            ' Set the value, let property value cascades do the rest
-            Me.m_bpAdjustSpace.SetValue(True)
+        Private Sub OnEffortOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_rbPredictEffort.CheckedChanged, m_rbEcopathEffort.CheckedChanged
+
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+
+            Me.m_bpEffort.SetValue(Me.m_rbPredictEffort.Checked)
+
         End Sub
 
-        Private Sub cbContaminantTracing_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_cbContaminantTracing.Click
+        Private Sub OnConcTracingOptionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_cbContaminantTracing.CheckedChanged
 
-            If m_cbContaminantTracing.Checked Then
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+
+            If Me.m_cbContaminantTracing.Checked Then
                 Dim cmdh As cCommandHandler = Me.CommandHandler
                 Dim cmd As cCommand = cmdh.GetCommand("EnableEcotracer")
 
@@ -326,6 +301,9 @@ Namespace Ecospace
         Private Sub OnCapCalcOptionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_rbCapHap.CheckedChanged, m_rbCap.CheckedChanged, m_rbHab.CheckedChanged
 
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.m_bInUpdate) Then Return
+
             Dim capcalctype As eEcospaceCapacityCalType = eEcospaceCapacityCalType.CapacityAndHabitat
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
 
@@ -339,7 +317,8 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnSaveCSVClicked(sender As Object, e As EventArgs) Handles m_cbSaveCSV.Click
+        Private Sub OnSaveCSVClicked(sender As Object, e As EventArgs) _
+            Handles m_cbSaveCSV.Click
             Try
                 Me.Core.Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSaveCSV.Checked
             Catch ex As Exception
@@ -347,7 +326,8 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub OnSaveASCIIClicked(sender As Object, e As EventArgs) Handles m_cbSaveASC.Click
+        Private Sub OnSaveASCIIClicked(sender As Object, e As EventArgs) _
+            Handles m_cbSaveASC.Click
             Try
                 Me.Core.Autosave(eAutosaveTypes.EcospaceASC) = Me.m_cbSaveASC.Checked
             Catch ex As Exception
