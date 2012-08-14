@@ -8343,7 +8343,7 @@ Namespace DataSources
                     strMap = CStr(Me.m_db.ReadSafe(reader, "PortMap", ""))
                     bSucces = bSucces And cStringUtils.StringToArray(strMap, _
                                                                      iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
-                                                                     ecospaceDS.Port, ecospaceDS.Depth, False)
+                                                                     ecospaceDS.Port)
 
                     ' Read sailing cost map for a given fleet and water cells only
                     strMap = CStr(Me.m_db.ReadSafe(reader, "SailCostMap", ""))
@@ -8482,7 +8482,7 @@ Namespace DataSources
 
                     ' Update fleet vars
                     drow("EffPower") = ecospaceDS.EffPower(iFleet)
-                    drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth, False)
+                    drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex)
                     drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth, True)
 
                     ' Wrap up: was this a new row?
@@ -8508,70 +8508,11 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcospaceHabitatFishery(idm)
             ' Save MPA fishery
             bSucces = bSucces And Me.SaveEcospaceMPAFishery(idm)
-
             ' There
             Return bSucces
 
         End Function
 
-        Private Function SaveEcospaceFleetMap(ByVal idm As cIDMappings) As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim drow As DataRow = Nothing
-            Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
-            Dim iFleet As Integer = 0
-            Dim iRow As Integer = 0
-            Dim iCol As Integer = 0
-            Dim iPortID As Integer = 1
-            Dim iFleetID As Integer = 0
-            Dim bSucces As Boolean = True
-
-            iScenarioID = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioID)
-
-            Try
-                ' Erase
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioFleetMap WHERE ScenarioID={0}", iScenarioID))
-                writer = Me.m_db.GetWriter("EcospaceScenarioFleetMap")
-
-                For iFleet = 1 To ecospaceDS.nFleets
-
-                    iFleetID = idm.GetID(eDataTypes.EcospaceFleet, ecopathDS.FleetDBID(iFleet))
-                    Debug.Assert(iFleetID <> 0)
-
-                    For iRow = 1 To ecospaceDS.InRow
-                        For iCol = 1 To ecospaceDS.InCol
-
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("FleetID") = iFleetID
-                            drow("InRow") = iRow
-                            drow("InCol") = iCol
-                            drow("SailCost") = ecospaceDS.Sail(iFleet, iRow, iCol)
-                            If ecospaceDS.Port(iFleet, iRow, iCol) Then
-                                drow("PortID") = iPortID
-                                iPortID += 1 ' Haha
-                            Else
-                                drow("PortID") = 0
-                            End If
-                            writer.AddRow(drow)
-
-                        Next iCol
-                    Next iRow
-                Next iFleet
-
-                Me.m_db.ReleaseWriter(writer, True)
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while saving EcospaceScenarioFleetMap", ex.Message))
-                bSucces = False
-            End Try
-
-            ' Report outcome
-            Return bSucces
-
-        End Function
 
         Private Function SaveEcospaceHabitatFishery(ByVal idm As cIDMappings) As Boolean
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
