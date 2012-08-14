@@ -169,13 +169,15 @@ Public Class cEcospaceLayerInteger
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
         Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
         Dim d As Integer(,) = DirectCast(Me.Data, Integer(,))
+        Dim iRows As Integer = bm.InRow
+        Dim iCols As Integer = bm.InCol
 
         Me.m_iMaxValue = Integer.MinValue
         Me.m_iMinValue = Integer.MaxValue
         Me.m_iNumValueCells = 0
 
-        For iRow As Integer = 1 To bm.InRow
-            For iCol As Integer = 1 To bm.InCol
+        For iRow As Integer = 1 To iRows
+            For iCol As Integer = 1 To iCols
                 If layerDepth.IsWaterCell(iRow, iCol) Then
                     If d(iRow, iCol) <> cCore.NULL_VALUE Then
                         Me.m_iMaxValue = Math.Max(d(iRow, iCol), Me.m_iMaxValue)

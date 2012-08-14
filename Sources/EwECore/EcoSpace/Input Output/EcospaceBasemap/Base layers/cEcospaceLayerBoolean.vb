@@ -1,4 +1,4 @@
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -24,33 +24,16 @@ Imports EwEUtils.Core
 #End Region ' Imports
 
 ''' <summary>
-''' Base layer providing access to Ecospace data as cells of single values.
+''' Base layer providing access to Ecospace data as cells of Boolean values.
 ''' </summary>
-
-Public Class cEcospaceLayerSingle
+Public Class cEcospaceLayerBoolean
     Inherits cEcospaceLayer
-
-#Region " Private variables "
-
-    ''' <summary>Layer max value.</summary>
-    Private m_sMaxValue As Single = 0.0!
-    ''' <summary>Layer min value.</summary>
-    Private m_sMinValue As Single = 0.0!
-    ''' <summary>Layer num of cells with a value.</summary>
-    Private m_iNumValueCells As Integer = 0
-
-    ''' <summary>States whether cached statistics should be recalculated.</summary>
-    ''' <remarks>True at startup to make sure that stats are properly calculated
-    ''' when first queried.</remarks>
-    Private m_bInvalidateStats As Boolean = True
-
-#End Region ' Private variables
 
 #Region " Construction "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for an NxN layer of Single values, that derives its data and 
+    ''' Constructor for a NxN layer of Boolean values that derives its data and 
     ''' identity from a manager.
     ''' </summary>
     ''' <param name="theCore"></param>
@@ -63,13 +46,13 @@ Public Class cEcospaceLayerSingle
                    ByVal strName As String, _
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, strName, varName, iIndex, GetType(Single))
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, strName, varName, iIndex, GetType(Boolean))
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Constructor for a NxN layer of Single values that derives its data from 
-    ''' a manager, but that is a unique data entity in the EwE core.
+    ''' Constructor for a NxN layer of Boolean values that derives its data and 
+    ''' identity from a manager, but that is a unique data entity in the EwE core.
     ''' </summary>
     ''' <param name="theCore"></param>
     ''' <param name="iDBID"></param>
@@ -84,8 +67,7 @@ Public Class cEcospaceLayerSingle
                    ByVal varName As eVarNameFlags, _
                    Optional ByVal iIndex As Integer = cCore.NULL_VALUE)
 
-        MyBase.New(theCore, iDBID, manager, strName, varName, iIndex, GetType(Single))
-
+        MyBase.New(theCore, iDBID, manager, strName, varName, iIndex, GetType(Boolean))
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -95,12 +77,12 @@ Public Class cEcospaceLayerSingle
     ''' <param name="theCore"></param>
     ''' <param name="data"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByRef theCore As cCore, _
-                   ByRef data As Single(,), _
+    Public Sub New(ByVal theCore As cCore, _
+                   ByVal data As Boolean(,), _
                    ByVal strName As String, _
                    Optional ByVal meta As cVariableMetaData = Nothing)
 
-        MyBase.New(theCore, CObj(data), strName, GetType(Single), meta)
+        MyBase.New(theCore, CObj(data), strName, GetType(Boolean), meta)
 
     End Sub
 
@@ -111,18 +93,15 @@ Public Class cEcospaceLayerSingle
     ''' <inheritdocs cref="cEcospaceLayer.Cell"/>
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            Dim d As Single(,) = DirectCast(Me.Data, Single(,))
+            Dim d As Boolean(,) = DirectCast(Me.Data, Boolean(,))
             If Me.ValidateCellPosition(iRow, iCol) Then Return d(iRow, iCol) Else Return cCore.NULL_VALUE
         End Get
         Set(ByVal value As Object)
-            Dim d As Single(,) = DirectCast(Me.Data, Single(,))
-            Dim s As Single = Convert.ToSingle(value)
-            If Me.ValidateCellValue(value) Then
+            Dim d As Boolean(,) = DirectCast(Me.Data, Boolean(,))
+            Dim i As Boolean = CBool(value)
+            If Me.ValidateCellValue(i) Then
                 If Me.ValidateCellPosition(iRow, iCol) Then
-                    d(iRow, iCol) = s
-                    If (Me.m_bInvalidateStats = False) Then
-                        Me.m_bInvalidateStats = (Math.Abs(s) > Me.m_sMaxValue)
-                    End If
+                    d(iRow, iCol) = i
                 End If
             End If
         End Set
@@ -131,66 +110,28 @@ Public Class cEcospaceLayerSingle
     ''' <inheritdocs cref="cEcospaceLayer.MaxValue"/>
     Public Overrides ReadOnly Property MaxValue() As Single
         Get
-            If Me.m_bInvalidateStats Then Me.RecalcStats()
-            Return Me.m_sMaxValue
+            Return CSng(Math.Max(CSng(True), CSng(False)))
         End Get
     End Property
 
     ''' <inheritdocs cref="cEcospaceLayer.MinValue"/>
     Public Overrides ReadOnly Property MinValue() As Single
         Get
-            If Me.m_bInvalidateStats Then Me.RecalcStats()
-            Return Me.m_sMinValue
+            Return CSng(Math.Min(CSng(True), CSng(False)))
         End Get
     End Property
 
     ''' <inheritdocs cref="cEcospaceLayer.NumValueCells"/>
     Public Overrides ReadOnly Property NumValueCells As Integer
         Get
-            If Me.m_bInvalidateStats Then Me.RecalcStats()
-            Return Me.m_iNumValueCells
+            Return 1
         End Get
     End Property
 
     Public Overrides Sub Invalidate()
-        Me.m_bInvalidateStats = True
+        ' NOP
     End Sub
 
 #End Region ' Cell interaction
-
-#Region " Internals "
-
-    Protected Overridable Sub RecalcStats()
-
-        Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-        Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-        Dim s As Single = 0.0!
-        Dim iRows As Integer = bm.InRow
-        Dim iCols As Integer = bm.InCol
-
-        Me.m_sMaxValue = Single.MinValue
-        Me.m_sMinValue = Single.MaxValue
-        For iRow As Integer = 1 To iRows
-            For iCol As Integer = 1 To iCols
-                If layerDepth.IsWaterCell(iRow, iCol) Then
-                    s = CSng(Me.Cell(iRow, iCol))
-                    If (s <> cCore.NULL_VALUE) Then
-                        Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)
-                        Me.m_sMinValue = Math.Min(s, Me.m_sMinValue)
-                        Me.m_iNumValueCells += 1
-                    End If
-                End If
-            Next iCol
-        Next iRow
-
-        If (Me.m_sMaxValue = Me.m_sMinValue) Then
-            Me.m_sMinValue = 0
-        End If
-
-        Me.m_bInvalidateStats = False
-
-    End Sub
-
-#End Region ' Internals
 
 End Class

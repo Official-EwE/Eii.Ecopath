@@ -162,11 +162,13 @@ Public MustInherit Class cEcospaceLayerVector
     Protected Overridable Sub RecalcStats()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        Dim iRows As Integer = bm.InRow
+        Dim iCols As Integer = bm.InCol
 
         Me.m_sMaxValue = 0
 
-        For iRow As Integer = 1 To bm.InRow
-            For iCol As Integer = 1 To bm.InCol
+        For iRow As Integer = 1 To iRows
+            For iCol As Integer = 1 To iCols
                 Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, _
                                           Math.Max(Math.Abs(Me.XVelocity(iRow, iCol)), _
                                                    Math.Abs(Me.YVelocity(iRow, iCol))))

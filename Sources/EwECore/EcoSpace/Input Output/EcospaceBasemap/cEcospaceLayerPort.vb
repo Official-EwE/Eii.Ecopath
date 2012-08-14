@@ -28,7 +28,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 ''' Layer providing access to Ecospace port data.
 ''' </summary>
 Public Class cEcospaceLayerPort
-    Inherits cEcospaceLayerInteger
+    Inherits cEcospaceLayerBoolean
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
         MyBase.New(theCore, manager, _
@@ -46,9 +46,9 @@ Public Class cEcospaceLayerPort
                 For iFleet As Integer = 1 To Me.m_core.nFleets
                     If data(iFleet, iRow, iCol) Then Return 1.0!
                 Next
-                Return cCore.NULL_VALUE
+                Return 0.0!
             Else
-                Return CSng(IIf(data(Me.Index, iRow, iCol), 1.0!, 0.0!))
+                Return CSng(IIF(data(Me.Index, iRow, iCol), 1.0!, 0.0!))
             End If
         End Get
         Set(ByVal value As Object)
@@ -63,28 +63,6 @@ Public Class cEcospaceLayerPort
             End If
         End Set
     End Property
-
-    Public Overrides ReadOnly Property MaxValue() As Single
-        Get
-            Return Me.m_iMaxValue
-        End Get
-    End Property
-
-    Public Overrides ReadOnly Property MinValue() As Single
-        Get
-            Return Me.m_iMinValue
-        End Get
-    End Property
-
-    Protected Overrides Sub RecalcStats()
-
-        Me.m_iMaxValue = 1
-        Me.m_iMinValue = 0
-        Me.m_iNumValueCells = 1
-
-        Me.m_bInvalidateStats = False
-
-    End Sub
 
 #End Region ' Cell interaction
 
