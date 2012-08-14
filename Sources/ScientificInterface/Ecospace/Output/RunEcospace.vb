@@ -437,7 +437,6 @@ Namespace Ecospace
                 br = New SolidBrush(Color.White)
                 g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
 
-                ' ToDo: globalize this
                 Try
                     Me.PlotMap(g)
                     bmp.Save(cmdFS.FileName, imgFormat)
@@ -457,11 +456,12 @@ Namespace Ecospace
 
                     lgd.SaveAsBitmap(strFilenameLegend, imgFormat)
 #End If
-
-                    msg = New cMessage(String.Format("Map image saved to {0}", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                    ' ToDo: globalize this
+                    msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Map image", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = IO.Path.GetDirectoryName(cmdFS.FileName)
                 Catch ex As Exception
-                    msg = New cMessage(String.Format("Failed to map image to {0}", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+                    ' ToDo: globalize this
+                    msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, "Map image", cmdFS.FileName, ex.Message), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
                 Finally
                     g.Dispose()
                     g = Nothing
