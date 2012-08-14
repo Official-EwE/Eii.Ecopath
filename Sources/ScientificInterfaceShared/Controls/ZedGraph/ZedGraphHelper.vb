@@ -1818,7 +1818,8 @@ Namespace Controls
 
             If cmdFS.Result = DialogResult.OK Then
                 If Me.WriteDataToCSV(cmdFS.FileName) Then
-                    Dim msg As New cMessage(String.Format(My.Resources.STATUS_GRAPH_SAVED, cmdFS.FileName), _
+                    ' ToDo: globalize this
+                    Dim msg As New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, "Graph data", cmdFS.FileName), _
                                             eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
                     Me.m_uic.Core.Messages.SendMessage(msg)

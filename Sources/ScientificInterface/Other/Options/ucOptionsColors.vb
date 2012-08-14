@@ -230,12 +230,8 @@ Namespace Other
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_FAILEDVALIDATION, cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ERROR, cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_COMPUTED, cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
-            ' JS 02Aug08: disabled, not used
-            'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ES_PRESSURE, StyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT)
-            'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ES_PROFITS, StyleGuide.eApplicationColorType.PROFIT_TEXT)
-            'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_ES_TOTALCATCH, StyleGuide.eApplicationColorType.TOTALCATCH_TEXT)
-            'Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_TROPHIC_LINK, StyleGuide.eApplicationColorType.TROPHICLINK_TEXT)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_REMARKS, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
+            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_PEDIGREE, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PEDIGREE)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_SUM, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.SUM_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_READONLY, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
@@ -243,7 +239,6 @@ Namespace Other
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_HIGHLIGHT, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.HIGHLIGHT)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_PREDATOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PREDATOR)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_PROMPT_PREY, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PREY)
-            Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_IMG_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
             Me.AddColorTypeItem(My.Resources.OPTIONS_COLORDLG_ECOSPACE_MAPLOT_BACKGROUND_COLOR, cStyleGuide.eApplicationColorType.NotSet, cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
 

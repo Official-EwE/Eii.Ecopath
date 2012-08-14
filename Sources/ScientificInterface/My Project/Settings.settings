@@ -14,9 +14,6 @@
     <Setting Name="SettingLoaded" Roaming="true" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ColorESPressureText" Roaming="true" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">ForestGreen</Value>
-    </Setting>
     <Setting Name="ColorComputedValuesText" Roaming="true" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">0, 0, 244</Value>
     </Setting>
@@ -34,15 +31,6 @@
     </Setting>
     <Setting Name="ColorNameText" Roaming="true" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">Black</Value>
-    </Setting>
-    <Setting Name="ColorESProfitsText" Roaming="true" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">LimeGreen</Value>
-    </Setting>
-    <Setting Name="ColorESTotalCatchText" Roaming="true" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">MediumSeaGreen</Value>
-    </Setting>
-    <Setting Name="ColorTrophicLinkText" Roaming="true" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">LavenderBlush</Value>
     </Setting>
     <Setting Name="ColorRemarksBackground" Roaming="true" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">White</Value>
@@ -175,6 +163,9 @@
     </Setting>
     <Setting Name="ColorPredator" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">IndianRed</Value>
+    </Setting>
+    <Setting Name="ColorPedigree" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Orange</Value>
     </Setting>
   </Settings>
 </SettingsFile>

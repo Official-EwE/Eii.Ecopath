@@ -2199,6 +2199,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Pedigree|Pedigree indicator color in data grids.
+        '''</summary>
+        Public ReadOnly Property OPTIONS_COLORDLG_PROMPT_PEDIGREE() As String
+            Get
+                Return ResourceManager.GetString("OPTIONS_COLORDLG_PROMPT_PEDIGREE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Predation|Color to indicate a predator (flow diagram only).
         '''</summary>
         Public ReadOnly Property OPTIONS_COLORDLG_PROMPT_PREDATOR() As String

@@ -103,17 +103,10 @@ Public Class gridLayerData
         Dim cell As Cells.ICell = Nothing
         Dim tCell As Type = Nothing
         Dim data As cEcospaceLayer = Nothing
-        'Dim dataDepth As cEcospaceLayer = Me.m_core.EcospaceBasemap.LayerDepth
 
         ' Grab the data
         data = Me.m_layer.Data
-        ' Grab the type of the data
-        If TypeOf data Is cEcospaceLayerInteger Then
-            tCell = GetType(Integer)
-        Else
-            ' Assume single
-            tCell = GetType(Single)
-        End If
+        tCell = data.ValueType
 
         ' Prepare grid
         Me.RowsCount = 1
@@ -127,11 +120,14 @@ Public Class gridLayerData
             ' Add row value cells
             For iCol As Integer = 1 To Me.m_basemap.InCol
                 ' Properly prepare cell
-                If tCell Is GetType(Integer) Then
-                    cell = New Cells.Real.Cell(CInt(data.Cell(iRow, iCol)), tCell)
-                Else
-                    cell = New EwECell(CSng(data.Cell(iRow, iCol)), tCell)
-                End If
+                cell = New EwECell(data.Cell(iRow, iCol), tCell)
+                'If tCell Is GetType(Integer) Then
+                '    cell = New Cells.Real.Cell(CInt(data.Cell(iRow, iCol)), tCell)
+                'ElseIf tCell Is GetType(Boolean) Then
+                '    cell = New Cells.Real.Cell(CBool(data.Cell(iRow, iCol)), tCell)
+                'Else
+                '    cell = New EwECell(CSng(data.Cell(iRow, iCol)), tCell)
+                'End If
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 'cell.SuppressZero(cCore.NULL_VALUE) = True
                 '' Highlight land cells

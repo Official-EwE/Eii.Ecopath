@@ -96,19 +96,6 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("ForestGreen"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property ColorESPressureText() As Global.System.Drawing.Color
-        Get
-            Return CType(Me("ColorESPressureText"),Global.System.Drawing.Color)
-        End Get
-        Set
-            Me("ColorESPressureText") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("0, 0, 244"),  _
      Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
     Public Property ColorComputedValuesText() As Global.System.Drawing.Color
@@ -182,45 +169,6 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("ColorNameText") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("LimeGreen"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property ColorESProfitsText() As Global.System.Drawing.Color
-        Get
-            Return CType(Me("ColorESProfitsText"),Global.System.Drawing.Color)
-        End Get
-        Set
-            Me("ColorESProfitsText") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("MediumSeaGreen"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property ColorESTotalCatchText() As Global.System.Drawing.Color
-        Get
-            Return CType(Me("ColorESTotalCatchText"),Global.System.Drawing.Color)
-        End Get
-        Set
-            Me("ColorESTotalCatchText") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("LavenderBlush"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
-    Public Property ColorTrophicLinkText() As Global.System.Drawing.Color
-        Get
-            Return CType(Me("ColorTrophicLinkText"),Global.System.Drawing.Color)
-        End Get
-        Set
-            Me("ColorTrophicLinkText") = value
         End Set
     End Property
     
@@ -759,6 +707,18 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("ColorPredator") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("Orange")>  _
+    Public Property ColorPedigree() As Global.System.Drawing.Color
+        Get
+            Return CType(Me("ColorPedigree"),Global.System.Drawing.Color)
+        End Get
+        Set
+            Me("ColorPedigree") = value
         End Set
     End Property
 End Class

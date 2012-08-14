@@ -1278,16 +1278,13 @@ Namespace Style
             COMPUTED_TEXT
             INVALIDMODELRESULT_TEXT
             GENERICERROR_TEXT
-            PROFIT_TEXT
-            FISHINGPRESSURE_TEXT
-            TOTALCATCH_TEXT
-            TROPHICLINK_TEXT
             HIGHLIGHT
             IMAGE_BACKGROUND
             PLOT_BACKGROUND
             MAP_BACKGROUND
             PREY
             PREDATOR
+            PEDIGREE
         End Enum
 
         ''' -------------------------------------------------------------------
@@ -1969,10 +1966,10 @@ Namespace Style
                 Case eApplicationColorType.FAILEDVALIDATION_TEXT : Return Color.DarkGoldenrod
                 Case eApplicationColorType.GENERICERROR_TEXT : Return Color.Firebrick
                 Case eApplicationColorType.COMPUTED_TEXT : Return Color.FromArgb(255, 0, 0, 244)
-                Case eApplicationColorType.FISHINGPRESSURE_TEXT : Return Color.Red
-                Case eApplicationColorType.PROFIT_TEXT : Return Color.Blue
-                Case eApplicationColorType.TOTALCATCH_TEXT : Return Color.LightCoral
-                Case eApplicationColorType.TROPHICLINK_TEXT : Return Color.LavenderBlush
+                    'Case eApplicationColorType.FISHINGPRESSURE_TEXT : Return Color.Red
+                    'Case eApplicationColorType.PROFIT_TEXT : Return Color.Blue
+                    'Case eApplicationColorType.TOTALCATCH_TEXT : Return Color.LightCoral
+                    'Case eApplicationColorType.TROPHICLINK_TEXT : Return Color.LavenderBlush
                 Case eApplicationColorType.CHECKED_BACKGROUND : Return Color.Coral
                 Case eApplicationColorType.REMARKS_BACKGROUND : Return Color.White
                 Case eApplicationColorType.SUM_BACKGROUND : Return Color.FromArgb(255, 255, 254, 225)

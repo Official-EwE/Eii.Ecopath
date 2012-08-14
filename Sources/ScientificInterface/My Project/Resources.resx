@@ -1592,4 +1592,7 @@ Description: {2}</value>
   <data name="OPTIONS_COLORDLG_PROMPT_PREY" xml:space="preserve">
     <value>Prey|Color to indicate a prey (flow diagram only)</value>
   </data>
+  <data name="OPTIONS_COLORDLG_PROMPT_PEDIGREE" xml:space="preserve">
+    <value>Pedigree|Pedigree indicator color in data grids</value>
+  </data>
 </root>

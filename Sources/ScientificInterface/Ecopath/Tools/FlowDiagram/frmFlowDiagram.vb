@@ -320,7 +320,7 @@ Namespace Ecopath.Controls.FlowDiagram
                     bmp.Save(cmdFS.FileName, fmt)
 
                     ' ToDo: globalize this
-                    Dim msg As New cMessage(String.Format("Flow diagram image saved to {0}", cmdFS.FileName), _
+                    Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Flow diagram image", cmdFS.FileName), _
                                             eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
                     Me.Core.Messages.SendMessage(msg)

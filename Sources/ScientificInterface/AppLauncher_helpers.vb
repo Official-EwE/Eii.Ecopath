@@ -370,10 +370,6 @@ Partial Public Class AppLauncher
                 .ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT) = My.Settings.ColorFailedValidationText
                 .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT) = My.Settings.ColorErrorText
                 .ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT) = My.Settings.ColorComputedValuesText
-                .ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT) = My.Settings.ColorESPressureText
-                .ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT) = My.Settings.ColorESProfitsText
-                .ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT) = My.Settings.ColorESTotalCatchText
-                .ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT) = My.Settings.ColorTrophicLinkText
                 .ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND) = My.Settings.ColorRemarksBackground
                 .ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND) = My.Settings.ColorSumBackground
                 .ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND) = My.Settings.ColorReadOnlyBackground
@@ -384,6 +380,7 @@ Partial Public Class AppLauncher
                 .ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND) = My.Settings.ColorMapBackground
                 .ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR) = My.Settings.ColorPredator
                 .ApplicationColor(cStyleGuide.eApplicationColorType.PREY) = My.Settings.ColorPrey
+                .ApplicationColor(cStyleGuide.eApplicationColorType.PEDIGREE) = My.Settings.ColorPedigree
 
                 .ThumbnailSize = My.Settings.ThumbnailSize
                 ' Fix: do not allow disabling of legend viz
@@ -419,10 +416,6 @@ Partial Public Class AppLauncher
                 My.Settings.ColorFailedValidationText = .ApplicationColor(cStyleGuide.eApplicationColorType.FAILEDVALIDATION_TEXT)
                 My.Settings.ColorErrorText = .ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
                 My.Settings.ColorComputedValuesText = .ApplicationColor(cStyleGuide.eApplicationColorType.COMPUTED_TEXT)
-                My.Settings.ColorESPressureText = .ApplicationColor(cStyleGuide.eApplicationColorType.FISHINGPRESSURE_TEXT)
-                My.Settings.ColorESProfitsText = .ApplicationColor(cStyleGuide.eApplicationColorType.PROFIT_TEXT)
-                My.Settings.ColorESTotalCatchText = .ApplicationColor(cStyleGuide.eApplicationColorType.TOTALCATCH_TEXT)
-                My.Settings.ColorTrophicLinkText = .ApplicationColor(cStyleGuide.eApplicationColorType.TROPHICLINK_TEXT)
                 My.Settings.ColorRemarksBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND)
                 My.Settings.ColorSumBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.SUM_BACKGROUND)
                 My.Settings.ColorReadOnlyBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.READONLY_BACKGROUND)
@@ -433,6 +426,7 @@ Partial Public Class AppLauncher
                 My.Settings.ColorMapBackground = .ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)
                 My.Settings.ColorPredator = .ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
                 My.Settings.ColorPrey = .ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
+                My.Settings.ColorPedigree = .ApplicationColor(cStyleGuide.eApplicationColorType.PEDIGREE)
 
                 My.Settings.ThumbnailSize = .ThumbnailSize
                 My.Settings.ShowLegends = .ShowLegends

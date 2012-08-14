@@ -52,7 +52,7 @@ Namespace Controls
             If (sPedigreeLevel > 0) Then
 
                 Dim rcPedigree As Rectangle = GetPedigreeArea(sg, rcClip)
-                Dim clrFill As Color = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                Dim clrFill As Color = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PEDIGREE)
                 Dim sBarHeight As Single = (rcPedigree.Height - 4) / 4.0!
                 Dim rcBar As New RectangleF(rcPedigree.X, rcPedigree.Y + rcClip.Height - sBarHeight - 4, rcPedigree.Width, sBarHeight)
 
