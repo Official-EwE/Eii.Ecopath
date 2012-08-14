@@ -3607,7 +3607,7 @@ Namespace Database
                         Next
 
                         drow("SailCostMap") = cStringUtils.ArrayToString(dataSailCost, Me.m_dicDepthMaps(iScenarioID), True)
-                        drow("PortMap") = cStringUtils.ArrayToString(dataPort, Me.m_dicDepthMaps(iScenarioID), False)
+                        drow("PortMap") = cStringUtils.ArrayToString(dataPort)
 
                         writer.AddRow(drow)
                         writer.Commit()
