@@ -2347,6 +2347,11 @@ Public Class AppLauncher
         If (foc.Result = Windows.Forms.DialogResult.OK) Then
             foc.FileName = dlgLoad.FileName
             foc.FileNames = dlgLoad.FileNames
+
+            My.Settings.LastSelectedDirectory = Path.GetDirectoryName(foc.FileName)
+            Me.SaveSettings()
+
+            foc.Directory = My.Settings.LastSelectedDirectory
         End If
 
     End Sub
@@ -2363,7 +2368,11 @@ Public Class AppLauncher
         If (fsc.Result = Windows.Forms.DialogResult.OK) Then
             fsc.FileName = dlgSave.FileName
             fsc.FilterIndex = dlgSave.FilterIndex
+
+            My.Settings.LastSelectedDirectory = Path.GetDirectoryName(fsc.FileName)
             Me.SaveSettings()
+
+            fsc.Directory = My.Settings.LastSelectedDirectory
         End If
 
     End Sub
@@ -2380,6 +2389,7 @@ Public Class AppLauncher
 
         If (doc.Result = Windows.Forms.DialogResult.OK) Then
             doc.Directory = dlgLoad.SelectedPath
+            My.Settings.LastSelectedDirectory = doc.Directory
         End If
 
     End Sub
