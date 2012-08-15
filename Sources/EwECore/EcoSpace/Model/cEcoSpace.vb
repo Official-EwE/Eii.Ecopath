@@ -576,6 +576,9 @@ Public Class cEcoSpace
             'redim all 
             If redimForRun() Then
 
+                ' Preserve base RelPP, either loaded or sketched
+                Me.m_Data.setBaseRelPP()
+
                 If (Me.m_SpatialData IsNot Nothing) Then
                     For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
                         If (src IsNot Nothing) Then
@@ -2479,9 +2482,8 @@ Public Class cEcoSpace
         Dim i As Integer
         Dim j As Integer
 
-        'Restore RelPP to its base value
-        'External data sources may have changed the value of RelPP during a run
-        Array.Copy(Me.m_Data.relPP0, Me.m_Data.RelPP, Me.m_Data.RelPP.Length)
+        ' Restore RelPP
+        Me.m_Data.restoreBaseRelPP()
 
         'This function is used to scale the relative primary productivity _
         'so that the total primary productivity is the same in Ecospace and Ecopath

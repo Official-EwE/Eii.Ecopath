@@ -1766,13 +1766,18 @@ Public Class cEcospaceDataStructures
     End Sub
 
     ''' <summary>
-    ''' Preserve RelPP map in the <see cref="relPP0"/> temporary array, to be restored at the end of an Ecospace run.
+    ''' Preserve RelPP map in the <see cref="relPP0"/> temporary array.
     ''' </summary>
     Public Sub setBaseRelPP()
-        Array.Copy(Me.RelPP, relPP0, RelPP.Length)
+        Array.Copy(Me.RelPP, Me.relPP0, Me.RelPP.Length)
     End Sub
 
-
+    ''' <summary>
+    ''' Restore RelPP map from the <see cref="relPP0"/> temporary array.
+    ''' </summary>
+    Public Sub restoreBaseRelPP()
+        Array.Copy(Me.relPP0, Me.RelPP, Me.RelPP.Length)
+    End Sub
 
     ''' <summary>
     ''' Hardwire some Capacity map values
