@@ -174,8 +174,7 @@
     <value>Seed cells</value>
   </data>
   <data name="CORE_DEFAULT_PORT" xml:space="preserve">
-    <value>Ports {0}</value>
-    <comment>{0} fleet index</comment>
+    <value>Port</value>
   </data>
   <data name="CORE_DEFAULT_REGION" xml:space="preserve">
     <value>Regions</value>
@@ -187,8 +186,7 @@
     <value>PP (relative)</value>
   </data>
   <data name="CORE_DEFAULT_SAILCOST" xml:space="preserve">
-    <value>Sailing cost {0}</value>
-    <comment>{0} fleet index</comment>
+    <value>Sailing cost</value>
   </data>
   <data name="CORE_DEFAULT_SCENARIO" xml:space="preserve">
     <value>New Scenario</value>
