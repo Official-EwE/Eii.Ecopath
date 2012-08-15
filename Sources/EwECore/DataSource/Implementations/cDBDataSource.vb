@@ -7462,7 +7462,7 @@ Namespace DataSources
                 drow("RelCinMap") = cStringUtils.ArrayToString(asNewMap)
                 drow("RegionMap") = "" ' Region map empty for new scenario
                 drow("CapacityCalType") = eEcospaceCapacityCalType.Capacity
-
+                drow("PredictEffort") = True
                 writer.AddRow(drow)
 
                 Me.m_db.ReleaseWriter(writer)
@@ -8650,6 +8650,7 @@ Namespace DataSources
                 drow("ScenarioID") = iScenarioID
                 drow("FleetID") = iFleetID
                 drow("EcopathFleetID") = iEcopathFleetID
+                drow("EffPower") = 1
                 drow("SailCostMap") = ""
                 drow("PortMap") = ""
 
