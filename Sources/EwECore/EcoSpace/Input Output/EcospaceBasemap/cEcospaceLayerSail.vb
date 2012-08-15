@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports EwEUtils.Core
-Imports DefaultRes = EwECore.My.Resources.CoreDefaults
 
 #End Region ' Imports
 
@@ -30,9 +29,7 @@ Public Class cEcospaceLayerSail
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, _
-                   String.Format(DefaultRes.CORE_DEFAULT_SAILCOST, iIndex), _
-                   EwEUtils.Core.eVarNameFlags.LayerSail, iIndex)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, eVarNameFlags.LayerSail, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerSail
     End Sub
 

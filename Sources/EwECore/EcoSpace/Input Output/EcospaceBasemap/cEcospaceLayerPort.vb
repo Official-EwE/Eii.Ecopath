@@ -19,7 +19,6 @@
 
 Option Strict On
 Imports EwEUtils.Core
-Imports DefaultRes = EwECore.My.Resources.CoreDefaults
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
@@ -31,9 +30,7 @@ Public Class cEcospaceLayerPort
     Inherits cEcospaceLayerBoolean
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, _
-                   String.Format(DefaultRes.CORE_DEFAULT_PORT, iIndex), _
-                   EwEUtils.Core.eVarNameFlags.LayerPort, iIndex)
+        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_PORT, eVarNameFlags.LayerPort, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerPort
     End Sub
 
