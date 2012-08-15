@@ -26,7 +26,6 @@ Namespace Ecospace
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
-        <System.Diagnostics.DebuggerNonUserCode()> _
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -42,78 +41,78 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMPAOptimizations))
-            Me.m_btnRun = New System.Windows.Forms.Button
-            Me.m_btnStop = New System.Windows.Forms.Button
-            Me.m_tsMap = New cEwEToolstrip
-            Me.m_tsbMPA = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmClearMPA = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmSetAllMPA = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsbSeed = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmClearSeed = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmSetAllSeed = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsbEditLayers = New System.Windows.Forms.ToolStripButton
-            Me.m_cmbMPA = New System.Windows.Forms.ComboBox
-            Me.m_rbRandom = New System.Windows.Forms.RadioButton
-            Me.m_rbEcoseed = New System.Windows.Forms.RadioButton
-            Me.m_hdrParameters = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lbMPA = New System.Windows.Forms.Label
-            Me.m_lblEndYear = New System.Windows.Forms.Label
-            Me.m_nudIterations = New cEwENumericUpDown
-            Me.m_nudStep = New cEwENumericUpDown
-            Me.m_nudEndYear = New cEwENumericUpDown
-            Me.m_lblStartYear = New System.Windows.Forms.Label
-            Me.m_nudStartYear = New cEwENumericUpDown
-            Me.m_tcResults = New System.Windows.Forms.TabControl
-            Me.m_tpProgress = New System.Windows.Forms.TabPage
-            Me.m_graphProgress = New ZedGraph.ZedGraphControl
-            Me.m_gridProgress = New ScientificInterface.gridMPAOptimizations
-            Me.m_tpResults = New System.Windows.Forms.TabPage
-            Me.m_cmbAreaClosed = New System.Windows.Forms.ComboBox
-            Me.m_btnSave = New System.Windows.Forms.Button
-            Me.m_lblAreaClosed = New System.Windows.Forms.Label
-            Me.m_lblBestPercentile = New System.Windows.Forms.Label
-            Me.m_graphResults = New ZedGraph.ZedGraphControl
-            Me.m_btnResetMPAs = New System.Windows.Forms.Button
-            Me.m_btnConvertToMpa = New System.Windows.Forms.Button
-            Me.m_nudBestPercentile = New cEwENumericUpDown
-            Me.m_gridResults = New ScientificInterface.gridMPAOptimizations
-            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lblSearchType = New System.Windows.Forms.Label
-            Me.m_tlbParameters = New System.Windows.Forms.TableLayoutPanel
-            Me.m_lblMinArea = New System.Windows.Forms.Label
-            Me.m_lblMaxArea = New System.Windows.Forms.Label
-            Me.m_nudMinArea = New cEwENumericUpDown
-            Me.m_nudMaxArea = New cEwENumericUpDown
-            Me.m_lblStep = New System.Windows.Forms.Label
-            Me.m_nudBaseYear = New cEwENumericUpDown
-            Me.m_lblBaseYear = New System.Windows.Forms.Label
-            Me.m_lblIterations = New System.Windows.Forms.Label
-            Me.m_lblDiscRate = New System.Windows.Forms.Label
-            Me.m_nudDiscRate = New cEwENumericUpDown
-            Me.m_nudGenDiscRate = New cEwENumericUpDown
-            Me.m_lblGenDiscRate = New System.Windows.Forms.Label
-            Me.m_tcConfiguration = New System.Windows.Forms.TabControl
-            Me.m_tabParameters = New System.Windows.Forms.TabPage
-            Me.m_tlpObjectives = New System.Windows.Forms.TableLayoutPanel
-            Me.m_lblObjectives = New System.Windows.Forms.Label
-            Me.m_gridGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup
-            Me.m_gridFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet
-            Me.m_gridObjectives = New ScientificInterface.Ecosim.gridSearchObjectivesWeight
-            Me.m_lbFleet = New System.Windows.Forms.Label
-            Me.m_lblGroup = New System.Windows.Forms.Label
-            Me.m_tabMap = New System.Windows.Forms.TabPage
-            Me.m_scMap = New System.Windows.Forms.SplitContainer
-            Me.m_ucZoom = New ucMapZoom
-            Me.m_tlbLayers = New System.Windows.Forms.TableLayoutPanel
-            Me.m_plLayers = New System.Windows.Forms.Panel
-            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_scContent = New System.Windows.Forms.SplitContainer
-            Me.PictureBox1 = New System.Windows.Forms.PictureBox
-            Me.PictureBox2 = New System.Windows.Forms.PictureBox
-            Me.m_bntReset = New System.Windows.Forms.Button
-            Me.m_tlpMap = New System.Windows.Forms.TableLayoutPanel
+            Me.m_btnRun = New System.Windows.Forms.Button()
+            Me.m_btnStop = New System.Windows.Forms.Button()
+            Me.m_tsMap = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbMPA = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmClearMPA = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmSetAllMPA = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsbSeed = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmClearSeed = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmSetAllSeed = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsbEditLayers = New System.Windows.Forms.ToolStripButton()
+            Me.m_cmbMPA = New System.Windows.Forms.ComboBox()
+            Me.m_rbRandom = New System.Windows.Forms.RadioButton()
+            Me.m_rbEcoseed = New System.Windows.Forms.RadioButton()
+            Me.m_hdrParameters = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lbMPA = New System.Windows.Forms.Label()
+            Me.m_lblEndYear = New System.Windows.Forms.Label()
+            Me.m_nudIterations = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudStep = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudEndYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblStartYear = New System.Windows.Forms.Label()
+            Me.m_nudStartYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_tcResults = New System.Windows.Forms.TabControl()
+            Me.m_tpProgress = New System.Windows.Forms.TabPage()
+            Me.m_graphProgress = New ZedGraph.ZedGraphControl()
+            Me.m_gridProgress = New ScientificInterface.gridMPAOptimizations()
+            Me.m_tpResults = New System.Windows.Forms.TabPage()
+            Me.m_cmbAreaClosed = New System.Windows.Forms.ComboBox()
+            Me.m_btnSave = New System.Windows.Forms.Button()
+            Me.m_lblAreaClosed = New System.Windows.Forms.Label()
+            Me.m_lblBestPercentile = New System.Windows.Forms.Label()
+            Me.m_graphResults = New ZedGraph.ZedGraphControl()
+            Me.m_btnResetMPAs = New System.Windows.Forms.Button()
+            Me.m_btnConvertToMpa = New System.Windows.Forms.Button()
+            Me.m_nudBestPercentile = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_gridResults = New ScientificInterface.gridMPAOptimizations()
+            Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblSearchType = New System.Windows.Forms.Label()
+            Me.m_tlbParameters = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblMinArea = New System.Windows.Forms.Label()
+            Me.m_lblMaxArea = New System.Windows.Forms.Label()
+            Me.m_nudMinArea = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudMaxArea = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblStep = New System.Windows.Forms.Label()
+            Me.m_nudBaseYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblBaseYear = New System.Windows.Forms.Label()
+            Me.m_lblIterations = New System.Windows.Forms.Label()
+            Me.m_lblDiscRate = New System.Windows.Forms.Label()
+            Me.m_nudDiscRate = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudGenDiscRate = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblGenDiscRate = New System.Windows.Forms.Label()
+            Me.m_tcConfiguration = New System.Windows.Forms.TabControl()
+            Me.m_tabParameters = New System.Windows.Forms.TabPage()
+            Me.m_tlpObjectives = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblObjectives = New System.Windows.Forms.Label()
+            Me.m_gridGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
+            Me.m_gridFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
+            Me.m_gridObjectives = New ScientificInterface.Ecosim.gridSearchObjectivesWeight()
+            Me.m_lbFleet = New System.Windows.Forms.Label()
+            Me.m_lblGroup = New System.Windows.Forms.Label()
+            Me.m_tabMap = New System.Windows.Forms.TabPage()
+            Me.m_tlpMap = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_scMap = New System.Windows.Forms.SplitContainer()
+            Me.m_ucZoomBar = New ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar()
+            Me.m_ucZoom = New ScientificInterfaceShared.Controls.Map.ucMapZoom()
+            Me.m_tlbLayers = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plLayers = New System.Windows.Forms.Panel()
+            Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_scContent = New System.Windows.Forms.SplitContainer()
+            Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+            Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+            Me.m_bntReset = New System.Windows.Forms.Button()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudStep, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -133,16 +132,18 @@ Namespace Ecospace
             Me.m_tabParameters.SuspendLayout()
             Me.m_tlpObjectives.SuspendLayout()
             Me.m_tabMap.SuspendLayout()
+            Me.m_tlpMap.SuspendLayout()
+            CType(Me.m_scMap, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMap.Panel1.SuspendLayout()
             Me.m_scMap.Panel2.SuspendLayout()
             Me.m_scMap.SuspendLayout()
             Me.m_tlbLayers.SuspendLayout()
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.Panel2.SuspendLayout()
             Me.m_scContent.SuspendLayout()
             CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tlpMap.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -160,14 +161,16 @@ Namespace Ecospace
             '
             'm_tsMap
             '
+            Me.m_tsMap.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMap.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbMPA, Me.m_tsbSeed, Me.m_tsbEditLayers})
             resources.ApplyResources(Me.m_tsMap, "m_tsMap")
             Me.m_tsMap.Name = "m_tsMap"
+            Me.m_tsMap.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsbMPA
             '
             Me.m_tsbMPA.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearMPA, Me.m_tsmSetAllMPA})
-            Me.m_tsbMPA.Image = Global.ScientificInterface.My.Resources.MPA1
+            Me.m_tsbMPA.Image = Global.ScientificInterface.My.Resources.Resources.MPA1
             resources.ApplyResources(Me.m_tsbMPA, "m_tsbMPA")
             Me.m_tsbMPA.Name = "m_tsbMPA"
             '
@@ -184,7 +187,7 @@ Namespace Ecospace
             'm_tsbSeed
             '
             Me.m_tsbSeed.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearSeed, Me.m_tsmSetAllSeed})
-            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Seed
+            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.Seed
             resources.ApplyResources(Me.m_tsbSeed, "m_tsbSeed")
             Me.m_tsbSeed.Name = "m_tsbSeed"
             '
@@ -200,7 +203,7 @@ Namespace Ecospace
             '
             'm_tsbEditLayers
             '
-            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Importance
+            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.Importance
             resources.ApplyResources(Me.m_tsbEditLayers, "m_tsbEditLayers")
             Me.m_tsbEditLayers.Name = "m_tsbEditLayers"
             '
@@ -226,6 +229,9 @@ Namespace Ecospace
             'm_hdrParameters
             '
             resources.ApplyResources(Me.m_hdrParameters, "m_hdrParameters")
+            Me.m_hdrParameters.CanCollapseParent = False
+            Me.m_hdrParameters.CollapsedParentHeight = 0
+            Me.m_hdrParameters.IsCollapsed = False
             Me.m_hdrParameters.Name = "m_hdrParameters"
             '
             'm_lbMPA
@@ -285,13 +291,13 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_graphProgress, "m_graphProgress")
             Me.m_graphProgress.IsAutoScrollRange = True
             Me.m_graphProgress.Name = "m_graphProgress"
-            Me.m_graphProgress.ScrollGrace = 0
-            Me.m_graphProgress.ScrollMaxX = 0
-            Me.m_graphProgress.ScrollMaxY = 0
-            Me.m_graphProgress.ScrollMaxY2 = 0
-            Me.m_graphProgress.ScrollMinX = 0
-            Me.m_graphProgress.ScrollMinY = 0
-            Me.m_graphProgress.ScrollMinY2 = 0
+            Me.m_graphProgress.ScrollGrace = 0.0R
+            Me.m_graphProgress.ScrollMaxX = 0.0R
+            Me.m_graphProgress.ScrollMaxY = 0.0R
+            Me.m_graphProgress.ScrollMaxY2 = 0.0R
+            Me.m_graphProgress.ScrollMinX = 0.0R
+            Me.m_graphProgress.ScrollMinY = 0.0R
+            Me.m_graphProgress.ScrollMinY2 = 0.0R
             '
             'm_gridProgress
             '
@@ -304,22 +310,22 @@ Namespace Ecospace
             Me.m_gridProgress.BackColor = System.Drawing.Color.White
             Me.m_gridProgress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridProgress.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridProgress.CustomSort = False
             Me.m_gridProgress.FixedColumnWidths = False
             Me.m_gridProgress.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridProgress.GridToolTipActive = True
             Me.m_gridProgress.Name = "m_gridProgress"
             Me.m_gridProgress.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridProgress.UIContext = Nothing
             '
             'm_tpResults
@@ -365,13 +371,13 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_graphResults, "m_graphResults")
             Me.m_graphResults.IsAutoScrollRange = True
             Me.m_graphResults.Name = "m_graphResults"
-            Me.m_graphResults.ScrollGrace = 0
-            Me.m_graphResults.ScrollMaxX = 0
-            Me.m_graphResults.ScrollMaxY = 0
-            Me.m_graphResults.ScrollMaxY2 = 0
-            Me.m_graphResults.ScrollMinX = 0
-            Me.m_graphResults.ScrollMinY = 0
-            Me.m_graphResults.ScrollMinY2 = 0
+            Me.m_graphResults.ScrollGrace = 0.0R
+            Me.m_graphResults.ScrollMaxX = 0.0R
+            Me.m_graphResults.ScrollMaxY = 0.0R
+            Me.m_graphResults.ScrollMaxY2 = 0.0R
+            Me.m_graphResults.ScrollMinX = 0.0R
+            Me.m_graphResults.ScrollMinY = 0.0R
+            Me.m_graphResults.ScrollMinY2 = 0.0R
             '
             'm_btnResetMPAs
             '
@@ -402,27 +408,30 @@ Namespace Ecospace
             Me.m_gridResults.BackColor = System.Drawing.Color.White
             Me.m_gridResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridResults.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridResults.CustomSort = False
             Me.m_gridResults.FixedColumnWidths = False
             Me.m_gridResults.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_gridResults.GridToolTipActive = True
             Me.m_gridResults.Name = "m_gridResults"
             Me.m_gridResults.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridResults.UIContext = Nothing
             '
             'm_hdrOutput
             '
+            Me.m_hdrOutput.CanCollapseParent = False
+            Me.m_hdrOutput.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdrOutput, "m_hdrOutput")
+            Me.m_hdrOutput.IsCollapsed = False
             Me.m_hdrOutput.Name = "m_hdrOutput"
             '
             'm_lblSearchType
@@ -558,8 +567,8 @@ Namespace Ecospace
             Me.m_gridGroup.BackColor = System.Drawing.Color.White
             Me.m_gridGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridGroup.CustomSort = False
             resources.ApplyResources(Me.m_gridGroup, "m_gridGroup")
             Me.m_gridGroup.FixedColumnWidths = False
@@ -568,14 +577,14 @@ Namespace Ecospace
             Me.m_gridGroup.Manager = Nothing
             Me.m_gridGroup.Name = "m_gridGroup"
             Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridGroup.UIContext = Nothing
             '
             'm_gridFleet
@@ -588,8 +597,8 @@ Namespace Ecospace
             Me.m_gridFleet.BackColor = System.Drawing.Color.White
             Me.m_gridFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridFleet.CustomSort = False
             resources.ApplyResources(Me.m_gridFleet, "m_gridFleet")
             Me.m_gridFleet.FixedColumnWidths = False
@@ -599,14 +608,14 @@ Namespace Ecospace
             Me.m_gridFleet.Manager = Nothing
             Me.m_gridFleet.Name = "m_gridFleet"
             Me.m_gridFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridFleet.UIContext = Nothing
             '
             'm_gridObjectives
@@ -619,8 +628,8 @@ Namespace Ecospace
             Me.m_gridObjectives.BackColor = System.Drawing.Color.White
             Me.m_gridObjectives.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridObjectives.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridObjectives.CustomSort = False
             resources.ApplyResources(Me.m_gridObjectives, "m_gridObjectives")
             Me.m_gridObjectives.FixedColumnWidths = False
@@ -631,14 +640,14 @@ Namespace Ecospace
             Me.m_gridObjectives.ShowMaxPortUtil = False
             Me.m_gridObjectives.ShowMPAOptParams = False
             Me.m_gridObjectives.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridObjectives.UIContext = Nothing
             '
             'm_lbFleet
@@ -658,26 +667,42 @@ Namespace Ecospace
             Me.m_tabMap.Name = "m_tabMap"
             Me.m_tabMap.UseVisualStyleBackColor = True
             '
+            'm_tlpMap
+            '
+            resources.ApplyResources(Me.m_tlpMap, "m_tlpMap")
+            Me.m_tlpMap.Controls.Add(Me.m_tsMap, -1, 0)
+            Me.m_tlpMap.Controls.Add(Me.m_scMap, 0, 1)
+            Me.m_tlpMap.Name = "m_tlpMap"
+            '
             'm_scMap
             '
+            Me.m_scMap.BackColor = System.Drawing.SystemColors.Control
             resources.ApplyResources(Me.m_scMap, "m_scMap")
             Me.m_scMap.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
             Me.m_scMap.Name = "m_scMap"
             '
             'm_scMap.Panel1
             '
+            Me.m_scMap.Panel1.Controls.Add(Me.m_ucZoomBar)
             Me.m_scMap.Panel1.Controls.Add(Me.m_ucZoom)
             '
             'm_scMap.Panel2
             '
             Me.m_scMap.Panel2.Controls.Add(Me.m_tlbLayers)
             '
+            'm_ucZoomBar
+            '
+            resources.ApplyResources(Me.m_ucZoomBar, "m_ucZoomBar")
+            Me.m_ucZoomBar.MinimumSize = New System.Drawing.Size(100, 25)
+            Me.m_ucZoomBar.Name = "m_ucZoomBar"
+            Me.m_ucZoomBar.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
+            Me.m_ucZoomBar.UIContext = Nothing
+            '
             'm_ucZoom
             '
-            Me.m_ucZoom.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_ucZoom, "m_ucZoom")
             Me.m_ucZoom.Name = "m_ucZoom"
-            Me.m_ucZoom.PositionMode = ucMapZoom.ePositionModeTypes.Center
+            Me.m_ucZoom.PositionMode = ScientificInterfaceShared.Controls.Map.ucMapZoom.ePositionModeTypes.Center
             Me.m_ucZoom.UIContext = Nothing
             Me.m_ucZoom.ZoomPercentage = 100.0!
             '
@@ -696,7 +721,10 @@ Namespace Ecospace
             '
             'm_hdrLayers
             '
+            Me.m_hdrLayers.CanCollapseParent = False
+            Me.m_hdrLayers.CollapsedParentHeight = 0
             resources.ApplyResources(Me.m_hdrLayers, "m_hdrLayers")
+            Me.m_hdrLayers.IsCollapsed = False
             Me.m_hdrLayers.Name = "m_hdrLayers"
             '
             'm_scContent
@@ -724,7 +752,7 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.PictureBox2, "PictureBox2")
             Me.PictureBox2.BackColor = System.Drawing.Color.White
-            Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.logo_LENFEST
+            Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
             Me.PictureBox2.Name = "PictureBox2"
             Me.PictureBox2.TabStop = False
             '
@@ -733,13 +761,6 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_bntReset, "m_bntReset")
             Me.m_bntReset.Name = "m_bntReset"
             Me.m_bntReset.UseVisualStyleBackColor = True
-            '
-            'm_tlpMap
-            '
-            resources.ApplyResources(Me.m_tlpMap, "m_tlpMap")
-            Me.m_tlpMap.Controls.Add(Me.m_tsMap, -1, 0)
-            Me.m_tlpMap.Controls.Add(Me.m_scMap, 0, 1)
-            Me.m_tlpMap.Name = "m_tlpMap"
             '
             'frmMPAOptimizations
             '
@@ -783,17 +804,20 @@ Namespace Ecospace
             Me.m_tlpObjectives.ResumeLayout(False)
             Me.m_tlpObjectives.PerformLayout()
             Me.m_tabMap.ResumeLayout(False)
+            Me.m_tlpMap.ResumeLayout(False)
+            Me.m_tlpMap.PerformLayout()
             Me.m_scMap.Panel1.ResumeLayout(False)
+            Me.m_scMap.Panel1.PerformLayout()
             Me.m_scMap.Panel2.ResumeLayout(False)
+            CType(Me.m_scMap, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMap.ResumeLayout(False)
             Me.m_tlbLayers.ResumeLayout(False)
             Me.m_scContent.Panel1.ResumeLayout(False)
             Me.m_scContent.Panel2.ResumeLayout(False)
+            CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.ResumeLayout(False)
             CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tlpMap.ResumeLayout(False)
-            Me.m_tlpMap.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -807,19 +831,14 @@ Namespace Ecospace
         Private WithEvents m_tsbSeed As System.Windows.Forms.ToolStripDropDownButton
         Private WithEvents m_tsmClearSeed As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmSetAllSeed As System.Windows.Forms.ToolStripMenuItem
-        Private WithEvents m_nudStartYear As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudEndYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_tcResults As System.Windows.Forms.TabControl
         Private WithEvents m_tpProgress As System.Windows.Forms.TabPage
-        Private WithEvents m_nudStep As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudIterations As System.Windows.Forms.NumericUpDown
         Private WithEvents m_rbRandom As System.Windows.Forms.RadioButton
         Private WithEvents m_rbEcoseed As System.Windows.Forms.RadioButton
         Private WithEvents m_cmbMPA As System.Windows.Forms.ComboBox
         Private WithEvents m_tsbEditLayers As System.Windows.Forms.ToolStripButton
         Private WithEvents m_gridProgress As ScientificInterface.gridMPAOptimizations
         Private WithEvents m_tpResults As System.Windows.Forms.TabPage
-        Private WithEvents m_nudBestPercentile As System.Windows.Forms.NumericUpDown
         Private WithEvents m_btnConvertToMpa As System.Windows.Forms.Button
         Private WithEvents m_btnResetMPAs As System.Windows.Forms.Button
         Private WithEvents m_lblBestPercentile As System.Windows.Forms.Label
@@ -844,8 +863,6 @@ Namespace Ecospace
         Private WithEvents m_gridGroup As gridSearchObjectivesGroup
         Private WithEvents m_lblMinArea As System.Windows.Forms.Label
         Private WithEvents m_lblMaxArea As System.Windows.Forms.Label
-        Private WithEvents m_nudMinArea As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudMaxArea As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblStep As System.Windows.Forms.Label
         Private WithEvents m_lblIterations As System.Windows.Forms.Label
         Private WithEvents m_tlpObjectives As System.Windows.Forms.TableLayoutPanel
@@ -856,17 +873,25 @@ Namespace Ecospace
         Private WithEvents m_gridObjectives As gridSearchObjectivesWeight
         Private WithEvents m_btnSave As System.Windows.Forms.Button
         Private WithEvents m_lblAreaClosed As System.Windows.Forms.Label
-        Private WithEvents m_nudBaseYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblBaseYear As System.Windows.Forms.Label
         Private WithEvents m_cmbAreaClosed As System.Windows.Forms.ComboBox
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblDiscRate As System.Windows.Forms.Label
-        Private WithEvents m_nudDiscRate As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudGenDiscRate As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblGenDiscRate As System.Windows.Forms.Label
         Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
         Private WithEvents PictureBox2 As System.Windows.Forms.PictureBox
         Private WithEvents m_bntReset As System.Windows.Forms.Button
         Private WithEvents m_tlpMap As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_ucZoomBar As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
+        Private WithEvents m_nudStartYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudEndYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudStep As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudIterations As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudBestPercentile As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudMinArea As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudMaxArea As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudBaseYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudDiscRate As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudGenDiscRate As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 End Namespace

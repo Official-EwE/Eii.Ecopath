@@ -110,6 +110,10 @@ Namespace Controls.Map
             AddHandler zoomContainer.OnPositionChanged, AddressOf OnMapPositionChanged
 
             Me.m_lZoomContainers.Add(zoomContainer)
+            ' All all existing layers manually - 'cause we may have missed addition events
+            For Each l As cLayer In zoomContainer.Map.Layers
+                Me.m_lLayers.Add(l)
+            Next
 
             AddHandler zoomContainer.Map.LayerAdded, AddressOf OnMapLayerAdded
             AddHandler zoomContainer.Map.LayerRemoved, AddressOf OnMapLayerRemoved
@@ -133,6 +137,11 @@ Namespace Controls.Map
             RemoveHandler zoomContainer.MouseWheel, AddressOf OnMapMousewheel
             RemoveHandler zoomContainer.OnPositionChanged, AddressOf OnMapPositionChanged
             Me.m_lZoomContainers.Remove(zoomContainer)
+
+            ' Remove all layers manually - 'cause we're going to miss removal events
+            For Each l As cLayer In zoomContainer.Map.Layers
+                Me.m_lLayers.Remove(l)
+            Next
 
         End Sub
 

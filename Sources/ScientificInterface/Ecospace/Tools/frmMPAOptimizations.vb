@@ -170,6 +170,7 @@ Namespace Ecospace
             ' Add LayersControl
             Me.m_ucLayers = New ucLayersControl()
             Me.m_ucLayers.UIContext = Me.UIContext
+            Me.m_ucLayers.Dock = DockStyle.Fill
             Me.m_plLayers.Controls.Add(Me.m_ucLayers)
 
             ' Configure objective grids
@@ -188,6 +189,8 @@ Namespace Ecospace
 
             ' Configure map
             Me.m_ucZoom.UIContext = Me.UIContext
+            Me.m_ucZoomBar.UIContext = Me.UIContext
+            Me.m_ucZoomBar.AddZoomContainer(Me.m_ucZoom)
 
             Me.m_propSearchType = New cIntegerProperty(MPAOpt, eVarNameFlags.MPAOptSearchType)
             AddHandler Me.m_propSearchType.PropertyChanged, AddressOf OnSearchTypeChanged
@@ -219,14 +222,11 @@ Namespace Ecospace
 
         End Sub
 
-        ''' <summary>
-        ''' Cleanup
-        ''' </summary>
-        Private Sub frmEcoseed_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles Me.Disposed
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
             Dim alays As cLayer() = Me.m_lLayers.ToArray
 
+            Me.m_ucZoomBar.RemoveZoomContainer(Me.m_ucZoom)
             For Each l As cLayer In alays
                 Me.RemoveLayer(l)
             Next
@@ -252,6 +252,9 @@ Namespace Ecospace
             Me.m_fpMPA.Release()
             Me.m_fpStartYear.Release()
             Me.m_fpStepSize.Release()
+
+            MyBase.OnFormClosed(e)
+
         End Sub
 
 #End Region ' Form
@@ -1374,7 +1377,7 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: transmogrify non-zero values
-                        iValue = IIf(iValue = 0, iValue, iConvertTo)
+                        iValue = IIF(iValue = 0, iValue, iConvertTo)
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = iValue
@@ -1409,7 +1412,7 @@ Namespace Ecospace
                     ' Must convert?
                     If iConvertTo <> cCore.NULL_VALUE Then
                         ' #Yes: ognotrizarp non-zero values
-                        sValue = CInt(IIf(sValue = 0, sValue, iConvertTo))
+                        sValue = CInt(IIF(sValue = 0, sValue, iConvertTo))
                     End If
                     ' Apply!
                     lDest.Cell(iRow, iCol) = sValue
