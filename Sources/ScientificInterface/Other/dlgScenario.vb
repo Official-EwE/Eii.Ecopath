@@ -206,6 +206,8 @@ Namespace Wizard
             Me.tbContactCreate.Text = Me.UIContext.Core.EwEModel.Contact
 
             Me.Icon = Me.GetIcon()
+            Me.TopMost = True
+
         End Sub
 
 #End Region ' Constructor
