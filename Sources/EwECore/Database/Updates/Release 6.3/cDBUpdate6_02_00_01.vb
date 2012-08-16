@@ -161,7 +161,7 @@ Friend Class cDBUpdate6_02_00_01
         Dim dataRelCin As Single(,) = Nothing
         Dim dataDepthA As Single(,) = Nothing : Dim dataXVel As Single(,) = Nothing : Dim dataYVel As Single(,) = Nothing
         Dim dataMPA As Integer(,) = Nothing
-        Dim dataHabitat As Integer(,) = Nothing
+        Dim dataHabitat As Integer(,,) = Nothing
         Dim dataRegion As Integer(,) = Nothing
         Dim dataPort As Integer(,,) = Nothing
         Dim dataSailingCost As Single(,,) = Nothing
@@ -215,7 +215,7 @@ Friend Class cDBUpdate6_02_00_01
         ReDim dataXVel(InRow, InCol)
         ReDim dataYVel(InRow, InCol)
         ReDim dataDepthA(InRow, InCol)
-        ReDim dataHabitat(InRow, InCol)
+        ReDim dataHabitat(InRow, InCol, lHabitatID.Count)
         ReDim dataMPA(InRow, InCol)
         ReDim dataRegion(InRow, InCol)
         ReDim dataPort(lFleetID.Count, InRow, InCol)
@@ -240,7 +240,7 @@ Friend Class cDBUpdate6_02_00_01
             ' Exclude 'all' habitat map
             i = lHabitatID.IndexOf(CInt(reader("HabitatID")))
             If (i > 0) Then
-                dataHabitat(iRow, iCol) = i
+                dataHabitat(iRow, iCol, i) = 1
             End If
 
             i = lMPAID.IndexOf(CInt(reader("MPAID")))
@@ -333,7 +333,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, dataDepth, True, i)
+                drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, i, cStringUtils.eFilterIndexTypes.LastIndex, dataDepth, True)
                 drow.EndEdit()
             End If
         Next
@@ -395,7 +395,7 @@ Friend Class cDBUpdate6_02_00_01
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
                 ' Save ports on land only
-                drow("PortMap") = cStringUtils.ArrayToString(dataPort, i, cStringUtils.eFilterIndexTypes.FirstIndex, dataDepth, False)
+                drow("PortMap") = cStringUtils.ArrayToString(dataPort, i, cStringUtils.eFilterIndexTypes.FirstIndex)
                 ' Save sailing cost on water only
                 drow("SailCostMap") = cStringUtils.ArrayToString(dataSailingCost, i, cStringUtils.eFilterIndexTypes.FirstIndex, dataDepth)
                 drow.EndEdit()
