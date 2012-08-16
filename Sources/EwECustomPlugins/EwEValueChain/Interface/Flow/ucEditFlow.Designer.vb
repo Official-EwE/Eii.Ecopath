@@ -53,12 +53,6 @@ Partial Class ucEditFlow
         Me.m_tsbArrange = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsddZoom = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.m_tsmiZoom50 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiZoom75 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiZoom100 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiZoom125 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiZoom150 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiZoom200 = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_split = New System.Windows.Forms.SplitContainer()
         Me.m_plFlow = New EwEValueChainPlugin.plFlow()
         Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
@@ -252,49 +246,12 @@ Partial Class ucEditFlow
         '
         'm_tsddZoom
         '
-        Me.m_tsddZoom.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiZoom50, Me.m_tsmiZoom75, Me.m_tsmiZoom100, Me.m_tsmiZoom125, Me.m_tsmiZoom150, Me.m_tsmiZoom200})
         Me.m_tsddZoom.Image = CType(resources.GetObject("m_tsddZoom.Image"), System.Drawing.Image)
         Me.m_tsddZoom.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tsddZoom.Name = "m_tsddZoom"
         Me.m_tsddZoom.Size = New System.Drawing.Size(52, 35)
         Me.m_tsddZoom.Text = "Zoom"
         Me.m_tsddZoom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        '
-        'm_tsmiZoom50
-        '
-        Me.m_tsmiZoom50.Name = "m_tsmiZoom50"
-        Me.m_tsmiZoom50.Size = New System.Drawing.Size(102, 22)
-        Me.m_tsmiZoom50.Text = "50%"
-        '
-        'm_tsmiZoom75
-        '
-        Me.m_tsmiZoom75.Name = "m_tsmiZoom75"
-        Me.m_tsmiZoom75.Size = New System.Drawing.Size(102, 22)
-        Me.m_tsmiZoom75.Text = "75%"
-        '
-        'm_tsmiZoom100
-        '
-        Me.m_tsmiZoom100.Name = "m_tsmiZoom100"
-        Me.m_tsmiZoom100.Size = New System.Drawing.Size(102, 22)
-        Me.m_tsmiZoom100.Text = "100%"
-        '
-        'm_tsmiZoom125
-        '
-        Me.m_tsmiZoom125.Name = "m_tsmiZoom125"
-        Me.m_tsmiZoom125.Size = New System.Drawing.Size(102, 22)
-        Me.m_tsmiZoom125.Text = "125%"
-        '
-        'm_tsmiZoom150
-        '
-        Me.m_tsmiZoom150.Name = "m_tsmiZoom150"
-        Me.m_tsmiZoom150.Size = New System.Drawing.Size(102, 22)
-        Me.m_tsmiZoom150.Text = "150%"
-        '
-        'm_tsmiZoom200
-        '
-        Me.m_tsmiZoom200.Name = "m_tsmiZoom200"
-        Me.m_tsmiZoom200.Size = New System.Drawing.Size(102, 22)
-        Me.m_tsmiZoom200.Text = "200%"
         '
         'm_split
         '
@@ -419,12 +376,6 @@ Partial Class ucEditFlow
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsddZoom As System.Windows.Forms.ToolStripDropDownButton
-    Private WithEvents m_tsmiZoom50 As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiZoom75 As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiZoom100 As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiZoom125 As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiZoom150 As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiZoom200 As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbSave As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiExportToImage As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiSave As System.Windows.Forms.ToolStripMenuItem

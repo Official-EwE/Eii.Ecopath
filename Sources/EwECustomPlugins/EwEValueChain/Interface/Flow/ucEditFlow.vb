@@ -51,12 +51,20 @@ Public Class ucEditFlow
         Me.Data = data
         Me.Diagram = diagram
 
+        Dim levels As Single() = Me.m_plFlow.ZoomLevels
+        For i As Integer = 0 To levels.Length - 1
+            Dim ctrl As New ToolStripMenuItem(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_VALUE_PERCENTAGE, levels(i) * 100), Nothing, AddressOf OnZoom)
+            ctrl.Tag = levels(i)
+            Me.m_tsddZoom.DropDownItems.Add(ctrl)
+        Next
+
         If (data.Parameters IsNot Nothing) Then
             Me.m_plFlow.ZoomFactor = data.Parameters.ZoomFactor
         End If
         Me.UpdateControls()
 
         AddHandler Me.m_plFlow.EditModeChanged, AddressOf Me.OnEditModeChanged
+        AddHandler Me.m_plFlow.ZoomChanged, AddressOf Me.OnZoomChanged
 
     End Sub
 
@@ -73,6 +81,8 @@ Public Class ucEditFlow
 
             ' Disconnect
             RemoveHandler Me.m_plFlow.EditModeChanged, AddressOf OnEditModeChanged
+            RemoveHandler Me.m_plFlow.ZoomChanged, AddressOf Me.OnZoomChanged
+
             ' Default cleanup
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
@@ -210,39 +220,20 @@ Public Class ucEditFlow
 
 #Region " Zoomzoom "
 
-    Private Sub m_tsddZoom_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-    Handles m_tsddZoom.Click
-        ' NOP
+    Private Sub OnZoom(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Try
+            Me.m_plFlow.ZoomFactor = CSng(DirectCast(sender, ToolStripMenuItem).Tag)
+        Catch ex As Exception
+            cLog.Write(ex, "ValueChain.ucEditFlow::OnZoom")
+        End Try
     End Sub
 
-    Private Sub m_tsmiZoom50_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiZoom50.Click
-        Me.m_plFlow.ZoomFactor = 0.5!
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub m_tsmiZoom75_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiZoom75.Click
-        Me.m_plFlow.ZoomFactor = 0.75!
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub m_tsmiZoom100_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiZoom100.Click
-        Me.m_plFlow.ZoomFactor = 1.0!
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub m_tsmiZoom125_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiZoom125.Click
-        Me.m_plFlow.ZoomFactor = 1.25!
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub m_tsmiZoom150_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiZoom150.Click
-        Me.m_plFlow.ZoomFactor = 1.5!
-        Me.UpdateControls()
-    End Sub
-
-    Private Sub m_tsmiZoom200_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiZoom200.Click
-        Me.m_plFlow.ZoomFactor = 2.0!
-        Me.UpdateControls()
+    Private Sub OnZoomChanged(sender As plFlow, sZoom As Single)
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+            cLog.Write(ex, "ValueChain.ucEditFlow::OnZoomChanged")
+        End Try
     End Sub
 
 #End Region ' moozmooZ
@@ -261,12 +252,9 @@ Public Class ucEditFlow
         Me.m_tsbDelete.Checked = (Me.m_plFlow.EditMode = plFlow.eEditMode.Delete)
         Me.m_tsbShowGrid.Checked = Me.m_plFlow.ShowGrid
 
-        Me.m_tsmiZoom50.Checked = (Me.m_plFlow.ZoomFactor = 0.5!)
-        Me.m_tsmiZoom75.Checked = (Me.m_plFlow.ZoomFactor = 0.75)
-        Me.m_tsmiZoom100.Checked = (Me.m_plFlow.ZoomFactor = 1.0!)
-        Me.m_tsmiZoom125.Checked = (Me.m_plFlow.ZoomFactor = 1.25!)
-        Me.m_tsmiZoom150.Checked = (Me.m_plFlow.ZoomFactor = 1.5!)
-        Me.m_tsmiZoom200.Checked = (Me.m_plFlow.ZoomFactor = 2.0!)
+        For Each item As ToolStripMenuItem In Me.m_tsddZoom.DropDownItems
+            item.Checked = (CSng(item.Tag) = Me.m_plFlow.ZoomFactor)
+        Next
 
         '' Update list of avialable diagrams
         'With Me.m_tsddDiagram.DropDownItems

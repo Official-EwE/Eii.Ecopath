@@ -124,6 +124,7 @@ Public Class plFlow
     End Enum
 
     Public Event EditModeChanged(ByVal sender As plFlow, ByVal mode As eEditMode)
+    Public Event ZoomChanged(ByVal sender As plFlow, ByVal sZoom As Single)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -175,12 +176,31 @@ Public Class plFlow
             Return Me.m_sScale
         End Get
         Set(ByVal value As Single)
+            If (value = Me.m_sScale) Then Return
             Me.m_sScale = value
             For Each uc As plUnitControl In Me.m_dtControls.Values
                 uc.ZoomFactor = value
             Next
             Me.Invalidate(True)
+            RaiseEvent ZoomChanged(Me, Me.m_sScale)
         End Set
+    End Property
+
+    Public Sub Zoom(ByVal bZoomIn As Boolean)
+        Dim i As Integer = -1
+        Dim levels As Single() = Me.ZoomLevels
+        For j As Integer = 0 To levels.Length - 1
+            If Me.ZoomFactor = levels(j) Then i = j
+        Next
+        If (i = -1) Then Return
+        If bZoomIn Then i += 1 Else i -= 1
+        Me.ZoomFactor = levels(Math.Max(0, Math.Min(i, levels.Length - 1)))
+    End Sub
+
+    Public ReadOnly Property ZoomLevels() As Single()
+        Get
+            Return New Single() {0.5!, 0.75!, 1.0!, 1.25!, 1.5!, 2.0!}
+        End Get
     End Property
 
 #End Region ' Scale
@@ -440,6 +460,17 @@ Public Class plFlow
         End Select
     End Sub
 
+    Protected Overrides Sub OnMouseHover(ByVal e As System.EventArgs)
+        Me.Focus()
+    End Sub
+
+    Protected Overrides Sub OnMouseWheel(e As System.Windows.Forms.MouseEventArgs)
+        If My.Computer.Keyboard.CtrlKeyDown Then
+            Me.Zoom(e.Delta > 0)
+        Else
+            MyBase.OnMouseWheel(e)
+        End If
+    End Sub
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Paint the panel and all unit connectors
