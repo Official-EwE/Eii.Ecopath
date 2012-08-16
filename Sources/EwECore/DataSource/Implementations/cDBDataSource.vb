@@ -1586,12 +1586,8 @@ Namespace DataSources
                         ' JS 23apr07: Leading B and QB groups are calculated at runtime, no longer stored in DB
                         ' JS 23nov10: Hah, three and a half years later these values are stored again
                         stanzaDS.BaseStanza(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingLifeStage", cCore.NULL_VALUE))
-                        stanzaDS.BaseStanza(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanza(iStanza)))
-
-                        ' JS 14jun12: Leading CB separated from leading B
+                        ' JS 14jun12: Leading CB separated from leading B (default to LeadingLifeStage)
                         stanzaDS.BaseStanzaCB(iStanza) = CInt(Me.m_db.ReadSafe(rdStanza, "LeadingCB", stanzaDS.BaseStanza(iStanza)))
-                        stanzaDS.BaseStanzaCB(iStanza) = Math.Max(1, Math.Min(stanzaDS.Nstanza(iStanza), stanzaDS.BaseStanzaCB(iStanza)))
-
 
                     Catch ex As Exception
                         Me.LogMessage(String.Format("Error {0} occurred while reading Stanza {1}", ex.Message, stanzaDS.StanzaName(iStanza)))

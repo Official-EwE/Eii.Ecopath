@@ -164,14 +164,18 @@ Public Class gridEditMultiStanza
 
     Public Sub SetStanzaGroupValues(ByVal bApplyToCore As Boolean)
 
-        Dim iLeading As Integer = Me.m_stanzagroup.LeadingB
+        Dim iLeadingB As Integer = Me.m_stanzagroup.LeadingB
+        Dim iLeadingCB As Integer = Me.m_stanzagroup.LeadingCB
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
             If CBool(Me(iStanza, eColumnTypes.LeadingB).Value) Then
-                iLeading = iStanza
+                iLeadingB = iStanza
+            End If
+            If CBool(Me(iStanza, eColumnTypes.LeadingCB).Value) Then
+                iLeadingCB = iStanza
             End If
         Next
-        Me.m_stanzagroup.LeadingB = iLeading
-        Me.m_stanzagroup.LeadingCB = iLeading
+        Me.m_stanzagroup.LeadingB = iLeadingB
+        Me.m_stanzagroup.LeadingCB = iLeadingCB
 
         For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
 

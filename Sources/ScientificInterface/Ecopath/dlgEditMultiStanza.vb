@@ -116,7 +116,6 @@ Namespace Ecopath
 
             Me.m_cbEggAtSpawn.Enabled = bEcospaceLoaded
 
-            Me.m_grid.RefreshContent()
             Me.UpdateControls()
 
         End Sub

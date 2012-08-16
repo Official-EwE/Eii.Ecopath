@@ -10747,7 +10747,8 @@ Public Class cCore
             Dim wmatwinf As Single
             Dim rp As Single
             Dim ba As Single
-            Dim leading As Integer
+            Dim leadingB As Integer
+            Dim leadingCB As Integer
             'maybe not the correct messagetype but it seems to work
             Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.STANZA_CALCULATEPARMS_TOOMANYMISSING, stanza.Name), _
                                             eMessageType.TooManyMissingParameters, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.Stanza)
@@ -10775,7 +10776,8 @@ Public Class cCore
                 cb(i) = stanza.CB(i)
                 FirstAge(i) = stanza.StartAge(i)
             Next
-            leading = stanza.LeadingB
+            leadingB = stanza.LeadingB
+            leadingCB = stanza.LeadingCB
 
             If SecondAge(nStanzas) = 0 Then
                 For i = 2 To nStanzas
@@ -10820,8 +10822,8 @@ Public Class cCore
             stanza.BiomassAccumulationRate = ba
             stanza.HatchCode = iHatchCode
             stanza.FixedFecundity = bFixedFecundity
-            stanza.LeadingB = leading
-            stanza.LeadingCB = leading
+            stanza.LeadingB = leadingB
+            stanza.LeadingCB = leadingCB
 
             'stanza.AllowValidation = True
 
