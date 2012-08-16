@@ -53,11 +53,14 @@ Namespace Other
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            'Me.m_tsddFields.DropDown.Items.Clear()
+
             If disposing AndAlso components IsNot Nothing Then
+                Me.m_fpVerboseLevel.Release()
+                Me.m_fpVerboseLevel = Nothing
                 components.Dispose()
             End If
             MyBase.Dispose(disposing)
+
         End Sub
 
 #End Region ' Constructors
