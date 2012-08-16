@@ -41,38 +41,38 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTimeSeries))
-            Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-            Me.plSketchPad = New System.Windows.Forms.Panel
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar
-            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucTimeSeriesSketchPad
-            Me.m_tlbShapeToolBox = New System.Windows.Forms.TableLayoutPanel
-            Me.m_shapeToolbox = New ScientificInterfaceShared.Controls.ucShapeToolbox
-            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar
-            Me.SplitContainer1.Panel1.SuspendLayout()
-            Me.SplitContainer1.Panel2.SuspendLayout()
-            Me.SplitContainer1.SuspendLayout()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.plSketchPad = New System.Windows.Forms.Panel()
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_sketchPadToolbar = New ScientificInterfaceShared.Controls.ucSketchPadToolbar()
+            Me.m_sketchPad = New ScientificInterfaceShared.Controls.ucTimeSeriesSketchPad()
+            Me.m_tlbShapeToolBox = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_shapeToolbox = New ScientificInterfaceShared.Controls.ucShapeToolbox()
+            Me.m_shapeToolboxToolbar = New ScientificInterfaceShared.Controls.ucShapeToolboxToolbar()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_scMain.Panel1.SuspendLayout()
+            Me.m_scMain.Panel2.SuspendLayout()
+            Me.m_scMain.SuspendLayout()
             Me.plSketchPad.SuspendLayout()
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_tlbShapeToolBox.SuspendLayout()
             Me.SuspendLayout()
             '
-            'SplitContainer1
+            'm_scMain
             '
-            Me.SplitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-            resources.ApplyResources(Me.SplitContainer1, "SplitContainer1")
-            Me.SplitContainer1.Name = "SplitContainer1"
+            Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+            resources.ApplyResources(Me.m_scMain, "m_scMain")
+            Me.m_scMain.Name = "m_scMain"
             '
-            'SplitContainer1.Panel1
+            'm_scMain.Panel1
             '
-            Me.SplitContainer1.Panel1.Controls.Add(Me.plSketchPad)
+            Me.m_scMain.Panel1.Controls.Add(Me.plSketchPad)
             '
-            'SplitContainer1.Panel2
+            'm_scMain.Panel2
             '
-            resources.ApplyResources(Me.SplitContainer1.Panel2, "SplitContainer1.Panel2")
-            Me.SplitContainer1.Panel2.Controls.Add(Me.m_tlbShapeToolBox)
+            resources.ApplyResources(Me.m_scMain.Panel2, "m_scMain.Panel2")
+            Me.m_scMain.Panel2.Controls.Add(Me.m_tlbShapeToolBox)
             '
             'plSketchPad
             '
@@ -93,20 +93,28 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
             Me.m_sketchPadToolbar.Handler = Nothing
             Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
+            Me.m_sketchPadToolbar.UIContext = Nothing
             '
             'm_sketchPad
             '
+            Me.m_sketchPad.AllowedEdits = ScientificInterfaceShared.Controls.ucSketchPad.eMouseInteractionMode.DrawShape
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
+            Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.Editable = False
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
             Me.m_sketchPad.Name = "m_sketchPad"
+            Me.m_sketchPad.NumDataPoints = 0
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
+            Me.m_sketchPad.ShowValueTooltip = True
             Me.m_sketchPad.ShowXMark = False
+            Me.m_sketchPad.ShowYMark = False
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Dots
+            Me.m_sketchPad.UIContext = Nothing
+            Me.m_sketchPad.XAxisMaxValue = -9999
             Me.m_sketchPad.XMarkValue = -9999.0!
             Me.m_sketchPad.YAxisAutoScaleMode = ScientificInterfaceShared.Definitions.eAxisAutoScaleModeTypes.[Auto]
             Me.m_sketchPad.YAxisMaxValue = 0.0!
@@ -129,6 +137,8 @@ Namespace Ecosim
             Me.m_shapeToolbox.Handler = Nothing
             Me.m_shapeToolbox.Name = "m_shapeToolbox"
             Me.m_shapeToolbox.Selection = New EwECore.cShapeData(-1) {}
+            Me.m_shapeToolbox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
+            Me.m_shapeToolbox.UIContext = Nothing
             Me.m_shapeToolbox.YAxisMinValue = -9999.0!
             '
             'm_shapeToolboxToolbar
@@ -141,12 +151,13 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.SplitContainer1)
+            Me.Controls.Add(Me.m_scMain)
             Me.Name = "frmTimeSeries"
             Me.TabText = ""
-            Me.SplitContainer1.Panel1.ResumeLayout(False)
-            Me.SplitContainer1.Panel2.ResumeLayout(False)
-            Me.SplitContainer1.ResumeLayout(False)
+            Me.m_scMain.Panel1.ResumeLayout(False)
+            Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_scMain.ResumeLayout(False)
             Me.plSketchPad.ResumeLayout(False)
             Me.TableLayoutPanel1.ResumeLayout(False)
             Me.m_tlbShapeToolBox.ResumeLayout(False)
@@ -154,13 +165,13 @@ Namespace Ecosim
 
         End Sub
         Friend WithEvents plSketchPad As System.Windows.Forms.Panel
-        Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_sketchPadToolbar As ucSketchPadToolbar
         Friend WithEvents m_sketchPad As ucTimeSeriesSketchPad
         Friend WithEvents m_tlbShapeToolBox As System.Windows.Forms.TableLayoutPanel
         Friend WithEvents m_shapeToolbox As ucShapeToolbox
         Friend WithEvents m_shapeToolboxToolbar As ucShapeToolboxToolbar
+        Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
 
     End Class
 End Namespace
