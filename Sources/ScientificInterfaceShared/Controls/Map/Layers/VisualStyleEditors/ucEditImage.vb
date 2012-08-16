@@ -113,7 +113,10 @@ Namespace Controls
 #Region " Overridables "
 
         Public Overrides Function Apply(ByVal vs As cVisualStyle) As Boolean
-            vs.Image = Me.m_glyphSelect.SelectedImage
+            Dim img As Image = Me.m_glyphSelect.SelectedImage
+            If (img IsNot Nothing) Then
+                vs.Image = Me.m_glyphSelect.SelectedImage
+            End If
             Return True
         End Function
 
