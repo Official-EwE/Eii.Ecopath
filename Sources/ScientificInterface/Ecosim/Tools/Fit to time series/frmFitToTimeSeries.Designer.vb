@@ -88,12 +88,15 @@ Namespace Ecosim
             Me.m_lbVariancePrimaryProd = New System.Windows.Forms.Label()
             Me.m_lbSplinePoints = New System.Windows.Forms.Label()
             Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            CType(Me.m_split1, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_split1.Panel1.SuspendLayout()
             Me.m_split1.Panel2.SuspendLayout()
             Me.m_split1.SuspendLayout()
+            CType(Me.m_splitSearch, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_splitSearch.Panel1.SuspendLayout()
             Me.m_splitSearch.Panel2.SuspendLayout()
             Me.m_splitSearch.SuspendLayout()
+            CType(Me.m_scGrids, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scGrids.Panel1.SuspendLayout()
             Me.m_scGrids.Panel2.SuspendLayout()
             Me.m_scGrids.SuspendLayout()
@@ -108,6 +111,7 @@ Namespace Ecosim
             CType(Me.m_nudLastYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudFirstYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSplinePts, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_splitAnomalyShape, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_splitAnomalyShape.Panel1.SuspendLayout()
             Me.m_splitAnomalyShape.Panel2.SuspendLayout()
             Me.m_splitAnomalyShape.SuspendLayout()
@@ -164,8 +168,8 @@ Namespace Ecosim
             'm_splitSearch
             '
             Me.m_splitSearch.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_splitSearch.Location = New System.Drawing.Point(0, 73)
             Me.m_splitSearch.Margin = New System.Windows.Forms.Padding(0)
             Me.m_splitSearch.Name = "m_splitSearch"
@@ -208,7 +212,7 @@ Namespace Ecosim
             'm_hdrFishingMortality
             '
             Me.m_hdrFishingMortality.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrFishingMortality.CanCollapseParent = False
             Me.m_hdrFishingMortality.CollapsedParentHeight = 0
             Me.m_hdrFishingMortality.IsCollapsed = False
@@ -224,8 +228,8 @@ Namespace Ecosim
             '
             Me.m_grid.AllowBlockSelect = True
             Me.m_grid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -233,8 +237,8 @@ Namespace Ecosim
             Me.m_grid.BackColor = System.Drawing.Color.White
             Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_grid.CustomSort = False
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
@@ -245,14 +249,14 @@ Namespace Ecosim
             Me.m_grid.Name = "m_grid"
             Me.m_grid.Size = New System.Drawing.Size(272, 176)
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.TabIndex = 1
             Me.m_grid.UIContext = Nothing
             '
@@ -279,8 +283,8 @@ Namespace Ecosim
             '
             Me.m_gridOutput.AllowBlockSelect = True
             Me.m_gridOutput.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_gridOutput.AutoSizeMinHeight = 10
             Me.m_gridOutput.AutoSizeMinWidth = 10
             Me.m_gridOutput.AutoStretchColumnsToFitWidth = False
@@ -288,8 +292,8 @@ Namespace Ecosim
             Me.m_gridOutput.BackColor = System.Drawing.Color.White
             Me.m_gridOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_gridOutput.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                        Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                        Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
             Me.m_gridOutput.CustomSort = False
             Me.m_gridOutput.FixedColumnWidths = True
             Me.m_gridOutput.FocusStyle = SourceGrid2.FocusStyle.None
@@ -300,14 +304,14 @@ Namespace Ecosim
             Me.m_gridOutput.NumAICPoints = 0
             Me.m_gridOutput.Size = New System.Drawing.Size(272, 149)
             Me.m_gridOutput.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                        Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                        Or SourceGrid2.GridSpecialKeys.Delete) _
-                        Or SourceGrid2.GridSpecialKeys.Arrows) _
-                        Or SourceGrid2.GridSpecialKeys.Tab) _
-                        Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                        Or SourceGrid2.GridSpecialKeys.Enter) _
-                        Or SourceGrid2.GridSpecialKeys.Escape) _
-                        Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridOutput.TabIndex = 0
             Me.m_gridOutput.UIContext = Nothing
             '
@@ -324,7 +328,7 @@ Namespace Ecosim
             'm_hdrOutput
             '
             Me.m_hdrOutput.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrOutput.CanCollapseParent = False
             Me.m_hdrOutput.CollapsedParentHeight = 0
             Me.m_hdrOutput.IsCollapsed = False
@@ -365,11 +369,12 @@ Namespace Ecosim
             Me.m_tbResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
             Me.m_tbResults.Size = New System.Drawing.Size(272, 117)
             Me.m_tbResults.TabIndex = 1
+            Me.m_tbResults.WordWrap = False
             '
             'm_hdrIterations
             '
             Me.m_hdrIterations.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrIterations.CanCollapseParent = False
             Me.m_hdrIterations.CollapsedParentHeight = 0
             Me.m_hdrIterations.IsCollapsed = False
@@ -422,7 +427,7 @@ Namespace Ecosim
             'm_hdrSearchTypes
             '
             Me.m_hdrSearchTypes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrSearchTypes.CanCollapseParent = False
             Me.m_hdrSearchTypes.CollapsedParentHeight = 0
             Me.m_hdrSearchTypes.IsCollapsed = False
@@ -459,8 +464,8 @@ Namespace Ecosim
             'm_tabSearchOptions
             '
             Me.m_tabSearchOptions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tabSearchOptions.Controls.Add(Me.tpVulnerabilitySearch)
             Me.m_tabSearchOptions.Controls.Add(Me.m_tpAnomalySearch)
             Me.m_tabSearchOptions.Location = New System.Drawing.Point(0, 26)
@@ -534,7 +539,7 @@ Namespace Ecosim
             'm_vulnerabilityBlockCodeSelector
             '
             Me.m_vulnerabilityBlockCodeSelector.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_vulnerabilityBlockCodeSelector.Location = New System.Drawing.Point(0, 30)
             Me.m_vulnerabilityBlockCodeSelector.Margin = New System.Windows.Forms.Padding(0)
             Me.m_vulnerabilityBlockCodeSelector.Name = "m_vulnerabilityBlockCodeSelector"
@@ -547,8 +552,8 @@ Namespace Ecosim
             'm_vulnerabilityBlockMatrix
             '
             Me.m_vulnerabilityBlockMatrix.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_vulnerabilityBlockMatrix.BlockColors = Nothing
             Me.m_vulnerabilityBlockMatrix.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_vulnerabilityBlockMatrix.Location = New System.Drawing.Point(-1, 112)
@@ -636,8 +641,8 @@ Namespace Ecosim
             'm_splitAnomalyShape
             '
             Me.m_splitAnomalyShape.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_splitAnomalyShape.Location = New System.Drawing.Point(0, 53)
             Me.m_splitAnomalyShape.Margin = New System.Windows.Forms.Padding(0)
             Me.m_splitAnomalyShape.Name = "m_splitAnomalyShape"
@@ -657,6 +662,7 @@ Namespace Ecosim
             '
             'm_sketchPad
             '
+            Me.m_sketchPad.AllowedEdits = ScientificInterfaceShared.Controls.ucSketchPad.eMouseInteractionMode.DrawShape
             Me.m_sketchPad.AxisTickMarkDisplayMode = ScientificInterfaceShared.Definitions.eAxisTickmarkDisplayModeTypes.Absolute
             Me.m_sketchPad.BackColor = System.Drawing.Color.FromArgb(CType(CType(231, Byte), Integer), CType(CType(235, Byte), Integer), CType(CType(250, Byte), Integer))
             Me.m_sketchPad.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -693,7 +699,7 @@ Namespace Ecosim
             'm_hdrAppliedFF
             '
             Me.m_hdrAppliedFF.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrAppliedFF.CanCollapseParent = False
             Me.m_hdrAppliedFF.CollapsedParentHeight = 0
             Me.m_hdrAppliedFF.IsCollapsed = False
@@ -709,8 +715,8 @@ Namespace Ecosim
             '
             Me.m_shapeToolBox.AllowCheckboxes = False
             Me.m_shapeToolBox.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_shapeToolBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_shapeToolBox.Color = System.Drawing.Color.Empty
             Me.m_shapeToolBox.Handler = Nothing
@@ -763,7 +769,7 @@ Namespace Ecosim
             'm_hdrSearch
             '
             Me.m_hdrSearch.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrSearch.CanCollapseParent = False
             Me.m_hdrSearch.CollapsedParentHeight = 0
             Me.m_hdrSearch.IsCollapsed = False
@@ -788,13 +794,16 @@ Namespace Ecosim
             Me.m_split1.Panel1.ResumeLayout(False)
             Me.m_split1.Panel1.PerformLayout()
             Me.m_split1.Panel2.ResumeLayout(False)
+            CType(Me.m_split1, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_split1.ResumeLayout(False)
             Me.m_splitSearch.Panel1.ResumeLayout(False)
             Me.m_splitSearch.Panel2.ResumeLayout(False)
+            CType(Me.m_splitSearch, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_splitSearch.ResumeLayout(False)
             Me.m_scGrids.Panel1.ResumeLayout(False)
             Me.m_scGrids.Panel2.ResumeLayout(False)
             Me.m_scGrids.Panel2.PerformLayout()
+            CType(Me.m_scGrids, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scGrids.ResumeLayout(False)
             Me.m_tlbSearch.ResumeLayout(False)
             Me.m_tlbSearch.PerformLayout()
@@ -813,6 +822,7 @@ Namespace Ecosim
             CType(Me.m_nudSplinePts, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_splitAnomalyShape.Panel1.ResumeLayout(False)
             Me.m_splitAnomalyShape.Panel2.ResumeLayout(False)
+            CType(Me.m_splitAnomalyShape, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_splitAnomalyShape.ResumeLayout(False)
             Me.ResumeLayout(False)
 
