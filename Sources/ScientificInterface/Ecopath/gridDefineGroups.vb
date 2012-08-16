@@ -218,10 +218,13 @@ Public Class gridDefineGroups
         ''' with this administrative unit.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property GroupDBID() As Integer
+        Public Property GroupDBID() As Integer
             Get
                 Return Me.m_iGroupDBID
             End Get
+            Set(value As Integer)
+                Me.m_iGroupDBID = value
+            End Set
         End Property
 
         Public ReadOnly Property GroupIndex() As Integer
@@ -1222,55 +1225,54 @@ Public Class gridDefineGroups
     ''' <summary>
     ''' Delete a row from the grid
     ''' </summary>
-    ''' <param name="iRow">The index of the row to delete.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub ToggleDeleteRow(Optional ByVal iRow As Integer = -1)
+    Public Sub ToggleDeleteRows()
 
-        If iRow = -1 Then iRow = Me.SelectedRow
+        For Each iRow As Integer In Me.SelectedRows
 
-        Dim iGroup As Integer = iRow - iFIRSTGROUPROW
-        Dim gi As cGroupInfo = Nothing
-        Dim si As cStanzaInfo = Nothing
-        Dim strPrompt As String = ""
+            Dim iGroup As Integer = iRow - iFIRSTGROUPROW
+            Dim gi As cGroupInfo = Nothing
+            Dim si As cStanzaInfo = Nothing
 
-        ' Validate
-        If iGroup < 0 Then Return
+            ' Validate
+            If iGroup < 0 Then Return
 
-        ' Check if need to update a stanza configuration
-        gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
-        ' Toggle 'flagged for deletion' flag
-        gi.FlaggedForDeletion = Not gi.FlaggedForDeletion
+            ' Check if need to update a stanza configuration
+            gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
+            ' Toggle 'flagged for deletion' flag
+            gi.FlaggedForDeletion = Not gi.FlaggedForDeletion
 
-        ' Check to see what is to happen to the group now
-        Select Case gi.Status
+            ' Check to see what is to happen to the group now
+            Select Case gi.Status
 
-            Case eItemStatusTypes.Original, eItemStatusTypes.Added
-                ' Clear removed status of the group, if any
-                Me.m_lgiGroupsRemoved.Remove(gi)
+                Case eItemStatusTypes.Original, eItemStatusTypes.Added
+                    ' Clear removed status of the group, if any
+                    Me.m_lgiGroupsRemoved.Remove(gi)
 
-            Case eItemStatusTypes.Removed, eItemStatusTypes.Invalid
-                ' Get connected stanza info, if any
-                si = gi.Stanza
-                ' Part of a stanza config?
-                If si IsNot Nothing Then
-                    ' #Yes: Remove the group from stanza config
-                    si.RemoveGroup(gi)
-                    gi.Stanza = Nothing
-                    ' Stanza config empty?
-                    If (si.HasGroups = False) Then
-                        ' #Yes: Remove stanza config
-                        Me.m_lsiStanza.Remove(si)
-                        ' Flag stanza config for deletion if not new
-                        If (Not si.IsNew()) Then Me.m_lsiStanzaRemoved.Add(si)
+                Case eItemStatusTypes.Removed, eItemStatusTypes.Invalid
+                    ' Get connected stanza info, if any
+                    si = gi.Stanza
+                    ' Part of a stanza config?
+                    If si IsNot Nothing Then
+                        ' #Yes: Remove the group from stanza config
+                        si.RemoveGroup(gi)
+                        gi.Stanza = Nothing
+                        ' Stanza config empty?
+                        If (si.HasGroups = False) Then
+                            ' #Yes: Remove stanza config
+                            Me.m_lsiStanza.Remove(si)
+                            ' Flag stanza config for deletion if not new
+                            If (Not si.IsNew()) Then Me.m_lsiStanzaRemoved.Add(si)
+                        End If
                     End If
-                End If
 
-                ' Remove group from org group list if group is New, there is no need to preserve it.
-                If gi.IsNew() Then Me.m_lgiGroups.Remove(gi)
-                ' Add to removed group list if group is not new
-                If Not gi.IsNew() Then Me.m_lgiGroupsRemoved.Add(gi)
+                    ' Remove group from org group list if group is New, there is no need to preserve it.
+                    If gi.IsNew() Then Me.m_lgiGroups.Remove(gi)
+                    ' Add to removed group list if group is not new
+                    If Not gi.IsNew() Then Me.m_lgiGroupsRemoved.Add(gi)
 
-        End Select
+            End Select
+        Next
 
         Me.UpdateGrid()
 
@@ -1909,7 +1911,6 @@ Public Class gridDefineGroups
                 Return False
             End If
 
-            Dim htGroupID As New Dictionary(Of cGroupInfo, Integer)
             Dim iDBID As Integer = Nothing
 
             ' Add new groups
@@ -1920,8 +1921,8 @@ Public Class gridDefineGroups
                     Dim igt As Integer = iGroup + 1
                     bSuccess = bSuccess And Me.Core.AddGroup(gi.Name, gi.PP, gi.VBK, igt, iDBID)
                     Debug.Assert(igt = iGroup + 1)
-                    ' Map this new ID during update
-                    htGroupID.Add(gi, iDBID)
+                    ' Store new ID
+                    gi.GroupDBID = iDBID
                 Else
                     If ((iGroup + 1) <> gi.GroupIndex) Then
                         If Not Me.Core.MoveGroup(gi.GroupIndex, iGroup + 1) Then
@@ -1980,14 +1981,8 @@ Public Class gridDefineGroups
                     ReDim aiStartAge(si.GroupList.Count - 1)
 
                     For i As Integer = 0 To si.GroupList.Count - 1
-                        ' Get the first group
                         gi = si.GroupList(i)
-                        iDBID = gi.GroupDBID
-                        ' Is not an existing group?
-                        If iDBID = cCore.NULL_VALUE Then
-                            iDBID = htGroupID(gi)
-                        End If
-                        aiGroupID(i) = iDBID
+                        aiGroupID(i) = gi.GroupDBID
                         aiStartAge(i) = gi.StanzaAge
                     Next
                     If Not Me.Core.AppendStanza(si.Name, aiGroupID, aiStartAge, iStanzaID) Then
@@ -2015,11 +2010,7 @@ Public Class gridDefineGroups
                         ' Add newly assigned groups
                         For iLifestage As Integer = 0 To si.NumGroups - 1
                             gi = si.GroupList(iLifestage)
-                            iDBID = gi.GroupDBID
-                            If (iDBID = cCore.NULL_VALUE) Then
-                                iDBID = htGroupID(gi)
-                            End If
-                            If Not Me.Core.AddStanzaLifestage(si.StanzaGroup.Index, iDBID, gi.StanzaAge, gi.StanzaMortality) Then
+                            If Not Me.Core.AddStanzaLifestage(si.StanzaGroup.Index, gi.GroupDBID, gi.StanzaAge, gi.StanzaMortality) Then
                                 bSuccess = False
                             End If
                         Next
@@ -2058,21 +2049,23 @@ Public Class gridDefineGroups
 
             For iGroup = 0 To Me.m_lgiGroups.Count - 1
                 gi = DirectCast(Me.m_lgiGroups(iGroup), cGroupInfo)
-                group = dtGroups(gi.GroupDBID)
-                If gi.IsChanged(group) Then
-                    If (group.Name <> gi.Name) Then group.Name = gi.Name
-                    If (group.PP <> gi.PP) Then group.PP = gi.PP
-                    If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
-                    If (group.PoolColor <> gi.PoolColor) Then
-                        ' Is gi.poolcolor the default color? 
-                        If gi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.GroupColorDefault(group.Index, Me.m_lgiGroups.Count)) Then
-                            ' #Yes: Set color to transparent to allow group to show up as true default colour
-                            group.PoolColor = 0
-                        Else
-                            ' #No: Assign new color
-                            group.PoolColor = gi.PoolColor
+                If (gi.GroupDBID <> cCore.NULL_VALUE) Then
+                    group = dtGroups(gi.GroupDBID)
+                    If gi.IsChanged(group) Then
+                        If (group.Name <> gi.Name) Then group.Name = gi.Name
+                        If (group.PP <> gi.PP) Then group.PP = gi.PP
+                        If (group.VBK <> gi.VBK) Then group.VBK = gi.VBK
+                        If (group.PoolColor <> gi.PoolColor) Then
+                            ' Is gi.poolcolor the default color? 
+                            If gi.PoolColor = cColorUtils.ColorToInt(Me.StyleGuide.GroupColorDefault(group.Index, Me.m_lgiGroups.Count)) Then
+                                ' #Yes: Set color to transparent to allow group to show up as true default colour
+                                group.PoolColor = 0
+                            Else
+                                ' #No: Assign new color
+                                group.PoolColor = gi.PoolColor
+                            End If
+                            bColorsChanged = True
                         End If
-                        bColorsChanged = True
                     End If
                 End If
             Next

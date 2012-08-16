@@ -105,13 +105,13 @@ Namespace Ecopath
 
         Private Sub m_btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnDelete.Click
-            Me.m_grid.ToggleDeleteRow()
+            Me.m_grid.ToggleDeleteRows()
             Me.UpdateControls()
         End Sub
 
         Private Sub m_btnPreserve_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnKeep.Click
-            Me.m_grid.ToggleDeleteRow()
+            Me.m_grid.ToggleDeleteRows()
             Me.UpdateControls()
         End Sub
 
