@@ -2591,7 +2591,7 @@ Public Class cEcoSpace
                     If m_Data.Depth(i, j) > 0 Then
 
                         'set the Proportion of area fished by this fleet for all the habitats in the cell 
-                        Me.m_Data.PAreaFished(i, j, ig) = 1 * m_Data.Width(i) * PFished
+                        Me.m_Data.PAreaFished(i, j, ig) = 1 * PFished ' 1 * m_Data.Width(i) * PFished
                         'constrain percentage of area fished to 1.0
                         If Me.m_Data.PAreaFished(i, j, ig) > 1.0 Then Me.m_Data.PAreaFished(i, j, ig) = 1
 

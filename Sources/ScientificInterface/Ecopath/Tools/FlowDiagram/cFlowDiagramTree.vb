@@ -50,13 +50,14 @@ Namespace Ecopath.Controls.FlowDiagram
 
             '''--------------------------------------------------------------------
             ''' <summary>
-            ''' 
+            ''' Draw a flow diagram node.
             ''' </summary>
-            ''' <param name="g"></param>
-            ''' <param name="ptf"></param>
-            ''' <param name="nodetype"></param>
-            ''' <param name="iSize"></param>
-            ''' <param name="clr"></param>
+            ''' <param name="g">Graphics to render the node onto.</param>
+            ''' <param name="ptf">Point of the node center.</param>
+            ''' <param name="nodetype"><see cref="eNodeTypes">Node render type</see>.</param>
+            ''' <param name="iSize">Node render size, in pixels.</param>
+            ''' <param name="clrLine">Node line colour.</param>
+            ''' <param name="clrFill">Node fill colour.</param>
             '''--------------------------------------------------------------------
             Public Sub DrawNode(ByVal g As Graphics, _
                                 ByVal ptf As PointF, _

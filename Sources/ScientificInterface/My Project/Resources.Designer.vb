@@ -150,7 +150,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Configure data set.
+        '''  Looks up a localized string similar to Configure external data connection.
         '''</summary>
         Public ReadOnly Property CAPTION_EXTERNAL_DATASET_CONFIGURE() As String
             Get
