@@ -1971,22 +1971,6 @@ Jxtb/cy+n/O+n4v5mfzF/wCUo1H/AJQz+9b/AJQX/jk9f91e3hn3B2J/i0f7/l/l/rfLdZ9X8P8A
 m8n6T/8APv3/AI7dv/5JbqOn/Kaf88f454n/AMF7+5P+O/H/ABb4vUezv1f5P/fv2WPXPm97MLn7
 YlWv6YVf/9kL</value>
   </data>
-  <data name="consumer" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
-dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
-ZW0uRHJhd2luZy5CaXRtYXABAAAABERhdGEHAgIAAAAJAwAAAA8DAAAAZgIAAAKJUE5HDQoaCgAA
-AA1JSERSAAAAIAAAACAIBgAAAHN6evQAAAABc1JHQgCuzhzpAAAABGdBTUEAALGPC/xhBQAAAAlw
-SFlzAAAOwgAADsIBFShKgAAAAftJREFUWEftVrFuAjEM5Rv4B/6Bf6jUT7iVuRIs3AjriU4cYujY
-gaHq1qkbn8AA3TrA0KVjJURL/SI7coOvhDAgpEOyQhLHfn62k2s06l/NQM1AzcClGdjv941LykWd
-I/DrBdDpdJokbSXNlFR6BsjQDAbCMTRK+y2SIfRI7pRgjvVWFRA+4/yInASADGQkJckNg3UsiDGs
-835mAAdAJ0kA2DAihlMAccb6/X7Oe5hjHfvQK7Uj0U8CwIbFeTmZTO7X6/XHZrP5EsEc6wxGQHgm
-ogBMp9NbKMrINKPQQDuMlsvl8oWcbkl+DNliX+tLio4CkAIM80RzFBZAZIiQnO4qnAugHTOBdODc
-sMq2eQ/oHHHUvjuI5s8jzh0I6IkdDsi1aBhcDABEILmfkfHvGADQE8d8XneK3QWqlbwCUwgAbabf
-yru5xmmQAM4DAHC9Xu8hMnoHCPpMuwvACvAgBaPRyN1wGNVF42sgogB9IaIT9M2K/6H9AwDj8Xie
-5/kco0Lsu2C1Wr3HsAA9vjt8F8CeZf/Pa1gBwN0DHE0ZwcJO62v6kwCoPLpuQG4Xi8WbxQTWsc/t
-6x4qfR0nA5DoVUtm3W73uSiKV1Q7/Z4Gg8Ej026+BckpCB6U5NcwCoBVpcazmvw9cLQLQmf/zTnP
-/ovolLPm90CqgXPP/QI8oMncUYviwwAAAABJRU5ErkJgggs=</value>
-  </data>
   <data name="producer" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD
 dWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABVTeXN0
@@ -2162,5 +2146,8 @@ QmCCCw==</value>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ValueChain" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ValueChain.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="consumer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\consumer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
