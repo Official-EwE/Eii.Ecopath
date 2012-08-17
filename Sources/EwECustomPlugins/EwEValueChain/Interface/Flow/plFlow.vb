@@ -919,14 +919,16 @@ Public Class plFlow
                 uc.Cursor = cCursorFactory.GetCursorOverlay(Cursors.Hand, SharedResources.chain_horz)
                 If TypeOf Me.Selection Is plUnitControl Then
                     Dim unitSelected As cUnit = DirectCast(Me.Selection, plUnitControl).Unit
-
+                    Dim bError As Boolean = False
                     If TypeOf unitSelected Is cProducerUnit Then
                         ' Create link for every group
                         For iGroup As Integer = 1 To Me.m_data.Core.nGroups
-                            Dim group As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(iGroup)
-                            Dim link As cLinkLandings = Me.m_data.CreateLandingsLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, group)
-                            If (link IsNot Nothing) Then
-                                Me.AddLink(link)
+                            If Not bError Then
+                                Dim group As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(iGroup)
+                                Dim link As cLinkLandings = Me.m_data.CreateLandingsLink(DirectCast(unitSelected, cProducerUnit), uc.Unit, group, bError)
+                                If (link IsNot Nothing) Then
+                                    Me.AddLink(link)
+                                End If
                             End If
                         Next
                         Me.CheckMissingParameters()

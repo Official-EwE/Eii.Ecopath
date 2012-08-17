@@ -39,33 +39,23 @@ Partial Class ucSelector2
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.m_lbxBits = New System.Windows.Forms.ListBox()
         Me.m_tlpBits = New System.Windows.Forms.TableLayoutPanel()
         Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.m_btnAdd = New System.Windows.Forms.Button()
         Me.m_btnRemove = New System.Windows.Forms.Button()
         Me.m_hdrSelection = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lbxBits = New System.Windows.Forms.CheckedListBox()
         Me.m_tlpBits.SuspendLayout()
         Me.m_tlpButtons.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'm_lbxBits
-        '
-        Me.m_lbxBits.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_lbxBits.FormattingEnabled = True
-        Me.m_lbxBits.IntegralHeight = False
-        Me.m_lbxBits.Location = New System.Drawing.Point(3, 23)
-        Me.m_lbxBits.Name = "m_lbxBits"
-        Me.m_lbxBits.Size = New System.Drawing.Size(260, 203)
-        Me.m_lbxBits.TabIndex = 0
         '
         'm_tlpBits
         '
         Me.m_tlpBits.ColumnCount = 1
         Me.m_tlpBits.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.m_tlpBits.Controls.Add(Me.m_tlpButtons, 0, 2)
-        Me.m_tlpBits.Controls.Add(Me.m_lbxBits, 0, 1)
         Me.m_tlpBits.Controls.Add(Me.m_hdrSelection, 0, 0)
+        Me.m_tlpBits.Controls.Add(Me.m_lbxBits, 0, 1)
         Me.m_tlpBits.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tlpBits.Location = New System.Drawing.Point(0, 0)
         Me.m_tlpBits.Margin = New System.Windows.Forms.Padding(0)
@@ -128,6 +118,15 @@ Partial Class ucSelector2
         Me.m_hdrSelection.Text = "Selection"
         Me.m_hdrSelection.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'm_lbxBits
+        '
+        Me.m_lbxBits.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_lbxBits.FormattingEnabled = True
+        Me.m_lbxBits.Location = New System.Drawing.Point(3, 23)
+        Me.m_lbxBits.Name = "m_lbxBits"
+        Me.m_lbxBits.Size = New System.Drawing.Size(260, 203)
+        Me.m_lbxBits.TabIndex = 3
+        '
         'ucSelector2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -140,11 +139,11 @@ Partial Class ucSelector2
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents m_lbxBits As System.Windows.Forms.ListBox
     Private WithEvents m_tlpBits As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_btnRemove As System.Windows.Forms.Button
     Private WithEvents m_btnAdd As System.Windows.Forms.Button
     Private WithEvents m_tlpButtons As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_hdrSelection As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_lbxBits As System.Windows.Forms.CheckedListBox
 
 End Class

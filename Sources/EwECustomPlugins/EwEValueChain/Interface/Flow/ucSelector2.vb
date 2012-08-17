@@ -95,27 +95,44 @@ Public Class ucSelector2
             End If
 
             Me.PopulateListbox()
+            Me.UpdateControls()
+            Me.UpdateSelection()
 
         End Set
     End Property
 
+    Private m_bInUpdate As Boolean = False
+
     Private Sub PopulateListbox()
 
-        ' Wipe
+        Dim bCheckboxes As Boolean = False
+        Dim iTop As Integer = Me.m_lbxBits.TopIndex
+
+        If Me.m_bInUpdate Then Return
+
+        Me.m_bInUpdate = True
         Me.m_lbxBits.Items.Clear()
         ' Update
         If (Me.m_selection IsNot Nothing) Then
             Try
                 If (Me.m_selection.Length > 0) Then
                     For i As Integer = 0 To Me.m_selection.Length - 1
-                        Me.m_lbxBits.Items.Add(Me.m_selection(i))
+                        Dim itm As cEwEDatabase.cOOPStorable = Me.m_selection(i)
+                        Dim pos As Integer = Me.m_lbxBits.Items.Add(itm)
+
+                        If (TypeOf itm Is cLink) Then
+                            Me.m_lbxBits.SetItemChecked(pos, DirectCast(itm, cLink).BiomassRatio > 0)
+                        End If
+
                     Next
                 End If
                 Me.m_lbxBits.SelectedIndex = Math.Min(Me.m_selection.Length - 1, Me.m_iSel)
+                Me.m_lbxBits.TopIndex = Math.Min(iTop, Me.m_lbxBits.Items.Count - 1)
             Catch ex As Exception
 
             End Try
         End If
+        Me.m_bInUpdate = False
 
     End Sub
 
@@ -185,7 +202,20 @@ Public Class ucSelector2
 
     End Sub
 
-    Private m_bInUpdate As Boolean = False
+    Private Sub m_lbxBits_ItemCheck(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
+        Handles m_lbxBits.ItemCheck
+        If Me.m_bInUpdate Then Return
+        Try
+            Me.m_bInUpdate = True
+            Dim item As cEwEDatabase.cOOPStorable = DirectCast(Me.m_lbxBits.Items(e.Index), cEwEDatabase.cOOPStorable)
+            If (e.NewValue = CheckState.Unchecked) And (TypeOf (item) Is cLink) Then
+                DirectCast(item, cLink).BiomassRatio = 0
+            End If
+            Me.m_bInUpdate = False
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     Private Sub OnSelectItem(sender As System.Object, e As System.EventArgs) _
         Handles m_lbxBits.SelectedIndexChanged
@@ -197,9 +227,7 @@ Public Class ucSelector2
     End Sub
 
     Private Sub OnItemChanged(obj As cEwEDatabase.cOOPStorable)
-        Me.m_bInUpdate = True
         Me.PopulateListbox()
-        Me.m_bInUpdate = False
     End Sub
 
 End Class
