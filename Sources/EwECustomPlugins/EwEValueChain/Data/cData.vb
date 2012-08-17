@@ -754,7 +754,7 @@ Public Class cData
         Return Me.m_lLinks(iIndex)
     End Function
 
-    Public Function CreateLandingsLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput) As cLinkLandings
+    Public Function CreateLandingsLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput, ByRef bError As Boolean) As cLinkLandings
 
         ' Do not create link if there are no landings
         If (unitSource.Fleet.Landings(group.Index) = 0) Then Return Nothing
@@ -762,18 +762,21 @@ Public Class cData
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
             Me.SendMessage(My.Resources.ERROR_LINK_NEEDUNITS)
+            bError = True
             Return Nothing
         End If
 
         ' Check if link is allowed
         If Not cLinkFactory.CanCreateLink(unitSource, unitTarget) Then
             Me.SendMessage(My.Resources.ERROR_LINK_NOTALLOWED)
+            bError = True
             Return Nothing
         End If
 
         ' Check for loop
         If unitTarget.IsLoop(unitSource) Then
             Me.SendMessage(My.Resources.ERROR_LINK_LOOP)
+            bError = True
             Return Nothing
         End If
 
@@ -781,6 +784,7 @@ Public Class cData
         If unitSource.HasTarget(unitTarget, group) Then
             Dim fmt As New cCoreInterfaceFormatter()
             Me.SendMessage(String.Format(My.Resources.ERROR_LINK_DUPLICATE, fmt.GetDescriptor(group)))
+            bError = True
             Return Nothing
         End If
 

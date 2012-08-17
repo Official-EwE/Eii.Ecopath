@@ -52,6 +52,7 @@ Public Class cLandingsLinkManager
         Dim group As cEcoPathGroupInput = Nothing
         Dim dtTarget As New Dictionary(Of cUnit, List(Of Integer))
         Dim landings As List(Of Integer) = Nothing
+        Dim bDummy As Boolean
 
         ' Delete all invisible links
         aLinks = Me.m_data.GetLinks(GetType(cLinkLandings), True)
@@ -95,7 +96,7 @@ Public Class cLandingsLinkManager
                         group = Me.m_core.EcoPathGroupInputs(iGroup)
                         ' Create link
                         Console.WriteLine("> VC: Fleet {0}, group {1} missing landings link, added", fleet.Name, group.Name)
-                        Me.m_data.CreateLandingsLink(prod, unit, group)
+                        Me.m_data.CreateLandingsLink(prod, unit, group, bDummy)
                     End If
                 Next
             Next

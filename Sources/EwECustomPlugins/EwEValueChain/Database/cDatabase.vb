@@ -136,12 +136,13 @@ Public Class cDatabase
             For Each obj As cOOPStorable In aObjects
                 ' Is old-fashioned producer link?
                 Dim l As cLink = DirectCast(obj, cLink)
+                Dim bError As Boolean = False
                 If (l.Source.GetType Is GetType(cProducerUnit)) Then
                     ' #Yes: dump it
                     l.Source.RemoveLink(l)
                     Try
                         For iGroup As Integer = 1 To data.Core.nGroups
-                            Dim ll As cLinkLandings = data.CreateLandingsLink(DirectCast(l.Source, cProducerUnit), l.Target, data.Core.EcoPathGroupInputs(iGroup))
+                            Dim ll As cLinkLandings = data.CreateLandingsLink(DirectCast(l.Source, cProducerUnit), l.Target, data.Core.EcoPathGroupInputs(iGroup), bError)
                             ll.BiomassRatio = l.BiomassRatio
                             ll.ValueRatio = l.ValueRatio
                             ll.ValuePerTon = l.ValuePerTon
