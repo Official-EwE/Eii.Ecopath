@@ -27,6 +27,7 @@ Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Drawing.Drawing2D
 Imports System.ComponentModel
+Imports Microsoft.Glee
 
 #End Region ' Imports
 
@@ -313,6 +314,65 @@ Public Class plFlow
         If (Me.EditMode <> eEditMode.ReadOnly) Then
             Me.EditMode = eEditMode.Move
         End If
+
+        Me.Refresh()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Auto-arrange the units in the flow panel using the GLEE library.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub ArrangeGLEE()
+
+        ' Switch to 'move' mode upon arranging if NOT readonly
+        If (Me.EditMode <> eEditMode.ReadOnly) Then
+            Me.EditMode = eEditMode.Move
+        End If
+
+        Dim g As New GleeGraph()
+        g.NodeSeparation = Math.Max(Me.m_sGridMarginRatio * 0.5, Me.m_sGridMarginRatio * 0.5)
+        Dim nodes As New Dictionary(Of cUnit, Node)
+        Dim layers As New Dictionary(Of Type, Microsoft.Glee.LayerEdge)
+
+        ' Feed graph with nodes
+        For Each unit As cUnit In Me.m_dtControls.Keys
+            Dim uc As plUnitControl = Me.m_dtControls(unit)
+            ' Reverse height and width, 'cause the graph will be flipped Vert to Horz
+            Dim n As New Microsoft.Glee.Node(CStr(uc.Unit.DBID), Splines.CurveFactory.CreateBox(uc.Height, uc.Width, New Splines.Point(uc.FlowPos.Ypos, uc.FlowPos.Xpos)))
+            g.AddNode(n)
+            nodes(unit) = n
+        Next
+
+        ' Feed graph with connections
+        For Each l As LinkWrapper In Me.m_lDiagramLinks
+            g.AddEdge(New Edge(nodes(l.Target), nodes(l.Source)))
+        Next
+
+        ' Shazam
+        g.CalculateLayout()
+
+        ' Hack: find layouted graph offset. Bounding box cannot limited by GleeGraph
+        Dim dx As Integer = Integer.MaxValue
+        Dim dy As Integer = Integer.MaxValue
+        For Each n As Node In nodes.Values
+            Dim ptc As Splines.Point = n.Center
+            dx = Math.Min(dx, CInt(ptc.X))
+            dy = Math.Min(dy, CInt(ptc.Y))
+        Next
+
+        ' Apply layout
+        For Each unit As cUnit In Me.m_dtControls.Keys
+            Dim uc As plUnitControl = Me.m_dtControls(unit)
+            Dim n As Node = nodes(unit)
+            Dim ptc As Splines.Point = n.Center
+            ' Switch x and Y to get a horizontal graph
+            uc.FlowPos.AllowEvents = False
+            uc.FlowPos.Xpos = 10 + CInt(ptc.Y - dy + m_iCellWidth / 2)
+            uc.FlowPos.Ypos = 10 + CInt(ptc.X - dx + m_iCellHeight / 2)
+            uc.FlowPos.AllowEvents = True
+        Next
 
         Me.Refresh()
 

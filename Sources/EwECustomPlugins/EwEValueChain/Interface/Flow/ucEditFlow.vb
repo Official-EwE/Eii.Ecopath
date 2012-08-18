@@ -205,7 +205,7 @@ Public Class ucEditFlow
         Me.m_uic.Core.Messages.SendMessage(fmsg)
         If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return
 
-        Me.m_plFlow.Arrange()
+        Me.m_plFlow.ArrangeGLEE()
         Me.UpdateControls()
 
     End Sub
