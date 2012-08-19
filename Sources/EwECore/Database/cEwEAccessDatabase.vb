@@ -362,14 +362,6 @@ Namespace Database
                 adapter.UpdateCommand = cmdBuilder.GetUpdateCommand(True)
                 adapter.DeleteCommand = cmdBuilder.GetDeleteCommand(True)
 
-                ' JS 04apr06: Disabled unreliable event, handled generically in cEwEDatabase
-                '' Handle event to fix invalid DBNull values with their defaults
-                'AddHandler adapter.RowUpdating, New OleDbRowUpdatingEventHandler(AddressOf OnRowUpdating)
-
-                ' JS 05sep07: Disabled since EwE no longer uses Autonumbered values
-                '' Handle event to implement Access Autonumber ID fix
-                'AddHandler adapter.RowUpdated, New OleDbRowUpdatedEventHandler(AddressOf OnRowUpdated)
-
             Catch ex As InvalidOperationException
                 cLog.Write(String.Format("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
                 Debug.Assert(False, String.Format("Table in query '{0}' seems to be missing a primary key: {1}", strSQL, ex.Message))
@@ -574,107 +566,6 @@ Namespace Database
         End Property
 
 #End Region ' Overrides
-
-#Region " Private helper methods "
-
-#If 0 Then
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' A superb attempt to validate and fix datarow values right before cramming it into a MDB.
-        ''' </summary>
-        ''' <param name="sender"></param>
-        ''' <param name="args"></param>
-        ''' <remarks>
-        ''' Although a brilliant idea, this does not work. For some reason Access' Required field
-        ''' flag does not translate in a proper AllowDBNull value; AllowDBNull remains True for
-        ''' every single field.
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Private Sub OnRowUpdating(ByVal sender As Object, ByVal args As OleDbRowUpdatingEventArgs)
-
-            Dim drow As DataRow = args.Row
-            Dim dtable As DataTable = drow.Table
-            Dim dtSchema As DataTable = Nothing
-
-            ' Is this an INSERT or UPDATE command?
-            If args.StatementType = StatementType.Insert Or args.StatementType = StatementType.Update Then
-
-                ' #Yes: check for DBNull values in every column
-                For Each col As DataColumn In dtable.Columns
-                    ' Is this a DBnull value?
-                    If Convert.IsDBNull(drow(col.ColumnName)) Then
-                        ' #Yes, hmmm.. now fix only fields that may not be null, do not autoincrement 
-                        ' and cannot be unique to prevent conflicts when substituting default value.
-                        If (Not col.AllowDBNull) And _
-                           (Not col.AutoIncrement) And _
-                           (Not col.Unique) And _
-                           (Not col.ReadOnly) Then
-
-                            ' Store default value the cell
-                            drow(col.ColumnName) = col.DefaultValue
-                            ' Tell the row to shut up
-                            drow.AcceptChanges()
-                            Console.WriteLine("   - Applied default value to {0}.{1}, value {2}", args.TableMapping.SourceTable, col.ColumnName, col.DefaultValue)
-                        End If
-                    End If
-                Next
-            End If
-        End Sub
-
-#End If
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Event handler, called whenever a <see cref="DataRow">DataRow</see> is updated 
-        ''' into the database via an adapter to ensure that Autonumber values are properly
-        ''' reflected in the DataRow.
-        ''' </summary>
-        ''' <remarks>
-        ''' <para>This handler solves a problem that occurs when inserting or updating
-        ''' rows with an Autonumber ID. Whenever such a row is created and written to the
-        ''' database, the number reflected in the <see cref="DataRow">DataRow</see> will 
-        ''' differ from the actual value in the database.</para>
-        ''' <para>The solution implemented here only works for M$ Access 2000 and newer.</para>
-        ''' </remarks>
-        ''' -------------------------------------------------------------------
-        Private Sub OnRowUpdated(ByVal sender As Object, ByVal args As OleDbRowUpdatedEventArgs)
-            ' Include a variable and a command to retrieve the identity value from the Access database.
-            Dim nIDNew As Integer = 0
-            Dim cmd As OleDbCommand = Nothing
-            Dim drow As DataRow = args.Row
-            Dim dtable As DataTable = drow.Table
-
-            ' Only worry about INSERT commands (where the new Autonum value is defined)
-            If args.StatementType = StatementType.Insert Then
-                ' #Yes
-
-                drow = args.Row
-                dtable = drow.Table
-
-                If dtable Is Nothing Then Return
-
-                ' Check every column
-                For Each col As DataColumn In dtable.Columns
-                    ' Only update Autonumber fields
-                    If col.AutoIncrement Then
-                        ' Prepare query to obtain the actual ID.
-                        ' Note that this only works for Access 2000 and higher.
-                        cmd = New OleDbCommand("SELECT @@IDENTITY", Me.m_conn)
-                        ' Retrieve the identity value
-                        nIDNew = CInt(cmd.ExecuteScalar())
-                        ' Store it in the row
-                        drow(col.ColumnName) = nIDNew
-                        ' Tell the row to shut up
-                        drow.AcceptChanges()
-
-                        Console.WriteLine("   - Fixed Autonumber column {0}.{1}, value {2}", args.TableMapping.SourceTable, col.ColumnName, nIDNew)
-                    End If
-                Next
-            End If
-        End Sub
-
-#End Region ' Careful with that axe, Eugene
 
     End Class
 
