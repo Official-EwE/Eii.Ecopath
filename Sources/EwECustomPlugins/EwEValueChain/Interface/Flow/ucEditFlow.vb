@@ -205,7 +205,11 @@ Public Class ucEditFlow
         Me.m_uic.Core.Messages.SendMessage(fmsg)
         If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return
 
-        Me.m_plFlow.ArrangeGLEE()
+        Try
+            Me.m_plFlow.ArrangeGLEE()
+        Catch ex As Exception
+            cLog.Write(ex, "ValueChain::ArrangeGlee")
+        End Try
         Me.UpdateControls()
 
     End Sub

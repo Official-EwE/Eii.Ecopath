@@ -369,8 +369,8 @@ Public Class plFlow
             Dim ptc As Splines.Point = n.Center
             ' Switch x and Y to get a horizontal graph
             uc.FlowPos.AllowEvents = False
-            uc.FlowPos.Xpos = 10 + CInt(ptc.Y - dy + m_iCellWidth / 2)
-            uc.FlowPos.Ypos = 10 + CInt(ptc.X - dx + m_iCellHeight / 2)
+            uc.FlowPos.Xpos = 10 + CInt(ptc.Y - dy + m_iCellWidth / 4)
+            uc.FlowPos.Ypos = 10 + CInt(ptc.X - dx + m_iCellHeight / 4)
             uc.FlowPos.AllowEvents = True
         Next
 
