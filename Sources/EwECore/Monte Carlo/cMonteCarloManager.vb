@@ -763,6 +763,38 @@ Public Class cMonteCarloManager
 
                 grp.ResetStatusFlags()
 
+                Dim grpPath As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(grp.Index)
+
+                ' B
+                grp.SetStatusFlags(eVarNameFlags.mcB, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBcv, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBLower, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
+
+                ' PB
+                grp.SetStatusFlags(eVarNameFlags.mcPB, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcPBcv, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcPBLower, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcPBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
+
+                ' QB
+                grp.SetStatusFlags(eVarNameFlags.mcQB, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcQBcv, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcQBLower, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcQBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
+
+                ' BA
+                grp.SetStatusFlags(eVarNameFlags.mcBA, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
+                grp.SetStatusFlags(eVarNameFlags.mcBAcv, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
+                grp.SetStatusFlags(eVarNameFlags.mcBALower, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
+                grp.SetStatusFlags(eVarNameFlags.mcBAUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
+
+                ' EE
+                grp.SetStatusFlags(eVarNameFlags.mcEE, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
+                grp.SetStatusFlags(eVarNameFlags.mcEEcv, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
+                grp.SetStatusFlags(eVarNameFlags.mcEELower, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
+                grp.SetStatusFlags(eVarNameFlags.mcEEUpper, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
+
                 grp.AllowValidation = True
 
             Next 'For Each grp As cMonteCarloGroup
@@ -773,8 +805,42 @@ Public Class cMonteCarloManager
             Throw New ApplicationException("LoadGroupParameters", ex)
         End Try
 
-
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Derive status flags for Monte Carlo groups from Ecopath input statuses.
+    ''' </summary>
+    ''' <param name="grp">The Ecopath group to read status information from.</param>
+    ''' <param name="var">The varname of the status to read.</param>
+    ''' <returns>A montecarlified status flag.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function ToMCStatus(grp As cEcoPathGroupInput, var As eVarNameFlags) As eStatusFlags
+
+        Dim status As eStatusFlags = grp.GetStatus(var)
+
+        ' Stanza groups should only allow B and QB edits in MCMC when configured as leading
+        If grp.isMultiStanza Then
+
+            Dim sg As cStanzaGroup = Me.m_core.StanzaGroups(grp.iStanza)
+            Select Case var
+                Case eVarNameFlags.BiomassAreaInput
+                    If (sg.iGroups(sg.LeadingB) = grp.Index) Then status = eStatusFlags.OK
+                Case eVarNameFlags.QBInput
+                    If (sg.iGroups(sg.LeadingCB) = grp.Index) Then status = eStatusFlags.OK
+                    'Case Else
+                    '    status = eStatusFlags.OK
+            End Select
+        End If
+
+        ' Any null or not editable status flag should be blocked out in the MCMC interface
+        If ((status And (eStatusFlags.Null Or eStatusFlags.NotEditable)) > 0) Then
+            status = status Or eStatusFlags.NotEditable Or eStatusFlags.Null
+        End If
+
+        Return status
+
+    End Function
 
     ''' <summary>
     ''' Update the Monte Carlo groups with the best fit of the trials
