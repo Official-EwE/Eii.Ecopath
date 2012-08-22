@@ -86,6 +86,11 @@ Namespace Controls.Map.Layers
 
             Dim sValue As Single = CSng(value)
 
+            ' Skip this if layer should not draw
+            If ((style And cStyleGuide.eStyleFlags.Highlight) = 0) And (Me.m_bDrawAlways = False) Then
+                Return
+            End If
+
             If Not cNumberUtils.IsFinite(sValue) Then
                 Me.RenderError(g, rc)
                 Return
@@ -102,28 +107,24 @@ Namespace Controls.Map.Layers
 
                 ' Draw background
                 ' Render value on top for highlighted layers
-                If ((style And cStyleGuide.eStyleFlags.Highlight) = cStyleGuide.eStyleFlags.Highlight) Or _
-                   (Me.m_bDrawAlways = True) Then
+                If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
 
-                    If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
+                    Dim sValRange As Single = (sValMax - sValMin)
 
-                        Dim sValRange As Single = (sValMax - sValMin)
-
-                        ' Has a range? draw background
-                        If (sValRange > 0.0) Then
-                            ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
-                            ' not (0, sValueMax)!!!
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
-                                g.FillRectangle(br, rc)
-                            End Using
-                        Else
-                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
-                                g.FillRectangle(br, rc)
-                            End Using
-                        End If
-                        ' Draw value
-                        g.DrawString(String.Format("{0}", value), Me.m_ft, Me.m_brFore, rc)
+                    ' Has a range? draw background
+                    If (sValRange > 0.0) Then
+                        ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
+                        ' not (0, sValueMax)!!!
+                        Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
+                            g.FillRectangle(br, rc)
+                        End Using
+                    Else
+                        Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
+                            g.FillRectangle(br, rc)
+                        End Using
                     End If
+                    ' Draw value
+                    g.DrawString(String.Format("{0}", value), Me.m_ft, Me.m_brFore, rc)
                 End If
             Catch ex As Exception
                 ' Boom
