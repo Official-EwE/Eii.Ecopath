@@ -236,7 +236,6 @@ Friend Class cEcosimMonteCarlo
 
     End Function
 
-
     Public Sub Clear()
 
         Me.Pmean = Nothing
@@ -251,7 +250,7 @@ Friend Class cEcosimMonteCarlo
     Private Function PedigreeVarToMCIndex(ByVal vn As eVarNameFlags) As eMCParams
 
         Select Case vn
-            Case eVarNameFlags.BiomassAreaInput : Return eMCParams.BA
+            Case eVarNameFlags.BiomassAreaInput : Return eMCParams.Biomass
             Case eVarNameFlags.PBInput : Return eMCParams.PB
             Case eVarNameFlags.QBInput : Return eMCParams.QB
         End Select
@@ -261,44 +260,44 @@ Friend Class cEcosimMonteCarlo
 
     End Function
 
-    Friend Sub LoadFromPedigree()
+    ''' <summary>
+    ''' Load CV values for a given variable from Pedigree.
+    ''' </summary>
+    ''' <param name="varname"></param>
+    Friend Function LoadFromPedigree(varname As eVarNameFlags) As Boolean
 
         Dim opt As Integer ' Opt = pedigree level
-        Dim varname As eVarNameFlags = eVarNameFlags.NotSet
         Dim man As cPedigreeManager = Nothing
-        Dim iPar As Integer = 0
+        Dim parm As eMCParams = eMCParams.NotSet
+        Dim iVar As Integer = Me.m_core.PedigreeVariableIndex(varname)
 
-        ' For all pedigree supported vars
-        For iVar As Integer = 1 To Me.m_epdata.NumPedigreeVariables
-            ' Get variable
-            varname = Me.m_core.PedigreeVariable(iVar)
-            ' For all groups
-            For i As Integer = 1 To Me.m_epdata.NumGroups
-                ' Read assigned pedigree level for a group (was 'Opt = ReadPedigreeFromDatabase(Par)')
-                opt = Me.m_epdata.Pedigree(i, iVar)
-                If opt > 0 Then ' Non-estimated level
-                    Try
+        If (iVar <= 0) Then Return False
 
-                        iPar = Me.PedigreeVarToMCIndex(varname)
+        ' For all groups
+        For i As Integer = 1 To Me.m_epdata.NumGroups
+            ' Read assigned pedigree level for a group (was 'Opt = ReadPedigreeFromDatabase(Par)')
+            opt = Me.m_epdata.Pedigree(i, iVar)
+            If opt > 0 Then ' Non-estimated level
+                Try
 
-                        If iPar > 0 And iPar < 4 Then
-                            Select Case varname
-                                Case eVarNameFlags.BiomassAreaInput, _
-                                     eVarNameFlags.PBInput, _
-                                     eVarNameFlags.QBInput
+                    Select Case varname
 
-                                    CVpar(iPar, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
+                        Case eVarNameFlags.BiomassAreaInput, _
+                             eVarNameFlags.PBInput, _
+                             eVarNameFlags.QBInput
+                            parm = Me.PedigreeVarToMCIndex(varname)
+                            CVpar(parm, i) = Me.m_epdata.PedigreeLevelConfidence(opt) / 100.0! / 2.0!
 
-                            End Select
-                        End If
-                    Catch ex As Exception
-
-                    End Try
-                End If
-            Next
+                    End Select
+                Catch ex As Exception
+                    cLog.Write(ex, "cEcosimMonteCarlo::LoadFromPedigree(" & varname.ToString & ")")
+                    Return False
+                End Try
+            End If
         Next
+        Return True
 
-    End Sub
+    End Function
 
     Public Sub initForRun()
 

@@ -51,6 +51,12 @@ Namespace Ecosim
 
         Private m_sYMax As Single = 1.0!
 
+        Private m_qeB As New cQuickEditHandler()
+        Private m_qePB As New cQuickEditHandler()
+        Private m_qeQB As New cQuickEditHandler()
+        Private m_qeEE As New cQuickEditHandler()
+        Private m_qeBA As New cQuickEditHandler()
+
 #End Region ' Private vars
 
 #Region " Constructor "
@@ -67,6 +73,14 @@ Namespace Ecosim
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            ' Fix for disappearing toolstrips
+            ' http://stackoverflow.com/questions/57208/toolstrips-in-tabpages-frequently-disappear-from-windows-forms-designer
+            Me.m_tsB.Visible = True
+            Me.m_tsPB.Visible = True
+            Me.m_tsQB.Visible = True
+            Me.m_tsEE.Visible = True
+            Me.m_tsBA.Visible = True
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -106,11 +120,9 @@ Namespace Ecosim
             'Set the interface checkbox with the value from the core
             Me.m_cbSave.Checked = Me.m_mcmanager.bSaveOutput
 
-
             Me.m_plothelper = New cEcosimOutputPlotHelper()
             Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
             Me.m_plothelper.ShowMultipleRuns = True
-
             Me.m_plothelper.ConfigurePane(SharedResources.HEADER_MCTRIALS, SharedResources.HEADER_TIME, SharedResources.HEADER_BIOMASS, False)
             Me.m_plothelper.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly
 
@@ -141,6 +153,13 @@ Namespace Ecosim
             Me.m_lbGroups.SelectedIndex = 0
 
             Me.m_txTol.Text = Me.m_mcmanager.EcopathEETolerance.ToString
+            Me.m_tcMain.SelectedTab = Me.m_tbpB
+
+            Me.m_qeB.Attach(Me.m_gridB, Me.UIContext, Me.m_tsB, "MC_B")
+            Me.m_qePB.Attach(Me.m_gridPB, Me.UIContext, Me.m_tsPB, "MC_PB")
+            Me.m_qeQB.Attach(Me.m_gridQB, Me.UIContext, Me.m_tsQB, "MC_QB")
+            Me.m_qeEE.Attach(Me.m_gridEE, Me.UIContext, Me.m_tsEE, "MC_EE")
+            Me.m_qeBA.Attach(Me.m_gridBA, Me.UIContext, Me.m_tsBA, "MC_BA")
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSimMonteCarlo, eCoreComponentType.Core}
 
@@ -153,6 +172,12 @@ Namespace Ecosim
             If Me.m_mcmanager.IsRunning Then
                 Me.m_mcmanager.StopRun(0)
             End If
+
+            Me.m_qeB.Detach()
+            Me.m_qePB.Detach()
+            Me.m_qeQB.Detach()
+            Me.m_qeEE.Detach()
+            Me.m_qeBA.Detach()
 
             Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
             Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
@@ -212,14 +237,12 @@ Namespace Ecosim
 
         Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbRetainEstimates.CheckedChanged
-
             If Not Me.m_mcmanager Is Nothing Then
                 Try
                     Me.m_mcmanager.nTrials = CInt(Me.m_nudNumTrials.Value)
                 Catch ex As Exception
                 End Try
             End If
-
         End Sub
 
         Private Sub nudNumTrials_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
@@ -233,33 +256,40 @@ Namespace Ecosim
         End Sub
 
         Private Sub m_cbSave_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-                    Handles m_cbSave.CheckedChanged
-
+            Handles m_cbSave.CheckedChanged
             If Me.m_mcmanager IsNot Nothing Then
                 Try
                     Me.m_mcmanager.bSaveOutput = Me.m_cbSave.Checked
                 Catch ex As Exception
                 End Try
             End If
-
         End Sub
 
-        Private Sub OnLoadFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnFromPedigree.Click
-            ' Load parms from pedigree
-            Me.m_mcmanager.LoadFromPedigree()
+        Private Sub OnLoadBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnLoadPedB.Click
+            Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.BiomassAreaInput)
         End Sub
 
+        Private Sub OnLoadPBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnLoadPedPB.Click
+            Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.PBInput)
+        End Sub
 
-        Private Sub OntxTolValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles m_txTol.Validating
+        Private Sub OnLoadQBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnLoadPedQB.Click
+            Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.QBInput)
+        End Sub
+
+        Private Sub OntxTolValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) _
+            Handles m_txTol.Validating
             Dim tol As Single
             If Single.TryParse(Me.m_txTol.Text, tol) Then
                 Me.m_mcmanager.EcopathEETolerance = tol
             End If
         End Sub
 
-
-        Private Sub m_btDefaultTol_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btDefaultTol.Click
+        Private Sub m_btDefaultTol_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btDefaultTol.Click
             Me.m_mcmanager.setDefaultTol()
             Me.m_txTol.Text = Me.m_mcmanager.EcopathEETolerance.ToString
         End Sub
@@ -322,7 +352,7 @@ Namespace Ecosim
                 Me.m_gridBestFit.RefreshContent()
 
                 ' Select outputs
-                Me.m_tcOutput.SelectedTab = m_tbpBestTrial
+                Me.m_tcMain.SelectedTab = m_tbpBestTrial
 
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
@@ -377,7 +407,7 @@ Namespace Ecosim
 
             If Me.m_mcmanager.bShowPlot Then
                 ' Select biomass plot page.
-                Me.m_tcOutput.SelectedTab = Me.m_tbpBPlot
+                Me.m_tcMain.SelectedTab = Me.m_tbpBPlot
             End If
 
             Me.m_fpSSorg.Value = Me.m_mcmanager.SSorg

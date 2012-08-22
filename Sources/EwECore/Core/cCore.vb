@@ -11908,10 +11908,12 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns the index of a pedigree variable.
+    ''' Returns the index of a pedigree variable, or -1 if pedigree is not 
+    ''' supported for the variable.
     ''' </summary>
     ''' <param name="varName">The variable to obtain the index for.</param>
-    ''' <returns>A one-based index.</returns>
+    ''' <returns>A one-based index, or -1 if pedigree is not 
+    ''' supported for the variable.</returns>
     ''' -----------------------------------------------------------------------
     Public Function PedigreeVariableIndex(ByVal varName As eVarNameFlags) As Integer
         Return Array.IndexOf(Me.m_EcoPathData.PedigreeVariables, varName)

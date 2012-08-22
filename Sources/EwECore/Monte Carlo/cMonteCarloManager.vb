@@ -484,11 +484,8 @@ Public Class cMonteCarloManager
     End Property
 
     ''' <summary>
-    ''' Sum of Squares fit to the currently loaded reference data for the original ecopath parameters
+    ''' Get the Sum of Squares, fit to the currently loaded reference data for the original ecopath parameters
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property SSorg() As Single
         Get
             'Sum of Squares fit to the currently loaded reference data 
@@ -496,10 +493,8 @@ Public Class cMonteCarloManager
         End Get
     End Property
 
-
-
     ''' <summary>
-    ''' Best fitting Sum of Squares to the currently loaded reference data for all the trials run to date
+    ''' Get the best fitting Sum of Squares to the currently loaded reference data for all the trials run to date
     ''' </summary>
     ''' <remarks></remarks>
     Public ReadOnly Property SSBestFit() As Single
@@ -510,7 +505,7 @@ Public Class cMonteCarloManager
     End Property
 
     ''' <summary>
-    ''' Number of attempts at finding a balanced Ecopath model for the current trial
+    ''' Get the number of attempts at finding a balanced Ecopath model for the current trial
     ''' </summary>
     Public ReadOnly Property nEcopathIterations() As Single
         Get
@@ -519,14 +514,13 @@ Public Class cMonteCarloManager
     End Property
 
     ''' <summary>
-    ''' Number of trials performed in the currently running simulation
+    ''' Get the number of trials performed in the currently running simulation
     ''' </summary>
     Public ReadOnly Property nTrialIterations() As Single
         Get
             Return m_mc.nTrialIterations
         End Get
     End Property
-
 
     ''' <summary>
     ''' Set the <see cref="MonteCarloEcopathProgressDelegate">delegate</see> to call at each attempt 
@@ -540,7 +534,7 @@ Public Class cMonteCarloManager
     End Property
 
     ''' <summary>
-    ''' <see cref="MonteCarloTrialProgressDelegate"/> to call at the completion of each Monte Carlo trial.
+    ''' Set the <see cref="MonteCarloTrialProgressDelegate"/> to call at the completion of each Monte Carlo trial.
     ''' </summary>
     ''' <remarks>This delegate is supplied by a user interface and will be called 
     ''' by the Monte Carlo routines at the end of each Monte Carlo trial.
@@ -552,7 +546,7 @@ Public Class cMonteCarloManager
     End Property
 
     ''' <summary>
-    ''' Method to call in the interface when the Monte Carlo trials have completed.
+    ''' Set the method to call in the interface when the Monte Carlo trials have completed.
     ''' </summary>
     ''' <remarks></remarks>
     Public WriteOnly Property MonteCarloCompletedHandler() As MonteCarloCompletedDelegate
@@ -563,12 +557,10 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
-
     ''' <summary>
-    ''' Synchronization object (Windows form) used for calling all the delegates across threads
+    ''' Set the <see cref="System.ComponentModel.ISynchronizeInvoke">Synchronization object</see>, which can be
+    ''' a Windows.Forms.Control, used for calling all the delegates across threads
     ''' </summary>
-    ''' <value></value>
-    ''' <remarks></remarks>
     Public WriteOnly Property SyncObject() As System.ComponentModel.ISynchronizeInvoke
         Set(ByVal value As System.ComponentModel.ISynchronizeInvoke)
             m_SyncObject = value
@@ -586,7 +578,9 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
-
+    ''' <summary>
+    ''' Get the max. number of iterations that Monte Carlo will perform.
+    ''' </summary>
     Public ReadOnly Property MaxEcoPathInterations() As Integer
         Get
             'ToDo_jb montecarlo manager this should come from the monte carlo model
@@ -594,20 +588,19 @@ Public Class cMonteCarloManager
         End Get
     End Property
 
-
     ''' <summary>
-    ''' Monte Carlo group information
+    ''' Get a <see cref="cMonteCarloGroup"/> for a given index.
     ''' </summary>
-    ''' <param name="iGroup"></param>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
+    ''' <param name="iGroup">The one-based group index to obtain the group for.</param>
     Public ReadOnly Property Groups(ByVal iGroup As Integer) As cMonteCarloGroup
         Get
             Return m_lstGrps.Item(iGroup - 1)
         End Get
     End Property
 
+    ''' <summary>
+    ''' Get/set whether Monte Carlo should automatically save trial outputs.
+    ''' </summary>
     Public Property bSaveOutput() As Boolean
         Get
             Return Me.m_mc.bSaveOutput
@@ -617,22 +610,29 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
-    Public Sub LoadFromPedigree()
-
+    ''' <summary>
+    ''' Load CV values from pedigree for a given variable.
+    ''' </summary>
+    ''' <param name="var">The <see cref="eVarNameFlags">variable</see> to laod CV values for.</param>
+    Public Sub LoadFromPedigree(var As eVarNameFlags)
         Try
 
-            Me.m_mc.LoadFromPedigree()
-            Me.m_mc.CalculateUpperLowerLimits(False)
-            Me.LoadGroups()
+            If Me.m_mc.LoadFromPedigree(var) Then
+                Me.m_mc.CalculateUpperLowerLimits(False)
+                Me.LoadGroups()
+                Me.m_core.onChanged(Me, eMessageType.DataModified)
+            End If
 
-            Me.m_core.onChanged(Me, eMessageType.DataModified)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
 
     End Sub
 
-
+    ''' <summary>
+    ''' Get/set a tolerance for EE estimates if the default mass-balance constraint 
+    ''' of [0, 1] proves too strict.
+    ''' </summary>
     Public Property EcopathEETolerance() As Single
         Get
             Return Me.m_mc.EcopathEETol
@@ -642,7 +642,9 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
-
+    ''' <summary>
+    ''' Yippee.
+    ''' </summary>
     Public Property bShowPlot() As Boolean
         Get
             Return m_mc.bShowPlot

@@ -104,8 +104,8 @@ Namespace Ecosim
 
         Private Sub FillValue(ByVal flags() As eVarNameFlags)
 
-            Dim mcGrp As cCoreGroupBase = Nothing
-            'Dim mcGroup As cMonteCarloGroup = Nothing
+            'Dim mcGrp As cCoreGroupBase = Nothing
+            Dim mcGrp As cMonteCarloGroup = Nothing
 
             For i As Integer = 1 To Me.Core.nLivingGroups
                 mcGrp = Me.m_mcmanager.Groups(i)
