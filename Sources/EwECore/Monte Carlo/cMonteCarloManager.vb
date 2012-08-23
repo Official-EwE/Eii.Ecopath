@@ -837,7 +837,7 @@ Public Class cMonteCarloManager
 
         ' Any null or not editable status flag should be blocked out in the MCMC interface
         If ((status And (eStatusFlags.Null Or eStatusFlags.NotEditable)) > 0) Then
-            status = status Or eStatusFlags.NotEditable Or eStatusFlags.Null
+            status = eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
         End If
 
         Return status
