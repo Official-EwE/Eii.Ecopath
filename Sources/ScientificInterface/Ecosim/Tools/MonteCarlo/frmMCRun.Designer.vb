@@ -30,10 +30,12 @@ Namespace Ecosim
             Me.m_btnStop = New System.Windows.Forms.Button()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tbpSettings = New System.Windows.Forms.TabPage()
-            Me.m_cbSave = New System.Windows.Forms.CheckBox()
             Me.m_cbRetainEstimates = New System.Windows.Forms.CheckBox()
+            Me.m_btDefaultTol = New System.Windows.Forms.Button()
             Me.m_cbRetainCurPattern = New System.Windows.Forms.CheckBox()
+            Me.Label1 = New System.Windows.Forms.Label()
             Me.m_cbShowBioTraj = New System.Windows.Forms.CheckBox()
+            Me.m_txTol = New System.Windows.Forms.TextBox()
             Me.m_tbpB = New System.Windows.Forms.TabPage()
             Me.m_gridB = New ScientificInterface.Ecosim.MCRunInputGrid()
             Me.m_tsB = New ScientificInterfaceShared.Controls.cEwEToolstrip()
@@ -59,6 +61,7 @@ Namespace Ecosim
             Me.m_lblGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage()
             Me.m_gridBestFit = New ScientificInterface.Ecosim.MCRunOutputGrid()
+            Me.m_cbSave = New System.Windows.Forms.CheckBox()
             Me.lblTrial = New System.Windows.Forms.Label()
             Me.lblERun = New System.Windows.Forms.Label()
             Me.lblSS = New System.Windows.Forms.Label()
@@ -75,9 +78,6 @@ Namespace Ecosim
             Me.m_hdrInputOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_txTol = New System.Windows.Forms.TextBox()
-            Me.Label1 = New System.Windows.Forms.Label()
-            Me.m_btDefaultTol = New System.Windows.Forms.Button()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -141,23 +141,28 @@ Namespace Ecosim
             Me.m_tbpSettings.Name = "m_tbpSettings"
             Me.m_tbpSettings.UseVisualStyleBackColor = True
             '
-            'm_cbSave
-            '
-            resources.ApplyResources(Me.m_cbSave, "m_cbSave")
-            Me.m_cbSave.Name = "m_cbSave"
-            Me.m_cbSave.UseVisualStyleBackColor = True
-            '
             'm_cbRetainEstimates
             '
             resources.ApplyResources(Me.m_cbRetainEstimates, "m_cbRetainEstimates")
             Me.m_cbRetainEstimates.Name = "m_cbRetainEstimates"
             Me.m_cbRetainEstimates.UseVisualStyleBackColor = True
             '
+            'm_btDefaultTol
+            '
+            resources.ApplyResources(Me.m_btDefaultTol, "m_btDefaultTol")
+            Me.m_btDefaultTol.Name = "m_btDefaultTol"
+            Me.m_btDefaultTol.UseVisualStyleBackColor = True
+            '
             'm_cbRetainCurPattern
             '
             resources.ApplyResources(Me.m_cbRetainCurPattern, "m_cbRetainCurPattern")
             Me.m_cbRetainCurPattern.Name = "m_cbRetainCurPattern"
             Me.m_cbRetainCurPattern.UseVisualStyleBackColor = True
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
             '
             'm_cbShowBioTraj
             '
@@ -166,6 +171,11 @@ Namespace Ecosim
             Me.m_cbShowBioTraj.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_cbShowBioTraj.Name = "m_cbShowBioTraj"
             Me.m_cbShowBioTraj.UseVisualStyleBackColor = True
+            '
+            'm_txTol
+            '
+            resources.ApplyResources(Me.m_txTol, "m_txTol")
+            Me.m_txTol.Name = "m_txTol"
             '
             'm_tbpB
             '
@@ -508,6 +518,12 @@ Namespace Ecosim
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridBestFit.UIContext = Nothing
             '
+            'm_cbSave
+            '
+            resources.ApplyResources(Me.m_cbSave, "m_cbSave")
+            Me.m_cbSave.Name = "m_cbSave"
+            Me.m_cbSave.UseVisualStyleBackColor = True
+            '
             'lblTrial
             '
             resources.ApplyResources(Me.lblTrial, "lblTrial")
@@ -606,22 +622,6 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.lblBestSS, 3, 2)
             Me.m_tlpOutputs.Controls.Add(Me.lblValueSSOrg, 4, 0)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
-            '
-            'm_txTol
-            '
-            resources.ApplyResources(Me.m_txTol, "m_txTol")
-            Me.m_txTol.Name = "m_txTol"
-            '
-            'Label1
-            '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
-            '
-            'm_btDefaultTol
-            '
-            resources.ApplyResources(Me.m_btDefaultTol, "m_btDefaultTol")
-            Me.m_btDefaultTol.Name = "m_btDefaultTol"
-            Me.m_btDefaultTol.UseVisualStyleBackColor = True
             '
             'MCRun
             '

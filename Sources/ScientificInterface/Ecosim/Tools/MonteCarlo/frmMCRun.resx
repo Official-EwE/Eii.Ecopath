@@ -391,7 +391,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpSettings.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1015,10 +1015,10 @@
     <value>7</value>
   </data>
   <data name="m_tcMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 96</value>
+    <value>4, 75</value>
   </data>
   <data name="m_tcMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>594, 193</value>
+    <value>594, 214</value>
   </data>
   <data name="m_tcMain.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1262,6 +1262,9 @@
   </data>
   <data name="&gt;&gt;m_nudNumTrials.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="m_btnTS.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="m_btnTS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
