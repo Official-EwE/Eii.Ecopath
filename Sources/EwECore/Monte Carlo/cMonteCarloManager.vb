@@ -231,8 +231,8 @@ Public Class cMonteCarloManager
 
         Try
 
-            'load the best fits into the interface groups
-            Me.LoadBestFitsToGroups()
+            'reload the groups
+            Me.LoadGroups()
 
             'set the signaled state 
             'Release any waiting threads
@@ -348,7 +348,7 @@ Public Class cMonteCarloManager
         Try
 
             m_mc.ApplyBestFits()
-            Me.LoadBestFitsToGroups()
+            Me.LoadGroups()
 
             'tell the core that the monte carlo manager has changed the ecopath and ecosim data
             'this loads modeling data into core input/output objects
@@ -714,88 +714,94 @@ Public Class cMonteCarloManager
         Try
             Dim m_epdata As cEcopathDataStructures = m_core.m_EcoPathData
             Dim m_esdata As cEcosimDatastructures = m_core.m_EcoSimData
+            Dim iIndex As Integer = 0
 
             For Each grp As cMonteCarloGroup In m_lstGrps
 
                 grp.AllowValidation = False
 
                 'convert the Database ID into an iGroup
-                grp.Index = Array.IndexOf(m_epdata.GroupDBID, grp.DBID)
+                iIndex = Array.IndexOf(m_epdata.GroupDBID, grp.DBID)
+                grp.Index = iIndex
                 grp.Resize()
 
                 grp.Name = m_epdata.GroupName(grp.Index)
 
                 'data from Ecopath
-                grp.B = m_epdata.B(grp.Index)
-                grp.PB = m_epdata.PB(grp.Index)
-                grp.QB = m_epdata.QB(grp.Index)
-                grp.BA = m_epdata.BA(grp.Index)
-                grp.EE = m_epdata.EE(grp.Index)
-                grp.VU = m_esdata.VulnerabilityPredator(grp.Index)
+                grp.B = m_epdata.B(iIndex)
+                grp.PB = m_epdata.PB(iIndex)
+                grp.QB = m_epdata.QB(iIndex)
+                grp.BA = m_epdata.BA(iIndex)
+                grp.EE = m_epdata.EE(iIndex)
+                grp.VU = m_esdata.VulnerabilityPredator(iIndex)
 
-                'ReDim CVpar(5, m_core.nGroups)
-                grp.Bcv = m_mc.CVpar(eMCParams.Biomass, grp.Index)
-                grp.PBcv = m_mc.CVpar(eMCParams.PB, grp.Index)
-                grp.QBcv = m_mc.CVpar(eMCParams.QB, grp.Index)
-                grp.BAcv = m_mc.CVpar(eMCParams.BA, grp.Index)
-                grp.EEcv = m_mc.CVpar(eMCParams.EE, grp.Index)
-                grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, grp.Index)
+                grp.Bcv = m_mc.CVpar(eMCParams.Biomass, iIndex)
+                grp.PBcv = m_mc.CVpar(eMCParams.PB, iIndex)
+                grp.QBcv = m_mc.CVpar(eMCParams.QB, iIndex)
+                grp.BAcv = m_mc.CVpar(eMCParams.BA, iIndex)
+                grp.EEcv = m_mc.CVpar(eMCParams.EE, iIndex)
+                grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, iIndex)
 
-                'ReDim ParLimit(1, 5, m_core.nGroups)
-                grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, grp.Index)
-                grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, grp.Index)
-                grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, grp.Index)
-                grp.BALower = m_mc.ParLimit(0, eMCParams.BA, grp.Index)
-                grp.EELower = m_mc.ParLimit(0, eMCParams.EE, grp.Index)
-                grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, grp.Index)
+                grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, iIndex)
+                grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, iIndex)
+                grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, iIndex)
+                grp.BALower = m_mc.ParLimit(0, eMCParams.BA, iIndex)
+                grp.EELower = m_mc.ParLimit(0, eMCParams.EE, iIndex)
+                grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, iIndex)
 
-                grp.BUpper = m_mc.ParLimit(1, eMCParams.Biomass, grp.Index)
-                grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, grp.Index)
-                grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, grp.Index)
-                grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, grp.Index)
-                grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, grp.Index)
-                grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, grp.Index)
+                grp.BUpper = m_mc.ParLimit(1, eMCParams.Biomass, iIndex)
+                grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, iIndex)
+                grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, iIndex)
+                grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, iIndex)
+                grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, iIndex)
+                grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, iIndex)
 
-                grp.Bbf = 0
-                grp.PBbf = 0
-                grp.QBbf = 0
-                grp.BAbf = 0
-                grp.EEbf = 0
-                grp.VUbf = 0
+                'best fit data from the monte carlo trials, if any
+                grp.Bbf = m_mc.BestFit(eMCParams.Biomass, iIndex)
+                grp.PBbf = m_mc.BestFit(eMCParams.PB, iIndex)
+                grp.QBbf = m_mc.BestFit(eMCParams.QB, iIndex)
+                grp.BAbf = m_mc.BestFit(eMCParams.BA, iIndex)
+                grp.EEbf = m_mc.BestFit(eMCParams.EE, iIndex)
+                grp.VUbf = m_mc.BestFit(eMCParams.Vulnerability, iIndex)
 
                 grp.ResetStatusFlags()
 
-                Dim grpPath As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(grp.Index)
+                Dim grpPath As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iIndex)
 
                 ' B
                 grp.SetStatusFlags(eVarNameFlags.mcB, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
                 grp.SetStatusFlags(eVarNameFlags.mcBcv, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
                 grp.SetStatusFlags(eVarNameFlags.mcBLower, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
                 grp.SetStatusFlags(eVarNameFlags.mcBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
+                grp.SetStatusFlags(eVarNameFlags.mcBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
 
                 ' PB
                 grp.SetStatusFlags(eVarNameFlags.mcPB, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcPBcv, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcPBLower, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcPBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcPBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
 
                 ' QB
                 grp.SetStatusFlags(eVarNameFlags.mcQB, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcQBcv, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcQBLower, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcQBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
+                grp.SetStatusFlags(eVarNameFlags.mcQBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
 
                 ' BA
                 grp.SetStatusFlags(eVarNameFlags.mcBA, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
                 grp.SetStatusFlags(eVarNameFlags.mcBAcv, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
                 grp.SetStatusFlags(eVarNameFlags.mcBALower, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
                 grp.SetStatusFlags(eVarNameFlags.mcBAUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
+                grp.SetStatusFlags(eVarNameFlags.mcBAbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
 
                 ' EE
                 grp.SetStatusFlags(eVarNameFlags.mcEE, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEEcv, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEELower, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEEUpper, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
+                grp.SetStatusFlags(eVarNameFlags.mcEEbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
 
                 grp.AllowValidation = True
 
@@ -804,8 +810,9 @@ Public Class cMonteCarloManager
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.StackTrace)
-            Throw New ApplicationException("LoadGroupParameters", ex)
         End Try
+
+        Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
 
     End Sub
 
@@ -817,7 +824,8 @@ Public Class cMonteCarloManager
     ''' <param name="var">The varname of the status to read.</param>
     ''' <returns>A montecarlified status flag.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function ToMCStatus(grp As cEcoPathGroupInput, var As eVarNameFlags) As eStatusFlags
+    Private Function ToMCStatus(ByVal grp As cEcoPathGroupInput, ByVal var As eVarNameFlags, _
+                                Optional ByVal bIsBestFit As Boolean = False) As eStatusFlags
 
         Dim status As eStatusFlags = grp.GetStatus(var)
 
@@ -837,81 +845,85 @@ Public Class cMonteCarloManager
 
         ' Any null or not editable status flag should be blocked out in the MCMC interface
         If ((status And (eStatusFlags.Null Or eStatusFlags.NotEditable)) > 0) Then
-            status = eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
+            If bIsBestFit Then
+                status = eStatusFlags.NotEditable Or eStatusFlags.ValueComputed
+            Else
+                status = eStatusFlags.NotEditable Or eStatusFlags.Null
+            End If
         End If
 
         Return status
 
     End Function
 
-    ''' <summary>
-    ''' Update the Monte Carlo groups with the best fit of the trials
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub LoadBestFitsToGroups()
+    ' ''' <summary>
+    ' ''' Update the Monte Carlo groups with the best fit of the trials
+    ' ''' </summary>
+    ' ''' <remarks></remarks>
+    'Private Sub LoadBestFitsToGroups()
 
-        Try
-            Dim m_epdata As cEcopathDataStructures = m_core.m_EcoPathData
-            Dim m_ecopath As cEcoPathModel = m_core.m_EcoPath
+    '    Try
+    '        Dim m_epdata As cEcopathDataStructures = m_core.m_EcoPathData
+    '        Dim m_ecopath As cEcoPathModel = m_core.m_EcoPath
 
-            For Each grp As cMonteCarloGroup In m_lstGrps
+    '        For Each grp As cMonteCarloGroup In m_lstGrps
 
-                grp.AllowValidation = False
+    '            grp.AllowValidation = False
 
-                'convert the Database ID into an iGroup
-                grp.Index = Array.IndexOf(m_epdata.GroupDBID, grp.DBID)
-                grp.Resize()
+    '            'convert the Database ID into an iGroup
+    '            grp.Index = Array.IndexOf(m_epdata.GroupDBID, grp.DBID)
+    '            grp.Resize()
 
-                'best fit data from the monte carlo trials
-                grp.Bbf = m_mc.BestFit(eMCParams.Biomass, grp.Index)
-                grp.PBbf = m_mc.BestFit(eMCParams.PB, grp.Index)
-                grp.QBbf = m_mc.BestFit(eMCParams.QB, grp.Index)
-                grp.BAbf = m_mc.BestFit(eMCParams.BA, grp.Index)
-                grp.EEbf = m_mc.BestFit(eMCParams.EE, grp.Index)
-                grp.VUbf = m_mc.BestFit(eMCParams.Vulnerability, grp.Index)
+    '            'best fit data from the monte carlo trials
+    '            grp.Bbf = m_mc.BestFit(eMCParams.Biomass, grp.Index)
+    '            grp.PBbf = m_mc.BestFit(eMCParams.PB, grp.Index)
+    '            grp.QBbf = m_mc.BestFit(eMCParams.QB, grp.Index)
+    '            grp.BAbf = m_mc.BestFit(eMCParams.BA, grp.Index)
+    '            grp.EEbf = m_mc.BestFit(eMCParams.EE, grp.Index)
+    '            grp.VUbf = m_mc.BestFit(eMCParams.Vulnerability, grp.Index)
 
-                'ReDim CVpar(5, m_core.nGroups)
-                grp.Bcv = m_mc.CVpar(eMCParams.Biomass, grp.Index)
-                grp.PBcv = m_mc.CVpar(eMCParams.PB, grp.Index)
-                grp.QBcv = m_mc.CVpar(eMCParams.QB, grp.Index)
-                grp.BAcv = m_mc.CVpar(eMCParams.BA, grp.Index)
-                grp.EEcv = m_mc.CVpar(eMCParams.EE, grp.Index)
-                grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, grp.Index)
+    '            'ReDim CVpar(5, m_core.nGroups)
+    '            grp.Bcv = m_mc.CVpar(eMCParams.Biomass, grp.Index)
+    '            grp.PBcv = m_mc.CVpar(eMCParams.PB, grp.Index)
+    '            grp.QBcv = m_mc.CVpar(eMCParams.QB, grp.Index)
+    '            grp.BAcv = m_mc.CVpar(eMCParams.BA, grp.Index)
+    '            grp.EEcv = m_mc.CVpar(eMCParams.EE, grp.Index)
+    '            grp.VUcv = m_mc.CVpar(eMCParams.Vulnerability, grp.Index)
 
-                'ReDim ParLimit(1, 5, m_core.nGroups)
-                grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, grp.Index)
-                grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, grp.Index)
-                grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, grp.Index)
-                grp.BALower = m_mc.ParLimit(0, eMCParams.BA, grp.Index)
-                grp.EELower = m_mc.ParLimit(0, eMCParams.EE, grp.Index)
-                grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, grp.Index)
+    '            'ReDim ParLimit(1, 5, m_core.nGroups)
+    '            grp.BLower = m_mc.ParLimit(0, eMCParams.Biomass, grp.Index)
+    '            grp.PBLower = m_mc.ParLimit(0, eMCParams.PB, grp.Index)
+    '            grp.QBLower = m_mc.ParLimit(0, eMCParams.QB, grp.Index)
+    '            grp.BALower = m_mc.ParLimit(0, eMCParams.BA, grp.Index)
+    '            grp.EELower = m_mc.ParLimit(0, eMCParams.EE, grp.Index)
+    '            grp.VULower = m_mc.ParLimit(0, eMCParams.Vulnerability, grp.Index)
 
-                grp.BUpper = m_mc.ParLimit(1, eMCParams.Biomass, grp.Index)
-                grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, grp.Index)
-                grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, grp.Index)
-                grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, grp.Index)
-                grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, grp.Index)
-                grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, grp.Index)
+    '            grp.BUpper = m_mc.ParLimit(1, eMCParams.Biomass, grp.Index)
+    '            grp.PBUpper = m_mc.ParLimit(1, eMCParams.PB, grp.Index)
+    '            grp.QBUpper = m_mc.ParLimit(1, eMCParams.QB, grp.Index)
+    '            grp.BAUpper = m_mc.ParLimit(1, eMCParams.BA, grp.Index)
+    '            grp.EEUpper = m_mc.ParLimit(1, eMCParams.EE, grp.Index)
+    '            grp.VUUpper = m_mc.ParLimit(1, eMCParams.Vulnerability, grp.Index)
 
-                grp.ResetStatusFlags()
+    '            grp.ResetStatusFlags()
 
-                'validation for monte carlo groups should be handled by the manager
-                'the manager and the monte carlo model know what to do in response to an edit
-                'this is not setup yet
-                grp.AllowValidation = True
+    '            'validation for monte carlo groups should be handled by the manager
+    '            'the manager and the monte carlo model know what to do in response to an edit
+    '            'this is not setup yet
+    '            grp.AllowValidation = True
 
-            Next 'For Each grp As cMonteCarloGroup
+    '        Next 'For Each grp As cMonteCarloGroup
 
-            Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
+    '        Me.AddMessage(New cMessage("MC groups updated", eMessageType.DataModified, eCoreComponentType.EcoSim, eMessageImportance.Maintenance))
 
-        Catch ex As Exception
-            cLog.Write(ex)
-            Debug.Assert(False, ex.StackTrace)
-            Throw New ApplicationException("UpdateGroupsBestFit", ex)
-        End Try
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '        Debug.Assert(False, ex.StackTrace)
+    '        Throw New ApplicationException("UpdateGroupsBestFit", ex)
+    '    End Try
 
 
-    End Sub
+    'End Sub
 
     Private Sub InitGroups()
 
