@@ -773,35 +773,35 @@ Public Class cMonteCarloManager
                 grp.SetStatusFlags(eVarNameFlags.mcBcv, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
                 grp.SetStatusFlags(eVarNameFlags.mcBLower, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
                 grp.SetStatusFlags(eVarNameFlags.mcBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput))
-                grp.SetStatusFlags(eVarNameFlags.mcBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
+                grp.SetStatusFlags(eVarNameFlags.mcBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum, True))
 
                 ' PB
                 grp.SetStatusFlags(eVarNameFlags.mcPB, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcPBcv, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcPBLower, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcPBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.PBInput))
-                grp.SetStatusFlags(eVarNameFlags.mcPBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
+                grp.SetStatusFlags(eVarNameFlags.mcPBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum, True))
 
                 ' QB
                 grp.SetStatusFlags(eVarNameFlags.mcQB, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcQBcv, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcQBLower, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
                 grp.SetStatusFlags(eVarNameFlags.mcQBUpper, Me.ToMCStatus(grpPath, eVarNameFlags.QBInput))
-                grp.SetStatusFlags(eVarNameFlags.mcQBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
+                grp.SetStatusFlags(eVarNameFlags.mcQBbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum, True))
 
                 ' BA
                 grp.SetStatusFlags(eVarNameFlags.mcBA, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
                 grp.SetStatusFlags(eVarNameFlags.mcBAcv, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
                 grp.SetStatusFlags(eVarNameFlags.mcBALower, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
                 grp.SetStatusFlags(eVarNameFlags.mcBAUpper, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum))
-                grp.SetStatusFlags(eVarNameFlags.mcBAbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
+                grp.SetStatusFlags(eVarNameFlags.mcBAbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum, True))
 
                 ' EE
                 grp.SetStatusFlags(eVarNameFlags.mcEE, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEEcv, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEELower, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
                 grp.SetStatusFlags(eVarNameFlags.mcEEUpper, Me.ToMCStatus(grpPath, eVarNameFlags.EEInput))
-                grp.SetStatusFlags(eVarNameFlags.mcEEbf, Me.ToMCStatus(grpPath, eVarNameFlags.BiomassAreaInput, True))
+                grp.SetStatusFlags(eVarNameFlags.mcEEbf, Me.ToMCStatus(grpPath, eVarNameFlags.BioAccum, True))
 
                 grp.AllowValidation = True
 
