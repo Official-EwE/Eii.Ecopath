@@ -505,9 +505,7 @@ Friend Class cEcosimMonteCarlo
                         'keep the best fits for applying later
                         For igrp As Integer = 1 To m_core.nGroups
                             BestFit(eMCParams.Biomass, igrp) = m_epdata.B(igrp)
-                            ' JS13feb12 added
                             BestFit(eMCParams.QB, igrp) = m_epdata.QB(igrp)
-
                             BestFit(eMCParams.PB, igrp) = m_epdata.PB(igrp)
                             BestFit(eMCParams.EE, igrp) = m_epdata.EE(igrp)
                             BestFit(eMCParams.BA, igrp) = m_epdata.BA(igrp)
