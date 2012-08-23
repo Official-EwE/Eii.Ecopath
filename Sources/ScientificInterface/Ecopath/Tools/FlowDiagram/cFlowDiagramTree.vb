@@ -365,7 +365,7 @@ Namespace Ecopath.Controls.FlowDiagram
                             ' Normal
                     End Select
                 Case eHighlightType.Hidden
-                    clrLine = LightGray
+                    Return ' clrLine = Color.FromArgb(255, 240, 240, 240)
                 Case eHighlightType.Predator
                     clrLine = Me.m_data.PreyColor
                     sLineWidth = 2.0!
