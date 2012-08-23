@@ -639,7 +639,7 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_btnRunTrials)
             Me.Name = "MCRun"
-            Me.TabText = "Monte Carlo simulation of varying Ecopath basic parameters"
+            Me.TabText = "Monte Carlo simulations"
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tbpSettings.ResumeLayout(False)
             Me.m_tbpSettings.PerformLayout()
