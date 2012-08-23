@@ -421,7 +421,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 142</value>
+    <value>586, 163</value>
   </data>
   <data name="m_gridB.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -475,7 +475,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpB.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -502,7 +502,7 @@
     <value>0, 25</value>
   </data>
   <data name="m_gridPB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 142</value>
+    <value>586, 163</value>
   </data>
   <data name="m_gridPB.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -556,7 +556,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpBP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpBP.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -583,7 +583,7 @@
     <value>0, 25</value>
   </data>
   <data name="m_gridQB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 142</value>
+    <value>586, 163</value>
   </data>
   <data name="m_gridQB.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -637,7 +637,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpQB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpQB.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -664,7 +664,7 @@
     <value>0, 25</value>
   </data>
   <data name="m_gridEE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 142</value>
+    <value>586, 163</value>
   </data>
   <data name="m_gridEE.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -709,7 +709,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpEE.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpEE.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -739,7 +739,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridBA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 142</value>
+    <value>586, 163</value>
   </data>
   <data name="m_gridBA.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -784,7 +784,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpBA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpBA.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -946,7 +946,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpBPlot.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpBPlot.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -994,7 +994,7 @@
     <value>4, 22</value>
   </data>
   <data name="m_tbpBestTrial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>586, 167</value>
+    <value>586, 188</value>
   </data>
   <data name="m_tbpBestTrial.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1633,7 +1633,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Monte Carlo simulation of varying Ecopath basic parameters</value>
+    <value>Monte Carlo simulations</value>
   </data>
   <data name="&gt;&gt;m_tsbnLoadPedB.Name" xml:space="preserve">
     <value>m_tsbnLoadPedB</value>
