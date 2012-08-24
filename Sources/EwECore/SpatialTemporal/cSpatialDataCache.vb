@@ -166,7 +166,11 @@ Namespace SpatialData
                                     ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
                                     strFilter As String, strExt As String) As String _
                                 Implements ISpatialDataCache.GetFileName
-            Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strFilter, strExt)
+            If Guid.Empty.Equals(ds.GUID) Then
+                Return cFileUtils.MakeTempFile(strExt)
+            Else
+                Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strFilter, strExt)
+            End If
         End Function
 
 #End Region ' Cache access

@@ -50,7 +50,7 @@ Namespace SpatialData
         ''' to be preserved: layer data is then preserved on first overwrite,
         ''' and restored when a run finished. Preserved layer data is maintained
         ''' in temporary files.</summary>
-        Private m_bPreserveLayerContent As Boolean = True
+        Private m_bRestoreLayerContent As Boolean = True
         ''' <summary>File names of preserved layers.</summary>
         Private m_astrLayerFiles() As String
 
@@ -105,13 +105,12 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the number of layers for this adapter.
+        ''' Returns the maximum number of layers for this adapter.
         ''' </summary>
         ''' <returns>The number of layers for this adapter.</returns>
         ''' -------------------------------------------------------------------
         Public Function Length() As Integer
-            ' Why not return Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))?
-            Return Me.m_converters.Length
+            Return Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
         End Function
 
         ''' -------------------------------------------------------------------
@@ -139,11 +138,12 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property Converter(iIndex As Integer) As ISpatialDataConverter
             Get
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Return Me.m_converters(Math.Max(0, iIndex))
             End Get
             Set(ByVal value As ISpatialDataConverter)
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                If (Me.m_converters Is Nothing) Then Me.Initialize()
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Me.m_converters(Math.Max(0, iIndex)) = value
             End Set
         End Property
@@ -157,11 +157,12 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property Dataset(iIndex As Integer) As ISpatialDataSet
             Get
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Return Me.m_datasets(Math.Max(0, iIndex))
             End Get
             Set(ByVal value As ISpatialDataSet)
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                If (Me.m_datasets Is Nothing) Then Me.Initialize()
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Me.m_datasets(Math.Max(0, iIndex)) = value
             End Set
         End Property
@@ -205,7 +206,7 @@ Namespace SpatialData
         ''' <param name="iTime">The one-based Ecospace time step to populate data for.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Protected Friend Overridable Function Populate(ByVal iTime As Integer) As Boolean
+        Public Overridable Function Populate(ByVal iTime As Integer) As Boolean
 
             Dim msg As cMessage = Nothing
             Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
@@ -240,7 +241,7 @@ Namespace SpatialData
 
                                 Try
                                     ' The raster returned here MUST have the extent and projection compatible with Ecospace
-                                    dataExternal = ds.GetRaster(cv, layer.Name)
+                                    dataExternal = ds.GetRaster(cv, cValueID.getDataTypeID(layer.DataType, layer.DBID))
                                 Catch ex As Exception
                                     Me.m_core.SpatialOperationLog.LogOperation(String.Format(My.Resources.CoreMessages.STATUS_EXCEPTION, ex.Message), eStatusFlags.ErrorEncountered)
                                     cLog.Write(ex, "cSpatialDataAdapter::Populate(" & layer.ToString() & ")")
@@ -395,17 +396,19 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get/set whether the content of an externally driven layer should be
-        ''' preserved. If set to true, the content of any layer that is configured 
-        ''' to receive external data will be preserved in a temporary file,
-        ''' from which the content is restored at the end of a run.
+        ''' preserved when external data is received, and should be restored
+        ''' after a run has completed. If set to true, the content of any layer 
+        ''' that is configured to receive external data will be preserved in a 
+        ''' temporary file, from which the content is restored at the end of a 
+        ''' run.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property PreserveLayerContent As Boolean
+        Public Property RestoreLayerContent As Boolean
             Get
-                Return Me.m_bPreserveLayerContent
+                Return Me.m_bRestoreLayerContent
             End Get
             Set(value As Boolean)
-                Me.m_bPreserveLayerContent = value
+                Me.m_bRestoreLayerContent = value
             End Set
         End Property
 
@@ -413,7 +416,7 @@ Namespace SpatialData
         ''' <summary>
         ''' Save the content of adapter-managed layers to a temporary file.
         ''' <seealso cref="RestoreLayerData"/>
-        ''' <seealso cref="PreserveLayerContent"/>
+        ''' <seealso cref="RestoreLayerContent"/>
         ''' </summary>
         ''' <param name="bm">Ecospace base map that states the size of the layer grid.</param>
         ''' <remarks>
@@ -429,7 +432,7 @@ Namespace SpatialData
             Next
 
             ' Early bail out
-            If (Not Me.PreserveLayerContent) Then Return
+            If (Not Me.RestoreLayerContent) Then Return
 
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
@@ -490,7 +493,7 @@ Namespace SpatialData
         ''' <summary>
         ''' Restore the content of layers from a temporary file.
         ''' <seealso cref="SaveLayerData"/>
-        ''' <seealso cref="PreserveLayerContent"/>
+        ''' <seealso cref="RestoreLayerContent"/>
         ''' </summary>
         ''' <param name="bm">Ecospace base map that states the size of the layer grid.</param>
         ''' -------------------------------------------------------------------

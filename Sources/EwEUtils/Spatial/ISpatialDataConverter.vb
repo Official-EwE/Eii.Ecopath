@@ -48,10 +48,10 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the name of the attribute to filter content by.
+        ''' Get/set an attribute filter, if needed.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Property Attribute As String
+        Property AttributeFilter As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -68,7 +68,6 @@ Namespace SpatialData
         ''' <see cref="Point.Y"/> as latiude.</param>
         ''' <param name="dCellSize">Cell size (in decimal degrees) to convert data to.</param>
         ''' <param name="strFile">Name of the file to store the converted raster.</param>
-        ''' <param name="strLayerName">Name of the layer that is to receive the data.</param>
         ''' <returns>A <see cref="ISpatialRaster">raster</see> with data, trimmed to the Ecospace 
         ''' bounding box indicated by <paramref name="ptfNE"/>, <paramref name="ptfSW"/> and 
         ''' <paramref name="dCellSize">cell size</paramref>.</returns>
@@ -77,8 +76,7 @@ Namespace SpatialData
                          ByVal ptfNE As PointF, _
                          ByVal ptfSW As PointF, _
                          ByVal dCellSize As Double, _
-                         ByVal strFile As String, _
-                         ByVal strLayerName As String) As ISpatialRaster
+                         ByVal strFile As String) As ISpatialRaster
 
         ''' -------------------------------------------------------------------
         ''' <summary>
