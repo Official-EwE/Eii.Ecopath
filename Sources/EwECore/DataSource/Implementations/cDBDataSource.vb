@@ -7359,7 +7359,7 @@ Namespace DataSources
                 drow("AdjustSpace") = ecospaceDS.AdjustSpace
                 drow("UseExact") = ecospaceDS.UseExact
 
-                If Me.m_sVersion >= 6.01 Then
+                If Me.Version >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol
                 End If
                 drow("CapacityCalType") = ecospaceDS.CapCalType
@@ -7537,15 +7537,11 @@ Namespace DataSources
                  Implements IEcospaceDatasource.ResizeEcospaceBasemap
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim iScenarioID As Integer = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
             Dim dt As DataTable = Nothing
             Dim drow As DataRow = Nothing
             Dim bSucces As Boolean = True
-
-            ' Get ID of scenario to save to
-            iScenarioID = ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario)
 
             Try
                 writer = Me.m_db.GetWriter("EcospaceScenario")
