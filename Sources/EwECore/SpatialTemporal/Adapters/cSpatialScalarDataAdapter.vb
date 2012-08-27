@@ -54,7 +54,7 @@ Namespace SpatialData
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
 
-            If (Me.m_scaleType(layer.Index) = eScaleType.Relative) Then
+            If (Me.DataScaleType(layer.Index) = eScaleType.Relative) Then
                 sValueAtT /= Me.DataScale(layer.Index)
             End If
 
@@ -119,11 +119,13 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property DataScaleType(iIndex As Integer) As eScaleType
             Get
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                If (Me.m_scaleType Is Nothing) Then Me.Initialize()
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Return Me.m_scaleType(Math.Max(0, iIndex))
             End Get
             Set(value As eScaleType)
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                If (Me.m_scaleType Is Nothing) Then Me.Initialize()
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Me.m_scaleType(Math.Max(0, iIndex)) = value
             End Set
         End Property
@@ -138,11 +140,13 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property DataScale(iIndex As Integer) As Double
             Get
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                If (Me.m_scales Is Nothing) Then Me.Initialize()
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Return Me.m_scales(Math.Max(0, iIndex))
             End Get
             Set(value As Double)
-                Debug.Assert(iIndex < Me.Length, "Index out of range")
+                If (Me.m_scales Is Nothing) Then Me.Initialize()
+                Debug.Assert(iIndex <= Me.Length, "Index out of range")
                 Me.m_scales(Math.Max(0, iIndex)) = value
             End Set
         End Property
