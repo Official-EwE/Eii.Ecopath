@@ -1305,7 +1305,6 @@ Public Class cEcosimDatastructures
     Public ReadOnly Property NTimes() As Integer
         Get
             Return Me.NumYears * Me.NumStepsPerYear
-            'VC091102: THIS can't be right, SO I REMARKED IT OUT : If NumYears > 55 Then Stop
         End Get
     End Property
 
