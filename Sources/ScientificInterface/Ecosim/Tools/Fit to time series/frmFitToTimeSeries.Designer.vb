@@ -545,7 +545,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockCodeSelector.Name = "m_vulnerabilityBlockCodeSelector"
             Me.m_vulnerabilityBlockCodeSelector.NumBlocks = 30
             Me.m_vulnerabilityBlockCodeSelector.SelectedBlock = 15
-            Me.m_vulnerabilityBlockCodeSelector.Size = New System.Drawing.Size(520, 52)
+            Me.m_vulnerabilityBlockCodeSelector.Size = New System.Drawing.Size(576, 52)
             Me.m_vulnerabilityBlockCodeSelector.TabIndex = 1
             Me.m_vulnerabilityBlockCodeSelector.UIContext = Nothing
             '
@@ -559,7 +559,7 @@ Namespace Ecosim
             Me.m_vulnerabilityBlockMatrix.Location = New System.Drawing.Point(-1, 112)
             Me.m_vulnerabilityBlockMatrix.Name = "m_vulnerabilityBlockMatrix"
             Me.m_vulnerabilityBlockMatrix.SelectedBlockNum = 0
-            Me.m_vulnerabilityBlockMatrix.Size = New System.Drawing.Size(521, 469)
+            Me.m_vulnerabilityBlockMatrix.Size = New System.Drawing.Size(577, 469)
             Me.m_vulnerabilityBlockMatrix.TabIndex = 2
             Me.m_vulnerabilityBlockMatrix.TabStop = False
             Me.m_vulnerabilityBlockMatrix.UIContext = Nothing
