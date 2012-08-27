@@ -317,6 +317,10 @@ Public Class cEcospaceDataStructures
     Public MigConcRow() As Single
     Public MigConcCol() As Single
 
+    ''' <summary>
+    ''' Average Sailing Cost for all water cell 
+    ''' </summary>
+    ''' <remarks>By fleet</remarks>
     Public SailScale() As Single
 
     Public FitRespType As Integer
