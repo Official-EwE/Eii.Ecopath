@@ -12216,7 +12216,7 @@ Public Class cCore
                 'greater than zero 
                 'less than the last time step
                 'greater than start summary period
-                If value > 0 And value + m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep <= m_EcoSpaceData.TotalTime And _
+                If value > 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
                                 value > m_EcoSpaceData.SumStart(0) Then
                     'passed validation
                     ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
@@ -12234,7 +12234,7 @@ Public Class cCore
                 'greater than or equal to zero 
                 'less than the last time step
                 'less than end summary period
-                If value >= 0 And value + m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep <= m_EcoSpaceData.TotalTime And _
+                If value >= 0 And value + CSng(m_EcoSpaceData.TimeStep * m_EcoSpaceData.NumStep) <= m_EcoSpaceData.TotalTime And _
                                 value < m_EcoSpaceData.SumStart(1) Then
                     'passed validation
                     ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
@@ -12253,7 +12253,7 @@ Public Class cCore
 
                 'greater than zero
                 'end of the last summary period is still in bounds
-                If value > 0 And m_EcoSpaceData.SumStart(1) + value * m_EcoSpaceData.TimeStep <= m_EcoSpaceData.TotalTime Then
+                If value > 0 And m_EcoSpaceData.SumStart(1) + CSng(value * m_EcoSpaceData.TimeStep) <= m_EcoSpaceData.TotalTime Then
                     'passed validation
                     ValueObject.ValidationMessage = String.Format(My.Resources.CoreMessages.VARIABLE_VALIDATION_PASSED, cni.GetVarName(ValueObject.varName), ValueObject.Value)
                     ValueObject.ValidationStatus = eStatusFlags.OK
