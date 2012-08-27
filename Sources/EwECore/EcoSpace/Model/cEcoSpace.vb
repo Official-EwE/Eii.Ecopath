@@ -252,7 +252,7 @@ Public Class cEcoSpace
     Private its As Integer
 
     ''' <summary>
-    ''' Cumulative itime step at the current user selected time step.
+    ''' Cumulative itime step array index at the current user selected time step.
     ''' </summary>
     ''' <remarks></remarks>
     Private itt As Integer
@@ -862,7 +862,7 @@ Public Class cEcoSpace
         Dim Fgear() As Single
         Dim FtimeTotal(m_Data.NGroups) As Single
         Dim ExtraTime As Integer = m_search.ExtraYearsForSearch
-        Dim steps_per_year As Integer = 1 / m_Data.TimeStep
+        'Dim steps_per_year As Integer = 1 / m_Data.TimeStep
 
         'timers
         Dim stpwchTotRunTime As New Stopwatch
@@ -907,22 +907,31 @@ Public Class cEcoSpace
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'START OF TIME LOOP
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            For m_Data.TimeNow = StartTime To (m_Data.TotalTime - m_Data.TimeStep) Step m_Data.TimeStep
+            For m_Data.TimeNow = StartTime To m_Data.TotalTime Step m_Data.TimeStep
 
                 Me.m_PauseSignal.WaitOne()
 
                 'set time step counters
-                its = Math.Truncate(m_Data.TimeNow * 12) + 1 ' i time assuming a monthly time step used for data array by month i.e. zscale()
-                itt += 1 'cumulative i time at the curent time step 
+                'itt is the cumulative time counter
+                itt += 1
+                'its is the cumulative monthly counter used for data array by month i.e. zscale()
+                its = Math.Truncate(m_Data.TimeNow * 12) + 1
+                If itt > nEcospaceTimeSteps Then
+                    'We have exceeded the number of time step bump out of the time loop.
+                    'This quarantees we don't come up one time step short due to rounding issues with m_Data.TimeStep
+                    itt = nEcospaceTimeSteps
+                    Exit For
+                End If
 
-                Debug.Assert(itt <= nEcospaceTimeSteps, "itt > nEcospaceTimeSteps")
-
-                'make sure the time loop indexes do not get larger than the data they reference
-                If itt > nEcospaceTimeSteps Then itt = nEcospaceTimeSteps
+                'make sure its (time loop indexes) do not get larger than the data they reference
                 If its > m_SimData.ForcePoints Then its = m_SimData.ForcePoints 'HACK  bump back the index
+                If its > m_SimData.NTimes Then its = m_SimData.NTimes
 
-                m_Data.MonthNow = 1 + (its - 1) Mod 12
-                m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow + 0.001)  'iYear will be truncated to the integer part of timenow
+                'MonthNow will be truncated to monthly(decimal) part of TimeNow
+                m_Data.MonthNow = Math.Truncate(1.0F + (m_Data.TimeNow - Math.Truncate(m_Data.TimeNow)) * 12.0F)
+                'YearNow will be truncated to the integer part of timenow
+                m_Data.YearNow = 1 + Math.Truncate(m_Data.TimeNow)
+
                 If m_Data.MonthNow = 1 Then
                     bAccumulateData = True 'new year collect the model fitting data after the six month
                 End If
@@ -1746,12 +1755,8 @@ Public Class cEcoSpace
                         End If
 
                         If m_Data.Depth(i, j) > 0 Then
-                            'If ip > 0 And i > 0 And j > 0 Then
-                            '    Debug.Assert(Me.m_Data.HabCap(i, j, ip) > 0, "Opps cap=0")
-                            'End If
 
-                            'Debug.Assert(Me.m_Data.HabCap(i, j, ip) > 0, "Hab cap = 0")
-                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip) 'Basebiomass(ip)
+                            m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip)
                             'If m_Data.PrefHab(ip, m_Data.HabType(i, j)) = False And m_Data.PrefHab(ip, 0) = False Then
                             '    m_Data.Bcell(i, j, ip) = 0.1 * m_SimData.StartBiomass(ip)
                             'End If
@@ -1830,16 +1835,12 @@ Public Class cEcoSpace
             'set dispersal rate arrays for solvegrid
             SetMovementParameters()
 
-            ' If CurrentForce Then velmaker.SetBoundaryDepths() 
             'Need to call this to initialize DepthY and DepthX arrays.  
             If m_Data.CurrentForce Then SetXYBoundaryDepths()
 
             'set some solvegrid solution parameters
             Dim iter As Double
             Dim TimeStep2 As Single
-            'm_Data.W = 0.9
-            'm_Data.Tol = 0.0001
-            'm_Data.maxIter = 40
 
             Dim ihalf As Integer = Math.Truncate(m_Data.InCol / 2)
             j = 0
@@ -2586,12 +2587,12 @@ Public Class cEcoSpace
                         PFished = 1
                     End If
 
-                    'Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
+                    Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
 
                     If m_Data.Depth(i, j) > 0 Then
 
-                        'set the Proportion of area fished by this fleet for all the habitats in the cell 
-                        Me.m_Data.PAreaFished(i, j, ig) = 1 * PFished ' 1 * m_Data.Width(i) * PFished
+                        'set the Proportion of area fished by this fleet for all the habitats in the cell
+                        Me.m_Data.PAreaFished(i, j, ig) = 1 * PFished
                         'constrain percentage of area fished to 1.0
                         If Me.m_Data.PAreaFished(i, j, ig) > 1.0 Then Me.m_Data.PAreaFished(i, j, ig) = 1
 
@@ -4196,7 +4197,7 @@ exitline:
     ''' <param name="iCol">Map col</param>
     ''' <remarks></remarks>
     Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
-        Dim sum As Single, iFlt As Integer, igrp As Integer
+        Dim cellCatch As Single, iFlt As Integer, igrp As Integer
         'Dim Landings(,) As Single
 
         'ReDim Landings(Me.m_EPdata.NumGroups, Me.m_EPdata.NumFleet)
@@ -4238,23 +4239,23 @@ exitline:
                     For iFlt = 1 To m_EPdata.NumFleet
                         If m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp) > 0 Then
                             'First get catch
-                            sum = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp) * m_Data.Width(iRow)
+                            cellCatch = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp) * m_Data.Width(iRow)
 
                             'Sum the total catch by gear
-                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += sum
+                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += cellCatch
                             'sum all fleets
-                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0, iCumTime) += sum
+                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0, iCumTime) += cellCatch
 
-                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iCumTime) += sum
+                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iCumTime) += cellCatch
                             'sum all fleets into the zero fleet index
-                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp, iCumTime) += sum
+                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp, iCumTime) += cellCatch
 
                             'Next line is for adding up catch by region etc
                             If m_Data.nRegions > 0 Then
-                                m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += sum
+                                m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += cellCatch
                             End If
 
-                            m_Data.Landings(igrp, iFlt) += sum * Me.m_EPdata.PropLanded(iFlt, igrp)
+                            m_Data.Landings(igrp, iFlt) += cellCatch * Me.m_EPdata.PropLanded(iFlt, igrp)
                         End If
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
@@ -6352,6 +6353,25 @@ exitline:
 
                 Next ic
             Next ir
+
+            'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            'TEMP HACK
+            'For update bug that set PHabType as the Habitat Index instead of Propotion of Habitat Type
+            ''Debug.Assert(False, "WARNING: EcoSpace.normalizePropHabType() has changed all valid habitats to 1.0!")
+            'For ir As Integer = 1 To Me.m_Data.InRow
+            '    For ic As Integer = 1 To Me.m_Data.InCol
+
+            '        For ihab = 1 To Me.m_Data.NoHabitats
+            '            If Me.m_Data.PHabType(ir, ic, ihab) > 1.0 Then
+            '                Me.m_Data.PHabType(ir, ic, ihab) = 1.0
+            '                bChanged = True
+            '            End If
+
+            '        Next ihab
+            '    Next ic
+            'Next ir
+            'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 
             If bChanged Then
                 'maybe send a message
