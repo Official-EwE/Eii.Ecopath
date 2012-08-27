@@ -9467,10 +9467,7 @@ Public Class cCore
 
         m_EcoSpaceData.PredictEffort = m_EcospaceModelParams.PredictEffort
 
-        'casting to single was resulting in the timestep being slightly larger (in some cases)this was causing the time loop in ecospace to exit early
-        'rounding seems to have solved this
-        'm_EcoSpaceData.TimeStep = CSng(1.0 / m_EcospaceModelParams.NumberOfTimeStepsPerYear)
-        m_EcoSpaceData.TimeStep = CSng(Math.Round(1.0 / m_EcospaceModelParams.NumberOfTimeStepsPerYear, 6))
+        m_EcoSpaceData.TimeStep = CSng(1.0 / m_EcospaceModelParams.NumberOfTimeStepsPerYear)
 
         m_EcoSpaceData.SumStart(0) = m_EcospaceModelParams.StartSummaryTime
         m_EcoSpaceData.SumStart(1) = m_EcospaceModelParams.EndSummaryTime
