@@ -1499,7 +1499,7 @@ Public Class cCore
                 ts.CV = Me.m_TSData.sCV(ts.Index)
 
                 'DatSS and DatQ are not part of m_TSData yet
-                ts.DataSS = Me.m_TSData.sDatSS(ts.Index)
+                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
                 ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
                 ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
 
@@ -1529,7 +1529,7 @@ Public Class cCore
                 ts.CV = Me.m_TSData.sCV(ts.Index)
 
                 'DatSS and DatQ are not part of m_TSData yet
-                ts.DataSS = Me.m_TSData.sDatSS(ts.Index)
+                ts.DataSS = Me.m_TSData.sSSPredErr(ts.Index)
                 ts.DataQ = Me.m_TSData.sDatQ(ts.Index)
                 ts.eDataQ = Me.m_TSData.sEDatQ(ts.Index)
 
