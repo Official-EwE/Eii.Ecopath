@@ -183,8 +183,11 @@ Public MustInherit Class cTimeSeries
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Sum of squares for the fit of a data set to the predicted value DatSS
+    ''' Weighted Sum of squares for the fit of a data set to the predicted value SSPredErr
     ''' </summary>
+    ''' <remarks>
+    ''' sumof(log(observed(i)/predicted(i))^2) * [timeseries weight(i)].
+    ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Property DataSS() As Single
         Get

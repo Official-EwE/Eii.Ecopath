@@ -79,6 +79,8 @@ Public Class cTimeSeriesDataStructures
     Public sDatQ() As Single
     Public sEDatQ() As Single 'exp(sDatQ)
 
+    ''' <summary>Weighted Sum of Squared Prediction Error by time series data set sumof(log(observed(i)/predicted(i))^2) * [timeseries weight(i)].</summary>
+    Public sSSPredErr() As Single
 
     ' ------------------------------------------------
     ' Applied structures
@@ -102,6 +104,9 @@ Public Class cTimeSeriesDataStructures
     ''' <summary>Start year for each applied time series.</summary>
     Public DatYear() As Integer
     Public DatSS() As Single
+
+    ''' <summary>Sum of Squared Prediction Error by time series data set sumof(log(observed(i)/predicted(i))^2) * [timeseries weight(i)].</summary>
+    Public SSPredErr() As Single
 
     ''' <summary>mean(sumof(log(observed/predicted))) by data type</summary>
     Public DatQ() As Single
@@ -188,12 +193,15 @@ Public Class cTimeSeriesDataStructures
         ReDim TimeSeriesType(nNumTimeSeries)
         ReDim sValues(nMaxYears + 1, nNumTimeSeries)
         ReDim sDatSS(nNumTimeSeries)
+        ReDim sSSPredErr(nNumTimeSeries)
+
         ReDim sDatQ(nNumTimeSeries)
         ReDim sEDatQ(nNumTimeSeries)
 
         ReDim DatSS(nNumTimeSeries)
         ReDim DatQ(nNumTimeSeries)
         ReDim eDatQ(nNumTimeSeries)
+        ReDim SSPredErr(nNumTimeSeries)
 
     End Sub
 
@@ -341,10 +349,12 @@ Public Class cTimeSeriesDataStructures
                 sDatSS(iTS) = DatSS(iTSenabled)
                 sDatQ(iTS) = DatQ(iTSenabled)
                 sEDatQ(iTS) = eDatQ(iTSenabled)
+                sSSPredErr(iTS) = SSPredErr(iTSenabled)
             Else
                 sDatSS(iTS) = 0.0!
                 sDatQ(iTS) = 0.0!
                 sEDatQ(iTS) = 0.0!
+                sSSPredErr(iTS) = 0.0!
             End If
         Next iTS
 
@@ -462,7 +472,7 @@ Public Class cTimeSeriesDataStructures
                         Case eTimeSeriesType.TotalMortality, eTimeSeriesType.ConstantTotalMortality 'Z by pool
 
                             If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 'now also with forced Z
-                            If DatType(j) = -5 Then
+                            If DatType(j) = eTimeSeriesType.ConstantTotalMortality Then
                                 PoolForceZ(DatPool(j), i) = DatVal(i, j)
                             Else
                                 PoolForceZ(DatPool(j), i) = 0
@@ -470,7 +480,7 @@ Public Class cTimeSeriesDataStructures
 
                         Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing 'Catches, -6 is forced
                             If Math.Abs(DatVal(i, j)) > 0 Then Iobs = Iobs + 1 '....Added by SM for Catch Fitting.
-                            If DatType(j) = -6 Then
+                            If DatType(j) = eTimeSeriesType.CatchesForcing Then
                                 PoolForceCatch(DatPool(j), i) = DatVal(i, j)
                             Else
                                 PoolForceCatch(DatPool(j), i) = 0
@@ -501,7 +511,6 @@ Public Class cTimeSeriesDataStructures
             End If
 
             If Iobs = 0 Then Iobs = HoldIobs
-
             ReDim Wt(Iobs)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

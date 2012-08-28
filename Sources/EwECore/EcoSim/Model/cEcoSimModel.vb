@@ -2164,7 +2164,7 @@ Namespace Ecosim
                                 Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / Zest)
                                 m_RefData.Yhat(m_RefData.Iobs) = Math.Log(Zest)
 
-                            Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing 'jb forcing data not use for stats    '6, -6 Absolute Catch Data, Martell, Jan 02
+                            Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing  '6, -6 Absolute Catch Data, Martell, Jan 02
 
                                 If m_Data.FishTime(m_RefData.DatPool(j)) > 0 Then
                                     Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / (BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j))))
@@ -3157,6 +3157,8 @@ Namespace Ecosim
             ReDim m_RefData.DatSS(m_RefData.NdatType)
             ReDim m_RefData.DatQ(m_RefData.NdatType)
             ReDim m_RefData.eDatQ(m_RefData.NdatType)
+            '28-Aug-2011 Added SS prediction error by time series data type(set)
+            ReDim m_RefData.SSPredErr(m_RefData.NdatType)
 
             For j = 1 To m_RefData.NdatType
                 If DatNobs(j) > 0 Then
@@ -3170,7 +3172,7 @@ Namespace Ecosim
                        m_RefData.DatType(j) = eTimeSeriesType.TotalMortality Or _
                        m_RefData.DatType(j) = eTimeSeriesType.Catches Or _
                        m_RefData.DatType(j) = eTimeSeriesType.CatchesForcing Or _
-                        m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body wieght here
+                        m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then 'added mean body weight here
                         'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
                         'replicated by ecosim.
 
@@ -3186,6 +3188,7 @@ Namespace Ecosim
                 End If
             Next
 
+            'Reset all counters and sums
             m_RefData.Iobs = 0
             Ss = 0
             If bSSgrp Then
@@ -3214,6 +3217,7 @@ Namespace Ecosim
                         m_RefData.Erpred(m_RefData.Iobs) = m_RefData.Erpred(m_RefData.Iobs) - m_RefData.DatQ(j)
                         DatDev(j, i) = m_RefData.Erpred(m_RefData.Iobs)
                         Ss = Ss + m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2
+                        m_RefData.SSPredErr(j) += m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2
                         'Next is to calculate the SS by group:
                         If bSSgrp Then
                             SSgroup(m_RefData.DatPool(j)) += m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2
