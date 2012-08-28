@@ -20,6 +20,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Xml
+Imports System.Collections.Generic
 
 #End Region ' Imports
 
@@ -52,6 +53,19 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Property AttributeFilter As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the name of the attribute to rasterize, if needed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property AttributeName As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Optional mappings for rasterizing features
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property AttributeValueMappings() As Dictionary(Of Object, Object)
 
         ''' -------------------------------------------------------------------
         ''' <summary>

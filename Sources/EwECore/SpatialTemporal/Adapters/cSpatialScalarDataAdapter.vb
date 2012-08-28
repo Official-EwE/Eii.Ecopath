@@ -80,7 +80,6 @@ Namespace SpatialData
     Public MustInherit Class cSpatialScalarDataAdapterBase
         Inherits cSpatialDataAdapter
 
-
 #Region " Private variables "
 
         Protected m_scales() As Double

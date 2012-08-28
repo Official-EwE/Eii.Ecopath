@@ -7449,6 +7449,7 @@ Namespace DataSources
                 drow("InRow") = InRow
                 drow("InCol") = InCol
                 drow("CellLength") = sCellLength
+                drow("CellSize") = cEcospaceBasemap.ToCellSize(sCellLength)
                 drow("MinLat") = sOriginLat
                 drow("MinLon") = sOriginLon
                 drow("ModelType") = 2
