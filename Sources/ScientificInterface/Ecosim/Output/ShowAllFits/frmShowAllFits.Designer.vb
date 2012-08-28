@@ -42,39 +42,41 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShowAllFits))
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_chkShowYear = New System.Windows.Forms.CheckBox
-            Me.m_chkShowWeight = New System.Windows.Forms.CheckBox
-            Me.m_chkShowCatch = New System.Windows.Forms.CheckBox
-            Me.m_chkShowZ = New System.Windows.Forms.CheckBox
-            Me.m_chkShowB = New System.Windows.Forms.CheckBox
-            Me.m_nudMarginTB = New cEwENumericUpDown
-            Me.m_nudMarginLR = New cEwENumericUpDown
-            Me.m_nudDotSize = New cEwENumericUpDown
-            Me.m_nudLineWidth = New cEwENumericUpDown
-            Me.m_nudRowNum = New cEwENumericUpDown
-            Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox
-            Me.m_lblTBMargin = New System.Windows.Forms.Label
-            Me.m_lblMarginLR = New System.Windows.Forms.Label
-            Me.m_hdrDisplayOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_hdrGeneral = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lblRowNum = New System.Windows.Forms.Label
-            Me.m_lblLineWidth = New System.Windows.Forms.Label
-            Me.m_lblDotSize = New System.Windows.Forms.Label
-            Me.m_pbPlots = New System.Windows.Forms.PictureBox
-            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
-            Me.m_tsmiOptions = New System.Windows.Forms.ToolStripButton
-            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsmiChoosePlots = New System.Windows.Forms.ToolStripButton
-            Me.m_tsbnScale = New System.Windows.Forms.ToolStripButton
-            Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator
-            Me.m_tsddSave = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmiSaveAsImage = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiSaveAsCSV = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsddPrint = New System.Windows.Forms.ToolStripDropDownButton
-            Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem
-            Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_chkShowYear = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowWeight = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowCatch = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowZ = New System.Windows.Forms.CheckBox()
+            Me.m_chkShowB = New System.Windows.Forms.CheckBox()
+            Me.m_nudMarginTB = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudMarginLR = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudDotSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudLineWidth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudRowNum = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_chkScaleForPrinter = New System.Windows.Forms.CheckBox()
+            Me.m_lblTBMargin = New System.Windows.Forms.Label()
+            Me.m_lblMarginLR = New System.Windows.Forms.Label()
+            Me.m_hdrDisplayOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrGeneral = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblRowNum = New System.Windows.Forms.Label()
+            Me.m_lblLineWidth = New System.Windows.Forms.Label()
+            Me.m_lblDotSize = New System.Windows.Forms.Label()
+            Me.m_pbPlots = New System.Windows.Forms.PictureBox()
+            Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsmiOptions = New System.Windows.Forms.ToolStripButton()
+            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiChoosePlots = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnScale = New System.Windows.Forms.ToolStripButton()
+            Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsddSave = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiSaveAsImage = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiSaveAsCSV = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsddPrint = New System.Windows.Forms.ToolStripDropDownButton()
+            Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_tsmiPrintPreview = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_printdocAllFits = New System.Drawing.Printing.PrintDocument()
+            Me.m_chkShowSS = New System.Windows.Forms.CheckBox()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -96,6 +98,7 @@ Namespace Ecosim
             'm_scMain.Panel1
             '
             resources.ApplyResources(Me.m_scMain.Panel1, "m_scMain.Panel1")
+            Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowSS)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowYear)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowWeight)
             Me.m_scMain.Panel1.Controls.Add(Me.m_chkShowCatch)
@@ -217,11 +220,17 @@ Namespace Ecosim
             'm_hdrDisplayOptions
             '
             resources.ApplyResources(Me.m_hdrDisplayOptions, "m_hdrDisplayOptions")
+            Me.m_hdrDisplayOptions.CanCollapseParent = False
+            Me.m_hdrDisplayOptions.CollapsedParentHeight = 0
+            Me.m_hdrDisplayOptions.IsCollapsed = False
             Me.m_hdrDisplayOptions.Name = "m_hdrDisplayOptions"
             '
             'm_hdrGeneral
             '
             resources.ApplyResources(Me.m_hdrGeneral, "m_hdrGeneral")
+            Me.m_hdrGeneral.CanCollapseParent = False
+            Me.m_hdrGeneral.CollapsedParentHeight = 0
+            Me.m_hdrGeneral.IsCollapsed = False
             Me.m_hdrGeneral.Name = "m_hdrGeneral"
             '
             'm_lblRowNum
@@ -248,9 +257,11 @@ Namespace Ecosim
             '
             'm_tsMain
             '
+            Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiOptions, Me.m_sep1, Me.m_tsmiChoosePlots, Me.m_tsbnScale, Me.m_sep2, Me.m_tsddSave, Me.m_tsddPrint})
             resources.ApplyResources(Me.m_tsMain, "m_tsMain")
             Me.m_tsMain.Name = "m_tsMain"
+            Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'm_tsmiOptions
             '
@@ -316,6 +327,14 @@ Namespace Ecosim
             'm_printdocAllFits
             '
             '
+            'm_chkShowSS
+            '
+            resources.ApplyResources(Me.m_chkShowSS, "m_chkShowSS")
+            Me.m_chkShowSS.Checked = True
+            Me.m_chkShowSS.CheckState = System.Windows.Forms.CheckState.Checked
+            Me.m_chkShowSS.Name = "m_chkShowSS"
+            Me.m_chkShowSS.UseVisualStyleBackColor = True
+            '
             'frmShowAllFits
             '
             resources.ApplyResources(Me, "$this")
@@ -328,6 +347,7 @@ Namespace Ecosim
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
             Me.m_scMain.Panel2.PerformLayout()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             CType(Me.m_nudMarginTB, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudMarginLR, System.ComponentModel.ISupportInitialize).EndInit()
@@ -348,15 +368,10 @@ Namespace Ecosim
         Private WithEvents m_printdocAllFits As System.Drawing.Printing.PrintDocument
         Private WithEvents m_hdrDisplayOptions As cEwEHeaderLabel
         Private WithEvents m_hdrGeneral As cEwEHeaderLabel
-        Private WithEvents m_nudRowNum As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudLineWidth As System.Windows.Forms.NumericUpDown
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsmiChoosePlots As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnScale As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_nudDotSize As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblRowNum As System.Windows.Forms.Label
-        Private WithEvents m_nudMarginLR As System.Windows.Forms.NumericUpDown
-        Private WithEvents m_nudMarginTB As System.Windows.Forms.NumericUpDown
         Private WithEvents m_chkScaleForPrinter As System.Windows.Forms.CheckBox
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_tsddSave As System.Windows.Forms.ToolStripDropDownButton
@@ -373,6 +388,12 @@ Namespace Ecosim
         Private WithEvents m_chkShowZ As System.Windows.Forms.CheckBox
         Private WithEvents m_chkShowB As System.Windows.Forms.CheckBox
         Private WithEvents m_pbPlots As System.Windows.Forms.PictureBox
+        Private WithEvents m_chkShowSS As System.Windows.Forms.CheckBox
+        Private WithEvents m_nudRowNum As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudLineWidth As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudDotSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudMarginLR As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudMarginTB As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 
 End Namespace

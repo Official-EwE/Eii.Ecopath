@@ -112,22 +112,52 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_scMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_scMain.Panel1.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_chkShowSS.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_chkShowSS.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_chkShowSS.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 298</value>
+  </data>
+  <data name="m_chkShowSS.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 17</value>
+  </data>
+  <data name="m_chkShowSS.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="m_chkShowSS.Text" xml:space="preserve">
+    <value>Show &amp;SS contribution</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.Name" xml:space="preserve">
+    <value>m_chkShowSS</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_chkShowSS.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="m_chkShowYear.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -148,13 +178,13 @@
     <value>m_chkShowYear</value>
   </data>
   <data name="&gt;&gt;m_chkShowYear.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_chkShowYear.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_chkShowYear.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_chkShowWeight.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -175,13 +205,13 @@
     <value>m_chkShowWeight</value>
   </data>
   <data name="&gt;&gt;m_chkShowWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_chkShowWeight.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_chkShowWeight.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_chkShowCatch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -202,13 +232,13 @@
     <value>m_chkShowCatch</value>
   </data>
   <data name="&gt;&gt;m_chkShowCatch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_chkShowCatch.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_chkShowCatch.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_chkShowZ.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -229,13 +259,13 @@
     <value>m_chkShowZ</value>
   </data>
   <data name="&gt;&gt;m_chkShowZ.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_chkShowZ.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_chkShowZ.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_chkShowB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -256,13 +286,13 @@
     <value>m_chkShowB</value>
   </data>
   <data name="&gt;&gt;m_chkShowB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_chkShowB.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_chkShowB.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_nudMarginTB.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -271,7 +301,7 @@
     <value>67, 226</value>
   </data>
   <data name="m_nudMarginTB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 20</value>
+    <value>63, 20</value>
   </data>
   <data name="m_nudMarginTB.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -280,13 +310,13 @@
     <value>m_nudMarginTB</value>
   </data>
   <data name="&gt;&gt;m_nudMarginTB.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMarginTB.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_nudMarginTB.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_nudMarginLR.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -295,7 +325,7 @@
     <value>67, 200</value>
   </data>
   <data name="m_nudMarginLR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 20</value>
+    <value>63, 20</value>
   </data>
   <data name="m_nudMarginLR.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -304,13 +334,13 @@
     <value>m_nudMarginLR</value>
   </data>
   <data name="&gt;&gt;m_nudMarginLR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudMarginLR.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_nudMarginLR.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_nudDotSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -319,7 +349,7 @@
     <value>67, 174</value>
   </data>
   <data name="m_nudDotSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 20</value>
+    <value>63, 20</value>
   </data>
   <data name="m_nudDotSize.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -328,13 +358,13 @@
     <value>m_nudDotSize</value>
   </data>
   <data name="&gt;&gt;m_nudDotSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudDotSize.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_nudDotSize.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_nudLineWidth.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -343,7 +373,7 @@
     <value>67, 148</value>
   </data>
   <data name="m_nudLineWidth.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 20</value>
+    <value>63, 20</value>
   </data>
   <data name="m_nudLineWidth.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -352,13 +382,13 @@
     <value>m_nudLineWidth</value>
   </data>
   <data name="&gt;&gt;m_nudLineWidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudLineWidth.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_nudLineWidth.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_nudRowNum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -367,7 +397,7 @@
     <value>67, 122</value>
   </data>
   <data name="m_nudRowNum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 20</value>
+    <value>64, 20</value>
   </data>
   <data name="m_nudRowNum.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -376,19 +406,19 @@
     <value>m_nudRowNum</value>
   </data>
   <data name="&gt;&gt;m_nudRowNum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudRowNum.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_nudRowNum.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="m_chkScaleForPrinter.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_chkScaleForPrinter.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 309</value>
+    <value>6, 332</value>
   </data>
   <data name="m_chkScaleForPrinter.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 17</value>
@@ -403,13 +433,13 @@
     <value>m_chkScaleForPrinter</value>
   </data>
   <data name="&gt;&gt;m_chkScaleForPrinter.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_chkScaleForPrinter.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_chkScaleForPrinter.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="m_lblTBMargin.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -430,13 +460,13 @@
     <value>m_lblTBMargin</value>
   </data>
   <data name="&gt;&gt;m_lblTBMargin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblTBMargin.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblTBMargin.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="m_lblMarginLR.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,13 +487,13 @@
     <value>m_lblMarginLR</value>
   </data>
   <data name="&gt;&gt;m_lblMarginLR.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblMarginLR.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblMarginLR.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="m_hdrDisplayOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -475,7 +505,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_hdrDisplayOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 18</value>
+    <value>134, 18</value>
   </data>
   <data name="m_hdrDisplayOptions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -490,13 +520,13 @@
     <value>m_hdrDisplayOptions</value>
   </data>
   <data name="&gt;&gt;m_hdrDisplayOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.511, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDisplayOptions.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_hdrDisplayOptions.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="m_hdrGeneral.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -505,7 +535,7 @@
     <value>0, 97</value>
   </data>
   <data name="m_hdrGeneral.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 18</value>
+    <value>134, 18</value>
   </data>
   <data name="m_hdrGeneral.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -520,13 +550,13 @@
     <value>m_hdrGeneral</value>
   </data>
   <data name="&gt;&gt;m_hdrGeneral.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.511, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrGeneral.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_hdrGeneral.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="m_lblRowNum.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -547,13 +577,13 @@
     <value>m_lblRowNum</value>
   </data>
   <data name="&gt;&gt;m_lblRowNum.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblRowNum.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblRowNum.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="m_lblLineWidth.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -574,13 +604,13 @@
     <value>m_lblLineWidth</value>
   </data>
   <data name="&gt;&gt;m_lblLineWidth.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblLineWidth.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblLineWidth.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="m_lblDotSize.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -601,19 +631,19 @@
     <value>m_lblDotSize</value>
   </data>
   <data name="&gt;&gt;m_lblDotSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblDotSize.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblDotSize.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Parent" xml:space="preserve">
     <value>m_scMain</value>
@@ -646,7 +676,7 @@
     <value>m_pbPlots</value>
   </data>
   <data name="&gt;&gt;m_pbPlots.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_pbPlots.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -654,7 +684,7 @@
   <data name="&gt;&gt;m_pbPlots.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
   <data name="m_tsmiOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -686,9 +716,9 @@
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACTSURBVDhPY2AYtuAC0GfomCjPgjVdu3YbBaMZhtsgmEZ0
-        27GI4zQE7IK41MgLSVAMYsMM3L3zwAUQxqX7wsePH8GKQZqR2SAxGB+nAc+ePIMrAilesnI23DCYASA1
-        UNdgOgLZAGxeABn6BGjAqlVbcXqBAaQI5lTkgEQTxxudYCfCNGAxkKi0AFJEViIi2vTBpRAA5fOqhNUR
-        QiYAAAAASUVORK5CYII=
+        27GI4zQE7IK4lMgLSVAMYsMM3L3zwAUQxqX7wsePH8GKQZqR2SAxGB+nAc+ePIMrAilesnIW3DCYASA1
+        UNdgOgLZAGxeABn6BGjAqlVbcXqBAaQI5lTkgEQTxxudYCfCNGAxkKi0AFJEViIi2vTBpRAAzWKqeA7v
+        H3MAAAAASUVORK5CYII=
 </value>
   </data>
   <data name="m_tsmiChoosePlots.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -730,7 +760,7 @@
   <data name="m_tsmiSaveAsImage.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6
-        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsQAAALEAGtI711AAACR0lE
+        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsPAAALDwGS+QOlAAACR0lE
         QVQ4T6WTXUiTARSGdxkRRBdB0IUREV1EKRFEYYuQAklL8sKQfphUoJSUWJbLxAVZWqyBio5WajorM1PL
         xExUlLQfbU5n0lygRerMP/qxOZ92vpjfCKLAi3P5Puc957xHA2gWUoo49147gWUqbSPrdjOXChrQm56S
         lFVFvKEcXaqV2OQiohMt7Esw+6Ro5gGeWfhbff0BY9NzDI3N0f/JS6fLy7rd6f8HcNsdOI6EYD8cjK3V
@@ -753,7 +783,7 @@
   <data name="m_tsmiSaveAsCSV.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxAAAAsQAa0jvXUAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfZCQIUIRDU+0OW
+        YQUAAAAJcEhZcwAACw8AAAsPAZL5A6UAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfZCQIUIRDU+0OW
         AAACMElEQVQ4T42T3WuSYRjG/Sv6AzroMEhYRQd1OBYRdNBJzBBqFMyO6qCDCiIK+thgShuONLMtc/mV
         bTqXTjPdNDfnmGKbjsXc5rQvkE1LX716n9t8fTeUeuDmvnke7t99Pc/1vpLHY3ncf5XDbV0O19XbuKrM
         ovvRJs7d20DnrcyekLRaDKD3A8+ma1A5OTy0lXHH8As3dEX0qneE6Oi6hLaA/1HAADKZjEEopFJpHWhw
@@ -800,7 +830,7 @@
   <data name="m_tsmiPrint.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6
-        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsQAAALEAGtI711AAACWUlE
+        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsPAAALDwGS+QOlAAACWUlE
         QVQ4T6WS609ScRjHWetVf0K973VvWlvrutVm4iWtNjVTxOlMigYyUQhZhpZKahdriY2OzAU6iELHjGmN
         TaeQXbwsXW4JJFgiJChhXL6di9gF2mqd7bvfOb+d5/N5znN+LACs/0lSsW7w9fY+y9sqw/A0/hT90BTp
         ZMSpAMJXU64g9cbP18a3KBxuP/rMY8goro2zi2p2JwFI+y4yiMXiWPYFYLW/o2O02KA1jcI+7UQhv5EC
@@ -823,7 +853,7 @@
   <data name="m_tsmiPrintPreview.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGOfPtRkwAAACBjSFJNAAB6
-        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsQAAALEAGtI711AAAB8klE
+        JQAAgIMAAPn/AACA6QAAdTAAAOpgAAA6mAAAF2+SX8VGAAAACXBIWXMAAAsPAAALDwGS+QOlAAAB8klE
         QVQ4T6XT/0sTcRzHcf+E/onop36IsiL8JYIy0UJazpn+YBMXMQkKFfplv2gFWraG3pRazRZp0hW3vjgr
         l5vWgqKCxVQoIdRNllokTre5Z7uTyc7ziOgDrx/u+Lwf7zdv7gqAgv+JUiwFxtkccThMv+8jHu87OW16
         TTaA7IUtz82B1+wtqdNFFOCR/4tePZ0eH0Nj4RzSvnkSBRh48VkXcPQ+V4pz2RK4/+y9BkgllxkZG0G4
@@ -844,17 +874,17 @@
   <data name="m_tsddPrint.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         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
-        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
+        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
 </value>
   </data>
   <data name="m_tsddPrint.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -882,7 +912,7 @@
     <value>m_tsMain</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.1.1.511, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsMain.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -894,7 +924,7 @@
     <value>m_scMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel2.Parent" xml:space="preserve">
     <value>m_scMain</value>
@@ -915,7 +945,7 @@
     <value>m_scMain</value>
   </data>
   <data name="&gt;&gt;m_scMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_scMain.Parent" xml:space="preserve">
     <value>$this</value>
@@ -923,13 +953,13 @@
   <data name="&gt;&gt;m_scMain.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="m_printdocAllFits.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="m_printdocAllFits.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>96, 4</value>
   </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>46</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -951,78 +981,78 @@
     <value>m_tsmiOptions</value>
   </data>
   <data name="&gt;&gt;m_tsmiOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_sep1.Name" xml:space="preserve">
     <value>m_sep1</value>
   </data>
   <data name="&gt;&gt;m_sep1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiChoosePlots.Name" xml:space="preserve">
     <value>m_tsmiChoosePlots</value>
   </data>
   <data name="&gt;&gt;m_tsmiChoosePlots.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsbnScale.Name" xml:space="preserve">
     <value>m_tsbnScale</value>
   </data>
   <data name="&gt;&gt;m_tsbnScale.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_sep2.Name" xml:space="preserve">
     <value>m_sep2</value>
   </data>
   <data name="&gt;&gt;m_sep2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsddSave.Name" xml:space="preserve">
     <value>m_tsddSave</value>
   </data>
   <data name="&gt;&gt;m_tsddSave.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiSaveAsImage.Name" xml:space="preserve">
     <value>m_tsmiSaveAsImage</value>
   </data>
   <data name="&gt;&gt;m_tsmiSaveAsImage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiSaveAsCSV.Name" xml:space="preserve">
     <value>m_tsmiSaveAsCSV</value>
   </data>
   <data name="&gt;&gt;m_tsmiSaveAsCSV.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsddPrint.Name" xml:space="preserve">
     <value>m_tsddPrint</value>
   </data>
   <data name="&gt;&gt;m_tsddPrint.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripDropDownButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiPrint.Name" xml:space="preserve">
     <value>m_tsmiPrint</value>
   </data>
   <data name="&gt;&gt;m_tsmiPrint.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tsmiPrintPreview.Name" xml:space="preserve">
     <value>m_tsmiPrintPreview</value>
   </data>
   <data name="&gt;&gt;m_tsmiPrintPreview.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_printdocAllFits.Name" xml:space="preserve">
     <value>m_printdocAllFits</value>
   </data>
   <data name="&gt;&gt;m_printdocAllFits.Type" xml:space="preserve">
-    <value>System.Drawing.Printing.PrintDocument, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>System.Drawing.Printing.PrintDocument, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmShowAllFits</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.1.1.511, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7836.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

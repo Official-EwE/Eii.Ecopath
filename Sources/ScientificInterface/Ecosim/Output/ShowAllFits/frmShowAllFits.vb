@@ -67,9 +67,7 @@ Namespace Ecosim
 #End Region ' Private vars
 
         Public Sub New()
-
             Me.InitializeComponent()
-
         End Sub
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
@@ -83,6 +81,7 @@ Namespace Ecosim
             Me.CalcPlotParams()
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim}
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -108,7 +107,7 @@ Namespace Ecosim
             Dim iRow, iCol As Integer
             Dim sPosX, sPosY As Single
             Dim data() As Single
-            Dim ftCaption As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
+            Dim ftCaption As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
             Dim ftScale As Font = Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
 
             For i As Integer = 0 To Me.m_lPlots.Count - 1
@@ -130,11 +129,12 @@ Namespace Ecosim
                     ' ===============
                     ' Draw title
                     ' ===============
+                    strTitle = plot.TimeSeries.Name
                     If Me.m_chkShowWeight.Checked Then
-                        strTitle = String.Format(SharedResources.GENERIC_LABEL_DETAILED, plot.TimeSeries.Name, _
-                            Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
-                    Else
-                        strTitle = plot.TimeSeries.Name
+                        strTitle = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strTitle, Me.StyleGuide.FormatNumber(plot.TimeSeries.WtType))
+                    End If
+                    If Me.m_chkShowSS.Checked Then
+                        strTitle = String.Format(SharedResources.GENERIC_LABEL_INDEXED, strTitle, Me.StyleGuide.FormatNumber(plot.TimeSeries.DataSS))
                     End If
 
                     g.DrawString(strTitle, ftCaption, Brushes.Black, sPosX + szPosName.Width, sPosY + szPosName.Height)
@@ -717,7 +717,8 @@ Namespace Ecosim
         Private Sub OnShowDetailsChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_chkShowWeight.CheckedChanged, _
                     m_chkShowYear.CheckedChanged, _
-                    m_chkScaleForPrinter.CheckedChanged
+                    m_chkScaleForPrinter.CheckedChanged, _
+                    m_chkShowSS.CheckedChanged
             Me.UpdatePlots()
         End Sub
 
