@@ -68,6 +68,10 @@ Namespace Controls.Map.Layers
             Me.m_nudRegion.Value = iVal
             Me.m_nudRegion.Maximum = CDec(editor.CellValueMax)
 
+            ' Whooh
+            Me.m_btnFromHabitats.Enabled = (Me.UIContext.Core.nHabitats > 0)
+            Me.m_btnFromMPAs.Enabled = (Me.UIContext.Core.nMPAs > 0)
+
         End Sub
 
 #End Region ' Overrides
