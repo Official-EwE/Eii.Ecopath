@@ -116,9 +116,9 @@ Namespace Ecosim
             ' Set the axis
             Me.m_graph.GraphPane.XAxis.Scale.Min = Core.EcosimFirstYear
             Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
-            Me.m_graph.AxisChange()
 
             AddHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
+            AddHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged
 
             Me.UpdateControls()
 
@@ -163,6 +163,7 @@ Namespace Ecosim
             Me.m_lbGroups.Detach()
 
             RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
+            RemoveHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged
             Me.m_zgp.Detach()
 
             MyBase.OnFormClosed(e)
@@ -732,7 +733,7 @@ Namespace Ecosim
                 If (iGroup > 0) Then
 
                     ' Yes: Create data list
-                    pplData = New PointPairList
+                    pplData = New PointPairList()
 
                     pplData.Add(Me.Core.EcosimFirstYear, Me.GetStartValue(iGroup))
                     src = Me.Core.EcoSimGroupOutputs(iGroup)
@@ -747,7 +748,7 @@ Namespace Ecosim
                         ' Should datapoint be displayed?
                         If bIncludeDataPoint Then
                             ' #Yes: display it
-                            pplData.Add(CDbl(iTimeStep / cCore.N_MONTHS) + Core.EcosimFirstYear, dValue)
+                            pplData.Add(CDbl(iTimeStep / cCore.N_MONTHS) + Math.Max(1, Core.EcosimFirstYear), dValue)
                         End If
 
                     Next iTimeStep
@@ -759,7 +760,7 @@ Namespace Ecosim
 
             Next iGroupItem
 
-            Me.m_graph.GraphPane.XAxis.Scale.Min = Core.EcosimFirstYear
+            Me.m_graph.GraphPane.XAxis.Scale.Min = Math.Max(Core.EcosimFirstYear, 1)
             Me.m_graph.GraphPane.XAxis.Scale.Max = Core.EcoSimModelParameters.NumberYears + Core.EcosimFirstYear
 
             ' Draw timeseries 
@@ -771,6 +772,18 @@ Namespace Ecosim
 
             Me.m_zgp.PlotLines(lLines.ToArray(), 1, True, Me.m_zgp.ShowMultipleRuns = False, Me.m_bIsCumulative)
 
+            Me.AlignSketchpad()
+
+        End Sub
+
+        Private Sub AlignSketchpad()
+            Dim rcf As RectangleF = Me.m_zgp.GetPane(1).Chart.Rect()
+            Me.m_sketchPad.SuspendLayout()
+            Me.m_sketchPad.Dock = DockStyle.None
+            Me.m_sketchPad.Location = New Point(CInt(rcf.X), Me.m_sketchPad.Location.Y)
+            Me.m_sketchPad.Width = CInt(rcf.Width)
+            Me.m_sketchPad.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Top
+            Me.m_sketchPad.ResumeLayout()
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -1170,6 +1183,11 @@ Namespace Ecosim
             Catch ex As Exception
                 ' Plop
             End Try
+        End Sub
+
+        Private Sub OnAxisChanged(pane As GraphPane)
+            If (Me.UIContext Is Nothing) Then Return
+            Me.AlignSketchpad()
         End Sub
 
     End Class
