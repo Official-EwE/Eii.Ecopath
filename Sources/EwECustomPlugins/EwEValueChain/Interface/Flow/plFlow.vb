@@ -595,7 +595,7 @@ Public Class plFlow
                 PaintLink(e.Graphics, ctrlSource.Center, ptT, clrFore, c.Width, c.External)
 
                 ' Paint detection link on detection bitmap with a fixed width to make the link better clickable
-                PaintLink(g, ctrlSource.Center, ptT, c.Color, 5)
+                PaintLink(g, ctrlSource.Center, ptT, c.Color, 2)
 
             Catch ex As Exception
                 Console.WriteLine("LinkWrapper {0} not correctly configured", c.ToString)
