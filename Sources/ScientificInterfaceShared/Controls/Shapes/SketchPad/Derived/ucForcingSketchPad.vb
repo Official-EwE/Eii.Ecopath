@@ -66,10 +66,12 @@ Namespace Controls
 
             If (Me.Shape IsNot Nothing) Then
                 If Not Me.IsSeasonal Then
+                    Dim iYearStart As Integer = Me.UIContext.Core.EcosimFirstYear
+                    If (iYearStart <= 0) Then iYearStart = 1
                     Dim iYearMax As Integer = CInt(Me.XAxisMaxValue / cCore.N_MONTHS)
                     Dim iStepSize As Integer = (iYearMax + 9) \ 10
                     For i As Integer = 0 To iYearMax Step iStepSize
-                        lstrLabels.Add(i.ToString)
+                        lstrLabels.Add((iYearStart + i).ToString)
                         sScale = CSng(Me.YearToX(i, iWidth) / iWidth)
                     Next
                 Else
