@@ -2566,26 +2566,39 @@ Namespace Controls
                         gp.ZoomStack.Add(zs)
                         gp.YAxis.Scale.Max -= (gp.YAxis.Scale.Max - sValueAvg) / 4
                         gp.YAxis.Scale.Min += (sValueAvg - gp.YAxis.Scale.Min) / 4
+                        Me.m_zgc.AxisChange()
+
                     Case ucHoverMenu.eCommandTypes.ZoomOut
                         zs = gp.ZoomStack.Pop(gp)
-                        If zs IsNot Nothing Then zs.ApplyState(gp)
+                        If (zs IsNot Nothing) Then
+                            zs.ApplyState(gp)
+                            Me.m_zgc.AxisChange()
+                        End If
+
                     Case ucHoverMenu.eCommandTypes.ZoomReset
                         While gp.ZoomStack.Count > 0
                             zs = gp.ZoomStack.Pop(gp)
-                            If zs IsNot Nothing Then zs.ApplyState(gp)
+                            If (zs IsNot Nothing) Then
+                                zs.ApplyState(gp)
+                                Me.m_zgc.AxisChange()
+                            End If
                         End While
+
                     Case ucHoverMenu.eCommandTypes.Export
                         Me.ExtractDataToCSV()
+
                     Case ucHoverMenu.eCommandTypes.ShowLegends
                         Me.IsLegendVisible = Not Me.IsLegendVisible
+                        Me.m_zgc.AxisChange()
+
                     Case ucHoverMenu.eCommandTypes.ShowAxisLabels
                         Me.IsAxisLabelsVisible = Not IsAxisLabelsVisible
+                        Me.m_zgc.AxisChange()
+
                 End Select
             Next
 
             Me.UpdateHoverMenuItems()
-
-            Me.m_zgc.Refresh()
 
         End Sub
 
