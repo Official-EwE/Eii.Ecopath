@@ -98,7 +98,7 @@ Namespace Ecosim
             Me.m_params = Core.EcoSimModelParameters()
             Me.m_simStats = Me.Core.EcosimStats
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.Core}
 
             Me.m_lbGroups.Attach(Me.UIContext)
 
@@ -132,6 +132,8 @@ Namespace Ecosim
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             Me.PopulateGraph()
+            Me.UpdateSS()
+
             Me.SelectionMode = eSelectionModeType.Fleets
 
         End Sub
@@ -180,9 +182,12 @@ Namespace Ecosim
 
                     If (((Me.SelectionMode = eSelectionModeType.Fleets) And (msg.DataType = eDataTypes.FishingEffort)) Or _
                         ((Me.SelectionMode = eSelectionModeType.Groups) And (msg.DataType = eDataTypes.FishMort))) Then
-
                         Me.m_shapeGUIHandler.Refresh()
+                    End If
 
+                Case eCoreComponentType.Core
+                    If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+                        Me.UpdateControls()
                     End If
 
             End Select
@@ -1049,6 +1054,7 @@ Namespace Ecosim
             Me.m_tsbnSetTo0.Enabled = Me.m_bIsEffortSelected
 
             Me.m_tsbnExplore.Enabled = (Me.Core.StateMonitor.HasEcosimRan)
+            Me.m_tsbnSaveOutput.Checked = Me.Core.Autosave(eAutosaveTypes.Ecosim)
 
             Me.m_bInUpdate = False
 
@@ -1085,6 +1091,7 @@ Namespace Ecosim
 
             Dim sSS As Single = 0.0!
             Dim iGroup As Integer = 0
+            Dim iNumGroupsSelected As Integer = 0
 
             For Each iItem As Integer In Me.m_lbGroups.SelectedIndices
                 iGroup = Math.Max(0, Me.m_lbGroups.GetGroupIndexAt(iItem))
@@ -1093,11 +1100,17 @@ Namespace Ecosim
                     Exit For
                 Else
                     sSS += Me.Core.EcosimStats.SSGroup(iGroup)
+                    iNumGroupsSelected += 1
                 End If
             Next
 
             Try
-                Me.tslblSSValue.Text = Me.StyleGuide.FormatNumber(sSS)
+                If iNumGroupsSelected = 0 Then
+                    Me.m_tsblbSS.Text = My.Resources.ECOSIM_HEADER_SS
+                Else
+                    Me.m_tsblbSS.Text = My.Resources.ECOSIM_HEADER_SS_GROUPS
+                End If
+                Me.m_tslblSSValue.Text = Me.StyleGuide.FormatNumber(sSS)
             Catch ex As Exception
 
             End Try
@@ -1148,6 +1161,14 @@ Namespace Ecosim
                 Me.UpdateControls()
                 Me.PopulateTargetComboBox()
             Catch ex As Exception
+            End Try
+        End Sub
+
+        Private Sub OnSaveOutput(sender As System.Object, e As System.EventArgs) Handles m_tsbnSaveOutput.Click
+            Try
+                Me.Core.Autosave(eAutosaveTypes.Ecosim) = Me.m_tsbnSaveOutput.Checked
+            Catch ex As Exception
+                ' Plop
             End Try
         End Sub
 

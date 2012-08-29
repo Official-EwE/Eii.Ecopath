@@ -618,6 +618,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Sum of Squares:.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_HEADER_SS() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_HEADER_SS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sum of Squares for selected group(s):.
+        '''</summary>
+        Public ReadOnly Property ECOSIM_HEADER_SS_GROUPS() As String
+            Get
+                Return ResourceManager.GetString("ECOSIM_HEADER_SS_GROUPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to For all pairs with group {0}: {1} as a predator.
         '''</summary>
         Public ReadOnly Property ECOSIM_LABEL_APPLY_SHAPES_PRED() As String
