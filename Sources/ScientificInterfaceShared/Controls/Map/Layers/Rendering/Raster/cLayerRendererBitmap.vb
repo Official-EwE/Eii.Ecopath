@@ -22,6 +22,7 @@ Imports System.Drawing.Drawing2D
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
+Imports System.Drawing.Imaging
 
 #End Region 'Imports
 
@@ -43,9 +44,7 @@ Namespace Controls.Map.Layers
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
                                            ByVal rc As Rectangle)
             If (Me.IsStyleValid) Then
-                Using br As New TextureBrush(Me.VisualStyle.Image, WrapMode.Tile)
-                    g.FillRectangle(br, rc)
-                End Using
+                Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, 1.0!)
             Else
                 Me.RenderError(g, rc)
             End If
@@ -56,7 +55,11 @@ Namespace Controls.Map.Layers
                                         ByVal layer As cEcospaceLayer, _
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
-            Me.RenderPreview(g, rc)
+            If (Me.IsStyleValid) Then
+                Me.DrawImageAlpha(g, rc, Me.VisualStyle.Image, Math.Min(1, Math.Max(0, CSng(value))))
+            Else
+                Me.RenderError(g, rc)
+            End If
         End Sub
 
         Protected Overrides Function IsStyleValid() As Boolean
@@ -70,6 +73,35 @@ Namespace Controls.Map.Layers
             objClone = Activator.CreateInstance(Me.GetType(), New Object() {vs})
             Return DirectCast(objClone, cRasterLayerRenderer)
         End Function
+
+        Private Sub DrawImageAlpha(ByVal g As Graphics, ByVal rc As Rectangle, ByVal img As Image, ByVal sAlpha As Single)
+
+            If sAlpha >= 1 Then
+                Using br As New TextureBrush(img, WrapMode.Tile)
+                    g.FillRectangle(br, rc)
+                End Using
+            Else
+                Dim matrixItems As Single()() = { _
+                    New Single() {1, 0, 0, 0, 0}, _
+                    New Single() {0, 1, 0, 0, 0}, _
+                    New Single() {0, 0, 1, 0, 0}, _
+                    New Single() {0, 0, 0, sAlpha, 0}, _
+                    New Single() {0, 0, 0, 0, 1}}
+
+                Dim colorMatrix As New ColorMatrix(matrixItems)
+                Dim imageAtt As New ImageAttributes()
+                imageAtt.SetColorMatrix( _
+                   colorMatrix, _
+                   ColorMatrixFlag.Default, _
+                   ColorAdjustType.Bitmap)
+
+                Using br As New TextureBrush(img, New Rectangle(0, 0, img.Width, img.Height), imageAtt)
+                    br.WrapMode = WrapMode.Tile
+                    g.FillRectangle(br, rc)
+                End Using
+            End If
+
+        End Sub
 
     End Class
 
