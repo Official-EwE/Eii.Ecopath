@@ -37,6 +37,16 @@ Imports SourceGrid2
 Public Class ucUnitGrid
     : Inherits EwEGrid
 
+    Private Class cUnitSorter
+        Implements IComparer(Of cUnit)
+
+        Public Function Compare(x As cUnit, y As cUnit) As Integer _
+            Implements System.Collections.Generic.IComparer(Of cUnit).Compare
+            Return String.Compare(x.Name, y.Name)
+        End Function
+
+    End Class
+
     Private m_data As cData = Nothing
     Private m_unitType As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Producer
     Private m_lUnits As List(Of cUnit) = Nothing
@@ -61,6 +71,9 @@ Public Class ucUnitGrid
         ' Get all defined units of this type
         Me.m_lUnits = New List(Of cUnit)
         Me.m_lUnits.AddRange(Me.m_data.GetUnits(Me.m_unitType))
+
+        ' Bingaling
+        Me.m_lUnits.Sort(New cUnitSorter())
 
         ' Get list of properties supported by this type
         Me.m_api = cPropertyInfoHelper.GetAllowedProperties(cUnitFactory.MapType(Me.m_unitType))

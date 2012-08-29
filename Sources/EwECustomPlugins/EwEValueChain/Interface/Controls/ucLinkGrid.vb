@@ -29,12 +29,27 @@ Imports EwECore
 
 ''' ===========================================================================
 ''' <summary>
-''' 
+''' Grid for showing a whack of links.
 ''' </summary>
 ''' ===========================================================================
 <CLSCompliant(False)> _
 Public Class ucLinkGrid
     : Inherits EwEGrid
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class for sorting links by name
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Class cLinkSorter
+        Implements IComparer(Of cLink)
+
+        Public Function Compare(x As cLink, y As cLink) As Integer _
+            Implements System.Collections.Generic.IComparer(Of cLink).Compare
+            Return String.Compare(x.Name, y.Name)
+        End Function
+
+    End Class
 
     Private m_data As cData = Nothing
     Private m_api As PropertyInfo() = Nothing
@@ -222,6 +237,10 @@ Public Class ucLinkGrid
             End If
 
         Next
+
+        ' Whahoo
+        lLinks.Sort(New cLinkSorter())
+
         Return lLinks.ToArray
 
     End Function
