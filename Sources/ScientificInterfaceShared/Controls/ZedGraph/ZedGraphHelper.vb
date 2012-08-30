@@ -2597,7 +2597,7 @@ Namespace Controls
 
                 End Select
             Next
-
+            Me.m_zgc.Refresh()
             Me.UpdateHoverMenuItems()
 
         End Sub
