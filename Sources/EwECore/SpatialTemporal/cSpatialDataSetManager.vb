@@ -365,7 +365,7 @@ Namespace SpatialData
         Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
             If (Me.m_core IsNot Nothing And Me.IsIndexing()) Then
                 Try
-                    Me.m_core.Messages.SendMessage(New cMessage("Index updated", eMessageType.DataModified,
+                    Me.m_core.Messages.SendMessage(New cMessage("Spatial dataset index updated", eMessageType.DataModified,
                                                                 EwEUtils.Core.eCoreComponentType.EcoSpace, _
                                                                 eMessageImportance.Maintenance, _
                                                                 EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection))
