@@ -200,6 +200,10 @@ Namespace SpatialData
                 sb.AppendLine("   " & vs.Status.ToString & ", " & vs.Message)
             Next
 
+            If Me.m_msgCurrent.Hyperlink Then
+                sb.AppendLine("Results written to: " & Me.m_msgCurrent.Hyperlink)
+            End If
+
             cLog.WriteTextToFile(Me.m_strLogFileName, sb, Me.m_bLogStarted)
             Me.m_bLogStarted = True
 
