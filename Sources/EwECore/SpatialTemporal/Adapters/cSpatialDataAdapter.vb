@@ -110,7 +110,7 @@ Namespace SpatialData
         ''' <returns>The number of layers for this adapter.</returns>
         ''' -------------------------------------------------------------------
         Public Function Length() As Integer
-            Return Math.Max(0, Me.m_core.GetCoreCounter(Me.m_coreCounter))
+            Return Me.m_converters.Length
         End Function
 
         ''' -------------------------------------------------------------------
@@ -134,16 +134,16 @@ Namespace SpatialData
         ''' <summary>
         ''' Get/set a <see cref="ISpatialDataSet">data set</see> for layer <paramref name="iIndex"/>.
         ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>].</param>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&lt;.</param>
         ''' -------------------------------------------------------------------
         Public Property Converter(iIndex As Integer) As ISpatialDataConverter
             Get
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Return Me.m_converters(Math.Max(0, iIndex))
             End Get
             Set(ByVal value As ISpatialDataConverter)
                 If (Me.m_converters Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Me.m_converters(Math.Max(0, iIndex)) = value
             End Set
         End Property
@@ -153,16 +153,16 @@ Namespace SpatialData
         ''' Get/set a <see cref="ISpatialDataConverter">data converter</see> 
         ''' for layer <paramref name="iIndex"/>.
         ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>].</param>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&lt;.</param>
         ''' -------------------------------------------------------------------
         Public Property Dataset(iIndex As Integer) As ISpatialDataSet
             Get
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Return Me.m_datasets(Math.Max(0, iIndex))
             End Get
             Set(ByVal value As ISpatialDataSet)
                 If (Me.m_datasets Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Me.m_datasets(Math.Max(0, iIndex)) = value
             End Set
         End Property

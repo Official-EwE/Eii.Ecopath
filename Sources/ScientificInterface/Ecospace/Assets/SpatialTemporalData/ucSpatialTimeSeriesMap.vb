@@ -286,12 +286,13 @@ Namespace Ecospace
             Dim clrOutlineLight As Color = cColorUtils.GetVariant(clrOutlineFull, 0.5!)
 
             ' - Fills -
-            Using br As New HatchBrush(HatchStyle.DarkDownwardDiagonal, clrFillLight, Color.Transparent)
-                g.FillRectangles(br, Me.m_lExternalDataMapExtents.ToArray)
-            End Using
             If (Me.m_iCurrentTimeStepExtent >= 0) Then
-                Using br As New HatchBrush(HatchStyle.DarkUpwardDiagonal, clrFillLight, Color.Transparent)
+                Using br As New SolidBrush(Color.FromArgb(64, Color.LightBlue))
                     g.FillRectangle(br, Me.m_lExternalDataMapExtents(Me.m_iCurrentTimeStepExtent))
+                End Using
+            Else
+                Using br As New SolidBrush(Color.FromArgb(64, Color.LightBlue))
+                    g.FillRectangles(br, Me.m_lExternalDataMapExtents.ToArray)
                 End Using
             End If
 
@@ -310,10 +311,10 @@ Namespace Ecospace
         Private Sub DrawMap(g As Graphics)
 
             ' ToDo: draw depth layer preview
-            Using br As New HatchBrush(HatchStyle.DarkUpwardDiagonal, Color.LightGreen, Color.Transparent)
+            Using br As New SolidBrush(Color.FromArgb(64, Color.White))
                 g.FillRectangles(br, New RectangleF() {Me.m_rcfEcospaceExtent})
             End Using
-            Using p As New Pen(Brushes.Green, 0.001)
+            Using p As New Pen(Color.FromArgb(192, Color.Green), 0.001)
                 g.DrawRectangles(p, New RectangleF() {Me.m_rcfEcospaceExtent})
             End Using
 
@@ -342,8 +343,8 @@ Namespace Ecospace
 
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim tmpFont As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
-            Dim brText As New SolidBrush(System.Drawing.Color.FromArgb(160, 0, 0, 0))
-            Dim brBack As New SolidBrush(Color.FromArgb(128, 255, 255, 255))
+            Dim brText As New SolidBrush(Color.Black)
+            Dim brBack As New SolidBrush(Color.FromArgb(164, 255, 255, 255))
             Dim sbText As New StringBuilder()
             Dim fmt As New StringFormat()
 

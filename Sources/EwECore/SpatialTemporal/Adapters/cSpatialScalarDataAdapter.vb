@@ -114,17 +114,17 @@ Namespace SpatialData
         ''' Get/set the <see cref="eScaleType">scale type</see> for the layer identified by <paramref name="iIndex"/>.
         ''' If set to <see cref="eScaleType.Relative"/>, external values are <see cref="DataScale">scaled</see>.
         ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>]</param>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&lt;</param>
         ''' -------------------------------------------------------------------
         Public Property DataScaleType(iIndex As Integer) As eScaleType
             Get
                 If (Me.m_scaleType Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Return Me.m_scaleType(Math.Max(0, iIndex))
             End Get
             Set(value As eScaleType)
                 If (Me.m_scaleType Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Me.m_scaleType(Math.Max(0, iIndex)) = value
             End Set
         End Property
@@ -135,17 +135,17 @@ Namespace SpatialData
         ''' <see cref="DataScaleType"/> for layer <paramref name="iIndex"/> is
         ''' set to <see cref="eScaleType.Relative"/>.
         ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>]</param>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&tl;</param>
         ''' -------------------------------------------------------------------
         Public Property DataScale(iIndex As Integer) As Double
             Get
                 If (Me.m_scales Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Return Me.m_scales(Math.Max(0, iIndex))
             End Get
             Set(value As Double)
                 If (Me.m_scales Is Nothing) Then Me.Initialize()
-                Debug.Assert(iIndex <= Me.Length, "Index out of range")
+                Debug.Assert(iIndex < Me.Length, "Index out of range")
                 Me.m_scales(Math.Max(0, iIndex)) = value
             End Set
         End Property
