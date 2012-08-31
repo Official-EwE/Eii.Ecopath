@@ -160,6 +160,16 @@ Public Class frmStartPanel
         End Try
     End Sub
 
+    Private Sub OnBrowserFacebook(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnFacebook.Click
+        Try
+            Me.m_browser.Navigate("http://www.facebook.com/eweconsortium")
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
     Private Sub OnUpdateNav(ByVal sender As Object, ByVal e As EventArgs)
         If Me.InvokeRequired Then
             Me.Invoke(New UpdateControlsDelegate(AddressOf UpdateControls))

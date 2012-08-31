@@ -172,6 +172,44 @@
   <data name="m_tsbnHome.Text" xml:space="preserve">
     <value>Ecopath start page</value>
   </data>
+  <data name="m_tsbnFacebook.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+        L7PsA+Qf8mzchOnY0fgAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="m_tsbnFacebook.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnFacebook.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="m_tsbnFacebook.Text" xml:space="preserve">
+    <value>Ecopath on Facebook</value>
+  </data>
   <data name="m_sep1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
   </data>
@@ -287,7 +325,7 @@
     <value>m_ts1</value>
   </data>
   <data name="&gt;&gt;m_ts1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7634.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7980.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts1.Parent" xml:space="preserve">
     <value>m_tlp</value>
@@ -771,6 +809,12 @@
   <data name="&gt;&gt;m_tsbnHome.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;m_tsbnFacebook.Name" xml:space="preserve">
+    <value>m_tsbnFacebook</value>
+  </data>
+  <data name="&gt;&gt;m_tsbnFacebook.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;m_sep1.Name" xml:space="preserve">
     <value>m_sep1</value>
   </data>
@@ -811,6 +855,6 @@
     <value>frmStartPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7634.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7980.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

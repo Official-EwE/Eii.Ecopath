@@ -45,6 +45,7 @@ Partial Class frmStartPanel
         Me.m_browser = New System.Windows.Forms.WebBrowser()
         Me.m_ts1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.m_tsbnHome = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnFacebook = New System.Windows.Forms.ToolStripButton()
         Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton()
@@ -73,7 +74,7 @@ Partial Class frmStartPanel
         'm_ts1
         '
         Me.m_ts1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHome, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_sep2, Me.m_tsbnRefresh, Me.m_tsbnRSS})
+        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHome, Me.m_tsbnFacebook, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_sep2, Me.m_tsbnRefresh, Me.m_tsbnRSS})
         resources.ApplyResources(Me.m_ts1, "m_ts1")
         Me.m_ts1.Name = "m_ts1"
         Me.m_ts1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -83,6 +84,12 @@ Partial Class frmStartPanel
         Me.m_tsbnHome.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnHome, "m_tsbnHome")
         Me.m_tsbnHome.Name = "m_tsbnHome"
+        '
+        'm_tsbnFacebook
+        '
+        Me.m_tsbnFacebook.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnFacebook, "m_tsbnFacebook")
+        Me.m_tsbnFacebook.Name = "m_tsbnFacebook"
         '
         'm_sep1
         '
@@ -141,6 +148,7 @@ Partial Class frmStartPanel
     Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnRSS As System.Windows.Forms.ToolStripButton
+    Friend WithEvents m_tsbnFacebook As System.Windows.Forms.ToolStripButton
 
 
 End Class
