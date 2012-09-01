@@ -122,7 +122,7 @@ Public Class cEcoNetwork
     'Private NumLivPath As Integer
     Private NumOfPaths As Integer
     Private Sel As Integer 'jb I don't think this is used anymore In EwE5 it is set from PrepareReqPPDetails()
-    Private GrpsToShow() As Boolean
+    Private m_GroupsToShow() As Boolean
 
 #Region "Private Ecosim Data"
 
@@ -336,31 +336,38 @@ Public Class cEcoNetwork
 
 #End Region
 
-#Region "Public Properties"
+#Region " Public Properties "
 
-    Public WriteOnly Property GroupsToShow() As Boolean()
+    Public Property GroupsToShow() As Boolean()
+        Get
+            Return Me.m_GroupsToShow
+        End Get
         Set(ByVal value As Boolean())
-            Me.GrpsToShow = value
+            Me.m_GroupsToShow = value
         End Set
     End Property
 
-    Public WriteOnly Property EcopathData() As cEcopathDataStructures
+    Public Property EcopathData() As cEcopathDataStructures
+        Get
+            Return Me.m_epdata
+        End Get
         Set(ByVal value As cEcopathDataStructures)
-            m_epdata = value
+            Me.m_epdata = value
         End Set
     End Property
 
-    Public WriteOnly Property EcosimData() As cEcosimDatastructures
+    Public Property EcosimData() As cEcosimDatastructures
+        Get
+            Return Me.m_esdata
+        End Get
         Set(ByVal value As cEcosimDatastructures)
-            m_esdata = value
+            Me.m_esdata = value
         End Set
     End Property
 
-#End Region
+#End Region ' Public Properties
 
-#Region "Network Analysis"
-
-
+#Region " Network Analysis "
 
     ''' <summary>
     ''' Run the Main Network Analysis routine
@@ -375,6 +382,11 @@ Public Class cEcoNetwork
         'Mixed trophic impact
         'Ascencdency
         'Flow from detritus
+
+#If DEBUG Then
+        ' Profiler bit
+        Console.WriteLine("NA started at " & Date.Now.ToLongTimeString)
+#End If
 
         Dim i As Integer ', chk As Integer
         Dim strErr As String = ""
@@ -393,7 +405,8 @@ Public Class cEcoNetwork
             NetworkDimensioning()
 
             ' EconetMain_g% = 1
-            'jb this is weird I can’t put a Try Catch statement into either Ulanow or Lindeman           
+            'jb this is weird I can’t put a Try Catch statement into either Ulanow or Lindeman   
+            ' JS: that's because of the presence of labels. We *really* should get rid of those
             Try
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_ULANOW, 0.2)
                 strErr = "Ulanow()"
@@ -442,10 +455,18 @@ Public Class cEcoNetwork
             End If
 
         Catch ex As Exception
+#If DEBUG Then
+            ' Profiler bit
+            Console.WriteLine("NA screwed up at " & Date.Now.ToLongTimeString)
+#End If
             ' Debug.Assert(False, ex.Message)
             cLog.Write(ex)
             bSucces = False
         End Try
+#If DEBUG Then
+        ' Profiler bit
+        Console.WriteLine("NA ended at " & Date.Now.ToLongTimeString)
+#End If
 
         cApplicationStatusNotifier.EndProgress(Me.m_core)
 
@@ -491,10 +512,8 @@ Public Class cEcoNetwork
 
             'validates data.
             If totalPP = 0 Then
-                MsgBox("No utilized primary producers.")
-                Debug.Assert(False)
+                Me.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_PP, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning))
                 Return False
-                ' Exit Function
             End If
 
             'continue computing.
@@ -910,7 +929,7 @@ Public Class cEcoNetwork
                 If APj(j) > 0 Then
                     Predat(i) = Predat(i) + PredNoC(j) * Ap(i, j)
                     TRP(i) = TRP(i) + HNoC(j) * Ap(i, j)
-                    If GrpsToShow(j) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ap(i, j)
+                    If m_GroupsToShow(j) Then TrpShow(i) = TrpShow(i) + HNoC(j) * Ap(i, j)
                     'TrpShow(i) = TrpShow(i) + HNoC(j) * Ap(i, j) 'joeh
                     Impo(i) = Impo(i) + im(j) * Ap(i, j)
                     CA(i) = CA(i) + m_epdata.fCatch(j) * Ap(i, j)
@@ -947,7 +966,7 @@ Public Class cEcoNetwork
                     PredatD(i) += PredNoC(j) * Ad(i, j)
                     TRPD(i) += HNoC(j) * Ad(i, j)
 
-                    If GrpsToShow(j) Then TrpShow(i) += HNoC(j) * Ad(i, j)
+                    If m_GroupsToShow(j) Then TrpShow(i) += HNoC(j) * Ad(i, j)
                     'TrpShow(i) = TrpShow(i) + HNoC(j) * Ad(i, j) 'joeh
                     ImpD(i) += im(j) * Ad(i, j)
                     CAD(i) += m_epdata.fCatch(j) * Ad(i, j)
@@ -1623,7 +1642,7 @@ EmergyRun:
         If chk = 0 Then                  'Only print cycling in first run
             If ErrC = 0 Then
             Else
-                If ToldYou = False Then MsgBox("Predatory cycling index cannot be calculated. ")
+                If ToldYou = False Then Me.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_CYCLING, eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Warning))
                 ToldYou = True
             End If
         Else                              'if Chk > 0
@@ -2769,9 +2788,9 @@ NextPivot:
         End Try
     End Sub
 
-#End Region
+#End Region ' Network Analysis
 
-#Region "Required PP"
+#Region " Required PP "
 
     ''' <summary>
     ''' Calcualte public varaibles need for required primary production
@@ -3136,9 +3155,9 @@ NextPivot:
 
     End Sub
 
-#End Region
+#End Region ' Required PP
 
-#Region "Pathway Cycles"
+#Region " Pathway Cycles "
 
     Public Sub FindCycles(ByRef DC(,) As Single, ByVal Topic As Integer, ByVal Sel As Integer, ByVal Sel2 As Integer, ByRef NoPath As Integer, ByRef NoArrows As Integer)
         'Public Sub FindCycles1(ByVal DC() As Single, ByVal Topic As Integer, ByVal Sel As Integer, ByVal Sel2 As Integer, ByVal NoPath As Integer, ByVal NoArrows As Integer)
@@ -3557,9 +3576,9 @@ NextPivot:
 
     End Sub
 
-#End Region
+#End Region ' Pathway Cycles
 
-#Region "Ecosim"
+#Region " Ecosim "
 
     Public Function InitForEcosim() As Boolean
 
@@ -4168,6 +4187,20 @@ NextPivot:
 
     'End Sub
 
-#End Region
+#End Region ' Ecosim
+
+#Region " Panic "
+
+    Private Sub SendMessage(ByVal msg As cMessage)
+        If (Me.m_core IsNot Nothing) Then
+            Try
+                Me.m_core.Messages.SendMessage(msg)
+            Catch ex As Exception
+
+            End Try
+        End If
+    End Sub
+
+#End Region ' Panic
 
 End Class

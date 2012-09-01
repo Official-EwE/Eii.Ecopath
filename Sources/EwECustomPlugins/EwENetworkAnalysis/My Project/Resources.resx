@@ -4568,4 +4568,10 @@ ozm8Eni5lw1AitsyI2flY0anwvm8OjSm79/8uLuoH5reHe98Vi7oA+P/AKT/AP/ZCw==</value>
     <value>Network Analysis indices saved to '{0}'</value>
     <comment>{0}: file name</comment>
   </data>
+  <data name="PROMPT_ERROR_CYCLING" xml:space="preserve">
+    <value>Predatory cycling index cannot be calculated.</value>
+  </data>
+  <data name="PROMPT_ERROR_PP" xml:space="preserve">
+    <value>There are no utilized primary producers. Network analysis cannot continue.</value>
+  </data>
 </root>
