@@ -135,7 +135,7 @@ Namespace SpatialData
         ''' <see cref="DataScaleType"/> for layer <paramref name="iIndex"/> is
         ''' set to <see cref="eScaleType.Relative"/>.
         ''' </summary>
-        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&tl;</param>
+        ''' <param name="iIndex">Layer index [0, <see cref="Length"/>&lt;</param>
         ''' -------------------------------------------------------------------
         Public Property DataScale(iIndex As Integer) As Double
             Get
