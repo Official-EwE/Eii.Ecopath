@@ -51,20 +51,20 @@ Namespace Ecospace
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSpatialTimeSeries))
             Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
             Me.m_tsMap = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tslZoom = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnZoomMap = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomData = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomBoth = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnShowGrid = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowRefMap = New System.Windows.Forms.ToolStripButton()
+            Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
             Me.m_tsDatasets = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tscmTypes = New System.Windows.Forms.ToolStripComboBox()
             Me.m_tslData = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsbnConnections = New System.Windows.Forms.ToolStripButton()
-            Me.m_map = New ScientificInterface.Ecospace.ucSpatialTimeSeriesMap()
-            Me.m_toolbox = New ScientificInterface.Ecospace.Controls.ucSpatialTimeSeriesToolbox()
-            Me.m_tsbnShowGrid = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
@@ -88,6 +88,17 @@ Namespace Ecospace
             '
             Me.m_scMain.Panel2.Controls.Add(Me.m_toolbox)
             Me.m_scMain.Panel2.Controls.Add(Me.m_tsDatasets)
+            '
+            'm_map
+            '
+            resources.ApplyResources(Me.m_map, "m_map")
+            Me.m_map.Name = "m_map"
+            Me.m_map.SelectedDataset = Nothing
+            Me.m_map.SelectedTimeStep = -1
+            Me.m_map.ShowGrid = False
+            Me.m_map.ShowReferenceMap = False
+            Me.m_map.UIContext = Nothing
+            Me.m_map.ZoomLevel = ScientificInterface.Ecospace.ucSpatialTimeSeriesMap.eZoomLevel.Both
             '
             'm_tsMap
             '
@@ -130,6 +141,13 @@ Namespace Ecospace
             Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
             resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
             '
+            'm_tsbnShowGrid
+            '
+            Me.m_tsbnShowGrid.CheckOnClick = True
+            Me.m_tsbnShowGrid.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+            resources.ApplyResources(Me.m_tsbnShowGrid, "m_tsbnShowGrid")
+            Me.m_tsbnShowGrid.Name = "m_tsbnShowGrid"
+            '
             'm_tsbnShowRefMap
             '
             Me.m_tsbnShowRefMap.CheckOnClick = True
@@ -137,6 +155,16 @@ Namespace Ecospace
             Me.m_tsbnShowRefMap.Image = Global.ScientificInterface.My.Resources.Resources.Basemap
             resources.ApplyResources(Me.m_tsbnShowRefMap, "m_tsbnShowRefMap")
             Me.m_tsbnShowRefMap.Name = "m_tsbnShowRefMap"
+            '
+            'm_toolbox
+            '
+            Me.m_toolbox.BackColor = System.Drawing.SystemColors.Window
+            resources.ApplyResources(Me.m_toolbox, "m_toolbox")
+            Me.m_toolbox.Name = "m_toolbox"
+            Me.m_toolbox.SelectedDatasetIndex = -1
+            Me.m_toolbox.SelectedTimeStep = -1
+            Me.m_toolbox.UIContext = Nothing
+            Me.m_toolbox.VarName = EwEUtils.Core.eVarNameFlags.NotSet
             '
             'm_tsDatasets
             '
@@ -165,34 +193,6 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_tsbnConnections, "m_tsbnConnections")
             Me.m_tsbnConnections.Name = "m_tsbnConnections"
-            '
-            'm_map
-            '
-            resources.ApplyResources(Me.m_map, "m_map")
-            Me.m_map.Name = "m_map"
-            Me.m_map.SelectedDataset = Nothing
-            Me.m_map.SelectedTimeStep = -1
-            Me.m_map.ShowReferenceMap = False
-            Me.m_map.UIContext = Nothing
-            Me.m_map.ZoomLevel = ScientificInterface.Ecospace.ucSpatialTimeSeriesMap.eZoomLevel.Both
-            '
-            'm_toolbox
-            '
-            Me.m_toolbox.BackColor = System.Drawing.SystemColors.Window
-            resources.ApplyResources(Me.m_toolbox, "m_toolbox")
-            Me.m_toolbox.Name = "m_toolbox"
-            Me.m_toolbox.SelectedDatasetIndex = -1
-            Me.m_toolbox.SelectedTimeStep = -1
-            Me.m_toolbox.UIContext = Nothing
-            Me.m_toolbox.VarName = EwEUtils.Core.eVarNameFlags.NotSet
-            '
-            'm_tsbnShowGrid
-            '
-            Me.m_tsbnShowGrid.CheckOnClick = True
-            Me.m_tsbnShowGrid.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            resources.ApplyResources(Me.m_tsbnShowGrid, "m_tsbnShowGrid")
-            Me.m_tsbnShowGrid.Image = SharedResources.ShowGridlinesHS
-            Me.m_tsbnShowGrid.Name = "m_tsbnShowGrid"
             '
             'frmSpatialTimeSeries
             '
