@@ -107,10 +107,9 @@ Public Class cResultWriter
 
     Private Function WriteData(ByVal strFileName As String, ByVal strData As String) As Boolean
 
-        ' ToDo: globalize this method
         Dim strPath As String = Path.GetDirectoryName(strFileName)
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then
-            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_NOACCESS, strPath), True)
+            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_NOACCESS, strPath), True, strPath)
             Return False
         End If
 
@@ -118,11 +117,11 @@ Public Class cResultWriter
         If (sw IsNot Nothing) Then
             sw.Write(strData)
             sw.Close()
-            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_SUCCESS, strFileName))
+            Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_SUCCESS, strFileName), False, strPath)
             Return True
         End If
 
-        Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_FAILED, strFileName), True)
+        Me.SendMessage(String.Format(My.Resources.PROMPT_SAVE_FAILED, strFileName), True, strPath)
         Return False
 
     End Function
@@ -435,9 +434,10 @@ Public Class cResultWriter
         Return sb.ToString()
     End Function
 
-    Private Sub SendMessage(strMessage As String, Optional bError As Boolean = False)
+    Private Sub SendMessage(strMessage As String, Optional bError As Boolean = False, Optional strURL As String = "")
         Dim msg As New cMessage(strMessage, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, _
                                 DirectCast(IIf(bError, eMessageImportance.Warning, eMessageImportance.Information), eMessageImportance))
+        msg.Hyperlink = strURL
         Me.m_manager.Core.Messages.SendMessage(msg)
     End Sub
 
