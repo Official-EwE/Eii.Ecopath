@@ -7696,7 +7696,7 @@ Namespace DataSources
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "HabitatMap", ""))
                     ' Read only water cells with values for this habitat index
-                    cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.PHabType, ecospaceDS.Depth, True)
+                    cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.PHabType, ecospaceDS.Depth, True, sMax:=1)
                     i += 1
                 End While
 
