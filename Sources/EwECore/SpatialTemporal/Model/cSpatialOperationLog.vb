@@ -15,10 +15,15 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
 Imports EwEUtils.Core
 Imports System.Text
 Imports System.IO
 Imports EwEUtils.Utilities
+
+#End Region ' Imports
 
 Namespace SpatialData
 
@@ -200,7 +205,7 @@ Namespace SpatialData
                 sb.AppendLine("   " & vs.Status.ToString & ", " & vs.Message)
             Next
 
-            If Me.m_msgCurrent.Hyperlink Then
+            If Not String.IsNullOrWhiteSpace(Me.m_msgCurrent.Hyperlink) Then
                 sb.AppendLine("Results written to: " & Me.m_msgCurrent.Hyperlink)
             End If
 

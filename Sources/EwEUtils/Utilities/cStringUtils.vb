@@ -1015,7 +1015,8 @@ Namespace Utilities
                                             ByVal data As Array, _
                                             Optional ByVal land As Integer(,) = Nothing, _
                                             Optional ByVal bWaterOnly As Boolean = True, _
-                                            Optional ByVal valueGet As Object = Nothing) As Boolean
+                                            Optional ByVal valueGet As Object = Nothing,
+                                            Optional ByVal sMax As Single = Single.MaxValue) As Boolean
 
             ' Need 3 dim array
             Debug.Assert(data.Rank = 3)
@@ -1065,7 +1066,7 @@ Namespace Utilities
                                     If tData Is GetType(Boolean) Then
                                         value = (astrValues(iColumn) = "1")
                                     Else
-                                        value = cStringUtils.ConvertToNumber(astrValues(iColumn), tData)
+                                        value = Math.Min(sMax, CSng(cStringUtils.ConvertToNumber(astrValues(iColumn), tData)))
                                     End If
                                     ' Does this value match the value to get if provided?
                                     If (value.Equals(valueGet) Or (valueGet Is Nothing)) Then
