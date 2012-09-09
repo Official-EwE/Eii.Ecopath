@@ -487,7 +487,7 @@ Namespace Ecospace.Controls
             If bSelected Then
                 clrText = SystemColors.HighlightText
                 clrTextFill = SystemColors.Highlight
-                Using br As New HatchBrush(HatchStyle.BackwardDiagonal, SystemColors.MenuHighlight, Color.Transparent)
+                Using br As New SolidBrush(Color.FromArgb(64, clrTextFill))
                     g.FillRectangle(br, rcBack)
                 End Using
             End If
