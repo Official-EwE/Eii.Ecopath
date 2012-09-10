@@ -35,6 +35,62 @@ Public Class cCEFASMonteCarloSamplePlugin
 
 #Region "Sample MonteCarlo"
 
+    ''' <summary>
+    ''' PROOF OF CONCEPT ONLY Vary and normalize the Diet Matrix 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub SampleDietMatrix()
+        'Mark this routine is coppied from cEcopathModel.checkDietsSumToOne()
+        'and is only a "proof of concept" 
+        'you will need to check that it is actually doing what it claims to
+        Dim iPred As Integer
+        Dim iPrey As Integer
+
+        'The diet matrix is stored in cEcopathDataStructures.DC(pred,prey)
+        'Get the cEcopathDataStructures object from the Ecopath Model object
+        Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
+        Dim randNumGen As New Random
+
+        For iPred = 1 To ecopathData.NumLiving
+            For iPrey = 1 To ecopathData.NumLiving
+
+                'does this pred eats this prey?
+                If ecopathData.DC(iPred, iPrey) > 0 Then
+                    'Yep... change the diet matix
+                    'You will have to do better then a uniform distribution!
+                    ecopathData.DC(iPred, iPrey) = CSng(randNumGen.NextDouble())
+                End If
+            Next
+        Next
+
+        'Now the diet matrix has been varied
+        'Normalize the new diet matrix
+        Dim sSum As Single
+        Dim sTolerance As Single
+        Dim bSumToOne As Boolean = True
+
+        sTolerance = 0.001
+
+        ' Check all diets
+        For iPred = 1 To ecopathData.NumLiving
+            ' Is consumer?
+            If ecopathData.PP(iPred) < 1 Then
+                ' #Yes: determine diet sum
+                sSum = 0
+                For iPrey = 0 To ecopathData.NumGroups
+                    sSum = sSum + ecopathData.DC(iPred, iPrey)
+                Next
+                If sSum <> 0 And Math.Abs(sSum - 1) > sTolerance Then
+                    For iPrey = 0 To ecopathData.NumGroups
+                        ecopathData.DC(iPred, iPrey) = ecopathData.DC(iPred, iPrey) / sSum
+                    Next
+
+                End If
+            End If
+        Next
+
+    End Sub
+
 
     Private Sub TestMonteCarlo()
         Dim nLiving As Integer = Core.nLivingGroups
@@ -60,6 +116,8 @@ Public Class cCEFASMonteCarloSamplePlugin
 
                 'Loop over the new Ecopath parameters and run Ecosim 
                 For iter As Integer = 1 To 10
+
+                    Me.SampleDietMatrix()
 
                     'Set the Ecopath parameters using the Monte Carlo input parameters set above
                     If MonteCarlo.selectNewEcopathParameters() Then
