@@ -322,7 +322,7 @@ Public Class cEwEStatusBar
             Case Else
                 Me.m_tsbProgress.Style = ProgressBarStyle.Continuous
                 Me.m_tsbProgress.Visible = True
-                Me.m_tsbProgress.Value = CInt(Math.Max(Math.Min(100, sProgress * 100), 0))
+                Me.m_tsbProgress.Value = CInt(Math.Ceiling(Math.Max(Math.Min(100, sProgress * 100), 0)))
                 Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
         End Select
 

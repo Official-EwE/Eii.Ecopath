@@ -857,7 +857,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Marine Protected Areas.
+        '''  Looks up a localized string similar to MPAs.
         '''</summary>
         Public ReadOnly Property ECOSPACE_LAYERGROUP_MPAS() As String
             Get

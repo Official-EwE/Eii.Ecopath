@@ -2358,7 +2358,7 @@
     <value>Data layers</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_MPAS" xml:space="preserve">
-    <value>Marine Protected Areas</value>
+    <value>MPAs</value>
   </data>
   <data name="ECOSPACE_LAYERGROUP_REGIONS" xml:space="preserve">
     <value>Regions</value>

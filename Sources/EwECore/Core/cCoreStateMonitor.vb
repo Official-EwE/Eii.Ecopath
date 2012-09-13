@@ -75,6 +75,8 @@ Public Class cCoreStateMonitor
 
     ''' <summary>Flag stating that a search is active.</summary>
     Private m_bIsSearching As Boolean = False
+    ''' <summary>Flag stating that a batch lock is active.</summary>
+    Private m_bIsBatchLocked As Boolean = False
 
     ''' <summary>Flag indicating whether the datasource contains unsaved changes that do not affect the running model and its scenarios.</summary>
     Private m_bDatasourceModified As Boolean = False
@@ -706,19 +708,29 @@ Public Class cCoreStateMonitor
 
 #End Region ' Ecotracer
 
-#Region " Search "
-
-#End Region ' Search
+#Region " Busy state "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Set the searching state of the core state monitor.
     ''' </summary>
-    ''' <param name="bIsSearching"></param>
+    ''' <param name="bIsSearching">State flag to set</param>
     ''' -----------------------------------------------------------------------
     Friend Sub SetIsSearching(ByVal bIsSearching As Boolean)
         Me.m_bIsSearching = bIsSearching
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Set the batch lock state of the core state monitor.
+    ''' </summary>
+    ''' <param name="bIsBatchLocked">State flag to set</param>
+    ''' -----------------------------------------------------------------------
+    Friend Sub SetIsBatchLocked(ByVal bIsBatchLocked As Boolean)
+        Me.m_bIsBatchLocked = bIsBatchLocked
+    End Sub
+
+#End Region ' Busy state
 
 #End Region ' Ececution
 
@@ -738,11 +750,12 @@ Public Class cCoreStateMonitor
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns whether the core is computing.
+    ''' Returns whether the core is busy. Either a model is running, a search
+    ''' is in progress, or a batch operation is in progress.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Function IsComputing() As Boolean
-        Return (Me.IsEcopathRunning Or Me.IsEcosimRunning Or Me.IsEcospaceRunning Or Me.IsSearching)
+    Public Function IsBusy() As Boolean
+        Return (Me.IsEcopathRunning Or Me.IsEcosimRunning Or Me.IsEcospaceRunning Or Me.IsSearching Or Me.IsBatchLocked)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -869,6 +882,15 @@ Public Class cCoreStateMonitor
     ''' -----------------------------------------------------------------------
     Public Function IsSearching() As Boolean
         Return Me.m_bIsSearching
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns whether a batch lock is active on the core.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function IsBatchLocked() As Boolean
+        Return Me.m_bIsBatchLocked
     End Function
 
     ''' -----------------------------------------------------------------------

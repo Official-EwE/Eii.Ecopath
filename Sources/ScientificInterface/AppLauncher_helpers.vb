@@ -176,10 +176,7 @@ Partial Public Class AppLauncher
                         ' Check if form should be disabled
                         ' A form should be disabled if it is an input form; path, sim or space are running,
                         ' and the form is not used to start the runs.
-                        bMustDisableForm = (Me.m_csm.IsEcopathRunning Or _
-                                            Me.m_csm.IsEcosimRunning Or _
-                                            Me.m_csm.IsEcospaceRunning) And _
-                                           (Not f.IsRunForm())
+                        bMustDisableForm = (Me.m_csm.IsBusy) And (Not f.IsRunForm())
                     End If
 
                     If bMustCloseForm Then

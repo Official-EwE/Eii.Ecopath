@@ -812,7 +812,10 @@ Public Class cCore
         ' Increase messages lock count to stop any messages from being sent while in a batch
         Me.Messages.SetMessageLock()
 
-        If Me.m_iBatchLock = 1 Then Me.DataSource.BeginTransaction()
+        If Me.m_iBatchLock = 1 Then
+            Me.DataSource.BeginTransaction()
+            Me.StateMonitor.SetIsBatchLocked(True)
+        End If
 
         Return True
 
@@ -850,6 +853,7 @@ Public Class cCore
         If (Not Me.IsBatchLocked()) Then
 
             Me.DataSource.EndTransaction(bCommit)
+            Me.StateMonitor.SetIsBatchLocked(False)
 
             ' Need to reload?
             If (Me.m_batchLockType = eBatchLockType.Restructure) Then
@@ -2518,7 +2522,7 @@ Public Class cCore
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Function CanStopRun() As Boolean
-        If Not (Me.m_StateMonitor.IsComputing Or Me.m_StateMonitor.IsSearching) Then
+        If Not (Me.m_StateMonitor.IsBusy) Then
             Return False
         End If
         Return (Me.m_dgtStop IsNot Nothing)
@@ -13143,7 +13147,7 @@ Public Class cCore
             End If
 
             ' Do not interrupt executions
-            If (Not Me.m_StateMonitor.IsComputing) Then
+            If (Not Me.m_StateMonitor.IsBusy) Then
                 Me.m_StateMonitor.UpdateExecutionState(obj.CoreComponent)
             End If
 
@@ -13288,7 +13292,7 @@ Public Class cCore
             Me.m_pluginManager.UpdatePluginEnabledStates()
         End If
 
-        If (Not Me.m_StateMonitor.IsSearching And Not Me.m_StateMonitor.IsComputing) Then
+        If (Not Me.m_StateMonitor.IsSearching And Not Me.m_StateMonitor.IsBusy) Then
             ' Remove any pending handbrake
             Me.SetStopRunDelegate(Nothing)
         End If
