@@ -51,6 +51,10 @@ Namespace Ecosim
             Value
             AvgWeightOrProdCons
             TL
+            TLC
+            KemptonsQ
+            FIB
+            TotalCatch
         End Enum
 
 #End Region ' Private vars
@@ -263,6 +267,30 @@ Namespace Ecosim
                                                   strModelDetails, strDataDetails, preyNames.ToString)
                         End If
                     Next
+
+                Case eResultTypes.KemptonsQ, _
+                    eResultTypes.TLC, _
+                    eResultTypes.FIB, _
+                    eResultTypes.TotalCatch
+
+                    Dim data(m_core.nEcosimTimeSteps) As Single
+                    For i As Integer = 1 To m_core.nEcosimTimeSteps
+                        Select Case resulttype
+                            Case eResultTypes.KemptonsQ
+                                data(i) = Me.m_core.EcosimOutputs.TLCatch(i)
+                            Case eResultTypes.KemptonsQ
+                                data(i) = Me.m_core.EcosimOutputs.KemptonsQ(i)
+                            Case eResultTypes.FIB
+                                data(i) = Me.m_core.EcosimOutputs.FIB(i)
+                            Case eResultTypes.TotalCatch
+                                data(i) = Me.m_core.EcosimOutputs.TotalCatch(i)
+                        End Select
+                    Next i
+
+                    strDataDetails = "Data, " & resulttype.ToString
+                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, strPostfix, resulttype), _
+                                                 bSaveAnnual, data, _
+                                                 strModelDetails, strDataDetails)
             End Select
 
             Return bSuccess
@@ -273,7 +301,7 @@ Namespace Ecosim
                                            ByVal bSaveAnnual As Boolean, _
                                            ByVal strPostfix As String, _
                                            ByVal outputtype As eResultTypes, _
-                                           Optional ByVal GroupName As String = "") As String
+                                           Optional ByVal strGroupName As String = "") As String
 
             Dim strFileName As String = ""
             Dim strExt As String = ".csv"
@@ -281,48 +309,64 @@ Namespace Ecosim
             If bSaveAnnual Then
                 Select Case outputtype
                     Case eResultTypes.Biomass
-                        strFileName = "biomass_annual"
+                        strFileName = "Biomass_annual"
                     Case eResultTypes.Mortality
-                        strFileName = "mortality_annual"
+                        strFileName = "Mortality_annual"
                     Case eResultTypes.Yield
-                        strFileName = "yield_annual"
+                        strFileName = "Yield_annual"
                     Case eResultTypes.ConsumptionBiomass
-                        strFileName = "cons_biom_annual"
+                        strFileName = "Cons_biom_annual"
                     Case eResultTypes.FeedingTime
-                        strFileName = "feedingTime_annual"
+                        strFileName = "FeedingTime_annual"
                     Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = "weight_annual"
+                        strFileName = "Weight_annual"
                     Case eResultTypes.PredationMortality
-                        strFileName = "predation_annual " & GroupName
+                        strFileName = "Predation_annual " & strGroupName
                     Case eResultTypes.Prey
-                        strFileName = "prey_annual " & GroupName
+                        strFileName = "Prey_annual " & strGroupName
                     Case eResultTypes.TL
-                        strFileName = "tL_annual"
+                        strFileName = "TL_annual"
                     Case eResultTypes.Value
-                        strFileName = "value_annual"
+                        strFileName = "Value_annual"
+                    Case eResultTypes.FIB
+                        strFileName = "FIB_annual"
+                    Case eResultTypes.KemptonsQ
+                        strFileName = "KemptonsQ_annual"
+                    Case eResultTypes.TLC
+                        strFileName = "TLC_annual"
+                    Case eResultTypes.TotalCatch
+                        strFileName = "TotalCatch_annual"
                 End Select
             Else
                 Select Case outputtype
                     Case eResultTypes.Biomass
-                        strFileName = "biomass"
+                        strFileName = "Biomass"
                     Case eResultTypes.Mortality
-                        strFileName = "mortality"
+                        strFileName = "Mortality"
                     Case eResultTypes.Yield
-                        strFileName = "yield"
+                        strFileName = "Yield"
                     Case eResultTypes.ConsumptionBiomass
-                        strFileName = "cons_biom"
+                        strFileName = "Cons_biom"
                     Case eResultTypes.FeedingTime
-                        strFileName = "feedingTime"
+                        strFileName = "FeedingTime"
                     Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = "weight"
+                        strFileName = "Weight"
                     Case eResultTypes.PredationMortality
-                        strFileName = "predation " & GroupName
+                        strFileName = "Predation " & strGroupName
                     Case eResultTypes.Prey
-                        strFileName = "Prey " & GroupName
+                        strFileName = "Prey " & strGroupName
                     Case eResultTypes.TL
                         strFileName = "TL"
                     Case eResultTypes.Value
                         strFileName = "Value"
+                    Case eResultTypes.FIB
+                        strFileName = "FIB"
+                    Case eResultTypes.KemptonsQ
+                        strFileName = "KemptonsQ"
+                    Case eResultTypes.TLC
+                        strFileName = "TLC"
+                    Case eResultTypes.TotalCatch
+                        strFileName = "TotalCatch"
                 End Select
             End If
 
@@ -370,6 +414,44 @@ Namespace Ecosim
                                 sw.Write(cStringUtils.FormatSingle(data(i, j)))
                             Next
                             sw.WriteLine()
+                        Next
+                    End If
+                    sw.Close()
+
+                End Using
+
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+        Private Function SaveDataToFile(ByVal strFileName As String, _
+                                 ByVal bSaveYearly As Boolean, _
+                                 ByVal data As Single(), _
+                                 ByVal strModelDetails As String, _
+                                 ByVal strDataDetails As String) As Boolean
+
+            Try
+                'Overwritten the file
+                Using sw As StreamWriter = New StreamWriter(strFileName, False)
+                    sw.WriteLine(strModelDetails)
+                    sw.WriteLine(strDataDetails)
+                    sw.WriteLine()
+                    If bSaveYearly Then
+                        Dim simYears As Integer = CInt((data.Length - 1) / cCore.N_MONTHS)
+                        Dim sum As Single
+                        For j As Integer = 1 To simYears
+                            For k As Integer = 1 To cCore.N_MONTHS
+                                sum += data((j - 1) * cCore.N_MONTHS + k)
+                            Next
+                            sw.WriteLine(cStringUtils.FormatSingle(sum / cCore.N_MONTHS))
+                        Next
+                    Else
+                        'Each time steps
+                        For j As Integer = 1 To data.Length - 1
+                            sw.WriteLine(cStringUtils.FormatSingle(data(j)))
                         Next
                     End If
                     sw.Close()
