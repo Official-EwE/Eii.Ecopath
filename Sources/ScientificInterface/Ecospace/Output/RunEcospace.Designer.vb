@@ -62,8 +62,8 @@ Namespace Ecospace
             Me.m_cbShowLabels = New System.Windows.Forms.CheckBox()
             Me.m_hdrLabelOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plDistribution = New System.Windows.Forms.Panel()
+            Me.Label1 = New System.Windows.Forms.Label()
             Me.m_txFMax = New System.Windows.Forms.TextBox()
-            Me.m_ckSelFleets = New System.Windows.Forms.CheckBox()
             Me.m_rbDisplayF = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayRelBiomass = New System.Windows.Forms.RadioButton()
             Me.m_rbDisplayFOverB = New System.Windows.Forms.RadioButton()
@@ -72,7 +72,7 @@ Namespace Ecospace
             Me.m_hdrDist = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_rbDisplayCoverB = New System.Windows.Forms.RadioButton()
             Me.m_plDisplayOptions = New System.Windows.Forms.Panel()
-            Me.m_btnDisplayGroups = New System.Windows.Forms.Button()
+            Me.m_btnDisplayGroups1 = New System.Windows.Forms.Button()
             Me.m_cbShowIBMPackets = New System.Windows.Forms.CheckBox()
             Me.m_hdrDispOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbMPA = New System.Windows.Forms.CheckBox()
@@ -85,7 +85,6 @@ Namespace Ecospace
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_tabPlot = New System.Windows.Forms.TabPage()
             Me.m_zgPlotLarge = New ZedGraph.ZedGraphControl()
-            Me.Label1 = New System.Windows.Forms.Label()
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -243,7 +242,6 @@ Namespace Ecospace
             '
             Me.m_plDistribution.Controls.Add(Me.Label1)
             Me.m_plDistribution.Controls.Add(Me.m_txFMax)
-            Me.m_plDistribution.Controls.Add(Me.m_ckSelFleets)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayF)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayRelBiomass)
             Me.m_plDistribution.Controls.Add(Me.m_rbDisplayFOverB)
@@ -254,16 +252,15 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_plDistribution, "m_plDistribution")
             Me.m_plDistribution.Name = "m_plDistribution"
             '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
             'm_txFMax
             '
             resources.ApplyResources(Me.m_txFMax, "m_txFMax")
             Me.m_txFMax.Name = "m_txFMax"
-            '
-            'm_ckSelFleets
-            '
-            resources.ApplyResources(Me.m_ckSelFleets, "m_ckSelFleets")
-            Me.m_ckSelFleets.Name = "m_ckSelFleets"
-            Me.m_ckSelFleets.UseVisualStyleBackColor = True
             '
             'm_rbDisplayF
             '
@@ -300,7 +297,7 @@ Namespace Ecospace
             'm_hdrDist
             '
             resources.ApplyResources(Me.m_hdrDist, "m_hdrDist")
-            Me.m_hdrDist.CanCollapseParent = False
+            Me.m_hdrDist.CanCollapseParent = True
             Me.m_hdrDist.CollapsedParentHeight = 0
             Me.m_hdrDist.IsCollapsed = False
             Me.m_hdrDist.Name = "m_hdrDist"
@@ -313,7 +310,7 @@ Namespace Ecospace
             '
             'm_plDisplayOptions
             '
-            Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_btnDisplayGroups1)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowAll)
             Me.m_plDisplayOptions.Controls.Add(Me.m_cbShowIBMPackets)
             Me.m_plDisplayOptions.Controls.Add(Me.m_hdrDispOpt)
@@ -325,11 +322,11 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
             Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
             '
-            'm_btnDisplayGroups
+            'm_btnDisplayGroups1
             '
-            resources.ApplyResources(Me.m_btnDisplayGroups, "m_btnDisplayGroups")
-            Me.m_btnDisplayGroups.Name = "m_btnDisplayGroups"
-            Me.m_btnDisplayGroups.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_btnDisplayGroups1, "m_btnDisplayGroups1")
+            Me.m_btnDisplayGroups1.Name = "m_btnDisplayGroups1"
+            Me.m_btnDisplayGroups1.UseVisualStyleBackColor = True
             '
             'm_cbShowIBMPackets
             '
@@ -342,7 +339,7 @@ Namespace Ecospace
             'm_hdrDispOpt
             '
             resources.ApplyResources(Me.m_hdrDispOpt, "m_hdrDispOpt")
-            Me.m_hdrDispOpt.CanCollapseParent = False
+            Me.m_hdrDispOpt.CanCollapseParent = True
             Me.m_hdrDispOpt.CollapsedParentHeight = 0
             Me.m_hdrDispOpt.IsCollapsed = False
             Me.m_hdrDispOpt.Name = "m_hdrDispOpt"
@@ -431,11 +428,6 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
-            'Label1
-            '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
-            '
             'RunEcospace
             '
             resources.ApplyResources(Me, "$this")
@@ -484,7 +476,7 @@ Namespace Ecospace
         Private WithEvents m_hdrDist As cEwEHeaderLabel
         Private WithEvents m_plDisplayOptions As System.Windows.Forms.Panel
         Private WithEvents m_zgPlotLarge As ZedGraphControl
-        Private WithEvents m_btnDisplayGroups As System.Windows.Forms.Button
+        Private WithEvents m_btnDisplayGroups1 As System.Windows.Forms.Button
         Private WithEvents m_plDistribution As System.Windows.Forms.Panel
         Private WithEvents m_rbDisplayRelBiomass As System.Windows.Forms.RadioButton
         Private WithEvents m_rbDisplayFishingEffort As System.Windows.Forms.RadioButton
@@ -504,7 +496,6 @@ Namespace Ecospace
         Private WithEvents m_plRun As System.Windows.Forms.Panel
         Private WithEvents m_rbDisplayFOverB As System.Windows.Forms.RadioButton
         Private WithEvents m_tlpOptions As System.Windows.Forms.TableLayoutPanel
-        Friend WithEvents m_ckSelFleets As System.Windows.Forms.CheckBox
         Friend WithEvents m_txFMax As System.Windows.Forms.TextBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
 

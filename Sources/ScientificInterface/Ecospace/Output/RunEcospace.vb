@@ -272,7 +272,7 @@ Namespace Ecospace
 
             Me.m_cmdDisplayGroups = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
             If (Me.m_cmdDisplayGroups IsNot Nothing) Then
-                Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups)
+                Me.m_cmdDisplayGroups.AddControl(Me.m_btnDisplayGroups1)
                 AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
             End If
             Me.m_cmbLabelPos.SelectedIndex = 0
@@ -319,7 +319,7 @@ Namespace Ecospace
             Try
 
                 If (Me.m_cmdDisplayGroups IsNot Nothing) Then
-                    Me.m_cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups)
+                    Me.m_cmdDisplayGroups.RemoveControl(Me.m_btnDisplayGroups1)
                     RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
                     Me.m_cmdDisplayGroups = Nothing
                 End If
@@ -876,9 +876,7 @@ Namespace Ecospace
                     m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged
 
             If Me.m_rbDisplayFishingEffort.Checked Then
-                If Me.m_ckSelFleets.Checked Then
-                    Me.setFleetsForSelGroups()
-                End If
+                Me.setFleetsForSelGroups()
             End If
 
             Me.RefreshPlot()
@@ -887,17 +885,12 @@ Namespace Ecospace
         End Sub
 
 
-        Private Sub OnSelFleetsCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_ckSelFleets.CheckedChanged
+        Private Sub OnSelFleetsCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
 
-            If Me.m_ckSelFleets.Checked Then
-                If Me.m_rbDisplayFishingEffort.Checked Then
-
-                    Me.setFleetsForSelGroups()
-
-                    Me.RefreshPlot()
-                    Me.RefreshMap()
-
-                End If
+            If Me.m_rbDisplayFishingEffort.Checked Then
+                Me.setFleetsForSelGroups()
+                Me.RefreshPlot()
+                Me.RefreshMap()
             End If
 
         End Sub
@@ -1299,6 +1292,7 @@ Namespace Ecospace
 
 #End Region ' Internal implementation
 
+ 
     End Class
 
 End Namespace
