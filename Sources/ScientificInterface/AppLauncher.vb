@@ -3341,7 +3341,7 @@ Public Class AppLauncher
         Dim strPath As String = Me.Core.OutputPath
 
         writer = New EwECore.Ecosim.cEcosimResultWriter(Me.UIContext.Core)
-        writer.WriteResults(strPath, "", DirectCast(cmd, cEcosimSaveDataCommand).Results)
+        writer.WriteResults(strPath, DirectCast(cmd, cEcosimSaveDataCommand).Results)
         writer = Nothing
 
     End Sub

@@ -68,11 +68,12 @@ Namespace Ecosim
         ''' <param name="strPath">The path to write to. If not specified, output is
         ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
         ''' <param name="results">The results to write, or nothing to write all results.</param>
+        ''' <param name="strPostfix">Postfix to append to the file name, e.g. biomass{postfix}_details.csv.</param>
         ''' <returns>True if saved successfully.</returns>
         ''' -----------------------------------------------------------------------
         Public Function WriteResults(Optional ByVal strPath As String = "", _
-                                     Optional ByVal strPrefix As String = "", _
-                                     Optional ByVal results As eResultTypes() = Nothing) As Boolean
+                                     Optional ByVal results As eResultTypes() = Nothing, _
+                                     Optional ByVal strPostfix As String = "") As Boolean
 
             Dim msg As cMessage = Nothing
             Dim bSucces As Boolean = True
@@ -94,7 +95,7 @@ Namespace Ecosim
             For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
                 If Me.ShouldWriteResult(results, outputtype) Then
                     Try
-                        If Not Me.WriteResults(strPath, strPrefix, outputtype, True) Or Not Me.WriteResults(strPath, strPrefix, outputtype, False) Then
+                        If Not Me.WriteResults(strPath, outputtype, strPostfix, True) Or Not Me.WriteResults(strPath, outputtype, strPostfix, False) Then
                             bSucces = False
                             msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
                                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
@@ -131,8 +132,8 @@ Namespace Ecosim
         End Function
 
         Private Function WriteResults(ByVal strPath As String, _
-                                      ByVal strPrefix As String, _
                                       ByVal resulttype As eResultTypes, _
+                                      ByVal strPostfix As String, _
                                       ByVal bSaveAnnual As Boolean) As Boolean
 
             Dim strModelDetails As String = Me.GetModelDetails()
@@ -183,7 +184,7 @@ Namespace Ecosim
 
                     Next
                     strDataDetails = "Data, " & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, strPrefix, bSaveAnnual, resulttype), _
+                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, strPostfix, resulttype), _
                                                  bSaveAnnual, data, _
                                                  strModelDetails, strDataDetails, astrGroupNames)
 
@@ -219,7 +220,7 @@ Namespace Ecosim
                             Next
                             strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
 
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, strPrefix, bSaveAnnual, resulttype, grpOutput.Name), _
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, strPostfix, resulttype, grpOutput.Name), _
                                                                       bSaveAnnual, predData, _
                                                                       strModelDetails, strDataDetails, predNames.ToString)
                         End If
@@ -257,7 +258,7 @@ Namespace Ecosim
                             Next
 
                             strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, strPrefix, bSaveAnnual, resulttype, grpOutput.Name), _
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, strPostfix, resulttype, grpOutput.Name), _
                                                   bSaveAnnual, preyData, _
                                                   strModelDetails, strDataDetails, preyNames.ToString)
                         End If
@@ -269,8 +270,8 @@ Namespace Ecosim
         End Function
 
         Private Function GetOutputFileName(ByVal strPath As String, _
-                                           ByVal strPrefix As String, _
                                            ByVal bSaveAnnual As Boolean, _
+                                           ByVal strPostfix As String, _
                                            ByVal outputtype As eResultTypes, _
                                            Optional ByVal GroupName As String = "") As String
 
@@ -325,7 +326,7 @@ Namespace Ecosim
                 End Select
             End If
 
-            Dim strFullPath As String = Path.Combine(strPath, strPrefix & strFileName & strExt)
+            Dim strFullPath As String = Path.Combine(strPath, strFileName & strPostfix & strExt)
             If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
             Return strFullPath
 
