@@ -1748,7 +1748,7 @@ Public Class cEcoSpace
                 For i = 0 To m_Data.InRow + 1
                     For j = 0 To m_Data.InCol + 1
 
-                        If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
+                        'If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0
 
                         If m_Data.IsAdvected(ip) Then
                             m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip)
@@ -3167,14 +3167,28 @@ exitline:
     ''' </summary>
     Sub EvaluateFishing()
 
+        ' For all cells
         For i As Integer = 1 To Me.m_Data.InRow
             For j As Integer = 1 To Me.m_Data.InCol
+                ' For all fleets
                 For ig As Integer = 1 To Me.m_Data.nFleets
                     Dim bFished As Boolean = False
-                    If (Me.m_Data.Depth(i, j) > 0) And _
-                       (Me.m_Data.MPA(i, j) = 0 Or Me.m_Data.MPAfishery(ig, Me.m_Data.MPA(i, j)) Or Me.m_Data.MPAmonth(Me.m_Data.MonthNow, Me.m_Data.MPA(i, j))) And _
-                       (Me.m_Data.PAreaFished(i, j, ig) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
-                        bFished = True
+                    ' Is this is a fished water cell?
+                    If (Me.m_Data.Depth(i, j) > 0) And (Me.m_Data.PAreaFished(i, j, ig) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
+                        ' Ok
+                        bFished = (Me.m_Data.MPA(i, j) = 0 Or Me.m_Data.MPAfishery(ig, Me.m_Data.MPA(i, j)) Or Me.m_Data.MPAmonth(Me.m_Data.MonthNow, Me.m_Data.MPA(i, j)))
+
+                        '' Check if there are MPA restrictions for this fleet
+                        'For im As Integer = 1 To Me.m_Data.MPAno
+                        '    ' Is an MPA active in this cell?
+                        '    If (Me.m_Data.MPA(i, j, im)) Then
+                        '        ' Is an MPA restriction active for this fleet?
+                        '        If Not Me.m_Data.MPAfishery(ig, im) And Not Me.m_Data.MPAmonth(Me.m_Data.MonthNow, im) Then
+                        '            bFished = False
+                        '        End If
+                        '    End If
+                        'Next
+
                     End If
                     Me.m_Data.IsFished(ig, i, j) = bFished
                 Next ig
