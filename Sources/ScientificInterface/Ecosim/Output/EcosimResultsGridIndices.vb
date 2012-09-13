@@ -21,6 +21,7 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
 
@@ -41,15 +42,15 @@ Namespace Ecosim
             ' Define column headers
             Me.Redim(Me.Core.nEcosimTimeSteps + 1, 5)
             ' Time step
-            Me(0, 0) = New EwEColumnHeaderCell("Time step")
+            Me(0, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_TIME)
             'FIB
-            Me(0, 1) = New EwEColumnHeaderCell("FIB")
+            Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_FIB)
             'TL Catch
-            Me(0, 2) = New EwEColumnHeaderCell("TL Catch")
+            Me(0, 2) = New EwEColumnHeaderCell(SharedResources.HEADER_TLC)
             'Total catch
-            Me(0, 3) = New EwEColumnHeaderCell("Total catch")
+            Me(0, 3) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALCATCH)
             'Kemptons Q
-            Me(0, 4) = New EwEColumnHeaderCell("Kemptons Q")
+            Me(0, 4) = New EwEColumnHeaderCell(SharedResources.HEADER_KEMPTONSQ)
 
         End Sub
 
