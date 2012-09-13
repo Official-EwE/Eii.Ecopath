@@ -3128,6 +3128,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to FIB index.
+        '''</summary>
+        Public ReadOnly Property HEADER_FIB() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FIB", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Field.
         '''</summary>
         Public ReadOnly Property HEADER_FIELD() As String
@@ -3556,6 +3565,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_KALWT() As String
             Get
                 Return ResourceManager.GetString("HEADER_KALWT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Kempton&apos;s Q.
+        '''</summary>
+        Public ReadOnly Property HEADER_KEMPTONSQ() As String
+            Get
+                Return ResourceManager.GetString("HEADER_KEMPTONSQ", resourceCulture)
             End Get
         End Property
         
@@ -4739,7 +4757,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Total catches.
+        '''  Looks up a localized string similar to Total catch.
         '''</summary>
         Public ReadOnly Property HEADER_SUM_CATCH() As String
             Get
@@ -4969,6 +4987,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_TIMESERIES() As String
             Get
                 Return ResourceManager.GetString("HEADER_TIMESERIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Trophic level of the catch.
+        '''</summary>
+        Public ReadOnly Property HEADER_TLC() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TLC", resourceCulture)
             End Get
         End Property
         

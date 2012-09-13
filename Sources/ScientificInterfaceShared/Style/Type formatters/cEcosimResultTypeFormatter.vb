@@ -50,12 +50,16 @@ Namespace Style
                 Case cEcosimResultWriter.eResultTypes.Biomass : Return My.Resources.HEADER_BIOMASS
                 Case cEcosimResultWriter.eResultTypes.ConsumptionBiomass : Return My.Resources.HEADER_CONSUMPTION_OVER_BIOMASS
                 Case cEcosimResultWriter.eResultTypes.FeedingTime : Return My.Resources.HEADER_FEEDINGTIME
-                Case cEcosimResultWriter.eResultTypes.Mortality : Return "Mortality"
+                Case cEcosimResultWriter.eResultTypes.Mortality : Return My.Resources.HEADER_MORTALITY
                 Case cEcosimResultWriter.eResultTypes.PredationMortality : Return My.Resources.HEADER_PREDMORT
                 Case cEcosimResultWriter.eResultTypes.Prey : Return My.Resources.HEADER_PREY_PERCENTAGE
                 Case cEcosimResultWriter.eResultTypes.Value : Return My.Resources.HEADER_VALUE
                 Case cEcosimResultWriter.eResultTypes.Yield : Return My.Resources.HEADER_CATCH
-                Case cEcosimResultWriter.eResultTypes.TL : Return "Trophic levels"
+                Case cEcosimResultWriter.eResultTypes.TL : Return My.Resources.HEADER_TROPHICLEVEL
+                Case cEcosimResultWriter.eResultTypes.FIB : Return My.Resources.HEADER_FIB
+                Case cEcosimResultWriter.eResultTypes.KemptonsQ : Return My.Resources.HEADER_KEMPTONSQ
+                Case cEcosimResultWriter.eResultTypes.TLC : Return My.Resources.HEADER_TLC
+                Case cEcosimResultWriter.eResultTypes.TotalCatch : Return My.Resources.HEADER_TOTALCATCH
             End Select
             Return ""
 

@@ -1287,7 +1287,7 @@
     <value>Total biomass/total throughput</value>
   </data>
   <data name="HEADER_SUM_CATCH" xml:space="preserve">
-    <value>Total catches</value>
+    <value>Total catch</value>
   </data>
   <data name="HEADER_SUM_CONSUMPTION" xml:space="preserve">
     <value>Sum of all consumption</value>
@@ -2549,5 +2549,14 @@
   </data>
   <data name="AUTOSAVE_MSE" xml:space="preserve">
     <value>MSE results</value>
+  </data>
+  <data name="HEADER_FIB" xml:space="preserve">
+    <value>FIB index</value>
+  </data>
+  <data name="HEADER_KEMPTONSQ" xml:space="preserve">
+    <value>Kempton's Q</value>
+  </data>
+  <data name="HEADER_TLC" xml:space="preserve">
+    <value>Trophic level of the catch</value>
   </data>
 </root>
