@@ -2349,6 +2349,13 @@ Public Class cCore
 
     End Function
 
+    ''' -------------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the default output location for a given <see cref="eAutosaveTypes">autosaving component</see>.
+    ''' </summary>
+    ''' <param name="type">The <see cref="eAutosaveTypes">autosaving component</see> to get return
+    ''' the default path for.</param>
+    ''' -------------------------------------------------------------------------
     Public ReadOnly Property DefaultOutputPath(ByVal type As eAutosaveTypes) As String
         Get
             Dim sbPath As New StringBuilder()
