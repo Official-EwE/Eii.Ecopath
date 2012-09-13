@@ -103,12 +103,12 @@ Namespace Utilities
                     j = strExpression.IndexOf(cQualifier, j + 1)
                     If (j > -1) Then j = strExpression.IndexOfAny(chrs, j + 1)
                 Else
-                    lstr.Add(strExpression.Substring(i, j - i))
+                    lstr.Add(strExpression.Substring(i, j - i).Replace(cQualifier, ""))
                     i = j + 1
                     j = strExpression.IndexOfAny(chrs, i)
                 End If
             End While
-            lstr.Add(strExpression.Substring(i))
+            lstr.Add(strExpression.Substring(i).Replace(cQualifier, ""))
             Return lstr.ToArray
 #End If
         End Function

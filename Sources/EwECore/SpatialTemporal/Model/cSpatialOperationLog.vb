@@ -168,17 +168,19 @@ Namespace SpatialData
         Private Sub WriteMessage()
 
             Dim sb As New StringBuilder()
+            Dim strPath As String = ""
 
             If (Not Me.m_bLogStarted) Then
 
-                ' Allowed to use smart directory>
+                ' Allowed to use smart directory?
                 If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
                     ' #Yes: use core smartness
-                    Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, Me.m_core.EcospaceOutputFileName("SpatialOperations", "", ".txt"))
+                    strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceCSV)
                 Else
                     ' #No: use base output directory
-                    Me.m_strLogFileName = Path.Combine(Me.m_core.OutputPath, "SpatialOperations.txt")
+                    Me.m_strLogFileName = Me.m_core.OutputPath
                 End If
+                Me.m_strLogFileName = Path.Combine(strPath, "SpatialOperations.txt")
 
                 If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(Me.m_strLogFileName), True) Then
                     cLog.Write("cSpatialOperationsLog: unable to create output directory " & Me.m_strLogFileName)

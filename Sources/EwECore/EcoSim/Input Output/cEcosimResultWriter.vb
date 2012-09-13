@@ -42,15 +42,15 @@ Namespace Ecosim
 
         Public Enum eResultTypes As Integer
             Biomass = 0
-            Mortality
-            Yield
             ConsumptionBiomass
-            FeedingTime
-            AvgWeightOrProdCons
             PredationMortality
+            Mortality
+            FeedingTime
             Prey
-            TL
+            Yield
             Value
+            AvgWeightOrProdCons
+            TL
         End Enum
 
 #End Region ' Private vars
@@ -71,6 +71,7 @@ Namespace Ecosim
         ''' <returns>True if saved successfully.</returns>
         ''' -----------------------------------------------------------------------
         Public Function WriteResults(Optional ByVal strPath As String = "", _
+                                     Optional ByVal strPrefix As String = "", _
                                      Optional ByVal results As eResultTypes() = Nothing) As Boolean
 
             Dim msg As cMessage = Nothing
@@ -79,7 +80,7 @@ Namespace Ecosim
             If Not Me.m_core.StateMonitor.HasEcosimRan Then Return False
 
             If String.IsNullOrEmpty(strPath) Then
-                strPath = Me.m_core.OutputPath
+                strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecosim)
             End If
 
             ' Try to make sure that the output path is there
@@ -93,7 +94,7 @@ Namespace Ecosim
             For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
                 If Me.ShouldWriteResult(results, outputtype) Then
                     Try
-                        If Not Me.WriteResults(outputtype, strPath, True) Or Not Me.WriteResults(outputtype, strPath, False) Then
+                        If Not Me.WriteResults(strPath, strPrefix, outputtype, True) Or Not Me.WriteResults(strPath, strPrefix, outputtype, False) Then
                             bSucces = False
                             msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
                                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
@@ -110,7 +111,7 @@ Namespace Ecosim
                 msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_SUCCESS, strPath), _
                                    eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
                 ' Provide hyperlink to the directory with the files
-                msg.Hyperlink = Path.GetDirectoryName(Me.GetOutputFileName(strPath, True, eResultTypes.Biomass))
+                msg.Hyperlink = strPath
                 Me.m_core.Messages.SendMessage(msg)
             End If
             Return bSucces
@@ -129,8 +130,9 @@ Namespace Ecosim
 
         End Function
 
-        Private Function WriteResults(ByVal resulttype As eResultTypes, _
-                                      ByVal strPath As String, _
+        Private Function WriteResults(ByVal strPath As String, _
+                                      ByVal strPrefix As String, _
+                                      ByVal resulttype As eResultTypes, _
                                       ByVal bSaveAnnual As Boolean) As Boolean
 
             Dim strModelDetails As String = Me.GetModelDetails()
@@ -181,7 +183,7 @@ Namespace Ecosim
 
                     Next
                     strDataDetails = "Data, " & resulttype.ToString
-                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype), _
+                    bSuccess = Me.SaveDataToFile(Me.GetOutputFileName(strPath, strPrefix, bSaveAnnual, resulttype), _
                                                  bSaveAnnual, data, _
                                                  strModelDetails, strDataDetails, astrGroupNames)
 
@@ -217,7 +219,7 @@ Namespace Ecosim
                             Next
                             strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
 
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, strPrefix, bSaveAnnual, resulttype, grpOutput.Name), _
                                                                       bSaveAnnual, predData, _
                                                                       strModelDetails, strDataDetails, predNames.ToString)
                         End If
@@ -255,7 +257,7 @@ Namespace Ecosim
                             Next
 
                             strDataDetails = "Data, " & cStringUtils.ToCSVField(resulttype.ToString & " of " & grpOutput.Name)
-                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, bSaveAnnual, resulttype, grpOutput.Name), _
+                            bSuccess = bSuccess And Me.SaveDataToFile(Me.GetOutputFileName(strPath, strPrefix, bSaveAnnual, resulttype, grpOutput.Name), _
                                                   bSaveAnnual, preyData, _
                                                   strModelDetails, strDataDetails, preyNames.ToString)
                         End If
@@ -267,9 +269,10 @@ Namespace Ecosim
         End Function
 
         Private Function GetOutputFileName(ByVal strPath As String, _
-                                          ByVal bSaveAnnual As Boolean, _
-                                          ByVal outputtype As eResultTypes, _
-                                          Optional ByVal GroupName As String = "") As String
+                                           ByVal strPrefix As String, _
+                                           ByVal bSaveAnnual As Boolean, _
+                                           ByVal outputtype As eResultTypes, _
+                                           Optional ByVal GroupName As String = "") As String
 
             Dim strFileName As String = ""
             Dim strExt As String = ".csv"
@@ -277,52 +280,52 @@ Namespace Ecosim
             If bSaveAnnual Then
                 Select Case outputtype
                     Case eResultTypes.Biomass
-                        strFileName = Me.m_core.EcosimOutputFileName("Biomass_annual", "", strExt)
+                        strFileName = "biomass_annual"
                     Case eResultTypes.Mortality
-                        strFileName = Me.m_core.EcosimOutputFileName("Mortality_annual", "", strExt)
+                        strFileName = "mortality_annual"
                     Case eResultTypes.Yield
-                        strFileName = Me.m_core.EcosimOutputFileName("Yield_annual", "", strExt)
+                        strFileName = "yield_annual"
                     Case eResultTypes.ConsumptionBiomass
-                        strFileName = Me.m_core.EcosimOutputFileName("Cons_biom_annual", "", strExt)
+                        strFileName = "cons_biom_annual"
                     Case eResultTypes.FeedingTime
-                        strFileName = Me.m_core.EcosimOutputFileName("FeedingTime_annual", "", strExt)
+                        strFileName = "feedingTime_annual"
                     Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = Me.m_core.EcosimOutputFileName("Weight_annual", "", strExt)
+                        strFileName = "weight_annual"
                     Case eResultTypes.PredationMortality
-                        strFileName = Me.m_core.EcosimOutputFileName("Predation_annual " & GroupName, "", strExt)
+                        strFileName = "predation_annual " & GroupName
                     Case eResultTypes.Prey
-                        strFileName = Me.m_core.EcosimOutputFileName("Prey_annual " & GroupName, "", strExt)
+                        strFileName = "prey_annual " & GroupName
                     Case eResultTypes.TL
-                        strFileName = Me.m_core.EcosimOutputFileName("TL_annual", "", strExt)
+                        strFileName = "tL_annual"
                     Case eResultTypes.Value
-                        strFileName = Me.m_core.EcosimOutputFileName("Value_annual", "", strExt)
+                        strFileName = "value_annual"
                 End Select
             Else
                 Select Case outputtype
                     Case eResultTypes.Biomass
-                        strFileName = Me.m_core.EcosimOutputFileName("Biomass", "", strExt)
+                        strFileName = "biomass"
                     Case eResultTypes.Mortality
-                        strFileName = Me.m_core.EcosimOutputFileName("Mortality", "", strExt)
+                        strFileName = "mortality"
                     Case eResultTypes.Yield
-                        strFileName = Me.m_core.EcosimOutputFileName("Yield", "", strExt)
+                        strFileName = "yield"
                     Case eResultTypes.ConsumptionBiomass
-                        strFileName = Me.m_core.EcosimOutputFileName("Cons_biom", "", strExt)
+                        strFileName = "cons_biom"
                     Case eResultTypes.FeedingTime
-                        strFileName = Me.m_core.EcosimOutputFileName("FeedingTime", "", strExt)
+                        strFileName = "feedingTime"
                     Case eResultTypes.AvgWeightOrProdCons
-                        strFileName = Me.m_core.EcosimOutputFileName("Weight", "", strExt)
+                        strFileName = "weight"
                     Case eResultTypes.PredationMortality
-                        strFileName = Me.m_core.EcosimOutputFileName("Predation " & GroupName, "", strExt)
+                        strFileName = "predation " & GroupName
                     Case eResultTypes.Prey
-                        strFileName = Me.m_core.EcosimOutputFileName("Prey " & GroupName, "", strExt)
+                        strFileName = "Prey " & GroupName
                     Case eResultTypes.TL
-                        strFileName = Me.m_core.EcosimOutputFileName("TL", "", strExt)
+                        strFileName = "TL"
                     Case eResultTypes.Value
-                        strFileName = Me.m_core.EcosimOutputFileName("Value", "", strExt)
+                        strFileName = "Value"
                 End Select
             End If
 
-            Dim strFullPath As String = Path.Combine(strPath, strFileName)
+            Dim strFullPath As String = Path.Combine(strPath, strPrefix & strFileName & strExt)
             If Not EwEUtils.Utilities.cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFullPath), True) Then Return ""
             Return strFullPath
 

@@ -41,14 +41,14 @@ Friend Class cMSECSVOutputWriter
     End Sub
 
     Public Function getOutputFileName(ByVal strDataType As String, ByVal strDataName As String) As String
-        Dim strOutputFileName As String = Path.Combine(Me.DataDir, Me.m_core.OutputFileLocation(eAutosaveTypes.MSE, strDataType & " " & strDataName, ".csv"))
+        Dim strOutputFileName As String = Path.Combine(Me.DataDir, strDataType & " " & strDataName & ".csv")
         cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strOutputFileName), True)
         Return strOutputFileName
     End Function
 
     Public ReadOnly Property DataDir() As String
         Get
-            Return Me.m_core.OutputPath
+            Return Me.m_core.DefaultOutputPath(eAutosaveTypes.MSE)
         End Get
     End Property
 

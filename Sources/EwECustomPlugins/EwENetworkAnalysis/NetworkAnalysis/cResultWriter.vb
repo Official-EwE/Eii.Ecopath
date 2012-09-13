@@ -93,9 +93,10 @@ Public Class cResultWriter
 
     Private Function GetResultFileName(ByVal strPath As String, ByVal bWithPPR As Boolean, ByVal bAnnual As Boolean) As String
         Dim core As cCore = Me.m_manager.Core
-        Dim strFile As String = core.EcosimOutputFileName(My.Resources.CAPTION, _
-                                                          CStr(IIf(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY)) & "_" & CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")), _
-                                                          ".csv")
+        Dim strFile As String = "NA_" & _
+                                CStr(IIf(bAnnual, My.Resources.HEADER_ANNUAL, My.Resources.HEADER_MONTHLY)) & "_" & _
+                                CStr(IIf(bWithPPR, "IndicesPPR", "IndicesWithoutPPR")) & _
+                                ".csv"
         Return Path.Combine(strPath, strFile)
     End Function
 

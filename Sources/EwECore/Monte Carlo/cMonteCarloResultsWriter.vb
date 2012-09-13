@@ -68,15 +68,13 @@ Friend Class cMonteCarloResultsWriter
 
     Private ReadOnly Property OutputFilename() As String
         Get
-            Return Path.Combine(Me.DataDir, Me.Core.OutputFileLocation(eAutosaveTypes.MonteCarlo, "MonteCarloTrials", eAutosaveTypes.MonteCarlo.ToString, ".csv"))
+            Return Path.Combine(Me.DataDir, "MonteCarloTrials.csv")
         End Get
     End Property
 
-
     Private Function DataDir() As String
-        Return Me.Core.OutputPath
+        Return Me.Core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
     End Function
-
 
     Private ReadOnly Property ModelName() As String
         Get

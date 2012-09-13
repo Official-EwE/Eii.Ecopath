@@ -247,28 +247,34 @@ Namespace Controls
 
                 Me.m_lvShapes.SuspendLayout()
 
-                If ashapes Is Nothing Then
-                    ' Clear all selections
-                    For Each item As ListViewItem In Me.m_lvShapes.Items
-                        item.Selected = False
-                    Next
-                Else
-                    For Each item As ListViewItem In Me.m_lvShapes.Items
-                        ' Get item shape
-                        Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
-                        ' Get index in selection, if any
-                        Dim iIndex As Integer = Array.IndexOf(ashapes, shape)
-                        ' Exists in selection?
-                        If (iIndex > -1) Then
-                            ' #Yes: select the item
-                            item.Selected = True
-                            ' Shape still exists: add to selection to broadcast
-                            lShapes.Add(shape)
-                        Else
+                Try
+
+                    If ashapes Is Nothing Then
+                        ' Clear all selections
+                        For Each item As ListViewItem In Me.m_lvShapes.Items
                             item.Selected = False
-                        End If
-                    Next
-                End If
+                        Next
+                    Else
+                        For Each item As ListViewItem In Me.m_lvShapes.Items
+                            ' Get item shape
+                            Dim shape As cShapeData = DirectCast(item.Tag, cShapeData)
+                            ' Get index in selection, if any
+                            Dim iIndex As Integer = Array.IndexOf(ashapes, shape)
+                            ' Exists in selection?
+                            If (iIndex > -1) Then
+                                ' #Yes: select the item
+                                item.Selected = True
+                                ' Shape still exists: add to selection to broadcast
+                                lShapes.Add(shape)
+                            Else
+                                item.Selected = False
+                            End If
+                        Next
+                    End If
+
+                Catch ex As Exception
+
+                End Try
 
                 Me.m_lvShapes.ResumeLayout()
 
@@ -366,19 +372,32 @@ Namespace Controls
             End If
         End Function
 
+        Private m_bUpdateRequested As Boolean = False
+
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Load the shapes from the shape manager into this form.
+        ''' Order an update of thumbnails and list view items in the toolbox.
         ''' </summary>
         ''' <remarks>
-        ''' This reloads all the data from the shape manager and can be called 
-        ''' to load the view the first time or to re-initialize the view.
+        ''' This call is buffered to handle shape updates only once. A single
+        ''' shape change results in a shape change message for every shape it
+        ''' a manager. This is highly unpractical, but the core messaging 
+        ''' system never got updated to either send one message for all shapes,
+        ''' or preserve info which shape was changed. Hence this work-around.
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Private Sub UpdateThumbnails()
+            If Me.m_bUpdateRequested Then Return
+            Me.m_bUpdateRequested = True
+            Me.BeginInvoke(New MethodInvoker(AddressOf DelayUpdateThumbnails))
+        End Sub
+
+        Private Sub DelayUpdateThumbnails()
+
+            Me.m_bUpdateRequested = False
 
             ' UIC may disappear in response to manager commands
-            If Me.m_uic Is Nothing Then Return
+            If (Me.m_uic Is Nothing) Then Return
 
             Dim iThumbSize As Integer = Me.m_uic.StyleGuide.ThumbnailSize
             Dim largeImageList As New ImageList

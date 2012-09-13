@@ -157,8 +157,10 @@ Public MustInherit Class cShapeData
             Return DirectCast(Me.m_xdata.Clone(), Single())
         End Get
         Set(ByVal value() As Single)
-            Init(value)
-            Update()
+            Me.Init(value)
+            If Not Me.IsLockedUpdates Then
+                Me.Update()
+            End If
         End Set
     End Property
 

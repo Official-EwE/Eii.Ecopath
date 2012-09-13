@@ -63,30 +63,21 @@ Namespace Other
             MyBase.OnLoad(e)
 
             Dim strDefault As String = ("{" & SharedResources.HEADER_SCENARIO & "}").ToLower()
-            Dim strEcosimScenario As String = strDefault
-            Dim strEcospaceScenario As String = strDefault
-            Dim strEcotracerScenario As String = strDefault
             Dim strOutput As String = ("{" & SharedResources.HEADER_OUTPUT_LOCATION & "}").ToLower() & IO.Path.DirectorySeparatorChar
             Dim core As cCore = Me.m_uic.Core
 
             If (core.ActiveEcosimScenarioIndex > -1) Then
-                strEcosimScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name
+                Me.m_tbxEcosim.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.Ecosim)
+                Me.m_tbxMC.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
+                Me.m_tbxMSE.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.MSE)
             End If
             If (core.ActiveEcospaceScenarioIndex > -1) Then
-                strEcospaceScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex).Name
+                Me.m_tbxASCII.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.EcospaceASC)
+                Me.m_tbxCSV.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.EcospaceCSV)
             End If
             If (core.ActiveEcotracerScenarioIndex > -1) Then
-                strEcotracerScenario = core.EcotracerScenarios(core.ActiveEcotracerScenarioIndex).Name
+                Me.m_tbxTracer.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.Ecotracer)
             End If
-
-            Me.m_tbxEcosim.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.Ecosim, strScenario:=strEcosimScenario)
-            Me.m_tbxMC.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.MonteCarlo, strScenario:=strEcosimScenario)
-            Me.m_tbxMSE.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.MSE, strScenario:=strEcosimScenario)
-
-            Me.m_tbxASCII.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.EcospaceASC, strScenario:=strEcospaceScenario, strExt:=".asc")
-            Me.m_tbxCSV.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.EcospaceCSV, strScenario:=strEcospaceScenario, strExt:=".csv")
-
-            Me.m_tbxTracer.Text = strOutput & core.OutputFileLocation(eAutosaveTypes.Ecotracer, strScenario:=strEcotracerScenario)
 
             Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.Ecosim)
             Me.m_cbMonteCarlo.Checked = core.Autosave(eAutosaveTypes.MonteCarlo)

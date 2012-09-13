@@ -2015,6 +2015,7 @@ Namespace Controls
             End Select
 
             li.IsVisible = info.IsVisible
+            li.Label.IsVisible = li.IsVisible ' Hide from legend too
             li.Tag = info
 
             Return li
@@ -2226,6 +2227,7 @@ Namespace Controls
                 With Me.GetPane(iPane)
                     For Each ci As CurveItem In .CurveList
                         ci.IsVisible = Me.IsCurveVisible(ci)
+                        ci.Label.IsVisible = ci.IsVisible ' Hide from legend too
                     Next
                 End With
             Next iPane

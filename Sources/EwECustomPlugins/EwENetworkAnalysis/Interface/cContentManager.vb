@@ -166,7 +166,7 @@ Public MustInherit Class cContentManager
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Overridable Function Filename(ByVal strComponent As String) As String
-        Return Me.UIContext.Core.EcopathOutputFileName(strComponent, My.Resources.CAPTION)
+        Return IO.Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath), strComponent)
     End Function
 
     ''' -----------------------------------------------------------------------

@@ -67,52 +67,52 @@ Public Class cForcingFunction
 
     Public Property YZero() As Single
         Get
-            Return m_YZero
+            Return Me.m_YZero
         End Get
         Set(ByVal value As Single)
-            m_YZero = value
-            Update()
+            Me.m_YZero = value
+            Me.Update()
         End Set
     End Property
 
 
     Public Property YBase() As Single
         Get
-            Return m_YBase
+            Return Me.m_YBase
         End Get
         Set(ByVal value As Single)
-            m_YBase = value
-            Update()
+            Me.m_YBase = value
+            Me.Update()
         End Set
     End Property
 
     Public Property YEnd() As Single
         Get
-            Return m_YEnd
+            Return Me.m_YEnd
         End Get
         Set(ByVal value As Single)
-            m_YEnd = value
-            Update()
+            Me.m_YEnd = value
+            Me.Update()
         End Set
     End Property
 
     Public Property Steep() As Single
         Get
-            Return m_Steep
+            Return Me.m_Steep
         End Get
         Set(ByVal value As Single)
-            m_Steep = value
-            Update()
+            Me.m_Steep = value
+            Me.Update()
         End Set
     End Property
 
     Public Property ShapeFunctionType() As eShapeFunctionType
         Get
-            Return m_ShapeFunctionType
+            Return Me.m_ShapeFunctionType
         End Get
         Set(ByVal value As eShapeFunctionType)
-            m_ShapeFunctionType = value
-            Update()
+            Me.m_ShapeFunctionType = value
+            Me.Update()
         End Set
     End Property
 
@@ -128,7 +128,7 @@ Public Class cForcingFunction
 
     Public ReadOnly Property ZScale() As Single
         Get
-            Return m_ZScale
+            Return Me.m_ZScale
         End Get
     End Property
 
@@ -138,32 +138,23 @@ Public Class cForcingFunction
     ''' <remarks>This is a zero based index set when the shape is added to the manager (Construction of the shape) </remarks>
     Public Property ID() As Integer
         Get
-            Return m_ID
+            Return Me.m_ID
         End Get
         Friend Set(ByVal value As Integer)
-            m_ID = value
+            Me.m_ID = value
             '  Update()
         End Set
     End Property
 
     Public Property NYears() As Integer
         Get
-            Return m_nYears
+            Return Me.m_nYears
         End Get
         Friend Set(ByVal value As Integer)
-            m_nYears = value
-            Update()
+            Me.m_nYears = value
+            Me.Update()
         End Set
     End Property
-
-    'Public Property AllowValidation() As Boolean
-    '    Get
-    '        Return Me.m_bAllowValidation
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        Me.m_bAllowValidation = False
-    '    End Set
-    'End Property
 
 #End Region ' Public fields/properties
 

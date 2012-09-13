@@ -4989,7 +4989,7 @@ Namespace DataSources
 
                 ecosimDS.ForcingShapeParams(iForcingShape) = shapeParms
                 ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
-                ecosimDS.ForcingTitles(iForcingShape) = CStr(readerShape("Title"))
+                ecosimDS.ForcingTitles(iForcingShape) = CStr(readerShape("Title")).Trim()
                 ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.EggProd
                 ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
 
@@ -5039,7 +5039,7 @@ Namespace DataSources
 
                 ecosimDS.ForcingShapeParams(iForcingShape) = shapeParms
                 ecosimDS.ForcingDBIDs(iForcingShape) = iShapeID
-                ecosimDS.ForcingTitles(iForcingShape) = CStr(readerShape("Title"))
+                ecosimDS.ForcingTitles(iForcingShape) = CStr(readerShape("Title")).Trim()
                 ecosimDS.ForcingShapeType(iForcingShape) = eDataTypes.Forcing
                 ecosimDS.ForcingApplicationType(iForcingShape) = DirectCast(Me.m_db.ReadSafe(readerShape, "ApplicationType", eForcingApplicationTypes.NotSet), eForcingApplicationTypes)
                 ecosimDS.isSeasonal(iForcingShape) = bIsSeasonal
@@ -5091,7 +5091,7 @@ Namespace DataSources
 
                 medData.MediationShapeParams(iMediationShape) = shapeParms
                 medData.MediationDBIDs(iMediationShape) = iShapeID
-                medData.MediationTitles(iMediationShape) = CStr(readerShape("Title"))
+                medData.MediationTitles(iMediationShape) = CStr(readerShape("Title")).Trim()
                 medData.IMedBase(iMediationShape) = CInt(Me.m_db.ReadSafe(readerShape, "IMedBase", 1200 / 3))
                 medData.XAxisMin(iMediationShape) = CSng(Me.m_db.ReadSafe(readerShape, "XAxisMin", 0))
                 medData.XAxisMax(iMediationShape) = CSng(Me.m_db.ReadSafe(readerShape, "XAxisMax", 1))
@@ -5414,7 +5414,7 @@ Namespace DataSources
 
                 readerShape = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimShapeFishRate WHERE (ShapeID={0})", iShapeID))
                 If readerShape.Read() Then
-                    ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(readerShape("Title"))
+                    ecosimDS.FishRateGearTitle(iFishingRateShape) = CStr(readerShape("Title")).Trim()
                     strMemo = CStr(readerShape("zScale"))
                     astrMemoBits = strMemo.Trim.Split(CChar(" "))
                     For j As Integer = 1 To Math.Min(ecosimDS.NTimes, astrMemoBits.Length)
@@ -5452,7 +5452,7 @@ Namespace DataSources
                 ' Store ID
                 ecosimDS.FishRateNoDBID(iForcingShape) = iShapeID
                 ' Store title
-                ecosimDS.FishRateNoTitle(iForcingShape) = CStr(readerShape("Title"))
+                ecosimDS.FishRateNoTitle(iForcingShape) = CStr(readerShape("Title")).Trim()
                 ' Store points
                 strMemo = CStr(readerShape("zScale"))
                 ' Got points?
