@@ -936,6 +936,8 @@ Public Class cEcoSpace
                     bAccumulateData = True 'new year collect the model fitting data after the six month
                 End If
 
+                Me.EvaluateFishing()
+
                 'set the Capacity maps if any of the inputs have changed
                 Me.SetHabCap()
 
@@ -3161,94 +3163,107 @@ exitline:
     End Sub
 
     ''' <summary>
-    ''' This routine predicts spatial effort and fishing mortality rate
-    ''' distribution by gear type; called at each iteration
-    ''' step in finding biomass spatial equilibrium
-    ''' model below is a gravity attraction model, distributing
-    ''' total efforts TotEffort(gear) over all cells where each gear can fish
-    ''' in proportion to relative profitability (catch rate x price sum) for that cell for the gear
+    ''' Evaluate the <see cref="cEcospaceDataStructures.IsFished">fishing access map</see> for the current month.
     ''' </summary>
-    ''' <param name="iMonth"></param>
-    ''' <param name="iCumMonth"></param>
-    ''' <remarks>This has been replace with a version that can run on seperate threads PredictEffortDistributionThreaded() </remarks>
-    Sub PredictEffortDistribution(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
-        Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
-        Dim Valt As Single, isp As Integer
-        Dim EffortCost As Single
-        Dim SailCost As Single
-        Static NoSailing As Boolean, TotE As Single
-        Dim Attract(,) As Single
+    Sub EvaluateFishing()
 
-        Me.m_Data.allocate(m_Data.Ftot, m_Data.NGroups, m_Data.InRow, m_Data.InCol)
-        Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
-
-        'ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
-        ' ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
-
-        For ig = 1 To m_Data.nFleets
-            TotE = TotEffort(ig) * m_Data.SEmult(ig)
-            'jb Attract() gets cleared out for each fleet
-            ReDim Attract(m_Data.InRow, m_Data.InCol)
-            TotAttract = 0.0000000001
-
-            'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-            If m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail) = 0 Then
-                EffortCost = 0
-                SailCost = 1
-                If NoSailing = False Then
-                    ''ToDo_jb Feedback Message?? or some other type of message that gets posted immediately
-                    'MsgBox("No variable or sailing cost has been specified for " + GearName(ig), vbInformation + vbOKOnly, "Check cost of fishing in Ecopath")
-                    NoSailing = True
-                End If
-            Else
-                EffortCost = m_EPdata.cost(ig, eCostIndex.CUPE) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
-                SailCost = m_EPdata.cost(ig, eCostIndex.Sail) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
-            End If
-
-            '
-            For i = 1 To m_Data.InRow
-                For j = 1 To m_Data.InCol
-                    If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
-                    If m_Data.Depth(i, j) > 0 And _
-                        (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                         And (Me.m_Data.PAreaFished(i, j, ig) > 0 Or m_Data.GearHab(ig, 0)) Then
-                        'Water and (Not closed by MPA) and (Fished by this gear)
-                        'mpamonth(Month, MPAType) is false if closed, True if open.
-
-                        Valt = 0
-                        For isp = 1 To m_Data.NGroups
-                            Valt = Valt + m_EPdata.Market(ig, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(ig, isp)
-                        Next
-
-                        If m_Data.Sail(ig, i, j) = 0 Then m_Data.Sail(ig, i, j) = 0.000001
-                        'VC Sail() above: to avoid dividing with zero
-                        Valt = (Valt ^ m_Data.EffPower(ig)) / (EffortCost + SailCost * m_Data.Sail(ig, i, j) / m_Data.SailScale(ig))
-                        Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, ig) 'may want to modify this by dividing by a site cost factor for cell i,j
-                        TotAttract = TotAttract + Valt * Me.m_Data.PAreaFished(i, j, ig)
+        For i As Integer = 1 To Me.m_Data.InRow
+            For j As Integer = 1 To Me.m_Data.InCol
+                For ig As Integer = 1 To Me.m_Data.nFleets
+                    Dim bFished As Boolean = False
+                    If (Me.m_Data.Depth(i, j) > 0) And _
+                       (Me.m_Data.MPA(i, j) = 0 Or Me.m_Data.MPAfishery(ig, Me.m_Data.MPA(i, j)) Or Me.m_Data.MPAmonth(Me.m_Data.MonthNow, Me.m_Data.MPA(i, j))) And _
+                       (Me.m_Data.PAreaFished(i, j, ig) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
+                        bFished = True
                     End If
-                Next
-            Next
+                    Me.m_Data.IsFished(ig, i, j) = True
+                Next ig
+            Next j
+        Next i
 
-            For i = 1 To m_Data.InRow
-                For j = 1 To m_Data.InCol
-                    'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
-                    If m_Data.Depth(i, j) > 0 And _
-                        (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(ig, m_Data.MPA(i, j)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(i, j))) _
-                        And (Me.m_Data.PAreaFished(i, j, ig) > 0 Or m_Data.GearHab(ig, 0)) Then
-
-                        'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
-                        m_Data.EffortSpace(ig, i, j) = m_SimData.FishRateGear(ig, iCumMonth) * TotE * Attract(i, j) / TotAttract
-                        'If Me.m_Data.PAreaFished(i, j, ig) > 0 Then
-                        For isp = 1 To m_Data.NGroups
-                            'Fishing Mort
-                            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(ig, i, j) * m_SimData.relQ(ig, isp) / Me.m_Data.PAreaFished(i, j, ig)
-                        Next isp
-                        'End If
-                    End If
-                Next j
-            Next i
-        Next ig
     End Sub
+
+    ' ''' <summary>
+    ' ''' This routine predicts spatial effort and fishing mortality rate
+    ' ''' distribution by gear type; called at each iteration
+    ' ''' step in finding biomass spatial equilibrium
+    ' ''' model below is a gravity attraction model, distributing
+    ' ''' total efforts TotEffort(gear) over all cells where each gear can fish
+    ' ''' in proportion to relative profitability (catch rate x price sum) for that cell for the gear
+    ' ''' </summary>
+    ' ''' <param name="iMonth"></param>
+    ' ''' <param name="iCumMonth"></param>
+    ' ''' <remarks>This has been replace with a version that can run on seperate threads PredictEffortDistributionThreaded() </remarks>
+    'Sub PredictEffortDistribution(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
+    '    Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
+    '    Dim Valt As Single, isp As Integer
+    '    Dim EffortCost As Single
+    '    Dim SailCost As Single
+    '    Static NoSailing As Boolean, TotE As Single
+    '    Dim Attract(,) As Single
+
+    '    Me.m_Data.allocate(m_Data.Ftot, m_Data.NGroups, m_Data.InRow, m_Data.InCol)
+    '    Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
+
+    '    'ReDim m_Data.Ftot(m_Data.NGroups, m_Data.InRow, m_Data.InCol)
+    '    ' ReDim m_Data.EffortSpace(m_Data.nFleets, m_Data.InRow, m_Data.InCol)
+
+    '    For ig = 1 To m_Data.nFleets
+    '        TotE = TotEffort(ig) * m_Data.SEmult(ig)
+    '        'jb Attract() gets cleared out for each fleet
+    '        ReDim Attract(m_Data.InRow, m_Data.InCol)
+    '        TotAttract = 0.0000000001
+
+    '        'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
+    '        If m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail) = 0 Then
+    '            EffortCost = 0
+    '            SailCost = 1
+    '            If NoSailing = False Then
+    '                ''ToDo_jb Feedback Message?? or some other type of message that gets posted immediately
+    '                'MsgBox("No variable or sailing cost has been specified for " + GearName(ig), vbInformation + vbOKOnly, "Check cost of fishing in Ecopath")
+    '                NoSailing = True
+    '            End If
+    '        Else
+    '            EffortCost = m_EPdata.cost(ig, eCostIndex.CUPE) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
+    '            SailCost = m_EPdata.cost(ig, eCostIndex.Sail) / (m_EPdata.cost(ig, eCostIndex.Fixed) + m_EPdata.cost(ig, eCostIndex.CUPE) + m_EPdata.cost(ig, eCostIndex.Sail))
+    '        End If
+
+    '        '
+    '        For i = 1 To m_Data.InRow
+    '            For j = 1 To m_Data.InCol
+    '                If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
+    '                If Me.IsFished(ig, i, j) Then
+    '                    Valt = 0
+    '                    For isp = 1 To m_Data.NGroups
+    '                        Valt = Valt + m_EPdata.Market(ig, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(ig, isp)
+    '                    Next
+
+    '                    If m_Data.Sail(ig, i, j) = 0 Then m_Data.Sail(ig, i, j) = 0.000001
+    '                    'VC Sail() above: to avoid dividing with zero
+    '                    Valt = (Valt ^ m_Data.EffPower(ig)) / (EffortCost + SailCost * m_Data.Sail(ig, i, j) / m_Data.SailScale(ig))
+    '                    Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, ig) 'may want to modify this by dividing by a site cost factor for cell i,j
+    '                    TotAttract = TotAttract + Valt * Me.m_Data.PAreaFished(i, j, ig)
+    '                End If
+    '            Next
+    '        Next
+
+    '        For i = 1 To m_Data.InRow
+    '            For j = 1 To m_Data.InCol
+    '                'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
+    '                If Me.IsFished(ig, i, j) Then
+    '                    'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
+    '                    m_Data.EffortSpace(ig, i, j) = m_SimData.FishRateGear(ig, iCumMonth) * TotE * Attract(i, j) / TotAttract
+    '                    'If Me.m_Data.PAreaFished(i, j, ig) > 0 Then
+    '                    For isp = 1 To m_Data.NGroups
+    '                        'Fishing Mort
+    '                        m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(ig, i, j) * m_SimData.relQ(ig, isp) / Me.m_Data.PAreaFished(i, j, ig)
+    '                    Next isp
+    '                    'End If
+    '                End If
+    '            Next j
+    '        Next i
+    '    Next ig
+    'End Sub
 
     ''' <summary>
     ''' Threaded Version
@@ -3304,12 +3319,9 @@ exitline:
                     For j = 1 To m_Data.InCol
                         'Moved to InitSpatialEquilibrium
                         'If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
-                        If m_Data.Depth(i, j) > 0 And _
-                            (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(iFlt, m_Data.MPA(i, j)) Or m_Data.MPAmonth(arguments.iMonth, m_Data.MPA(i, j))) _
-                             And (Me.m_Data.PAreaFished(i, j, iFlt) > 0 Or m_Data.GearHab(iFlt, 0)) Then
+                        If Me.m_Data.IsFished(iFlt, i, j) Then
                             'Water and (Not closed by MPA) and (Fished by this gear)
                             'mpamonth(Month, MPAType) is false if closed, True if open.
-
                             Valt = 0
                             For isp = 1 To m_Data.NGroups
                                 Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
@@ -3329,9 +3341,7 @@ exitline:
                 For i = 1 To m_Data.InRow
                     For j = 1 To m_Data.InCol
                         'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
-                        If m_Data.Depth(i, j) > 0 And _
-                            (m_Data.MPA(i, j) = 0 Or m_Data.MPAfishery(iFlt, m_Data.MPA(i, j)) Or m_Data.MPAmonth(arguments.iMonth, m_Data.MPA(i, j))) _
-                            And (Me.m_Data.PAreaFished(i, j, iFlt) > 0 Or m_Data.GearHab(iFlt, 0)) Then
+                        If Me.m_Data.IsFished(iFlt, i, j) Then
 
                             'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
                             m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
@@ -3419,21 +3429,15 @@ exitline:
             For irow As Integer = 1 To m_Data.InRow
                 For icol As Integer = 1 To m_Data.InCol
                     'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
-                    If m_Data.Depth(irow, icol) > 0 And _
-                        (m_Data.MPA(irow, icol) = 0 Or m_Data.MPAfishery(iflt, m_Data.MPA(irow, icol)) Or m_Data.MPAmonth(iMonth, m_Data.MPA(irow, icol))) _
-                        And (Me.m_Data.PAreaFished(irow, icol, iflt) > 0 Or m_Data.GearHab(iflt, 0)) Then
-
+                    If Me.m_Data.IsFished(iflt, irow, icol) Then
                         For igrp As Integer = 1 To m_Data.NGroups
                             'Fishing Mort Rate in a cell by group
                             m_Data.Ftot(igrp, irow, icol) += m_Data.EffortSpace(iflt, irow, icol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(irow, icol, iflt)
                         Next igrp
-
                     End If ' m_Data.Depth(i, j) > 0
                 Next icol
             Next
         Next
-
-
 
     End Sub
 

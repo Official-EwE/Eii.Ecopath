@@ -346,6 +346,10 @@ Public Class cEcospaceDataStructures
     Public MPAmonth(,) As Boolean
     Public MPAfishery(,) As Boolean
 
+    ''' <summary>Fleet/Gear cell access (fleet, row, col).</summary>
+    ''' <remarks>JS added 12 Sept 12 to determine fleet cell fishing access for the mao once 
+    ''' for every time step. This is done to facilitate overlapping MPAs.</remarks>
+    Friend IsFished(,,) As Boolean
 
     ''' <summary>
     ''' SOR weight 
@@ -1294,6 +1298,7 @@ Public Class cEcospaceDataStructures
 
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)
+            ReDim IsFished(nFleets, Me.InRow, Me.InCol)
 
             ReDim Lat(InRow)
             ReDim Width(InRow)
