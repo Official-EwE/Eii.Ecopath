@@ -3176,7 +3176,7 @@ exitline:
                        (Me.m_Data.PAreaFished(i, j, ig) > 0 Or Me.m_Data.GearHab(ig, 0)) Then
                         bFished = True
                     End If
-                    Me.m_Data.IsFished(ig, i, j) = True
+                    Me.m_Data.IsFished(ig, i, j) = bFished
                 Next ig
             Next j
         Next i
