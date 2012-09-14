@@ -17,7 +17,7 @@
 '
 Namespace Controls.Wizard
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+
     Partial Class ucWizardNavigation
         Inherits System.Windows.Forms.UserControl
 

@@ -18,7 +18,7 @@
 
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+
     Partial Class ucShapeToolbox
         Inherits System.Windows.Forms.UserControl
 

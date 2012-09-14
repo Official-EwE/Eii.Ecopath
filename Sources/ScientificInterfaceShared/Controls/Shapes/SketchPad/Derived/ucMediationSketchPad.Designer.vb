@@ -17,7 +17,7 @@
 '
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+
     Partial Class ucMediationSketchPad
         Inherits ucSketchPad
 

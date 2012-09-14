@@ -17,7 +17,6 @@
 '
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucFieldPicker
         Inherits System.Windows.Forms.UserControl
 
@@ -42,7 +41,7 @@ Namespace Controls
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucFieldPicker))
-            Me.m_tsBogus = New cEwEToolStrip
+            Me.m_tsBogus = New cEwEToolstrip
             Me.m_tsddFields = New System.Windows.Forms.ToolStripSplitButton
             Me.m_tsBogus.SuspendLayout()
             Me.SuspendLayout()
@@ -83,7 +82,7 @@ Namespace Controls
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_tsBogus As cEwEToolStrip
+        Private WithEvents m_tsBogus As cEwEToolstrip
         Private WithEvents m_tsddFields As System.Windows.Forms.ToolStripSplitButton
 
     End Class

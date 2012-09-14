@@ -17,7 +17,6 @@
 '
 Namespace Controls.Map.Layers
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucLayerEditorRegion
         Inherits ucLayerEditorDefault
 

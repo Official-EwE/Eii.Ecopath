@@ -19,7 +19,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Controls.Map.Layers
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucLayerEditor
         Inherits System.Windows.Forms.UserControl
 

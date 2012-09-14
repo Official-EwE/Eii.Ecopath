@@ -17,7 +17,6 @@
 '
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class cCustomToolstripComboBox
         Inherits System.Windows.Forms.ToolStripComboBox
 

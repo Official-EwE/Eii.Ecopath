@@ -15,11 +15,8 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-
 Namespace Controls.Map
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucMapZoomToolbar
         Inherits System.Windows.Forms.UserControl
 
@@ -223,7 +220,7 @@ Namespace Controls.Map
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tsZoom As cEwEToolStrip
+        Private WithEvents m_tsZoom As cEwEToolstrip
         Private WithEvents m_cmsZoom As System.Windows.Forms.ContextMenuStrip
         Private WithEvents m_tsbSaveImage As System.Windows.Forms.ToolStripButton
         Private WithEvents m_ts1 As System.Windows.Forms.ToolStripSeparator

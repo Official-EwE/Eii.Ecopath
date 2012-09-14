@@ -17,8 +17,8 @@
 '
 Imports ScientificInterfaceShared.Forms
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class frmShapeValue
+
+Partial Class frmShapeValue
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.

@@ -17,8 +17,8 @@
 '
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-        Partial Class ucMediationAssignmentsToolbar
+
+    Partial Class ucMediationAssignmentsToolbar
         Inherits System.Windows.Forms.UserControl
 
         'Required by the Windows Form Designer

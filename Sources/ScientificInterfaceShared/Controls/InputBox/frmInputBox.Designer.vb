@@ -1,6 +1,5 @@
 ﻿Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmInputBox
         Inherits System.Windows.Forms.Form
 

@@ -17,7 +17,6 @@
 '
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucFormSeparator
         Inherits System.Windows.Forms.UserControl
 

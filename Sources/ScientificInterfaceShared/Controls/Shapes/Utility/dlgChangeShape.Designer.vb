@@ -17,8 +17,8 @@
 '
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class dlgChangeShape
+
+    Partial Class dlgChangeShape
         Inherits System.Windows.Forms.Form
 
         'UserControl overrides dispose to clean up the component list.

@@ -17,7 +17,6 @@
 '
 Imports ScientificInterfaceShared.Controls
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class dlgDefineMapResponseAssignments
     Inherits System.Windows.Forms.Form
 

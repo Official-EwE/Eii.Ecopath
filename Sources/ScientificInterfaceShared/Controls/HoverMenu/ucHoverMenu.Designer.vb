@@ -17,7 +17,6 @@
 '
 Namespace Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucHoverMenu
         Inherits UserControl
 
@@ -139,7 +138,7 @@ Namespace Controls
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_ts As cEwEToolStrip
+        Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbnZoomIn As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnZoomOut As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnZoomReset As System.Windows.Forms.ToolStripButton

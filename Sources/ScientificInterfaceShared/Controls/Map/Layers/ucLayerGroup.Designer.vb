@@ -17,7 +17,6 @@
 '
 Namespace Controls.Map
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucLayerGroup
         Inherits System.Windows.Forms.UserControl
 
