@@ -89,6 +89,8 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Configuration" />
     <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows" />
+    <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cPluginPoint.vb" />
