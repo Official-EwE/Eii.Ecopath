@@ -28,10 +28,10 @@ Imports EwECore
 Imports EwECore.Database
 Imports EwECore.DataSources
 Imports EwEPlugin
-Imports EwEUtils
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.Database
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
 Imports ScientificInterface.Ecopath
 Imports ScientificInterface.Ecosim
@@ -46,7 +46,6 @@ Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports WeifenLuo.WinFormsUI.Docking
-Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -278,10 +277,10 @@ Public Class AppLauncher
 
     Private Sub ProcessCommandLine()
 
-        Dim astrCmd As String() = cStringUtils.SplitQualified(Microsoft.VisualBasic.Command(), " "c)
+        Dim astrCmd As String() = Environment.GetCommandLineArgs
 
         If (astrCmd.Length > 0) Then
-            If Not String.IsNullOrEmpty(astrCmd(0)) Then
+            If (cDataSourceFactory.GetSupportedType(astrCmd(0)) <> eDataSourceTypes.NotSet) Then
                 ' Open the model
                 Me.LoadEcopathModel(astrCmd(0).Replace("""", ""), eLoadSourceType.CommandLine)
             End If
