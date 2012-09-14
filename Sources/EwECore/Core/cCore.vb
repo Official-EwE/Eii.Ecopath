@@ -898,6 +898,7 @@ Public Class cCore
 
             ' Broadcast data state change
             Me.m_StateMonitor.UpdateDataState(Me.DataSource, TriState.True)
+            Me.m_StateMonitor.UpdateExecutionState(eCoreComponentType.NotSet, TriState.True)
 
         End If
 

@@ -376,12 +376,11 @@ Public Class cCoreStateMonitor
     Friend Sub UpdateExecutionState(ByVal cc As eCoreComponentType, _
                                     Optional ByVal tsSendUpdate As TriState = TriState.UseDefault)
 
-        ' -- Experimental: hijack the core plugin manager to invalidate scenarios
         Dim pm As EwEPlugin.cPluginManager = Me.m_core.PluginManager
         Dim bHasEcopathRan As Boolean = Me.HasEcopathRan
         Dim bHasEcosimRan As Boolean = Me.HasEcosimRan
         Dim bHasEcospaceRan As Boolean = Me.HasEcospaceRan
-        ' -- X
+        Dim bHandled As Boolean = False
 
         Select Case cc
             Case eCoreComponentType.Core, _
@@ -393,6 +392,7 @@ Public Class cCoreStateMonitor
 
             Case eCoreComponentType.EcoPath
                 SetEcopathLoaded(Me.HasEcopathLoaded(), tsSendUpdate)
+                bHandled = True
 
             Case eCoreComponentType.EcoSim, _
                  eCoreComponentType.EcoSimFitToTimeSeries, _
@@ -401,22 +401,29 @@ Public Class cCoreStateMonitor
                  eCoreComponentType.ShapesManager, _
                  eCoreComponentType.TimeSeries
                 SetEcoSimLoaded(Me.HasEcosimLoaded(), tsSendUpdate, False)
+                bHandled = True
 
             Case eCoreComponentType.EcoSpace, _
                  eCoreComponentType.MPAOptimization
                 Me.SetEcospaceLoaded(Me.HasEcospaceLoaded(), tsSendUpdate, False)
+                bHandled = True
 
             Case eCoreComponentType.Ecotracer
                 Me.SetEcotracerLoaded(Me.HasEcotracerLoaded(), tsSendUpdate, False)
+                bHandled = True
 
         End Select
 
-        ' -- Experimental: hijack the core plugin manager to invalidate scenarios
+        ' Not handled but notification requested?
+        If tsSendUpdate = TriState.True And bHandled = False Then
+            ' #Yes: force notification
+            Me.CalcExecutionState(Me.m_iEcopathState, Me.m_iEcosimState, Me.m_iEcospaceState, Me.m_iEcotracerState, tsSendUpdate)
+        End If
+
         If (tsSendUpdate = TriState.False) Or (pm Is Nothing) Then Return
         If (bHasEcospaceRan <> Me.HasEcospaceRan) Then pm.EcospaceRunInvalidated()
         If (bHasEcosimRan <> Me.HasEcosimRan) Then pm.EcosimRunInvalidated()
         If (bHasEcopathRan <> Me.HasEcopathRan) Then pm.EcopathRunInvalidated()
-        ' -- X
 
     End Sub
 
