@@ -19,8 +19,7 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated(), CLSCompliant(False)> _
-Partial Class SuitabilityPlot
+    Partial Class SuitabilityPlot
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.

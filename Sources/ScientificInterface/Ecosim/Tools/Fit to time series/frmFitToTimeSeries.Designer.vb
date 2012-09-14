@@ -20,7 +20,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated(), CLSCompliant(False)> _
     Partial Class frmFitToTimeSeries
         Inherits frmEwE
 
@@ -852,7 +851,7 @@ Namespace Ecosim
         Private WithEvents m_hdrIterations As cEwEHeaderLabel
         Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_hdrSearchTypes As cEwEHeaderLabel
-        Private WithEvents m_tsVulSearchTools As cEwEToolStrip
+        Private WithEvents m_tsVulSearchTools As cEwEToolstrip
         Private WithEvents m_tsbSensOfSS2V As System.Windows.Forms.ToolStripButton
         Private WithEvents m_hdrAppliedFF As cEwEHeaderLabel
         Private WithEvents m_grid As gridFitToTimeSeriesGroup

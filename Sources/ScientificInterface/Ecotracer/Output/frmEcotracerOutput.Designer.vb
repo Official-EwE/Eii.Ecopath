@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmEcotracerOutput
     Inherits frmEwE
 

@@ -31,7 +31,7 @@ Imports EwEUtils.Commands
 #End Region
 
 
-Public Class frmOptions
+Public Class frmMSEOptions
 
     'ToDo_jb 19-April-2010 Change "Effort and regulatory option" to something Effort and evaluation type control type....
     Dim m_MSE As cMSEManager

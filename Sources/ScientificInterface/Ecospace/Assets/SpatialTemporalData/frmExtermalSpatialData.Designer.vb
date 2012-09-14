@@ -25,7 +25,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmSpatialTimeSeries
         Inherits frmEwE
 

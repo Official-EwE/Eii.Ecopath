@@ -18,8 +18,7 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmOptions
+Partial Class frmMSEOptions
     Inherits frmEwE
 
     'Form overrides dispose to clean up the component list.
@@ -42,7 +41,7 @@ Partial Class frmOptions
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOptions))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEOptions))
         Me.m_pnlRegOpt = New System.Windows.Forms.Panel()
         Me.pnlUseReg = New System.Windows.Forms.Panel()
         Me.txMaxEffort = New System.Windows.Forms.TextBox()

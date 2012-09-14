@@ -18,7 +18,6 @@
 Imports ScientificInterfaceShared.Forms
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmMSERecruitment
         Inherits frmEwE
 
@@ -46,7 +45,7 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSERecruitment))
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.tsToolStrip = New cEwEToolStrip
+            Me.tsToolStrip = New cEwEToolstrip
             Me.tsbtDefaults = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecosim.gridMSERecruitment
             Me.m_scMain.Panel1.SuspendLayout()
@@ -145,7 +144,7 @@ Namespace Ecosim
         Private WithEvents m_grid As Ecosim.gridMSERecruitment
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
-        Friend WithEvents tsToolStrip As cEwEToolStrip
+        Friend WithEvents tsToolStrip As cEwEToolstrip
         Friend WithEvents tsbtDefaults As System.Windows.Forms.ToolStripButton
 
     End Class

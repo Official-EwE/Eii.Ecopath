@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Other
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucOptionsColors
         Inherits System.Windows.Forms.UserControl
 

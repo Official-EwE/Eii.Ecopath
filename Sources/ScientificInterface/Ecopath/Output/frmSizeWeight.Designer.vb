@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecopath.Output
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class SizeWeightPlot
         Inherits frmEwE
 

@@ -21,7 +21,6 @@ Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmMPAOptimizations
         Inherits frmEwE
 

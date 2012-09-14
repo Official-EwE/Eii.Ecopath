@@ -20,8 +20,6 @@ Imports ScientificInterfaceShared
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmForcingFunction
         Inherits frmEwE
 

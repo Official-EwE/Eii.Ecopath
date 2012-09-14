@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Ecopath
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgEditPedigree
         Inherits System.Windows.Forms.Form
 

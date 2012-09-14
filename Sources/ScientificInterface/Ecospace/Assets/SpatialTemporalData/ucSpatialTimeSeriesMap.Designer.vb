@@ -1,6 +1,5 @@
 ﻿Namespace Ecospace
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucSpatialTimeSeriesMap
         Inherits System.Windows.Forms.UserControl
 

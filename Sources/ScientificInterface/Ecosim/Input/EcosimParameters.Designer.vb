@@ -19,7 +19,7 @@ Imports ScientificInterfaceShared.Forms
 Imports ScientificInterface.Controls
 
 Namespace Ecosim
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated(), CLSCompliant(False)> _
+
     Partial Class EcosimParameters
         : Inherits frmEwE
 

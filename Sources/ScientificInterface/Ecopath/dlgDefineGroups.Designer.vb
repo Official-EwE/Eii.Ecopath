@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared
 
 Namespace Ecopath
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgDefineGroups
         Inherits System.Windows.Forms.Form
 

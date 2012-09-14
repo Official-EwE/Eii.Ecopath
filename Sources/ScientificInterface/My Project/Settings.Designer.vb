@@ -66,17 +66,17 @@ Partial Friend NotInheritable Class Settings
         End Set
     End Property
     
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?>"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"<ArrayOfAnyType xmlns:xsi=""http://www.w3"& _ 
-        ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"  <"& _ 
-        "anyType />"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10)&"</ArrayOfAnyType>"),  _
-     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)>  _
+    <Global.System.Configuration.UserScopedSettingAttribute(), _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(), _
+     Global.System.Configuration.DefaultSettingValueAttribute("<?xml version=""1.0"" encoding=""utf-16""?><ArrayOfAnyType xmlns:xsi=""http://www.w3" & _
+        ".org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema""><" & _
+        "anyType /></ArrayOfAnyType>"), _
+     Global.System.Configuration.SettingsManageabilityAttribute(Global.System.Configuration.SettingsManageability.Roaming)> _
     Public Property MdbRecentlyUsedList() As Global.System.Collections.ArrayList
         Get
-            Return CType(Me("MdbRecentlyUsedList"),Global.System.Collections.ArrayList)
+            Return CType(Me("MdbRecentlyUsedList"), Global.System.Collections.ArrayList)
         End Get
-        Set
+        Set(value As Global.System.Collections.ArrayList)
             Me("MdbRecentlyUsedList") = value
         End Set
     End Property
@@ -725,8 +725,7 @@ End Class
 
 Namespace My
     
-    <Global.Microsoft.VisualBasic.HideModuleNameAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
     Friend Module MySettingsProperty
         

@@ -20,7 +20,6 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecopath.Input
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmBasicInput
         Inherits frmEwEGrid
 

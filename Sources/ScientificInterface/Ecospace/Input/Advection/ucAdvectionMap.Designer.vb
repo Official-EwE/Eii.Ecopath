@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace.Advection
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucAdvectionMap
         Inherits System.Windows.Forms.UserControl
 

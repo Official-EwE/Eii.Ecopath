@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared
 
 Namespace Other
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucOptionsGraphs
         Inherits System.Windows.Forms.UserControl
 

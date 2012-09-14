@@ -16,7 +16,7 @@
 ' ===============================================================================
 '
 Imports ScientificInterfaceShared.Forms
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+
 Partial Class frmMSEAssessFleets
     Inherits frmEwEGrid
 
@@ -44,7 +44,7 @@ Partial Class frmMSEAssessFleets
         Me.m_split = New System.Windows.Forms.SplitContainer
         Me.m_blocks = New ScientificInterface.Ecosim.ucPolicyColorBlocks
         Me.m_grid = New ScientificInterface.gridFishingCV
-        Me.m_tsMain = New cEwEToolStrip
+        Me.m_tsMain = New cEwEToolstrip
         Me.m_split.Panel1.SuspendLayout()
         Me.m_split.Panel2.SuspendLayout()
         Me.m_split.SuspendLayout()
@@ -123,5 +123,5 @@ Partial Class frmMSEAssessFleets
     Private WithEvents m_blocks As ScientificInterface.Ecosim.ucPolicyColorBlocks
     Private WithEvents m_grid As ScientificInterface.gridFishingCV
     Private WithEvents m_split As System.Windows.Forms.SplitContainer
-    Private WithEvents m_tsMain As cEwEToolStrip
+    Private WithEvents m_tsMain As cEwEToolstrip
 End Class

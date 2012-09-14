@@ -19,11 +19,10 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Other
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucOptionsMap
         Inherits System.Windows.Forms.UserControl
 
-         'Required by the Windows Form Designer
+        'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
 
         'NOTE: The following procedure is required by the Windows Form Designer

@@ -3,7 +3,6 @@ Imports ZedGraph
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class MCRun
         Inherits frmEwE
 

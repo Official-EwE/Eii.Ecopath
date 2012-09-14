@@ -17,8 +17,7 @@
 '
 Imports ScientificInterfaceShared.Forms
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-    Partial Class frmStatusPanel
+Partial Class frmStatusPanel
     Inherits frmEwEDockContent
 
     Private components As System.ComponentModel.IContainer

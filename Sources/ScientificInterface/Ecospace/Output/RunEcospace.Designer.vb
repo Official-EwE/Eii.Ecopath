@@ -20,10 +20,8 @@ Imports ZedGraph
 
 Namespace Ecospace
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class RunEcospace
         Inherits frmEwE
-
 
         'Form overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -499,7 +497,7 @@ Namespace Ecospace
         Friend WithEvents m_txFMax As System.Windows.Forms.TextBox
         Friend WithEvents Label1 As System.Windows.Forms.Label
 
- 
+
     End Class
 
 End Namespace

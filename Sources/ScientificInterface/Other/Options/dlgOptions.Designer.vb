@@ -16,7 +16,7 @@
 ' ===============================================================================
 '
 Namespace Other
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+
     Partial Class dlgOptions
         Inherits System.Windows.Forms.Form
 

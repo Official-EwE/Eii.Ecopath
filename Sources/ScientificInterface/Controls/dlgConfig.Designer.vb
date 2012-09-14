@@ -15,7 +15,6 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class dlgConfig
     Inherits System.Windows.Forms.Form
 

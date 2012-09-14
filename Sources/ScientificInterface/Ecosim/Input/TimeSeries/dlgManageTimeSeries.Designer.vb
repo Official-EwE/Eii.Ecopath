@@ -17,7 +17,6 @@
 '
 Imports ScientificInterfaceShared.Controls
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class dlgManageTimeSeries
     Inherits System.Windows.Forms.Form
 
@@ -282,7 +281,7 @@ Partial Class dlgManageTimeSeries
         '
         Me.m_tbImportSeparator.AcceptsReturn = True
         Me.m_tbImportSeparator.AcceptsTab = True
-        Me.m_tbImportSeparator.Character = Global.Microsoft.VisualBasic.ChrW(46)
+        Me.m_tbImportSeparator.Character = "."c
         Me.m_tbImportSeparator.CharacterMask = ""
         Me.m_tbImportSeparator.CharCode = 46
         Me.m_tbImportSeparator.Location = New System.Drawing.Point(328, 72)
@@ -292,13 +291,12 @@ Partial Class dlgManageTimeSeries
         Me.m_tbImportSeparator.ShortcutsEnabled = False
         Me.m_tbImportSeparator.Size = New System.Drawing.Size(90, 20)
         Me.m_tbImportSeparator.TabIndex = 8
-        Me.m_tbImportSeparator.Text = ". (period)"
         '
         'm_tbImportDelimiter
         '
         Me.m_tbImportDelimiter.AcceptsReturn = True
         Me.m_tbImportDelimiter.AcceptsTab = True
-        Me.m_tbImportDelimiter.Character = Global.Microsoft.VisualBasic.ChrW(44)
+        Me.m_tbImportDelimiter.Character = ","c
         Me.m_tbImportDelimiter.CharacterMask = ""
         Me.m_tbImportDelimiter.CharCode = 44
         Me.m_tbImportDelimiter.Location = New System.Drawing.Point(74, 72)
@@ -309,7 +307,6 @@ Partial Class dlgManageTimeSeries
         Me.m_tbImportDelimiter.ShortcutsEnabled = False
         Me.m_tbImportDelimiter.Size = New System.Drawing.Size(90, 20)
         Me.m_tbImportDelimiter.TabIndex = 6
-        Me.m_tbImportDelimiter.Text = ", (comma)"
         '
         'm_tbImportAuthor
         '

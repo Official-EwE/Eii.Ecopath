@@ -18,8 +18,6 @@
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
-
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmMSEBatchTFM
     Inherits frmEwE
 

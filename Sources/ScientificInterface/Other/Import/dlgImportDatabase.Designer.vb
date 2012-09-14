@@ -17,7 +17,6 @@
 '
 Namespace Import
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgImportDatabase
         Inherits System.Windows.Forms.Form
 

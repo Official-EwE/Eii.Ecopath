@@ -20,7 +20,6 @@ Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace.Basemap
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmEcospaceMap
         Inherits frmEwE
 

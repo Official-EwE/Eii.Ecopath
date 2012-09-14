@@ -17,7 +17,6 @@
 '
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class dlgDefineTaxa
     Inherits System.Windows.Forms.Form
 

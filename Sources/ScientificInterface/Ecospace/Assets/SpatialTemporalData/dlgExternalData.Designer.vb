@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecospace
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgExternalData
         Inherits Form
         Implements IUIElement

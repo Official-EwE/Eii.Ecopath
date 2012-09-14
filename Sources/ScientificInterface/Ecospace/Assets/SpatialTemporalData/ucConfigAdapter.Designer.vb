@@ -17,11 +17,10 @@
 '
 Namespace Ecospace.Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucConfigAdapter
         Inherits System.Windows.Forms.UserControl
 
-         'Required by the Windows Form Designer
+        'Required by the Windows Form Designer
         Private components As System.ComponentModel.IContainer
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)

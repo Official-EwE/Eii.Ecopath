@@ -19,8 +19,7 @@ Imports ScientificInterfaceShared
 
 Namespace Other
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class ucOptionsPresentation
+    Partial Class ucOptionsPresentation
         Inherits System.Windows.Forms.UserControl
 
         'UserControl overrides dispose to clean up the component list.

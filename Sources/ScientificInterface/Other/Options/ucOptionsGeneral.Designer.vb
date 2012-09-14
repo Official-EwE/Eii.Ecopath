@@ -19,8 +19,7 @@ Imports ScientificInterfaceShared
 
 Namespace Other
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class ucOptionsGeneral
+    Partial Class ucOptionsGeneral
         Inherits System.Windows.Forms.UserControl
 
         'Required by the Windows Form Designer

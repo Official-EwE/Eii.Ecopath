@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmGroupRefLevels
         Inherits frmEwEGrid
 
@@ -45,7 +44,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmGroupRefLevels))
-            Me.m_ts = New cEwEToolStrip
+            Me.m_ts = New cEwEToolstrip
             Me.m_tsbnReset = New System.Windows.Forms.ToolStripButton
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
@@ -78,7 +77,7 @@ Namespace Ecosim
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_ts As cEwEToolStrip
+        Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbnReset As System.Windows.Forms.ToolStripButton
 
     End Class

@@ -17,7 +17,6 @@
 '
 Namespace Ecopath
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class EditMultiStanza
         Inherits System.Windows.Forms.Form
 

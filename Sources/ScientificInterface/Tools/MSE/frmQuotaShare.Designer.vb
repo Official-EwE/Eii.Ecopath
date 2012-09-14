@@ -20,7 +20,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmQuotaShare
         Inherits frmEwEGrid
 
@@ -45,7 +44,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmQuotaShare))
-            Me.m_tss = New cEwEToolStrip
+            Me.m_tss = New cEwEToolstrip
             Me.m_tsbnDefaults = New System.Windows.Forms.ToolStripButton
             Me.m_tsSumtoOneBtn = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecosim.gridQuotaShare
@@ -113,7 +112,7 @@ Namespace Ecosim
 
         End Sub
         Private WithEvents m_grid As gridQuotaShare
-        Private WithEvents m_tss As cEwEToolStrip
+        Private WithEvents m_tss As cEwEToolstrip
         Private WithEvents m_tsSumtoOneBtn As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnDefaults As System.Windows.Forms.ToolStripButton
     End Class

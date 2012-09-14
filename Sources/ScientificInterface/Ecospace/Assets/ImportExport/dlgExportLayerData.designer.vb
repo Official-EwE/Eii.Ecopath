@@ -17,7 +17,6 @@
 '
 Namespace Ecospace.Basemap
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgExportLayerData
         Inherits System.Windows.Forms.Form
 

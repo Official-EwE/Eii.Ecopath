@@ -20,7 +20,6 @@ Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace.Advection
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmAdvection
         Inherits frmEwE
 

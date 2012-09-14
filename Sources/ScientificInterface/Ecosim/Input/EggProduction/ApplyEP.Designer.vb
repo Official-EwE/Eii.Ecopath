@@ -20,7 +20,7 @@ Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+
     Partial Class ApplyEP
         Inherits frmEwE
 

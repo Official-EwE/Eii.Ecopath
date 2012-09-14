@@ -19,7 +19,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Wizard
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class EwEScenarioDlg
         Inherits System.Windows.Forms.Form
 

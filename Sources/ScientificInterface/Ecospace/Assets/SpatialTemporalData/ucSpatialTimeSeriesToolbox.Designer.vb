@@ -17,7 +17,6 @@
 '
 Namespace Ecospace.Controls
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucSpatialTimeSeriesToolbox
         Inherits System.Windows.Forms.UserControl
 

@@ -17,7 +17,6 @@
 '
 Namespace Import
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucImportPageProgress
         Inherits System.Windows.Forms.UserControl
 

@@ -20,8 +20,6 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
 
-    <CLSCompliant(False)> _
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmEggProduction
         Inherits frmEwE
 

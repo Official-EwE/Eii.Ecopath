@@ -20,7 +20,6 @@ Imports ScientificInterfaceShared
 
 Namespace Ecopath.Output
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class PSDContributionPlot
         Inherits frmEwE
 

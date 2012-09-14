@@ -16,7 +16,7 @@
 ' ===============================================================================
 '
 Imports ScientificInterfaceShared.Forms
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+
 Partial Class frmMSEAssessGroups
     Inherits frmEwE
 

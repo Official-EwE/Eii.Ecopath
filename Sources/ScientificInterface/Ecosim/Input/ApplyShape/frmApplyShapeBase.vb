@@ -34,8 +34,7 @@ Namespace Ecosim
     ''' Mediation' interface.
     ''' </summary>
     ''' =======================================================================
-    <CLSCompliant(False)> _
-     Public Class frmApplyShapeBase
+    Public Class frmApplyShapeBase
         Inherits frmEwE
 
         Public Sub New()

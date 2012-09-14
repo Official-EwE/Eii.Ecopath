@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Controls.Map
 
 Namespace Ecospace.Basemap.Layers
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgEditLayer
         Inherits System.Windows.Forms.Form
 

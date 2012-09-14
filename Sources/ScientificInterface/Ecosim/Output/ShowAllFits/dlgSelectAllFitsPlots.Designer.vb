@@ -17,7 +17,6 @@
 '
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgSelectAllFitsPlots
         Inherits System.Windows.Forms.Form
 

@@ -18,8 +18,6 @@
 Imports ScientificInterfaceShared.Forms
 
 
-
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmCapacityFunction
     Inherits frmEwE
 

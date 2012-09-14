@@ -19,8 +19,6 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecospace
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-        <CLSCompliant(False)> _
     Partial Class frmApplyCapacity
         Inherits Ecosim.frmApplyShapeBase
 

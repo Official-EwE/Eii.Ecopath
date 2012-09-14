@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated(), CLSCompliant(False)> _
     Partial Class frmStockRecruitmentPlot
         Inherits frmEwE
 

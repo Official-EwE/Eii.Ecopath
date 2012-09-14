@@ -18,8 +18,6 @@
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Forms
 
-
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmMSERunBatch
     Inherits frmEwE
 
@@ -28,6 +26,7 @@ Partial Class frmMSERunBatch
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
+
                 components.Dispose()
             End If
         Finally

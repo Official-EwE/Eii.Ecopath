@@ -19,7 +19,6 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmTargetFishingMortalityPolicy
         Inherits frmEwE
 
@@ -47,7 +46,7 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTargetFishingMortalityPolicy))
             Me.m_scMain = New System.Windows.Forms.SplitContainer
             Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.ToolStrip1 = New cEwEToolStrip
+            Me.ToolStrip1 = New cEwEToolstrip
             Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton
             Me.m_grid = New ScientificInterface.Ecosim.gridTargetFishingMortalityPolicy
             Me.m_scMain.Panel1.SuspendLayout()
@@ -146,7 +145,7 @@ Namespace Ecosim
         Private WithEvents m_grid As Ecosim.gridTargetFishingMortalityPolicy
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
-        Friend WithEvents ToolStrip1 As cEwEToolStrip
+        Friend WithEvents ToolStrip1 As cEwEToolstrip
         Friend WithEvents tsbDefaultTFM As System.Windows.Forms.ToolStripButton
 
     End Class

@@ -18,8 +18,6 @@
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports ScientificInterfaceShared.Forms
 
-<CLSCompliant(False)> _
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmStartPanel
     Inherits frmEwE
 
@@ -139,7 +137,7 @@ Partial Class frmStartPanel
 
     End Sub
     Private WithEvents m_browser As System.Windows.Forms.WebBrowser
-    Private WithEvents m_ts1 As cEwEToolStrip
+    Private WithEvents m_ts1 As cEwEToolstrip
     Private WithEvents m_tsbnBack As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_tsbnForward As System.Windows.Forms.ToolStripButton

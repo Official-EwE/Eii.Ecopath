@@ -17,7 +17,6 @@
 '
 Namespace Ecospace.Advection
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class ucMap
         Inherits ucAdvectionMap
 

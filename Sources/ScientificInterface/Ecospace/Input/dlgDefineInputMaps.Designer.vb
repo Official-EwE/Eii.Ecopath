@@ -17,7 +17,6 @@
 '
 Namespace Ecospace
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class dlgDefineInputMaps
         Inherits System.Windows.Forms.Form
 

@@ -18,7 +18,6 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmMSEPlots
     Inherits frmEwE
 

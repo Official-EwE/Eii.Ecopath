@@ -20,7 +20,6 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Ecotracer
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
     Partial Class frmEcotracerInput
         Inherits frmEwEGrid
 
