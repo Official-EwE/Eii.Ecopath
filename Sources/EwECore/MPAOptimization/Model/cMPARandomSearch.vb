@@ -46,9 +46,9 @@ Public Class cMPARandomSearch
     'results of each iterations
     Private m_lstObjectiveResults As New List(Of cObjectiveResult)
 
-    Private m_cellComputedCallback As SearchIterationDelegate
-    Private m_StateCallback As RunStateDelegate
-    Private m_SendMessageCallback As SendMessageDelegate
+    Private m_cellComputedCallback As cMPAOptManager.SearchIterationDelegate
+    Private m_StateCallback As cMPAOptManager.SearchRunStateDelegate
+    Private m_SendMessageCallback As cMPAOptManager.SendMessageDelegate
 
     '''' <summary>Best results of the current run</summary>
     'Private m_bestResults As cObjectiveResult
@@ -107,7 +107,9 @@ Public Class cMPARandomSearch
 
     End Function
 
-    Public Sub Connect(ByVal OnSearchInteration As SearchIterationDelegate, ByVal OnRunStateChanged As RunStateDelegate, ByVal OnSendMessage As SendMessageDelegate) Implements IMPASearchModel.Connect
+    Public Sub Connect(ByVal OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
+                       ByVal OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
+                       ByVal OnSendMessage As cMPAOptManager.SendMessageDelegate) Implements IMPASearchModel.Connect
         m_cellComputedCallback = OnSearchInteration
         m_StateCallback = OnRunStateChanged
         m_SendMessageCallback = OnSendMessage
@@ -282,7 +284,7 @@ Public Class cMPARandomSearch
         Try
 
             Me.m_bRunning = True
-            Me.setRunState(eRunStates.Initializing)
+            Me.setRunState(cMPAOptManager.eRunStates.Initializing)
 
             Me.m_data.StopRun = False
 
@@ -294,7 +296,7 @@ Public Class cMPARandomSearch
         End Try
 
         Me.m_bRunning = False
-        Me.setRunState(eRunStates.Completed)
+        Me.setRunState(cMPAOptManager.eRunStates.Completed)
 
     End Sub
 
@@ -360,7 +362,7 @@ Public Class cMPARandomSearch
 
             Dim nStep As Integer = 0
 
-            Me.setRunState(eRunStates.Searching)
+            Me.setRunState(cMPAOptManager.eRunStates.Searching)
 
             m_nIters = 0
 
@@ -517,7 +519,7 @@ Public Class cMPARandomSearch
                 'save the best results 
                 TargetSumMax = curSum
 
-                Me.setRunState(eRunStates.NewBestResultFound)
+                Me.setRunState(cMPAOptManager.eRunStates.NewBestResultFound)
 
             End If
 
@@ -651,7 +653,7 @@ Public Class cMPARandomSearch
     End Sub
 
 
-    Private Sub setRunState(ByVal RunState As eRunStates)
+    Private Sub setRunState(ByVal RunState As cMPAOptManager.eRunStates)
 
         Try
 

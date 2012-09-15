@@ -480,24 +480,24 @@ Namespace Ecospace
             End Try
         End Sub
 
-        Private Sub OnSeedRunStateCallback(ByVal runstate As eRunStates)
+        Private Sub OnSeedRunStateCallback(ByVal runstate As cMPAOptManager.eRunStates)
 
             Try
                 Select Case runstate
 
-                    Case eRunStates.Initializing
+                    Case cMPAOptManager.eRunStates.Initializing
                         Me.RunMode = eFormModeTypes.Initializing
 
-                    Case eRunStates.Searching
+                    Case cMPAOptManager.eRunStates.Searching
                         Me.RunMode = eFormModeTypes.Searching
 
-                    Case eRunStates.Completed
+                    Case cMPAOptManager.eRunStates.Completed
                         Me.RunMode = eFormModeTypes.Results
 
-                    Case eRunStates.NewCellSelected
+                    Case cMPAOptManager.eRunStates.NewCellSelected
                         Me.HandleNewCellSelected()
 
-                    Case eRunStates.NewBestResultFound
+                    Case cMPAOptManager.eRunStates.NewBestResultFound
                         Me.HandleNewBestResultFound()
 
                 End Select

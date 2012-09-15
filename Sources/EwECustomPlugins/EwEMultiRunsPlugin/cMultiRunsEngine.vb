@@ -36,6 +36,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Friend Class cMultiRunsEngine
+    Inherits cThreadWaitBase
 
 #Region " Private helper classes "
 
@@ -90,6 +91,9 @@ Friend Class cMultiRunsEngine
     Private m_options As cEcosimResultWriter.eResultTypes() = Nothing
     Private m_FFCache As New Dictionary(Of String, cFFCache)
 
+    Private m_dgt As cMultiRunsEngine.RunCompletedDelegate = Nothing
+    Private m_bStopRun As Boolean = False
+
 #End Region ' Privates
 
 #Region " Public bits "
@@ -99,19 +103,36 @@ Friend Class cMultiRunsEngine
     ''' Create the worker.
     ''' </summary>
     ''' <param name="uic">The UI context to operate onto.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub New(ByVal uic As cUIContext)
+
+        Me.m_uic = uic
+        Me.m_man = uic.Core.ForcingShapeManager
+
+    End Sub
+
+    Public Delegate Sub RunCompletedDelegate()
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Run!
+    ''' </summary>
     ''' <param name="astrFiles">The files to read and apply.</param>
     ''' <param name="strOutFolder">Output folder.</param>
     ''' <param name="bMonthly">States whether files should be read as monthly (true) or annual (false) values.</param>
     ''' <param name="options"><see cref="cEcosimResultWriter.eResultTypes">Output options</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal uic As cUIContext, _
+    Public Sub Run(ByVal dgt As RunCompletedDelegate, _
                    ByVal astrFiles As String(), _
                    ByVal strOutFolder As String, _
                    ByVal bMonthly As Boolean, _
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
-        Me.m_uic = uic
-        Me.m_man = uic.Core.ForcingShapeManager
+        If Me.IsRunning Then Return
+
+        Dim core As cCore = Me.m_uic.Core
+        If Not core.SaveChanges() Then Return
+
         Me.m_bMonthly = bMonthly
         Me.m_astrFiles = astrFiles
         Me.m_options = options
@@ -124,60 +145,22 @@ Friend Class cMultiRunsEngine
             Me.m_FFCache(ff.Name) = New cFFCache(ff)
         Next
 
-    End Sub
+        Me.m_dgt = dgt
+        Me.SetWait()
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Run!
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Sub Run()
-
-        Dim core As cCore = Me.m_uic.Core
-
-        If Not core.SaveChanges() Then Return
-
-        core.SetBatchLock(cCore.eBatchLockType.Update)
-        cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_INITIALIZING, -1)
         Try
-            Dim iNum As Integer = Me.m_astrFiles.Length
-
-            For i As Integer = 0 To iNum - 1
-
-                Dim strFile As String = Me.m_astrFiles(i)
-                Dim strFileShort As String = Path.GetFileNameWithoutExtension(strFile)
-                Dim strFolder As String = Path.Combine(Me.m_strOutFolder, strFileShort)
-
-                If Not cFileUtils.IsDirectoryAvailable(strFolder, True) Then
-                    'Aargh
-                    Exit For
-                End If
-
-                cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
-                Me.ReadCSVIntoFF(strFile)
-                cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
-                core.RunEcoSim()
-                cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
-                Me.WriteResults(strFolder, strFile, Me.m_options)
-            Next
-            Me.ReadCSVIntoFF("")
+            Dim thrd As New Threading.Thread(AddressOf RunThreaded)
+            thrd.Start()
         Catch ex As Exception
-            Debug.Assert(False, ex.Message)
+            ' Whoah!
         End Try
 
-        cApplicationStatusNotifier.UpdateProgress(core, My.Resources.STATUS_RESTORING, -1)
-        For Each ffc As cFFCache In Me.m_FFCache.Values
-            ffc.Restore()
-        Next
-
-        Me.m_man.Update()
-        core.DiscardChanges()
-        GC.Collect()
-
-        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
-        cApplicationStatusNotifier.EndProgress(core)
-
     End Sub
+
+    Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
+        Me.m_bStopRun = True
+        Return True
+    End Function
 
 #End Region ' Public bits
 
@@ -307,6 +290,72 @@ Friend Class cMultiRunsEngine
         Catch ex As Exception
 
         End Try
+
+    End Sub
+
+    Private Sub RunThreaded()
+
+        Dim core As cCore = Me.m_uic.Core
+        Me.m_bStopRun = False
+
+        core.SetBatchLock(cCore.eBatchLockType.Update)
+        core.SetStopRunDelegate(AddressOf StopRun)
+        cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_INITIALIZING, -1)
+        Try
+            Dim iNum As Integer = Me.m_astrFiles.Length
+            Dim i As Integer = 0
+
+            While i < iNum And Not Me.m_bStopRun
+
+                Dim strFile As String = Me.m_astrFiles(i)
+                Dim strFileShort As String = Path.GetFileNameWithoutExtension(strFile)
+                Dim strFolder As String = Path.Combine(Me.m_strOutFolder, strFileShort)
+
+                If Not cFileUtils.IsDirectoryAvailable(strFolder, True) Then
+                    Me.m_bStopRun = True
+                End If
+
+                If Not Me.m_bStopRun Then
+                    core.SetStopRunDelegate(AddressOf StopRun)
+                    cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
+                    Me.ReadCSVIntoFF(strFile)
+                End If
+
+                If Not Me.m_bStopRun Then
+                    core.SetStopRunDelegate(AddressOf StopRun)
+                    cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
+                    core.RunEcoSim()
+                End If
+
+                If Not Me.m_bStopRun Then
+                    core.SetStopRunDelegate(AddressOf StopRun)
+                    cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
+                    Me.WriteResults(strFolder, strFile, Me.m_options)
+                End If
+
+                i += 1
+
+            End While
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        cApplicationStatusNotifier.UpdateProgress(core, My.Resources.STATUS_RESTORING, -1)
+        For Each ffc As cFFCache In Me.m_FFCache.Values
+            ffc.Restore()
+        Next
+
+        Me.m_man.Update()
+        core.DiscardChanges()
+        GC.Collect()
+
+        core.SetStopRunDelegate(Nothing)
+        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+        cApplicationStatusNotifier.EndProgress(core)
+
+        '= agk ='
+        Me.ReleaseWait()
+        If (Me.m_dgt IsNot Nothing) Then Me.m_dgt.Invoke()
 
     End Sub
 

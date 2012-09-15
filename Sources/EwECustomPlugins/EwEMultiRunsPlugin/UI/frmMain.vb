@@ -37,6 +37,9 @@ Imports System.Windows.Forms
 ''' ---------------------------------------------------------------------------
 Public Class frmMain
 
+    'Private m_bRunning As Boolean = False
+    Private m_engine As cMultiRunsEngine = Nothing
+
 #Region " Form overrides "
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -55,6 +58,9 @@ Public Class frmMain
         Else
             Me.m_rbAnnual.Checked = True
         End If
+
+        Me.m_engine = New cMultiRunsEngine(Me.UIContext)
+
         Me.UpdateControls()
 
     End Sub
@@ -173,10 +179,14 @@ Public Class frmMain
     Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRun.Click
 
-        Try
-            Me.StoreSettings()
-            Me.UpdateControls()
+        If Me.m_engine.IsRunning Then
+            Return
+        End If
 
+        Me.StoreSettings()
+        Me.UpdateControls()
+
+        Try
             Dim lFiles As New List(Of String)
             For Each item As Object In Me.m_clbFilesSrc.CheckedItems
                 lFiles.Add(CStr(item))
@@ -187,14 +197,23 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
-            Dim engine As New cMultiRunsEngine(Me.UIContext, lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
-            engine.Run()
+            Me.m_engine.Run(New cMultiRunsEngine.RunCompletedDelegate(AddressOf RunDone), lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
 
         Catch ex As Exception
             ' Whoah
             cLog.Write(ex, "OnRun")
         End Try
 
+    End Sub
+
+    Private Delegate Sub RunDoneDelegate()
+
+    Private Sub RunDone()
+        If Me.InvokeRequired Then
+            Me.Invoke(New RunDoneDelegate(AddressOf RunDone))
+        Else
+            Me.UpdateControls()
+        End If
     End Sub
 
 #End Region ' Event handlers

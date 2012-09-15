@@ -15,52 +15,15 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 Imports EwECore.EcoSeed
 Imports System.Threading
 Imports EwECore.SearchObjectives
 Imports EwEUtils.Core
 
-#Region "Enums"
-
-'init
-'running
-
-Public Enum eRunStates
-    ' Started
-    Initializing
-    Searching
-    Completed
-    ''' <summary>Ecoseed has selected a new cell to add to the current MPA configuration</summary>
-    NewCellSelected
-
-    ''' <summary>
-    ''' New BestResult found for both EcoSeed and Random search
-    ''' </summary>
-    ''' <remarks></remarks>
-    NewBestResultFound
-End Enum
-
-#End Region
-
-#Region "Delegates for model to comunicate back to the manager"
-
-''' <summary>
-''' Ecoseed has computed the value of a cell
-''' </summary>
-''' <remarks></remarks>
-Public Delegate Sub SearchIterationDelegate()
-
-''' <summary>
-''' An Ecoseed run has started
-''' </summary>
-''' <remarks></remarks>
-Public Delegate Sub RunStateDelegate(ByVal RunState As eRunStates)
-
-
-Public Delegate Sub SendMessageDelegate(ByVal message As EwECore.cMessage)
-
-#End Region
+#End Region ' Imports
 
 #Region "Optimization Manager"
 
@@ -68,6 +31,49 @@ Public Class cMPAOptManager
     Inherits cThreadWaitBase 'for thread blocking
     Implements ICoreInterface
     Implements SearchObjectives.ISearchObjective
+
+
+#Region "Enums"
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' ENumerated type, defines MPA search run states.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eRunStates As Integer
+        ''' <summary>Search is initializing.</summary>
+        Initializing
+        ''' <summary>Search is in progress.</summary>
+        Searching
+        ''' <summary>Search is completed.</summary>
+        Completed
+        ''' <summary>A new cell is selected to add to the current MPA configuration</summary>
+        NewCellSelected
+        ''' <summary>A new best result has been found.</summary>
+        NewBestResultFound
+    End Enum
+
+#End Region
+
+#Region "Delegates for model to comunicate back to the manager"
+
+    ''' <summary>
+    ''' MPA Search has computed the value of a cell
+    ''' </summary>
+    Public Delegate Sub SearchIterationDelegate()
+
+    ''' <summary>
+    ''' MPA Search run state delegate.
+    ''' </summary>
+    Public Delegate Sub SearchRunStateDelegate(ByVal RunState As eRunStates)
+
+    ''' <summary>
+    ''' Message sending delegate
+    ''' </summary>
+    ''' <param name="message"></param>
+    Public Delegate Sub SendMessageDelegate(ByVal message As EwECore.cMessage)
+
+#End Region
 
 #Region "Private Data"
 
@@ -80,7 +86,7 @@ Public Class cMPAOptManager
     Private m_searchObjectives As cSearchObjective
 
     Private m_SeedCellComputedCallback As SearchIterationDelegate
-    Private m_SeedRunStateCallback As RunStateDelegate
+    Private m_SeedRunStateCallback As SearchRunStateDelegate
     Private m_thrSeed As Threading.Thread
     Private m_curRowCol As cMPAOptOutput
 
@@ -115,7 +121,7 @@ Public Class cMPAOptManager
 
     End Function
 
-    Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, ByVal SeedCellCallback As SearchIterationDelegate, ByVal RunStateCallback As RunStateDelegate)
+    Public Sub Connect(ByVal syncObject As System.ComponentModel.ISynchronizeInvoke, ByVal SeedCellCallback As SearchIterationDelegate, ByVal RunStateCallback As SearchRunStateDelegate)
 
         m_syncObject = syncObject
         m_SeedCellComputedCallback = SeedCellCallback
@@ -675,7 +681,9 @@ Public Interface IMPASearchModel
 
     Function Init(ByRef EcoSpaceModel As cEcoSpace, ByRef MPAOptData As cMPAOptDataStructures) As Boolean
 
-    Sub Connect(ByVal OnSearchInteration As SearchIterationDelegate, ByVal OnRunStateChanged As RunStateDelegate, ByVal OnSendMessage As SendMessageDelegate)
+    Sub Connect(ByVal OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
+                ByVal OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
+                ByVal OnSendMessage As cMPAOptManager.SendMessageDelegate)
 
     Sub StopRun()
     Sub clearMPAs()

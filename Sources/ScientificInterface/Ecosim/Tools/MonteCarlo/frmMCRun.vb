@@ -118,7 +118,7 @@ Namespace Ecosim
             Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
 
             'Set the interface checkbox with the value from the core
-            Me.m_cbSave.Checked = Me.m_mcmanager.bSaveOutput
+            Me.m_cbSave.Checked = Me.m_mcmanager.IsSaveOutput
 
             Me.m_plothelper = New cEcosimOutputPlotHelper()
             Me.m_plothelper.Attach(Me.UIContext, Me.m_graph)
@@ -259,7 +259,7 @@ Namespace Ecosim
             Handles m_cbSave.CheckedChanged
             If Me.m_mcmanager IsNot Nothing Then
                 Try
-                    Me.m_mcmanager.bSaveOutput = Me.m_cbSave.Checked
+                    Me.m_mcmanager.IsSaveOutput = Me.m_cbSave.Checked
                 Catch ex As Exception
                 End Try
             End If
@@ -522,7 +522,7 @@ Namespace Ecosim
             MyBase.OnCoreMessage(msg)
 
             If (msg.Source = eCoreComponentType.Core And msg.Type = eMessageType.GlobalSettingsChanged) Then
-                Me.m_cbSave.Checked = Me.m_mcmanager.bSaveOutput
+                Me.m_cbSave.Checked = Me.m_mcmanager.IsSaveOutput
             End If
         End Sub
 

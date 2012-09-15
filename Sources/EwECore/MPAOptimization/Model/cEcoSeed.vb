@@ -52,8 +52,8 @@ Namespace EcoSeed
         Private m_lstObjectiveResults As New List(Of cObjectiveResult)
         ' Private m_BestObjective As cObjectiveResult
 
-        Private m_cellComputedCallback As SearchIterationDelegate
-        Private m_StateCallback As RunStateDelegate
+        Private m_cellComputedCallback As cMPAOptManager.SearchIterationDelegate
+        Private m_StateCallback As cMPAOptManager.SearchRunStateDelegate
         Private m_nIters As Integer
 
         Private m_filename As String
@@ -123,7 +123,9 @@ Namespace EcoSeed
 
         End Function
 
-        Public Sub Connect(ByVal OnSearchInteration As SearchIterationDelegate, ByVal OnRunStateChanged As RunStateDelegate, ByVal OnSendMessage As SendMessageDelegate) Implements IMPASearchModel.Connect
+        Public Sub Connect(ByVal OnSearchInteration As cMPAOptManager.SearchIterationDelegate, _
+                           ByVal OnRunStateChanged As cMPAOptManager.SearchRunStateDelegate, _
+                           ByVal OnSendMessage As cMPAOptManager.SendMessageDelegate) Implements IMPASearchModel.Connect
             m_cellComputedCallback = OnSearchInteration
             m_StateCallback = OnRunStateChanged
         End Sub
@@ -312,7 +314,7 @@ Namespace EcoSeed
         Public Sub Run() Implements IMPASearchModel.Run
 
             Me.m_bRunning = True
-            Me.setRunState(eRunStates.Initializing)
+            Me.setRunState(cMPAOptManager.eRunStates.Initializing)
 
             Me.m_data.StopRun = False
             Try
@@ -323,7 +325,7 @@ Namespace EcoSeed
             End Try
 
             Me.m_bRunning = False
-            Me.setRunState(eRunStates.Completed)
+            Me.setRunState(cMPAOptManager.eRunStates.Completed)
 
         End Sub
 
@@ -362,7 +364,7 @@ Namespace EcoSeed
 
                 WriteOutputFileHeader()
 
-                Me.setRunState(eRunStates.Searching)
+                Me.setRunState(cMPAOptManager.eRunStates.Searching)
 
                 Me.m_nIters = 0
                 NotAllCellsAreMPAs = True
@@ -422,7 +424,7 @@ Namespace EcoSeed
 
                                 If SeedSumMax > TotalSearchMax Then
                                     'new highest score across all the model runs
-                                    Me.setRunState(eRunStates.NewBestResultFound)
+                                    Me.setRunState(cMPAOptManager.eRunStates.NewBestResultFound)
                                 End If
 
                                 'System.Console.WriteLine("m_data.bestrow = " & m_data.bestrow.ToString & ", m_data.bestcol= " & m_data.bestrow.ToString & ", TargetSum = " & TargetSum.ToString)
@@ -450,7 +452,7 @@ Namespace EcoSeed
                         'Tell the delegate that a new best cell has been selected. 
                         'this needs to be synchronous because the best row/col are set back to -1 (not selected) right after
                         'synchronization is handled by the manager
-                        Me.setRunState(eRunStates.NewCellSelected)
+                        Me.setRunState(cMPAOptManager.eRunStates.NewCellSelected)
 
                         'set the MPA cell to the selected Seed cell
                         m_SpaceData.MPA(m_data.bestrow, m_data.bestcol) = m_data.MPASeed(m_data.bestrow, m_data.bestcol)
@@ -582,7 +584,7 @@ Namespace EcoSeed
         End Sub
 
 
-        Private Sub setRunState(ByVal RunState As eRunStates)
+        Private Sub setRunState(ByVal RunState As cMPAOptManager.eRunStates)
 
             Try
 
