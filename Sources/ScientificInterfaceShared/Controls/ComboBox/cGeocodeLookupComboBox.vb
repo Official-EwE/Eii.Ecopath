@@ -31,7 +31,6 @@ Namespace Controls
     ''' on the combo box text.
     ''' </summary>
     ''' ===========================================================================
-    <CLSCompliant(False)> _
     Public Class cGeocodeLookupComboBox
         Inherits ComboBox
 
@@ -40,7 +39,7 @@ Namespace Controls
         Private m_lookup As IGeoCodeLookup = Nothing
         Private m_searchThread As Thread = Nothing
         Private m_bIsSearching As Boolean = False
-        Private m_bOkToSearch As Boolean = False
+        Private m_bOkToAutoComplete As Boolean = False
         Private m_strLastSearch As String = ""
 
 #End Region ' Private variables
@@ -117,9 +116,9 @@ Namespace Controls
 
             Try
                 If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Up Or e.KeyCode = Keys.Enter Then
-                    Me.m_bOkToSearch = False
+                    Me.m_bOkToAutoComplete = False
                 Else
-                    Me.m_bOkToSearch = True
+                    Me.m_bOkToAutoComplete = True
                 End If
                 MyBase.OnKeyDown(e)
             Catch ex As Exception
@@ -132,10 +131,10 @@ Namespace Controls
 
             If Me.Text.Length <= 4 Then
                 Me.Search("")
-            ElseIf Me.m_bOkToSearch Then
+            ElseIf Me.m_bOkToAutoComplete Then
                 Me.Search(Me.Text)
             End If
-            Me.m_bOkToSearch = False
+            Me.m_bOkToAutoComplete = False
 
         End Sub
 
@@ -199,6 +198,8 @@ Namespace Controls
         ''' <param name="aLocations"></param>
         ''' -----------------------------------------------------------------------
         Private Sub OnSearchResults(ByVal aLocations As cGeoCodeLocation())
+
+            If Me.m_strLastSearch.Length <= 4 Then Return
 
             Me.BindingContext = New BindingContext()
             Me.DataSource = aLocations

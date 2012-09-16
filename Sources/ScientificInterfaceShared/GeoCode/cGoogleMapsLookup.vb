@@ -122,11 +122,11 @@ Namespace GeoCode
             For Each xnResult As XmlNode In xd.GetElementsByTagName("result")
 
                 loc = Nothing
+                bOK = False
 
                 xnAddress = xnResult.Item("formatted_address")
                 If (xnAddress IsNot Nothing) Then
                     strName = xnAddress.InnerText
-                    bOK = Not String.IsNullOrEmpty(strName)
                 End If
 
                 xnGeometry = xnResult.Item("geometry")
@@ -136,10 +136,11 @@ Namespace GeoCode
                         xnSW = xnBounds.Item("southwest")
                         xnNE = xnBounds.Item("northeast")
                         If (xnSW IsNot Nothing) And (xnNE IsNot Nothing) Then
-                            bOK = bOK And Single.TryParse(xnNE.Item("lng").InnerText, Globalization.NumberStyles.Any, ci, sEast) And _
+                            bOK = Single.TryParse(xnNE.Item("lng").InnerText, Globalization.NumberStyles.Any, ci, sEast) And _
                                   Single.TryParse(xnNE.Item("lat").InnerText, Globalization.NumberStyles.Any, ci, sNorth) And _
                                   Single.TryParse(xnSW.Item("lng").InnerText, Globalization.NumberStyles.Any, ci, sWest) And _
-                                  Single.TryParse(xnSW.Item("lat").InnerText, Globalization.NumberStyles.Any, ci, sSouth)
+                                  Single.TryParse(xnSW.Item("lat").InnerText, Globalization.NumberStyles.Any, ci, sSouth) And _
+                                  Not String.IsNullOrEmpty(strName)
                         End If
                     End If
                 End If

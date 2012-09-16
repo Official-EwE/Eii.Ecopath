@@ -62,22 +62,7 @@ Namespace Other
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Dim strDefault As String = ("{" & SharedResources.HEADER_SCENARIO & "}").ToLower()
-            Dim strOutput As String = ("{" & SharedResources.HEADER_OUTPUT_LOCATION & "}").ToLower() & IO.Path.DirectorySeparatorChar
             Dim core As cCore = Me.m_uic.Core
-
-            If (core.ActiveEcosimScenarioIndex > -1) Then
-                Me.m_tbxEcosim.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.Ecosim)
-                Me.m_tbxMC.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.MonteCarlo)
-                Me.m_tbxMSE.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.MSE)
-            End If
-            If (core.ActiveEcospaceScenarioIndex > -1) Then
-                Me.m_tbxASCII.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.EcospaceASC)
-                Me.m_tbxCSV.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.EcospaceCSV)
-            End If
-            If (core.ActiveEcotracerScenarioIndex > -1) Then
-                Me.m_tbxTracer.Text = strOutput & core.DefaultOutputPath(eAutosaveTypes.Ecotracer)
-            End If
 
             Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.Ecosim)
             Me.m_cbMonteCarlo.Checked = core.Autosave(eAutosaveTypes.MonteCarlo)
@@ -206,8 +191,19 @@ Namespace Other
 
         Private Sub UpdateControls()
 
+            Dim core As cCore = Me.m_uic.Core
+
             Me.UpdateSample(Me.m_tbxOutputSample, Me.m_tbOutputMask.Text)
             Me.UpdateSample(Me.m_tbxBackupSample, Me.m_tbBackupMask.Text)
+
+            Dim strOutput As String = Me.m_tbOutputMask.Text
+
+            Me.UpdateAutosavePath(Me.m_tbxEcosim, core.DefaultOutputPath(eAutosaveTypes.Ecosim, strOutput, True))
+            Me.UpdateAutosavePath(Me.m_tbxMC, core.DefaultOutputPath(eAutosaveTypes.MonteCarlo, strOutput, True))
+            Me.UpdateAutosavePath(Me.m_tbxMSE, core.DefaultOutputPath(eAutosaveTypes.MSE, strOutput, True))
+            Me.UpdateAutosavePath(Me.m_tbxASCII, core.DefaultOutputPath(eAutosaveTypes.EcospaceASC, strOutput, True))
+            Me.UpdateAutosavePath(Me.m_tbxCSV, core.DefaultOutputPath(eAutosaveTypes.EcospaceCSV, strOutput, True))
+            Me.UpdateAutosavePath(Me.m_tbxTracer, core.DefaultOutputPath(eAutosaveTypes.Ecotracer, strOutput, True))
 
         End Sub
 
@@ -220,6 +216,11 @@ Namespace Other
             End If
             tbx.Text = cStringUtils.CompactString(strSample, tbx.ClientRectangle.Width, tbx.Font, TextFormatFlags.PathEllipsis)
 
+        End Sub
+
+        Private Sub UpdateAutosavePath(ByVal tb As TextBox, ByVal strPath As String)
+            TextRenderer.MeasureText(strPath, Font, New Drawing.Size(tb.ClientSize.Width, 0), TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
+            tb.Text = strPath
         End Sub
 
         Private Sub InsertText(ByVal tb As TextBox, ByVal strText As String)

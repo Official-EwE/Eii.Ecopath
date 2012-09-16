@@ -2361,9 +2361,10 @@ Public Class cCore
     ''' <param name="type">The <see cref="eAutosaveTypes">autosaving component</see> to get return
     ''' the default path for.</param>
     ''' -------------------------------------------------------------------------
-    Public ReadOnly Property DefaultOutputPath(ByVal type As eAutosaveTypes) As String
+    Public ReadOnly Property DefaultOutputPath(ByVal type As eAutosaveTypes, _
+                                               Optional strBasePath As String = "", _
+                                               Optional bFillWithPlaceholders As Boolean = False) As String
         Get
-            Dim sbPath As New StringBuilder()
             Dim strModel As String = ""
             Dim strScenario As String = ""
 
@@ -2371,56 +2372,75 @@ Public Class cCore
                 strModel = Me.DataSource.FileName
             End If
 
+            If String.IsNullOrWhiteSpace(strBasePath) Then
+                strBasePath = Me.OutputPath
+            End If
+
             Select Case type
                 Case eAutosaveTypes.Ecopath
                     ' NOP
 
                 Case eAutosaveTypes.Ecosim
+                    strScenario = "Ecosim_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = "Ecosim_" & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
                     End If
 
                 Case eAutosaveTypes.MonteCarlo
+                    strScenario = "MC_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = "MC_" & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name & "_MC"
+                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name & "_MC"
+                    Else
+                        strScenario = strScenario & "{scenario}"
                     End If
 
                 Case eAutosaveTypes.MSE
+                    strScenario = "MSE_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = "MSE_" & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name & "_MSE"
+                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name & "_MSE"
+                    Else
+                        strScenario = strScenario & "{scenario}"
                     End If
 
                 Case eAutosaveTypes.EcospaceASC
+                    strScenario = "Ecospace_ASC_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
-                        strScenario = "Ecospace_ASC_" & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
                     End If
 
                 Case eAutosaveTypes.EcospaceCSV
+                    strScenario = "Ecospace_CSV_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
-                        strScenario = "Ecospace_CSV_" & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
                     End If
 
                 Case eAutosaveTypes.Ecotracer
+                    strScenario = "Ecotracer_"
                     If (Me.ActiveEcotracerScenarioIndex > 0) Then
-                        strScenario = "Ecotracer_" & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
+                        strScenario = strScenario & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
                     End If
 
             End Select
 
-            sbPath.Append(Me.OutputPath)
-            sbPath.Append(Path.DirectorySeparatorChar)
+            Dim strPath As String = strBasePath
 
             If Not String.IsNullOrWhiteSpace(strModel) Then
-                sbPath.Append(cFileUtils.ToValidFileName(strModel, False))
-                sbPath.Append(Path.DirectorySeparatorChar)
+                strPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strModel, False))
             End If
 
             If Not String.IsNullOrWhiteSpace(strScenario) Then
-                sbPath.Append(cFileUtils.ToValidFileName(strScenario, False))
-                sbPath.Append(Path.DirectorySeparatorChar)
+                strPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strScenario, False))
             End If
 
-            Return sbPath.ToString()
+            Return strPath
 
         End Get
     End Property
