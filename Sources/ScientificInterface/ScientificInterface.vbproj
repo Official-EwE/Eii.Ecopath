@@ -1639,19 +1639,14 @@
       <SubType>UserControl</SubType>
     </Compile>
     <None Include="Resources\team.rtf" />
-    <None Include="Resources\Raster.png" />
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Habitat.png" />
     <None Include="Resources\MPA.png" />
-    <None Include="Resources\EditMultiStanza.png" />
-    <None Include="Resources\EditFleets.png" />
-    <None Include="Resources\EditGroup.png" />
     <None Include="Resources\ecopath 256x256.bmp" />
     <None Include="Resources\Ecotracer.ico" />
     <None Include="Resources\ewe_home.url.txt" />
     <None Include="Resources\certificate.png" />
     <DesignData Include="Resources\Ecopath_hohoho.ico" />
-    <None Include="Resources\EditTaxa.png" />
     <Content Include="Resources\Computer.png" />
     <EmbeddedResource Include="Resources\Ecopath_beta.ico" />
     <None Include="Resources\EWE_forever.jpg" />

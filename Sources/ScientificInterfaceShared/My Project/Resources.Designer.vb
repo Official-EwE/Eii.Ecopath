@@ -24,7 +24,8 @@ Namespace My.Resources
     '''</summary>
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
+     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
+     Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
     Public Module Resources
         
         Private resourceMan As Global.System.Resources.ResourceManager
@@ -154,6 +155,20 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("Back", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property basemap() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("basemap", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property bing() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("bing", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
@@ -401,6 +416,13 @@ Namespace My.Resources
         Public ReadOnly Property compareversionsHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("compareversionsHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Computer() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Computer", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -1886,9 +1908,23 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property google() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("google", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
         Public ReadOnly Property graphhs() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("graphhs", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Habitat() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Habitat", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -5390,6 +5426,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Importance() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Importance", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property ImportXMLHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ImportXMLHS", resourceCulture)
@@ -5599,6 +5642,13 @@ Namespace My.Resources
         Public ReadOnly Property move() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("move", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property MPA() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("MPA", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -6028,9 +6078,23 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property Raster() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Raster", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property Refresh() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Refresh", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Regions() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Regions", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -6114,6 +6178,13 @@ Namespace My.Resources
         Public ReadOnly Property Seasonal() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Seasonal", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Seed() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Seed", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -6284,6 +6355,13 @@ Namespace My.Resources
         Public ReadOnly Property tag() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("tag", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Public ReadOnly Property taxon() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("taxon", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

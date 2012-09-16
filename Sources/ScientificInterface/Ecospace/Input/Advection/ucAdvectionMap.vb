@@ -41,6 +41,10 @@ Namespace Ecospace.Advection
         ''' <summary>The raster layer that can be edited in this map, if any.</summary>
         Private m_layerData As cRasterLayer = Nothing
 
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
 #End Region ' Private vars
 
 #Region " Public access "

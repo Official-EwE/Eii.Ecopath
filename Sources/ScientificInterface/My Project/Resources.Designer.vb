@@ -24,7 +24,8 @@ Namespace My.Resources
     '''</summary>
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
+     Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
+     Global.Microsoft.VisualBasic.HideModuleNameAttribute()>  _
     Public Module Resources
         
         Private resourceMan As Global.System.Resources.ResourceManager
@@ -111,13 +112,6 @@ Namespace My.Resources
         Public ReadOnly Property acknowledgements() As String
             Get
                 Return ResourceManager.GetString("acknowledgements", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Basemap() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Basemap", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -235,20 +229,6 @@ Namespace My.Resources
         Public ReadOnly Property CAPTION_TIMESTEP() As String
             Get
                 Return ResourceManager.GetString("CAPTION_TIMESTEP", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property certificate() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("certificate", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Computer() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Computer", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -1323,13 +1303,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property EditTaxa() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("EditTaxa", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         Public ReadOnly Property EWE_forever() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("EWE_forever", resourceCulture)
@@ -1771,13 +1744,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property google() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("google", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to Do you want to delete habitat from {0} to {1}?.
         '''</summary>
@@ -1802,13 +1768,6 @@ Namespace My.Resources
         Public ReadOnly Property HABITAT_DELETE_CONFIRMATION() As String
             Get
                 Return ResourceManager.GetString("HABITAT_DELETE_CONFIRMATION", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Habitat1() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Habitat1", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -1845,13 +1804,6 @@ Namespace My.Resources
         Public ReadOnly Property IMPORT_ERROR_CAPTION() As String
             Get
                 Return ResourceManager.GetString("IMPORT_ERROR_CAPTION", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Importance() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Importance", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -2025,13 +1977,6 @@ Namespace My.Resources
         Public ReadOnly Property MPA_BATCH_DELETE_CONFIRMATION() As String
             Get
                 Return ResourceManager.GetString("MPA_BATCH_DELETE_CONFIRMATION", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property MPA1() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("MPA1", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -3004,13 +2949,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property Raster1() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Raster1", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
         '''<summary>
         '''  Looks up a localized string similar to Do you want to delete region from {0} to {1}?.
         '''</summary>
@@ -3035,13 +2973,6 @@ Namespace My.Resources
         Public ReadOnly Property REGION_DELETE_CONFIRMATION() As String
             Get
                 Return ResourceManager.GetString("REGION_DELETE_CONFIRMATION", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Regions() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Regions", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
@@ -3123,13 +3054,6 @@ Namespace My.Resources
         Public ReadOnly Property SEARCH_STATUS_STARTED() As String
             Get
                 Return ResourceManager.GetString("SEARCH_STATUS_STARTED", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Seed() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Seed", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

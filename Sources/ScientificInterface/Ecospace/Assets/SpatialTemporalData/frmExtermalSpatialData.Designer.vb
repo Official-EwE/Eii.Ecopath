@@ -93,7 +93,6 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_map, "m_map")
             Me.m_map.Name = "m_map"
             Me.m_map.SelectedDataset = Nothing
-            Me.m_map.SelectedTimeStep = -1
             Me.m_map.ShowGrid = False
             Me.m_map.ShowReferenceMap = False
             Me.m_map.UIContext = Nothing
@@ -151,7 +150,7 @@ Namespace Ecospace
             '
             Me.m_tsbnShowRefMap.CheckOnClick = True
             Me.m_tsbnShowRefMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-            Me.m_tsbnShowRefMap.Image = Global.ScientificInterface.My.Resources.Resources.Basemap
+            Me.m_tsbnShowRefMap.Image = SharedResources.basemap
             resources.ApplyResources(Me.m_tsbnShowRefMap, "m_tsbnShowRefMap")
             Me.m_tsbnShowRefMap.Name = "m_tsbnShowRefMap"
             '

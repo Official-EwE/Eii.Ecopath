@@ -68,6 +68,9 @@ Namespace Ecospace
 
 #Region " Form events "
 
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Event handler; called when the form is initially loaded.

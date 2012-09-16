@@ -273,7 +273,7 @@ Namespace Ecosim
             '
             Me.m_tsdrpdnbtnContent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsdrpdnbtnContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiBiomassAbs, Me.m_tsmiBiomassRel, Me.ToolStripSeparator6, Me.m_tsmiCatchAbs, Me.m_tsmiCatchRel, Me.ToolStripSeparator7, Me.m_tsmiValueAbs, Me.m_tsmiValueRel})
-            Me.m_tsdrpdnbtnContent.Image = Global.ScientificInterface.My.Resources.Resources.Importance
+            Me.m_tsdrpdnbtnContent.Image = SharedResources.Importance
             resources.ApplyResources(Me.m_tsdrpdnbtnContent, "m_tsdrpdnbtnContent")
             Me.m_tsdrpdnbtnContent.Name = "m_tsdrpdnbtnContent"
             '

@@ -18,6 +18,7 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterface.Ecosim
 Imports ScientificInterfaceShared.Controls.Map
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
@@ -169,7 +170,7 @@ Namespace Ecospace
             'm_tsbMPA
             '
             Me.m_tsbMPA.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearMPA, Me.m_tsmSetAllMPA})
-            Me.m_tsbMPA.Image = Global.ScientificInterface.My.Resources.Resources.MPA1
+            Me.m_tsbMPA.Image = SharedResources.MPA
             resources.ApplyResources(Me.m_tsbMPA, "m_tsbMPA")
             Me.m_tsbMPA.Name = "m_tsbMPA"
             '
@@ -186,7 +187,7 @@ Namespace Ecospace
             'm_tsbSeed
             '
             Me.m_tsbSeed.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearSeed, Me.m_tsmSetAllSeed})
-            Me.m_tsbSeed.Image = Global.ScientificInterface.My.Resources.Resources.Seed
+            Me.m_tsbSeed.Image = SharedResources.Seed
             resources.ApplyResources(Me.m_tsbSeed, "m_tsbSeed")
             Me.m_tsbSeed.Name = "m_tsbSeed"
             '
@@ -202,7 +203,7 @@ Namespace Ecospace
             '
             'm_tsbEditLayers
             '
-            Me.m_tsbEditLayers.Image = Global.ScientificInterface.My.Resources.Resources.Importance
+            Me.m_tsbEditLayers.Image = SharedResources.Importance
             resources.ApplyResources(Me.m_tsbEditLayers, "m_tsbEditLayers")
             Me.m_tsbEditLayers.Name = "m_tsbEditLayers"
             '

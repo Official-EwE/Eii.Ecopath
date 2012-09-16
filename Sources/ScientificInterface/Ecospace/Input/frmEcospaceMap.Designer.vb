@@ -17,6 +17,7 @@
 '
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls.Map
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace.Basemap
 
@@ -108,19 +109,19 @@ Namespace Ecospace.Basemap
             '
             'tsbEditBasemap
             '
-            Me.tsbEditBasemap.Image = Global.ScientificInterface.My.Resources.Resources.Raster1
+            Me.tsbEditBasemap.Image = SharedResources.basemap
             resources.ApplyResources(Me.tsbEditBasemap, "tsbEditBasemap")
             Me.tsbEditBasemap.Name = "tsbEditBasemap"
             '
             'm_tsbDefineHabitats
             '
-            Me.m_tsbDefineHabitats.Image = Global.ScientificInterface.My.Resources.Resources.Habitat1
+            Me.m_tsbDefineHabitats.Image = SharedResources.Habitat
             resources.ApplyResources(Me.m_tsbDefineHabitats, "m_tsbDefineHabitats")
             Me.m_tsbDefineHabitats.Name = "m_tsbDefineHabitats"
             '
             'm_tsbDefineMPA
             '
-            Me.m_tsbDefineMPA.Image = Global.ScientificInterface.My.Resources.Resources.MPA1
+            Me.m_tsbDefineMPA.Image = SharedResources.Resources.MPA
             resources.ApplyResources(Me.m_tsbDefineMPA, "m_tsbDefineMPA")
             Me.m_tsbDefineMPA.Name = "m_tsbDefineMPA"
             '

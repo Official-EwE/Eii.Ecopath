@@ -139,8 +139,10 @@ Namespace Controls
         ''' <inheritdocs cref="cShapeGUIHandler.Detach"/>
         ''' -------------------------------------------------------------------
         Public Overrides Sub Detach()
-            Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhShapes)
-            Me.m_mhShapes = Nothing
+            If (Me.m_mhShapes IsNot Nothing) Then
+                Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhShapes)
+                Me.m_mhShapes = Nothing
+            End If
             MyBase.Detach()
         End Sub
 

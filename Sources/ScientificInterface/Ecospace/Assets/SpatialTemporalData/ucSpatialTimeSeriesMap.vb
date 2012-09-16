@@ -45,7 +45,7 @@ Namespace Ecospace
         End Enum
 
         Private m_ds As ISpatialDataSet = Nothing
-        Private m_iTimeStep As Integer = -1
+        Private m_iTimeStep As Integer = 1
         Private m_uic As cUIContext = Nothing
         Private m_rcfEcospaceExtent As RectangleF
         Private m_lExternalDataMapExtents As New List(Of RectangleF)
@@ -55,6 +55,7 @@ Namespace Ecospace
         Private m_bShowGrid As Boolean = False
 
         Public Sub New()
+            MyBase.New()
             Me.InitializeComponent()
             Me.SetStyle(ControlStyles.OptimizedDoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.AllPaintingInWmPaint Or ControlStyles.UserPaint, True)
         End Sub
@@ -351,9 +352,10 @@ Namespace Ecospace
             fmt.Alignment = StringAlignment.Center
             fmt.LineAlignment = StringAlignment.Center
 
-            sbText.AppendLine(String.Format(My.Resources.CAPTION_TIMESTEP, _
-                                            Me.m_iTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStep).ToShortDateString()))
-            'g.DrawString(strLabel, tmpFont, brTmp, rc.Width / 2.0!, 15, fmt)
+            If (Me.m_iTimeStep >= 0) Then
+                sbText.AppendLine(String.Format(My.Resources.CAPTION_TIMESTEP, _
+                                                Me.m_iTimeStep, Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStep).ToShortDateString()))
+            End If
 
             If (Me.m_ds IsNot Nothing) Then
                 Dim sdf As New cSpatialDatasetFormatter()

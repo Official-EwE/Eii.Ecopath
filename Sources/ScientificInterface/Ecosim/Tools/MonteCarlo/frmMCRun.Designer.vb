@@ -224,7 +224,7 @@ Namespace Ecosim
             '
             'm_tsbnLoadPedB
             '
-            Me.m_tsbnLoadPedB.Image = Global.ScientificInterface.My.Resources.Resources.certificate
+            Me.m_tsbnLoadPedB.Image = ScientificInterfaceShared.My.Resources.certificate
             resources.ApplyResources(Me.m_tsbnLoadPedB, "m_tsbnLoadPedB")
             Me.m_tsbnLoadPedB.Name = "m_tsbnLoadPedB"
             '
@@ -276,7 +276,7 @@ Namespace Ecosim
             '
             'm_tsbnLoadPedPB
             '
-            Me.m_tsbnLoadPedPB.Image = Global.ScientificInterface.My.Resources.Resources.certificate
+            Me.m_tsbnLoadPedPB.Image = Global.ScientificInterfaceShared.My.Resources.certificate
             resources.ApplyResources(Me.m_tsbnLoadPedPB, "m_tsbnLoadPedPB")
             Me.m_tsbnLoadPedPB.Name = "m_tsbnLoadPedPB"
             '
@@ -328,7 +328,7 @@ Namespace Ecosim
             '
             'm_tsbnLoadPedQB
             '
-            Me.m_tsbnLoadPedQB.Image = Global.ScientificInterface.My.Resources.Resources.certificate
+            Me.m_tsbnLoadPedQB.Image = ScientificInterfaceShared.My.Resources.certificate
             resources.ApplyResources(Me.m_tsbnLoadPedQB, "m_tsbnLoadPedQB")
             Me.m_tsbnLoadPedQB.Name = "m_tsbnLoadPedQB"
             '

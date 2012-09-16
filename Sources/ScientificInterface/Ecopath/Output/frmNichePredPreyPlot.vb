@@ -75,6 +75,11 @@ Namespace Ecopath.Output
 
 #Region " Form overrides "
 
+        Public Sub New()
+            MyBase.New()
+            Me.InitializeComponent()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Form is about to appear; hook up to all dynamic bits, ect.
@@ -160,7 +165,6 @@ Namespace Ecopath.Output
 
 #Region " Internals "
 
-#End Region ' Internals
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Refresh the content of the plot.
@@ -300,6 +304,8 @@ Namespace Ecopath.Output
             Me.m_bShowLabels = Me.m_cbLabels.Checked
             Me.UpdatePlot()
         End Sub
+
+#End Region ' Internals
 
     End Class
 

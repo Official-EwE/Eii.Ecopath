@@ -64,6 +64,11 @@ Namespace Ecospace
 
 #Region " Form overrides "
 
+        Public Sub New()
+            MyBase.New()
+            Me.InitializeComponent()
+        End Sub
+
         Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
             Get
                 Return MyBase.UIContext

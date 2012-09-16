@@ -60,6 +60,7 @@ Namespace Ecospace.Advection
 #End Region ' Private vars
 
         Public Sub New()
+            MyBase.New()
             Me.InitializeComponent()
         End Sub
 

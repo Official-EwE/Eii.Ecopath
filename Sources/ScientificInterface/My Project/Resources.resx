@@ -334,9 +334,6 @@ Description: {1}</value>
     <value>{0} {1}</value>
     <comment>{0}=copyright, {1}=company name</comment>
   </data>
-  <data name="Raster1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Raster.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="GENERIC_TOOLTIP_PREDATOR" xml:space="preserve">
     <value>Predator {0}</value>
     <comment>{0}=predator name</comment>
@@ -477,9 +474,6 @@ Description: {1}</value>
   <data name="FIT2TS_PROGRESS_RUNCOMPLETED" xml:space="preserve">
     <value>Run completed at {0}</value>
     <comment>{0}=time run completed</comment>
-  </data>
-  <data name="Habitat1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Habitat.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ECOSPACE_SCENARIO_DELETE_CAPTION" xml:space="preserve">
     <value>Delete Ecospace scenario - Ecopath model {0}</value>
@@ -699,9 +693,6 @@ Location: {1}</value>
     <value>Egg production shape {0}</value>
     <comment>The default name for a new Ecosim Egg production shape. {0}=autonumber</comment>
   </data>
-  <data name="MPA1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MPA.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_GROUPINFO_FEEDINGTIMEADJUSTRATE" xml:space="preserve">
     <value>Feeding time adjust rate [0,1]</value>
   </data>
@@ -801,9 +792,6 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   <data name="OPTIONS_COLORDLG_ECOSIM_PLOTS_BACKGROUND_COLOR" xml:space="preserve">
     <value>Plots and Graphs background|Background colour to use for plots and graphs</value>
   </data>
-  <data name="Basemap" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Web.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="STATUS_ECOSPACE_RUNNING" xml:space="preserve">
     <value>Running Ecospace...</value>
   </data>
@@ -818,9 +806,6 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   </data>
   <data name="MPAOPT_LEGEND_WEIGHTEDTOTAL" xml:space="preserve">
     <value>Weighted total</value>
-  </data>
-  <data name="Regions" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Regions.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_ITEMSTATUS_DELETEPENDING" xml:space="preserve">
     <value>To delete</value>
@@ -1045,9 +1030,6 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   <data name="ECOSIM_GROUPINFO_OPTTEMP" xml:space="preserve">
     <value>Optimum temperature(&gt;0)</value>
   </data>
-  <data name="Seed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Seed.PNG;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ECOSIM_CAPTION_APPLYFF" xml:space="preserve">
     <value>Apply forcing functions</value>
   </data>
@@ -1088,9 +1070,6 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   <data name="SELECTION_DERIVED" xml:space="preserve">
     <value>(derived value selected)</value>
     <comment>This indicates that the user has selected a value that is defined in the user interface without an underlying core variable, such as (but not limited to) results of user-interface built formulas</comment>
-  </data>
-  <data name="Importance" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Importance.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="STATUS_MODEL_COMPACT_SUCCESS" xml:space="preserve">
     <value>Your database was compacted succesfully.</value>
@@ -1145,9 +1124,6 @@ Description: {2}</value>
   </data>
   <data name="PROMPT_UPDATE_MIGRATION" xml:space="preserve">
     <value>A newer Ecopath plug-in is available that may apply to '{0}' on your system, but copies cannot be authenticated. Do you want EwE6 to overwrite your local file?</value>
-  </data>
-  <data name="google" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\google.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PROMPT_GOOGLELOCATION_SEARCH" xml:space="preserve">
     <value>Found entry '{0}' with bounding box N {1}, W {2}, S {3}, E {4}. Do you want to use this value?</value>
@@ -1251,9 +1227,6 @@ Description: {2}</value>
   <data name="GENERIC_ECOSPACE_NO_DATA_AVAILABLE" xml:space="preserve">
     <value>Ecospace data not available</value>
   </data>
-  <data name="certificate" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\certificate.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Ecotracer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecotracer.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -1331,9 +1304,6 @@ Description: {2}</value>
   </data>
   <data name="Ecopath_hohoho" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Ecopath_hohoho.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EditTaxa" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EditTaxa.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GENERIC_LABEL_TRIAL" xml:space="preserve">
     <value>Trial {0} - {1}</value>
@@ -1509,9 +1479,6 @@ Description: {2}</value>
   </data>
   <data name="Ecospace" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\ecospace.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Computer" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\computer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PROMPT_DEFINE_PEDIGREE" xml:space="preserve">
     <value>Pedigree levels are not defined for one or more value types. Do you want to define these now?</value>
