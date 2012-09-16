@@ -458,6 +458,8 @@ Partial Class frmModelDescription
         'm_cmbModelAreaName
         '
         resources.ApplyResources(Me.m_cmbModelAreaName, "m_cmbModelAreaName")
+        Me.m_cmbModelAreaName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend
+        Me.m_cmbModelAreaName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource
         Me.m_cmbModelAreaName.LookupEngine = Nothing
         Me.m_cmbModelAreaName.Name = "m_cmbModelAreaName"
         '

@@ -132,7 +132,7 @@
     <value>m_udNumDigits</value>
   </data>
   <data name="&gt;&gt;m_udNumDigits.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_udNumDigits.Parent" xml:space="preserve">
     <value>m_gbNumFormatting</value>
@@ -196,7 +196,7 @@
     <value>m_lblOptions</value>
   </data>
   <data name="&gt;&gt;m_lblOptions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblOptions.Parent" xml:space="preserve">
     <value>Panel2</value>
@@ -289,7 +289,7 @@
     <value>m_lblModel</value>
   </data>
   <data name="&gt;&gt;m_lblModel.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_lblModel.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1132,7 +1132,7 @@
     <value>m_cmbMonetaryUnit</value>
   </data>
   <data name="&gt;&gt;m_cmbMonetaryUnit.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cMonetaryUnitComboBox, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cMonetaryUnitComboBox, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_cmbMonetaryUnit.Parent" xml:space="preserve">
     <value>m_gbMonetaryUnits</value>
@@ -1369,7 +1369,7 @@
     <value>m_hdrExecution</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrExecution.Parent" xml:space="preserve">
     <value>Panel1</value>
@@ -1390,7 +1390,7 @@
     <value>m_nudFirstYear</value>
   </data>
   <data name="&gt;&gt;m_nudFirstYear.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudFirstYear.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1444,7 +1444,7 @@
     <value>m_nudNorth</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudNorth.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1468,7 +1468,7 @@
     <value>m_nudSouth</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudSouth.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1492,7 +1492,7 @@
     <value>m_nudWest</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudWest.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1516,7 +1516,7 @@
     <value>m_nudEast</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudEast.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1675,7 +1675,7 @@
     <value>m_cmbModelAreaName</value>
   </data>
   <data name="&gt;&gt;m_cmbModelAreaName.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cGeocodeLookupComboBox, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cGeocodeLookupComboBox, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_cmbModelAreaName.Parent" xml:space="preserve">
     <value>m_plDescr</value>
@@ -1908,6 +1908,6 @@
     <value>frmModelDescription</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8036.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
