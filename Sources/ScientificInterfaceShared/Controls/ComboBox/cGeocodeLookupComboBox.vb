@@ -40,6 +40,8 @@ Namespace Controls
         Private m_lookup As IGeoCodeLookup = Nothing
         Private m_searchThread As Thread = Nothing
         Private m_bIsSearching As Boolean = False
+        Private m_bOkToSearch As Boolean = False
+        Private m_strLastSearch As String = ""
 
 #End Region ' Private variables
 
@@ -108,44 +110,32 @@ Namespace Controls
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Locate a string in the list of available found locations.
-        ''' </summary>
-        ''' <param name="strText">The text to find.</param>
-        ''' <returns>True if successful.</returns>
-        ''' -----------------------------------------------------------------------
-        Private Function Locate(ByVal strText As String) As Boolean
-            Dim iIndex As Integer = Me.FindString(strText)
-
-            If iIndex <> -1 Then
-                Me.SelectedText = ""
-                Me.SelectedIndex = iIndex
-                Me.SelectionStart = strText.Length
-                Me.SelectionLength = Me.Text.Length
-                Return True
-            Else
-                Me.Text = strText
-                Me.SelectionStart = Me.Text.Length
-                Return False
-            End If
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' Keypress handler to initiate a geolocation search.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Overrides Sub OnKeyPress(ByVal e As System.Windows.Forms.KeyPressEventArgs)
+        Protected Overrides Sub OnKeyDown(e As System.Windows.Forms.KeyEventArgs)
 
-            MyBase.OnKeyPress(e)
-
-            If Not Char.IsControl(e.KeyChar) Then
-                If Me.SelectionLength = 0 Then
-                    Me.Search(Me.Text)
+            Try
+                If e.KeyCode = Keys.Down Or e.KeyCode = Keys.Up Or e.KeyCode = Keys.Enter Then
+                    Me.m_bOkToSearch = False
                 Else
-                    Me.Search(Me.Text.Substring(0, Me.SelectionStart))
+                    Me.m_bOkToSearch = True
                 End If
+                MyBase.OnKeyDown(e)
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+        Protected Overrides Sub OnTextChanged(e As System.EventArgs)
+
+            If Me.Text.Length <= 4 Then
+                Me.Search("")
+            ElseIf Me.m_bOkToSearch Then
+                Me.Search(Me.Text)
             End If
+            Me.m_bOkToSearch = False
 
         End Sub
 
@@ -161,19 +151,22 @@ Namespace Controls
             ' Let's be easy on the designer
             If Me.DesignMode Then Return
 
+            Me.m_strLastSearch = strFindStr
+            Me.DataSource = Nothing ' Forget forget forget
+
             If Me.m_searchThread IsNot Nothing Then
                 Me.m_searchThread.Abort()
                 Me.FireSearchingEvent(False)
             End If
 
-            If String.IsNullOrEmpty(strFindStr) Or (Me.m_lookup Is Nothing) Then Return
+            If String.IsNullOrEmpty(strFindStr) Or (Me.m_lookup Is Nothing) Then
+                Return
+            End If
 
             Me.FireSearchingEvent(True)
+
             Me.m_searchThread = New Thread(AddressOf SearchThread)
             Me.m_searchThread.Start(strFindStr)
-
-            ' Try to match text with present items
-            Me.Locate(strFindStr)
 
         End Sub
 
@@ -207,20 +200,23 @@ Namespace Controls
         ''' -----------------------------------------------------------------------
         Private Sub OnSearchResults(ByVal aLocations As cGeoCodeLocation())
 
-            ' Grab text before modifying dropdown items
-            Dim strText As String = Me.Text
+            Me.BindingContext = New BindingContext()
+            Me.DataSource = aLocations
+            Me.SuspendLayout()
+            Me.BeginInvoke(New MethodInvoker(AddressOf PostProcessSearch), Nothing)
 
-            ' Update items in critical section
-            Monitor.Enter(Me)
-            Me.Items.Clear()
-            For Each Loc As cGeoCodeLocation In aLocations
-                Me.Items.Add(Loc)
-                Me.DroppedDown = True
-            Next
-            Monitor.Exit(Me)
+            ' Let UI process new datasource items
 
-            ' Restore text
-            Me.Locate(strText)
+        End Sub
+
+        Private Sub PostProcessSearch()
+
+            Me.DroppedDown = True
+            Me.Text = Me.m_strLastSearch
+            Me.SelectionStart = Me.Text.Length
+            Me.ResumeLayout()
+
+            Me.m_strLastSearch = ""
 
             ' Notify world
             Me.FireSearchingEvent(False)
