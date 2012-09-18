@@ -44,6 +44,9 @@ Public Class frmMSEPlots
     Private m_curPlotType As ePlotTypes
     Private m_curPlotData As ePlotData
 
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)

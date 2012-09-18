@@ -49,6 +49,11 @@ Public Class frmMSEOptions
     Private m_fpUseQuotaRegs As cPropertyFormatProvider
     Private m_dctEffortControls As Dictionary(Of eMSERegulationMode, RadioButton)
 
+    Public Sub New()
+        MyBase.New()
+        Me.InitializeComponent()
+    End Sub
+
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 

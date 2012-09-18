@@ -66,6 +66,7 @@ Public Class frmMSE
 #Region "Construction Initialization and Destruction"
 
     Public Sub New()
+        MyBase.New()
         Me.InitializeComponent()
     End Sub
 

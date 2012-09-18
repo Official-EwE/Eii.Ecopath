@@ -34,6 +34,7 @@ Public Class frmMSEAssessGroups
     Private m_propStartYear As cProperty = Nothing
 
     Public Sub New()
+        MyBase.New()
         Me.InitializeComponent()
     End Sub
 

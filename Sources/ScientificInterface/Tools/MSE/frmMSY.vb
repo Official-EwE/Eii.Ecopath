@@ -36,6 +36,10 @@ Public Class frmMSY
     Private m_nFleets As Integer
     Private MSY() As Single
 
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
+
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 

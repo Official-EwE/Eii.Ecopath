@@ -55,6 +55,11 @@ Namespace Ecosim
 
 #End Region ' Internals
 
+        Public Sub New()
+            MyBase.New()
+            Me.InitializeComponent()
+        End Sub
+
 #Region " Events "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)

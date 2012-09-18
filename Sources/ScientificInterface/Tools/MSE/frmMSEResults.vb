@@ -31,6 +31,7 @@ Public Class frmMSEResults
     Private m_EventSource As cMSEEventSource
 
     Public Sub New()
+        MyBase.New()
         InitializeComponent()
         m_EventSource = New cMSEEventSource
     End Sub
