@@ -29,6 +29,7 @@ Public Class frmMSEBatchFixedF
     Private m_BatchManager As EwECore.MSEBatchManager.cMSEBatchManager
 
     Public Sub New()
+        MyBase.New()
         Me.InitializeComponent()
     End Sub
 

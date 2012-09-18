@@ -40,6 +40,11 @@ Public Class frmMSEBatchParameters
 
     Private m_batchManager As EwECore.MSEBatchManager.cMSEBatchManager
 
+    Public Sub New()
+        MyBase.New()
+        Me.InitializeComponent()
+    End Sub
+
     Private Sub EcospaceParameters_Load(ByVal sender As Object, ByVal e As System.EventArgs) _
           Handles Me.Load
      

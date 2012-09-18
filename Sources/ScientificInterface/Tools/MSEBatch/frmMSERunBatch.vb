@@ -31,6 +31,7 @@ Public Class frmMSERunBatch
     Private m_zgh As cZedGraphHelper
 
     Public Sub New()
+        MyBase.New()
         Me.InitializeComponent()
     End Sub
 
