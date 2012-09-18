@@ -6687,6 +6687,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Number of Ecosim years.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_ECOSIMNYEARS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_ECOSIMNYEARS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to EE|||Ecotrophic Efficiency.
         '''</summary>
         Public ReadOnly Property VARIABLE_EEINPUT() As String
@@ -6750,6 +6759,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to MSE base biomass .
+        '''</summary>
+        Public ReadOnly Property VARIABLE_MSEBBASE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_MSEBBASE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Name.
         '''</summary>
         Public ReadOnly Property VARIABLE_NAME() As String
@@ -6782,6 +6800,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_TCATCHINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_TCATCHINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Variable &apos;{0}&apos;.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_UNNAMED() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_UNNAMED", resourceCulture)
             End Get
         End Property
         

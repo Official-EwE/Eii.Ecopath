@@ -2592,4 +2592,14 @@
   <data name="taxon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\taxon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="VARIABLE_ECOSIMNYEARS" xml:space="preserve">
+    <value>Number of Ecosim years</value>
+  </data>
+  <data name="VARIABLE_MSEBBASE" xml:space="preserve">
+    <value>MSE base biomass </value>
+  </data>
+  <data name="VARIABLE_UNNAMED" xml:space="preserve">
+    <value>Variable '{0}'</value>
+    <comment>{0} = name of variable</comment>
+  </data>
 </root>
