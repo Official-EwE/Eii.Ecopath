@@ -2258,6 +2258,8 @@ Namespace Core
         ''' <summary>Quota options apply to effort.</summary>
         Effort
 
+        LinearProgramming
+
     End Enum
 
 #End Region ' Quota types

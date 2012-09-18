@@ -681,6 +681,10 @@ Public Class cSpaceSolver
                     Case Else
                         eat = 0
                 End Select
+
+                If iRow = 3 And iCol = 42 And i = 26 Then
+                    ' Debug.Assert(False, "derivt")
+                End If
                 Eatenof(i) = Eatenof(i) + eat
                 Eatenby(j) = Eatenby(j) + eat
 
@@ -708,6 +712,10 @@ Public Class cSpaceSolver
             m_Ecosim.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
+
+                'If iRow = 3 And iCol = 42 And i = 26 Then
+                '    Debug.Assert(False, "derivt")
+                'End If
 
                 Eatenby(i) = Eatenby(i) + m_SimData.QBoutside(i) * Biomass(i)
 

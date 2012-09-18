@@ -29,6 +29,10 @@ Imports System.Text
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
+Imports Microsoft.SolverFoundation.Solvers
+Imports Microsoft.SolverFoundation.Common
+Imports Microsoft.SolverFoundation.Services
+
 Namespace MSE
 
 #Region "Public definitions"
@@ -177,6 +181,10 @@ Namespace MSE
 
         Private m_StartT As Integer
         Private m_EndT As Integer
+
+        Private m_LPSolver As SimplexSolver
+        Private m_FleetCode() As Integer, m_GroupCode() As Integer
+        Private m_QStar(,) As Single
 
 #End Region
 
@@ -387,6 +395,8 @@ Namespace MSE
                 m_Ecosim.Init(False)
 
                 Me.InitResults()
+
+                Me.InitLPSolver()
 
                 'sets the start and end timesteps using StartYear and EndYear
                 Me.setStartTEndT()
@@ -1341,6 +1351,12 @@ Namespace MSE
                             End If
                         Next i
 
+
+                    Case eQuotaTypes.LinearProgramming
+
+                        LPEffort(Biomass, QMult, QYear, t)
+
+
                 End Select
             Next ig
 
@@ -1349,6 +1365,69 @@ Namespace MSE
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".DoAssessment()PluginManager.MSERegulateEffort Exception: " & ex.Message)
             End Try
+
+        End Sub
+
+        Private Sub InitLPSolver()
+
+            Me.m_LPSolver = New SimplexSolver
+
+            ReDim m_FleetCode(Me.m_data.nFleets)
+            ReDim m_GroupCode(Me.m_data.NGroups + 1)
+            ReDim m_QStar(Me.m_data.NGroups, Me.m_data.nFleets)
+
+            'Add the Fleets as Variables and get the Variable ID's into m_FleetCode
+            For iflt As Integer = 1 To Me.m_data.nFleets
+                Me.m_LPSolver.AddVariable(Me.m_epdata.FleetName(iflt), m_FleetCode(iflt))
+                'Set the bounds 
+                Me.m_LPSolver.SetBounds(m_FleetCode(iflt), 0, cMSEDataStructures.MSE_DEFAULT_MAXEFFORT) 'Me.m_data.MaxEffort(iflt)
+            Next
+
+            For igrp As Integer = 1 To Me.m_data.NGroups
+                Me.m_LPSolver.AddRow(Me.m_epdata.GroupName(igrp), m_GroupCode(igrp))
+            Next
+
+            Me.m_LPSolver.AddRow("VALUE", m_GroupCode(Me.m_data.NGroups + 1))
+
+            Me.m_LPSolver.AddGoal(m_GroupCode(Me.m_data.NGroups + 1), 1, False)
+
+        End Sub
+
+
+
+
+        Private Sub LPEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+            Dim iFlt As Integer, iGrp As Integer
+            Dim QStar(,) As Single
+
+            Dim VPerEffort() As Single
+
+            ReDim QStar(Me.m_data.NGroups, Me.m_data.nFleets)
+            ReDim VPerEffort(Me.m_data.nFleets)
+
+
+            'Get fishing mortality at this time step
+            For iflt = 1 To Me.m_data.nFleets
+                For iGrp = 1 To Me.m_data.NGroups
+                    QStar(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
+                Next iGrp
+            Next iFlt
+
+            'Get value for the LP Solver
+            For iFlt = 1 To Me.m_data.nFleets
+                For iGrp = 1 To Me.m_data.NGroups
+                    VPerEffort(iFlt) += QYear(iFlt) * QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_epdata.Market(iFlt, iGrp)
+                Next iGrp
+            Next iFlt
+
+            For iGrp = 1 To Me.m_data.NGroups
+                For iFlt = 1 To Me.m_data.nFleets
+                    Me.m_LPSolver.SetCoefficient(Me.m_GroupCode(iGrp), Me.m_FleetCode(iFlt), QStar(iGrp, iFlt))
+                Next
+            Next
+
+
+
 
         End Sub
 
