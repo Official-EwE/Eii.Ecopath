@@ -4117,6 +4117,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Other mortality.
+        '''</summary>
+        Public ReadOnly Property HEADER_OTHERMORT() As String
+            Get
+                Return ResourceManager.GetString("HEADER_OTHERMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to + Other mort. rate (/{0}).
         '''</summary>
         Public ReadOnly Property HEADER_OTHERMORTRATE_UNIT() As String
@@ -6660,6 +6669,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to BA||Biomass accumulation.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_BIOACCUM() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOACCUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to BA rate||Biomass accumulation rate.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_BIOACCUMRATEPERYEAR() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_BIOACCUMRATEPERYEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to B||Biomass.
         '''</summary>
         Public ReadOnly Property VARIABLE_BIOMASS() As String
@@ -6674,6 +6701,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_BIOMASSAREAINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_BIOMASSAREAINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Detritus import.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_DETIMP() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DETIMP", resourceCulture)
             End Get
         End Property
         
@@ -6701,6 +6737,42 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_EEINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_EEINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to EE|||Ecotrophic Efficiency.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_EEOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EEOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to GE|G/E||Production over consumption.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_GEINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_GEINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to GE|G/E||Production over consumption.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_GEOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_GEOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to GS||Unassim. cons.|Unassimilated consumption.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_GS() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_GS", resourceCulture)
             End Get
         End Property
         
@@ -6786,11 +6858,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Predation mortality.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_PREDMORT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_PREDMORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to QB|Q/B||Consumption over biomass.
         '''</summary>
         Public ReadOnly Property VARIABLE_QBINPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_QBINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to QB|Q/B||Consumption over biomass.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_QBOUTPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_QBOUTPUT", resourceCulture)
             End Get
         End Property
         

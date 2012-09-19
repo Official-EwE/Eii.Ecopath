@@ -152,6 +152,7 @@
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
+    <Compile Include="HelperClasses\Linear Programming\cLPSolver.vb" />
     <Compile Include="HelperClasses\Threading\cThreadWaitBase.vb" />
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
@@ -498,6 +499,12 @@
     <Content Include="Includes\Interop.JRO.dll" />
     <Content Include="Includes\Ionic.Zip.dll" />
     <Content Include="Includes\Microsoft.Office.interop.access.dao.dll" />
+    <Content Include="Includes\win64\lpsolve55.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Includes\win32\lpsolve55.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\gpl-2.0.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -519,5 +526,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

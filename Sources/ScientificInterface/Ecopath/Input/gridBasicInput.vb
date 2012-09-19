@@ -71,7 +71,7 @@ Namespace Ecopath.Input
             Me(0, eColumnTypes.PB) = New EwEColumnHeaderCell(SharedResources.HEADER_PB_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, eColumnTypes.QB) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
             Me(0, eColumnTypes.EE) = New EwEColumnHeaderCell(SharedResources.HEADER_EE)
-            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell("Other mortality")
+            Me(0, eColumnTypes.OtherMort) = New EwEColumnHeaderCell(SharedResources.HEADER_OTHERMORT)
             Me(0, eColumnTypes.GE) = New EwEColumnHeaderCell(SharedResources.HEADER_GE)
             Me(0, eColumnTypes.GS) = New EwEColumnHeaderCell(SharedResources.HEADER_UNASSIMILCONSUMPTION)
             Me(0, eColumnTypes.DetImp) = New EwEColumnHeaderCell(SharedResources.HEADER_DETIMP_UNIT, New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Currency, cStyleGuide.eUnitType.Time})

@@ -2602,4 +2602,34 @@
     <value>Variable '{0}'</value>
     <comment>{0} = name of variable</comment>
   </data>
+  <data name="VARIABLE_BIOACCUM" xml:space="preserve">
+    <value>BA||Biomass accumulation</value>
+  </data>
+  <data name="VARIABLE_BIOACCUMRATEPERYEAR" xml:space="preserve">
+    <value>BA rate||Biomass accumulation rate</value>
+  </data>
+  <data name="VARIABLE_DETIMP" xml:space="preserve">
+    <value>Detritus import</value>
+  </data>
+  <data name="VARIABLE_GS" xml:space="preserve">
+    <value>GS||Unassim. cons.|Unassimilated consumption</value>
+  </data>
+  <data name="VARIABLE_PREDMORT" xml:space="preserve">
+    <value>Predation mortality</value>
+  </data>
+  <data name="HEADER_OTHERMORT" xml:space="preserve">
+    <value>Other mortality</value>
+  </data>
+  <data name="VARIABLE_EEOUTPUT" xml:space="preserve">
+    <value>EE|||Ecotrophic Efficiency</value>
+  </data>
+  <data name="VARIABLE_GEINPUT" xml:space="preserve">
+    <value>GE|G/E||Production over consumption</value>
+  </data>
+  <data name="VARIABLE_GEOUTPUT" xml:space="preserve">
+    <value>GE|G/E||Production over consumption</value>
+  </data>
+  <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
+    <value>QB|Q/B||Consumption over biomass</value>
+  </data>
 </root>

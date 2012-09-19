@@ -23,6 +23,7 @@ Imports System.IO
 Imports System.Net
 Imports System.Security.Principal
 Imports EwEUtils.Utilities
+Imports System.Diagnostics
 
 #End Region ' Imports
 
@@ -176,7 +177,34 @@ Namespace SystemUtilities
         ''' -----------------------------------------------------------------------
         Public Shared Function Is64Bit() As Boolean
 
-            Return (System.Runtime.InteropServices.Marshal.SizeOf(GetType(IntPtr)) = 8)
+            ' This flag was introduced in .NET framework 4
+            Return Environment.Is64BitProcess
+            'Return (System.Runtime.InteropServices.Marshal.SizeOf(GetType(IntPtr)) = 8)
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether this application is running under Windows.
+        ''' </summary>
+        ''' <returns>True if running in 64 bit mode.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsWindows() As Boolean
+
+            Select Case Environment.OSVersion.Platform
+                Case PlatformID.MacOSX, _
+                     PlatformID.Unix, _
+                     PlatformID.Xbox
+                    Return False
+                Case PlatformID.Win32NT, _
+                     PlatformID.Win32S, _
+                     PlatformID.Win32Windows, _
+                     PlatformID.WinCE
+                    Return True
+                Case Else
+                    debug.assert(False, "Unknown platform ID " & Environment.OSVersion.Platform.ToString)
+            End Select
+            Return False
 
         End Function
 
