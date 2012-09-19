@@ -127,6 +127,7 @@
     <Compile Include="Commands\cControlHandler.vb" />
     <Compile Include="Core\IEcospaceResultsWriter.vb" />
     <Compile Include="Core\IExternalDataSource.vb" />
+    <Compile Include="Core\ISolver.vb" />
     <Compile Include="Core\ITaxonDetailData.vb" />
     <Compile Include="Core\IEconomicData.vb" />
     <Compile Include="Core\INetworkAnalysisData.vb" />
