@@ -859,7 +859,7 @@ Namespace Ecosim
                         PredictCurrentEffort(itime)
                         If Me.m_search.SearchMode = eSearchModes.MSE Then
                             'if MSE is running then regulate the predicted Effort 
-                            Me.m_MSE.RegulateEffort(BB, Qmult, QYear, itime)
+                            Me.m_MSE.RegulateEffort(BB, Qmult, QYear, itime, ipct)
                         End If
                         'set the F using the Predicted and Regulated (if MSE is running) effort
                         SetFtimeFromGear(BB, itime, QYear, True)

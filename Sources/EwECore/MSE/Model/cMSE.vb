@@ -183,7 +183,7 @@ Namespace MSE
         Private m_EndT As Integer
 
         Private m_LPSolver As SimplexSolver
-        Private m_FleetCode() As Integer, m_GroupCode() As Integer
+        Private m_FleetCode() As Integer, m_GroupCode() As Integer, m_GoalRowID As Integer
         Private m_QStar(,) As Single
 
 #End Region
@@ -410,6 +410,14 @@ Namespace MSE
                     If Me.m_data.Fopt(igrp) < 0 Then Me.m_data.Fopt(igrp) = 0
                     If Me.m_data.Blim(igrp) < 0 Then Me.m_data.Blim(igrp) = 0
                     If Me.m_data.Bbase(igrp) < 0 Then Me.m_data.Bbase(igrp) = 0
+                Next
+
+                For igrp = 1 To Me.m_data.NGroups
+                    For iFlt As Integer = 1 To Me.m_data.nFleets
+                        If Me.m_esData.relQ(iFlt, igrp) > 0 Then
+                            Me.m_data.Fweight(iFlt, igrp) = 1
+                        End If
+                    Next
                 Next
 
             Catch ex As Exception
@@ -1175,7 +1183,7 @@ Namespace MSE
                         'xxxxxxxxxxxxxxxx
 
                         'Regulate the effort every month
-                        Me.RegulateEffort(Biomass, QMult, QYear, iTimeStep)
+                        Me.RegulateEffort(Biomass, QMult, QYear, iTimeStep, iMonth)
                         'Catch base on the regulated effort
                         'Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
 
@@ -1271,7 +1279,7 @@ Namespace MSE
 
         End Sub
 
-        Friend Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+        Friend Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer, imonth As Integer)
             Dim i As Integer, ig As Integer, Elim As Single, Emax As Single
             Dim ci As Single
 
@@ -1279,86 +1287,100 @@ Namespace MSE
                 Exit Sub
             End If
 
-            'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
-            For ig = 1 To m_esData.nGear
+            If Me.m_data.UseLPSolution Then
 
-                Select Case Me.m_data.QuotaType(ig)
+                If imonth = 1 Then
+                    LPEffort(Biomass, QMult, QYear, t)
+                Else
+                    For ig = 1 To Me.m_epdata.NumFleet
+                        Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t - 1)
+                    Next
+                End If
 
-                    Case eQuotaTypes.Effort
-                        'NOT IMPLEMENTED at this time
-                        Debug.Assert(Me.m_data.QuotaType(ig) = eQuotaTypes.Effort, "Effort regulations have not been implemented at this time!")
+            Else
 
-                    Case eQuotaTypes.Weakest 'limit effort to weakest stock
+                'does regulatory reduction in FishRateGear(ig,t) for each ig (gear)
+                For ig = 1 To m_esData.nGear
 
-                        For i = 1 To m_data.NGroups
-                            If (m_epdata.Landing(ig, i) + m_epdata.Discard(ig, i)) > 0 Then
-                                'Calculate the effort limitation, has quote been exceeded?
-                                Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * QYear(ig) * m_esData.FishMGear(ig, i) * Biomass(i)))
-                                Debug.Assert(Elim >= 0)
-                                If m_esData.FishRateGear(ig, t) > Elim Then
-                                    m_esData.FishRateGear(ig, t) = Elim
+                    Select Case Me.m_data.QuotaType(ig)
+
+                        Case eQuotaTypes.Effort
+                            'NOT IMPLEMENTED at this time
+                            Debug.Assert(Me.m_data.QuotaType(ig) = eQuotaTypes.Effort, "Effort regulations have not been implemented at this time!")
+
+                        Case eQuotaTypes.Weakest 'limit effort to weakest stock
+
+                            For i = 1 To m_data.NGroups
+                                If (m_epdata.Landing(ig, i) + m_epdata.Discard(ig, i)) > 0 Then
+                                    'Calculate the effort limitation, has quote been exceeded?
+                                    Elim = CSng(Me.m_data.QuotaTime(ig, i) / (1.0E-20 + QMult(i) * QYear(ig) * m_esData.FishMGear(ig, i) * Biomass(i)))
+                                    Debug.Assert(Elim >= 0)
+                                    If m_esData.FishRateGear(ig, t) > Elim Then
+                                        m_esData.FishRateGear(ig, t) = Elim
+                                    End If
                                 End If
-                            End If
-                        Next i
+                            Next i
 
-                    Case eQuotaTypes.HighestValue, eQuotaTypes.Selective 'limit effort to highest economic value stock but discard overages on weaker stocks
+                        Case eQuotaTypes.HighestValue, eQuotaTypes.Selective 'limit effort to highest economic value stock but discard overages on weaker stocks
 
-                        Emax = 0
-                        Dim vmax As Single = 0
-                        Dim imax As Integer = 0
-                        Dim v As Single
-                        For i = 1 To m_data.NGroups
-                            If (m_epdata.Landing(ig, i)) > 0 Then
-                                'find the stock with the biggest economic value
-                                v = CSng(Me.m_data.QuotaTime(ig, i) * Me.m_epdata.Market(ig, i))
-                                If v > vmax Then
-                                    vmax = v
-                                    imax = i
-                                End If
-
-                            End If
-                        Next i
-
-                        'get the effort limit for the stock with the biggest value
-                        Emax = CSng(Me.m_data.QuotaTime(ig, imax) / (1.0E-20 + QMult(imax) * QYear(ig) * m_esData.FishMGear(ig, imax) * Biomass(imax)))
-
-                        'Limit the effort if it is greater than the max allowable 
-                        If Emax < m_esData.FishRateGear(ig, t) Then m_esData.FishRateGear(ig, t) = Emax
-
-                        For i = 1 To m_data.NGroups
-                            If (m_epdata.Landing(ig, i)) > 0 Then
-                                ci = m_esData.FishRateGear(ig, t) * QMult(i) * QYear(ig) * m_esData.FishMGear(ig, i) * Biomass(i)
-
-                                If ci > Me.m_data.QuotaTime(ig, i) Then
-                                    'fishing mortality exceeds quota
-                                    Me.m_esData.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
-                                    If Me.m_data.QuotaType(ig) = eQuotaTypes.HighestValue Then
-                                        'QuotaType = Strongest 
-                                        'excess catch discarded and included in the fishing mortailtiy
-                                        Me.m_esData.Propdiscardtime(ig, i) = (1 - Me.m_esData.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
-                                    Else
-                                        'QuotaType = Selective 
-                                        'excess catch is NOT included in fishing mortaility all discards survive
-                                        Me.m_esData.Propdiscardtime(ig, i) = 0
+                            Emax = 0
+                            Dim vmax As Single = 0
+                            Dim imax As Integer = 0
+                            Dim v As Single
+                            For i = 1 To m_data.NGroups
+                                If (m_epdata.Landing(ig, i)) > 0 Then
+                                    'find the stock with the biggest economic value
+                                    v = CSng(Me.m_data.QuotaTime(ig, i) * Me.m_epdata.Market(ig, i))
+                                    If v > vmax Then
+                                        vmax = v
+                                        imax = i
                                     End If
 
-                                Else
-                                    'ci < QuotaTime
-                                    Me.m_esData.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
-                                    Me.m_esData.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
                                 End If
+                            Next i
 
-                            End If
-                        Next i
+                            'get the effort limit for the stock with the biggest value
+                            Emax = CSng(Me.m_data.QuotaTime(ig, imax) / (1.0E-20 + QMult(imax) * QYear(ig) * m_esData.FishMGear(ig, imax) * Biomass(imax)))
 
+                            'Limit the effort if it is greater than the max allowable 
+                            If Emax < m_esData.FishRateGear(ig, t) Then m_esData.FishRateGear(ig, t) = Emax
 
-                    Case eQuotaTypes.LinearProgramming
+                            For i = 1 To m_data.NGroups
+                                If (m_epdata.Landing(ig, i)) > 0 Then
+                                    ci = m_esData.FishRateGear(ig, t) * QMult(i) * QYear(ig) * m_esData.FishMGear(ig, i) * Biomass(i)
 
-                        LPEffort(Biomass, QMult, QYear, t)
+                                    If ci > Me.m_data.QuotaTime(ig, i) Then
+                                        'fishing mortality exceeds quota
+                                        Me.m_esData.PropLandedTime(ig, i) = CSng(Me.m_data.QuotaTime(ig, i) / (ci + 1.0E-20))
+                                        If Me.m_data.QuotaType(ig) = eQuotaTypes.HighestValue Then
+                                            'QuotaType = Strongest 
+                                            'excess catch discarded and included in the fishing mortailtiy
+                                            Me.m_esData.Propdiscardtime(ig, i) = (1 - Me.m_esData.PropLandedTime(ig, i)) * m_epdata.PropDiscardMort(ig, i)
+                                        Else
+                                            'QuotaType = Selective 
+                                            'excess catch is NOT included in fishing mortaility all discards survive
+                                            Me.m_esData.Propdiscardtime(ig, i) = 0
+                                        End If
 
+                                    Else
+                                        'ci < QuotaTime
+                                        Me.m_esData.PropLandedTime(ig, i) = m_epdata.PropLanded(ig, i)
+                                        Me.m_esData.Propdiscardtime(ig, i) = m_epdata.PropDiscard(ig, i)
+                                    End If
 
-                End Select
-            Next ig
+                                End If
+                            Next i
+
+                    End Select
+                Next ig
+            End If
+
+            ''Write out Effort calculated by one of the options above
+            'System.Console.WriteLine("Effort via option.")
+            'For ig = 1 To m_esData.nGear
+            '    System.Console.Write(m_esData.FishRateGear(ig, t).ToString & ", ")
+            'Next
+            'System.Console.WriteLine()
 
             Try
                 Me.m_core.PluginManager.MSERegulateEffort(Biomass, QMult, QYear, t)
@@ -1387,9 +1409,9 @@ Namespace MSE
                 Me.m_LPSolver.AddRow(Me.m_epdata.GroupName(igrp), m_GroupCode(igrp))
             Next
 
-            Me.m_LPSolver.AddRow("VALUE", m_GroupCode(Me.m_data.NGroups + 1))
+            Me.m_LPSolver.AddRow("VALUE", Me.m_GoalRowID)
 
-            Me.m_LPSolver.AddGoal(m_GroupCode(Me.m_data.NGroups + 1), 1, False)
+            Me.m_LPSolver.AddGoal(m_GoalRowID, 1, False)
 
         End Sub
 
@@ -1398,36 +1420,52 @@ Namespace MSE
 
         Private Sub LPEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
             Dim iFlt As Integer, iGrp As Integer
-            Dim QStar(,) As Single
+            Dim c As Single, effort As Single
 
             Dim VPerEffort() As Single
 
-            ReDim QStar(Me.m_data.NGroups, Me.m_data.nFleets)
             ReDim VPerEffort(Me.m_data.nFleets)
 
 
+
             'Get fishing mortality at this time step
-            For iflt = 1 To Me.m_data.nFleets
+            For iFlt = 1 To Me.m_data.nFleets
                 For iGrp = 1 To Me.m_data.NGroups
-                    QStar(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
+                    If t > 1 Then
+                        'QStar(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
+                        'Using Kalman filter to update catchability estimate
+                        ' Me.m_data.Qest(iGrp, iFlt) = Me.m_data.CatchYear(iFlt, iGrp) / Me.m_data.BestimateLast(iGrp) / (Me.m_esData.FishRateGear(iFlt, t - 12) + 1.0E-20F) ' + Me.m_data.KalGainQ(iFlt) * Me.m_data.Qest(iGrp, iFlt)
+                        Me.m_data.Qest(iGrp, iFlt) = (1 - Me.m_data.KalGainQ(iFlt)) * (Me.m_data.CatchYear(iFlt, iGrp) / 12) / Me.m_data.BestimateLast(iGrp) / (Me.m_esData.FishRateGear(iFlt, t - 12) + 1.0E-20F) + Me.m_data.KalGainQ(iFlt) * Me.m_data.Qest(iGrp, iFlt)
+                    End If
+                    Me.m_data.QStar(iGrp, iFlt) = Me.m_data.Qest(iGrp, iFlt) * (Me.m_esData.PropLandedTime(iFlt, iGrp) + (1 - Me.m_esData.PropLandedTime(iFlt, iGrp)) * m_epdata.PropDiscardMort(iFlt, iGrp))
                 Next iGrp
             Next iFlt
 
             'Get value for the LP Solver
             For iFlt = 1 To Me.m_data.nFleets
                 For iGrp = 1 To Me.m_data.NGroups
-                    VPerEffort(iFlt) += QYear(iFlt) * QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_epdata.Market(iFlt, iGrp)
+                    VPerEffort(iFlt) += Me.m_data.QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_epdata.Market(iFlt, iGrp) * Me.m_esData.PropLandedTime(iFlt, iGrp)
                 Next iGrp
             Next iFlt
 
             For iGrp = 1 To Me.m_data.NGroups
                 For iFlt = 1 To Me.m_data.nFleets
-                    Me.m_LPSolver.SetCoefficient(Me.m_GroupCode(iGrp), Me.m_FleetCode(iFlt), QStar(iGrp, iFlt))
+                    Me.m_LPSolver.SetCoefficient(Me.m_GroupCode(iGrp), Me.m_FleetCode(iFlt), Me.m_data.QStar(iGrp, iFlt))
+                    Me.m_LPSolver.SetBounds(Me.m_GroupCode(iGrp), 0, Me.m_data.FTarget(iGrp))
                 Next
             Next
 
+            For iFlt = 1 To Me.m_data.nFleets
+                Me.m_LPSolver.SetCoefficient(Me.m_GoalRowID, Me.m_FleetCode(iFlt), VPerEffort(iFlt))
+                Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Rational.PositiveInfinity)
+            Next
 
+            Me.m_LPSolver.Solve(New SimplexSolverParams)
 
+            For iFlt = 1 To Me.m_data.nFleets
+                Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToDouble)
+                ' System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToDouble.ToString)
+            Next
 
         End Sub
 
@@ -1522,10 +1560,9 @@ Namespace MSE
         Friend Sub UpdateQuotas(ByVal Biomass() As Single)
             Dim iflt As Integer, igrp As Integer
             Dim tQuota() As Single
-            Dim FTarget() As Single
 
             ReDim tQuota(Me.m_epdata.NumGroups)
-            ReDim FTarget(Me.m_epdata.NumGroups)
+            Array.Clear(Me.m_data.FTarget, 0, Me.m_epdata.NumGroups)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'HACK WARNING
             'BatchMode (cMSEBatchManager) needs to be able to set FixedF() and TAC() values to zero and still have them considered a valid value
@@ -1570,14 +1607,14 @@ Namespace MSE
                     If brange <= 0 Then brange = 1.0E-20
 
                     'VC to JB: I think the Biomass below should be Bestimate instead; talked to Carl and he agrees. will be a double wham, which is OK.
-                    FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / brange
+                    Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp) * (Me.m_data.Bestimate(igrp) - Me.m_data.Blim(igrp)) / brange
 
                     'constrain the fishing mortality to min and max values. 
                     'Fmin(igrp) only gets set by the MSEBatchManager for all other runs it must be zero. 
-                    If FTarget(igrp) < Me.m_data.Fmin(igrp) Then FTarget(igrp) = Me.m_data.Fmin(igrp)
-                    If FTarget(igrp) > Me.m_data.Fopt(igrp) Then FTarget(igrp) = Me.m_data.Fopt(igrp)
+                    If Me.m_data.FTarget(igrp) < Me.m_data.Fmin(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fmin(igrp)
+                    If Me.m_data.FTarget(igrp) > Me.m_data.Fopt(igrp) Then Me.m_data.FTarget(igrp) = Me.m_data.Fopt(igrp)
 
-                    tQuota(igrp) = FTarget(igrp) * Me.m_data.Bestimate(igrp)
+                    tQuota(igrp) = Me.m_data.FTarget(igrp) * Me.m_data.Bestimate(igrp)
 
                 End If
 
@@ -2498,21 +2535,42 @@ Namespace MSE
         ''' <remarks></remarks>
         Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
             Try
-
+                Dim iflt As Integer, igrp As Integer
                 If Me.m_Search.SearchMode <> eSearchModes.MSE Then
                     Exit Sub
                 End If
 
-                For igrp As Integer = 1 To Me.m_data.nLiving
+                'After the first year
+
+                If (iTime - 1) Mod 12 = 0 Then
+                    'First month of a new year
+                    Array.Clear(Me.m_data.CatchYear, 0, Me.m_data.CatchYear.Length)
+                    ' Array.Clear(Me.m_data.EffortYear, 0, Me.m_data.EffortYear.Length)
+                End If
+
+                'grab effort and catch
+                For iflt = 1 To Me.m_data.nFleets
+                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
+                    For igrp = 1 To Me.m_data.NGroups
+                        Me.m_data.CatchYear(iflt, igrp) += Me.m_esData.ResultsSumCatchByGroupGear(igrp, iflt, CInt(iTime))
+                    Next
+                Next
+
+
+
+                For igrp = 1 To Me.m_data.nLiving
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
                 Next igrp
 
                 Dim sumValue As Single
-                For iflt As Integer = 1 To Me.m_esData.nGear
+                For iflt = 1 To Me.m_esData.nGear
                     sumValue += Me.m_esData.ResultsSumValueByGear(iflt, CInt(iTime))
                     Me.m_data.CatchFleetStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
                     Me.m_data.EffortStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsEffort(iflt, CInt(iTime)))
+
+                    ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
+
                 Next iflt
 
                 Me.m_data.ValueFleetStats.AddValue(1, CInt(iTime), sumValue)

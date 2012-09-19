@@ -165,6 +165,8 @@ Namespace MSE
         ''' <remarks>Set to Bestimate() for the previous year.</remarks>
         Public BestimateLast() As Single
 
+        Public QestLast() As Single
+
         ''' <summary>Regulatory Mode</summary>
         ''' <remarks></remarks>
         Public RegulationMode As eMSERegulationMode
@@ -288,6 +290,16 @@ Namespace MSE
 
         Public MSEMaxEffort As Single
 
+        Public FTarget() As Single
+
+        Public UseLPSolution As Boolean
+
+        Public CatchYear(,) As Single
+        Public EffortYear() As Single
+
+        Public QStar(,) As Single
+        Public Qest(,) As Single
+
 #End Region
 
 #Region "Private data"
@@ -313,6 +325,7 @@ Namespace MSE
             Me.RegulationMode = eMSERegulationMode.UseRegulations
             Me.StopRun = False
             Me.MSEMaxEffort = MSE_DEFAULT_MAXEFFORT
+            Me.UseLPSolution = True
 
         End Sub
 
@@ -498,6 +511,7 @@ Namespace MSE
 
             ReDim Bestimate(NGroups)
             ReDim BestimateLast(NGroups)
+            ReDim QestLast(NGroups)
 
             ReDim MSYGroupWeight(NGroups)
             For iGrp As Integer = 1 To NGroups
@@ -543,6 +557,7 @@ Namespace MSE
 
             ReDim Quotashare(nFleets, NGroups)
             ReDim QuotaTime(nFleets, NGroups)
+            ReDim FTarget(NGroups)
             ReDim Blim(NGroups)
             ReDim Bbase(NGroups)
             ReDim Fopt(NGroups)
@@ -697,6 +712,8 @@ Namespace MSE
                 For iGrp = 1 To Me.m_EPData.NumGroups
                     Wftot(iFlt) = Wftot(iFlt) + Fweight(iFlt, iGrp)
                     Fwc(iFlt, 0) = Fwc(iFlt, 0) + Fweight(iFlt, iGrp) * Me.m_ESData.relQ(iFlt, iGrp)
+                    Qest(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
+                    QStar(iGrp, iFlt) = Me.m_ESData.relQ(iFlt, iGrp)
                 Next
                 If Wftot(iFlt) > 0 Then Fwc(iFlt, 0) = Fwc(iFlt, 0) / Wftot(iFlt)
                 Fwc(iFlt, 1) = Fwc(iFlt, 0)
@@ -713,14 +730,22 @@ Namespace MSE
                 If VarQgrow(iFlt) = 0 Then VarQgrow(iFlt) = 0.0001
                 VarQest(iFlt) = VarQgrow(iFlt) * CSng((1 + Math.Sqrt(1 + 4 * VarQyear(iFlt) / VarQgrow(iFlt))) / 2)
                 KalGainQ(iFlt) = VarQest(iFlt) / (VarQest(iFlt) + VarQyear(iFlt))
+
+                'Me.EffortYear(iFlt) = 1
+
             Next iFlt
 
-
             ReDim Me.CatchYearGroup(Me.NGroups)
+            ReDim Me.CatchYear(Me.nFleets, Me.NGroups)
+
             For iGrp = 1 To Me.NGroups
                 Me.CatchYearGroup(iGrp) = Me.m_EPData.fCatch(iGrp)
                 'make sure Fmin did not get set to some strange value
                 If Me.Fmin(iGrp) < 0 Then Me.Fmin(iGrp) = 0
+
+                For iFlt = 1 To Me.nFleets
+                    Me.CatchYear(iFlt, iGrp) = Me.m_EPData.Landing(iFlt, iGrp) + Me.m_EPData.Discard(iFlt, iGrp)
+                Next
             Next
 
         End Sub
@@ -739,6 +764,9 @@ Namespace MSE
                 Me.ProfitSum.Init()
                 Me.CostSum.Init()
                 Me.JobsSum.Init()
+
+                ReDim QStar(Me.NGroups, Me.nFleets)
+                ReDim Qest(Me.NGroups, Me.nFleets)
 
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)

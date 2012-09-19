@@ -46,6 +46,8 @@ Public Class frmMSEOptions
 
     Private m_fpMaxEffort As cPropertyFormatProvider
 
+    Private m_fpUseLP As cPropertyFormatProvider
+
     Private m_fpUseQuotaRegs As cPropertyFormatProvider
     Private m_dctEffortControls As Dictionary(Of eMSERegulationMode, RadioButton)
 
@@ -64,6 +66,7 @@ Public Class frmMSEOptions
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 
         Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.m_ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
+        Me.m_fpUseLP = New cPropertyFormatProvider(Me.UIContext, Me.m_ckLP, Me.m_MSE.ModelParameters, eVarNameFlags.MSELPSolution)
         ' Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
 
         'Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)

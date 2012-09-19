@@ -316,6 +316,17 @@ Namespace MSE
             End Set
         End Property
 
+        Public Property LPSolution As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSELPSolution))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSELPSolution, value)
+            End Set
+        End Property
+
+
 #End Region
 
 #Region "Status Properties"

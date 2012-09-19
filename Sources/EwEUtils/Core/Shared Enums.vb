@@ -1108,6 +1108,8 @@ Namespace Core
         ''' <summary>Max Effort for the MSE </summary>
         MSEMaxEffort
 
+        MSELPSolution
+
         'data by iteration
         MSEBiomass
         MSECatchByGroup

@@ -757,6 +757,9 @@ Public Class cSearchDatastructures
 
         For igrp As Integer = 1 To EcoPathData.NumGroups
             CatchYearGroup(igrp) = EcoPathData.fCatch(igrp)
+            For iflt As Integer = 1 To EcoPathData.NumFleet
+                CatchYear(iflt, igrp) = EcoPathData.Landing(iflt, igrp)
+            Next
         Next
 
         m_ecopathData = EcoPathData

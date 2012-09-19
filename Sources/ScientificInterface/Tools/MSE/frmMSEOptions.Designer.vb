@@ -62,6 +62,7 @@ Partial Class frmMSEOptions
         Me.m_lblKalmanGain = New System.Windows.Forms.Label()
         Me.m_ckPlugin = New System.Windows.Forms.CheckBox()
         Me.m_hdrRunOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_ckLP = New System.Windows.Forms.CheckBox()
         Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
@@ -71,6 +72,7 @@ Partial Class frmMSEOptions
         'm_pnlRegOpt
         '
         resources.ApplyResources(Me.m_pnlRegOpt, "m_pnlRegOpt")
+        Me.m_pnlRegOpt.Controls.Add(Me.m_ckLP)
         Me.m_pnlRegOpt.Controls.Add(Me.pnlUseReg)
         Me.m_pnlRegOpt.Controls.Add(Me.pnlFTracking)
         Me.m_pnlRegOpt.Controls.Add(Me.rbUseRegs)
@@ -208,13 +210,19 @@ Partial Class frmMSEOptions
         Me.m_hdrRunOptions.IsCollapsed = False
         Me.m_hdrRunOptions.Name = "m_hdrRunOptions"
         '
-        'frmOptions
+        'm_ckLP
+        '
+        resources.ApplyResources(Me.m_ckLP, "m_ckLP")
+        Me.m_ckLP.Name = "m_ckLP"
+        Me.m_ckLP.UseVisualStyleBackColor = True
+        '
+        'frmMSEOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_pnlRunOpt)
         Me.Controls.Add(Me.m_pnlRegOpt)
-        Me.Name = "frmOptions"
+        Me.Name = "frmMSEOptions"
         Me.m_pnlRegOpt.ResumeLayout(False)
         Me.m_pnlRegOpt.PerformLayout()
         Me.pnlUseReg.ResumeLayout(False)
@@ -246,4 +254,5 @@ Partial Class frmMSEOptions
     Private WithEvents m_pnlRegOpt As System.Windows.Forms.Panel
     Private WithEvents m_pnlRunOpt As System.Windows.Forms.Panel
     Friend WithEvents txMaxEffort As System.Windows.Forms.TextBox
+    Friend WithEvents m_ckLP As System.Windows.Forms.CheckBox
 End Class
