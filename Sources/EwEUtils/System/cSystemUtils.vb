@@ -187,7 +187,7 @@ Namespace SystemUtilities
         ''' <summary>
         ''' Returns whether this application is running under Windows.
         ''' </summary>
-        ''' <returns>True if running in 64 bit mode.</returns>
+        ''' <returns>True if running under Windows.</returns>
         ''' -----------------------------------------------------------------------
         Public Shared Function IsWindows() As Boolean
 
