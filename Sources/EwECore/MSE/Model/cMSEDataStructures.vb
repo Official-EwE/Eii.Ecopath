@@ -299,6 +299,8 @@ Namespace MSE
 
         Public QStar(,) As Single
         Public Qest(,) As Single
+        Public LowLPEffort() As Single
+        Public UpperLPEffort() As Single
 
 #End Region
 
@@ -566,11 +568,17 @@ Namespace MSE
             ReDim FixedF(NGroups)
             ReDim TAC(NGroups)
 
+            ReDim LowLPEffort(nFleets)
+            ReDim UpperLPEffort(nFleets)
 
             'Setting regulatory values to NULL will cause them to be set to a default value if the database does not contain values
             'see cEcosimModel.setDefaultValues
             For iflt As Integer = 1 To nFleets
+
                 MaxEffort(iflt) = cCore.NULL_VALUE
+                LowLPEffort(iflt) = 0.01F
+                UpperLPEffort(iflt) = MSE_DEFAULT_MAXEFFORT
+
                 For igrp As Integer = 1 To NGroups
                     Quota(iflt, igrp) = cCore.NULL_VALUE
                 Next

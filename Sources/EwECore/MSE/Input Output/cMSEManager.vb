@@ -734,6 +734,10 @@ Namespace MSE
                     mseFlt.MaxEffort = Me.m_MSEdata.MaxEffort(iFleet)
                     mseFlt.QuotaType = Me.m_MSEdata.QuotaType(iFleet)
 
+                    mseFlt.LowerLPEffortBound = Me.m_MSEdata.LowLPEffort(iFleet)
+                    mseFlt.UpperLPEffortBound = Me.m_MSEdata.UpperLPEffort(iFleet)
+
+
                     For iGroup = 1 To m_core.nGroups
                         mseFlt.QuotaShare(iGroup) = m_MSEdata.Quotashare(iFleet, iGroup)
                     Next
@@ -770,6 +774,8 @@ Namespace MSE
                 m_parameters.MSEResultsEndYear = Me.m_MSEdata.ResultsEndYear
 
                 m_parameters.MaxEffort = Me.m_MSEdata.MSEMaxEffort
+                m_parameters.UseLPSolution = Me.m_MSEdata.UseLPSolution
+
 
                 m_parameters.ResetStatusFlags()
 
@@ -873,6 +879,7 @@ Namespace MSE
                             Me.m_MSEdata.Bbase(iGroup) = mseGrp.BBase
                             Me.m_MSEdata.Fopt(iGroup) = mseGrp.FOpt
                             Me.m_MSEdata.Fmin(iGroup) = mseGrp.Fmin
+                            Me.m_MSEdata.UseLPSolution = m_parameters.UseLPSolution
 
                             For it As Integer = 1 To Me.m_MSEdata.nYears
                                 Me.m_MSEdata.CVBiomT(iGroup, it) = mseGrp.BiomassCV(it)
@@ -905,6 +912,10 @@ Namespace MSE
 
                             Me.m_MSEdata.MaxEffort(iFleet) = mseFlt.MaxEffort
                             Me.m_MSEdata.QuotaType(iFleet) = mseFlt.QuotaType
+
+                            Me.m_MSEdata.LowLPEffort(iFleet) = mseFlt.LowerLPEffortBound
+                            Me.m_MSEdata.UpperLPEffort(iFleet) = mseFlt.UpperLPEffortBound
+
                             For iGroup As Integer = 1 To m_core.nGroups
                                 m_MSEdata.Quotashare(iFleet, iGroup) = mseFlt.QuotaShare(iGroup)
                             Next
@@ -935,6 +946,8 @@ Namespace MSE
                         Me.m_MSEdata.MSEMaxEffort = Me.m_parameters.MaxEffort
 
                         Me.m_search.MSEUseEconomicPlugin = Me.m_parameters.UseEconomicPlugin
+
+                        Me.m_MSEdata.UseLPSolution = Me.m_parameters.UseLPSolution
 
                 End Select
 

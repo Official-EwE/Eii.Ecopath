@@ -1402,7 +1402,7 @@ Namespace MSE
             For iflt As Integer = 1 To Me.m_data.nFleets
                 Me.m_LPSolver.AddVariable(Me.m_epdata.FleetName(iflt), m_FleetCode(iflt))
                 'Set the bounds 
-                Me.m_LPSolver.SetBounds(m_FleetCode(iflt), 0, cMSEDataStructures.MSE_DEFAULT_MAXEFFORT) 'Me.m_data.MaxEffort(iflt)
+                Me.m_LPSolver.SetBounds(m_FleetCode(iflt), Me.m_data.LowLPEffort(iflt), Me.m_data.UpperLPEffort(iflt)) 'Me.m_data.MaxEffort(iflt)
             Next
 
             For igrp As Integer = 1 To Me.m_data.NGroups
@@ -1416,17 +1416,11 @@ Namespace MSE
         End Sub
 
 
-
-
         Private Sub LPEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
             Dim iFlt As Integer, iGrp As Integer
-            Dim c As Single, effort As Single
 
             Dim VPerEffort() As Single
-
             ReDim VPerEffort(Me.m_data.nFleets)
-
-
 
             'Get fishing mortality at this time step
             For iFlt = 1 To Me.m_data.nFleets
@@ -1434,9 +1428,9 @@ Namespace MSE
                     If t > 1 Then
                         'QStar(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
                         'Using Kalman filter to update catchability estimate
-                        ' Me.m_data.Qest(iGrp, iFlt) = Me.m_data.CatchYear(iFlt, iGrp) / Me.m_data.BestimateLast(iGrp) / (Me.m_esData.FishRateGear(iFlt, t - 12) + 1.0E-20F) ' + Me.m_data.KalGainQ(iFlt) * Me.m_data.Qest(iGrp, iFlt)
                         Me.m_data.Qest(iGrp, iFlt) = (1 - Me.m_data.KalGainQ(iFlt)) * (Me.m_data.CatchYear(iFlt, iGrp) / 12) / Me.m_data.BestimateLast(iGrp) / (Me.m_esData.FishRateGear(iFlt, t - 12) + 1.0E-20F) + Me.m_data.KalGainQ(iFlt) * Me.m_data.Qest(iGrp, iFlt)
                     End If
+                    Me.m_data.Qest(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
                     Me.m_data.QStar(iGrp, iFlt) = Me.m_data.Qest(iGrp, iFlt) * (Me.m_esData.PropLandedTime(iFlt, iGrp) + (1 - Me.m_esData.PropLandedTime(iFlt, iGrp)) * m_epdata.PropDiscardMort(iFlt, iGrp))
                 Next iGrp
             Next iFlt
@@ -1451,8 +1445,8 @@ Namespace MSE
             For iGrp = 1 To Me.m_data.NGroups
                 For iFlt = 1 To Me.m_data.nFleets
                     Me.m_LPSolver.SetCoefficient(Me.m_GroupCode(iGrp), Me.m_FleetCode(iFlt), Me.m_data.QStar(iGrp, iFlt))
-                    Me.m_LPSolver.SetBounds(Me.m_GroupCode(iGrp), 0, Me.m_data.FTarget(iGrp))
                 Next
+                Me.m_LPSolver.SetBounds(Me.m_GroupCode(iGrp), 0, Me.m_data.FTarget(iGrp))
             Next
 
             For iFlt = 1 To Me.m_data.nFleets
@@ -1598,6 +1592,7 @@ Namespace MSE
                     'xxxxxxxxxxxxxxxxxxxxxxxxxxx
                     Dim f As Single = CSng(Math.Round(m_data.FixedF(igrp), 5))
                     tQuota(igrp) = f * Me.m_data.Bestimate(igrp)
+                    Me.m_data.FTarget(igrp) = f
 
                 Else
                     'xxxxxxxxxxxxxxxxxxxxxxxx

@@ -151,6 +151,13 @@ Namespace MSE
             val.Stored = True
             m_values.Add(val.varName, val)
 
+            'UseLP
+            meta = New cVariableMetaData()
+            val = New cValue(New Boolean, eVarNameFlags.MSELPSolution, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.MSELPSolution))
+            val.Stored = False
+            m_values.Add(val.varName, val)
+
+
 
             ResetStatusFlags()
             AllowValidation = True
@@ -227,6 +234,16 @@ Namespace MSE
 
             Set(ByVal value As Boolean)
                 SetVariable(eVarNameFlags.MSEUseEconomicPlugin, value)
+            End Set
+        End Property
+
+        Public Property UseLPSolution() As Boolean
+            Get
+                Return CBool(GetVariable(eVarNameFlags.MSELPSolution))
+            End Get
+
+            Set(ByVal value As Boolean)
+                SetVariable(eVarNameFlags.MSELPSolution, value)
             End Set
         End Property
 

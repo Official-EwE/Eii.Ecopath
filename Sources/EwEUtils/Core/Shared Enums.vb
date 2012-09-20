@@ -321,6 +321,9 @@ Namespace Core
 
         MSEFmaxPM
 
+        MSELowerLPEffort
+        MSEUpperLPEffort
+
         'jb Salinity values added Dec-07
         SalinityForceFunctionNumber
         SalinityOpt

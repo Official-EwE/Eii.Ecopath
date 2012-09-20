@@ -43,6 +43,7 @@ Partial Class frmMSEOptions
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEOptions))
         Me.m_pnlRegOpt = New System.Windows.Forms.Panel()
+        Me.m_ckLP = New System.Windows.Forms.CheckBox()
         Me.pnlUseReg = New System.Windows.Forms.Panel()
         Me.txMaxEffort = New System.Windows.Forms.TextBox()
         Me.rbEffortEcosim = New System.Windows.Forms.RadioButton()
@@ -62,7 +63,9 @@ Partial Class frmMSEOptions
         Me.m_lblKalmanGain = New System.Windows.Forms.Label()
         Me.m_ckPlugin = New System.Windows.Forms.CheckBox()
         Me.m_hdrRunOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_ckLP = New System.Windows.Forms.CheckBox()
+        Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.GridFleetLPEffortBounds1 = New ScientificInterface.gridFleetLPEffortBounds()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
@@ -72,13 +75,18 @@ Partial Class frmMSEOptions
         'm_pnlRegOpt
         '
         resources.ApplyResources(Me.m_pnlRegOpt, "m_pnlRegOpt")
-        Me.m_pnlRegOpt.Controls.Add(Me.m_ckLP)
         Me.m_pnlRegOpt.Controls.Add(Me.pnlUseReg)
         Me.m_pnlRegOpt.Controls.Add(Me.pnlFTracking)
         Me.m_pnlRegOpt.Controls.Add(Me.rbUseRegs)
         Me.m_pnlRegOpt.Controls.Add(Me.rbNoRegs)
         Me.m_pnlRegOpt.Controls.Add(Me.m_hdrEffortRegOptions)
         Me.m_pnlRegOpt.Name = "m_pnlRegOpt"
+        '
+        'm_ckLP
+        '
+        resources.ApplyResources(Me.m_ckLP, "m_ckLP")
+        Me.m_ckLP.Name = "m_ckLP"
+        Me.m_ckLP.UseVisualStyleBackColor = True
         '
         'pnlUseReg
         '
@@ -210,16 +218,56 @@ Partial Class frmMSEOptions
         Me.m_hdrRunOptions.IsCollapsed = False
         Me.m_hdrRunOptions.Name = "m_hdrRunOptions"
         '
-        'm_ckLP
+        'CEwEHeaderLabel1
         '
-        resources.ApplyResources(Me.m_ckLP, "m_ckLP")
-        Me.m_ckLP.Name = "m_ckLP"
-        Me.m_ckLP.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
+        Me.CEwEHeaderLabel1.CanCollapseParent = False
+        Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
+        Me.CEwEHeaderLabel1.IsCollapsed = False
+        Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+        '
+        'GridFleetLPEffortBounds1
+        '
+        Me.GridFleetLPEffortBounds1.AllowBlockSelect = True
+        resources.ApplyResources(Me.GridFleetLPEffortBounds1, "GridFleetLPEffortBounds1")
+        Me.GridFleetLPEffortBounds1.AutoSizeMinHeight = 10
+        Me.GridFleetLPEffortBounds1.AutoSizeMinWidth = 10
+        Me.GridFleetLPEffortBounds1.AutoStretchColumnsToFitWidth = False
+        Me.GridFleetLPEffortBounds1.AutoStretchRowsToFitHeight = False
+        Me.GridFleetLPEffortBounds1.BackColor = System.Drawing.Color.White
+        Me.GridFleetLPEffortBounds1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.GridFleetLPEffortBounds1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+        Me.GridFleetLPEffortBounds1.CustomSort = False
+        Me.GridFleetLPEffortBounds1.FixedColumnWidths = False
+        Me.GridFleetLPEffortBounds1.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.GridFleetLPEffortBounds1.GridToolTipActive = True
+        Me.GridFleetLPEffortBounds1.Name = "GridFleetLPEffortBounds1"
+        Me.GridFleetLPEffortBounds1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+            Or SourceGrid2.GridSpecialKeys.Delete) _
+            Or SourceGrid2.GridSpecialKeys.Arrows) _
+            Or SourceGrid2.GridSpecialKeys.Tab) _
+            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+            Or SourceGrid2.GridSpecialKeys.Enter) _
+            Or SourceGrid2.GridSpecialKeys.Escape) _
+            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+        Me.GridFleetLPEffortBounds1.UIContext = Nothing
+        '
+        'Label1
+        '
+        resources.ApplyResources(Me.Label1, "Label1")
+        Me.Label1.Name = "Label1"
         '
         'frmMSEOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.GridFleetLPEffortBounds1)
+        Me.Controls.Add(Me.CEwEHeaderLabel1)
+        Me.Controls.Add(Me.m_ckLP)
         Me.Controls.Add(Me.m_pnlRunOpt)
         Me.Controls.Add(Me.m_pnlRegOpt)
         Me.Name = "frmMSEOptions"
@@ -232,6 +280,7 @@ Partial Class frmMSEOptions
         Me.m_pnlRunOpt.ResumeLayout(False)
         Me.m_pnlRunOpt.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents rbUseRegs As System.Windows.Forms.RadioButton
@@ -255,4 +304,7 @@ Partial Class frmMSEOptions
     Private WithEvents m_pnlRunOpt As System.Windows.Forms.Panel
     Friend WithEvents txMaxEffort As System.Windows.Forms.TextBox
     Friend WithEvents m_ckLP As System.Windows.Forms.CheckBox
+    Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents GridFleetLPEffortBounds1 As ScientificInterface.gridFleetLPEffortBounds
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 End Class

@@ -87,6 +87,16 @@ Namespace MSE
             val = New cValue(New Single, eVarNameFlags.MaxEffort, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MaxEffort))
             m_values.Add(val.varName, val)
 
+            'LP Effort Lower bound
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+            val = New cValue(New Single, eVarNameFlags.MSELowerLPEffort, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSELowerLPEffort))
+            m_values.Add(val.varName, val)
+
+            'LP Effort Upper bound
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan), cCore.NULL_VALUE)
+            val = New cValue(New Single, eVarNameFlags.MSEUpperLPEffort, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEUpperLPEffort))
+            m_values.Add(val.varName, val)
+
             'QuotaType
             meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Integer, eVarNameFlags.QuotaType, eStatusFlags.Null, eValueTypes.Int, meta, m_core.m_validators.getValidator(eVarNameFlags.QuotaType))
@@ -300,6 +310,28 @@ Namespace MSE
                 SetVariable(eVarNameFlags.QuotaShare, value, iGroup)
             End Set
         End Property
+
+
+        Public Property LowerLPEffortBound() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSELowerLPEffort))
+            End Get
+            Set(value As Single)
+                SetVariable(eVarNameFlags.MSELowerLPEffort, value)
+            End Set
+        End Property
+
+
+        Public Property UpperLPEffortBound() As Single
+            Get
+                Return CSng(GetVariable(eVarNameFlags.MSEUpperLPEffort))
+            End Get
+
+            Set(ByVal value As Single)
+                SetVariable(eVarNameFlags.MSEUpperLPEffort, value)
+            End Set
+        End Property
+
 
 #End Region
 

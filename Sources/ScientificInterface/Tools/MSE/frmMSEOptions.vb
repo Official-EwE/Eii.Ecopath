@@ -92,6 +92,8 @@ Public Class frmMSEOptions
         Me.m_dctEffortControls.Add(eMSERegulationMode.NoRegulations, Me.rbNoRegs)
         Me.m_dctEffortControls.Add(eMSERegulationMode.UseRegulations, Me.rbUseRegs)
 
+        Me.GridFleetLPEffortBounds1.UIContext = Me.UIContext
+
         Me.UpdateSelectedEffortMode()
         Me.UpdateControls()
 

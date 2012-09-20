@@ -121,44 +121,17 @@
   <data name="m_pnlRegOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_ckLP.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_ckLP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 30</value>
-  </data>
-  <data name="m_ckLP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 17</value>
-  </data>
-  <data name="m_ckLP.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_ckLP.Text" xml:space="preserve">
-    <value>Use Linear Programing Solution</value>
-  </data>
-  <data name="&gt;&gt;m_ckLP.Name" xml:space="preserve">
-    <value>m_ckLP</value>
-  </data>
-  <data name="&gt;&gt;m_ckLP.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_ckLP.Parent" xml:space="preserve">
-    <value>m_pnlRegOpt</value>
-  </data>
-  <data name="&gt;&gt;m_ckLP.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="pnlUseReg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="txMaxEffort.Location" type="System.Drawing.Point, System.Drawing">
     <value>93, 2</value>
   </data>
   <data name="txMaxEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 20</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txMaxEffort.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -259,10 +232,10 @@
     <value>3</value>
   </data>
   <data name="pnlUseReg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 76</value>
+    <value>19, 56</value>
   </data>
   <data name="pnlUseReg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>557, 69</value>
+    <value>882, 69</value>
   </data>
   <data name="pnlUseReg.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -277,7 +250,7 @@
     <value>m_pnlRegOpt</value>
   </data>
   <data name="&gt;&gt;pnlUseReg.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="txSBPower.Location" type="System.Drawing.Point, System.Drawing">
     <value>159, 72</value>
@@ -409,7 +382,7 @@
     <value>4</value>
   </data>
   <data name="pnlFTracking.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 174</value>
+    <value>22, 154</value>
   </data>
   <data name="pnlFTracking.Size" type="System.Drawing.Size, System.Drawing">
     <value>253, 97</value>
@@ -427,13 +400,13 @@
     <value>m_pnlRegOpt</value>
   </data>
   <data name="&gt;&gt;pnlFTracking.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="rbUseRegs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="rbUseRegs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 53</value>
+    <value>6, 33</value>
   </data>
   <data name="rbUseRegs.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 17</value>
@@ -454,13 +427,13 @@
     <value>m_pnlRegOpt</value>
   </data>
   <data name="&gt;&gt;rbUseRegs.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="rbNoRegs.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="rbNoRegs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 148</value>
+    <value>6, 131</value>
   </data>
   <data name="rbNoRegs.Size" type="System.Drawing.Size, System.Drawing">
     <value>294, 17</value>
@@ -481,7 +454,7 @@
     <value>m_pnlRegOpt</value>
   </data>
   <data name="&gt;&gt;rbNoRegs.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="m_hdrEffortRegOptions.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -493,7 +466,7 @@
     <value>No</value>
   </data>
   <data name="m_hdrEffortRegOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 18</value>
+    <value>901, 18</value>
   </data>
   <data name="m_hdrEffortRegOptions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -514,7 +487,7 @@
     <value>m_pnlRegOpt</value>
   </data>
   <data name="&gt;&gt;m_hdrEffortRegOptions.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="m_pnlRegOpt.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 82</value>
@@ -523,7 +496,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pnlRegOpt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 274</value>
+    <value>901, 261</value>
   </data>
   <data name="m_pnlRegOpt.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -538,7 +511,34 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pnlRegOpt.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>5</value>
+  </data>
+  <data name="m_ckLP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_ckLP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 375</value>
+  </data>
+  <data name="m_ckLP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>174, 17</value>
+  </data>
+  <data name="m_ckLP.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_ckLP.Text" xml:space="preserve">
+    <value>Use Linear Programing Solution</value>
+  </data>
+  <data name="&gt;&gt;m_ckLP.Name" xml:space="preserve">
+    <value>m_ckLP</value>
+  </data>
+  <data name="&gt;&gt;m_ckLP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_ckLP.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_ckLP.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_pnlRunOpt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -631,7 +631,7 @@
     <value>No</value>
   </data>
   <data name="m_hdrRunOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 18</value>
+    <value>901, 18</value>
   </data>
   <data name="m_hdrRunOptions.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -661,7 +661,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pnlRunOpt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>576, 69</value>
+    <value>901, 69</value>
   </data>
   <data name="m_pnlRunOpt.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -676,6 +676,96 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pnlRunOpt.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="CEwEHeaderLabel1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 354</value>
+  </data>
+  <data name="CEwEHeaderLabel1.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>900, 18</value>
+  </data>
+  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+    <value>Linear Programming </value>
+  </data>
+  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
+    <value>CEwEHeaderLabel1</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8046.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="GridFleetLPEffortBounds1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="GridFleetLPEffortBounds1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 416</value>
+  </data>
+  <data name="GridFleetLPEffortBounds1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>882, 123</value>
+  </data>
+  <data name="GridFleetLPEffortBounds1.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="GridFleetLPEffortBounds1.Text" xml:space="preserve">
+    <value>MSE fleet ref. levels</value>
+  </data>
+  <data name="&gt;&gt;GridFleetLPEffortBounds1.Name" xml:space="preserve">
+    <value>GridFleetLPEffortBounds1</value>
+  </data>
+  <data name="&gt;&gt;GridFleetLPEffortBounds1.Type" xml:space="preserve">
+    <value>ScientificInterface.gridFleetLPEffortBounds, EwE6, Version=6.3.8046.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8</value>
+  </data>
+  <data name="&gt;&gt;GridFleetLPEffortBounds1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;GridFleetLPEffortBounds1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 400</value>
+  </data>
+  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 13</value>
+  </data>
+  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Effort bounds</value>
+  </data>
+  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
+    <value>Label1</value>
+  </data>
+  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -688,7 +778,7 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>581, 464</value>
+    <value>906, 551</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
