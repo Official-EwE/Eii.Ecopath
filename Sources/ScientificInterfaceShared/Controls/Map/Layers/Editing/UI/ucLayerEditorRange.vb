@@ -18,9 +18,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports ScientificInterfaceShared.Style
+Imports EwECore
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -125,6 +126,20 @@ Namespace Controls.Map.Layers
             Me.m_btnSmooth.Enabled = bEditable
             Me.m_lbValue.Enabled = bEditable
 
+        End Sub
+
+        Public Overrides Sub StartEdit(editor As cLayerEditor)
+            ' Freeze renderer min/max values 
+            Me.Layer.Renderer.ScaleMax = Me.Layer.Data.MaxValue
+            Me.Layer.Renderer.ScaleMin = Me.Layer.Data.MinValue
+            MyBase.StartEdit(editor)
+        End Sub
+
+        Public Overrides Sub EndEdit(editor As cLayerEditor)
+            ' Release renderer min/max values
+            Me.Layer.Renderer.ScaleMax = cCore.NULL_VALUE
+            Me.Layer.Renderer.ScaleMin = cCore.NULL_VALUE
+            MyBase.EndEdit(editor)
         End Sub
 
 #End Region ' Overrides
