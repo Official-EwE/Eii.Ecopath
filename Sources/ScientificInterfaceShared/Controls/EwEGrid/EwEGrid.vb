@@ -429,20 +429,25 @@ Namespace Controls.EwEGrid
             End Get
             Set(ByVal value As cUIContext)
 
-                ' Clean-up
-                If (Me.m_uic IsNot Nothing) Then
-                    RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
-                    Me.ClearData()
-                End If
+                Try
+                    ' Clean-up
+                    If (Me.m_uic IsNot Nothing) Then
+                        RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                        Me.ClearData()
+                    End If
 
-                ' Store UIC
-                Me.m_uic = value
+                    ' Store UIC
+                    Me.m_uic = value
 
-                ' Refresh when setting
-                If (Me.m_uic IsNot Nothing) Then
-                    Me.RefreshContent()
-                    AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
-                End If
+                    ' Refresh when setting
+                    If (Me.m_uic IsNot Nothing) Then
+                        Me.RefreshContent()
+                        AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf Me.OnStyleGuideChanged
+                    End If
+
+                Catch ex As Exception
+
+                End Try
 
             End Set
         End Property
