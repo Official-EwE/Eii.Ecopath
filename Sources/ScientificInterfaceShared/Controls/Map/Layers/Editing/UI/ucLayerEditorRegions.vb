@@ -22,6 +22,11 @@ Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorRegion
 
+        Public Sub New()
+            MyBase.New()
+            Me.InitializeComponent()
+        End Sub
+
 #Region " Overrides "
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -136,7 +141,6 @@ Namespace Controls.Map.Layers
         End Sub
 
 #End Region ' Event handlers
-
 
     End Class
 

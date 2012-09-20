@@ -23,6 +23,11 @@ Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorPort
 
+        Public Sub New()
+            MyBase.New()
+            Me.InitializeComponent()
+        End Sub
+
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
