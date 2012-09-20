@@ -750,15 +750,15 @@ Namespace Utilities
             Dim tData As Type = data.GetType().GetElementType
 
             ' For all rows
-            For i As Integer = 1 To data.GetUpperBound(0)
+            For i As Integer = 1 To data.GetUpperBound(0) - 1
 
-                ' Start of new row
+                ' Start of new rowg
                 bHasRowValues = False
                 sbRow.Length = 0
                 bUseCell = False
 
                 ' For all cols
-                For j As Integer = 1 To data.GetUpperBound(1)
+                For j As Integer = 1 To data.GetUpperBound(1) - 1
 
                     ' Append separator after last value
                     If bUseCell Then sbRow.Append(","c)
@@ -834,14 +834,14 @@ Namespace Utilities
             Dim tData As Type = data.GetType().GetElementType
 
             ' For all rows
-            For i As Integer = 1 To data.GetUpperBound(0)
+            For i As Integer = 1 To data.GetUpperBound(0) - 1
                 ' Still row data left?
                 If (i < astrLines.Length) Then
 
                     ' #Yes: split row into values
                     astrValues = astrLines(i - 1).Split(","c)
                     ' For all cols
-                    For j As Integer = 1 To data.GetUpperBound(1)
+                    For j As Integer = 1 To data.GetUpperBound(1) - 1
                         ' Ignore land filter?
                         If (land Is Nothing) Then
                             ' #Yes: use cell
@@ -942,7 +942,7 @@ Namespace Utilities
             End Select
 
             ' For all rows
-            For i As Integer = 1 To InRow
+            For i As Integer = 1 To InRow - 1
 
                 ' Start new line
                 bHasRowValues = False
@@ -950,7 +950,7 @@ Namespace Utilities
                 bUseCell = False
 
                 ' For all cols
-                For j As Integer = 1 To InCol
+                For j As Integer = 1 To InCol - 1
 
                     ' Append separator if already has values on this row
                     If bUseCell Then sbRow.Append(","c)
@@ -1040,14 +1040,14 @@ Namespace Utilities
             End Select
 
             ' For all rows
-            For i As Integer = 1 To InRow
+            For i As Integer = 1 To InRow - 1
                 ' Still row data left?
                 If (i < astrLines.Length) Then
 
                     ' #Yes: split row into values
                     astrValues = astrLines(i - 1).Split(","c)
                     ' For all cols
-                    For j As Integer = 1 To InCol
+                    For j As Integer = 1 To InCol - 1
                         ' Ignore land filter?
                         If (land Is Nothing) Then
                             ' #Yes: use cell
