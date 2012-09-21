@@ -141,7 +141,7 @@ Public Class cSelectionMonitor
             End Select
 
             If Not String.IsNullOrWhiteSpace(Me.m_cmdSelect.Status) Then
-                strSelection = String.Format(SharedResources.GENERIC_LABEL_DETAILED, strSelection, Me.m_cmdSelect.Status)
+                strSelection = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, strSelection, Me.m_cmdSelect.Status)
             End If
 
         End If
