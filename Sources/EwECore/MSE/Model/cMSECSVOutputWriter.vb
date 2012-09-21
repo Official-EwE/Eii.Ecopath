@@ -41,7 +41,7 @@ Friend Class cMSECSVOutputWriter
     End Sub
 
     Public Function getOutputFileName(ByVal strDataType As String, ByVal strDataName As String) As String
-        Dim strOutputFileName As String = Path.Combine(Me.DataDir, strDataType & " " & strDataName & ".csv")
+        Dim strOutputFileName As String = Path.Combine(Me.DataDir, cFileUtils.ToValidFileName(strDataType & " " & strDataName & ".csv", False))
         cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strOutputFileName), True)
         Return strOutputFileName
     End Function
