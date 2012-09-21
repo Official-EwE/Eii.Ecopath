@@ -231,7 +231,6 @@ Public Class frmNavigationPanel
             .Add("ndMSERun", eCoreExecutionState.EcosimLoaded, GetType(frmMSE), "") ' ToDo: connect to help
             .Add("ndMSEResults", eCoreExecutionState.EcosimLoaded, GetType(frmMSEResults), "") ' ToDo: connect to help
             .Add("ndMSEPlots", eCoreExecutionState.EcosimLoaded, GetType(frmMSEPlots), "") ' ToDo: connect to help
-            .Add("ndMSEhri", eCoreExecutionState.EcosimLoaded, GetType(frmHarvestRuleImpact), "") ' ToDo: connect to help
 
             'MSE Batch
             .Add("ndRunBatch", eCoreExecutionState.EcosimLoaded, GetType(frmMSERunBatch), "") ' ToDo: connect to help
