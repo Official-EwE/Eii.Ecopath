@@ -123,9 +123,6 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EwE6, Version=6.3.8046.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
-      <ExecutableExtension>.exe</ExecutableExtension>
-    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -1851,6 +1848,10 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
       <Name>EwEFlowDiagramPlugin %28EwE custom plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EwECustomPlugins\EwEMultiRunsPlugin\EwEMultiRunsPlugin.vbproj">
+      <Project>{C73CF657-456C-4397-B6A1-5DC8FA68AD48}</Project>
+      <Name>EwEMultiRunsPlugin %28EwE custom plugins\EwEMultiRunsPlugin\EwEMultiRunsPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
