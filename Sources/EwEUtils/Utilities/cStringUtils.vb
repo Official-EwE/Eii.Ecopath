@@ -916,6 +916,8 @@ Namespace Utilities
         Public Shared Function ArrayToString(ByVal data As Array, _
                                              ByVal iFilter As Integer, _
                                              ByVal filterIndex As eFilterIndexTypes, _
+                                             ByVal InRow As Integer, _
+                                             ByVal InCol As Integer, _
                                              Optional ByVal dataDepth As Integer(,) = Nothing, _
                                              Optional ByVal bWaterOnly As Boolean = True, _
                                              Optional ByVal valueSet As Object = Nothing) As String
@@ -927,22 +929,20 @@ Namespace Utilities
             Dim sbRow As New StringBuilder()
             Dim bHasRowValues As Boolean = False
             Dim bUseCell As Boolean = False
-            Dim InRow As Integer = 0
-            Dim InCol As Integer = 0
             Dim value As Object = Nothing
             Dim tData As Type = data.GetType().GetElementType
 
             Select Case filterIndex
                 Case eFilterIndexTypes.FirstIndex
-                    InRow = data.GetUpperBound(1)
-                    InCol = data.GetUpperBound(2)
+                    InRow = Math.Min(InRow, data.GetUpperBound(1))
+                    InCol = Math.Min(InCol, data.GetUpperBound(2))
                 Case eFilterIndexTypes.LastIndex
-                    InRow = data.GetUpperBound(0)
-                    InCol = data.GetUpperBound(1)
+                    InRow = Math.Min(InRow, data.GetUpperBound(0))
+                    InCol = Math.Min(InCol, data.GetUpperBound(1))
             End Select
 
             ' For all rows
-            For i As Integer = 1 To InRow - 1
+            For i As Integer = 1 To InRow
 
                 ' Start new line
                 bHasRowValues = False
@@ -950,7 +950,7 @@ Namespace Utilities
                 bUseCell = False
 
                 ' For all cols
-                For j As Integer = 1 To InCol - 1
+                For j As Integer = 1 To InCol
 
                     ' Append separator if already has values on this row
                     If bUseCell Then sbRow.Append(","c)
@@ -1013,6 +1013,8 @@ Namespace Utilities
                                             ByVal iFilter As Integer, _
                                             ByVal filterIndex As eFilterIndexTypes, _
                                             ByVal data As Array, _
+                                            ByVal InRow As Integer, _
+                                            ByVal InCol As Integer, _
                                             Optional ByVal land As Integer(,) = Nothing, _
                                             Optional ByVal bWaterOnly As Boolean = True, _
                                             Optional ByVal valueGet As Object = Nothing,
@@ -1024,30 +1026,28 @@ Namespace Utilities
             Dim astrLines As String() = strData.Replace("""", "").Split(";"c)
             Dim astrValues As String() = Nothing
             Dim iColumn As Integer = 0
-            Dim InRow As Integer = 0
-            Dim InCol As Integer = 0
             Dim value As Object = Nothing
             Dim tData As Type = data.GetType().GetElementType
             Dim bUseValue As Boolean = False
 
             Select Case filterIndex
                 Case eFilterIndexTypes.FirstIndex
-                    InRow = data.GetUpperBound(1)
-                    InCol = data.GetUpperBound(2)
+                    InRow = Math.Min(InRow, data.GetUpperBound(1))
+                    InCol = Math.Min(InCol, data.GetUpperBound(2))
                 Case eFilterIndexTypes.LastIndex
-                    InRow = data.GetUpperBound(0)
-                    InCol = data.GetUpperBound(1)
+                    InRow = Math.Min(InRow, data.GetUpperBound(0))
+                    InCol = Math.Min(InCol, data.GetUpperBound(1))
             End Select
 
             ' For all rows
-            For i As Integer = 1 To InRow - 1
+            For i As Integer = 1 To InRow
                 ' Still row data left?
                 If (i < astrLines.Length) Then
 
                     ' #Yes: split row into values
                     astrValues = astrLines(i - 1).Split(","c)
                     ' For all cols
-                    For j As Integer = 1 To InCol - 1
+                    For j As Integer = 1 To InCol
                         ' Ignore land filter?
                         If (land Is Nothing) Then
                             ' #Yes: use cell

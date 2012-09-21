@@ -7696,7 +7696,8 @@ Namespace DataSources
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "HabitatMap", ""))
                     ' Read only water cells with values for this habitat index
-                    cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.PHabType, ecospaceDS.Depth, True, sMax:=1)
+                    cStringUtils.StringToArray(strMap, i, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.PHabType, _
+                                               ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth, True, sMax:=1)
                     i += 1
                 End While
 
@@ -7792,7 +7793,8 @@ Namespace DataSources
 
                     drow("HabitatName") = ecospaceDS.HabitatText(iHabitat)
                     drow("Sequence") = iHabitat
-                    drow("HabitatMap") = cStringUtils.ArrayToString(ecospaceDS.PHabType, iHabitat, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Depth, True)
+                    drow("HabitatMap") = cStringUtils.ArrayToString(ecospaceDS.PHabType, iHabitat, cStringUtils.eFilterIndexTypes.LastIndex, _
+                                                                    ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -8002,7 +8004,8 @@ Namespace DataSources
                     Next
 
                     strMap = CStr(Me.m_db.ReadSafe(reader, "CapacityMap", ""))
-                    cStringUtils.StringToArray(strMap, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.HabCapInput, ecospaceDS.Depth)
+                    cStringUtils.StringToArray(strMap, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.HabCapInput, _
+                                               ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth)
 
                 End While
                 Me.m_db.ReleaseReader(reader)
@@ -8137,7 +8140,8 @@ Namespace DataSources
                         sbTemp.Append(cStringUtils.FormatSingle(ecospaceDS.Prefcol(iGroup, iMonth)))
                     Next
                     drow("PrefCol") = sbTemp.ToString()
-                    drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, ecospaceDS.Depth, True)
+                    drow("CapacityMap") = cStringUtils.ArrayToString(ecospaceDS.HabCapInput, iGroup, cStringUtils.eFilterIndexTypes.LastIndex, _
+                                                                     ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth, True)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -8336,13 +8340,13 @@ Namespace DataSources
                     strMap = CStr(Me.m_db.ReadSafe(reader, "PortMap", ""))
                     bSucces = bSucces And cStringUtils.StringToArray(strMap, _
                                                                      iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
-                                                                     ecospaceDS.Port)
+                                                                     ecospaceDS.Port, ecospaceDS.InRow, ecospaceDS.InCol)
 
                     ' Read sailing cost map for a given fleet and water cells only
                     strMap = CStr(Me.m_db.ReadSafe(reader, "SailCostMap", ""))
                     bSucces = bSucces And cStringUtils.StringToArray(strMap, _
                                                                      iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, _
-                                                                     ecospaceDS.Sail, ecospaceDS.Depth, True)
+                                                                     ecospaceDS.Sail, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth, True)
 
                 End While
 
@@ -8475,8 +8479,8 @@ Namespace DataSources
 
                     ' Update fleet vars
                     drow("EffPower") = ecospaceDS.EffPower(iFleet)
-                    drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex)
-                    drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth, True)
+                    drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.InRow, ecospaceDS.InCol)
+                    drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth, True)
 
                     ' Wrap up: was this a new row?
                     If bNewRow Then
@@ -8951,7 +8955,8 @@ Namespace DataSources
                     ecospaceDS.ImportanceLayerWeight(iLayer) = CSng(readerLayer("Weight"))
 
                     Dim strMap As String = CStr(Me.m_db.ReadSafe(readerLayer, "LayerMap", ""))
-                    bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.ImportanceLayerMap, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.ImportanceLayerMap, _
+                                                                     ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth)
                 End While
 
             Catch ex As Exception
@@ -9015,7 +9020,8 @@ Namespace DataSources
                     drow("Description") = ecospaceDS.ImportanceLayerDescription(iLayer)
                     drow("Weight") = ecospaceDS.ImportanceLayerWeight(iLayer)
                     drow("Sequence") = iLayer
-                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.ImportanceLayerMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth)
+                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.ImportanceLayerMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth)
 
                     If bNewRow Then
                         writer.AddRow(drow)
@@ -9158,7 +9164,8 @@ Namespace DataSources
                     ecospaceDS.EnvironmentalLayerDescription(iLayer) = CStr(readerLayer("LayerDescription"))
 
                     Dim strMap As String = CStr(Me.m_db.ReadSafe(readerLayer, "LayerMap", ""))
-                    bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.EnvironmentalLayerMap, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(strMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.EnvironmentalLayerMap, _
+                                                                     ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth)
                 End While
 
             Catch ex As Exception
@@ -9252,7 +9259,8 @@ Namespace DataSources
                     drow("Sequence") = iLayer
                     drow("LayerName") = ecospaceDS.EnvironmentalLayerName(iLayer)
                     drow("LayerDescription") = ecospaceDS.EnvironmentalLayerDescription(iLayer)
-                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.EnvironmentalLayerMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.Depth)
+                    drow("LayerMap") = cStringUtils.ArrayToString(ecospaceDS.EnvironmentalLayerMap, iLayer, cStringUtils.eFilterIndexTypes.FirstIndex, _
+                                                                  ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth)
 
                     If bNewRow Then
                         writer.AddRow(drow)

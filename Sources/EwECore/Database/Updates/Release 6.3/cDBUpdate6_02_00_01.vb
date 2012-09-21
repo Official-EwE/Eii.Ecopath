@@ -333,7 +333,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, i, cStringUtils.eFilterIndexTypes.LastIndex, dataDepth, True)
+                drow("HabitatMap") = cStringUtils.ArrayToString(dataHabitat, i, cStringUtils.eFilterIndexTypes.LastIndex, InRow, InCol, dataDepth, True)
                 drow.EndEdit()
             End If
         Next
@@ -379,7 +379,8 @@ Friend Class cDBUpdate6_02_00_01
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
                 ' Save ports on land only
-                drow("CapacityMap") = cStringUtils.ArrayToString(dataHabCap, i, cStringUtils.eFilterIndexTypes.LastIndex, dataDepth)
+                drow("CapacityMap") = cStringUtils.ArrayToString(dataHabCap, i, cStringUtils.eFilterIndexTypes.LastIndex, _
+                                                                 InRow, InCol, dataDepth)
                 drow.EndEdit()
             End If
         Next
@@ -395,9 +396,9 @@ Friend Class cDBUpdate6_02_00_01
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
                 ' Save ports on land only
-                drow("PortMap") = cStringUtils.ArrayToString(dataPort, i, cStringUtils.eFilterIndexTypes.FirstIndex)
+                drow("PortMap") = cStringUtils.ArrayToString(dataPort, i, cStringUtils.eFilterIndexTypes.FirstIndex, InRow, InCol)
                 ' Save sailing cost on water only
-                drow("SailCostMap") = cStringUtils.ArrayToString(dataSailingCost, i, cStringUtils.eFilterIndexTypes.FirstIndex, dataDepth)
+                drow("SailCostMap") = cStringUtils.ArrayToString(dataSailingCost, i, cStringUtils.eFilterIndexTypes.FirstIndex, InRow, InCol, dataDepth)
                 drow.EndEdit()
             End If
         Next
@@ -412,7 +413,7 @@ Friend Class cDBUpdate6_02_00_01
             drow = dt.Rows.Find(key)
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
-                drow("LayerMap") = cStringUtils.ArrayToString(dataImportance, i, cStringUtils.eFilterIndexTypes.LastIndex, dataDepth)
+                drow("LayerMap") = cStringUtils.ArrayToString(dataImportance, i, cStringUtils.eFilterIndexTypes.LastIndex, InRow, InCol, dataDepth)
                 drow.EndEdit()
             End If
         Next
