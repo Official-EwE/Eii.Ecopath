@@ -222,6 +222,12 @@ Namespace MSE
             End Get
         End Property
 
+        Public ReadOnly Property FCompareStats() As cCoreInputOutputList(Of cCoreInputOutputBase)
+            Get
+                Return Me.m_lstFStats
+            End Get
+        End Property
+
 
         Public ReadOnly Property FleetStats() As cCoreInputOutputList(Of cCoreInputOutputBase)
             Get
@@ -776,7 +782,7 @@ Namespace MSE
                 m_parameters.NTrials = Me.m_MSEdata.NTrials
                 m_parameters.RegulatoryMode = Me.m_MSEdata.RegulationMode
                 m_parameters.EffortSource = Me.m_MSEdata.EffortSource
-   
+
                 m_parameters.MSYStartTimeIndex = Me.m_MSEdata.MSYStartTimeIndex
                 m_parameters.MSYRunSilent = Me.m_MSEdata.MSYRunSilent
                 m_parameters.MSYEvaluateValue = Me.m_MSEdata.MSYEvaluateValue
