@@ -21,6 +21,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region 'Imports
 
@@ -91,6 +92,28 @@ Namespace Controls.Map.Layers
 
         Protected Overrides Function IsStyleValid() As Boolean
             Return True
+        End Function
+
+        Public Overrides Function GetDisplayText(value As Object) As String
+
+            Dim asValues As Single() = Nothing
+            Dim sAngle As Single = 0
+            Dim sScale As Single = 1.0
+
+            If TypeOf value Is Single() Then
+                asValues = DirectCast(value, Single())
+                If asValues.Length > 0 Then
+                    sAngle = asValues(0)
+                    If asValues.Length > 1 Then
+                        sScale = asValues(1)
+                    End If
+                End If
+
+                Return String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DOUBLE, _
+                                     cStringUtils.FormatNumber(sAngle), cStringUtils.FormatNumber(sScale))
+            End If
+            Return ""
+
         End Function
 
     End Class

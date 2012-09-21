@@ -21,6 +21,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region 'Imports
 
@@ -114,6 +115,10 @@ Namespace Controls.Map.Layers
             Me.m_brFore.Dispose()
             Me.m_brFore = Nothing
         End Sub
+
+        Public Overrides Function GetDisplayText(value As Object) As String
+            Return cStringUtils.FormatNumber(value)
+        End Function
 
     End Class
 

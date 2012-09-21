@@ -165,6 +165,11 @@ Namespace Controls.Map.Layers
             Me.m_brFore = Nothing
         End Sub
 
+        Public Overrides Function GetDisplayText(value As Object) As String
+            If (Object.Equals(value, cCore.NULL_VALUE)) Then Return ""
+            Return cStringUtils.FormatNumber(value)
+        End Function
+
     End Class
 
 End Namespace

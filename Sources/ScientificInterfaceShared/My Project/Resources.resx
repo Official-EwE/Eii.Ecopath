@@ -2615,7 +2615,7 @@
     <value>GS||Unassim. cons.|Unassimilated consumption</value>
   </data>
   <data name="VARIABLE_PREDMORT" xml:space="preserve">
-    <value>Predation mortality</value>
+    <value>M2||Pred. mort.|Predation mortality</value>
   </data>
   <data name="HEADER_OTHERMORT" xml:space="preserve">
     <value>Other mortality</value>
@@ -2631,5 +2631,26 @@
   </data>
   <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
     <value>QB|Q/B||Consumption over biomass</value>
+  </data>
+  <data name="VARIABLE_DETFATE" xml:space="preserve">
+    <value>Detritus fate</value>
+  </data>
+  <data name="VARIABLE_EMIG" xml:space="preserve">
+    <value>Emigration</value>
+  </data>
+  <data name="VARIABLE_EMIGRATE" xml:space="preserve">
+    <value>e||Emig. rate|Emigration rate</value>
+  </data>
+  <data name="VARIABLE_IMMIG" xml:space="preserve">
+    <value>Immigration</value>
+  </data>
+  <data name="VARIABLE_OTHERMORTINPUT" xml:space="preserve">
+    <value>M0||Other mortality</value>
+  </data>
+  <data name="VARIABLE_STANZAMORTALITY" xml:space="preserve">
+    <value>Z||Tot. mort. rate|Total mortality rate</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS" xml:space="preserve">
+    <value>lon: {0}, lat: {1}, value: {2}</value>
   </data>
 </root>

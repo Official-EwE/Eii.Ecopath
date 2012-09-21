@@ -44,6 +44,8 @@ Namespace Properties
         Private m_lprop As New List(Of cProperty)
         ''' <summary>The event that occurred.</summary>
         Private m_event As SelectionChangeEventType = SelectionChangeEventType.Clear
+        ''' <summary>Auxillary status information.</summary>
+        Private m_strStatus As String = ""
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -65,11 +67,13 @@ Namespace Properties
         ''' the field that was selected.</param>
         ''' <param name="sourceSec">The <see cref="cCoreInputOutputBase">cCoreInputOutput</see> 
         ''' object that acts as secundary index to the selection.</param>
+        ''' <param name="strStatus">Optional status message to include.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal pm As cPropertyManager, _
                                     ByVal source As cCoreInputOutputBase, _
                                     ByVal varName As eVarNameFlags, _
-                                    Optional ByVal sourceSec As cCoreInputOutputBase = Nothing)
+                                    Optional ByVal sourceSec As cCoreInputOutputBase = Nothing, _
+                                    Optional ByVal strStatus As String = "")
 
             Dim prop As cProperty = Nothing
 
@@ -78,7 +82,7 @@ Namespace Properties
                 prop = pm.GetProperty(source, varName, sourceSec)
             End If
 
-            Me.Invoke(prop)
+            Me.Invoke(prop, strStatus)
 
         End Sub
 
@@ -91,6 +95,7 @@ Namespace Properties
         Public Overloads Sub Invoke()
             ' Clear list of props
             Me.m_lprop.Clear()
+            Me.m_strStatus = ""
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -102,12 +107,14 @@ Namespace Properties
         ''' </summary>
         ''' <param name="prop">The <see cref="cProperty">cProperty</see> that 
         ''' was selected.</param>
+        ''' <param name="strStatus">Optional status message to include.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal prop As cProperty)
+        Public Overloads Sub Invoke(ByVal prop As cProperty, _
+                                    Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
-            ' Store prop
             Me.m_lprop.Add(prop)
+            Me.m_strStatus = strStatus
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -120,11 +127,12 @@ Namespace Properties
         ''' <param name="aprop">Array of <see cref="cProperty">cProperty</see> 
         ''' instances that were selected.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal aprop() As cProperty)
+        Public Overloads Sub Invoke(ByVal aprop() As cProperty, _
+                                    Optional strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
-            ' Store prop
             Me.m_lprop.AddRange(aprop)
+            Me.m_strStatus = strStatus
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -139,12 +147,14 @@ Namespace Properties
         ''' <param name="event">The <see cref="SelectionChangeEventType">event</see> that fired this command.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal lprop As List(Of cProperty), _
-                                    ByVal [event] As SelectionChangeEventType)
+                                    ByVal [event] As SelectionChangeEventType, _
+                                    Optional ByVal strStatus As String = "")
             ' Clear list of props
             Me.m_lprop.Clear()
             ' Store prop
             Me.m_lprop.AddRange(lprop)
             Me.m_event = [event]
+            Me.m_strStatus = strStatus
             ' Fire the command
             MyBase.Invoke()
         End Sub
@@ -187,6 +197,17 @@ Namespace Properties
         Public ReadOnly Property EventType() As SelectionChangeEventType
             Get
                 Return Me.m_event
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the status message associated with the selection.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property Status As String
+            Get
+                Return Me.m_strStatus
             End Get
         End Property
 

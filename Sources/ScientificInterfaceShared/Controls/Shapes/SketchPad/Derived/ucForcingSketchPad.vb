@@ -75,12 +75,11 @@ Namespace Controls
                         sScale = CSng(Me.YearToX(i, iWidth) / iWidth)
                     Next
                 Else
-                    Dim lstrMonths As New List(Of String)
                     For i As Integer = 1 To cCore.N_MONTHS
-                        lstrMonths.Add(New Date(1, i, 1).ToString("MMM"))
+                        lstrLabels.Add(New Date(1, i, 1).ToString("MMM"))
                     Next
                     ' Hack: one extra to center labels under value ranges
-                    lstrMonths.Add("")
+                    lstrLabels.Add("")
                     sScale = 1
                 End If
             End If

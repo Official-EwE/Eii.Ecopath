@@ -108,6 +108,11 @@ Namespace Controls.Map.Layers
             Me.m_brFore = Nothing
         End Sub
 
+        Public Overrides Function GetDisplayText(value As Object) As String
+            If String.IsNullOrWhiteSpace(CStr(value)) Then Return ""
+            Return CStr(value)
+        End Function
+
     End Class
 
 End Namespace

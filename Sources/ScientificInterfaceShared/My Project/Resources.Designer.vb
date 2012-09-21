@@ -1523,6 +1523,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to lon: {0}, lat: {1}, value: {2}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_MAPPOS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_MAPPOS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_NAMEANDSEQUENCE() As String
@@ -6705,6 +6714,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Detritus fate.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_DETFATE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_DETFATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Detritus import.
         '''</summary>
         Public ReadOnly Property VARIABLE_DETIMP() As String
@@ -6750,6 +6768,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Emigration.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_EMIG() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EMIG", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to e||Emig. rate|Emigration rate.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_EMIGRATE() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_EMIGRATE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to GE|G/E||Production over consumption.
         '''</summary>
         Public ReadOnly Property VARIABLE_GEINPUT() As String
@@ -6773,6 +6809,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_GS() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_GS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Immigration.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_IMMIG() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_IMMIG", resourceCulture)
             End Get
         End Property
         
@@ -6849,6 +6894,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to M0||Other mortality.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_OTHERMORTINPUT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_OTHERMORTINPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to PB|P/B||Production over biomass.
         '''</summary>
         Public ReadOnly Property VARIABLE_PBINPUT() As String
@@ -6858,7 +6912,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Predation mortality.
+        '''  Looks up a localized string similar to M2||Pred. mort.|Predation mortality.
         '''</summary>
         Public ReadOnly Property VARIABLE_PREDMORT() As String
             Get
@@ -6881,6 +6935,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_QBOUTPUT() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_QBOUTPUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Z||Tot. mort. rate|Total mortality rate.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_STANZAMORTALITY() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_STANZAMORTALITY", resourceCulture)
             End Get
         End Property
         

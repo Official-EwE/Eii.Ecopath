@@ -154,6 +154,7 @@ Namespace Controls.Map.Layers
                                        ByVal ptfTL As PointF, _
                                        ByVal ptfBR As PointF, _
                                        ByVal style As cStyleGuide.eStyleFlags)
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' States whether the current visual style is valid
@@ -220,6 +221,14 @@ Namespace Controls.Map.Layers
                 Me.m_sScaleMin = value
             End Set
         End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the display text for a given cell in the underlying data.
+        ''' </summary>
+        ''' <returns>The display text for a given cell in the underlying data.</returns>
+        ''' -----------------------------------------------------------------------
+        Public MustOverride Function GetDisplayText(value As Object) As String
 
     End Class
 

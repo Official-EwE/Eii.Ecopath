@@ -60,7 +60,7 @@ Namespace Controls.Map.Layers
                                     ByVal ptfTL As System.Drawing.PointF, _
                                     ByVal ptfBR As System.Drawing.PointF, _
                                     ByVal style As Style.cStyleGuide.eStyleFlags)
-            Throw New NotImplementedException("ToDo: use this system instead of rendering individual cells")
+            Throw New NotImplementedException("ToDo: override this renderer")
         End Sub
 
         ''' -----------------------------------------------------------------------

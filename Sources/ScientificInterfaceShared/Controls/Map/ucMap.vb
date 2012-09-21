@@ -26,6 +26,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Properties
 
 #End Region ' Imports
 
@@ -51,7 +52,7 @@ Namespace Controls.Map
         Private m_uic As cUIContext = Nothing
         ''' <summary>The bitmap to draw on.</summary>
         Private m_bmp As Bitmap = Nothing
-         ''' <summary>Map title.</summary>
+        ''' <summary>Map title.</summary>
         Private m_strTitle As String = ""
         ''' <summary>List of layers.</summary>
         Private m_layers As New List(Of cLayer)
@@ -59,6 +60,8 @@ Namespace Controls.Map
         Private m_layerSelected As cLayer = Nothing
         ''' <summary>States whether map must be refreshed</summary>
         Private m_bRefreshMap As Boolean = False
+
+        Private m_cmdPropSelect As cPropertySelectionCommand = Nothing
 
         Public Sub New()
 
@@ -308,14 +311,35 @@ Namespace Controls.Map
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
 
-            If (Me.CanEdit = False) Then Return
-            If (Me.Capture = False) Then Return
-
+            ' Get value in selected layer
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim InRow As Integer = bm.InRow
             Dim InCol As Integer = bm.InCol
+            Dim l As cLayer = Me.m_layerSelected
 
-            Me.ProcessMouseInput(e, InRow, InCol)
+            If (Me.CanEdit And Me.Capture) Then
+                Me.ProcessMouseInput(e, InRow, InCol)
+            ElseIf (l IsNot Nothing) Then
+                If (Me.m_layerSelected IsNot Nothing) Then
+
+                    Dim ptCell As Point = Me.GetCellIndex(e.Location, InRow, InCol)
+                    Dim sLat As Single = bm.RowToLat(ptCell.Y)
+                    Dim sLon As Single = bm.ColToLon(ptCell.X)
+                    Dim strVal As String = ""
+                    If TypeOf l Is cRasterLayer Then
+                        strVal = l.Renderer.GetDisplayText(DirectCast(l, cRasterLayer).Value(ptCell.Y, ptCell.X))
+                    End If
+
+                    If Not String.IsNullOrWhiteSpace(strVal) Then
+                        Dim sel As cPropertySelectionCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
+                        If sel IsNot Nothing Then
+                            sel.Invoke(sel.Selection, String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
+                                                                    Me.UIContext.StyleGuide.FormatNumber(sLon), _
+                                                                    Me.UIContext.StyleGuide.FormatNumber(sLat), strVal))
+                        End If
+                    End If
+                End If
+            End If
 
         End Sub
 

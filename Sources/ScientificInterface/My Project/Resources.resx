@@ -243,7 +243,7 @@ Description: {1}</value>
     <comment>{0}=forcing function index</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_MIGRATING" xml:space="preserve">
-    <value>Migrating?</value>
+    <value>Migrating</value>
   </data>
   <data name="ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT" xml:space="preserve">
     <value>Are you sure you want to delete {0} habitat(s)? This action cannot be undone.</value>
@@ -1005,7 +1005,7 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
     <comment>{0}=habitat name</comment>
   </data>
   <data name="ECOSPACE_DISPERSAL_ADVECTED" xml:space="preserve">
-    <value>Advected?</value>
+    <value>Advected</value>
   </data>
   <data name="ECOSIM_GROUPINFO_TEMPSPREADLEFT" xml:space="preserve">
     <value>Temperature tolerance below optimum(&gt;0)</value>

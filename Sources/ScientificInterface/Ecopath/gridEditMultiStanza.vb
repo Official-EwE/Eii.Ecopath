@@ -40,7 +40,7 @@ Public Class gridEditMultiStanza
         StartAge
         LeadingB
         Biomass
-        PBInput
+        Z
         LeadingCB
         CBInput
     End Enum
@@ -86,7 +86,7 @@ Public Class gridEditMultiStanza
         Me(0, eColumnTypes.StartAge) = New EwEColumnHeaderCell(SharedResources.HEADER_STARTAGE)
         Me(0, eColumnTypes.LeadingB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
         Me(0, eColumnTypes.Biomass) = New EwEColumnHeaderCell(eVarNameFlags.Biomass, SharedResources.GENERIC_LABEL_UNIT, cStyleGuide.eUnitType.Currency)
-        Me(0, eColumnTypes.PBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
+        Me(0, eColumnTypes.Z) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTALMORTALITY_UNIT, cStyleGuide.eUnitType.Time)
         Me(0, eColumnTypes.LeadingCB) = New EwEColumnHeaderCell(SharedResources.HEADER_LEADING)
         Me(0, eColumnTypes.CBInput) = New EwEColumnHeaderCell(SharedResources.HEADER_QB_UNIT, cStyleGuide.eUnitType.Time)
 
@@ -142,8 +142,8 @@ Public Class gridEditMultiStanza
             ewec = New EwECell(0, GetType(Single))
             ewec.SuppressZero(cCore.NULL_VALUE) = True
             ewec.Value = Me.m_stanzagroup.Mortality(iStanza)
-            Me(iRow, eColumnTypes.PBInput) = ewec
-            Me(iRow, eColumnTypes.PBInput).Behaviors.Add(Me.EwEEditHandler)
+            Me(iRow, eColumnTypes.Z) = ewec
+            Me(iRow, eColumnTypes.Z).Behaviors.Add(Me.EwEEditHandler)
 
             ' LeadingCB
             Me(iRow, eColumnTypes.LeadingCB) = New Cells.Real.CheckBox(Me.m_stanzagroup.LeadingCB = iStanza)
@@ -184,7 +184,7 @@ Public Class gridEditMultiStanza
             'Biomass
             Me.m_stanzagroup.Biomass(iStanza) = CSng(Me(iStanza, eColumnTypes.Biomass).Value)
             'Total Mortality
-            Me.m_stanzagroup.Mortality(iStanza) = CSng(Me(iStanza, eColumnTypes.PBInput).Value)
+            Me.m_stanzagroup.Mortality(iStanza) = CSng(Me(iStanza, eColumnTypes.Z).Value)
             'Consumption/Biomass
             Me.m_stanzagroup.CB(iStanza) = CSng(Me(iStanza, eColumnTypes.CBInput).Value)
         Next

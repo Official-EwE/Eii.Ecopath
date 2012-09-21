@@ -892,7 +892,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Advected?.
+        '''  Looks up a localized string similar to Advected.
         '''</summary>
         Public ReadOnly Property ECOSPACE_DISPERSAL_ADVECTED() As String
             Get
@@ -928,7 +928,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Migrating?.
+        '''  Looks up a localized string similar to Migrating.
         '''</summary>
         Public ReadOnly Property ECOSPACE_DISPERSAL_MIGRATING() As String
             Get

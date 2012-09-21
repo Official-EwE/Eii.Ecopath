@@ -22,6 +22,7 @@ Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Utilities
 
 #End Region 'Imports
 
@@ -109,6 +110,11 @@ Namespace Controls.Map.Layers
             End If
 
         End Sub
+
+        Public Overrides Function GetDisplayText(value As Object) As String
+            If (Object.Equals(value, cCore.NULL_VALUE)) Then Return ""
+            Return cStringUtils.FormatNumber(value)
+        End Function
 
     End Class
 

@@ -89,6 +89,10 @@ Namespace Controls.Map.Layers
             g.DrawImage(My.Resources.map, rc)
         End Sub
 
+        Public Overrides Function GetDisplayText(value As Object) As String
+            Return ""
+        End Function
+
     End Class
 
 End Namespace

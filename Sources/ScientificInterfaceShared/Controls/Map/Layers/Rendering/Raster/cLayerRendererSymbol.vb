@@ -70,6 +70,10 @@ Namespace Controls.Map.Layers
             Return True
         End Function
 
+        Public Overrides Function GetDisplayText(value As Object) As String
+            Return ""
+        End Function
+
     End Class
 
 End Namespace
