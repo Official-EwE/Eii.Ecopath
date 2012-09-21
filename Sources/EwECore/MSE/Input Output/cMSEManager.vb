@@ -79,6 +79,8 @@ Namespace MSE
 
         Private m_lstBioEstStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEBiomassStats, 1)
 
+        Private m_lstFStats As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.MSEFStats, 1)
+
         Private m_TotFleetValue As cMSEStats
 
         Private m_output As cMSEOutput
@@ -251,6 +253,12 @@ Namespace MSE
         Public ReadOnly Property BioEstimatesStats(ByVal iGroupIndex As Integer) As cMSEStats
             Get
                 Return DirectCast(Me.m_lstBioEstStats(iGroupIndex), cMSEStats) 'Return Me.m_lstBioEstStats
+            End Get
+        End Property
+
+        Public ReadOnly Property FCompare(ByVal iGroupIndex As Integer) As cMSEStats
+            Get
+                Return DirectCast(Me.m_lstFStats(iGroupIndex), cMSEStats) 'Return Me.m_lstBioEstStats
             End Get
         End Property
 
@@ -588,6 +596,9 @@ Namespace MSE
                 Me.m_lstGroupOutputs.Add(New cMSEGroupOutput(Me.m_core, Me.m_MSEdata, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+
+                Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+                ' Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FActualStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
             Next
 
             If Me.m_core.PluginManager IsNot Nothing Then

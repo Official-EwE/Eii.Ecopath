@@ -753,6 +753,9 @@ Namespace MSE
             Me.m_data.EffortStats.ComputeStats()
             Me.m_data.BioEstStats.ComputeStats()
 
+            Me.m_data.FStats.ComputeStats()
+            Me.m_data.FStats.ComputeStats()
+
             Me.m_data.ValueFleetStats.ComputeStats()
 
         End Sub
@@ -767,6 +770,9 @@ Namespace MSE
             Me.m_data.CatchFleetStats.AddIteration()
             Me.m_data.CatchGroupStats.AddIteration()
             Me.m_data.EffortStats.AddIteration()
+
+            Me.m_data.FStats.AddIteration()
+            ' Me.m_data.FActualStats.AddIteration()
 
             Me.m_data.BioEstStats.AddIteration()
 
@@ -1451,10 +1457,10 @@ Namespace MSE
 
             For iFlt = 1 To Me.m_data.nFleets
                 Me.m_LPSolver.SetCoefficient(Me.m_GoalRowID, Me.m_FleetCode(iFlt), VPerEffort(iFlt))
-                Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Rational.PositiveInfinity)
+                Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
 
-            Me.m_LPSolver.Solve(New SimplexSolverParams)
+            Me.m_LPSolver.Solve()
 
             For iFlt = 1 To Me.m_data.nFleets
                 Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToDouble)
@@ -2550,12 +2556,17 @@ Namespace MSE
                         Me.m_data.CatchYear(iflt, igrp) += Me.m_esData.ResultsSumCatchByGroupGear(igrp, iflt, CInt(iTime))
                     Next
                 Next
-
-
-
+                Dim sumQ As Single
                 For igrp = 1 To Me.m_data.nLiving
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
+
+                    sumQ = 0
+                    For iflt = 1 To Me.m_esData.nGear
+                        sumQ += Me.m_data.QStar(igrp, iflt)
+                    Next iflt
+                    Me.m_data.FStats.AddValue(igrp, CInt(iTime), sumQ - Me.m_data.FTarget(igrp))
+
                 Next igrp
 
                 Dim sumValue As Single

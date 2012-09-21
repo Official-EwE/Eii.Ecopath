@@ -2051,6 +2051,9 @@ Namespace Core
         EcospaceSpatialDataConnection = 107
         EcospaceSpatialDataSource = 108
 
+
+        MSEFStats = 109
+
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
         ''' </summary>
