@@ -89,6 +89,30 @@ Namespace My
                 Me("ReadAsMonth") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("40")>  _
+        Public Property SplitterPos() As Single
+            Get
+                Return CType(Me("SplitterPos"),Single)
+            End Get
+            Set
+                Me("SplitterPos") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property CreateUniqueRunFolder() As Boolean
+            Get
+                Return CType(Me("CreateUniqueRunFolder"),Boolean)
+            End Get
+            Set
+                Me("CreateUniqueRunFolder") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

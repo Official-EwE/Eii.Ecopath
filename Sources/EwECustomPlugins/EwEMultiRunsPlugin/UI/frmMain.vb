@@ -53,6 +53,7 @@ Public Class frmMain
 
         Me.m_tbxSource.Text = My.Settings.PathIn
         Me.m_tbxDest.Text = My.Settings.PathOut
+        Me.m_cbCreateRunFolder.Checked = My.Settings.CreateUniqueRunFolder
         If My.Settings.ReadAsMonth Then
             Me.m_rbMonthly.Checked = True
         Else
@@ -279,6 +280,7 @@ Public Class frmMain
         My.Settings.PathIn = Me.m_tbxSource.Text
         My.Settings.PathOut = Me.m_tbxDest.Text
         My.Settings.ReadAsMonth = Me.m_rbMonthly.Checked
+        My.Settings.CreateUniqueRunFolder = Me.m_cbCreateRunFolder.Checked
         My.Settings.Save()
     End Sub
 

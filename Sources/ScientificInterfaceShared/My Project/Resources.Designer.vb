@@ -1523,11 +1523,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to lon: {0}, lat: {1}, value: {2}.
+        '''  Looks up a localized string similar to lon: {0}, lat: {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_MAPPOS() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_MAPPOS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to lon: {0}, lat: {1}, value: {2}.
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_MAPPOS_VALUE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_MAPPOS_VALUE", resourceCulture)
             End Get
         End Property
         

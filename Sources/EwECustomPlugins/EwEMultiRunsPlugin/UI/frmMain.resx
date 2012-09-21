@@ -172,7 +172,7 @@
     <value>84, 49</value>
   </data>
   <data name="m_clbFilesSrc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>436, 70</value>
+    <value>436, 111</value>
   </data>
   <data name="m_clbFilesSrc.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -214,7 +214,7 @@
     <value>m_hdrIn</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8001.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8050.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Parent" xml:space="preserve">
     <value>m_csMain.Panel1</value>
@@ -292,7 +292,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbAnnual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 148</value>
+    <value>84, 189</value>
   </data>
   <data name="m_rbAnnual.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 17</value>
@@ -349,7 +349,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_rbMonthly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 125</value>
+    <value>84, 166</value>
   </data>
   <data name="m_rbMonthly.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 17</value>
@@ -412,7 +412,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblReadAs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 127</value>
+    <value>9, 168</value>
   </data>
   <data name="m_lblReadAs.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 13</value>
@@ -450,6 +450,33 @@
   <data name="m_csMain.Panel1MinSize" type="System.Int32, mscorlib">
     <value>120</value>
   </data>
+  <data name="m_cbCreateRunFolder.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbCreateRunFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>84, 144</value>
+  </data>
+  <data name="m_cbCreateRunFolder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 17</value>
+  </data>
+  <data name="m_cbCreateRunFolder.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_cbCreateRunFolder.Text" xml:space="preserve">
+    <value>&amp;Create unique folder for every run</value>
+  </data>
+  <data name="&gt;&gt;m_cbCreateRunFolder.Name" xml:space="preserve">
+    <value>m_cbCreateRunFolder</value>
+  </data>
+  <data name="&gt;&gt;m_cbCreateRunFolder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbCreateRunFolder.Parent" xml:space="preserve">
+    <value>m_csMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_cbCreateRunFolder.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_hrdOut.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -475,13 +502,13 @@
     <value>m_hrdOut</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8001.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8050.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Parent" xml:space="preserve">
     <value>m_csMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_tbxDest.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -505,7 +532,37 @@
     <value>m_csMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_tbxDest.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
+  </data>
+  <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="m_btnRun.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
+    <value>526, 140</value>
+  </data>
+  <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnRun.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="m_btnRun.Text" xml:space="preserve">
+    <value>&amp;Run</value>
+  </data>
+  <data name="&gt;&gt;m_btnRun.Name" xml:space="preserve">
+    <value>m_btnRun</value>
+  </data>
+  <data name="&gt;&gt;m_btnRun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnRun.Parent" xml:space="preserve">
+    <value>m_csMain.Panel2</value>
+  </data>
+  <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_clbValues.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -517,7 +574,7 @@
     <value>84, 50</value>
   </data>
   <data name="m_clbValues.Size" type="System.Drawing.Size, System.Drawing">
-    <value>436, 123</value>
+    <value>436, 88</value>
   </data>
   <data name="m_clbValues.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -532,7 +589,7 @@
     <value>m_csMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_clbValues.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="m_lblDest.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -562,7 +619,7 @@
     <value>m_csMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_lblDest.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="m_btnAllVars.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -592,7 +649,7 @@
     <value>m_csMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_btnAllVars.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="m_btnChooseOut.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -622,7 +679,7 @@
     <value>m_csMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_btnChooseOut.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="m_lblVars.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -652,7 +709,7 @@
     <value>m_csMain.Panel2</value>
   </data>
   <data name="&gt;&gt;m_lblVars.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_csMain.Panel2.Name" xml:space="preserve">
     <value>m_csMain.Panel2</value>
@@ -670,10 +727,10 @@
     <value>74</value>
   </data>
   <data name="m_csMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>605, 345</value>
+    <value>605, 376</value>
   </data>
   <data name="m_csMain.SplitterDistance" type="System.Int32, mscorlib">
-    <value>168</value>
+    <value>209</value>
   </data>
   <data name="m_csMain.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -723,36 +780,6 @@
   <data name="&gt;&gt;m_pbLogo.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="m_btnRun.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnRun.Location" type="System.Drawing.Point, System.Drawing">
-    <value>526, 348</value>
-  </data>
-  <data name="m_btnRun.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="m_btnRun.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="m_btnRun.Text" xml:space="preserve">
-    <value>&amp;Run</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Name" xml:space="preserve">
-    <value>m_btnRun</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -765,13 +792,10 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>frmMain2</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8001.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8050.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

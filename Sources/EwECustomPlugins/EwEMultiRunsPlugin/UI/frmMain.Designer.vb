@@ -60,6 +60,7 @@ Partial Class frmMain
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
         Me.m_btnRun = New System.Windows.Forms.Button()
+        Me.m_cbCreateRunFolder = New System.Windows.Forms.CheckBox()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_csMain.Panel1.SuspendLayout()
         Me.m_csMain.Panel2.SuspendLayout()
@@ -87,8 +88,10 @@ Partial Class frmMain
         '
         'm_csMain.Panel2
         '
+        Me.m_csMain.Panel2.Controls.Add(Me.m_cbCreateRunFolder)
         Me.m_csMain.Panel2.Controls.Add(Me.m_hrdOut)
         Me.m_csMain.Panel2.Controls.Add(Me.m_tbxDest)
+        Me.m_csMain.Panel2.Controls.Add(Me.m_btnRun)
         Me.m_csMain.Panel2.Controls.Add(Me.m_clbValues)
         Me.m_csMain.Panel2.Controls.Add(Me.m_lblDest)
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnAllVars)
@@ -214,14 +217,20 @@ Partial Class frmMain
         Me.m_btnRun.Name = "m_btnRun"
         Me.m_btnRun.UseVisualStyleBackColor = True
         '
+        'm_cbCreateRunFolder
+        '
+        resources.ApplyResources(Me.m_cbCreateRunFolder, "m_cbCreateRunFolder")
+        Me.m_cbCreateRunFolder.Name = "m_cbCreateRunFolder"
+        Me.m_cbCreateRunFolder.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
+        Me.AcceptButton = Me.m_btnRun
         Me.AllowDrop = True
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_csMain)
         Me.Controls.Add(Me.m_pbLogo)
-        Me.Controls.Add(Me.m_btnRun)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmMain"
         Me.ShowInTaskbar = False
@@ -255,4 +264,5 @@ Partial Class frmMain
     Private WithEvents m_lblVars As System.Windows.Forms.Label
     Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
     Private WithEvents m_btnRun As System.Windows.Forms.Button
+    Private WithEvents m_cbCreateRunFolder As System.Windows.Forms.CheckBox
 End Class

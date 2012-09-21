@@ -330,12 +330,17 @@ Namespace Controls.Map
                         strVal = l.Renderer.GetDisplayText(DirectCast(l, cRasterLayer).Value(ptCell.Y, ptCell.X))
                     End If
 
-                    If Not String.IsNullOrWhiteSpace(strVal) Then
-                        Dim sel As cPropertySelectionCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
-                        If sel IsNot Nothing Then
+                    Dim sel As cPropertySelectionCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
+
+                    If sel IsNot Nothing Then
+                        If Not String.IsNullOrWhiteSpace(strVal) Then
+                            sel.Invoke(sel.Selection, String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _
+                                                                        Me.UIContext.StyleGuide.FormatNumber(sLon), _
+                                                                        Me.UIContext.StyleGuide.FormatNumber(sLat), strVal))
+                        Else
                             sel.Invoke(sel.Selection, String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
-                                                                    Me.UIContext.StyleGuide.FormatNumber(sLon), _
-                                                                    Me.UIContext.StyleGuide.FormatNumber(sLat), strVal))
+                                            Me.UIContext.StyleGuide.FormatNumber(sLon), _
+                                            Me.UIContext.StyleGuide.FormatNumber(sLat)))
                         End If
                     End If
                 End If

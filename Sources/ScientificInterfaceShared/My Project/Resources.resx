@@ -2651,6 +2651,9 @@
     <value>Z||Tot. mort. rate|Total mortality rate</value>
   </data>
   <data name="GENERIC_VALUE_MAPPOS" xml:space="preserve">
+    <value>lon: {0}, lat: {1}</value>
+  </data>
+  <data name="GENERIC_VALUE_MAPPOS_VALUE" xml:space="preserve">
     <value>lon: {0}, lat: {1}, value: {2}</value>
   </data>
 </root>

@@ -94,6 +94,8 @@ Friend Class cMultiRunsEngine
     Private m_dgt As cMultiRunsEngine.RunCompletedDelegate = Nothing
     Private m_bStopRun As Boolean = False
 
+    Private m_bCreateRunFolder As Boolean = False
+
 #End Region ' Privates
 
 #Region " Public bits "
@@ -110,6 +112,20 @@ Friend Class cMultiRunsEngine
         Me.m_man = uic.Core.ForcingShapeManager
 
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether the run creates a new folder for every run.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property CreateUniqueRunFolder As Boolean
+        Get
+            Return Me.m_bCreateRunFolder
+        End Get
+        Set(value As Boolean)
+            Me.m_bCreateRunFolder = value
+        End Set
+    End Property
 
     Public Delegate Sub RunCompletedDelegate()
 
@@ -139,7 +155,16 @@ Friend Class cMultiRunsEngine
 
         Dim strDate As String = Date.Now.ToString("yy-MM-dd hh-mm")
         Dim strScope As String = cSystemUtils.IIF(bMonthly, "monthly", "annual")
-        Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(String.Format("Run {0} {1}", strDate, strScope), False))
+
+        If Me.m_bCreateRunFolder Then
+            Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(String.Format("Run {0} {1}", strDate, strScope), False))
+        Else
+            Me.m_strOutFolder = Path.Combine(strOutFolder, "Run")
+        End If
+
+        If Directory.Exists(Me.m_strOutFolder) Then
+
+        End If
 
         For Each ff As cForcingFunction In Me.m_man
             Me.m_FFCache(ff.Name) = New cFFCache(ff)

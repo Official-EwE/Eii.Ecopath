@@ -321,7 +321,7 @@ Namespace Controls.EwEGrid
                         Return ""
                     End If
 
-                    If (Me.StyleGuide Is Nothing) Then Return "#.#!"
+                    If (Me.StyleGuide Is Nothing) Then Return "#ERROR"
 
                     Return Me.StyleGuide.FormatNumber(sValue, Me.Style, Me.m_iNumDigits, Me.m_tsGroupDigits)
                 End If
