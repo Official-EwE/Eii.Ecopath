@@ -56,6 +56,16 @@ Public Class frmMSEOptions
         Me.InitializeComponent()
     End Sub
 
+    Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+        Get
+            Return MyBase.UIContext
+        End Get
+        Set(value As ScientificInterfaceShared.Controls.cUIContext)
+            MyBase.UIContext = value
+            Me.m_gridFleetLPEffortBounds.UIContext = Me.UIContext
+        End Set
+    End Property
+
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
@@ -91,8 +101,6 @@ Public Class frmMSEOptions
         Me.m_dctEffortControls = New Dictionary(Of eMSERegulationMode, RadioButton)
         Me.m_dctEffortControls.Add(eMSERegulationMode.NoRegulations, Me.rbNoRegs)
         Me.m_dctEffortControls.Add(eMSERegulationMode.UseRegulations, Me.rbUseRegs)
-
-        Me.GridFleetLPEffortBounds1.UIContext = Me.UIContext
 
         Me.UpdateSelectedEffortMode()
         Me.UpdateControls()

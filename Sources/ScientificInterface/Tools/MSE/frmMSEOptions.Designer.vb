@@ -39,11 +39,9 @@ Partial Class frmMSEOptions
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEOptions))
         Me.m_pnlRegOpt = New System.Windows.Forms.Panel()
-        Me.m_ckLP = New System.Windows.Forms.CheckBox()
         Me.pnlUseReg = New System.Windows.Forms.Panel()
         Me.txMaxEffort = New System.Windows.Forms.TextBox()
         Me.rbEffortEcosim = New System.Windows.Forms.RadioButton()
@@ -58,14 +56,14 @@ Partial Class frmMSEOptions
         Me.rbUseRegs = New System.Windows.Forms.RadioButton()
         Me.rbNoRegs = New System.Windows.Forms.RadioButton()
         Me.m_hdrEffortRegOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_ckLP = New System.Windows.Forms.CheckBox()
         Me.m_pnlRunOpt = New System.Windows.Forms.Panel()
         Me.txKalmanGain = New System.Windows.Forms.TextBox()
         Me.m_lblKalmanGain = New System.Windows.Forms.Label()
         Me.m_ckPlugin = New System.Windows.Forms.CheckBox()
         Me.m_hdrRunOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.GridFleetLPEffortBounds1 = New ScientificInterface.gridFleetLPEffortBounds()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_gridFleetLPEffortBounds = New ScientificInterface.gridFleetLPEffortBounds()
         Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlUseReg.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
@@ -81,12 +79,6 @@ Partial Class frmMSEOptions
         Me.m_pnlRegOpt.Controls.Add(Me.rbNoRegs)
         Me.m_pnlRegOpt.Controls.Add(Me.m_hdrEffortRegOptions)
         Me.m_pnlRegOpt.Name = "m_pnlRegOpt"
-        '
-        'm_ckLP
-        '
-        resources.ApplyResources(Me.m_ckLP, "m_ckLP")
-        Me.m_ckLP.Name = "m_ckLP"
-        Me.m_ckLP.UseVisualStyleBackColor = True
         '
         'pnlUseReg
         '
@@ -185,6 +177,12 @@ Partial Class frmMSEOptions
         Me.m_hdrEffortRegOptions.IsCollapsed = False
         Me.m_hdrEffortRegOptions.Name = "m_hdrEffortRegOptions"
         '
+        'm_ckLP
+        '
+        resources.ApplyResources(Me.m_ckLP, "m_ckLP")
+        Me.m_ckLP.Name = "m_ckLP"
+        Me.m_ckLP.UseVisualStyleBackColor = True
+        '
         'm_pnlRunOpt
         '
         resources.ApplyResources(Me.m_pnlRunOpt, "m_pnlRunOpt")
@@ -226,25 +224,25 @@ Partial Class frmMSEOptions
         Me.CEwEHeaderLabel1.IsCollapsed = False
         Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
         '
-        'GridFleetLPEffortBounds1
+        'm_gridFleetLPEffortBounds
         '
-        Me.GridFleetLPEffortBounds1.AllowBlockSelect = True
-        resources.ApplyResources(Me.GridFleetLPEffortBounds1, "GridFleetLPEffortBounds1")
-        Me.GridFleetLPEffortBounds1.AutoSizeMinHeight = 10
-        Me.GridFleetLPEffortBounds1.AutoSizeMinWidth = 10
-        Me.GridFleetLPEffortBounds1.AutoStretchColumnsToFitWidth = False
-        Me.GridFleetLPEffortBounds1.AutoStretchRowsToFitHeight = False
-        Me.GridFleetLPEffortBounds1.BackColor = System.Drawing.Color.White
-        Me.GridFleetLPEffortBounds1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.GridFleetLPEffortBounds1.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+        Me.m_gridFleetLPEffortBounds.AllowBlockSelect = True
+        resources.ApplyResources(Me.m_gridFleetLPEffortBounds, "m_gridFleetLPEffortBounds")
+        Me.m_gridFleetLPEffortBounds.AutoSizeMinHeight = 10
+        Me.m_gridFleetLPEffortBounds.AutoSizeMinWidth = 10
+        Me.m_gridFleetLPEffortBounds.AutoStretchColumnsToFitWidth = False
+        Me.m_gridFleetLPEffortBounds.AutoStretchRowsToFitHeight = False
+        Me.m_gridFleetLPEffortBounds.BackColor = System.Drawing.Color.White
+        Me.m_gridFleetLPEffortBounds.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_gridFleetLPEffortBounds.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.GridFleetLPEffortBounds1.CustomSort = False
-        Me.GridFleetLPEffortBounds1.FixedColumnWidths = False
-        Me.GridFleetLPEffortBounds1.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.GridFleetLPEffortBounds1.GridToolTipActive = True
-        Me.GridFleetLPEffortBounds1.Name = "GridFleetLPEffortBounds1"
-        Me.GridFleetLPEffortBounds1.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+        Me.m_gridFleetLPEffortBounds.CustomSort = False
+        Me.m_gridFleetLPEffortBounds.FixedColumnWidths = False
+        Me.m_gridFleetLPEffortBounds.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_gridFleetLPEffortBounds.GridToolTipActive = True
+        Me.m_gridFleetLPEffortBounds.Name = "m_gridFleetLPEffortBounds"
+        Me.m_gridFleetLPEffortBounds.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
             Or SourceGrid2.GridSpecialKeys.Arrows) _
@@ -253,19 +251,13 @@ Partial Class frmMSEOptions
             Or SourceGrid2.GridSpecialKeys.Enter) _
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.GridFleetLPEffortBounds1.UIContext = Nothing
-        '
-        'Label1
-        '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        Me.m_gridFleetLPEffortBounds.UIContext = Nothing
         '
         'frmMSEOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.GridFleetLPEffortBounds1)
+        Me.Controls.Add(Me.m_gridFleetLPEffortBounds)
         Me.Controls.Add(Me.CEwEHeaderLabel1)
         Me.Controls.Add(Me.m_ckLP)
         Me.Controls.Add(Me.m_pnlRunOpt)
@@ -305,6 +297,5 @@ Partial Class frmMSEOptions
     Friend WithEvents txMaxEffort As System.Windows.Forms.TextBox
     Friend WithEvents m_ckLP As System.Windows.Forms.CheckBox
     Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents GridFleetLPEffortBounds1 As ScientificInterface.gridFleetLPEffortBounds
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_gridFleetLPEffortBounds As ScientificInterface.gridFleetLPEffortBounds
 End Class
