@@ -22,14 +22,11 @@ Option Explicit On
 
 Imports EwECore
 Imports EwECore.MSE
-Imports EwECore.SearchObjectives
-Imports ScientificInterface.Controls
-Imports EwEUtils.Core
-Imports ScientificInterface.Ecosim
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
 
-Imports ZedGraph
 Imports ScientificInterfaceShared.Commands
+Imports ZedGraph
 
 #End Region
 
@@ -41,8 +38,8 @@ Public Class frmMSEPlots
     Private m_paneMaster As MasterPane = Nothing
     Private m_plotter As cMSEPlotter
     Private m_MSEEvents As cMSEEventSource
-    Private m_curPlotType As ePlotTypes
-    Private m_curPlotData As ePlotData
+    Private m_curPlotType As eMSEPlotTypes
+    Private m_curPlotData As eMSEPlotData
 
     Public Sub New()
         Me.InitializeComponent()
@@ -55,7 +52,7 @@ Public Class frmMSEPlots
 
         Me.m_MSE = Me.UIContext.Core.MSEManager
         Me.m_plotter = New cMSEPlotter()
-        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.ZedGraph)
+        Me.m_plotter.Init(Me.UIContext, Me.m_MSE, Me.m_graph)
 
         Me.m_MSEEvents = New cMSEEventSource
         AddHandler Me.m_MSEEvents.onRefLevelsChanged, AddressOf Me.onRefLevelsChanged
@@ -66,23 +63,24 @@ Public Class frmMSEPlots
         ' Display Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.AddControl(Me.btShowHide)
+            cmd.AddControl(Me.m_btnShowHide)
         End If
 
         AddHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
 
-        Me.rbHisto.Tag = ePlotTypes.Histogram
-        Me.rbValues.Tag = ePlotTypes.Values
+        Me.m_rbHisto.Tag = eMSEPlotTypes.Histogram
+        Me.m_rbValues.Tag = eMSEPlotTypes.Values
 
-        Me.rbGroupBiomass.Tag = ePlotData.Biomass
-        Me.rbGroupCatch.Tag = ePlotData.GroupCatch
-        Me.rbFleetValue.Tag = ePlotData.FleetValue
-        Me.rbEffort.Tag = ePlotData.Effort
-        Me.rbBioEst.Tag = ePlotData.BioEst
-        Me.rbTotFleetValue.Tag = ePlotData.FleetTotValue
+        Me.m_rbGroupBiomass.Tag = eMSEPlotData.Biomass
+        Me.m_rbGroupCatch.Tag = eMSEPlotData.GroupCatch
+        Me.m_rbFleetValue.Tag = eMSEPlotData.FleetValue
+        Me.m_rbEffort.Tag = eMSEPlotData.Effort
+        Me.m_rbBioEst.Tag = eMSEPlotData.BioEst
+        Me.m_rbTotFleetValue.Tag = eMSEPlotData.FleetTotValue
+        Me.m_rbFComparison.Tag = eMSEPlotData.FishingMortalityComparison
 
-        Me.m_curPlotData = ePlotData.Biomass
-        Me.m_curPlotType = ePlotTypes.Histogram
+        Me.m_curPlotData = eMSEPlotData.Biomass
+        Me.m_curPlotType = eMSEPlotTypes.Histogram
 
 
         Try
@@ -103,7 +101,7 @@ Public Class frmMSEPlots
         ' Show/Hide Groups
         Dim cmd As cCommand = Me.UIContext.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
         If Not Object.ReferenceEquals(cmd, Nothing) Then
-            cmd.RemoveControl(Me.btShowHide)
+            cmd.RemoveControl(Me.m_btnShowHide)
         End If
 
         RemoveHandler cmd.OnPostInvoke, AddressOf Me.OnShowHideGroups
@@ -120,7 +118,7 @@ Public Class frmMSEPlots
     End Sub
 
     Private Sub PlotGroupData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
-                              ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
+                              ByVal PlotType As eMSEPlotTypes, ByVal DataType As eMSEPlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -144,9 +142,8 @@ Public Class frmMSEPlots
 
     End Sub
 
-
     Private Sub PlotFleetData(ByVal lstStatObjects As EwECore.cCoreInputOutputList(Of cCoreInputOutputBase), _
-                              ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
+                              ByVal PlotType As eMSEPlotTypes, ByVal DataType As eMSEPlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -167,7 +164,7 @@ Public Class frmMSEPlots
 
     End Sub
 
-    Private Sub PlotFleetTotValData(ByVal TotFleetValue As cMSEStats, ByVal PlotType As ePlotTypes, ByVal DataType As ePlotData)
+    Private Sub PlotFleetTotValData(ByVal TotFleetValue As cMSEStats, ByVal PlotType As eMSEPlotTypes, ByVal DataType As eMSEPlotData)
         Dim data As New List(Of cCoreGroupBase)
 
         Try
@@ -187,32 +184,42 @@ Public Class frmMSEPlots
     Private Sub DrawPlots()
 
         Select Case Me.m_curPlotData
-            Case ePlotData.Biomass
+            Case eMSEPlotData.Biomass
                 PlotGroupData(Me.m_MSE.BiomassStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case ePlotData.BioEst
+            Case eMSEPlotData.BioEst
                 PlotGroupData(Me.m_MSE.BioEstimatesStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case ePlotData.GroupCatch
+            Case eMSEPlotData.GroupCatch
                 PlotGroupData(Me.m_MSE.GroupCatchStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case ePlotData.FleetValue
+            Case eMSEPlotData.FleetValue
                 PlotFleetData(Me.m_MSE.FleetStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case ePlotData.Effort
+            Case eMSEPlotData.Effort
                 PlotFleetData(Me.m_MSE.EffortStats, Me.m_curPlotType, Me.m_curPlotData)
-            Case ePlotData.FleetTotValue
+            Case eMSEPlotData.FleetTotValue
                 PlotFleetTotValData(Me.m_MSE.TotalFleetValueStats, Me.m_curPlotType, Me.m_curPlotData)
+            Case eMSEPlotData.FishingMortalityComparison
+                PlotGroupData(Me.m_MSE.FCompareStats, Me.m_curPlotType, Me.m_curPlotData)
         End Select
 
     End Sub
 
     Private Sub onDataTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-                Handles rbGroupBiomass.CheckedChanged, rbGroupCatch.CheckedChanged, _
-                rbFleetValue.CheckedChanged, rbEffort.CheckedChanged, rbBioEst.CheckedChanged, rbTotFleetValue.CheckedChanged
+                Handles m_rbGroupBiomass.CheckedChanged, m_rbGroupCatch.CheckedChanged, _
+                        m_rbFleetValue.CheckedChanged, m_rbEffort.CheckedChanged, m_rbBioEst.CheckedChanged, _
+                        m_rbTotFleetValue.CheckedChanged, m_rbFComparison.CheckedChanged
+
+        ' Ignore creation-time events
+        If (Me.UIContext Is Nothing) Then Return
+
         Try
 
             If DirectCast(sender, RadioButton).Checked Then
                 Dim tag As Object = DirectCast(sender, RadioButton).Tag
-                If tag Is Nothing Then Exit Sub
-                Me.m_curPlotData = DirectCast(tag, ePlotData)
-                Me.updateControls()
+                If tag Is Nothing Then
+                    Debug.Assert(False, "Radio button does not have a tag")
+                    Return
+                End If
+                Me.m_curPlotData = DirectCast(tag, eMSEPlotData)
+                Me.UpdateControls()
                 Me.Cursor = Cursors.WaitCursor
                 Me.DrawPlots()
             End If
@@ -227,13 +234,13 @@ Public Class frmMSEPlots
     End Sub
 
 
-    Private Sub onPlotTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles rbHisto.CheckedChanged, rbValues.CheckedChanged
+    Private Sub onPlotTypeCheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_rbHisto.CheckedChanged, m_rbValues.CheckedChanged
 
         Try
             If DirectCast(sender, RadioButton).Checked Then
                 Dim tag As Object = DirectCast(sender, RadioButton).Tag
                 If tag Is Nothing Then Exit Sub
-                m_curPlotType = DirectCast(tag, ePlotTypes)
+                m_curPlotType = DirectCast(tag, eMSEPlotTypes)
                 Me.Cursor = Cursors.WaitCursor
                 Me.m_plotter.PlotType = Me.m_curPlotType
                 Me.DrawPlots()

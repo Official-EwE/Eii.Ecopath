@@ -41,168 +41,183 @@ Partial Class frmMSEPlots
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.components = New System.ComponentModel.Container
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEPlots))
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.rbTotFleetValue = New System.Windows.Forms.RadioButton
-        Me.rbBioEst = New System.Windows.Forms.RadioButton
-        Me.btShowHide = New System.Windows.Forms.Button
-        Me.m_hdrPlots = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.rbEffort = New System.Windows.Forms.RadioButton
-        Me.rbFleetValue = New System.Windows.Forms.RadioButton
-        Me.rbGroupCatch = New System.Windows.Forms.RadioButton
-        Me.rbGroupBiomass = New System.Windows.Forms.RadioButton
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.m_hdrType = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.rbValues = New System.Windows.Forms.RadioButton
-        Me.rbHisto = New System.Windows.Forms.RadioButton
-        Me.pnlGraph = New System.Windows.Forms.Panel
-        Me.ZedGraph = New ZedGraph.ZedGraphControl
-        Me.Panel1.SuspendLayout()
-        Me.Panel2.SuspendLayout()
+        Me.m_plPlot = New System.Windows.Forms.Panel()
+        Me.m_rbTotFleetValue = New System.Windows.Forms.RadioButton()
+        Me.m_rbFComparison = New System.Windows.Forms.RadioButton()
+        Me.m_rbBioEst = New System.Windows.Forms.RadioButton()
+        Me.m_btnShowHide = New System.Windows.Forms.Button()
+        Me.m_hdrPlots = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_rbEffort = New System.Windows.Forms.RadioButton()
+        Me.m_rbFleetValue = New System.Windows.Forms.RadioButton()
+        Me.m_rbGroupCatch = New System.Windows.Forms.RadioButton()
+        Me.m_rbGroupBiomass = New System.Windows.Forms.RadioButton()
+        Me.m_plPlotType = New System.Windows.Forms.Panel()
+        Me.m_hdrType = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_rbValues = New System.Windows.Forms.RadioButton()
+        Me.m_rbHisto = New System.Windows.Forms.RadioButton()
+        Me.pnlGraph = New System.Windows.Forms.Panel()
+        Me.m_graph = New ZedGraph.ZedGraphControl()
+        Me.m_plPlot.SuspendLayout()
+        Me.m_plPlotType.SuspendLayout()
         Me.pnlGraph.SuspendLayout()
         Me.SuspendLayout()
         '
-        'Panel1
+        'm_plPlot
         '
-        resources.ApplyResources(Me.Panel1, "Panel1")
-        Me.Panel1.Controls.Add(Me.rbTotFleetValue)
-        Me.Panel1.Controls.Add(Me.rbBioEst)
-        Me.Panel1.Controls.Add(Me.btShowHide)
-        Me.Panel1.Controls.Add(Me.m_hdrPlots)
-        Me.Panel1.Controls.Add(Me.rbEffort)
-        Me.Panel1.Controls.Add(Me.rbFleetValue)
-        Me.Panel1.Controls.Add(Me.rbGroupCatch)
-        Me.Panel1.Controls.Add(Me.rbGroupBiomass)
-        Me.Panel1.Name = "Panel1"
+        resources.ApplyResources(Me.m_plPlot, "m_plPlot")
+        Me.m_plPlot.Controls.Add(Me.m_rbTotFleetValue)
+        Me.m_plPlot.Controls.Add(Me.m_rbFComparison)
+        Me.m_plPlot.Controls.Add(Me.m_rbBioEst)
+        Me.m_plPlot.Controls.Add(Me.m_btnShowHide)
+        Me.m_plPlot.Controls.Add(Me.m_hdrPlots)
+        Me.m_plPlot.Controls.Add(Me.m_rbEffort)
+        Me.m_plPlot.Controls.Add(Me.m_rbFleetValue)
+        Me.m_plPlot.Controls.Add(Me.m_rbGroupCatch)
+        Me.m_plPlot.Controls.Add(Me.m_rbGroupBiomass)
+        Me.m_plPlot.Name = "m_plPlot"
         '
-        'rbTotFleetValue
+        'm_rbTotFleetValue
         '
-        resources.ApplyResources(Me.rbTotFleetValue, "rbTotFleetValue")
-        Me.rbTotFleetValue.Name = "rbTotFleetValue"
-        Me.rbTotFleetValue.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbTotFleetValue, "m_rbTotFleetValue")
+        Me.m_rbTotFleetValue.Name = "m_rbTotFleetValue"
+        Me.m_rbTotFleetValue.UseVisualStyleBackColor = True
         '
-        'rbBioEst
+        'm_rbFComparison
         '
-        resources.ApplyResources(Me.rbBioEst, "rbBioEst")
-        Me.rbBioEst.Name = "rbBioEst"
-        Me.rbBioEst.TabStop = True
-        Me.rbBioEst.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbFComparison, "m_rbFComparison")
+        Me.m_rbFComparison.Name = "m_rbFComparison"
+        Me.m_rbFComparison.TabStop = True
+        Me.m_rbFComparison.UseVisualStyleBackColor = True
         '
-        'btShowHide
+        'm_rbBioEst
         '
-        resources.ApplyResources(Me.btShowHide, "btShowHide")
-        Me.btShowHide.Name = "btShowHide"
-        Me.btShowHide.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbBioEst, "m_rbBioEst")
+        Me.m_rbBioEst.Name = "m_rbBioEst"
+        Me.m_rbBioEst.TabStop = True
+        Me.m_rbBioEst.UseVisualStyleBackColor = True
+        '
+        'm_btnShowHide
+        '
+        resources.ApplyResources(Me.m_btnShowHide, "m_btnShowHide")
+        Me.m_btnShowHide.Name = "m_btnShowHide"
+        Me.m_btnShowHide.UseVisualStyleBackColor = True
         '
         'm_hdrPlots
         '
         resources.ApplyResources(Me.m_hdrPlots, "m_hdrPlots")
+        Me.m_hdrPlots.CanCollapseParent = False
+        Me.m_hdrPlots.CollapsedParentHeight = 0
+        Me.m_hdrPlots.IsCollapsed = False
         Me.m_hdrPlots.Name = "m_hdrPlots"
         '
-        'rbEffort
+        'm_rbEffort
         '
-        resources.ApplyResources(Me.rbEffort, "rbEffort")
-        Me.rbEffort.Name = "rbEffort"
-        Me.rbEffort.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbEffort, "m_rbEffort")
+        Me.m_rbEffort.Name = "m_rbEffort"
+        Me.m_rbEffort.UseVisualStyleBackColor = True
         '
-        'rbFleetValue
+        'm_rbFleetValue
         '
-        resources.ApplyResources(Me.rbFleetValue, "rbFleetValue")
-        Me.rbFleetValue.Name = "rbFleetValue"
-        Me.rbFleetValue.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbFleetValue, "m_rbFleetValue")
+        Me.m_rbFleetValue.Name = "m_rbFleetValue"
+        Me.m_rbFleetValue.UseVisualStyleBackColor = True
         '
-        'rbGroupCatch
+        'm_rbGroupCatch
         '
-        resources.ApplyResources(Me.rbGroupCatch, "rbGroupCatch")
-        Me.rbGroupCatch.Name = "rbGroupCatch"
-        Me.rbGroupCatch.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbGroupCatch, "m_rbGroupCatch")
+        Me.m_rbGroupCatch.Name = "m_rbGroupCatch"
+        Me.m_rbGroupCatch.UseVisualStyleBackColor = True
         '
-        'rbGroupBiomass
+        'm_rbGroupBiomass
         '
-        resources.ApplyResources(Me.rbGroupBiomass, "rbGroupBiomass")
-        Me.rbGroupBiomass.Checked = True
-        Me.rbGroupBiomass.Name = "rbGroupBiomass"
-        Me.rbGroupBiomass.TabStop = True
-        Me.rbGroupBiomass.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbGroupBiomass, "m_rbGroupBiomass")
+        Me.m_rbGroupBiomass.Checked = True
+        Me.m_rbGroupBiomass.Name = "m_rbGroupBiomass"
+        Me.m_rbGroupBiomass.TabStop = True
+        Me.m_rbGroupBiomass.UseVisualStyleBackColor = True
         '
-        'Panel2
+        'm_plPlotType
         '
-        Me.Panel2.Controls.Add(Me.m_hdrType)
-        Me.Panel2.Controls.Add(Me.rbValues)
-        Me.Panel2.Controls.Add(Me.rbHisto)
-        resources.ApplyResources(Me.Panel2, "Panel2")
-        Me.Panel2.Name = "Panel2"
+        Me.m_plPlotType.Controls.Add(Me.m_hdrType)
+        Me.m_plPlotType.Controls.Add(Me.m_rbValues)
+        Me.m_plPlotType.Controls.Add(Me.m_rbHisto)
+        resources.ApplyResources(Me.m_plPlotType, "m_plPlotType")
+        Me.m_plPlotType.Name = "m_plPlotType"
         '
         'm_hdrType
         '
+        Me.m_hdrType.CanCollapseParent = False
+        Me.m_hdrType.CollapsedParentHeight = 0
+        Me.m_hdrType.IsCollapsed = False
         resources.ApplyResources(Me.m_hdrType, "m_hdrType")
         Me.m_hdrType.Name = "m_hdrType"
         '
-        'rbValues
+        'm_rbValues
         '
-        resources.ApplyResources(Me.rbValues, "rbValues")
-        Me.rbValues.Name = "rbValues"
-        Me.rbValues.Tag = ""
-        Me.rbValues.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbValues, "m_rbValues")
+        Me.m_rbValues.Name = "m_rbValues"
+        Me.m_rbValues.Tag = ""
+        Me.m_rbValues.UseVisualStyleBackColor = True
         '
-        'rbHisto
+        'm_rbHisto
         '
-        resources.ApplyResources(Me.rbHisto, "rbHisto")
-        Me.rbHisto.Checked = True
-        Me.rbHisto.Name = "rbHisto"
-        Me.rbHisto.TabStop = True
-        Me.rbHisto.Tag = ""
-        Me.rbHisto.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbHisto, "m_rbHisto")
+        Me.m_rbHisto.Checked = True
+        Me.m_rbHisto.Name = "m_rbHisto"
+        Me.m_rbHisto.TabStop = True
+        Me.m_rbHisto.Tag = ""
+        Me.m_rbHisto.UseVisualStyleBackColor = True
         '
         'pnlGraph
         '
         resources.ApplyResources(Me.pnlGraph, "pnlGraph")
-        Me.pnlGraph.Controls.Add(Me.ZedGraph)
+        Me.pnlGraph.Controls.Add(Me.m_graph)
         Me.pnlGraph.Name = "pnlGraph"
         '
-        'ZedGraph
+        'm_graph
         '
-        resources.ApplyResources(Me.ZedGraph, "ZedGraph")
-        Me.ZedGraph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.ZedGraph.Name = "ZedGraph"
-        Me.ZedGraph.ScrollGrace = 0
-        Me.ZedGraph.ScrollMaxX = 0
-        Me.ZedGraph.ScrollMaxY = 0
-        Me.ZedGraph.ScrollMaxY2 = 0
-        Me.ZedGraph.ScrollMinX = 0
-        Me.ZedGraph.ScrollMinY = 0
-        Me.ZedGraph.ScrollMinY2 = 0
+        resources.ApplyResources(Me.m_graph, "m_graph")
+        Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_graph.Name = "m_graph"
+        Me.m_graph.ScrollGrace = 0.0R
+        Me.m_graph.ScrollMaxX = 0.0R
+        Me.m_graph.ScrollMaxY = 0.0R
+        Me.m_graph.ScrollMaxY2 = 0.0R
+        Me.m_graph.ScrollMinX = 0.0R
+        Me.m_graph.ScrollMinY = 0.0R
+        Me.m_graph.ScrollMinY2 = 0.0R
         '
         'frmMSEPlots
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.pnlGraph)
-        Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.m_plPlotType)
+        Me.Controls.Add(Me.m_plPlot)
         Me.Name = "frmMSEPlots"
-        Me.Panel1.ResumeLayout(False)
-        Me.Panel1.PerformLayout()
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
+        Me.m_plPlot.ResumeLayout(False)
+        Me.m_plPlot.PerformLayout()
+        Me.m_plPlotType.ResumeLayout(False)
+        Me.m_plPlotType.PerformLayout()
         Me.pnlGraph.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
-    Private WithEvents Panel1 As System.Windows.Forms.Panel
-    Private WithEvents rbEffort As System.Windows.Forms.RadioButton
-    Private WithEvents rbFleetValue As System.Windows.Forms.RadioButton
-    Private WithEvents rbGroupCatch As System.Windows.Forms.RadioButton
-    Private WithEvents rbGroupBiomass As System.Windows.Forms.RadioButton
-    Private WithEvents Panel2 As System.Windows.Forms.Panel
-    Private WithEvents rbValues As System.Windows.Forms.RadioButton
-    Private WithEvents rbHisto As System.Windows.Forms.RadioButton
+    Private WithEvents m_plPlot As System.Windows.Forms.Panel
+    Private WithEvents m_rbEffort As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbFleetValue As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbGroupCatch As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbGroupBiomass As System.Windows.Forms.RadioButton
+    Private WithEvents m_plPlotType As System.Windows.Forms.Panel
+    Private WithEvents m_rbValues As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbHisto As System.Windows.Forms.RadioButton
     Private WithEvents m_hdrType As cEwEHeaderLabel
-    Private WithEvents btShowHide As System.Windows.Forms.Button
-    Private WithEvents rbBioEst As System.Windows.Forms.RadioButton
+    Private WithEvents m_btnShowHide As System.Windows.Forms.Button
+    Private WithEvents m_rbBioEst As System.Windows.Forms.RadioButton
     Private WithEvents m_hdrPlots As cEwEHeaderLabel
     Friend WithEvents pnlGraph As System.Windows.Forms.Panel
-    Private WithEvents ZedGraph As ZedGraph.ZedGraphControl
-    Private WithEvents rbTotFleetValue As System.Windows.Forms.RadioButton
+    Private WithEvents m_graph As ZedGraph.ZedGraphControl
+    Private WithEvents m_rbTotFleetValue As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbFComparison As System.Windows.Forms.RadioButton
 End Class

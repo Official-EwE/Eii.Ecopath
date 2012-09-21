@@ -127,24 +127,6 @@ Namespace Definitions
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Type of data being plotted.
-    ''' </summary>
-    ''' <remarks>This can't be EwECore.eDataTypes because the data comes from the same Core objects. 
-    ''' Can't use eVarNameFlags because there is more than one type of data in a plot.</remarks>
-    ''' -----------------------------------------------------------------------
-    Public Enum ePlotData As Integer
-        NotSet = 0
-        Biomass
-        GroupCatch
-        FleetValue
-        Effort
-        BioEst
-        FleetTotValue
-        Value
-    End Enum
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
     ''' Line types for plots.
     ''' </summary>
     ''' -----------------------------------------------------------------------

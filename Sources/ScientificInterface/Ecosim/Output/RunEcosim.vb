@@ -67,7 +67,7 @@ Namespace Ecosim
         Private m_bInUpdate As Boolean = False
 
         ' === plot data ==
-        Private m_plotData As ePlotData = ePlotData.Biomass
+        Private m_plotData As eMSEPlotData = eMSEPlotData.Biomass
         Private m_bIsAnnual As Boolean = False
         Private m_bIsCumulative As Boolean = False
         Private m_bIsExploring As Boolean = False
@@ -261,32 +261,32 @@ Namespace Ecosim
 
         Private Sub OnShowBiomassAbs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiBiomassAbs.Click
-            Me.ShowData(ePlotData.Biomass, True)
+            Me.ShowData(eMSEPlotData.Biomass, True)
         End Sub
 
         Private Sub OnShowBiomassRel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiBiomassRel.Click
-            Me.ShowData(ePlotData.Biomass, False)
+            Me.ShowData(eMSEPlotData.Biomass, False)
         End Sub
 
         Private Sub OnShowCatchAbs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiCatchAbs.Click
-            Me.ShowData(ePlotData.GroupCatch, True)
+            Me.ShowData(eMSEPlotData.GroupCatch, True)
         End Sub
 
         Private Sub OnShowCatchRel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiCatchRel.Click
-            Me.ShowData(ePlotData.GroupCatch, False)
+            Me.ShowData(eMSEPlotData.GroupCatch, False)
         End Sub
 
         Private Sub OnShowValueAbs(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiValueAbs.Click
-            Me.ShowData(ePlotData.Value, True)
+            Me.ShowData(eMSEPlotData.Value, True)
         End Sub
 
         Private Sub m_tsmiValueRel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsmiValueRel.Click
-            Me.ShowData(ePlotData.Value, False)
+            Me.ShowData(eMSEPlotData.Value, False)
         End Sub
 
         Private Sub AutoScaleToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -625,7 +625,7 @@ Namespace Ecosim
         ''' Get/set type of data to plot.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub ShowData(ByVal data As ePlotData, ByVal bCumulative As Boolean)
+        Private Sub ShowData(ByVal data As eMSEPlotData, ByVal bCumulative As Boolean)
             ' Store props
             Me.m_plotData = data
             Me.m_bIsCumulative = bCumulative
@@ -703,19 +703,19 @@ Namespace Ecosim
 
             ' Set title
             Select Case Me.m_plotData
-                Case ePlotData.Biomass
+                Case eMSEPlotData.Biomass
                     If Me.m_bIsCumulative Then
                         m_zgp.DataName = SharedResources.HEADER_BIOMASS_CUMULATIVE
                     Else
                         m_zgp.DataName = SharedResources.HEADER_RELATIVEBIOMASS
                     End If
-                Case ePlotData.GroupCatch
+                Case eMSEPlotData.GroupCatch
                     If Me.m_bIsCumulative Then
                         m_zgp.DataName = SharedResources.HEADER_CATCH_CUMULATIVE
                     Else
                         m_zgp.DataName = SharedResources.HEADER_RELATIVE_CATCH
                     End If
-                Case ePlotData.Value
+                Case eMSEPlotData.Value
                     If Me.m_bIsCumulative Then
                         m_zgp.DataName = SharedResources.HEADER_VALUE_CUMULATIVE
                     Else
@@ -802,7 +802,7 @@ Namespace Ecosim
             Dim EDataQ As Single = 0.0!
 
             ' Only plot time series for biomass 
-            If (Me.m_plotData <> ePlotData.Biomass) Then Return
+            If (Me.m_plotData <> eMSEPlotData.Biomass) Then Return
             ' Only plot data when NOT showing cumulative data
             If (Me.m_bIsCumulative) Then Return
 
@@ -862,11 +862,11 @@ Namespace Ecosim
 
             ' Get data point value
             Select Case Me.m_plotData
-                Case ePlotData.Biomass
+                Case eMSEPlotData.Biomass
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Biomass, 1))
-                Case ePlotData.GroupCatch
+                Case eMSEPlotData.GroupCatch
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.TcatchOutput, 1))
-                Case ePlotData.Value
+                Case eMSEPlotData.Value
                     ' ToDo: resolve group value
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, 0, 1))
             End Select
@@ -889,11 +889,11 @@ Namespace Ecosim
 
             ' Get data point value
             Select Case Me.m_plotData
-                Case ePlotData.Biomass
+                Case eMSEPlotData.Biomass
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Biomass(iTimeStep), src.BiomassRel(iTimeStep)))
-                Case ePlotData.GroupCatch
+                Case eMSEPlotData.GroupCatch
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Yield(iTimeStep), src.YieldRel(iTimeStep)))
-                Case ePlotData.Value
+                Case eMSEPlotData.Value
                     Return CSng(cSystemUtils.IIF(Me.m_bIsCumulative, src.Value(iTimeStep), src.ValueRel(iTimeStep)))
             End Select
 
@@ -1033,11 +1033,11 @@ Namespace Ecosim
 
             Me.m_tsmiShowAnnualOutput.Checked = Me.m_bIsAnnual
 
-            Me.m_tsmiBiomassAbs.Checked = (Me.m_plotData = ePlotData.Biomass) And Me.m_bIsCumulative
-            Me.m_tsmiBiomassRel.Checked = (Me.m_plotData = ePlotData.Biomass) And Not Me.m_bIsCumulative
-            Me.m_tsmiCatchAbs.Checked = (Me.m_plotData = ePlotData.GroupCatch) And Me.m_bIsCumulative
-            Me.m_tsmiCatchRel.Checked = (Me.m_plotData = ePlotData.GroupCatch) And Not Me.m_bIsCumulative
-            Me.m_tsmiValueAbs.Checked = (Me.m_plotData = ePlotData.Value) And Me.m_bIsCumulative
+            Me.m_tsmiBiomassAbs.Checked = (Me.m_plotData = eMSEPlotData.Biomass) And Me.m_bIsCumulative
+            Me.m_tsmiBiomassRel.Checked = (Me.m_plotData = eMSEPlotData.Biomass) And Not Me.m_bIsCumulative
+            Me.m_tsmiCatchAbs.Checked = (Me.m_plotData = eMSEPlotData.GroupCatch) And Me.m_bIsCumulative
+            Me.m_tsmiCatchRel.Checked = (Me.m_plotData = eMSEPlotData.GroupCatch) And Not Me.m_bIsCumulative
+            Me.m_tsmiValueAbs.Checked = (Me.m_plotData = eMSEPlotData.Value) And Me.m_bIsCumulative
 
             Me.m_tsmiAutoscale.Checked = (Me.m_zgp.AutoScaleYOption = cZedGraphHelper.eScaleOptionTypes.MaxOnly)
             Me.m_tsmiCustomScaleLabel.Checked = Not m_tsmiAutoscale.Checked

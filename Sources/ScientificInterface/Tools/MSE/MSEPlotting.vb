@@ -34,9 +34,36 @@ Imports ZedGraph
 
 #Region "Enumerators"
 
-Friend Enum ePlotTypes
+''' -----------------------------------------------------------------------
+''' <summary>
+''' Type of data being plotted.
+''' </summary>
+''' <remarks>This can't be EwECore.eDataTypes because the data comes from the same Core objects. 
+''' Can't use eVarNameFlags because there is more than one type of data in a plot.</remarks>
+''' -----------------------------------------------------------------------
+Public Enum eMSEPlotData As Integer
+    NotSet = 0
+    Biomass
+    GroupCatch
+    FleetValue
+    Effort
+    BioEst
+    FleetTotValue
+    Value
+    FishingMortalityComparison
+End Enum
+
+''' -----------------------------------------------------------------------
+''' <summary>
+''' Enumerated type, stating supported types of MSE plots.
+''' </summary>
+''' -----------------------------------------------------------------------
+Friend Enum eMSEPlotTypes
+    ''' <summary>Plot a historgram.</summary>
     Histogram
+    ''' <summary>Plot a mass lines plot.</summary>
     Values
+    ''' <summary>Plot a single line.</summary>
     Line
 End Enum
 
@@ -44,11 +71,11 @@ End Enum
 
 #Region "Plotting Class"
 
-#Region "Reference point class"
-
 Friend Class cMSERefPoint
+
     Private m_low As Single
     Private m_upper As Single
+
     Public Sub New(ByVal LowerRef As Single, ByVal UpperRef As Single)
         Me.m_low = LowerRef
         Me.m_upper = UpperRef
@@ -74,10 +101,6 @@ Friend Class cMSERefPoint
 
 End Class
 
-#End Region
-
-#Region "Plotter class"
-
 Friend Class cMSEPlotter
 
 #Region "Private data"
@@ -90,12 +113,13 @@ Friend Class cMSEPlotter
     Private m_zdGraph As ZedGraphControl
     Private m_manager As cMSEManager
     Private m_nvis As Integer
-    Private m_type As ePlotTypes
-    Private m_dataType As ePlotData
+    Private m_type As eMSEPlotTypes
+    Private m_dataType As eMSEPlotData
     Private m_Data As List(Of cCoreGroupBase)
     Private m_RefPoints As List(Of cMSERefPoint)
     Private m_nLines As Integer
-    'Private m_isFished() As Boolean
+    Private m_iIterMin As Integer = Integer.MinValue
+    Private m_iIterMax As Integer = Integer.MaxValue
 
 #End Region
 
@@ -104,17 +128,14 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' Initialize to ZedGraphHelper and a Zedgraph control
     ''' </summary>
-    ''' <param name="uic"></param>
-    ''' <param name="ZedGraph"></param>
-    ''' <remarks></remarks>
+    ''' <param name="uic">UI context to use.</param>
+    ''' <param name="ZedGraph">Graph to use.</param>
     Public Sub Init(ByVal uic As cUIContext, _
                     ByVal MSEManager As cMSEManager, _
                     ByVal ZedGraph As ZedGraphControl)
         Me.m_uic = uic
         Me.m_zdGraph = ZedGraph
         Me.m_manager = MSEManager
-
-        'Me.getIsFished()
 
         Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.nVisPanes)
 
@@ -138,15 +159,14 @@ Friend Class cMSEPlotter
         End Try
     End Sub
 
-
     ''' <summary>
     ''' Get/set how the current data is to be plotted.
     ''' </summary>
-    Public Property PlotType() As ePlotTypes
+    Public Property PlotType() As eMSEPlotTypes
         Get
             Return Me.m_type
         End Get
-        Set(ByVal value As ePlotTypes)
+        Set(ByVal value As eMSEPlotTypes)
             m_type = value
         End Set
     End Property
@@ -154,29 +174,23 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' What type of data is being plotted. Used mostly for labels
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Property DataType() As ePlotData
+    Public Property DataType() As eMSEPlotData
         Get
             Return Me.m_dataType
         End Get
-        Set(ByVal value As ePlotData)
+        Set(ByVal value As eMSEPlotData)
             m_dataType = value
         End Set
     End Property
 
-    'Private ReadOnly Property isFished(ByVal GroupIndex As Integer) As Boolean
-    '    Get
-    '        Try
-    '            Return Me.m_isFished(GroupIndex)
-    '        Catch ex As Exception
-    '            'swallow it...
-    '        End Try
-    '        Return False
-    '    End Get
-    'End Property
-
+    Public Sub PlotIterations(ByVal iIterMin As Integer, ByVal iIterMax As Integer)
+        Me.m_iIterMin = iIterMin
+        Me.m_iIterMax = iIterMax
+        ' Redraw if need be
+        If Me.m_Data IsNot Nothing Then
+            Me.Draw()
+        End If
+    End Sub
 
     Public Sub Clear()
         Try
@@ -198,13 +212,12 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' Plot the current data
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub Draw()
         Try
 
             If Me.m_Data IsNot Nothing Then
 
-                If Me.m_type <> ePlotTypes.Line Then
+                If Me.m_type <> eMSEPlotTypes.Line Then
                     Me.m_zgh.NumPanes = Me.nVisPanes
                     Me.ClearGraphs()
                     Me.configPanes()
@@ -212,18 +225,14 @@ Friend Class cMSEPlotter
 
                 Me.plotRefLines()
 
-                If m_type = ePlotTypes.Histogram Then
-                    Me.plotHistoGram()
-
-                ElseIf Me.m_type = ePlotTypes.Values Then
-                    'mass lines
-                    Me.plotValues()
-
-                ElseIf Me.m_type = ePlotTypes.Line Then
-                    'single line
-                    Me.plotline()
-
-                End If
+                Select Case m_type
+                    Case eMSEPlotTypes.Histogram
+                        Me.plotHistoGram()
+                    Case eMSEPlotTypes.Values
+                        Me.plotValues()
+                    Case eMSEPlotTypes.Line
+                        Me.plotline()
+                End Select
 
             End If
 
@@ -241,7 +250,6 @@ Friend Class cMSEPlotter
     ''' Added data to be plotted
     ''' </summary>
     ''' <param name="ListOfData"></param>
-    ''' <remarks></remarks>
     Public Sub AddData(ByVal ListOfData As List(Of cCoreGroupBase))
 
         Try
@@ -253,7 +261,7 @@ Friend Class cMSEPlotter
 
             'if we are adding one line at a time
             'and this is the first line then configure the panes
-            If Me.m_type = ePlotTypes.Line And Me.m_nLines = 0 Then
+            If Me.m_type = eMSEPlotTypes.Line And Me.m_nLines = 0 Then
                 Me.configValuePanes()
             End If
 
@@ -269,7 +277,6 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' Added Mean data to be plotted
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub AddMean()
 
         Dim stats As cMSEStats
@@ -277,7 +284,7 @@ Friend Class cMSEPlotter
         Try
 
             'Only data added one line at a time should be plotted this way
-            If Me.m_type <> ePlotTypes.Line Then Exit Sub
+            If Me.m_type <> eMSEPlotTypes.Line Then Exit Sub
 
             For Each data As cCoreGroupBase In Me.m_Data
                 ipane += 1
@@ -321,7 +328,7 @@ Friend Class cMSEPlotter
                 End If
 
                 'Do NOT rescale if this is a Histogram
-                If Me.m_type <> ePlotTypes.Histogram Then
+                If Me.m_type <> eMSEPlotTypes.Histogram Then
                     ' Me.m_zgh.AutoscalePane(ipane) = True
                 End If
 
@@ -344,21 +351,21 @@ Friend Class cMSEPlotter
         Try
             Select Case Me.m_dataType
 
-                Case ePlotData.Biomass
+                Case eMSEPlotData.Biomass
                     Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                     refPoint = New cMSERefPoint(grp.BiomassRefLower, grp.BiomassRefUpper)
 
-                Case ePlotData.BioEst
+                Case eMSEPlotData.BioEst
                     Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                     refPoint = New cMSERefPoint(grp.BiomassEstRefLower, grp.BiomassEstRefUpper)
 
-                Case ePlotData.GroupCatch
+                Case eMSEPlotData.GroupCatch
                     Dim grp As cMSEGroupInput = Me.m_manager.GroupInputs(ItemIndex)
                     refPoint = New cMSERefPoint(grp.CatchRefLower, grp.CatchRefUpper)
-                Case ePlotData.FleetValue
+                Case eMSEPlotData.FleetValue
                     Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
                     refPoint = New cMSERefPoint(flt.CatchRefLower, flt.CatchRefUpper)
-                Case ePlotData.Effort
+                Case eMSEPlotData.Effort
                     Dim flt As cMSEFleetInput = Me.m_manager.FleetInputs(ItemIndex)
                     refPoint = New cMSERefPoint(flt.EffortRefLower, flt.EffortRefUpper)
 
@@ -379,9 +386,9 @@ Friend Class cMSEPlotter
 #Region "Private methods"
 
     Private Sub configPanes()
-        If Me.m_type = ePlotTypes.Histogram Then
+        If Me.m_type = eMSEPlotTypes.Histogram Then
             configHistoPanes()
-        ElseIf Me.m_type = ePlotTypes.Values Or Me.m_type = ePlotTypes.Line Then
+        ElseIf Me.m_type = eMSEPlotTypes.Values Or Me.m_type = eMSEPlotTypes.Line Then
             configValuePanes()
         End If
     End Sub
@@ -409,12 +416,12 @@ Friend Class cMSEPlotter
 
         If Me.m_uic.StyleGuide.GroupVisible(GroupIndex) Then
 
-            If Me.m_dataType <> ePlotData.GroupCatch Then
+            If Me.m_dataType <> eMSEPlotData.GroupCatch Then
                 Return True
             End If
 
             Dim grp As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(GroupIndex)
-            If Me.m_dataType = ePlotData.GroupCatch And grp.IsFished Then
+            If Me.m_dataType = eMSEPlotData.GroupCatch And grp.IsFished Then
                 'For ePlotData.GroupCatch only fished groups are visible
                 Return True
             End If
@@ -431,7 +438,7 @@ Friend Class cMSEPlotter
 
         Select Case Me.m_dataType
 
-            Case ePlotData.Biomass, ePlotData.GroupCatch, ePlotData.BioEst
+            Case eMSEPlotData.Biomass, eMSEPlotData.GroupCatch, eMSEPlotData.BioEst
                 'By group
                 Dim grp As cCoreGroupBase = Nothing
                 For i As Integer = 1 To Me.m_manager.NumGroups
@@ -448,7 +455,7 @@ Friend Class cMSEPlotter
 
                 Next
 
-            Case ePlotData.Effort, ePlotData.FleetValue
+            Case eMSEPlotData.Effort, eMSEPlotData.FleetValue
                 'By Fleet
                 Dim flt As cFleetInput
                 For iflt As Integer = 1 To Me.m_uic.Core.nFleets
@@ -463,7 +470,7 @@ Friend Class cMSEPlotter
                     End If
                 Next
 
-            Case ePlotData.FleetTotValue
+            Case eMSEPlotData.FleetTotValue
 
                 'By Fleet
 
@@ -472,7 +479,7 @@ Friend Class cMSEPlotter
                                        Me.YLabel, 0, 0, _
                                        False, LegendPos.Top, 1)
                 Me.m_zgh.AutoscalePane(1) = True
-                   
+
 
 
 
@@ -487,19 +494,19 @@ Friend Class cMSEPlotter
         Get
             Select Case Me.m_type
 
-                Case ePlotTypes.Histogram
+                Case eMSEPlotTypes.Histogram
                     Return SharedResources.HEADER_PROBABILITY
 
-                Case ePlotTypes.Line, ePlotTypes.Values
+                Case eMSEPlotTypes.Line, eMSEPlotTypes.Values
                     Select Case Me.m_dataType
-                        Case ePlotData.Biomass
+                        Case eMSEPlotData.Biomass
                             Return SharedResources.HEADER_BIOMASS
-                        Case ePlotData.Effort
+                        Case eMSEPlotData.Effort
                             Return SharedResources.HEADER_EFFORT
-                        Case ePlotData.FleetValue
+                        Case eMSEPlotData.FleetValue
                             Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
                                                                         New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
-                        Case ePlotData.GroupCatch
+                        Case eMSEPlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
                     End Select
 
@@ -516,24 +523,24 @@ Friend Class cMSEPlotter
         Get
             Select Case Me.m_type
 
-                Case ePlotTypes.Histogram
+                Case eMSEPlotTypes.Histogram
 
                     Select Case Me.m_dataType
-                        Case ePlotData.Biomass
+                        Case eMSEPlotData.Biomass
                             ' ToDo: add unit
                             Return SharedResources.HEADER_BIOMASS
-                        Case ePlotData.Effort
+                        Case eMSEPlotData.Effort
                             ' ToDo: add unit
                             Return SharedResources.HEADER_EFFORT
-                        Case ePlotData.FleetValue
+                        Case eMSEPlotData.FleetValue
                             Return Me.m_uic.StyleGuide.FormatUnitString(SharedResources.HEADER_CATCHVALUE_UNIT, _
                                                                         New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
-                        Case ePlotData.GroupCatch
+                        Case eMSEPlotData.GroupCatch
                             ' ToDo: add unit
                             Return SharedResources.HEADER_CATCH_WEIGHT
                     End Select
 
-                Case ePlotTypes.Line, ePlotTypes.Values
+                Case eMSEPlotTypes.Line, eMSEPlotTypes.Values
 
                     Return "Year"
 
@@ -626,7 +633,7 @@ Friend Class cMSEPlotter
                 dx = 1 / data.nStepsPerYear
                 lstLines.Clear()
 
-                For iter As Integer = 1 To data.nIterations
+                For iter As Integer = Math.Max(1, Math.Min(Me.m_iIterMin, Me.m_iIterMax)) To Math.Min(data.nIterations, Math.Max(Me.m_iIterMin, Me.m_iIterMax))
                     Dim ppl As New PointPairList
                     'get the values for this interation
                     values = data.Values(iter)
@@ -701,6 +708,68 @@ Friend Class cMSEPlotter
 
     End Sub
 
+
+    Private Sub PlotComparison()
+
+        Try
+
+            Dim ipane As Integer
+            Dim dx As Double
+            Dim x As Double
+            Dim values() As Single
+            Dim lstLines As New List(Of ZedGraph.LineItem)
+
+            Debug.Assert(Me.m_Data.Count = 2)
+
+            For iData As Integer = 0 To 1
+                Dim data As cMSEStats = DirectCast(Me.m_Data(iData), cMSEStats)
+                Dim strLabel As String = ""
+                Dim clr As Color = Color.Gray
+
+                ipane += 1
+                dx = 1 / data.nStepsPerYear
+                lstLines.Clear()
+
+                For iter As Integer = Math.Max(1, Math.Min(Me.m_iIterMin, Me.m_iIterMax)) To Math.Min(data.nIterations, Math.Max(Me.m_iIterMin, Me.m_iIterMax))
+                    Dim ppl As New PointPairList
+                    'get the values for this interation
+                    values = data.Values(iter)
+                    'reset the x starting value
+                    x = Me.m_uic.Core.EcosimFirstYear
+                    'add a point for each value
+                    For iTime As Integer = 1 To data.nTimeSteps
+                        ppl.Add(x, values(iTime))
+                        x += dx
+                    Next
+
+                    If iData = 0 Then
+                        strLabel = String.Format("Label 1 {0}", data.Name)
+                        clr = Color.Blue
+                    Else
+                        strLabel = String.Format("Label 2 {0}", data.Name)
+                        clr = Color.Red
+                    End If
+                    Dim Line As LineItem = Me.m_zgh.CreateLineItem(strLabel, eLineType.ModelData, clr, ppl)
+                    lstLines.Add(Line)
+                Next
+
+                'set the y max
+                Me.m_zgh.YScaleMax(ipane) = data.Max * Me.m_zgh.YScaleGrace
+                Me.m_zgh.YScaleMin(ipane) = 0
+
+                Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
+                Me.plotMean(data, ipane)
+            Next
+
+            Me.m_zgh.RescaleAndRedraw()
+
+        Catch ex As Exception
+            System.Console.WriteLine(Me.ToString & ".AddLineToGraph() Error: " & ex.Message)
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
     Private Sub plotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
         Dim x As Double, dx As Double
         Dim ppl As PointPairList = Nothing
@@ -751,7 +820,7 @@ Friend Class cMSEPlotter
 
         Me.removeRefLines(pane)
 
-        If Me.m_type = ePlotTypes.Histogram Then
+        If Me.m_type = eMSEPlotTypes.Histogram Then
             'Histogram plot
 
             Dim pplLB As New PointPairList
@@ -852,11 +921,11 @@ Friend Class cMSEPlotter
 
     Friend Function nVisPanes() As Integer
 
-        If Me.m_dataType = ePlotData.FleetTotValue Then
+        If Me.m_dataType = eMSEPlotData.FleetTotValue Then
             Return 1
         End If
 
-        If Me.m_dataType = ePlotData.Effort Or Me.m_dataType = ePlotData.FleetValue Then
+        If Me.m_dataType = eMSEPlotData.Effort Or Me.m_dataType = eMSEPlotData.FleetValue Then
             Return nVisFleets()
         End If
 
@@ -864,40 +933,9 @@ Friend Class cMSEPlotter
 
     End Function
 
-    'Private Sub getIsFished()
-
-    '    Try
-
-    '        Dim core As cCore = Me.m_uic.Core
-    '        Dim ngrps As Integer = core.GetCoreCounter(eCoreCounterTypes.nGroups)
-    '        Dim nflts As Integer = core.GetCoreCounter(eCoreCounterTypes.nFleets)
-    '        Dim fleetIO As cFleetInput
-    '        Dim tc As Single
-
-    '        ReDim Me.m_isFished(ngrps)
-    '        For iflt As Integer = 1 To nflts
-    '            fleetIO = core.FleetInputs(iflt)
-    '            For igrp As Integer = 1 To ngrps
-    '                tc = fleetIO.Discards(igrp) + fleetIO.Landings(igrp)
-    '                If tc > 0 Then
-    '                    Me.m_isFished(igrp) = True
-    '                    Exit For
-    '                End If
-    '            Next
-    '        Next
-
-    '    Catch ex As Exception
-    '        Debug.Assert(False, Me.ToString & ".getIsFished() Exception: " & ex.Message)
-    '        cLog.Write(ex)
-    '    End Try
-
-    'End Sub
-
 #End Region
 
 End Class
-
-#End Region
 
 #End Region
 
