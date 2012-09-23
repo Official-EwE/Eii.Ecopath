@@ -159,11 +159,7 @@ Friend Class cMultiRunsEngine
         If Me.m_bCreateRunFolder Then
             Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(String.Format("Run {0} {1}", strDate, strScope), False))
         Else
-            Me.m_strOutFolder = Path.Combine(strOutFolder, "Run")
-        End If
-
-        If Directory.Exists(Me.m_strOutFolder) Then
-
+            Me.m_strOutFolder = strOutFolder
         End If
 
         For Each ff As cForcingFunction In Me.m_man

@@ -51,16 +51,16 @@ Partial Class frmMain
         Me.m_rbMonthly = New System.Windows.Forms.RadioButton()
         Me.m_btnChooseSrc = New System.Windows.Forms.Button()
         Me.m_lblReadAs = New System.Windows.Forms.Label()
+        Me.m_cbCreateRunFolder = New System.Windows.Forms.CheckBox()
         Me.m_hrdOut = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tbxDest = New System.Windows.Forms.TextBox()
+        Me.m_btnRun = New System.Windows.Forms.Button()
         Me.m_clbValues = New System.Windows.Forms.CheckedListBox()
         Me.m_lblDest = New System.Windows.Forms.Label()
         Me.m_btnAllVars = New System.Windows.Forms.Button()
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
-        Me.m_btnRun = New System.Windows.Forms.Button()
-        Me.m_cbCreateRunFolder = New System.Windows.Forms.CheckBox()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_csMain.Panel1.SuspendLayout()
         Me.m_csMain.Panel2.SuspendLayout()
@@ -160,6 +160,12 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_lblReadAs, "m_lblReadAs")
         Me.m_lblReadAs.Name = "m_lblReadAs"
         '
+        'm_cbCreateRunFolder
+        '
+        resources.ApplyResources(Me.m_cbCreateRunFolder, "m_cbCreateRunFolder")
+        Me.m_cbCreateRunFolder.Name = "m_cbCreateRunFolder"
+        Me.m_cbCreateRunFolder.UseVisualStyleBackColor = True
+        '
         'm_hrdOut
         '
         resources.ApplyResources(Me.m_hrdOut, "m_hrdOut")
@@ -173,6 +179,12 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_tbxDest, "m_tbxDest")
         Me.m_tbxDest.Name = "m_tbxDest"
         Me.m_tbxDest.ReadOnly = True
+        '
+        'm_btnRun
+        '
+        resources.ApplyResources(Me.m_btnRun, "m_btnRun")
+        Me.m_btnRun.Name = "m_btnRun"
+        Me.m_btnRun.UseVisualStyleBackColor = True
         '
         'm_clbValues
         '
@@ -210,18 +222,6 @@ Partial Class frmMain
         Me.m_pbLogo.BackgroundImage = Global.EwEMultiRunsPlugin.My.Resources.Resources.logo_canada_dfo
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
-        '
-        'm_btnRun
-        '
-        resources.ApplyResources(Me.m_btnRun, "m_btnRun")
-        Me.m_btnRun.Name = "m_btnRun"
-        Me.m_btnRun.UseVisualStyleBackColor = True
-        '
-        'm_cbCreateRunFolder
-        '
-        resources.ApplyResources(Me.m_cbCreateRunFolder, "m_cbCreateRunFolder")
-        Me.m_cbCreateRunFolder.Name = "m_cbCreateRunFolder"
-        Me.m_cbCreateRunFolder.UseVisualStyleBackColor = True
         '
         'frmMain
         '
