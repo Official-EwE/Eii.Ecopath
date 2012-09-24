@@ -150,7 +150,9 @@ Namespace Ecosim
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
 
             Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
-            Me.m_hoverMenu.Attach(Me.m_plScroll)
+            Me.m_hoverMenu.Attach(Me.m_plScroll, ucHoverMenu.eCommandTypes.ZoomIn Or _
+                                                 ucHoverMenu.eCommandTypes.ZoomOut Or _
+                                                 ucHoverMenu.eCommandTypes.ZoomReset)
             AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_bInit = True
