@@ -525,6 +525,9 @@ Friend Class cMSEPlotter
                                                                         New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary})
                         Case eMSEPlotData.GroupCatch
                             Return SharedResources.HEADER_CATCH_WEIGHT
+                        Case eMSEPlotData.FishingMortalityComparison
+                            ' ToDo: add Y label
+                            Return ""
                     End Select
 
             End Select
@@ -559,7 +562,7 @@ Friend Class cMSEPlotter
 
                 Case eMSEPlotTypes.Line, eMSEPlotTypes.Values
 
-                    Return "Year"
+                    Return SharedResources.HEADER_YEAR
 
             End Select
 
@@ -666,9 +669,10 @@ Friend Class cMSEPlotter
                     lstLines.Add(Line)
 
                 Next
-                'set the y max
-                Me.m_zgh.YScaleMax(ipane) = data.Max * Me.m_zgh.YScaleGrace
-                Me.m_zgh.YScaleMin(ipane) = 0
+
+                ''set the y max
+                'Me.m_zgh.YScaleMax(ipane) = data.Max * Me.m_zgh.YScaleGrace
+                'Me.m_zgh.YScaleMin(ipane) = 0
 
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
                 Me.plotMean(data, ipane)
