@@ -455,6 +455,23 @@ Friend Class cMSEPlotter
 
                 Next
 
+            Case eMSEPlotData.FishingMortalityComparison
+                'By group
+                Dim grp As cCoreGroupBase = Nothing
+                For i As Integer = 1 To Me.m_manager.NumGroups
+                    grp = Me.m_manager.GroupInputs(i)
+                    'figure out if this group is visible
+                    If Me.isGroupVisible(grp.Index) Then
+                        'Only configure the pane if this group is visible
+                        ipane += 1
+                        Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
+                                               CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
+                                               Me.YLabel, -1.0, 1.0, False, LegendPos.Top, ipane)
+                        ' Me.m_zgh.AutoscalePane(ipane) = True
+                    End If
+
+                Next
+
             Case eMSEPlotData.Effort, eMSEPlotData.FleetValue
                 'By Fleet
                 Dim flt As cFleetInput

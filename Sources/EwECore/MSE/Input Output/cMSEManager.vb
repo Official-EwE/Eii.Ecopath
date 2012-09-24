@@ -351,6 +351,16 @@ Namespace MSE
             Me.m_VarToStat.Add(eVarNameFlags.MSEEffortAboveLimit, eMSEStatNames.AboveLimit)
             Me.m_VarToStat.Add(eVarNameFlags.MSEEffortBelowLimit, eMSEStatNames.BelowLimit)
 
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatHistogram, eMSEStatNames.PercentageHistogram)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatMeanValues, eMSEStatNames.MeanRun)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatMin, eMSEStatNames.Min)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatMax, eMSEStatNames.Max)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatCV, eMSEStatNames.CV)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatBins, eMSEStatNames.nBins)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatBinWidths, eMSEStatNames.BinWidth)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatValues, eMSEStatNames.Values)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatAboveLimit, eMSEStatNames.AboveLimit)
+            Me.m_VarToStat.Add(eVarNameFlags.MSEFStatBelowLimit, eMSEStatNames.BelowLimit)
 
             Me.m_VarToStat.Add(eVarNameFlags.MSENTrials, eMSEStatNames.nIterations)
 
@@ -359,8 +369,6 @@ Namespace MSE
         Public Function Run() As Boolean
 
             Try
-
-
 
                 If Me.IsRunning Then
                     Me.m_core.Messages.SendMessage(New cMessage("A Management Strategy Evaluation is already running. Only one evaluation can be run at a time.", _
@@ -595,6 +603,8 @@ Namespace MSE
             Me.m_lstBiomassStats.Clear()
             Me.m_lstGroupCatchStats.Clear()
             Me.m_lstBioEstStats.Clear()
+            Me.m_lstFStats.Clear()
+
             For igrp As Integer = 1 To m_core.nLivingGroups
                 'BioEst
                 Me.m_lstBioEstStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioEstStats, eDataTypes.MSEBioEstStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
@@ -603,7 +613,7 @@ Namespace MSE
                 Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
 
-                Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+                Me.m_lstFStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FStats, eDataTypes.MSEFStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 ' Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FActualStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
             Next
 
@@ -627,8 +637,6 @@ Namespace MSE
             Catch ex As Exception
 
             End Try
-
-
 
         End Function
 
@@ -722,6 +730,13 @@ Namespace MSE
                     stat.Name = Me.m_core.m_EcoPathData.FleetName(stat.Index)
                 Next
 
+                For Each stat As cMSEStats In Me.m_lstFStats
+                    stat.AllowValidation = False 'no validation of outputs
+                    stat.Index = Array.IndexOf(coreData.GroupDBID, stat.DBID)
+                    stat.Name = Me.m_core.m_EcoPathData.GroupName(stat.Index)
+                Next
+
+
                 'fleets
                 For Each mseFlt As cMSEFleetInput In Me.m_lstFleetInputs
                     mseFlt.AllowValidation = False
@@ -753,7 +768,6 @@ Namespace MSE
 
                     mseFlt.LowerLPEffortBound = Me.m_MSEdata.LowLPEffort(iFleet)
                     mseFlt.UpperLPEffortBound = Me.m_MSEdata.UpperLPEffort(iFleet)
-
 
                     For iGroup = 1 To m_core.nGroups
                         mseFlt.QuotaShare(iGroup) = m_MSEdata.Quotashare(iFleet, iGroup)
@@ -792,7 +806,6 @@ Namespace MSE
 
                 m_parameters.MaxEffort = Me.m_MSEdata.MSEMaxEffort
                 m_parameters.UseLPSolution = Me.m_MSEdata.UseLPSolution
-
 
                 m_parameters.ResetStatusFlags()
 

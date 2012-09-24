@@ -1217,6 +1217,19 @@ Namespace Core
         MSEBioEstAboveLimit
         MSEBioEstBelowLimit
 
+
+        MSEFStatHistogram
+        MSEFStatMeanValues
+        MSEFStatMin
+        MSEFStatMax
+        MSEFStatCV
+        MSEFStatStd
+        MSEFStatBins
+        MSEFStatBinWidths
+        MSEFStatValues
+        MSEFStatAboveLimit
+        MSEFStatBelowLimit
+
         MSEStartYear
         MSEResultsStartYear
         MSEResultsEndYear

@@ -754,7 +754,6 @@ Namespace MSE
             Me.m_data.BioEstStats.ComputeStats()
 
             Me.m_data.FStats.ComputeStats()
-            Me.m_data.FStats.ComputeStats()
 
             Me.m_data.ValueFleetStats.ComputeStats()
 
@@ -1460,7 +1459,7 @@ Namespace MSE
                 Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
 
-            Me.m_LPSolver.Solve()
+            Me.m_LPSolver.Solve(New SimplexSolverParams)
 
             For iFlt = 1 To Me.m_data.nFleets
                 Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToDouble)
@@ -2556,16 +2555,14 @@ Namespace MSE
                         Me.m_data.CatchYear(iflt, igrp) += Me.m_esData.ResultsSumCatchByGroupGear(igrp, iflt, CInt(iTime))
                     Next
                 Next
-                Dim sumQ As Single
+                ' System.Console.WriteLine()
                 For igrp = 1 To Me.m_data.nLiving
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
 
-                    sumQ = 0
-                    For iflt = 1 To Me.m_esData.nGear
-                        sumQ += Me.m_data.QStar(igrp, iflt)
-                    Next iflt
-                    Me.m_data.FStats.AddValue(igrp, CInt(iTime), sumQ - Me.m_data.FTarget(igrp))
+                    Me.m_data.FStats.AddValue(igrp, CInt(iTime), Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp))
+
+                    ' System.Console.Write((Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)).ToString & ",")
 
                 Next igrp
 
