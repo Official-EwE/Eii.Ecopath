@@ -726,6 +726,7 @@ Namespace Controls
 
             End With
 
+            Me.UpdateStyle(iPane)
             Me.RescaleAndRedraw()
 
             Return gp
@@ -2242,10 +2243,18 @@ Namespace Controls
             Return ci.IsVisible
         End Function
 
-        Protected Overridable Sub UpdateStyle()
+        Protected Overridable Sub UpdateStyle(Optional iPane As Integer = -1)
 
+            Dim iPaneMin As Integer = 1
+            Dim iPaneMax As Integer = Me.m_nPanels
             Dim lAxis As New List(Of ZedGraph.Axis)
-            For iPane As Integer = 1 To Me.m_nPanels
+
+            If (iPane > 0) Then
+                iPaneMin = iPane
+                iPaneMax = iPane
+            End If
+
+            For iPane = iPaneMin To iPaneMax
                 With Me.GetPane(iPane)
 
                     lAxis.Clear()
