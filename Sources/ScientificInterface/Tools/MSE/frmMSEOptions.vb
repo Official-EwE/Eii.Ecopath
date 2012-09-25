@@ -43,11 +43,7 @@ Public Class frmMSEOptions
     Private m_fpSBPower As cPropertyFormatProvider
 
     Private m_fpMaxEffort As cPropertyFormatProvider
-
-
     Private m_fpUseQuotaRegs As cPropertyFormatProvider
-    Private m_dctEffortControls As Dictionary(Of eMSERegulationMode, RadioButton)
-
 
     Private m_RegMode As eMSERegulationMode
     Private m_ControlType As eControlTypes
@@ -86,30 +82,33 @@ Public Class frmMSEOptions
         '  Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.m_ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
 
         'Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
-        Me.m_fpSBPower = New cPropertyFormatProvider(Me.UIContext, Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
-        Me.m_fpMaxEffort = New cPropertyFormatProvider(Me.UIContext, Me.txMaxEffort, Me.m_MSE.ModelParameters, eVarNameFlags.MSEMaxEffort)
+        Me.m_fpSBPower = New cPropertyFormatProvider(Me.UIContext, Me.m_txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
+        Me.m_fpMaxEffort = New cPropertyFormatProvider(Me.UIContext, Me.m_txMaxEffort, Me.m_MSE.ModelParameters, eVarNameFlags.MSEMaxEffort)
 
 
         'Assessment methods Catch Estimated Biomass and Direct Exploitation are stored in the tag property of the radio buttons
         'see the Changed event of the radio buttons for setting the parameters
-        Me.rbCatchEstBio.Tag = eAssessmentMethods.CatchEstmBio
-        Me.rbDirectExp.Tag = eAssessmentMethods.DirectExploitation
-        Me.rbExact.Tag = eAssessmentMethods.Exact
+        Me.m_rbCatchEstBio.Tag = eAssessmentMethods.CatchEstmBio
+        Me.m_rbDirectExp.Tag = eAssessmentMethods.DirectExploitation
+        Me.m_rbExact.Tag = eAssessmentMethods.Exact
 
-        Me.rbEffortNoCap.Tag = eMSEEffortSource.NoCap
-        Me.rbEffortEcosim.Tag = eMSEEffortSource.EcosimEffort
-        Me.rbEffortPredicted.Tag = eMSEEffortSource.Predicted
+        Me.m_rbEffortNoCap.Tag = eMSEEffortSource.NoCap
+        Me.m_rbEffortEcosim.Tag = eMSEEffortSource.EcosimEffort
+        Me.m_rbEffortPredicted.Tag = eMSEEffortSource.Predicted
 
-        Me.rbNoRegs.Tag = eMSERegulationMode.NoRegulations
-        Me.rbUseRegs.Tag = eMSERegulationMode.UseRegulations
+        Me.m_rbNoRegs.Tag = eMSERegulationMode.NoRegulations
+        Me.m_rbUseRegs.Tag = eMSERegulationMode.UseRegulations
 
         Me.m_rbEffortControls.Tag = eControlTypes.InputEffort
         Me.m_rbQuotaControls.Tag = eControlTypes.OutputQuota
 
-        Me.m_dctEffortControls = New Dictionary(Of eMSERegulationMode, RadioButton)
+        Me.m_RegMode = eMSERegulationMode.UseRegulations
+        Me.m_ControlType = eControlTypes.InputEffort
 
-        m_RegMode = eMSERegulationMode.UseRegulations
-        m_ControlType = eControlTypes.InputEffort
+        ' Don't set this in designer
+        Me.m_panelEffortControls.Dock = DockStyle.Fill
+        Me.m_panelQuotaControls.Dock = DockStyle.Fill
+        Me.m_panelNoReg.Dock = DockStyle.Fill
 
         Me.UpdateControls()
 
@@ -117,7 +116,6 @@ Public Class frmMSEOptions
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
         Me.m_fpSBPower.Release()
-
         MyBase.OnFormClosed(e)
     End Sub
 
@@ -166,41 +164,49 @@ Public Class frmMSEOptions
     End Sub
 
 
+    Private Sub UpdateSelectedEffortMode()
+        Try
+            ' m_dctEffortControls.Item(Me.m_MSE.ModelParameters.RegulatoryMode).Checked = True
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private m_bInUpdate As Boolean = False
+
     Protected Overrides Sub UpdateControls()
 
-        Me.pnlFTracking.Enabled = False
+        If Me.m_bInUpdate Then Return
+        Me.m_bInUpdate = True
+
+        ' 0 = Effort, 1 = Quota, 2 = NoReg
+        Dim iPanel As Integer = 0
 
         Me.m_MSE.ModelParameters.RegulatoryMode = Me.m_RegMode
 
-        Me.m_panelEffortControls.Visible = False
-        Me.m_panelNoReg.Visible = False
-        Me.m_panelQuotaControls.Visible = False
-
-        Select Case Me.m_RegMode
-
+        Select Me.m_RegMode
             Case eMSERegulationMode.UseRegulations
-                'Fishery is regulated
-
+                Me.m_rbUseRegs.Checked = True
                 Select Case Me.m_ControlType
-
                     Case eControlTypes.InputEffort
-                        Me.m_MSE.ModelParameters.UseLPSolution = True
-                        Me.m_panelEffortControls.Visible = True
-
+                        Me.m_rbEffortControls.Checked = True
+                        iPanel = 0
                     Case eControlTypes.OutputQuota
-                        Me.m_MSE.ModelParameters.UseLPSolution = False
-                        Me.m_panelQuotaControls.Visible = True
-
+                        Me.m_rbQuotaControls.Checked = True
+                        iPanel = 1
                 End Select
-
-
             Case eMSERegulationMode.NoRegulations
-                'No Regulations
-                'Tracking Ecosim Effort
-                Me.pnlFTracking.Enabled = True
-                Me.m_panelNoReg.Visible = True
+                Me.m_rbNoRegs.Checked = True
+                iPanel = 2
+                End Select
+        Me.m_MSE.ModelParameters.UseLPSolution = (iPanel = 0)
+                Me.m_panelEffortControls.Visible = (iPanel = 0)
+                Me.m_panelQuotaControls.Visible = (iPanel = 1)
+                Me.m_panelNoReg.Enabled = (iPanel = 2)
+                Me.m_panelNoReg.Visible = (iPanel = 2)
 
-        End Select
+                Me.m_panelRegControls.Enabled = (iPanel <> 2)
+                Me.m_bInUpdate = False
 
     End Sub
 
@@ -225,35 +231,30 @@ Public Class frmMSEOptions
 
     End Sub
 
-    Private Sub pnlUseReg_Paint(sender As System.Object, e As System.Windows.Forms.PaintEventArgs)
+    Private Sub OnControlTypeCheckChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_rbEffortControls.CheckedChanged, m_rbQuotaControls.CheckedChanged
 
-    End Sub
-
-    Private Sub onControlTypeChanged_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles m_rbEffortControls.CheckedChanged, m_rbQuotaControls.CheckedChanged
+        If (Me.UIContext Is Nothing) Then Return
 
         Try
-
-            If Me.UIContext Is Nothing Then Return
-
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
             Debug.Assert(TypeOf sender Is RadioButton)
             Debug.Assert(rb.Tag IsNot Nothing)
             Debug.Assert(TypeOf rb.Tag Is eControlTypes)
-
+            Me.m_RegMode = eMSERegulationMode.UseRegulations
             Me.m_ControlType = DirectCast(rb.Tag, eControlTypes)
-
             Me.UpdateControls()
-
         Catch ex As Exception
-
+            cLog.Write(ex, "frmMSEOptions::OnControlTypeCheckChanged")
         End Try
 
     End Sub
 
-
-    Private Sub onChangeRegControls_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles rbUseRegs.CheckedChanged, rbNoRegs.CheckedChanged
+    Private Sub OnRegControlsCheckChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_rbUseRegs.CheckedChanged, m_rbNoRegs.CheckedChanged
 
         If Me.UIContext Is Nothing Then Return
+
         Try
 
             Dim rb As RadioButton = DirectCast(sender, RadioButton)
@@ -264,14 +265,12 @@ Public Class frmMSEOptions
             If rb.Checked = True Then
                 Me.m_RegMode = DirectCast(rb.Tag, eMSERegulationMode)
                 Me.m_MSE.ModelParameters.RegulatoryMode = m_RegMode
+                Me.UpdateControls()
             End If
-
-            Me.UpdateControls()
 
         Catch ex As Exception
 
         End Try
-
 
     End Sub
 

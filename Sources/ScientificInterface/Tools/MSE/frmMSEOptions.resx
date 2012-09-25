@@ -136,7 +136,7 @@
     <value>153, 17</value>
   </data>
   <data name="m_rbQuotaControls.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="m_rbQuotaControls.Text" xml:space="preserve">
     <value>Use output (&amp;quota) controls</value>
@@ -148,7 +148,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbQuotaControls.Parent" xml:space="preserve">
-    <value>Panel4</value>
+    <value>m_panelRegControls</value>
   </data>
   <data name="&gt;&gt;m_rbQuotaControls.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -166,7 +166,7 @@
     <value>268, 17</value>
   </data>
   <data name="m_rbEffortControls.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>0</value>
   </data>
   <data name="m_rbEffortControls.Text" xml:space="preserve">
     <value>Use input effort control (&amp;linear programming solution)</value>
@@ -178,145 +178,124 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbEffortControls.Parent" xml:space="preserve">
-    <value>Panel4</value>
+    <value>m_panelRegControls</value>
   </data>
   <data name="&gt;&gt;m_rbEffortControls.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="Panel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 26</value>
+  <data name="m_panelRegControls.Location" type="System.Drawing.Point, System.Drawing">
+    <value>25, 46</value>
   </data>
-  <data name="Panel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>292, 49</value>
+  <data name="m_panelRegControls.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 49</value>
   </data>
-  <data name="Panel4.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;Panel4.Name" xml:space="preserve">
-    <value>Panel4</value>
-  </data>
-  <data name="&gt;&gt;Panel4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Panel4.Parent" xml:space="preserve">
-    <value>Panel5</value>
-  </data>
-  <data name="&gt;&gt;Panel4.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="rbUseRegs.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbUseRegs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbUseRegs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="rbUseRegs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>133, 17</value>
-  </data>
-  <data name="rbUseRegs.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="rbUseRegs.Text" xml:space="preserve">
-    <value>Use &amp;regulatory controls</value>
-  </data>
-  <data name="&gt;&gt;rbUseRegs.Name" xml:space="preserve">
-    <value>rbUseRegs</value>
-  </data>
-  <data name="&gt;&gt;rbUseRegs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbUseRegs.Parent" xml:space="preserve">
-    <value>Panel5</value>
-  </data>
-  <data name="&gt;&gt;rbUseRegs.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="rbNoRegs.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbNoRegs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbNoRegs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 81</value>
-  </data>
-  <data name="rbNoRegs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>294, 17</value>
-  </data>
-  <data name="rbNoRegs.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="rbNoRegs.Text" xml:space="preserve">
-    <value>&amp;No regulatory controls (evaluate current Ecosim scenario)</value>
-  </data>
-  <data name="&gt;&gt;rbNoRegs.Name" xml:space="preserve">
-    <value>rbNoRegs</value>
-  </data>
-  <data name="&gt;&gt;rbNoRegs.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbNoRegs.Parent" xml:space="preserve">
-    <value>Panel5</value>
-  </data>
-  <data name="&gt;&gt;rbNoRegs.ZOrder" xml:space="preserve">
+  <data name="m_panelRegControls.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="Panel5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 18</value>
+  <data name="&gt;&gt;m_panelRegControls.Name" xml:space="preserve">
+    <value>m_panelRegControls</value>
   </data>
-  <data name="Panel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>326, 112</value>
-  </data>
-  <data name="Panel5.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;Panel5.Name" xml:space="preserve">
-    <value>Panel5</value>
-  </data>
-  <data name="&gt;&gt;Panel5.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_panelRegControls.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Panel5.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_panelRegControls.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
   </data>
-  <data name="&gt;&gt;Panel5.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_panelRegControls.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="CEwEHeaderLabel2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbUseRegs.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbUseRegs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="CEwEHeaderLabel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+  <data name="m_rbUseRegs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 23</value>
   </data>
-  <data name="CEwEHeaderLabel2.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
+  <data name="m_rbUseRegs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 17</value>
   </data>
-  <data name="CEwEHeaderLabel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1066, 18</value>
+  <data name="m_rbUseRegs.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="CEwEHeaderLabel2.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="m_rbUseRegs.Text" xml:space="preserve">
+    <value>Use &amp;regulatory controls</value>
   </data>
-  <data name="CEwEHeaderLabel2.Text" xml:space="preserve">
-    <value>Control options</value>
+  <data name="&gt;&gt;m_rbUseRegs.Name" xml:space="preserve">
+    <value>m_rbUseRegs</value>
   </data>
-  <data name="CEwEHeaderLabel2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
+  <data name="&gt;&gt;m_rbUseRegs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel2</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbUseRegs.Parent" xml:space="preserve">
     <value>m_pnlRegOpt</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbUseRegs.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_rbNoRegs.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbNoRegs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbNoRegs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 101</value>
+  </data>
+  <data name="m_rbNoRegs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>294, 17</value>
+  </data>
+  <data name="m_rbNoRegs.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_rbNoRegs.Text" xml:space="preserve">
+    <value>&amp;No regulatory controls (evaluate current Ecosim scenario)</value>
+  </data>
+  <data name="&gt;&gt;m_rbNoRegs.Name" xml:space="preserve">
+    <value>m_rbNoRegs</value>
+  </data>
+  <data name="&gt;&gt;m_rbNoRegs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbNoRegs.Parent" xml:space="preserve">
+    <value>m_pnlRegOpt</value>
+  </data>
+  <data name="&gt;&gt;m_rbNoRegs.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_hdrOptions.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrOptions.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_hdrOptions.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="m_hdrOptions.Size" type="System.Drawing.Size, System.Drawing">
+    <value>654, 18</value>
+  </data>
+  <data name="m_hdrOptions.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrOptions.Text" xml:space="preserve">
+    <value>Control options</value>
+  </data>
+  <data name="m_hdrOptions.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrOptions.Name" xml:space="preserve">
+    <value>m_hdrOptions</value>
+  </data>
+  <data name="&gt;&gt;m_hdrOptions.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrOptions.Parent" xml:space="preserve">
+    <value>m_pnlRegOpt</value>
+  </data>
+  <data name="&gt;&gt;m_hdrOptions.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="m_pnlRegOpt.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 9</value>
@@ -325,10 +304,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pnlRegOpt.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1075, 133</value>
+    <value>657, 125</value>
   </data>
   <data name="m_pnlRegOpt.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_pnlRegOpt.Name" xml:space="preserve">
     <value>m_pnlRegOpt</value>
@@ -340,61 +319,262 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pnlRegOpt.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_TableLayout.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_TableLayout.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="CEwEHeaderLabel6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_panelNoReg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_txSBPower.Location" type="System.Drawing.Point, System.Drawing">
+    <value>165, 92</value>
+  </data>
+  <data name="m_txSBPower.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 20</value>
+  </data>
+  <data name="m_txSBPower.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_txSBPower.Name" xml:space="preserve">
+    <value>m_txSBPower</value>
+  </data>
+  <data name="&gt;&gt;m_txSBPower.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_txSBPower.Parent" xml:space="preserve">
+    <value>m_panelNoReg</value>
+  </data>
+  <data name="&gt;&gt;m_txSBPower.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_hdrNoReg.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="CEwEHeaderLabel6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrNoReg.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="CEwEHeaderLabel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 0</value>
+  <data name="m_hdrNoReg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
   </data>
-  <data name="CEwEHeaderLabel6.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="m_hdrNoReg.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="CEwEHeaderLabel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1066, 18</value>
+  <data name="m_hdrNoReg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>461, 18</value>
   </data>
-  <data name="CEwEHeaderLabel6.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="m_hdrNoReg.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="CEwEHeaderLabel6.Text" xml:space="preserve">
-    <value>Effort Controls</value>
+  <data name="m_hdrNoReg.Text" xml:space="preserve">
+    <value>No regulator options</value>
   </data>
-  <data name="CEwEHeaderLabel6.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrNoReg.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel6.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel6</value>
+  <data name="&gt;&gt;m_hdrNoReg.Name" xml:space="preserve">
+    <value>m_hdrNoReg</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel6.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrNoReg.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel6.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrNoReg.Parent" xml:space="preserve">
+    <value>m_panelNoReg</value>
+  </data>
+  <data name="&gt;&gt;m_hdrNoReg.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_lblSBPower.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblSBPower.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblSBPower.Location" type="System.Drawing.Point, System.Drawing">
+    <value>26, 95</value>
+  </data>
+  <data name="m_lblSBPower.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 13</value>
+  </data>
+  <data name="m_lblSBPower.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_lblSBPower.Text" xml:space="preserve">
+    <value>&amp;Survey vs. biomass power:</value>
+  </data>
+  <data name="&gt;&gt;m_lblSBPower.Name" xml:space="preserve">
+    <value>m_lblSBPower</value>
+  </data>
+  <data name="&gt;&gt;m_lblSBPower.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblSBPower.Parent" xml:space="preserve">
+    <value>m_panelNoReg</value>
+  </data>
+  <data name="&gt;&gt;m_lblSBPower.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbExact.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbExact.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbExact.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 69</value>
+  </data>
+  <data name="m_rbExact.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 17</value>
+  </data>
+  <data name="m_rbExact.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="m_rbExact.Text" xml:space="preserve">
+    <value>Exact biomass known</value>
+  </data>
+  <data name="&gt;&gt;m_rbExact.Name" xml:space="preserve">
+    <value>m_rbExact</value>
+  </data>
+  <data name="&gt;&gt;m_rbExact.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbExact.Parent" xml:space="preserve">
+    <value>m_panelNoReg</value>
+  </data>
+  <data name="&gt;&gt;m_rbExact.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_rbCatchEstBio.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbCatchEstBio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbCatchEstBio.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 23</value>
+  </data>
+  <data name="m_rbCatchEstBio.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 17</value>
+  </data>
+  <data name="m_rbCatchEstBio.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_rbCatchEstBio.Text" xml:space="preserve">
+    <value>Catch/estimated biomass</value>
+  </data>
+  <data name="&gt;&gt;m_rbCatchEstBio.Name" xml:space="preserve">
+    <value>m_rbCatchEstBio</value>
+  </data>
+  <data name="&gt;&gt;m_rbCatchEstBio.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbCatchEstBio.Parent" xml:space="preserve">
+    <value>m_panelNoReg</value>
+  </data>
+  <data name="&gt;&gt;m_rbCatchEstBio.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_rbDirectExp.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_rbDirectExp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_rbDirectExp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 46</value>
+  </data>
+  <data name="m_rbDirectExp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 17</value>
+  </data>
+  <data name="m_rbDirectExp.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_rbDirectExp.Text" xml:space="preserve">
+    <value>Direct exploitation rate</value>
+  </data>
+  <data name="&gt;&gt;m_rbDirectExp.Name" xml:space="preserve">
+    <value>m_rbDirectExp</value>
+  </data>
+  <data name="&gt;&gt;m_rbDirectExp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbDirectExp.Parent" xml:space="preserve">
+    <value>m_panelNoReg</value>
+  </data>
+  <data name="&gt;&gt;m_rbDirectExp.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="m_panelNoReg.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 261</value>
+  </data>
+  <data name="m_panelNoReg.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_panelNoReg.Size" type="System.Drawing.Size, System.Drawing">
+    <value>464, 124</value>
+  </data>
+  <data name="m_panelNoReg.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_panelNoReg.Name" xml:space="preserve">
+    <value>m_panelNoReg</value>
+  </data>
+  <data name="&gt;&gt;m_panelNoReg.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_panelNoReg.Parent" xml:space="preserve">
+    <value>m_plControls</value>
+  </data>
+  <data name="&gt;&gt;m_panelNoReg.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_hdrEffort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrEffort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_hdrEffort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="m_hdrEffort.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
+  </data>
+  <data name="m_hdrEffort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>464, 18</value>
+  </data>
+  <data name="m_hdrEffort.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="m_hdrEffort.Text" xml:space="preserve">
+    <value>Effort Controls</value>
+  </data>
+  <data name="m_hdrEffort.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEffort.Name" xml:space="preserve">
+    <value>m_hdrEffort</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEffort.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrEffort.Parent" xml:space="preserve">
     <value>m_panelEffortControls</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrEffort.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_gridFleetLPEffortBounds.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_gridFleetLPEffortBounds.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 21</value>
+    <value>6, 21</value>
+  </data>
+  <data name="m_gridFleetLPEffortBounds.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="m_gridFleetLPEffortBounds.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1063, 130</value>
+    <value>458, 76</value>
   </data>
   <data name="m_gridFleetLPEffortBounds.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>1</value>
   </data>
   <data name="m_gridFleetLPEffortBounds.Text" xml:space="preserve">
     <value>MSE fleet ref. levels</value>
@@ -411,14 +591,11 @@
   <data name="&gt;&gt;m_gridFleetLPEffortBounds.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_panelEffortControls.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="m_panelEffortControls.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>9, 12</value>
   </data>
   <data name="m_panelEffortControls.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1069, 181</value>
+    <value>464, 100</value>
   </data>
   <data name="m_panelEffortControls.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -430,45 +607,45 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_panelEffortControls.Parent" xml:space="preserve">
-    <value>m_TableLayout</value>
+    <value>m_plControls</value>
   </data>
   <data name="&gt;&gt;m_panelEffortControls.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <data name="CEwEHeaderLabel3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrQuota.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="CEwEHeaderLabel3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_hdrQuota.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="CEwEHeaderLabel3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrQuota.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 0</value>
   </data>
-  <data name="CEwEHeaderLabel3.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="m_hdrQuota.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="CEwEHeaderLabel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1066, 22</value>
+  <data name="m_hdrQuota.Size" type="System.Drawing.Size, System.Drawing">
+    <value>461, 22</value>
   </data>
-  <data name="CEwEHeaderLabel3.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+  <data name="m_hdrQuota.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="CEwEHeaderLabel3.Text" xml:space="preserve">
+  <data name="m_hdrQuota.Text" xml:space="preserve">
     <value>Quota controls </value>
   </data>
-  <data name="CEwEHeaderLabel3.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrQuota.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel3.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel3</value>
+  <data name="&gt;&gt;m_hdrQuota.Name" xml:space="preserve">
+    <value>m_hdrQuota</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel3.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrQuota.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrQuota.Parent" xml:space="preserve">
     <value>m_panelQuotaControls</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrQuota.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_hdrEffortRegOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -484,7 +661,7 @@
     <value>No</value>
   </data>
   <data name="m_hdrEffortRegOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1102, 25</value>
+    <value>497, 25</value>
   </data>
   <data name="m_hdrEffortRegOptions.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -507,118 +684,118 @@
   <data name="&gt;&gt;m_hdrEffortRegOptions.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="txMaxEffort.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_txMaxEffort.Location" type="System.Drawing.Point, System.Drawing">
     <value>98, 24</value>
   </data>
-  <data name="txMaxEffort.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_txMaxEffort.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 20</value>
   </data>
-  <data name="txMaxEffort.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;txMaxEffort.Name" xml:space="preserve">
-    <value>txMaxEffort</value>
-  </data>
-  <data name="&gt;&gt;txMaxEffort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txMaxEffort.Parent" xml:space="preserve">
-    <value>m_panelQuotaControls</value>
-  </data>
-  <data name="&gt;&gt;txMaxEffort.ZOrder" xml:space="preserve">
+  <data name="m_txMaxEffort.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="rbEffortEcosim.AutoSize" type="System.Boolean, mscorlib">
+  <data name="&gt;&gt;m_txMaxEffort.Name" xml:space="preserve">
+    <value>m_txMaxEffort</value>
+  </data>
+  <data name="&gt;&gt;m_txMaxEffort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_txMaxEffort.Parent" xml:space="preserve">
+    <value>m_panelQuotaControls</value>
+  </data>
+  <data name="&gt;&gt;m_txMaxEffort.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_rbEffortEcosim.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="rbEffortEcosim.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbEffortEcosim.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="rbEffortEcosim.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_rbEffortEcosim.Location" type="System.Drawing.Point, System.Drawing">
     <value>174, 24</value>
   </data>
-  <data name="rbEffortEcosim.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbEffortEcosim.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 17</value>
   </data>
-  <data name="rbEffortEcosim.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="rbEffortEcosim.Text" xml:space="preserve">
-    <value>Cap effort at the &amp;Ecosim level   </value>
-  </data>
-  <data name="&gt;&gt;rbEffortEcosim.Name" xml:space="preserve">
-    <value>rbEffortEcosim</value>
-  </data>
-  <data name="&gt;&gt;rbEffortEcosim.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbEffortEcosim.Parent" xml:space="preserve">
-    <value>m_panelQuotaControls</value>
-  </data>
-  <data name="&gt;&gt;rbEffortEcosim.ZOrder" xml:space="preserve">
+  <data name="m_rbEffortEcosim.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="rbEffortNoCap.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbEffortEcosim.Text" xml:space="preserve">
+    <value>Cap effort at the &amp;Ecosim level   </value>
+  </data>
+  <data name="&gt;&gt;m_rbEffortEcosim.Name" xml:space="preserve">
+    <value>m_rbEffortEcosim</value>
+  </data>
+  <data name="&gt;&gt;m_rbEffortEcosim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_rbEffortEcosim.Parent" xml:space="preserve">
+    <value>m_panelQuotaControls</value>
+  </data>
+  <data name="&gt;&gt;m_rbEffortEcosim.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_rbEffortNoCap.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="rbEffortNoCap.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbEffortNoCap.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="rbEffortNoCap.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 25</value>
+  <data name="m_rbEffortNoCap.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 24</value>
   </data>
-  <data name="rbEffortNoCap.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbEffortNoCap.Size" type="System.Drawing.Size, System.Drawing">
     <value>86, 17</value>
   </data>
-  <data name="rbEffortNoCap.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="m_rbEffortNoCap.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="rbEffortNoCap.Text" xml:space="preserve">
+  <data name="m_rbEffortNoCap.Text" xml:space="preserve">
     <value>Cap effort &amp;at:</value>
   </data>
-  <data name="&gt;&gt;rbEffortNoCap.Name" xml:space="preserve">
-    <value>rbEffortNoCap</value>
+  <data name="&gt;&gt;m_rbEffortNoCap.Name" xml:space="preserve">
+    <value>m_rbEffortNoCap</value>
   </data>
-  <data name="&gt;&gt;rbEffortNoCap.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbEffortNoCap.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbEffortNoCap.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbEffortNoCap.Parent" xml:space="preserve">
     <value>m_panelQuotaControls</value>
   </data>
-  <data name="&gt;&gt;rbEffortNoCap.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbEffortNoCap.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="rbEffortPredicted.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_rbEffortPredicted.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="rbEffortPredicted.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_rbEffortPredicted.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="rbEffortPredicted.Location" type="System.Drawing.Point, System.Drawing">
-    <value>354, 25</value>
+  <data name="m_rbEffortPredicted.Location" type="System.Drawing.Point, System.Drawing">
+    <value>352, 24</value>
   </data>
-  <data name="rbEffortPredicted.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+  <data name="m_rbEffortPredicted.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>
-  <data name="rbEffortPredicted.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_rbEffortPredicted.Size" type="System.Drawing.Size, System.Drawing">
     <value>85, 17</value>
   </data>
-  <data name="rbEffortPredicted.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+  <data name="m_rbEffortPredicted.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="rbEffortPredicted.Text" xml:space="preserve">
+  <data name="m_rbEffortPredicted.Text" xml:space="preserve">
     <value>&amp;Predict effort</value>
   </data>
-  <data name="&gt;&gt;rbEffortPredicted.Name" xml:space="preserve">
-    <value>rbEffortPredicted</value>
+  <data name="&gt;&gt;m_rbEffortPredicted.Name" xml:space="preserve">
+    <value>m_rbEffortPredicted</value>
   </data>
-  <data name="&gt;&gt;rbEffortPredicted.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_rbEffortPredicted.Type" xml:space="preserve">
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;rbEffortPredicted.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_rbEffortPredicted.Parent" xml:space="preserve">
     <value>m_panelQuotaControls</value>
   </data>
-  <data name="&gt;&gt;rbEffortPredicted.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_rbEffortPredicted.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="m_gridRegOptions.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -628,10 +805,10 @@
     <value>6, 50</value>
   </data>
   <data name="m_gridRegOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1060, 117</value>
+    <value>458, 80</value>
   </data>
   <data name="m_gridRegOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;m_gridRegOptions.Name" xml:space="preserve">
     <value>m_gridRegOptions</value>
@@ -645,17 +822,14 @@
   <data name="&gt;&gt;m_gridRegOptions.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="m_panelQuotaControls.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
   <data name="m_panelQuotaControls.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 190</value>
+    <value>9, 118</value>
   </data>
   <data name="m_panelQuotaControls.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1069, 181</value>
+    <value>464, 130</value>
   </data>
   <data name="m_panelQuotaControls.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;m_panelQuotaControls.Name" xml:space="preserve">
     <value>m_panelQuotaControls</value>
@@ -664,262 +838,37 @@
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_panelQuotaControls.Parent" xml:space="preserve">
-    <value>m_TableLayout</value>
+    <value>m_plControls</value>
   </data>
   <data name="&gt;&gt;m_panelQuotaControls.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="CEwEHeaderLabel4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="CEwEHeaderLabel4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="CEwEHeaderLabel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 2</value>
-  </data>
-  <data name="CEwEHeaderLabel4.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="CEwEHeaderLabel4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1066, 18</value>
-  </data>
-  <data name="CEwEHeaderLabel4.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="CEwEHeaderLabel4.Text" xml:space="preserve">
-    <value>No regulator options</value>
-  </data>
-  <data name="CEwEHeaderLabel4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel4.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel4</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel4.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8095.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel4.Parent" xml:space="preserve">
-    <value>m_panelNoReg</value>
-  </data>
-  <data name="&gt;&gt;CEwEHeaderLabel4.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="pnlFTracking.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="txSBPower.Location" type="System.Drawing.Point, System.Drawing">
-    <value>159, 72</value>
-  </data>
-  <data name="txSBPower.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
-  </data>
-  <data name="txSBPower.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;txSBPower.Name" xml:space="preserve">
-    <value>txSBPower</value>
-  </data>
-  <data name="&gt;&gt;txSBPower.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;txSBPower.Parent" xml:space="preserve">
-    <value>pnlFTracking</value>
-  </data>
-  <data name="&gt;&gt;txSBPower.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Label6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 75</value>
-  </data>
-  <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>133, 13</value>
-  </data>
-  <data name="Label6.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="Label6.Text" xml:space="preserve">
-    <value>&amp;Survey vs. biomass power:</value>
-  </data>
-  <data name="&gt;&gt;Label6.Name" xml:space="preserve">
-    <value>Label6</value>
-  </data>
-  <data name="&gt;&gt;Label6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Label6.Parent" xml:space="preserve">
-    <value>pnlFTracking</value>
-  </data>
-  <data name="&gt;&gt;Label6.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="rbExact.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbExact.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbExact.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
-  </data>
-  <data name="rbExact.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 17</value>
-  </data>
-  <data name="rbExact.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="rbExact.Text" xml:space="preserve">
-    <value>Exact biomass known</value>
+  <data name="m_plControls.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;rbExact.Name" xml:space="preserve">
-    <value>rbExact</value>
+  <data name="m_plControls.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 137</value>
   </data>
-  <data name="&gt;&gt;rbExact.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="m_plControls.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="&gt;&gt;rbExact.Parent" xml:space="preserve">
-    <value>pnlFTracking</value>
+  <data name="m_plControls.Size" type="System.Drawing.Size, System.Drawing">
+    <value>657, 474</value>
   </data>
-  <data name="&gt;&gt;rbExact.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="rbDirectExp.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbDirectExp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbDirectExp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 26</value>
-  </data>
-  <data name="rbDirectExp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 17</value>
-  </data>
-  <data name="rbDirectExp.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_plControls.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="rbDirectExp.Text" xml:space="preserve">
-    <value>Direct exploitation rate</value>
+  <data name="&gt;&gt;m_plControls.Name" xml:space="preserve">
+    <value>m_plControls</value>
   </data>
-  <data name="&gt;&gt;rbDirectExp.Name" xml:space="preserve">
-    <value>rbDirectExp</value>
-  </data>
-  <data name="&gt;&gt;rbDirectExp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbDirectExp.Parent" xml:space="preserve">
-    <value>pnlFTracking</value>
-  </data>
-  <data name="&gt;&gt;rbDirectExp.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="rbCatchEstBio.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rbCatchEstBio.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rbCatchEstBio.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="rbCatchEstBio.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 17</value>
-  </data>
-  <data name="rbCatchEstBio.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="rbCatchEstBio.Text" xml:space="preserve">
-    <value>Catch/estimated biomass</value>
-  </data>
-  <data name="&gt;&gt;rbCatchEstBio.Name" xml:space="preserve">
-    <value>rbCatchEstBio</value>
-  </data>
-  <data name="&gt;&gt;rbCatchEstBio.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rbCatchEstBio.Parent" xml:space="preserve">
-    <value>pnlFTracking</value>
-  </data>
-  <data name="&gt;&gt;rbCatchEstBio.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="pnlFTracking.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 23</value>
-  </data>
-  <data name="pnlFTracking.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 95</value>
-  </data>
-  <data name="pnlFTracking.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;pnlFTracking.Name" xml:space="preserve">
-    <value>pnlFTracking</value>
-  </data>
-  <data name="&gt;&gt;pnlFTracking.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_plControls.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;pnlFTracking.Parent" xml:space="preserve">
-    <value>m_panelNoReg</value>
-  </data>
-  <data name="&gt;&gt;pnlFTracking.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_panelNoReg.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="m_panelNoReg.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 377</value>
-  </data>
-  <data name="m_panelNoReg.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1069, 181</value>
-  </data>
-  <data name="m_panelNoReg.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;m_panelNoReg.Name" xml:space="preserve">
-    <value>m_panelNoReg</value>
-  </data>
-  <data name="&gt;&gt;m_panelNoReg.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_panelNoReg.Parent" xml:space="preserve">
-    <value>m_TableLayout</value>
-  </data>
-  <data name="&gt;&gt;m_panelNoReg.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_TableLayout.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 145</value>
-  </data>
-  <data name="m_TableLayout.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="m_TableLayout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1075, 561</value>
-  </data>
-  <data name="m_TableLayout.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;m_TableLayout.Name" xml:space="preserve">
-    <value>m_TableLayout</value>
-  </data>
-  <data name="&gt;&gt;m_TableLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_TableLayout.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_plControls.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_TableLayout.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_TableLayout.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_panelEffortControls" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_panelQuotaControls" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_panelNoReg" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="&gt;&gt;m_plControls.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -931,10 +880,13 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1090, 710</value>
+    <value>664, 614</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>MSE options</value>

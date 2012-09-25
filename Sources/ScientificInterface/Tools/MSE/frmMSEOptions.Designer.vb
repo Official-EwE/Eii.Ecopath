@@ -42,64 +42,54 @@ Partial Class frmMSEOptions
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSEOptions))
         Me.m_pnlRegOpt = New System.Windows.Forms.Panel()
-        Me.Panel5 = New System.Windows.Forms.Panel()
-        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.m_panelRegControls = New System.Windows.Forms.Panel()
         Me.m_rbQuotaControls = New System.Windows.Forms.RadioButton()
         Me.m_rbEffortControls = New System.Windows.Forms.RadioButton()
-        Me.rbUseRegs = New System.Windows.Forms.RadioButton()
-        Me.rbNoRegs = New System.Windows.Forms.RadioButton()
-        Me.CEwEHeaderLabel2 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_TableLayout = New System.Windows.Forms.TableLayoutPanel()
-        Me.m_panelEffortControls = New System.Windows.Forms.Panel()
-        Me.CEwEHeaderLabel6 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_panelQuotaControls = New System.Windows.Forms.Panel()
-        Me.CEwEHeaderLabel3 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_hdrEffortRegOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.txMaxEffort = New System.Windows.Forms.TextBox()
-        Me.rbEffortEcosim = New System.Windows.Forms.RadioButton()
-        Me.rbEffortNoCap = New System.Windows.Forms.RadioButton()
-        Me.rbEffortPredicted = New System.Windows.Forms.RadioButton()
+        Me.m_rbUseRegs = New System.Windows.Forms.RadioButton()
+        Me.m_rbNoRegs = New System.Windows.Forms.RadioButton()
+        Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_panelNoReg = New System.Windows.Forms.Panel()
-        Me.CEwEHeaderLabel4 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.pnlFTracking = New System.Windows.Forms.Panel()
-        Me.txSBPower = New System.Windows.Forms.TextBox()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.rbExact = New System.Windows.Forms.RadioButton()
-        Me.rbDirectExp = New System.Windows.Forms.RadioButton()
-        Me.rbCatchEstBio = New System.Windows.Forms.RadioButton()
+        Me.m_txSBPower = New System.Windows.Forms.TextBox()
+        Me.m_hdrNoReg = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblSBPower = New System.Windows.Forms.Label()
+        Me.m_rbExact = New System.Windows.Forms.RadioButton()
+        Me.m_rbCatchEstBio = New System.Windows.Forms.RadioButton()
+        Me.m_rbDirectExp = New System.Windows.Forms.RadioButton()
+        Me.m_panelEffortControls = New System.Windows.Forms.Panel()
+        Me.m_hdrEffort = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_panelQuotaControls = New System.Windows.Forms.Panel()
+        Me.m_hdrQuota = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrEffortRegOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_txMaxEffort = New System.Windows.Forms.TextBox()
+        Me.m_rbEffortEcosim = New System.Windows.Forms.RadioButton()
+        Me.m_rbEffortNoCap = New System.Windows.Forms.RadioButton()
+        Me.m_rbEffortPredicted = New System.Windows.Forms.RadioButton()
+        Me.m_plControls = New System.Windows.Forms.Panel()
         Me.m_gridFleetLPEffortBounds = New ScientificInterface.gridFleetLPEffortBounds()
         Me.m_gridRegOptions = New ScientificInterface.Ecosim.gridRegulatoryOptions()
         Me.m_pnlRegOpt.SuspendLayout()
-        Me.Panel5.SuspendLayout()
-        Me.Panel4.SuspendLayout()
-        Me.m_TableLayout.SuspendLayout()
+        Me.m_panelRegControls.SuspendLayout()
+        Me.m_panelNoReg.SuspendLayout()
         Me.m_panelEffortControls.SuspendLayout()
         Me.m_panelQuotaControls.SuspendLayout()
-        Me.m_panelNoReg.SuspendLayout()
-        Me.pnlFTracking.SuspendLayout()
+        Me.m_plControls.SuspendLayout()
         Me.SuspendLayout()
         '
         'm_pnlRegOpt
         '
         resources.ApplyResources(Me.m_pnlRegOpt, "m_pnlRegOpt")
-        Me.m_pnlRegOpt.Controls.Add(Me.Panel5)
-        Me.m_pnlRegOpt.Controls.Add(Me.CEwEHeaderLabel2)
+        Me.m_pnlRegOpt.Controls.Add(Me.m_panelRegControls)
+        Me.m_pnlRegOpt.Controls.Add(Me.m_rbUseRegs)
+        Me.m_pnlRegOpt.Controls.Add(Me.m_rbNoRegs)
+        Me.m_pnlRegOpt.Controls.Add(Me.m_hdrOptions)
         Me.m_pnlRegOpt.Name = "m_pnlRegOpt"
         '
-        'Panel5
+        'm_panelRegControls
         '
-        Me.Panel5.Controls.Add(Me.Panel4)
-        Me.Panel5.Controls.Add(Me.rbUseRegs)
-        Me.Panel5.Controls.Add(Me.rbNoRegs)
-        resources.ApplyResources(Me.Panel5, "Panel5")
-        Me.Panel5.Name = "Panel5"
-        '
-        'Panel4
-        '
-        Me.Panel4.Controls.Add(Me.m_rbQuotaControls)
-        Me.Panel4.Controls.Add(Me.m_rbEffortControls)
-        resources.ApplyResources(Me.Panel4, "Panel4")
-        Me.Panel4.Name = "Panel4"
+        Me.m_panelRegControls.Controls.Add(Me.m_rbQuotaControls)
+        Me.m_panelRegControls.Controls.Add(Me.m_rbEffortControls)
+        resources.ApplyResources(Me.m_panelRegControls, "m_panelRegControls")
+        Me.m_panelRegControls.Name = "m_panelRegControls"
         '
         'm_rbQuotaControls
         '
@@ -115,70 +105,114 @@ Partial Class frmMSEOptions
         Me.m_rbEffortControls.TabStop = True
         Me.m_rbEffortControls.UseVisualStyleBackColor = True
         '
-        'rbUseRegs
+        'm_rbUseRegs
         '
-        resources.ApplyResources(Me.rbUseRegs, "rbUseRegs")
-        Me.rbUseRegs.Checked = True
-        Me.rbUseRegs.Name = "rbUseRegs"
-        Me.rbUseRegs.TabStop = True
-        Me.rbUseRegs.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbUseRegs, "m_rbUseRegs")
+        Me.m_rbUseRegs.Checked = True
+        Me.m_rbUseRegs.Name = "m_rbUseRegs"
+        Me.m_rbUseRegs.TabStop = True
+        Me.m_rbUseRegs.UseVisualStyleBackColor = True
         '
-        'rbNoRegs
+        'm_rbNoRegs
         '
-        resources.ApplyResources(Me.rbNoRegs, "rbNoRegs")
-        Me.rbNoRegs.Name = "rbNoRegs"
-        Me.rbNoRegs.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbNoRegs, "m_rbNoRegs")
+        Me.m_rbNoRegs.Name = "m_rbNoRegs"
+        Me.m_rbNoRegs.UseVisualStyleBackColor = True
         '
-        'CEwEHeaderLabel2
+        'm_hdrOptions
         '
-        Me.CEwEHeaderLabel2.CanCollapseParent = False
-        Me.CEwEHeaderLabel2.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.CEwEHeaderLabel2, "CEwEHeaderLabel2")
-        Me.CEwEHeaderLabel2.IsCollapsed = False
-        Me.CEwEHeaderLabel2.Name = "CEwEHeaderLabel2"
+        Me.m_hdrOptions.CanCollapseParent = False
+        Me.m_hdrOptions.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrOptions, "m_hdrOptions")
+        Me.m_hdrOptions.IsCollapsed = False
+        Me.m_hdrOptions.Name = "m_hdrOptions"
         '
-        'm_TableLayout
+        'm_panelNoReg
         '
-        resources.ApplyResources(Me.m_TableLayout, "m_TableLayout")
-        Me.m_TableLayout.Controls.Add(Me.m_panelEffortControls, 0, 0)
-        Me.m_TableLayout.Controls.Add(Me.m_panelQuotaControls, 0, 1)
-        Me.m_TableLayout.Controls.Add(Me.m_panelNoReg, 0, 2)
-        Me.m_TableLayout.Name = "m_TableLayout"
+        resources.ApplyResources(Me.m_panelNoReg, "m_panelNoReg")
+        Me.m_panelNoReg.Controls.Add(Me.m_txSBPower)
+        Me.m_panelNoReg.Controls.Add(Me.m_hdrNoReg)
+        Me.m_panelNoReg.Controls.Add(Me.m_lblSBPower)
+        Me.m_panelNoReg.Controls.Add(Me.m_rbExact)
+        Me.m_panelNoReg.Controls.Add(Me.m_rbCatchEstBio)
+        Me.m_panelNoReg.Controls.Add(Me.m_rbDirectExp)
+        Me.m_panelNoReg.MinimumSize = New System.Drawing.Size(100, 115)
+        Me.m_panelNoReg.Name = "m_panelNoReg"
+        '
+        'm_txSBPower
+        '
+        resources.ApplyResources(Me.m_txSBPower, "m_txSBPower")
+        Me.m_txSBPower.Name = "m_txSBPower"
+        '
+        'm_hdrNoReg
+        '
+        resources.ApplyResources(Me.m_hdrNoReg, "m_hdrNoReg")
+        Me.m_hdrNoReg.CanCollapseParent = False
+        Me.m_hdrNoReg.CollapsedParentHeight = 0
+        Me.m_hdrNoReg.IsCollapsed = False
+        Me.m_hdrNoReg.Name = "m_hdrNoReg"
+        '
+        'm_lblSBPower
+        '
+        resources.ApplyResources(Me.m_lblSBPower, "m_lblSBPower")
+        Me.m_lblSBPower.Name = "m_lblSBPower"
+        '
+        'm_rbExact
+        '
+        resources.ApplyResources(Me.m_rbExact, "m_rbExact")
+        Me.m_rbExact.Name = "m_rbExact"
+        Me.m_rbExact.TabStop = True
+        Me.m_rbExact.UseVisualStyleBackColor = True
+        '
+        'm_rbCatchEstBio
+        '
+        resources.ApplyResources(Me.m_rbCatchEstBio, "m_rbCatchEstBio")
+        Me.m_rbCatchEstBio.Checked = True
+        Me.m_rbCatchEstBio.Name = "m_rbCatchEstBio"
+        Me.m_rbCatchEstBio.TabStop = True
+        Me.m_rbCatchEstBio.UseVisualStyleBackColor = True
+        '
+        'm_rbDirectExp
+        '
+        resources.ApplyResources(Me.m_rbDirectExp, "m_rbDirectExp")
+        Me.m_rbDirectExp.Name = "m_rbDirectExp"
+        Me.m_rbDirectExp.UseVisualStyleBackColor = True
         '
         'm_panelEffortControls
         '
-        Me.m_panelEffortControls.Controls.Add(Me.CEwEHeaderLabel6)
+        Me.m_panelEffortControls.Controls.Add(Me.m_hdrEffort)
         Me.m_panelEffortControls.Controls.Add(Me.m_gridFleetLPEffortBounds)
         resources.ApplyResources(Me.m_panelEffortControls, "m_panelEffortControls")
+        Me.m_panelEffortControls.MinimumSize = New System.Drawing.Size(100, 100)
         Me.m_panelEffortControls.Name = "m_panelEffortControls"
         '
-        'CEwEHeaderLabel6
+        'm_hdrEffort
         '
-        resources.ApplyResources(Me.CEwEHeaderLabel6, "CEwEHeaderLabel6")
-        Me.CEwEHeaderLabel6.CanCollapseParent = False
-        Me.CEwEHeaderLabel6.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel6.IsCollapsed = False
-        Me.CEwEHeaderLabel6.Name = "CEwEHeaderLabel6"
+        resources.ApplyResources(Me.m_hdrEffort, "m_hdrEffort")
+        Me.m_hdrEffort.CanCollapseParent = False
+        Me.m_hdrEffort.CollapsedParentHeight = 0
+        Me.m_hdrEffort.IsCollapsed = False
+        Me.m_hdrEffort.Name = "m_hdrEffort"
         '
         'm_panelQuotaControls
         '
-        Me.m_panelQuotaControls.Controls.Add(Me.CEwEHeaderLabel3)
+        Me.m_panelQuotaControls.Controls.Add(Me.m_hdrQuota)
         Me.m_panelQuotaControls.Controls.Add(Me.m_hdrEffortRegOptions)
-        Me.m_panelQuotaControls.Controls.Add(Me.txMaxEffort)
-        Me.m_panelQuotaControls.Controls.Add(Me.rbEffortEcosim)
-        Me.m_panelQuotaControls.Controls.Add(Me.rbEffortNoCap)
-        Me.m_panelQuotaControls.Controls.Add(Me.rbEffortPredicted)
+        Me.m_panelQuotaControls.Controls.Add(Me.m_txMaxEffort)
+        Me.m_panelQuotaControls.Controls.Add(Me.m_rbEffortEcosim)
+        Me.m_panelQuotaControls.Controls.Add(Me.m_rbEffortNoCap)
+        Me.m_panelQuotaControls.Controls.Add(Me.m_rbEffortPredicted)
         Me.m_panelQuotaControls.Controls.Add(Me.m_gridRegOptions)
         resources.ApplyResources(Me.m_panelQuotaControls, "m_panelQuotaControls")
         Me.m_panelQuotaControls.Name = "m_panelQuotaControls"
         '
-        'CEwEHeaderLabel3
+        'm_hdrQuota
         '
-        resources.ApplyResources(Me.CEwEHeaderLabel3, "CEwEHeaderLabel3")
-        Me.CEwEHeaderLabel3.CanCollapseParent = False
-        Me.CEwEHeaderLabel3.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel3.IsCollapsed = False
-        Me.CEwEHeaderLabel3.Name = "CEwEHeaderLabel3"
+        resources.ApplyResources(Me.m_hdrQuota, "m_hdrQuota")
+        Me.m_hdrQuota.CanCollapseParent = False
+        Me.m_hdrQuota.CollapsedParentHeight = 0
+        Me.m_hdrQuota.IsCollapsed = False
+        Me.m_hdrQuota.Name = "m_hdrQuota"
         '
         'm_hdrEffortRegOptions
         '
@@ -188,86 +222,38 @@ Partial Class frmMSEOptions
         Me.m_hdrEffortRegOptions.IsCollapsed = False
         Me.m_hdrEffortRegOptions.Name = "m_hdrEffortRegOptions"
         '
-        'txMaxEffort
+        'm_txMaxEffort
         '
-        resources.ApplyResources(Me.txMaxEffort, "txMaxEffort")
-        Me.txMaxEffort.Name = "txMaxEffort"
+        resources.ApplyResources(Me.m_txMaxEffort, "m_txMaxEffort")
+        Me.m_txMaxEffort.Name = "m_txMaxEffort"
         '
-        'rbEffortEcosim
+        'm_rbEffortEcosim
         '
-        resources.ApplyResources(Me.rbEffortEcosim, "rbEffortEcosim")
-        Me.rbEffortEcosim.Name = "rbEffortEcosim"
-        Me.rbEffortEcosim.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbEffortEcosim, "m_rbEffortEcosim")
+        Me.m_rbEffortEcosim.Name = "m_rbEffortEcosim"
+        Me.m_rbEffortEcosim.UseVisualStyleBackColor = True
         '
-        'rbEffortNoCap
+        'm_rbEffortNoCap
         '
-        resources.ApplyResources(Me.rbEffortNoCap, "rbEffortNoCap")
-        Me.rbEffortNoCap.Checked = True
-        Me.rbEffortNoCap.Name = "rbEffortNoCap"
-        Me.rbEffortNoCap.TabStop = True
-        Me.rbEffortNoCap.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbEffortNoCap, "m_rbEffortNoCap")
+        Me.m_rbEffortNoCap.Checked = True
+        Me.m_rbEffortNoCap.Name = "m_rbEffortNoCap"
+        Me.m_rbEffortNoCap.TabStop = True
+        Me.m_rbEffortNoCap.UseVisualStyleBackColor = True
         '
-        'rbEffortPredicted
+        'm_rbEffortPredicted
         '
-        resources.ApplyResources(Me.rbEffortPredicted, "rbEffortPredicted")
-        Me.rbEffortPredicted.Name = "rbEffortPredicted"
-        Me.rbEffortPredicted.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbEffortPredicted, "m_rbEffortPredicted")
+        Me.m_rbEffortPredicted.Name = "m_rbEffortPredicted"
+        Me.m_rbEffortPredicted.UseVisualStyleBackColor = True
         '
-        'm_panelNoReg
+        'm_plControls
         '
-        Me.m_panelNoReg.Controls.Add(Me.CEwEHeaderLabel4)
-        Me.m_panelNoReg.Controls.Add(Me.pnlFTracking)
-        resources.ApplyResources(Me.m_panelNoReg, "m_panelNoReg")
-        Me.m_panelNoReg.Name = "m_panelNoReg"
-        '
-        'CEwEHeaderLabel4
-        '
-        resources.ApplyResources(Me.CEwEHeaderLabel4, "CEwEHeaderLabel4")
-        Me.CEwEHeaderLabel4.CanCollapseParent = False
-        Me.CEwEHeaderLabel4.CollapsedParentHeight = 0
-        Me.CEwEHeaderLabel4.IsCollapsed = False
-        Me.CEwEHeaderLabel4.Name = "CEwEHeaderLabel4"
-        '
-        'pnlFTracking
-        '
-        resources.ApplyResources(Me.pnlFTracking, "pnlFTracking")
-        Me.pnlFTracking.Controls.Add(Me.txSBPower)
-        Me.pnlFTracking.Controls.Add(Me.Label6)
-        Me.pnlFTracking.Controls.Add(Me.rbExact)
-        Me.pnlFTracking.Controls.Add(Me.rbDirectExp)
-        Me.pnlFTracking.Controls.Add(Me.rbCatchEstBio)
-        Me.pnlFTracking.Name = "pnlFTracking"
-        '
-        'txSBPower
-        '
-        resources.ApplyResources(Me.txSBPower, "txSBPower")
-        Me.txSBPower.Name = "txSBPower"
-        '
-        'Label6
-        '
-        resources.ApplyResources(Me.Label6, "Label6")
-        Me.Label6.Name = "Label6"
-        '
-        'rbExact
-        '
-        resources.ApplyResources(Me.rbExact, "rbExact")
-        Me.rbExact.Name = "rbExact"
-        Me.rbExact.TabStop = True
-        Me.rbExact.UseVisualStyleBackColor = True
-        '
-        'rbDirectExp
-        '
-        resources.ApplyResources(Me.rbDirectExp, "rbDirectExp")
-        Me.rbDirectExp.Name = "rbDirectExp"
-        Me.rbDirectExp.UseVisualStyleBackColor = True
-        '
-        'rbCatchEstBio
-        '
-        resources.ApplyResources(Me.rbCatchEstBio, "rbCatchEstBio")
-        Me.rbCatchEstBio.Checked = True
-        Me.rbCatchEstBio.Name = "rbCatchEstBio"
-        Me.rbCatchEstBio.TabStop = True
-        Me.rbCatchEstBio.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_plControls, "m_plControls")
+        Me.m_plControls.Controls.Add(Me.m_panelNoReg)
+        Me.m_plControls.Controls.Add(Me.m_panelEffortControls)
+        Me.m_plControls.Controls.Add(Me.m_panelQuotaControls)
+        Me.m_plControls.Name = "m_plControls"
         '
         'm_gridFleetLPEffortBounds
         '
@@ -331,50 +317,46 @@ Partial Class frmMSEOptions
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_plControls)
         Me.Controls.Add(Me.m_pnlRegOpt)
-        Me.Controls.Add(Me.m_TableLayout)
         Me.Name = "frmMSEOptions"
         Me.m_pnlRegOpt.ResumeLayout(False)
-        Me.Panel5.ResumeLayout(False)
-        Me.Panel5.PerformLayout()
-        Me.Panel4.ResumeLayout(False)
-        Me.Panel4.PerformLayout()
-        Me.m_TableLayout.ResumeLayout(False)
+        Me.m_pnlRegOpt.PerformLayout()
+        Me.m_panelRegControls.ResumeLayout(False)
+        Me.m_panelRegControls.PerformLayout()
+        Me.m_panelNoReg.ResumeLayout(False)
+        Me.m_panelNoReg.PerformLayout()
         Me.m_panelEffortControls.ResumeLayout(False)
         Me.m_panelQuotaControls.ResumeLayout(False)
         Me.m_panelQuotaControls.PerformLayout()
-        Me.m_panelNoReg.ResumeLayout(False)
-        Me.pnlFTracking.ResumeLayout(False)
-        Me.pnlFTracking.PerformLayout()
+        Me.m_plControls.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
     Private WithEvents m_pnlRegOpt As System.Windows.Forms.Panel
-    Private WithEvents CEwEHeaderLabel2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents m_TableLayout As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents m_panelEffortControls As System.Windows.Forms.Panel
+    Private WithEvents m_hdrOptions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_gridFleetLPEffortBounds As ScientificInterface.gridFleetLPEffortBounds
-    Friend WithEvents m_panelQuotaControls As System.Windows.Forms.Panel
-    Private WithEvents CEwEHeaderLabel3 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_hdrQuota As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrEffortRegOptions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents txMaxEffort As System.Windows.Forms.TextBox
-    Private WithEvents rbEffortEcosim As System.Windows.Forms.RadioButton
-    Private WithEvents rbEffortNoCap As System.Windows.Forms.RadioButton
-    Private WithEvents rbEffortPredicted As System.Windows.Forms.RadioButton
+    Friend WithEvents m_txMaxEffort As System.Windows.Forms.TextBox
+    Private WithEvents m_rbEffortEcosim As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbEffortNoCap As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbEffortPredicted As System.Windows.Forms.RadioButton
     Friend WithEvents m_gridRegOptions As ScientificInterface.Ecosim.gridRegulatoryOptions
-    Friend WithEvents m_panelNoReg As System.Windows.Forms.Panel
-    Private WithEvents pnlFTracking As System.Windows.Forms.Panel
-    Private WithEvents txSBPower As System.Windows.Forms.TextBox
-    Private WithEvents Label6 As System.Windows.Forms.Label
-    Private WithEvents rbExact As System.Windows.Forms.RadioButton
-    Private WithEvents rbDirectExp As System.Windows.Forms.RadioButton
-    Private WithEvents rbCatchEstBio As System.Windows.Forms.RadioButton
-    Friend WithEvents Panel5 As System.Windows.Forms.Panel
-    Friend WithEvents Panel4 As System.Windows.Forms.Panel
     Friend WithEvents m_rbQuotaControls As System.Windows.Forms.RadioButton
     Friend WithEvents m_rbEffortControls As System.Windows.Forms.RadioButton
-    Private WithEvents rbUseRegs As System.Windows.Forms.RadioButton
-    Private WithEvents rbNoRegs As System.Windows.Forms.RadioButton
-    Private WithEvents CEwEHeaderLabel6 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents CEwEHeaderLabel4 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_rbUseRegs As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbNoRegs As System.Windows.Forms.RadioButton
+    Private WithEvents m_hdrEffort As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_panelNoReg As System.Windows.Forms.Panel
+    Private WithEvents m_txSBPower As System.Windows.Forms.TextBox
+    Private WithEvents m_hdrNoReg As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_lblSBPower As System.Windows.Forms.Label
+    Private WithEvents m_rbExact As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbCatchEstBio As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbDirectExp As System.Windows.Forms.RadioButton
+    Private WithEvents m_panelEffortControls As System.Windows.Forms.Panel
+    Private WithEvents m_panelQuotaControls As System.Windows.Forms.Panel
+    Private WithEvents m_panelRegControls As System.Windows.Forms.Panel
+    Private WithEvents m_plControls As System.Windows.Forms.Panel
 End Class
