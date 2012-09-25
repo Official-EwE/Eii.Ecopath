@@ -756,7 +756,7 @@ Namespace MSE
             Me.m_data.EffortStats.ComputeStats()
             Me.m_data.BioEstStats.ComputeStats()
 
-            Me.m_data.FStats.ComputeStats()
+            Me.m_data.FLPDualValue.ComputeStats()
 
             Me.m_data.ValueFleetStats.ComputeStats()
 
@@ -773,7 +773,7 @@ Namespace MSE
             Me.m_data.CatchGroupStats.AddIteration()
             Me.m_data.EffortStats.AddIteration()
 
-            Me.m_data.FStats.AddIteration()
+            Me.m_data.FLPDualValue.AddIteration()
             ' Me.m_data.FActualStats.AddIteration()
 
             Me.m_data.BioEstStats.AddIteration()
@@ -892,7 +892,7 @@ Namespace MSE
         End Function
 
         ''' <summary>
-        ''' Tell any plugin that a search interation has completed
+        ''' Tell any plugin that a search iteration has completed
         ''' </summary>
         ''' <remarks></remarks>
         Private Sub PostPluginData()
@@ -1297,8 +1297,9 @@ Namespace MSE
 
             If Me.m_data.UseLPSolution Then
 
+                '
                 If imonth = 1 Then
-                    RegulateEffort(Biomass, QMult, QYear, t)
+                    RegulateLPEffort(Biomass, QMult, QYear, t)
                 Else
                     For ig = 1 To Me.m_epdata.NumFleet
                         Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t - 1)
@@ -1424,7 +1425,7 @@ Namespace MSE
         End Sub
 
 
-        Private Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+        Private Sub RegulateLPEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
             Dim iFlt As Integer, iGrp As Integer
 
             Dim VPerEffort() As Single
@@ -1476,7 +1477,7 @@ Namespace MSE
 
                 For iGrp = 1 To m_data.nLiving
                     For it As Integer = t To t + 11
-                        Me.m_data.FStats.AddValue(iGrp, it, Math.Abs(CSng(sensitivityReport.GetDualValue(Me.m_GroupCode(iGrp)).ToDouble())))
+                        Me.m_data.FLPDualValue.AddValue(iGrp, it, Math.Abs(CSng(sensitivityReport.GetDualValue(Me.m_GroupCode(iGrp)).ToDouble())))
                     Next
                 Next
 

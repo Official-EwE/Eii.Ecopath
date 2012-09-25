@@ -1097,7 +1097,7 @@ Namespace Core
         MSETrialNumber
 
         MSEAssessMethod
-        MSEKalmanGain
+        'MSEKalmanGain
         MSEForcastGain
         MSEAssessPower
         MSENTrials

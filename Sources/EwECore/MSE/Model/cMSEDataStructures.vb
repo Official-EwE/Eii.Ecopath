@@ -145,7 +145,7 @@ Namespace MSE
         Public CatchFleetStats As cMSESummaryStats
         Public EffortStats As cMSESummaryStats
 
-        Public FStats As cMSESummaryStats
+        Public FLPDualValue As cMSESummaryStats
         'Public FActualStats As cMSESummaryStats
 
         Public ValueFleetStats As cMSESummaryStats
@@ -381,7 +381,7 @@ Namespace MSE
                 Me.JobsSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 Me.CostSum = New cMSESummaryStats(Me, Nothing, 1, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
-                Me.FStats = New cMSESummaryStats(Me, Nothing, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
+                Me.FLPDualValue = New cMSESummaryStats(Me, Nothing, nLiving, cCore.N_MONTHS, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
                 ' Me.FActualStats = New cMSESummaryStats(Me, Nothing, 1, nLiving, eCoreCounterTypes.nEcosimTimeSteps, AddressOf theCore.GetCoreCounter)
 
                 'yearly time steps
@@ -421,7 +421,7 @@ Namespace MSE
             'yearly time steps
             Me.BioEstStats = Nothing ' New cMSESummaryStats(Me, Me.BioEstBounds, nLiving, 1, eCoreCounterTypes.nEcosimYears, AddressOf theCore.GetCoreCounter)
 
-            Me.FStats = Nothing
+            Me.FLPDualValue = Nothing
 
             Me.BioBounds = Nothing
             Me.BioEstBounds = Nothing
@@ -777,7 +777,7 @@ Namespace MSE
                 Me.EffortStats.Init()
                 Me.ValueFleetStats.Init()
 
-                Me.FStats.Init()
+                Me.FLPDualValue.Init()
                 '  Me.FActualStats.Init()
 
                 Me.ProfitSum.Init()

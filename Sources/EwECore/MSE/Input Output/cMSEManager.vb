@@ -613,7 +613,7 @@ Namespace MSE
                 Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.BioStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 Me.m_lstGroupCatchStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.CatchGroupStats, eDataTypes.MSECatchByGroupStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
 
-                Me.m_lstFStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FStats, eDataTypes.MSEFStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
+                Me.m_lstFStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FLPDualValue, eDataTypes.MSEFStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
                 ' Me.m_lstBiomassStats.Add(New cMSEStats(Me.m_core, Me.m_MSEdata.FActualStats, eDataTypes.MSEBiomassStats, Me.m_VarToStat, Me.m_core.m_EcoPathData.GroupDBID(igrp), igrp))
             Next
 
@@ -787,7 +787,7 @@ Namespace MSE
                     'Ok both ForcastGain and KalmanGain are arrays in the code
                     'but both set as a single value from the interface
                     ' m_parameters.ForcastGain = Me.m_MSEdata.GstockPred(1)
-                    m_parameters.KalmanGain = Me.m_MSEdata.KalmanGain(1)
+                    '  m_parameters.KalmanGain = Me.m_MSEdata.KalmanGain(1)
                 Catch ex As Exception
 
                 End Try
@@ -954,13 +954,13 @@ Namespace MSE
 
                     Case eDataTypes.MSEParameters
 
-                        For igrp As Integer = 1 To m_core.nLivingGroups
-                            'KalmanGain and ForcastGain are set as a single value in the interface
-                            'this is applied to all the groups for the code
-                            Me.m_MSEdata.KalmanGain(igrp) = Me.m_parameters.KalmanGain
-                            'Me.m_MSEdata.GstockPred(igrp) = Me.m_parameters.ForcastGain
-                            'Me.m_MSEdata.RstockRatio(igrp) = (1 - Me.m_MSEdata.GstockPred(igrp)) * m_core.StartBiomass(igrp)
-                        Next igrp
+                        'For igrp As Integer = 1 To m_core.nLivingGroups
+                        '    'KalmanGain and ForcastGain are set as a single value in the interface
+                        '    'this is applied to all the groups for the code
+                        '    Me.m_MSEdata.KalmanGain(igrp) = Me.m_parameters.KalmanGain
+                        '    'Me.m_MSEdata.GstockPred(igrp) = Me.m_parameters.ForcastGain
+                        '    'Me.m_MSEdata.RstockRatio(igrp) = (1 - Me.m_MSEdata.GstockPred(igrp)) * m_core.StartBiomass(igrp)
+                        'Next igrp
 
                         Me.m_MSEdata.AssessMethod = Me.m_parameters.AssessmentMethod()
                         Me.m_MSEdata.AssessPower = Me.m_parameters.AssessPower()

@@ -63,12 +63,6 @@ Namespace MSE
             val.Stored = True
             m_values.Add(val.varName, val)
 
-            'Kalman gain
-            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo))
-            val = New cValue(New Single, eVarNameFlags.MSEKalmanGain, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEKalmanGain))
-            val.Stored = False
-            m_values.Add(val.varName, val)
-
             'Forcast Gain
             meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(New Single, eVarNameFlags.MSEForcastGain, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.MSEForcastGain))
@@ -192,17 +186,6 @@ Namespace MSE
 
             Set(ByVal value As Single)
                 SetVariable(eVarNameFlags.MSEForcastGain, value)
-            End Set
-        End Property
-
-
-        Public Property KalmanGain() As Single
-            Get
-                Return CSng(GetVariable(eVarNameFlags.MSEKalmanGain))
-            End Get
-
-            Set(ByVal value As Single)
-                SetVariable(eVarNameFlags.MSEKalmanGain, value)
             End Set
         End Property
 
