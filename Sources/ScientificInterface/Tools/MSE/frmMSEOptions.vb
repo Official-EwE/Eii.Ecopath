@@ -37,10 +37,8 @@ Public Class frmMSEOptions
     Dim m_MSE As cMSEManager
 
     Private m_fpNTrials As cPropertyFormatProvider
-    'Private m_fpUsePlugin As cPropertyFormatProvider
     Private m_fpSave As cPropertyFormatProvider
 
-    '  Private m_fpKalman As cPropertyFormatProvider
     Private m_fpForecast As cPropertyFormatProvider
     Private m_fpSBPower As cPropertyFormatProvider
 
@@ -110,28 +108,20 @@ Public Class frmMSEOptions
 
         Me.m_dctEffortControls = New Dictionary(Of eMSERegulationMode, RadioButton)
 
-
         m_RegMode = eMSERegulationMode.UseRegulations
         m_ControlType = eControlTypes.InputEffort
 
-        ' Me.UpdateSelectedEffortMode()
         Me.UpdateControls()
-
-        '  Me.updateControlTypes(eControlTypes.InputEffort)
 
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        '   Me.m_dctEffortControls.Clear()
-
-        ' Me.m_fpUsePlugin.Release()
         Me.m_fpSBPower.Release()
 
         MyBase.OnFormClosed(e)
     End Sub
 
     Private Sub rbFTracking_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
 
         If Me.m_MSE Is Nothing Then Exit Sub
 
@@ -176,18 +166,8 @@ Public Class frmMSEOptions
     End Sub
 
 
-    'Private Sub UpdateSelectedEffortMode()
-    '    Try
-    '        ' m_dctEffortControls.Item(Me.m_MSE.ModelParameters.RegulatoryMode).Checked = True
-    '    Catch ex As Exception
-
-    '    End Try
-    'End Sub
-
-
     Protected Overrides Sub UpdateControls()
 
-        ' Me.pnlUseReg.Enabled = False
         Me.pnlFTracking.Enabled = False
 
         Me.m_MSE.ModelParameters.RegulatoryMode = Me.m_RegMode
@@ -203,24 +183,21 @@ Public Class frmMSEOptions
 
                 Select Case Me.m_ControlType
 
-
                     Case eControlTypes.InputEffort
                         Me.m_MSE.ModelParameters.UseLPSolution = True
-
                         Me.m_panelEffortControls.Visible = True
 
                     Case eControlTypes.OutputQuota
                         Me.m_MSE.ModelParameters.UseLPSolution = False
                         Me.m_panelQuotaControls.Visible = True
 
-
                 End Select
 
 
             Case eMSERegulationMode.NoRegulations
                 'No Regulations
+                'Tracking Ecosim Effort
                 Me.pnlFTracking.Enabled = True
-
                 Me.m_panelNoReg.Visible = True
 
         End Select
@@ -229,7 +206,6 @@ Public Class frmMSEOptions
 
 
     Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
 
         Try
 
@@ -268,9 +244,6 @@ Public Class frmMSEOptions
 
             Me.UpdateControls()
 
-
-            '  Me.updateControlTypes(DirectCast(rb.Tag, eControlTypes))
-
         Catch ex As Exception
 
         End Try
@@ -278,44 +251,27 @@ Public Class frmMSEOptions
     End Sub
 
 
-    Private Sub updateControlTypes(ByVal newControlType As eControlTypes)
-
-        If newControlType = eControlTypes.InputEffort Then
-
-            ' Me.m_SplitControls.Panel1.Enabled = True
-            ' Me.m_SplitControls.Panel2.Enabled = False
-
-            Me.m_MSE.ModelParameters.UseLPSolution = True
-
-
-
-        ElseIf newControlType = eControlTypes.OutputQuota Then
-
-            '  Me.m_SplitControls.Panel1.Enabled = False
-            '  Me.m_SplitControls.Panel2.Enabled = True
-
-
-            Me.m_MSE.ModelParameters.UseLPSolution = False
-
-        End If
-
-    End Sub
-   
     Private Sub onChangeRegControls_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles rbUseRegs.CheckedChanged, rbNoRegs.CheckedChanged
 
         If Me.UIContext Is Nothing Then Return
+        Try
 
-        Dim rb As RadioButton = DirectCast(sender, RadioButton)
-        Debug.Assert(TypeOf sender Is RadioButton)
-        Debug.Assert(rb.Tag IsNot Nothing)
-        Debug.Assert(TypeOf rb.Tag Is eMSERegulationMode)
+            Dim rb As RadioButton = DirectCast(sender, RadioButton)
+            Debug.Assert(TypeOf sender Is RadioButton)
+            Debug.Assert(rb.Tag IsNot Nothing)
+            Debug.Assert(TypeOf rb.Tag Is eMSERegulationMode)
 
-        If rb.Checked = True Then
-            Me.m_RegMode = DirectCast(rb.Tag, eMSERegulationMode)
-            Me.m_MSE.ModelParameters.RegulatoryMode = m_RegMode
-        End If
+            If rb.Checked = True Then
+                Me.m_RegMode = DirectCast(rb.Tag, eMSERegulationMode)
+                Me.m_MSE.ModelParameters.RegulatoryMode = m_RegMode
+            End If
 
-        Me.UpdateControls()
+            Me.UpdateControls()
+
+        Catch ex As Exception
+
+        End Try
+
 
     End Sub
 
