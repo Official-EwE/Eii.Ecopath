@@ -183,6 +183,9 @@ Namespace MSE
         Private m_EndT As Integer
 
         Private m_LPSolver As SimplexSolver
+
+        'Dim context As SolverContext = SolverContext.GetContext()
+        'Dim model As Model = context.CreateModel() 
         Private m_FleetCode() As Integer, m_GroupCode() As Integer, m_GoalRowID As Integer
         Private m_QStar(,) As Single
 
@@ -1295,7 +1298,7 @@ Namespace MSE
             If Me.m_data.UseLPSolution Then
 
                 If imonth = 1 Then
-                    LPEffort(Biomass, QMult, QYear, t)
+                    RegulateEffort(Biomass, QMult, QYear, t)
                 Else
                     For ig = 1 To Me.m_epdata.NumFleet
                         Me.m_esData.FishRateGear(ig, t) = Me.m_esData.FishRateGear(ig, t - 1)
@@ -1421,7 +1424,7 @@ Namespace MSE
         End Sub
 
 
-        Private Sub LPEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
+        Private Sub RegulateEffort(ByVal Biomass() As Single, ByVal QMult() As Single, ByVal QYear() As Single, ByVal t As Integer)
             Dim iFlt As Integer, iGrp As Integer
 
             Dim VPerEffort() As Single
@@ -1459,12 +1462,31 @@ Namespace MSE
                 Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
 
-            Me.m_LPSolver.Solve(New SimplexSolverParams)
+            Dim solverParams As SimplexSolverParams = New SimplexSolverParams()
+            solverParams.GetSensitivityReport = True
+            solverParams.GetInfeasibilityReport = True
+
+            Me.m_LPSolver.Solve(solverParams)
+
+            'For LPSolver use the get_sensitivity_rhs() or get_dual_solution()to get the Dual values/Shadow values
+            Dim reportSensitivity As ILinearSolverReport = m_LPSolver.GetReport(LinearSolverReportType.Sensitivity)
+
+            If reportSensitivity IsNot Nothing Then
+                Dim sensitivityReport As ILinearSolverSensitivityReport = TryCast(reportSensitivity, ILinearSolverSensitivityReport)
+
+                For iGrp = 1 To m_data.nLiving
+                    For it As Integer = t To t + 11
+                        Me.m_data.FStats.AddValue(iGrp, it, Math.Abs(CSng(sensitivityReport.GetDualValue(Me.m_GroupCode(iGrp)).ToDouble())))
+                    Next
+                Next
+
+            End If
 
             For iFlt = 1 To Me.m_data.nFleets
                 Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToDouble)
                 ' System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToDouble.ToString)
             Next
+
 
         End Sub
 
@@ -2560,7 +2582,7 @@ Namespace MSE
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
 
-                    Me.m_data.FStats.AddValue(igrp, CInt(iTime), Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp))
+                    'Me.m_data.FStats.AddValue(igrp, CInt(iTime), 1 + (Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)))
 
                     ' System.Console.Write((Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)).ToString & ",")
 
