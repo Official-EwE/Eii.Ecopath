@@ -67,7 +67,7 @@ Partial Class frmMSEOptions
         Me.rbEffortEcosim = New System.Windows.Forms.RadioButton()
         Me.rbEffortNoCap = New System.Windows.Forms.RadioButton()
         Me.rbEffortPredicted = New System.Windows.Forms.RadioButton()
-        Me.m_GrdRegOptions = New ScientificInterface.Ecosim.gridRegulatoryOptions()
+        Me.m_gridRegOptions = New ScientificInterface.Ecosim.gridRegulatoryOptions()
         Me.m_pnlRegOpt.SuspendLayout()
         Me.pnlFTracking.SuspendLayout()
         Me.m_pnlRunOpt.SuspendLayout()
@@ -216,7 +216,7 @@ Partial Class frmMSEOptions
         Me.m_SplitControls.Panel2.Controls.Add(Me.rbEffortEcosim)
         Me.m_SplitControls.Panel2.Controls.Add(Me.rbEffortNoCap)
         Me.m_SplitControls.Panel2.Controls.Add(Me.rbEffortPredicted)
-        Me.m_SplitControls.Panel2.Controls.Add(Me.m_GrdRegOptions)
+        Me.m_SplitControls.Panel2.Controls.Add(Me.m_gridRegOptions)
         '
         'm_gridFleetLPEffortBounds
         '
@@ -257,17 +257,17 @@ Partial Class frmMSEOptions
         '
         'CEwEHeaderLabel3
         '
+        resources.ApplyResources(Me.CEwEHeaderLabel3, "CEwEHeaderLabel3")
         Me.CEwEHeaderLabel3.CanCollapseParent = False
         Me.CEwEHeaderLabel3.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.CEwEHeaderLabel3, "CEwEHeaderLabel3")
         Me.CEwEHeaderLabel3.IsCollapsed = False
         Me.CEwEHeaderLabel3.Name = "CEwEHeaderLabel3"
         '
         'm_hdrEffortRegOptions
         '
+        resources.ApplyResources(Me.m_hdrEffortRegOptions, "m_hdrEffortRegOptions")
         Me.m_hdrEffortRegOptions.CanCollapseParent = False
         Me.m_hdrEffortRegOptions.CollapsedParentHeight = 0
-        resources.ApplyResources(Me.m_hdrEffortRegOptions, "m_hdrEffortRegOptions")
         Me.m_hdrEffortRegOptions.IsCollapsed = False
         Me.m_hdrEffortRegOptions.Name = "m_hdrEffortRegOptions"
         '
@@ -296,25 +296,25 @@ Partial Class frmMSEOptions
         Me.rbEffortPredicted.Name = "rbEffortPredicted"
         Me.rbEffortPredicted.UseVisualStyleBackColor = True
         '
-        'm_GrdRegOptions
+        'm_gridRegOptions
         '
-        Me.m_GrdRegOptions.AllowBlockSelect = True
-        resources.ApplyResources(Me.m_GrdRegOptions, "m_GrdRegOptions")
-        Me.m_GrdRegOptions.AutoSizeMinHeight = 10
-        Me.m_GrdRegOptions.AutoSizeMinWidth = 10
-        Me.m_GrdRegOptions.AutoStretchColumnsToFitWidth = False
-        Me.m_GrdRegOptions.AutoStretchRowsToFitHeight = False
-        Me.m_GrdRegOptions.BackColor = System.Drawing.Color.White
-        Me.m_GrdRegOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.m_GrdRegOptions.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+        Me.m_gridRegOptions.AllowBlockSelect = True
+        resources.ApplyResources(Me.m_gridRegOptions, "m_gridRegOptions")
+        Me.m_gridRegOptions.AutoSizeMinHeight = 10
+        Me.m_gridRegOptions.AutoSizeMinWidth = 10
+        Me.m_gridRegOptions.AutoStretchColumnsToFitWidth = False
+        Me.m_gridRegOptions.AutoStretchRowsToFitHeight = False
+        Me.m_gridRegOptions.BackColor = System.Drawing.Color.White
+        Me.m_gridRegOptions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.m_gridRegOptions.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
             Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
             Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-        Me.m_GrdRegOptions.CustomSort = False
-        Me.m_GrdRegOptions.FixedColumnWidths = True
-        Me.m_GrdRegOptions.FocusStyle = SourceGrid2.FocusStyle.None
-        Me.m_GrdRegOptions.GridToolTipActive = True
-        Me.m_GrdRegOptions.Name = "m_GrdRegOptions"
-        Me.m_GrdRegOptions.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+        Me.m_gridRegOptions.CustomSort = False
+        Me.m_gridRegOptions.FixedColumnWidths = True
+        Me.m_gridRegOptions.FocusStyle = SourceGrid2.FocusStyle.None
+        Me.m_gridRegOptions.GridToolTipActive = True
+        Me.m_gridRegOptions.Name = "m_gridRegOptions"
+        Me.m_gridRegOptions.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
             Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
             Or SourceGrid2.GridSpecialKeys.Delete) _
             Or SourceGrid2.GridSpecialKeys.Arrows) _
@@ -323,7 +323,7 @@ Partial Class frmMSEOptions
             Or SourceGrid2.GridSpecialKeys.Enter) _
             Or SourceGrid2.GridSpecialKeys.Escape) _
             Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-        Me.m_GrdRegOptions.UIContext = Nothing
+        Me.m_gridRegOptions.UIContext = Nothing
         '
         'frmMSEOptions
         '
@@ -364,7 +364,6 @@ Partial Class frmMSEOptions
     Private WithEvents CEwEHeaderLabel2 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Friend WithEvents m_rbQuotaControls As System.Windows.Forms.RadioButton
     Friend WithEvents m_rbEffortControls As System.Windows.Forms.RadioButton
-    Friend WithEvents m_SplitControls As System.Windows.Forms.SplitContainer
     Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents CEwEHeaderLabel3 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrEffortRegOptions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -372,6 +371,7 @@ Partial Class frmMSEOptions
     Private WithEvents rbEffortEcosim As System.Windows.Forms.RadioButton
     Private WithEvents rbEffortNoCap As System.Windows.Forms.RadioButton
     Private WithEvents rbEffortPredicted As System.Windows.Forms.RadioButton
-    Friend WithEvents m_GrdRegOptions As ScientificInterface.Ecosim.gridRegulatoryOptions
+    Friend WithEvents m_gridRegOptions As ScientificInterface.Ecosim.gridRegulatoryOptions
     Private WithEvents m_gridFleetLPEffortBounds As ScientificInterface.gridFleetLPEffortBounds
+    Private WithEvents m_SplitControls As System.Windows.Forms.SplitContainer
 End Class

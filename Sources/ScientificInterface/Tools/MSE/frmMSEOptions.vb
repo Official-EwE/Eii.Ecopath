@@ -68,7 +68,7 @@ Public Class frmMSEOptions
         Set(value As ScientificInterfaceShared.Controls.cUIContext)
             MyBase.UIContext = value
             Me.m_gridFleetLPEffortBounds.UIContext = Me.UIContext
-            Me.m_GrdRegOptions.UIContext = Me.UIContext
+            Me.m_gridRegOptions.UIContext = Me.UIContext
         End Set
     End Property
 
