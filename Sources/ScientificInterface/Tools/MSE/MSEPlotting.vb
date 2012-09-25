@@ -129,12 +129,13 @@ Friend Class cMSEPlotter
     ''' Initialize to ZedGraphHelper and a Zedgraph control
     ''' </summary>
     ''' <param name="uic">UI context to use.</param>
-    ''' <param name="ZedGraph">Graph to use.</param>
+    ''' <param name="graph">Graph to use.</param>
     Public Sub Init(ByVal uic As cUIContext, _
                     ByVal MSEManager As cMSEManager, _
-                    ByVal ZedGraph As ZedGraphControl)
+                    ByVal graph As ZedGraphControl)
+
         Me.m_uic = uic
-        Me.m_zdGraph = ZedGraph
+        Me.m_zdGraph = graph
         Me.m_manager = MSEManager
 
         Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.nVisPanes)
@@ -258,6 +259,10 @@ Friend Class cMSEPlotter
                 Me.m_Data.Clear()
             End If
             Me.m_Data = ListOfData
+
+            If Me.m_Data IsNot Nothing Then
+                Me.m_zgh.IsAxisLabelsVisible = (Me.m_Data.Count < 10)
+            End If
 
             'if we are adding one line at a time
             'and this is the first line then configure the panes
@@ -496,9 +501,6 @@ Friend Class cMSEPlotter
                                        Me.YLabel, 0, 0, _
                                        False, LegendPos.Top, 1)
                 Me.m_zgh.AutoscalePane(1) = True
-
-
-
 
         End Select
 
