@@ -1146,10 +1146,8 @@ Namespace Controls
             Set(ByVal value As Boolean)
                 If (value <> Me.m_bShowAxisLabels) Then
                     Me.m_bShowAxisLabels = value
-                    For i As Integer = 1 To Me.m_nPanels
-                        Dim gp As GraphPane = Me.GetPane(i)
-                        Me.UpdateAxisLabels(gp)
-                    Next
+                    Me.UpdateAxisLabels()
+                    Me.m_zgc.Invalidate()
                 End If
             End Set
         End Property
@@ -1914,6 +1912,7 @@ Namespace Controls
                 Me.UpdateLegends()
                 Me.UpdateAxisLabels()
             End If
+            Me.m_zgc.Invalidate()
         End Sub
 
         Private Function OnMouseDownEvent(ByVal zg As ZedGraphControl, ByVal args As MouseEventArgs) As Boolean
@@ -2337,14 +2336,15 @@ Namespace Controls
                     gp.X2Axis.Title.IsVisible = bShow
                     gp.YAxis.Title.IsVisible = bShow
                     gp.Y2Axis.Title.IsVisible = bShow
+                    gp.Title.IsVisible = bShow
                 Next
             Else
                 gp.XAxis.Title.IsVisible = bShow
                 gp.X2Axis.Title.IsVisible = bShow
                 gp.YAxis.Title.IsVisible = bShow
                 gp.Y2Axis.Title.IsVisible = bShow
+                gp.Title.IsVisible = bShow
             End If
-            Me.m_zgc.Invalidate()
 
         End Sub
 
@@ -2597,14 +2597,17 @@ Namespace Controls
 
                     Case ucHoverMenu.eCommandTypes.Export
                         Me.ExtractDataToCSV()
+                        Exit For
 
                     Case ucHoverMenu.eCommandTypes.ShowLegends
                         Me.IsLegendVisible = Not Me.IsLegendVisible
                         Me.m_zgc.AxisChange()
+                        Exit For
 
                     Case ucHoverMenu.eCommandTypes.ShowAxisLabels
                         Me.IsAxisLabelsVisible = Not IsAxisLabelsVisible
                         Me.m_zgc.AxisChange()
+                        Exit For
 
                 End Select
             Next
