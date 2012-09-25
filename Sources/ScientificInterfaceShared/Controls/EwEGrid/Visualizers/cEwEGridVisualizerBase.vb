@@ -148,6 +148,10 @@ Namespace Controls.EwEGrid
 
             sg.GetStyleColors(style, clrFore, clrBack)
 
+            If Not cell.Grid.Enabled Then
+                clrFore = EwEUtils.Utilities.cColorUtils.GetVariant(clrFore, 0.5)
+            End If
+
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
                 ' #Yes: obtain standard focus border properties
