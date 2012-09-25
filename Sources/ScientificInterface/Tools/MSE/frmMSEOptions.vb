@@ -46,10 +46,15 @@ Public Class frmMSEOptions
 
     Private m_fpMaxEffort As cPropertyFormatProvider
 
-    Private m_fpUseLP As cPropertyFormatProvider
 
     Private m_fpUseQuotaRegs As cPropertyFormatProvider
     Private m_dctEffortControls As Dictionary(Of eMSERegulationMode, RadioButton)
+
+    Private Enum eControlTypes
+        InputEffort
+        OutputQuota
+    End Enum
+
 
     Public Sub New()
         MyBase.New()
@@ -63,6 +68,7 @@ Public Class frmMSEOptions
         Set(value As ScientificInterfaceShared.Controls.cUIContext)
             MyBase.UIContext = value
             Me.m_gridFleetLPEffortBounds.UIContext = Me.UIContext
+            Me.m_GrdRegOptions.UIContext = Me.UIContext
         End Set
     End Property
 
@@ -76,8 +82,6 @@ Public Class frmMSEOptions
         Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.MSE, eCoreComponentType.SearchObjective}
 
         Me.m_fpUsePlugin = New cPropertyFormatProvider(Me.UIContext, Me.m_ckPlugin, Me.m_MSE.ModelParameters, eVarNameFlags.MSEUseEconomicPlugin)
-        Me.m_fpUseLP = New cPropertyFormatProvider(Me.UIContext, Me.m_ckLP, Me.m_MSE.ModelParameters, eVarNameFlags.MSELPSolution)
-        ' Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
 
         'Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
         Me.m_fpSBPower = New cPropertyFormatProvider(Me.UIContext, Me.txSBPower, Me.m_MSE.ModelParameters, eVarNameFlags.MSEAssessPower)
@@ -98,22 +102,22 @@ Public Class frmMSEOptions
         Me.rbNoRegs.Tag = eMSERegulationMode.NoRegulations
         Me.rbUseRegs.Tag = eMSERegulationMode.UseRegulations
 
+        Me.m_rbEffortControls.Tag = eControlTypes.InputEffort
+        Me.m_rbQuotaControls.Tag = eControlTypes.OutputQuota
+
         Me.m_dctEffortControls = New Dictionary(Of eMSERegulationMode, RadioButton)
-        Me.m_dctEffortControls.Add(eMSERegulationMode.NoRegulations, Me.rbNoRegs)
-        Me.m_dctEffortControls.Add(eMSERegulationMode.UseRegulations, Me.rbUseRegs)
 
         Me.UpdateSelectedEffortMode()
         Me.UpdateControls()
 
+        Me.updateControlTypes(eControlTypes.InputEffort)
+
     End Sub
 
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-        Me.m_dctEffortControls.Clear()
+        '   Me.m_dctEffortControls.Clear()
 
         Me.m_fpUsePlugin.Release()
-        ' Me.m_fpSave = New cPropertyFormatProvider(Me.UIContext, Me.ckSave, Me.m_MSE.ModelParameters, eVarNameFlags.MSESave)
-
-        'Me.m_fpForecast = New cPropertyFormatProvider(Me.UIContext, Me.txForecast, Me.m_MSE.ModelParameters, eVarNameFlags.MSEForcastGain)
         Me.m_fpSBPower.Release()
         Me.m_fpKalman.Release()
 
@@ -168,7 +172,7 @@ Public Class frmMSEOptions
 
     Private Sub UpdateSelectedEffortMode()
         Try
-            m_dctEffortControls.Item(Me.m_MSE.ModelParameters.RegulatoryMode).Checked = True
+            ' m_dctEffortControls.Item(Me.m_MSE.ModelParameters.RegulatoryMode).Checked = True
         Catch ex As Exception
 
         End Try
@@ -177,13 +181,13 @@ Public Class frmMSEOptions
 
     Protected Overrides Sub UpdateControls()
 
-        Me.pnlUseReg.Enabled = False
+        ' Me.pnlUseReg.Enabled = False
         Me.pnlFTracking.Enabled = False
 
         Select Case Me.m_MSE.ModelParameters.RegulatoryMode
 
             Case eMSERegulationMode.UseRegulations
-                Me.pnlUseReg.Enabled = True
+                '   Me.pnlUseReg.Enabled = True
 
             Case eMSERegulationMode.NoRegulations
                 Me.pnlFTracking.Enabled = True
@@ -194,8 +198,8 @@ Public Class frmMSEOptions
     End Sub
 
 
-    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles rbEffortNoCap.CheckedChanged, rbEffortEcosim.CheckedChanged, rbEffortPredicted.CheckedChanged
+    Private Sub rbNoCap_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
 
         Try
 
@@ -215,4 +219,59 @@ Public Class frmMSEOptions
 
     End Sub
 
+    Private Sub pnlUseReg_Paint(sender As System.Object, e As System.Windows.Forms.PaintEventArgs)
+
+    End Sub
+
+    Private Sub onControlTypeChanged_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles m_rbEffortControls.CheckedChanged, m_rbQuotaControls.CheckedChanged
+
+        Try
+
+            Dim rb As RadioButton = DirectCast(sender, RadioButton)
+            Debug.Assert(TypeOf sender Is RadioButton)
+            Debug.Assert(rb.Tag IsNot Nothing)
+            Debug.Assert(TypeOf rb.Tag Is eControlTypes)
+
+            Me.updateControlTypes(DirectCast(rb.Tag, eControlTypes))
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+
+    Private Sub updateControlTypes(ByVal newControlType As eControlTypes)
+
+        If newControlType = eControlTypes.InputEffort Then
+
+            'Me.m_SplitControls.Panel1Collapsed = False
+            'Me.m_SplitControls.Panel2Collapsed = True
+
+            Me.m_SplitControls.Panel1.Enabled = True
+            Me.m_SplitControls.Panel2.Enabled = False
+
+            '  Me.m_SplitControls.SplitterDistance = Me.m_SplitControls.Width
+
+            Me.m_MSE.ModelParameters.UseLPSolution = True
+
+
+
+        ElseIf newControlType = eControlTypes.OutputQuota Then
+            'Me.m_SplitControls.Panel1Collapsed = True
+            'Me.m_SplitControls.Panel2Collapsed = False
+
+            Me.m_SplitControls.Panel1.Enabled = False
+            Me.m_SplitControls.Panel2.Enabled = True
+
+
+
+            ' Me.m_SplitControls.SplitterDistance = 0
+
+            Me.m_MSE.ModelParameters.UseLPSolution = False
+
+        End If
+
+    End Sub
+   
 End Class

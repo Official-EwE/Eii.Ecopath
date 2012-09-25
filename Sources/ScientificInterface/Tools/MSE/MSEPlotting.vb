@@ -466,8 +466,8 @@ Friend Class cMSEPlotter
                         ipane += 1
                         Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
                                                CDbl(Me.m_uic.Core.EcosimFirstYear + (Me.m_uic.Core.nEcosimTimeSteps / cCore.N_MONTHS)), _
-                                               Me.YLabel, -1.0, 1.0, False, LegendPos.Top, ipane)
-                        ' Me.m_zgh.AutoscalePane(ipane) = True
+                                               Me.YLabel, 0, 1.0, False, LegendPos.Top, ipane)
+                        Me.m_zgh.AutoscalePane(ipane) = True
                     End If
 
                 Next
