@@ -21,11 +21,9 @@ Option Strict On
 Option Explicit On
 
 Imports EwECore
-Imports EwECore.MSE
-Imports EwEUtils.Core
-Imports ScientificInterface.Other
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
+Imports SourceGrid2.Cells
 Imports SourceGrid2.Cells.Real
 
 #End Region
@@ -164,20 +162,19 @@ Public Class gridSelectColorBlock
 
     End Sub
 
-    Private Sub gridSelectColorBlock_CellLostFocus(ByVal sender As Object, ByVal e As SourceGrid2.PositionCancelEventArgs) _
-        Handles Me.CellLostFocus
+    Protected Overrides Function OnCellEdited(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
 
         'Don't set the value if this is not a valid value column
-        If e.Position.Column < 1 Then Exit Sub
+        If p.Column < 1 Then Exit Function
 
         Try
             ' Parse using UI default number formatting
-            Dim newvalue As Single = Single.Parse(CStr(Me(0, e.Position.Column).Value))
+            Dim newvalue As Single = Single.Parse(CStr(Me(0, p.Column).Value))
             Dim dif As Single = CSng(Math.Round(newvalue - Me.m_sBlockValue, 2))
 
             'has the cell been edited
             If dif <> 0.0 Then
-                Dim col As Integer = e.Position.Column
+                Dim col As Integer = p.Column
                 Me.m_parentSelector.BlockValues(col) = newvalue
                 RaiseEvent OnValueChanged(newvalue, col)
             End If
@@ -185,8 +182,9 @@ Public Class gridSelectColorBlock
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & " CellLostFocus() Exception: " & ex.Message)
         End Try
+        Return MyBase.OnCellEdited(p, Cell)
 
-    End Sub
+    End Function
 
 #End Region ' Events
 
@@ -215,6 +213,8 @@ Public Class gridSelectColorBlock
 
     Protected Overrides Sub FillData()
 
+        Dim cell As Cell = Nothing
+
         If (Me.m_parentSelector Is Nothing) Then Return
         If (Me.StyleGuide Is Nothing) Then Return
 
@@ -230,9 +230,12 @@ Public Class gridSelectColorBlock
         For i As Integer = 1 To Me.m_parentSelector.NumBlocks
 
             ' Top row (row 0) holds CV values
-            Me(0, i) = New EwECell(cvs(i), cvs(i).GetType)
+            cell = New EwECell(cvs(i), cvs(i).GetType)
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(0, i) = cell
+
             ' Bottom row (row 1) holds CV colours
-            Dim cell As New Cell("", GetType(String))
+            cell = New Cell("", GetType(String))
             cell.VisualModel = Me.m_vm
             cell.EditableMode = EditableMode.None
             cell.EnableEdit = False
