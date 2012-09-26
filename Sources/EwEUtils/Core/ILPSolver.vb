@@ -122,6 +122,9 @@ Namespace Core
         ''' -------------------------------------------------------------------
         Function GetValue(ByVal iItem As Integer) As Double
 
+
+        Function GetDualValue(ByVal iItem As Integer) As Double
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns whether this solver is supported by the operating system.

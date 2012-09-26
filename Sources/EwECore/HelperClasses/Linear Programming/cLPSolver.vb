@@ -44,7 +44,7 @@ Public Class cLPSolver
     ''' LPSolve unmanaged library wrapper
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Class lpsolve55
+    Public Class lpsolve55
 
         Private Shared g_bInit As Boolean = False
         Private Shared g_bUsable As Boolean = False
@@ -475,6 +475,7 @@ Public Class cLPSolver
         Public m_dMin As Double
         Public m_dMax As Double
         Public m_dResult As Double
+        Public m_DualValue As Double
         Public Sub New(key As Object, ord As Integer)
             Me.m_key = key
             Me.m_ord = ord
@@ -620,9 +621,10 @@ Public Class cLPSolver
                         dRow(v + 1) = rd.m_dVals(vd.m_key)
                     End If
                 Next v
-                If Not Double.IsInfinity(rd.m_dMin) Then
-                    lpsolve55.add_constraint(lp, dRow, lpsolve55.lpsolve_constr_types.GE, rd.m_dMin)
-                End If
+                ' Dim bAdded As Boolean
+                'If Not Double.IsInfinity(rd.m_dMin) Then
+                '    bAdded = lpsolve55.add_constraint(lp, dRow, lpsolve55.lpsolve_constr_types.GE, rd.m_dMin)
+                'End If
                 If Not Double.IsInfinity(rd.m_dMax) Then
                     lpsolve55.add_constraint(lp, dRow, lpsolve55.lpsolve_constr_types.LE, rd.m_dMax)
                 End If
@@ -652,6 +654,12 @@ Public Class cLPSolver
             'lpsolve55.print_solution(lp, 1)
             'lpsolve55.print_constraints(lp, 1)
 
+
+            Dim dualValues() As Double
+            ReDim dualValues(1 + lpsolve55.get_Ncolumns(lp) + lpsolve55.get_Nrows(lp))
+            lpsolve55.get_dual_solution(lp, dualValues)
+
+
             ' This looks incredibly fragile...
 
             Dim dSol(1 + Me.Vars.Length + Me.Rows.Length) As Double
@@ -662,13 +670,17 @@ Public Class cLPSolver
 
             For iRow As Integer = 0 To rows.Length - 1
                 rows(iRow).m_dResult = dSol(iSol)
+                rows(iRow).m_DualValue = dualValues(iSol)
                 iSol += 1
             Next
 
             For iVar As Integer = 0 To vars.Length - 1
                 vars(iVar).m_dResult = dSol(iSol)
+                vars(iVar).m_DualValue = dualValues(iSol)
                 iSol += 1
             Next
+
+            '  lpsolve55.write_lp(lp, "MSLP.txt")
 
         Catch ex As Exception
             bSuccess = False
@@ -680,12 +692,84 @@ Public Class cLPSolver
 
     End Function
 
+
+
+    Public Sub SolveLPSolve()
+
+        'SimplexSolver solver = new SimplexSolver();
+        Dim lp As Integer = lpsolve55.make_lp(0, 2)
+
+        ' - Vars already defined in constructor
+        'int savid, vzvid;
+        'solver.AddVariable("Saudi Arabia", out savid);
+        'solver.SetBounds(savid, 0, 9000);
+        lpsolve55.set_bounds(lp, 1, 0, 9000)
+        'solver.AddVariable("Venezuela", out vzvid);
+        'solver.SetBounds(vzvid, 0, 6000);
+        lpsolve55.set_bounds(lp, 2, 0, 6000)
+
+        'int gasoline, jetfuel, machinelubricant, cost;
+        Dim drow As Double()
+
+        'solver.AddRow("gasoline", out gasoline);
+        'solver.SetCoefficient(gasoline, savid, 0.3);
+        'solver.SetCoefficient(gasoline, vzvid, 0.4);
+        'solver.SetBounds(gasoline, 2000, Rational.PositiveInfinity);
+        drow = New Double() {0, 0.3, 0.4}
+        lpsolve55.add_constraint(lp, drow, lpsolve55.lpsolve_constr_types.GE, 2000)
+
+        'solver.AddRow("jetfuel", out jetfuel);
+        'solver.SetCoefficient(jetfuel, savid, 0.4);
+        'solver.SetCoefficient(jetfuel, vzvid, 0.2);
+        'solver.SetBounds(jetfuel, 1500, Rational.PositiveInfinity);
+        drow = New Double() {0, 0.4, 0.2}
+        lpsolve55.add_constraint(lp, drow, lpsolve55.lpsolve_constr_types.GE, 1500)
+
+        'solver.AddRow("machinelubricant", out machinelubricant);
+        'solver.SetCoefficient(machinelubricant, savid, 0.2);
+        'solver.SetCoefficient(machinelubricant, vzvid, 0.3);
+        'solver.SetBounds(machinelubricant, 500, Rational.PositiveInfinity);
+        drow = New Double() {0, 0.2, 0.3}
+        lpsolve55.add_constraint(lp, drow, lpsolve55.lpsolve_constr_types.GE, 500)
+
+        'solver.AddRow("cost", out cost);
+        'solver.SetCoefficient(cost, savid, 20);
+        'solver.SetCoefficient(cost, vzvid, 15);
+        'solver.AddGoal(cost, 1, true);
+        drow = New Double() {0, 20, 15}
+        lpsolve55.set_obj_fn(lp, drow)
+
+        'solver.Solve(new SimplexSolverParams());
+        lpsolve55.set_minim(lp)
+
+        'lpsolve55.print_lp(lp)
+        lpsolve55.solve(lp)
+
+        'Console.WriteLine("SA {0}, VZ {1}, Gasoline {2}, Jet Fuel {3}, Machine Lubricant {4}, Cost {5}",
+        '    solver.GetValue(savid).ToDouble(),
+        '    solver.GetValue(vzvid).ToDouble(),
+        '    solver.GetValue(gasoline).ToDouble(),
+        '    solver.GetValue(jetfuel).ToDouble(),
+        '    solver.GetValue(machinelubricant).ToDouble(),
+        '    solver.GetValue(cost).ToDouble());
+
+        'lpsolve55.print_objective(lp)
+        'lpsolve55.print_solution(lp, 1)
+        'lpsolve55.print_constraints(lp, 1)
+
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ILPSolver.GetValue"/>
     ''' -----------------------------------------------------------------------
     Public Function GetValue(iData As Integer) As Double _
           Implements ILPSolver.GetValue
         Return Me.m_lDefs(iData).m_dResult
+    End Function
+
+
+    Public Function GetDualValue(iData As Integer) As Double Implements EwEUtils.Core.ILPSolver.GetDualValue
+        Return Me.m_lDefs(iData).m_DualValue
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -737,4 +821,5 @@ Public Class cLPSolver
 
 #End Region ' Internals
 
+    
 End Class
