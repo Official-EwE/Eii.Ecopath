@@ -214,7 +214,7 @@ Public Class frmNavigationPanel
 
             'MSE
             .Add("ndOptions", eCoreExecutionState.EcosimLoaded, GetType(frmMSEOptions), "") ' ToDo: connect to help
-            .Add("ndControlType", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
+            ' .Add("ndControlType", eCoreExecutionState.EcosimLoaded, GetType(gridRegulatoryOptions), "") ' ToDo: connect to help
             .Add("ndRefFixedEscape", eCoreExecutionState.EcosimLoaded, GetType(gridFixedEscapement), "") ' ToDo: connect to help
             .Add("ndQuotaShare", eCoreExecutionState.EcosimLoaded, GetType(frmQuotaShare), "") ' ToDo: connect to help
             .Add("ndRegFishingMort", eCoreExecutionState.EcosimLoaded, GetType(frmTargetFishingMortalityPolicy), "") ' ToDo: connect to help
