@@ -818,23 +818,25 @@ Friend Class cMSEPlotter
         li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
         Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
-        '2 standard deviation lines
-        Dim std2 As Single = 2 * StatsData.Std
-        ppl = New PointPairList()
-        ppl.Add(0, StatsData.Mean + std2)
-        ppl.Add(x, StatsData.Mean + std2)
-        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
-        li.Line.Style = Drawing2D.DashStyle.Dot
-        li.Line.Width = 0.5
-        Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
+        'jb 26-Sept-2012 removed to upper and lower standard deviation lines for formating of graph 
+        'in some circumstances the lines caused the graph to scale < 0
+        ''2 standard deviation lines
+        'Dim std2 As Single = 2 * StatsData.Std
+        'ppl = New PointPairList()
+        'ppl.Add(0, StatsData.Mean + std2)
+        'ppl.Add(x, StatsData.Mean + std2)
+        'li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        'li.Line.Style = Drawing2D.DashStyle.Dot
+        'li.Line.Width = 0.5
+        'Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
-        ppl = New PointPairList()
-        ppl.Add(0, StatsData.Mean - std2)
-        ppl.Add(x, StatsData.Mean - std2)
-        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
-        li.Line.Style = Drawing2D.DashStyle.Dot
-        li.Line.Width = 0.5
-        Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
+        'ppl = New PointPairList()
+        'ppl.Add(0, StatsData.Mean - std2)
+        'ppl.Add(x, StatsData.Mean - std2)
+        'li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Color.Blue, ppl)
+        'li.Line.Style = Drawing2D.DashStyle.Dot
+        'li.Line.Width = 0.5
+        'Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
 
     End Sub
 
