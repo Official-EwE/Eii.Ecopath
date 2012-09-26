@@ -1152,6 +1152,8 @@ Namespace MSE
                         System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
                     End Try
 
+                    Me.m_core.Messages.sendAllMessages()
+
                     Me.m_MSE.Disconnect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)
 
             End Select
