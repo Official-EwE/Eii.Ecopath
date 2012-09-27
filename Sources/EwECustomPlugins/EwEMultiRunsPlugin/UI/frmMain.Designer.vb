@@ -219,7 +219,7 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
         Me.m_pbLogo.BackColor = System.Drawing.Color.White
-        Me.m_pbLogo.BackgroundImage = Global.EwEMultiRunsPlugin.My.Resources.Resources.logo_canada_dfo
+        Me.m_pbLogo.BackgroundImage = Global.EwEMultiSimPlugin.My.Resources.Resources.logo_canada_dfo
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
         '

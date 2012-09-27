@@ -35,7 +35,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' Ecosim, and organizes extraction of results.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
-Friend Class cMultiRunsEngine
+Friend Class cEngine
     Inherits cThreadWaitBase
 
 #Region " Private helper classes "
@@ -91,7 +91,7 @@ Friend Class cMultiRunsEngine
     Private m_options As cEcosimResultWriter.eResultTypes() = Nothing
     Private m_FFCache As New Dictionary(Of String, cFFCache)
 
-    Private m_dgt As cMultiRunsEngine.RunCompletedDelegate = Nothing
+    Private m_dgt As cEngine.RunCompletedDelegate = Nothing
     Private m_bStopRun As Boolean = False
 
     Private m_bCreateRunFolder As Boolean = False

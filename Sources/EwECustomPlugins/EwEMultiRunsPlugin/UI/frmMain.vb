@@ -38,7 +38,7 @@ Imports System.Windows.Forms
 Public Class frmMain
 
     'Private m_bRunning As Boolean = False
-    Private m_engine As cMultiRunsEngine = Nothing
+    Private m_engine As cEngine = Nothing
 
 #Region " Form overrides "
 
@@ -60,7 +60,7 @@ Public Class frmMain
             Me.m_rbAnnual.Checked = True
         End If
 
-        Me.m_engine = New cMultiRunsEngine(Me.UIContext)
+        Me.m_engine = New cEngine(Me.UIContext)
 
         Me.UpdateControls()
 
@@ -198,7 +198,7 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
-            Me.m_engine.Run(New cMultiRunsEngine.RunCompletedDelegate(AddressOf RunDone), lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
+            Me.m_engine.Run(New cEngine.RunCompletedDelegate(AddressOf RunDone), lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
 
         Catch ex As Exception
             ' Whoah
