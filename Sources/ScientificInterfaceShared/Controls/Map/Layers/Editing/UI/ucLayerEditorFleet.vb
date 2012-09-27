@@ -60,13 +60,13 @@ Namespace Controls.Map.Layers
             Me.m_cmbFleet.Enabled = Me.IsAttached
         End Sub
 
-        Protected Overloads Property Editor() As cLayerEditorFleet
+        Protected Overloads Property Editor() As cLayerEditorPorts
             Get
-                Return DirectCast(MyBase.Editor, cLayerEditorFleet)
+                Return DirectCast(MyBase.Editor, cLayerEditorPorts)
             End Get
-            Set(ByVal editor As cLayerEditorFleet)
+            Set(ByVal editor As cLayerEditorPorts)
                 ' Sanity check
-                Debug.Assert(TypeOf editor Is cLayerEditorFleet, "ucLayerEditorFleet connected to wrong editor class")
+                Debug.Assert(TypeOf editor Is cLayerEditorPorts, "ucLayerEditorFleet connected to wrong editor class")
                 ' Configure editor
                 editor.CellValue = 0
                 ' Set
