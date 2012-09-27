@@ -1849,9 +1849,9 @@
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
       <Name>EwEFlowDiagramPlugin %28EwE custom plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEMultiRunsPlugin\EwEMultiRunsPlugin.vbproj">
+    <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj">
       <Project>{C73CF657-456C-4397-B6A1-5DC8FA68AD48}</Project>
-      <Name>EwEMultiRunsPlugin %28EwE custom plugins\EwEMultiRunsPlugin\EwEMultiRunsPlugin%29</Name>
+      <Name>EwEMultiSimPlugin %28EwE custom plugins\EwEMultiSimPlugin\EwEMultiSimPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>

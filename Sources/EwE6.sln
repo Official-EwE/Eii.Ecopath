@@ -47,9 +47,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEEcoTrophPlugin", "EwEEco
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEEcotroph", "EwECustomPlugins\EwEEcotroph\EwEEcotroph.vbproj", "{FEF1031B-9933-4364-AD29-C4F8B2E68382}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEMultiRunsPlugin", "EwEMultiRunsPlugin", "{FDC7E306-EA56-49AE-B290-766C5A330EC0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EwEMultiSimPlugin", "EwEMultiSimPlugin", "{FDC7E306-EA56-49AE-B290-766C5A330EC0}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEMultiRunsPlugin", "EwECustomPlugins\EwEMultiRunsPlugin\EwEMultiRunsPlugin.vbproj", "{C73CF657-456C-4397-B6A1-5DC8FA68AD48}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "EwEMultiSimPlugin", "EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj", "{C73CF657-456C-4397-B6A1-5DC8FA68AD48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
