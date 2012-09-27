@@ -621,13 +621,16 @@ Public Class cLPSolver
                         dRow(v + 1) = rd.m_dVals(vd.m_key)
                     End If
                 Next v
-                ' Dim bAdded As Boolean
-                'If Not Double.IsInfinity(rd.m_dMin) Then
-                '    bAdded = lpsolve55.add_constraint(lp, dRow, lpsolve55.lpsolve_constr_types.GE, rd.m_dMin)
-                'End If
-                If Not Double.IsInfinity(rd.m_dMax) Then
-                    lpsolve55.add_constraint(lp, dRow, lpsolve55.lpsolve_constr_types.LE, rd.m_dMax)
+                Dim bAdded As Boolean
+
+                'only add a lower constraint if it is not equal to zero
+                If rd.m_dMin <> 0 Then
+                    bAdded = lpsolve55.add_constraint(lp, dRow, lpsolve55.lpsolve_constr_types.GE, rd.m_dMin)
                 End If
+
+                'Always add the upper constraint! I think LPSolve will ignore constraints that are zero! Maybe...
+                lpsolve55.add_constraint(lp, dRow, lpsolve55.lpsolve_constr_types.LE, rd.m_dMax)
+
                 lpsolve55.set_row_name(lp, rd.m_ord, rd.m_key.ToString())
             Next r
 
@@ -655,16 +658,16 @@ Public Class cLPSolver
             'lpsolve55.print_constraints(lp, 1)
 
 
-            Dim dualValues() As Double
-            ReDim dualValues(1 + lpsolve55.get_Ncolumns(lp) + lpsolve55.get_Nrows(lp))
-            lpsolve55.get_dual_solution(lp, dualValues)
-
-
             ' This looks incredibly fragile...
+            Dim n As Integer = 1 + Me.Vars.Length + Me.Rows.Length
+            Debug.Assert(n = 1 + lpsolve55.get_Ncolumns(lp) + lpsolve55.get_Nrows(lp), "cLPSolver number of variables and rows does not match.")
 
-            Dim dSol(1 + Me.Vars.Length + Me.Rows.Length) As Double
+            Dim dualValues(n) As Double
+            Dim dSol(n) As Double
+
             Dim iSol As Integer = 0
             lpsolve55.get_primal_solution(lp, dSol)
+            lpsolve55.get_dual_solution(lp, dualValues)
             Me.Goal.m_dResult = dSol(iSol)
             iSol += 1
 
@@ -680,7 +683,7 @@ Public Class cLPSolver
                 iSol += 1
             Next
 
-            '  lpsolve55.write_lp(lp, "MSLP.txt")
+            '  lpsolve55.write_lp(lp, "cLPSolver.txt")
 
         Catch ex As Exception
             bSuccess = False

@@ -29,9 +29,9 @@ Imports System.Text
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
-Imports Microsoft.SolverFoundation.Solvers
-Imports Microsoft.SolverFoundation.Common
-Imports Microsoft.SolverFoundation.Services
+'Imports Microsoft.SolverFoundation.Solvers
+'Imports Microsoft.SolverFoundation.Common
+'Imports Microsoft.SolverFoundation.Services
 
 Namespace MSE
 
@@ -1440,7 +1440,7 @@ Namespace MSE
                         'Using Kalman filter to update catchability estimate
                         Me.m_data.Qest(iGrp, iFlt) = (1 - Me.m_data.KalGainQ(iFlt)) * (Me.m_data.CatchYear(iFlt, iGrp) / 12) / Me.m_data.BestimateLast(iGrp) / (Me.m_esData.FishRateGear(iFlt, t - 12) + 1.0E-20F) + Me.m_data.KalGainQ(iFlt) * Me.m_data.Qest(iGrp, iFlt)
                     End If
-                    Me.m_data.Qest(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
+                    ' Me.m_data.Qest(iGrp, iFlt) = Me.m_esData.FishMGear(iFlt, iGrp) * QYear(iFlt) * QMult(iGrp)
                     Me.m_data.QStar(iGrp, iFlt) = Me.m_data.Qest(iGrp, iFlt) * (Me.m_esData.PropLandedTime(iFlt, iGrp) + (1 - Me.m_esData.PropLandedTime(iFlt, iGrp)) * m_epdata.PropDiscardMort(iFlt, iGrp))
                 Next iGrp
             Next iFlt
@@ -1464,18 +1464,23 @@ Namespace MSE
                 Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
 
-            Dim solverParams As SimplexSolverParams = New SimplexSolverParams()
-            solverParams.GetSensitivityReport = True
-            solverParams.GetInfeasibilityReport = True
-
-            ' Me.m_LPSolver.Solve(solverParams)
             Me.m_LPSolver.Solve()
+
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'MS Sensitivity Dual Values 
+            'Dim solverParams As SimplexSolverParams = New SimplexSolverParams()
+            'solverParams.GetSensitivityReport = True
+            'solverParams.GetInfeasibilityReport = True
+
+            'Me.m_LPSolver.Solve(solverParams)
 
             ''For LPSolver use the get_sensitivity_rhs() or get_dual_solution()to get the Dual values/Shadow values
             'Dim reportSensitivity As ILinearSolverReport = m_LPSolver.GetReport(LinearSolverReportType.Sensitivity)
 
             'If reportSensitivity IsNot Nothing Then
             '    Dim sensitivityReport As ILinearSolverSensitivityReport = TryCast(reportSensitivity, ILinearSolverSensitivityReport)
+            'End if
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             For iGrp = 1 To m_data.nLiving
                 Dim dv As Single = Math.Abs(CSng(Me.m_LPSolver.GetDualValue(Me.m_GroupCode(iGrp))))
@@ -1484,14 +1489,10 @@ Namespace MSE
                 Next
             Next
 
-            'End If
-
             For iFlt = 1 To Me.m_data.nFleets
-                'Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToDouble)
                 Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)))
-                System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
+                'System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
             Next
-
 
         End Sub
 
