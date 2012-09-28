@@ -53,6 +53,8 @@ Imports WeifenLuo.WinFormsUI.Docking
 ''' ---------------------------------------------------------------------------
 Public Class frmNavigationPanel
 
+    Private Const g_BetaNodes As String = "ndEcospaceExtData"
+
     Private m_uic As cUIContext = Nothing
     Private m_nodeController As cTreeViewNodeController = Nothing
     Private m_pluginManager As cPluginManager = Nothing
@@ -109,6 +111,17 @@ Public Class frmNavigationPanel
         ' Put all the list here
         Me.m_nodeController = New cTreeViewNodeController()
         Me.m_nodeController.Attach(Me.m_uic, Me.m_tvNavigation)
+
+#If Not Debug Then
+        ' Remove development-time nodes from release
+        For Each strBetaNode As String In g_BetaNodes.Split(","c)
+            Dim tn As TreeNode = Me.FindNode(m_tvNavigation.Nodes, strBetaNode)
+            If (tn IsNot Nothing) Then
+                Me.m_tvNavigation.Nodes.Remove(tn)
+                cLog.Write(String.Format("NavPanel: Removed BETA node '{0}' from navigation tree", strBetaNode))
+            End If
+        Next
+#End If
 
         With Me.m_nodeController
 

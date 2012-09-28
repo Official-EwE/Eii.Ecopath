@@ -92,7 +92,7 @@ Partial Public Class AppLauncher
         Me.m_tsmiFileCompact = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiPrint = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_menuMain = New System.Windows.Forms.MenuStrip()
+        Me.m_menuMain = New ScientificInterfaceShared.Controls.cEwEMenustrip
         Me.MenuView = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewStartPage = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewNavigation = New System.Windows.Forms.ToolStripMenuItem()
@@ -708,7 +708,7 @@ Partial Public Class AppLauncher
     Private WithEvents m_tsmiHelpAbout As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuWindows As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiOptions As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_menuMain As System.Windows.Forms.MenuStrip
+    Private WithEvents m_menuMain As ScientificInterfaceShared.Controls.cEwEMenustrip
     Private WithEvents ToolBarToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents MenuTools As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiWindowsCloseAll As System.Windows.Forms.ToolStripMenuItem
