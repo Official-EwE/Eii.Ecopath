@@ -168,6 +168,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdShowOptions As cShowOptionsCommand = Nothing
     Private WithEvents m_cmdPluginGUICommand As cPluginGUICommand = Nothing
     Private WithEvents m_cmdHelpAbout As cCommand = Nothing
+    Private WithEvents m_cmdHelpReportIssue As cCommand = Nothing
     Private WithEvents m_cmdPropertySelection As cPropertySelectionCommand = Nothing
     Private WithEvents m_cmdShowHideItems As cDisplayGroupsCommand = Nothing
     Private WithEvents m_cmdEnableEcotracer As cCommand = Nothing
@@ -515,6 +516,11 @@ Public Class AppLauncher
         'Create and configure Help>About command
         Me.m_cmdHelpAbout = New cCommand(cmdh, "HelpAbout")
         Me.m_cmdHelpAbout.AddControl(Me.m_tsmiHelpAbout)
+
+        'Create and configure Help>About command
+        Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
+        Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
+        Me.m_cmdHelpReportIssue.AddControl(Me.m_tslBeta)
 
         ' Create plugin gui command for GUI plugins to use
         Me.m_cmdPluginGUICommand = New cPluginGUICommand(cmdh)
@@ -3010,7 +3016,8 @@ Public Class AppLauncher
         Me.Help.ShowHelp(HelpNavigator.Find)
     End Sub
 
-    Private Sub OnReportBug(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpBugReport.Click
+    Private Sub OnReportBug(cmd As cCommand) Handles m_cmdHelpReportIssue.OnInvoke
+
         Dim strError As String = ""
         If Not cBugReporter.InvokeBugReport(My.Resources.GENERIC_CAPTION, "mailto:ewedevteam@gmail.com", Me.m_pluginManager) Then
             Dim msg As New cMessage(My.Resources.PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT, _
@@ -3019,6 +3026,7 @@ Public Class AppLauncher
                                     eMessageImportance.Warning)
             Me.Core.Messages.SendMessage(msg)
         End If
+
     End Sub
 
     Private Sub OnVisitForums(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiForums.Click
