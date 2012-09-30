@@ -773,6 +773,8 @@ Public Class AppLauncher
             .BringToFront()
         End With
 
+        Me.Text = My.Resources.GENERIC_CAPTION
+
         ' Egg
         Dim d As Date = Date.Now
         If d.DayOfYear > 345 And d.DayOfYear < 363 Then

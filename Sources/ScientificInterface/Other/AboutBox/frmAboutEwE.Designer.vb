@@ -48,18 +48,23 @@ Namespace Other
             Me.m_lbVersion = New System.Windows.Forms.Label()
             Me.m_lbCopyright = New System.Windows.Forms.Label()
             Me.m_rtbDistribution = New System.Windows.Forms.RichTextBox()
+            Me.m_plSponsors = New System.Windows.Forms.Panel()
             Me.m_tlpSonpsors = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
             Me.m_pbPEW = New System.Windows.Forms.PictureBox()
             Me.m_pbSAUP = New System.Windows.Forms.PictureBox()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpGeneral = New System.Windows.Forms.TabPage()
+            Me.m_tpLicense = New System.Windows.Forms.TabPage()
+            Me.m_tlpLicense = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_rtbLicense = New System.Windows.Forms.RichTextBox()
+            Me.m_pbLicense = New System.Windows.Forms.PictureBox()
             Me.m_tpTeam = New System.Windows.Forms.TabPage()
-            Me.m_tlpCredits = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tlpTeam = New System.Windows.Forms.TableLayoutPanel()
             Me.m_rtbTeam = New System.Windows.Forms.RichTextBox()
             Me.m_pbFish1 = New System.Windows.Forms.PictureBox()
-            Me.m_tpacknowledgements = New System.Windows.Forms.TabPage()
-            Me.m_tlpModules = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tpAcknowledgements = New System.Windows.Forms.TabPage()
+            Me.m_tlpAck = New System.Windows.Forms.TableLayoutPanel()
             Me.m_rtbAcknowledgements = New System.Windows.Forms.RichTextBox()
             Me.m_pbFish2 = New System.Windows.Forms.PictureBox()
             Me.m_tpTechnical = New System.Windows.Forms.TabPage()
@@ -68,28 +73,31 @@ Namespace Other
             Me.m_tlpTechnicalDetails = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lbTechnical = New System.Windows.Forms.Label()
             Me.m_lblNetVersion = New System.Windows.Forms.Label()
-            Me.m_gridTechnical = New ScientificInterface.AboutEwEGrid()
+            Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
             Me.m_tpDatabase = New System.Windows.Forms.TabPage()
             Me.m_tlpDatabase = New System.Windows.Forms.TableLayoutPanel()
             Me.m_pbFish4 = New System.Windows.Forms.PictureBox()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
-            Me.m_gridDatabase = New ScientificInterface.DatabaseGrid()
-            Me.m_plSponsors = New System.Windows.Forms.Panel()
+            Me.m_gridDatabase = New ScientificInterface.gridDatabase()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
+            Me.m_plSponsors.SuspendLayout()
             Me.m_tlpSonpsors.SuspendLayout()
             CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbPEW, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tcMain.SuspendLayout()
             Me.m_tpGeneral.SuspendLayout()
+            Me.m_tpLicense.SuspendLayout()
+            Me.m_tlpLicense.SuspendLayout()
+            CType(Me.m_pbLicense, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tpTeam.SuspendLayout()
-            Me.m_tlpCredits.SuspendLayout()
+            Me.m_tlpTeam.SuspendLayout()
             CType(Me.m_pbFish1, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_tpacknowledgements.SuspendLayout()
-            Me.m_tlpModules.SuspendLayout()
+            Me.m_tpAcknowledgements.SuspendLayout()
+            Me.m_tlpAck.SuspendLayout()
             CType(Me.m_pbFish2, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tpTechnical.SuspendLayout()
             Me.m_tlpTechnical.SuspendLayout()
@@ -99,7 +107,6 @@ Namespace Other
             Me.m_tlpDatabase.SuspendLayout()
             CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.TableLayoutPanel2.SuspendLayout()
-            Me.m_plSponsors.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_btnOK
@@ -117,8 +124,8 @@ Namespace Other
             '
             'm_pbFish0
             '
+            Me.m_pbFish0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_pbFish0.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
-            Me.m_pbFish0.BorderStyle = BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_pbFish0, "m_pbFish0")
             Me.m_pbFish0.Name = "m_pbFish0"
             Me.m_pbFish0.TabStop = False
@@ -163,6 +170,13 @@ Namespace Other
             resources.ApplyResources(Me.m_rtbDistribution, "m_rtbDistribution")
             Me.m_rtbDistribution.Name = "m_rtbDistribution"
             '
+            'm_plSponsors
+            '
+            Me.m_plSponsors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_plSponsors.Controls.Add(Me.m_tlpSonpsors)
+            resources.ApplyResources(Me.m_plSponsors, "m_plSponsors")
+            Me.m_plSponsors.Name = "m_plSponsors"
+            '
             'm_tlpSonpsors
             '
             Me.m_tlpSonpsors.BackColor = System.Drawing.Color.White
@@ -197,8 +211,9 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_tcMain, "m_tcMain")
             Me.m_tcMain.Controls.Add(Me.m_tpGeneral)
+            Me.m_tcMain.Controls.Add(Me.m_tpLicense)
             Me.m_tcMain.Controls.Add(Me.m_tpTeam)
-            Me.m_tcMain.Controls.Add(Me.m_tpacknowledgements)
+            Me.m_tcMain.Controls.Add(Me.m_tpAcknowledgements)
             Me.m_tcMain.Controls.Add(Me.m_tpTechnical)
             Me.m_tcMain.Controls.Add(Me.m_tpDatabase)
             Me.m_tcMain.Name = "m_tcMain"
@@ -211,19 +226,49 @@ Namespace Other
             Me.m_tpGeneral.Name = "m_tpGeneral"
             Me.m_tpGeneral.UseVisualStyleBackColor = True
             '
+            'm_tpLicense
+            '
+            Me.m_tpLicense.Controls.Add(Me.m_tlpLicense)
+            resources.ApplyResources(Me.m_tpLicense, "m_tpLicense")
+            Me.m_tpLicense.Name = "m_tpLicense"
+            Me.m_tpLicense.UseVisualStyleBackColor = True
+            '
+            'm_tlpLicense
+            '
+            resources.ApplyResources(Me.m_tlpLicense, "m_tlpLicense")
+            Me.m_tlpLicense.Controls.Add(Me.m_rtbLicense, 1, 0)
+            Me.m_tlpLicense.Controls.Add(Me.m_pbLicense, 0, 0)
+            Me.m_tlpLicense.Name = "m_tlpLicense"
+            '
+            'm_rtbLicense
+            '
+            Me.m_rtbLicense.BackColor = System.Drawing.SystemColors.Control
+            Me.m_rtbLicense.Cursor = System.Windows.Forms.Cursors.Default
+            resources.ApplyResources(Me.m_rtbLicense, "m_rtbLicense")
+            Me.m_rtbLicense.Name = "m_rtbLicense"
+            Me.m_rtbLicense.ShortcutsEnabled = False
+            '
+            'm_pbLicense
+            '
+            Me.m_pbLicense.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            resources.ApplyResources(Me.m_pbLicense, "m_pbLicense")
+            Me.m_pbLicense.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
+            Me.m_pbLicense.Name = "m_pbLicense"
+            Me.m_pbLicense.TabStop = False
+            '
             'm_tpTeam
             '
-            Me.m_tpTeam.Controls.Add(Me.m_tlpCredits)
+            Me.m_tpTeam.Controls.Add(Me.m_tlpTeam)
             resources.ApplyResources(Me.m_tpTeam, "m_tpTeam")
             Me.m_tpTeam.Name = "m_tpTeam"
             Me.m_tpTeam.UseVisualStyleBackColor = True
             '
-            'm_tlpCredits
+            'm_tlpTeam
             '
-            resources.ApplyResources(Me.m_tlpCredits, "m_tlpCredits")
-            Me.m_tlpCredits.Controls.Add(Me.m_rtbTeam, 1, 0)
-            Me.m_tlpCredits.Controls.Add(Me.m_pbFish1, 0, 0)
-            Me.m_tlpCredits.Name = "m_tlpCredits"
+            resources.ApplyResources(Me.m_tlpTeam, "m_tlpTeam")
+            Me.m_tlpTeam.Controls.Add(Me.m_rtbTeam, 1, 0)
+            Me.m_tlpTeam.Controls.Add(Me.m_pbFish1, 0, 0)
+            Me.m_tlpTeam.Name = "m_tlpTeam"
             '
             'm_rtbTeam
             '
@@ -235,24 +280,24 @@ Namespace Other
             'm_pbFish1
             '
             resources.ApplyResources(Me.m_pbFish1, "m_pbFish1")
+            Me.m_pbFish1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             Me.m_pbFish1.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
-            Me.m_pbFish1.BorderStyle = BorderStyle.FixedSingle
             Me.m_pbFish1.Name = "m_pbFish1"
             Me.m_pbFish1.TabStop = False
             '
-            'm_tpacknowledgements
+            'm_tpAcknowledgements
             '
-            Me.m_tpacknowledgements.Controls.Add(Me.m_tlpModules)
-            resources.ApplyResources(Me.m_tpacknowledgements, "m_tpacknowledgements")
-            Me.m_tpacknowledgements.Name = "m_tpacknowledgements"
-            Me.m_tpacknowledgements.UseVisualStyleBackColor = True
+            Me.m_tpAcknowledgements.Controls.Add(Me.m_tlpAck)
+            resources.ApplyResources(Me.m_tpAcknowledgements, "m_tpAcknowledgements")
+            Me.m_tpAcknowledgements.Name = "m_tpAcknowledgements"
+            Me.m_tpAcknowledgements.UseVisualStyleBackColor = True
             '
-            'm_tlpModules
+            'm_tlpAck
             '
-            resources.ApplyResources(Me.m_tlpModules, "m_tlpModules")
-            Me.m_tlpModules.Controls.Add(Me.m_rtbAcknowledgements, 1, 0)
-            Me.m_tlpModules.Controls.Add(Me.m_pbFish2, 0, 0)
-            Me.m_tlpModules.Name = "m_tlpModules"
+            resources.ApplyResources(Me.m_tlpAck, "m_tlpAck")
+            Me.m_tlpAck.Controls.Add(Me.m_rtbAcknowledgements, 1, 0)
+            Me.m_tlpAck.Controls.Add(Me.m_pbFish2, 0, 0)
+            Me.m_tlpAck.Name = "m_tlpAck"
             '
             'm_rtbAcknowledgements
             '
@@ -263,9 +308,9 @@ Namespace Other
             '
             'm_pbFish2
             '
+            Me.m_pbFish2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_pbFish2, "m_pbFish2")
             Me.m_pbFish2.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
-            Me.m_pbFish2.BorderStyle = BorderStyle.FixedSingle
             Me.m_pbFish2.Name = "m_pbFish2"
             Me.m_pbFish2.TabStop = False
             '
@@ -285,9 +330,9 @@ Namespace Other
             '
             'm_pbFish3
             '
+            Me.m_pbFish3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_pbFish3, "m_pbFish3")
             Me.m_pbFish3.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
-            Me.m_pbFish3.BorderStyle = BorderStyle.FixedSingle
             Me.m_pbFish3.Name = "m_pbFish3"
             Me.m_pbFish3.TabStop = False
             '
@@ -354,6 +399,7 @@ Namespace Other
             '
             'm_pbFish4
             '
+            Me.m_pbFish4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_pbFish4, "m_pbFish4")
             Me.m_pbFish4.Image = Global.ScientificInterface.My.Resources.Resources.logo_EWE5_caption
             Me.m_pbFish4.Name = "m_pbFish4"
@@ -400,13 +446,6 @@ Namespace Other
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
             '
-            'm_plSponsors
-            '
-            Me.m_plSponsors.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_plSponsors.Controls.Add(Me.m_tlpSonpsors)
-            resources.ApplyResources(Me.m_plSponsors, "m_plSponsors")
-            Me.m_plSponsors.Name = "m_plSponsors"
-            '
             'frmAboutEwE
             '
             Me.AcceptButton = Me.m_btnOK
@@ -426,19 +465,24 @@ Namespace Other
             Me.m_tlpGeneral.PerformLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpDetails.ResumeLayout(False)
+            Me.m_plSponsors.ResumeLayout(False)
             Me.m_tlpSonpsors.ResumeLayout(False)
             CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbPEW, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tcMain.ResumeLayout(False)
             Me.m_tpGeneral.ResumeLayout(False)
+            Me.m_tpLicense.ResumeLayout(False)
+            Me.m_tlpLicense.ResumeLayout(False)
+            Me.m_tlpLicense.PerformLayout()
+            CType(Me.m_pbLicense, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tpTeam.ResumeLayout(False)
-            Me.m_tlpCredits.ResumeLayout(False)
-            Me.m_tlpCredits.PerformLayout()
+            Me.m_tlpTeam.ResumeLayout(False)
+            Me.m_tlpTeam.PerformLayout()
             CType(Me.m_pbFish1, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_tpacknowledgements.ResumeLayout(False)
-            Me.m_tlpModules.ResumeLayout(False)
-            Me.m_tlpModules.PerformLayout()
+            Me.m_tpAcknowledgements.ResumeLayout(False)
+            Me.m_tlpAck.ResumeLayout(False)
+            Me.m_tlpAck.PerformLayout()
             CType(Me.m_pbFish2, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tpTechnical.ResumeLayout(False)
             Me.m_tlpTechnical.ResumeLayout(False)
@@ -450,7 +494,6 @@ Namespace Other
             Me.m_tlpDatabase.PerformLayout()
             CType(Me.m_pbFish4, System.ComponentModel.ISupportInitialize).EndInit()
             Me.TableLayoutPanel2.ResumeLayout(False)
-            Me.m_plSponsors.ResumeLayout(False)
             Me.ResumeLayout(False)
 
         End Sub
@@ -472,25 +515,29 @@ Namespace Other
         Private WithEvents m_tlpTechnicalDetails As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_rtbTeam As System.Windows.Forms.RichTextBox
         Private WithEvents m_tlpGeneral As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_tlpCredits As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_tlpModules As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tlpTeam As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_tlpAck As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tlpTechnical As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tpGeneral As System.Windows.Forms.TabPage
         Private WithEvents m_tpTeam As System.Windows.Forms.TabPage
-        Private WithEvents m_tpacknowledgements As System.Windows.Forms.TabPage
+        Private WithEvents m_tpAcknowledgements As System.Windows.Forms.TabPage
         Private WithEvents m_tpTechnical As System.Windows.Forms.TabPage
-        Private WithEvents m_gridTechnical As ScientificInterface.AboutEwEGrid
+        Private WithEvents m_gridTechnical As ScientificInterface.gridAboutEwE
         Private WithEvents m_tpDatabase As System.Windows.Forms.TabPage
         Private WithEvents m_tlpDatabase As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_pbFish4 As System.Windows.Forms.PictureBox
         Private WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblDatabase As System.Windows.Forms.Label
-        Private WithEvents m_gridDatabase As DatabaseGrid
+        Private WithEvents m_gridDatabase As gridDatabase
         Private WithEvents m_tlpSonpsors As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
         Private WithEvents m_pbPEW As System.Windows.Forms.PictureBox
         Private WithEvents m_pbSAUP As System.Windows.Forms.PictureBox
         Private WithEvents m_plSponsors As System.Windows.Forms.Panel
+        Private WithEvents m_tpLicense As System.Windows.Forms.TabPage
+        Private WithEvents m_tlpLicense As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_rtbLicense As System.Windows.Forms.RichTextBox
+        Private WithEvents m_pbLicense As System.Windows.Forms.PictureBox
 
     End Class
 End Namespace

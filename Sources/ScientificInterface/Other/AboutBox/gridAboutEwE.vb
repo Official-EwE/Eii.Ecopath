@@ -32,7 +32,7 @@ Imports SourceGrid2
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 <CLSCompliant(False)> _
-Public Class AboutEwEGrid
+Public Class gridAboutEwE
     Inherits EwEGrid
 
     ''' -----------------------------------------------------------------------

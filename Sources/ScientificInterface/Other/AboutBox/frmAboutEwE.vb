@@ -22,6 +22,7 @@ Imports System.Reflection
 Imports EwECore
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports 
 
@@ -49,7 +50,7 @@ Namespace Other
             If (Me.m_uic Is Nothing) Then Return
 
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
-            Dim strBit As String = IIf(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
+            Dim strBit As String = IIF(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
@@ -60,10 +61,8 @@ Namespace Other
             ' Format technical page
             Me.m_lblNetVersion.Text = String.Format(My.Resources.ABOUT_VERSION, System.Environment.Version.ToString(), strBit)
 
-            ' Format team page
             Me.m_rtbTeam.Rtf = My.Resources.team
-
-            ' Format acknowledgements page
+            Me.m_rtbLicense.Rtf = My.Resources.license
             Me.m_rtbAcknowledgements.Rtf = My.Resources.acknowledgements
 
             If Not Me.m_uic.Core.StateMonitor.HasEcopathLoaded Then
@@ -75,6 +74,21 @@ Namespace Other
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnOK.Click
             Me.Close()
+        End Sub
+
+        Private Sub OnURLClicked(sender As Object, e As System.Windows.Forms.LinkClickedEventArgs) _
+            Handles m_rtbLicense.LinkClicked
+
+            Try
+                Dim cmd As cBrowserCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                If cmd IsNot Nothing Then
+                    cmd.Invoke(e.LinkText)
+                End If
+            Catch ex As Exception
+                ' Aargh
+                cLog.Write(ex, "frmAboutEwE::OnURLClicked")
+            End Try
+
         End Sub
 
     End Class

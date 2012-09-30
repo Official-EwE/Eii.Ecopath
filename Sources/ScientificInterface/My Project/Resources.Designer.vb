@@ -1457,7 +1457,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim.
+        '''  Looks up a localized string similar to Ecopath with Ecosim CSIRO Beta.
         '''</summary>
         Public ReadOnly Property GENERIC_CAPTION() As String
             Get
@@ -1912,6 +1912,16 @@ Namespace My.Resources
         Public ReadOnly Property LEGEND_BYNUM() As String
             Get
                 Return ResourceManager.GetString("LEGEND_BYNUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang4105\deflangfe4105\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f37\fbidi \fswiss\fcharset0\fprq2{\*\panose 020f0502020204030204}Calibri;}{\f536\fbidi \f [rest of string was truncated]&quot;;.
+        '''</summary>
+        Public ReadOnly Property license() As String
+            Get
+                Return ResourceManager.GetString("license", resourceCulture)
             End Get
         End Property
         

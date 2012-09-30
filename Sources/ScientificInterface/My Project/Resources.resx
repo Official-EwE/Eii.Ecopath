@@ -496,7 +496,7 @@ Description: {1}</value>
     <value>Ecopath biomass values</value>
   </data>
   <data name="GENERIC_CAPTION" xml:space="preserve">
-    <value>Ecopath with Ecosim</value>
+    <value>Ecopath with Ecosim CSIRO Beta</value>
   </data>
   <data name="STATUS_MODEL_COMPACTING_OS" xml:space="preserve">
     <value>Your Windows installation does not have the necessary components installed to compact this type of database.</value>
@@ -1567,5 +1567,8 @@ Description: {2}</value>
   </data>
   <data name="ECOSIM_HEADER_SS_GROUPS" xml:space="preserve">
     <value>Sum of Squares for selected group(s):</value>
+  </data>
+  <data name="license" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\license.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>
