@@ -61,9 +61,11 @@ Namespace Other
             ' Format technical page
             Me.m_lblNetVersion.Text = String.Format(My.Resources.ABOUT_VERSION, System.Environment.Version.ToString(), strBit)
 
-            Me.m_rtbTeam.Rtf = My.Resources.team
-            Me.m_rtbLicense.Rtf = My.Resources.license
-            Me.m_rtbAcknowledgements.Rtf = My.Resources.acknowledgements
+            Dim strFont As String = Me.Font.Name
+
+            Me.m_rtbTeam.Rtf = StyleRTF(My.Resources.team)
+            Me.m_rtbLicense.Rtf = StyleRTF(My.Resources.license)
+            Me.m_rtbAcknowledgements.Rtf = StyleRTF(My.Resources.acknowledgements)
 
             If Not Me.m_uic.Core.StateMonitor.HasEcopathLoaded Then
                 Me.m_tcMain.TabPages.Remove(Me.m_tpDatabase)
@@ -90,6 +92,24 @@ Namespace Other
             End Try
 
         End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Switch RTF text from 9 pt Arial to local form font and size.
+        ''' </summary>
+        ''' <param name="strRTF">Text to convert, needing to specify Arial font at 18 pt</param>
+        ''' <returns>A transmogrified text.</returns>
+        ''' -------------------------------------------------------------------
+        Private Function StyleRTF(strRTF As String) As String
+
+            Dim strFont As String = Me.Font.FontFamily.Name
+            Dim szFont As Single = Me.Font.Size
+
+            strRTF = strRTF.Replace("Arial;", strFont & ";")
+            strRTF = strRTF.Replace("\fs18", "\fs" & CInt(szFont * 2))
+
+            Return strRTF
+        End Function
 
     End Class
 

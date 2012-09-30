@@ -520,7 +520,6 @@ Public Class AppLauncher
         'Create and configure Help>About command
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
-        Me.m_cmdHelpReportIssue.AddControl(Me.m_tslBeta)
 
         ' Create plugin gui command for GUI plugins to use
         Me.m_cmdPluginGUICommand = New cPluginGUICommand(cmdh)
