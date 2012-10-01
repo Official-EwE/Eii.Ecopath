@@ -539,16 +539,8 @@ Public Class AppLauncher
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
 
-#If Not Debug Then
-        ' Remove development time nodes from public release
-        For Each strBetaNode As String In "m_tsmiEcospaceDataConnections".Split(","c)
-            For Each tsi As ToolStripItem In Me.m_menuMain.Items.Find(strBetaNode, True)
-                tsi.Visible = False
-                cLog.Write(String.Format("AppLauncher: Hidden BETA menu item '{0}' on main menu", strBetaNode))
-            Next
-        Next
-
-#End If
+        ' Special case: hide spatial data framework UI
+        Me.m_cmdEcospaceDataConnections.IsAvailable = My.Settings.EnableSpatialFramework
 
     End Sub
 
@@ -3593,11 +3585,9 @@ Public Class AppLauncher
     End Sub
 
     Private Sub OnInvokeEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnInvoke
-#If Debug Then
         ' Provide debug access to ecospace connections 
         Dim dlg As New dlgExternalData(Me.UIContext, Me.m_cmdEcospaceDataConnections.Layer)
         dlg.ShowDialog(Me)
-#End If
     End Sub
 
     Private Sub OnImportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
