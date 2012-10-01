@@ -138,6 +138,7 @@ Namespace Commands
         End Sub
 
         Public Overrides Sub Update()
+            Me.m_tsi.Available = Me.Command.IsAvailable
             Me.m_tsi.Enabled = Me.Command.Enabled
             Me.m_tsi.Checked = Me.Command.Checked
         End Sub
@@ -179,6 +180,7 @@ Namespace Commands
         End Sub
 
         Public Overrides Sub Update()
+            Me.m_tsb.Available = Me.Command.IsAvailable
             Me.m_tsb.Enabled = Me.Command.Enabled
             Me.m_tsb.Checked = Me.Command.Checked
         End Sub
@@ -220,6 +222,7 @@ Namespace Commands
         End Sub
 
         Public Overrides Sub Update()
+            Me.m_tsb.Available = Me.Command.IsAvailable
             Me.m_tsb.Enabled = Me.Command.Enabled
         End Sub
 
@@ -260,6 +263,7 @@ Namespace Commands
         End Sub
 
         Public Overrides Sub Update()
+            Me.m_tsb.Available = Me.Command.IsAvailable
             Me.m_tsb.Enabled = Me.Command.Enabled
         End Sub
 

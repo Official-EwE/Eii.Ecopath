@@ -53,6 +53,8 @@ Namespace Commands
         Private m_bChecked As Boolean = False
         ''' <summary>Optional Tag attached to the command.</summary>
         Private m_objTag As Object = Nothing
+        ''' <summary>Entirely disable a command.</summary>
+        Private m_bAvailable As Boolean = True
 
 #End Region ' Private vars
 
@@ -256,12 +258,28 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Get/Set the command available state. Unavailable commands cannot be 
+        ''' enabled.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property IsAvailable() As Boolean
+            Get
+                Return Me.m_bAvailable
+            End Get
+            Set(ByVal bAvailable As Boolean)
+                Me.m_bAvailable = bAvailable
+                Me.Update()
+            End Set
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Get/Set the command enabled state.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property Enabled() As Boolean
             Get
-                Return Me.m_bEnabled
+                Return Me.m_bEnabled And Me.m_bAvailable
             End Get
             Set(ByVal bEnable As Boolean)
                 Me.m_bEnabled = bEnable
