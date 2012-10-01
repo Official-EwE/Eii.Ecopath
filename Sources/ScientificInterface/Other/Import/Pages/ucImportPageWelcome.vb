@@ -32,6 +32,10 @@ Namespace Import
     Public Class ucImportPageWelcome
         Implements IWizardPage
 
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Initialize the welcome page.

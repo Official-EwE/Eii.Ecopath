@@ -88,6 +88,10 @@ Namespace Import
 
 #Region " Interface "
 
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Initialize the model selection page with the wizard content.

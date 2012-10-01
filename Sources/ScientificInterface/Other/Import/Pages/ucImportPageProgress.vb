@@ -52,6 +52,10 @@ Namespace Import
 
 #End Region ' Private vars
 
+        Public Sub New()
+            Me.InitializeComponent()
+        End Sub
+
 #Region " IWizardPage implementation "
 
         ''' -------------------------------------------------------------------
