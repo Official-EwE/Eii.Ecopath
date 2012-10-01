@@ -53,6 +53,7 @@ Namespace Other
             Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
             Me.m_pbPEW = New System.Windows.Forms.PictureBox()
             Me.m_pbSAUP = New System.Windows.Forms.PictureBox()
+            Me.m_lbLicense = New System.Windows.Forms.Label()
             Me.m_tcMain = New System.Windows.Forms.TabControl()
             Me.m_tpGeneral = New System.Windows.Forms.TabPage()
             Me.m_tpLicense = New System.Windows.Forms.TabPage()
@@ -134,11 +135,12 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_tlpDetails, "m_tlpDetails")
             Me.m_tlpDetails.Controls.Add(Me.m_lbTitle, 0, 0)
-            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 4)
+            Me.m_tlpDetails.Controls.Add(Me.m_rtbDisclaimer, 0, 5)
             Me.m_tlpDetails.Controls.Add(Me.m_lbVersion, 0, 1)
-            Me.m_tlpDetails.Controls.Add(Me.m_lbCopyright, 0, 2)
-            Me.m_tlpDetails.Controls.Add(Me.m_rtbDistribution, 0, 5)
-            Me.m_tlpDetails.Controls.Add(Me.m_plSponsors, 0, 6)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbCopyright, 0, 3)
+            Me.m_tlpDetails.Controls.Add(Me.m_rtbDistribution, 0, 6)
+            Me.m_tlpDetails.Controls.Add(Me.m_plSponsors, 0, 7)
+            Me.m_tlpDetails.Controls.Add(Me.m_lbLicense, 0, 2)
             Me.m_tlpDetails.Name = "m_tlpDetails"
             '
             'm_lbTitle
@@ -206,6 +208,11 @@ Namespace Other
             Me.m_pbSAUP.Image = Global.ScientificInterface.My.Resources.Resources.logo_SAUP2
             Me.m_pbSAUP.Name = "m_pbSAUP"
             Me.m_pbSAUP.TabStop = False
+            '
+            'm_lbLicense
+            '
+            resources.ApplyResources(Me.m_lbLicense, "m_lbLicense")
+            Me.m_lbLicense.Name = "m_lbLicense"
             '
             'm_tcMain
             '
@@ -465,6 +472,7 @@ Namespace Other
             Me.m_tlpGeneral.PerformLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpDetails.ResumeLayout(False)
+            Me.m_tlpDetails.PerformLayout()
             Me.m_plSponsors.ResumeLayout(False)
             Me.m_tlpSonpsors.ResumeLayout(False)
             CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).EndInit()
@@ -506,7 +514,6 @@ Namespace Other
         Private WithEvents m_pbFish1 As System.Windows.Forms.PictureBox
         Private WithEvents m_pbFish0 As System.Windows.Forms.PictureBox
         Private WithEvents m_rtbDistribution As System.Windows.Forms.RichTextBox
-        Private WithEvents m_rtbDisclaimer As System.Windows.Forms.RichTextBox
         Private WithEvents m_lbTitle As System.Windows.Forms.Label
         Private WithEvents m_lbVersion As System.Windows.Forms.Label
         Private WithEvents m_lbCopyright As System.Windows.Forms.Label
@@ -538,6 +545,8 @@ Namespace Other
         Private WithEvents m_tlpLicense As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_rtbLicense As System.Windows.Forms.RichTextBox
         Private WithEvents m_pbLicense As System.Windows.Forms.PictureBox
+        Private WithEvents m_rtbDisclaimer As System.Windows.Forms.RichTextBox
+        Private WithEvents m_lbLicense As System.Windows.Forms.Label
 
     End Class
 End Namespace
