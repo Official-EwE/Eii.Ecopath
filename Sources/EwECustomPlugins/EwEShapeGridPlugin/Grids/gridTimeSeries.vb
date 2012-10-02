@@ -45,11 +45,10 @@ Public Class gridTimeSeries
 
         cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, SharedResources.STATUS_UPDATING)
 
+        Dim edt As EwEComboBoxCellEditor = Nothing
+
         Dim aGroupTSTypes As eTimeSeriesType() = Me.GroupTSTypes()
         Dim aFleetTSTypes As eTimeSeriesType() = Me.FleetTSTypes()
-
-        Dim aGroupIndexes As Integer() = Me.GroupIndexes()
-        Dim aFleetIndexes As Integer() = Me.FleetIndexes
 
         Dim nYears As Integer = Me.Core.nTimeSeriesYears
         Dim ats As cShapeData() = Me.Shapes
@@ -58,14 +57,17 @@ Public Class gridTimeSeries
         Dim cell As SourceGrid2.Cells.ICell = Nothing
         Dim cmb As SourceGrid2.Cells.Real.ComboBox = Nothing
 
-        Dim astrGroupNames As String() = Me.GroupNames(aGroupIndexes)
-        Dim astrFleetNames As String() = Me.FleetNames(aFleetIndexes)
-        Dim astrNames As String() = Nothing
-        Dim aIndexes As Integer() = Nothing
+        Dim lGroups As New List(Of cCoreInputOutputBase)
+        Dim lFleets As New List(Of cCoreInputOutputBase)
+        For igroup As Integer = 1 To Me.Core.nGroups
+            lGroups.Add(Me.Core.EcoPathGroupInputs(igroup))
+        Next
 
-        Dim astrGroupTypes As String() = Me.TSTypeNames(aGroupTSTypes)
-        Dim astrFleetTypes As String() = Me.TSTypeNames(aFleetTSTypes)
-        Dim astrTypes As String() = Nothing
+        For ifleet As Integer = 1 To Me.Core.nFleets
+            lFleets.Add(Me.Core.FleetInputs(ifleet))
+        Next
+        Dim collDatTypes As ICollection = Nothing
+        Dim selDatType As cCoreInputOutputBase = Nothing
         Dim aTypes As eTimeSeriesType() = Nothing
 
         Me.Redim(nYears + [Enum].GetValues(GetType(eRowType)).Length, nTS + 1)
@@ -100,22 +102,22 @@ Public Class gridTimeSeries
             Me(eRowType.Name, i + 1) = cell
 
             If TypeOf ts Is cGroupTimeSeries Then
-                astrNames = astrGroupNames
-                aIndexes = aGroupIndexes
-                astrTypes = astrGroupTypes
-                aTypes = aGroupTSTypes
+                collDatTypes = lGroups
+                selDatType = Me.Core.EcoPathGroupInputs(ts.DatPool)
+                aTypes = Me.GroupTSTypes
             Else
-                astrNames = astrFleetNames
-                aIndexes = aFleetIndexes
-                astrTypes = astrFleetTypes
-                aTypes = aFleetTSTypes
+                collDatTypes = lFleets
+                selDatType = Me.Core.FleetInputs(ts.DatPool)
+                aTypes = Me.FleetTSTypes
             End If
 
-            cell = Me.CreateComboCell(ts.DatPool, aIndexes, astrNames)
+            edt = New EwEComboBoxCellEditor(New cCoreInterfaceFormatter(), collDatTypes)
+            cell = New SourceGrid2.Cells.Real.Cell(selDatType, edt)
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.PoolCode, i + 1) = cell
 
-            cell = Me.CreateComboCell(ts.TimeSeriesType, aTypes, astrTypes)
+            edt = New EwEComboBoxCellEditor(New cTimeSeriesTypeFormatter(), aTypes)
+            cell = New SourceGrid2.Cells.Real.Cell(ts.TimeSeriesType, edt)
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Type, i + 1) = cell
 
@@ -142,7 +144,7 @@ Public Class gridTimeSeries
             Me.Columns(i).Width = Math.Max(Me.Columns(i).Width, 48)
         Next
         ' Fix all descriptive rows
-        Me.FixedRows = eRowType.FirstTime
+        Me.FixedRows = 2
         ' Fix header column
         Me.FixedColumns = 1
     End Sub
@@ -173,7 +175,7 @@ Public Class gridTimeSeries
             Case eRowType.Name
                 ts.Name = CStr(cell.GetValue(p))
             Case eRowType.PoolCode
-                ts.DatPool = CInt(cell.GetValue(p))
+                ts.DatPool = DirectCast(cell.GetValue(p), cCoreInputOutputBase).Index
             Case eRowType.Type
                 ts.TimeSeriesType = DirectCast(cell.GetValue(p), eTimeSeriesType)
             Case eRowType.Weight

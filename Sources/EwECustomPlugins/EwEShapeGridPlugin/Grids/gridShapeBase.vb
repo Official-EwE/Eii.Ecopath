@@ -6,6 +6,7 @@ Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SourceGrid2.Cells.Real
 Imports SourceGrid2.DataModels
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -90,24 +91,6 @@ Public MustInherit Class gridShapeBase
             Me.Columns(iCol).Tag = value
         End Set
     End Property
-
-    ' ToDo: replace with ScIntShared combo editor
-    Protected Function CreateComboCell(ByVal value As Object, ByVal aiValuesOrg() As Integer, ByVal astrValuesDisplay As String()) As Cell
-
-        Dim editor As New EditorComboBox(value.GetType)
-        Dim mapping As New SourceLibrary.ComponentModel.Validator.ValueMapping()
-
-        editor.StandardValues = aiValuesOrg
-        editor.StandardValuesExclusive = True
-        editor.AllowStringConversion = False
-
-        mapping.ValueList = aiValuesOrg
-        mapping.DisplayStringList = astrValuesDisplay
-        mapping.BindValidator(editor)
-
-        Return New Cell(value, editor)
-
-    End Function
 
     Protected Sub InvalidateShape(ByVal iCol As Integer)
         Me.InvalidateShape(Me.Shape(iCol))
