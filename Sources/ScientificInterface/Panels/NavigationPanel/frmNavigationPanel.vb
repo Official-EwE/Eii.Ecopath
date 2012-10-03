@@ -112,6 +112,11 @@ Public Class frmNavigationPanel
 
         If Not My.Settings.EnableSpatialFramework Then Me.RemoveNode("ndEcospaceExtData")
 
+#If Not Debug Then
+        Me.RemoveNode("ndMSEBatch")
+        Console.writeline("Removed MSE Batch node in release mode")
+#End If
+
         With Me.m_nodeController
 
             'Basic Parameters
