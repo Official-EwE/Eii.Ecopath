@@ -141,7 +141,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRunMSY.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="m_btnStop.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -168,7 +168,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnStop.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="txtMSYresults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -199,7 +199,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;txtMSYresults.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="m_btnFleetTradeoffs.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -226,7 +226,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnFleetTradeoffs.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="m_rbValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -253,7 +253,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_rbValue.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="rbCatch.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -280,7 +280,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;rbCatch.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="m_lblMSY.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -313,7 +313,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblMSY.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="m_hdrOptions.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 9</value>
@@ -340,7 +340,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrOptions.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="m_lblBase.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -367,7 +367,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblBase.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="m_hdrRun.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -397,7 +397,94 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_lbFleet.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lbFleet.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 205</value>
+  </data>
+  <data name="m_lbFleet.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 13</value>
+  </data>
+  <data name="m_lbFleet.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lbFleet.Text" xml:space="preserve">
+    <value>&lt;fleet&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_lbFleet.Name" xml:space="preserve">
+    <value>m_lbFleet</value>
+  </data>
+  <data name="&gt;&gt;m_lbFleet.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lbFleet.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lbFleet.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_lblIter.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblIter.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblIter.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 228</value>
+  </data>
+  <data name="m_lblIter.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 13</value>
+  </data>
+  <data name="m_lblIter.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lblIter.Text" xml:space="preserve">
+    <value>&lt;iter&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_lblIter.Name" xml:space="preserve">
+    <value>m_lblIter</value>
+  </data>
+  <data name="&gt;&gt;m_lblIter.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblIter.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblIter.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="m_lblEffort.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblEffort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblEffort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 250</value>
+  </data>
+  <data name="m_lblEffort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 13</value>
+  </data>
+  <data name="m_lblEffort.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_lblEffort.Text" xml:space="preserve">
+    <value>&lt;effort&gt;</value>
+  </data>
+  <data name="&gt;&gt;m_lblEffort.Name" xml:space="preserve">
+    <value>m_lblEffort</value>
+  </data>
+  <data name="&gt;&gt;m_lblEffort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblEffort.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblEffort.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

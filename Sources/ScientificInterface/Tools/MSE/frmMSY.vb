@@ -44,7 +44,7 @@ Public Class frmMSY
         MyBase.OnLoad(e)
 
         Me.m_mse = Me.UIContext.Core.MSEManager
-        Me.rbValue.Checked = True
+        Me.m_rbValue.Checked = True
 
     End Sub
 
@@ -53,7 +53,7 @@ Public Class frmMSY
         Try
 
             ' Hard-wire run state parameters...for now
-            If rbValue.Checked Then
+            If m_rbValue.Checked Then
                 Me.m_mse.ModelParameters.MSYEvaluateValue = True
             Else
                 Me.m_mse.ModelParameters.MSYEvaluateValue = False
@@ -101,9 +101,9 @@ Public Class frmMSY
     Private Sub onMSYProgress(ByVal MSYProgress As MSE.cMSYProgressArgs)
 
         Try
-            Me.lbFleet.Text = String.Format(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets)
-            Me.lbiter.Text = String.Format(SharedResources.GENERIC_VALUE_ITERATION, MSYProgress.Iteration)
-            Me.lbEffort.Text = String.Format(My.Resources.MSE_EFFORT_VALUE, Me.StyleGuide.FormatNumber(MSYProgress.CurrentEffort))
+            Me.m_lbFleet.Text = String.Format(SharedResources.GENERIC_VALUE_FLEET_OF_N, MSYProgress.FleetIndex, m_nFleets)
+            Me.m_lblIter.Text = String.Format(SharedResources.GENERIC_VALUE_ITERATION, MSYProgress.Iteration)
+            Me.m_lblEffort.Text = String.Format(My.Resources.MSE_EFFORT_VALUE, Me.StyleGuide.FormatNumber(MSYProgress.CurrentEffort))
             If MSYProgress.CurrentEffort > 0 Then MSY(MSYProgress.FleetIndex) = MSYProgress.CurrentEffort
 
             'the DoEvents can be removed once the MSY is running on a thread 
