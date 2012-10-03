@@ -48,7 +48,7 @@ Public Class frmMSY
 
     End Sub
 
-    Private Sub btRunMSY_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btRunMSY.Click
+    Private Sub btRunMSY_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnRunMSY.Click
 
         Try
 
@@ -82,11 +82,11 @@ Public Class frmMSY
     Private Shadows Sub updateControls(ByVal bRunning As Boolean)
 
         If bRunning Then
-            Me.btRunMSY.Enabled = False
-            Me.btStop.Enabled = True
+            Me.m_btnRunMSY.Enabled = False
+            Me.m_btnStop.Enabled = True
         Else
-            Me.btRunMSY.Enabled = True
-            Me.btStop.Enabled = False
+            Me.m_btnRunMSY.Enabled = True
+            Me.m_btnStop.Enabled = False
 
             Dim sb As New StringBuilder()
             sb.AppendLine(String.Format(My.Resources.MSE_ITERATION_HEADER, cStringUtils.vbTab))
@@ -115,12 +115,12 @@ Public Class frmMSY
     End Sub
 
     Private Sub btStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles btStop.Click
+        Handles m_btnStop.Click
         Me.m_mse.StopRun(0)
     End Sub
 
     Private Sub btFleetTradeoffs_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles btFleetTradeoffs.Click
+        Handles m_btnFleetTradeoffs.Click
 
         Try
             'get the number of fleets for the progress updates

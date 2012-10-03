@@ -41,62 +41,48 @@ Partial Class frmMSY
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSY))
-        Me.btRunMSY = New System.Windows.Forms.Button
-        Me.btStop = New System.Windows.Forms.Button
-        Me.lbFleet = New System.Windows.Forms.Label
-        Me.lbiter = New System.Windows.Forms.Label
-        Me.lbEffort = New System.Windows.Forms.Label
-        Me.txtMSYresults = New System.Windows.Forms.TextBox
-        Me.btFleetTradeoffs = New System.Windows.Forms.Button
-        Me.rbValue = New System.Windows.Forms.RadioButton
-        Me.rbCatch = New System.Windows.Forms.RadioButton
-        Me.lblMSY = New System.Windows.Forms.Label
+        Me.m_btnRunMSY = New System.Windows.Forms.Button()
+        Me.m_btnStop = New System.Windows.Forms.Button()
+        Me.txtMSYresults = New System.Windows.Forms.TextBox()
+        Me.m_btnFleetTradeoffs = New System.Windows.Forms.Button()
+        Me.m_rbValue = New System.Windows.Forms.RadioButton()
+        Me.rbCatch = New System.Windows.Forms.RadioButton()
+        Me.m_lblMSY = New System.Windows.Forms.Label()
+        Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_lblBase = New System.Windows.Forms.Label()
+        Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.SuspendLayout()
         '
-        'btRunMSY
+        'm_btnRunMSY
         '
-        resources.ApplyResources(Me.btRunMSY, "btRunMSY")
-        Me.btRunMSY.Name = "btRunMSY"
-        Me.btRunMSY.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnRunMSY, "m_btnRunMSY")
+        Me.m_btnRunMSY.Name = "m_btnRunMSY"
+        Me.m_btnRunMSY.UseVisualStyleBackColor = True
         '
-        'btStop
+        'm_btnStop
         '
-        resources.ApplyResources(Me.btStop, "btStop")
-        Me.btStop.Name = "btStop"
-        Me.btStop.UseVisualStyleBackColor = True
-        '
-        'lbFleet
-        '
-        resources.ApplyResources(Me.lbFleet, "lbFleet")
-        Me.lbFleet.Name = "lbFleet"
-        '
-        'lbiter
-        '
-        resources.ApplyResources(Me.lbiter, "lbiter")
-        Me.lbiter.Name = "lbiter"
-        '
-        'lbEffort
-        '
-        resources.ApplyResources(Me.lbEffort, "lbEffort")
-        Me.lbEffort.Name = "lbEffort"
+        Me.m_btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        resources.ApplyResources(Me.m_btnStop, "m_btnStop")
+        Me.m_btnStop.Name = "m_btnStop"
+        Me.m_btnStop.UseVisualStyleBackColor = True
         '
         'txtMSYresults
         '
         resources.ApplyResources(Me.txtMSYresults, "txtMSYresults")
         Me.txtMSYresults.Name = "txtMSYresults"
         '
-        'btFleetTradeoffs
+        'm_btnFleetTradeoffs
         '
-        resources.ApplyResources(Me.btFleetTradeoffs, "btFleetTradeoffs")
-        Me.btFleetTradeoffs.Name = "btFleetTradeoffs"
-        Me.btFleetTradeoffs.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_btnFleetTradeoffs, "m_btnFleetTradeoffs")
+        Me.m_btnFleetTradeoffs.Name = "m_btnFleetTradeoffs"
+        Me.m_btnFleetTradeoffs.UseVisualStyleBackColor = True
         '
-        'rbValue
+        'm_rbValue
         '
-        resources.ApplyResources(Me.rbValue, "rbValue")
-        Me.rbValue.Name = "rbValue"
-        Me.rbValue.TabStop = True
-        Me.rbValue.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbValue, "m_rbValue")
+        Me.m_rbValue.Name = "m_rbValue"
+        Me.m_rbValue.TabStop = True
+        Me.m_rbValue.UseVisualStyleBackColor = True
         '
         'rbCatch
         '
@@ -105,38 +91,61 @@ Partial Class frmMSY
         Me.rbCatch.TabStop = True
         Me.rbCatch.UseVisualStyleBackColor = True
         '
-        'lblMSY
+        'm_lblMSY
         '
-        resources.ApplyResources(Me.lblMSY, "lblMSY")
-        Me.lblMSY.Name = "lblMSY"
+        resources.ApplyResources(Me.m_lblMSY, "m_lblMSY")
+        Me.m_lblMSY.Name = "m_lblMSY"
+        '
+        'm_hdrOptions
+        '
+        Me.m_hdrOptions.CanCollapseParent = False
+        Me.m_hdrOptions.CollapsedParentHeight = 0
+        Me.m_hdrOptions.IsCollapsed = False
+        resources.ApplyResources(Me.m_hdrOptions, "m_hdrOptions")
+        Me.m_hdrOptions.Name = "m_hdrOptions"
+        '
+        'm_lblBase
+        '
+        resources.ApplyResources(Me.m_lblBase, "m_lblBase")
+        Me.m_lblBase.Name = "m_lblBase"
+        '
+        'm_hdrRun
+        '
+        Me.m_hdrRun.CanCollapseParent = False
+        Me.m_hdrRun.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrRun, "m_hdrRun")
+        Me.m_hdrRun.IsCollapsed = False
+        Me.m_hdrRun.Name = "m_hdrRun"
         '
         'frmMSY
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.Controls.Add(Me.lblMSY)
+        Me.CancelButton = Me.m_btnStop
+        Me.Controls.Add(Me.m_lblBase)
+        Me.Controls.Add(Me.m_hdrRun)
+        Me.Controls.Add(Me.m_hdrOptions)
+        Me.Controls.Add(Me.m_lblMSY)
         Me.Controls.Add(Me.rbCatch)
-        Me.Controls.Add(Me.rbValue)
-        Me.Controls.Add(Me.btFleetTradeoffs)
+        Me.Controls.Add(Me.m_rbValue)
+        Me.Controls.Add(Me.m_btnFleetTradeoffs)
         Me.Controls.Add(Me.txtMSYresults)
-        Me.Controls.Add(Me.lbEffort)
-        Me.Controls.Add(Me.lbiter)
-        Me.Controls.Add(Me.lbFleet)
-        Me.Controls.Add(Me.btStop)
-        Me.Controls.Add(Me.btRunMSY)
+        Me.Controls.Add(Me.m_btnStop)
+        Me.Controls.Add(Me.m_btnRunMSY)
+        Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
         Me.Name = "frmMSY"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents btRunMSY As System.Windows.Forms.Button
-    Friend WithEvents btStop As System.Windows.Forms.Button
-    Friend WithEvents lbFleet As System.Windows.Forms.Label
-    Friend WithEvents lbiter As System.Windows.Forms.Label
-    Friend WithEvents lbEffort As System.Windows.Forms.Label
     Friend WithEvents txtMSYresults As System.Windows.Forms.TextBox
-    Friend WithEvents btFleetTradeoffs As System.Windows.Forms.Button
-    Friend WithEvents rbValue As System.Windows.Forms.RadioButton
     Friend WithEvents rbCatch As System.Windows.Forms.RadioButton
-    Friend WithEvents lblMSY As System.Windows.Forms.Label
+    Private WithEvents m_lblMSY As System.Windows.Forms.Label
+    Private WithEvents m_hdrOptions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_rbValue As System.Windows.Forms.RadioButton
+    Private WithEvents m_lblBase As System.Windows.Forms.Label
+    Private WithEvents m_btnRunMSY As System.Windows.Forms.Button
+    Private WithEvents m_btnStop As System.Windows.Forms.Button
+    Private WithEvents m_hdrRun As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Private WithEvents m_btnFleetTradeoffs As System.Windows.Forms.Button
 End Class
