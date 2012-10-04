@@ -115,6 +115,8 @@ Public Class frmNavigationPanel
 #If Not Debug Then
         Me.RemoveNode("ndMSEBatch")
         Console.writeline("Removed MSE Batch node in release mode")
+         Me.RemoveNode("ndRefMSY")
+        Console.writeline("Removed MSE MSY node in release mode")
 #End If
 
         With Me.m_nodeController
