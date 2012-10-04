@@ -31,9 +31,9 @@ Namespace Controls
     Public Class cSysConfig
 
         Public Shared Function OSVersion() As String
-            Return String.Format(My.Resources.ABOUT_OS_VERSION, _
-                                 System.Environment.OSVersion.ToString(), _
-                                 cSystemUtils.IIF(cSystemUtils.Is64BitOS, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT))
+            Dim strOS As String = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, My.Computer.Info.OSFullName, My.Computer.Info.OSVersion)
+            Dim strBit As String = cSystemUtils.IIF(cSystemUtils.Is64BitOS, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
+            Return String.Format(My.Resources.GENERIC_LABEL_DETAILED, strOS, strBit)
         End Function
 
         Public Shared Function NETVersion() As String
