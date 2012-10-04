@@ -813,6 +813,7 @@
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\EwE6.exe.manifest">
       <SubType>Designer</SubType>
     </None>

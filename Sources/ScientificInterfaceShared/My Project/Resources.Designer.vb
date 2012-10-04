@@ -60,6 +60,42 @@ Namespace My.Resources
             End Set
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to 32 bit.
+        '''</summary>
+        Public ReadOnly Property ABOUT_32BIT() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_32BIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to 64 bit.
+        '''</summary>
+        Public ReadOnly Property ABOUT_64BIT() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_64BIT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .NET version {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property ABOUT_NET_VERSION() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_NET_VERSION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Operating System {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property ABOUT_OS_VERSION() As String
+            Get
+                Return ResourceManager.GetString("ABOUT_OS_VERSION", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property AddTableHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("AddTableHS", resourceCulture)

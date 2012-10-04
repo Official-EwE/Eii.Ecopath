@@ -61,24 +61,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to 32 bit.
-        '''</summary>
-        Public ReadOnly Property ABOUT_32BIT() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_32BIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to 64 bit.
-        '''</summary>
-        Public ReadOnly Property ABOUT_64BIT() As String
-            Get
-                Return ResourceManager.GetString("ABOUT_64BIT", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to About {0}.
         '''</summary>
         Public ReadOnly Property ABOUT_CAPTION() As String
@@ -106,8 +88,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang4105\deflangfe4105\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Ro [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang4105\deflangfe4105{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+        '''{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\nowidctlpar\lang2057\b\f0\fs18 EwE6\b0  was developed through funding from Lenfest Ocean Program with additional support from the Pew Charitable Trusts. We thank Margaret Bowman for support.\par
+        '''\par
+        '''\b EwE release 6.3 \b0 was funded by CSIRO, we thank Beth Fulton and Rodrigo Bustamante for support.\par
+        '''\par
+        '''\b ENA\b0  (Ecological Network Analysis [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property acknowledgements() As String
             Get
@@ -1916,8 +1902,12 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch31505\stshfloch31506\stshfhich31506\stshfbi0\deflang4105\deflangfe4105\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\f37\fbidi \fswiss\fcharset0\fprq2{\*\panose 020f0502020204030204}Calibri;}{\f536\fbidi \f [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang1043{\fonttbl{\f0\fnil\fcharset0 Arial;}}
+        '''{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sa200\sl276\slmult1\lang9\b\f0\fs18 GNU GENERAL PUBLIC LICENSE \b0 Version 2, June 1991\par
+        '''Copyright (C) 1989, 1991 Free Software Foundation, Inc.  \line 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA\par
+        '''Everyone is permitted to copy and distribute verbatim copies \line of this license document, but changing it is not allowed.\par
+        '''\b Preamble\par
+        '''\b0 Th [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property license() As String
             Get
@@ -3860,9 +3850,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch0\stshfloch0\stshfhich0\stshfbi0\deflang4105\deflangfe4105\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        '''{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}
-        '''{\fdb [rest of string was truncated]&quot;;.
+        '''  Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\deflang4105\deflangfe4105{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}}
+        '''{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\qc\b\f0\fs18 \par
+        '''Programming:\b0 \par
+        '''Joe Buszowski, Villy Christensen, Sherman Lai, Jeroen Steenbeek, Carl Walters, Will Walters.\par
+        '''\par
+        '''\b Documentation:\b0 \par
+        '''Villy Christensen, Daniel Pauly, Robyn Forrest, Audrey Valls, Carl Walters.\par
+        '''\par
+        '''\b Testing:\b0 \par
+        '''Cathy Bulman, Marta Coll, Sylvie Guenette, Sheila Heymans, Carie Hoover,  [rest of string was truncated]&quot;;.
         '''</summary>
         Public ReadOnly Property team() As String
             Get

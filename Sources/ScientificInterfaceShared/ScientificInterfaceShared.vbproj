@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
+    <Compile Include="Controls\SysConfig\cSysConfig.vb" />
     <Compile Include="Controls\Toolstrip\cEwEMenustrip.vb">
       <SubType>Component</SubType>
     </Compile>

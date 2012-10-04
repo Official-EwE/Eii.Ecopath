@@ -1455,12 +1455,6 @@ Description: {2}</value>
     <value>External data for '{0}'</value>
     <comment>{0}=layer name</comment>
   </data>
-  <data name="ABOUT_32BIT" xml:space="preserve">
-    <value>32 bit</value>
-  </data>
-  <data name="ABOUT_64BIT" xml:space="preserve">
-    <value>64 bit</value>
-  </data>
   <data name="ABOUT_VERSION" xml:space="preserve">
     <value>Version {0} ({1})</value>
     <comment>{0}=ewe version, {1}:32 / 64 bit indicator</comment>

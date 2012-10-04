@@ -22,6 +22,7 @@ Imports System.Text
 Imports System.Reflection
 Imports EwEPlugin
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -58,11 +59,16 @@ Public Class cBugReporter
         sbBody.AppendLine("")
         sbBody.AppendLine("---------------------------------------------------")
         sbBody.AppendLine("EwE configuration (do not modify):")
+        sbBody.AppendLine(cSysConfig.OSVersion())
+        sbBody.AppendLine(cSysConfig.NETVersion())
+
+        sbBody.AppendLine("Loaded modules:")
         For Each an In cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
             sbBody.AppendLine(String.Format("* {0}={2},{1}", _
                                             an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
         Next
         If (pm IsNot Nothing) Then
+            sbBody.AppendLine("Loaded plug-ins:")
             For Each pa As cPluginAssembly In pm.PluginAssemblies
                 an = pa.AssemblyName
                 sbBody.AppendLine(String.Format("- {0}={2},{1}", _

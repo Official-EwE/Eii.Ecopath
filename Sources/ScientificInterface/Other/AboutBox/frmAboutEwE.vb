@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports 
 
@@ -50,16 +51,17 @@ Namespace Other
             If (Me.m_uic Is Nothing) Then Return
 
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
-            Dim strBit As String = IIF(cSystemUtils.Is64Bit, My.Resources.ABOUT_64BIT, My.Resources.ABOUT_32BIT)
+            Dim strBitApp As String = cSystemUtils.IIF(cSystemUtils.Is64BitOS, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, cCore.Version, strBit)
+            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, cCore.Version, strBitApp)
             Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page
-            Me.m_lblNetVersion.Text = String.Format(My.Resources.ABOUT_VERSION, System.Environment.Version.ToString(), strBit)
+            Me.m_lblOSVersion.Text = cSysConfig.OSVersion()
+            Me.m_lblNetVersion.Text = cSysConfig.NETVersion()
 
             Dim strFont As String = Me.Font.Name
 

@@ -2656,4 +2656,18 @@
   <data name="GENERIC_VALUE_MAPPOS_VALUE" xml:space="preserve">
     <value>lon: {0}, lat: {1}, value: {2}</value>
   </data>
+  <data name="ABOUT_32BIT" xml:space="preserve">
+    <value>32 bit</value>
+  </data>
+  <data name="ABOUT_64BIT" xml:space="preserve">
+    <value>64 bit</value>
+  </data>
+  <data name="ABOUT_NET_VERSION" xml:space="preserve">
+    <value>.NET version {0} ({1})</value>
+    <comment>{0}=framework version, {1}=32 or 64 bit</comment>
+  </data>
+  <data name="ABOUT_OS_VERSION" xml:space="preserve">
+    <value>Operating System {0} ({1})</value>
+    <comment>{0}=OS version, {1}=32 or 64 bit</comment>
+  </data>
 </root>

@@ -73,7 +73,6 @@ Namespace Other
             Me.m_pbFish3 = New System.Windows.Forms.PictureBox()
             Me.m_tlpTechnicalDetails = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lbTechnical = New System.Windows.Forms.Label()
-            Me.m_lblNetVersion = New System.Windows.Forms.Label()
             Me.m_gridTechnical = New ScientificInterface.gridAboutEwE()
             Me.m_tpDatabase = New System.Windows.Forms.TabPage()
             Me.m_tlpDatabase = New System.Windows.Forms.TableLayoutPanel()
@@ -81,6 +80,8 @@ Namespace Other
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblDatabase = New System.Windows.Forms.Label()
             Me.m_gridDatabase = New ScientificInterface.gridDatabase()
+            Me.m_lblNetVersion = New System.Windows.Forms.Label()
+            Me.m_lblOSVersion = New System.Windows.Forms.Label()
             Me.m_tlpGeneral.SuspendLayout()
             CType(Me.m_pbFish0, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpDetails.SuspendLayout()
@@ -346,8 +347,9 @@ Namespace Other
             'm_tlpTechnicalDetails
             '
             resources.ApplyResources(Me.m_tlpTechnicalDetails, "m_tlpTechnicalDetails")
-            Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lbTechnical, 0, 0)
+            Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lblOSVersion, 0, 2)
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lblNetVersion, 0, 2)
+            Me.m_tlpTechnicalDetails.Controls.Add(Me.m_lbTechnical, 0, 0)
             Me.m_tlpTechnicalDetails.Controls.Add(Me.m_gridTechnical, 0, 1)
             Me.m_tlpTechnicalDetails.Name = "m_tlpTechnicalDetails"
             '
@@ -355,11 +357,6 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_lbTechnical, "m_lbTechnical")
             Me.m_lbTechnical.Name = "m_lbTechnical"
-            '
-            'm_lblNetVersion
-            '
-            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
-            Me.m_lblNetVersion.Name = "m_lblNetVersion"
             '
             'm_gridTechnical
             '
@@ -453,6 +450,16 @@ Namespace Other
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridDatabase.UIContext = Nothing
             '
+            'm_lblNetVersion
+            '
+            resources.ApplyResources(Me.m_lblNetVersion, "m_lblNetVersion")
+            Me.m_lblNetVersion.Name = "m_lblNetVersion"
+            '
+            'm_lblOSVersion
+            '
+            resources.ApplyResources(Me.m_lblOSVersion, "m_lblOSVersion")
+            Me.m_lblOSVersion.Name = "m_lblOSVersion"
+            '
             'frmAboutEwE
             '
             Me.AcceptButton = Me.m_btnOK
@@ -507,7 +514,6 @@ Namespace Other
         End Sub
         Private WithEvents m_pbFish3 As System.Windows.Forms.PictureBox
         Private WithEvents m_lbTechnical As System.Windows.Forms.Label
-        Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
         Private WithEvents m_btnOK As System.Windows.Forms.Button
         Private WithEvents m_rtbAcknowledgements As System.Windows.Forms.RichTextBox
         Private WithEvents m_pbFish2 As System.Windows.Forms.PictureBox
@@ -547,6 +553,8 @@ Namespace Other
         Private WithEvents m_pbLicense As System.Windows.Forms.PictureBox
         Private WithEvents m_rtbDisclaimer As System.Windows.Forms.RichTextBox
         Private WithEvents m_lbLicense As System.Windows.Forms.Label
+        Private WithEvents m_lblOSVersion As System.Windows.Forms.Label
+        Private WithEvents m_lblNetVersion As System.Windows.Forms.Label
 
     End Class
 End Namespace
