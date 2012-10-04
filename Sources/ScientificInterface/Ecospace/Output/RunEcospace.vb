@@ -854,6 +854,7 @@ Namespace Ecospace
 
             Me.IsRunning = True
             Me.m_iTimeStepCur = 0
+            Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.Core.StopEcospace))
             Me.Core.RunEcoSpace(AddressOf onEcospaceTimeStep)
             Me.m_cbOverlay.Enabled = True
 
@@ -863,6 +864,7 @@ Namespace Ecospace
             Handles m_btnStop.Click
 
             Me.Core.StopEcospace()
+            Me.Core.SetStopRunDelegate(Nothing)
 
             ' Controls wil be updated via Core state monitor events
             'Me.UpdateControls()

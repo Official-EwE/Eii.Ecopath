@@ -81,7 +81,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
+    <DefineConstants>BETA=1</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -91,7 +91,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>UNDER_DEVELOPMENT=1</DefineConstants>
+    <DefineConstants>BETA=1</DefineConstants>
     <DocumentationFile>EwE6.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

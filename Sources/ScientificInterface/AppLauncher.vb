@@ -519,6 +519,7 @@ Public Class AppLauncher
 
         'Create and configure Help>About command
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
+        Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
 
         ' Create plugin gui command for GUI plugins to use
@@ -539,8 +540,12 @@ Public Class AppLauncher
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
 
-        ' Special case: hide spatial data framework UI
+        ' Special cases: hide spatial data framework UI
         Me.m_cmdEcospaceDataConnections.IsAvailable = My.Settings.EnableSpatialFramework
+#If Not BETA Then
+        ' Hide BETA features only
+        Me.m_tsbnBeta.Visible = False
+#End If
 
     End Sub
 

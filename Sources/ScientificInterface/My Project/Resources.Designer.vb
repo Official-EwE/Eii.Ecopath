@@ -3688,11 +3688,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Downloading &apos;{0}&apos;....
+        '''  Looks up a localized string similar to Checking &apos;{0}&apos;.
         '''</summary>
-        Public ReadOnly Property STATUS_UPDATE_DOWNLOADING() As String
+        Public ReadOnly Property STATUS_UPDATE_CHECKING_COMP() As String
             Get
-                Return ResourceManager.GetString("STATUS_UPDATE_DOWNLOADING", resourceCulture)
+                Return ResourceManager.GetString("STATUS_UPDATE_CHECKING_COMP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Completed &apos;{0}&apos;.
+        '''</summary>
+        Public ReadOnly Property STATUS_UPDATE_DONE_COMP() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_DONE_COMP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Downloading &apos;{0}&apos;.
+        '''</summary>
+        Public ReadOnly Property STATUS_UPDATE_DOWNLOADING_COMP() As String
+            Get
+                Return ResourceManager.GetString("STATUS_UPDATE_DOWNLOADING_COMP", resourceCulture)
             End Get
         End Property
         

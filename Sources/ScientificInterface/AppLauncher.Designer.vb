@@ -131,7 +131,6 @@ Partial Public Class AppLauncher
         Me.m_tsmiEcotracerSaveAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcotracerDelete = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsModel = New ScientificInterfaceShared.Controls.cModelPathToolStrip()
-        Me.m_tslBeta = New System.Windows.Forms.ToolStripLabel()
         Me.m_tsbSave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripSplitButton()
@@ -140,6 +139,7 @@ Partial Public Class AppLauncher
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
+        Me.m_tsbnBeta = New System.Windows.Forms.ToolStripButton()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -637,19 +637,12 @@ Partial Public Class AppLauncher
         resources.ApplyResources(Me.m_tsModel, "m_tsModel")
         Me.m_tsModel.CanOverflow = False
         Me.m_tsModel.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslBeta, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.ToolStripSeparator5, Me.m_tsbnAutosaveResults})
+        Me.m_tsModel.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnBeta, sep1, Me.m_tsbSave, sep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEcospace, Me.m_tsbEcotracer, sep3, Me.ToolStripSeparator5, Me.m_tsbnAutosaveResults})
         Me.m_tsModel.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.m_tsModel.Name = "m_tsModel"
         Me.m_tsModel.Path = ""
         Me.m_tsModel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         Me.m_tsModel.Stretch = True
-        '
-        'm_tslBeta
-        '
-        Me.m_tslBeta.DoubleClickEnabled = True
-        resources.ApplyResources(Me.m_tslBeta, "m_tslBeta")
-        Me.m_tslBeta.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.m_tslBeta.Name = "m_tslBeta"
         '
         'm_tsbSave
         '
@@ -697,6 +690,14 @@ Partial Public Class AppLauncher
         resources.ApplyResources(Me.m_ssMain, "m_ssMain")
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
+        '
+        'm_tsbnBeta
+        '
+        Me.m_tsbnBeta.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.m_tsbnBeta.DoubleClickEnabled = True
+        resources.ApplyResources(Me.m_tsbnBeta, "m_tsbnBeta")
+        Me.m_tsbnBeta.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.m_tsbnBeta.Name = "m_tsbnBeta"
         '
         'AppLauncher
         '
@@ -801,7 +802,7 @@ Partial Public Class AppLauncher
     Private WithEvents m_tsmiOpenOutput As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnAutosaveResults As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tslBeta As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tsbnBeta As System.Windows.Forms.ToolStripButton
 
 End Class
 

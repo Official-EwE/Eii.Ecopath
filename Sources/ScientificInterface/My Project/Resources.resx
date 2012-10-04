@@ -978,8 +978,8 @@ Ecopath 5 can be downloaded from '{0}', follow the download links.</value>
   <data name="STATUS_DATA_SAVING" xml:space="preserve">
     <value>Saving data, please wait...</value>
   </data>
-  <data name="STATUS_UPDATE_DOWNLOADING" xml:space="preserve">
-    <value>Downloading '{0}'...</value>
+  <data name="STATUS_UPDATE_DOWNLOADING_COMP" xml:space="preserve">
+    <value>Downloading '{0}'</value>
     <comment>{0}=component name</comment>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_FUNCT_RESP" xml:space="preserve">
@@ -1564,5 +1564,13 @@ Description: {2}</value>
   </data>
   <data name="license" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\license.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="STATUS_UPDATE_CHECKING_COMP" xml:space="preserve">
+    <value>Checking '{0}'</value>
+    <comment>{0}=component name</comment>
+  </data>
+  <data name="STATUS_UPDATE_DONE_COMP" xml:space="preserve">
+    <value>Completed '{0}'</value>
+    <comment>{0}=component name</comment>
   </data>
 </root>

@@ -83,7 +83,7 @@ Public Class frmUpdateComponents
         AddHandler Me.m_pm.AssemblyUpdated, AddressOf OnAssemblyUpdated
 
         ' Set initial message
-        Me.UpdateControls("", 0)
+        Me.UpdateControls("", eAutoUpdateTypes.Done, 0)
 
     End Sub
 
@@ -141,12 +141,12 @@ Public Class frmUpdateComponents
     ''' <param name="strName">Name of the component that is updated.</param>
     ''' <param name="sProgress">Update progress [0, 1]</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnAssemblyUpdating(ByVal strName As String, ByVal sProgress As Single)
+    Private Sub OnAssemblyUpdating(ByVal strName As String, status As eAutoUpdateTypes, ByVal sProgress As Single)
 
         If Me.InvokeRequired Then
-            Me.Invoke(New UpdateControlsDelegate(AddressOf UpdateControls), New Object() {strName, sProgress})
+            Me.Invoke(New UpdateControlsDelegate(AddressOf UpdateControls), New Object() {strName, status, sProgress})
         Else
-            Me.UpdateControls(strName, sProgress)
+            Me.UpdateControls(strName, status, sProgress)
         End If
 
     End Sub
@@ -179,7 +179,7 @@ Public Class frmUpdateComponents
     ''' <param name="strName">Name of the component that is updated.</param>
     ''' <param name="sProgress">Update progress [0, 1]</param>
     ''' -----------------------------------------------------------------------
-    Private Delegate Sub UpdateControlsDelegate(ByVal strName As String, ByVal sProgress As Single)
+    Private Delegate Sub UpdateControlsDelegate(ByVal strName As String, ByVal result As eAutoUpdateTypes, ByVal sProgress As Single)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -188,13 +188,24 @@ Public Class frmUpdateComponents
     ''' <param name="strName">Name of the component that is updated.</param>
     ''' <param name="sProgress">Update progress [0, 1]</param>
     ''' -----------------------------------------------------------------------
-    Private Sub UpdateControls(ByVal strName As String, ByVal sProgress As Single)
+    Private Sub UpdateControls(ByVal strName As String, ByVal result As eAutoUpdateTypes, ByVal sProgress As Single)
+
+        Dim strText As String = ""
 
         If String.IsNullOrEmpty(strName) Then
-            Me.m_lblInfo.Text = My.Resources.STATUS_UPDATE_CHECKING
+            strText = My.Resources.STATUS_UPDATE_CHECKING
         Else
-            Me.m_lblInfo.Text = String.Format(My.Resources.STATUS_UPDATE_DOWNLOADING, strName)
+            Select Case result
+                Case eAutoUpdateTypes.Checking
+                    strText = String.Format(My.Resources.STATUS_UPDATE_CHECKING_COMP, strName)
+                Case eAutoUpdateTypes.Downloading
+                    strText = String.Format(My.Resources.STATUS_UPDATE_DOWNLOADING_COMP, strName)
+                Case eAutoUpdateTypes.Done
+                    strText = String.Format(My.Resources.STATUS_UPDATE_DONE_COMP, strName)
+            End Select
         End If
+
+        Me.m_lblInfo.Text = strText
         Me.m_pbProgress.Value = CInt(100 * sProgress)
 
     End Sub
