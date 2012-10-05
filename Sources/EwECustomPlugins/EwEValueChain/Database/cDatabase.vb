@@ -178,7 +178,7 @@ Public Class cDatabase
             cLog.Write(ex, "ValueChain::LoadModel - loading individual units")
         End Try
 
-        Return True
+        Return bSucces
 
     End Function
 

@@ -137,6 +137,12 @@ Public Class cData
             Me.m_bInitializing = True
             bSucces = Me.m_db.LoadModel(Me)
 
+            If bSucces = False Then
+                Me.SendMessage("Failed to load value chain from database, see error log for details.")
+                Me.m_db.Close()
+                Return False
+            End If
+
             If bMigrate Then
 
                 Me.m_db.Close()
