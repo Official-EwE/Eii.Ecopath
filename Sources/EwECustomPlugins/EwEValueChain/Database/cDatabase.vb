@@ -22,6 +22,7 @@ Imports EwEUtils.Database
 Imports EwEUtils.Core
 Imports System.IO
 Imports System.Reflection
+Imports EwECore
 
 #End Region ' Imports
 
@@ -76,8 +77,10 @@ Public Class cDatabase
             aObjects = Me.ReadObjects(GetType(cParameters))
         Catch ex As Exception
             bSucces = False
+            cLog.Write(ex, "ValueChain::LoadModel - reading objects")
         End Try
-        If aObjects.Length = 0 Then
+
+        If (aObjects.Length = 0) Then
             data.AddParameters(New cParameters())
             ' If no parameters found there is little need to continue...
             Return True
@@ -172,6 +175,7 @@ Public Class cDatabase
 
         Catch ex As Exception
             bSucces = False
+            cLog.Write(ex, "ValueChain::LoadModel - loading individual units")
         End Try
 
         Return True
