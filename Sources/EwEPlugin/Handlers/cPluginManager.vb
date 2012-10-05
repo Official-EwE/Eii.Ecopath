@@ -357,7 +357,10 @@ Public Class cPluginManager
                 If updater.AttachAssembly(fi.FullName) Then
 
                     ' #Yes: process file
-                    RaiseEvent AssemblyUpdating("", sProgress)
+                    Try
+                        RaiseEvent AssemblyUpdating(strPluginName, eAutoUpdateTypes.Checking, sProgress)
+                    Catch ex As Exception
+                    End Try
 
                     ' Check for update type
                     Select Case updater.CheckForUpdate()
@@ -394,19 +397,13 @@ Public Class cPluginManager
 
                         ' #Yes: go at it
                         Try
-                            RaiseEvent AssemblyUpdating(strPluginName, sProgress)
+                            RaiseEvent AssemblyUpdating(strPluginName, eAutoUpdateTypes.Downloading, sProgress)
                         Catch ex As Exception
                             ' Hmm, wish we could write to the log here...
                         End Try
                         result = updater.DownloadUpdate()
                     Else
-                        ' #No: just reflect progress
-                        Try
-                            RaiseEvent AssemblyUpdating("", sProgress)
-                        Catch ex As Exception
-
-                        End Try
-                        result = eAutoUpdateResultTypes.Success_NoActionRequired
+                         result = eAutoUpdateResultTypes.Success_NoActionRequired
                     End If
 
                     Try
@@ -418,7 +415,7 @@ Public Class cPluginManager
             Next
 
             ' Done
-            RaiseEvent AssemblyUpdating("", 1.0!)
+            RaiseEvent AssemblyUpdating("", eAutoUpdateTypes.Done, 1.0!)
 
         Catch ex As Exception
             ' Kaboom
@@ -719,9 +716,10 @@ Public Class cPluginManager
     ''' Assembly update in progress delegate.
     ''' </summary>
     ''' <param name="strName">The name of the plugin that is being updated.</param>
+    ''' <param name="status">Update status.</param>
     ''' <param name="sProgress">Update progress.</param>
     ''' -----------------------------------------------------------------------
-    Public Delegate Sub AssemblyUpdatingHandler(ByVal strName As String, ByVal sProgress As Single)
+    Public Delegate Sub AssemblyUpdatingHandler(ByVal strName As String, ByVal status As eAutoUpdateTypes, ByVal sProgress As Single)
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
