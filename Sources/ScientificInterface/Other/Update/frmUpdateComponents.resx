@@ -145,10 +145,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblInfo.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="m_pbProgress.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_pbProgress.Location" type="System.Drawing.Point, System.Drawing">
     <value>101, 33</value>
@@ -169,7 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pbProgress.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_btnAbort.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -202,7 +202,7 @@
     <value>0</value>
   </data>
   <data name="m_tlpButtons.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
+    <value>Top, Left, Right</value>
   </data>
   <data name="m_tlpButtons.ColumnCount" type="System.Int32, mscorlib">
     <value>3</value>
@@ -232,7 +232,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tlpButtons.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_tlpButtons.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_btnAbort" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,75,Percent,50" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -259,6 +259,33 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_pbLogo.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_cbAutoUpdatePlugins.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbAutoUpdatePlugins.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 95</value>
+  </data>
+  <data name="m_cbAutoUpdatePlugins.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 17</value>
+  </data>
+  <data name="m_cbAutoUpdatePlugins.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="m_cbAutoUpdatePlugins.Text" xml:space="preserve">
+    <value>&amp;Check for updates at start-up</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoUpdatePlugins.Name" xml:space="preserve">
+    <value>m_cbAutoUpdatePlugins</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoUpdatePlugins.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoUpdatePlugins.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutoUpdatePlugins.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -268,7 +295,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>416, 100</value>
+    <value>416, 122</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -5225,9 +5252,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAHAADAAwAAwAMAAMADAACAAQAAgAEAAAABAAAAAAAAAAAAAAAB
         AACAAQAAgAEAAMADAADABwAA8A8AAPw/AAA=
 </value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

@@ -46,6 +46,7 @@ Partial Class frmUpdateComponents
         Me.m_btnAbort = New System.Windows.Forms.Button()
         Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
+        Me.m_cbAutoUpdatePlugins = New System.Windows.Forms.CheckBox()
         Me.m_tlpButtons.SuspendLayout()
         CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -81,12 +82,19 @@ Partial Class frmUpdateComponents
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
         '
+        'm_cbAutoUpdatePlugins
+        '
+        resources.ApplyResources(Me.m_cbAutoUpdatePlugins, "m_cbAutoUpdatePlugins")
+        Me.m_cbAutoUpdatePlugins.Name = "m_cbAutoUpdatePlugins"
+        Me.m_cbAutoUpdatePlugins.UseVisualStyleBackColor = True
+        '
         'frmUpdateComponents
         '
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ControlBox = False
+        Me.Controls.Add(Me.m_cbAutoUpdatePlugins)
         Me.Controls.Add(Me.m_pbLogo)
         Me.Controls.Add(Me.m_tlpButtons)
         Me.Controls.Add(Me.m_pbProgress)
@@ -96,6 +104,7 @@ Partial Class frmUpdateComponents
         Me.m_tlpButtons.ResumeLayout(False)
         CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Private WithEvents m_pbProgress As System.Windows.Forms.ProgressBar
@@ -103,4 +112,5 @@ Partial Class frmUpdateComponents
     Private WithEvents m_btnAbort As System.Windows.Forms.Button
     Private WithEvents m_tlpButtons As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
+    Private WithEvents m_cbAutoUpdatePlugins As System.Windows.Forms.CheckBox
 End Class

@@ -82,6 +82,8 @@ Public Class frmUpdateComponents
         AddHandler Me.m_pm.AssemblyUpdating, AddressOf OnAssemblyUpdating
         AddHandler Me.m_pm.AssemblyUpdated, AddressOf OnAssemblyUpdated
 
+        Me.m_cbAutoUpdatePlugins.Checked = My.Settings.AutoUpdatePlugins
+
         ' Set initial message
         Me.UpdateControls("", eAutoUpdateTypes.Done, 0)
 
@@ -166,6 +168,18 @@ Public Class frmUpdateComponents
             Me.UpdateStatus(strName, result)
         End If
 
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Toggle update check
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnCheckUpdateChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbAutoUpdatePlugins.CheckedChanged
+        My.Settings.AutoUpdatePlugins = Me.m_cbAutoUpdatePlugins.Checked
     End Sub
 
 #End Region ' Events
