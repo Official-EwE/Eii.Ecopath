@@ -138,7 +138,7 @@ Public Class cData
             bSucces = Me.m_db.LoadModel(Me)
 
             If bSucces = False Then
-                Me.SendMessage("Failed to load value chain from database, see error log for details.")
+                Me.SendMessage("Failed to load value chain from database, see error log for details.", eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
                 Me.m_db.Close()
                 Return False
             End If
