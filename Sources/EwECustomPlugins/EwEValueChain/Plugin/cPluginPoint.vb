@@ -278,7 +278,10 @@ Public Class cPluginPoint
         If Me.m_data.Load(Me.m_core.DataSource.ToString) Then
             ' Manage incoming DB to weed out dead stuff
             Me.m_linkman.ManageLinks()
+            Return True
         End If
+
+        Return False
 
     End Function
 
