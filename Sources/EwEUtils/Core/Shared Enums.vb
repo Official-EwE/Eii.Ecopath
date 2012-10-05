@@ -2571,7 +2571,21 @@ Namespace Core
 
 #End Region ' Organism types
 
-#Region " Automated update result types "
+#Region " Automated update types "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating possible automated update statuses.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eAutoUpdateTypes As Integer
+        ''' <summary>Checking for possible update.</summary>
+        Checking
+        ''' <summary>Downloading update.</summary>
+        Downloading
+        ''' <summary>Update done.</summary>
+        Done
+    End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -2599,7 +2613,7 @@ Namespace Core
         Error_Generic
     End Enum
 
-#End Region ' Automated update result types
+#End Region ' Automated update types
 
 #Region " Ecospace Capacity and Habitat "
 
