@@ -50,6 +50,8 @@ Namespace Ecosim
             Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsDDShowHidePlots = New System.Windows.Forms.ToolStripSplitButton()
+            Me.m_tsmiAll = New System.Windows.Forms.ToolStripMenuItem()
+            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_plGroups = New System.Windows.Forms.Panel()
             Me.m_hdrGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plFleets = New System.Windows.Forms.Panel()
@@ -181,9 +183,20 @@ Namespace Ecosim
             'm_tsDDShowHidePlots
             '
             Me.m_tsDDShowHidePlots.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsDDShowHidePlots.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiAll, Me.m_sep1})
             resources.ApplyResources(Me.m_tsDDShowHidePlots, "m_tsDDShowHidePlots")
-            Me.m_tsDDShowHidePlots.Overflow = ToolStripItemOverflow.Never
             Me.m_tsDDShowHidePlots.Name = "m_tsDDShowHidePlots"
+            Me.m_tsDDShowHidePlots.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            '
+            'm_tsmiAll
+            '
+            Me.m_tsmiAll.Name = "m_tsmiAll"
+            resources.ApplyResources(Me.m_tsmiAll, "m_tsmiAll")
+            '
+            'm_sep1
+            '
+            Me.m_sep1.Name = "m_sep1"
+            resources.ApplyResources(Me.m_sep1, "m_sep1")
             '
             'm_plGroups
             '
@@ -306,6 +319,8 @@ Namespace Ecosim
         Private WithEvents m_tsMain As cEwEToolstrip
         Private WithEvents m_tsDDShowHidePlots As System.Windows.Forms.ToolStripSplitButton
         Private WithEvents m_cbSaveVisibleOnly As System.Windows.Forms.CheckBox
+        Private WithEvents m_tsmiAll As System.Windows.Forms.ToolStripMenuItem
+        Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     End Class
 
 End Namespace

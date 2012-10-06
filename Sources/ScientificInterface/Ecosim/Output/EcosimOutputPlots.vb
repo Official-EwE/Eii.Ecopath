@@ -259,6 +259,14 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnShowAll(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsmiAll.Click
+            For i As Integer = 0 To Me.m_abPlotVisible.Count - 1
+                Me.m_abPlotVisible(i) = True
+            Next
+            Me.ShowHidePlots()
+        End Sub
+
         Private Sub ShowHidePlots()
 
             Me.m_graph.Visible = False
@@ -313,13 +321,20 @@ Namespace Ecosim
                 Else
                     Me.m_aiPlotPane(plot) = cCore.NULL_VALUE
                 End If
-                Try
-                    DirectCast(Me.m_tsDDShowHidePlots.DropDownItems(plot), ToolStripMenuItem).Checked = Me.m_abPlotVisible(plot)
-                Catch ex As Exception
+             Next plot
 
-                End Try
-            Next plot
+            Try
+                For Each item As ToolStripItem In Me.m_tsDDShowHidePlots.DropDownItems
+                    If (item.Tag IsNot Nothing) And (TypeOf item Is ToolStripMenuItem) Then
+                        Dim plot As ePlot = DirectCast(item.Tag, ePlot)
+                        DirectCast(item, ToolStripMenuItem).Checked = Me.m_abPlotVisible(plot)
+                    End If
+                Next
+            Catch ex As Exception
 
+            End Try
+
+            Me.m_tsmiAll.Checked = (iPane = Me.m_abPlotVisible.Count)
 
             If Me.m_zgh.IsAttached Then
                 Me.m_zgh.Detach()

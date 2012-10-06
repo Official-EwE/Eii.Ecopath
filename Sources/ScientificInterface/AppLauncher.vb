@@ -3355,6 +3355,10 @@ Public Class AppLauncher
 
         Dim writer As EwECore.Ecosim.cEcosimResultWriter = Nothing
         Dim strPath As String = Me.Core.OutputPath
+        Dim dlg As FolderBrowserDialog = cEwEFileDialogHelper.FolderBrowserDialog(My.Resources.PROMPT_FOLDER_SELECTION, strPath)
+
+        If (dlg.ShowDialog <> Windows.Forms.DialogResult.OK) Then Return
+        strPath = dlg.SelectedPath
 
         writer = New EwECore.Ecosim.cEcosimResultWriter(Me.UIContext.Core)
         writer.WriteResults(strPath, DirectCast(cmd, cEcosimSaveDataCommand).Results)

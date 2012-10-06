@@ -273,7 +273,7 @@ Namespace Ecosim
                     Dim data(m_core.nEcosimTimeSteps) As Single
                     For i As Integer = 1 To m_core.nEcosimTimeSteps
                         Select Case resulttype
-                            Case eResultTypes.KemptonsQ
+                            Case eResultTypes.TLC
                                 data(i) = Me.m_core.EcosimOutputs.TLCatch(i)
                             Case eResultTypes.KemptonsQ
                                 data(i) = Me.m_core.EcosimOutputs.KemptonsQ(i)
@@ -387,14 +387,14 @@ Namespace Ecosim
                     sw.WriteLine()
                     sw.WriteLine(strGroupNames)
                     If bSaveYearly Then
-                        Dim simYears As Integer = CInt((data.GetLength(1) - 1) / cCore.N_MONTHS)
+                        Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))
                         Dim nGroups As Integer = data.GetLength(0) - 1
                         Dim sum(nGroups) As Single
                         For j As Integer = 1 To simYears
-                            ReDim sum(nGroups)
                             For i As Integer = 1 To nGroups
                                 For k As Integer = 1 To cCore.N_MONTHS
-                                    sum(i) = sum(i) + data(i, (j - 1) * cCore.N_MONTHS + k)
+                                    If (k = 1) Then sum(i) = 0
+                                    sum(i) += data(i, (j - 1) * cCore.N_MONTHS + k)
                                 Next
                                 If i > 1 Then sw.Write(", ")
                                 sw.Write(cStringUtils.FormatSingle(sum(i) / cCore.N_MONTHS))
@@ -439,6 +439,7 @@ Namespace Ecosim
                         Dim simYears As Integer = CInt((data.Length - 1) / cCore.N_MONTHS)
                         Dim sum As Single
                         For j As Integer = 1 To simYears
+                            sum = 0
                             For k As Integer = 1 To cCore.N_MONTHS
                                 sum += data((j - 1) * cCore.N_MONTHS + k)
                             Next
