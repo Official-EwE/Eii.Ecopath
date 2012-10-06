@@ -3017,7 +3017,7 @@ Public Class AppLauncher
     Private Sub OnReportBug(cmd As cCommand) Handles m_cmdHelpReportIssue.OnInvoke
 
         Dim strError As String = ""
-        If Not cBugReporter.InvokeBugReport(My.Resources.GENERIC_CAPTION, "mailto:ewedevteam@gmail.com", Me.m_pluginManager) Then
+        If Not cBugReporter.InvokeBugReport(My.Resources.GENERIC_CAPTION, "ewedevteam@gmail.com", Me.m_pluginManager) Then
             Dim msg As New cMessage(My.Resources.PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT, _
                                     eMessageType.NotSet, _
                                     eCoreComponentType.External, _
