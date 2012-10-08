@@ -4201,7 +4201,7 @@ Namespace Ecosim
         ''' <remarks>
         ''' FishTime() is the total fishing mortality used by Ecosim in Deritt
         ''' </remarks>
-        Friend Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
+        Public Sub SetFtimeFromGear(ByVal BB() As Single, ByVal t As Integer, ByVal QYear() As Single, ByVal PredEffort As Boolean)
             Dim i As Integer, ig As Integer, Ft As Single
 
             'fishing mortality at the current effort
