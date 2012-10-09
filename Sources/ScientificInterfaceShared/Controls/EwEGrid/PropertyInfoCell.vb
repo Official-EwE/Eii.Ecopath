@@ -100,14 +100,19 @@ Namespace Controls.EwEGrid
 
                 Try
                     If (Me.m_pi.PropertyType Is GetType(Single)) Then
+                        If (Me.Value Is Nothing) Then Me.Value = 0
                         Me.m_pi.SetValue(Me.m_obj, CSng(Val(Me.Value)), Nothing)
                     ElseIf (Me.m_pi.PropertyType Is GetType(String)) Then
+                        If (Me.Value Is Nothing) Then Me.Value = ""
                         Me.m_pi.SetValue(Me.m_obj, CStr(Me.Value), Nothing)
                     ElseIf (Me.m_pi.PropertyType Is GetType(Integer)) Then
+                        If (Me.Value Is Nothing) Then Me.Value = 0
                         Me.m_pi.SetValue(Me.m_obj, CInt(Val(Me.Value)), Nothing)
                     ElseIf (Me.m_pi.PropertyType Is GetType(Double)) Then
+                        If (Me.Value Is Nothing) Then Me.Value = 0
                         Me.m_pi.SetValue(Me.m_obj, CDbl(Val(Me.Value)), Nothing)
                     ElseIf (Me.m_pi.PropertyType Is GetType(Boolean)) Then
+                        If (Me.Value Is Nothing) Then Me.Value = False
                         Me.m_pi.SetValue(Me.m_obj, Convert.ToBoolean(Me.Value), Nothing)
                     Else
                         Debug.Assert(False, String.Format("Value type '{0}' not supported yet in PICell", Me.m_pi.PropertyType))
