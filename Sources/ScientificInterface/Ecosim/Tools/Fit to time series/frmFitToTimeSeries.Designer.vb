@@ -54,11 +54,11 @@ Namespace Ecosim
             Me.m_lblAICDataPts = New System.Windows.Forms.Label()
             Me.m_hdrOutput = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlbSearch = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_tbResults = New System.Windows.Forms.TextBox()
             Me.m_hdrIterations = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_btnStop = New System.Windows.Forms.Button()
             Me.m_btnSearch = New System.Windows.Forms.Button()
+            Me.m_lbResults = New System.Windows.Forms.ListBox()
             Me.m_hdrSearchTypes = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_cbVulnerabilitySearch = New System.Windows.Forms.CheckBox()
             Me.m_cbAnomalySearch = New System.Windows.Forms.CheckBox()
@@ -150,7 +150,7 @@ Namespace Ecosim
             Me.m_cbResetVs.Location = New System.Drawing.Point(164, 54)
             Me.m_cbResetVs.Name = "m_cbResetVs"
             Me.m_cbResetVs.Size = New System.Drawing.Size(109, 17)
-            Me.m_cbResetVs.TabIndex = 3
+            Me.m_cbResetVs.TabIndex = 5
             Me.m_cbResetVs.Text = "&Reset V's on Run"
             Me.m_cbResetVs.UseVisualStyleBackColor = True
             '
@@ -160,7 +160,7 @@ Namespace Ecosim
             Me.m_btnTimeSeriesWeights.Location = New System.Drawing.Point(164, 26)
             Me.m_btnTimeSeriesWeights.Name = "m_btnTimeSeriesWeights"
             Me.m_btnTimeSeriesWeights.Size = New System.Drawing.Size(108, 23)
-            Me.m_btnTimeSeriesWeights.TabIndex = 0
+            Me.m_btnTimeSeriesWeights.TabIndex = 3
             Me.m_btnTimeSeriesWeights.Text = "&Time series..."
             Me.m_btnTimeSeriesWeights.UseVisualStyleBackColor = True
             '
@@ -343,9 +343,9 @@ Namespace Ecosim
             '
             Me.m_tlbSearch.ColumnCount = 1
             Me.m_tlbSearch.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlbSearch.Controls.Add(Me.m_tbResults, 0, 1)
             Me.m_tlbSearch.Controls.Add(Me.m_hdrIterations, 0, 0)
             Me.m_tlbSearch.Controls.Add(Me.TableLayoutPanel2, 0, 2)
+            Me.m_tlbSearch.Controls.Add(Me.m_lbResults, 0, 1)
             Me.m_tlbSearch.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_tlbSearch.Location = New System.Drawing.Point(0, 0)
             Me.m_tlbSearch.Margin = New System.Windows.Forms.Padding(0)
@@ -356,19 +356,6 @@ Namespace Ecosim
             Me.m_tlbSearch.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30.0!))
             Me.m_tlbSearch.Size = New System.Drawing.Size(272, 165)
             Me.m_tlbSearch.TabIndex = 0
-            '
-            'm_tbResults
-            '
-            Me.m_tbResults.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_tbResults.Location = New System.Drawing.Point(0, 18)
-            Me.m_tbResults.Margin = New System.Windows.Forms.Padding(0)
-            Me.m_tbResults.Multiline = True
-            Me.m_tbResults.Name = "m_tbResults"
-            Me.m_tbResults.ReadOnly = True
-            Me.m_tbResults.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-            Me.m_tbResults.Size = New System.Drawing.Size(272, 117)
-            Me.m_tbResults.TabIndex = 1
-            Me.m_tbResults.WordWrap = False
             '
             'm_hdrIterations
             '
@@ -423,6 +410,17 @@ Namespace Ecosim
             Me.m_btnSearch.Text = "&Search"
             Me.m_btnSearch.UseVisualStyleBackColor = True
             '
+            'm_lbResults
+            '
+            Me.m_lbResults.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_lbResults.FormattingEnabled = True
+            Me.m_lbResults.IntegralHeight = False
+            Me.m_lbResults.Location = New System.Drawing.Point(0, 18)
+            Me.m_lbResults.Margin = New System.Windows.Forms.Padding(0)
+            Me.m_lbResults.Name = "m_lbResults"
+            Me.m_lbResults.Size = New System.Drawing.Size(272, 117)
+            Me.m_lbResults.TabIndex = 3
+            '
             'm_hdrSearchTypes
             '
             Me.m_hdrSearchTypes.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
@@ -446,7 +444,7 @@ Namespace Ecosim
             Me.m_cbVulnerabilitySearch.Location = New System.Drawing.Point(3, 30)
             Me.m_cbVulnerabilitySearch.Name = "m_cbVulnerabilitySearch"
             Me.m_cbVulnerabilitySearch.Size = New System.Drawing.Size(117, 17)
-            Me.m_cbVulnerabilitySearch.TabIndex = 1
+            Me.m_cbVulnerabilitySearch.TabIndex = 2
             Me.m_cbVulnerabilitySearch.Text = "&Vulnerability search"
             Me.m_cbVulnerabilitySearch.UseVisualStyleBackColor = True
             '
@@ -456,7 +454,7 @@ Namespace Ecosim
             Me.m_cbAnomalySearch.Location = New System.Drawing.Point(3, 54)
             Me.m_cbAnomalySearch.Name = "m_cbAnomalySearch"
             Me.m_cbAnomalySearch.Size = New System.Drawing.Size(101, 17)
-            Me.m_cbAnomalySearch.TabIndex = 2
+            Me.m_cbAnomalySearch.TabIndex = 4
             Me.m_cbAnomalySearch.Text = "&Anomaly search"
             Me.m_cbAnomalySearch.UseVisualStyleBackColor = True
             '
@@ -805,7 +803,6 @@ Namespace Ecosim
             CType(Me.m_scGrids, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scGrids.ResumeLayout(False)
             Me.m_tlbSearch.ResumeLayout(False)
-            Me.m_tlbSearch.PerformLayout()
             Me.TableLayoutPanel2.ResumeLayout(False)
             Me.m_tabSearchOptions.ResumeLayout(False)
             Me.tpVulnerabilitySearch.ResumeLayout(False)
@@ -838,7 +835,6 @@ Namespace Ecosim
         Private WithEvents m_vulnerabilityBlockMatrix As ucVulnerabiltyBlocks
         Private WithEvents m_vulnerabilityBlockCodeSelector As ucParmBlockCodes
         Private WithEvents m_splitSearch As System.Windows.Forms.SplitContainer
-        Private WithEvents m_tbResults As System.Windows.Forms.TextBox
         Private WithEvents m_btnStop As System.Windows.Forms.Button
         Private WithEvents m_tabSearchOptions As System.Windows.Forms.TabControl
         Private WithEvents tpVulnerabilitySearch As System.Windows.Forms.TabPage
@@ -872,6 +868,7 @@ Namespace Ecosim
         Private WithEvents m_nudFirstYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudVariance As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudVariancePrimaryProd As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_lbResults As System.Windows.Forms.ListBox
     End Class
 
 End Namespace

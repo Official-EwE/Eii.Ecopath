@@ -506,15 +506,16 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OnRunStarted(ByVal runType As eRunType, ByVal nSteps As Integer)
 
+            Me.m_lbResults.Items.Clear()
+
             Dim data As cF2TSResults = Me.m_F2TSManager.Results
-            Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNSTARTED, data.BaseSS), False)
+            Me.LogProgress(String.Format(My.Resources.FIT2TS_PROGRESS_RUNSTARTED, data.BaseSS))
 
             If (Me.m_dlgSensOfSS IsNot Nothing) Then
                 Me.m_dlgSensOfSS.OnRunStarted(runType, nSteps)
             End If
 
             Me.IsRunning = True
-            Me.m_tbResults.Text = ""
             Me.UpdateControls()
 
         End Sub
@@ -663,11 +664,9 @@ Namespace Ecosim
         ''' 
         ''' </summary>
         ''' <param name="strEntry"></param>
-        ''' <param name="bAppend"></param>
         ''' -------------------------------------------------------------------
-        Private Sub LogProgress(ByVal strEntry As String, Optional ByVal bAppend As Boolean = True)
-            Dim strLog As String = strEntry & cStringUtils.vbNewline & Me.m_tbResults.Text
-            Me.m_tbResults.Text = strLog
+        Private Sub LogProgress(ByVal strEntry As String)
+            Me.m_lbResults.Items.Insert(0, strEntry)
         End Sub
 
 #End Region ' Internal implementation
