@@ -31,8 +31,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-' ToDo_JS: Remove INI file, use XML instead
-
 Namespace Ecopath.Controls.FlowDiagram
 
     ''' =======================================================================
@@ -356,12 +354,12 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tsFlowDiagram = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbtnShowHideGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSettings = New System.Windows.Forms.ToolStripButton()
+            Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
             Me.m_tss1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tslLayout = New System.Windows.Forms.ToolStripLabel()
             Me.m_tsmiLoad = New System.Windows.Forms.ToolStripButton()
             Me.m_tsmiSave = New System.Windows.Forms.ToolStripButton()
-            Me.m_tss2 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_tsmiSaveToImage = New System.Windows.Forms.ToolStripButton()
             CType(Me.m_pbFlowDiagram, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scContent.Panel1.SuspendLayout()
@@ -415,6 +413,16 @@ Namespace Ecopath.Controls.FlowDiagram
             resources.ApplyResources(Me.m_tsmiSettings, "m_tsmiSettings")
             Me.m_tsmiSettings.Name = "m_tsmiSettings"
             '
+            'm_tss2
+            '
+            Me.m_tss2.Name = "m_tss2"
+            resources.ApplyResources(Me.m_tss2, "m_tss2")
+            '
+            'm_tsmiSaveToImage
+            '
+            resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
+            Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
+            '
             'm_tss1
             '
             Me.m_tss1.Name = "m_tss1"
@@ -436,17 +444,6 @@ Namespace Ecopath.Controls.FlowDiagram
             Me.m_tsmiSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             resources.ApplyResources(Me.m_tsmiSave, "m_tsmiSave")
             Me.m_tsmiSave.Name = "m_tsmiSave"
-            '
-            'm_tss2
-            '
-            Me.m_tss2.Name = "m_tss2"
-            resources.ApplyResources(Me.m_tss2, "m_tss2")
-            '
-            'm_tsmiSaveToImage
-            '
-            resources.ApplyResources(Me.m_tsmiSaveToImage, "m_tsmiSaveToImage")
-            Me.m_tsmiSaveToImage.Name = "m_tsmiSaveToImage"
-            m_tsmiSaveToImage.Image = SharedResources.InsertPictureHS
             '
             'frmFlowDiagram
             '
