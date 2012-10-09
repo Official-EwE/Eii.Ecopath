@@ -47,13 +47,6 @@ Public Class cBugReporter
     Public Shared Function InvokeBugReport(ByVal strAppName As String, _
                                            ByVal strMailTo As String, _
                                            Optional ByVal pm As cPluginManager = Nothing) As Boolean
-        Return SendBigMessage(strAppName, strMailTo, pm)
-    End Function
-
-    Private Shared Function SendBigMessage(ByVal strAppName As String, _
-                                    ByVal strMailTo As String, _
-                                    ByVal pm As cPluginManager) As Boolean
-
         Dim an As AssemblyName = Nothing
         Dim ub As New UrlBuilder("mailto:" & strMailTo)
         Dim sbBody As New System.Text.StringBuilder
@@ -63,12 +56,12 @@ Public Class cBugReporter
 
         sbBody.AppendLine("I experienced the following issue with " & strAppName & ":")
         sbBody.AppendLine("")
-        sbBody.AppendLine("(Please provide a detailed description of the issue, and steps to reproduce the error if possible. If required, please zip up and attach your model)")
+        sbBody.AppendLine("(Please provide a detailed description of the issue, and steps to reproduce errors. If required, please zip up and attach your model)")
         sbBody.AppendLine("")
         sbBody.AppendLine("")
         sbBody.AppendLine("")
         sbBody.AppendLine("")
-        sbBody.AppendLine("---------------------------------------------------")
+        sbBody.AppendLine("----")
         sbBody.AppendLine("Configuration (do not modify):")
 
         sbBody.AppendLine()
@@ -92,7 +85,6 @@ Public Class cBugReporter
             Next
         End If
 
-        sbBody.AppendLine("---------------------------------------------------")
         ub.QueryString("body") = sbBody.ToString()
 
         Try
@@ -105,60 +97,5 @@ Public Class cBugReporter
 
     End Function
 
-    Private Shared Function SendAttachment(ByVal strAppName As String, _
-                                    ByVal strAddress As String, _
-                                    ByVal pm As cPluginManager) As Boolean
-
-        Dim an As AssemblyName = Nothing
-        Dim oMsg As New MailMessage()
-        Dim sbBody As New System.Text.StringBuilder
-
-        sbBody.AppendLine("I experienced the following issue with " & strAppName & ":")
-        sbBody.AppendLine("")
-        sbBody.AppendLine("(Please provide a detailed description of the issue, and steps to reproduce the error if possible. If required, please zip up and attach your model)")
-
-        Dim strFile As String = Path.Combine(System.IO.Path.GetTempPath(), "EwE_config.txt")
-        Dim swTemp As New StreamWriter(strFile)
-        swTemp.WriteLine("EwE configuration (do not modify):")
-        swTemp.WriteLine()
-        swTemp.WriteLine(cSysConfig.OSVersion())
-        swTemp.WriteLine(cSysConfig.NETVersion())
-        swTemp.WriteLine()
-        swTemp.WriteLine("EwE modules:")
-        For Each an In cAssemblyUtils.GetSummary(Assembly.GetExecutingAssembly)
-            swTemp.WriteLine(String.Format("* {0}={2},{1}", _
-                                            an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
-        Next
-
-        If (pm IsNot Nothing) Then
-            swTemp.WriteLine()
-            swTemp.WriteLine("EwE plug-ins:")
-            For Each pa As cPluginAssembly In pm.PluginAssemblies
-                an = pa.AssemblyName
-                swTemp.WriteLine(String.Format("- {0}={2},{1}", _
-                                                an.Name, cStringUtils.ToHexString(an.GetPublicKeyToken), an.Version))
-            Next
-        End If
-        swTemp.WriteLine("---------------------------------------------------")
-        swTemp.Flush()
-        swTemp.Close()
-
-        'oMsg.From =
-        oMsg.To.Add(New Net.Mail.MailAddress(strAddress))
-        oMsg.Subject = strAppName & " incident report"
-        oMsg.Body = sbBody.ToString()
-
-        Dim oAttch As New Net.Mail.Attachment(strFile)
-        oMsg.Attachments.Add(oAttch)
-
-        Dim cl As New SmtpClient()
-        Try
-            cl.Send(oMsg)
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
-    End Function
 
 End Class
