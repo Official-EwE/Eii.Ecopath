@@ -215,6 +215,7 @@ Namespace Ecopath.Controls.FlowDiagram
         Private m_clrNode As Color = Color.LightGray
         Private m_bAutoNodeSize As Boolean = True
         Private m_iNodeSize As Integer = 10
+        Private m_bIsDrawLabel As Boolean = True
         Private m_bIsNodeDrawBiomass As Boolean = False
         Private m_clrLine As Color = Color.Gray
         Private m_bAutoLineWidth As Boolean = False
@@ -334,12 +335,14 @@ Namespace Ecopath.Controls.FlowDiagram
                 clrPen = EwEUtils.Utilities.cColorUtils.GetVariant(Me.m_data.TextColor, 0.5!)
             End If
 
-            Me.m_node.DrawLabel(g, _
-                                Me.LabelLocation(iGroup, rc), _
-                                Me.m_data.RenderFont, _
-                                clrPen, _
-                                strGroupName, _
-                                strBiomassLabel)
+            If (Me.m_bIsDrawLabel) Then
+                Me.m_node.DrawLabel(g, _
+                                    Me.LabelLocation(iGroup, rc), _
+                                    Me.m_data.RenderFont, _
+                                    clrPen, _
+                                    strGroupName, _
+                                    strBiomassLabel)
+            End If
 
         End Sub
 
@@ -474,6 +477,8 @@ Namespace Ecopath.Controls.FlowDiagram
 #End Region ' SetPosition
 
 #Region " Configuration "
+
+        ' ToDo_JS: somehow globalize these properties 
 
         <Browsable(True), _
             Category("Misc."), _
@@ -638,6 +643,20 @@ Namespace Ecopath.Controls.FlowDiagram
             End Get
             Set(ByVal value As Boolean)
                 Me.m_bIsNodeDrawBiomass = value
+                RaiseEvent OnChanged(Me)
+            End Set
+        End Property
+
+        <Browsable(True), _
+            Category("Node"), _
+            DisplayName("Draw labels"), _
+            Description("Draw group name labels.")> _
+        Public Property NodeDrawLabels() As Boolean
+            Get
+                Return Me.m_bIsDrawLabel
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bIsDrawLabel = value
                 RaiseEvent OnChanged(Me)
             End Set
         End Property
