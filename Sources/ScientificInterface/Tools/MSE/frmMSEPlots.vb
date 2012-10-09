@@ -128,7 +128,7 @@ Public Class frmMSEPlots
             Me.m_plotter.DataType = DataType
 
             For Each stat As cMSEStats In lstStatObjects
-                If Me.m_plotter.isGroupVisible(stat.Index) Then
+                If Me.m_plotter.IsGroupVisible(stat.Index) Then
                     data.Add(stat)
                 End If
             Next

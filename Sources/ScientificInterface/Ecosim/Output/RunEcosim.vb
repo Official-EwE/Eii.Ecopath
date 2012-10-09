@@ -693,7 +693,7 @@ Namespace Ecosim
 
             ' Safety checks
             If (Me.m_zgp Is Nothing) Then Return
-            If (Not Me.m_zgp.isReady) Then Me.m_zgp.Clear() : Return
+            If (Not Me.m_zgp.IsReady) Then Me.m_zgp.Clear() : Return
             If (Not Me.Core.StateMonitor.HasEcosimRan) Then Return
 
             Dim groupPathOut As cEcoPathGroupOutput = Nothing

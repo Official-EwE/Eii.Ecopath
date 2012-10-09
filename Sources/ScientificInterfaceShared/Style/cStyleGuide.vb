@@ -1082,7 +1082,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function GroupColorDefault(ByVal core As cCore, _
                                           ByVal iGroup As Integer) As Color
-            If (iGroup = 0) Then Return Color.Black
+            If (iGroup = 0) Then Return Color.Gray
             Return Me.GroupColorDefault(iGroup, core.nGroups)
         End Function
 
@@ -1153,7 +1153,7 @@ Namespace Style
         ''' -------------------------------------------------------------------
         Public Function FleetColorDefault(ByVal iFleet As Integer, _
                                           ByVal nFleets As Integer) As Color
-            If (iFleet = 0) Then Return Color.Black
+            If (iFleet = 0) Then Return Color.Gray
             Return Me.m_colorrampFleets.GetColor(iFleet, nFleets)
         End Function
 

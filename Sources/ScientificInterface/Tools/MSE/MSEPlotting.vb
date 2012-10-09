@@ -138,7 +138,7 @@ Friend Class cMSEPlotter
         Me.m_zdGraph = graph
         Me.m_manager = MSEManager
 
-        Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.nVisPanes)
+        Me.m_zgh.Attach(Me.m_uic, Me.m_zdGraph, Me.NumVisPanes)
 
     End Sub
 
@@ -195,11 +195,11 @@ Friend Class cMSEPlotter
 
     Public Sub Clear()
         Try
-            Me.m_zgh.NumPanes = Me.nVisPanes
+            Me.m_zgh.NumPanes = Me.NumVisPanes
 
             Me.ClearData()
             Me.ClearGraphs()
-            Me.configPanes()
+            Me.ConfigPanes()
             Me.m_nLines = 0
 
             'this forces zedgraph to recalculte the layout of the new panes
@@ -219,20 +219,20 @@ Friend Class cMSEPlotter
             If Me.m_Data IsNot Nothing Then
 
                 If Me.m_type <> eMSEPlotTypes.Line Then
-                    Me.m_zgh.NumPanes = Me.nVisPanes
+                    Me.m_zgh.NumPanes = Me.NumVisPanes
                     Me.ClearGraphs()
-                    Me.configPanes()
+                    Me.ConfigPanes()
                 End If
 
                 Me.plotRefLines()
 
                 Select Case m_type
                     Case eMSEPlotTypes.Histogram
-                        Me.plotHistoGram()
+                        Me.PlotHistoGram()
                     Case eMSEPlotTypes.Values
-                        Me.plotValues()
+                        Me.PlotValues()
                     Case eMSEPlotTypes.Line
-                        Me.plotline()
+                        Me.Plotline()
                 End Select
 
             End If
@@ -267,7 +267,7 @@ Friend Class cMSEPlotter
             'if we are adding one line at a time
             'and this is the first line then configure the panes
             If Me.m_type = eMSEPlotTypes.Line And Me.m_nLines = 0 Then
-                Me.configValuePanes()
+                Me.ConfigValuePanes()
             End If
 
             Me.m_nLines += 1
@@ -295,7 +295,7 @@ Friend Class cMSEPlotter
                 ipane += 1
                 stats = Me.m_manager.BiomassStats(data.Index)
                 '   Me.m_zgh.AutoScaleYOption(ipane) = cZedGraphHelper.eScaleOptionTypes.None
-                Me.plotMean(stats, ipane)
+                Me.PlotMean(stats, ipane)
             Next
 
         Catch ex As Exception
@@ -329,7 +329,7 @@ Friend Class cMSEPlotter
                 Dim RefPoint As cMSERefPoint = Me.getRefPoint(statobj.Index)
                 If Not RefPoint Is Nothing Then
                     'Add the data to the graph pane, this will remove existing reference lines
-                    Me.plotRefLine(RefPoint.LowerReference, RefPoint.UpperReference, Me.m_zgh.GetPane(ipane))
+                    Me.PlotRefLine(RefPoint.LowerReference, RefPoint.UpperReference, Me.m_zgh.GetPane(ipane))
                 End If
 
                 'Do NOT rescale if this is a Histogram
@@ -390,15 +390,15 @@ Friend Class cMSEPlotter
 
 #Region "Private methods"
 
-    Private Sub configPanes()
+    Private Sub ConfigPanes()
         If Me.m_type = eMSEPlotTypes.Histogram Then
-            configHistoPanes()
+            ConfigHistoPanes()
         ElseIf Me.m_type = eMSEPlotTypes.Values Or Me.m_type = eMSEPlotTypes.Line Then
-            configValuePanes()
+            ConfigValuePanes()
         End If
     End Sub
 
-    Private Sub configHistoPanes()
+    Private Sub ConfigHistoPanes()
 
         Me.m_zgh.YScaleGrace = 1.1
         Dim ipane As Integer
@@ -417,7 +417,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Friend Function isGroupVisible(ByVal GroupIndex As Integer) As Boolean
+    Friend Function IsGroupVisible(ByVal GroupIndex As Integer) As Boolean
 
         If Me.m_uic.StyleGuide.GroupVisible(GroupIndex) Then
 
@@ -437,7 +437,7 @@ Friend Class cMSEPlotter
 
     End Function
 
-    Private Sub configValuePanes()
+    Private Sub ConfigValuePanes()
         Dim ipane As Integer
         Dim xStart As Double = CDbl(Me.m_uic.Core.EcosimFirstYear)
 
@@ -449,7 +449,7 @@ Friend Class cMSEPlotter
                 For i As Integer = 1 To Me.m_manager.NumGroups
                     grp = Me.m_manager.GroupInputs(i)
                     'figure out if this group is visible
-                    If Me.isGroupVisible(grp.Index) Then
+                    If Me.IsGroupVisible(grp.Index) Then
                         'Only configure the pane if this group is visible
                         ipane += 1
                         Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
@@ -466,7 +466,7 @@ Friend Class cMSEPlotter
                 For i As Integer = 1 To Me.m_manager.NumGroups
                     grp = Me.m_manager.GroupInputs(i)
                     'figure out if this group is visible
-                    If Me.isGroupVisible(grp.Index) Then
+                    If Me.IsGroupVisible(grp.Index) Then
                         'Only configure the pane if this group is visible
                         ipane += 1
                         Me.m_zgh.ConfigurePane(grp.Name, Me.XLabel, xStart, _
@@ -590,7 +590,7 @@ Friend Class cMSEPlotter
         Next
     End Sub
 
-    Private Sub plotHistoGram()
+    Private Sub PlotHistoGram()
 
         Try
 
@@ -640,7 +640,7 @@ Friend Class cMSEPlotter
     End Sub
 
 
-    Private Sub plotValues()
+    Private Sub PlotValues()
 
         Try
 
@@ -677,7 +677,7 @@ Friend Class cMSEPlotter
                 'Me.m_zgh.YScaleMin(ipane) = 0
 
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
-                Me.plotMean(data, ipane)
+                Me.PlotMean(data, ipane)
             Next
 
             Me.m_zgh.RescaleAndRedraw()
@@ -692,8 +692,7 @@ Friend Class cMSEPlotter
     ''' <summary>
     ''' Plot one line across all the groups/fleets
     ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub plotline()
+    Private Sub Plotline()
 
         Try
 
@@ -730,7 +729,6 @@ Friend Class cMSEPlotter
         End Try
 
     End Sub
-
 
     Private Sub PlotComparison()
 
@@ -777,11 +775,12 @@ Friend Class cMSEPlotter
                 Next
 
                 'set the y max
+                ' JS: this should not be necessary
                 Me.m_zgh.YScaleMax(ipane) = data.Max * Me.m_zgh.YScaleGrace
                 Me.m_zgh.YScaleMin(ipane) = 0
 
                 Me.m_zgh.PlotLines(lstLines.ToArray, ipane, False, False)
-                Me.plotMean(data, ipane)
+                Me.PlotMean(data, ipane)
             Next
 
             Me.m_zgh.RescaleAndRedraw()
@@ -793,7 +792,8 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub plotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
+    Private Sub PlotMean(ByVal StatsData As cMSEStats, ByVal ipane As Integer)
+
         Dim x As Double, dx As Double
         Dim ppl As PointPairList = Nothing
         Dim li As LineItem = Nothing
@@ -806,7 +806,7 @@ Friend Class cMSEPlotter
             ppl.Add(x, StatsData.Mean(iTime))
             x += dx
         Next
-        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Me.getLineColour(StatsData), ppl)
+        li = Me.m_zgh.CreateLineItem("", eLineType.NotSet, Me.GetLineColour(StatsData), ppl)
         li.Line.Width = 2
 
         Me.m_zgh.GetPane(ipane).CurveList.Insert(0, li)
@@ -840,10 +840,10 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub plotRefLine(ByVal LowerBound As Single, ByVal UpperBound As Single, ByVal pane As ZedGraph.GraphPane)
+    Private Sub PlotRefLine(ByVal LowerBound As Single, ByVal UpperBound As Single, ByVal pane As ZedGraph.GraphPane)
         'Dim dx As Double
 
-        Me.removeRefLines(pane)
+        Me.RemoveRefLines(pane)
 
         If Me.m_type = eMSEPlotTypes.Histogram Then
             'Histogram plot
@@ -894,7 +894,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Sub removeRefLines(ByVal pane As ZedGraph.GraphPane)
+    Private Sub RemoveRefLines(ByVal pane As ZedGraph.GraphPane)
 
         Dim lbIndex As Integer = pane.CurveList.IndexOfTag(LB_TAG)
         If lbIndex > -1 Then
@@ -908,7 +908,7 @@ Friend Class cMSEPlotter
 
     End Sub
 
-    Private Function getLineColour(ByVal StatsData As cMSEStats) As Color
+    Private Function GetLineColour(ByVal StatsData As cMSEStats) As Color
 
         Try
             'if this is group data then get the colour from the style guide
@@ -924,17 +924,17 @@ Friend Class cMSEPlotter
 
     End Function
 
-    Private Function nVisGroups() As Integer
+    Private Function NumVisGroups() As Integer
         Dim n As Integer
         For igrp As Integer = 1 To Me.m_uic.Core.nLivingGroups
-            If Me.isGroupVisible(igrp) Then
+            If Me.IsGroupVisible(igrp) Then
                 n += 1
             End If
         Next
         Return n
     End Function
 
-    Private Function nVisFleets() As Integer
+    Private Function NumVisFleets() As Integer
         Dim n As Integer
         For igrp As Integer = 1 To Me.m_uic.Core.nFleets
             If Me.m_uic.StyleGuide.FleetVisible(igrp) Then
@@ -944,17 +944,17 @@ Friend Class cMSEPlotter
         Return n
     End Function
 
-    Friend Function nVisPanes() As Integer
+    Friend Function NumVisPanes() As Integer
 
         If Me.m_dataType = eMSEPlotData.FleetTotValue Then
             Return 1
         End If
 
         If Me.m_dataType = eMSEPlotData.Effort Or Me.m_dataType = eMSEPlotData.FleetValue Then
-            Return nVisFleets()
+            Return NumVisFleets()
         End If
 
-        Return nVisGroups()
+        Return NumVisGroups()
 
     End Function
 

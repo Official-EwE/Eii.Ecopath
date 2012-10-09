@@ -222,8 +222,6 @@ Namespace Ecosim
             '
             'm_lbFleets
             '
-            Me.m_lbFleets.AllFleetsItemColor = System.Drawing.Color.Black
-            Me.m_lbFleets.AllFleetsItemText = "(All)"
             resources.ApplyResources(Me.m_lbFleets, "m_lbFleets")
             Me.m_lbFleets.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbFleets.FleetListTracking = ScientificInterfaceShared.Controls.cFleetListBox.eFleetTrackingType.Manual

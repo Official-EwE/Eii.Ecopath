@@ -262,7 +262,9 @@ Namespace Ecosim
             If lLines.Count > 0 Then
 
                 '#Yes: plot graph
-                '  - fix graph scale
+                ''  - fix graph scale
+
+                ' JS: this should not be necessary
                 Me.m_zgh.YScaleMax = data.MaxRecruitment * Me.m_zgh.YScaleGrace
                 Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
 

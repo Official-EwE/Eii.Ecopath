@@ -483,9 +483,16 @@ Namespace Ecosim
             Me.AddCurveToGraphPane(ePlot.FeedingTime, Me.m_zgh.CreateLineItem(group, pplFeedTime))
 
             If Me.m_bContainsAggregatedFleet Then
-                Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem("All", eLineType.ModelData, Color.Black, applFishMortFleet(0)), True)
-                Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem("All", eLineType.ModelData, Color.Black, applCatchFleet(0)), True)
-                Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem("All", eLineType.ModelData, Color.Black, applValueFleet(0)), True)
+                Dim strAll As String = SharedResources.GENERIC_VALUE_ALL
+                Dim clrAll As Color = Me.StyleGuide.FleetColorDefault(0, 1)
+                Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(strAll, eLineType.ModelData, clrAll, applFishMortFleet(0)))
+                Me.AddCurveToGraphPane(ePlot.[Catch], Me.m_zgh.CreateLineItem(strAll, eLineType.ModelData, clrAll, applCatchFleet(0)), True)
+                Me.AddCurveToGraphPane(ePlot.Value, Me.m_zgh.CreateLineItem(strAll, eLineType.ModelData, clrAll, applValueFleet(0)), True)
+
+                For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.FishingMortality, iGroup, Color.Black)
+                    Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, li)
+                Next li
+
             Else
                 For i As Integer = 1 To Me.UIContext.Core.nFleets
 

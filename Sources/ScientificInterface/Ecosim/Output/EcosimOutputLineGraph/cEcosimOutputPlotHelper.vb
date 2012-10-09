@@ -159,7 +159,7 @@ Namespace Controls
         ''' Is the graph ready to plot? Has it been initialized?
         ''' </summary>
         ''' <returns>True if the graph is ready to plot.</returns>
-        Public ReadOnly Property isReady() As Boolean
+        Public ReadOnly Property IsReady() As Boolean
             Get
                 Return (Me.m_runCurrent IsNot Nothing)
             End Get

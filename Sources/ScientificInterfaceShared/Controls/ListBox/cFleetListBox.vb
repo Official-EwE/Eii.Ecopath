@@ -158,8 +158,6 @@ Namespace Controls
         Private m_sSortThreshold As Single = cCore.NULL_VALUE
         Private m_fleettrackingtype As eFleetTrackingType = eFleetTrackingType.AllFleets
         Private m_bShowAllFleetsItem As Boolean = True
-        Private m_strAllFleetsItem As String = My.Resources.GENERIC_VALUE_ALL
-        Private m_clrAllFleetsItem As Color = Color.Black
 
 #End Region ' Privates
 
@@ -347,42 +345,6 @@ Namespace Controls
                     Me.m_bShowAllFleetsItem = value
                     Me.Populate()
                 End If
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the text for the 'all Fleets' item.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("The text for the 'all Fleets' item"), _
-         Category("EwE6"), _
-         DefaultValue(True)> _
-      Public Property AllFleetsItemText() As String
-            Get
-                Return Me.m_strAllFleetsItem
-            End Get
-            Set(ByVal value As String)
-                Me.m_strAllFleetsItem = value
-            End Set
-        End Property
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the colour for the 'all Fleets' item.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        <Browsable(True), _
-         Description("The colour for the 'all Fleets' item"), _
-         Category("EwE6"), _
-         DefaultValue(True)> _
-      Public Property AllFleetsItemColor() As Color
-            Get
-                Return Me.m_clrAllFleetsItem
-            End Get
-            Set(ByVal value As Color)
-                Me.m_clrAllFleetsItem = value
             End Set
         End Property
 
@@ -607,7 +569,7 @@ Namespace Controls
 
             ' Add 'all Fleets' item
             If Me.m_bShowAllFleetsItem Then
-                Me.Items.Add(New cFleetItem(Me.m_strAllFleetsItem, Me.m_clrAllFleetsItem))
+                Me.Items.Add(New cFleetItem(My.Resources.GENERIC_VALUE_ALL, Me.UIContext.StyleGuide.FleetColorDefault(0, 1)))
             End If
 
             ' (Re)populate listbox
