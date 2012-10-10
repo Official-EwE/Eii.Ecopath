@@ -42,11 +42,32 @@ Public Class ucResults
         End Sub
 
         Public Overrides Function ToString() As String
-            If Me.m_source Is Nothing Then Return "<all fleets>"
+            If Me.m_source Is Nothing Then Return ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALLFLEETS
             Return Me.m_source.Name
         End Function
 
         Public ReadOnly Property Source() As cCoreInputOutputBase
+            Get
+                Return Me.m_source
+            End Get
+        End Property
+
+    End Class
+
+    Private Class cUnitComboItem
+
+        Private m_source As cUnit
+
+        Public Sub New(ByVal source As cUnit)
+            Me.m_source = source
+        End Sub
+
+        Public Overrides Function ToString() As String
+            If Me.m_source Is Nothing Then Return ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALL
+            Return Me.m_source.Name
+        End Function
+
+        Public ReadOnly Property Source() As cUnit
             Get
                 Return Me.m_source
             End Get
@@ -59,6 +80,7 @@ Public Class ucResults
 #Region " Private bits "
 
     Private Shared g_iLastFleet As Integer = 0
+    Private Shared g_iLastUnit As Integer = 0
 
     Private Enum eViewModeType As Integer
         Grid = 0
@@ -180,8 +202,9 @@ Public Class ucResults
         Next
         Me.m_tscmbGraphData.SelectedIndex = 0
 
-        ' Restore last selection
+        ' Restore last selections
         Me.m_tscmbFleets.SelectedIndex = Math.Min(Me.m_tscmbFleets.Items.Count - 1, Math.Max(-1, ucResults.g_iLastFleet))
+        Me.m_tscmbUnit.SelectedIndex = Math.Min(Me.m_tscmbUnit.Items.Count - 1, Math.Max(-1, ucResults.g_iLastUnit))
 
         ' Initialize view
         Select Case Me.m_result.RunType
@@ -218,13 +241,36 @@ Public Class ucResults
 
     End Sub
 
+    Private Sub OnFilterByUnit(ByVal sender As Object, ByVal e As EventArgs) _
+        Handles m_tscmbUnit.SelectedIndexChanged
+
+        ' Filter by unit
+        Dim item As cUnitComboItem = Nothing
+        Dim unit As cUnit = Nothing
+
+        If Me.m_bInUpdate Then Return
+        Me.m_bInUpdate = True
+
+        ucResults.g_iLastUnit = Me.m_tscmbUnit.SelectedIndex
+        item = DirectCast(Me.m_tscmbUnit.SelectedItem, cUnitComboItem)
+        If item IsNot Nothing Then unit = item.Source
+
+        Me.m_plFlow.UnitFilter = unit
+
+        Me.UpdateControls()
+        Me.UpdateFilter()
+
+        Me.m_bInUpdate = False
+
+    End Sub
+
     Private Sub OnDoubleClickedFlow(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_scResults.DoubleClick
         Me.m_tsbShowFlow.Checked = Not m_tsbShowFlow.Checked
         Me.UpdateControls()
     End Sub
 
-    Private Sub m_tsbShowFlow_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnShowFlow(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbShowFlow.Click
         Me.m_tsbShowFlow.Checked = Not m_tsbShowFlow.Checked
         Me.UpdateControls()
@@ -415,6 +461,14 @@ Public Class ucResults
         Next
         Me.m_tscmbFleets.SelectedIndex = 0
 
+        ' Populate units combo
+        Me.m_tscmbUnit.Items.Clear()
+        Me.m_tscmbUnit.Items.Add(New cUnitComboItem(Nothing))
+        For iSeq As Integer = 0 To Me.m_data.UnitCount - 1
+            Me.m_tscmbUnit.Items.Add(New cUnitComboItem(Me.m_data.Unit(iSeq)))
+        Next
+        Me.m_tscmbUnit.SelectedIndex = 0
+
         Me.SetViewMode(Me.m_viewMode)
 
         Me.UpdateFilter()
@@ -429,9 +483,8 @@ Public Class ucResults
     Private Sub UpdateFilter()
         Me.m_plFlow.SuspendLayout()
         Me.m_plFlow.RebuildFlow()
-        Me.m_plFlow.Arrange()
+        Me.m_plFlow.ArrangeGLEE()
         Me.m_plFlow.ResumeLayout()
-
         Me.UpdateResults()
     End Sub
 
@@ -464,6 +517,7 @@ Public Class ucResults
 
         Me.m_tscmbFleets.Enabled = (Me.m_data.Parameters.ResultsByFleet = True)
         Me.m_tscmbFleets.SelectedItem = Me.GetCoreComboItem(Me.m_plFlow.FleetFilter, Me.m_tscmbFleets)
+        Me.m_tscmbUnit.SelectedItem = Me.GetUnitComboItem(Me.m_plFlow.UnitFilter, Me.m_tscmbUnit)
 
         Me.m_tslblData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
         Me.m_tscmbGraphData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
@@ -525,7 +579,7 @@ Public Class ucResults
 
         Dim gv As IGraphView = DirectCast(Me.m_view, IGraphView)
         Dim strGraphTitle As String = ""
-        Dim strXAxisLabel As String = CStr(IIf(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year"))
+        Dim strXAxisLabel As String = CStr(IIF(Me.m_viewMode = eViewModeType.GraphEquilibrium, "Effort", "Year"))
         Dim strYAxisLabel As String = ""
         Dim aUnitsYAxis() As cStyleGuide.eUnitType = New cStyleGuide.eUnitType() {cStyleGuide.eUnitType.Monetary}
         Dim avars() As cResults.eVariableType = Nothing
@@ -533,6 +587,7 @@ Public Class ucResults
         Select Case graphmode
 
             Case eGraphDataType.CostRevenue
+                ' ToDo: globalize this
                 strGraphTitle = "Revenue and Cost"
                 strYAxisLabel = "Revenue and Cost ({0})"
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal, _
@@ -540,6 +595,7 @@ Public Class ucResults
                                                       cResults.eVariableType.Profit}
 
             Case eGraphDataType.Cost
+                ' ToDo: globalize this
                 strGraphTitle = "Cost"
                 strYAxisLabel = "Cost breakdown ({0})"
                 avars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture, _
@@ -549,6 +605,7 @@ Public Class ucResults
                                                       cResults.eVariableType.CostRawmaterial}
 
             Case eGraphDataType.Revenue
+                ' ToDo: globalize this
                 strGraphTitle = "Revenue"
                 strYAxisLabel = "Revenue breakdown ({0})"
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets, _
@@ -558,12 +615,14 @@ Public Class ucResults
                                                       cResults.eVariableType.RevenueAgriculture}
 
             Case eGraphDataType.Jobs
+                ' ToDo: globalize this
                 strGraphTitle = "Jobs"
                 strYAxisLabel = "Jobs"
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal, _
                                                       cResults.eVariableType.NumberOfJobsMaleTotal, _
                                                       cResults.eVariableType.NumberOfJobsFemaleTotal}
             Case eGraphDataType.Dependents
+                ' ToDo: globalize this
                 strGraphTitle = "Dependents"
                 strYAxisLabel = "Dependents"
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal, _
@@ -596,6 +655,26 @@ Public Class ucResults
         Dim item As cCoreComboItem = Nothing
         For i As Integer = 0 To cmb.Items.Count - 1
             item = DirectCast(cmb.Items(i), cCoreComboItem)
+            If Object.ReferenceEquals(source, item.Source) Then
+                Return item
+            End If
+        Next
+        Return Nothing
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper method, returns a cUnitComboItem for a given cUnit.
+    ''' instance from a given combo box.
+    ''' </summary>
+    ''' <param name="source">The source to locate.</param>
+    ''' <param name="cmb">The combo box to plunder.</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Function GetUnitComboItem(ByVal source As cUnit, ByVal cmb As ToolStripComboBox) As cUnitComboItem
+        Dim item As cUnitComboItem = Nothing
+        For i As Integer = 0 To cmb.Items.Count - 1
+            item = DirectCast(cmb.Items(i), cUnitComboItem)
             If Object.ReferenceEquals(source, item.Source) Then
                 Return item
             End If

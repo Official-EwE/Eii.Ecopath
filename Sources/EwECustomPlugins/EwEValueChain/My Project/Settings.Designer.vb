@@ -56,13 +56,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property LastForm() As Integer
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ShowGrid() As Boolean
             Get
-                Return CType(Me("LastForm"),Integer)
+                Return CType(Me("ShowGrid"),Boolean)
             End Get
             Set
-                Me("LastForm") = value
+                Me("ShowGrid") = value
             End Set
         End Property
     End Class

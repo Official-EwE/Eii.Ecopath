@@ -41,7 +41,6 @@ Public Class cParameters
     Private m_sEffortInc As Single = 0.25!
     Private m_liFleets As New List(Of Integer)
     Private m_sZoomFactor As Single = 1.0!
-    Private m_bShowGrid As Boolean = False
     Private m_bDeletePrompt As Boolean = True
 
 #Region " Properties "
@@ -121,15 +120,6 @@ Public Class cParameters
         End Get
         Set(value As Single)
             Me.m_sZoomFactor = value
-        End Set
-    End Property
-
-    Public Property ShowGrid As Boolean
-        Get
-            Return Me.m_bShowGrid
-        End Get
-        Set(bShowGrid As Boolean)
-            Me.m_bShowGrid = bShowGrid
         End Set
     End Property
 

@@ -65,13 +65,14 @@ Public Class plFlow
     Private m_selector As ucSelector2 = Nothing
     ''' <summary>Fleet to filter for in the flow, if any.</summary>
     Private m_fleetFilter As cFleetInput = Nothing
+    ''' <summary>Unit to filter for in the flow, if any.</summary>
+    Private m_unitFilter As cUnit = Nothing
 
     ''' <summary>Selected flow element.</summary>
     Private m_selection As Object = Nothing
     Private m_hover As LinkWrapper = Nothing
 
     '' ToDo: get rid of cUnitControl, render all in this graph
-    '' ToDo: make graph scalable, zoomable.
 
     ''' <summary>Drag/drop mouse offset.</summary>
     ''' <remarks>The (x,y) distance from a control's origin during a drag/drop operation.</remarks>
@@ -217,6 +218,20 @@ Public Class plFlow
         End Get
         Set(ByVal value As cFleetInput)
             Me.m_fleetFilter = value
+            Me.m_unitFilter = Nothing
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the unit to filter flow layout by.
+    ''' </summary>
+    Public Property UnitFilter() As cUnit
+        Get
+            Return Me.m_unitFilter
+        End Get
+        Set(ByVal value As cUnit)
+            Me.m_unitFilter = value
+            Me.m_fleetFilter = Nothing
         End Set
     End Property
 
@@ -280,44 +295,44 @@ Public Class plFlow
         End Set
     End Property
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Auto-arrange the units in the flow panel.
-    ''' </summary>
-    ''' <remarks>
-    ''' The initial version of this algorithm is pretty blunt and should be 
-    ''' seriously refined.
-    ''' </remarks>
-    ''' -----------------------------------------------------------------------
-    Public Sub Arrange()
+    ' ''' -----------------------------------------------------------------------
+    ' ''' <summary>
+    ' ''' Auto-arrange the units in the flow panel.
+    ' ''' </summary>
+    ' ''' <remarks>
+    ' ''' The initial version of this algorithm is pretty blunt and should be 
+    ' ''' seriously refined.
+    ' ''' </remarks>
+    ' ''' -----------------------------------------------------------------------
+    'Public Sub Arrange()
 
-        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
-        Dim uc As plUnitControl = Nothing
-        Dim iUnitColumn As Integer = 0
-        Dim aiUnitCount([Enum].GetValues(GetType(cUnitFactory.eUnitType)).Length) As Integer
+    '    Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
+    '    Dim uc As plUnitControl = Nothing
+    '    Dim iUnitColumn As Integer = 0
+    '    Dim aiUnitCount([Enum].GetValues(GetType(cUnitFactory.eUnitType)).Length) As Integer
 
-        ' Align each unit in its column, where row position is based on unit index
-        '    ToDo: include branches, merges into algorithm
-        For Each unit As cUnit In Me.m_dtControls.Keys
-            iUnitColumn = CInt(unit.UnitType) - 1
-            uc = Me.m_dtControls(unit)
-            With uc.FlowPos
-                .AllowEvents = False
-                .Xpos = CInt(ptUnitMargin.X + iUnitColumn * Me.m_iCellWidth)
-                .Ypos = CInt(ptUnitMargin.Y + aiUnitCount(iUnitColumn) * Me.m_iCellHeight)
-                .AllowEvents = True
-            End With
-            aiUnitCount(iUnitColumn) += 1
-        Next
+    '    ' Align each unit in its column, where row position is based on unit index
+    '    '    ToDo: include branches, merges into algorithm
+    '    For Each unit As cUnit In Me.m_dtControls.Keys
+    '        iUnitColumn = CInt(unit.UnitType) - 1
+    '        uc = Me.m_dtControls(unit)
+    '        With uc.FlowPos
+    '            .AllowEvents = False
+    '            .Xpos = CInt(ptUnitMargin.X + iUnitColumn * Me.m_iCellWidth)
+    '            .Ypos = CInt(ptUnitMargin.Y + aiUnitCount(iUnitColumn) * Me.m_iCellHeight)
+    '            .AllowEvents = True
+    '        End With
+    '        aiUnitCount(iUnitColumn) += 1
+    '    Next
 
-        ' Switch to 'move' mode upon arranging if NOT readonly
-        If (Me.EditMode <> eEditMode.ReadOnly) Then
-            Me.EditMode = eEditMode.Move
-        End If
+    '    ' Switch to 'move' mode upon arranging if NOT readonly
+    '    If (Me.EditMode <> eEditMode.ReadOnly) Then
+    '        Me.EditMode = eEditMode.Move
+    '    End If
 
-        Me.Refresh()
+    '    Me.Refresh()
 
-    End Sub
+    'End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -340,20 +355,23 @@ Public Class plFlow
         For Each unit As cUnit In Me.m_dtControls.Keys
             Dim uc As plUnitControl = Me.m_dtControls(unit)
             ' Reverse height and width, 'cause the graph will be flipped Vert to Horz
-            Dim n As New Microsoft.Glee.Node(CStr(uc.Unit.DBID), Splines.CurveFactory.CreateBox(uc.Height, uc.Width, New Splines.Point(uc.FlowPos.Ypos, uc.FlowPos.Xpos)))
+            Dim n As New Microsoft.Glee.Node(CStr(uc.Unit.DBID), Splines.CurveFactory.CreateBox(uc.Height, uc.Width, New Splines.Point(0, 0)))
             g.AddNode(n)
             nodes(unit) = n
         Next
 
         ' Feed graph with connections
         For Each l As LinkWrapper In Me.m_lDiagramLinks
-            g.AddEdge(New Edge(nodes(l.Target), nodes(l.Source)))
+            ' We may be arranging a partial diagram - test for completeness
+            If nodes.ContainsKey(l.Target) And nodes.ContainsKey(l.Source) Then
+                g.AddEdge(New Edge(nodes(l.Target), nodes(l.Source)))
+            End If
         Next
 
         ' Shazam
         g.CalculateLayout()
 
-        ' Hack: find layouted graph offset. Bounding box cannot limited by GleeGraph
+        ' Hack: find layouted graph offset. Bounding box cannot be limited by GleeGraph
         Dim dx As Integer = Integer.MaxValue
         Dim dy As Integer = Integer.MaxValue
         For Each n As Node In nodes.Values
@@ -369,8 +387,8 @@ Public Class plFlow
             Dim ptc As Splines.Point = n.Center
             ' Switch x and Y to get a horizontal graph
             uc.FlowPos.AllowEvents = False
-            uc.FlowPos.Xpos = 10 + CInt(ptc.Y - dy + m_iCellWidth / 4)
-            uc.FlowPos.Ypos = 10 + CInt(ptc.X - dx + m_iCellHeight / 4)
+            uc.FlowPos.Xpos = CInt(ptc.Y - dy + m_iCellWidth / 4)
+            uc.FlowPos.Ypos = CInt(ptc.X - dx + m_iCellHeight / 4)
             uc.FlowPos.AllowEvents = True
         Next
 
@@ -399,10 +417,14 @@ Public Class plFlow
 
         Dim lUnits As New List(Of cUnit)
 
+        Me.Visible = False
+
         ' Has unit filter?
-        ' #No: has fleet and/or group filter?
-        If (Me.FleetFilter IsNot Nothing) Then
-            ' #Yes: grab flow operating on the requested fleet/group
+        If (Me.m_unitFilter IsNot Nothing) Then
+            ' #Yes: grab unit only
+            lUnits.Add(Me.m_unitFilter)
+        ElseIf (Me.FleetFilter IsNot Nothing) Then
+            ' #No: Has fleet filter?
             lUnits.AddRange(Me.m_data.GetUnits(Me.FleetFilter))
         Else
             ' #No: grab all units
@@ -422,6 +444,18 @@ Public Class plFlow
                 Me.AddLink(unit.LinkOut(j), False)
             Next j
         Next unit
+
+        ' Rendering for a temporary diagram?
+        If (Me.m_diagram Is Nothing) Then
+            ' #Yes: auto-layout
+            Try
+                Me.ArrangeGLEE()
+            Catch ex As Exception
+
+            End Try
+        End If
+
+        Me.Visible = True
 
     End Sub
 

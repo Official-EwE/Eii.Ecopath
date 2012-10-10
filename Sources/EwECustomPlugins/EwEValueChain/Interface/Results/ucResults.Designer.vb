@@ -39,6 +39,8 @@ Partial Class ucResults
         Me.m_tssSep3 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tslFleets = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbFleets = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_tslUnit = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tscmbUnit = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tssep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbShowFlow = New System.Windows.Forms.ToolStripButton()
         Me.m_tssep2 = New System.Windows.Forms.ToolStripSeparator()
@@ -69,7 +71,7 @@ Partial Class ucResults
         'm_tsResults
         '
         Me.m_tsResults.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslFleets, Me.m_tscmbFleets, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
+        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslFleets, Me.m_tscmbFleets, Me.m_tslUnit, Me.m_tscmbUnit, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
         Me.m_tsResults.Location = New System.Drawing.Point(0, 0)
         Me.m_tsResults.Name = "m_tsResults"
         Me.m_tsResults.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -104,6 +106,17 @@ Partial Class ucResults
         Me.m_tscmbFleets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscmbFleets.Name = "m_tscmbFleets"
         Me.m_tscmbFleets.Size = New System.Drawing.Size(150, 25)
+        '
+        'm_tslUnit
+        '
+        Me.m_tslUnit.Name = "m_tslUnit"
+        Me.m_tslUnit.Size = New System.Drawing.Size(32, 22)
+        Me.m_tslUnit.Text = "Unit:"
+        '
+        'm_tscmbUnit
+        '
+        Me.m_tscmbUnit.Name = "m_tscmbUnit"
+        Me.m_tscmbUnit.Size = New System.Drawing.Size(121, 25)
         '
         'm_tssep1
         '
@@ -244,5 +257,7 @@ Partial Class ucResults
     Private WithEvents m_tscmbGraphData As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_tslblData As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tssSep3 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tslUnit As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tscmbUnit As System.Windows.Forms.ToolStripComboBox
 
 End Class
