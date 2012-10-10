@@ -117,6 +117,7 @@ Partial Class ucResults
         '
         'm_tscmbUnit
         '
+        Me.m_tscmbUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscmbUnit.Name = "m_tscmbUnit"
         Me.m_tscmbUnit.Size = New System.Drawing.Size(150, 25)
         Me.m_tscmbUnit.Sorted = True

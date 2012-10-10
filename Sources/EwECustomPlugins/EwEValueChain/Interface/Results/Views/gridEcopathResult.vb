@@ -186,6 +186,7 @@ Public Class gridEcopathResult
         Me.AutoSize = True
         Me.AutoSizeAll()
         Me.AutoSizeColumn(0, 140)
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -254,9 +255,9 @@ Public Class gridEcopathResult
         Next i
 
         ' Create total cells
-        For iRow As Integer = 4 To Me.RowsCount - 1
+        For iRow As Integer = 3 To Me.RowsCount - 1
             Dim sTotal As Single = 0.0!
-            For iCol As Integer = eColumnTypes.Producer To eColumnTypes.Wholesaler
+            For iCol As Integer = eColumnTypes.Producer To eColumnTypes.Retailer
                 Try
                     sTotal += CSng(Val(Me(iRow, iCol).Value))
                 Catch ex As Exception
@@ -266,6 +267,7 @@ Public Class gridEcopathResult
             Me.UpdateDataCell(Me(iRow, eColumnTypes.Total), sTotal)
         Next
 
+        Me.FixedColumnWidths = False
         Me.InvalidateCells()
 
     End Sub
@@ -307,6 +309,7 @@ Public Class gridEcopathResult
         cell.NumDigits = 0
         ' Group digits
         cell.GroupDigits = TriState.True
+        cell.VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleRight
 
         Return cell
 
