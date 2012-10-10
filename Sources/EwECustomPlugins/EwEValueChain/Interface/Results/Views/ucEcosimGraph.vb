@@ -47,6 +47,7 @@ Public Class ucEcosimGraph
     Public Sub New(ByVal data As cData, ByVal uic As cUIContext)
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(uic, Me)
+        Me.m_zgh.ShowPointValue = True
         Me.m_data = data
         Me.PrepareGraph()
     End Sub
