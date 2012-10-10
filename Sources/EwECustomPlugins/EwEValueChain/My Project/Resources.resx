@@ -2150,4 +2150,31 @@ QmCCCw==</value>
   <data name="consumer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\consumer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="HEADER_COST" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="HEADER_COST_UNIT" xml:space="preserve">
+    <value>Cost ({0})</value>
+    <comment>{0}: unit</comment>
+  </data>
+  <data name="HEADER_DEPENDENTS" xml:space="preserve">
+    <value>Dependents</value>
+  </data>
+  <data name="HEADER_JOBS" xml:space="preserve">
+    <value>Jobs</value>
+  </data>
+  <data name="HEADER_REVENUE" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="HEADER_REVENUE_UNIT" xml:space="preserve">
+    <value>Revenue ({0})</value>
+    <comment>{0}: unit</comment>
+  </data>
+  <data name="HEADER_REV_COST" xml:space="preserve">
+    <value>Revenue and cost</value>
+  </data>
+  <data name="HEADER_REV_COST_UNIT" xml:space="preserve">
+    <value>Revenue and cost ({0})</value>
+    <comment>{0}: unit</comment>
+  </data>
 </root>
