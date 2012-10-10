@@ -1461,7 +1461,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Biomass by tropic level.
+        '''  Looks up a localized string similar to Biomass by trophic level.
         '''</summary>
         Friend ReadOnly Property PAGE_FB_BIOMTL() As String
             Get
@@ -1479,7 +1479,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catch by tropic level.
+        '''  Looks up a localized string similar to Catch by trophic level.
         '''</summary>
         Friend ReadOnly Property PAGE_FB_CATCHTL() As String
             Get
@@ -1578,7 +1578,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mixed tropic impact.
+        '''  Looks up a localized string similar to Mixed trophic impact.
         '''</summary>
         Friend ReadOnly Property PAGE_MTI() As String
             Get
@@ -1596,7 +1596,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mixed tropic impact plot.
+        '''  Looks up a localized string similar to Mixed trophic impact plot.
         '''</summary>
         Friend ReadOnly Property PAGE_MTI_PLOT() As String
             Get
@@ -1605,7 +1605,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Mixed tropic impact plot (EwE5).
+        '''  Looks up a localized string similar to Mixed trophic impact plot (EwE5).
         '''</summary>
         Friend ReadOnly Property PAGE_MTI_PLOTEWE5() As String
             Get
@@ -1659,7 +1659,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Tropic level decomposition.
+        '''  Looks up a localized string similar to Trophic level decomposition.
         '''</summary>
         Friend ReadOnly Property PAGE_TLDECOMP() As String
             Get

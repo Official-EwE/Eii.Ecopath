@@ -4450,13 +4450,13 @@ ozm8Eni5lw1AitsyI2flY0anwvm8OjSm79/8uLuoH5reHe98Vi7oA+P/AKT/AP/ZCw==</value>
     <value>Biomass pyramid</value>
   </data>
   <data name="PAGE_FB_BIOMTL" xml:space="preserve">
-    <value>Biomass by tropic level</value>
+    <value>Biomass by trophic level</value>
   </data>
   <data name="PAGE_FB_CATCHPMD" xml:space="preserve">
     <value>Catch pyramid</value>
   </data>
   <data name="PAGE_FB_CATCHTL" xml:space="preserve">
-    <value>Catch by tropic level</value>
+    <value>Catch by trophic level</value>
   </data>
   <data name="PAGE_FB_FLOWPMD" xml:space="preserve">
     <value>Flow pyramid</value>
@@ -4489,16 +4489,16 @@ ozm8Eni5lw1AitsyI2flY0anwvm8OjSm79/8uLuoH5reHe98Vi7oA+P/AKT/AP/ZCw==</value>
     <value>Keystoneness table</value>
   </data>
   <data name="PAGE_MTI" xml:space="preserve">
-    <value>Mixed tropic impact</value>
+    <value>Mixed trophic impact</value>
   </data>
   <data name="PAGE_MTI_IMPACT" xml:space="preserve">
     <value>Impact data</value>
   </data>
   <data name="PAGE_MTI_PLOT" xml:space="preserve">
-    <value>Mixed tropic impact plot</value>
+    <value>Mixed trophic impact plot</value>
   </data>
   <data name="PAGE_MTI_PLOTEWE5" xml:space="preserve">
-    <value>Mixed tropic impact plot (EwE5)</value>
+    <value>Mixed trophic impact plot (EwE5)</value>
   </data>
   <data name="PAGE_PPR" xml:space="preserve">
     <value>Primary production required</value>
@@ -4510,7 +4510,7 @@ ozm8Eni5lw1AitsyI2flY0anwvm8OjSm79/8uLuoH5reHe98Vi7oA+P/AKT/AP/ZCw==</value>
     <value>For harvest of all groups</value>
   </data>
   <data name="PAGE_TLDECOMP" xml:space="preserve">
-    <value>Tropic level decomposition</value>
+    <value>Trophic level decomposition</value>
   </data>
   <data name="PAGE_TL_ABSFLOWS" xml:space="preserve">
     <value>Absolute flows</value>
