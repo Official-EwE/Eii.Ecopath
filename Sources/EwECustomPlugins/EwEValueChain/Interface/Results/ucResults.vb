@@ -43,7 +43,8 @@ Public Class ucResults
 
         Public Overrides Function ToString() As String
             If Me.m_source Is Nothing Then Return ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALLFLEETS
-            Return Me.m_source.Name
+            Dim ftm As New cCoreInterfaceFormatter()
+            Return ftm.GetDescriptor(Me.m_source)
         End Function
 
         Public ReadOnly Property Source() As cCoreInputOutputBase
@@ -64,7 +65,7 @@ Public Class ucResults
 
         Public Overrides Function ToString() As String
             If Me.m_source Is Nothing Then Return ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALL
-            Return Me.m_source.Name
+            Return Me.m_source.Name.Trim
         End Function
 
         Public ReadOnly Property Source() As cUnit
@@ -326,7 +327,7 @@ Public Class ucResults
             Me.m_data.Core.RunEcoPath()
 
         Catch ex As Exception
-
+            cLog.Write(ex, "ValueChain::OnInvokeRunEcopath")
         End Try
 
         ' Switch back to auto run mode
@@ -363,11 +364,10 @@ Public Class ucResults
             Me.m_result.Reset(cModel.eRunTypes.Ecosim)
             ' Prepare view
             Me.SetViewMode(eViewModeType.Graph)
-            ' Run Ecosim
-            Me.m_data.Core.RunEcoSim(AddressOf EcosimTimestepHandler)
+            Me.m_data.Core.RunEcoSim()
 
         Catch ex As Exception
-
+            cLog.Write(ex, "ValueChain::OnInvokeRunEcosim")
         End Try
 
         ' Switch back to auto run mode
@@ -394,8 +394,6 @@ Public Class ucResults
         Me.m_model.IsManualRunMode = True
 
         Try
-
-
             ' Reset cached results
             '    In manual mode the calling process becomes responsible for resetting results
             Me.m_result.Reset(cModel.eRunTypes.Equilibrium)
@@ -404,7 +402,7 @@ Public Class ucResults
             ' Run
             Me.m_model.RunEquilibrium(Me.m_data, Me.m_result)
         Catch ex As Exception
-
+            cLog.Write(ex, "ValueChain::OnInvokeRunEquilibrium")
         End Try
 
         ' Switch back to auto run mode
@@ -424,16 +422,6 @@ Public Class ucResults
     End Sub
 
 #End Region ' Commands
-
-#Region " Core messages "
-
-    Private Sub EcosimTimestepHandler(ByVal iTime As Long, ByVal results As cEcoSimResults)
-        ' JS 25Feb09: plug-in will handle this
-        'Me.m_model.Run(Me.m_data, Me.m_result, CInt(iTime), results)
-        'Me.UpdateResults()
-    End Sub
-
-#End Region ' Core messages
 
 #End Region ' Events
 
@@ -587,17 +575,15 @@ Public Class ucResults
         Select Case graphmode
 
             Case eGraphDataType.CostRevenue
-                ' ToDo: globalize this
-                strGraphTitle = "Revenue and Cost"
-                strYAxisLabel = "Revenue and Cost ({0})"
+                strGraphTitle = My.Resources.HEADER_REV_COST
+                strYAxisLabel = My.Resources.HEADER_REV_COST_UNIT
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal, _
                                                       cResults.eVariableType.Cost, _
                                                       cResults.eVariableType.Profit}
 
             Case eGraphDataType.Cost
-                ' ToDo: globalize this
-                strGraphTitle = "Cost"
-                strYAxisLabel = "Cost breakdown ({0})"
+                strGraphTitle = My.Resources.HEADER_COST
+                strYAxisLabel = My.Resources.HEADER_COST_UNIT
                 avars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture, _
                                                       cResults.eVariableType.CostInput, _
                                                       cResults.eVariableType.CostManagementRoyaltyCertification, _
@@ -605,9 +591,8 @@ Public Class ucResults
                                                       cResults.eVariableType.CostRawmaterial}
 
             Case eGraphDataType.Revenue
-                ' ToDo: globalize this
-                strGraphTitle = "Revenue"
-                strYAxisLabel = "Revenue breakdown ({0})"
+                strGraphTitle = My.Resources.HEADER_REVENUE
+                strYAxisLabel = My.Resources.HEADER_REVENUE_UNIT
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets, _
                                                       cResults.eVariableType.RevenueSubsidies, _
                                                       cResults.eVariableType.RevenueProductsMain, _
@@ -615,16 +600,14 @@ Public Class ucResults
                                                       cResults.eVariableType.RevenueAgriculture}
 
             Case eGraphDataType.Jobs
-                ' ToDo: globalize this
-                strGraphTitle = "Jobs"
-                strYAxisLabel = "Jobs"
+                strGraphTitle = My.Resources.HEADER_JOBS
+                strYAxisLabel = My.Resources.HEADER_JOBS
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal, _
                                                       cResults.eVariableType.NumberOfJobsMaleTotal, _
                                                       cResults.eVariableType.NumberOfJobsFemaleTotal}
             Case eGraphDataType.Dependents
-                ' ToDo: globalize this
-                strGraphTitle = "Dependents"
-                strYAxisLabel = "Dependents"
+                strGraphTitle = My.Resources.HEADER_DEPENDENTS
+                strYAxisLabel = My.Resources.HEADER_DEPENDENTS
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal, _
                                                       cResults.eVariableType.NumberOfWorkerDependents, _
                                                       cResults.eVariableType.NumberOfWorkerFemales, _

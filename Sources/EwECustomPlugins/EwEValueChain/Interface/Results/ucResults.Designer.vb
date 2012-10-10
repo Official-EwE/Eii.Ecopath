@@ -89,6 +89,7 @@ Partial Class ucResults
         Me.m_tscmbGraphData.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscmbGraphData.Name = "m_tscmbGraphData"
         Me.m_tscmbGraphData.Size = New System.Drawing.Size(121, 25)
+        Me.m_tscmbGraphData.Sorted = True
         '
         'm_tssSep3
         '
@@ -106,6 +107,7 @@ Partial Class ucResults
         Me.m_tscmbFleets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscmbFleets.Name = "m_tscmbFleets"
         Me.m_tscmbFleets.Size = New System.Drawing.Size(150, 25)
+        Me.m_tscmbFleets.Sorted = True
         '
         'm_tslUnit
         '
@@ -116,7 +118,8 @@ Partial Class ucResults
         'm_tscmbUnit
         '
         Me.m_tscmbUnit.Name = "m_tscmbUnit"
-        Me.m_tscmbUnit.Size = New System.Drawing.Size(121, 25)
+        Me.m_tscmbUnit.Size = New System.Drawing.Size(150, 25)
+        Me.m_tscmbUnit.Sorted = True
         '
         'm_tssep1
         '
@@ -207,6 +210,7 @@ Partial Class ucResults
         Me.m_plFlow.ShowGrid = False
         Me.m_plFlow.Size = New System.Drawing.Size(747, 68)
         Me.m_plFlow.TabIndex = 0
+        Me.m_plFlow.UnitFilter = Nothing
         '
         'm_btnRunEquilibrium
         '
