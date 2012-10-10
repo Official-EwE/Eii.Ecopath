@@ -234,7 +234,7 @@ Public MustInherit Class cUnit
                 If inputTotal.Tons > 0 Then
                     Dim sOutputBiomass As Single = link.BiomassRatio * inputTotal.Tons
                     Dim sOutputValue As Single = 0
-                    If link.ValuePerTon <> 1.0! Then
+                    If link.ValuePerTon <> 1.0! And link.ValuePerTon <> 0 Then
                         sOutputValue = link.ValuePerTon * sOutputBiomass
                     Else
                         sOutputValue = (inputTotal.Value / inputTotal.Tons) * link.ValueRatio * sOutputBiomass
