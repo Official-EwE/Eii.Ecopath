@@ -93,49 +93,48 @@ Public Class frmMain
 
         Select Case Me.m_pageCurrent
             Case eValueChainPageTypes.Parameters
-                Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Context))
+                Me.ShowForm(New ucParameters(Me.m_plugin.Data, Me.m_plugin.Context), My.Resources.NAVTREE_INPUT_PARAMETERS)
             Case eValueChainPageTypes.TableProducers
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Producer)
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_PRODUCERS)
             Case eValueChainPageTypes.TableProcessors
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Processing)
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_PROCESSORS)
             Case eValueChainPageTypes.TableDistributors
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Distribution)
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_DISTRIBUTORS)
             Case eValueChainPageTypes.TableWholesellers
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Wholesaler)
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_WHOLESELLERS)
             Case eValueChainPageTypes.TableRetailer
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Retailer)
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_RETAILERS)
             Case eValueChainPageTypes.TableConsumers
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Consumer)
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_CONSUMERS)
             Case eValueChainPageTypes.Flow
-                Me.ShowForm(New ucEditFlow(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Data.FlowDiagram(0)))
+                Me.ShowForm(New ucEditFlow(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Data.FlowDiagram(0)), My.Resources.NAVTREE_INPUT_FLOW)
             Case eValueChainPageTypes.Defaults
-                Me.ShowForm(New ucDefaults(Me.m_plugin.Context, Me.m_plugin.Data))
+                Me.ShowForm(New ucDefaults(Me.m_plugin.Context, Me.m_plugin.Data), My.Resources.NAVTREE_INPUT_DEFAULTS)
             Case eValueChainPageTypes.TableLinks
                 Dim grid As New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLink))
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_LINKS)
             Case eValueChainPageTypes.TableLandingsLinks
                 Dim grid As New ucLinkGrid(Me.m_plugin.Context, Me.m_plugin.Data, GetType(cLinkLandings))
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_LANDINGLINKS)
             Case eValueChainPageTypes.Run
-                Me.ShowForm(New ucResults(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results))
+                Me.ShowForm(New ucResults(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results), My.Resources.NAVTREE_OUTPUT_RUN)
             Case Else
                 Debug.Assert(False)
         End Select
-
         Me.m_bInUpdate = False
 
     End Sub
@@ -159,7 +158,9 @@ Public Class frmMain
         Return strFormName
     End Function
 
-    Private Sub ShowForm(ByVal f As Control)
+    Private Sub ShowForm(ByVal f As Control, ByVal strTitle As String)
+
+        Debug.Assert(f IsNot Nothing)
 
         Dim ctrl As Control = Nothing
 
@@ -182,6 +183,7 @@ Public Class frmMain
             Debug.Assert(False, ex.Message)
         End Try
 
+        Me.TabText = String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_INDEXED, My.Resources.GENERIC_CAPTION, strTitle)
         Me.ResumeLayout()
 
     End Sub

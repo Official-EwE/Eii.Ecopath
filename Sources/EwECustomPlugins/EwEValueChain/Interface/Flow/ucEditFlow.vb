@@ -60,6 +60,7 @@ Public Class ucEditFlow
 
         If (data.Parameters IsNot Nothing) Then
             Me.m_plFlow.ZoomFactor = data.Parameters.ZoomFactor
+            Me.m_plFlow.ShowGrid = data.Parameters.ShowGrid
         End If
         Me.UpdateControls()
 
@@ -73,6 +74,7 @@ Public Class ucEditFlow
             ' Store zoom factor
             If (Data.Parameters IsNot Nothing) Then
                 Data.Parameters.ZoomFactor = Me.m_plFlow.ZoomFactor
+                Data.Parameters.ShowGrid = Me.m_plFlow.ShowGrid
             End If
 
             Me.m_diagram = Nothing
