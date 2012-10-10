@@ -1776,6 +1776,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Network Analysis may run slow on complex diet matrices, and may take several hours to days (!) to complete. Are you sure you want to continue?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_NETWORK_COMPLEXDIET() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_NETWORK_COMPLEXDIET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Save Network Analysis results as annual averages?.
         '''</summary>
         Friend ReadOnly Property PROMPT_SAVE_ANNUAL_AVERAGES() As String

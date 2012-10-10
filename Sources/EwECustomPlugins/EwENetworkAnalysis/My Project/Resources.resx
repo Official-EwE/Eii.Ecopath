@@ -4574,4 +4574,7 @@ ozm8Eni5lw1AitsyI2flY0anwvm8OjSm79/8uLuoH5reHe98Vi7oA+P/AKT/AP/ZCw==</value>
   <data name="PROMPT_ERROR_PP" xml:space="preserve">
     <value>There are no utilized primary producers. Network analysis cannot continue.</value>
   </data>
+  <data name="PROMPT_NETWORK_COMPLEXDIET" xml:space="preserve">
+    <value>Network Analysis may run slow on complex diet matrices, and may take several hours to days (!) to complete. Are you sure you want to continue?</value>
+  </data>
 </root>

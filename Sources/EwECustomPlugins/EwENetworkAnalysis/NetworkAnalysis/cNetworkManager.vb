@@ -167,11 +167,21 @@ Public Class cNetworkManager
         Me.m_runstate = eRunState.NetworkNeedsToRun
         Me.m_pathwaystate = ePathways.NotRan
 
-        If Me.m_econetwork Is Nothing Then
+        If (Me.m_econetwork Is Nothing) Then
             'message of some sort
             Me.m_publisher.SendMessage(New cMessage(My.Resources.PROMPT_ERROR_INITIALIZE, _
                                                  eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Warning))
             bSucces = False
+        End If
+
+        If (Me.MayRunSlow()) Then
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_NETWORK_COMPLEXDIET, _
+                                             eCoreComponentType.External, eMessageType.Any, _
+                                             eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            fmsg.Reply = cFeedbackMessage.eReply.NO
+            fmsg.Suppressable = True
+            Me.m_publisher.SendMessage(fmsg)
+            If fmsg.Reply <> cFeedbackMessage.eReply.YES Then Return False
         End If
 
         If bSucces Then
@@ -2112,6 +2122,17 @@ Public Class cNetworkManager
             Return ""
         End Try
 
+    End Function
+
+    Private Function MayRunSlow() As Boolean
+        Dim nGroups As Integer = Me.Core.nGroups
+        Dim nDiets As Integer = 0
+        For i As Integer = 1 To nGroups
+            For j As Integer = 1 To nGroups
+                If EcopathData.DCInput(i, j) > 0 Then nDiets += 1
+            Next
+        Next
+        Return (nGroups > 30) And (nDiets > nGroups * 6)
     End Function
 
 #End Region ' Misc private methods
