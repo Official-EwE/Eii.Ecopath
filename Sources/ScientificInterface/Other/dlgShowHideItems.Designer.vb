@@ -43,7 +43,6 @@ Namespace Ecosim
             Me.m_clbGroups = New System.Windows.Forms.CheckedListBox()
             Me.m_btnAllGroups = New System.Windows.Forms.Button()
             Me.m_btnNoneGroups = New System.Windows.Forms.Button()
-            Me.m_btnDefaultGroups = New System.Windows.Forms.Button()
             Me.m_tcDisplayBits = New System.Windows.Forms.TabControl()
             Me.m_tpGroups = New System.Windows.Forms.TabPage()
             Me.m_hdrFilterGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -90,11 +89,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_btnNoneGroups, "m_btnNoneGroups")
             Me.m_btnNoneGroups.Name = "m_btnNoneGroups"
             '
-            'm_btnDefaultGroups
-            '
-            resources.ApplyResources(Me.m_btnDefaultGroups, "m_btnDefaultGroups")
-            Me.m_btnDefaultGroups.Name = "m_btnDefaultGroups"
-            '
             'm_tcDisplayBits
             '
             resources.ApplyResources(Me.m_tcDisplayBits, "m_tcDisplayBits")
@@ -113,7 +107,6 @@ Namespace Ecosim
             Me.m_tpGroups.Controls.Add(Me.m_btnConsumers)
             Me.m_tpGroups.Controls.Add(Me.m_btnProducers)
             Me.m_tpGroups.Controls.Add(Me.m_btnFished)
-            Me.m_tpGroups.Controls.Add(Me.m_btnDefaultGroups)
             Me.m_tpGroups.Controls.Add(Me.m_btnAllGroups)
             Me.m_tpGroups.Controls.Add(Me.m_btnNoneGroups)
             resources.ApplyResources(Me.m_tpGroups, "m_tpGroups")
@@ -213,7 +206,6 @@ Namespace Ecosim
         Private WithEvents m_btnAllGroups As System.Windows.Forms.Button
         Private WithEvents m_btnNoneGroups As System.Windows.Forms.Button
         Private WithEvents m_clbGroups As System.Windows.Forms.CheckedListBox
-        Private WithEvents m_btnDefaultGroups As System.Windows.Forms.Button
         Private WithEvents m_clbFleets As System.Windows.Forms.CheckedListBox
         Private WithEvents m_btnAllFleets As System.Windows.Forms.Button
         Private WithEvents m_btnNoneFleets As System.Windows.Forms.Button

@@ -168,23 +168,6 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSelectDefaultGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_btnDefaultGroups.Click
-
-            ' Check all groups, uncheck summary items
-            Me.m_clbGroups.SuspendLayout()
-
-            Dim iIndex As Integer = 0
-            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_clbGroups.SetItemChecked(iGroup - 1, True)
-            Next
-            iIndex += 1
-
-            Me.m_clbGroups.ResumeLayout()
-            Me.SyncFleets()
-
-        End Sub
-
         Private Sub OnSelectProducers(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnProducers.Click
 
