@@ -2735,7 +2735,13 @@ Namespace Database
             ' Optimization: cache assembly names
             If m_dtAssemblyNames.Count = 0 Then
                 For Each ass In AppDomain.CurrentDomain.GetAssemblies()
-                    m_dtAssemblyNames.Add(ass.GetName.Name, ass)
+                    Try
+                        If Not ass.FullName.StartsWith("Microsoft") Then
+                            m_dtAssemblyNames.Add(ass.GetName.Name, ass)
+                        End If
+                    Catch ex As Exception
+                        ' Ignore assembly confusion 
+                    End Try
                 Next
             End If
 
