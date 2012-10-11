@@ -565,7 +565,7 @@ Namespace Ecospace
                 Next
 
                 Dim maptype As cMapDrawer.eMapType
-                Dim RelScaler() As Single
+                Dim RelScaler() As Single = Nothing
                 Dim ifirst As Integer = 0
                 Dim ilast As Integer = 0
 

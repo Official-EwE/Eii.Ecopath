@@ -25,6 +25,7 @@ Imports System.Reflection
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Database
 Imports Microsoft.Glee
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
@@ -1323,7 +1324,7 @@ Public Class plFlow
     ''' </summary>
     ''' <param name="obj">The item that changed.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub OnElementChanged(ByVal obj As cOOPStorable)
+    Private Sub OnElementChanged(ByVal obj As cEwEDatabase.cOOPStorable)
         Me.Invalidate()
     End Sub
 

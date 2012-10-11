@@ -67,6 +67,7 @@ Namespace Ecospace
             MyBase.OnFormClosed(e)
         End Sub
 
+        <CLSCompliant(False)> _
         Protected Overrides ReadOnly Property Grid() As Ecosim.ApplyShapeGrid
             Get
                 Return Me.m_grid

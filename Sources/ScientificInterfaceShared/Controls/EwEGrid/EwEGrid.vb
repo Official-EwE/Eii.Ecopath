@@ -1258,7 +1258,7 @@ Namespace Controls.EwEGrid
             Dim bRepeatRow As Boolean = (r.ColumnsCount Mod iDX = 0) And (iDX > 1)
             Dim bRepeatCol As Boolean = (r.RowsCount Mod iDY = 0) And (iDY > 1)
             Dim iRowFrom As Integer = r.Start.Row
-            Dim iRowTo As Integer = Math.Min(IIf(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1), Me.RowsCount - 1)
+            Dim iRowTo As Integer = Math.Min(IIF(bRepeatRow, r.End.Row, r.Start.Row + astrLines.Length - 1), Me.RowsCount - 1)
             ' Restrict paste operation to the selection area when repeating data and/or when pasting into a range
             Dim bRestrictToSelection As Boolean = bRepeatRow Or bRepeatCol Or (r.RowsCount > 1) Or (r.ColumnsCount > 1)
 
@@ -1275,7 +1275,7 @@ Namespace Controls.EwEGrid
 
                         Dim astrCols() As String = astrLines(iRowData).Split(CChar(cStringUtils.vbTab))
                         Dim iColFrom As Integer = r.Start.Column
-                        Dim iColTo As Integer = Math.Min(CInt(IIf(bRepeatCol, r.End.Column, r.Start.Column + astrCols.Length - 1)), Me.ColumnsCount - 1)
+                        Dim iColTo As Integer = Math.Min(CInt(IIF(bRepeatCol, r.End.Column, r.Start.Column + astrCols.Length - 1)), Me.ColumnsCount - 1)
                         iColData = 0
 
                         If bRestrictToSelection Then iColTo = Math.Min(iColTo, r.End.Column)

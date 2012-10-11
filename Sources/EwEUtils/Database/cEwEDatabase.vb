@@ -1670,7 +1670,7 @@ Namespace Database
                     Me.ReleaseReader(reader)
 
                 Catch ex As Exception
-
+                    ' Aargh, cLog is not available here!!
                 End Try
             End If
 
