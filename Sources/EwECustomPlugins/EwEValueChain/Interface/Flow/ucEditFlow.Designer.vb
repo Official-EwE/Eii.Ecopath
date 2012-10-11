@@ -59,6 +59,8 @@ Partial Class ucEditFlow
         Me.m_pgDetails = New System.Windows.Forms.PropertyGrid()
         Me.m_selector = New EwEValueChainPlugin.ucSelector2()
         Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tssbConvert = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_split.Panel1.SuspendLayout()
@@ -70,7 +72,7 @@ Partial Class ucEditFlow
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator3, Me.m_tsbAdd, Me.ToolStripSeparator1, Me.m_tsbMove, Me.m_tsbLink, Me.m_tsbDelete, Me.m_tsSeparator, Me.m_tsbShowGrid, Me.m_tsbArrange, Me.ToolStripSeparator5, Me.m_tsddZoom})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator3, Me.m_tsbAdd, Me.ToolStripSeparator1, Me.m_tsbMove, Me.m_tsbLink, Me.m_tsbDelete, Me.m_tsSeparator, Me.m_tsbShowGrid, Me.m_tsbArrange, Me.ToolStripSeparator5, Me.m_tsddZoom, Me.ToolStripSeparator2, Me.m_tssbConvert})
         Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -283,6 +285,7 @@ Partial Class ucEditFlow
         Me.m_plFlow.ShowGrid = False
         Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
         Me.m_plFlow.TabIndex = 0
+        Me.m_plFlow.UnitFilter = Nothing
         '
         'm_tlpDetails
         '
@@ -305,9 +308,9 @@ Partial Class ucEditFlow
         'm_pgDetails
         '
         Me.m_pgDetails.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pgDetails.Location = New System.Drawing.Point(3, 143)
+        Me.m_pgDetails.Location = New System.Drawing.Point(3, 23)
         Me.m_pgDetails.Name = "m_pgDetails"
-        Me.m_pgDetails.Size = New System.Drawing.Size(175, 279)
+        Me.m_pgDetails.Size = New System.Drawing.Size(175, 399)
         Me.m_pgDetails.TabIndex = 0
         '
         'm_selector
@@ -326,12 +329,27 @@ Partial Class ucEditFlow
         Me.m_hdrDetails.CollapsedParentHeight = 0
         Me.m_hdrDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_hdrDetails.IsCollapsed = False
-        Me.m_hdrDetails.Location = New System.Drawing.Point(3, 120)
+        Me.m_hdrDetails.Location = New System.Drawing.Point(3, 0)
         Me.m_hdrDetails.Name = "m_hdrDetails"
         Me.m_hdrDetails.Size = New System.Drawing.Size(175, 20)
         Me.m_hdrDetails.TabIndex = 2
         Me.m_hdrDetails.Text = "Selection details"
         Me.m_hdrDetails.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 38)
+        '
+        'm_tssbConvert
+        '
+        Me.m_tssbConvert.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.m_tssbConvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.m_tssbConvert.Image = CType(resources.GetObject("m_tssbConvert.Image"), System.Drawing.Image)
+        Me.m_tssbConvert.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tssbConvert.Name = "m_tssbConvert"
+        Me.m_tssbConvert.Size = New System.Drawing.Size(88, 35)
+        Me.m_tssbConvert.Text = "Convert to..."
         '
         'ucEditFlow
         '
@@ -382,5 +400,7 @@ Partial Class ucEditFlow
     Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_selector As EwEValueChainPlugin.ucSelector2
     Private WithEvents m_hdrDetails As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tssbConvert As System.Windows.Forms.ToolStripSplitButton
 
 End Class

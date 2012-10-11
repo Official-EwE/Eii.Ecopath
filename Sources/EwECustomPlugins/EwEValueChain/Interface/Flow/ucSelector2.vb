@@ -39,6 +39,14 @@ Public Class ucSelector2
         Me.m_pg = pg
     End Sub
 
+    Public ReadOnly Property SelectedUnit As cUnit
+        Get
+            If (Me.m_selection.Length = 0) Then Return Nothing
+            If (TypeOf Me.m_selection(0) Is cUnit) Then Return DirectCast(Me.m_selection(0), cUnit)
+            Return Nothing
+        End Get
+    End Property
+
     Public Property Selection() As Object
         Get
             Return Me.m_selection

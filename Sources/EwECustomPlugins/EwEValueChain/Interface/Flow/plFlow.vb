@@ -28,6 +28,8 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Drawing.Drawing2D
 Imports System.ComponentModel
 Imports Microsoft.Glee
+Imports System.Reflection
+Imports ScientificInterfaceShared.Controls.EwEGrid
 
 #End Region ' Imports
 
@@ -659,12 +661,19 @@ Public Class plFlow
 
 #Region " Selection "
 
-    Private Property Selection() As Object
+    ''' <summary>
+    ''' Panel selection change event.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="obj"></param>
+    Public Event SelectionChanged(ByVal sender As plFlow, ByVal obj As Object)
+
+    Public Property Selection() As Object
         Get
             Return Me.m_selection
         End Get
 
-        Set(ByVal value As Object)
+        Private Set(ByVal value As Object)
             ' Optimization
             If Object.ReferenceEquals(Me.m_selection, value) Then Return
 
@@ -695,8 +704,14 @@ Public Class plFlow
                 End If
             End If
 
+            Try
+                ' Pass out selection
+                RaiseEvent SelectionChanged(Me, Me.m_selection)
+            Catch ex As Exception
+
+            End Try
+
             Me.UpdateControls()
-            ' Redraw
             Me.Invalidate()
 
         End Set
@@ -913,6 +928,48 @@ Public Class plFlow
         End If
 
         Return Me.m_data.DeleteUnit(unit)
+
+    End Function
+
+    Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.eUnitType) As Boolean
+
+        Dim unitNew As cUnit = Me.CreateUnit(convertTo)
+        Dim llinks As New List(Of cLink)
+        Dim api As PropertyInfo() = cPropertyInfoHelper.GetAllowedProperties(unit.GetType)
+
+        ' Copy properties
+        For Each pi As PropertyInfo In api
+            Try
+                Dim objVal As Object = pi.GetValue(unit, Nothing)
+                pi.SetValue(unitNew, objVal, Nothing)
+            Catch ex As Exception
+                ' Whaaah!
+            End Try
+        Next
+
+        For i As Integer = 0 To unit.LinkInCount - 1
+            llinks.Add(unit.LinkIn(i))
+        Next
+        For Each l As cLink In llinks
+            Dim src As cUnit = l.Source
+            src.RemoveLink(l)
+            l.Target = unitNew
+            src.AddLink(l)
+        Next
+
+        llinks.Clear()
+        For i As Integer = 0 To unit.LinkOutCount - 1
+            llinks.Add(unit.LinkOut(i))
+        Next
+        For Each l As cLink In llinks
+            unit.RemoveLink(l)
+            l.Source = unitNew
+            unitNew.AddLink(l)
+        Next
+
+        Dim pos As cFlowPosition = Me.m_data.FlowPosition(unit, Me.m_diagram)
+        pos.Unit = unitNew
+        Me.m_data.DeleteUnit(unit)
 
     End Function
 

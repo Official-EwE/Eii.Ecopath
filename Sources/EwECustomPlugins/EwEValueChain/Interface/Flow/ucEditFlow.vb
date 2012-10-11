@@ -66,6 +66,7 @@ Public Class ucEditFlow
 
         AddHandler Me.m_plFlow.EditModeChanged, AddressOf Me.OnEditModeChanged
         AddHandler Me.m_plFlow.ZoomChanged, AddressOf Me.OnZoomChanged
+        AddHandler Me.m_plFlow.SelectionChanged, AddressOf Me.OnSelectionChanged
 
     End Sub
 
@@ -84,6 +85,7 @@ Public Class ucEditFlow
             ' Disconnect
             RemoveHandler Me.m_plFlow.EditModeChanged, AddressOf OnEditModeChanged
             RemoveHandler Me.m_plFlow.ZoomChanged, AddressOf Me.OnZoomChanged
+            RemoveHandler Me.m_plFlow.SelectionChanged, AddressOf OnSelectionChanged
 
             ' Default cleanup
             If disposing AndAlso components IsNot Nothing Then
@@ -196,6 +198,17 @@ Public Class ucEditFlow
         Me.UpdateControls()
     End Sub
 
+    Private Sub OnConvertSelection(ByVal sender As System.Object, ByVal e As System.EventArgs)
+
+        If (Not TypeOf sender Is ToolStripItem) Then Return
+        Dim item As ToolStripItem = DirectCast(sender, ToolStripItem)
+
+        If (item.Tag Is Nothing) Then Return
+        Me.m_plFlow.ConvertUnit(Me.m_selector.SelectedUnit, DirectCast(item.Tag, cUnitFactory.eUnitType))
+        Me.UpdateControls()
+
+    End Sub
+
 #End Region ' Creation buttons
 
 #Region " Control buttons "
@@ -242,6 +255,14 @@ Public Class ucEditFlow
         End Try
     End Sub
 
+    Private Sub OnSelectionChanged(sender As plFlow, selection As Object)
+        Try
+            Me.UpdateControls()
+        Catch ex As Exception
+            cLog.Write(ex, "ValueChain.ucEditFlow::OnSelectionChanged")
+        End Try
+    End Sub
+
 #End Region ' moozmooZ
 
 #End Region ' Event handling
@@ -275,6 +296,25 @@ Public Class ucEditFlow
         '        .Add(tsi)
         '    Next
         'End With
+
+        ' Update list of available conversion options
+        Dim bCanConvert As Boolean = False
+
+        Me.m_tssbConvert.DropDownItems.Clear()
+        Dim unit As cUnit = Me.m_selector.SelectedUnit
+        If (unit IsNot Nothing) Then
+            If (Not TypeOf unit Is cProducerUnit) Then
+                For ut As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Processing To cUnitFactory.eUnitType.Consumer
+                    If unit.UnitType <> ut And unit.UnitType <> cUnitFactory.eUnitType.Producer Then
+                        Dim item As New ToolStripMenuItem(ut.ToString, Nothing, AddressOf OnConvertSelection)
+                        item.Tag = ut
+                        Me.m_tssbConvert.DropDownItems.Add(item)
+                        bCanConvert = True
+                    End If
+                Next
+            End If
+        End If
+        Me.m_tssbConvert.Enabled = bCanConvert
 
     End Sub
 
