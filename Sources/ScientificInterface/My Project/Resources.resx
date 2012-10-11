@@ -1573,4 +1573,7 @@ Description: {2}</value>
     <value>Completed '{0}'</value>
     <comment>{0}=component name</comment>
   </data>
+  <data name="STATUS_LAUNCHING_EMAIL" xml:space="preserve">
+    <value>Launching e-mail client...</value>
+  </data>
 </root>

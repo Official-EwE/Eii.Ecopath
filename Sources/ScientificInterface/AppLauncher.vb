@@ -3017,6 +3017,8 @@ Public Class AppLauncher
     Private Sub OnReportBug(cmd As cCommand) Handles m_cmdHelpReportIssue.OnInvoke
 
         Dim strError As String = ""
+
+        cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_LAUNCHING_EMAIL)
         If Not cBugReporter.InvokeBugReport(My.Resources.GENERIC_CAPTION, "ewedevteam@gmail.com", Me.m_pluginManager) Then
             Dim msg As New cMessage(My.Resources.PROMPT_ERROR_BUG_REPORT_NO_MAIL_CLIENT, _
                                     eMessageType.NotSet, _
@@ -3024,6 +3026,7 @@ Public Class AppLauncher
                                     eMessageImportance.Warning)
             Me.Core.Messages.SendMessage(msg)
         End If
+        cApplicationStatusNotifier.EndProgress(Me.Core)
 
     End Sub
 

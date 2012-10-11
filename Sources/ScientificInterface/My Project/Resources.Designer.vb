@@ -3436,6 +3436,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Launching e-mail client....
+        '''</summary>
+        Public ReadOnly Property STATUS_LAUNCHING_EMAIL() As String
+            Get
+                Return ResourceManager.GetString("STATUS_LAUNCHING_EMAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Loading, please wait....
         '''</summary>
         Public ReadOnly Property STATUS_LOADING() As String
