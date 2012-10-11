@@ -38,6 +38,7 @@ Namespace Ecosim
 
         Private m_uic As cUIContext = Nothing
         Private m_bInSync As Boolean = False
+        Private m_il As ImageList = Nothing
 
 #End Region ' Private variables
 
@@ -62,6 +63,8 @@ Namespace Ecosim
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
 
+            If (Me.m_uic Is Nothing) Then Return
+
             Dim group As cEcoPathGroupInput = Nothing
             Dim fleet As cFleetInput = Nothing
 
@@ -83,6 +86,13 @@ Namespace Ecosim
 
             Me.m_bInSync = False
             Me.m_cbSyncGroupsAndFleets.Checked = My.Settings.LinkVisibleGroupsFleets
+
+            Me.m_il = New ImageList()
+            Me.m_il.Images.Add(SharedResources.fish)
+            Me.m_il.Images.Add(SharedResources.fishing_gear)
+            Me.m_tcDisplayBits.ImageList = Me.m_il
+            Me.m_tpGroups.ImageIndex = 0
+            Me.m_tpFleets.ImageIndex = 1
 
         End Sub
 
