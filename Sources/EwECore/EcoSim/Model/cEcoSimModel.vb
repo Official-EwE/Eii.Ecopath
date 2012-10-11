@@ -161,7 +161,7 @@ Namespace Ecosim
         'Prepo WtGrow   SaveSizeAd  SaveSizeJuv
         't0 LkLoo Loo AinLW     BinLW
 
-        Private XplotLast() As Single, YplotLast() As Single
+        ' Private XplotLast() As Single, YplotLast() As Single
         Private fbasetest As Single, fstep As Single
         Private fishingrate As Single, fstepp As Single, lastharvest As Single, equilharvest As Single
         Private lastvalue As Single, equilvalue As Single, cbval As Single, equilstock As Single
@@ -726,7 +726,7 @@ Namespace Ecosim
 
             ReDim Fgear(m_EPData.NumFleet)
             ReDim QYear(m_EPData.NumFleet)
-            ReDim XplotLast(m_EPData.NumLiving), YplotLast(m_EPData.NumLiving), QGrowUsed(m_EPData.NumFleet)
+            ReDim QGrowUsed(m_EPData.NumFleet)
             ReDim RelFopt(nopt)
             ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
             ReDim BestTime(m_EPData.NumLiving)
@@ -4585,8 +4585,8 @@ Namespace Ecosim
                 d.BaseConsumption = BaseConsumption.Clone
 
 
-                d.XplotLast = XplotLast.Clone
-                d.YplotLast = YplotLast.Clone
+                ' d.XplotLast = XplotLast.Clone
+                '  d.YplotLast = YplotLast.Clone
                 d.fbasetest = fbasetest
                 d.fstep = fstep
                 d.fishingrate = fishingrate
