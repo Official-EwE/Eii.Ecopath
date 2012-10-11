@@ -38,24 +38,25 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgShowHideItems))
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_clbGroups = New System.Windows.Forms.CheckedListBox
-            Me.m_btnAllGroups = New System.Windows.Forms.Button
-            Me.m_btnNoneGroups = New System.Windows.Forms.Button
-            Me.m_btnDefaultGroups = New System.Windows.Forms.Button
-            Me.m_tcDisplayBits = New System.Windows.Forms.TabControl
-            Me.m_tpGroups = New System.Windows.Forms.TabPage
-            Me.m_hdrFilters = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_btnLiving = New System.Windows.Forms.Button
-            Me.m_btnNonLiving = New System.Windows.Forms.Button
-            Me.m_btnConsumers = New System.Windows.Forms.Button
-            Me.m_btnProducers = New System.Windows.Forms.Button
-            Me.m_btnFished = New System.Windows.Forms.Button
-            Me.m_tpFleets = New System.Windows.Forms.TabPage
-            Me.m_clbFleets = New System.Windows.Forms.CheckedListBox
-            Me.m_btnAllFleets = New System.Windows.Forms.Button
-            Me.m_btnNoneFleets = New System.Windows.Forms.Button
+            Me.OK_Button = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.m_clbGroups = New System.Windows.Forms.CheckedListBox()
+            Me.m_btnAllGroups = New System.Windows.Forms.Button()
+            Me.m_btnNoneGroups = New System.Windows.Forms.Button()
+            Me.m_btnDefaultGroups = New System.Windows.Forms.Button()
+            Me.m_tcDisplayBits = New System.Windows.Forms.TabControl()
+            Me.m_tpGroups = New System.Windows.Forms.TabPage()
+            Me.m_hdrFilterGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnLiving = New System.Windows.Forms.Button()
+            Me.m_btnNonLiving = New System.Windows.Forms.Button()
+            Me.m_btnConsumers = New System.Windows.Forms.Button()
+            Me.m_btnProducers = New System.Windows.Forms.Button()
+            Me.m_btnFished = New System.Windows.Forms.Button()
+            Me.m_tpFleets = New System.Windows.Forms.TabPage()
+            Me.m_clbFleets = New System.Windows.Forms.CheckedListBox()
+            Me.m_btnAllFleets = New System.Windows.Forms.Button()
+            Me.m_btnNoneFleets = New System.Windows.Forms.Button()
+            Me.m_cbSyncGroupsAndFleets = New System.Windows.Forms.CheckBox()
             Me.m_tcDisplayBits.SuspendLayout()
             Me.m_tpGroups.SuspendLayout()
             Me.m_tpFleets.SuspendLayout()
@@ -104,7 +105,8 @@ Namespace Ecosim
             '
             'm_tpGroups
             '
-            Me.m_tpGroups.Controls.Add(Me.m_hdrFilters)
+            Me.m_tpGroups.BackColor = System.Drawing.SystemColors.Control
+            Me.m_tpGroups.Controls.Add(Me.m_hdrFilterGroup)
             Me.m_tpGroups.Controls.Add(Me.m_clbGroups)
             Me.m_tpGroups.Controls.Add(Me.m_btnLiving)
             Me.m_tpGroups.Controls.Add(Me.m_btnNonLiving)
@@ -116,12 +118,14 @@ Namespace Ecosim
             Me.m_tpGroups.Controls.Add(Me.m_btnNoneGroups)
             resources.ApplyResources(Me.m_tpGroups, "m_tpGroups")
             Me.m_tpGroups.Name = "m_tpGroups"
-            Me.m_tpGroups.UseVisualStyleBackColor = True
             '
-            'm_hdrFilters
+            'm_hdrFilterGroup
             '
-            resources.ApplyResources(Me.m_hdrFilters, "m_hdrFilters")
-            Me.m_hdrFilters.Name = "m_hdrFilters"
+            resources.ApplyResources(Me.m_hdrFilterGroup, "m_hdrFilterGroup")
+            Me.m_hdrFilterGroup.CanCollapseParent = False
+            Me.m_hdrFilterGroup.CollapsedParentHeight = 0
+            Me.m_hdrFilterGroup.IsCollapsed = False
+            Me.m_hdrFilterGroup.Name = "m_hdrFilterGroup"
             '
             'm_btnLiving
             '
@@ -150,12 +154,12 @@ Namespace Ecosim
             '
             'm_tpFleets
             '
+            Me.m_tpFleets.BackColor = System.Drawing.SystemColors.Control
             Me.m_tpFleets.Controls.Add(Me.m_clbFleets)
             Me.m_tpFleets.Controls.Add(Me.m_btnAllFleets)
             Me.m_tpFleets.Controls.Add(Me.m_btnNoneFleets)
             resources.ApplyResources(Me.m_tpFleets, "m_tpFleets")
             Me.m_tpFleets.Name = "m_tpFleets"
-            Me.m_tpFleets.UseVisualStyleBackColor = True
             '
             'm_clbFleets
             '
@@ -174,6 +178,12 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_btnNoneFleets, "m_btnNoneFleets")
             Me.m_btnNoneFleets.Name = "m_btnNoneFleets"
             '
+            'm_cbSyncGroupsAndFleets
+            '
+            resources.ApplyResources(Me.m_cbSyncGroupsAndFleets, "m_cbSyncGroupsAndFleets")
+            Me.m_cbSyncGroupsAndFleets.Name = "m_cbSyncGroupsAndFleets"
+            Me.m_cbSyncGroupsAndFleets.UseVisualStyleBackColor = True
+            '
             'dlgShowHideItems
             '
             Me.AcceptButton = Me.OK_Button
@@ -181,6 +191,7 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_cbSyncGroupsAndFleets)
             Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_tcDisplayBits)
             Me.Controls.Add(Me.Cancel_Button)
@@ -195,6 +206,7 @@ Namespace Ecosim
             Me.m_tpGroups.ResumeLayout(False)
             Me.m_tpFleets.ResumeLayout(False)
             Me.ResumeLayout(False)
+            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_tcDisplayBits As System.Windows.Forms.TabControl
@@ -207,7 +219,7 @@ Namespace Ecosim
         Private WithEvents m_btnNoneFleets As System.Windows.Forms.Button
         Private WithEvents m_tpGroups As System.Windows.Forms.TabPage
         Private WithEvents m_tpFleets As System.Windows.Forms.TabPage
-        Private WithEvents m_hdrFilters As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_hdrFilterGroup As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnNonLiving As System.Windows.Forms.Button
         Private WithEvents m_btnConsumers As System.Windows.Forms.Button
         Private WithEvents m_btnProducers As System.Windows.Forms.Button
@@ -215,6 +227,7 @@ Namespace Ecosim
         Private WithEvents m_btnLiving As System.Windows.Forms.Button
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
+        Private WithEvents m_cbSyncGroupsAndFleets As System.Windows.Forms.CheckBox
     End Class
 
 End Namespace

@@ -112,23 +112,23 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
     <value>227, 499</value>
   </data>
   <data name="OK_Button.Size" type="System.Drawing.Size, System.Drawing">
     <value>67, 23</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="OK_Button.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -139,13 +139,13 @@
     <value>OK_Button</value>
   </data>
   <data name="&gt;&gt;OK_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;OK_Button.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -166,13 +166,13 @@
     <value>Cancel_Button</value>
   </data>
   <data name="&gt;&gt;Cancel_Button.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Cancel_Button.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="m_clbGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -184,7 +184,7 @@
     <value>0, 0</value>
   </data>
   <data name="m_clbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 458</value>
+    <value>247, 461</value>
   </data>
   <data name="m_clbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -193,7 +193,7 @@
     <value>m_clbGroups</value>
   </data>
   <data name="&gt;&gt;m_clbGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_clbGroups.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -204,17 +204,14 @@
   <data name="m_btnAllGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnAllGroups.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnAllGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnAllGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 0</value>
+    <value>253, 0</value>
   </data>
   <data name="m_btnAllGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnAllGroups.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -226,7 +223,7 @@
     <value>m_btnAllGroups</value>
   </data>
   <data name="&gt;&gt;m_btnAllGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnAllGroups.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -237,17 +234,14 @@
   <data name="m_btnNoneGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnNoneGroups.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnNoneGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnNoneGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 29</value>
+    <value>253, 29</value>
   </data>
   <data name="m_btnNoneGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnNoneGroups.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -259,7 +253,7 @@
     <value>m_btnNoneGroups</value>
   </data>
   <data name="&gt;&gt;m_btnNoneGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnNoneGroups.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -270,17 +264,14 @@
   <data name="m_btnDefaultGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnDefaultGroups.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnDefaultGroups.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnDefaultGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 58</value>
+    <value>253, 58</value>
   </data>
   <data name="m_btnDefaultGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnDefaultGroups.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -292,7 +283,7 @@
     <value>m_btnDefaultGroups</value>
   </data>
   <data name="&gt;&gt;m_btnDefaultGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnDefaultGroups.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -303,101 +294,11 @@
   <data name="m_tcDisplayBits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="m_tcDisplayBits.Appearance" type="System.Windows.Forms.TabAppearance, System.Windows.Forms">
-    <value>FlatButtons</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFilters.Name" xml:space="preserve">
-    <value>m_hdrFilters</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFilters.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.317, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFilters.Parent" xml:space="preserve">
-    <value>m_tpGroups</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFilters.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.Name" xml:space="preserve">
-    <value>m_btnLiving</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.Parent" xml:space="preserve">
-    <value>m_tpGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnLiving.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonLiving.Name" xml:space="preserve">
-    <value>m_btnNonLiving</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonLiving.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonLiving.Parent" xml:space="preserve">
-    <value>m_tpGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnNonLiving.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;m_btnConsumers.Name" xml:space="preserve">
-    <value>m_btnConsumers</value>
-  </data>
-  <data name="&gt;&gt;m_btnConsumers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnConsumers.Parent" xml:space="preserve">
-    <value>m_tpGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnConsumers.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_btnProducers.Name" xml:space="preserve">
-    <value>m_btnProducers</value>
-  </data>
-  <data name="&gt;&gt;m_btnProducers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnProducers.Parent" xml:space="preserve">
-    <value>m_tpGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnProducers.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;m_btnFished.Name" xml:space="preserve">
-    <value>m_btnFished</value>
-  </data>
-  <data name="&gt;&gt;m_btnFished.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnFished.Parent" xml:space="preserve">
-    <value>m_tpGroups</value>
-  </data>
-  <data name="&gt;&gt;m_btnFished.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="m_tpGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="m_tpGroups.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_tpGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>353, 458</value>
-  </data>
-  <data name="m_tpGroups.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tpGroups.Text" xml:space="preserve">
-    <value>Groups</value>
-  </data>
   <data name="&gt;&gt;m_tpGroups.Name" xml:space="preserve">
     <value>m_tpGroups</value>
   </data>
   <data name="&gt;&gt;m_tpGroups.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tpGroups.Parent" xml:space="preserve">
     <value>m_tcDisplayBits</value>
@@ -405,119 +306,11 @@
   <data name="&gt;&gt;m_tpGroups.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="m_clbFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_clbFleets.IntegralHeight" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="m_clbFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_clbFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 458</value>
-  </data>
-  <data name="m_clbFleets.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.Name" xml:space="preserve">
-    <value>m_clbFleets</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.Parent" xml:space="preserve">
-    <value>m_tpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_clbFleets.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_btnAllFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnAllFleets.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
-  <data name="m_btnAllFleets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnAllFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 0</value>
-  </data>
-  <data name="m_btnAllFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
-  </data>
-  <data name="m_btnAllFleets.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_btnAllFleets.Text" xml:space="preserve">
-    <value>&amp;All</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Name" xml:space="preserve">
-    <value>m_btnAllFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.Parent" xml:space="preserve">
-    <value>m_tpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnAllFleets.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_btnNoneFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="m_btnNoneFleets.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
-  <data name="m_btnNoneFleets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_btnNoneFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 29</value>
-  </data>
-  <data name="m_btnNoneFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
-  </data>
-  <data name="m_btnNoneFleets.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_btnNoneFleets.Text" xml:space="preserve">
-    <value>&amp;None</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Name" xml:space="preserve">
-    <value>m_btnNoneFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.Parent" xml:space="preserve">
-    <value>m_tpFleets</value>
-  </data>
-  <data name="&gt;&gt;m_btnNoneFleets.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tpFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="m_tpFleets.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="m_tpFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>353, 458</value>
-  </data>
-  <data name="m_tpFleets.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="m_tpFleets.Text" xml:space="preserve">
-    <value>Fleets</value>
-  </data>
   <data name="&gt;&gt;m_tpFleets.Name" xml:space="preserve">
     <value>m_tpFleets</value>
   </data>
   <data name="&gt;&gt;m_tpFleets.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tpFleets.Parent" xml:space="preserve">
     <value>m_tcDisplayBits</value>
@@ -532,7 +325,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_tcDisplayBits.Size" type="System.Drawing.Size, System.Drawing">
-    <value>361, 487</value>
+    <value>361, 464</value>
   </data>
   <data name="m_tcDisplayBits.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -541,58 +334,154 @@
     <value>m_tcDisplayBits</value>
   </data>
   <data name="&gt;&gt;m_tcDisplayBits.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_tcDisplayBits.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tcDisplayBits.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
-  <data name="m_hdrFilters.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="&gt;&gt;m_hdrFilterGroup.Name" xml:space="preserve">
+    <value>m_hdrFilterGroup</value>
   </data>
-  <data name="m_hdrFilters.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 91</value>
+  <data name="&gt;&gt;m_hdrFilterGroup.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8180.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="m_hdrFilters.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 18</value>
-  </data>
-  <data name="m_hdrFilters.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="m_hdrFilters.Text" xml:space="preserve">
-    <value>Filtered</value>
-  </data>
-  <data name="m_hdrFilters.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFilters.Name" xml:space="preserve">
-    <value>m_hdrFilters</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFilters.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.1.1.317, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
-  </data>
-  <data name="&gt;&gt;m_hdrFilters.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrFilterGroup.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
   </data>
-  <data name="&gt;&gt;m_hdrFilters.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrFilterGroup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_btnLiving.Name" xml:space="preserve">
+    <value>m_btnLiving</value>
+  </data>
+  <data name="&gt;&gt;m_btnLiving.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnLiving.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnLiving.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonLiving.Name" xml:space="preserve">
+    <value>m_btnNonLiving</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonLiving.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonLiving.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonLiving.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_btnConsumers.Name" xml:space="preserve">
+    <value>m_btnConsumers</value>
+  </data>
+  <data name="&gt;&gt;m_btnConsumers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnConsumers.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnConsumers.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_btnProducers.Name" xml:space="preserve">
+    <value>m_btnProducers</value>
+  </data>
+  <data name="&gt;&gt;m_btnProducers.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnProducers.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnProducers.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;m_btnFished.Name" xml:space="preserve">
+    <value>m_btnFished</value>
+  </data>
+  <data name="&gt;&gt;m_btnFished.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnFished.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnFished.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_tpGroups.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tpGroups.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="m_tpGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>353, 461</value>
+  </data>
+  <data name="m_tpGroups.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_tpGroups.Text" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="&gt;&gt;m_tpGroups.Name" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_tpGroups.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tpGroups.Parent" xml:space="preserve">
+    <value>m_tcDisplayBits</value>
+  </data>
+  <data name="&gt;&gt;m_tpGroups.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_hdrFilterGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_hdrFilterGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 90</value>
+  </data>
+  <data name="m_hdrFilterGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 18</value>
+  </data>
+  <data name="m_hdrFilterGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="m_hdrFilterGroup.Text" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="m_hdrFilterGroup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrFilterGroup.Name" xml:space="preserve">
+    <value>m_hdrFilterGroup</value>
+  </data>
+  <data name="&gt;&gt;m_hdrFilterGroup.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8180.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrFilterGroup.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_hdrFilterGroup.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_btnLiving.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnLiving.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnLiving.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnLiving.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 170</value>
+    <value>253, 169</value>
   </data>
   <data name="m_btnLiving.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnLiving.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -604,7 +493,7 @@
     <value>m_btnLiving</value>
   </data>
   <data name="&gt;&gt;m_btnLiving.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnLiving.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -615,17 +504,14 @@
   <data name="m_btnNonLiving.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnNonLiving.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnNonLiving.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnNonLiving.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 199</value>
+    <value>253, 198</value>
   </data>
   <data name="m_btnNonLiving.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnNonLiving.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -637,7 +523,7 @@
     <value>m_btnNonLiving</value>
   </data>
   <data name="&gt;&gt;m_btnNonLiving.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnNonLiving.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -648,17 +534,14 @@
   <data name="m_btnConsumers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnConsumers.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnConsumers.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnConsumers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 112</value>
+    <value>253, 111</value>
   </data>
   <data name="m_btnConsumers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnConsumers.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -670,7 +553,7 @@
     <value>m_btnConsumers</value>
   </data>
   <data name="&gt;&gt;m_btnConsumers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnConsumers.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -681,17 +564,14 @@
   <data name="m_btnProducers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnProducers.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnProducers.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnProducers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 141</value>
+    <value>253, 140</value>
   </data>
   <data name="m_btnProducers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnProducers.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -703,7 +583,7 @@
     <value>m_btnProducers</value>
   </data>
   <data name="&gt;&gt;m_btnProducers.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnProducers.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -714,17 +594,14 @@
   <data name="m_btnFished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_btnFished.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>Standard</value>
-  </data>
   <data name="m_btnFished.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="m_btnFished.Location" type="System.Drawing.Point, System.Drawing">
-    <value>286, 228</value>
+    <value>253, 227</value>
   </data>
   <data name="m_btnFished.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 23</value>
+    <value>100, 23</value>
   </data>
   <data name="m_btnFished.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -736,7 +613,7 @@
     <value>m_btnFished</value>
   </data>
   <data name="&gt;&gt;m_btnFished.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnFished.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -744,7 +621,184 @@
   <data name="&gt;&gt;m_btnFished.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <data name="&gt;&gt;m_clbFleets.Name" xml:space="preserve">
+    <value>m_clbFleets</value>
+  </data>
+  <data name="&gt;&gt;m_clbFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_clbFleets.Parent" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_clbFleets.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.Name" xml:space="preserve">
+    <value>m_btnAllFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.Parent" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.Name" xml:space="preserve">
+    <value>m_btnNoneFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.Parent" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_tpFleets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="m_tpFleets.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="m_tpFleets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>353, 438</value>
+  </data>
+  <data name="m_tpFleets.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_tpFleets.Text" xml:space="preserve">
+    <value>Fleets</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.Name" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.Parent" xml:space="preserve">
+    <value>m_tcDisplayBits</value>
+  </data>
+  <data name="&gt;&gt;m_tpFleets.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_clbFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="m_clbFleets.IntegralHeight" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="m_clbFleets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="m_clbFleets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>247, 438</value>
+  </data>
+  <data name="m_clbFleets.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;m_clbFleets.Name" xml:space="preserve">
+    <value>m_clbFleets</value>
+  </data>
+  <data name="&gt;&gt;m_clbFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckedListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_clbFleets.Parent" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_clbFleets.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_btnAllFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnAllFleets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnAllFleets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 0</value>
+  </data>
+  <data name="m_btnAllFleets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
+  <data name="m_btnAllFleets.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_btnAllFleets.Text" xml:space="preserve">
+    <value>&amp;All</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.Name" xml:space="preserve">
+    <value>m_btnAllFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.Parent" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnAllFleets.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_btnNoneFleets.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnNoneFleets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnNoneFleets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 29</value>
+  </data>
+  <data name="m_btnNoneFleets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
+  <data name="m_btnNoneFleets.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_btnNoneFleets.Text" xml:space="preserve">
+    <value>&amp;None</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.Name" xml:space="preserve">
+    <value>m_btnNoneFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.Parent" xml:space="preserve">
+    <value>m_tpFleets</value>
+  </data>
+  <data name="&gt;&gt;m_btnNoneFleets.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_cbSyncGroupsAndFleets.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbSyncGroupsAndFleets.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 475</value>
+  </data>
+  <data name="m_cbSyncGroupsAndFleets.Size" type="System.Drawing.Size, System.Drawing">
+    <value>330, 17</value>
+  </data>
+  <data name="m_cbSyncGroupsAndFleets.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="m_cbSyncGroupsAndFleets.Text" xml:space="preserve">
+    <value>&amp;Synchronize group and fleet selections via landings and discards</value>
+  </data>
+  <data name="&gt;&gt;m_cbSyncGroupsAndFleets.Name" xml:space="preserve">
+    <value>m_cbSyncGroupsAndFleets</value>
+  </data>
+  <data name="&gt;&gt;m_cbSyncGroupsAndFleets.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbSyncGroupsAndFleets.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbSyncGroupsAndFleets.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -752,9 +806,6 @@
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>379, 534</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>250, 368</value>
@@ -769,6 +820,6 @@
     <value>dlgShowHideItems</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -107,7 +107,6 @@ Partial Class ucResults
         Me.m_tscmbFleets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscmbFleets.Name = "m_tscmbFleets"
         Me.m_tscmbFleets.Size = New System.Drawing.Size(150, 25)
-        Me.m_tscmbFleets.Sorted = True
         '
         'm_tslUnit
         '

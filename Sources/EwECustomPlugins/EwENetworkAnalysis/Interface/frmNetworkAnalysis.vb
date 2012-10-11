@@ -123,7 +123,6 @@ Public Class frmNetworkAnalysis
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             Me.m_cmdDisplayGroups.AddControl(Me.tsmiDisplayGroups)
-            AddHandler Me.m_cmdDisplayGroups.OnPreInvoke, AddressOf OnPreInvokeDisplayGroups
             AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
         End If
 
@@ -135,7 +134,6 @@ Public Class frmNetworkAnalysis
 
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
             Me.m_cmdDisplayGroups.RemoveControl(Me.tsmiDisplayGroups)
-            RemoveHandler Me.m_cmdDisplayGroups.OnPreInvoke, AddressOf OnPreInvokeDisplayGroups
             RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
             Me.m_cmdDisplayGroups = Nothing
         End If
@@ -308,21 +306,6 @@ Public Class frmNetworkAnalysis
     Private Sub tsbtnOptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles tsbtnOptions.Click
         Me.ShowOptions(tsbtnOptions.Checked)
-    End Sub
-
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Event handler, triggered before 'DisplayGroups' command has been invoked.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Protected Overridable Sub OnPreInvokeDisplayGroups(ByVal cmd As cCommand)
-        Try
-            Me.m_cmdDisplayGroups.ShowGroups = True
-            Me.m_cmdDisplayGroups.ShowTotals = False
-        Catch ex As Exception
-
-        End Try
     End Sub
 
     ''' -----------------------------------------------------------------------

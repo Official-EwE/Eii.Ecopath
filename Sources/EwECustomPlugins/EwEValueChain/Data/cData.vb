@@ -1147,6 +1147,11 @@ Public Class cData
 
 #End Region ' Core access
 
+#Region " Aggregation "
+
+
+#End Region ' Aggregation
+
 #Region " Internals "
 
     ''' -----------------------------------------------------------------------

@@ -37,8 +37,7 @@ Namespace Ecosim
 #Region " Private variables "
 
         Private m_uic As cUIContext = Nothing
-        Private m_bShowGroups As Boolean = True
-        Private m_bShowTotals As Boolean = False
+        Private m_bInSync As Boolean = False
 
 #End Region ' Private variables
 
@@ -49,22 +48,11 @@ Namespace Ecosim
         ''' Create a new dialog.
         ''' </summary>
         ''' <param name="uic">The UI context to connect to.</param>
-        ''' <param name="bShowGroups">Flag stating whether all groups should be shown.</param>
-        ''' <param name="bShowTotals">Flag stating whether totals should be shown.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal bShowGroups As Boolean, _
-                       ByVal bShowTotals As Boolean)
-
+        Public Sub New(ByVal uic As cUIContext)
             Me.InitializeComponent()
-
-            ' Sanity check
             Debug.Assert(uic IsNot Nothing)
-
             Me.m_uic = uic
-            Me.m_bShowGroups = bShowGroups
-            Me.m_bShowTotals = bShowTotals
-
         End Sub
 
 #End Region ' Constructor
@@ -77,19 +65,14 @@ Namespace Ecosim
             Dim group As cEcoPathGroupInput = Nothing
             Dim fleet As cFleetInput = Nothing
 
-            Me.m_clbGroups.Items.Clear()
-            If Me.m_bShowGroups Then
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
-                    Me.m_clbGroups.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name), _
-                                             Me.m_uic.StyleGuide.GroupVisible(iGroup))
-                Next
-            End If
+            Me.m_bInSync = True
 
-            If Me.m_bShowTotals Then
-                Me.m_clbGroups.Items.Add(SharedResources.HEADER_TOTALCATCH, Me.m_uic.StyleGuide.TotalCatchVisible)
-                Me.m_clbGroups.Items.Add(SharedResources.HEADER_TOTALLENGTH, Me.m_uic.StyleGuide.TotalValueVisible)
-            End If
+            Me.m_clbGroups.Items.Clear()
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
+                Me.m_clbGroups.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name), _
+                                         Me.m_uic.StyleGuide.GroupVisible(iGroup))
+            Next
 
             Me.m_clbFleets.Items.Clear()
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
@@ -98,11 +81,36 @@ Namespace Ecosim
                                          Me.m_uic.StyleGuide.FleetVisible(iFleet))
             Next
 
+            Me.m_bInSync = False
+            Me.m_cbSyncGroupsAndFleets.Checked = My.Settings.LinkVisibleGroupsFleets
+
+        End Sub
+
+        Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
+            My.Settings.LinkVisibleGroupsFleets = Me.m_cbSyncGroupsAndFleets.Checked
+            My.Settings.Save()
+            MyBase.OnFormClosed(e)
         End Sub
 
 #End Region ' Form overrides
 
 #Region " Events "
+
+        Private Sub OnGroupChecked(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles m_clbGroups.ItemCheck
+            ' Abort if triggered by a sync call
+            If Me.m_bInSync Then Return
+            ' Delay invoke until check state has been processed
+            Me.BeginInvoke(New MethodInvoker(AddressOf SyncFleets), Nothing)
+        End Sub
+
+        Private Sub OnFleetChecked(sender As Object, e As System.Windows.Forms.ItemCheckEventArgs) _
+            Handles m_clbFleets.ItemCheck
+            ' Abort if triggered by a sync call
+            If Me.m_bInSync Then Return
+            ' Delay invoke until check state has been processed
+            Me.BeginInvoke(New MethodInvoker(AddressOf SyncGroups), Nothing)
+        End Sub
 
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
@@ -111,17 +119,10 @@ Namespace Ecosim
 
             Me.m_uic.StyleGuide.SuspendEvents()
 
-            If Me.m_bShowGroups Then
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Me.m_uic.StyleGuide.GroupVisible(iGroup) = Me.m_clbGroups.GetItemChecked(iGroup - 1)
-                Next
-                iIndex += Me.m_uic.Core.nGroups
-            End If
-
-            If Me.m_bShowTotals Then
-                Me.m_uic.StyleGuide.TotalCatchVisible = Me.m_clbGroups.GetItemChecked(iIndex)
-                Me.m_uic.StyleGuide.TotalValueVisible = Me.m_clbGroups.GetItemChecked(iIndex + 1)
-            End If
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_uic.StyleGuide.GroupVisible(iGroup) = Me.m_clbGroups.GetItemChecked(iGroup - 1)
+            Next
+            iIndex += Me.m_uic.Core.nGroups
 
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
                 Me.m_uic.StyleGuide.FleetVisible(iFleet) = Me.m_clbFleets.GetItemChecked(iFleet - 1)
@@ -151,6 +152,7 @@ Namespace Ecosim
                 Me.m_clbGroups.SetItemChecked(iItem, True)
             Next
             Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
 
         End Sub
 
@@ -173,20 +175,13 @@ Namespace Ecosim
             Me.m_clbGroups.SuspendLayout()
 
             Dim iIndex As Integer = 0
-            If Me.m_bShowGroups Then
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Me.m_clbGroups.SetItemChecked(iGroup - 1, True)
-                Next
-                iIndex += 1
-            End If
-
-            If Me.m_bShowTotals Then
-                For iItem As Integer = iIndex To Me.m_clbGroups.Items.Count - 1
-                    Me.m_clbGroups.SetItemChecked(iItem, False)
-                Next
-            End If
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_clbGroups.SetItemChecked(iGroup - 1, True)
+            Next
+            iIndex += 1
 
             Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
 
         End Sub
 
@@ -194,11 +189,9 @@ Namespace Ecosim
             Handles m_btnProducers.Click
 
             Me.m_clbGroups.SuspendLayout()
-            If Me.m_bShowGroups Then
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsProducer)
-                Next
-            End If
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsProducer)
+            Next
             Me.m_clbGroups.ResumeLayout()
 
         End Sub
@@ -207,12 +200,11 @@ Namespace Ecosim
             Handles m_btnConsumers.Click
 
             Me.m_clbGroups.SuspendLayout()
-            If Me.m_bShowGroups Then
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsConsumer)
-                Next
-            End If
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsConsumer)
+            Next
             Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
 
         End Sub
 
@@ -220,12 +212,11 @@ Namespace Ecosim
             Handles m_btnNonLiving.Click
 
             Me.m_clbGroups.SuspendLayout()
-            If Me.m_bShowGroups Then
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsDetritus)
-                Next
-            End If
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsDetritus)
+            Next
             Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
 
         End Sub
 
@@ -233,12 +224,11 @@ Namespace Ecosim
             Handles m_btnLiving.Click
 
             Me.m_clbGroups.SuspendLayout()
-            If Me.m_bShowGroups Then
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Me.m_clbGroups.SetItemChecked(iGroup - 1, iGroup <= Me.m_uic.Core.nLivingGroups)
-                Next
-            End If
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_clbGroups.SetItemChecked(iGroup - 1, iGroup <= Me.m_uic.Core.nLivingGroups)
+            Next
             Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
 
         End Sub
 
@@ -246,20 +236,19 @@ Namespace Ecosim
             Handles m_btnFished.Click
 
             Me.m_clbGroups.SuspendLayout()
-            If Me.m_bShowGroups Then
-                Dim core As cCore = Me.m_uic.Core
-                Dim asIsFished(core.nGroups) As Boolean
-                For iFleet As Integer = 1 To core.nFleets
-                    Dim fleet As cFleetInput = core.FleetInputs(iFleet)
-                    For iGroup As Integer = 1 To core.nGroups
-                        asIsFished(iGroup) = asIsFished(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
-                    Next
+            Dim core As cCore = Me.m_uic.Core
+            Dim asIsFished(core.nGroups) As Boolean
+            For iFleet As Integer = 1 To core.nFleets
+                Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                For iGroup As Integer = 1 To core.nGroups
+                    asIsFished(iGroup) = asIsFished(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
                 Next
-                For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                    Me.m_clbGroups.SetItemChecked(iGroup - 1, asIsFished(iGroup))
-                Next
-            End If
+            Next
+            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
+                Me.m_clbGroups.SetItemChecked(iGroup - 1, asIsFished(iGroup))
+            Next
             Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
 
         End Sub
 
@@ -272,6 +261,7 @@ Namespace Ecosim
                 Me.m_clbFleets.SetItemChecked(iItem, True)
             Next
             Me.m_clbFleets.ResumeLayout()
+            Me.SyncGroups()
 
         End Sub
 
@@ -284,10 +274,74 @@ Namespace Ecosim
                 Me.m_clbFleets.SetItemChecked(iItem, False)
             Next
             Me.m_clbFleets.ResumeLayout()
+            Me.SyncGroups()
 
         End Sub
 
 #End Region ' Events
+
+#Region " Internals "
+
+        Private Sub SyncFleets()
+
+            If (Not Me.m_cbSyncGroupsAndFleets.Checked) Then Return
+
+            ' Bail-out
+            If Me.m_bInSync Then Return
+            Me.m_bInSync = True
+
+            Dim core As cCore = Me.m_uic.Core
+            Dim abLanded(core.nFleets) As Boolean
+            For iFleet As Integer = 1 To core.nFleets
+                Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                For iGroup As Integer = 1 To core.nGroups
+                    If Me.m_clbGroups.GetItemChecked(iGroup - 1) Then
+                        abLanded(iFleet) = abLanded(iFleet) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                    End If
+                Next
+            Next
+
+            Me.m_clbFleets.SuspendLayout()
+
+            For iFleet As Integer = 1 To core.nFleets
+                Me.m_clbFleets.SetItemChecked(iFleet - 1, abLanded(iFleet))
+            Next
+
+            Me.m_clbFleets.ResumeLayout()
+            Me.m_bInSync = False
+
+        End Sub
+
+        Private Sub SyncGroups()
+
+            If (Not Me.m_cbSyncGroupsAndFleets.Checked) Then Return
+
+            ' Bail-out
+            If Me.m_bInSync Then Return
+            Me.m_bInSync = True
+
+            Dim core As cCore = Me.m_uic.Core
+            Dim abLanded(core.nGroups) As Boolean
+            For iFleet As Integer = 1 To core.nFleets
+                Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                If Me.m_clbFleets.GetItemChecked(iFleet - 1) Then
+                    For iGroup As Integer = 1 To core.nGroups
+                        abLanded(iGroup) = abLanded(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                    Next
+                End If
+            Next
+
+            Me.m_clbGroups.SuspendLayout()
+
+            For iGroup As Integer = 1 To core.nGroups
+                Me.m_clbGroups.SetItemChecked(iGroup - 1, abLanded(iGroup))
+            Next
+
+            Me.m_clbGroups.ResumeLayout()
+            Me.m_bInSync = False
+        End Sub
+
+#End Region ' Internals
 
     End Class
 
