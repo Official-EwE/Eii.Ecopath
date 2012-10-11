@@ -51,18 +51,30 @@ Public Class cLPSolver
 
         Public Shared Sub Init()
             If g_bInit Then Return
+            Dim badded As Boolean = True
+            Dim SetDLLRetVal As Integer
             Try
                 g_bUsable = cSystemUtils.IsWindows
                 If cSystemUtils.Is64Bit Then
-                    lpsolve55.SetDllDirectoryA("Includes\win64")
+                    SetDLLRetVal = CInt(lpsolve55.SetDllDirectoryA("Includes\win64"))
                 Else
-                    lpsolve55.SetDllDirectoryA("Includes\win32")
+                    SetDLLRetVal = CInt(lpsolve55.SetDllDirectoryA("Includes\win32"))
+                    'SetDLLRetVal = CInt(lpsolve55.SetDllDirectoryA("boguspath"))
                 End If
+
+                If SetDLLRetVal = 0 Then
+                    badded = False
+                    cLog.Write("lpsolve55.Init() Failed to set lpsolve55.dll path.")
+                End If
+
             Catch ex As Exception
                 cLog.Write(ex, "lpsolve55::Init")
                 g_bUsable = False
+                Return
             End Try
+
             g_bInit = True
+
         End Sub
 
         Public Shared Function IsUsable() As Boolean
@@ -600,6 +612,7 @@ Public Class cLPSolver
         Try
             lp = lpsolve55.make_lp(0, vars.Length)
         Catch ex As Exception
+            cLog.Write(ex, "cLPSolver.Solve() Failed on make_lp(,)")
             Return bSuccess
         End Try
 
