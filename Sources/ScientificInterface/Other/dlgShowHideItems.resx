@@ -181,10 +181,10 @@
     <value>False</value>
   </data>
   <data name="m_clbGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
+    <value>0, 0</value>
   </data>
   <data name="m_clbGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>241, 426</value>
+    <value>253, 435</value>
   </data>
   <data name="m_clbGroups.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -208,7 +208,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnAllGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 6</value>
+    <value>259, 0</value>
   </data>
   <data name="m_btnAllGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -238,7 +238,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnNoneGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 35</value>
+    <value>259, 29</value>
   </data>
   <data name="m_btnNoneGroups.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -264,14 +264,17 @@
   <data name="m_tcDisplayBits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_tcDisplayBits.Appearance" type="System.Windows.Forms.TabAppearance, System.Windows.Forms">
+    <value>FlatButtons</value>
+  </data>
   <data name="m_hdrFilterGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="m_hdrFilterGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 63</value>
+    <value>259, 57</value>
   </data>
   <data name="m_hdrFilterGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 18</value>
+    <value>94, 18</value>
   </data>
   <data name="m_hdrFilterGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -301,7 +304,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnLiving.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 150</value>
+    <value>259, 144</value>
   </data>
   <data name="m_btnLiving.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -331,7 +334,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnNonLiving.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 179</value>
+    <value>259, 173</value>
   </data>
   <data name="m_btnNonLiving.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -361,7 +364,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnConsumers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 84</value>
+    <value>259, 78</value>
   </data>
   <data name="m_btnConsumers.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -391,7 +394,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnProducers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 113</value>
+    <value>259, 107</value>
   </data>
   <data name="m_btnProducers.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -421,7 +424,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnFished.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 216</value>
+    <value>259, 210</value>
   </data>
   <data name="m_btnFished.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -445,13 +448,13 @@
     <value>6</value>
   </data>
   <data name="m_tpGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 25</value>
   </data>
   <data name="m_tpGroups.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>353, 438</value>
+    <value>353, 435</value>
   </data>
   <data name="m_tpGroups.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -478,10 +481,10 @@
     <value>False</value>
   </data>
   <data name="m_clbFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 6</value>
+    <value>0, 0</value>
   </data>
   <data name="m_clbFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>241, 426</value>
+    <value>253, 435</value>
   </data>
   <data name="m_clbFleets.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -505,7 +508,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnAllFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 6</value>
+    <value>259, 0</value>
   </data>
   <data name="m_btnAllFleets.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -535,7 +538,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnNoneFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>253, 35</value>
+    <value>259, 29</value>
   </data>
   <data name="m_btnNoneFleets.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -559,13 +562,13 @@
     <value>2</value>
   </data>
   <data name="m_tpFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 25</value>
   </data>
   <data name="m_tpFleets.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tpFleets.Size" type="System.Drawing.Size, System.Drawing">
-    <value>353, 438</value>
+    <value>353, 435</value>
   </data>
   <data name="m_tpFleets.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -613,7 +616,7 @@
     <value>True</value>
   </data>
   <data name="m_cbSyncGroupsAndFleets.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 475</value>
+    <value>13, 475</value>
   </data>
   <data name="m_cbSyncGroupsAndFleets.Size" type="System.Drawing.Size, System.Drawing">
     <value>330, 17</value>
