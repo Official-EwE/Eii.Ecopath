@@ -53,14 +53,14 @@ Partial Class ucEditFlow
         Me.m_tsbArrange = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsddZoom = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_split = New System.Windows.Forms.SplitContainer()
-        Me.m_plFlow = New EwEValueChainPlugin.plFlow()
         Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pgDetails = New System.Windows.Forms.PropertyGrid()
-        Me.m_selector = New EwEValueChainPlugin.ucSelector2()
         Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tssbConvert = New System.Windows.Forms.ToolStripSplitButton()
+        Me.m_plFlow = New EwEValueChainPlugin.plFlow()
+        Me.m_selector = New EwEValueChainPlugin.ucSelector2()
+        Me.m_tssbConvert = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_split.Panel1.SuspendLayout()
@@ -255,6 +255,11 @@ Partial Class ucEditFlow
         Me.m_tsddZoom.Text = "Zoom"
         Me.m_tsddZoom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 38)
+        '
         'm_split
         '
         Me.m_split.Dock = System.Windows.Forms.DockStyle.Fill
@@ -272,28 +277,13 @@ Partial Class ucEditFlow
         Me.m_split.SplitterDistance = 571
         Me.m_split.TabIndex = 2
         '
-        'm_plFlow
-        '
-        Me.m_plFlow.AutoScroll = True
-        Me.m_plFlow.BackColor = System.Drawing.SystemColors.Window
-        Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
-        Me.m_plFlow.FleetFilter = Nothing
-        Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
-        Me.m_plFlow.Name = "m_plFlow"
-        Me.m_plFlow.ShowGrid = False
-        Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
-        Me.m_plFlow.TabIndex = 0
-        Me.m_plFlow.UnitFilter = Nothing
-        '
         'm_tlpDetails
         '
         Me.m_tlpDetails.ColumnCount = 1
         Me.m_tlpDetails.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.m_tlpDetails.Controls.Add(Me.m_pgDetails, 0, 2)
-        Me.m_tlpDetails.Controls.Add(Me.m_selector, 0, 0)
         Me.m_tlpDetails.Controls.Add(Me.m_hdrDetails, 0, 1)
+        Me.m_tlpDetails.Controls.Add(Me.m_selector, 0, 0)
         Me.m_tlpDetails.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_tlpDetails.Location = New System.Drawing.Point(0, 0)
         Me.m_tlpDetails.Margin = New System.Windows.Forms.Padding(0)
@@ -313,16 +303,6 @@ Partial Class ucEditFlow
         Me.m_pgDetails.Size = New System.Drawing.Size(175, 399)
         Me.m_pgDetails.TabIndex = 0
         '
-        'm_selector
-        '
-        Me.m_selector.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_selector.Location = New System.Drawing.Point(0, 0)
-        Me.m_selector.Margin = New System.Windows.Forms.Padding(0)
-        Me.m_selector.Name = "m_selector"
-        Me.m_selector.Selection = New EwEUtils.Database.cEwEDatabase.cOOPStorable(-1) {}
-        Me.m_selector.Size = New System.Drawing.Size(181, 120)
-        Me.m_selector.TabIndex = 1
-        '
         'm_hdrDetails
         '
         Me.m_hdrDetails.CanCollapseParent = False
@@ -336,20 +316,40 @@ Partial Class ucEditFlow
         Me.m_hdrDetails.Text = "Selection details"
         Me.m_hdrDetails.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'ToolStripSeparator2
+        'm_plFlow
         '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 38)
+        Me.m_plFlow.AutoScroll = True
+        Me.m_plFlow.BackColor = System.Drawing.SystemColors.Window
+        Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
+        Me.m_plFlow.FleetFilter = Nothing
+        Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
+        Me.m_plFlow.Name = "m_plFlow"
+        Me.m_plFlow.ShowGrid = False
+        Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
+        Me.m_plFlow.TabIndex = 0
+        Me.m_plFlow.UnitFilter = Nothing
+        '
+        'm_selector
+        '
+        Me.m_selector.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_selector.Location = New System.Drawing.Point(0, 0)
+        Me.m_selector.Margin = New System.Windows.Forms.Padding(0)
+        Me.m_selector.Name = "m_selector"
+        Me.m_selector.Selection = New EwEUtils.Database.cEwEDatabase.cOOPStorable(-1) {}
+        Me.m_selector.Size = New System.Drawing.Size(181, 120)
+        Me.m_selector.TabIndex = 1
         '
         'm_tssbConvert
         '
-        Me.m_tssbConvert.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.m_tssbConvert.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.m_tssbConvert.Image = CType(resources.GetObject("m_tssbConvert.Image"), System.Drawing.Image)
         Me.m_tssbConvert.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.m_tssbConvert.Name = "m_tssbConvert"
-        Me.m_tssbConvert.Size = New System.Drawing.Size(88, 35)
-        Me.m_tssbConvert.Text = "Convert to..."
+        Me.m_tssbConvert.Size = New System.Drawing.Size(76, 35)
+        Me.m_tssbConvert.Text = "Convert to"
+        Me.m_tssbConvert.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.m_tssbConvert.ToolTipText = "Convert"
         '
         'ucEditFlow
         '
@@ -401,6 +401,6 @@ Partial Class ucEditFlow
     Private WithEvents m_selector As EwEValueChainPlugin.ucSelector2
     Private WithEvents m_hdrDetails As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents m_tssbConvert As System.Windows.Forms.ToolStripSplitButton
+    Private WithEvents m_tssbConvert As System.Windows.Forms.ToolStripDropDownButton
 
 End Class

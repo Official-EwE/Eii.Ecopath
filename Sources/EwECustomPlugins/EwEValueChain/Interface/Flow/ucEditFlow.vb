@@ -273,6 +273,10 @@ Public Class ucEditFlow
 
         Dim fd As cFlowDiagram = Nothing
         Dim tsi As ToolStripItem = Nothing
+        Dim fmt As New cUnitTypeFormatter()
+        Dim unit As cUnit = Me.m_selector.SelectedUnit
+        Dim img As Image = Nothing
+        Dim bCanConvert As Boolean = False
 
         Me.m_tsbMove.Checked = (Me.m_plFlow.EditMode = plFlow.eEditMode.Move)
         Me.m_tsbLink.Checked = (Me.m_plFlow.EditMode = plFlow.eEditMode.Link)
@@ -298,15 +302,14 @@ Public Class ucEditFlow
         'End With
 
         ' Update list of available conversion options
-        Dim bCanConvert As Boolean = False
-
         Me.m_tssbConvert.DropDownItems.Clear()
-        Dim unit As cUnit = Me.m_selector.SelectedUnit
+        ' Has a selected unit?
         If (unit IsNot Nothing) Then
+            img = cUnitImageFactory.GetImage(unit.UnitType)
             If (Not TypeOf unit Is cProducerUnit) Then
                 For ut As cUnitFactory.eUnitType = cUnitFactory.eUnitType.Processing To cUnitFactory.eUnitType.Consumer
-                    If unit.UnitType <> ut And unit.UnitType <> cUnitFactory.eUnitType.Producer Then
-                        Dim item As New ToolStripMenuItem(ut.ToString, Nothing, AddressOf OnConvertSelection)
+                    If (unit.UnitType <> ut) Then
+                        Dim item As New ToolStripMenuItem(fmt.GetDescriptor(ut), cUnitImageFactory.GetImage(ut), AddressOf OnConvertSelection)
                         item.Tag = ut
                         Me.m_tssbConvert.DropDownItems.Add(item)
                         bCanConvert = True
@@ -314,6 +317,9 @@ Public Class ucEditFlow
                 Next
             End If
         End If
+
+        ' Update conversion UI element
+        Me.m_tssbConvert.Image = img
         Me.m_tssbConvert.Enabled = bCanConvert
 
     End Sub

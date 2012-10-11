@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Database\cDatabase.vb" />
     <Compile Include="Data\cData.vb" />
+    <Compile Include="Utils\cUnitImageFactory.vb" />
     <Compile Include="Management\cLandingsLinkManager.vb" />
     <Compile Include="Data\Flow elements\Diagrams\cFlowDiagram.vb" />
     <Compile Include="Data\Flow elements\Diagrams\cFlowPosition.vb" />
@@ -269,6 +270,7 @@
     <Compile Include="Plugin\Input\cNTCPluginTabDistr.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabWholeseller.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabCons.vb" />
+    <Compile Include="Utils\cUnitTypeFormatter.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Interface\Controls\ucGridView.resx">
@@ -407,9 +409,7 @@
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

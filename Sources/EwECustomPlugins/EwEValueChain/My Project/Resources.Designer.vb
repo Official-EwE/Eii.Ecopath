@@ -314,7 +314,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Landing links.
+        '''  Looks up a localized string similar to Landings.
         '''</summary>
         Friend ReadOnly Property NAVTREE_INPUT_TABLE_LANDINGLINKS() As String
             Get
@@ -359,11 +359,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Wholeseller.
+        '''  Looks up a localized string similar to Wholesalers.
         '''</summary>
-        Friend ReadOnly Property NAVTREE_INPUT_TABLE_WHOLESELLERS() As String
+        Friend ReadOnly Property NAVTREE_INPUT_TABLE_WHOLESALERS() As String
             Get
-                Return ResourceManager.GetString("NAVTREE_INPUT_TABLE_WHOLESELLERS", resourceCulture)
+                Return ResourceManager.GetString("NAVTREE_INPUT_TABLE_WHOLESALERS", resourceCulture)
             End Get
         End Property
         
@@ -405,6 +405,15 @@ Namespace My.Resources
         Friend ReadOnly Property PROMPT_AUTOLAYOUT() As String
             Get
                 Return ResourceManager.GetString("PROMPT_AUTOLAYOUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Are you sure you want to convert {0} from type &apos;{1}&apos; to type &apos;{2}&apos;?.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_CONVERT_UNIT() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_CONVERT_UNIT", resourceCulture)
             End Get
         End Property
         
@@ -500,6 +509,60 @@ Namespace My.Resources
         Friend ReadOnly Property STATUS_SAVING() As String
             Get
                 Return ResourceManager.GetString("STATUS_SAVING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Consumer.
+        '''</summary>
+        Friend ReadOnly Property UNIT_TYPE_CONSUMER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TYPE_CONSUMER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Distribution.
+        '''</summary>
+        Friend ReadOnly Property UNIT_TYPE_DISTRIBUTION() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TYPE_DISTRIBUTION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Processing.
+        '''</summary>
+        Friend ReadOnly Property UNIT_TYPE_PROCESSING() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TYPE_PROCESSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Producer.
+        '''</summary>
+        Friend ReadOnly Property UNIT_TYPE_PRODUCER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TYPE_PRODUCER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Retailer.
+        '''</summary>
+        Friend ReadOnly Property UNIT_TYPE_RETAILER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TYPE_RETAILER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Wholesaler.
+        '''</summary>
+        Friend ReadOnly Property UNIT_TYPE_WHOLESALER() As String
+            Get
+                Return ResourceManager.GetString("UNIT_TYPE_WHOLESALER", resourceCulture)
             End Get
         End Property
         

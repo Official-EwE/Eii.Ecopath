@@ -28,7 +28,7 @@ Public Class cNTCPluginTabWholeseller
 
     Public Overrides ReadOnly Property ControlText() As String
         Get
-            Return My.Resources.NAVTREE_INPUT_TABLE_WHOLESELLERS
+            Return My.Resources.NAVTREE_INPUT_TABLE_WHOLESALERS
         End Get
     End Property
 

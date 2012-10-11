@@ -109,7 +109,7 @@ Public Class frmMain
             Case eValueChainPageTypes.TableWholesellers
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Wholesaler)
                 Dim view As New ucGridView(grid)
-                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_WHOLESELLERS)
+                Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_WHOLESALERS)
             Case eValueChainPageTypes.TableRetailer
                 Dim grid As New ucUnitGrid(Me.m_plugin.Context, Me.m_plugin.Data, cUnitFactory.eUnitType.Retailer)
                 Dim view As New ucGridView(grid)

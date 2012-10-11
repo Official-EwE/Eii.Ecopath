@@ -210,21 +210,8 @@ Public Class plUnitControl
             End Using
         End If
 
-        ' Paint unit type image
-        Select Case Me.Unit.UnitType
-            Case cUnitFactory.eUnitType.Producer
-                img = My.Resources.producer
-            Case cUnitFactory.eUnitType.Processing
-                img = My.Resources.processing
-            Case cUnitFactory.eUnitType.Distribution
-                img = My.Resources.distribution
-            Case cUnitFactory.eUnitType.Wholesaler
-                img = My.Resources.wholesaler
-            Case cUnitFactory.eUnitType.Retailer
-                img = My.Resources.retailer
-            Case cUnitFactory.eUnitType.Consumer
-                img = My.Resources.consumer
-        End Select
+        ' Get unit image
+        img = cUnitImageFactory.GetImage(Me.Unit.UnitType)
 
         If (img IsNot Nothing) Then
             Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(24 * Me.ZoomFactor), CInt(24 * Me.ZoomFactor))

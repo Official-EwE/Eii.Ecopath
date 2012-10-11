@@ -18,18 +18,18 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.ComponentModel
 Imports System.Drawing
+Imports System.Drawing.Drawing2D
+Imports System.Reflection
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Database.cEwEDatabase
-Imports ScientificInterfaceShared.Style
-Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports System.Drawing.Drawing2D
-Imports System.ComponentModel
+Imports EwEUtils.Core
 Imports Microsoft.Glee
-Imports System.Reflection
+Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -921,7 +921,8 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETEUNIT, unit.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETEUNIT, unit.Name), _
+                                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
             If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
 
@@ -932,6 +933,14 @@ Public Class plFlow
     End Function
 
     Public Function ConvertUnit(ByVal unit As cUnit, ByVal convertTo As cUnitFactory.eUnitType) As Boolean
+
+        Dim fmt As New cUnitTypeFormatter()
+        Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.GetDescriptor(unit.UnitType), fmt.GetDescriptor(convertTo)), _
+                                         eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+        fmsg.Reply = cFeedbackMessage.eReply.YES
+        fmsg.Suppressable = True
+        Me.m_uic.Core.Messages.SendMessage(fmsg)
+        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
 
         Dim unitNew As cUnit = Me.CreateUnit(convertTo)
         Dim llinks As New List(Of cLink)
@@ -970,6 +979,8 @@ Public Class plFlow
         Dim pos As cFlowPosition = Me.m_data.FlowPosition(unit, Me.m_diagram)
         pos.Unit = unitNew
         Me.m_data.DeleteUnit(unit)
+
+        Me.RebuildFlow()
 
     End Function
 
