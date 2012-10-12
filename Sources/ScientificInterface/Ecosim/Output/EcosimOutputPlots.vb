@@ -113,6 +113,27 @@ Namespace Ecosim
 
         End Sub
 
+        Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
+                If (MyBase.UIContext IsNot Nothing) Then
+                    Me.m_lbGroups.Detach()
+                    Me.m_lbPredators.Detach()
+                    Me.m_lbPrey.Detach()
+                    Me.m_lbFleets.Detach()
+                End If
+                MyBase.UIContext = value
+                If (MyBase.UIContext IsNot Nothing) Then
+                    Me.m_lbGroups.Attach(Me.UIContext)
+                    Me.m_lbPredators.Attach(Me.UIContext)
+                    Me.m_lbPrey.Attach(Me.UIContext)
+                    Me.m_lbFleets.Attach(Me.UIContext)
+                End If
+            End Set
+        End Property
+
 #End Region ' Constructors
 
 #Region " Event handlers "
@@ -134,11 +155,6 @@ Namespace Ecosim
             Me.m_zgh.ShowPointValue = True
             Me.m_zgh.IsTrackVisiblity = False
 
-            Me.m_lbGroups.Attach(Me.UIContext)
-            Me.m_lbPredators.Attach(Me.UIContext)
-            Me.m_lbPrey.Attach(Me.UIContext)
-            Me.m_lbFleets.Attach(Me.UIContext)
-
             Me.UpdateColors()
             Me.AddCurves()
 
@@ -152,11 +168,7 @@ Namespace Ecosim
             Me.ConfigurePlots(False)
 
             Me.CoreComponents = Nothing
-            Me.m_lbGroups.Detach()
-            Me.m_lbPredators.Detach()
-            Me.m_lbPrey.Detach()
-            Me.m_lbFleets.Detach()
-
+ 
             Me.m_paneMaster = Nothing
             Me.m_zgh = Nothing
 

@@ -78,10 +78,23 @@ Namespace Ecosim
 #Region " Constructors "
 
         Public Sub New()
-
             Me.InitializeComponent()
-
         End Sub
+
+        Public Overrides Property UIContext As ScientificInterfaceShared.Controls.cUIContext
+            Get
+                Return MyBase.UIContext
+            End Get
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
+                If MyBase.UIContext IsNot Nothing Then
+                    Me.m_lbGroups.Detach()
+                End If
+                MyBase.UIContext = value
+                If MyBase.UIContext IsNot Nothing Then
+                    Me.m_lbGroups.Attach(Me.UIContext)
+                End If
+            End Set
+        End Property
 
 #End Region ' Constructors
 
@@ -99,8 +112,6 @@ Namespace Ecosim
             Me.m_simStats = Me.Core.EcosimStats
 
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSim, eCoreComponentType.ShapesManager, eCoreComponentType.Core}
-
-            Me.m_lbGroups.Attach(Me.UIContext)
 
             Me.m_zgp = New cEcosimOutputPlotHelper()
             Me.m_zgp.Attach(Me.UIContext, Me.m_graph)
@@ -145,7 +156,7 @@ Namespace Ecosim
             ' Unplug
             Me.IsExploring = False
 
-            If Me.UIContext Is Nothing Then Return
+            If (Me.UIContext Is Nothing) Then Return
 
             ' Clean up
             If Me.m_shapeGUIHandler IsNot Nothing Then
@@ -159,8 +170,6 @@ Namespace Ecosim
             If Not Object.ReferenceEquals(cmd, Nothing) Then
                 cmd.RemoveControl(Me.m_tsbtnShowHideGroups)
             End If
-
-            Me.m_lbGroups.Detach()
 
             RemoveHandler Me.m_zgp.OnCursorPos, AddressOf OnSyncCursor
             RemoveHandler Me.m_graph.GraphPane.AxisChangeEvent, AddressOf OnAxisChanged
@@ -576,6 +585,34 @@ Namespace Ecosim
         End Sub
 
 #End Region ' Forcing function
+
+        Private Sub OnSelectTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnFleet.Click, m_tsbnGroup.Click
+            Try
+                If Object.ReferenceEquals(sender, Me.m_tsbnFleet) Then
+                    Me.SelectionMode = eSelectionModeType.Fleets
+                Else
+                    Me.SelectionMode = eSelectionModeType.Groups
+                End If
+                Me.UpdateControls()
+                Me.PopulateTargetComboBox()
+            Catch ex As Exception
+            End Try
+        End Sub
+
+        Private Sub OnSaveOutput(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnSaveOutput.Click
+            Try
+                Me.Core.Autosave(eAutosaveTypes.Ecosim) = Me.m_tsbnSaveOutput.Checked
+            Catch ex As Exception
+                ' Plop
+            End Try
+        End Sub
+
+        Private Sub OnAxisChanged(pane As GraphPane)
+            If (Me.UIContext Is Nothing) Then Return
+            Me.AlignSketchpad()
+        End Sub
 
 #End Region ' Events
 
@@ -1162,33 +1199,6 @@ Namespace Ecosim
         End Sub
 
 #End Region ' Internal implementation
-
-        Private Sub OnSelectTarget(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsbnFleet.Click, m_tsbnGroup.Click
-            Try
-                If Object.ReferenceEquals(sender, Me.m_tsbnFleet) Then
-                    Me.SelectionMode = eSelectionModeType.Fleets
-                Else
-                    Me.SelectionMode = eSelectionModeType.Groups
-                End If
-                Me.UpdateControls()
-                Me.PopulateTargetComboBox()
-            Catch ex As Exception
-            End Try
-        End Sub
-
-        Private Sub OnSaveOutput(sender As System.Object, e As System.EventArgs) Handles m_tsbnSaveOutput.Click
-            Try
-                Me.Core.Autosave(eAutosaveTypes.Ecosim) = Me.m_tsbnSaveOutput.Checked
-            Catch ex As Exception
-                ' Plop
-            End Try
-        End Sub
-
-        Private Sub OnAxisChanged(pane As GraphPane)
-            If (Me.UIContext Is Nothing) Then Return
-            Me.AlignSketchpad()
-        End Sub
 
     End Class
 
