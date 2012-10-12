@@ -3615,6 +3615,7 @@ Namespace DataSources
 
             bSucces = bSucces And Me.LoadEcosimGroups(iScenarioID)
             bSucces = bSucces And Me.LoadEcosimFleets(iScenarioID)
+            bSucces = bSucces And Me.LoadEcosimVulnerabilities()
             bSucces = bSucces And Me.LoadShapes()
             bSucces = bSucces And Me.LoadEcosimMSE(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
@@ -3737,7 +3738,11 @@ Namespace DataSources
 
             bSucces = bSucces And Me.SaveEcosimGroups(idm)
             bSucces = bSucces And Me.SaveEcosimFleets(idm)
-            bSucces = bSucces And Me.SaveShapes(idm)
+            bSucces = bSucces And Me.SaveEcosimVulnerabilities(idm)
+
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
+                bSucces = bSucces And Me.SaveShapes(idm)
+            End If
 
             If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.TimeSeries}) Then
                 bSucces = bSucces And Me.SaveTimeSeries(idm)
@@ -4277,6 +4282,48 @@ Namespace DataSources
 
         End Function
 
+        Private Function LoadEcosimVulnerabilities() As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
+            Dim reader As IDataReader = Nothing
+            Dim iPredator As Integer = 0
+            Dim iPrey As Integer = 0
+            Dim bSucces As Boolean = True
+
+            For iPredator = 1 To Me.m_core.nGroups
+                For iPrey = 1 To Me.m_core.nGroups
+                    ecosimDS.VulMult(iPrey, iPredator) = 2.0!
+                Next iPrey
+            Next iPredator
+
+            Try
+                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
+                While reader.Read()
+
+                    ' Find iPredator
+                    iPredator = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
+                    ' Find iPrey
+                    iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
+
+                    If (iPredator > -1 And iPrey > -1) Then
+                        ecosimDS.VulMult(iPrey, iPredator) = CSng(reader("vulnerability"))
+                    End If
+
+                End While
+                Me.m_db.ReleaseReader(reader)
+                reader = Nothing
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
+                bSucces = False
+            End Try
+
+            Return bSucces
+
+        End Function
+
         Private Function LoadEcosimFleets(ByVal iScenarioID As Integer) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -4627,6 +4674,46 @@ Namespace DataSources
 
         End Function
 
+        Private Function SaveEcosimVulnerabilities(ByVal idm As cIDMappings) As Boolean
+
+            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
+            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
+            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
+            Dim drow As DataRow = Nothing
+            Dim iPredator As Integer = 0
+            Dim iPrey As Integer = 0
+            Dim iShapeID As Integer = 0
+            Dim bSucces As Boolean = True
+
+            Try
+                Me.m_db.Execute(String.Format("DELETE FROM EcoSimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
+                writer = Me.m_db.GetWriter("EcoSimScenarioForcingMatrix")
+
+                For iPredator = 1 To ecosimDS.nGroups
+                    For iPrey = 1 To ecosimDS.nGroups
+
+                        If (ecosimDS.SimDC(iPredator, iPrey) > 0) Then
+                            drow = writer.NewRow()
+                            drow("ScenarioID") = iScenarioID
+                            drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
+                            drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
+                            drow("vulnerability") = ecosimDS.VulMult(iPrey, iPredator)
+                            writer.AddRow(drow)
+                        End If
+
+                    Next iPrey
+                Next iPredator
+
+                Me.m_db.ReleaseWriter(writer, True)
+
+            Catch ex As Exception
+                bSucces = False
+            End Try
+
+            Return bSucces
+        End Function
+
         Private Function SaveEcosimFleets(ByVal idm As cIDMappings) As Boolean
 
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
@@ -4945,7 +5032,6 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            bSucces = bSucces And Me.LoadEcosimVulnerabilities()
             bSucces = bSucces And Me.LoadPredPreyInteractions()
             bSucces = bSucces And Me.LoadLandingInteractions()
             bSucces = bSucces And Me.LoadMediationWeights()
@@ -5099,48 +5185,6 @@ Namespace DataSources
 
             Catch ex As Exception
                 Me.LogMessage(String.Format("Error {0} occurred while reading MediationShape {1}", ex.Message, iShapeID))
-                bSucces = False
-            End Try
-
-            Return bSucces
-
-        End Function
-
-        Private Function LoadEcosimVulnerabilities() As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim iScenarioID As Integer = ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario)
-            Dim reader As IDataReader = Nothing
-            Dim iPredator As Integer = 0
-            Dim iPrey As Integer = 0
-            Dim bSucces As Boolean = True
-
-            For iPredator = 1 To Me.m_core.nGroups
-                For iPrey = 1 To Me.m_core.nGroups
-                    ecosimDS.VulMult(iPrey, iPredator) = 2.0!
-                Next iPrey
-            Next iPredator
-
-            Try
-                reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
-                While reader.Read()
-
-                    ' Find iPredator
-                    iPredator = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PredID")))
-                    ' Find iPrey
-                    iPrey = Array.IndexOf(ecosimDS.GroupDBID, CInt(reader("PreyID")))
-
-                    If (iPredator > -1 And iPrey > -1) Then
-                        ecosimDS.VulMult(iPrey, iPredator) = CSng(reader("vulnerability"))
-                    End If
-
-                End While
-                Me.m_db.ReleaseReader(reader)
-                reader = Nothing
-
-            Catch ex As Exception
-                Me.LogMessage(String.Format("Error {0} occurred while reading ForcingMatrix", ex.Message))
                 bSucces = False
             End Try
 
@@ -5607,7 +5651,6 @@ Namespace DataSources
                 bSucces = False
             End Try
 
-            bSucces = bSucces And SaveEcosimVulnerabilities(idm)
             bSucces = bSucces And SavePredPreyInteractions(idm)
             bSucces = bSucces And SaveLandingsInteractions(idm)
             bSucces = bSucces And SaveMediationWeights(idm)
@@ -5799,46 +5842,6 @@ Namespace DataSources
 
             Return bSucces
 
-        End Function
-
-        Private Function SaveEcosimVulnerabilities(ByVal idm As cIDMappings) As Boolean
-
-            Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
-            Dim ecosimDS As cEcosimDatastructures = Me.m_core.m_EcoSimData
-            Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSimScenario, ecopathDS.EcosimScenarioDBID(ecopathDS.ActiveEcosimScenario))
-            Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
-            Dim drow As DataRow = Nothing
-            Dim iPredator As Integer = 0
-            Dim iPrey As Integer = 0
-            Dim iShapeID As Integer = 0
-            Dim bSucces As Boolean = True
-
-            Try
-                Me.m_db.Execute(String.Format("DELETE FROM EcoSimScenarioForcingMatrix WHERE (ScenarioID={0})", iScenarioID))
-                writer = Me.m_db.GetWriter("EcoSimScenarioForcingMatrix")
-
-                For iPredator = 1 To ecosimDS.nGroups
-                    For iPrey = 1 To ecosimDS.nGroups
-
-                        If (ecosimDS.SimDC(iPredator, iPrey) > 0) Then
-                            drow = writer.NewRow()
-                            drow("ScenarioID") = iScenarioID
-                            drow("PredID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPredator))
-                            drow("PreyID") = idm.GetID(eDataTypes.EcoSimGroupInput, ecopathDS.GroupDBID(iPrey))
-                            drow("vulnerability") = ecosimDS.VulMult(iPrey, iPredator)
-                            writer.AddRow(drow)
-                        End If
-
-                    Next iPrey
-                Next iPredator
-
-                Me.m_db.ReleaseWriter(writer, True)
-
-            Catch ex As Exception
-                bSucces = False
-            End Try
-
-            Return bSucces
         End Function
 
         Private Function SavePredPreyInteractions(ByVal idm As cIDMappings) As Boolean
