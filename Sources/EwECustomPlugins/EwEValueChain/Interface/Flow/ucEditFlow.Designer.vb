@@ -323,7 +323,7 @@ Partial Class ucEditFlow
         Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
-        Me.m_plFlow.FleetFilter = Nothing
+        Me.m_plFlow.ItemFilter = Nothing
         Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
         Me.m_plFlow.Name = "m_plFlow"
         Me.m_plFlow.ShowGrid = False

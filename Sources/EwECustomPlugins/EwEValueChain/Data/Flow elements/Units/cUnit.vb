@@ -205,12 +205,12 @@ Public MustInherit Class cUnit
     ''' <param name="results"></param>
     ''' <param name="input"></param>
     ''' <param name="iTimeStep"></param>
-    ''' <param name="iFleet">The fleet to run the chain for.</param>
+    ''' <param name="iUnit">The unit to aggregate by.</param>
     ''' -----------------------------------------------------------------------
     Public Overridable Sub Process(ByVal results As cResults, _
                                    ByVal input As cInput, _
                                    ByVal iTimeStep As Integer, _
-                                   ByVal iFleet As Integer)
+                                   ByVal iUnit As Integer)
 
         Dim inputTotal As cInput = Nothing
         Dim sTotalOutputBiomass As Single = 0
@@ -253,16 +253,16 @@ Public MustInherit Class cUnit
                     sTotalOutputBiomass += sOutputBiomass
                     sTotalOutputValue += sOutputValue
 
-                    link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iFleet)
+                    link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iUnit)
 
                 End If
             Next
 
             ' Store the amount that each fleet contributes to the total
-            results.StoreFleetContribution(iFleet, Me, iTimeStep, inputTotal.Value, inputTotal.Tons)
+            results.StoreContribution(iUnit, Me, iTimeStep, inputTotal.Value, inputTotal.Tons)
 
             ' Running for all fleet?
-            If iFleet = 0 Then
+            If iUnit = 0 Then
                 ' #Yes: make all calculations. Calculations are not necessary when running for individual fleets
                 '       where only transfer ratios are collected.
                 Me.Calculate(results, _

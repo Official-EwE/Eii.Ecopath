@@ -223,13 +223,13 @@ Public Class cProducerUnit
     Public Overrides Sub Process(ByVal results As cResults, _
                                  ByVal input As cInput, _
                                  ByVal iTimeStep As Integer, _
-                                 ByVal iFleet As Integer)
+                                 ByVal iUnit As Integer)
 
         ' Store landings and landings price only for producers
         results.Store(Me, cResults.eVariableType.Landings, input.Tons, iTimeStep)
         results.Store(Me, cResults.eVariableType.LandingsPrice, input.Value, iTimeStep)
 
-        MyBase.Process(results, input, iTimeStep, iFleet)
+        MyBase.Process(results, input, iTimeStep, iUnit)
 
     End Sub
 
@@ -636,14 +636,14 @@ Public Class cProducerUnit
 
     Public Overloads Sub Process(ByVal results As cResults, _
                                  ByVal iTimeStep As Integer, _
-                                 ByVal iFleet As Integer)
+                                 ByVal iItem As Integer)
 
         Dim sTotalOutputBiomass As Single = 0
         Dim sTotalOutputValue As Single = 0
 
-        ' No fleet specified?
-        If iFleet = 0 Then
-            ' #Yes: make all calculations
+        ' No item specified?
+        If iItem = 0 Then
+            ' #Yes: perform all calculations
             Dim sBTot As Single = 0
             Dim sValTot As Single = 0
             For iGroup As Integer = 1 To Me.Core.nGroups
@@ -696,13 +696,13 @@ Public Class cProducerUnit
 
             ' Process every link to ensure that target units receive all inputs!
             If sBiomass > 0 Then
-                link.Target.Process(results, New cInput(sBiomass, sValue, sValue / sBiomass), iTimeStep, iFleet)
+                link.Target.Process(results, New cInput(sBiomass, sValue, sValue / sBiomass), iTimeStep, iItem)
 
                 'VC: I changed the line above to pass sPrice/sBiomass as the third parameter (instead of sPrice). 
                 'it is supposed to be the price per unit biomass
                 'it was multiplying an extra time with the total catches (sBiomass) as it was.
             Else
-                link.Target.Process(results, New cInput(sBiomass, sValue), iTimeStep, iFleet)
+                link.Target.Process(results, New cInput(sBiomass, sValue), iTimeStep, iItem)
 
             End If
 
@@ -711,7 +711,7 @@ Public Class cProducerUnit
 
         Next
 
-        results.StoreFleetContribution(iFleet, Me, iTimeStep, sTotalOutputValue, sTotalOutputBiomass)
+        results.StoreContribution(iItem, Me, iTimeStep, sTotalOutputValue, sTotalOutputBiomass)
 
     End Sub
 

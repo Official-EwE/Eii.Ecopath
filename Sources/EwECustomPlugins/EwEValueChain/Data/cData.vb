@@ -62,6 +62,8 @@ Public Class cData
 
     Private Shared s_inst As cData = Nothing
 
+    Private m_lItems As New List(Of cCoreInputOutputBase)
+
 #End Region ' Private vars 
 
     Public Sub New(ByVal core As cCore)
@@ -1102,16 +1104,16 @@ Public Class cData
     ''' Return all units that operate (directly or indirectly) onto a given 
     ''' fleet and/or group.
     ''' </summary>
-    ''' <param name="fleet"></param>
+    ''' <param name="item"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function GetUnits(ByVal fleet As cFleetInput) As cUnit()
+    Public Function GetUnits(ByVal item As cCoreInputOutputBase) As cUnit()
 
         Dim lUnits As New List(Of cUnit)
         Dim pu As cProducerUnit = Nothing
-        Dim bIsFleet As Boolean = False
+        Dim bUseUnit As Boolean = False
 
-        If (fleet Is Nothing) Then Return Me.GetUnits(cUnitFactory.eUnitType.All)
+        If (item Is Nothing) Then Return Me.GetUnits(cUnitFactory.eUnitType.All)
 
         ' * Determine for all producers whether the fleet and group filter matches
         ' * For all matching producers add all related units in the flow
@@ -1121,18 +1123,16 @@ Public Class cData
             ' Get producer unit
             pu = DirectCast(unit, cProducerUnit)
 
-            ' Fleet filter provided?
-            '    #Y: Group filter provided?
-            '       #Y: include when prod(f) = f and prod(f) catches g
-            '       #N: include when prod(f) = f
-            '    #N: Group filter provided?
-            '       #Y: include when prod(f) catches g
-            '       #N: include always
+            ' Filtering by fleet?
+            If (TypeOf item Is cFleetInput) Then
+                ' #Yes: include producer if it uses this fleet
+                bUseUnit = Object.ReferenceEquals(pu.Fleet, item)
+            Else
+                ' #Yes: include producer if its fleet lands or discards a group
+                bUseUnit = (pu.Fleet.Landings(item.Index) > 0) Or (pu.Fleet.Discards(item.Index) > 0)
+            End If
 
-            ' Producer uses this fleet, OR fleet filter is not active
-            bIsFleet = Object.ReferenceEquals(pu.Fleet, fleet) ' Or (fleet Is Nothing)
-
-            If bIsFleet Then
+            If bUseUnit Then
                 ' Add producer
                 lUnits.Add(pu)
                 ' Get all flow units linked to this producer
@@ -1146,11 +1146,6 @@ Public Class cData
     End Function
 
 #End Region ' Core access
-
-#Region " Aggregation "
-
-
-#End Region ' Aggregation
 
 #Region " Internals "
 

@@ -32,6 +32,8 @@ Imports System.Reflection
 Public Class cParameters
     Inherits EwEUtils.Database.cEwEDatabase.cOOPStorable
 
+#Region " Private vars "
+
     Private m_bRunWithEcopath As Boolean = False
     Private m_bRunWithEcosim As Boolean = False
     Private m_bRunSearches As Boolean = False
@@ -42,8 +44,17 @@ Public Class cParameters
     Private m_liFleets As New List(Of Integer)
     Private m_sZoomFactor As Single = 1.0!
     Private m_bDeletePrompt As Boolean = True
+    Private m_aggmode As eAggregationModeType = eAggregationModeType.FullModel
+
+#End Region ' Private vars
 
 #Region " Properties "
+
+    Public Enum eAggregationModeType As Integer
+        FullModel = 0
+        ByFleet
+        ByGroup
+    End Enum
 
     Public ReadOnly Property EquilibriumFleetsToVary() As List(Of Integer)
         Get
@@ -123,15 +134,13 @@ Public Class cParameters
         End Set
     End Property
 
-    Public Property ResultsByFleet() As Boolean
+    Public Property AggregationMode As eAggregationModeType
         Get
-            Return Me.m_bResultsByFleet
+            Return Me.m_aggmode
         End Get
-        Set(ByVal bResultsByFleet As Boolean)
-            If (Me.m_bResultsByFleet <> bResultsByFleet) Then
-                Me.m_bResultsByFleet = bResultsByFleet
-                Me.SetChanged()
-            End If
+        Set(value As eAggregationModeType)
+            Me.m_aggmode = value
+            Me.SetChanged()
         End Set
     End Property
 

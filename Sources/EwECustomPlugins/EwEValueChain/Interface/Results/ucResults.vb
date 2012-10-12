@@ -26,6 +26,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports ZedGraph
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -36,13 +37,18 @@ Public Class ucResults
     Private Class cCoreComboItem
 
         Private m_source As cCoreInputOutputBase
+        Private m_strLabel As String
 
         Public Sub New(ByVal source As cCoreInputOutputBase)
             Me.m_source = source
         End Sub
 
+        Public Sub New(ByVal strLabel As String)
+            Me.m_strLabel = strLabel
+        End Sub
+
         Public Overrides Function ToString() As String
-            If Me.m_source Is Nothing Then Return ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALLFLEETS
+            If Me.m_source Is Nothing Then Return Me.m_strLabel
             Dim ftm As New cCoreInterfaceFormatter()
             Return ftm.GetDescriptor(Me.m_source)
         End Function
@@ -64,7 +70,7 @@ Public Class ucResults
         End Sub
 
         Public Overrides Function ToString() As String
-            If Me.m_source Is Nothing Then Return ScientificInterfaceShared.My.Resources.GENERIC_VALUE_ALL
+            If Me.m_source Is Nothing Then Return SharedResources.GENERIC_VALUE_ALL
             Return Me.m_source.Name.Trim
         End Function
 
@@ -80,7 +86,7 @@ Public Class ucResults
 
 #Region " Private bits "
 
-    Private Shared g_iLastFleet As Integer = 0
+    Private Shared g_iLastItem As Integer = 0
     Private Shared g_iLastUnit As Integer = 0
 
     Private Enum eViewModeType As Integer
@@ -204,7 +210,7 @@ Public Class ucResults
         Me.m_tscmbGraphData.SelectedIndex = 0
 
         ' Restore last selections
-        Me.m_tscmbFleets.SelectedIndex = Math.Min(Me.m_tscmbFleets.Items.Count - 1, Math.Max(-1, ucResults.g_iLastFleet))
+        Me.m_tscmbItems.SelectedIndex = Math.Min(Me.m_tscmbItems.Items.Count - 1, Math.Max(-1, ucResults.g_iLastItem))
         Me.m_tscmbUnit.SelectedIndex = Math.Min(Me.m_tscmbUnit.Items.Count - 1, Math.Max(-1, ucResults.g_iLastUnit))
 
         ' Initialize view
@@ -219,21 +225,19 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub OnFilterByFleet(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tscmbFleets.SelectedIndexChanged
+    Private Sub nFilterByItem(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tscmbItems.SelectedIndexChanged
 
         ' Filter by fleet
         Dim item As cCoreComboItem = Nothing
-        Dim fleet As cFleetInput = Nothing
+        Dim coreitem As cCoreInputOutputBase = Nothing
 
         If Me.m_bInUpdate Then Return
         Me.m_bInUpdate = True
 
-        ucResults.g_iLastFleet = Me.m_tscmbFleets.SelectedIndex
-        item = DirectCast(Me.m_tscmbFleets.SelectedItem, cCoreComboItem)
-        If item IsNot Nothing Then fleet = DirectCast(item.Source, cFleetInput)
-
-        Me.m_plFlow.FleetFilter = fleet
+        ucResults.g_iLastItem = Me.m_tscmbItems.SelectedIndex
+        item = DirectCast(Me.m_tscmbItems.SelectedItem, cCoreComboItem)
+        Me.m_plFlow.ItemFilter = item.Source
 
         Me.UpdateControls()
         Me.UpdateFilter()
@@ -437,17 +441,31 @@ Public Class ucResults
 
         Me.m_plFlow.Init(Me.m_uic, Me.m_data, Nothing, Nothing)
 
-        ' Populate fleet combo
-        Me.m_tscmbFleets.Items.Clear()
-        For iFleet As Integer = 0 To Me.m_data.Core.nFleets
-            If iFleet = 0 Then
-                item = Nothing
-            Else
-                item = Me.m_data.Core.FleetInputs(iFleet)
-            End If
-            Me.m_tscmbFleets.Items.Add(New cCoreComboItem(item))
-        Next
-        Me.m_tscmbFleets.SelectedIndex = 0
+        ' Populate items combo
+        Me.m_tscmbItems.Items.Clear()
+        Select Case Me.m_data.Parameters.AggregationMode
+
+            Case cParameters.eAggregationModeType.FullModel
+                ' Nop
+
+            Case cParameters.eAggregationModeType.ByFleet
+                Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLFLEETS))
+                For i As Integer = 1 To Me.m_data.Core.nFleets
+                    Me.m_tscmbItems.Items.Add(New cCoreComboItem(Me.m_data.Core.FleetInputs(i)))
+                Next
+                Me.m_tscmbItems.SelectedIndex = 0
+
+            Case cParameters.eAggregationModeType.ByGroup
+                Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLGROUPS))
+                For i As Integer = 1 To Me.m_data.Core.nGroups
+                    Dim grp As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(i)
+                    If grp.IsFished Then
+                        Me.m_tscmbItems.Items.Add(New cCoreComboItem(grp))
+                    End If
+                Next
+                Me.m_tscmbItems.SelectedIndex = 0
+
+        End Select
 
         ' Populate units combo
         Me.m_tscmbUnit.Items.Clear()
@@ -481,15 +499,15 @@ Public Class ucResults
         If Me.m_bInitializing Then Return
         If Me.m_bInUpdate Then Return
 
-        Dim fleet As cFleetInput = Me.m_plFlow.FleetFilter
-        Dim iFleet As Integer = 0
+        Dim item As cCoreInputOutputBase = Me.m_plFlow.ItemFilter
+        Dim iItem As Integer = 0
 
-        If (fleet IsNot Nothing) Then
-            iFleet = fleet.Index
+        If (item IsNot Nothing) Then
+            iItem = item.Index
         End If
 
         If Me.m_view IsNot Nothing Then
-            Me.m_view.ShowResults(iFleet, Me.m_plFlow.GetFlowUnits(), Me.m_result)
+            Me.m_view.ShowResults(iItem, Me.m_plFlow.GetFlowUnits(), Me.m_result)
         End If
 
     End Sub
@@ -503,8 +521,10 @@ Public Class ucResults
         Me.m_tsbEcosim.Checked = (Me.m_viewMode = eViewModeType.Graph)
         Me.m_tsbEquilibrium.Checked = (Me.m_viewMode = eViewModeType.GraphEquilibrium)
 
-        Me.m_tscmbFleets.Enabled = (Me.m_data.Parameters.ResultsByFleet = True)
-        Me.m_tscmbFleets.SelectedItem = Me.GetCoreComboItem(Me.m_plFlow.FleetFilter, Me.m_tscmbFleets)
+        Me.m_tslItem.Visible = (Me.m_data.Parameters.AggregationMode <> cParameters.eAggregationModeType.FullModel)
+        Me.m_tscmbItems.Visible = (Me.m_data.Parameters.AggregationMode <> cParameters.eAggregationModeType.FullModel)
+        Me.m_tscmbItems.SelectedItem = Me.GetCoreComboItem(Me.m_plFlow.ItemFilter, Me.m_tscmbItems)
+
         Me.m_tscmbUnit.SelectedItem = Me.GetUnitComboItem(Me.m_plFlow.UnitFilter, Me.m_tscmbUnit)
 
         Me.m_tslblData.Visible = (Me.m_viewMode <> eViewModeType.Grid)

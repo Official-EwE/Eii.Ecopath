@@ -2199,4 +2199,7 @@ QmCCCw==</value>
   <data name="UNIT_TYPE_WHOLESALER" xml:space="preserve">
     <value>Wholesaler</value>
   </data>
+  <data name="HEADER_CATEGORIES" xml:space="preserve">
+    <value>Categories</value>
+  </data>
 </root>

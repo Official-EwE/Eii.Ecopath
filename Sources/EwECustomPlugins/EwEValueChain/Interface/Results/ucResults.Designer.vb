@@ -37,13 +37,14 @@ Partial Class ucResults
         Me.m_tslblData = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbGraphData = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tssSep3 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tslFleets = New System.Windows.Forms.ToolStripLabel()
-        Me.m_tscmbFleets = New System.Windows.Forms.ToolStripComboBox()
+        Me.m_tslItem = New System.Windows.Forms.ToolStripLabel()
+        Me.m_tscmbItems = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tslUnit = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscmbUnit = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tssep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbShowFlow = New System.Windows.Forms.ToolStripButton()
         Me.m_tssep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tscbYear = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEquilibrium = New System.Windows.Forms.ToolStripButton()
@@ -60,7 +61,7 @@ Partial Class ucResults
         'm_btnRunEcopath
         '
         Me.m_btnRunEcopath.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnRunEcopath.Location = New System.Drawing.Point(435, 522)
+        Me.m_btnRunEcopath.Location = New System.Drawing.Point(567, 522)
         Me.m_btnRunEcopath.Margin = New System.Windows.Forms.Padding(0)
         Me.m_btnRunEcopath.Name = "m_btnRunEcopath"
         Me.m_btnRunEcopath.Size = New System.Drawing.Size(100, 23)
@@ -71,11 +72,11 @@ Partial Class ucResults
         'm_tsResults
         '
         Me.m_tsResults.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslFleets, Me.m_tscmbFleets, Me.m_tslUnit, Me.m_tscmbUnit, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
+        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslItem, Me.m_tscmbItems, Me.m_tslUnit, Me.m_tscmbUnit, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tscbYear, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
         Me.m_tsResults.Location = New System.Drawing.Point(0, 0)
         Me.m_tsResults.Name = "m_tsResults"
         Me.m_tsResults.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.m_tsResults.Size = New System.Drawing.Size(751, 25)
+        Me.m_tsResults.Size = New System.Drawing.Size(883, 25)
         Me.m_tsResults.TabIndex = 2
         '
         'm_tslblData
@@ -96,17 +97,17 @@ Partial Class ucResults
         Me.m_tssSep3.Name = "m_tssSep3"
         Me.m_tssSep3.Size = New System.Drawing.Size(6, 25)
         '
-        'm_tslFleets
+        'm_tslItem
         '
-        Me.m_tslFleets.Name = "m_tslFleets"
-        Me.m_tslFleets.Size = New System.Drawing.Size(35, 22)
-        Me.m_tslFleets.Text = "&Fleet:"
+        Me.m_tslItem.Name = "m_tslItem"
+        Me.m_tslItem.Size = New System.Drawing.Size(34, 22)
+        Me.m_tslItem.Text = "&Item:"
         '
-        'm_tscmbFleets
+        'm_tscmbItems
         '
-        Me.m_tscmbFleets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.m_tscmbFleets.Name = "m_tscmbFleets"
-        Me.m_tscmbFleets.Size = New System.Drawing.Size(150, 25)
+        Me.m_tscmbItems.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscmbItems.Name = "m_tscmbItems"
+        Me.m_tscmbItems.Size = New System.Drawing.Size(150, 25)
         '
         'm_tslUnit
         '
@@ -138,6 +139,13 @@ Partial Class ucResults
         '
         Me.m_tssep2.Name = "m_tssep2"
         Me.m_tssep2.Size = New System.Drawing.Size(6, 25)
+        '
+        'm_tscbYear
+        '
+        Me.m_tscbYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_tscbYear.Name = "m_tscbYear"
+        Me.m_tscbYear.Size = New System.Drawing.Size(75, 25)
+        Me.m_tscbYear.Visible = False
         '
         'm_tsbEcopath
         '
@@ -172,7 +180,7 @@ Partial Class ucResults
         'm_btnRunEcosim
         '
         Me.m_btnRunEcosim.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnRunEcosim.Location = New System.Drawing.Point(541, 522)
+        Me.m_btnRunEcosim.Location = New System.Drawing.Point(673, 522)
         Me.m_btnRunEcosim.Margin = New System.Windows.Forms.Padding(0)
         Me.m_btnRunEcosim.Name = "m_btnRunEcosim"
         Me.m_btnRunEcosim.Size = New System.Drawing.Size(100, 23)
@@ -194,7 +202,7 @@ Partial Class ucResults
         'm_scResults.Panel1
         '
         Me.m_scResults.Panel1.Controls.Add(Me.m_plFlow)
-        Me.m_scResults.Size = New System.Drawing.Size(751, 490)
+        Me.m_scResults.Size = New System.Drawing.Size(883, 490)
         Me.m_scResults.SplitterDistance = 72
         Me.m_scResults.TabIndex = 3
         '
@@ -203,19 +211,19 @@ Partial Class ucResults
         Me.m_plFlow.AutoScroll = True
         Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.[ReadOnly]
-        Me.m_plFlow.FleetFilter = Nothing
+        Me.m_plFlow.ItemFilter = Nothing
         Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
         Me.m_plFlow.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plFlow.Name = "m_plFlow"
         Me.m_plFlow.ShowGrid = False
-        Me.m_plFlow.Size = New System.Drawing.Size(747, 68)
+        Me.m_plFlow.Size = New System.Drawing.Size(879, 68)
         Me.m_plFlow.TabIndex = 0
         Me.m_plFlow.UnitFilter = Nothing
         '
         'm_btnRunEquilibrium
         '
         Me.m_btnRunEquilibrium.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnRunEquilibrium.Location = New System.Drawing.Point(647, 522)
+        Me.m_btnRunEquilibrium.Location = New System.Drawing.Point(779, 522)
         Me.m_btnRunEquilibrium.Margin = New System.Windows.Forms.Padding(0)
         Me.m_btnRunEquilibrium.Name = "m_btnRunEquilibrium"
         Me.m_btnRunEquilibrium.Size = New System.Drawing.Size(100, 23)
@@ -233,7 +241,7 @@ Partial Class ucResults
         Me.Controls.Add(Me.m_btnRunEcopath)
         Me.Controls.Add(Me.m_tsResults)
         Me.Name = "ucResults"
-        Me.Size = New System.Drawing.Size(751, 552)
+        Me.Size = New System.Drawing.Size(883, 552)
         Me.m_tsResults.ResumeLayout(False)
         Me.m_tsResults.PerformLayout()
         Me.m_scResults.Panel1.ResumeLayout(False)
@@ -246,8 +254,8 @@ Partial Class ucResults
 
     Private WithEvents m_btnRunEcopath As System.Windows.Forms.Button
     Private WithEvents m_tsResults As cEwEToolstrip
-    Private WithEvents m_tslFleets As System.Windows.Forms.ToolStripLabel
-    Private WithEvents m_tscmbFleets As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tslItem As System.Windows.Forms.ToolStripLabel
+    Private WithEvents m_tscmbItems As System.Windows.Forms.ToolStripComboBox
     Private WithEvents m_btnRunEcosim As System.Windows.Forms.Button
     Private WithEvents m_scResults As System.Windows.Forms.SplitContainer
     Private WithEvents m_tssep1 As System.Windows.Forms.ToolStripSeparator
@@ -263,5 +271,6 @@ Partial Class ucResults
     Private WithEvents m_tssSep3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tslUnit As System.Windows.Forms.ToolStripLabel
     Private WithEvents m_tscmbUnit As System.Windows.Forms.ToolStripComboBox
+    Private WithEvents m_tscbYear As System.Windows.Forms.ToolStripComboBox
 
 End Class

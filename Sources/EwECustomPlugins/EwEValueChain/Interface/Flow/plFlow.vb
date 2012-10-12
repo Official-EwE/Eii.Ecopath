@@ -66,8 +66,8 @@ Public Class plFlow
     Private m_uic As cUIContext = Nothing
     ''' <summary>Data selector</summary>
     Private m_selector As ucSelector2 = Nothing
-    ''' <summary>Fleet to filter for in the flow, if any.</summary>
-    Private m_fleetFilter As cFleetInput = Nothing
+    ''' <summary>Item to filter for in the flow, if any.</summary>
+    Private m_itemFilter As cCoreInputOutputBase = Nothing
     ''' <summary>Unit to filter for in the flow, if any.</summary>
     Private m_unitFilter As cUnit = Nothing
 
@@ -215,12 +215,12 @@ Public Class plFlow
     ''' <summary>
     ''' Get/set the fleet to filter flow layout by.
     ''' </summary>
-    Public Property FleetFilter() As cFleetInput
+    Public Property ItemFilter() As cCoreInputOutputBase
         Get
-            Return Me.m_fleetFilter
+            Return Me.m_itemFilter
         End Get
-        Set(ByVal value As cFleetInput)
-            Me.m_fleetFilter = value
+        Set(ByVal value As cCoreInputOutputBase)
+            Me.m_itemFilter = value
             Me.m_unitFilter = Nothing
         End Set
     End Property
@@ -234,7 +234,7 @@ Public Class plFlow
         End Get
         Set(ByVal value As cUnit)
             Me.m_unitFilter = value
-            Me.m_fleetFilter = Nothing
+            Me.m_itemFilter = Nothing
         End Set
     End Property
 
@@ -426,9 +426,9 @@ Public Class plFlow
         If (Me.m_unitFilter IsNot Nothing) Then
             ' #Yes: grab unit only
             lUnits.Add(Me.m_unitFilter)
-        ElseIf (Me.FleetFilter IsNot Nothing) Then
+        ElseIf (Me.ItemFilter IsNot Nothing) Then
             ' #No: Has fleet filter?
-            lUnits.AddRange(Me.m_data.GetUnits(Me.FleetFilter))
+            lUnits.AddRange(Me.m_data.GetUnits(Me.ItemFilter))
         Else
             ' #No: grab all units
             lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.All))

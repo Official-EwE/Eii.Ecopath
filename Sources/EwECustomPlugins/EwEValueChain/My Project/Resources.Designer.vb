@@ -190,6 +190,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Categories.
+        '''</summary>
+        Friend ReadOnly Property HEADER_CATEGORIES() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CATEGORIES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Cost.
         '''</summary>
         Friend ReadOnly Property HEADER_COST() As String

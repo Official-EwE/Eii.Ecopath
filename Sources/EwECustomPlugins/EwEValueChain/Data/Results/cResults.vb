@@ -353,14 +353,15 @@ Public Class cResults
 
         Dim core As cCore = Me.m_data.Core
         Dim nNumUnits As Integer = Me.m_data.GetUnits(cUnitFactory.eUnitType.All).Length
+        Dim nItems As Integer = Math.Max(Me.m_data.Core.nFleets, Me.m_data.Core.nGroups)
 
         Me.m_dtResultTimeStep.Clear()
         Me.m_dtSnapshots.Clear()
         Me.m_iMaxTimeStep = 0
         Me.m_runType = runType
 
-        ReDim Me.m_asItemValueContribution(Math.Max(core.nFleets, core.nGroups), nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
-        ReDim Me.m_asItemBiomassContribution(Math.Max(core.nFleets, core.nGroups), nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_asItemValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+        ReDim Me.m_asItemBiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
 
     End Sub
 
@@ -437,13 +438,13 @@ Public Class cResults
     ''' <param name="var"></param>
     ''' <param name="iTimeStep"></param>
     ''' <param name="unit"></param>
-    ''' <param name="iFleet"></param>
+    ''' <param name="iItem"></param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function Result(ByVal unit As cUnit, _
                            ByVal var As eVariableType, _
                            ByVal iTimeStep As Integer, _
-                           ByVal iFleet As Integer, _
+                           ByVal iItem As Integer, _
                            ByVal contr As eContributionType) As Single
 
         Dim rs As cTimeStepResults = Me.GetTimeStepResult(iTimeStep)
@@ -451,7 +452,7 @@ Public Class cResults
         Dim sContrVal As Single = 0
         Dim sContrBio As Single = 0
 
-        Me.GetContributionRatios(iFleet, unit, iTimeStep, sContrVal, sContrBio)
+        Me.GetContributionRatios(iItem, unit, iTimeStep, sContrVal, sContrBio)
 
         Select Case contr
             Case eContributionType.Value
@@ -525,14 +526,14 @@ Public Class cResults
     ''' <param name="vartype"></param>
     ''' <param name="iTimeStep"></param>
     ''' <param name="lUnits"></param>
-    ''' <param name="iFleet">Fleet to extract contribution for.</param>
+    ''' <param name="iItem">Aggreagation item index, if any.</param>
     ''' <param name="contr"><see cref="eContributionType"/> to extract contribution for.</param>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
     Public Function GetTimeStepTotal(ByVal vartype As eVariableType, _
                                      ByVal iTimeStep As Integer, _
                                      ByVal lUnits As cUnit(), _
-                                     ByVal iFleet As Integer, _
+                                     ByVal iItem As Integer, _
                                      ByVal contr As eContributionType) As Single
 
         Dim sTotal As Single = 0.0!
@@ -542,7 +543,7 @@ Public Class cResults
         End If
 
         For Each unit As cUnit In lUnits
-            sTotal += Me.Result(unit, vartype, iTimeStep, iFleet, contr)
+            sTotal += Me.Result(unit, vartype, iTimeStep, iItem, contr)
         Next
 
         Return sTotal
@@ -612,7 +613,7 @@ Public Class cResults
     ''' <summary>
     ''' Store the contribution of a single fleet to a unit at a given time step.
     ''' </summary>
-    ''' <param name="iFleet">The fleet to store the contribution for.</param>
+    ''' <param name="iItem">The item to store the contribution for.</param>
     ''' <param name="unit">The unit to store the contribution for.</param>
     ''' <param name="iTimeStep">The time step to store the contribution for.</param>
     ''' <param name="sValueContribution">The value contribution to store.</param>
@@ -622,11 +623,11 @@ Public Class cResults
     ''' very closely approximate) the value for the unit for the default chain.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public Sub StoreFleetContribution(ByVal iFleet As Integer, _
-                                      ByVal unit As cUnit, _
-                                      ByVal iTimeStep As Integer, _
-                                      ByVal sValueContribution As Single, _
-                                      ByVal sBiomassContribution As Single)
+    Public Sub StoreContribution(ByVal iItem As Integer, _
+                                 ByVal unit As cUnit, _
+                                 ByVal iTimeStep As Integer, _
+                                 ByVal sValueContribution As Single, _
+                                 ByVal sBiomassContribution As Single)
 
         Dim bOkidoki As Boolean = False
 
@@ -639,8 +640,8 @@ Public Class cResults
         If bOkidoki Then
             Try
                 ' Append contribution in case this is called multiple times for a single fleet + unit combo
-                Me.m_asItemValueContribution(iFleet, unit.Sequence, iTimeStep) += sValueContribution
-                Me.m_asItemBiomassContribution(iFleet, unit.Sequence, iTimeStep) += sBiomassContribution
+                Me.m_asItemValueContribution(iItem, unit.Sequence, iTimeStep) += sValueContribution
+                Me.m_asItemBiomassContribution(iItem, unit.Sequence, iTimeStep) += sBiomassContribution
             Catch ex As Exception
                 ' Whoah!
             End Try

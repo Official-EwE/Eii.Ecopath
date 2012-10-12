@@ -24,6 +24,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 
 #End Region ' Imports
@@ -72,14 +73,14 @@ Public Class gridEcopathResult
         Me.Redim(22, 8)
 
         ' Column headers
-        Me(0, 0) = New EwEColumnHeaderCell("Categories")
-        Me(0, 1) = New EwEColumnHeaderCell("Unit")
-        Me(0, 2) = New EwEColumnHeaderCell("Producer")
-        Me(0, 3) = New EwEColumnHeaderCell("Processor")
-        Me(0, 4) = New EwEColumnHeaderCell("Distributor")
-        Me(0, 5) = New EwEColumnHeaderCell("Wholesaler")
-        Me(0, 6) = New EwEColumnHeaderCell("Retailer")
-        Me(0, 7) = New EwEColumnHeaderCell("Total")
+        Me(0, 0) = New EwEColumnHeaderCell("")
+        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
+        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PRODUCER)
+        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PROCESSING)
+        Me(0, 4) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_DISTRIBUTION)
+        Me(0, 5) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_WHOLESALER)
+        Me(0, 6) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_RETAILER)
+        Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
         ' Row headers
         Me(1, 0) = CreateRowHeaderCell("Production")

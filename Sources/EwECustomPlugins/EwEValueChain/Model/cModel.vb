@@ -240,21 +240,8 @@ Public Class cModel
                         Optional ByVal ecosimResults As cEcoSimResults = Nothing, _
                         Optional ByVal ecosimDS As cEcosimDatastructures = Nothing) As Boolean
 
-        Dim prodUnit As cProducerUnit = Nothing
-        Dim iFleetRun As Integer = 0
-        Dim iFleetSrc As Integer = 0 ' Fleet that is the landings source for a given producer unit
-        Dim iNumFleetRun As Integer = 0
-        Dim iBaseYear As Integer = 0
         Dim bAllowedToRun As Boolean = False
-
-        ' Respond to ResultsByFleet setting
-        '  * To aggregate results over all fleets only a full run is done for fleet 0
-        '  * To gather results by fleet a full run is done first. Then the chain is ran for every additional
-        '    fleet, passing in only landings and prices for that particular fleet, and gathering the contributions
-        '    for only that fleet.
-        If data.Parameters.ResultsByFleet Then
-            iNumFleetRun = data.Core.nFleets
-        End If
+        Dim iBaseYear As Integer = 0
 
         ' Sanity check
         Select Case result.RunType
@@ -276,68 +263,206 @@ Public Class cModel
 
         End Select
 
-        Try
+        If bAllowedToRun Then
 
-            If bAllowedToRun Then
+            Try
 
-                ' JS 23Mar11: not used
-                '' PreCompute the landings values. 
-                '' This should be changed: 
-                '' Should also check for Ecopath or Ecosim Running, right now, it just always precomputes
-                'Dim clpLandPort As New cComputeLandingPortions(data, iTimeStep, result.RunType)
+                Select Case data.Parameters.AggregationMode
 
-                ' Run for each fleet
-                For iFleetRun = 0 To iNumFleetRun
+                    Case cParameters.eAggregationModeType.FullModel
+                        Me.RunFullModel(data, result, iTimeStep, ecosimResults, ecosimDS)
 
-                    ' Prepare data for a time step
-                    data.InitTimeStep()
+                    Case cParameters.eAggregationModeType.ByFleet
+                        Me.RunTimeStepByFleet(data, result, iTimeStep, ecosimResults, ecosimDS)
 
-                    ' For each producer
-                    For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+                    Case cParameters.eAggregationModeType.ByGroup
+                        Me.RunTimeStepByLanding(data, result, iTimeStep, ecosimResults, ecosimDS)
 
-                        ' Get actual producer
-                        prodUnit = DirectCast(unit, cProducerUnit)
+                End Select
 
-                        If (prodUnit.Fleet IsNot Nothing) Then
-                            ' Get index
-                            iFleetSrc = prodUnit.Fleet.Index
-                            For iGroupSrc = 1 To data.Core.nGroups
-                                ' Gathering results for a fleet that does not serve the current producer?
-                                If (iFleetRun > 0) And (iFleetRun <> iFleetSrc) Then
-                                    ' #Yes: run this fleet without landings and value
-                                    prodUnit.SetLandings(iGroupSrc, 0, 0)
-                                Else
-                                    ' #No: Run this fleet using standard landings and value
-                                    prodUnit.SetLandings(iGroupSrc, _
-                                                         Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS), _
-                                                         Me.GetLandingValue(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
-                                End If
+            Catch ex As Exception
+                ' Aargh
+            End Try
 
-                            Next iGroupSrc
-                        End If
+        End If
 
-                        ' Start calculating!
-                        prodUnit.Process(result, iTimeStep, iFleetRun)
-
-                    Next unit
-
-                Next iFleetRun
-
-            End If
-
-            ' Finish results
-            result.CalculateDerivedValues(iTimeStep)
-
-        Catch ex As Exception
-            ' BOMB
-            Return False
-        End Try
-
-        ' result.Dump(iTimeStep)
+        ' Finish results
+        result.CalculateDerivedValues(iTimeStep)
 
         Return True
+
     End Function
 
+
+    ''' <summary>
+    ''' Run a time step for the entire chain, unfiltered.
+    ''' </summary>
+    ''' <param name="data"></param>
+    ''' <param name="result"></param>
+    ''' <param name="iTimeStep">1 when running Ecopath.</param>
+    ''' <param name="ecosimResults"></param>
+    ''' <param name="ecosimDS"></param>
+    Private Function RunFullModel(ByVal data As cData, _
+                        ByVal result As cResults, _
+                        ByVal iTimeStep As Integer, _
+                        ByVal ecosimResults As cEcoSimResults, _
+                        ByVal ecosimDS As cEcosimDatastructures) As Boolean
+
+        Dim prodUnit As cProducerUnit = Nothing
+        Dim iFleet As Integer = 0
+
+        ' Prepare data for a time step
+        data.InitTimeStep()
+
+        ' For each producer
+        For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+
+            ' Get actual producer
+            prodUnit = DirectCast(unit, cProducerUnit)
+
+            If (prodUnit.Fleet IsNot Nothing) Then
+                iFleet = prodUnit.Fleet.Index
+                For iGroupSrc = 1 To data.Core.nGroups
+                    prodUnit.SetLandings(iGroupSrc, _
+                                         Me.GetLandings(data.Core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS), _
+                                         Me.GetLandingValue(data.Core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
+                Next iGroupSrc
+            End If
+            prodUnit.Process(result, iTimeStep, 0)
+        Next unit
+
+        Return True
+
+    End Function
+
+
+    ''' <summary>
+    ''' Run a time step, aggregated values by fleet.
+    ''' </summary>
+    ''' <param name="data"></param>
+    ''' <param name="result"></param>
+    ''' <param name="iTimeStep">1 when running Ecopath.</param>
+    ''' <param name="ecosimResults"></param>
+    ''' <param name="ecosimDS"></param>
+    ''' <returns></returns>
+    Public Function RunTimeStepByFleet(ByVal data As cData, _
+                                       ByVal result As cResults, _
+                                       ByVal iTimeStep As Integer, _
+                                       ByVal ecosimResults As cEcoSimResults, _
+                                       ByVal ecosimDS As cEcosimDatastructures) As Boolean
+
+        Dim prodUnit As cProducerUnit = Nothing
+        Dim iFleetSrc As Integer = 0 ' Fleet that is the landings source for a given producer unit
+
+        ' First run chain for full model
+        Me.RunFullModel(data, result, iTimeStep, ecosimResults, ecosimDS)
+
+        ' Next run chain for each fleet
+        For iFleet As Integer = 1 To data.Core.nFleets
+
+            ' Prepare data for a time step
+            data.InitTimeStep()
+
+            ' For each producer
+            For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+
+                ' Get actual producer
+                prodUnit = DirectCast(unit, cProducerUnit)
+
+                If (prodUnit.Fleet IsNot Nothing) Then
+                    ' Get index
+                    iFleetSrc = prodUnit.Fleet.Index
+                    For iGroupSrc = 1 To data.Core.nGroups
+                        ' Gathering results for a fleet that does not serve the current producer?
+                        If (iFleet <> iFleetSrc) Then
+                            ' #Yes: run this fleet without landings and value
+                            prodUnit.SetLandings(iGroupSrc, 0, 0)
+                        Else
+                            ' #No: Run this fleet using standard landings and value
+                            prodUnit.SetLandings(iGroupSrc, _
+                                                 Me.GetLandings(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS), _
+                                                 Me.GetLandingValue(data.Core, iFleetSrc, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
+                        End If
+
+                    Next iGroupSrc
+                End If
+
+                ' Start calculating!
+                prodUnit.Process(result, iTimeStep, iFleet)
+
+            Next unit
+
+        Next iFleet
+
+        Return True
+
+    End Function
+
+    ''' <summary>
+    ''' Run a time step, aggregated values by fleet.
+    ''' </summary>
+    ''' <param name="data"></param>
+    ''' <param name="result"></param>
+    ''' <param name="iTimeStep">1 when running Ecopath.</param>
+    ''' <param name="ecosimResults"></param>
+    ''' <param name="ecosimDS"></param>
+    ''' <returns></returns>
+    Public Function RunTimeStepByLanding(ByVal data As cData, _
+                                         ByVal result As cResults, _
+                                         ByVal iTimeStep As Integer, _
+                                         ByVal ecosimResults As cEcoSimResults, _
+                                         ByVal ecosimDS As cEcosimDatastructures) As Boolean
+
+        Dim grpRun As cEcoPathGroupInput = Nothing
+        Dim flt As cFleetInput = Nothing
+        Dim prodUnit As cProducerUnit = Nothing
+
+        ' First run chain for full model
+        Me.RunFullModel(data, result, iTimeStep, ecosimResults, ecosimDS)
+
+        ' Next run chain for each landing
+        For iGroup As Integer = 1 To data.Core.nGroups
+
+            grpRun = data.Core.EcoPathGroupInputs(iGroup)
+
+            ' Prepare data for a time step
+            data.InitTimeStep()
+
+            ' For each producer
+            For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
+
+                ' Get actual producer
+                prodUnit = DirectCast(unit, cProducerUnit)
+                flt = prodUnit.Fleet
+
+                If (flt IsNot Nothing) Then
+
+                    Dim sCatch As Single = flt.Landings(iGroup) + flt.Discards(iGroup)
+                    Dim iFleet As Integer = flt.Index
+
+                    ' Gathering results for a fleet that does not serve the current producer?
+                    If (sCatch = 0) Then
+                        ' #Yes: run this fleet without landings and value
+                        prodUnit.SetLandings(iGroup, 0, 0)
+                    Else
+                        ' #No: Run this fleet using standard landings and value
+                        prodUnit.SetLandings(iGroup, _
+                                             Me.GetLandings(data.Core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS), _
+                                             Me.GetLandingValue(data.Core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS))
+                    End If
+                End If
+
+                ' Start calculating!
+                prodUnit.Process(result, iTimeStep, iGroup)
+
+            Next unit
+
+        Next iGroup
+
+        Return True
+
+    End Function
+   
 #Region " Helpers "
 
     Private Function GetLandings(ByVal core As cCore, _

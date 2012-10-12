@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports EwEUtils.Database.cEwEDatabase
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -127,13 +128,11 @@ Public Class ucParameters
 
         ' Init check boxes
         Try
-
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
-                Me.m_clbFleets.Items.Add(Me.m_uic.Core.FleetInputs(iFleet).Name)
+                Me.m_clbFleets.Items.Add(Me.m_uic.Core.FleetInputs(iFleet))
             Next iFleet
-
         Catch ex As Exception
-
+            ' Aargh
         End Try
 
         ' Reflect parameters values in controls
@@ -201,10 +200,18 @@ Public Class ucParameters
     ''' 
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub OnResultsByFleetChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_chkResultsByFleet.CheckedChanged
+    Private Sub OnAggregationModeChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_rbAggNone.CheckedChanged, m_rbAggFleet.CheckedChanged, m_rbAggGroup.CheckedChanged
+
         If Me.m_bInUpdate Then Return
-        Me.m_params.ResultsByFleet = Me.m_chkResultsByFleet.Checked
+        If Me.m_rbAggNone.Checked Then
+            Me.m_params.AggregationMode = cParameters.eAggregationModeType.FullModel
+        ElseIf Me.m_rbAggFleet.Checked Then
+            Me.m_params.AggregationMode = cParameters.eAggregationModeType.ByFleet
+        Else
+            Me.m_params.AggregationMode = cParameters.eAggregationModeType.ByGroup
+        End If
+
     End Sub
 
     Private Sub m_nudEffortMin_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -232,7 +239,14 @@ Public Class ucParameters
         Me.m_params.EquilibriumEffortIncrement = CSng(Me.m_nudEffortIncr.Value)
     End Sub
 
-    Private Sub m_clbFleets_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnFormatFleet(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+        Handles m_clbFleets.Format
+        Dim item As ICoreInputOutput = DirectCast(e.ListItem, ICoreInputOutput)
+        Dim fmt As New cCoreInterfaceFormatter()
+        e.Value = fmt.GetDescriptor(item)
+    End Sub
+
+    Private Sub OnFleetSelected(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_clbFleets.SelectedIndexChanged
 
         If Me.m_bInUpdate Then Return
@@ -258,7 +272,10 @@ Public Class ucParameters
             Me.m_chkRunWithEcopath.Checked = Me.m_params.RunWithEcopath
             Me.m_chkRunWithEcosim.Checked = Me.m_params.RunWithEcosim
             Me.m_chkRunWithSearches.Checked = Me.m_params.RunWithSearches
-            Me.m_chkResultsByFleet.Checked = Me.m_params.ResultsByFleet
+
+            Me.m_rbAggNone.Checked = (Me.m_params.AggregationMode = cParameters.eAggregationModeType.FullModel)
+            Me.m_rbAggFleet.Checked = (Me.m_params.AggregationMode = cParameters.eAggregationModeType.ByFleet)
+            Me.m_rbAggGroup.Checked = (Me.m_params.AggregationMode = cParameters.eAggregationModeType.ByGroup)
 
             Me.m_fpFMin.Value = Me.m_params.EquilibriumEffortMin
             Me.m_fpFMax.Value = Me.m_params.EquilibriumEffortMax
