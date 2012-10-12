@@ -290,21 +290,26 @@ Friend Class cDBUpdate6_02_00_01
             reader = Nothing
         Next
 
-        ' Read importance layer data
-        For i = 0 To lImportanceLayerID.Count - 1
-            reader = db.GetReader("SELECT * FROM EcospaceScenarioWeightLayerCell WHERE ScenarioID=" & iScenarioID & " AND lImportanceLayerID=" & lImportanceLayerID(i))
-            While reader.Read
+        Try
 
-                iRow = CInt(reader("InRow"))
-                iCol = CInt(reader("InCol"))
-                If (iRow <= InRow) And (iCol <= InCol) Then
-                    dataImportance(iRow, iCol, i) = CSng(reader("Weight"))
-                End If
+            ' Read importance layer data
+            For i = 0 To lImportanceLayerID.Count - 1
+                reader = db.GetReader("SELECT * FROM EcospaceScenarioWeightLayerCell WHERE ScenarioID=" & iScenarioID & " AND lImportanceLayerID=" & lImportanceLayerID(i))
+                While reader.Read
 
-            End While
-            db.ReleaseReader(reader)
-            reader = Nothing
-        Next
+                    iRow = CInt(reader("InRow"))
+                    iCol = CInt(reader("InCol"))
+                    If (iRow <= InRow) And (iCol <= InCol) Then
+                        dataImportance(iRow, iCol, i) = CSng(reader("Weight"))
+                    End If
+
+                End While
+                db.ReleaseReader(reader)
+                reader = Nothing
+            Next
+        Catch ex As Exception
+            ' Too bad, keep moving on
+        End Try
 
         ' ---------------------------
         ' Update tables
