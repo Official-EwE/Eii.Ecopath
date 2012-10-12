@@ -58,7 +58,8 @@ Public Class ucEcosimGraph
         MyBase.Finalize()
     End Sub
 
-    Public Sub ShowResults(ByVal iFleet As Integer, ByVal lUnits As cUnit(), ByVal result As cResults) _
+    Public Sub ShowResults(ByVal iFleet As Integer, ByVal lUnits As cUnit(), ByVal result As cResults, _
+                           ByVal iTimeStep As Integer) _
              Implements IResultView.ShowResults
 
         Dim cr As New ZedGraph.ColorSymbolRotator()
@@ -74,7 +75,7 @@ Public Class ucEcosimGraph
             line.Color = cr.NextColor()
             line.Symbol = New ZedGraph.Symbol(SymbolType.None, line.Color)
 
-            For iTimeStep As Integer = 1 To result.NumTimeSteps
+            For iTimeStep = 1 To result.NumTimeSteps
                 line.AddPoint(CDbl(iBaseYear + ((iTimeStep - 1) / cCore.N_MONTHS)), _
                               result.GetTimeStepTotal(vn, iTimeStep, lUnits, iFleet, cResults.GetVariableContributionType(vn)))
             Next iTimeStep

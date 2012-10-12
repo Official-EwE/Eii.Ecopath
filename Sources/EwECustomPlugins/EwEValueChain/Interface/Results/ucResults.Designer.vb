@@ -145,7 +145,6 @@ Partial Class ucResults
         Me.m_tscbYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_tscbYear.Name = "m_tscbYear"
         Me.m_tscbYear.Size = New System.Drawing.Size(75, 25)
-        Me.m_tscbYear.Visible = False
         '
         'm_tsbEcopath
         '

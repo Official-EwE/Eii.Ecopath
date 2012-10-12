@@ -82,6 +82,27 @@ Public Class ucResults
 
     End Class
 
+    Private Class cTimeStepComboItem
+
+        Private m_iStep As Integer
+        Private m_strLabel As String
+
+        Public Sub New(ByVal iStep As Integer, ByVal strLabel As String)
+            Me.m_iStep = iStep
+            Me.m_strLabel = strLabel
+        End Sub
+
+        Public Overrides Function ToString() As String
+            Return Me.m_strLabel
+        End Function
+
+        Public ReadOnly Property TimeStep() As Integer
+            Get
+                Return Me.m_iStep
+            End Get
+        End Property
+
+    End Class
 #End Region ' Helper classes
 
 #Region " Private bits "
@@ -220,12 +241,13 @@ Public Class ucResults
             Case cModel.eRunTypes.Equilibrium : Me.SetViewMode(eViewModeType.GraphEquilibrium)
         End Select
 
+        Me.UpdateYearCombo()
         Me.UpdateResults()
         Me.UpdateControls()
 
     End Sub
 
-    Private Sub nFilterByItem(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnFilterByItem(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tscmbItems.SelectedIndexChanged
 
         ' Filter by fleet
@@ -381,6 +403,7 @@ Public Class ucResults
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         ' Update results
+        Me.UpdateYearCombo()
         Me.UpdateResults()
         Me.UpdateControls()
 
@@ -507,12 +530,19 @@ Public Class ucResults
         End If
 
         If Me.m_view IsNot Nothing Then
-            Me.m_view.ShowResults(iItem, Me.m_plFlow.GetFlowUnits(), Me.m_result)
+            Me.m_view.ShowResults(iItem, Me.m_plFlow.GetFlowUnits(), Me.m_result, Me.SelectedTimeStep())
         End If
 
     End Sub
 
     Private Sub UpdateControls()
+
+        Dim bHasSim As Boolean = False
+        If Me.m_data IsNot Nothing Then
+            If Me.m_data.Core IsNot Nothing Then
+                bHasSim = Me.m_data.Core.StateMonitor.HasEcosimRan
+            End If
+        End If
 
         Me.m_bInUpdate = True
 
@@ -527,6 +557,7 @@ Public Class ucResults
 
         Me.m_tscmbUnit.SelectedItem = Me.GetUnitComboItem(Me.m_plFlow.UnitFilter, Me.m_tscmbUnit)
 
+        Me.m_tscbYear.Visible = (Me.m_viewMode <> eViewModeType.Grid) And (bHasSim)
         Me.m_tslblData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
         Me.m_tscmbGraphData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
 
@@ -534,11 +565,25 @@ Public Class ucResults
 
     End Sub
 
+    Private Sub UpdateYearCombo()
+
+        ' Fill time step drop down
+        Me.m_tscbYear.Items.Clear()
+        Dim iYearStart As Integer = Me.m_data.Core.EcosimFirstYear
+        Dim iStepsPerYear As Integer = CInt(Me.m_data.Core.nEcosimTimeSteps / Math.Max(1, Me.m_data.Core.nEcosimYears))
+        Me.m_tscbYear.Items.Add(New cTimeStepComboItem(1, "Ecopath"))
+        For iYear As Integer = 0 To Me.m_data.Core.nEcosimYears - 1
+            Me.m_tscbYear.Items.Add(New cTimeStepComboItem(CInt((iYear + 0.5) * iStepsPerYear), CStr(iYearStart + iYear)))
+        Next
+        Me.m_tscbYear.SelectedIndex = 0
+
+    End Sub
+
     Private Sub SetViewMode(ByVal viewMode As eViewModeType)
 
         Dim ctrl As ScrollableControl = Nothing
 
-        ' Store view mode type
+         ' Store view mode type
         Me.m_viewMode = viewMode
 
         ' Create new view
@@ -685,6 +730,16 @@ Public Class ucResults
         Return Nothing
     End Function
 
+    Private Function SelectedTimeStep() As Integer
+        Dim item As cTimeStepComboItem = DirectCast(Me.m_tscbYear.SelectedItem, cTimeStepComboItem)
+        If (item Is Nothing) Then Return 1
+        Return item.TimeStep
+    End Function
+
 #End Region ' Internals 
+
+    Private Sub OnYearSelected(sender As Object, e As System.EventArgs) Handles m_tscbYear.SelectedIndexChanged
+        Me.UpdateResults()
+    End Sub
 
 End Class
