@@ -239,16 +239,13 @@ Namespace Ecosim
                     For Each lvItem In Me.m_lvAppliedShapes.Items
                         ' Get shape
                         shape = Me.Shape(lvItem)
-                        ' Is 'one of ours'?
-                        If IsAllowedShape(shape) Then
-                            ' #Yes: still room to apply? (which should be; the UI has been enforcing this already)
-                            If (iApplication <= iNumApplied) Then
-                                ' #Yes: add application
-                                ffappl = DirectCast(lvItem.SubItems(1).Tag, eForcingFunctionApplication)
-                                ppi.setShape(iApplication, shape, ffappl)
-                            End If
-                            iApplication += 1
+                        ' Still room to apply? (which should be; the UI has been enforcing this already)
+                        If (iApplication <= iNumApplied) Then
+                            ' #Yes: add application
+                            ffappl = DirectCast(lvItem.SubItems(1).Tag, eForcingFunctionApplication)
+                            ppi.setShape(iApplication, shape, ffappl)
                         End If
+                        iApplication += 1
                     Next
 
                     ' Clear remainging interactions
