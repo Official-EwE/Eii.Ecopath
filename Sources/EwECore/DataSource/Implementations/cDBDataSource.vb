@@ -3737,9 +3737,8 @@ Namespace DataSources
 
             bSucces = bSucces And Me.SaveEcosimGroups(idm)
             bSucces = bSucces And Me.SaveEcosimFleets(idm)
-            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
-                bSucces = bSucces And Me.SaveShapes(idm)
-            End If
+            bSucces = bSucces And Me.SaveShapes(idm)
+
             If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.TimeSeries}) Then
                 bSucces = bSucces And Me.SaveTimeSeries(idm)
             End If
