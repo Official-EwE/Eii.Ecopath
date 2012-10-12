@@ -154,6 +154,7 @@
   <ItemGroup>
     <Content Include="Resources\logo_canada.png" />
     <Content Include="Resources\logo_canada_dfo.gif" />
+    <Content Include="Resources\logo_multisim.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EwECore\EwECore.vbproj">
