@@ -39,6 +39,7 @@ Namespace Controls.EwEGrid
     <CLSCompliant(False)> _
     Public Class PropertyCell
         : Inherits EwECellBase
+        : Implements IPropertyCell
 
         ''' <summary>Connected property.</summary>
         Private m_property As cProperty = Nothing
@@ -106,11 +107,10 @@ Namespace Controls.EwEGrid
 #Region " Data (property)"
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get the property in the cell
-        ''' </summary>
+        ''' <inheritdocs cref="IPropertyCell.GetProperty"/>
         ''' -------------------------------------------------------------------
-        Public Function GetProperty() As cProperty
+        Public Function GetProperty() As cProperty _
+             Implements IPropertyCell.GetProperty
             Return Me.m_property
         End Function
 

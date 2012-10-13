@@ -241,8 +241,8 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected ReadOnly Property StyleGuide(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
             Get
-                If (TypeOf cell Is IUIElement) Then
-                    Dim uic As cUIContext = DirectCast(cell, IUIElement).UIContext
+                If (TypeOf cell Is IEwECell) Then
+                    Dim uic As cUIContext = DirectCast(cell, IEwECell).UIContext
                     If (uic IsNot Nothing) Then
                         Return uic.StyleGuide
                     End If
@@ -261,9 +261,9 @@ Namespace Controls.EwEGrid
         Protected ReadOnly Property Style(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide.eStyleFlags
             Get
                 ' Rendering an EwE base cell?
-                If (TypeOf cell Is EwECellBase) Then
+                If (TypeOf cell Is IEwECell) Then
                     ' #Yes: obtain cell style
-                    Return DirectCast(cell, EwECellBase).Style
+                    Return DirectCast(cell, IEwECell).Style
                 End If
                 Return cStyleGuide.eStyleFlags.OK
             End Get

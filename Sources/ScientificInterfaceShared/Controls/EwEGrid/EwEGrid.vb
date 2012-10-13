@@ -1368,9 +1368,9 @@ Namespace Controls.EwEGrid
                                 c = Me(p.Row, p.Column)
                                 If c IsNot Nothing Then
                                     ' Is property cell?
-                                    If TypeOf c Is PropertyCell Then
+                                    If (TypeOf c Is IPropertyCell) Then
                                         ' #Yes: add to list of selected cells
-                                        Me.m_lpropertySelected.Add(DirectCast(c, PropertyCell).GetProperty())
+                                        Me.m_lpropertySelected.Add(DirectCast(c, IPropertyCell).GetProperty())
                                     End If
                                 End If
                             Catch ex As Exception

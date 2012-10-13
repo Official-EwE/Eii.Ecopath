@@ -41,8 +41,8 @@ Namespace Controls.EwEGrid
     <CLSCompliant(False)> _
     Public MustInherit Class EwECellBase
         Inherits Cell
+        Implements IEwECell
         Implements IDisposable
-        Implements IUIElement
 
 #Region " Private helper class "
 
@@ -196,7 +196,8 @@ Namespace Controls.EwEGrid
         ''' triggering EwE colour feedback and EwE cell edit behaviour.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Style() As cStyleGuide.eStyleFlags
+        Public Overridable Property Style() As cStyleGuide.eStyleFlags _
+            Implements IEwECell.Style
 
             Get
                 Return Me.m_style
@@ -453,7 +454,7 @@ Namespace Controls.EwEGrid
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overridable Property UIContext() As cUIContext _
-            Implements IUIElement.UIContext
+            Implements IEwECell.UIContext
             Get
                 Return Me.m_uic
             End Get
