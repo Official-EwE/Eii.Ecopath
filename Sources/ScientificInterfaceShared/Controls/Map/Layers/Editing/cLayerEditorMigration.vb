@@ -80,6 +80,17 @@ Namespace Controls.Map.Layers
                 'NOP
             End Set
         End Property
+
+        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
+                                             value As Object, _
+                                             e As System.Windows.Forms.MouseEventArgs, _
+                                             ptClick As System.Drawing.Point)
+            Dim layerCore As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
+            Dim grp As cEcospaceGroup = Me.UIContext.Core.EcospaceGroups(layerCore.iLayer)
+            grp.IsMigratory = True
+            MyBase.SetCellValue(ptSet, value, e, ptClick)
+        End Sub
+
 #End Region ' Public interfaces
 
     End Class

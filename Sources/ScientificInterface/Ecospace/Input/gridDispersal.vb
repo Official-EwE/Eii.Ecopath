@@ -177,6 +177,18 @@ Namespace Ecospace
 
         End Sub
 
+        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
+            ' ToDo: replace this logic with a checkbox property cell one day
+            If (msg.DataType = eDataTypes.EcospaceGroup) Then
+                If (msg.HasVariable(eVarNameFlags.IsMigratory) Or msg.HasVariable(eVarNameFlags.IsAdvected)) Then
+                    For i As Integer = 1 To Me.RowsCount - 1
+                        Me.UpdateRow(i)
+                    Next
+                End If
+            End If
+            MyBase.OnCoreMessage(msg)
+        End Sub
+
     End Class
 
 End Namespace
