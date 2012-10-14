@@ -59,15 +59,15 @@ Namespace Ecospace
 
         Public Sub New()
             MyBase.New()
-            m_ah = New CustomEvents
-            AddHandler m_ah.ValueChanged, New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
+            'm_ah = New CustomEvents
+            'AddHandler m_ah.ValueChanged, New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-            If (Me.m_ah IsNot Nothing) Then
-                RemoveHandler m_ah.ValueChanged, New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
-                Me.m_ah = Nothing
-            End If
+            'If (Me.m_ah IsNot Nothing) Then
+            '    RemoveHandler m_ah.ValueChanged, New SourceGrid2.PositionEventHandler(AddressOf m_ahValueChanged)
+            '    Me.m_ah = Nothing
+            'End If
             MyBase.Dispose(disposing)
         End Sub
 
@@ -116,10 +116,10 @@ Namespace Ecospace
                 'Rel. feed.rate in bad habitat
                 Me(iGroup, eColumnTypes.RelFeedRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EatEffBad)
                 'Advected?
-                Me(iGroup, eColumnTypes.Advected) = New Cells.Real.CheckBox(source.IsAdvected())
+                Me(iGroup, eColumnTypes.Advected) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsAdvected)
                 Me(iGroup, eColumnTypes.Advected).Behaviors.Add(m_ah)
                 'Migrating?
-                Me(iGroup, eColumnTypes.Migrating) = New Cells.Real.CheckBox(source.IsMigratory())
+                Me(iGroup, eColumnTypes.Migrating) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsMigratory)
                 Me(iGroup, eColumnTypes.Migrating).Behaviors.Add(m_ah)
                 'North/south concentration
                 Me(iGroup, eColumnTypes.NSCont) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MigrationConcRow)
@@ -128,7 +128,7 @@ Namespace Ecospace
                 'Barrier avoidance weight
                 Me(iGroup, eColumnTypes.BarrierAvoidance) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BarrierAvoidanceWeight)
 
-                Me.UpdateRow(iGroup)
+                'Me.UpdateRow(iGroup)
             Next
 
         End Sub
@@ -140,54 +140,54 @@ Namespace Ecospace
             End Get
         End Property
 
-        Private Sub m_ahValueChanged(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+        'Private Sub m_ahValueChanged(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
 
-            Dim iGroup As Integer = e.Position.Row
-            Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(iGroup)
-            Dim colType As eColumnTypes = DirectCast(e.Position.Column, eColumnTypes)
-            Dim bChecked As Boolean = CBool(e.Cell.GetValue(e.Position))
+        '    Dim iGroup As Integer = e.Position.Row
+        '    Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(iGroup)
+        '    Dim colType As eColumnTypes = DirectCast(e.Position.Column, eColumnTypes)
+        '    Dim bChecked As Boolean = CBool(e.Cell.GetValue(e.Position))
 
-            Select Case colType
-                Case eColumnTypes.Advected
-                    group.IsAdvected = bChecked
-                Case eColumnTypes.Migrating
-                    group.IsMigratory = bChecked
-            End Select
+        '    Select Case colType
+        '        Case eColumnTypes.Advected
+        '            group.IsAdvected = bChecked
+        '        Case eColumnTypes.Migrating
+        '            group.IsMigratory = bChecked
+        '    End Select
 
-            UpdateRow(iGroup)
+        '    'UpdateRow(iGroup)
 
-        End Sub
+        'End Sub
 
 
-        ''' <summary>
-        ''' Update check boxes in a row
-        ''' </summary>
-        ''' <param name="i">Row number to update.</param>
-        Private Sub UpdateRow(ByVal i As Integer)
+        ' ''' <summary>
+        ' ''' Update check boxes in a row
+        ' ''' </summary>
+        ' ''' <param name="i">Row number to update.</param>
+        'Private Sub UpdateRow(ByVal i As Integer)
 
-            Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(i)
+        '    Dim group As cEcospaceGroup = Me.Core.EcospaceGroups(i)
 
-            Me(i, eColumnTypes.Advected).Behaviors.Remove(m_ah)
-            Me(i, eColumnTypes.Advected).Value = CBool(group.IsAdvected())
-            Me(i, eColumnTypes.Advected).Behaviors.Add(m_ah)
+        '    Me(i, eColumnTypes.Advected).Behaviors.Remove(m_ah)
+        '    Me(i, eColumnTypes.Advected).Value = CBool(group.IsAdvected())
+        '    Me(i, eColumnTypes.Advected).Behaviors.Add(m_ah)
 
-            Me(i, eColumnTypes.Migrating).Behaviors.Remove(m_ah)
-            Me(i, eColumnTypes.Migrating).Value = CBool(group.IsMigratory())
-            Me(i, eColumnTypes.Migrating).Behaviors.Add(m_ah)
+        '    Me(i, eColumnTypes.Migrating).Behaviors.Remove(m_ah)
+        '    Me(i, eColumnTypes.Migrating).Value = CBool(group.IsMigratory())
+        '    Me(i, eColumnTypes.Migrating).Behaviors.Add(m_ah)
 
-        End Sub
+        'End Sub
 
-        Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
-            ' ToDo: replace this logic with a checkbox property cell one day
-            If (msg.DataType = eDataTypes.EcospaceGroup) Then
-                If (msg.HasVariable(eVarNameFlags.IsMigratory) Or msg.HasVariable(eVarNameFlags.IsAdvected)) Then
-                    For i As Integer = 1 To Me.RowsCount - 1
-                        Me.UpdateRow(i)
-                    Next
-                End If
-            End If
-            MyBase.OnCoreMessage(msg)
-        End Sub
+        'Public Overrides Sub OnCoreMessage(msg As EwECore.cMessage)
+        '    ' ToDo: replace this logic with a checkbox property cell one day
+        '    If (msg.DataType = eDataTypes.EcospaceGroup) Then
+        '        If (msg.HasVariable(eVarNameFlags.IsMigratory) Or msg.HasVariable(eVarNameFlags.IsAdvected)) Then
+        '            For i As Integer = 1 To Me.RowsCount - 1
+        '                Me.UpdateRow(i)
+        '            Next
+        '        End If
+        '    End If
+        '    MyBase.OnCoreMessage(msg)
+        'End Sub
 
     End Class
 
