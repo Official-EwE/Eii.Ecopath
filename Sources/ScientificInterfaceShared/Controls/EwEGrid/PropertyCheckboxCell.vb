@@ -26,6 +26,7 @@ Namespace Controls.EwEGrid
     <CLSCompliant(False)> _
     Public Class PropertyCheckboxCell
         Inherits EwECheckboxCell
+        Implements IPropertyCell
 
         ''' <summary>Connected property.</summary>
         Private m_property As cBooleanProperty = Nothing
@@ -90,6 +91,14 @@ Namespace Controls.EwEGrid
 #End Region ' Construction 
 
 #Region " Data (property)"
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IPropertyCell.GetProperty"/>
+        ''' -------------------------------------------------------------------
+        Public Function GetProperty() As cProperty _
+            Implements IPropertyCell.GetProperty
+            Return Me.m_property
+        End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -165,7 +174,7 @@ Namespace Controls.EwEGrid
         Public Overrides Property Style() As cStyleGuide.eStyleFlags
             Get
                 Dim s As cStyleGuide.eStyleFlags = MyBase.Style
-                If (s = 0) And (Me.m_property IsNot Nothing) Then
+                If (Me.m_property IsNot Nothing) Then
                     s = Me.m_property.GetStyle()
                 End If
                 Return s

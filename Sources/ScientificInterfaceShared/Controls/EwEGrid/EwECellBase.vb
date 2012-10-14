@@ -488,7 +488,8 @@ Namespace Controls.EwEGrid
         ''' Get a reference to the <see cref="cCore"/>, attached to the cell.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected ReadOnly Property Core() As cCore
+        Protected ReadOnly Property Core() As cCore _
+            Implements IEwECell.Core
             Get
                 If (Me.UIContext Is Nothing) Then Return Nothing
                 Return Me.UIContext.Core
@@ -500,7 +501,8 @@ Namespace Controls.EwEGrid
         ''' Get a reference to the <see cref="cPropertyManager"/>, attached to the cell.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected ReadOnly Property PropertyManager() As cPropertyManager
+        Protected ReadOnly Property PropertyManager() As cPropertyManager _
+            Implements IEwECell.PropertyManager
             Get
                 If (Me.UIContext Is Nothing) Then Return Nothing
                 Return Me.UIContext.PropertyManager
@@ -512,7 +514,8 @@ Namespace Controls.EwEGrid
         ''' Get a reference to the <see cref="cStyleGuide"/>, attached to the cell.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Protected ReadOnly Property StyleGuide() As cStyleGuide
+        Protected ReadOnly Property StyleGuide() As cStyleGuide _
+            Implements IEwECell.StyleGuide
             Get
                 If (Me.UIContext Is Nothing) Then Return Nothing
                 Return Me.UIContext.StyleGuide

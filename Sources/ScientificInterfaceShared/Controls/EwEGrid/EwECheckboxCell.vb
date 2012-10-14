@@ -25,7 +25,7 @@ Namespace Controls.EwEGrid
     <CLSCompliant(False)> _
     Public Class EwECheckboxCell
         Inherits SourceGrid2.Cells.Real.CheckBox
-        Implements IUIElement
+        Implements IEwECell
         Implements IDisposable
 
         ''' <summary>Default visualizer for EwECells</summary>
@@ -75,7 +75,8 @@ Namespace Controls.EwEGrid
         ''' triggering EwE colour feedback and EwE cell edit behaviour.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Overridable Property Style() As cStyleGuide.eStyleFlags
+        Public Overridable Property Style() As cStyleGuide.eStyleFlags _
+            Implements IEwECell.Style
 
             Get
                 Return Me.m_style
@@ -132,21 +133,24 @@ Namespace Controls.EwEGrid
             Me.UIContext = Nothing
         End Sub
 
-        Protected ReadOnly Property Core() As cCore
+        Protected ReadOnly Property Core() As cCore _
+            Implements IEwECell.Core
             Get
                 If (Me.UIContext Is Nothing) Then Return Nothing
                 Return Me.UIContext.Core
             End Get
         End Property
 
-        Protected ReadOnly Property PropertyManager() As cPropertyManager
+        Protected ReadOnly Property PropertyManager() As cPropertyManager _
+            Implements IEwECell.PropertyManager
             Get
                 If (Me.UIContext Is Nothing) Then Return Nothing
                 Return Me.UIContext.PropertyManager
             End Get
         End Property
 
-        Protected ReadOnly Property StyleGuide() As cStyleGuide
+        Protected ReadOnly Property StyleGuide() As cStyleGuide _
+            Implements IEwECell.StyleGuide
             Get
                 If (Me.UIContext Is Nothing) Then Return Nothing
                 Return Me.UIContext.StyleGuide
@@ -154,7 +158,7 @@ Namespace Controls.EwEGrid
         End Property
 
         Public Overridable Property UIContext() As cUIContext _
-            Implements IUIElement.UIContext
+            Implements IEwECell.UIContext
             Get
                 Return Me.m_uic
             End Get

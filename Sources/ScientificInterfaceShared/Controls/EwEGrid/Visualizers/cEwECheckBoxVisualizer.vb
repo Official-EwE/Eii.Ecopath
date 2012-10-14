@@ -67,6 +67,8 @@ Namespace Controls.EwEGrid
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
 
+            If (sg Is Nothing) Then Return
+
             ' Get style colors, but exclude remarks style because remarks are 
             ' rendered in a different manner
             sg.GetStyleColors(style And Not cStyleGuide.eStyleFlags.Remarks, clrFore, clrBack)
@@ -111,12 +113,14 @@ Namespace Controls.EwEGrid
                                                 ByVal rc As System.Drawing.Rectangle, _
                                                 ByVal status As SourceGrid2.DrawCellStatus)
 
-            If cell Is Nothing Then Return
+            If (cell Is Nothing) Then Return
 
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
             Dim style As cStyleGuide.eStyleFlags = Me.Style(cell)
             Dim clrFore As Color = Me.ForeColor
             Dim rcBorder As RectangleBorder = Me.Border
+
+            If (sg Is Nothing) Then Return
 
             ' Does cell have focus?
             If (status = DrawCellStatus.Focus) Then
@@ -160,8 +164,8 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Protected ReadOnly Property StyleGuide(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide
             Get
-                If (TypeOf cell Is IUIElement) Then
-                    Dim uic As cUIContext = DirectCast(cell, IUIElement).UIContext
+                If (TypeOf cell Is IEwECell) Then
+                    Dim uic As cUIContext = DirectCast(cell, IEwECell).UIContext
                     If (uic IsNot Nothing) Then
                         Return uic.StyleGuide
                     End If
@@ -180,9 +184,9 @@ Namespace Controls.EwEGrid
         Protected ReadOnly Property Style(ByVal cell As SourceGrid2.Cells.ICellVirtual) As cStyleGuide.eStyleFlags
             Get
                 ' Rendering a cell with an associated property?
-                If (TypeOf cell Is EwECellBase) Then
+                If (TypeOf cell Is IEwECell) Then
                     ' #Yes: obtain cell style
-                    Return DirectCast(cell, EwECellBase).Style()
+                    Return DirectCast(cell, IEwECell).Style()
                 End If
                 Return cStyleGuide.eStyleFlags.OK
             End Get
