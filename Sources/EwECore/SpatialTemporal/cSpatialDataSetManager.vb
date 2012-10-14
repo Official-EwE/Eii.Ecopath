@@ -128,14 +128,18 @@ Namespace SpatialData
                             Try
                                 Dim strTypeName As String = xa.InnerText
                                 Dim t As Type = cTypeUtils.StringToType(strTypeName)
-                                ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
+                                If (t IsNot Nothing) Then
 
-                                ds.Configuration(doc) = xn.ChildNodes(0)
-                                xa = xn.Attributes("GUID")
-                                ' Assign GUID
-                                ds.GUID = Guid.Parse(xa.InnerText)
+                                    ds = DirectCast(Activator.CreateInstance(t), ISpatialDataSet)
 
-                                If TypeOf ds Is IPlugin Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+                                    ds.Configuration(doc) = xn.ChildNodes(0)
+                                    xa = xn.Attributes("GUID")
+                                    ' Assign GUID
+                                    ds.GUID = Guid.Parse(xa.InnerText)
+
+                                    If TypeOf ds Is IPlugin Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+
+                                End If
 
                             Catch ex As Exception
                                 ds = Nothing
