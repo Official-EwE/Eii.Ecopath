@@ -105,10 +105,8 @@ Namespace Ecospace
                 Me(iGroup, eColumnTypes.RelFeedRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EatEffBad)
                 'Advected?
                 Me(iGroup, eColumnTypes.Advected) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsAdvected)
-                Me(iGroup, eColumnTypes.Advected).Behaviors.Add(m_ah)
                 'Migrating?
                 Me(iGroup, eColumnTypes.Migrating) = New PropertyCheckboxCell(Me.PropertyManager, source, eVarNameFlags.IsMigratory)
-                Me(iGroup, eColumnTypes.Migrating).Behaviors.Add(m_ah)
                 'North/south concentration
                 Me(iGroup, eColumnTypes.NSCont) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.MigrationConcRow)
                 'East/west concentration
@@ -126,6 +124,7 @@ Namespace Ecospace
                 Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSpace}
             End Get
         End Property
+
 
     End Class
 
