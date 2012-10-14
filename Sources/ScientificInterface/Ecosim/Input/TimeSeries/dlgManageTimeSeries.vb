@@ -697,7 +697,8 @@ Public Class dlgManageTimeSeries
             Try
                 For Each ts As cTimeSeriesImport In Me.m_tr
 
-                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Forcing) Then
+                    If (cTimeSeriesFactory.TimeSeriesCategory(ts.TimeSeriesType) = eTimeSeriesCategoryType.Forcing) And _
+                       (Me.m_tr.FirstYear >= 1900) Then
 
                         fmsg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_TIMESERIES_IMPORT_AS_MONTHLY, ts.Name), _
                                                     eCoreComponentType.TimeSeries, _
