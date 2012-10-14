@@ -3638,8 +3638,8 @@ exitline:
                                     MigGrad(i, j, ihab, imonth) = 2000
                                 End If
 
-                            Next
-                        Next
+                            Next j
+                        Next i
                         If Sweep = 1 Then
                             i = Math.Max(0, Math.Min(Me.m_Data.InRow, m_Data.PrefRow(migIndex(ihab), imonth)))
                             j = Math.Max(0, Math.Min(Me.m_Data.InCol, m_Data.Prefcol(migIndex(ihab), imonth)))
