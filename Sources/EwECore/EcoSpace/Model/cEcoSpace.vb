@@ -3641,10 +3641,10 @@ exitline:
                             Next
                         Next
                         If Sweep = 1 Then
-                            MigGrad(m_Data.PrefRow(migIndex(ihab), imonth), m_Data.Prefcol(migIndex(ihab), imonth), ihab, imonth) = 0
+                            i = Math.Max(0, Math.Min(Me.m_Data.InRow, m_Data.PrefRow(migIndex(ihab), imonth)))
+                            j = Math.Max(0, Math.Min(Me.m_Data.InCol, m_Data.Prefcol(migIndex(ihab), imonth)))
+                            MigGrad(i, j, ihab, imonth) = 0
                         End If
-                        'If m_Data.PrefHab(ihab, 0) Then Exit For
-                        'End If
                     Next
                 Next
             Next
