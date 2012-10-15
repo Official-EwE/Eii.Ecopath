@@ -91,8 +91,6 @@ Namespace Commands
         ''' Call to add a User Interface Control to a command.
         ''' </summary>
         ''' <param name="objGUI">The control to add.</param>
-        ''' <param name="objTag">Optional tag to launch with the command. Note that
-        ''' this tag will be available for handling code only via the <see cref="cCommand.Tag"/> property.</param>
         ''' <remarks>
         ''' The <see cref="cCommandHandler"/> predefines a few <see cref="cControlHandler"/> 
         ''' types that interact with specific User Interface control classes. Ensure
@@ -101,22 +99,21 @@ Namespace Commands
         ''' state is changed.
         ''' </remarks>
         ''' ----------------------------------------------------------------------
-        Public Sub AddControl(ByVal objGUI As Object, Optional objTag As Object = Nothing)
+        Public Sub AddControl(ByVal objGUI As Object, Optional fnparms As Object() = Nothing)
+
+            Dim cmdh As cCommandHandler = Me.m_cmdh
+            Dim t As Type = cmdh.GetControlHandlerType(objGUI)
+            Dim objControlHandler As Object = Nothing
+            Dim objParms() As Object = {Me, objGUI, fnparms}
             Try
-                Dim cmdh As cCommandHandler = Me.m_cmdh
-                Dim t As Type = cmdh.GetControlHandlerType(objGUI)
-                Dim objControlHandler As Object = Nothing
-                Dim objParms() As Object = {Me, objGUI, objTag}
-
                 Debug.Assert(t IsNot Nothing, "Control type not supported for automatic command handling!")
-
                 objControlHandler = Activator.CreateInstance(t, objParms)
                 If (TypeOf objControlHandler Is cControlHandler) Then
                     Me.m_dictControls.Add(objGUI, DirectCast(objControlHandler, cControlHandler))
                 End If
             Catch ex As Exception
                 ' Cannot log this!
-                Debug.Assert(False, "UI init error")
+                Debug.Assert(False, "UI init error on type " & t.ToString)
             End Try
         End Sub
 

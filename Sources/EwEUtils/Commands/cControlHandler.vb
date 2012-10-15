@@ -21,6 +21,7 @@ Option Strict On
 Imports System
 Imports System.Windows.Forms
 Imports System.Diagnostics
+Imports System.Reflection
 
 #End Region ' Imports
 
@@ -40,8 +41,8 @@ Namespace Commands
 
         ''' <summary>The associated Command.</summary>
         Private m_cmd As cCommand = Nothing
-        ''' <summary>Optional tag</summary>
-        Private m_objTag As Object = Nothing
+        ''' <summary>Optional command invocation function parameters.</summary>
+        Private m_objParams As Object() = Nothing
 
         ''' ---------------------------------------------------------------------------
         ''' <summary>
@@ -51,9 +52,10 @@ Namespace Commands
         ''' <param name="objCmd">The Command instance to attach.</param>
         ''' <param name="objGUI">The User Interface instance to attach.</param>
         ''' ---------------------------------------------------------------------------
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
             Debug.Assert(TypeOf objCmd Is cCommand)
             Me.m_cmd = DirectCast(objCmd, cCommand)
+            Me.m_objParams = fnparms
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -63,7 +65,7 @@ Namespace Commands
             Implements IDisposable.Dispose
 
             Me.m_cmd = Nothing
-            Me.m_objTag = Nothing
+            Me.m_objParams = Nothing
             GC.SuppressFinalize(Me)
 
         End Sub
@@ -84,9 +86,9 @@ Namespace Commands
         ''' Helper method; exposes an attached launch parameter to derived classes.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Protected ReadOnly Property Tag As Object
+        Protected ReadOnly Property Params As Object()
             Get
-                Return Me.m_objTag
+                Return Me.m_objParams
             End Get
         End Property
 
@@ -96,9 +98,9 @@ Namespace Commands
         ''' </summary>
         ''' ---------------------------------------------------------------------------
         Protected Sub Invoke()
-            Me.m_cmd.Tag = Me.m_objTag
-            Me.m_cmd.Invoke()
-            Me.m_cmd.Tag = Nothing
+            Dim t As Type = Me.m_cmd.GetType
+            t.InvokeMember("Invoke", BindingFlags.InvokeMethod, Type.DefaultBinder, Me.m_cmd, Me.m_objParams)
+            'Me.m_cmd.Invoke()
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -126,8 +128,8 @@ Namespace Commands
 
         Private WithEvents m_tsi As ToolStripMenuItem = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal tag As Object)
-            MyBase.New(objCmd, objGUI, tag)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+            MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripMenuItem)
             Me.m_tsi = DirectCast(objGUI, ToolStripMenuItem)
         End Sub
@@ -168,8 +170,8 @@ Namespace Commands
 
         Private WithEvents m_tsb As ToolStripButton = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
-            MyBase.New(objCmd, objGUI, objTag)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+            MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripButton)
         End Sub
@@ -210,8 +212,8 @@ Namespace Commands
 
         Private WithEvents m_tsb As ToolStripDropDownButton = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, objTag As Object)
-            MyBase.New(objCmd, objGUI, objTag)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+            MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripDropDownButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripDropDownButton)
         End Sub
@@ -251,8 +253,8 @@ Namespace Commands
 
         Private WithEvents m_tsb As ToolStripSplitButton = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
-            MyBase.New(objCmd, objGUI, objTag)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+            MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is ToolStripSplitButton)
             Me.m_tsb = DirectCast(objGUI, ToolStripSplitButton)
         End Sub
@@ -291,8 +293,8 @@ Namespace Commands
 
         Private WithEvents m_btn As Button = Nothing
 
-        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal objTag As Object)
-            MyBase.New(objCmd, objGUI, objTag)
+        Public Sub New(ByVal objCmd As Object, ByVal objGUI As Object, ByVal fnparms As Object())
+            MyBase.New(objCmd, objGUI, fnparms)
             Debug.Assert(TypeOf objGUI Is Button)
             Me.m_btn = DirectCast(objGUI, Button)
         End Sub

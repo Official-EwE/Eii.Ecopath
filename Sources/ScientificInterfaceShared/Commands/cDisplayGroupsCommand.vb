@@ -32,11 +32,41 @@ Namespace Commands
     Public Class cDisplayGroupsCommand
         Inherits cCommand
 
+        Private m_groupOptions As eGroupDisplayOptions = eGroupDisplayOptions.All
+
         Public Shared cCOMMAND_NAME As String = "~displaygroups"
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Group display options.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Enum eGroupDisplayOptions As Integer
+            ''' <summary>Show fished groups.</summary>
+            Fished = &H1
+            ''' <summary>Show non-fished groups.</summary>
+            NonFished = &H2
+            ''' <summary>Show living groups.</summary>
+            Living = &H4
+            ''' <summary>Show non-living groups.</summary>
+            NonLiving = &H8
+            ''' <summary>Show producer groups.</summary>
+            Producers = &H10
+            ''' <summary>Show consumer groups.</summary>
+            Consumers = &H20
+            ''' <summary>Show detritus groups.</summary>
+            Detritus = &H40
+            ''' <summary>Show stanza groups.</summary>
+            Stanza = &H80
+            ''' <summary>Show non-stanza groups.</summary>
+            NonStanza = &H100
+            ''' <summary>Show all groups.</summary>
+            All = &HFF
+        End Enum
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
         ''' </summary>
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -------------------------------------------------------------------
@@ -44,6 +74,29 @@ Namespace Commands
             MyBase.New(cmdh, cDisplayGroupsCommand.cCOMMAND_NAME)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Launch the commands with a given set of group display options.
+        ''' </summary>
+        ''' <param name="groupOptions"></param>
+        ''' -------------------------------------------------------------------
+        Public Overloads Sub Invoke(groupOptions As eGroupDisplayOptions)
+            Me.m_groupOptions = groupOptions
+            MyBase.Invoke()
+            Me.m_groupOptions = eGroupDisplayOptions.All
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="eGroupDisplayOptions">group display options</see>
+        ''' that the command was invoked with.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property GroupDisplayOptions As eGroupDisplayOptions
+            Get
+                Return Me.m_groupOptions
+            End Get
+        End Property
     End Class
 
 End Namespace
