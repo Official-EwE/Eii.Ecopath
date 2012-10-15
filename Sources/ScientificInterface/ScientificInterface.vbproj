@@ -223,6 +223,12 @@
     <Compile Include="Ecopath\Input\frmDietComp.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecosim\Tools\MSY\frmMSYSingleSpecies.Designer.vb">
+      <DependentUpon>frmMSYSingleSpecies.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Tools\MSY\frmMSYSingleSpecies.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Assets\cLayerFactoryInternal.vb" />
     <Compile Include="Ecospace\Assets\ImportExport\dlgExportLayerData.designer.vb">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>
@@ -776,6 +782,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\dlgConfig.resx">
       <DependentUpon>dlgConfig.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Tools\MSY\frmMSYSingleSpecies.resx">
+      <DependentUpon>frmMSYSingleSpecies.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>

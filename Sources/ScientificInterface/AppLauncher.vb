@@ -3138,7 +3138,7 @@ Public Class AppLauncher
 
     Private Sub OnDisplayShowHideItems(ByVal cmd As cCommand) _
         Handles m_cmdShowHideItems.OnInvoke
-        Dim dlg As New dlgShowHideItems(Me.UIContext)
+        Dim dlg As New dlgShowHideItems(Me.UIContext, Me.m_cmdShowHideItems.GroupDisplayOptions)
         dlg.ShowDialog()
     End Sub
 

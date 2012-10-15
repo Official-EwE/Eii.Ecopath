@@ -22,6 +22,8 @@ Option Explicit On
 
 Imports EwECore
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Controls
 
 #End Region
 
@@ -40,6 +42,8 @@ Namespace Ecosim
         Private m_bInSync As Boolean = False
         Private m_il As ImageList = Nothing
 
+        Private m_groupOptions As cDisplayGroupsCommand.eGroupDisplayOptions = cDisplayGroupsCommand.eGroupDisplayOptions.All
+
 #End Region ' Private variables
 
 #Region " Constructor "
@@ -50,10 +54,12 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="uic">The UI context to connect to.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext)
+        Public Sub New(ByVal uic As cUIContext, _
+                       Optional groupOptions As cDisplayGroupsCommand.eGroupDisplayOptions = cDisplayGroupsCommand.eGroupDisplayOptions.All)
             Me.InitializeComponent()
             Debug.Assert(uic IsNot Nothing)
             Me.m_uic = uic
+            Me.m_groupOptions = groupOptions
         End Sub
 
 #End Region ' Constructor
@@ -67,20 +73,23 @@ Namespace Ecosim
 
             Dim group As cEcoPathGroupInput = Nothing
             Dim fleet As cFleetInput = Nothing
+            Dim bShowGroup As Boolean = True
 
             Me.m_bInSync = True
 
             Me.m_clbGroups.Items.Clear()
             For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
                 group = Me.m_uic.Core.EcoPathGroupInputs(iGroup)
-                Me.m_clbGroups.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name), _
-                                         Me.m_uic.StyleGuide.GroupVisible(iGroup))
+                If (Me.IncludeGroup(group)) Then
+                    Me.m_clbGroups.Items.Add(New cCoreInputOutputControlItem(group), _
+                                             Me.m_uic.StyleGuide.GroupVisible(iGroup))
+                End If
             Next
 
             Me.m_clbFleets.Items.Clear()
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
                 fleet = Me.m_uic.Core.FleetInputs(iFleet)
-                Me.m_clbFleets.Items.Add(String.Format(SharedResources.GENERIC_LABEL_INDEXED, iFleet, fleet.Name), _
+                Me.m_clbFleets.Items.Add(New cCoreInputOutputControlItem(fleet), _
                                          Me.m_uic.StyleGuide.FleetVisible(iFleet))
             Next
 
@@ -181,20 +190,31 @@ Namespace Ecosim
         Private Sub OnSelectProducers(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnProducers.Click
 
+            Dim grp As cCoreGroupBase = Nothing
+
             Me.m_clbGroups.SuspendLayout()
-            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsProducer)
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, grp.IsProducer)
+                End If
             Next
             Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
 
         End Sub
 
         Private Sub OnSelectComsumers(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnConsumers.Click
 
+            Dim grp As cCoreGroupBase = Nothing
+
             Me.m_clbGroups.SuspendLayout()
-            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsConsumer)
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, grp.IsConsumer)
+                End If
             Next
             Me.m_clbGroups.ResumeLayout()
             Me.SyncFleets()
@@ -204,9 +224,14 @@ Namespace Ecosim
         Private Sub OnSelectDetritus(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnNonLiving.Click
 
+            Dim grp As cCoreGroupBase = Nothing
+
             Me.m_clbGroups.SuspendLayout()
-            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_clbGroups.SetItemChecked(iGroup - 1, Me.m_uic.Core.EcoPathGroupInputs(iGroup).IsDetritus)
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, grp.IsDetritus)
+                End If
             Next
             Me.m_clbGroups.ResumeLayout()
             Me.SyncFleets()
@@ -216,9 +241,14 @@ Namespace Ecosim
         Private Sub OnSelectLiving(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnLiving.Click
 
+            Dim grp As cCoreGroupBase = Nothing
+
             Me.m_clbGroups.SuspendLayout()
-            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_clbGroups.SetItemChecked(iGroup - 1, iGroup <= Me.m_uic.Core.nLivingGroups)
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, grp.IsLiving)
+                End If
             Next
             Me.m_clbGroups.ResumeLayout()
             Me.SyncFleets()
@@ -228,17 +258,24 @@ Namespace Ecosim
         Private Sub OnSelectFished(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnFished.Click
 
-            Me.m_clbGroups.SuspendLayout()
             Dim core As cCore = Me.m_uic.Core
             Dim asIsFished(core.nGroups) As Boolean
+
             For iFleet As Integer = 1 To core.nFleets
                 Dim fleet As cFleetInput = core.FleetInputs(iFleet)
                 For iGroup As Integer = 1 To core.nGroups
                     asIsFished(iGroup) = asIsFished(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
                 Next
             Next
-            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_clbGroups.SetItemChecked(iGroup - 1, asIsFished(iGroup))
+
+            Dim grp As cCoreGroupBase = Nothing
+
+            Me.m_clbGroups.SuspendLayout()
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, asIsFished(grp.Index))
+                End If
             Next
             Me.m_clbGroups.ResumeLayout()
             Me.SyncFleets()
@@ -287,9 +324,13 @@ Namespace Ecosim
             Dim abLanded(core.nFleets) As Boolean
             For iFleet As Integer = 1 To core.nFleets
                 Dim fleet As cFleetInput = core.FleetInputs(iFleet)
-                For iGroup As Integer = 1 To core.nGroups
-                    If Me.m_clbGroups.GetItemChecked(iGroup - 1) Then
-                        abLanded(iFleet) = abLanded(iFleet) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                    If Me.m_clbGroups.GetItemChecked(i) Then
+                        Dim grp As cCoreGroupBase = Me.GroupAt(i)
+                        If (grp IsNot Nothing) Then
+                            Dim iGroup As Integer = grp.Index
+                            abLanded(iFleet) = abLanded(iFleet) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                        End If
                     End If
                 Next
             Next
@@ -318,8 +359,12 @@ Namespace Ecosim
             For iFleet As Integer = 1 To core.nFleets
                 Dim fleet As cFleetInput = core.FleetInputs(iFleet)
                 If Me.m_clbFleets.GetItemChecked(iFleet - 1) Then
-                    For iGroup As Integer = 1 To core.nGroups
-                        abLanded(iGroup) = abLanded(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                    For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                        Dim grp As cCoreGroupBase = Me.GroupAt(i)
+                        If (grp IsNot Nothing) Then
+                            Dim iGroup As Integer = grp.Index
+                            abLanded(iGroup) = abLanded(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                        End If
                     Next
                 End If
             Next
@@ -333,6 +378,32 @@ Namespace Ecosim
             Me.m_clbGroups.ResumeLayout()
             Me.m_bInSync = False
         End Sub
+
+        Private Function IncludeGroup(grp As cEcoPathGroupInput) As Boolean
+
+            Dim bInclude As Boolean = False
+
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.Consumers) > 0 Then bInclude = bInclude Or grp.IsConsumer
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.Producers) > 0 Then bInclude = bInclude Or grp.IsProducer
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.Living) > 0 Then bInclude = bInclude Or grp.IsLiving
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.NonLiving) > 0 Then bInclude = bInclude Or (Not grp.IsLiving)
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.Fished) > 0 Then bInclude = bInclude Or grp.IsFished
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.NonFished) > 0 Then bInclude = bInclude Or (Not grp.IsFished)
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.Detritus) > 0 Then bInclude = bInclude Or (grp.IsDetritus)
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.Stanza) > 0 Then bInclude = bInclude Or (grp.isMultiStanza)
+            If (Me.m_groupOptions And cDisplayGroupsCommand.eGroupDisplayOptions.NonStanza) > 0 Then bInclude = bInclude Or (Not grp.isMultiStanza)
+
+            Return bInclude
+
+        End Function
+
+        Private Function GroupAt(i As Integer) As cCoreGroupBase
+            Dim item As Object = Me.m_clbGroups.Items(i)
+            If Not TypeOf item Is cCoreInputOutputControlItem Then Return Nothing
+            Dim cci As cCoreInputOutputControlItem = DirectCast(item, cCoreInputOutputControlItem)
+            If Not TypeOf cci.Source Is cCoreGroupBase Then Return Nothing
+            Return DirectCast(cci.Source, cCoreGroupBase)
+        End Function
 
 #End Region ' Internals
 
