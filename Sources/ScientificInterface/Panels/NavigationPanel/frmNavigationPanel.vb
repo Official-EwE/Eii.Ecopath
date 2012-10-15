@@ -200,6 +200,7 @@ Public Class frmNavigationPanel
             .Add("ndMCRun", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.MCRun), "Monte Carlo runs.htm") ' ToDo: connect to help
             .Add("ndFishingPolicySearch", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFishingPolicySearch), "Fishing policy search.htm")
             .Add("ndFitToTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmFitToTimeSeries), "Fit to time series.htm")
+            .Add("ndMSY", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMSYSingleSpecies), "") ' ToDo: connect to help
 
             ' Ecospace
             .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.DispersalEwEGrid), "Dispersal.htm")
