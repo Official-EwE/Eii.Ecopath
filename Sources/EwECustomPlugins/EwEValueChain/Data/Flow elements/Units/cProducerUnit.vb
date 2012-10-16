@@ -197,6 +197,9 @@ Public Class cProducerUnit
         MyBase.Clear()
         ' Reset effort to 1 at the beginning of every time step
         Me.m_sEffort = 1.0!
+        ' Clear totals prior to a run!
+        Array.Clear(Me.m_asLandings, 0, Me.m_asLandings.Length - 1)
+        Array.Clear(Me.m_asLandingsValue, 0, Me.m_asLandingsValue.Length - 1)
     End Sub
 
     Public Shadows Function HasTarget(ByVal unit As cUnit, ByVal group As cEcoPathGroupInput) As Boolean
@@ -641,15 +644,16 @@ Public Class cProducerUnit
         Dim sTotalOutputBiomass As Single = 0
         Dim sTotalOutputValue As Single = 0
 
+        Dim sBTot As Single = 0
+        Dim sValTot As Single = 0
+        For iGroup As Integer = 1 To Me.Core.nGroups
+            sBTot += Me.m_asLandings(iGroup)
+            sValTot += Me.m_asLandingsValue(iGroup)
+        Next
+
         ' No item specified?
         If iItem = 0 Then
             ' #Yes: perform all calculations
-            Dim sBTot As Single = 0
-            Dim sValTot As Single = 0
-            For iGroup As Integer = 1 To Me.Core.nGroups
-                sBTot += Me.m_asLandings(iGroup)
-                sValTot += Me.m_asLandingsValue(iGroup)
-            Next
             Me.Calculate(results, sBTot, 0, sBTot, sValTot, iTimeStep)
         End If
 
@@ -682,6 +686,7 @@ Public Class cProducerUnit
                 If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
                     Dim iGroup As Integer = ll.Group.Index
                     If asTotalBGroup(iGroup) > 0 Then
+                        'If asTotalBGroup(iGroup) > 0 And m_asLandings(iGroup) > 0 Then
                         sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
 
                         If (ll.ValueRatio = 1.0!) Then
@@ -711,7 +716,7 @@ Public Class cProducerUnit
 
         Next
 
-        results.StoreContribution(iItem, Me, iTimeStep, sTotalOutputValue, sTotalOutputBiomass)
+        results.StoreContribution(iItem, Me, iTimeStep, sValTot, sBTot)
 
     End Sub
 

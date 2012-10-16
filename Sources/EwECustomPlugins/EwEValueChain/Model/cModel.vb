@@ -420,39 +420,41 @@ Public Class cModel
         ' First run chain for full model
         Me.RunFullModel(data, result, iTimeStep, ecosimResults, ecosimDS)
 
-        ' Next run chain for each landing
+        ' Next run chain for each group
         For iGroup As Integer = 1 To data.Core.nGroups
 
+            ' Get group
             grpRun = data.Core.EcoPathGroupInputs(iGroup)
 
             ' Prepare data for a time step
             data.InitTimeStep()
 
-            ' For each producer
+            ' Set this groups' landing for each producer
             For Each unit As cUnit In data.GetUnits(cUnitFactory.eUnitType.Producer)
 
-                ' Get actual producer
+                ' Get actual producer and its connected fleet
                 prodUnit = DirectCast(unit, cProducerUnit)
                 flt = prodUnit.Fleet
 
+                ' Has a fleet?
                 If (flt IsNot Nothing) Then
 
                     Dim sCatch As Single = flt.Landings(iGroup) + flt.Discards(iGroup)
                     Dim iFleet As Integer = flt.Index
 
-                    ' Gathering results for a fleet that does not serve the current producer?
+                    ' Is group being caught?
                     If (sCatch = 0) Then
-                        ' #Yes: run this fleet without landings and value
+                        ' #No: Assign no landings and value
                         prodUnit.SetLandings(iGroup, 0, 0)
                     Else
-                        ' #No: Run this fleet using standard landings and value
-                        prodUnit.SetLandings(iGroup, _
-                                             Me.GetLandings(data.Core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS), _
-                                             Me.GetLandingValue(data.Core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS))
+                        ' #Yes: Assign standard landings and value
+                        Dim sB As Single = Me.GetLandings(data.Core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS)
+                        Dim sV As Single = Me.GetLandingValue(data.Core, iFleet, iGroup, iTimeStep, ecosimResults, ecosimDS)
+                        prodUnit.SetLandings(iGroup, sB, sV)
                     End If
                 End If
 
-                ' Start calculating!
+                ' Start calculating for this group only
                 prodUnit.Process(result, iTimeStep, iGroup)
 
             Next unit

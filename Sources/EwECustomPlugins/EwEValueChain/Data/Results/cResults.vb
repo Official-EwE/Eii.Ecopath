@@ -214,8 +214,11 @@ Public Class cResults
     ''' <remarks>Indexed as (item, time step, unit sequence).</remarks>
     Private m_asItemBiomassContribution As Single(,,)
 
-    ''' <summary>Max no of time steps</summary>
+    ''' <summary>Max no of time steps.</summary>
     Private m_iMaxTimeStep As Integer = 0
+    ''' <summary>Max no of items values are aggregated over.</summary>
+    Private m_iMaxItem As Integer = 0
+
     ''' <summary>Run type that results were computed for.</summary>
     Private m_runType As cModel.eRunTypes = cModel.eRunTypes.Ecopath
 
@@ -358,6 +361,7 @@ Public Class cResults
         Me.m_dtResultTimeStep.Clear()
         Me.m_dtSnapshots.Clear()
         Me.m_iMaxTimeStep = 0
+        Me.m_iMaxItem = 0
         Me.m_runType = runType
 
         ReDim Me.m_asItemValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
@@ -607,11 +611,11 @@ Public Class cResults
 
 #End Region ' Internals
 
-#Region " EXPERIMENTAL "
+#Region " Contribution by item "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Store the contribution of a single fleet to a unit at a given time step.
+    ''' Store the contribution of a single item to a unit at a given time step.
     ''' </summary>
     ''' <param name="iItem">The item to store the contribution for.</param>
     ''' <param name="unit">The unit to store the contribution for.</param>
@@ -619,7 +623,7 @@ Public Class cResults
     ''' <param name="sValueContribution">The value contribution to store.</param>
     ''' <param name="sBiomassContribution">The biomass contribution to store.</param>
     ''' <remarks>
-    ''' The sum of contributions of all fleets [1..n] should equal (or very,
+    ''' The sum of contributions of all items should equal (or very,
     ''' very closely approximate) the value for the unit for the default chain.
     ''' </remarks>
     ''' -----------------------------------------------------------------------
@@ -639,19 +643,21 @@ Public Class cResults
 
         If bOkidoki Then
             Try
-                ' Append contribution in case this is called multiple times for a single fleet + unit combo
+                ' Append contribution in case this is called multiple times for a single ([fleet|group], unit combo)
                 Me.m_asItemValueContribution(iItem, unit.Sequence, iTimeStep) += sValueContribution
                 Me.m_asItemBiomassContribution(iItem, unit.Sequence, iTimeStep) += sBiomassContribution
             Catch ex As Exception
                 ' Whoah!
             End Try
         End If
+
+        Me.m_iMaxItem = Math.Max(Me.m_iMaxItem, iItem)
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the value ratio that a single fleet contributed for a given unit and 
-    ''' time step, relative to the total value contribution for all fleets.
+    ''' Get the value ratio that a single item contributed for a given unit and 
+    ''' time step, relative to the total value contribution for all items.
     ''' </summary>
     ''' <param name="iItem">Item to explore, 0 for all items.</param>
     ''' <param name="unit"></param>
@@ -691,7 +697,7 @@ Public Class cResults
                 sAllItemsValue = Me.m_asItemValueContribution(0, unit.Sequence, iTimestep)
                 sAllItemsBiomass = Me.m_asItemBiomassContribution(0, unit.Sequence, iTimestep)
 
-                For i As Integer = 1 To Me.m_data.Core.nFleets
+                For i As Integer = 1 To Me.m_iMaxItem
                     sTotalValue += Me.m_asItemValueContribution(i, unit.Sequence, iTimestep)
                     sTotalBiomass += Me.m_asItemBiomassContribution(i, unit.Sequence, iTimestep)
                 Next
@@ -705,7 +711,7 @@ Public Class cResults
                 sContrValue = Me.m_asItemValueContribution(iItem, unit.Sequence, iTimestep)
                 sContrBiomass = Me.m_asItemBiomassContribution(iItem, unit.Sequence, iTimestep)
             Catch ex As Exception
-                Debug.Assert(False, "VC: Failure obtaining contribution for fleet")
+                Debug.Assert(False, "VC: Failure obtaining contribution for item")
             End Try
         End If
 
@@ -719,6 +725,6 @@ Public Class cResults
 
     End Sub
 
-#End Region ' EXPERIMENTAL
+#End Region ' Contribution by item
 
 End Class
