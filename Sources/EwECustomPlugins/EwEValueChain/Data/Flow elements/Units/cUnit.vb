@@ -365,6 +365,10 @@ Public MustInherit Class cUnit
 
 #Region " Properties "
 
+    Public Overrides Function ToString() As String
+        Return Me.Name
+    End Function
+
     <Browsable(False)> _
     Public Property Sequence() As Integer
         Get
@@ -435,9 +439,24 @@ Public MustInherit Class cUnit
 
     <Browsable(True), _
         Category(sPROPCAT_GENERAL), _
+        DisplayName("Biomass ratio"), _
+        Description("Total biomass ratio passed out of this unit"), _
+        cPropertySorter.PropertyOrder(3)> _
+    Public ReadOnly Property BiomassRatio() As Single
+        Get
+            Dim sTot As Single = 0
+            For i As Integer = 0 To Me.LinkOutCount - 1
+                sTot += Me.LinkOut(i).BiomassRatio
+            Next
+            Return sTot
+        End Get
+    End Property
+
+    <Browsable(True), _
+        Category(sPROPCAT_GENERAL), _
         DisplayName("Nationality"), _
         Description("Nationality of this unit"), _
-        cPropertySorter.PropertyOrder(3)> _
+        cPropertySorter.PropertyOrder(4)> _
     Public Overridable Property Nationality() As Integer
         Get
             Return Me.m_iNationality
@@ -452,7 +471,7 @@ Public MustInherit Class cUnit
         Category(sPROPCAT_GENERAL), _
         DisplayName("Name (local)"), _
         Description("Local name of this unit"), _
-        cPropertySorter.PropertyOrder(4)> _
+        cPropertySorter.PropertyOrder(5)> _
     Public Overridable Property NameLocal() As String
         Get
             Return m_strNameLocal
@@ -466,9 +485,5 @@ Public MustInherit Class cUnit
 #End Region ' General
 
 #End Region ' Properties
-
-    Public Overrides Function ToString() As String
-        Return Me.Name
-    End Function
 
 End Class
