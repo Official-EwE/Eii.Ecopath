@@ -57,6 +57,6 @@ Public Class cFlowDiagram
         End Set
     End Property
 
-#End Region
+#End Region ' Properties
 
 End Class

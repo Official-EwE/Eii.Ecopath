@@ -344,6 +344,9 @@ Public Class plFlow
     ''' -----------------------------------------------------------------------
     Public Sub ArrangeGLEE()
 
+        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), _
+                                      CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
+
         ' Switch to 'move' mode upon arranging if NOT readonly
         If (Me.EditMode <> eEditMode.ReadOnly) Then
             Me.EditMode = eEditMode.Move
@@ -393,13 +396,41 @@ Public Class plFlow
             Dim ptc As Splines.Point = n.Center
             ' Switch x and Y to get a horizontal graph
             uc.FlowPos.AllowEvents = False
-            uc.FlowPos.Xpos = CInt(ptc.Y - dy + m_iCellWidth / 4)
-            uc.FlowPos.Ypos = CInt(ptc.X - dx + m_iCellHeight / 4)
+            uc.FlowPos.Xpos = CInt(ptc.Y - dy + ptUnitMargin.X)
+            uc.FlowPos.Ypos = CInt(ptc.X - dx + ptUnitMargin.Y)
             uc.FlowPos.AllowEvents = True
         Next
 
         Me.Refresh()
 
+    End Sub
+
+    Private Sub ArrangeQuiet()
+
+        Dim ptUnitMargin As New Point(CInt(Me.m_iCellWidth * Me.m_sGridMarginRatio * 0.5), _
+                                      CInt(Me.m_iCellHeight * Me.m_sGridMarginRatio * 0.5))
+
+        Dim iMinX As Integer = Integer.MaxValue
+        Dim iMinY As Integer = Integer.MaxValue
+
+        ' Feed graph with nodes
+        For Each unit As cUnit In Me.m_dtControls.Keys
+            Dim uc As plUnitControl = Me.m_dtControls(unit)
+            Dim fp As cFlowPosition = uc.FlowPos
+            iMinX = Math.Min(fp.Xpos, iMinX) : iMinY = Math.Min(fp.Ypos, iMinY)
+        Next
+        If (iMinX <> 0) Or (iMinY <> 0) Then
+            For Each unit As cUnit In Me.m_dtControls.Keys
+                Dim uc As plUnitControl = Me.m_dtControls(unit)
+                Dim fp As cFlowPosition = uc.FlowPos
+
+                fp.AllowEvents = False
+                fp.Xpos = CInt(fp.Xpos - iMinX + ptUnitMargin.X)
+                fp.Ypos = CInt(fp.Ypos - iMinY + ptUnitMargin.Y)
+                fp.AllowEvents = True
+
+            Next
+        End If
     End Sub
 
     Public Property ShowGrid() As Boolean
@@ -451,15 +482,17 @@ Public Class plFlow
             Next j
         Next unit
 
-        ' Rendering for a temporary diagram?
-        If (Me.m_diagram Is Nothing) Then
-            ' #Yes: auto-layout
-            Try
+        Try
+            ' Rendering for a temporary diagram?
+            If (Me.m_diagram Is Nothing) Then
+                ' #Yes: auto-layout
                 Me.ArrangeGLEE()
-            Catch ex As Exception
+            Else
+                Me.ArrangeQuiet()
+            End If
+        Catch ex As Exception
 
-            End Try
-        End If
+        End Try
 
         Me.Visible = True
 
@@ -571,6 +604,7 @@ Public Class plFlow
             MyBase.OnMouseWheel(e)
         End If
     End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Paint the panel and all unit connectors
