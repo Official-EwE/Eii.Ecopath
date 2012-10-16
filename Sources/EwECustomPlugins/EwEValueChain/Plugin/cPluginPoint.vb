@@ -43,6 +43,7 @@ Public Class cPluginPoint
     Implements EwEPlugin.Data.IDataProducerPlugin
     Implements EwEPlugin.ISearchPlugin
     Implements EwEPlugin.IDisposedPlugin
+    Implements EwEPlugin.IAutoSavePlugin
 
 #Region " Privates "
 
@@ -57,6 +58,7 @@ Public Class cPluginPoint
     Private m_mhEcopath As cMessageHandler = Nothing
     Private m_linkman As cLandingsLinkManager = Nothing
     Private m_syncobj As SynchronizationContext = Nothing
+    Private m_bSaveCSV As Boolean = False
 
     ' Data exchange
     Private m_dataBroadcaster As EwEPlugin.Data.IDataBroadcaster = Nothing
@@ -697,5 +699,26 @@ Public Class cPluginPoint
     End Function
 
 #End Region ' Helpers
+
+    Public Property AutoSave As Boolean Implements EwEPlugin.IAutoSavePlugin.AutoSave
+        Get
+            Return Me.m_bSaveCSV
+        End Get
+        Set(value As Boolean)
+            Me.m_bSaveCSV = value
+        End Set
+    End Property
+
+    Public Function AutoSaveName() As String Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
+        Return My.Resources.GENERIC_CAPTION
+    End Function
+
+    Public Function AutoSaveSubPath() As String Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
+        Return "ValueChain"
+    End Function
+
+    Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
+        Return eAutosaveTypes.Ecopath
+    End Function
 
 End Class
