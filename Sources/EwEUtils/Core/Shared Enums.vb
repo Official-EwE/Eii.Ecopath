@@ -2678,8 +2678,10 @@ Namespace Core
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eAutosaveTypes As Integer
+        ''' <summary>Hmm</summary>
+        NotSet = 0
         ''' <summary>Ecopath run results</summary>
-        Ecopath = 0
+        Ecopath
         ''' <summary>Ecosim run results</summary>
         Ecosim
         ''' <summary>Monte Carlo results</summary>

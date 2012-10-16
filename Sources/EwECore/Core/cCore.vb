@@ -2622,12 +2622,15 @@ Public Class cCore
         If (TypeOf ds.Connection Is cEwEDatabase) Then
             Dim db As cEwEDatabase = DirectCast(ds.Connection, cEwEDatabase)
             Dim dbUpd As New cDatabaseUpdater(Me, 6.0!)
+            Dim msg As cMessage = Nothing
 
             If dbUpd.HasUpdates(db) Then
                 ' Create a copy of the database for select types
-                Dim src As String = db.Name
+                Dim bSucces As Boolean = True
+                Dim strSrc As String = db.Name
+                Dim strDest As String = ""
                 Try
-                    If File.Exists(src) Then
+                    If File.Exists(strSrc) Then
 
                         ' User wants to make a backup?
                         Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name), _
@@ -2643,19 +2646,20 @@ Public Class cCore
 
                         If (fmsg.Reply = cFeedbackMessage.eReply.OK) Then
 
-                            Dim strSrc As String = CStr(src)
-                            Dim strDest As String = ""
-                            Dim msg As cMessage = Nothing
-
+                            ' Pick destiniation location
                             Try
-                                ' Pick destiniation location
                                 cPathUtility.ResolvePath(Me.BackupFileMask, strSrc, db.GetVersion.ToString, strDest)
+                                bSucces = cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest), True)
                             Catch ex As Exception
                                 ' Hmm
                             End Try
 
                             ' Create backup
-                            If cFileUtils.CreateBackup(strSrc, strDest) Then
+                            If bSucces Then
+                                bSucces = cFileUtils.CreateBackup(strSrc, strDest)
+                            End If
+
+                            If bSucces Then
                                 msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_SUCCESS, strDest), _
                                                         eMessageType.DataImport, _
                                                         eCoreComponentType.DataSource, _
@@ -2668,17 +2672,27 @@ Public Class cCore
                             End If
                             ' Send backup result message
                             Me.m_publisher.SendMessage(msg)
+
+                            ' Abort when failed
+                            If bSucces = False Then Return False
+
                         End If
                     End If
 
                 Catch ex As Exception
+                    cLog.Write(ex, "cCore::UpdateDataSource")
                     ' Whoah
+                    msg = New cMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_FAILED, strDest), _
+                                          eMessageType.DataImport, _
+                                          eCoreComponentType.DataSource, _
+                                          eMessageImportance.Warning)
+                    Me.m_publisher.SendMessage(msg)
+                    Return False
                 End Try
 
                 ' Run updates
                 If Not dbUpd.UpdateDatabase(db) Then
                     ' Database update failed
-                    Dim msg As cMessage = Nothing
                     msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_FAILED, _
                                             eMessageType.DataImport, _
                                             eCoreComponentType.DataSource, _
@@ -2688,7 +2702,6 @@ Public Class cCore
                     Return False
                 Else
                     ' Database update failed
-                    Dim msg As cMessage = Nothing
                     msg = New cMessage(My.Resources.CoreMessages.ECOPATH_MODEL_UPDATE_SUCCESS, _
                                             eMessageType.DataImport, _
                                             eCoreComponentType.DataSource, _
