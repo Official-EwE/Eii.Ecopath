@@ -79,6 +79,13 @@ Namespace Utilities
             strFile = strFile.Replace("/", "-")
 
             ' Replace invalid file name chars with hyphens
+            For Each c As Char In Path.GetInvalidPathChars
+                If strPath.IndexOf(c) > -1 Then
+                    strPath = strPath.Replace(c, "")
+                End If
+            Next
+
+            ' Replace invalid file name chars with hyphens
             For Each c As Char In Path.GetInvalidFileNameChars
                 If strFile.IndexOf(c) > -1 Then
                     strFile = strFile.Replace(c, "-"c)
