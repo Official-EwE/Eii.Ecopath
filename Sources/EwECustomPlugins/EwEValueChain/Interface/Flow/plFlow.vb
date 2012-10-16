@@ -354,11 +354,14 @@ Public Class plFlow
         Dim nodes As New Dictionary(Of cUnit, Node)
         Dim layers As New Dictionary(Of Type, Microsoft.Glee.LayerEdge)
 
+        ' Make sure all nodes have unique IDs
+        Me.m_data.InitRun()
+
         ' Feed graph with nodes
         For Each unit As cUnit In Me.m_dtControls.Keys
             Dim uc As plUnitControl = Me.m_dtControls(unit)
             ' Reverse height and width, 'cause the graph will be flipped Vert to Horz
-            Dim n As New Microsoft.Glee.Node(CStr(uc.Unit.DBID), Splines.CurveFactory.CreateBox(uc.Height, uc.Width, New Splines.Point(0, 0)))
+            Dim n As New Microsoft.Glee.Node(CStr(uc.Unit.Sequence), Splines.CurveFactory.CreateBox(uc.Height, uc.Width, New Splines.Point(0, 0)))
             g.AddNode(n)
             nodes(unit) = n
         Next
