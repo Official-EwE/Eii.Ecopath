@@ -1,0 +1,68 @@
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
+Imports EwEUtils.Core
+
+#End Region ' Imports
+
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Interface for implementing a plugin point that automatically saves its
+''' data. Note that this plug-in point just serves to identify the auto-save
+''' setting in the user interface. The plug-in is responsible for triggering and
+''' implementing the auto-save behaviour.
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Interface IAutoSavePlugin
+    : Inherits IPlugin
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether this plug-in is allowed to auto-save data.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Property AutoSave As Boolean
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Name to identify the auto-save setting.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Function AutoSaveName() As String
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the <see cref="eAutosaveTypes"/> core autosave type that defines the
+    ''' output path that this plug-in writes to.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Function AutoSaveType() As eAutosaveTypes
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the relative path under the <see cref="AutoSaveType"/> path
+    ''' that this plug-in saves to.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Function AutoSaveSubPath() As String
+
+End Interface
+
