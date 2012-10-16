@@ -4063,24 +4063,28 @@ Public Class AppLauncher
 
         Dim strPath As String = ""
 
+        If String.IsNullOrWhiteSpace(My.Settings.BackupFileMask) Then
+            My.Settings.BackupFileMask = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
+        End If
+
         If cPathUtility.ResolvePath(My.Settings.BackupFileMask, Me.Core, strPath) Then
-            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath), True) Then
-                ' Pass MASK in because the core will need to substitute fields into the mask
-                Me.Core.BackupFileMask = My.Settings.BackupFileMask
-            End If
+            ' Pass MASK in because the core will need to substitute fields into the mask
+            Me.Core.BackupFileMask = My.Settings.BackupFileMask
+        End If
+
+        If String.IsNullOrWhiteSpace(My.Settings.OutputPathMask) Then
+            My.Settings.OutputPathMask = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
         End If
 
         If cPathUtility.ResolvePath(My.Settings.OutputPathMask, Me.Core, strPath) Then
-            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath), True) Then
-                ' Pass actual formatted path because the core will not change this further.
-                Me.Core.OutputPath = Path.GetDirectoryName(strPath)
+            ' Pass actual formatted path because the core will not change this further.
+            Me.Core.OutputPath = Path.GetDirectoryName(strPath)
 
-                If (bResetUI) Then
-                    ' Also reset file and directory commands to use output dir by default
-                    Me.m_cmdFileOpen.Directory = Me.Core.OutputPath
-                    Me.m_cmdFileSave.Directory = Me.Core.OutputPath
-                    Me.m_cmdDirectoryOpen.Directory = Me.Core.OutputPath
-                End If
+            If (bResetUI) Then
+                ' Also reset file and directory commands to use output dir by default
+                Me.m_cmdFileOpen.Directory = Me.Core.OutputPath
+                Me.m_cmdFileSave.Directory = Me.Core.OutputPath
+                Me.m_cmdDirectoryOpen.Directory = Me.Core.OutputPath
             End If
         End If
 
