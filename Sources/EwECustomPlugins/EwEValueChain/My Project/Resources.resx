@@ -2202,4 +2202,22 @@ QmCCCw==</value>
   <data name="HEADER_CATEGORIES" xml:space="preserve">
     <value>Categories</value>
   </data>
+  <data name="consumer_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\consumer_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="distribution_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\distribution_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="processing_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\factory_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="producer_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\producer_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="retailer_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\retailer_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wholesaler_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\wholesaler_small.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

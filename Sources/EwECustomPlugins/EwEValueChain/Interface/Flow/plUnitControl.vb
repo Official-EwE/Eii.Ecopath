@@ -211,7 +211,7 @@ Public Class plUnitControl
         End If
 
         ' Get unit image
-        img = cUnitImageFactory.GetImage(Me.Unit.UnitType)
+        img = cUnitImageFactory.GetImage(Me.Unit.UnitType, True)
 
         If (img IsNot Nothing) Then
             Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(24 * Me.ZoomFactor), CInt(24 * Me.ZoomFactor))

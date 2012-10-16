@@ -67,6 +67,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property consumer_small() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("consumer_small", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Consumer {0}.
         '''</summary>
@@ -124,6 +131,13 @@ Namespace My.Resources
         Friend ReadOnly Property distribution() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("distribution", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property distribution_small() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("distribution_small", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -401,9 +415,23 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property processing_small() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("processing_small", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property producer() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("producer", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property producer_small() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("producer_small", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -447,6 +475,13 @@ Namespace My.Resources
         Friend ReadOnly Property retailer() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("retailer", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property retailer_small() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("retailer_small", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -592,6 +627,13 @@ Namespace My.Resources
         Friend ReadOnly Property wholesaler() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("wholesaler", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property wholesaler_small() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("wholesaler_small", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

@@ -24,20 +24,27 @@ Imports System.Drawing
 
 Public Class cUnitImageFactory
 
-    Public Shared Function GetImage(ByVal unitType As cUnitFactory.eUnitType) As Image
+    Public Shared Function GetImage(ByVal unitType As cUnitFactory.eUnitType, _
+                                    ByVal bLarge As Boolean) As Image
         Select Case unitType
             Case cUnitFactory.eUnitType.Producer
-                Return My.Resources.producer
+                If bLarge Then Return My.Resources.producer
+                Return My.Resources.producer_small
             Case cUnitFactory.eUnitType.Processing
-                Return My.Resources.processing
+                If bLarge Then Return My.Resources.processing
+                Return My.Resources.processing_small
             Case cUnitFactory.eUnitType.Distribution
-                Return My.Resources.distribution
+                If bLarge Then Return My.Resources.distribution
+                Return My.Resources.distribution_small
             Case cUnitFactory.eUnitType.Wholesaler
-                Return My.Resources.wholesaler
+                If bLarge Then Return My.Resources.wholesaler
+                Return My.Resources.wholesaler_small
             Case cUnitFactory.eUnitType.Retailer
-                Return My.Resources.retailer
+                If bLarge Then Return My.Resources.retailer
+                Return My.Resources.retailer_small
             Case cUnitFactory.eUnitType.Consumer
-                Return My.Resources.consumer
+                If bLarge Then Return My.Resources.consumer
+                Return My.Resources.consumer_small
         End Select
         Return Nothing
     End Function
