@@ -290,6 +290,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\cSelectionMonitor.vb" />
+    <Compile Include="Other\Options\gridAutoSave.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Other\Options\ucOptionsMap.Designer.vb">
       <DependentUpon>ucOptionsMap.vb</DependentUpon>
     </Compile>
