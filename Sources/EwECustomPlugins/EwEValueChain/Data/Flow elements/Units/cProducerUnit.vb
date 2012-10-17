@@ -518,6 +518,12 @@ Public Class cProducerUnit
 
 #Region " Properties "
 
+    Public Overrides ReadOnly Property BiomassRatio As String
+        Get
+            Return MyBase.BiomassRatio & " / " & Me.LinkOutCount.ToString()
+        End Get
+    End Property
+
     <Browsable(True), _
     Category(sPROPCAT_INPUTCOST), _
     DisplayName("Monitoring cost"), _

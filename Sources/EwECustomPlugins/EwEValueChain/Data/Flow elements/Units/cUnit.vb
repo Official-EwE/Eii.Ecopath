@@ -442,13 +442,13 @@ Public MustInherit Class cUnit
         DisplayName("Biomass ratio"), _
         Description("Total biomass ratio passed out of this unit"), _
         cPropertySorter.PropertyOrder(3)> _
-    Public ReadOnly Property BiomassRatio() As Single
+    Public Overridable ReadOnly Property BiomassRatio() As String
         Get
             Dim sTot As Single = 0
             For i As Integer = 0 To Me.LinkOutCount - 1
                 sTot += Me.LinkOut(i).BiomassRatio
             Next
-            Return sTot
+            Return sTot.ToString()
         End Get
     End Property
 
