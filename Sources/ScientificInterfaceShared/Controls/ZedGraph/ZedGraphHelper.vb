@@ -730,7 +730,8 @@ Namespace Controls
                 .Legend.Position = legendPos
 
                 .Border.IsVisible = False
-                .Chart.Border.IsVisible = False
+                .Chart.Border.IsVisible = True
+                .Chart.Border.Color = Color.FromArgb(16, 0, 0, 0)
 
                 Me.UpdateLegends(gp)
                 Me.UpdateAxisLabels(gp)
