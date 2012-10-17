@@ -2115,7 +2115,6 @@ Namespace Controls
                                          Optional ByVal iPane As Integer = 1) As Boolean
 
             Dim pane As GraphPane = Me.GetPane(iPane)
-            Dim li As LineItem = Nothing
             Dim ci As CurveItem = Nothing
             Dim infoTest As cCurveInfo = Nothing
 
@@ -2124,7 +2123,6 @@ Namespace Controls
             For iCurve As Integer = 0 To pane.CurveList.Count - 1
                 ci = pane.CurveList(iCurve)
                 If (TypeOf ci Is LineItem) Then
-                    li = DirectCast(ci, LineItem)
                     infoTest = Me.CurveInfo(ci)
                     If (infoTest IsNot Nothing) Then
                         If (infoTest.IsReferenceTo(item)) Then Return True
