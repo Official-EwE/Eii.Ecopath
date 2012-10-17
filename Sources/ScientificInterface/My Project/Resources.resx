@@ -496,7 +496,7 @@ Description: {1}</value>
     <value>Ecopath biomass values</value>
   </data>
   <data name="GENERIC_CAPTION" xml:space="preserve">
-    <value>Ecopath with Ecosim CSIRO Beta</value>
+    <value>Ecopath with Ecosim Beta</value>
   </data>
   <data name="STATUS_MODEL_COMPACTING_OS" xml:space="preserve">
     <value>Your Windows installation does not have the necessary components installed to compact this type of database.</value>

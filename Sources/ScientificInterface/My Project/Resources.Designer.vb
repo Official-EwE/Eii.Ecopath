@@ -1443,7 +1443,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath with Ecosim CSIRO Beta.
+        '''  Looks up a localized string similar to Ecopath with Ecosim Beta.
         '''</summary>
         Public ReadOnly Property GENERIC_CAPTION() As String
             Get
