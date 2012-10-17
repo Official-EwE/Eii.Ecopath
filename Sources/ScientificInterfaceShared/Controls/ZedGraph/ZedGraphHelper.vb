@@ -281,6 +281,17 @@ Namespace Controls
                 End Set
             End Property
 
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Returns whether this info references a given core input/output item.
+            ''' </summary>
+            ''' <param name="src">The core input/output item to test.</param>
+            ''' <returns>True if true. Well, that is a surprise.</returns>
+            ''' ---------------------------------------------------------------
+            Public Function IsReferenceTo(ByVal src As cCurveInfo) As Boolean
+                Return Object.ReferenceEquals(src.m_source, Me.m_source)
+            End Function
+
         End Class
 
 #End Region ' Helper classes
@@ -745,10 +756,10 @@ Namespace Controls
         ''' indicated panel.</remarks>
         ''' -------------------------------------------------------------------
         Public Overridable Sub PlotLines(ByVal lines() As LineItem, _
-                             Optional ByVal iPane As Integer = 1, _
-                             Optional ByVal bRescale As Boolean = True, _
-                             Optional ByVal bClear As Boolean = True, _
-                             Optional ByVal bCumulative As Boolean = False)
+                                         Optional ByVal iPane As Integer = 1, _
+                                         Optional ByVal bRescale As Boolean = True, _
+                                         Optional ByVal bClear As Boolean = True, _
+                                         Optional ByVal bCumulative As Boolean = False)
             Try
 
                 If (Me.IsPaneCumulative(iPane) <> bCumulative) Then
@@ -763,7 +774,7 @@ Namespace Controls
 
                     If bClear Then .CurveList.Clear()
 
-                    If lines IsNot Nothing Then
+                    If (lines IsNot Nothing) Then
                         For i As Integer = 0 To lines.Length - 1
                             ' Get line
                             li = lines(i)
@@ -809,6 +820,13 @@ Namespace Controls
                                             ' Add the curve to the end 
                                             .CurveList.Insert(iLastLine + 1, li)
                                         Else
+                                            ' Extract info
+                                            Dim info As cCurveInfo = Me.CurveInfo(li)
+                                            If (info IsNot Nothing) Then
+                                                ' #1172: hide duplicate legend items
+                                                li.Label.IsVisible = li.Label.IsVisible And Not Me.ContainsCurve(info)
+                                            End If
+                                            ' Add curve
                                             .CurveList.Add(li)
                                         End If
 
@@ -1988,6 +2006,7 @@ Namespace Controls
                                                       ByVal ppl As PointPairList) As LineItem
 
             Dim li As LineItem = Nothing
+            Dim bShowInLegend As Boolean = True
 
             Select Case info.LineType()
 
@@ -2015,9 +2034,11 @@ Namespace Controls
             End Select
 
             li.IsVisible = info.IsVisible
-            li.Label.IsVisible = li.IsVisible ' Hide from legend too
+            li.Label.IsVisible = info.IsVisible
             li.Tag = info
 
+            ' Detect if this line is a duplicate of an already existing core item. In that case the 
+            ' line will be hidden from the legend
             Return li
 
         End Function
@@ -2034,8 +2055,8 @@ Namespace Controls
         ''' no such curve could be found.</returns>
         ''' -------------------------------------------------------------------
         Protected Function FindNextCurvePos(ByVal curvetype As eLineType, _
-                                         Optional ByVal iPane As Integer = 1, _
-                                         Optional ByVal iStart As Integer = 0) As Integer
+                                            Optional ByVal iPane As Integer = 1, _
+                                            Optional ByVal iStart As Integer = 0) As Integer
 
             Dim pane As GraphPane = Me.GetPane(iPane)
             Dim ci As CurveItem = Nothing
@@ -2063,8 +2084,8 @@ Namespace Controls
         ''' no such curve could be found.</returns>
         ''' -------------------------------------------------------------------
         Protected Function FindLastCurvePos(ByVal curvetype As eLineType, _
-                                          Optional ByVal iPane As Integer = 1, _
-                                          Optional ByVal iStart As Integer = -1) As Integer
+                                            Optional ByVal iPane As Integer = 1, _
+                                            Optional ByVal iStart As Integer = -1) As Integer
 
             Dim pane As GraphPane = Me.GetPane(iPane)
             Dim ci As CurveItem = Nothing
@@ -2079,6 +2100,38 @@ Namespace Controls
                 If Me.CurveType(ci) = curvetype Then Return iCurve
             Next
             Return -1
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether a graph pane already contains a line for core object.
+        ''' </summary>
+        ''' <param name="item">The core object to search for.</param>
+        ''' <param name="iPane"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected Function ContainsCurve(ByVal item As cCurveInfo, _
+                                         Optional ByVal iPane As Integer = 1) As Boolean
+
+            Dim pane As GraphPane = Me.GetPane(iPane)
+            Dim li As LineItem = Nothing
+            Dim ci As CurveItem = Nothing
+            Dim infoTest As cCurveInfo = Nothing
+
+            If (pane Is Nothing) Then Return False
+
+            For iCurve As Integer = 0 To pane.CurveList.Count - 1
+                ci = pane.CurveList(iCurve)
+                If (TypeOf ci Is LineItem) Then
+                    li = DirectCast(ci, LineItem)
+                    infoTest = Me.CurveInfo(ci)
+                    If (infoTest IsNot Nothing) Then
+                        If (infoTest.IsReferenceTo(item)) Then Return True
+                    End If
+                End If
+            Next
+            Return False
 
         End Function
 
@@ -2146,7 +2199,6 @@ Namespace Controls
             ReDim Me.m_bCumulative(Me.m_nPanels)
 
         End Sub
-
 
 #Region " Styling "
 
