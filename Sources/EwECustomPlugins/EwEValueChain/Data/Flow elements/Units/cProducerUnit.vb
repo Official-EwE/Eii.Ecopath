@@ -520,7 +520,14 @@ Public Class cProducerUnit
 
     Public Overrides ReadOnly Property BiomassRatio As String
         Get
-            Return MyBase.BiomassRatio & " / " & Me.LinkOutCount.ToString()
+            ' Count # of active links
+            Dim iNumActiveLinks As Integer = 0
+            For i As Integer = 0 To Me.LinkOutCount - 1
+                If Me.LinkOut(i).BiomassRatio > 0 Then
+                    iNumActiveLinks += 1
+                End If
+            Next
+            Return MyBase.BiomassRatio & " / " & iNumActiveLinks.ToString()
         End Get
     End Property
 

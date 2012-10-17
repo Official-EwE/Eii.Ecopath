@@ -203,7 +203,7 @@ Public Class cLink
     End Property
 
     Public Overrides Function ToString() As String
-        Return Me.Name
+        Return Me.Name & " " & Me.BiomassRatio.ToString()
     End Function
 
 End Class
