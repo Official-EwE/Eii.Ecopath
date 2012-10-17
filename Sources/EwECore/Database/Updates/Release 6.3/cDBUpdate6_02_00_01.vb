@@ -294,7 +294,7 @@ Friend Class cDBUpdate6_02_00_01
 
             ' Read importance layer data
             For i = 0 To lImportanceLayerID.Count - 1
-                reader = db.GetReader("SELECT * FROM EcospaceScenarioWeightLayerCell WHERE ScenarioID=" & iScenarioID & " AND lImportanceLayerID=" & lImportanceLayerID(i))
+                reader = db.GetReader("SELECT * FROM EcospaceScenarioWeightLayerCell WHERE ScenarioID=" & iScenarioID & " AND LayerID=" & lImportanceLayerID(i))
                 While reader.Read
 
                     iRow = CInt(reader("InRow"))
@@ -414,8 +414,8 @@ Friend Class cDBUpdate6_02_00_01
         writer = db.GetWriter("EcospaceScenarioWeightLayer")
         dt = writer.GetDataTable()
         For i = 0 To lImportanceLayerID.Count - 1
-            key(1) = lImportanceLayerID(i)
-            drow = dt.Rows.Find(key)
+            ' This table is not indexed by scenario, only by layer ID. Should be ok, but it is an oversight
+            drow = dt.Rows.Find(lImportanceLayerID(i))
             If (drow IsNot Nothing) Then
                 drow.BeginEdit()
                 drow("LayerMap") = cStringUtils.ArrayToString(dataImportance, i, cStringUtils.eFilterIndexTypes.LastIndex, InRow, InCol, dataDepth)
