@@ -1158,6 +1158,19 @@ Namespace Ecospace
 
             Try
 
+                'jb Fixes bug 1134 
+                'EcoSpace interface was not responding to messages from cCore.setEcosimRunLength() eMessageType.EcosimNYearsChanged
+                'This can change the Run Length for Ecospace as well
+                'It only responded if the variable was changed from the interface and there was a VarName in the cMessage.Variables() list 
+                'The number of years can change by loading time series data or clicking the Reset All button on the Ecosim interface
+                If msg.Type = eMessageType.EcosimNYearsChanged Then
+                    If Not bHasRunInit Then
+                        Me.InitCoreParams()
+                        Me.InitUIParams()
+                        bHasRunInit = True
+                    End If
+                End If
+
                 For Each vStat As cVariableStatus In msg.Variables
 
                     Select Case vStat.VarName
