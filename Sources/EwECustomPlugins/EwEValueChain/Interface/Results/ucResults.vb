@@ -103,6 +103,28 @@ Public Class ucResults
         End Property
 
     End Class
+
+    Private Class cAggregationComboItem
+
+        Private m_agg As cParameters.eAggregationModeType
+
+        Public Sub New(agg As cParameters.eAggregationModeType)
+            Me.m_agg = agg
+        End Sub
+
+        Public Overrides Function ToString() As String
+            Dim fmt As New cAggregationModeTypeFormatter()
+            Return fmt.GetDescriptor(Me.m_agg)
+        End Function
+
+        Public ReadOnly Property AggregationMode As cParameters.eAggregationModeType
+            Get
+                Return Me.m_agg
+            End Get
+        End Property
+
+    End Class
+
 #End Region ' Helper classes
 
 #Region " Private bits "
@@ -224,11 +246,20 @@ Public Class ucResults
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Dim iSel As Integer = 0
+
         Me.m_tscmbGraphData.Items.Clear()
         For Each gd As eGraphDataType In [Enum].GetValues(GetType(eGraphDataType))
             Me.m_tscmbGraphData.Items.Add(gd)
         Next
         Me.m_tscmbGraphData.SelectedIndex = 0
+
+        Me.m_cmbAgg.Items.Clear()
+        For Each agg As cParameters.eAggregationModeType In [Enum].GetValues(GetType(cParameters.eAggregationModeType))
+            Dim i As Integer = Me.m_cmbAgg.Items.Add(New cAggregationComboItem(agg))
+            If agg = Me.m_data.Parameters.AggregationMode Then iSel = i
+        Next
+        Me.m_cmbAgg.SelectedIndex = iSel
 
         ' Restore last selections
         Me.m_tscmbItems.SelectedIndex = Math.Min(Me.m_tscmbItems.Items.Count - 1, Math.Max(-1, ucResults.g_iLastItem))
@@ -328,6 +359,19 @@ Public Class ucResults
         Handles m_tscmbGraphData.SelectedIndexChanged
         Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, eGraphDataType))
         Me.UpdateResults()
+    End Sub
+
+    Private Sub OnYearSelected(sender As Object, e As System.EventArgs) _
+        Handles m_tscbYear.SelectedIndexChanged
+        Me.UpdateResults()
+    End Sub
+
+    Private Sub OnAggregationSelected(sender As System.Object, e As System.EventArgs) _
+        Handles m_cmbAgg.SelectedIndexChanged
+        Dim sel As Object = Me.m_cmbAgg.SelectedItem
+        If (sel Is Nothing) Then Return
+        If (Not TypeOf sel Is cAggregationComboItem) Then Return
+        Me.m_data.Parameters.AggregationMode = DirectCast(sel, cAggregationComboItem).AggregationMode
     End Sub
 
 #Region " Commands "
@@ -737,9 +781,5 @@ Public Class ucResults
     End Function
 
 #End Region ' Internals 
-
-    Private Sub OnYearSelected(sender As Object, e As System.EventArgs) Handles m_tscbYear.SelectedIndexChanged
-        Me.UpdateResults()
-    End Sub
 
 End Class
