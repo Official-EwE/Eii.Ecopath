@@ -236,7 +236,7 @@ Partial Class ucResults
         '
         Me.m_lblAgg.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_lblAgg.AutoSize = True
-        Me.m_lblAgg.Location = New System.Drawing.Point(223, 527)
+        Me.m_lblAgg.Location = New System.Drawing.Point(215, 527)
         Me.m_lblAgg.Name = "m_lblAgg"
         Me.m_lblAgg.Size = New System.Drawing.Size(92, 13)
         Me.m_lblAgg.TabIndex = 4
@@ -247,7 +247,7 @@ Partial Class ucResults
         Me.m_cmbAgg.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_cmbAgg.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.m_cmbAgg.FormattingEnabled = True
-        Me.m_cmbAgg.Location = New System.Drawing.Point(321, 524)
+        Me.m_cmbAgg.Location = New System.Drawing.Point(313, 524)
         Me.m_cmbAgg.Name = "m_cmbAgg"
         Me.m_cmbAgg.Size = New System.Drawing.Size(121, 21)
         Me.m_cmbAgg.TabIndex = 5
