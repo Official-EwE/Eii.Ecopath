@@ -473,7 +473,7 @@ Public Class cProducerUnit
     <Browsable(False)> _
     Public Overrides ReadOnly Property HasError() As Boolean
         Get
-            Return (Me.m_fleet Is Nothing)
+            Return (Me.m_fleet Is Nothing) Or (Not String.IsNullOrWhiteSpace(Me.ImpossibleOutputs))
         End Get
     End Property
 
@@ -482,6 +482,7 @@ Public Class cProducerUnit
         Get
             Dim st As cStyleGuide.eStyleFlags = MyBase.Style
             If (Me.m_fleet IsNot Nothing) Then st = st Or cStyleGuide.eStyleFlags.ValueComputed
+            If (Me.HasError) Then st = st Or cStyleGuide.eStyleFlags.ErrorEncountered
             Return st
         End Get
     End Property
@@ -534,10 +535,10 @@ Public Class cProducerUnit
 
     <Browsable(True), _
         Category(sPROPCAT_VALIDATION), _
-        DisplayName("Invalid outputs"), _
-        Description("Names of groups that are landed, and transferred through the chain with a biomass ratio > 1"), _
+        DisplayName("Impossible outputs"), _
+        Description("Names of groups that are landed and transferred through the chain with an impossible biomass ratio > 1"), _
         cPropertySorter.PropertyOrder(7)> _
-    Public ReadOnly Property InvalidOutputs As String
+    Public ReadOnly Property ImpossibleOutputs As String
         Get
             Dim sTotal(Me.Core.nGroups) As Single
             Dim sbError As New StringBuilder()
@@ -557,7 +558,7 @@ Public Class cProducerUnit
                     End If
                     sbError.Append(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, _
                                                  fmt.GetDescriptor(Me.Core.EcoPathGroupInputs(i)), _
-                                                 cStringUtils.FormatNumber(sTotal(i))))
+                                                 sTotal(i).ToString()))
                 End If
             Next
             Return sbError.ToString
