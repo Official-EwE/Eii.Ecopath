@@ -23,6 +23,7 @@ Imports EwECore
 Imports EwEUtils.Utilities
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Style
+Imports System.Text
 
 #End Region ' Imports
 
@@ -528,6 +529,38 @@ Public Class cProducerUnit
                 End If
             Next
             Return MyBase.BiomassRatio & " / " & iNumActiveLinks.ToString()
+        End Get
+    End Property
+
+    <Browsable(True), _
+        Category(sPROPCAT_VALIDATION), _
+        DisplayName("Invalid outputs"), _
+        Description("Names of groups that are landed, and transferred through the chain with a biomass ratio > 1"), _
+        cPropertySorter.PropertyOrder(7)> _
+    Public ReadOnly Property InvalidOutputs As String
+        Get
+            Dim sTotal(Me.Core.nGroups) As Single
+            Dim sbError As New StringBuilder()
+            Dim fmt As New cCoreInterfaceFormatter()
+
+            For i As Integer = 0 To Me.LinkOutCount - 1
+                Dim ll As cLinkLandings = DirectCast(Me.LinkOut(i), cLinkLandings)
+                If (ll.Group IsNot Nothing) Then
+                    sTotal(ll.Group.Index) += ll.BiomassRatio
+                End If
+            Next
+
+            For i As Integer = 1 To Me.Core.nGroups
+                If sTotal(i) > 1.0! Then
+                    If (sbError.Length > 0) Then
+                        sbError.Append(",")
+                    End If
+                    sbError.Append(String.Format(ScientificInterfaceShared.My.Resources.GENERIC_LABEL_DETAILED, _
+                                                 fmt.GetDescriptor(Me.Core.EcoPathGroupInputs(i)), _
+                                                 cStringUtils.FormatNumber(sTotal(i))))
+                End If
+            Next
+            Return sbError.ToString
         End Get
     End Property
 

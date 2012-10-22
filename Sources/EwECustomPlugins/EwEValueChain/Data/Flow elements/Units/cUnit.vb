@@ -33,18 +33,16 @@ Imports ScientificInterfaceShared.Style
 Public MustInherit Class cUnit
     Inherits EwEUtils.Database.cEwEDatabase.cOOPStorable
 
-    Protected Const sPROPCAT_GENERAL As String = "1. General"
-    'Protected Const sPROPCAT_INTEGRATION As String = "2. Ecopath integration"
-    Protected Const sPROPCAT_PRODUCTS As String = "2. Products ($/t)"
-    Protected Const sPROPCAT_REVENUE As String = "3. Revenue ($/effort)"
-    'Protected Const sPROPCAT_EFFORTSUBSIDIES As String = "4. Effort subsidies ($/effort)"
-    Protected Const sPROPCAT_SUBSIDIES As String = "4. Subsidies ($/t)"
-    Protected Const sPROPCAT_PAY As String = "5. Pay ($/t)"
-    Protected Const sPROPCAT_SHARE As String = "5. Share (% revenue)"
-    'Protected Const sPROPCAT_EFFORTCOST As String = "6. Effort cost ($/effort)"
-    Protected Const sPROPCAT_INPUTCOST As String = "6. Input cost ($/t)"
-    Protected Const sPROPCAT_TAXES As String = "7. Taxes ($/t)"
-    Protected Const sPROPCAT_SOCIAL As String = "8. Social (#/t)"
+    Protected Const sPROPCAT_GENERAL As String = "01. General"
+    Protected Const sPROPCAT_VALIDATION As String = "02. Validation"
+    Protected Const sPROPCAT_PRODUCTS As String = "03. Products ($/t)"
+    Protected Const sPROPCAT_REVENUE As String = "04. Revenue ($/effort)"
+    Protected Const sPROPCAT_SUBSIDIES As String = "05. Subsidies ($/t)"
+    Protected Const sPROPCAT_PAY As String = "06. Pay ($/t)"
+    Protected Const sPROPCAT_SHARE As String = "07. Share (% revenue)"
+    Protected Const sPROPCAT_INPUTCOST As String = "08. Input cost ($/t)"
+    Protected Const sPROPCAT_TAXES As String = "09. Taxes ($/t)"
+    Protected Const sPROPCAT_SOCIAL As String = "10. Social (#/t)"
 
     ''' <summary>Index of the unit, which this unit needs to store its values in the Results object</summary>
     Private m_iSequence As Integer = 0
@@ -438,10 +436,10 @@ Public MustInherit Class cUnit
     Public MustOverride ReadOnly Property Category() As String
 
     <Browsable(True), _
-        Category(sPROPCAT_GENERAL), _
+        Category(sPROPCAT_VALIDATION), _
         DisplayName("Biomass ratio"), _
         Description("Total biomass ratio passed out of this unit"), _
-        cPropertySorter.PropertyOrder(3)> _
+        cPropertySorter.PropertyOrder(8)> _
     Public Overridable ReadOnly Property BiomassRatio() As String
         Get
             Dim sTot As Single = 0
