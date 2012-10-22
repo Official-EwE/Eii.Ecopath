@@ -60,6 +60,33 @@ Namespace My.Resources
             End Set
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Results by fleet.
+        '''</summary>
+        Friend ReadOnly Property AGGREGATION_MODE_BYFLEET() As String
+            Get
+                Return ResourceManager.GetString("AGGREGATION_MODE_BYFLEET", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Results by group.
+        '''</summary>
+        Friend ReadOnly Property AGGREGATION_MODE_BYGROUP() As String
+            Get
+                Return ResourceManager.GetString("AGGREGATION_MODE_BYGROUP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unaggregated.
+        '''</summary>
+        Friend ReadOnly Property AGGREGATION_MODE_FULLMODEL() As String
+            Get
+                Return ResourceManager.GetString("AGGREGATION_MODE_FULLMODEL", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property consumer() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("consumer", resourceCulture)
