@@ -624,6 +624,7 @@ Public Class plFlow
         Dim ctrlTarget As plUnitControl = Nothing
         Dim clrFore As Color = Color.Black
         Dim clrBack As Color = Color.Black
+        Dim sg As cStyleGuide = Me.m_uic.StyleGuide
 
         ' Draw form background
         Using br As New SolidBrush(Me.BackColor)
@@ -656,11 +657,11 @@ Public Class plFlow
 
                 ' Paint link on visible canvas
                 If Object.ReferenceEquals(Me.Selection, c) Then
-                    clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    clrFore = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
                 ElseIf Object.ReferenceEquals(Me.Selection, ctrlSource) Then
-                    clrFore = Color.Blue
+                    clrFore = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
                 ElseIf Object.ReferenceEquals(Me.Selection, ctrlTarget) Then
-                    clrFore = Color.Green
+                    clrFore = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
                 Else
                     clrFore = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
                     'Me.m_uic.StyleGuide.GetStyleColors(c.Style, clrFore, clrBack)
