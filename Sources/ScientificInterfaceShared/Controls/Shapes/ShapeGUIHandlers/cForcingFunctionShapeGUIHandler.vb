@@ -72,7 +72,7 @@ Namespace Controls
             Me.m_mhEcosim = New cMessageHandler(AddressOf OnCoreMessage, eCoreComponentType.EcoSim, eMessageType.Any, Me.UIContext.SyncObject)
             Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhEcosim)
 
-            Me.SketchpadDisplayAllData(False)
+            Me.DisplayFullXAxis = Me.m_bShowAll
 
         End Sub
 
@@ -160,6 +160,16 @@ Namespace Controls
         Protected Overridable Sub ResetAllShapes()
             Me.ResetShapes(Nothing)
         End Sub
+
+        Public Overrides Function XAxisMaxValue() As Integer
+            If (Me.UIContext Is Nothing) Then Return 0
+            If Not Me.m_bShowAll Then Return Me.Core.nEcosimTimeSteps
+            Dim xMax As Integer = 0
+            For Each sh As cShapeData In Me.m_lShapes
+                xMax = Math.Max(sh.XMax, xMax)
+            Next
+            Return xMax
+        End Function
 
 #End Region ' Forcing overrides
 
@@ -306,7 +316,7 @@ Namespace Controls
                     Me.ResetShapePrompted(Me.SelectedShapes)
 
                 Case eShapeCommandTypes.ShowAllData
-                    Me.SketchpadDisplayAllData(CBool(data))
+                    Me.DisplayFullXAxis = CBool(data)
 
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))
@@ -344,7 +354,7 @@ Namespace Controls
                 ElseIf msg.Source = eCoreComponentType.EcoSim And msg.Type = eMessageType.EcosimNYearsChanged Then
                     Try
                         Me.SketchPad.NumDataPoints = Me.NumDataYears
-                        Me.SketchpadDisplayAllData(Me.m_bShowAll)
+                        Me.DisplayFullXAxis = Me.m_bShowAll
                         Me.Refresh()
                     Catch ex As Exception
                     End Try
@@ -436,6 +446,23 @@ Namespace Controls
         Public Overrides Function NumDataYears() As Integer
             Return Me.UIContext.Core.nEcosimYears
         End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Set whether all available shape data should be shown in the attached
+        ''' controls.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable Property DisplayFullXAxis As Boolean
+            Get
+                Return Me.m_bShowAll
+            End Get
+            Set(bShowAll As Boolean)
+                Me.m_bShowAll = bShowAll
+                If (Me.SketchPad IsNot Nothing) Then Me.SketchPad.XAxisMaxValue = Me.XAxisMaxValue
+                If (Me.ShapeToolBox IsNot Nothing) Then Me.ShapeToolBox.XAxisMaxValue = Me.XAxisMaxValue
+            End Set
+        End Property
 
 #End Region ' Baseclass overrides
 
@@ -589,22 +616,6 @@ Namespace Controls
 
             End If
 
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Set whether all available shape data should be shown in the attached
-        ''' sketch pad.
-        ''' </summary>
-        ''' <param name="bShowAll">True to show all data, false to limit the shown data
-        ''' to an arbitrary number of data points dictated by specific shape handler
-        ''' implementations.</param>
-        ''' -----------------------------------------------------------------------
-        Protected Overridable Sub SketchpadDisplayAllData(ByVal bShowAll As Boolean)
-            Me.m_bShowAll = bShowAll
-            If (Me.SketchPad IsNot Nothing) Then
-                Me.SketchPad.XAxisMaxValue = IIf(bShowAll, cCore.NULL_VALUE, Me.SketchPad.NumDataPoints * cCore.N_MONTHS)
-            End If
         End Sub
 
         Protected Sub ResetShapePrompted(ByVal ashapes As cShapeData())

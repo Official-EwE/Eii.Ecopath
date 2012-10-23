@@ -49,6 +49,7 @@ Namespace Controls
         Private m_lShapes As New List(Of cShapeData)
         Private m_clr As Color
         Private m_sMinYScale As Single = cCore.NULL_VALUE
+        Private m_iMaxXScale As Integer = cCore.NULL_VALUE
         Private m_sketchDrawMode As eSketchDrawModeTypes = eSketchDrawModeTypes.Fill
 
 #End Region ' Variables
@@ -136,6 +137,24 @@ Namespace Controls
             End Get
             Set(ByVal value As Single)
                 Me.m_sMinYScale = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the max X value for the graph.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("State the max X value for the graph.")> _
+        Public Overridable Property XAxisMaxValue() As Integer
+            Get
+                Return Me.m_iMaxXScale
+            End Get
+            Set(ByVal iValue As Integer)
+                Me.m_iMaxXScale = iValue
+                Me.UpdateThumbnails()
+                Me.Invalidate()
             End Set
         End Property
 
@@ -319,13 +338,14 @@ Namespace Controls
 
             ' Determine whether to show enabled tick
             Dim bShowWarning As Boolean = False
+            Dim xMax As Integer = shape.XMax
 
             If TypeOf shape Is cTimeSeries Then
                 Dim ts As cTimeSeries = DirectCast(shape, cTimeSeries)
                 bShowWarning = Not (ts.ValidationStatus = eStatusFlags.OK)
             End If
 
-            Return cShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, Me.SketchDrawMode, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning)
+            Return cShapeImage.IconImage(Me.m_uic, shape, Me.m_clr, Me.SketchDrawMode, Me.XAxisMaxValue, Math.Max(Me.m_sMinYScale, shape.YMax), bShowWarning)
 
         End Function
 

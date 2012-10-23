@@ -312,10 +312,13 @@ Namespace Ecospace
 
         Private Sub GenerateShapeThumbnails(ByVal Icons As ImageList, ByVal IconSize As Integer)
 
+            Dim xMax As Integer = Me.m_ShapeGUI.XAxisMaxValue
+
             ' For all selectable shapes
             For Each shape As cForcingFunction In Me.m_lFFs
                 ' Create and Add the thumbnail image
-                Icons.Images.Add(cShapeImage.IconImage(Me.m_uic, shape, Me.m_ShapeGUI.Color, eSketchDrawModeTypes.Fill, DirectCast(shape, cEnviroResponseFunction).YMax, False))
+                Icons.Images.Add(cShapeImage.IconImage(Me.m_uic, shape, Me.m_ShapeGUI.Color, eSketchDrawModeTypes.Fill, _
+                                                       xMax, DirectCast(shape, cEnviroResponseFunction).YMax, False))
             Next
 
         End Sub

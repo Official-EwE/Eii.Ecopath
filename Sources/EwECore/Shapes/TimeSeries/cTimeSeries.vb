@@ -74,6 +74,7 @@ Public MustInherit Class cTimeSeries
         Me.m_core = core
         Me.m_datatype = eDataTypes.NotSet
         Me.DBID = DBID
+        Me.m_timeresolution = eShapeTimeResolutionType.Annual
 
     End Sub
 

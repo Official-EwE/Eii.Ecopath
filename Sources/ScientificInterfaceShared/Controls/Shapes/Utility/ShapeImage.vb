@@ -333,6 +333,7 @@ Namespace Controls
         ''' <param name="uic">UI context for looking up style information.</param>
         ''' <param name="clr">Colour to render the thumbnail image with.</param>
         ''' <param name="dm"><see cref="eSketchDrawModeTypes">Mode</see> for rendering lines.</param>
+        ''' <param name="iXMax">Number of points to draw, or <see cref="cCore.NULL_VALUE"/> to draw all available points.</param>
         ''' <param name="sYMax">Y-scale to use for rendering the image.</param>
         ''' <param name="bShowWarning">Flag stating whether a warning icon
         ''' should be displayed in the lower left corner of the shape
@@ -342,6 +343,7 @@ Namespace Controls
                 ByVal shape As cShapeData, _
                 ByVal clr As Color, _
                 ByVal dm As eSketchDrawModeTypes, _
+                ByVal iXMax As Integer, _
                 Optional ByVal sYMax As Single = cCore.NULL_VALUE, _
                 Optional ByVal bShowWarning As Boolean = False) As System.Drawing.Image
 
@@ -354,7 +356,7 @@ Namespace Controls
             If dm = eSketchDrawModeTypes.Dots Then dm = eSketchDrawModeTypes.LineSelective
 
             Try
-                DrawShape(uic, shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, cCore.NULL_VALUE, sYMax, cCore.NULL_VALUE)
+                DrawShape(uic, shape, New Rectangle(New Point(0, 0), bmp.Size), g, clr, dm, iXMax, sYMax, cCore.NULL_VALUE)
             Catch ex As Exception
                 ' Draw error image
                 g.FillRectangle(Brushes.White, New Rectangle(New Point(0, 0), bmp.Size))

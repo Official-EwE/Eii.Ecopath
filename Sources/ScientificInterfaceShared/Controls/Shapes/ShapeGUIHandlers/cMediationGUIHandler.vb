@@ -96,11 +96,19 @@ Namespace Controls
             MyBase.Detach()
         End Sub
 
-        Protected Overrides Sub SketchpadDisplayAllData(ByVal bShowAll As Boolean)
-            If (Me.SketchPad IsNot Nothing) Then
-                Me.SketchPad.XAxisMaxValue = cCore.NULL_VALUE
-            End If
-        End Sub
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cForcingShapeGUIHandler.DisplayFullXAxis"/>
+        ''' -------------------------------------------------------------------
+        Public Overrides Property DisplayFullXAxis As Boolean
+            Get
+                Return True
+            End Get
+            Set(value As Boolean)
+                If (Me.SketchPad IsNot Nothing) Then
+                    Me.SketchPad.XAxisMaxValue = cCore.NULL_VALUE
+                End If
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cShapeGUIHandler.SetSeasonal"/>

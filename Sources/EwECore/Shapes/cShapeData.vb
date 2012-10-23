@@ -39,12 +39,11 @@ Public MustInherit Class cShapeData
     Private m_x1 As Integer
     Private m_x2 As Integer
 
-
     Private m_strName As String
     Private m_xdata() As Single
-    'Private m_Ymax As Single
     Private m_Xmax As Integer
     Private m_bSeasonal As Boolean = False
+    Protected m_timeresolution As eShapeTimeResolutionType = eShapeTimeResolutionType.Month
 
     Public Event OnChanged(ByVal sd As cShapeData)
 
@@ -218,7 +217,24 @@ Public MustInherit Class cShapeData
     End Property
 
     ''' <summary>
-    ''' Get/set whether a shape is supposed to reflect a seasonal pattern.
+    ''' Get/set the <see cref="eShapeTimeResolutionType"/> temporal resolution of a shape.
+    ''' </summary>
+    ''' <remarks>
+    ''' This flag merely serves to direct a user interface how to reflect the data in a 
+    ''' shape. The underlying shape data is still interpreted per timestep (for shapes).</remarks>
+    Public Property TimeResolution() As eShapeTimeResolutionType
+        Get
+            Return Me.m_timeresolution
+        End Get
+
+        Set(ByVal timeresolution As eShapeTimeResolutionType)
+            Me.m_timeresolution = timeresolution
+            Me.Update()
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set whether a shape is supposed to reflect a monthly pattern.
     ''' </summary>
     Public Property IsSeasonal() As Boolean
         Get

@@ -2170,7 +2170,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Predation|Color to indicate a predator (flow diagram only).
+        '''  Looks up a localized string similar to Predation / incoming link|Color to indicate predation or incoming links in diagrams.
         '''</summary>
         Public ReadOnly Property OPTIONS_COLORDLG_PROMPT_PREDATOR() As String
             Get
@@ -2179,7 +2179,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Prey|Color to indicate a prey (flow diagram only).
+        '''  Looks up a localized string similar to Prey / outgoing link|Color to indicate either a prey or an outgoing link in diagrams.
         '''</summary>
         Public ReadOnly Property OPTIONS_COLORDLG_PROMPT_PREY() As String
             Get

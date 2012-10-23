@@ -578,6 +578,10 @@ Namespace Controls
             End Set
         End Property
 
+        Public Overridable Function XAxisMaxValue() As Integer
+            Return cCore.NULL_VALUE
+        End Function
+
 #End Region ' Public access
 
 #Region " Factory "

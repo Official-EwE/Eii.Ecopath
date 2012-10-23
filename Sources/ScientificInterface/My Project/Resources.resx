@@ -1548,10 +1548,10 @@ Description: {2}</value>
     <comment>{0}=start data, {1}=end date, {2}=% indexed,{3}=compatibility text,{4}=newline</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_PREDATOR" xml:space="preserve">
-    <value>Predation|Color to indicate a predator (flow diagram only)</value>
+    <value>Predation / incoming link|Color to indicate predation or incoming links in diagrams</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_PREY" xml:space="preserve">
-    <value>Prey|Color to indicate a prey (flow diagram only)</value>
+    <value>Prey / outgoing link|Color to indicate either a prey or an outgoing link in diagrams</value>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_PEDIGREE" xml:space="preserve">
     <value>Pedigree|Pedigree indicator color in data grids</value>

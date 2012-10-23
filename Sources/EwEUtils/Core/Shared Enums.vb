@@ -2714,4 +2714,20 @@ Namespace Core
 
 #End Region ' Log levels
 
+#Region " Shape resolution "
+
+    ''' <summary>
+    ''' Enumerated type stating the temporal resolution of shapes.
+    ''' </summary>
+    Public Enum eShapeTimeResolutionType As Integer
+        ''' <summary>Shape data does not reflect time, such is the case for mediation shapes.</summary>
+        NotApplicable = 0
+        ''' <summary>Shapes represent monthly data.</summary>
+        Month = 1
+        ''' <summary>Shapes represent annual data.</summary>
+        Annual = 2
+    End Enum
+
+#End Region ' Shape resolution
+
 End Namespace ' Core

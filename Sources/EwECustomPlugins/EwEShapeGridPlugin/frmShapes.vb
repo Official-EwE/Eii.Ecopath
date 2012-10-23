@@ -83,6 +83,7 @@ Friend Class frmShapes
         Dim handler As cShapeGUIHandler = DirectCast(Me.Grid, gridShapeBase).Handler
         Dim bSupportSeasonal As Boolean = handler.SupportCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal)
         Dim bIsTimeSeries As Boolean = (TypeOf Me.Grid Is gridTimeSeries)
+        Dim bIsForcing As Boolean = (TypeOf Me.Grid Is gridForcingBase)
 
         Me.m_tsbnSeasonal.Checked = Me.m_grid.IsSeasonal
         Me.m_tsbnLongTerm.Checked = Not Me.m_grid.IsSeasonal
@@ -91,6 +92,15 @@ Friend Class frmShapes
         Me.m_tsbnSeasonal.Visible = bSupportSeasonal
         Me.m_tsbnLongTerm.Visible = bSupportSeasonal
 
+        Me.m_tsbnShowAllData.Visible = bIsForcing
+        Me.m_tsbnShowAllData.Checked = Me.m_grid.ShowAllData
+
+    End Sub
+
+    Private Sub OnShowAllData(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnShowAllData.Click
+        Me.m_grid.ShowAllData = Not m_tsbnShowAllData.Checked
+        Me.UpdateControls()
     End Sub
 
 End Class

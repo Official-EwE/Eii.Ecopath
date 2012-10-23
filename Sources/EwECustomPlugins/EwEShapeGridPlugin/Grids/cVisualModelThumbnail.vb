@@ -40,7 +40,7 @@ Public Class cVisualModelThumbnail
         Using g As Graphics = Graphics.FromImage(img)
             cShapeImage.DrawShape(grid.UIContext, shape, _
                                   rcBmp, g, _
-                                  Me.m_handler.Color, Me.m_handler.SketchDrawMode)
+                                  Me.m_handler.Color, Me.m_handler.SketchDrawMode, Me.m_handler.XAxisMaxValue)
         End Using
 
         e.Graphics.DrawImage(img, rcClient.Location)

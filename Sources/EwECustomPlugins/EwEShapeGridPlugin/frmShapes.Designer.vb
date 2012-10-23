@@ -20,12 +20,14 @@ Partial Class frmShapes
 
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmShapes))
-        Me.m_plGrid = New System.Windows.Forms.Panel
-        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip
-        Me.m_tsbnTimeSeries = New System.Windows.Forms.ToolStripButton
-        Me.m_tsSep1 = New System.Windows.Forms.ToolStripSeparator
-        Me.m_tsbnLongTerm = New System.Windows.Forms.ToolStripButton
-        Me.m_tsbnSeasonal = New System.Windows.Forms.ToolStripButton
+        Me.m_plGrid = New System.Windows.Forms.Panel()
+        Me.m_tsMain = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+        Me.m_tsbnTimeSeries = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsSep1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnLongTerm = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnSeasonal = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnShowAllData = New System.Windows.Forms.ToolStripButton()
         Me.m_tsMain.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -36,9 +38,11 @@ Partial Class frmShapes
         '
         'm_tsMain
         '
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnTimeSeries, Me.m_tsSep1, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal})
+        Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnTimeSeries, Me.m_tsSep1, Me.m_tsbnLongTerm, Me.m_tsbnSeasonal, Me.ToolStripSeparator1, Me.m_tsbnShowAllData})
         resources.ApplyResources(Me.m_tsMain, "m_tsMain")
         Me.m_tsMain.Name = "m_tsMain"
+        Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
         'm_tsbnTimeSeries
         '
@@ -61,6 +65,17 @@ Partial Class frmShapes
         resources.ApplyResources(Me.m_tsbnSeasonal, "m_tsbnSeasonal")
         Me.m_tsbnSeasonal.Name = "m_tsbnSeasonal"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        resources.ApplyResources(Me.ToolStripSeparator1, "ToolStripSeparator1")
+        '
+        'm_tsbnShowAllData
+        '
+        Me.m_tsbnShowAllData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        resources.ApplyResources(Me.m_tsbnShowAllData, "m_tsbnShowAllData")
+        Me.m_tsbnShowAllData.Name = "m_tsbnShowAllData"
+        '
         'frmShapes
         '
         resources.ApplyResources(Me, "$this")
@@ -81,5 +96,7 @@ Partial Class frmShapes
     Private m_tsSep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnLongTerm As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnSeasonal As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnShowAllData As System.Windows.Forms.ToolStripButton
 
 End Class

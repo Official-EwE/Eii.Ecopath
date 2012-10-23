@@ -278,7 +278,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the max Y value for the graph.
+        ''' Get/set the max X value for the graph.
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Category("Sketchpad"), _

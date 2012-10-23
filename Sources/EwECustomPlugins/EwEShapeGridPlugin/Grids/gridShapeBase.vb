@@ -37,6 +37,7 @@ Public MustInherit Class gridShapeBase
             If (MyBase.UIContext IsNot Nothing) Then
                 Me.Handler.Attach(Me.UIContext, Nothing, Nothing, Nothing, Nothing)
                 AddHandler Me.Handler.OnRefreshed, AddressOf OnRefreshed
+                Me.RefreshContent()
             End If
         End Set
     End Property
@@ -55,6 +56,15 @@ Public MustInherit Class gridShapeBase
             If (Me.m_bIsSeasonal = value) Then Return
             Me.m_bIsSeasonal = value
             Me.RefreshContent()
+        End Set
+    End Property
+
+    Public Overridable Property ShowAllData As Boolean
+        Get
+            Return True
+        End Get
+        Set(value As Boolean)
+            ' NOP
         End Set
     End Property
 

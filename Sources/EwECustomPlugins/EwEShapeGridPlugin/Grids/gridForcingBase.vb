@@ -32,11 +32,28 @@ Public MustInherit Class gridForcingBase
         MyBase.New()
     End Sub
 
+    Public Overrides Property ShowAllData As Boolean
+        Get
+            If (Me.UIContext Is Nothing) Then Return False
+            Return DirectCast(Me.Handler, cForcingShapeGUIHandler).DisplayFullXAxis
+        End Get
+        Set(value As Boolean)
+            If (Me.UIContext Is Nothing) Then Return
+            DirectCast(Me.Handler, cForcingShapeGUIHandler).DisplayFullXAxis = value
+            Me.RefreshContent()
+        End Set
+    End Property
+
 #Region " Grid overrides "
+
+    Protected Overridable Function XAxisMax() As Integer
+        Return DirectCast(Me.Handler, cForcingShapeGUIHandler).XAxisMaxValue
+    End Function
 
     Protected Overrides Sub FillData()
 
-        If Me.UIContext Is Nothing Then Return
+        If (Me.UIContext Is Nothing) Then Return
+        If (Me.Handler.UIContext Is Nothing) Then Return
 
         Dim ats As cShapeData() = Me.Shapes
         Dim iNumShapes As Integer = ats.Length
@@ -47,10 +64,7 @@ Public MustInherit Class gridForcingBase
         If Me.IsSeasonal Then
             iNumPoints = cCore.N_MONTHS
         Else
-            iNumPoints = Me.Core.nEcosimTimeSteps
-            For Each s As cShapeData In ats
-                iNumPoints = Math.Max(iNumPoints, s.XMax)
-            Next
+            iNumPoints = Me.XAxisMax
         End If
         Me.Redim(iNumPoints + [Enum].GetValues(GetType(eRowType)).Length, iNumShapes + 1)
 
@@ -99,6 +113,10 @@ Public MustInherit Class gridForcingBase
 
     Protected Overrides Sub FinishStyle()
         MyBase.FinishStyle()
+
+        If (Me.UIContext Is Nothing) Then Return
+        If (Me.Handler.UIContext Is Nothing) Then Return
+
         Me.Rows(eRowType.Thumbnail).Height = 48
         For i As Integer = 1 To Me.ColumnsCount - 1
             Me.Columns(i).Width = Math.Max(Me.Columns(i).Width, 48)
