@@ -77,7 +77,11 @@ Public MustInherit Class gridForcingBase
 
         ' Create row header cells
         For i As Integer = 0 To iNumPoints - 1
-            Me(eRowType.FirstTime + i, 0) = New EwERowHeaderCell(Me.TimeLabel(i))
+            cell = New EwERowHeaderCell(Me.TimeLabel(i))
+            If (i Mod cCore.N_MONTHS) > 0 Then
+                cell.VisualModel.TextAlignment = Drawing.ContentAlignment.MiddleCenter
+            End If
+            Me(eRowType.FirstTime + i, 0) = cell
         Next
 
         ' Populate shape columns
@@ -192,11 +196,13 @@ Public MustInherit Class gridForcingBase
 #End Region ' Updates
 
     Protected Overrides Function TimeLabel(ByVal iPoint As Integer) As String
-        If Me.IsSeasonal Then
-            Return cDateUtils.GetMonthName(iPoint + 1)
-        Else
-            Return CStr(iPoint + Me.Core.EcosimFirstYear)
+
+        Dim iMonth As Integer = (iPoint Mod 12) + 1
+        If Not Me.IsSeasonal And (iMonth = 1) Then
+            Return CStr(Math.Floor(iPoint / cCore.N_MONTHS) + Me.Core.EcosimFirstYear)
         End If
+        Return cDateUtils.GetMonthName(iMonth)
+
     End Function
 
 End Class
