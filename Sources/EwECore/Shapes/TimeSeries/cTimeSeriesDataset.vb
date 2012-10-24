@@ -305,8 +305,9 @@ Public Class cTimeSeriesDataset
         End Get
     End Property
 
-    Friend Function Remove(ByVal item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Remove
-        Me.m_lTimeSeries.Remove(item)
+    Private Function Remove(ByVal item As cTimeSeries) As Boolean Implements System.Collections.Generic.ICollection(Of cTimeSeries).Remove
+        ' Nope
+        Debug.Assert(False, "Not implemented")
     End Function
 
     Public Function GetEnumerator() As System.Collections.Generic.IEnumerator(Of cTimeSeries) Implements System.Collections.Generic.IEnumerable(Of cTimeSeries).GetEnumerator
@@ -331,11 +332,13 @@ Public Class cTimeSeriesDataset
         End Get
         Friend Set(ByVal value As cTimeSeries)
             ' Nope
+            Debug.Assert(False, "Not implemented")
         End Set
     End Property
 
-    Friend Sub RemoveAt(ByVal index As Integer) Implements System.Collections.Generic.IList(Of cTimeSeries).RemoveAt
+    Private Sub RemoveAt(ByVal index As Integer) Implements System.Collections.Generic.IList(Of cTimeSeries).RemoveAt
         ' Nope
+        Debug.Assert(False, "Not implemented")
     End Sub
 
 #End Region ' List interfaces
