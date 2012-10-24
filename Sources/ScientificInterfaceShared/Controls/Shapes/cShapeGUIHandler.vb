@@ -18,11 +18,10 @@
 #Region " Imports "
 
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Commands
-Imports ScientificInterfaceShared.Definitions
-Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 

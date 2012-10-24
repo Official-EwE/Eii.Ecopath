@@ -1576,4 +1576,7 @@ Description: {2}</value>
   <data name="STATUS_LAUNCHING_EMAIL" xml:space="preserve">
     <value>Launching e-mail client...</value>
   </data>
+  <data name="PROMPT_TRIM_SHAPES" xml:space="preserve">
+    <value>Do you want to discard any forcing and egg production data past the current Ecosim run length? This operation cannot be undone.</value>
+  </data>
 </root>

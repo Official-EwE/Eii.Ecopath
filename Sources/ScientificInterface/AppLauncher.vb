@@ -176,6 +176,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdExportEcosimResultsToCSV As cEcosimSaveDataCommand = Nothing
     Private WithEvents m_cmdPrint As cCommand = Nothing
     Private WithEvents m_cmdEcospaceDataConnections As cEcospaceExternalDataCommand = Nothing
+    Private WithEvents m_cmdEcosimTrimShapes As cCommand = Nothing
 
 #End Region ' Commands
 
@@ -497,35 +498,30 @@ Public Class AppLauncher
 
         Me.m_cmdEditLayer = New cEditLayerCommand(cmdh)
 
-        'Create and configure ImportTimeSeries command
+        Me.m_cmdEcosimTrimShapes = New cCommand(cmdh, "TrimShapes")
+        Me.m_cmdEcosimTrimShapes.AddControl(Me.m_tsmiTrimShapes)
+
         Me.m_cmdImportTimeSeries = New cCommand(cmdh, "ImportTimeSeries")
         Me.m_cmdImportTimeSeries.AddControl(Me.m_tsmiTimeSeriesImport)
 
-        'Create and configure LoadTimeSeries command
         Me.m_cmdLoadTimeSeries = New cCommand(cmdh, "LoadTimeSeries")
         Me.m_cmdLoadTimeSeries.AddControl(Me.m_tsmiTimeSeriesLoad)
 
-        'Create and configure WeightTimeSeries command
         Me.m_cmdWeightTimeSeries = New cCommand(cmdh, "WeightTimeSeries")
         Me.m_cmdWeightTimeSeries.AddControl(Me.m_tsmiTimeSeriesEditWeights)
 
-        'Create and configure ExportTimeSeries command
         Me.m_cmdExportTimeSeries = New cCommand(cmdh, "ExportTimeSeries")
         Me.m_cmdExportTimeSeries.AddControl(Me.m_tsmiTimeSeriesExport)
 
-        'Create and configure Help>About command
         Me.m_cmdHelpAbout = New cCommand(cmdh, "HelpAbout")
         Me.m_cmdHelpAbout.AddControl(Me.m_tsmiHelpAbout)
 
-        'Create and configure Help>About command
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
 
-        ' Create plugin gui command for GUI plugins to use
         Me.m_cmdPluginGUICommand = New cPluginGUICommand(cmdh)
 
-        ' Create the one and only selection command
         Me.m_cmdPropertySelection = New cPropertySelectionCommand(cmdh)
 
         Me.m_cmdShowHideItems = New cDisplayGroupsCommand(cmdh)
@@ -3383,6 +3379,23 @@ Public Class AppLauncher
     Private Sub OnEstimateVsUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdEstimateVs.OnUpdate
         cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
+    End Sub
+
+    Private Sub OnTrimEcosimShapesInvoke(cmd As cCommand) _
+        Handles m_cmdEcosimTrimShapes.OnInvoke
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_TRIM_SHAPES, _
+                                         eCoreComponentType.ShapesManager, eMessageType.Any, eMessageImportance.Question, _
+                                         cFeedbackMessage.eReplyStyle.YES_NO)
+        Me.Core.Messages.SendMessage(fmsg)
+
+        If fmsg.Reply = cFeedbackMessage.eReply.YES Then
+            Me.Core.TrimShapesToEcosimRun()
+        End If
+    End Sub
+
+    Private Sub OnTrimEcosimShapesUpdate(cmd As cCommand) _
+        Handles m_cmdEcosimTrimShapes.OnInvoke
+        cmd.Enabled = (Me.Core.StateMonitor.HasEcosimLoaded)
     End Sub
 
 #End Region ' Ecosim commands

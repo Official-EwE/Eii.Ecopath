@@ -2914,6 +2914,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Do you want to discard any forcing and egg production data past the current Ecosim run length? This operation cannot be undone..
+        '''</summary>
+        Public ReadOnly Property PROMPT_TRIM_SHAPES() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_TRIM_SHAPES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to A newer Ecopath plug-in is available that may apply to &apos;{0}&apos; on your system, but copies cannot be authenticated. Do you want EwE6 to overwrite your local file?.
         '''</summary>
         Public ReadOnly Property PROMPT_UPDATE_MIGRATION() As String

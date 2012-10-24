@@ -53,10 +53,10 @@ Namespace Controls
             Me.m_tsbDuplicate = New System.Windows.Forms.ToolStripButton()
             Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbSetTo0 = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbSetToBaseline = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbSetToValue = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbResetAll = New System.Windows.Forms.ToolStripButton()
             Me.m_tscmbFilter = New System.Windows.Forms.ToolStripComboBox()
-            Me.m_tsbSetToBaseline = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -152,6 +152,15 @@ Namespace Controls
             Me.m_tsbSetTo0.Size = New System.Drawing.Size(50, 22)
             Me.m_tsbSetTo0.Text = "&Set to 0"
             '
+            'm_tsbSetToBaseline
+            '
+            Me.m_tsbSetToBaseline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbSetToBaseline.Image = CType(resources.GetObject("m_tsbSetToBaseline.Image"), System.Drawing.Image)
+            Me.m_tsbSetToBaseline.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbSetToBaseline.Name = "m_tsbSetToBaseline"
+            Me.m_tsbSetToBaseline.Size = New System.Drawing.Size(87, 22)
+            Me.m_tsbSetToBaseline.Text = "Set to &baseline"
+            '
             'm_tsbSetToValue
             '
             Me.m_tsbSetToValue.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
@@ -178,15 +187,6 @@ Namespace Controls
             Me.m_tscmbFilter.Name = "m_tscmbFilter"
             Me.m_tscmbFilter.Size = New System.Drawing.Size(150, 25)
             Me.m_tscmbFilter.Sorted = True
-            '
-            'm_tsbSetToBaseline
-            '
-            Me.m_tsbSetToBaseline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-            Me.m_tsbSetToBaseline.Image = CType(resources.GetObject("m_tsbSetToBaseline.Image"), System.Drawing.Image)
-            Me.m_tsbSetToBaseline.ImageTransparentColor = System.Drawing.Color.Magenta
-            Me.m_tsbSetToBaseline.Name = "m_tsbSetToBaseline"
-            Me.m_tsbSetToBaseline.Size = New System.Drawing.Size(87, 22)
-            Me.m_tsbSetToBaseline.Text = "Set to &baseline"
             '
             'ucShapeToolboxToolbar
             '

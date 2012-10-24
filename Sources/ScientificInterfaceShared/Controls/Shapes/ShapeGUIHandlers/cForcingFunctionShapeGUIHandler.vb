@@ -336,6 +336,7 @@ Namespace Controls
                 If (Me.ShapeToolBoxToolbar IsNot Nothing) Then Me.ShapeToolBoxToolbar.Refresh()
             Else
                 ' Do full update
+                Me.DisplayFullXAxis = Me.m_bShowAll
                 Me.UpdateShapeList(Me.SelectedShapes)
             End If
         End Sub

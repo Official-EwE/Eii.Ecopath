@@ -35,7 +35,7 @@ End Enum
 
 #End Region
 
-#Region " Forcing Shape Manager Base Class "
+#Region " Shape manager base class "
 
 ''' <summary>
 ''' Base class for a Shape Manager. Provides implementation to make a derived Shape Manager behave like a List (For Each). 
@@ -337,7 +337,7 @@ Public MustInherit Class cBaseShapeManager
 
 #End Region ' Protected methods
 
-#Region "Public Properties"
+#Region " Public Properties "
 
     Public ReadOnly Property Core() As cCore
         Get
@@ -397,7 +397,7 @@ Public MustInherit Class cBaseShapeManager
 
 End Class
 
-#End Region ' Forcing Shape Manager Base Class
+#End Region ' Shape manager base class
 
 #Region " Forcing Function shape manager "
 

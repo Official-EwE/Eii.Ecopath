@@ -1136,6 +1136,29 @@ Public Class cCore
         Return ds.RemoveShape(iDBID)
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Trim the length of forcing functions to the Ecosim run length.
+    ''' </summary>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function TrimShapesToEcosimRun() As Boolean
+
+        If (Not Me.CanSave(True)) Then Return False
+        If (Not Me.StateMonitor.HasEcosimLoaded) Then Return False
+
+        Try
+            Me.m_EcoSimData.ForcePoints = Me.m_EcoSimData.NTimes
+            For Each manager As cBaseShapeManager In m_ShapeManagers.Values
+                manager.Update()
+            Next
+        Catch ex As Exception
+            Return False
+        End Try
+        Return True
+
+    End Function
+
 #End Region
 
 #End Region ' Public Core Interfaces
@@ -10962,7 +10985,7 @@ Public Class cCore
 
 #End Region ' Stanza
 
-#Region "Monte Carlo"
+#Region " Monte Carlo "
 
     ''' <summary>
     ''' Get the Ecosim<see cref="cMonteCarloManager">Monte Carlo manager</see>.
@@ -10975,7 +10998,7 @@ Public Class cCore
 
 #End Region ' Monte carlo
 
-#Region "Fit to time series "
+#Region " Fit to time series "
 
     ''' <summary>
     ''' Get the Ecosim <see cref="cF2TSManager">Fit to Time Series manager</see>.
