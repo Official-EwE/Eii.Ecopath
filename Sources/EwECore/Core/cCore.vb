@@ -2057,16 +2057,16 @@ Public Class cCore
     ''' <param name="TS"><see cref="cTimeSeries">Time Series instance</see> to remove.</param>
     ''' -----------------------------------------------------------------------
     Public Function RemoveTimeSeries(ByVal TS As cTimeSeries) As Boolean
-        Return Me.RemoveTimeSeries(TS.Index)
+        Return Me.RemoveTimeSeries(TS.DBID)
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Remove an Ecosim Time Series from the data source.
     ''' </summary>
-    ''' <param name="iTS">Index of the time series to remove.</param>
+    ''' <param name="DBID">Database ID of the time series to remove.</param>
     ''' -----------------------------------------------------------------------
-    Public Function RemoveTimeSeries(ByVal iTS As Integer) As Boolean
+    Public Function RemoveTimeSeries(ByVal DBID As Integer) As Boolean
 
         Dim bSucces As Boolean = False
 
@@ -2077,7 +2077,7 @@ Public Class cCore
         If Not Me.SetBatchLock(eBatchLockType.Restructure) Then Return False
         Try
             ' Try to add TS to the data source
-            If DirectCast(DataSource, IEcosimDatasource).RemoveTimeSeries(iTS) Then
+            If DirectCast(DataSource, IEcosimDatasource).RemoveTimeSeries(DBID) Then
                 Me.DataAddedOrRemovedMessage("Ecosim number of time series has changed.", eCoreComponentType.TimeSeries, eDataTypes.NotSet)
                 bSucces = True
             End If
