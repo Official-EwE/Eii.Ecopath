@@ -746,10 +746,6 @@ Public Class cProducerUnit
                 End If
             End If
 
-            If link.Target.DBID = 93 Then
-                Console.WriteLine("Processing link from " & Me.Name & " to " & link.Target.Name)
-            End If
-
             ' Process every link to ensure that target units receive all inputs!
             If sBiomass > 0 Then
                 link.Target.Process(results, New cInput(sBiomass, sValue, sValue / sBiomass), iTimeStep, iItem)

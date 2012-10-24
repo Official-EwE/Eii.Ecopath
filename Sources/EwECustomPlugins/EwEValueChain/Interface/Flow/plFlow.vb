@@ -673,7 +673,7 @@ Public Class plFlow
                 PaintLink(g, ctrlSource.Center, ptT, c.Color, 2)
 
             Catch ex As Exception
-                Console.WriteLine("LinkWrapper {0} not correctly configured", c.ToString)
+                Debug.Assert(False, ex.Message)
             End Try
         Next
 

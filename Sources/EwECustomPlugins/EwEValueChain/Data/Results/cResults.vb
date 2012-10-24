@@ -642,9 +642,6 @@ Public Class cResults
         End Select
 
         If bOkidoki Then
-            If unit.DBID = 93 Then
-                Console.WriteLine("Stored contribution of " & sValueContribution & ", " & sBiomassContribution & " for item " & iItem)
-            End If
             Try
                 ' Append contribution in case this is called multiple times for a single ([fleet|group], unit combo)
                 Me.m_asItemValueContribution(iItem, unit.Sequence, iTimeStep) += sValueContribution

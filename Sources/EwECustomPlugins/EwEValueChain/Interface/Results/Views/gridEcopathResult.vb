@@ -263,7 +263,7 @@ Public Class gridEcopathResult
                 Try
                     sTotal += CSng(Val(Me(iRow, iCol).Value))
                 Catch ex As Exception
-                    Console.WriteLine("Failed to access cell for row {0}, col {1}", iRow, iCol)
+                    Debug.Assert(False, ex.Message)
                 End Try
             Next
             Me.UpdateDataCell(Me(iRow, eColumnTypes.Total), sTotal)

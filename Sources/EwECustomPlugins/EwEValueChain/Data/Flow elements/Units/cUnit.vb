@@ -141,8 +141,6 @@ Public MustInherit Class cUnit
         ' Linked to self?
         Dim bIsLoop As Boolean = Object.ReferenceEquals(unit, Me)
 
-        'Console.WriteLine("{0}:{1}={2}", Me.Name, unit.Name, bIsLoop)
-
         ' If no loop yet
         If Not bIsLoop Then
             ' Follow each output link
@@ -210,15 +208,9 @@ Public MustInherit Class cUnit
                                    ByVal iTimeStep As Integer, _
                                    ByVal iUnit As Integer)
 
-        Dim inputTotal As cInput = Nothing
         Dim sTotalOutputBiomass As Single = 0
         Dim sTotalOutputValue As Single = 0
         Dim sValuePerTon As Single = 0.0!
-
-        ' PERU debugging: track freezing plant
-        If Me.DBID = 93 Then
-            Console.WriteLine("Unit " & Me.ToString & " received " & input.Tons & " tons at " & input.Value & ", " & input.CustomValuePerTon & " (" & Me.m_lReceivedInputs.Count & "/" & Me.LinkInCount() & ")")
-        End If
 
         ' Store received values
         Me.m_lReceivedInputs.Add(input)
@@ -226,28 +218,22 @@ Public MustInherit Class cUnit
         ' At least expected inputs received?
         If (Me.m_lReceivedInputs.Count >= Me.LinkInCount()) Then
 
-            ' #Yes: Process!
-
-            ' Combine all inputs
-            inputTotal = Me.SumInputs(Me.m_lReceivedInputs)
-
-            If Me.DBID = 93 Then
-                Console.WriteLine("Unit " & Me.ToString & " processing " & inputTotal.Tons & " tons at " & inputTotal.Value & ", " & inputTotal.CustomValuePerTon)
-            End If
+            ' #Yes: Process combined inputs
+            input = Me.SumInputs(Me.m_lReceivedInputs)
 
             ' Store the amount that each fleet contributes to the total
-            results.StoreContribution(iUnit, Me, iTimeStep, inputTotal.Value, inputTotal.Tons)
+            results.StoreContribution(iUnit, Me, iTimeStep, input.Value, input.Tons)
 
             ' Determine outgoing biomass
             For Each link As cLink In Me.m_llinkOutput
                 ' Determine output biomass for a single link
-                If inputTotal.Tons > 0 Then
-                    Dim sOutputBiomass As Single = link.BiomassRatio * inputTotal.Tons
+                If input.Tons > 0 Then
+                    Dim sOutputBiomass As Single = link.BiomassRatio * input.Tons
                     Dim sOutputValue As Single = 0
                     If link.ValuePerTon <> 1.0! And link.ValuePerTon <> 0 Then
                         sOutputValue = link.ValuePerTon * sOutputBiomass
                     Else
-                        sOutputValue = (inputTotal.Value / inputTotal.Tons) * link.ValueRatio * sOutputBiomass
+                        sOutputValue = (input.Value / input.Tons) * link.ValueRatio * sOutputBiomass
                     End If
 
                     sTotalOutputBiomass += sOutputBiomass
@@ -262,7 +248,7 @@ Public MustInherit Class cUnit
             If iUnit = 0 Then
                 ' #Yes: make all calculations. Calculations are not necessary when running for individual fleets
                 '       where only transfer ratios are collected.
-                Me.Calculate(results, inputTotal.Tons, inputTotal.Value, sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
+                Me.Calculate(results, input.Tons, input.Value, sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
             End If
 
         End If

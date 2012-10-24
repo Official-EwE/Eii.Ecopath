@@ -192,9 +192,7 @@ Public Class cPluginPoint
             End If
 
         Catch ex As Exception
-
-            cLog.Write(ex)
-            System.Console.WriteLine(Me.ToString & ".Initialize() Error: " & ex.Message)
+            cLog.Write(ex, "VC::cPluginPoint.Initialize")
             Debug.Assert(False, ex.Message)
             Return
 

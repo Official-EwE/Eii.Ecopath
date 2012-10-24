@@ -182,7 +182,6 @@ Public MustInherit Class cEconomicUnit
         If Me.Broker = False Then
             results.Store(Me, cResults.eVariableType.RevenueProductsMain, sOutputValue, iTimeStep)
         End If
-        'Console.WriteLine("Unit {0} sOutputValue {1}", Me.Sequence, sOutputValue)
         Return True
     End Function
 
