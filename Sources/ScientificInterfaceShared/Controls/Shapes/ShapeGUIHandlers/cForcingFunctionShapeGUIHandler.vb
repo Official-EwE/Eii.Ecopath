@@ -23,6 +23,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Definitions
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -212,7 +213,9 @@ Namespace Controls
                     Return True
                 Case eShapeCommandTypes.Seasonal
                     Return True
-                Case eShapeCommandTypes.ShowAllData
+                Case eShapeCommandTypes.ShowExtraData
+                    Return True
+                Case eShapeCommandTypes.DiscardExtraData
                     Return True
                 Case Else
                     Return False
@@ -233,6 +236,7 @@ Namespace Controls
 
             Dim bHasSelection As Boolean = (Me.SelectedShapes IsNot Nothing)
             Dim bHasSingleSelection As Boolean = (Me.SelectedShape IsNot Nothing)
+            Dim cmdX As cCommand = Me.UIContext.CommandHandler.GetCommand("TrimUnusedShapeData")
 
             Select Case cmd
 
@@ -253,11 +257,9 @@ Namespace Controls
                      eShapeCommandTypes.SetMaxValue
                     Return bHasSingleSelection
 
-                Case eShapeCommandTypes.ShowAllData
-                    If (Me.SelectedShape IsNot Nothing) Then
-                        Return (Me.SelectedShape.IsSeasonal = False)
-                    End If
-                    Return False
+                Case eShapeCommandTypes.ShowExtraData, _
+                    eShapeCommandTypes.DiscardExtraData
+                    If (cmdX IsNot Nothing) Then Return cmdX.Enabled
 
             End Select
             Return False
@@ -275,6 +277,8 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Overrides Sub ExecuteCommand(ByVal cmd As eShapeCommandTypes, _
                  Optional ByVal ashapes As EwECore.cShapeData() = Nothing, Optional ByVal data As Object = Nothing)
+
+            Dim cmdX As cCommand = Me.UIContext.CommandHandler.GetCommand("TrimUnusedShapeData")
 
             If (ashapes Is Nothing) Then ashapes = Me.SelectedShapes
 
@@ -315,8 +319,15 @@ Namespace Controls
                 Case eShapeCommandTypes.SetToValue
                     Me.ResetShapePrompted(Me.SelectedShapes)
 
-                Case eShapeCommandTypes.ShowAllData
+                Case eShapeCommandTypes.ShowExtraData
                     Me.DisplayFullXAxis = CBool(data)
+
+                Case eShapeCommandTypes.DiscardExtraData
+                    Try
+                        If (cmdX IsNot Nothing) Then cmdX.Invoke()
+                    Catch ex As Exception
+                        ' Whoah
+                    End Try
 
                 Case Else
                     'Debug.Assert(False, String.Format("Command {0} not supported", cmd))

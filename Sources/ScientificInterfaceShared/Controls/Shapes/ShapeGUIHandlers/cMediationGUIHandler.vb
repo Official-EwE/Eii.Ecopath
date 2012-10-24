@@ -268,7 +268,7 @@ Namespace Controls
                     Return False
                 Case eShapeCommandTypes.DefineMediation
                     Return True
-                Case eShapeCommandTypes.ShowAllData
+                Case eShapeCommandTypes.ShowExtraData
                     Return False
                 Case eShapeCommandTypes.ViewMode
                     Return True

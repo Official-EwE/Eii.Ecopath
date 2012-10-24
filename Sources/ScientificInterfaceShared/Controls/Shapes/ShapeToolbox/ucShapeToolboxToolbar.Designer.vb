@@ -57,17 +57,20 @@ Namespace Controls
             Me.m_tsbSetToValue = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbResetAll = New System.Windows.Forms.ToolStripButton()
             Me.m_tscmbFilter = New System.Windows.Forms.ToolStripComboBox()
+            Me.m_ts3 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnShowExtraData = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnDiscardExtraData = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToBaseline, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter})
+            Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbImport, Me.m_tsbExport, Me.m_tsbLoad, Me.m_tsbWeight, Me.m_ts1, Me.m_tsbAdd, Me.m_tsbRemove, Me.m_tsbDuplicate, Me.m_ts2, Me.m_tsbSetTo0, Me.m_tsbSetToBaseline, Me.m_tsbSetToValue, Me.m_tsbResetAll, Me.m_tscmbFilter, Me.m_ts3, Me.m_tsbnShowExtraData, Me.m_tsbnDiscardExtraData})
             Me.m_ts.Location = New System.Drawing.Point(0, 0)
             Me.m_ts.Name = "m_ts"
             Me.m_ts.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-            Me.m_ts.Size = New System.Drawing.Size(903, 25)
+            Me.m_ts.Size = New System.Drawing.Size(1271, 25)
             Me.m_ts.TabIndex = 0
             '
             'm_tsbImport
@@ -188,13 +191,37 @@ Namespace Controls
             Me.m_tscmbFilter.Size = New System.Drawing.Size(150, 25)
             Me.m_tscmbFilter.Sorted = True
             '
+            'm_ts3
+            '
+            Me.m_ts3.Name = "m_ts3"
+            Me.m_ts3.Size = New System.Drawing.Size(6, 25)
+            '
+            'm_tsbnShowExtraData
+            '
+            Me.m_tsbnShowExtraData.CheckOnClick = True
+            Me.m_tsbnShowExtraData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbnShowExtraData.Image = CType(resources.GetObject("m_tsbnShowExtraData.Image"), System.Drawing.Image)
+            Me.m_tsbnShowExtraData.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnShowExtraData.Name = "m_tsbnShowExtraData"
+            Me.m_tsbnShowExtraData.Size = New System.Drawing.Size(94, 22)
+            Me.m_tsbnShowExtraData.Text = "Show extra &data"
+            '
+            'm_tsbnDiscardExtraData
+            '
+            Me.m_tsbnDiscardExtraData.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+            Me.m_tsbnDiscardExtraData.Image = CType(resources.GetObject("m_tsbnDiscardExtraData.Image"), System.Drawing.Image)
+            Me.m_tsbnDiscardExtraData.ImageTransparentColor = System.Drawing.Color.Magenta
+            Me.m_tsbnDiscardExtraData.Name = "m_tsbnDiscardExtraData"
+            Me.m_tsbnDiscardExtraData.Size = New System.Drawing.Size(104, 22)
+            Me.m_tsbnDiscardExtraData.Text = "Discard extra data"
+            '
             'ucShapeToolboxToolbar
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_ts)
             Me.Name = "ucShapeToolboxToolbar"
-            Me.Size = New System.Drawing.Size(903, 25)
+            Me.Size = New System.Drawing.Size(1271, 25)
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)
@@ -216,6 +243,9 @@ Namespace Controls
         Private WithEvents m_tsbExport As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tscmbFilter As System.Windows.Forms.ToolStripComboBox
         Private WithEvents m_tsbSetToBaseline As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_ts3 As System.Windows.Forms.ToolStripSeparator
+        Private WithEvents m_tsbnShowExtraData As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnDiscardExtraData As System.Windows.Forms.ToolStripButton
 
     End Class
 

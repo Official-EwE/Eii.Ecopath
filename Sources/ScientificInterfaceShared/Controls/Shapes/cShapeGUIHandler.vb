@@ -35,6 +35,7 @@ Namespace Controls
     ''' -----------------------------------------------------------------------
     <CLSCompliant(True)> _
     Public MustInherit Class cShapeGUIHandler
+        Implements IUIElement
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -86,8 +87,10 @@ Namespace Controls
             Filter
             ''' <summary>Set view mode for reflecting information in a different way.</summary>
             ViewMode
-            ''' <summary>Set if all data on an axis can be shown, or only used data.</summary>
-            ShowAllData
+            ''' <summary>Set whether all data on an axis can be shown, or only used data.</summary>
+            ShowExtraData
+            ''' <summary>Purge extra, unused data.</summary>
+            DiscardExtraData
         End Enum
 
 #Region " Private variables "
@@ -110,6 +113,16 @@ Namespace Controls
 #End Region ' Private variables
 
 #Region " Constructor and destructor "
+
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Private Set(value As cUIContext)
+                ' Must be set via Attach()
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -452,12 +465,6 @@ Namespace Controls
 #Region " Public access "
 
         Public Event OnRefreshed(ByVal sender As cShapeGUIHandler)
-
-        Public ReadOnly Property UIContext() As cUIContext
-            Get
-                Return Me.m_uic
-            End Get
-        End Property
 
         Public ReadOnly Property Core() As cCore
             Get

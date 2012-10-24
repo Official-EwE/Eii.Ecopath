@@ -498,8 +498,7 @@ Public Class AppLauncher
 
         Me.m_cmdEditLayer = New cEditLayerCommand(cmdh)
 
-        Me.m_cmdEcosimTrimShapes = New cCommand(cmdh, "TrimShapes")
-        Me.m_cmdEcosimTrimShapes.AddControl(Me.m_tsmiTrimShapes)
+        Me.m_cmdEcosimTrimShapes = New cCommand(cmdh, "TrimUnusedShapeData")
 
         Me.m_cmdImportTimeSeries = New cCommand(cmdh, "ImportTimeSeries")
         Me.m_cmdImportTimeSeries.AddControl(Me.m_tsmiTimeSeriesImport)
@@ -3389,13 +3388,13 @@ Public Class AppLauncher
         Me.Core.Messages.SendMessage(fmsg)
 
         If fmsg.Reply = cFeedbackMessage.eReply.YES Then
-            Me.Core.TrimShapesToEcosimRun()
+            Me.Core.TrimUnusedShapeData()
         End If
     End Sub
 
     Private Sub OnTrimEcosimShapesUpdate(cmd As cCommand) _
-        Handles m_cmdEcosimTrimShapes.OnInvoke
-        cmd.Enabled = (Me.Core.StateMonitor.HasEcosimLoaded)
+        Handles m_cmdEcosimTrimShapes.OnUpdate
+        cmd.Enabled = Me.Core.HasUnusedShapeData
     End Sub
 
 #End Region ' Ecosim commands

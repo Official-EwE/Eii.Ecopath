@@ -1138,11 +1138,26 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Trim the length of forcing functions to the Ecosim run length.
+    ''' Returns whether Ecosim has unused shape data - shape data allocated by
+    ''' earlier, longer Ecosim runs - that is currently not used. This data can
+    ''' be trimmed via <see cref="TrimUnusedShapeData"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasUnusedShapeData() As Boolean
+
+        If (Not Me.StateMonitor.HasEcosimLoaded) Then Return False
+        Return (Me.m_EcoSimData.ForcePoints > Me.m_EcoSimData.NTimes)
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Trim forcing functions to the Ecosim number of time steps. To determine
+    ''' if there is unused shape data check <see cref="HasUnusedShapeData"/>.
     ''' </summary>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function TrimShapesToEcosimRun() As Boolean
+    Public Function TrimUnusedShapeData() As Boolean
 
         If (Not Me.CanSave(True)) Then Return False
         If (Not Me.StateMonitor.HasEcosimLoaded) Then Return False

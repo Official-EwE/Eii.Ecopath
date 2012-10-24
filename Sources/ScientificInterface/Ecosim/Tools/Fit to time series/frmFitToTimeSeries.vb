@@ -488,7 +488,7 @@ Namespace Ecosim
         Private Sub OnShowAllData_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowAllData.CheckedChanged
             Try
-                Me.m_shapeHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAllData, Nothing, Me.m_cbShowAllData.Checked)
+                Me.m_shapeHandler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Nothing, Me.m_cbShowAllData.Checked)
             Catch ex As Exception
             End Try
         End Sub

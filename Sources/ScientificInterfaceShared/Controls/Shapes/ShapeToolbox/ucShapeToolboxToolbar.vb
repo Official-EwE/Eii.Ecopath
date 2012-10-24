@@ -85,6 +85,8 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToEcopathBaseline, Me.m_tsbSetToBaseline)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetToValue, Me.m_tsbSetToValue)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Filter, Me.m_tscmbFilter)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Me.m_tsbnShowExtraData)
+            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.DiscardExtraData, Me.m_tsbnDiscardExtraData)
 
             Dim astrFilters As String() = Me.m_handler.Filters()
             Me.m_tscmbFilter.Items.Clear()
@@ -204,11 +206,28 @@ Namespace Controls
             End Try
         End Sub
 
-#End Region ' Event handlers
+        Private Sub OnShowAllData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tsbnShowExtraData.Click
+            If (Me.m_handler Is Nothing) Then Return
+            Try
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowExtraData, Nothing, Me.m_tsbnShowExtraData.Checked)
+            Catch ex As Exception
+                ' Hmm
+            End Try
+        End Sub
 
-        Private Sub m_tscmbFilter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Private Sub m_tsbnDiscardExtraData_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnDiscardExtraData.Click
+            If (Me.m_handler Is Nothing) Then Return
+            Try
+                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.DiscardExtraData)
+            Catch ex As Exception
+                ' Hmm
+            End Try
 
         End Sub
+
+#End Region ' Event handlers
+
     End Class
 
 End Namespace

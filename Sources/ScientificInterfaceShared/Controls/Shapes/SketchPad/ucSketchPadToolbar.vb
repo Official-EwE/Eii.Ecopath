@@ -157,14 +157,6 @@ Namespace Controls
             End If
         End Sub
 
-        Private Sub OnShowAllData(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsbnShowAllData.Click
-            If Me.m_bInUpdate Then Return
-            If (Me.Handler IsNot Nothing) Then
-                Me.Handler.ExecuteCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAllData, Nothing, Me.m_tsbnShowAllData.Checked)
-            End If
-        End Sub
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Event handler; responds to an [ENTER] key press to apply entered text
@@ -232,7 +224,6 @@ Namespace Controls
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.Seasonal, Me.m_tsbnSeasonal)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tslWeight)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetWeight, Me.m_tstbWeight)
-            Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.ShowAllData, Me.m_tsbnShowAllData)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetMaxValue, Me.m_tslMaxValue)
             Me.UpdateCommand(cShapeGUIHandler.eShapeCommandTypes.SetMaxValue, Me.m_tstbMaxValue)
 
