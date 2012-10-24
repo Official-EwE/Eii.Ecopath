@@ -406,6 +406,8 @@ Public Class ucResults
 
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
+        Me.UpdateFilterCombos()
+
         ' Reflect results
         Me.UpdateResults()
         Me.UpdateControls()
@@ -447,6 +449,7 @@ Public Class ucResults
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         ' Update results
+        Me.UpdateFilterCombos()
         Me.UpdateYearCombo()
         Me.UpdateResults()
         Me.UpdateControls()
@@ -481,6 +484,7 @@ Public Class ucResults
 
         cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
+        Me.UpdateFilterCombos()
         '' Process results
         'Me.UpdateResults()
         'Me.UpdateControls()
@@ -507,41 +511,7 @@ Public Class ucResults
         Me.m_bInitializing = True
 
         Me.m_plFlow.Init(Me.m_uic, Me.m_data, Nothing, Nothing)
-
-        ' Populate items combo
-        Me.m_tscmbItems.Items.Clear()
-        Select Case Me.m_data.Parameters.AggregationMode
-
-            Case cParameters.eAggregationModeType.FullModel
-                ' Nop
-
-            Case cParameters.eAggregationModeType.ByFleet
-                Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLFLEETS))
-                For i As Integer = 1 To Me.m_data.Core.nFleets
-                    Me.m_tscmbItems.Items.Add(New cCoreComboItem(Me.m_data.Core.FleetInputs(i)))
-                Next
-                Me.m_tscmbItems.SelectedIndex = 0
-
-            Case cParameters.eAggregationModeType.ByGroup
-                Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLGROUPS))
-                For i As Integer = 1 To Me.m_data.Core.nGroups
-                    Dim grp As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(i)
-                    If grp.IsFished Then
-                        Me.m_tscmbItems.Items.Add(New cCoreComboItem(grp))
-                    End If
-                Next
-                Me.m_tscmbItems.SelectedIndex = 0
-
-        End Select
-
-        ' Populate units combo
-        Me.m_tscmbUnit.Items.Clear()
-        Me.m_tscmbUnit.Items.Add(New cUnitComboItem(Nothing))
-        For iSeq As Integer = 0 To Me.m_data.UnitCount - 1
-            Me.m_tscmbUnit.Items.Add(New cUnitComboItem(Me.m_data.Unit(iSeq)))
-        Next
-        Me.m_tscmbUnit.SelectedIndex = 0
-
+        Me.UpdateFilterCombos()
         Me.SetViewMode(Me.m_viewMode)
 
         Me.UpdateFilter()
@@ -623,6 +593,43 @@ Public Class ucResults
 
     End Sub
 
+    Private Sub UpdateFilterCombos()
+
+        ' Populate items combo
+        Me.m_tscmbItems.Items.Clear()
+        Select Case Me.m_data.Parameters.AggregationMode
+
+            Case cParameters.eAggregationModeType.FullModel
+                ' Nop
+
+            Case cParameters.eAggregationModeType.ByFleet
+                Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLFLEETS))
+                For i As Integer = 1 To Me.m_data.Core.nFleets
+                    Me.m_tscmbItems.Items.Add(New cCoreComboItem(Me.m_data.Core.FleetInputs(i)))
+                Next
+                Me.m_tscmbItems.SelectedIndex = 0
+
+            Case cParameters.eAggregationModeType.ByGroup
+                Me.m_tscmbItems.Items.Add(New cCoreComboItem(SharedResources.GENERIC_VALUE_ALLGROUPS))
+                For i As Integer = 1 To Me.m_data.Core.nGroups
+                    Dim grp As cEcoPathGroupInput = Me.m_data.Core.EcoPathGroupInputs(i)
+                    If grp.IsFished Then
+                        Me.m_tscmbItems.Items.Add(New cCoreComboItem(grp))
+                    End If
+                Next
+                Me.m_tscmbItems.SelectedIndex = 0
+
+        End Select
+
+        ' Populate units combo
+        Me.m_tscmbUnit.Items.Clear()
+        Me.m_tscmbUnit.Items.Add(New cUnitComboItem(Nothing))
+        For iSeq As Integer = 0 To Me.m_data.UnitCount - 1
+            Me.m_tscmbUnit.Items.Add(New cUnitComboItem(Me.m_data.Unit(iSeq)))
+        Next
+        Me.m_tscmbUnit.SelectedIndex = 0
+
+    End Sub
     Private Sub SetViewMode(ByVal viewMode As eViewModeType)
 
         Dim ctrl As ScrollableControl = Nothing

@@ -282,6 +282,8 @@ Public Class cModel
 
             Catch ex As Exception
                 ' Aargh
+                Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "VC::cModel.RunTimeStep(" & iTimeStep & ")")
             End Try
 
         End If
@@ -328,7 +330,13 @@ Public Class cModel
                                          Me.GetLandingValue(data.Core, iFleet, iGroupSrc, iTimeStep, ecosimResults, ecosimDS))
                 Next iGroupSrc
             End If
-            prodUnit.Process(result, iTimeStep, 0)
+
+            Try
+                prodUnit.Process(result, iTimeStep, 0)
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "VC::cModel.RunFullModel(" & prodUnit.Name & ")")
+            End Try
         Next unit
 
         Return True

@@ -215,6 +215,11 @@ Public MustInherit Class cUnit
         Dim sTotalOutputValue As Single = 0
         Dim sValuePerTon As Single = 0.0!
 
+        ' PERU debugging: track freezing plant
+        If Me.DBID = 93 Then
+            Console.WriteLine("Unit " & Me.ToString & " received " & input.Tons & " tons at " & input.Value & ", " & input.CustomValuePerTon & " (" & Me.m_lReceivedInputs.Count & "/" & Me.LinkInCount() & ")")
+        End If
+
         ' Store received values
         Me.m_lReceivedInputs.Add(input)
 
@@ -225,6 +230,13 @@ Public MustInherit Class cUnit
 
             ' Combine all inputs
             inputTotal = Me.SumInputs(Me.m_lReceivedInputs)
+
+            If Me.DBID = 93 Then
+                Console.WriteLine("Unit " & Me.ToString & " processing " & inputTotal.Tons & " tons at " & inputTotal.Value & ", " & inputTotal.CustomValuePerTon)
+            End If
+
+            ' Store the amount that each fleet contributes to the total
+            results.StoreContribution(iUnit, Me, iTimeStep, inputTotal.Value, inputTotal.Tons)
 
             ' Determine outgoing biomass
             For Each link As cLink In Me.m_llinkOutput
@@ -238,16 +250,6 @@ Public MustInherit Class cUnit
                         sOutputValue = (inputTotal.Value / inputTotal.Tons) * link.ValueRatio * sOutputBiomass
                     End If
 
-                    ' sValuePerTon = link.ValuePerTon
-                    ' Is default link value?
-                    ' If (sValuePerTon = 1.0!) Then
-                    ' #Yes: use aggregated input value
-                    'sValuePerTon = (link.ValueRatio * inputTotal.Value) / inputTotal.Tons
-                    ' this was: sValuePerTon = inputTotal.Value / inputTotal.Tons
-                    ' but it should consider the value addition in the link, so be based on outputvalue, not input value, VC therefore changed this 111117
-
-                    'End If
-
                     sTotalOutputBiomass += sOutputBiomass
                     sTotalOutputValue += sOutputValue
 
@@ -256,37 +258,12 @@ Public MustInherit Class cUnit
                 End If
             Next
 
-            ' Store the amount that each fleet contributes to the total
-            results.StoreContribution(iUnit, Me, iTimeStep, inputTotal.Value, inputTotal.Tons)
-
             ' Running for all fleet?
             If iUnit = 0 Then
                 ' #Yes: make all calculations. Calculations are not necessary when running for individual fleets
                 '       where only transfer ratios are collected.
-                Me.Calculate(results, _
-                    inputTotal.Tons, inputTotal.Value, _
-                    sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
+                Me.Calculate(results, inputTotal.Tons, inputTotal.Value, sTotalOutputBiomass, sTotalOutputValue, iTimeStep)
             End If
-
-            '' Pass biomass to all targets in the flow
-            'For Each outputLink As cLink In Me.m_llinkOutput
-            '    ' Pass resulting data to the next unit in the flow, and tell it to process
-            '    If inputTotal.Tons > 0 Then
-            '        ' Get system-defined value per ton
-            '        'sValuePerTon = outputLink.ValuePerTon
-            '        ' Is default value?
-            '        If outputLink.ValuePerTon = 1.0! Then
-            '            ' #Yes: use aggregated input value
-            '            sValuePerTon = (inputTotal.Value / inputTotal.Tons) * outputLink.ValueRatio
-            '        Else
-            '            sValuePerTon = outputLink.ValuePerTon
-            '        End If
-
-            '        outputLink.Target.Process(results, _
-            '                New cInput(inputTotal.Tons * outputLink.BiomassRatio, _
-            '                           inputTotal.Tons * outputLink.BiomassRatio * sValuePerTon), iTimeStep, iFleet)
-            '    End If
-            'Next outputLink
 
         End If
 

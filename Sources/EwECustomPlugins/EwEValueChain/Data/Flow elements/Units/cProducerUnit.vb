@@ -728,34 +728,36 @@ Public Class cProducerUnit
             Dim sValue As Single = 0.0
             'the above was called sPrice, but it is value, so renamed
 
-            If (TypeOf link Is cLinkLandings) Then
-                Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
-                If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
-                    Dim iGroup As Integer = ll.Group.Index
-                    If asTotalBGroup(iGroup) > 0 Then
-                        'If asTotalBGroup(iGroup) > 0 And m_asLandings(iGroup) > 0 Then
-                        sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+            Debug.Assert(TypeOf link Is cLinkLandings)
 
-                        If (ll.ValueRatio = 1.0!) Then
-                            sValue += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
-                        Else
-                            sValue += ll.ValueRatio * Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
-                        End If
+            Dim ll As cLinkLandings = DirectCast(link, cLinkLandings)
+            If (ll.Group IsNot Nothing) And (ll.IsVisible) Then
+                Dim iGroup As Integer = ll.Group.Index
+                If asTotalBGroup(iGroup) > 0 Then
+                    'If asTotalBGroup(iGroup) > 0 And m_asLandings(iGroup) > 0 Then
+                    sBiomass += Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
 
+                    If (ll.ValueRatio = 1.0!) Then
+                        sValue += Me.m_asLandingsValue(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
+                    Else
+                        sValue += ll.ValueRatio * Me.m_asLandings(iGroup) * ll.BiomassRatio / asTotalBGroup(iGroup)
                     End If
+
                 End If
+            End If
+
+            If link.Target.DBID = 93 Then
+                Console.WriteLine("Processing link from " & Me.Name & " to " & link.Target.Name)
             End If
 
             ' Process every link to ensure that target units receive all inputs!
             If sBiomass > 0 Then
                 link.Target.Process(results, New cInput(sBiomass, sValue, sValue / sBiomass), iTimeStep, iItem)
-
                 'VC: I changed the line above to pass sPrice/sBiomass as the third parameter (instead of sPrice). 
                 'it is supposed to be the price per unit biomass
                 'it was multiplying an extra time with the total catches (sBiomass) as it was.
             Else
                 link.Target.Process(results, New cInput(sBiomass, sValue), iTimeStep, iItem)
-
             End If
 
             sTotalOutputBiomass += sBiomass
