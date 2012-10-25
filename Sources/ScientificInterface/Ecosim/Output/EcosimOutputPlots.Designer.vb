@@ -126,7 +126,7 @@ Namespace Ecosim
             Me.m_lbPredators.SelectedGroupIndex = -1
             Me.m_lbPredators.ShowAllGroupsItem = False
             Me.m_lbPredators.SortThreshold = -9999.0!
-            Me.m_lbPredators.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueAsc
+            Me.m_lbPredators.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueDesc
             '
             'm_lbPrey
             '
@@ -144,7 +144,7 @@ Namespace Ecosim
             Me.m_lbPrey.SelectedGroupIndex = -1
             Me.m_lbPrey.ShowAllGroupsItem = False
             Me.m_lbPrey.SortThreshold = -9999.0!
-            Me.m_lbPrey.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueAsc
+            Me.m_lbPrey.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.ValueDesc
             '
             'm_scMain
             '
@@ -230,7 +230,7 @@ Namespace Ecosim
             Me.m_lbFleets.SelectedFleet = Nothing
             Me.m_lbFleets.SelectedFleetIndex = -1
             Me.m_lbFleets.SortThreshold = -9999.0!
-            Me.m_lbFleets.SortType = ScientificInterfaceShared.Controls.cFleetListBox.eSortType.FleetIndexAsc
+            Me.m_lbFleets.SortType = ScientificInterfaceShared.Controls.cFleetListBox.eSortType.ValueDesc
             '
             'm_hdrFleets
             '

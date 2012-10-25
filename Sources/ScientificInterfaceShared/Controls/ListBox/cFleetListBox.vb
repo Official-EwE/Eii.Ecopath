@@ -31,7 +31,7 @@ Namespace Controls
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Listbox devived class meant for showing colour-coded Ecopath fleets.
+    ''' Listbox derived class meant for showing colour-coded Ecopath fleets.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cFleetListBox
@@ -42,15 +42,21 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Enumerated type, indicates sort styles for a cFleetListBox.
+        ''' Enumerated type, indicates sort styles for a <see cref="cFleetListBox"/>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Enum eSortType As Byte
+            ''' <summary>Sort by fleet index, ascending.</summary>
             FleetIndexAsc = 0
+            ''' <summary>Sort by fleet index, descending.</summary>
             FleetIndexDesc
+            ''' <summary>Sort by fleet name, ascending.</summary>
             FleetNameAsc
+            ''' <summary>Sort by fleet index, descending.</summary>
             FleetNameDesc
+            ''' <summary>Sort by <see cref="cFleetListBox.SortValue"/>, ascending.</summary>
             ValueAsc
+            ''' <summary>Sort by <see cref="cFleetListBox.SortValue"/>, descending.</summary>
             ValueDesc
         End Enum
 
@@ -61,7 +67,7 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Enum eFleetTrackingType As Integer
-
+            ''' <summary>No automatic tracking.</summary>
             Manual
             ''' <summary>Only fleets, except for the all fleet.</summary>
             Fleets
@@ -71,7 +77,7 @@ Namespace Controls
 
 #End Region ' Public enums
 
-#Region " cFleetItem "
+#Region " Private classes "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -149,7 +155,93 @@ Namespace Controls
 
         End Class
 
-#End Region ' cFleetItem
+        Private Class cFleetItemComparer
+            Implements IComparer(Of cFleetItem)
+
+            Private m_sortType As eSortType = eSortType.FleetIndexAsc
+
+            Public Sub New(sortType As eSortType)
+                Me.m_sortType = sortType
+            End Sub
+
+            Public Function Compare(i1 As cFleetItem, i2 As cFleetItem) As Integer _
+                Implements System.Collections.Generic.IComparer(Of cFleetItem).Compare
+
+                Dim gi1 As cFleetItem = Nothing
+                Dim fleet1 As cFleetInput = Nothing
+                Dim gi2 As cFleetItem = Nothing
+                Dim fleet2 As cFleetInput = Nothing
+
+                ' Get sortable items
+                If TypeOf (i1) Is cFleetItem Then gi1 = DirectCast(i1, cFleetItem) : fleet1 = gi1.Source
+                If TypeOf (i2) Is cFleetItem Then gi2 = DirectCast(i2, cFleetItem) : fleet2 = gi2.Source
+
+                ' Weed out any incompatible item comparisons
+                If (gi1 Is Nothing) Then
+                    If (gi2 Is Nothing) Then
+                        ' Not sortable
+                        Return 0
+                    Else
+                        ' Non-fleet item sorts before fleet item
+                        Return 1
+                    End If
+                Else
+                    If (gi2 Is Nothing) Then
+                        ' Non-fleet item sorts before fleet item
+                        Return -1
+                    End If
+                End If
+
+                ' Ok, two cFleetItems to compare
+                ' Do both have fleets attached?
+                If (fleet1 Is Nothing) Then
+                    If (fleet2 Is Nothing) Then
+                        ' Not sortable
+                        Return 0
+                    Else
+                        ' Non-fleet item sorts before fleet item
+                        Return 1
+                    End If
+                Else
+                    If (fleet2 Is Nothing) Then
+                        ' Non-fleet item sorts before fleet item
+                        Return -1
+                    End If
+                End If
+
+                ' Ok, we have two valid fleets to compare!
+                Select Case Me.m_sortType
+
+                    Case eSortType.FleetIndexAsc
+                        If fleet1.Index < fleet2.Index Then Return -1
+                        If fleet1.Index > fleet2.Index Then Return 1
+
+                    Case eSortType.FleetIndexDesc
+                        If fleet1.Index > fleet2.Index Then Return -1
+                        If fleet1.Index < fleet2.Index Then Return 1
+
+                    Case eSortType.FleetNameAsc
+                        Return String.Compare(fleet1.Name, fleet2.Name)
+
+                    Case eSortType.FleetNameDesc
+                        Return String.Compare(fleet2.Name, fleet1.Name)
+
+                    Case eSortType.ValueAsc
+                        If gi1.SortValue < gi2.SortValue Then Return -1
+                        If gi1.SortValue > gi2.SortValue Then Return 1
+
+                    Case eSortType.ValueDesc
+                        If gi1.SortValue > gi2.SortValue Then Return -1
+                        If gi1.SortValue < gi2.SortValue Then Return 1
+
+                End Select
+
+                Return 0
+            End Function
+
+        End Class
+
+#End Region ' Private classes
 
 #Region " Privates "
 
@@ -691,32 +783,16 @@ Namespace Controls
         ''' ---------------------------------------------------------------
         Protected Overrides Sub Sort()
 
-            Dim objSwap As Object = Nothing
-            Dim iCounter As Integer = 0
-            Dim bSwapped As Boolean = False
+              ' Prevent listbox from re-sorting (ugh)
+            Me.Sorted = False
 
-            If (Items.Count > 1) Then
-                ' Bubble away
-                Do
-                    ' Reset bubble loop
-                    iCounter = Items.Count - 1
-                    bSwapped = False
-                    ' Bubble deeper
-                    While ((iCounter - 1) > 0)
-
-                        ' Need to swap items based on current sort order?
-                        If Me.Compare(Items(iCounter - 1), Items(iCounter)) = 1 Then
-                            ' #Yes: swap the items.
-                            objSwap = Items(iCounter)
-                            Items(iCounter) = Items(iCounter - 1)
-                            Items(iCounter - 1) = objSwap
-                            bSwapped = True
-                        End If
-                        ' Decrement the counter.
-                        iCounter -= 1
-                    End While
-                Loop While (bSwapped = True)
-            End If
+            Dim items(Me.Items.Count - 1) As cFleetItem
+            Me.Items.CopyTo(items, 0)
+            Array.Sort(items, New cFleetItemComparer(Me.m_sortType))
+            Me.Items.Clear()
+            For i As Integer = 0 To items.Length - 1
+                Me.Items.Add(items(i))
+            Next
 
         End Sub
 

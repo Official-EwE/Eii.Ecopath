@@ -46,11 +46,17 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Enum eSortType As Byte
+            ''' <summary>Sort by group index, ascending.</summary>
             GroupIndexAsc = 0
+            ''' <summary>Sort by group index, descending.</summary>
             GroupIndexDesc
+            ''' <summary>Sort by group name, ascending.</summary>
             GroupNameAsc
+            ''' <summary>Sort by group index, descending.</summary>
             GroupNameDesc
+            ''' <summary>Sort by <see cref="cGroupListBox.SortValue"/>, ascending.</summary>
             ValueAsc
+            ''' <summary>Sort by <see cref="cGroupListBox.SortValue"/>, descending.</summary>
             ValueDesc
         End Enum
 
@@ -74,21 +80,21 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Enumerated type, indicates how groups are displayed according to
-        ''' StyleGuide visibility settings.
+        ''' <see cref="cStyleGuide.GroupVisible">group visibility</see> settings.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Enum eGroupDisplayStyleTypes As Integer
             ''' <summary>Always show groups.</summary>
             DisplayAlways = 0
-            ''' <summary>Show styleguide hidden groups as 'hidden'.</summary>
+            ''' <summary>Show hidden groups as 'hidden'.</summary>
             DisplayAsHidden
-            ''' <summary>Do not show styleguide hidden groups.</summary>
+            ''' <summary>Do not show hidden groups.</summary>
             DisplayVisibleOnly
         End Enum
 
 #End Region ' Public enums
 
-#Region " cGroupItem "
+#Region " Private classes "
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -166,7 +172,93 @@ Namespace Controls
 
         End Class
 
-#End Region ' cGroupItem
+        Private Class cGroupItemComparer
+            Implements IComparer(Of cGroupItem)
+
+            Private m_sortType As eSortType = eSortType.GroupIndexAsc
+
+            Public Sub New(sortType As eSortType)
+                Me.m_sortType = sortType
+            End Sub
+
+            Public Function Compare(i1 As cGroupItem, i2 As cGroupItem) As Integer _
+                Implements System.Collections.Generic.IComparer(Of cGroupItem).Compare
+
+                Dim gi1 As cGroupItem = Nothing
+                Dim group1 As cCoreGroupBase = Nothing
+                Dim gi2 As cGroupItem = Nothing
+                Dim group2 As cCoreGroupBase = Nothing
+
+                ' Get sortable items
+                If TypeOf (i1) Is cGroupItem Then gi1 = DirectCast(i1, cGroupItem) : group1 = gi1.Source
+                If TypeOf (i2) Is cGroupItem Then gi2 = DirectCast(i2, cGroupItem) : group2 = gi2.Source
+
+                ' Weed out any incompatible item comparisons
+                If (gi1 Is Nothing) Then
+                    If (gi2 Is Nothing) Then
+                        ' Not sortable
+                        Return 0
+                    Else
+                        ' Non-group item sorts before group item
+                        Return 1
+                    End If
+                Else
+                    If (gi2 Is Nothing) Then
+                        ' Non-group item sorts before group item
+                        Return -1
+                    End If
+                End If
+
+                ' Ok, two cGroupItems to compare
+                ' Do both have groups attached?
+                If (group1 Is Nothing) Then
+                    If (group2 Is Nothing) Then
+                        ' Not sortable
+                        Return 0
+                    Else
+                        ' Non-group item sorts before group item
+                        Return 1
+                    End If
+                Else
+                    If (group2 Is Nothing) Then
+                        ' Non-group item sorts before group item
+                        Return -1
+                    End If
+                End If
+
+                ' Ok, we have two valid groups to compare!
+                Select Case Me.m_sortType
+
+                    Case eSortType.GroupIndexAsc
+                        If group1.Index < group2.Index Then Return -1
+                        If group1.Index > group2.Index Then Return 1
+
+                    Case eSortType.GroupIndexDesc
+                        If group1.Index > group2.Index Then Return -1
+                        If group1.Index < group2.Index Then Return 1
+
+                    Case eSortType.GroupNameAsc
+                        Return String.Compare(group1.Name, group2.Name)
+
+                    Case eSortType.GroupNameDesc
+                        Return String.Compare(group2.Name, group1.Name)
+
+                    Case eSortType.ValueAsc
+                        If gi1.SortValue < gi2.SortValue Then Return -1
+                        If gi1.SortValue > gi2.SortValue Then Return 1
+
+                    Case eSortType.ValueDesc
+                        If gi1.SortValue > gi2.SortValue Then Return -1
+                        If gi1.SortValue < gi2.SortValue Then Return 1
+
+                End Select
+
+                Return 0
+            End Function
+
+        End Class
+
+#End Region ' Private classes
 
 #Region " Privates "
 
@@ -828,126 +920,18 @@ Namespace Controls
         ''' ---------------------------------------------------------------
         Protected Overrides Sub Sort()
 
-            Dim objSwap As Object = Nothing
-            Dim iCounter As Integer = 0
-            Dim bSwapped As Boolean = False
+            ' Prevent listbox from re-sorting (ugh)
+            Me.Sorted = False
 
-            If (Items.Count > 1) Then
-                ' Bubble away
-                Do
-                    ' Reset bubble loop
-                    iCounter = Items.Count - 1
-                    bSwapped = False
-                    ' Bubble deeper
-                    While ((iCounter - 1) > 0)
-
-                        ' Need to swap items based on current sort order?
-                        If Me.Compare(Items(iCounter - 1), Items(iCounter)) = 1 Then
-                            ' #Yes: swap the items.
-                            objSwap = Items(iCounter)
-                            Items(iCounter) = Items(iCounter - 1)
-                            Items(iCounter - 1) = objSwap
-                            bSwapped = True
-                        End If
-                        ' Decrement the counter.
-                        iCounter -= 1
-                    End While
-                Loop While (bSwapped = True)
-            End If
+            Dim items(Me.Items.Count - 1) As cGroupItem
+            Me.Items.CopyTo(items, 0)
+            Array.Sort(items, New cGroupItemComparer(Me.m_sortType))
+            Me.Items.Clear()
+            For i As Integer = 0 To items.Length - 1
+                Me.Items.Add(items(i))
+            Next
 
         End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Compare two items in the listbox for sorting.
-        ''' </summary>
-        ''' <param name="i1"></param>
-        ''' <param name="i2"></param>
-        ''' <returns>
-        ''' <list>
-        ''' <item><description>-1 if i1 is less than i2</description></item>
-        ''' <item><description>0 if i1 equals i2</description></item>
-        ''' <item><description>1 if i1 is greater than i2</description></item>
-        ''' </list>
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Function Compare(ByVal i1 As Object, ByVal i2 As Object) As Integer
-            Dim gi1 As cGroupItem = Nothing
-            Dim group1 As cCoreGroupBase = Nothing
-            Dim gi2 As cGroupItem = Nothing
-            Dim group2 As cCoreGroupBase = Nothing
-
-            ' Get sortable items
-            If TypeOf (i1) Is cGroupItem Then gi1 = DirectCast(i1, cGroupItem) : group1 = gi1.Source
-            If TypeOf (i2) Is cGroupItem Then gi2 = DirectCast(i2, cGroupItem) : group2 = gi2.Source
-
-            ' Weed out any incompatible item comparisons
-            If (gi1 Is Nothing) Then
-                If (gi2 Is Nothing) Then
-                    ' Not sortable
-                    Return 0
-                Else
-                    ' Non-group item sorts before group item
-                    Return 1
-                End If
-            Else
-                If (gi2 Is Nothing) Then
-                    ' Non-group item sorts before group item
-                    Return -1
-                End If
-            End If
-
-            ' Ok, two cGroupItems to compare
-            ' Do both have groups attached?
-            If (group1 Is Nothing) Then
-                If (group2 Is Nothing) Then
-                    ' Not sortable
-                    Return 0
-                Else
-                    ' Non-group item sorts before group item
-                    Return 1
-                End If
-            Else
-                If (group2 Is Nothing) Then
-                    ' Non-group item sorts before group item
-                    Return -1
-                End If
-            End If
-
-            ' Ok, we have two valid groups to compare!
-            Select Case Me.m_sortType
-
-                Case eSortType.GroupIndexAsc
-                    If group1.Index < group2.Index Then Return -1
-                    If group1.Index = group2.Index Then Return 0
-                    Return 1
-
-                Case eSortType.GroupIndexDesc
-                    If group1.Index > group2.Index Then Return -1
-                    If group1.Index = group2.Index Then Return 0
-                    Return 1
-
-                Case eSortType.GroupNameAsc
-                    Return String.Compare(group1.Name, group2.Name)
-
-                Case eSortType.GroupNameDesc
-                    Return String.Compare(group2.Name, group1.Name)
-
-                Case eSortType.ValueAsc
-                    If gi1.SortValue < gi2.SortValue Then Return -1
-                    If gi1.SortValue = gi2.SortValue Then Return 0
-                    Return 1
-
-                Case eSortType.ValueDesc
-                    If gi1.SortValue > gi2.SortValue Then Return -1
-                    If gi1.SortValue = gi2.SortValue Then Return 0
-                    Return 1
-
-            End Select
-
-            Return 0
-
-        End Function
 
 #End Region ' Internals
 

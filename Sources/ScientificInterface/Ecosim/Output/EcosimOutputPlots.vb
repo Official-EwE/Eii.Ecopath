@@ -708,7 +708,6 @@ Namespace Ecosim
             For i As Integer = 0 To aiGroupIndex.Count - 1
                 l.SortValue(aiGroupIndex(i)) = asValues(i)
             Next
-            l.SortType = cGroupListBox.eSortType.ValueAsc
             l.Sorted = True
 
         End Sub
@@ -730,8 +729,7 @@ Namespace Ecosim
             For i As Integer = 0 To aiFleetIndex.Count - 1
                 l.SortValue(i) = asValues(i)
             Next
-            l.SortType = cFleetListBox.eSortType.ValueAsc
-            'l.Sorted = True
+            l.Sorted = True
 
         End Sub
 
