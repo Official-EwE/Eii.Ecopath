@@ -22,6 +22,8 @@ Imports EwEUtils.Core
 Public Class cEcospaceModelParameters
     Inherits cCoreInputOutputBase
 
+    Private N_CORES_HUNGABEE As Integer = 2048
+
 #Region " Constructor "
 
     Sub New(ByRef theCore As cCore, ByVal DBID As Integer)
@@ -92,8 +94,8 @@ Public Class cEcospaceModelParameters
             meta = New cVariableMetaData()
             val = New cValue(1, eVarNameFlags.UseExact, eStatusFlags.Null, eValueTypes.Bool, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
 
+            m_values.Add(val.varName, val)
             'Contaminant tracing
             meta = New cVariableMetaData()
             val = New cValue(New Boolean, eVarNameFlags.ConSimOnEcoSpace, eStatusFlags.Null, eValueTypes.Bool, _
@@ -106,25 +108,25 @@ Public Class cEcospaceModelParameters
             ' Multi threading vars
 
             'solver threads
-            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nSolverThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             'groups per threads
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nGroupsPerThread, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             'space threads
-            meta = New cVariableMetaData(0, 1000, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nSpaceThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
             'cells per thread
-            meta = New cVariableMetaData(0, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nMapCellsPerThread, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
