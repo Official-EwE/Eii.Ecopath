@@ -1084,7 +1084,8 @@ Namespace Database
                 drow("GroupIsInvert") = Me.FixValue(reader, "GroupIsInvert")
                 ' JS070412: Poolcolor converted to 8digit hexadecimal string
                 clrTemp = Color.FromArgb(CInt(Me.FixValue(reader, "PoolColor", &H0)))
-                drow("Poolcolor") = String.Format("{0:x8}", &HFF000000 + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
+                ' JS121026: retain transparency to make colour revert to default in UI
+                drow("Poolcolor") = String.Format("{0:x8}", ((clrTemp.A And &HFF) << 24) + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
 
                 writer.AddRow(drow)
                 ' Commit to allow FK in Remark
@@ -1298,7 +1299,8 @@ Namespace Database
                 drow("SailingCost") = Me.FixValue(reader, "SailingCost")
 
                 clrTemp = Color.FromArgb(CInt(Me.FixValue(reader, "PoolColor", &H0)))
-                drow("Poolcolor") = String.Format("{0:x8}", &HFF000000 + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
+                ' JS121026: retain transparency to make colour revert to default in UI
+                drow("Poolcolor") = String.Format("{0:x8}", ((clrTemp.A And &HFF) << 24) + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
 
                 writer.AddRow(drow)
                 writer.Commit()
