@@ -1432,9 +1432,9 @@ Public Class cEcoSpace
                     solver.SignalState.Reset()
 
                     solver.isOkToRunning = False
-                    Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                    worker.Start()
-                    'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                    'Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                    'worker.Start()
+                    ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
 
                     'iFstGrp += m_Data.nGroupsPerThread
                 Else
@@ -1504,8 +1504,10 @@ Public Class cEcoSpace
                     If solver.isOkToRun Then
 
                         iLstCell = iFrstCell + m_Data.nCellsPerThread - 1
-                        If iLstCell > m_Data.iTotalWaterCells Then iLstCell = m_Data.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
-
+                        If iLstCell > m_Data.iTotalWaterCells Then
+                            iLstCell = m_Data.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
+                        End If
+                       
                         solver.FirstLastCells(iFrstCell, iLstCell)
                         solver.SignalState.Reset()
 
@@ -4770,9 +4772,11 @@ exitline:
             End If
 
             For i As Integer = 1 To m_Data.nGridSolverThreads
-                solver = New cGridSolver(i)
-                solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, m_Data.IsMigratory, threadGroups, m_Data.UseExact)
-                m_gridSolvers.Add(solver)
+                If nGroupsInThread(i) > 0 Then
+                    solver = New cGridSolver(i)
+                    solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, m_Data.IsMigratory, threadGroups, m_Data.UseExact)
+                    m_gridSolvers.Add(solver)
+                End If
             Next i
 
             Return True
