@@ -153,20 +153,16 @@ Public MustInherit Class cUnit
         Return bIsLoop
     End Function
 
-    Public Function IsLinkedToProducer() As Boolean
+    'Public Overridable Function HasTarget(ByVal unit As cUnit) As Boolean
 
-    End Function
+    '    ' Follow each output link
+    '    For Each link As cLink In Me.m_llinkOutput
+    '        ' See the target link is the requesting unit
+    '        If Object.ReferenceEquals(link.Target, unit) Then Return True
+    '    Next link
+    '    Return False
 
-    Public Overridable Function HasTarget(ByVal unit As cUnit) As Boolean
-
-        ' Follow each output link
-        For Each link As cLink In Me.m_llinkOutput
-            ' See the target link is the requesting unit
-            If Object.ReferenceEquals(link.Target, unit) Then Return True
-        Next link
-        Return False
-
-    End Function
+    'End Function
 
 #End Region ' Links 
 
@@ -227,21 +223,21 @@ Public MustInherit Class cUnit
             ' Determine outgoing biomass
             For Each link As cLink In Me.m_llinkOutput
                 ' Determine output biomass for a single link
-                If input.Tons > 0 Then
-                    Dim sOutputBiomass As Single = link.BiomassRatio * input.Tons
-                    Dim sOutputValue As Single = 0
-                    If link.ValuePerTon <> 1.0! And link.ValuePerTon <> 0 Then
-                        sOutputValue = link.ValuePerTon * sOutputBiomass
-                    Else
-                        sOutputValue = (input.Value / input.Tons) * link.ValueRatio * sOutputBiomass
-                    End If
+                Dim sOutputBiomass As Single = link.BiomassRatio * input.Tons
+                Dim sOutputValue As Single = 0
 
-                    sTotalOutputBiomass += sOutputBiomass
-                    sTotalOutputValue += sOutputValue
-
-                    link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iUnit)
-
+                If ((link.ValuePerTon <> 1.0!) And (link.ValuePerTon <> 0)) Or _
+                    (input.Tons = 0) Then
+                    sOutputValue = link.ValuePerTon * sOutputBiomass
+                Else
+                    sOutputValue = (input.Value / input.Tons) * link.ValueRatio * sOutputBiomass
                 End If
+
+                sTotalOutputBiomass += sOutputBiomass
+                sTotalOutputValue += sOutputValue
+
+                link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iUnit)
+
             Next
 
             ' Running for all fleet?
@@ -371,6 +367,13 @@ Public MustInherit Class cUnit
     Public Overridable ReadOnly Property CanCompute() As Boolean
         Get
             Return Me.m_bCanCompute
+        End Get
+    End Property
+
+    <Browsable(False)> _
+    Public Overridable ReadOnly Property HasComputed() As Boolean
+        Get
+            Return (Me.m_lReceivedInputs.Count = Me.m_llinkInput.Count)
         End Get
     End Property
 
