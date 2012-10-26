@@ -2407,7 +2407,7 @@ Public Class cCore
             Dim strScenario As String = ""
 
             If (Me.DataSource IsNot Nothing) Then
-                strModel = Me.DataSource.FileName
+                strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
             End If
 
             If String.IsNullOrWhiteSpace(strBasePath) Then
