@@ -1512,9 +1512,9 @@ Public Class cEcoSpace
                         solver.SignalState.Reset()
 
                         solver.isOkToRun = False
-                        'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-                        Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                        worker.Start()
+                        ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                        'Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                        ' worker.Start()
                         iFrstCell += m_Data.nCellsPerThread
 
                     Else
@@ -3477,7 +3477,7 @@ exitline:
     ''' </summary>
     ''' <remarks></remarks>
     Sub AdjustTotalEffort()
-        
+
         Dim ig As Integer, i As Integer, j As Integer, TotAttract As Single
         Dim Valt As Single, isp As Integer
         Dim Effort() As Single

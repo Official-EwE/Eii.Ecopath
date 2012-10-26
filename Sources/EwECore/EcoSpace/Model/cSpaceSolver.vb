@@ -113,7 +113,7 @@ Public Class cSpaceSolver
 
     'the ip groups to solve
     Private iFrstCell As Integer
-    Private iLastCell As Integer
+    Private iLstCell As Integer
 
     'variables from m_ESData, used locally
     Private Hden() As Single
@@ -213,7 +213,7 @@ Public Class cSpaceSolver
     ''' <remarks>Call for each thread, before the thread is started, to set the groups to solve.</remarks>
     Public Sub FirstLastCells(ByVal iFirstCell As Integer, ByVal iLastCell As Integer)
         iFrstCell = iFirstCell
-        iLastCell = iLastCell
+        iLstCell = iLastCell
     End Sub
 
 
@@ -259,11 +259,11 @@ Public Class cSpaceSolver
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             SignalState.Reset()
             Dim iCell As Integer
-            ' Console.WriteLine()
 
             'do the processing here
-            For iCell = iFrstCell To iLastCell
+            For iCell = iFrstCell To iLstCell
                 'iCell is the linear index of the two dimensional spatial array
+
                 'it is now converted into a row/col index for use in the rest of the algorithm
                 'i = (iGrp - 1) \ m_Data.InCol + 1
                 'j = (iGrp - 1) Mod m_Data.InCol + 1
@@ -272,15 +272,13 @@ Public Class cSpaceSolver
                 SolveCell(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
 
             Next iCell
-            'Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", End T=" & DateTime.Now.ToLongTimeString)
 
+                'thread has finished it is ok to run this again
+                isOkToRun = True
 
-            'thread has finished it is ok to run this again
-            isOkToRun = True
-
-            'set signal state to 'signaled' 
-            'the processing has finished SignalState.WaitOne() will return immediately
-            SignalState.Set()
+                'set signal state to 'signaled' 
+                'the processing has finished SignalState.WaitOne() will return immediately
+                SignalState.Set()
 
         Catch ex As Exception
             cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
