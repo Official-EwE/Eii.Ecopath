@@ -212,13 +212,8 @@ Namespace Utilities
                 strDest = strSrc & ".backup_" & ToValidFileName(Date.Now.ToShortDateString, False)
             End If
 
-            If Not Directory.Exists(Path.GetDirectoryName(strDest)) Then
-                Try
-                    Directory.CreateDirectory(Path.GetDirectoryName(strDest))
-                Catch ex As Exception
-                    ' Ouch!
-                    Return False
-                End Try
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strDest)) Then
+                Return False
             End If
 
             Try
@@ -332,6 +327,9 @@ Namespace Utilities
                                                     Optional ByVal bCreate As Boolean = False, _
                                                     Optional ByVal bClear As Boolean = False) As Boolean
 
+            ' Test if already exists as a file
+            If File.Exists(strDirectory) Then Return False
+
             Dim bExists As Boolean = Directory.Exists(strDirectory)
 
             If bExists And bClear Then
@@ -406,6 +404,9 @@ Namespace Utilities
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function DeleteDirectory(strPath As String) As Boolean
+
+            ' Path indicates a file: abort
+            If File.Exists(strPath) Then Return False
 
             Dim bSucces As Boolean = True
             Try
