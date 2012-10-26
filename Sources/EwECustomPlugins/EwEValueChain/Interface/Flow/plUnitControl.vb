@@ -188,6 +188,12 @@ Public Class plUnitControl
 
         If Not Me.Unit.CanCompute Then
             clrBackground = Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND)
+        Else
+#If DEBUG Then
+            If Not Me.Unit.HasComputed Then
+                clrBackground = Color.Red
+            End If
+#End If
         End If
 
 

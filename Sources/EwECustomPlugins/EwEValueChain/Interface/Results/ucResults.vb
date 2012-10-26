@@ -571,7 +571,8 @@ Public Class ucResults
 
         Me.m_tscmbUnit.SelectedItem = Me.GetUnitComboItem(Me.m_plFlow.UnitFilter, Me.m_tscmbUnit)
 
-        Me.m_tscbYear.Visible = (Me.m_viewMode <> eViewModeType.Grid) And (bHasSim)
+        Me.m_tslbYear.Visible = (Me.m_viewMode = eViewModeType.Grid) And (bHasSim)
+        Me.m_tscbYear.Visible = (Me.m_viewMode = eViewModeType.Grid) And (bHasSim)
         Me.m_tslblData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
         Me.m_tscmbGraphData.Visible = (Me.m_viewMode <> eViewModeType.Grid)
 
@@ -630,6 +631,7 @@ Public Class ucResults
         Me.m_tscmbUnit.SelectedIndex = 0
 
     End Sub
+
     Private Sub SetViewMode(ByVal viewMode As eViewModeType)
 
         Dim ctrl As ScrollableControl = Nothing
