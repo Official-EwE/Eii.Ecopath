@@ -664,7 +664,7 @@ Namespace Core
         'Ecospace multi thread vars
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-        nSolverThreads
+        nGridSolverThreads
         nGroupsPerThread
         nSpaceThreads
         nMapCellsPerThread

@@ -126,7 +126,7 @@ Namespace Ecospace
             Me.UpdateControls()
 
             ' Hmm, connecting one control to two live properties - this could be dangerous
-            Me.m_fpNumThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSolverThreads)
+            Me.m_fpNumThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nGridSolverThreads)
             Me.m_fpNumThreads2 = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
             Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
 

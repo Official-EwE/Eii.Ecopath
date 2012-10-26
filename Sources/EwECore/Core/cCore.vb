@@ -9402,7 +9402,7 @@ Public Class cCore
             m_EcospaceModelParams.nRegions = m_EcoSpaceData.nRegions
 
             'Grid threads
-            m_EcospaceModelParams.nSolverThreads = m_EcoSpaceData.nGridSolverThreads
+            m_EcospaceModelParams.nGridSolverThreads = m_EcoSpaceData.nGridSolverThreads
             m_EcospaceModelParams.nGroupsPerThread = m_EcoSpaceData.nGroupsPerThread
 
             'Group Threads
@@ -9456,7 +9456,7 @@ Public Class cCore
         m_EcoSpaceData.nRegions = m_EcospaceModelParams.nRegions
 
         m_EcoSpaceData.nGroupsPerThread = m_EcospaceModelParams.nGroupsPerThread
-        m_EcoSpaceData.nGridSolverThreads = m_EcospaceModelParams.nSolverThreads
+        m_EcoSpaceData.nGridSolverThreads = m_EcospaceModelParams.nGridSolverThreads
 
         m_EcoSpaceData.nSpaceSolverThreads = m_EcospaceModelParams.nSpaceThreads
         m_EcoSpaceData.nCellsPerThread = m_EcospaceModelParams.nMapCellsPerThread

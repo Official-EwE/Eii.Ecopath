@@ -1935,6 +1935,18 @@ Public Class cEcoSpace
                     migratoryIndex(nMigratory) = i
                 End If
             Next
+
+            If Me.m_Data.nGridSolverThreads > Me.m_Data.NGroups Then
+                Me.m_Data.nGridSolverThreads = Me.m_Data.NGroups
+                System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of grid threads limited to number of groups.")
+            End If
+
+            If Me.m_Data.nSpaceSolverThreads > Me.m_Data.iTotalWaterCells Then
+                Me.m_Data.nSpaceSolverThreads = Me.m_Data.iTotalWaterCells
+                System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of group threads limited to number of water cells.")
+            End If
+
+
             Dim thread As Integer
             ReDim nGroupsInThread(m_Data.nGridSolverThreads)
             ReDim threadGroups(m_Data.nGridSolverThreads, m_Data.nvartot)
@@ -1944,6 +1956,7 @@ Public Class cEcoSpace
                 nGroupsInThread(thread) += 1
                 threadGroups(thread, nGroupsInThread(thread)) = migratoryIndex(i)
             Next
+
             Dim nNonMigThreads As Integer = (m_Data.nGridSolverThreads - nMigratory Mod m_Data.nGridSolverThreads)
             Dim numNonMig As Integer
             For i = 1 To m_Data.nvartot
@@ -4774,7 +4787,9 @@ exitline:
             For i As Integer = 1 To m_Data.nGridSolverThreads
                 If nGroupsInThread(i) > 0 Then
                     solver = New cGridSolver(i)
-                    solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, Me.m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, m_Data.IsMigratory, threadGroups, m_Data.UseExact)
+                    solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, _
+                                m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, _
+                                m_Data.IsMigratory, threadGroups, m_Data.UseExact)
                     m_gridSolvers.Add(solver)
                 End If
             Next i

@@ -109,7 +109,7 @@ Public Class cEcospaceModelParameters
 
             'solver threads
             meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(1, eVarNameFlags.nSolverThreads, eStatusFlags.Null, eValueTypes.Int, _
+            val = New cValue(1, eVarNameFlags.nGridSolverThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -389,14 +389,14 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-    Public Property nSolverThreads() As Integer
+    Public Property nGridSolverThreads() As Integer
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.nSolverThreads))
+            Return CInt(GetVariable(eVarNameFlags.nGridSolverThreads))
         End Get
 
         Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.nSolverThreads, value)
+            SetVariable(eVarNameFlags.nGridSolverThreads, value)
         End Set
 
     End Property
