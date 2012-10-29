@@ -307,7 +307,7 @@ Namespace Controls
         ''' <summary>Registered axis that need to display units.</summary>
         Private m_dtAxisLabels As New Dictionary(Of Axis, cAxisLabelFormatter)
         ''' <summary>Grace value for manual scaled Y-axis.</summary>
-        Private m_sYScaleGrace As Single = 1.2!
+        Private m_sYScaleGrace As Single = 0.1!
 
         ' == Legend ==
         ''' <summary>States whether this instance should show a legend if left to 'default'</summary>
