@@ -2401,10 +2401,11 @@ Public Class cCore
     ''' -------------------------------------------------------------------------
     Public ReadOnly Property DefaultOutputPath(ByVal type As eAutosaveTypes, _
                                                Optional strBasePath As String = "", _
-                                               Optional bFillWithPlaceholders As Boolean = False) As String
+                                               Optional bFillWithPlaceholders As Boolean = False, _
+                                               Optional strPrefix As String = "") As String
         Get
             Dim strModel As String = ""
-            Dim strScenario As String = ""
+            Dim strScenario As String = strPrefix
 
             If (Me.DataSource IsNot Nothing) Then
                 strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
@@ -2419,7 +2420,7 @@ Public Class cCore
                     ' NOP
 
                 Case eAutosaveTypes.Ecosim
-                    strScenario = "Ecosim_"
+                    If String.IsNullOrEmpty(strScenario) Then strScenario = "Ecosim_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -2427,23 +2428,23 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.MonteCarlo
-                    strScenario = "MC_"
+                    If String.IsNullOrEmpty(strScenario) Then strScenario = "MC_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name & "_MC"
+                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
                         strScenario = strScenario & "{scenario}"
                     End If
 
                 Case eAutosaveTypes.MSE
-                    strScenario = "MSE_"
+                    If String.IsNullOrEmpty(strScenario) Then strScenario = "MSE_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name & "_MSE"
+                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
                         strScenario = strScenario & "{scenario}"
                     End If
 
                 Case eAutosaveTypes.EcospaceASC
-                    strScenario = "Ecospace_ASC_"
+                    If String.IsNullOrEmpty(strScenario) Then strScenario = "Ecospace_ASC_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -2451,7 +2452,7 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.EcospaceCSV
-                    strScenario = "Ecospace_CSV_"
+                    If String.IsNullOrEmpty(strScenario) Then strScenario = "Ecospace_CSV_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -2459,7 +2460,7 @@ Public Class cCore
                     End If
 
                 Case eAutosaveTypes.Ecotracer
-                    strScenario = "Ecotracer_"
+                    If String.IsNullOrEmpty(strScenario) Then strScenario = "Ecotracer_"
                     If (Me.ActiveEcotracerScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name
                     Else

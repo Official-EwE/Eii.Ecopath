@@ -331,6 +331,10 @@ Public Class cPluginPoint
         ' Send out data
         Me.BroadcastResults(1)
 
+        If Me.m_data.Parameters.AutoSaveResults Then
+            Me.m_model.SaveResults(Me.m_data, Me.m_result, 1)
+        End If
+
     End Sub
 
 

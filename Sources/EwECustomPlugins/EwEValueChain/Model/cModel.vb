@@ -242,6 +242,7 @@ Public Class cModel
 
         Dim bAllowedToRun As Boolean = False
         Dim iBaseYear As Integer = 0
+        Dim writer As New cResultWriter(data, result)
 
         ' Sanity check
         Select Case result.RunType
@@ -523,6 +524,33 @@ Public Class cModel
         End If
 
     End Function
+
+    Friend Sub SaveResults(data As cData, result As cResults, iTimeStep As Integer)
+
+        Dim w As New cResultWriter(data, result)
+
+        Select Case data.Parameters.AggregationMode
+
+            Case cParameters.eAggregationModeType.FullModel
+                w.WriteResults(iTimeStep)
+
+            Case cParameters.eAggregationModeType.ByFleet
+                For iFleet As Integer = 1 To data.Core.nFleets
+                    Dim flt As cFleetInput = data.Core.FleetInputs(iFleet)
+                    w.WriteResults(iTimeStep, iFleet, flt.Name)
+                Next
+
+            Case cParameters.eAggregationModeType.ByGroup
+                For iGroup As Integer = 1 To data.Core.nGroups
+                    Dim grp As cEcoPathGroupInput = data.Core.EcoPathGroupInputs(iGroup)
+                    If grp.IsFished Then
+                        w.WriteResults(iTimeStep, iGroup, grp.Name)
+                    End If
+                Next
+
+        End Select
+
+    End Sub
 
 #End Region
 

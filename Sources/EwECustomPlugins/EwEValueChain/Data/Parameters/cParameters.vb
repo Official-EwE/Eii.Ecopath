@@ -46,6 +46,8 @@ Public Class cParameters
     Private m_bDeletePrompt As Boolean = True
     Private m_aggmode As eAggregationModeType = eAggregationModeType.FullModel
 
+    Private m_bAutoSaveResults As Boolean = False
+
 #End Region ' Private vars
 
 #Region " Properties "
@@ -154,6 +156,15 @@ Public Class cParameters
                 Me.m_bDeletePrompt = value
                 Me.SetChanged()
             End If
+        End Set
+    End Property
+
+    Public Property AutoSaveResults As Boolean
+        Get
+            Return Me.m_bAutoSaveResults
+        End Get
+        Set(value As Boolean)
+            Me.m_bAutoSaveResults = value
         End Set
     End Property
 
