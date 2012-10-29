@@ -289,7 +289,7 @@
     <value>m_hdrFilterGroup</value>
   </data>
   <data name="&gt;&gt;m_hdrFilterGroup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8180.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8341.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFilterGroup.Parent" xml:space="preserve">
     <value>m_tpGroups</value>

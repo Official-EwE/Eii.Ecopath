@@ -308,6 +308,20 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnSyncItemsChecked(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbSyncGroupsAndFleets.CheckedChanged
+
+            If Me.m_cbSyncGroupsAndFleets.Checked Then
+                If Object.ReferenceEquals(Me.m_tcDisplayBits.SelectedTab, Me.m_tpGroups) Then
+                    Me.SyncFleets()
+                Else
+                    Me.SyncGroups()
+                End If
+            End If
+
+        End Sub
+
+
 #End Region ' Events
 
 #Region " Internals "
