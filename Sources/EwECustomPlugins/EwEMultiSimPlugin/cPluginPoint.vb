@@ -96,7 +96,7 @@ Public Class cPluginPoint
     Public ReadOnly Property ControlImage As System.Drawing.Image _
         Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            Return My.Resources.logo_canada
+            Return Nothing ' My.Resources.logo_canada
         End Get
     End Property
 
