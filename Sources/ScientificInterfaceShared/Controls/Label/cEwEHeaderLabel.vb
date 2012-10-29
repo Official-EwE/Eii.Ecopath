@@ -94,7 +94,11 @@ Namespace Controls
         <Browsable(False)> _
         Public Overrides Property ForeColor() As System.Drawing.Color
             Get
-                Return MyBase.ForeColor
+                Dim clr As Color = MyBase.ForeColor
+                If Not Me.Enabled Then
+                    clr = cColorUtils.GetVariant(clr, 0.5)
+                End If
+                Return clr
             End Get
             Set(ByVal value As System.Drawing.Color)
                 ' NOP
