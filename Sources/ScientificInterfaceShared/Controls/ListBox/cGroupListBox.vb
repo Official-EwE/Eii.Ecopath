@@ -200,12 +200,12 @@ Namespace Controls
                         Return 0
                     Else
                         ' Non-group item sorts before group item
-                        Return 1
+                        Return -1
                     End If
                 Else
                     If (gi2 Is Nothing) Then
                         ' Non-group item sorts before group item
-                        Return -1
+                        Return 1
                     End If
                 End If
 
@@ -217,12 +217,12 @@ Namespace Controls
                         Return 0
                     Else
                         ' Non-group item sorts before group item
-                        Return 1
+                        Return -1
                     End If
                 Else
                     If (group2 Is Nothing) Then
                         ' Non-group item sorts before group item
-                        Return -1
+                        Return 1
                     End If
                 End If
 
