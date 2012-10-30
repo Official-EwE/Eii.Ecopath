@@ -517,14 +517,14 @@ Namespace Ecosim
                     Me.AddCurveToGraphPane(ePlot.FleetFishingMortality, Me.m_zgh.CreateLineItem(fleet, applFishMortFleet(i)), True)
                 Next
 
-                For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
-                    Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
-                Next li
-                For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroup, Color.Blue)
-                    Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
-                Next li
-
             End If
+
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.Catches, iGroup, Color.Red)
+                Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
+            Next li
+            For Each li As LineItem In Me.GetTimeSeriesLineItems(eTimeSeriesType.CatchesForcing, iGroup, Color.Blue)
+                Me.AddCurveToGraphPane(ePlot.[Catch], li, True)
+            Next li
 
             If groupSimOut.isMultiStanza() Then
 
