@@ -1829,13 +1829,6 @@ Public Class gridDefineGroups
         Dim sb As New System.Text.StringBuilder
 
         ' =================
-        ' Validation
-        ' =================
-
-        ' Validate content of the grid
-        If Not Me.ValidateContent() Then Return False
-
-        ' =================
         ' Change assessment
         ' =================
 
@@ -1888,6 +1881,13 @@ Public Class gridDefineGroups
             bConfigurationChanged = bConfigurationChanged Or si.IsNew()
             bConfigurationChanged = bConfigurationChanged Or si.IsChanged(Me.Core)
         Next iStanza
+
+        ' =================
+        ' Post change assessment validation
+        ' =================
+
+        ' Validate content of the grid
+        If Not Me.ValidateContent() Then Return False
 
         ' Assess stanza to remove
         ' JS14Apr07: Stanza are deleted when groups no longer use them. There will be no delete confirmation prompt
