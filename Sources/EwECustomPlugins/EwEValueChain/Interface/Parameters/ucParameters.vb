@@ -214,6 +214,17 @@ Public Class ucParameters
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnAutoSaveChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+         Handles m_cbAutoSave.CheckedChanged
+        If Me.m_bInUpdate Then Return
+        My.Settings.AutosaveResults = Me.m_cbAutoSave.Checked
+    End Sub
+
     Private Sub m_nudEffortMin_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_nudEffortMin.ValueChanged
         If (Me.m_params Is Nothing) Then Return
@@ -272,6 +283,8 @@ Public Class ucParameters
             Me.m_chkRunWithEcopath.Checked = Me.m_params.RunWithEcopath
             Me.m_chkRunWithEcosim.Checked = Me.m_params.RunWithEcosim
             Me.m_chkRunWithSearches.Checked = Me.m_params.RunWithSearches
+
+            Me.m_cbAutoSave.Checked = My.Settings.AutosaveResults
 
             Me.m_rbAggNone.Checked = (Me.m_params.AggregationMode = cParameters.eAggregationModeType.FullModel)
             Me.m_rbAggFleet.Checked = (Me.m_params.AggregationMode = cParameters.eAggregationModeType.ByFleet)

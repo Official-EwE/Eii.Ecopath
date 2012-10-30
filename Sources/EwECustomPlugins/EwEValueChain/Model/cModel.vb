@@ -527,28 +527,39 @@ Public Class cModel
 
     Friend Sub SaveResults(data As cData, result As cResults, iTimeStep As Integer)
 
-        Dim w As New cResultWriter(data, result)
+        Try
 
-        Select Case data.Parameters.AggregationMode
+            Dim w As New cResultWriter(data, result)
+            Dim agg As cParameters.eAggregationModeType = data.Parameters.AggregationMode
 
-            Case cParameters.eAggregationModeType.FullModel
-                w.WriteResults(iTimeStep)
+            Select Case agg
 
-            Case cParameters.eAggregationModeType.ByFleet
-                For iFleet As Integer = 1 To data.Core.nFleets
-                    Dim flt As cFleetInput = data.Core.FleetInputs(iFleet)
-                    w.WriteResults(iTimeStep, iFleet, flt.Name)
-                Next
+                Case cParameters.eAggregationModeType.FullModel
+                    w.WriteResults(agg)
 
-            Case cParameters.eAggregationModeType.ByGroup
-                For iGroup As Integer = 1 To data.Core.nGroups
-                    Dim grp As cEcoPathGroupInput = data.Core.EcoPathGroupInputs(iGroup)
-                    If grp.IsFished Then
-                        w.WriteResults(iTimeStep, iGroup, grp.Name)
-                    End If
-                Next
+                Case cParameters.eAggregationModeType.ByFleet
+                    For iFleet As Integer = 1 To data.Core.nFleets
+                        Dim flt As cFleetInput = data.Core.FleetInputs(iFleet)
+                        w.WriteResults(agg, iFleet, flt.Name)
+                    Next
 
-        End Select
+                Case cParameters.eAggregationModeType.ByGroup
+                    For iGroup As Integer = 1 To data.Core.nGroups
+                        Dim grp As cEcoPathGroupInput = data.Core.EcoPathGroupInputs(iGroup)
+                        If grp.IsFished Then
+                            w.WriteResults(agg, iGroup, grp.Name)
+                        End If
+                    Next
+
+            End Select
+
+            If (w.Message IsNot Nothing) Then
+                data.Core.Messages.SendMessage(w.Message)
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

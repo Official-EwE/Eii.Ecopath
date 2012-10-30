@@ -558,13 +558,15 @@ Public Class cResults
     ''' <summary>
     ''' Get the total sum of a given variabe across all time steps.
     ''' </summary>
-    ''' <param name="vartype"></param>
-    ''' <param name="lUnits"></param>
-    ''' <returns></returns>
+    ''' <param name="vartype">Variable to extract.</param>
+    ''' <param name="lUnits">Units to extract total for.</param>
+    ''' <param name="contr"><see cref="eContributionType">Contribution type</see>.</param>
+    ''' <param name="iItem">Item to filter by.</param>
+    ''' <returns>A total value.</returns>
     ''' -----------------------------------------------------------------------
     Public Function GetTotal(ByVal vartype As eVariableType, _
                              Optional ByVal lUnits As cUnit() = Nothing, _
-                             Optional ByVal iFleet As Integer = 0, _
+                             Optional ByVal iItem As Integer = 0, _
                              Optional contr As eContributionType = eContributionType.Value) As Single
 
         Dim sTotal As Single = 0.0!
@@ -575,7 +577,7 @@ Public Class cResults
 
         For iTimestep = 0 To Me.m_iMaxTimeStep
             For Each unit As cUnit In lUnits
-                sTotal += Me.Result(unit, vartype, iTimestep, iFleet, contr)
+                sTotal += Me.Result(unit, vartype, iTimestep, iItem, contr)
             Next
         Next iTimestep
 

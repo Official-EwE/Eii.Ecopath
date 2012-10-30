@@ -159,15 +159,6 @@ Public Class cParameters
         End Set
     End Property
 
-    Public Property AutoSaveResults As Boolean
-        Get
-            Return Me.m_bAutoSaveResults
-        End Get
-        Set(value As Boolean)
-            Me.m_bAutoSaveResults = value
-        End Set
-    End Property
-
 #End Region ' Parameters
 
 End Class

@@ -56,6 +56,7 @@ Partial Class ucParameters
         Me.m_rbAggFleet = New System.Windows.Forms.RadioButton()
         Me.m_rbAggGroup = New System.Windows.Forms.RadioButton()
         Me.m_lblAgg = New System.Windows.Forms.Label()
+        Me.m_cbAutoSave = New System.Windows.Forms.CheckBox()
         Me.m_tlpSponsors.SuspendLayout()
         CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_pbSAUP, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -84,7 +85,7 @@ Partial Class ucParameters
         Me.m_tlpSponsors.RowCount = 1
         Me.m_tlpSponsors.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.m_tlpSponsors.Size = New System.Drawing.Size(697, 76)
-        Me.m_tlpSponsors.TabIndex = 23
+        Me.m_tlpSponsors.TabIndex = 24
         '
         'm_pbLenfest
         '
@@ -133,25 +134,25 @@ Partial Class ucParameters
         Me.m_lblSponsors.Location = New System.Drawing.Point(0, 374)
         Me.m_lblSponsors.Name = "m_lblSponsors"
         Me.m_lblSponsors.Size = New System.Drawing.Size(703, 18)
-        Me.m_lblSponsors.TabIndex = 22
+        Me.m_lblSponsors.TabIndex = 23
         Me.m_lblSponsors.Text = "Sponsors"
         Me.m_lblSponsors.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_lblBaseYear
         '
         Me.m_lblBaseYear.AutoSize = True
-        Me.m_lblBaseYear.Location = New System.Drawing.Point(3, 123)
+        Me.m_lblBaseYear.Location = New System.Drawing.Point(3, 169)
         Me.m_lblBaseYear.Name = "m_lblBaseYear"
         Me.m_lblBaseYear.Size = New System.Drawing.Size(57, 13)
-        Me.m_lblBaseYear.TabIndex = 9
+        Me.m_lblBaseYear.TabIndex = 10
         Me.m_lblBaseYear.Text = "&Base year:"
         '
         'm_nudBaseYear
         '
-        Me.m_nudBaseYear.Location = New System.Drawing.Point(93, 121)
+        Me.m_nudBaseYear.Location = New System.Drawing.Point(93, 167)
         Me.m_nudBaseYear.Name = "m_nudBaseYear"
         Me.m_nudBaseYear.Size = New System.Drawing.Size(106, 20)
-        Me.m_nudBaseYear.TabIndex = 10
+        Me.m_nudBaseYear.TabIndex = 11
         '
         'm_hdrEcosimSettings
         '
@@ -161,10 +162,10 @@ Partial Class ucParameters
         Me.m_hdrEcosimSettings.CollapsedParentHeight = 0
         Me.m_hdrEcosimSettings.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_hdrEcosimSettings.IsCollapsed = False
-        Me.m_hdrEcosimSettings.Location = New System.Drawing.Point(0, 94)
+        Me.m_hdrEcosimSettings.Location = New System.Drawing.Point(0, 140)
         Me.m_hdrEcosimSettings.Name = "m_hdrEcosimSettings"
         Me.m_hdrEcosimSettings.Size = New System.Drawing.Size(703, 18)
-        Me.m_hdrEcosimSettings.TabIndex = 8
+        Me.m_hdrEcosimSettings.TabIndex = 9
         Me.m_hdrEcosimSettings.Text = "Ecosim-dependent settings"
         Me.m_hdrEcosimSettings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -221,10 +222,10 @@ Partial Class ucParameters
         Me.m_hdrEQ.CollapsedParentHeight = 0
         Me.m_hdrEQ.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_hdrEQ.IsCollapsed = False
-        Me.m_hdrEQ.Location = New System.Drawing.Point(0, 153)
+        Me.m_hdrEQ.Location = New System.Drawing.Point(0, 199)
         Me.m_hdrEQ.Name = "m_hdrEQ"
         Me.m_hdrEQ.Size = New System.Drawing.Size(703, 18)
-        Me.m_hdrEQ.TabIndex = 11
+        Me.m_hdrEQ.TabIndex = 12
         Me.m_hdrEQ.Text = "Equilibrium search"
         Me.m_hdrEQ.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
@@ -233,71 +234,71 @@ Partial Class ucParameters
         Me.m_clbFleets.CheckOnClick = True
         Me.m_clbFleets.FormattingEnabled = True
         Me.m_clbFleets.IntegralHeight = False
-        Me.m_clbFleets.Location = New System.Drawing.Point(356, 179)
+        Me.m_clbFleets.Location = New System.Drawing.Point(356, 225)
         Me.m_clbFleets.Name = "m_clbFleets"
         Me.m_clbFleets.Size = New System.Drawing.Size(137, 72)
-        Me.m_clbFleets.TabIndex = 19
+        Me.m_clbFleets.TabIndex = 20
         '
         'm_lblFleets
         '
         Me.m_lblFleets.AutoSize = True
-        Me.m_lblFleets.Location = New System.Drawing.Point(235, 181)
+        Me.m_lblFleets.Location = New System.Drawing.Point(235, 227)
         Me.m_lblFleets.Name = "m_lblFleets"
         Me.m_lblFleets.Size = New System.Drawing.Size(115, 13)
-        Me.m_lblFleets.TabIndex = 18
+        Me.m_lblFleets.TabIndex = 19
         Me.m_lblFleets.Text = "&Fleets to vary effort for:"
         '
         'm_lblEffortMin
         '
         Me.m_lblEffortMin.AutoSize = True
-        Me.m_lblEffortMin.Location = New System.Drawing.Point(3, 181)
+        Me.m_lblEffortMin.Location = New System.Drawing.Point(3, 227)
         Me.m_lblEffortMin.Name = "m_lblEffortMin"
         Me.m_lblEffortMin.Size = New System.Drawing.Size(78, 13)
-        Me.m_lblEffortMin.TabIndex = 12
+        Me.m_lblEffortMin.TabIndex = 13
         Me.m_lblEffortMin.Text = "M&inimum effort:"
         '
         'm_lblEffortMax
         '
         Me.m_lblEffortMax.AutoSize = True
-        Me.m_lblEffortMax.Location = New System.Drawing.Point(3, 207)
+        Me.m_lblEffortMax.Location = New System.Drawing.Point(3, 253)
         Me.m_lblEffortMax.Name = "m_lblEffortMax"
         Me.m_lblEffortMax.Size = New System.Drawing.Size(78, 13)
-        Me.m_lblEffortMax.TabIndex = 14
+        Me.m_lblEffortMax.TabIndex = 15
         Me.m_lblEffortMax.Text = "M&aximum effort"
         '
         'm_lbEffortIncr
         '
         Me.m_lbEffortIncr.AutoSize = True
-        Me.m_lbEffortIncr.Location = New System.Drawing.Point(3, 233)
+        Me.m_lbEffortIncr.Location = New System.Drawing.Point(3, 279)
         Me.m_lbEffortIncr.Name = "m_lbEffortIncr"
         Me.m_lbEffortIncr.Size = New System.Drawing.Size(84, 13)
-        Me.m_lbEffortIncr.TabIndex = 16
+        Me.m_lbEffortIncr.TabIndex = 17
         Me.m_lbEffortIncr.Text = "Effort i&ncrement:"
         '
         'm_nudEffortMin
         '
         Me.m_nudEffortMin.DecimalPlaces = 2
-        Me.m_nudEffortMin.Location = New System.Drawing.Point(93, 179)
+        Me.m_nudEffortMin.Location = New System.Drawing.Point(93, 225)
         Me.m_nudEffortMin.Name = "m_nudEffortMin"
         Me.m_nudEffortMin.Size = New System.Drawing.Size(106, 20)
-        Me.m_nudEffortMin.TabIndex = 13
+        Me.m_nudEffortMin.TabIndex = 14
         '
         'm_nudEffortMax
         '
         Me.m_nudEffortMax.DecimalPlaces = 2
-        Me.m_nudEffortMax.Location = New System.Drawing.Point(93, 205)
+        Me.m_nudEffortMax.Location = New System.Drawing.Point(93, 251)
         Me.m_nudEffortMax.Name = "m_nudEffortMax"
         Me.m_nudEffortMax.Size = New System.Drawing.Size(106, 20)
-        Me.m_nudEffortMax.TabIndex = 15
+        Me.m_nudEffortMax.TabIndex = 16
         '
         'm_nudEffortIncr
         '
         Me.m_nudEffortIncr.DecimalPlaces = 2
-        Me.m_nudEffortIncr.Location = New System.Drawing.Point(93, 231)
+        Me.m_nudEffortIncr.Location = New System.Drawing.Point(93, 277)
         Me.m_nudEffortIncr.Minimum = New Decimal(New Integer() {1, 0, 0, 131072})
         Me.m_nudEffortIncr.Name = "m_nudEffortIncr"
         Me.m_nudEffortIncr.Size = New System.Drawing.Size(106, 20)
-        Me.m_nudEffortIncr.TabIndex = 17
+        Me.m_nudEffortIncr.TabIndex = 18
         Me.m_nudEffortIncr.Value = New Decimal(New Integer() {25, 0, 0, 131072})
         '
         'm_hdrUI
@@ -308,20 +309,20 @@ Partial Class ucParameters
         Me.m_hdrUI.CollapsedParentHeight = 0
         Me.m_hdrUI.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.m_hdrUI.IsCollapsed = False
-        Me.m_hdrUI.Location = New System.Drawing.Point(0, 265)
+        Me.m_hdrUI.Location = New System.Drawing.Point(0, 311)
         Me.m_hdrUI.Name = "m_hdrUI"
         Me.m_hdrUI.Size = New System.Drawing.Size(703, 18)
-        Me.m_hdrUI.TabIndex = 20
+        Me.m_hdrUI.TabIndex = 21
         Me.m_hdrUI.Text = "User interface"
         Me.m_hdrUI.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_cbConfirmDelete
         '
         Me.m_cbConfirmDelete.AutoSize = True
-        Me.m_cbConfirmDelete.Location = New System.Drawing.Point(6, 290)
+        Me.m_cbConfirmDelete.Location = New System.Drawing.Point(6, 336)
         Me.m_cbConfirmDelete.Name = "m_cbConfirmDelete"
         Me.m_cbConfirmDelete.Size = New System.Drawing.Size(181, 17)
-        Me.m_cbConfirmDelete.TabIndex = 21
+        Me.m_cbConfirmDelete.TabIndex = 22
         Me.m_cbConfirmDelete.Text = "&Prompt for confirmation on delete"
         Me.m_cbConfirmDelete.UseVisualStyleBackColor = True
         '
@@ -367,6 +368,16 @@ Partial Class ucParameters
         Me.m_lblAgg.TabIndex = 4
         Me.m_lblAgg.Text = "&Data aggregation:"
         '
+        'm_cbAutoSave
+        '
+        Me.m_cbAutoSave.AutoSize = True
+        Me.m_cbAutoSave.Location = New System.Drawing.Point(6, 104)
+        Me.m_cbAutoSave.Name = "m_cbAutoSave"
+        Me.m_cbAutoSave.Size = New System.Drawing.Size(199, 17)
+        Me.m_cbAutoSave.TabIndex = 8
+        Me.m_cbAutoSave.Text = "&Automatically save results to CSV file"
+        Me.m_cbAutoSave.UseVisualStyleBackColor = True
+        '
         'ucParameters
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -384,6 +395,7 @@ Partial Class ucParameters
         Me.Controls.Add(Me.m_lblAgg)
         Me.Controls.Add(Me.m_lblFleets)
         Me.Controls.Add(Me.m_clbFleets)
+        Me.Controls.Add(Me.m_cbAutoSave)
         Me.Controls.Add(Me.m_chkRunWithSearches)
         Me.Controls.Add(Me.m_chkRunWithEcosim)
         Me.Controls.Add(Me.m_chkRunWithEcopath)
@@ -437,5 +449,6 @@ Partial Class ucParameters
     Private WithEvents m_rbAggFleet As System.Windows.Forms.RadioButton
     Private WithEvents m_rbAggGroup As System.Windows.Forms.RadioButton
     Private WithEvents m_lblAgg As System.Windows.Forms.Label
+    Private WithEvents m_cbAutoSave As System.Windows.Forms.CheckBox
 
 End Class

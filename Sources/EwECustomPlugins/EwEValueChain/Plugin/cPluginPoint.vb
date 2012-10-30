@@ -58,7 +58,6 @@ Public Class cPluginPoint
     Private m_mhEcopath As cMessageHandler = Nothing
     Private m_linkman As cLandingsLinkManager = Nothing
     Private m_syncobj As SynchronizationContext = Nothing
-    Private m_bSaveCSV As Boolean = False
 
     ' Data exchange
     Private m_dataBroadcaster As EwEPlugin.Data.IDataBroadcaster = Nothing
@@ -331,12 +330,11 @@ Public Class cPluginPoint
         ' Send out data
         Me.BroadcastResults(1)
 
-        If Me.m_data.Parameters.AutoSaveResults Then
+        If Me.AutoSave Then
             Me.m_model.SaveResults(Me.m_data, Me.m_result, 1)
         End If
 
     End Sub
-
 
 #End Region ' Ecopath integration
 
@@ -405,8 +403,13 @@ Public Class cPluginPoint
         ' Abort if not allowed to run with Ecosim
         If (parms.RunWithEcosim = False) Then Return
 
+
         If (Me.m_dataBroadcaster IsNot Nothing) Then
             Me.m_dataBroadcaster.BroadcastData(Me.Name, Me.m_ddx)
+        End If
+
+        If Me.AutoSave Then
+            Me.m_model.SaveResults(Me.m_data, Me.m_result, 1)
         End If
 
     End Sub
@@ -704,10 +707,11 @@ Public Class cPluginPoint
 
     Public Property AutoSave As Boolean Implements EwEPlugin.IAutoSavePlugin.AutoSave
         Get
-            Return Me.m_bSaveCSV
+            Return My.Settings.AutosaveResults
         End Get
         Set(value As Boolean)
-            Me.m_bSaveCSV = value
+            My.Settings.AutosaveResults = value
+            My.Settings.Save()
         End Set
     End Property
 

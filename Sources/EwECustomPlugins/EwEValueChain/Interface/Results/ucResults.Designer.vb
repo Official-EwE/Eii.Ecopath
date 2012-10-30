@@ -44,6 +44,7 @@ Partial Class ucResults
         Me.m_tssep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbShowFlow = New System.Windows.Forms.ToolStripButton()
         Me.m_tssep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tslbYear = New System.Windows.Forms.ToolStripLabel()
         Me.m_tscbYear = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripButton()
@@ -54,7 +55,6 @@ Partial Class ucResults
         Me.m_btnRunEquilibrium = New System.Windows.Forms.Button()
         Me.m_lblAgg = New System.Windows.Forms.Label()
         Me.m_cmbAgg = New System.Windows.Forms.ComboBox()
-        Me.m_tslbYear = New System.Windows.Forms.ToolStripLabel()
         Me.m_tsResults.SuspendLayout()
         CType(Me.m_scResults, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scResults.Panel1.SuspendLayout()
@@ -142,6 +142,12 @@ Partial Class ucResults
         '
         Me.m_tssep2.Name = "m_tssep2"
         Me.m_tssep2.Size = New System.Drawing.Size(6, 25)
+        '
+        'm_tslbYear
+        '
+        Me.m_tslbYear.Name = "m_tslbYear"
+        Me.m_tslbYear.Size = New System.Drawing.Size(93, 22)
+        Me.m_tslbYear.Text = "Show &values for:"
         '
         'm_tscbYear
         '
@@ -252,12 +258,6 @@ Partial Class ucResults
         Me.m_cmbAgg.Name = "m_cmbAgg"
         Me.m_cmbAgg.Size = New System.Drawing.Size(121, 21)
         Me.m_cmbAgg.TabIndex = 5
-        '
-        'm_tslbYear
-        '
-        Me.m_tslbYear.Name = "m_tslbYear"
-        Me.m_tslbYear.Size = New System.Drawing.Size(93, 22)
-        Me.m_tslbYear.Text = "Show &values for:"
         '
         'ucResults
         '
