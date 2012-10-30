@@ -142,7 +142,8 @@ Namespace Controls
 
         Protected Overrides Sub OnNodeMouseClick(e As System.Windows.Forms.TreeNodeMouseClickEventArgs)
             MyBase.OnNodeMouseClick(e)
-            If (Me.HasHyperlink(e.Node)) Then
+            ' Total hack to separate expand, collapse and navigation clicks
+            If (Me.HasHyperlink(e.Node) And e.Location.X > 25) Then
                 Try
                     Dim args As New TreeViewNavigateEventArgs(DirectCast(e.Node, cHyperlinkTreeNode), TreeViewAction.ByMouse)
                     Me.OnNavigate(args)
