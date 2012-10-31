@@ -1265,6 +1265,8 @@ Public Class cEIIDataSource
         For i As Integer = 1 To m_stanzaData.Nsplit
             m_stanzaData.StanzaDBID(i) = 1
         Next
+        m_stanzaData.OnPostInitialization()
+
         Return True
 
     End Function

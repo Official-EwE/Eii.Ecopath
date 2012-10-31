@@ -1634,6 +1634,7 @@ Namespace DataSources
                 rdStanza = Nothing
 
             End If
+            stanzaDS.OnPostInitialization()
 
             Return bSucces
         End Function

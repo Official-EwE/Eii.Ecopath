@@ -618,7 +618,7 @@ Public Class cCore
         Me.m_EcoSimData = New cEcosimDatastructures
         Me.m_EcoSpaceData = New cEcospaceDataStructures(Me.Messages)
         Me.m_SpatialData = New cSpatialDataStructures()
-        Me.m_Stanza = New cStanzaDatastructures
+        Me.m_Stanza = New cStanzaDatastructures(Me.Messages)
         Me.m_tracerData = New cContaminantTracerDataStructures
         Me.m_TSData = New cTimeSeriesDataStructures
         Me.m_MPAOptData = New cMPAOptDataStructures

@@ -116,6 +116,16 @@ Public Class cStanzaDatastructures
     ''' </remarks>
     Public SpeciesCode(,) As Single
 
+#Region " Private data "
+
+    Private m_messages As cMessagePublisher
+
+#End Region ' Private data
+
+    Public Sub New(ByVal CoreMessagePublisher As cMessagePublisher)
+        Me.m_messages = CoreMessagePublisher
+    End Sub
+
     ''' <summary>
     ''' Redimension the stanza arrays
     ''' </summary>
@@ -276,6 +286,45 @@ Public Class cStanzaDatastructures
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
+    End Sub
+
+    Public Sub OnPostInitialization()
+
+        ' ToDo: globalize this
+
+        Dim msg As New cMessage("Leading B and/or CB groups have been adjusted for one or more multi-stanza groups, please validate.", eMessageType.DataModified, _
+                                EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning)
+        Dim vs As cVariableStatus = Nothing
+        Dim i As Integer = 0
+
+        ' Fix leading B and CB if out of range
+        For iStanza As Integer = 1 To Nsplit
+
+            ' Assess B
+            i = Math.Max(1, Math.Min(Nstanza(iStanza), Me.BaseStanza(iStanza)))
+            If (i <> Me.BaseStanza(iStanza)) Then
+                Me.BaseStanza(iStanza) = i
+                vs = New cVariableStatus(eStatusFlags.MissingParameter, _
+                                         String.Format("Leading B adjusted for stanza {0}", Me.StanzaName(iStanza)), _
+                                         EwEUtils.Core.eVarNameFlags.LeadingBiomass, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
+                msg.AddVariable(vs)
+            End If
+
+            ' Assess CB
+            i = Math.Max(1, Math.Min(Nstanza(iStanza), Me.BaseStanzaCB(iStanza)))
+            If (i <> Me.BaseStanzaCB(iStanza)) Then
+                Me.BaseStanzaCB(iStanza) = i
+                vs = New cVariableStatus(eStatusFlags.MissingParameter, _
+                                         String.Format("Leading CB adjusted for stanza {0}", Me.StanzaName(iStanza)), _
+                                         EwEUtils.Core.eVarNameFlags.LeadingCB, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
+                msg.AddVariable(vs)
+            End If
+
+        Next
+
+        If (msg.Variables.Count > 0) Then
+            Me.m_messages.AddMessage(msg)
+        End If
     End Sub
 
 End Class

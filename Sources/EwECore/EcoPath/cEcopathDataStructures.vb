@@ -1164,8 +1164,6 @@ Public Class cEcopathDataStructures
                 Me.m_messages.AddMessage(New cMessage(strmsg, eMessageType.ErrorEncountered, _
                                                 eCoreComponentType.EcoPath, eMessageImportance.Warning))
             End If
-
-
         Catch ex As Exception
 
         End Try
