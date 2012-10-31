@@ -118,14 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="TS_TYPE_BIOMASSABS" xml:space="preserve">
-    <value>Absolute biomass</value>
+    <value>Absolute biomass (reference)</value>
     <comment>Time series type</comment>
   </data>
   <data name="MENU_SHOW_LEGEND" xml:space="preserve">
     <value>Show &amp;legend</value>
   </data>
   <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
-    <value>Relative biomass</value>
+    <value>Relative biomass  (reference)</value>
     <comment>Time series type</comment>
   </data>
   <data name="UNIT_CURRENCY_CALORIE" xml:space="preserve">
@@ -257,7 +257,7 @@
     <value>Month</value>
   </data>
   <data name="TS_TYPE_CATCHESFORCING" xml:space="preserve">
-    <value>Catches forcing</value>
+    <value>Catches (forcing)</value>
     <comment>Time series type</comment>
   </data>
   <data name="GENERIC_FILESAVE_SUCCES" xml:space="preserve">
@@ -328,7 +328,7 @@
     <value>(no data)</value>
   </data>
   <data name="TS_TYPE_CATCHES" xml:space="preserve">
-    <value>Catches</value>
+    <value>Catches (reference)</value>
     <comment>Time series type</comment>
   </data>
   <data name="PROMPT_SHAPE_DELETE_MULTIPLE" xml:space="preserve">

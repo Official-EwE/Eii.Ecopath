@@ -880,7 +880,7 @@ Namespace Controls
         ''' </summary>
         Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
 
-            If Me.UIContext Is Nothing Then Return
+            If (Me.UIContext Is Nothing) Then Return
 
             Dim sYMax As Single = Me.YAxisMaxValue
             ' Avoid division by zero

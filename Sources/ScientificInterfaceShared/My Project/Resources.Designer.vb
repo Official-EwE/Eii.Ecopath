@@ -6498,7 +6498,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Absolute biomass.
+        '''  Looks up a localized string similar to Absolute biomass (reference).
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSABS() As String
             Get
@@ -6516,7 +6516,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Relative biomass.
+        '''  Looks up a localized string similar to Relative biomass  (reference).
         '''</summary>
         Public ReadOnly Property TS_TYPE_BIOMASSREL() As String
             Get
@@ -6525,7 +6525,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catches.
+        '''  Looks up a localized string similar to Catches (reference).
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHES() As String
             Get
@@ -6534,7 +6534,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Catches forcing.
+        '''  Looks up a localized string similar to Catches (forcing).
         '''</summary>
         Public ReadOnly Property TS_TYPE_CATCHESFORCING() As String
             Get

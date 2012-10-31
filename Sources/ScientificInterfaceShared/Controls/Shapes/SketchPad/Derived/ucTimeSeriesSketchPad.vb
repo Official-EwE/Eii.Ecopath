@@ -58,6 +58,15 @@ Namespace Controls
             End Set
         End Property
 
+        Protected Overrides Sub OnPaint(e As System.Windows.Forms.PaintEventArgs)
+
+            If (Me.UIContext Is Nothing) Then Return
+            If (Me.UIContext.Core.ActiveTimeSeriesDatasetIndex <= 0) Then Return
+
+            MyBase.OnPaint(e)
+
+        End Sub
+
         Protected Overrides Sub DrawShape(ByVal shape As EwECore.cShapeData, _
                 ByVal rcImage As System.Drawing.Rectangle, _
                 ByVal g As System.Drawing.Graphics, _
