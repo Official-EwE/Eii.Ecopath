@@ -222,17 +222,26 @@ Namespace Ecosim
 
 #Region " Controls "
 
-        Private Sub btnRunOrStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnRun.Click
 
             If Not Me.IsRunning Then
                 Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
                 Me.m_graph.Refresh()
                 Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
-            Else
-                Me.Core.StopEcoSim()
             End If
 
+        End Sub
+
+        Private Sub OnStop(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnStop.Click
+            Try
+                If Me.IsRunning Then
+                    Me.Core.StopEcoSim()
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
         Private Sub OnShowMultipleRuns(ByVal sender As System.Object, ByVal e As System.EventArgs) _
@@ -428,10 +437,12 @@ Namespace Ecosim
                 ' #Yes: update to new state
                 Me.IsRunning = bEcosimRunning
                 If Me.IsRunning Then
+                    Me.Core.SetStopRunDelegate(AddressOf Me.Core.StopEcoSim)
                     cApplicationStatusNotifier.StartProgress(Me.Core, My.Resources.STATUS_ECOSIM_RUNNING)
                     Me.IsExploring = False
                 Else
                     cApplicationStatusNotifier.EndProgress(Me.Core)
+                    Me.Core.SetStopRunDelegate(Nothing)
                     If Not Me.m_zgp.ShowMultipleRuns Then
                         Me.m_zgp.Clear()
                     End If
@@ -1057,11 +1068,8 @@ Namespace Ecosim
 
             Me.m_bInUpdate = True
 
-            ' Configure run/stop button
-            Me.m_btnRun.Text = CStr(cSystemUtils.IIF(Me.IsRunning, My.Resources.LABEL_STOP, My.Resources.LABEL_RUN))
-            Me.m_btnRun.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
-            ' Reflect change immediately
-            Me.m_btnRun.Update()
+            Me.m_btnRun.Enabled = Not Me.IsRunning
+            Me.m_btnStop.Enabled = Me.IsRunning
 
             ' Reset buttons
             Me.m_tsbnSetToValue.Enabled = (Me.m_sketchPad.Shape IsNot Nothing)
@@ -1096,7 +1104,8 @@ Namespace Ecosim
             Me.m_tsbnFleet.Checked = (Me.SelectionMode = eSelectionModeType.Fleets)
             Me.m_tsbnGroup.Checked = (Me.SelectionMode = eSelectionModeType.Groups)
 
-            Me.m_scOptions.Panel1Collapsed = Not Me.m_zgp.ShowMultipleRuns
+            Me.m_hdrRuns.Visible = Me.m_zgp.ShowMultipleRuns
+            Me.m_lbRuns.Visible = Me.m_zgp.ShowMultipleRuns
             Me.m_tsbnShowMultipleRuns.Checked = Me.m_zgp.ShowMultipleRuns
             Me.m_tstbChangeAmount.Text = CStr(Me.m_sChangeTrackSize)
 

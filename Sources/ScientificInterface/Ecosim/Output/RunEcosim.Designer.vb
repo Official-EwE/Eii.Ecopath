@@ -89,11 +89,12 @@ Namespace Ecosim
             Me.sep3 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnSaveOutput = New System.Windows.Forms.ToolStripButton()
             Me.m_scGraph = New System.Windows.Forms.SplitContainer()
-            Me.m_scOptions = New System.Windows.Forms.SplitContainer()
-            Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_lbRuns = New System.Windows.Forms.ListBox()
-            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lbRuns = New System.Windows.Forms.ListBox()
+            Me.m_hdrRuns = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnStop = New System.Windows.Forms.Button()
             sep1 = New System.Windows.Forms.ToolStripSeparator()
             sep2 = New System.Windows.Forms.ToolStripSeparator()
             ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
@@ -107,10 +108,7 @@ Namespace Ecosim
             Me.m_scGraph.Panel1.SuspendLayout()
             Me.m_scGraph.Panel2.SuspendLayout()
             Me.m_scGraph.SuspendLayout()
-            CType(Me.m_scOptions, System.ComponentModel.ISupportInitialize).BeginInit()
-            Me.m_scOptions.Panel1.SuspendLayout()
-            Me.m_scOptions.Panel2.SuspendLayout()
-            Me.m_scOptions.SuspendLayout()
+            Me.m_tlpControls.SuspendLayout()
             Me.SuspendLayout()
             '
             'sep1
@@ -273,7 +271,6 @@ Namespace Ecosim
             '
             Me.m_tsdrpdnbtnContent.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
             Me.m_tsdrpdnbtnContent.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiBiomassAbs, Me.m_tsmiBiomassRel, Me.ToolStripSeparator6, Me.m_tsmiCatchAbs, Me.m_tsmiCatchRel, Me.ToolStripSeparator7, Me.m_tsmiValueAbs, Me.m_tsmiValueRel})
-            Me.m_tsdrpdnbtnContent.Image = SharedResources.Importance
             resources.ApplyResources(Me.m_tsdrpdnbtnContent, "m_tsdrpdnbtnContent")
             Me.m_tsdrpdnbtnContent.Name = "m_tsdrpdnbtnContent"
             '
@@ -441,47 +438,18 @@ Namespace Ecosim
             '
             'm_scGraph.Panel2
             '
-            Me.m_scGraph.Panel2.Controls.Add(Me.m_scOptions)
-            Me.m_scGraph.Panel2.Controls.Add(Me.m_btnRun)
+            Me.m_scGraph.Panel2.Controls.Add(Me.m_tlpControls)
             '
-            'm_scOptions
+            'm_tlpControls
             '
-            resources.ApplyResources(Me.m_scOptions, "m_scOptions")
-            Me.m_scOptions.Name = "m_scOptions"
-            '
-            'm_scOptions.Panel1
-            '
-            Me.m_scOptions.Panel1.Controls.Add(Me.m_hdrRuns)
-            Me.m_scOptions.Panel1.Controls.Add(Me.m_lbRuns)
-            '
-            'm_scOptions.Panel2
-            '
-            Me.m_scOptions.Panel2.Controls.Add(Me.m_hdrGroups)
-            Me.m_scOptions.Panel2.Controls.Add(Me.m_lbGroups)
-            '
-            'm_hdrRuns
-            '
-            resources.ApplyResources(Me.m_hdrRuns, "m_hdrRuns")
-            Me.m_hdrRuns.CanCollapseParent = False
-            Me.m_hdrRuns.CollapsedParentHeight = 0
-            Me.m_hdrRuns.IsCollapsed = False
-            Me.m_hdrRuns.Name = "m_hdrRuns"
-            '
-            'm_lbRuns
-            '
-            resources.ApplyResources(Me.m_lbRuns, "m_lbRuns")
-            Me.m_lbRuns.BackColor = System.Drawing.SystemColors.Window
-            Me.m_lbRuns.FormattingEnabled = True
-            Me.m_lbRuns.Name = "m_lbRuns"
-            Me.m_lbRuns.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-            '
-            'm_hdrGroups
-            '
-            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
-            Me.m_hdrGroups.CanCollapseParent = False
-            Me.m_hdrGroups.CollapsedParentHeight = 0
-            Me.m_hdrGroups.IsCollapsed = False
-            Me.m_hdrGroups.Name = "m_hdrGroups"
+            resources.ApplyResources(Me.m_tlpControls, "m_tlpControls")
+            Me.m_tlpControls.Controls.Add(Me.m_lbGroups, 0, 3)
+            Me.m_tlpControls.Controls.Add(Me.m_btnRun, 0, 4)
+            Me.m_tlpControls.Controls.Add(Me.m_hdrGroups, 0, 2)
+            Me.m_tlpControls.Controls.Add(Me.m_lbRuns, 0, 1)
+            Me.m_tlpControls.Controls.Add(Me.m_hdrRuns, 0, 0)
+            Me.m_tlpControls.Controls.Add(Me.m_btnStop, 0, 5)
+            Me.m_tlpControls.Name = "m_tlpControls"
             '
             'm_lbGroups
             '
@@ -500,10 +468,43 @@ Namespace Ecosim
             Me.m_lbGroups.SortThreshold = -9999.0!
             Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
             '
+            'm_hdrGroups
+            '
+            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.CanCollapseParent = False
+            Me.m_hdrGroups.CollapsedParentHeight = 0
+            Me.m_hdrGroups.IsCollapsed = False
+            Me.m_hdrGroups.Name = "m_hdrGroups"
+            '
+            'm_lbRuns
+            '
+            resources.ApplyResources(Me.m_lbRuns, "m_lbRuns")
+            Me.m_lbRuns.BackColor = System.Drawing.SystemColors.Window
+            Me.m_lbRuns.FormattingEnabled = True
+            Me.m_lbRuns.Name = "m_lbRuns"
+            Me.m_lbRuns.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
+            '
+            'm_hdrRuns
+            '
+            resources.ApplyResources(Me.m_hdrRuns, "m_hdrRuns")
+            Me.m_hdrRuns.CanCollapseParent = False
+            Me.m_hdrRuns.CollapsedParentHeight = 0
+            Me.m_hdrRuns.IsCollapsed = False
+            Me.m_hdrRuns.Name = "m_hdrRuns"
+            '
+            'm_btnStop
+            '
+            Me.m_btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            resources.ApplyResources(Me.m_btnStop, "m_btnStop")
+            Me.m_btnStop.Name = "m_btnStop"
+            Me.m_btnStop.UseVisualStyleBackColor = True
+            '
             'RunEcosim
             '
+            Me.AcceptButton = Me.m_btnRun
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.CancelButton = Me.m_btnStop
             Me.Controls.Add(Me.m_scGraph)
             Me.Controls.Add(Me.m_ts)
             Me.Name = "RunEcosim"
@@ -520,10 +521,7 @@ Namespace Ecosim
             Me.m_scGraph.Panel2.ResumeLayout(False)
             CType(Me.m_scGraph, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scGraph.ResumeLayout(False)
-            Me.m_scOptions.Panel1.ResumeLayout(False)
-            Me.m_scOptions.Panel2.ResumeLayout(False)
-            CType(Me.m_scOptions, System.ComponentModel.ISupportInitialize).EndInit()
-            Me.m_scOptions.ResumeLayout(False)
+            Me.m_tlpControls.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -551,7 +549,6 @@ Namespace Ecosim
         Private WithEvents m_tsmiShowAnnualOutput As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_tsmiShowLegend As System.Windows.Forms.ToolStripMenuItem
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
-        Private WithEvents m_scOptions As System.Windows.Forms.SplitContainer
         Private WithEvents m_lbRuns As System.Windows.Forms.ListBox
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_scGraph As System.Windows.Forms.SplitContainer
@@ -578,6 +575,8 @@ Namespace Ecosim
         Private WithEvents m_sketchPad As ScientificInterfaceShared.Controls.ucForcingSketchPad
         Private WithEvents sep3 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_tsbnSaveOutput As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tlpControls As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_btnStop As System.Windows.Forms.Button
 
     End Class
 End Namespace
