@@ -233,7 +233,7 @@ Public Class frmMSE
                 state = eMSEStates.Running
 
             Case eMSERunStates.IterationCompleted
-                System.Console.WriteLine("MSE Interface Iteration recieved.")
+                'System.Console.WriteLine("MSE Interface Iteration recieved.")
                 Me.onMSEProgress()
                 Me.AddLineToGraph()
                 state = eMSEStates.Running
