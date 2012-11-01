@@ -52,23 +52,30 @@ Public Class cLPSolver
         Public Shared Sub Init()
             If g_bInit Then Return
             Dim badded As Boolean = True
-            Dim SetDLLRetVal As Integer
+            Dim solveDir As String
+
             Try
                 g_bUsable = cSystemUtils.IsWindows
                 If cSystemUtils.Is64Bit Then
-                    SetDLLRetVal = CInt(lpsolve55.SetDllDirectoryA("Includes\win64"))
+                    solveDir = "Includes\win64"
                 Else
-                    SetDLLRetVal = CInt(lpsolve55.SetDllDirectoryA("Includes\win32"))
-                    'SetDLLRetVal = CInt(lpsolve55.SetDllDirectoryA("boguspath"))
+                    solveDir = "Includes\win32"
                 End If
 
-                If SetDLLRetVal = 0 Then
-                    badded = False
-                    cLog.Write("lpsolve55.Init() Failed to set lpsolve55.dll path.")
+                lpsolve55.SetDllDirectoryA(solveDir)
+
+                'Make sure lpsolve55.dll exists in the correct directory 
+                Dim dllPath As String = System.IO.Path.GetDirectoryName(Reflection.Assembly.GetExecutingAssembly().Location)
+                Dim lpsolveDLL As String = System.IO.Path.Combine(dllPath, solveDir, "lpsolve55.dll")
+                If Not System.IO.File.Exists(lpsolveDLL) Then
+                    System.Console.WriteLine("Failed to find lpsolve55.dll in " & lpsolveDLL)
+                    cLog.Write("Failed to find lpsolve55.dll in " & lpsolveDLL)
+                    g_bUsable = False
                 End If
 
             Catch ex As Exception
                 cLog.Write(ex, "lpsolve55::Init")
+                System.Console.WriteLine("Exception in lpsolve55.Init() " & ex.Message)
                 g_bUsable = False
                 Return
             End Try
@@ -791,8 +798,7 @@ Public Class cLPSolver
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="ILPSolver.IsSupported"/>
     ''' -----------------------------------------------------------------------
-    Public Function IsSupported() As Boolean _
-        Implements EwEUtils.Core.ILPSolver.IsSupported
+    Public Function IsSupported() As Boolean Implements EwEUtils.Core.ILPSolver.IsSupported
         lpsolve55.Init()
         Return lpsolve55.IsUsable()
     End Function
