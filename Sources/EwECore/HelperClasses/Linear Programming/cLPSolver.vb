@@ -599,7 +599,7 @@ Public Class cLPSolver
     ''' <see cref="IsSupported">is supported by the operating system</see>.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function Solve() As Boolean _
+    Public Function Solve(ByVal iTimeStepIndex As Integer) As Boolean _
           Implements ILPSolver.Solve
 
         Dim bSuccess As Boolean = False
@@ -671,12 +671,20 @@ Public Class cLPSolver
                 End If
             End If
 
-            'lpsolve55.print_lp(lp)
-            lpsolve55.solve(lp)
-            'lpsolve55.print_objective(lp)
-            'lpsolve55.print_solution(lp, 1)
-            'lpsolve55.print_constraints(lp, 1)
 
+            Dim lpResult As lpsolve55.lpsolve_return
+            lpResult = lpsolve55.solve(lp)
+            If lpResult <> lpsolve55.lpsolve_return.OPTIMAL Then
+
+#If DEBUG Then
+                'Need to find a better way to do this
+                Dim tmpPath As String = System.IO.Path.GetTempPath
+                Dim solverFile As String = System.IO.Path.Combine(tmpPath, "EWE6_LPSolve_model_" & iTimeStepIndex.ToString & ".txt")
+                System.Console.WriteLine("cLPSolver.Solve() Non Optimal Solution: " & lpResult.ToString & " Timestep " & iTimeStepIndex.ToString & " file saved to ")
+                System.Console.WriteLine(solverFile)
+                lpsolve55.write_lp(lp, solverFile)
+#End If
+            End If
 
             ' This looks incredibly fragile...
             Dim n As Integer = 1 + Me.Vars.Length + Me.Rows.Length
@@ -708,6 +716,8 @@ Public Class cLPSolver
         Catch ex As Exception
             bSuccess = False
         End Try
+
+        'lpsolve55.write_lp(lp, "cLPSolver.txt")
 
         lpsolve55.delete_lp(lp)
 

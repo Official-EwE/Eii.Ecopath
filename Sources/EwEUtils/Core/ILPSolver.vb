@@ -110,7 +110,7 @@ Namespace Core
         ''' </summary>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function Solve() As Boolean
+        Function Solve(ByVal iTimeStepIndex As Integer) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

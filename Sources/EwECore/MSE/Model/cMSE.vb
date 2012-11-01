@@ -706,7 +706,7 @@ Namespace MSE
 
                     Me.SumValues()
                     Me.resetEffort()
-                    System.Console.WriteLine("MSE PostMessage IterationCompleted " & itr.ToString)
+                    ' System.Console.WriteLine("MSE PostMessage IterationCompleted " & itr.ToString)
                     Me.PostMessage(eMSERunStates.IterationCompleted)
 
                     If Me.m_data.StopRun Then
@@ -1471,7 +1471,7 @@ Namespace MSE
                 Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
 
-            Me.m_LPSolver.Solve()
+            Me.m_LPSolver.Solve(t)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'MS Sensitivity Dual Values 
@@ -1521,6 +1521,7 @@ Namespace MSE
 
             Try
 
+                cLPSolver.lpsolve55.Init()
                 ReDim VPerEffort(Me.m_data.nFleets)
 
                 Dim ptrLp As Integer = cLPSolver.lpsolve55.make_lp(0, Me.m_data.nFleets)
@@ -1564,7 +1565,11 @@ Namespace MSE
                 Next
 
                 cLPSolver.lpsolve55.set_maxim(ptrLp)
-                cLPSolver.lpsolve55.solve(ptrLp)
+                Dim rv As cLPSolver.lpsolve55.lpsolve_return
+                rv = cLPSolver.lpsolve55.solve(ptrLp)
+                If rv <> cLPSolver.lpsolve55.lpsolve_return.OPTIMAL Then
+                    System.Console.WriteLine("LP Solver Non Optimal Solution: " & rv.ToString & " Timestep = " & t.ToString)
+                End If
 
                 Dim solution() As Double
                 ReDim solution(1 + cLPSolver.lpsolve55.get_Ncolumns(ptrLp) + cLPSolver.lpsolve55.get_Nrows(ptrLp))
@@ -1576,7 +1581,7 @@ Namespace MSE
 
                 For iFlt = 1 To Me.m_data.nFleets
                     Me.m_esData.FishRateGear(iFlt, t) = CSng(solution(Me.m_data.NGroups + iFlt))
-                    System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
+                    '    System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
                 Next
 
                 For iGrp = 1 To m_data.nLiving
@@ -1585,7 +1590,7 @@ Namespace MSE
                     Next
                 Next
 
-                ' cLPSolver.lpsolve55.write_lp(ptrLp, "lp.txt")
+                'cLPSolver.lpsolve55.write_lp(ptrLp, "lp.txt")
                 cLPSolver.lpsolve55.delete_lp(ptrLp)
 
             Catch ex As Exception
