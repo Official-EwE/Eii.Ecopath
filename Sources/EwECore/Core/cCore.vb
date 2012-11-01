@@ -7503,7 +7503,16 @@ Public Class cCore
 
 #End Region
 
-    Public Function RunEcoSim(Optional ByVal TimeStepDelegate As Ecosim.EcoSimTimeStepDelegate = Nothing) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Launch an Ecosim run.
+    ''' </summary>
+    ''' <param name="TimeStepDelegate">Delegate for receiving time step notifications.</param>
+    ''' <param name="bMultiThreaded">Multi-threaded run flag. Please use with care.</param>
+    ''' <returns>True if a run started successfully.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RunEcoSim(Optional ByVal TimeStepDelegate As Ecosim.EcoSimTimeStepDelegate = Nothing, _
+                              Optional ByVal bMultiThreaded As Boolean = False) As Boolean
         Dim msg As cMessage
 
         If Me.m_StateMonitor.HasEcosimLoaded() = False Then
@@ -7568,6 +7577,8 @@ Public Class cCore
         'if Ecosim is being run on a thread then setup the RunCompletedDelegate
         'this will call  Me.EcoSimRunCompleted(Nothing) once Ecosim has completed the run
         Me.m_EcoSim.RunCompletedDelegate = Nothing
+        Me.m_EcoSimData.bMultiThreaded = bMultiThreaded
+
         If Me.m_EcoSimData.bMultiThreaded Then
             Me.m_EcoSim.RunCompletedDelegate = AddressOf Me.onEcoSimRunCompleted
             Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcoSim))

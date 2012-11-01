@@ -149,14 +149,15 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
+        Protected Overrides Sub OnFormClosed(ByVal e As FormClosedEventArgs)
 
+            If (Me.UIContext Is Nothing) Then Return
+
+            Me.OnStop(Nothing, Nothing)
             RemoveHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
 
             ' Unplug
             Me.IsExploring = False
-
-            If (Me.UIContext Is Nothing) Then Return
 
             ' Clean up
             If Me.m_shapeGUIHandler IsNot Nothing Then
@@ -228,7 +229,7 @@ Namespace Ecosim
             If Not Me.IsRunning Then
                 Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
                 Me.m_graph.Refresh()
-                Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler)
+                Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler, True)
             End If
 
         End Sub
