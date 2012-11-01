@@ -3741,11 +3741,13 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcosimFleets(idm)
             bSucces = bSucces And Me.SaveEcosimVulnerabilities(idm)
 
-            'HACK Temp always save shapes cause something is wrong with the IsChange() 
-            'this lets Villy save his changes
-            'If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
-            bSucces = bSucces And Me.SaveShapes(idm)
-            'End If
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
+                bSucces = bSucces And Me.SaveShapes(idm)
+            End If
+
+            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.EcoSim}) Then
+                bSucces = bSucces And Me.SaveShapeAssignments(idm)
+            End If
 
             If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.TimeSeries}) Then
                 bSucces = bSucces And Me.SaveTimeSeries(idm)
@@ -5654,11 +5656,17 @@ Namespace DataSources
                 bSucces = False
             End Try
 
+            Return bSucces
+
+        End Function
+
+        Private Function SaveShapeAssignments(ByVal idm As cIDMappings) As Boolean
+
+            Dim bSucces As Boolean = True
             bSucces = bSucces And SavePredPreyInteractions(idm)
             bSucces = bSucces And SaveLandingsInteractions(idm)
             bSucces = bSucces And SaveMediationWeights(idm)
             bSucces = bSucces And SaveStanzaShapeAssignments(idm)
-
             Return bSucces
 
         End Function
