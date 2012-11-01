@@ -265,7 +265,7 @@ Namespace Ecosim
                 ''  - fix graph scale
 
                 ' JS: this should not be necessary
-                Me.m_zgh.YScaleMax = data.MaxRecruitment * Me.m_zgh.YScaleGrace
+                Me.m_zgh.YScaleMax = data.MaxRecruitment * (1 + Me.m_zgh.YScaleGrace)
                 Me.m_zgh.XScaleMax = data.Biomass(data.NumSteps - 1)
 
                 'now we need some lines:
