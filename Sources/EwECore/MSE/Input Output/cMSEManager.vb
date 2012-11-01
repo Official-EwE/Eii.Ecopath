@@ -408,11 +408,15 @@ Namespace MSE
 
 
         Public Function ValidateRun() As Boolean
-
-            ' Should this method not use Feedback messages where the user can opt to
-            ' cancel the run if data is going to get affected too much?
-
             Dim bOK As Boolean = True
+
+            If Me.ModelParameters.UseLPSolution Then
+                'When running the LP solution
+                'there is no need validate the Fleet Controls
+                'All Fleets are optimized when using the LP
+                Return True
+            End If
+
             'If using Quota regulations and any type of effort
             'make sure there is at least one type of Control has been set
             If Me.ModelParameters.RegulatoryMode = eMSERegulationMode.UseRegulations Then
