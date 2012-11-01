@@ -1089,4 +1089,15 @@ System Error: {0}</value>
     <value>Calculating scaling factor for '{0}' using data set '{1}', converter '{2}'</value>
     <comment>{0}=layer name, {1}=dataset name, {2}=converter name</comment>
   </data>
+  <data name="STANZA_LEADINGB_ADJUSTED" xml:space="preserve">
+    <value>Leading B adjusted for stanza {0}.</value>
+    <comment>{0}=stanza name</comment>
+  </data>
+  <data name="STANZA_LEADINGCB_ADJUSTED" xml:space="preserve">
+    <value>Leading CB adjusted for stanza {0}.</value>
+    <comment>{0}=stanza name</comment>
+  </data>
+  <data name="STANZA_LEADING_ADJUSTED" xml:space="preserve">
+    <value>Leading B and/or CB groups have been adjusted for one or more multi-stanza groups, please validate.</value>
+  </data>
 </root>

@@ -2058,11 +2058,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Leading B and/or CB groups have been adjusted for one or more multi-stanza groups, please validate..
+        '''</summary>
+        Friend Shared ReadOnly Property STANZA_LEADING_ADJUSTED() As String
+            Get
+                Return ResourceManager.GetString("STANZA_LEADING_ADJUSTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Leading group not specified for &apos;{0}&apos;.
         '''</summary>
         Friend Shared ReadOnly Property STANZA_LEADING_MISSING() As String
             Get
                 Return ResourceManager.GetString("STANZA_LEADING_MISSING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Leading B adjusted for stanza {0}..
+        '''</summary>
+        Friend Shared ReadOnly Property STANZA_LEADINGB_ADJUSTED() As String
+            Get
+                Return ResourceManager.GetString("STANZA_LEADINGB_ADJUSTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Leading CB adjusted for stanza {0}..
+        '''</summary>
+        Friend Shared ReadOnly Property STANZA_LEADINGCB_ADJUSTED() As String
+            Get
+                Return ResourceManager.GetString("STANZA_LEADINGCB_ADJUSTED", resourceCulture)
             End Get
         End Property
         

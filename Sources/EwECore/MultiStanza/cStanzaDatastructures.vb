@@ -290,9 +290,7 @@ Public Class cStanzaDatastructures
 
     Public Sub OnPostInitialization()
 
-        ' ToDo: globalize this
-
-        Dim msg As New cMessage("Leading B and/or CB groups have been adjusted for one or more multi-stanza groups, please validate.", eMessageType.DataModified, _
+        Dim msg As New cMessage(My.Resources.CoreMessages.STANZA_LEADING_ADJUSTED, eMessageType.DataModified, _
                                 EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning)
         Dim vs As cVariableStatus = Nothing
         Dim i As Integer = 0
@@ -305,7 +303,7 @@ Public Class cStanzaDatastructures
             If (i <> Me.BaseStanza(iStanza)) Then
                 Me.BaseStanza(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                         String.Format("Leading B adjusted for stanza {0}", Me.StanzaName(iStanza)), _
+                                         String.Format(My.Resources.CoreMessages.STANZA_LEADINGB_ADJUSTED, Me.StanzaName(iStanza)), _
                                          EwEUtils.Core.eVarNameFlags.LeadingBiomass, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
                 msg.AddVariable(vs)
             End If
@@ -315,7 +313,7 @@ Public Class cStanzaDatastructures
             If (i <> Me.BaseStanzaCB(iStanza)) Then
                 Me.BaseStanzaCB(iStanza) = i
                 vs = New cVariableStatus(eStatusFlags.MissingParameter, _
-                                         String.Format("Leading CB adjusted for stanza {0}", Me.StanzaName(iStanza)), _
+                                         String.Format(My.Resources.CoreMessages.STANZA_LEADINGCB_ADJUSTED, Me.StanzaName(iStanza)), _
                                          EwEUtils.Core.eVarNameFlags.LeadingCB, EwEUtils.Core.eDataTypes.Stanza, EwEUtils.Core.eCoreComponentType.EcoPath, iStanza)
                 msg.AddVariable(vs)
             End If
