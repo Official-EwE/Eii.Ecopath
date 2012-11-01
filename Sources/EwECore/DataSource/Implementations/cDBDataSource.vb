@@ -3741,9 +3741,11 @@ Namespace DataSources
             bSucces = bSucces And Me.SaveEcosimFleets(idm)
             bSucces = bSucces And Me.SaveEcosimVulnerabilities(idm)
 
-            If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
-                bSucces = bSucces And Me.SaveShapes(idm)
-            End If
+            'HACK Temp always save shapes cause something is wrong with the IsChange() 
+            'this lets Villy save his changes
+            'If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.ShapesManager}) Then
+            bSucces = bSucces And Me.SaveShapes(idm)
+            'End If
 
             If bDuplicating Or Me.IsChanged(New eCoreComponentType() {eCoreComponentType.TimeSeries}) Then
                 bSucces = bSucces And Me.SaveTimeSeries(idm)
