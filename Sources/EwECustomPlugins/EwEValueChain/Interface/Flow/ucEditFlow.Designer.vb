@@ -34,7 +34,7 @@ Partial Class ucEditFlow
         Me.m_tsbSave = New System.Windows.Forms.ToolStripSplitButton()
         Me.m_tsmiSave = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiExportToImage = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_ts1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbAdd = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_tsbCreateProducersForFleets = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
@@ -44,23 +44,24 @@ Partial Class ucEditFlow
         Me.m_tsbCreateWholesaler = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsbCreateRetailer = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsbCreateConsumer = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_ts2 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbMove = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbLink = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbDelete = New System.Windows.Forms.ToolStripButton()
-        Me.m_tsSeparator = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_ts3 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbShowGrid = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbArrange = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbLocalNames = New System.Windows.Forms.ToolStripButton()
+        Me.m_ts4 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsddZoom = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_ts5 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tssbConvert = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_split = New System.Windows.Forms.SplitContainer()
+        Me.m_plFlow = New EwEValueChainPlugin.plFlow()
         Me.m_tlpDetails = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pgDetails = New System.Windows.Forms.PropertyGrid()
         Me.m_hdrDetails = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_plFlow = New EwEValueChainPlugin.plFlow()
         Me.m_selector = New EwEValueChainPlugin.ucSelector2()
-        Me.m_tssbConvert = New System.Windows.Forms.ToolStripDropDownButton()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_split, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_split.Panel1.SuspendLayout()
@@ -72,7 +73,7 @@ Partial Class ucEditFlow
         'm_tsMain
         '
         Me.m_tsMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.ToolStripSeparator3, Me.m_tsbAdd, Me.ToolStripSeparator1, Me.m_tsbMove, Me.m_tsbLink, Me.m_tsbDelete, Me.m_tsSeparator, Me.m_tsbShowGrid, Me.m_tsbArrange, Me.ToolStripSeparator5, Me.m_tsddZoom, Me.ToolStripSeparator2, Me.m_tssbConvert})
+        Me.m_tsMain.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbSave, Me.m_ts1, Me.m_tsbAdd, Me.m_ts2, Me.m_tsbMove, Me.m_tsbLink, Me.m_tsbDelete, Me.m_ts3, Me.m_tsbShowGrid, Me.m_tsbArrange, Me.m_tsbLocalNames, Me.m_ts4, Me.m_tsddZoom, Me.m_ts5, Me.m_tssbConvert})
         Me.m_tsMain.Location = New System.Drawing.Point(0, 0)
         Me.m_tsMain.Name = "m_tsMain"
         Me.m_tsMain.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -104,10 +105,10 @@ Partial Class ucEditFlow
         Me.m_tsmiExportToImage.Size = New System.Drawing.Size(166, 22)
         Me.m_tsmiExportToImage.Text = "E&xport to image..."
         '
-        'ToolStripSeparator3
+        'm_ts1
         '
-        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 38)
+        Me.m_ts1.Name = "m_ts1"
+        Me.m_ts1.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsbAdd
         '
@@ -180,10 +181,10 @@ Partial Class ucEditFlow
         Me.m_tsbCreateConsumer.Size = New System.Drawing.Size(234, 22)
         Me.m_tsbCreateConsumer.Text = "New &consumer"
         '
-        'ToolStripSeparator1
+        'm_ts2
         '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 38)
+        Me.m_ts2.Name = "m_ts2"
+        Me.m_ts2.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsbMove
         '
@@ -217,10 +218,10 @@ Partial Class ucEditFlow
         Me.m_tsbDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbDelete.ToolTipText = "Delete links and units"
         '
-        'm_tsSeparator
+        'm_ts3
         '
-        Me.m_tsSeparator.Name = "m_tsSeparator"
-        Me.m_tsSeparator.Size = New System.Drawing.Size(6, 38)
+        Me.m_ts3.Name = "m_ts3"
+        Me.m_ts3.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsbShowGrid
         '
@@ -241,10 +242,21 @@ Partial Class ucEditFlow
         Me.m_tsbArrange.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         Me.m_tsbArrange.ToolTipText = "Arrange units"
         '
-        'ToolStripSeparator5
+        'm_tsbLocalNames
         '
-        Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
-        Me.ToolStripSeparator5.Size = New System.Drawing.Size(6, 38)
+        Me.m_tsbLocalNames.CheckOnClick = True
+        Me.m_tsbLocalNames.Image = Global.EwEValueChainPlugin.My.Resources.Resources.translate
+        Me.m_tsbLocalNames.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tsbLocalNames.Name = "m_tsbLocalNames"
+        Me.m_tsbLocalNames.Size = New System.Drawing.Size(77, 35)
+        Me.m_tsbLocalNames.Text = "&Local names"
+        Me.m_tsbLocalNames.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.m_tsbLocalNames.ToolTipText = "Show local names instead of standard names, where available"
+        '
+        'm_ts4
+        '
+        Me.m_ts4.Name = "m_ts4"
+        Me.m_ts4.Size = New System.Drawing.Size(6, 38)
         '
         'm_tsddZoom
         '
@@ -255,10 +267,20 @@ Partial Class ucEditFlow
         Me.m_tsddZoom.Text = "Zoom"
         Me.m_tsddZoom.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
         '
-        'ToolStripSeparator2
+        'm_ts5
         '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(6, 38)
+        Me.m_ts5.Name = "m_ts5"
+        Me.m_ts5.Size = New System.Drawing.Size(6, 38)
+        '
+        'm_tssbConvert
+        '
+        Me.m_tssbConvert.Image = CType(resources.GetObject("m_tssbConvert.Image"), System.Drawing.Image)
+        Me.m_tssbConvert.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tssbConvert.Name = "m_tssbConvert"
+        Me.m_tssbConvert.Size = New System.Drawing.Size(76, 35)
+        Me.m_tssbConvert.Text = "Convert to"
+        Me.m_tssbConvert.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
+        Me.m_tssbConvert.ToolTipText = "Convert"
         '
         'm_split
         '
@@ -276,6 +298,21 @@ Partial Class ucEditFlow
         Me.m_split.Size = New System.Drawing.Size(756, 425)
         Me.m_split.SplitterDistance = 571
         Me.m_split.TabIndex = 2
+        '
+        'm_plFlow
+        '
+        Me.m_plFlow.AutoScroll = True
+        Me.m_plFlow.BackColor = System.Drawing.SystemColors.Window
+        Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
+        Me.m_plFlow.ItemFilter = Nothing
+        Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
+        Me.m_plFlow.Name = "m_plFlow"
+        Me.m_plFlow.ShowGrid = False
+        Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
+        Me.m_plFlow.TabIndex = 0
+        Me.m_plFlow.UnitFilter = Nothing
         '
         'm_tlpDetails
         '
@@ -316,21 +353,6 @@ Partial Class ucEditFlow
         Me.m_hdrDetails.Text = "Selection details"
         Me.m_hdrDetails.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_plFlow
-        '
-        Me.m_plFlow.AutoScroll = True
-        Me.m_plFlow.BackColor = System.Drawing.SystemColors.Window
-        Me.m_plFlow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.m_plFlow.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plFlow.EditMode = EwEValueChainPlugin.plFlow.eEditMode.Move
-        Me.m_plFlow.ItemFilter = Nothing
-        Me.m_plFlow.Location = New System.Drawing.Point(0, 0)
-        Me.m_plFlow.Name = "m_plFlow"
-        Me.m_plFlow.ShowGrid = False
-        Me.m_plFlow.Size = New System.Drawing.Size(571, 425)
-        Me.m_plFlow.TabIndex = 0
-        Me.m_plFlow.UnitFilter = Nothing
-        '
         'm_selector
         '
         Me.m_selector.Dock = System.Windows.Forms.DockStyle.Fill
@@ -340,16 +362,6 @@ Partial Class ucEditFlow
         Me.m_selector.Selection = New EwEUtils.Database.cEwEDatabase.cOOPStorable(-1) {}
         Me.m_selector.Size = New System.Drawing.Size(181, 120)
         Me.m_selector.TabIndex = 1
-        '
-        'm_tssbConvert
-        '
-        Me.m_tssbConvert.Image = CType(resources.GetObject("m_tssbConvert.Image"), System.Drawing.Image)
-        Me.m_tssbConvert.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.m_tssbConvert.Name = "m_tssbConvert"
-        Me.m_tssbConvert.Size = New System.Drawing.Size(76, 35)
-        Me.m_tssbConvert.Text = "Convert to"
-        Me.m_tssbConvert.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText
-        Me.m_tssbConvert.ToolTipText = "Convert"
         '
         'ucEditFlow
         '
@@ -379,20 +391,18 @@ Partial Class ucEditFlow
     Private WithEvents m_tsbCreateWholesaler As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbCreateRetailer As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsbCreateConsumer As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_ts2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_split As System.Windows.Forms.SplitContainer
-    Private WithEvents m_plFlow As plFlow
     Private WithEvents m_pgDetails As System.Windows.Forms.PropertyGrid
     Private WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbMove As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbLink As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbAdd As System.Windows.Forms.ToolStripDropDownButton
     Private WithEvents m_tsbDelete As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsSeparator As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_ts3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbArrange As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbShowGrid As System.Windows.Forms.ToolStripButton
-    Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
-    Private WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_ts4 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsddZoom As System.Windows.Forms.ToolStripDropDownButton
     Private WithEvents m_tsbSave As System.Windows.Forms.ToolStripSplitButton
     Private WithEvents m_tsmiExportToImage As System.Windows.Forms.ToolStripMenuItem
@@ -400,7 +410,10 @@ Partial Class ucEditFlow
     Private WithEvents m_tlpDetails As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_selector As EwEValueChainPlugin.ucSelector2
     Private WithEvents m_hdrDetails As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tssbConvert As System.Windows.Forms.ToolStripDropDownButton
+    Private WithEvents m_ts1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_ts5 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbLocalNames As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_plFlow As EwEValueChainPlugin.plFlow
 
 End Class

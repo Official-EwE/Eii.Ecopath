@@ -583,6 +583,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property translate() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("translate", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Consumer.
         '''</summary>

@@ -235,6 +235,13 @@ Public Class ucEditFlow
         Me.UpdateControls()
     End Sub
 
+    Private Sub OnToggleAltNames(sender As Object, e As System.EventArgs) _
+        Handles m_tsbLocalNames.Click
+        My.Settings.ShowAltNames = Not My.Settings.ShowAltNames
+        Me.UpdateControls()
+        Me.m_plFlow.Invalidate(True)
+    End Sub
+
 #End Region ' Control buttons
 
 #Region " Zoomzoom "
@@ -282,6 +289,7 @@ Public Class ucEditFlow
         Me.m_tsbLink.Checked = (Me.m_plFlow.EditMode = plFlow.eEditMode.Link)
         Me.m_tsbDelete.Checked = (Me.m_plFlow.EditMode = plFlow.eEditMode.Delete)
         Me.m_tsbShowGrid.Checked = Me.m_plFlow.ShowGrid
+        Me.m_tsbLocalNames.Checked = My.Settings.ShowAltNames
 
         For Each item As ToolStripMenuItem In Me.m_tsddZoom.DropDownItems
             item.Checked = (CSng(item.Tag) = Me.m_plFlow.ZoomFactor)

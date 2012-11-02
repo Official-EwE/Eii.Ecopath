@@ -77,6 +77,18 @@ Namespace My
                 Me("AutosaveResults") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property ShowAltNames() As Boolean
+            Get
+                Return CType(Me("ShowAltNames"),Boolean)
+            End Get
+            Set
+                Me("ShowAltNames") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

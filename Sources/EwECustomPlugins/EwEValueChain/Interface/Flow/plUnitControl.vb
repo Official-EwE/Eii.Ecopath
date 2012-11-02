@@ -229,10 +229,13 @@ Public Class plUnitControl
             e.Graphics.DrawImage(img, rcImage, 0, 0, img.Width, img.Height, GraphicsUnit.Pixel)
         End If
 
-        ' Paint text
+        ' Paint unit name or alternate name
         Using br As New SolidBrush(clrText)
             Using ft As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
-                e.Graphics.DrawString(Me.Unit.Name, ft, br, rc)
+                Dim strName As String = ""
+                If My.Settings.ShowAltNames Then strName = Me.Unit.NameLocal
+                If String.IsNullOrWhiteSpace(strName) Then strName = Me.Unit.Name
+                e.Graphics.DrawString(strName, ft, br, rc)
             End Using
         End Using
 
