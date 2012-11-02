@@ -29,7 +29,6 @@ Namespace Ecosim
     Public Interface IBlockSelector
         Inherits IUIElement
 
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Event notifying that the number of blocks have changed.
@@ -40,7 +39,6 @@ Namespace Ecosim
         ''' </param>
         ''' -------------------------------------------------------------------
         Event OnNumBlocksChanged(ByVal sender As IBlockSelector)
-
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -53,10 +51,12 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Event OnBlockSelected(ByVal sender As IBlockSelector)
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Value of a cell (CV) has changed
         ''' </summary>
-        Event onValueChanged(ByVal newValue As Single, ByVal Index As Integer)
+        ''' -------------------------------------------------------------------
+        Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer)
 
         Property NumBlocks() As Integer
         Property SelectedBlock() As Integer
@@ -66,7 +66,6 @@ Namespace Ecosim
 
         Function ValuetoBlock(ByVal cv As Single) As Integer
         Function BlocktoValue(ByVal iBlock As Integer) As Single
-
 
     End Interface
 

@@ -135,7 +135,7 @@ Namespace Ecosim
                 '               Added ControlPanelVisible to provide user with design-time control.
                 Me.ControlPanelVisible = Me.m_DataSource.isControlPanelVisible
 
-                AddHandler BlockSelector.onValueChanged, AddressOf onCVValuesChanged
+                AddHandler BlockSelector.OnValueChanged, AddressOf onCVValuesChanged
 
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".Attach() Exception: " & ex.Message)
@@ -171,7 +171,7 @@ Namespace Ecosim
 
             If (Me.m_bInit) Then
 
-                RemoveHandler Me.m_BlockSelector.onValueChanged, AddressOf Me.onCVValuesChanged
+                RemoveHandler Me.m_BlockSelector.OnValueChanged, AddressOf Me.onCVValuesChanged
                 RemoveHandler Me.m_PropBaseYear.PropertyChanged, AddressOf OnPropChanged
                 Me.m_PropBaseYear = Nothing
 
