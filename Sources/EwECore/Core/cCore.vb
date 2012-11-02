@@ -863,12 +863,12 @@ Public Class cCore
                 '                   In other words, adding or removing groups (batch level Ecopath) will NOT
                 '                   cause batch level Ecosim and higher to automatically reload because Ecopath 
                 '                   will most likely not run. This addresses issue #512
-                Dim iEcosimScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
-                Dim iEcospaceScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE))
-                Dim iEcotracerScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
+                Dim iEcosimScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecosim, Me.m_EcoPathData.ActiveEcosimScenario, cCore.NULL_VALUE))
+                Dim iEcospaceScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecospace, Me.ActiveEcospaceScenarioIndex, cCore.NULL_VALUE))
+                Dim iEcotracerScenarioToLoad As Integer = CInt(IIF(Me.m_batchChangeLevel <= eBatchChangeLevelFlags.Ecotracer, Me.m_EcoPathData.ActiveEcotracerScenario, cCore.NULL_VALUE))
                 Dim iDatasetToReload As Integer = 0
 
-                If (Me.m_batchChangeLevel = eBatchChangeLevelFlags.TimeSeries Or Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecosim) Then
+                If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
                     For ids As Integer = 1 To Me.nTimeSeriesDatasets
                         Dim ds As cTimeSeriesDataset = Me.TimeSeriesDataset(ids)
                         If ds.IsLoaded() Then iDatasetToReload = ids : Exit For
@@ -882,7 +882,7 @@ Public Class cCore
                 If (iEcospaceScenarioToLoad >= 0) Then Me.LoadEcospaceScenario(iEcospaceScenarioToLoad) Else Me.m_StateMonitor.SetEcospaceLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecospace)
                 If (iEcotracerScenarioToLoad >= 0) Then Me.LoadEcotracerScenario(iEcotracerScenarioToLoad) Else Me.m_StateMonitor.SetEcotracerLoaded(Me.m_batchChangeLevel >= eBatchChangeLevelFlags.Ecotracer)
 
-                If (Me.m_batchChangeLevel = eBatchChangeLevelFlags.TimeSeries Or Me.m_batchChangeLevel = eBatchChangeLevelFlags.Ecosim) Then
+                If (Me.m_batchChangeLevel <= eBatchChangeLevelFlags.TimeSeries) Then
                     Me.InitAndLoadEcosimTimeSeriesDatasets()
                     If (iDatasetToReload > 0) Then
                         Me.LoadTimeSeries(iDatasetToReload, True)
