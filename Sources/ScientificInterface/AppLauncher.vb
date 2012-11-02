@@ -516,8 +516,13 @@ Public Class AppLauncher
         Me.m_cmdHelpAbout.AddControl(Me.m_tsmiHelpAbout)
 
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
-        Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
+#If BETA Then
+        Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
+        Me.m_tsbnBeta.Visible = True
+#Else
+        Me.m_tsbnBeta.Visible = False
+#End If
 
         Me.m_cmdPluginGUICommand = New cPluginGUICommand(cmdh)
 
@@ -537,10 +542,6 @@ Public Class AppLauncher
 
         ' Special cases: hide spatial data framework UI
         Me.m_cmdEcospaceDataConnections.IsAvailable = My.Settings.EnableSpatialFramework
-#If Not BETA Then
-        ' Hide BETA features only
-        Me.m_tsbnBeta.Visible = False
-#End If
 
     End Sub
 

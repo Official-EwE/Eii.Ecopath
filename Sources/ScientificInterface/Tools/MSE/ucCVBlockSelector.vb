@@ -40,10 +40,14 @@ Public Class ucCVBlockSelector
     Private m_numBlocks As Integer
     Private m_cvs() As Single
 
+    ''' <inheritdocs cref="IBlockSelector.OnBlockSelected"/>
     Public Event OnBlockSelected(ByVal sender As IBlockSelector) Implements IBlockSelector.OnBlockSelected
+
+    ''' <inheritdocs cref="IBlockSelector.OnNumBlocksChanged"/>
     Public Event OnNumBlocksChanged(ByVal sender As IBlockSelector) Implements IBlockSelector.OnNumBlocksChanged
 
-    Public Event onValueChanged(ByVal newValue As Single, ByVal Index As Integer) Implements IBlockSelector.onValueChanged
+    ''' <inheritdocs cref="IBlockSelector.OnValueChanged"/>
+    Public Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer) Implements IBlockSelector.OnValueChanged
 
 #End Region ' Private vars
 
