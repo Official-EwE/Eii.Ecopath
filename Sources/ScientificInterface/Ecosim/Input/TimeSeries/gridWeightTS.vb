@@ -64,7 +64,7 @@ Public Class gridWeightTS
                 ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
                 ts.CV = CSng(Me(iRow, CInt(eColumnTypes.CV)).Value)
             Next
-            Me.UIContext.Core.UpdateTimeSeries(True)
+            Me.UIContext.Core.UpdateTimeSeries(False)
         Catch ex As Exception
             Return False
         End Try
