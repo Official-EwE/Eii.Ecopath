@@ -6700,6 +6700,12 @@ Namespace DataSources
             ' JS 20oct07: data source should NOT do this; is responsibility of core logic
             tsDS.nGroups = ecopathDS.NumGroups
 
+            ' JS 02Nov12: The data base structure shows a severy limitation. If an Ecopath group is deleted, the associated
+            ' record in EcosimTimeSeriesGroup is automaticall removed through cascading data rules which is correct.
+            ' However, the master EcosimTimeSeries record is left in place. Althoug this has no implications for the
+            ' functioning of Ecosim, this deficiendcy breaks the time series structure which cannot be repaired with any 
+            ' EwE tool other a time series reimport.
+
             If (iDataset > 0) Then
 
                 Try
