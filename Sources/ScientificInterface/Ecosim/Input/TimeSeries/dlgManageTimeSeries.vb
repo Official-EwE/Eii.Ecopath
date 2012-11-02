@@ -175,7 +175,7 @@ Public Class dlgManageTimeSeries
                 End If
 
             Case eModeType.Weight
-                Me.ApplyTimeSeries()
+                Me.ApplyTimeSeries(False)
 
             Case eModeType.Import
                 Me.ImportDataset()
@@ -521,8 +521,8 @@ Public Class dlgManageTimeSeries
     ''' Apply selected TS
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Function ApplyTimeSeries(Optional ByVal bApplyAll As Boolean = False) As Boolean
-        Return Me.m_gridWeights.Apply(bApplyAll)
+    Private Function ApplyTimeSeries(ByVal bIsLoading As Boolean) As Boolean
+        Return Me.m_gridWeights.Apply(bIsLoading)
     End Function
 
 #End Region ' Weight

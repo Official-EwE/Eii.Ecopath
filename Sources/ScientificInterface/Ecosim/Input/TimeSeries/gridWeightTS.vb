@@ -49,7 +49,7 @@ Public Class gridWeightTS
         Next
     End Sub
 
-    Public Function Apply(Optional ByVal bEnableAll As Boolean = False) As Boolean
+    Public Function Apply(ByVal bIsLoading As Boolean) As Boolean
 
         ' Make sure this method is executed only when allowed
         If (Me.Core.ActiveTimeSeriesDatasetIndex <= 0) Then Return True
@@ -63,8 +63,8 @@ Public Class gridWeightTS
                 cbc = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
                 ts = DirectCast(cbc.Tag, cTimeSeries)
 
-                bChanged = bChanged Or (ts.Enabled <> (bEnableAll Or cbc.Checked))
-                ts.Enabled = bEnableAll Or cbc.Checked
+                bChanged = bChanged Or (ts.Enabled <> cbc.Checked)
+                ts.Enabled = bIsLoading Or cbc.Checked
 
                 bChanged = bChanged Or (ts.WtType <> CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value))
                 ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
@@ -72,7 +72,7 @@ Public Class gridWeightTS
                 bChanged = bChanged Or (ts.WtType <> CSng(Me(iRow, CInt(eColumnTypes.CV)).Value))
                 ts.CV = CSng(Me(iRow, CInt(eColumnTypes.CV)).Value)
             Next
-            Me.UIContext.Core.UpdateTimeSeries(bChanged)
+            Me.UIContext.Core.UpdateTimeSeries(bChanged And Not bIsLoading)
         Catch ex As Exception
             Return False
         End Try
