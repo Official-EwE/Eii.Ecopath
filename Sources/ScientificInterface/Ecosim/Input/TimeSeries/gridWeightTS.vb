@@ -57,14 +57,22 @@ Public Class gridWeightTS
         Try
             Dim cbc As SourceGrid2.Cells.Real.CheckBox = Nothing
             Dim ts As cTimeSeries = Nothing
+            Dim bChanged As Boolean = False
+
             For iRow As Integer = 1 To Me.RowsCount - 1
                 cbc = DirectCast(Me(iRow, CInt(eColumnTypes.Enabled)), SourceGrid2.Cells.Real.CheckBox)
                 ts = DirectCast(cbc.Tag, cTimeSeries)
+
+                bChanged = bChanged Or (ts.Enabled <> (bEnableAll Or cbc.Checked))
                 ts.Enabled = bEnableAll Or cbc.Checked
+
+                bChanged = bChanged Or (ts.WtType <> CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value))
                 ts.WtType = CSng(Me(iRow, CInt(eColumnTypes.Weight)).Value)
+
+                bChanged = bChanged Or (ts.WtType <> CSng(Me(iRow, CInt(eColumnTypes.CV)).Value))
                 ts.CV = CSng(Me(iRow, CInt(eColumnTypes.CV)).Value)
             Next
-            Me.UIContext.Core.UpdateTimeSeries(False)
+            Me.UIContext.Core.UpdateTimeSeries(bChanged)
         Catch ex As Exception
             Return False
         End Try
