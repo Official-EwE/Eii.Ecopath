@@ -439,6 +439,7 @@ Namespace Ecospace
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 
+            aCells(eColumnTypes.LayerName).VisualModel = vm
             pos = New Position(iRow, eColumnTypes.LayerStatus)
             aCells(eColumnTypes.LayerStatus).VisualModel = vm
             aCells(eColumnTypes.LayerStatus).SetValue(pos, strText)

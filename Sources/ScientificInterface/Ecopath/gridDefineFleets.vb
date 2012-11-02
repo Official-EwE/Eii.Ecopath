@@ -427,6 +427,8 @@ Imports EwEUtils.Core
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
 
+        aCells(eColumnTypes.FleetName).VisualModel = vm
+
         pos = New Position(iRow, eColumnTypes.FleetStatus)
         aCells(eColumnTypes.FleetStatus).VisualModel = vm
         aCells(eColumnTypes.FleetStatus).SetValue(pos, strText)

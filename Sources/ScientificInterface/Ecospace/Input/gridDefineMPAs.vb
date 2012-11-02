@@ -457,6 +457,7 @@ Namespace Ecospace
             End Select
 
             ' Set modification status
+            aCells(eColumnTypes.MPAName).VisualModel = vm
             pos = New Position(iRow, eColumnTypes.MPAStatus)
             aCells(eColumnTypes.MPAStatus).VisualModel = vm
             aCells(eColumnTypes.MPAStatus).SetValue(pos, strText)

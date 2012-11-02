@@ -965,6 +965,8 @@ Public Class gridDefineGroups
         Me(iRow, eColumnTypes.GroupStatus).VisualModel = vm
         Me(iRow, eColumnTypes.GroupStatus).SetValue(pos, strText)
 
+        Me(iRow, eColumnTypes.GroupName).VisualModel = vm
+
         Me.UpdateStanzaCells(iRow)
 
         Me.AllowUpdates = True

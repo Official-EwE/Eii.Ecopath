@@ -669,6 +669,7 @@ Public Class gridDefineTaxonomy
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
 
+        Me(iRow, eColumnTypes.Name).VisualModel = vm
         Me(iRow, eColumnTypes.Status).VisualModel = vm
         Me(iRow, eColumnTypes.Status).Value = strText
 

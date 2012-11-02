@@ -392,6 +392,7 @@ Namespace Ecospace
                     strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
             End Select
 
+            aCells(eColumnTypes.HabitatName).VisualModel = vm
             pos = New Position(iRow, eColumnTypes.HabitatStatus)
             aCells(eColumnTypes.HabitatStatus).VisualModel = vm
             aCells(eColumnTypes.HabitatStatus).SetValue(pos, strText)

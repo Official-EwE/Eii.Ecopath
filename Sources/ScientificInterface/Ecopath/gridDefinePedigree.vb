@@ -779,6 +779,8 @@ Imports SourceGrid2.Cells
                 strText = My.Resources.GENERIC_ITEMSTATUS_DELETEPENDING
         End Select
 
+        Me(iRow, eColumnTypes.LevelName).VisualModel = vm
+
         Me(iRow, eColumnTypes.LevelStatus).VisualModel = vm
         Me(iRow, eColumnTypes.LevelStatus).Value = strText
 
