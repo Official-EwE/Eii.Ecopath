@@ -739,6 +739,7 @@ Namespace Controls
             Dim iGroupStart As Integer = 1
             Dim iGroupEnd As Integer = 1
             Dim bSorted As Boolean = Me.Sorted
+            Dim bSelected As Boolean = (Me.SelectedIndex > -1)
 
             If (Not Me.IsInitialized()) Then Return
 
@@ -801,7 +802,7 @@ Namespace Controls
             Me.ResumeLayout()
 
             ' Todo: preserve selection
-            If Me.Items.Count > 0 Then Me.SelectedIndex = 0
+            If (Me.Items.Count > 0 And bSelected) Then Me.SelectedIndex = 0
 
         End Sub
 

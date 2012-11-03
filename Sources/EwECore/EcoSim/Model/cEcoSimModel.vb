@@ -2209,7 +2209,8 @@ Namespace Ecosim
                         'squared sum of log prediction error by datatype
                         DatSumZ2(j) = DatSumZ2(j) + Zstat * Zstat
 
-                    ElseIf m_TracerData.EcoSimConSimOn And m_RefData.DatVal(iDyear, j) > 0 And (m_RefData.DatType(j) = 8 Or m_RefData.DatType(j) = 9) Then
+                    ElseIf (m_TracerData.EcoSimConSimOn And m_RefData.DatVal(iDyear, j) > 0) And _
+                           (m_RefData.DatType(j) = eTimeSeriesType.EcotracerConcRel Or m_RefData.DatType(j) = eTimeSeriesType.EcotracerConcAbs) Then
 
                         'ToDo_jb AccumulateDataInfo contaminant tracing
                         'If TracerData.ConcTr(DatPool(j)) > 0 Then
