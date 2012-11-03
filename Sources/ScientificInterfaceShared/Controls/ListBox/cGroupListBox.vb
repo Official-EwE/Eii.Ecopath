@@ -746,6 +746,7 @@ Namespace Controls
 
             ' ToDo_JS: Preserve group selection
             Me.SuspendLayout()
+            Me.Sorted = False
 
             ' Clear items
             Me.Items.Clear()
@@ -795,7 +796,10 @@ Namespace Controls
                 End If
             Next
 
+            Me.Sorted = True
             Me.ResumeLayout()
+
+            If Me.Items.Count > 0 Then Me.SelectedIndex = 0
 
         End Sub
 
