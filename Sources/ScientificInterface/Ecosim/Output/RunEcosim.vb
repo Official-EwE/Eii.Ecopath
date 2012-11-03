@@ -701,28 +701,7 @@ Namespace Ecosim
 
         Private Sub PopulateGroupBox()
 
-            Dim sSumDiscardsLandings As Double = 0.0
-            Dim group As cCoreGroupBase = Nothing
-            'Dim gi As cGroupListBox.cGroupItem = Nothing
-            'Dim bIncludeGroup As Boolean = False
-            Dim groupSelected As cCoreGroupBase = Nothing
-
-            If (Me.m_lbGroups.SelectedIndex > 0) Then
-                groupSelected = Me.m_lbGroups.SelectedGroup
-            End If
-
-            Me.m_lbGroups.SuspendLayout()
-
-            Me.m_lbGroups.Sorted = False
-            Me.m_lbGroups.ShowAllGroupsItem = True
             Me.m_lbGroups.Populate()
-
-            If Me.m_lbGroups.SelectedItem Is Nothing Then
-                Me.m_lbGroups.SelectedIndex = 0
-            End If
-
-            Me.m_lbGroups.Sorted = True
-            Me.m_lbGroups.ResumeLayout()
 
         End Sub
 
