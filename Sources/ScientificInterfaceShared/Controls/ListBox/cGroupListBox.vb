@@ -738,6 +738,7 @@ Namespace Controls
             Dim bIncludeGroup As Boolean = False
             Dim iGroupStart As Integer = 1
             Dim iGroupEnd As Integer = 1
+            Dim bSorted As Boolean = Me.Sorted
 
             If (Not Me.IsInitialized()) Then Return
 
@@ -796,7 +797,7 @@ Namespace Controls
                 End If
             Next
 
-            Me.Sorted = True
+            Me.Sorted = bSorted
             Me.ResumeLayout()
 
             If Me.Items.Count > 0 Then Me.SelectedIndex = 0
