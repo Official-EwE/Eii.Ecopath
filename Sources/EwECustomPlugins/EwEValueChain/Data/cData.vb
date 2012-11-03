@@ -373,6 +373,25 @@ Public Class cData
         Next
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Diagnostics to determine whether the entire chain computed correctly.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Function HasCompletedRun() As Boolean
+        Dim unit As cUnit = Nothing
+        For iSequence As Integer = 0 To Me.UnitCount - 1
+            unit = Me.Unit(iSequence)
+            If Not unit.HasComputed Then
+#If DEBUG Then
+                Debug.Assert(False, "Chain did not compute correctly for unit " & unit.Name)
+#End If
+                Return False
+            End If
+        Next
+        Return True
+    End Function
+
 #End Region ' Running
 
 #Region " Parameters "

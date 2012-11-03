@@ -327,6 +327,10 @@ Public Class cPluginPoint
         ' Run a single time step
         Me.m_model.RunTimeStep(Me.m_data, Me.m_result, 1)
 
+#If DEBUG Then
+        Debug.Assert(Me.m_data.HasCompletedRun(), "Chain computations are broken; one or more units did not compute")
+#End If
+
         ' Send out data
         Me.BroadcastResults(1)
 
