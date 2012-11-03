@@ -800,6 +800,7 @@ Namespace Controls
             Me.Sorted = bSorted
             Me.ResumeLayout()
 
+            ' Todo: preserve selection
             If Me.Items.Count > 0 Then Me.SelectedIndex = 0
 
         End Sub
@@ -924,9 +925,6 @@ Namespace Controls
         ''' </summary>
         ''' ---------------------------------------------------------------
         Protected Overrides Sub Sort()
-
-            ' Prevent listbox from re-sorting (ugh)
-            Me.Sorted = False
 
             Dim items(Me.Items.Count - 1) As cGroupItem
             Me.Items.CopyTo(items, 0)

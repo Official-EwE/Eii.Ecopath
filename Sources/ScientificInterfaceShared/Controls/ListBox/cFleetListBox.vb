@@ -647,14 +647,15 @@ Namespace Controls
 
             Dim iFleetStart As Integer = 1
             Dim iFleetEnd As Integer = 1
+            Dim bSorted As Boolean = Me.Sorted
 
             If (Not Me.IsInitialized()) Then Return
 
             ' Stop automatic tracking if a manual list is provided
             If aiFleets IsNot Nothing Then Me.m_fleettrackingtype = eFleetTrackingType.Manual
 
-            ' ToDo_JS: Preserve fleet selection
             Me.SuspendLayout()
+            Me.Sorted = False
 
             ' Clear items
             Me.Items.Clear()
@@ -691,7 +692,11 @@ Namespace Controls
 
             End Select
 
+            Me.Sorted = bSorted
             Me.ResumeLayout()
+
+            ' Todo: preserve selection
+            If Me.Items.Count > 0 Then Me.SelectedIndex = 0
 
         End Sub
 
@@ -783,9 +788,6 @@ Namespace Controls
         ''' ---------------------------------------------------------------
         Protected Overrides Sub Sort()
 
-              ' Prevent listbox from re-sorting (ugh)
-            Me.Sorted = False
-
             Dim items(Me.Items.Count - 1) As cFleetItem
             Me.Items.CopyTo(items, 0)
             Array.Sort(items, New cFleetItemComparer(Me.m_sortType))
@@ -795,98 +797,6 @@ Namespace Controls
             Next
 
         End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Compare two items in the listbox for sorting.
-        ''' </summary>
-        ''' <param name="i1"></param>
-        ''' <param name="i2"></param>
-        ''' <returns>
-        ''' <list>
-        ''' <item><description>-1 if i1 is less than i2</description></item>
-        ''' <item><description>0 if i1 equals i2</description></item>
-        ''' <item><description>1 if i1 is greater than i2</description></item>
-        ''' </list>
-        ''' </returns>
-        ''' -------------------------------------------------------------------
-        Protected Overridable Function Compare(ByVal i1 As Object, ByVal i2 As Object) As Integer
-            Dim gi1 As cFleetItem = Nothing
-            Dim fleet1 As cFleetInput = Nothing
-            Dim gi2 As cFleetItem = Nothing
-            Dim fleet2 As cFleetInput = Nothing
-
-            ' Get sortable items
-            If TypeOf (i1) Is cFleetItem Then gi1 = DirectCast(i1, cFleetItem) : fleet1 = gi1.Source
-            If TypeOf (i2) Is cFleetItem Then gi2 = DirectCast(i2, cFleetItem) : fleet2 = gi2.Source
-
-            ' Weed out any incompatible item comparisons
-            If (gi1 Is Nothing) Then
-                If (gi2 Is Nothing) Then
-                    ' Not sortable
-                    Return 0
-                Else
-                    ' Non-fleet item sorts before fleet item
-                    Return 1
-                End If
-            Else
-                If (gi2 Is Nothing) Then
-                    ' Non-fleet item sorts before fleet item
-                    Return -1
-                End If
-            End If
-
-            ' Ok, two cFleetItems to compare
-            ' Do both have fleets attached?
-            If (fleet1 Is Nothing) Then
-                If (fleet2 Is Nothing) Then
-                    ' Not sortable
-                    Return 0
-                Else
-                    ' Non-fleet item sorts before fleet item
-                    Return 1
-                End If
-            Else
-                If (fleet2 Is Nothing) Then
-                    ' Non-fleet item sorts before fleet item
-                    Return -1
-                End If
-            End If
-
-            ' Ok, we have two valid fleets to compare!
-            Select Case Me.m_sortType
-
-                Case eSortType.FleetIndexAsc
-                    If fleet1.Index < fleet2.Index Then Return -1
-                    If fleet1.Index = fleet2.Index Then Return 0
-                    Return 1
-
-                Case eSortType.FleetIndexDesc
-                    If fleet1.Index > fleet2.Index Then Return -1
-                    If fleet1.Index = fleet2.Index Then Return 0
-                    Return 1
-
-                Case eSortType.FleetNameAsc
-                    Return String.Compare(fleet1.Name, fleet2.Name)
-
-                Case eSortType.FleetNameDesc
-                    Return String.Compare(fleet2.Name, fleet1.Name)
-
-                Case eSortType.ValueAsc
-                    If gi1.SortValue < gi2.SortValue Then Return -1
-                    If gi1.SortValue = gi2.SortValue Then Return 0
-                    Return 1
-
-                Case eSortType.ValueDesc
-                    If gi1.SortValue > gi2.SortValue Then Return -1
-                    If gi1.SortValue = gi2.SortValue Then Return 0
-                    Return 1
-
-            End Select
-
-            Return 0
-
-        End Function
 
 #End Region ' Internals
 
