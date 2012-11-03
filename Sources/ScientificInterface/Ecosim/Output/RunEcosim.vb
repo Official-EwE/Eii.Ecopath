@@ -372,6 +372,8 @@ Namespace Ecosim
         Private Sub lb_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbRuns.SelectedIndexChanged, m_lbGroups.SelectedIndexChanged
 
+            If Me.m_zgp Is Nothing Then Return
+
             If Me.m_bInUpdate Then Return
             Me.m_bInUpdate = True
 

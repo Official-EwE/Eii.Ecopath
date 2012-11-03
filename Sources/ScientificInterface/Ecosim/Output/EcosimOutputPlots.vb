@@ -188,6 +188,8 @@ Namespace Ecosim
         Private Sub OnGroupSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_lbGroups.SelectedIndexChanged
 
+            If (Me.m_zgh Is Nothing) Then Return
+
             Me.AddCurves()
             Me.m_zgh.RescaleAndRedraw()
 
