@@ -520,7 +520,7 @@ Public Class cModel
         Else
             ' #Yes: run for Ecosim
             ' JS 19Nov11: use Ecosim value for time step
-            Return ecosimDS.ResultsSumValueByGroupGear(iGroup, iFleet, iTimeStep) * ecosimresults.BCatch(iGroup, iFleet) * sArea
+            Return ecosimDS.ResultsSumValueByGroupGear(iGroup, iFleet, iTimeStep) * sArea
         End If
 
     End Function
