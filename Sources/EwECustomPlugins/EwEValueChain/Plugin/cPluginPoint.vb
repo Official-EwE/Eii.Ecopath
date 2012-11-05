@@ -384,6 +384,8 @@ Public Class cPluginPoint
         If (parms Is Nothing) Then Return
         ' Abort if not allowed to run with Ecosim
         If (parms.RunWithEcosim = False) Then Return
+        ' Do not run with searches
+        If (Me.m_data.Core.StateMonitor.IsSearching) Then Return
 
         ' Run VC model
         Me.m_model.RunTimeStep(Me.m_data, Me.m_result, iTimeStep, DirectCast(ecosimresults, cEcoSimResults), DirectCast(EcosimDatastructures, cEcosimDatastructures))
