@@ -82,13 +82,13 @@ Public Class ucResults
 
     End Class
 
-    Private Class cTimeStepComboItem
+    Private Class cYearComboItem
 
-        Private m_iStep As Integer
+        Private m_iYear As Integer
         Private m_strLabel As String
 
-        Public Sub New(ByVal iStep As Integer, ByVal strLabel As String)
-            Me.m_iStep = iStep
+        Public Sub New(ByVal iYear As Integer, ByVal strLabel As String)
+            Me.m_iYear = iYear
             Me.m_strLabel = strLabel
         End Sub
 
@@ -96,9 +96,9 @@ Public Class ucResults
             Return Me.m_strLabel
         End Function
 
-        Public ReadOnly Property TimeStep() As Integer
+        Public ReadOnly Property Year() As Integer
             Get
-                Return Me.m_iStep
+                Return Me.m_iYear
             End Get
         End Property
 
@@ -544,7 +544,7 @@ Public Class ucResults
         End If
 
         If Me.m_view IsNot Nothing Then
-            Me.m_view.ShowResults(iItem, Me.m_plFlow.GetFlowUnits(), Me.m_result, Me.SelectedTimeStep())
+            Me.m_view.ShowResults(iItem, Me.m_plFlow.GetFlowUnits(), Me.m_result, Me.SelectedYear())
         End If
 
     End Sub
@@ -583,12 +583,12 @@ Public Class ucResults
     Private Sub UpdateYearCombo()
 
         ' Fill time step drop down
-        Me.m_tscbYear.Items.Clear()
         Dim iYearStart As Integer = Me.m_data.Core.EcosimFirstYear
         Dim iStepsPerYear As Integer = CInt(Me.m_data.Core.nEcosimTimeSteps / Math.Max(1, Me.m_data.Core.nEcosimYears))
-        Me.m_tscbYear.Items.Add(New cTimeStepComboItem(1, "Ecopath"))
+
+        Me.m_tscbYear.Items.Clear()
         For iYear As Integer = 0 To Me.m_data.Core.nEcosimYears - 1
-            Me.m_tscbYear.Items.Add(New cTimeStepComboItem(CInt((iYear + 0.5) * iStepsPerYear), CStr(iYearStart + iYear)))
+            Me.m_tscbYear.Items.Add(New cYearComboItem(iYear, CStr(iYearStart + iYear)))
         Next
         Me.m_tscbYear.SelectedIndex = 0
 
@@ -636,7 +636,7 @@ Public Class ucResults
 
         Dim ctrl As ScrollableControl = Nothing
 
-         ' Store view mode type
+        ' Store view mode type
         Me.m_viewMode = viewMode
 
         ' Create new view
@@ -783,10 +783,10 @@ Public Class ucResults
         Return Nothing
     End Function
 
-    Private Function SelectedTimeStep() As Integer
-        Dim item As cTimeStepComboItem = DirectCast(Me.m_tscbYear.SelectedItem, cTimeStepComboItem)
-        If (item Is Nothing) Then Return 1
-        Return item.TimeStep
+    Private Function SelectedYear() As Integer
+        Dim item As cYearComboItem = DirectCast(Me.m_tscbYear.SelectedItem, cYearComboItem)
+        If (item Is Nothing) Then Return 0
+        Return item.Year
     End Function
 
 #End Region ' Internals 

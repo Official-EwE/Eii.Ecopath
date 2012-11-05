@@ -31,12 +31,12 @@ Public Interface IResultView
     ''' </summary>
     ''' <param name="iFleet"></param>
     ''' <param name="lUnits"></param>
-    ''' <param name="iTimeStep">Time step to show.</param>
+    ''' <param name="iYear">Year to show.</param>
     ''' <param name="result"></param>
     ''' -----------------------------------------------------------------------
     Sub ShowResults(ByVal iFleet As Integer, _
                     ByVal lUnits As cUnit(), _
                     ByVal result As cResults, _
-                    ByVal iTimeStep As Integer)
+                    ByVal iYear As Integer)
 
 End Interface
