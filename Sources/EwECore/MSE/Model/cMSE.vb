@@ -422,6 +422,7 @@ Namespace MSE
                     Next
                 Next
 
+
             Catch ex As Exception
                 cLog.Write(ex)
                 Throw New ApplicationException(Me.ToString & ".InitForRun() Error:" & ex.Message, ex)
@@ -743,6 +744,26 @@ Namespace MSE
 
             For igrp As Integer = 1 To Me.m_epdata.NumLiving
                 Me.m_Search.CatchYearGroup(igrp) = Me.m_epdata.fCatch(igrp)
+            Next
+
+            'Ecosim will not set F from Effort if there is F timeseries loaded
+            'This will turn OFF the Forced F for groups that are fished by a Controlled Fleet
+            For igrp As Integer = 1 To Me.m_data.nLiving
+                If Me.m_esData.FisForced(igrp) = True Then
+                    'Only if the group has forced F's
+                    For iflt As Integer = 1 To Me.m_data.nFleets
+                        If Me.m_esData.FishMGear(iflt, igrp) > 0 Then
+                            'Only if this fleet catches this group
+                            If Me.m_data.QuotaType(iflt) <> eQuotaTypes.NoControls Then
+                                'Only if there are quota control on this fleet
+                                Me.m_esData.FisForced(igrp) = False
+                                'Once F is no longer forced for this group 
+                                'there is no point in checking the other fleets that fish this group
+                                Exit For
+                            End If
+                        End If
+                    Next
+                End If
             Next
 
         End Sub
@@ -1194,11 +1215,15 @@ Namespace MSE
                         'Catch base on the regulated effort
                         'Me.CalcCatch(Biomass, QMult, QYear, iTimeStep)
 
-                        'Ecosim will not set F from Effort if there is F timeseries loaded
-                        'this tell Ecosim that there is NO timeseries loaded, even if there is...
-                        For igrp As Integer = 1 To Me.m_data.nLiving
-                            Me.m_esData.FisForced(igrp) = False
-                        Next
+                        '5-Nov-2012 jb Moved check of FisForced() to InitForTrial
+                        'And changed it to only set FisForced()=False if the Fleet is controled
+                        ''Ecosim will not set F from Effort if there is F timeseries loaded
+                        ''this tell Ecosim that there is NO timeseries loaded, even if there is...
+                        'For igrp As Integer = 1 To Me.m_data.nLiving
+                        '    If Me.m_esData.FisForced(igrp) = True Then
+                        '           Me.m_esData.FisForced(igrp) = False
+                        '    End If
+                        'Next
 
                         Me.m_Ecosim.SetFtimeFromGear(Biomass, iTimeStep, QYear, Me.m_esData.PredictSimEffort)
 
@@ -1258,7 +1283,7 @@ Namespace MSE
                     'Forced Mortality (Z)
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality PoolForceZ(group, 0) = 0 is No forcng
                     If iyear <= Me.m_refData.NdatYear Then
-                        Me.m_refData.PoolForceZ(igrp, 0) = CSng(IIf(Me.m_refData.PoolForceZ(igrp, iyear) > 0, Me.m_refData.PoolForceZ(igrp, iyear), 0))
+                        Me.m_refData.PoolForceZ(igrp, 0) = CSng(IIF(Me.m_refData.PoolForceZ(igrp, iyear) > 0, Me.m_refData.PoolForceZ(igrp, iyear), 0))
                     End If
 
                 Next igrp
@@ -1458,11 +1483,14 @@ Namespace MSE
                     VPerEffort(iFlt) += Me.m_data.QStar(iGrp, iFlt) * Biomass(iGrp) * Me.m_epdata.Market(iFlt, iGrp) * Me.m_esData.PropLandedTime(iFlt, iGrp)
                 Next iGrp
             Next iFlt
-
+            Dim sumF As Single
             For iGrp = 1 To Me.m_data.nLiving
+                sumF = 0
                 For iFlt = 1 To Me.m_data.nFleets
                     Me.m_LPSolver.SetCoefficient(Me.m_GroupCode(iGrp), Me.m_FleetCode(iFlt), Me.m_data.QStar(iGrp, iFlt))
+                    sumF += Me.m_data.QStar(iGrp, iFlt)
                 Next
+                'Debug.Assert(sumF <= Me.m_data.FTarget(iGrp))
                 Me.m_LPSolver.SetBounds(Me.m_GroupCode(iGrp), 0, Me.m_data.FTarget(iGrp))
             Next
 
