@@ -29,11 +29,11 @@ Imports System.Text
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
 
-'Imports Microsoft.SolverFoundation.Solvers
-'Imports Microsoft.SolverFoundation.Common
-'Imports Microsoft.SolverFoundation.Services
-
 Namespace MSE
+
+    'ToDo MSE 6-Nov-2012 LPSolver need to decide what to do what the model in Non Optimal INFEASIBLE
+    'ToDo MSE 6-Nov-2012 LPSolver F Timeseries unloading can not be loaded when running LP solution see InitForTrial
+    'ToDo MSE 6-Nov-2012 Debug F Timeseries unloading in  InitForTrial
 
 #Region "Public definitions"
 
