@@ -21,7 +21,7 @@ Imports EwECore
 Namespace Ecopath.Controls.FlowDiagram
 
     Public Class cFlowDiagramData
-        Implements IUIElement
+        Implements IFlowDiagramData
 
         Private m_uic As cUIContext = Nothing
         Private m_sDietMin As Single = 0
@@ -42,7 +42,7 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Properties "
 
         Friend Property UIContext() As cUIContext _
-            Implements IUIElement.UIContext
+            Implements IFlowDiagramData.UIContext
             Get
                 Return Me.m_uic
             End Get
@@ -51,108 +51,129 @@ Namespace Ecopath.Controls.FlowDiagram
             End Set
         End Property
 
-        Public Sub Refresh()
+        Public Sub Refresh() _
+            Implements IFlowDiagramData.Refresh
             Me.m_bInvalid = True
         End Sub
 
-        Public ReadOnly Property RenderFont() As Font
+        Public ReadOnly Property RenderFont() As Font _
+            Implements IFlowDiagramData.RenderFont
             Get
                 Return Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
             End Get
         End Property
 
-        Public ReadOnly Property TextColor() As Color
+        Public ReadOnly Property TextColor() As Color _
+            Implements IFlowDiagramData.TextColor
             Get
                 Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
             End Get
         End Property
 
-        Public ReadOnly Property PreyColor() As Color
+        Public ReadOnly Property PreyColor() As Color _
+            Implements IFlowDiagramData.PreyColor
             Get
                 Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
             End Get
         End Property
 
-        Public ReadOnly Property PredatorColor() As Color
+        Public ReadOnly Property PredatorColor() As Color _
+            Implements IFlowDiagramData.PredatorColor
             Get
                 Return Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
             End Get
         End Property
 
-        Public Property NumGroups() As Integer
-            Set(value As Integer)
-
-            End Set
+        Public ReadOnly Property NumGroups() As Integer _
+            Implements IFlowDiagramData.NumGroups
             Get
                 Return Me.m_uic.Core.nGroups
             End Get
         End Property
 
-        Public ReadOnly Property NumLivingGroups() As Integer
+        Public ReadOnly Property NumLivingGroups() As Integer _
+            Implements IFlowDiagramData.NumLivingGroups
             Get
                 Return Me.m_uic.Core.nLivingGroups
             End Get
         End Property
 
-        Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single
+        Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single _
+            Implements IFlowDiagramData.Biomass
             Get
                 Return Me.m_uic.Core.EcoPathGroupOutputs(iIndex).Biomass
             End Get
         End Property
 
-        Public ReadOnly Property GroupName(ByVal iIndex As Integer) As String
+        Public ReadOnly Property BiomassLabel(sBiomass As Single) As String _
+            Implements IFlowDiagramData.BiomassLabel
+            Get
+                Return String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, Me.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK))
+            End Get
+        End Property
+
+        Public ReadOnly Property GroupName(ByVal iIndex As Integer) As String _
+            Implements IFlowDiagramData.GroupName
             Get
                 Return Me.m_uic.Core.EcoPathGroupInputs(iIndex).Name
             End Get
         End Property
 
-        Public ReadOnly Property GroupColor(ByVal iGroup As Integer) As Color
+        Public ReadOnly Property GroupColor(ByVal iGroup As Integer) As Color _
+            Implements IFlowDiagramData.GroupColor
             Get
                 Return Me.m_uic.StyleGuide.GroupColor(Me.m_uic.Core, iGroup)
             End Get
         End Property
 
-        Public ReadOnly Property GroupVisible(ByVal iGroup As Integer) As Boolean
+        Public ReadOnly Property GroupVisible(ByVal iGroup As Integer) As Boolean _
+            Implements IFlowDiagramData.GroupVisible
             Get
                 Return Me.m_uic.StyleGuide.GroupVisible(iGroup)
             End Get
         End Property
 
-        Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
+        Public ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single _
+            Implements IFlowDiagramData.Diet
             Get
                 Dim group As cEcoPathGroupInput = Me.m_uic.Core.EcoPathGroupInputs(iPred)
                 Return group.DietComp(iPrey)
             End Get
         End Property
 
-        Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single
+        Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single _
+            Implements IFlowDiagramData.TrophicLevel
             Get
                 Return Me.m_uic.Core.EcoPathGroupOutputs(iIndex).TTLX
             End Get
         End Property
 
-        Public ReadOnly Property BiomassMax() As Single
+        Public ReadOnly Property BiomassMax() As Single _
+            Implements IFlowDiagramData.BiomassMax
             Get
                 If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sBiomassMax
             End Get
         End Property
 
-        Public ReadOnly Property MinBiomass() As Single
+        Public ReadOnly Property BiomassMin() As Single _
+            Implements IFlowDiagramData.BiomassMin
             Get
                 If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sBiomassMin
             End Get
         End Property
 
-        Public ReadOnly Property MinDiet() As Single
+        Public ReadOnly Property DietMin() As Single _
+            Implements IFlowDiagramData.DietMin
             Get
                 If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sDietMin
             End Get
         End Property
 
-        Public ReadOnly Property DietMax() As Single
+        Public ReadOnly Property DietMax() As Single _
+            Implements IFlowDiagramData.DietMax
             Get
                 If Me.m_bInvalid Then Me.Recalc()
                 Return Me.m_sDietMax

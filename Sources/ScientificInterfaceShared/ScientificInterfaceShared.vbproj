@@ -116,6 +116,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
+    <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramRenderer.vb" />
+    <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramTree.vb" />
+    <Compile Include="Controls\Diagrams\FlowDiagram\IFlowDiagramData.vb" />
     <Compile Include="Controls\EwEGrid\IEwECell.vb" />
     <Compile Include="Controls\EwEGrid\IPropertyCell.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />

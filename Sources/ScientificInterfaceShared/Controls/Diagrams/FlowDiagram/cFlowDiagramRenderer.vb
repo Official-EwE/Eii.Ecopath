@@ -21,21 +21,32 @@ Option Strict On
 
 Imports System.Math
 Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
-Namespace Ecopath.Controls.FlowDiagram
+Namespace Controls
 
+    ''' <summary>
+    ''' Class that renderes a <see cref="IFlowDiagramData">flow diagram</see>.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Class cFlowDiagramRenderer
 
         Private m_iHighlight As Integer = 0
         Private m_bIsMouseDown As Boolean = False
         Private m_tree As cFlowDiagramTree = Nothing
-        Private m_data As cFlowDiagramData = Nothing
+        Private m_data As IFlowDiagramData = Nothing
 
 #Region " Constructor "
 
-        Public Sub New(ByVal data As cFlowDiagramData, _
+        ''' <summary>
+        ''' Constructor for a flow diagram renderer.
+        ''' </summary>
+        ''' <param name="data"></param>
+        ''' <param name="tree"></param>
+        ''' <remarks></remarks>
+        Public Sub New(ByVal data As IFlowDiagramData, _
                        ByVal tree As cFlowDiagramTree)
 
             Me.m_data = data
@@ -229,7 +240,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
         End Sub
 
-        Public Sub EndDrag(ByVal fdData As cFlowDiagramData, ByVal pt As PointF)
+        Public Sub EndDrag(ByVal fdData As IFlowDiagramData, ByVal pt As PointF)
             Me.m_dragMode = eDragMode.None
         End Sub
 

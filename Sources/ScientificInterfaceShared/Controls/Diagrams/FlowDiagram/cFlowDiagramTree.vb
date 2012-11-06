@@ -21,11 +21,12 @@ Option Strict On
 Imports System.ComponentModel
 Imports System.Drawing.Color
 Imports System.Math
+Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-Namespace Ecopath.Controls.FlowDiagram
+Namespace Controls
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -107,10 +108,8 @@ Namespace Ecopath.Controls.FlowDiagram
                     g.DrawString(strGroupName, font, br, ptf.X, ptf.Y)
 
                     ' Draw the biomass string
-                    If (Not String.IsNullOrEmpty(strBiomass)) Then
-                        g.DrawString(String.Format(My.Resources.FLOWDIAGRAM_LABEL_BIOMASS, strBiomass), _
-                                     font, br, _
-                                     ptf.X, ptf.Y + CInt(font.Size * 1.5))
+                    If (Not String.IsNullOrWhiteSpace(strBiomass)) Then
+                        g.DrawString(strBiomass, font, br, ptf.X, ptf.Y + CInt(font.Size * 1.5))
                     End If
 
                 End Using
@@ -204,7 +203,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Privates "
 
-        Private m_data As cFlowDiagramData = Nothing
+        Private m_data As IFlowDiagramData = Nothing
         Private m_colorramp As New cEwEColorRamp()
         Private m_iNumTrophicLevels As Integer = 6
         Private m_sAngle() As Single            '' To store where the angle is relative to 0
@@ -244,7 +243,7 @@ Namespace Ecopath.Controls.FlowDiagram
 
 #Region " Constructor "
 
-        Public Sub New(ByVal data As cFlowDiagramData)
+        Public Sub New(ByVal data As IFlowDiagramData)
 
             Debug.Assert(data IsNot Nothing)
 
@@ -306,7 +305,7 @@ Namespace Ecopath.Controls.FlowDiagram
             Dim clrFill As Color = Color.LightGray
 
             If Me.m_bIsNodeDrawBiomass And sBiomass > 0.0! Then
-                strBiomassLabel = Me.m_data.UIContext.StyleGuide.FormatNumber(sBiomass, cStyleGuide.eStyleFlags.OK)
+                strBiomassLabel = Me.m_data.BiomassLabel(sBiomass)
             End If
 
             If bVisible Then

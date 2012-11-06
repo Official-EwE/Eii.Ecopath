@@ -188,8 +188,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramData.vb" />
-    <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramRenderer.vb" />
-    <Compile Include="Ecopath\Tools\FlowDiagram\cFlowDiagramTree.vb" />
     <Compile Include="Ecopath\Tools\FlowDiagram\frmFlowDiagram.vb">
       <SubType>Form</SubType>
     </Compile>
