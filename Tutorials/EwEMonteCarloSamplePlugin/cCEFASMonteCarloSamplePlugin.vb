@@ -23,6 +23,7 @@ Imports EwECore.Ecosim
 Public Class cCEFASMonteCarloSamplePlugin
     Implements ICorePlugin
     Implements IEcosimInitializedPlugin
+    Implements IEcosimBeginTimestepPlugin
     Implements IEcopathPlugin
     Implements IMenuItemPlugin
 
@@ -225,6 +226,23 @@ Public Class cCEFASMonteCarloSamplePlugin
         Return False
 
     End Function
+
+    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
+        'This was for testing the setting of F from Effort during an Ecosim Run
+        'Dim Q() As Single
+        'ReDim Q(Me._ecopath.EcopathData.NumGroups)
+        'For iflt As Integer = 1 To Me._ecopath.EcopathData.NumFleet
+        '    For igrp As Integer = 1 To Me._ecopath.EcopathData.NumGroups
+        '        If Me._ecosim.EcosimData.FishMGear(iflt, igrp) > 0 Then
+        '            Me._ecosim.EcosimData.FishRateGear(iflt, iTime) += Me._ecosim.EcosimData.FishRateGear(iflt, iTime - 1) + 0.5F
+        '        End If
+        '        Q(igrp) = 1
+        '    Next
+        'Next
+
+        'Me._ecosim.SetFtimeFromGear(BiomassAtTimestep, iTime, Q, True)
+
+    End Sub
 
     Private Function getEcosimResults() As Boolean
         Try
@@ -464,4 +482,5 @@ Public Class cCEFASMonteCarloSamplePlugin
 
 #End Region
 
+    
 End Class
