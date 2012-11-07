@@ -28,6 +28,16 @@ Public Class cFlowDiagramData
     ' Units, to be accessed by iGroup. Nyuk nyuk nyuk
     Private m_lUnits As New List(Of cUnit)
     Private m_nLivingGroups As Integer
+    Private m_nGroups As Integer
+
+    Private m_sDiet(,) As Single
+    Private m_sValueMin As Single
+    Private m_sValueMax As Single
+
+    Private m_sLinkValueMin As Single
+    Private m_sLinkValueMax As Single
+
+    Private m_bValid As Boolean = False
 
 #End Region ' Private vars
 
@@ -43,6 +53,10 @@ Public Class cFlowDiagramData
         Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Retailer))
         Me.m_nLivingGroups = Me.m_lUnits.Count
         Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Consumer))
+        Me.m_nGroups = Me.m_lUnits.Count
+
+        ' Pred -> prey
+        ReDim Me.m_sDiet(Me.m_nGroups, Me.m_nGroups)
 
     End Sub
 
@@ -76,6 +90,7 @@ Public Class cFlowDiagramData
     Public ReadOnly Property IsGroupVisible(iGroup As Integer) As Boolean _
         Implements IFlowDiagramData.IsGroupVisible
         Get
+            ' ToDo: use fow filters here
             Return True
         End Get
     End Property
@@ -83,21 +98,23 @@ Public Class cFlowDiagramData
     Public ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single _
         Implements IFlowDiagramData.LinkValue
         Get
-            ' hmm
+            ' Get sum of all values in one link
         End Get
     End Property
 
     Public ReadOnly Property LinkValueMax As Single _
         Implements IFlowDiagramData.LinkValueMax
         Get
-
+            If Not Me.m_bValid Then Me.Calculate()
+            Return Me.m_sLinkValueMax
         End Get
     End Property
 
     Public ReadOnly Property LinkValueMin As Single _
         Implements IFlowDiagramData.LinkValueMin
         Get
-
+            If Not Me.m_bValid Then Me.Calculate()
+            Return Me.m_sLinkValueMin
         End Get
     End Property
 
@@ -118,13 +135,14 @@ Public Class cFlowDiagramData
     Public ReadOnly Property Rank(iGroup As Integer) As Single _
         Implements IFlowDiagramData.Rank
         Get
-
+            Dim u As cUnit = Me.GetUnit(iGroup)
+            Return CSng(u.UnitType)
         End Get
     End Property
 
     Public Sub Refresh() _
         Implements IFlowDiagramData.Refresh
-
+        Me.m_bValid = False
     End Sub
 
     Public ReadOnly Property Value(iGroup As Integer) As Single _
@@ -144,14 +162,16 @@ Public Class cFlowDiagramData
     Public ReadOnly Property ValueMax As Single _
         Implements IFlowDiagramData.ValueMax
         Get
-
+            If Not Me.m_bValid Then Me.Calculate()
+            Return Me.m_sValueMax
         End Get
     End Property
 
     Public ReadOnly Property ValueMin As Single _
         Implements IFlowDiagramData.ValueMin
         Get
-
+            If Not Me.m_bValid Then Me.Calculate()
+            Return Me.m_sValueMin
         End Get
     End Property
 
@@ -167,12 +187,21 @@ Public Class cFlowDiagramData
 
 #End Region ' Properties
 
-#Region " Private vars "
+#Region " Internals "
 
     Private Function GetUnit(iGroup As Integer) As cUnit
         Return Me.m_lUnits(iGroup)
     End Function
 
-#End Region ' Private vars
+    Private Sub Calculate()
+
+        ' Cache min, max values
+        ' Calc diet matrix
+
+        Me.m_bValid = True
+
+    End Sub
+
+#End Region ' Internals
 
 End Class
