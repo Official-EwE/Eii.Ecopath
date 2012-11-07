@@ -27,6 +27,7 @@ Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.IO
 Imports System.Windows.Forms
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -37,8 +38,12 @@ Imports System.Windows.Forms
 ''' ---------------------------------------------------------------------------
 Public Class frmMain
 
-    'Private m_bRunning As Boolean = False
+#Region " Private vars "
+
+    ''' <summary>The run engine.</summary>
     Private m_engine As cEngine = Nothing
+
+#End Region ' Private vars
 
 #Region " Form overrides "
 
@@ -54,11 +59,13 @@ Public Class frmMain
         Me.m_tbxSource.Text = My.Settings.PathIn
         Me.m_tbxDest.Text = My.Settings.PathOut
         Me.m_cbCreateRunFolder.Checked = My.Settings.CreateUniqueRunFolder
-        If My.Settings.ReadAsMonth Then
-            Me.m_rbMonthly.Checked = True
-        Else
-            Me.m_rbAnnual.Checked = True
-        End If
+
+        Me.m_rbReadMonthly.Checked = My.Settings.ReadAsMonth : Me.m_rbReadAnnual.Checked = Not My.Settings.ReadAsMonth
+        Select Case My.Settings.WriteOption
+            Case 1 : Me.m_rbWriteMonthly.Checked = True
+            Case 2 : Me.m_rbWriteAnnual.Checked = True
+            Case Else : Me.m_rbWriteBoth.Checked = True
+        End Select
 
         Me.m_engine = New cEngine(Me.UIContext)
 
@@ -79,9 +86,12 @@ Public Class frmMain
         Dim bHasFiles As Boolean = (Me.m_clbFilesSrc.CheckedItems.Count > 0)
         Dim bHasVars As Boolean = (Me.m_clbValues.CheckedItems.Count > 0)
         Dim bHasOutput As Boolean = Not String.IsNullOrWhiteSpace(Me.m_tbxDest.Text)
-        Dim bIsRunning As Boolean = Me.Core.StateMonitor.IsBusy()
+        Dim bIsAnythingRunning As Boolean = Me.Core.StateMonitor.IsBusy()
 
-        Me.m_btnRun.Enabled = bHasFiles And bHasOutput And bHasVars And Not bIsRunning
+        Me.m_pbRun.Visible = Me.m_engine.IsRunning
+        Me.m_pbRun.Value = CInt(Me.m_engine.Progress * 100)
+
+        Me.m_btnRun.Enabled = bHasFiles And bHasOutput And bHasVars And Not bIsAnythingRunning
 
     End Sub
 
@@ -187,6 +197,14 @@ Public Class frmMain
         Me.StoreSettings()
         Me.UpdateControls()
 
+        Dim tsWriteOption As TriState = TriState.UseDefault
+        If (Me.m_rbWriteMonthly.Checked) Then
+            tsWriteOption = TriState.True
+        ElseIf (Me.m_rbWriteAnnual.Checked) Then
+            tsWriteOption = TriState.False
+        End If
+
+
         Try
             Dim lFiles As New List(Of String)
             For Each item As Object In Me.m_clbFilesSrc.CheckedItems
@@ -198,7 +216,12 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
-            Me.m_engine.Run(New cEngine.RunCompletedDelegate(AddressOf RunDone), lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
+            Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf RunProgress), _
+                            New cEngine.RunCompletedDelegate(AddressOf RunDone), _
+                            lFiles.ToArray(), Me.m_tbxDest.Text, _
+                            Me.m_rbReadMonthly.Checked, _
+                            tsWriteOption, _
+                            lOptions.ToArray())
 
         Catch ex As Exception
             ' Whoah
@@ -207,11 +230,19 @@ Public Class frmMain
 
     End Sub
 
-    Private Delegate Sub RunDoneDelegate()
+    Private Delegate Sub CallbackDelegate()
 
     Private Sub RunDone()
         If Me.InvokeRequired Then
-            Me.Invoke(New RunDoneDelegate(AddressOf RunDone))
+            Me.Invoke(New CallbackDelegate(AddressOf RunDone))
+        Else
+            Me.UpdateControls()
+        End If
+    End Sub
+
+    Private Sub RunProgress()
+        If Me.InvokeRequired Then
+            Me.Invoke(New CallbackDelegate(AddressOf RunProgress))
         Else
             Me.UpdateControls()
         End If
@@ -277,10 +308,20 @@ Public Class frmMain
 #Region " Internals "
 
     Private Sub StoreSettings()
+
         My.Settings.PathIn = Me.m_tbxSource.Text
         My.Settings.PathOut = Me.m_tbxDest.Text
-        My.Settings.ReadAsMonth = Me.m_rbMonthly.Checked
+        My.Settings.ReadAsMonth = Me.m_rbReadMonthly.Checked
         My.Settings.CreateUniqueRunFolder = Me.m_cbCreateRunFolder.Checked
+
+        If (Me.m_rbWriteMonthly.Checked) Then
+            My.Settings.WriteOption = 1
+        ElseIf (Me.m_rbWriteAnnual.Checked) Then
+            My.Settings.WriteOption = 2
+        Else
+            My.Settings.WriteOption = 0
+        End If
+
         My.Settings.Save()
     End Sub
 

@@ -87,14 +87,20 @@ Friend Class cEngine
     Private m_man As cForcingFunctionManager = Nothing
     Private m_astrFiles As String()
     Private m_strOutFolder As String = ""
-    Private m_bMonthly As Boolean = False
+    Private m_bReadMonthly As Boolean = False
+    Private m_tsWriteOption As TriState = TriState.UseDefault
     Private m_options As cEcosimResultWriter.eResultTypes() = Nothing
     Private m_FFCache As New Dictionary(Of String, cFFCache)
 
-    Private m_dgt As cEngine.RunCompletedDelegate = Nothing
+    Private m_dgtProgress As cEngine.RunProgressDelegate = Nothing
+    Private m_dgtComplete As cEngine.RunCompletedDelegate = Nothing
     Private m_bStopRun As Boolean = False
 
     Private m_bCreateRunFolder As Boolean = False
+
+    ' -- progress 
+    Private m_iNumSteps As Integer
+    Private m_iStep As Integer
 
 #End Region ' Privates
 
@@ -127,21 +133,40 @@ Friend Class cEngine
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get current run progress.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Progress As Single
+        Get
+            If Not Me.IsRunning Then Return 0
+            Return CSng(Me.m_iStep / Math.Max(1, Me.m_iNumSteps))
+        End Get
+    End Property
+
+    Public Delegate Sub RunProgressDelegate()
     Public Delegate Sub RunCompletedDelegate()
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Run!
     ''' </summary>
+    ''' <param name="dgtProgress">Delegate to call when stepping through the run.</param>
+    ''' <param name="dgtComplete">Delegate to call when the run has finished.</param>
     ''' <param name="astrFiles">The files to read and apply.</param>
     ''' <param name="strOutFolder">Output folder.</param>
-    ''' <param name="bMonthly">States whether files should be read as monthly (true) or annual (false) values.</param>
+    ''' <param name="bReadMonthly">States whether files should be read as monthly (true) or annual (false) values.</param>
+    ''' <param name="writeOption">States whether results should be written as monthly values (<see cref="TriState.[True]"/>),
+    ''' annual values (<see cref="TriState.[False]"/>), or in both modes (<see cref="TriState.UseDefault"/>).</param>
     ''' <param name="options"><see cref="cEcosimResultWriter.eResultTypes">Output options</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Run(ByVal dgt As RunCompletedDelegate, _
+    Public Sub Run(ByVal dgtProgress As RunProgressDelegate, _
+                   ByVal dgtComplete As RunCompletedDelegate, _
                    ByVal astrFiles As String(), _
                    ByVal strOutFolder As String, _
-                   ByVal bMonthly As Boolean, _
+                   ByVal bReadMonthly As Boolean, _
+                   ByVal writeOption As TriState, _
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
         If Me.IsRunning Then Return
@@ -149,12 +174,15 @@ Friend Class cEngine
         Dim core As cCore = Me.m_uic.Core
         If Not core.SaveChanges() Then Return
 
-        Me.m_bMonthly = bMonthly
+        Me.m_bReadMonthly = bReadMonthly
+        Me.m_tsWriteOption = writeOption
         Me.m_astrFiles = astrFiles
         Me.m_options = options
+        Me.m_iStep = 1
+        Me.m_iNumSteps = Me.m_astrFiles.Length
 
         Dim strDate As String = Date.Now.ToString("yy-MM-dd hh-mm")
-        Dim strScope As String = cSystemUtils.IIF(bMonthly, "monthly", "annual")
+        Dim strScope As String = cSystemUtils.IIF(bReadMonthly, "monthly", "annual")
 
         If Me.m_bCreateRunFolder Then
             Me.m_strOutFolder = Path.Combine(strOutFolder, cFileUtils.ToValidFileName(String.Format("Run {0} {1}", strDate, strScope), False))
@@ -166,7 +194,8 @@ Friend Class cEngine
             Me.m_FFCache(ff.Name) = New cFFCache(ff)
         Next
 
-        Me.m_dgt = dgt
+        Me.m_dgtProgress = dgtProgress
+        Me.m_dgtComplete = dgtComplete
         Me.SetWait()
 
         Try
@@ -199,7 +228,7 @@ Friend Class cEngine
         Dim msgStatus As cMessage = Nothing
         Dim iRepetitions As Integer = 0
 
-        If Me.m_bMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
+        If Me.m_bReadMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
 
         If File.Exists(strFileName) Then
 
@@ -296,10 +325,12 @@ Friend Class cEngine
 
     End Sub
 
-    Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String, ByVal outputs As cEcosimResultWriter.eResultTypes())
+    Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String, _
+                             ByVal outputs As cEcosimResultWriter.eResultTypes(), _
+                             ByVal tsWriteOption As TriState)
 
         Dim resultsWriter As New cEcosimResultWriter(Me.m_uic.Core)
-        resultsWriter.WriteResults(strPath, outputs)
+        resultsWriter.WriteResults(strPath, outputs, tsWriteOption)
 
     End Sub
 
@@ -345,13 +376,13 @@ Friend Class cEngine
                 If Not Me.m_bStopRun Then
                     core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
-                    core.RunEcoSim()
+                    core.RunEcoSim(Nothing, False)
                 End If
 
                 If Not Me.m_bStopRun Then
                     core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
-                    Me.WriteResults(strFolder, strFile, Me.m_options)
+                    Me.WriteResults(strFolder, strFile, Me.m_options, Me.m_tsWriteOption)
                 End If
 
                 i += 1
@@ -376,7 +407,7 @@ Friend Class cEngine
 
         '= agk ='
         Me.ReleaseWait()
-        If (Me.m_dgt IsNot Nothing) Then Me.m_dgt.Invoke()
+        If (Me.m_dgtComplete IsNot Nothing) Then Me.m_dgtComplete.Invoke()
 
     End Sub
 
