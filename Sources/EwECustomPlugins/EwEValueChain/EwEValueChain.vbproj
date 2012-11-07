@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Database\cDatabase.vb" />
     <Compile Include="Data\cData.vb" />
+    <Compile Include="Interface\FlowDiagram\cFlowDiagramData.vb" />
     <Compile Include="Output\cResultWriter.vb" />
     <Compile Include="Utils\cAggregationModeTypeFormatter.vb" />
     <Compile Include="Utils\cUnitImageFactory.vb" />
