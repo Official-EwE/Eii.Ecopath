@@ -22,30 +22,46 @@ Option Strict On
 Imports System.Math
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
+Imports EwECore
 
 #End Region ' Imports
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Class that renderes a <see cref="IFlowDiagramData">flow diagram</see>.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Class cFlowDiagramRenderer
+
+#Region " Private vars "
 
         Private m_iHighlight As Integer = 0
         Private m_bIsMouseDown As Boolean = False
         Private m_tree As cFlowDiagramTree = Nothing
         Private m_data As IFlowDiagramData = Nothing
 
+        Private Enum eDragMode As Integer
+            None
+            Label
+            Node
+        End Enum
+
+        Private m_dragMode As eDragMode = eDragMode.None
+        Private m_ptDragOffset As PointF = Nothing
+
+#End Region ' Private vars
+
 #Region " Constructor "
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Constructor for a flow diagram renderer.
         ''' </summary>
-        ''' <param name="data"></param>
-        ''' <param name="tree"></param>
-        ''' <remarks></remarks>
+        ''' <param name="data">The <see cref="IFlowDiagramData">data</see> for the flow diagram.</param>
+        ''' <param name="tree">The <see cref="cFlowDiagramTree"/> tree to tie it all together.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal data As IFlowDiagramData, _
                        ByVal tree As cFlowDiagramTree)
 
@@ -55,6 +71,8 @@ Namespace Controls
         End Sub
 
 #End Region ' Constructor
+
+#Region " Configuration "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -74,6 +92,17 @@ Namespace Controls
             End Set
         End Property
 
+#End Region ' Configuration
+
+#Region " Public access "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Master draw instruction. There can be only one.
+        ''' </summary>
+        ''' <param name="g">Graphics to draw onto.</param>
+        ''' <param name="rc">Rectangle to draw within.</param>
+        ''' -------------------------------------------------------------------
         Public Sub DrawFlowDiagram(ByVal g As Graphics, ByVal rc As Rectangle)
 
             Dim hl As cFlowDiagramTree.eHighlightType = cFlowDiagramTree.eHighlightType.None
@@ -86,9 +115,9 @@ Namespace Controls
                 For iPrey As Integer = 1 To Me.m_data.NumGroups()
                     ' Determine highlight state
                     hl = cFlowDiagramTree.eHighlightType.None
-                    If Me.m_data.GroupVisible(iPred) And Me.m_data.GroupVisible(iPrey) Then
-                        If (Me.HighlightNode = iPred) Then hl = cFlowDiagramTree.eHighlightType.Predator
-                        If (Me.HighlightNode = iPrey) Then hl = cFlowDiagramTree.eHighlightType.Prey
+                    If Me.m_data.IsGroupVisible(iPred) And Me.m_data.IsGroupVisible(iPrey) Then
+                        If (Me.HighlightNode = iPred) Then hl = cFlowDiagramTree.eHighlightType.LinkIn
+                        If (Me.HighlightNode = iPrey) Then hl = cFlowDiagramTree.eHighlightType.LinkOut
                     Else
                         hl = cFlowDiagramTree.eHighlightType.Hidden
                     End If
@@ -99,11 +128,19 @@ Namespace Controls
             ' Draw the nodes
             For j As Integer = 1 To Me.m_data.NumGroups()
                 ' Draw each node
-                Me.m_tree.DrawNode(g, rc, j, Me.m_data.GroupVisible(j))
+                Me.m_tree.DrawNode(g, rc, j, Me.m_data.IsGroupVisible(j))
             Next j
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Handle a mouse move operation.
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="rc"></param>
+        ''' <param name="pt"></param>
+        ''' -------------------------------------------------------------------
         Public Sub ProcessMouseMove(ByVal g As Graphics, ByVal rc As Rectangle, ByVal pt As PointF)
 
             Dim iNode As Integer = 0
@@ -137,96 +174,82 @@ Namespace Controls
 
         End Sub
 
-        Private Function GetNodeAtPoint(ByVal rc As Rectangle, ByVal pt As PointF) As Integer
-
-            Dim iGroup As Integer = 1
-            Dim iNodeAtPoint As Integer = 0
-
-            While (iGroup <= Me.m_data.NumGroups) And (iNodeAtPoint = 0)
-                If Me.m_tree.IsNodeAtPoint(rc, pt, iGroup, Me.m_data.Biomass(iGroup)) Then
-                    iNodeAtPoint = iGroup
-                End If
-                iGroup += 1
-            End While
-
-            Return iNodeAtPoint
-        End Function
-
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Save the diagram to a file.
         ''' </summary>
-        ''' <param name="rc"></param>
-        ''' <param name="pt"></param>
-        ''' <param name="g">Graphics to measure label dimensions with.</param>
-        ''' <param name="font">Font to measure label dimension with.</param>
-        ''' <returns></returns>
-        Private Function GetLabelAtPoint(ByVal rc As Rectangle, _
-                                         ByVal pt As PointF, _
-                                         ByVal g As Graphics, _
-                                         ByVal font As Font) As Integer
+        ''' <param name="inifile">The <see cref="cXMLINIfile">file</see> to save to.</param>
+        ''' <param name="rc">The rectangle to scale the diagram to.</param>
+        ''' -------------------------------------------------------------------
+        Public Function SaveToFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle) As Boolean
 
-            Dim iGroup As Integer = 1
-            Dim iLabelAtPoint As Integer = 0
+            Try
 
-            While (iGroup <= Me.m_data.NumGroups) And (iLabelAtPoint = 0)
-                If Me.m_tree.IsLabelAtPoint(rc, pt, iGroup, Me.m_data.GroupName(iGroup), g, font) Then
-                    iLabelAtPoint = iGroup
-                End If
-                iGroup += 1
-            End While
+                inifile.SaveSetting("Global", "NumGroups", Me.m_data.NumGroups)
+                For i As Integer = 1 To Me.m_data.NumGroups
+                    inifile.SaveSetting("Locations", i.ToString + "x", CStr(Me.m_tree.NodeLocation(i, rc).X))
+                    inifile.SaveSetting("Locations", i.ToString + "y", CStr(Me.m_tree.NodeLocation(i, rc).Y))
+                    inifile.SaveSetting("Locations", i.ToString + "xlabel", CStr(Me.m_tree.LabelLocation(i, rc).X))
+                    inifile.SaveSetting("Locations", i.ToString + "ylabel", CStr(Me.m_tree.LabelLocation(i, rc).Y))
+                Next i
 
-            Return iLabelAtPoint
-        End Function
-
-        Public Sub SaveToFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle)
-            inifile.SaveSetting("Global", "NumGroups", Me.m_data.NumGroups)
-            For i As Integer = 1 To Me.m_data.NumGroups
-                inifile.SaveSetting("Locations", i.ToString + "x", CStr(Me.m_tree.NodeLocation(i, rc).X))
-                inifile.SaveSetting("Locations", i.ToString + "y", CStr(Me.m_tree.NodeLocation(i, rc).Y))
-                inifile.SaveSetting("Locations", i.ToString + "xlabel", CStr(Me.m_tree.LabelLocation(i, rc).X))
-                inifile.SaveSetting("Locations", i.ToString + "ylabel", CStr(Me.m_tree.LabelLocation(i, rc).Y))
-            Next i
-        End Sub
-
-        Public Function LoadFromFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle) As Boolean
-            Dim ptf As PointF
-            Dim iNumGroups As Integer = Math.Min(CInt(inifile.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumGroups)
-            For i As Integer = 1 To iNumGroups
-                ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "x", "0"))
-                ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "y", "0"))
-                Me.m_tree.NodeLocation(i, rc) = ptf
-                ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "xlabel", "10"))
-                ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "ylabel", "10"))
-                Me.m_tree.LabelLocation(i, rc) = ptf
-            Next i
+            Catch ex As Exception
+                ' ToDo: send an error message
+                cLog.Write(ex, "FlowDiagram.SaveToFile")
+                Return False
+            End Try
             Return True
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the diagram from a file.
+        ''' </summary>
+        ''' <param name="inifile">The <see cref="cXMLINIfile">file</see> to load from.</param>
+        ''' <param name="rc">The rectangle to scale the diagram to.</param>
+        ''' -------------------------------------------------------------------
+        Public Function LoadFromFile(ByVal inifile As cXMLINIfile, ByVal rc As Rectangle) As Boolean
+
+            Try
+
+                Dim ptf As PointF
+                Dim iNumGroups As Integer = Math.Min(CInt(inifile.GetSetting("Global", "NumGroups", "0")), Me.m_data.NumGroups)
+                For i As Integer = 1 To iNumGroups
+                    ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "x", "0"))
+                    ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "y", "0"))
+                    Me.m_tree.NodeLocation(i, rc) = ptf
+                    ptf.X = CInt(inifile.GetSetting("Locations", i.ToString + "xlabel", "10"))
+                    ptf.Y = CInt(inifile.GetSetting("Locations", i.ToString + "ylabel", "10"))
+                    Me.m_tree.LabelLocation(i, rc) = ptf
+                Next i
+
+            Catch ex As Exception
+                ' ToDo: send an error message
+                cLog.Write(ex, "FlowDiagram.SaveToFile")
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+#End Region ' Public access
+
 #Region " Dragging "
-
-        Private Enum eDragMode As Integer
-            None
-            Label
-            Node
-        End Enum
-
-        Private m_dragMode As eDragMode = eDragMode.None
-        Private m_ptDragOffset As PointF = Nothing
 
         Public Sub BeginDrag(ByVal rc As Rectangle, ByVal pt As PointF, ByVal g As Graphics)
 
             If Me.IsDragging Then Return
 
             ' Find the node under the cursor
+            Dim uic As cUIContext = Me.m_data.UIContext
             Dim iLabel As Integer = 0
             Dim iNode As Integer = 0
-            Dim ft As Font = Me.m_data.RenderFont
 
             Me.HighlightNode = 0
             Me.m_ptDragOffset = pt
 
-            iLabel = Me.GetLabelAtPoint(rc, pt, g, ft)
+            iLabel = Me.GetLabelAtPoint(rc, pt, g, Me.m_tree.RenderFont)
             If iLabel > 0 Then
                 Me.HighlightNode = iLabel
                 Me.m_dragMode = eDragMode.Label
@@ -249,6 +272,61 @@ Namespace Controls
         End Function
 
 #End Region ' Dragging
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a node at a location.
+        ''' </summary>
+        ''' <param name="rc">Flow diagram area to find the node within.</param>
+        ''' <param name="pt">Point to test for.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetNodeAtPoint(ByVal rc As Rectangle, ByVal pt As PointF) As Integer
+
+            Dim iGroup As Integer = 1
+            Dim iNodeAtPoint As Integer = 0
+
+            While (iGroup <= Me.m_data.NumGroups) And (iNodeAtPoint = 0)
+                If Me.m_tree.IsNodeAtPoint(rc, pt, iGroup, Me.m_data.Value(iGroup)) Then
+                    iNodeAtPoint = iGroup
+                End If
+                iGroup += 1
+            End While
+
+            Return iNodeAtPoint
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a label at a location.
+        ''' </summary>
+        ''' <param name="rc">Flow diagram area to find the label within.</param>
+        ''' <param name="pt">Point to test for.</param>
+        ''' <param name="g">Graphics to measure label dimensions with.</param>
+        ''' <param name="font">Font to measure label dimension with.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetLabelAtPoint(ByVal rc As Rectangle, _
+                                         ByVal pt As PointF, _
+                                         ByVal g As Graphics, _
+                                         ByVal font As Font) As Integer
+
+            Dim iGroup As Integer = 1
+            Dim iLabelAtPoint As Integer = 0
+
+            While (iGroup <= Me.m_data.NumGroups) And (iLabelAtPoint = 0)
+                If Me.m_tree.IsLabelAtPoint(rc, pt, iGroup, Me.m_data.GroupName(iGroup), g, font) Then
+                    iLabelAtPoint = iGroup
+                End If
+                iGroup += 1
+            End While
+
+            Return iLabelAtPoint
+        End Function
+
+#End Region ' Internals
 
     End Class
 

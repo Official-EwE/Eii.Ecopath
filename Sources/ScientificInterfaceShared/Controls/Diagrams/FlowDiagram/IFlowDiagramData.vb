@@ -17,37 +17,131 @@
 '
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Template for defining a flow diagram. Although catered to groups and
+    ''' consumption, this interface offers the possibility to reflect other
+    ''' types of data in a flowdiagram-like structure.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Interface IFlowDiagramData
         Inherits IUIElement
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Refresh the data for the flow diagram. This can be used to trigger
+        ''' recalculations and recalibrations.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Sub Refresh()
 
-        ReadOnly Property RenderFont() As Font
-
-        ReadOnly Property TextColor() As Color
-
-        ReadOnly Property GroupColor(ByVal iGroup As Integer) As Color
-        ReadOnly Property PreyColor() As Color
-        ReadOnly Property PredatorColor() As Color
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the total number of groups in the flow diagram, including
+        ''' living and non-living groups.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         ReadOnly Property NumGroups() As Integer
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the number of living groups in the flow diagram. Based on
+        ''' the approach in Ecopath, occur before the non-living groups in the
+        ''' total list of <see cref="NumGroups">groups</see>.
+        ''' </summary>
+        ''' <remarks>
+        ''' Living groups can have incoming / predation and outgoing / prey links, 
+        ''' whereas all non-living groups (<see cref="NumGroups"/> - <see cref="NumLivingGroups"/>)
+        ''' can only have incoming / predation links.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
         ReadOnly Property NumLivingGroups() As Integer
 
-        ReadOnly Property Biomass(ByVal iIndex As Integer) As Single
-        ReadOnly Property BiomassLabel(ByVal sBiomass As Single) As String
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the color to render a group in the flow diagram.
+        ''' </summary>
+        ''' <param name="iGroup">The index of the group to get the color for.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property GroupColor(ByVal iGroup As Integer) As Color
 
-        ReadOnly Property GroupName(ByVal iIndex As Integer) As String
-        ReadOnly Property GroupVisible(ByVal iGroup As Integer) As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the name to render a group in the flow diagram.
+        ''' </summary>
+        ''' <param name="iGroup">The index of the group to get the name for.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property GroupName(ByVal iGroup As Integer) As String
 
-        ReadOnly Property Diet(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether a group should be rendered as visible.
+        ''' </summary>
+        ''' <param name="iGroup">The index of the group to get the visible state for.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property IsGroupVisible(ByVal iGroup As Integer) As Boolean
 
-        ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the value to reflect in the diagram for a group.
+        ''' </summary>
+        ''' <param name="iGroup">The index of the group to get the value for.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property Value(ByVal iGroup As Integer) As Single
 
-        ReadOnly Property BiomassMax() As Single
-        ReadOnly Property BiomassMin() As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a formatted label for a <see cref="Value"/>.
+        ''' </summary>
+        ''' <param name="sValue">The value to format.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property ValueLabel(ByVal sValue As Single) As String
 
-        ReadOnly Property DietMin() As Single
-        ReadOnly Property DietMax() As Single
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the value to place on a link in the diagram.
+        ''' </summary>
+        ''' <param name="iPred">The index of the predator group / source of the link.</param>
+        ''' <param name="iPrey">The index of the prey group / target of the link.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property LinkValue(ByVal iPred As Integer, ByVal iPrey As Integer) As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the rank for placing the group in the diagram. In foodwebs, the
+        ''' rank would typcally be the trophic level of a group.
+        ''' </summary>
+        ''' <param name="iGroup">The index of the group to get the rank for.</param>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property Rank(ByVal iGroup As Integer) As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the maximum <see cref="Value"/> in the diagram.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property ValueMax() As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the minimum <see cref="Value"/> in the diagram.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property ValueMin() As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the maximum <see cref="LinkValue"/> in the diagram.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property LinkValueMax() As Single
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the minimum <see cref="LinkValue"/> in the diagram.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        ReadOnly Property LinkValueMin() As Single
 
     End Interface
 

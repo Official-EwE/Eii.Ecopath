@@ -20,9 +20,8 @@
 Option Strict On
 Imports System.ComponentModel
 Imports System.Drawing.Color
-Imports System.Math
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -101,6 +100,8 @@ Namespace Controls
                                  ByVal clrFont As Color, _
                                  ByVal strGroupName As String, _
                                  Optional ByVal strBiomass As String = "")
+
+                ' ToDo: center labels in a box
 
                 Using br As New SolidBrush(clrFont)
 
@@ -235,8 +236,8 @@ Namespace Controls
         Public Enum eHighlightType As Integer
             None
             Hidden
-            Predator
-            Prey
+            LinkIn
+            LinkOut
         End Enum
 
         Public Event OnChanged(ByVal sender As cFlowDiagramTree)
@@ -285,9 +286,9 @@ Namespace Controls
 
             Select Case Me.m_colorusagetype
                 Case eColorUsageTypes.Biomass
-                    Me.DrawLegend(g, Me.m_data.BiomassMax, New Point(5, 5), SharedResources.HEADER_BIOMASS)
+                    Me.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), My.Resources.HEADER_BIOMASS)
                 Case eColorUsageTypes.Flow
-                    Me.DrawLegend(g, Me.m_data.DietMax, New Point(5, 5), SharedResources.HEADER_DIET)
+                    Me.DrawLegend(g, Me.m_data.LinkValueMax, New Point(5, 5), My.Resources.HEADER_DIET)
             End Select
 
         End Sub
@@ -298,14 +299,14 @@ Namespace Controls
                             ByVal bVisible As Boolean)
 
             Dim strGroupName As String = Me.m_data.GroupName(iGroup)
-            Dim sBiomass As Single = Me.m_data.Biomass(iGroup)
-            Dim sBiomassMax As Single = Me.m_data.BiomassMax
+            Dim sBiomass As Single = Me.m_data.Value(iGroup)
+            Dim sBiomassMax As Single = Me.m_data.ValueMax
             Dim strBiomassLabel As String = ""
             Dim clrPen As Color = Color.Black
             Dim clrFill As Color = Color.LightGray
 
             If Me.m_bIsNodeDrawBiomass And sBiomass > 0.0! Then
-                strBiomassLabel = Me.m_data.BiomassLabel(sBiomass)
+                strBiomassLabel = Me.m_data.ValueLabel(sBiomass)
             End If
 
             If bVisible Then
@@ -329,15 +330,15 @@ Namespace Controls
                                clrPen, clrFill)
 
             If bVisible Then
-                clrPen = Me.m_data.TextColor
+                clrPen = Me.TextColor
             Else
-                clrPen = EwEUtils.Utilities.cColorUtils.GetVariant(Me.m_data.TextColor, 0.5!)
+                clrPen = cColorUtils.GetVariant(Me.TextColor, 0.5!)
             End If
 
             If (Me.m_bIsDrawLabel) Then
                 Me.m_node.DrawLabel(g, _
                                     Me.LabelLocation(iGroup, rc), _
-                                    Me.m_data.RenderFont, _
+                                    Me.RenderFont, _
                                     clrPen, _
                                     strGroupName, _
                                     strBiomassLabel)
@@ -352,13 +353,14 @@ Namespace Controls
                                   ByVal highlight As eHighlightType)
 
             Dim clrLine As Color = Me.m_clrLine
-            Dim sDiet As Single = Me.m_data.Diet(iPred, iPrey)
-            Dim sDietMax As Single = Me.m_data.DietMax
+            Dim sDiet As Single = Me.m_data.LinkValue(iPred, iPrey)
+            Dim sDietMax As Single = Me.m_data.LinkValueMax
             Dim sLineWidth As Single = 0.5!
 
             If sDiet <= 0 Then Return
 
             Select Case highlight
+
                 Case eHighlightType.None
                     Select Case Me.m_colorusagetype
                         Case eColorUsageTypes.Flow
@@ -366,13 +368,16 @@ Namespace Controls
                         Case Else
                             ' Normal
                     End Select
+
                 Case eHighlightType.Hidden
                     Return ' clrLine = Color.FromArgb(255, 240, 240, 240)
-                Case eHighlightType.Predator
-                    clrLine = Me.m_data.PreyColor
+
+                Case eHighlightType.LinkIn
+                    clrLine = Me.InLinkColor
                     sLineWidth = 2.0!
-                Case eHighlightType.Prey
-                    clrLine = Me.m_data.PredatorColor
+
+                Case eHighlightType.LinkOut
+                    clrLine = Me.OutLinkColor
                     sLineWidth = 2.0!
             End Select
 
@@ -412,7 +417,7 @@ Namespace Controls
                 g.FillRectangle(brLegend, New Rectangle(ptIconTL, New Size(CInt(iXSize * 0.2), iIconHeight)))
                 brLegend.Dispose()
 
-                g.DrawString(String.Format(SharedResources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(Me.GetNiceNumber(sValInc))), _
+                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(Me.GetNiceNumber(sValInc))), _
                              font, brush, _
                              New Point(CInt(ptIconTL.X + iXSize * 0.3), ptIconTL.Y))
                 ptIconTL.Y += iIconHeight
@@ -452,7 +457,7 @@ Namespace Controls
             ' Calc how the groups are distributed over trophic levels [1, iNumTL+]
             For iGroup As Integer = 1 To Me.m_data.NumGroups
                 iTL = iNumTL
-                While (Me.m_data.TrophicLevel(iGroup) < iTL) And (iTL > 1)
+                While (Me.m_data.Rank(iGroup) < iTL) And (iTL > 1)
                     iTL -= 1
                 End While
                 aiGroupCount(iTL) += 1
@@ -462,7 +467,7 @@ Namespace Controls
             For iGroup As Integer = 1 To Me.m_data.NumGroups
 
                 iTL = iNumTL
-                While (Me.m_data.TrophicLevel(iGroup) < iTL) And (iTL > 1)
+                While (Me.m_data.Rank(iGroup) < iTL) And (iTL > 1)
                     iTL -= 1
                 End While
                 Me.m_sAngle(iGroup) = 360.0! * (aiGroup(iTL) + 0.5!) / aiGroupCount(iTL)
@@ -668,7 +673,7 @@ Namespace Controls
             Get
                 Dim pt As PointF
                 pt.X = CSng(Me.m_sAngle(i) / 360 * (rc.Width - 40)) + 20
-                pt.Y = (Me.m_iNumTrophicLevels - Me.m_data.TrophicLevel(i)) * CInt(rc.Height / Me.m_iNumTrophicLevels)
+                pt.Y = (Me.m_iNumTrophicLevels - Me.m_data.Rank(i)) * CInt(rc.Height / Me.m_iNumTrophicLevels)
                 Return pt
             End Get
             Set(ByVal value As PointF)
@@ -693,7 +698,7 @@ Namespace Controls
                                       ByVal i As Integer, ByVal sBiomass As Single) As Boolean
 
             Dim ptfNodeLocation As PointF = Me.NodeLocation(i, rc)
-            Dim sNodeSize As Single = CSng(Me.CalcNodeSize(sBiomass, Me.m_data.BiomassMax))
+            Dim sNodeSize As Single = CSng(Me.CalcNodeSize(sBiomass, Me.m_data.ValueMax))
             Dim rcf As New RectangleF(ptfNodeLocation.X - sNodeSize / 2, _
                                       ptfNodeLocation.Y - sNodeSize / 2, _
                                       sNodeSize, _
@@ -719,6 +724,34 @@ Namespace Controls
         End Function
 
 #End Region ' Properties
+
+#Region " EwE styling "
+
+        Public Function RenderFont() As Font
+            Dim uic As cUIContext = Me.m_data.UIContext
+            Debug.Assert(uic IsNot Nothing)
+            Return uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
+        End Function
+
+        Public Function TextColor() As Color
+            Dim uic As cUIContext = Me.m_data.UIContext
+            Debug.Assert(uic IsNot Nothing)
+            Return uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+        End Function
+
+        Public Function InLinkColor() As Color
+            Dim uic As cUIContext = Me.m_data.UIContext
+            Debug.Assert(uic IsNot Nothing)
+            Return uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
+        End Function
+
+        Public Function OutLinkColor() As Color
+            Dim uic As cUIContext = Me.m_data.UIContext
+            Debug.Assert(uic IsNot Nothing)
+            Return uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
+        End Function
+
+#End Region ' EwE styling
 
 #Region " Internals "
 
