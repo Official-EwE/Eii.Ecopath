@@ -1118,9 +1118,7 @@ Namespace Ecosim
                 baseGroupVal = 0
                 For iflt As Integer = 1 To Me.m_Data.nGear
                     'Landings are the "Ecopath" landings (discards not included) which is the annual landings
-                    'Value is monthly so convert to monthly
-                    'Value = Landings * [mediated price] * [timestep in years]
-                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.PESValue(igrp, iflt) * Me.DeltaT
+                    Dim value As Single = Me.m_Data.ResultsLandings(igrp, iflt) * Me.PESValue(igrp, iflt)
 
                     Me.m_Data.ResultsSumValueByGroupGear(igrp, iflt, iTime) += value
                     Me.m_Data.ResultsSumValueByGear(iflt, iTime) += value
@@ -1130,7 +1128,7 @@ Namespace Ecosim
                     Me.m_Data.ResultsSumValueByGear(0, iTime) += value
 
                     'Ecopath value of this group for relative value
-                    baseGroupVal += Me.m_EPData.Landing(iflt, igrp) * Me.m_EPData.Market(iflt, igrp) * Me.DeltaT
+                    baseGroupVal += Me.m_EPData.Landing(iflt, igrp) * Me.m_EPData.Market(iflt, igrp)
                 Next
                 If baseGroupVal > 0 Then
                     'Zero index contains the sum of landing across all fleets
