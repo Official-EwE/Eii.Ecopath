@@ -72,10 +72,19 @@ Namespace Ecosim
         ''' <param name="strPath">The path to write to. If not specified, output is
         ''' written to <see cref="cCore.OutputPath">the core output path</see>.</param>
         ''' <param name="results">The results to write, or nothing to write all results.</param>
+        ''' <param name="tsMonthly">Flag stating how values are aggragated. Possible
+        ''' values are:
+        ''' <list type="bullet">
+        ''' <item><term><see cref="TriState.[True]"/></term><description>Values are only written as monthly values.</description></item>
+        ''' <item><term><see cref="TriState.[False]"/></term><description>Values are only written as annual values.</description></item>
+        ''' <item><term><see cref="TriState.UseDefault"/></term><description>Values are written as both annual and monthly values.</description></item>
+        ''' </list>
+        ''' </param>
         ''' <returns>True if saved successfully.</returns>
         ''' -----------------------------------------------------------------------
         Public Function WriteResults(Optional ByVal strPath As String = "", _
-                                     Optional ByVal results As eResultTypes() = Nothing) As Boolean
+                                     Optional ByVal results As eResultTypes() = Nothing, _
+                                     Optional ByVal tsMonthly As TriState = TriState.UseDefault) As Boolean
 
             Dim msg As cMessage = Nothing
             Dim bSucces As Boolean = True
@@ -97,12 +106,15 @@ Namespace Ecosim
             For Each outputtype As cEcosimResultWriter.eResultTypes In [Enum].GetValues(GetType(eResultTypes))
                 If Me.ShouldWriteResult(results, outputtype) Then
                     Try
-                        If Not Me.WriteResults(strPath, outputtype, True) Or Not Me.WriteResults(strPath, outputtype, False) Then
-                            bSucces = False
+                        If (tsMonthly <> TriState.False) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, True)
+                        If (tsMonthly <> TriState.True) Then bSucces = bSucces And Me.WriteResults(strPath, outputtype, False)
+
+                        If Not bSucces Then
                             msg = New cMessage(String.Format(My.Resources.CoreMessages.ECOSIM_RESULTS_SAVE_FAILED, strPath, outputtype.ToString), _
                                                eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
                             Me.m_core.Messages.SendMessage(msg)
                         End If
+
                     Catch ex As Exception
                         bSucces = False
                         cLog.Write(ex, "cEcosimResultWriter::WriteResults " & outputtype.ToString())
