@@ -88,7 +88,6 @@ Friend Class cEngine
     Private m_astrFiles As String()
     Private m_strOutFolder As String = ""
     Private m_bReadMonthly As Boolean = False
-    Private m_tsWriteOption As TriState = TriState.UseDefault
     Private m_options As cEcosimResultWriter.eResultTypes() = Nothing
     Private m_FFCache As New Dictionary(Of String, cFFCache)
 
@@ -152,21 +151,17 @@ Friend Class cEngine
     ''' <summary>
     ''' Run!
     ''' </summary>
-    ''' <param name="dgtProgress">Delegate to call when stepping through the run.</param>
     ''' <param name="dgtComplete">Delegate to call when the run has finished.</param>
     ''' <param name="astrFiles">The files to read and apply.</param>
     ''' <param name="strOutFolder">Output folder.</param>
     ''' <param name="bReadMonthly">States whether files should be read as monthly (true) or annual (false) values.</param>
-    ''' <param name="writeOption">States whether results should be written as monthly values (<see cref="TriState.[True]"/>),
     ''' annual values (<see cref="TriState.[False]"/>), or in both modes (<see cref="TriState.UseDefault"/>).</param>
     ''' <param name="options"><see cref="cEcosimResultWriter.eResultTypes">Output options</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Run(ByVal dgtProgress As RunProgressDelegate, _
-                   ByVal dgtComplete As RunCompletedDelegate, _
+    Public Sub Run(ByVal dgtComplete As RunCompletedDelegate, _
                    ByVal astrFiles As String(), _
                    ByVal strOutFolder As String, _
                    ByVal bReadMonthly As Boolean, _
-                   ByVal writeOption As TriState, _
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
         If Me.IsRunning Then Return
@@ -175,7 +170,6 @@ Friend Class cEngine
         If Not core.SaveChanges() Then Return
 
         Me.m_bReadMonthly = bReadMonthly
-        Me.m_tsWriteOption = writeOption
         Me.m_astrFiles = astrFiles
         Me.m_options = options
         Me.m_iStep = 1
@@ -194,7 +188,6 @@ Friend Class cEngine
             Me.m_FFCache(ff.Name) = New cFFCache(ff)
         Next
 
-        Me.m_dgtProgress = dgtProgress
         Me.m_dgtComplete = dgtComplete
         Me.SetWait()
 
@@ -326,11 +319,10 @@ Friend Class cEngine
     End Sub
 
     Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String, _
-                             ByVal outputs As cEcosimResultWriter.eResultTypes(), _
-                             ByVal tsWriteOption As TriState)
+                             ByVal outputs As cEcosimResultWriter.eResultTypes())
 
         Dim resultsWriter As New cEcosimResultWriter(Me.m_uic.Core)
-        resultsWriter.WriteResults(strPath, outputs, tsWriteOption)
+        resultsWriter.WriteResults(strPath, outputs)
 
     End Sub
 
@@ -382,7 +374,7 @@ Friend Class cEngine
                 If Not Me.m_bStopRun Then
                     core.SetStopRunDelegate(AddressOf StopRun)
                     cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
-                    Me.WriteResults(strFolder, strFile, Me.m_options, Me.m_tsWriteOption)
+                    Me.WriteResults(strFolder, strFile, Me.m_options)
                 End If
 
                 i += 1

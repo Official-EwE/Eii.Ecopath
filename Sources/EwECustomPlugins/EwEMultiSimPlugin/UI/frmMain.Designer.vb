@@ -46,31 +46,26 @@ Partial Class frmMain
         Me.m_hdrIn = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblSource = New System.Windows.Forms.Label()
         Me.m_btnAllSrc = New System.Windows.Forms.Button()
-        Me.m_rbReadAnnual = New System.Windows.Forms.RadioButton()
+        Me.m_rbAnnual = New System.Windows.Forms.RadioButton()
         Me.m_tbxSource = New System.Windows.Forms.TextBox()
-        Me.m_rbReadMonthly = New System.Windows.Forms.RadioButton()
+        Me.m_rbMonthly = New System.Windows.Forms.RadioButton()
         Me.m_btnChooseSrc = New System.Windows.Forms.Button()
         Me.m_lblReadAs = New System.Windows.Forms.Label()
-        Me.m_pbRun = New System.Windows.Forms.ProgressBar()
         Me.m_cbCreateRunFolder = New System.Windows.Forms.CheckBox()
         Me.m_hrdOut = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tbxDest = New System.Windows.Forms.TextBox()
         Me.m_btnRun = New System.Windows.Forms.Button()
         Me.m_clbValues = New System.Windows.Forms.CheckedListBox()
-        Me.m_rbWriteAnnual = New System.Windows.Forms.RadioButton()
         Me.m_lblDest = New System.Windows.Forms.Label()
         Me.m_btnAllVars = New System.Windows.Forms.Button()
-        Me.m_rbWriteMonthly = New System.Windows.Forms.RadioButton()
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
-        Me.m_lblWriteAs = New System.Windows.Forms.Label()
-        Me.m_picLogo = New System.Windows.Forms.PictureBox()
-        Me.m_rbWriteBoth = New System.Windows.Forms.RadioButton()
+        Me.m_pbLogo = New System.Windows.Forms.PictureBox()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_csMain.Panel1.SuspendLayout()
         Me.m_csMain.Panel2.SuspendLayout()
         Me.m_csMain.SuspendLayout()
-        CType(Me.m_picLogo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'm_csMain
@@ -85,28 +80,23 @@ Partial Class frmMain
         Me.m_csMain.Panel1.Controls.Add(Me.m_hdrIn)
         Me.m_csMain.Panel1.Controls.Add(Me.m_lblSource)
         Me.m_csMain.Panel1.Controls.Add(Me.m_btnAllSrc)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_rbReadAnnual)
+        Me.m_csMain.Panel1.Controls.Add(Me.m_rbAnnual)
         Me.m_csMain.Panel1.Controls.Add(Me.m_tbxSource)
-        Me.m_csMain.Panel1.Controls.Add(Me.m_rbReadMonthly)
+        Me.m_csMain.Panel1.Controls.Add(Me.m_rbMonthly)
         Me.m_csMain.Panel1.Controls.Add(Me.m_btnChooseSrc)
         Me.m_csMain.Panel1.Controls.Add(Me.m_lblReadAs)
         '
         'm_csMain.Panel2
         '
-        Me.m_csMain.Panel2.Controls.Add(Me.m_pbRun)
         Me.m_csMain.Panel2.Controls.Add(Me.m_cbCreateRunFolder)
         Me.m_csMain.Panel2.Controls.Add(Me.m_hrdOut)
         Me.m_csMain.Panel2.Controls.Add(Me.m_tbxDest)
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnRun)
         Me.m_csMain.Panel2.Controls.Add(Me.m_clbValues)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_rbWriteBoth)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_rbWriteAnnual)
         Me.m_csMain.Panel2.Controls.Add(Me.m_lblDest)
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnAllVars)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_rbWriteMonthly)
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnChooseOut)
         Me.m_csMain.Panel2.Controls.Add(Me.m_lblVars)
-        Me.m_csMain.Panel2.Controls.Add(Me.m_lblWriteAs)
         '
         'm_lblFilesSrc
         '
@@ -139,12 +129,12 @@ Partial Class frmMain
         Me.m_btnAllSrc.Name = "m_btnAllSrc"
         Me.m_btnAllSrc.UseVisualStyleBackColor = True
         '
-        'm_rbReadAnnual
+        'm_rbAnnual
         '
-        resources.ApplyResources(Me.m_rbReadAnnual, "m_rbReadAnnual")
-        Me.m_rbReadAnnual.Name = "m_rbReadAnnual"
-        Me.m_rbReadAnnual.TabStop = True
-        Me.m_rbReadAnnual.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbAnnual, "m_rbAnnual")
+        Me.m_rbAnnual.Name = "m_rbAnnual"
+        Me.m_rbAnnual.TabStop = True
+        Me.m_rbAnnual.UseVisualStyleBackColor = True
         '
         'm_tbxSource
         '
@@ -152,12 +142,12 @@ Partial Class frmMain
         Me.m_tbxSource.Name = "m_tbxSource"
         Me.m_tbxSource.ReadOnly = True
         '
-        'm_rbReadMonthly
+        'm_rbMonthly
         '
-        resources.ApplyResources(Me.m_rbReadMonthly, "m_rbReadMonthly")
-        Me.m_rbReadMonthly.Name = "m_rbReadMonthly"
-        Me.m_rbReadMonthly.TabStop = True
-        Me.m_rbReadMonthly.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_rbMonthly, "m_rbMonthly")
+        Me.m_rbMonthly.Name = "m_rbMonthly"
+        Me.m_rbMonthly.TabStop = True
+        Me.m_rbMonthly.UseVisualStyleBackColor = True
         '
         'm_btnChooseSrc
         '
@@ -169,12 +159,6 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_lblReadAs, "m_lblReadAs")
         Me.m_lblReadAs.Name = "m_lblReadAs"
-        '
-        'm_pbRun
-        '
-        resources.ApplyResources(Me.m_pbRun, "m_pbRun")
-        Me.m_pbRun.Name = "m_pbRun"
-        Me.m_pbRun.Style = System.Windows.Forms.ProgressBarStyle.Continuous
         '
         'm_cbCreateRunFolder
         '
@@ -209,13 +193,6 @@ Partial Class frmMain
         Me.m_clbValues.FormattingEnabled = True
         Me.m_clbValues.Name = "m_clbValues"
         '
-        'm_rbWriteAnnual
-        '
-        resources.ApplyResources(Me.m_rbWriteAnnual, "m_rbWriteAnnual")
-        Me.m_rbWriteAnnual.Name = "m_rbWriteAnnual"
-        Me.m_rbWriteAnnual.TabStop = True
-        Me.m_rbWriteAnnual.UseVisualStyleBackColor = True
-        '
         'm_lblDest
         '
         resources.ApplyResources(Me.m_lblDest, "m_lblDest")
@@ -226,13 +203,6 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_btnAllVars, "m_btnAllVars")
         Me.m_btnAllVars.Name = "m_btnAllVars"
         Me.m_btnAllVars.UseVisualStyleBackColor = True
-        '
-        'm_rbWriteMonthly
-        '
-        resources.ApplyResources(Me.m_rbWriteMonthly, "m_rbWriteMonthly")
-        Me.m_rbWriteMonthly.Name = "m_rbWriteMonthly"
-        Me.m_rbWriteMonthly.TabStop = True
-        Me.m_rbWriteMonthly.UseVisualStyleBackColor = True
         '
         'm_btnChooseOut
         '
@@ -245,25 +215,13 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_lblVars, "m_lblVars")
         Me.m_lblVars.Name = "m_lblVars"
         '
-        'm_lblWriteAs
+        'm_pbLogo
         '
-        resources.ApplyResources(Me.m_lblWriteAs, "m_lblWriteAs")
-        Me.m_lblWriteAs.Name = "m_lblWriteAs"
-        '
-        'm_picLogo
-        '
-        resources.ApplyResources(Me.m_picLogo, "m_picLogo")
-        Me.m_picLogo.BackColor = System.Drawing.Color.White
-        Me.m_picLogo.BackgroundImage = Global.EwEMultiSimPlugin.My.Resources.Resources.logo_canada_large
-        Me.m_picLogo.Name = "m_picLogo"
-        Me.m_picLogo.TabStop = False
-        '
-        'm_rbWriteBoth
-        '
-        resources.ApplyResources(Me.m_rbWriteBoth, "m_rbWriteBoth")
-        Me.m_rbWriteBoth.Name = "m_rbWriteBoth"
-        Me.m_rbWriteBoth.TabStop = True
-        Me.m_rbWriteBoth.UseVisualStyleBackColor = True
+        resources.ApplyResources(Me.m_pbLogo, "m_pbLogo")
+        Me.m_pbLogo.BackColor = System.Drawing.Color.White
+        Me.m_pbLogo.BackgroundImage = Global.EwEMultiSimPlugin.My.Resources.Resources.logo_canada_large
+        Me.m_pbLogo.Name = "m_pbLogo"
+        Me.m_pbLogo.TabStop = False
         '
         'frmMain
         '
@@ -272,7 +230,7 @@ Partial Class frmMain
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.Controls.Add(Me.m_csMain)
-        Me.Controls.Add(Me.m_picLogo)
+        Me.Controls.Add(Me.m_pbLogo)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmMain"
         Me.ShowInTaskbar = False
@@ -282,7 +240,7 @@ Partial Class frmMain
         Me.m_csMain.Panel2.PerformLayout()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).EndInit()
         Me.m_csMain.ResumeLayout(False)
-        CType(Me.m_picLogo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.m_pbLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -293,9 +251,9 @@ Partial Class frmMain
     Private WithEvents m_hdrIn As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_lblSource As System.Windows.Forms.Label
     Private WithEvents m_btnAllSrc As System.Windows.Forms.Button
-    Private WithEvents m_rbReadAnnual As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbAnnual As System.Windows.Forms.RadioButton
     Private WithEvents m_tbxSource As System.Windows.Forms.TextBox
-    Private WithEvents m_rbReadMonthly As System.Windows.Forms.RadioButton
+    Private WithEvents m_rbMonthly As System.Windows.Forms.RadioButton
     Private WithEvents m_btnChooseSrc As System.Windows.Forms.Button
     Private WithEvents m_lblReadAs As System.Windows.Forms.Label
     Private WithEvents m_hrdOut As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -304,12 +262,7 @@ Partial Class frmMain
     Private WithEvents m_btnAllVars As System.Windows.Forms.Button
     Private WithEvents m_btnChooseOut As System.Windows.Forms.Button
     Private WithEvents m_lblVars As System.Windows.Forms.Label
-    Private WithEvents m_picLogo As System.Windows.Forms.PictureBox
+    Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
     Private WithEvents m_btnRun As System.Windows.Forms.Button
     Private WithEvents m_cbCreateRunFolder As System.Windows.Forms.CheckBox
-    Private WithEvents m_rbWriteAnnual As System.Windows.Forms.RadioButton
-    Private WithEvents m_rbWriteMonthly As System.Windows.Forms.RadioButton
-    Private WithEvents m_lblWriteAs As System.Windows.Forms.Label
-    Private WithEvents m_pbRun As System.Windows.Forms.ProgressBar
-    Private WithEvents m_rbWriteBoth As System.Windows.Forms.RadioButton
 End Class

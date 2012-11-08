@@ -113,18 +113,6 @@ Namespace My
                 Me("CreateUniqueRunFolder") = value
             End Set
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property WriteOption() As Integer
-            Get
-                Return CType(Me("WriteOption"),Integer)
-            End Get
-            Set
-                Me("WriteOption") = value
-            End Set
-        End Property
     End Class
 End Namespace
 
