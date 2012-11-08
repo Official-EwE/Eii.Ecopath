@@ -198,8 +198,10 @@ Public Class cProducerUnit
         ' Reset effort to 1 at the beginning of every time step
         Me.m_sEffort = 1.0!
         ' Clear totals prior to a run!
-        Array.Clear(Me.m_asLandings, 0, Me.m_asLandings.Length - 1)
-        Array.Clear(Me.m_asLandingsValue, 0, Me.m_asLandingsValue.Length - 1)
+        If (Me.m_asLandings IsNot Nothing) Then
+            Array.Clear(Me.m_asLandings, 0, Me.m_asLandings.Length - 1)
+            Array.Clear(Me.m_asLandingsValue, 0, Me.m_asLandingsValue.Length - 1)
+        End If
     End Sub
 
     Public Shadows Function HasTarget(ByVal unit As cUnit, ByVal group As cEcoPathGroupInput) As Boolean
