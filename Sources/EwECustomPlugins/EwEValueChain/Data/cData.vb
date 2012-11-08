@@ -356,7 +356,7 @@ Public Class cData
         For iSequence As Integer = 0 To Me.UnitCount - 1
             unit = Me.Unit(iSequence)
             ' Sequence is zero-based 
-            unit.InitRun(Me.m_core, iSequence)
+            unit.InitRun(iSequence)
         Next
     End Function
 
@@ -382,7 +382,7 @@ Public Class cData
         Dim unit As cUnit = Nothing
         For iSequence As Integer = 0 To Me.UnitCount - 1
             unit = Me.Unit(iSequence)
-            If Not unit.HasComputed Then
+            If unit.IsRunError Then
 #If DEBUG Then
                 Debug.Assert(False, "Chain did not compute correctly for unit " & unit.Name)
 #End If
@@ -628,8 +628,12 @@ Public Class cData
     ''' <remarks></remarks>
     Public Sub AddUnit(ByVal unit As cUnit)
 
-        If unit Is Nothing Then Return
+        If (unit Is Nothing) Then Return
 
+        ' Assign core
+        unit.core = Me.Core
+
+        ' Add
         Me.m_lUnits.Add(unit)
         Me.IsChanged = True
 

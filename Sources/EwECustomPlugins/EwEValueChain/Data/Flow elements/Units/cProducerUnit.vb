@@ -177,11 +177,10 @@ Public Class cProducerUnit
     ''' <summary>
     ''' Initialize the unit for a new run.
     ''' </summary>
-    ''' <param name="core"></param>
     ''' <param name="iSequence"></param>
     ''' -----------------------------------------------------------------------
-    Public Overrides Sub InitRun(ByVal core As EwECore.cCore, ByVal iSequence As Integer)
-        MyBase.InitRun(core, iSequence)
+    Public Overrides Sub InitRun(ByVal iSequence As Integer)
+        MyBase.InitRun(iSequence)
         ' Reset local vars for the next run
         Me.m_sOriginalOutputBiomass = 0.0!
 

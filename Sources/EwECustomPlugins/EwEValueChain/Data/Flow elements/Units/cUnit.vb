@@ -58,6 +58,7 @@ Public MustInherit Class cUnit
     Private m_core As cCore = Nothing
 
     Private m_bCanCompute As Boolean = False
+    Private m_bRunStarted As Boolean = False
 
     ''' <summary>Units that receive outputs from this unit.</summary>
     Protected m_llinkOutput As New List(Of cLink)
@@ -176,6 +177,7 @@ Public MustInherit Class cUnit
     ''' -----------------------------------------------------------------------
     Public Overridable Sub InitRun(ByVal iSequence As Integer)
         Me.Sequence = iSequence
+        Me.m_bRunStarted = True
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -369,10 +371,10 @@ Public MustInherit Class cUnit
     End Property
 
     <Browsable(False)> _
-    Public Overridable ReadOnly Property HasComputed() As Boolean
+    Public Overridable ReadOnly Property IsRunError() As Boolean
         Get
             ' Return if all results received OR when not ready to run yet
-            Return (Me.m_lReceivedInputs.Count = Me.m_llinkInput.Count) Or (Me.Sequence = 0)
+            Return (Me.m_lReceivedInputs.Count < Me.m_llinkInput.Count) And Me.m_bRunStarted
         End Get
     End Property
 
