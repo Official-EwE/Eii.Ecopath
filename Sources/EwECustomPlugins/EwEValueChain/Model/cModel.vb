@@ -520,7 +520,8 @@ Public Class cModel
         Else
             ' #Yes: run for Ecosim
             ' JS 19Nov11: use Ecosim value for time step
-            Return ecosimDS.ResultsSumValueByGroupGear(iGroup, iFleet, iTimeStep) * sArea
+            ' JS 07Nov12: Ecosim produces 'Ecopath values': values across a year
+            Return ecosimDS.ResultsSumValueByGroupGear(iGroup, iFleet, iTimeStep) * sArea / cCore.N_MONTHS
         End If
 
     End Function
