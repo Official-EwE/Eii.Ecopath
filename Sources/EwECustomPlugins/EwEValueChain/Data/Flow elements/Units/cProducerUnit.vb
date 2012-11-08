@@ -540,6 +540,9 @@ Public Class cProducerUnit
         cPropertySorter.PropertyOrder(7)> _
     Public ReadOnly Property UnlikelyOutputs As String
         Get
+
+            If Me.Core Is Nothing Then Return ""
+
             Dim sTotal(Me.Core.nGroups) As Single
             Dim sbError As New StringBuilder()
             Dim fmt As New cCoreInterfaceFormatter()
