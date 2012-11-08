@@ -172,12 +172,10 @@ Public MustInherit Class cUnit
     ''' <summary>
     ''' Initialize the unit for a new Ecosim or Ecospace run.
     ''' </summary>
-    ''' <param name="core">The EwE core that this run is performed onto.</param>
     ''' <param name="iSequence">The sequence number to assign to this unit for the run.</param>
     ''' -----------------------------------------------------------------------
-    Public Overridable Sub InitRun(ByVal core As cCore, ByVal iSequence As Integer)
+    Public Overridable Sub InitRun(ByVal iSequence As Integer)
         Me.Sequence = iSequence
-        Me.Core = core
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -337,11 +335,11 @@ Public MustInherit Class cUnit
     End Property
 
     <Browsable(False)> _
-    Protected Property Core() As cCore
+    Public Property Core() As cCore
         Get
             Return Me.m_core
         End Get
-        Private Set(ByVal value As cCore)
+        Set(ByVal value As cCore)
             Me.m_core = value
         End Set
     End Property
@@ -373,7 +371,8 @@ Public MustInherit Class cUnit
     <Browsable(False)> _
     Public Overridable ReadOnly Property HasComputed() As Boolean
         Get
-            Return (Me.m_lReceivedInputs.Count = Me.m_llinkInput.Count)
+            ' Return if all results received OR when not ready to run yet
+            Return (Me.m_lReceivedInputs.Count = Me.m_llinkInput.Count) Or (Me.Sequence = 0)
         End Get
     End Property
 
