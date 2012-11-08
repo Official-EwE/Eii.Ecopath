@@ -163,7 +163,7 @@ Partial Class ucResults
         Me.m_tsbEcopath.Name = "m_tsbEcopath"
         Me.m_tsbEcopath.Size = New System.Drawing.Size(23, 22)
         Me.m_tsbEcopath.Text = "Table"
-        Me.m_tsbEcopath.ToolTipText = "Show Ecopath results table"
+        Me.m_tsbEcopath.ToolTipText = "Show value chain results table"
         '
         'm_tsbEcosim
         '
@@ -173,7 +173,7 @@ Partial Class ucResults
         Me.m_tsbEcosim.Name = "m_tsbEcosim"
         Me.m_tsbEcosim.Size = New System.Drawing.Size(23, 22)
         Me.m_tsbEcosim.Text = "Graph"
-        Me.m_tsbEcosim.ToolTipText = "Show Ecosim results graph"
+        Me.m_tsbEcosim.ToolTipText = "Show value chain results graph"
         '
         'm_tsbEquilibrium
         '

@@ -590,7 +590,7 @@ Public Class ucResults
         For iYear As Integer = 0 To Me.m_data.Core.nEcosimYears - 1
             Me.m_tscbYear.Items.Add(New cYearComboItem(iYear, CStr(iYearStart + iYear)))
         Next
-        Me.m_tscbYear.SelectedIndex = 0
+        If (Me.m_tscbYear.Items.Count > 0) Then Me.m_tscbYear.SelectedIndex = 0
 
     End Sub
 
