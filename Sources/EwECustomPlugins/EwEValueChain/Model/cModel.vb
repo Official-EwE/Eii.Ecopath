@@ -493,8 +493,8 @@ Public Class cModel
         Else
             ' Yes: run for Ecosim
             Debug.Assert(iTimeStep = ecosimresults.CurrentT)
-
-            sLandings = ecosimresults.BCatch(iGroup, iFleet) * sArea
+            ' JS 07Nov12: Ecosim produces 'Ecopath values': values across a year
+            sLandings = ecosimresults.BCatch(iGroup, iFleet) * sArea / cCore.N_MONTHS
         End If
 
         Return sLandings
@@ -521,6 +521,7 @@ Public Class cModel
             ' #Yes: run for Ecosim
             ' JS 19Nov11: use Ecosim value for time step
             ' JS 07Nov12: Ecosim produces 'Ecopath values': values across a year
+            Debug.Assert(iTimeStep = ecosimresults.CurrentT)
             Return ecosimDS.ResultsSumValueByGroupGear(iGroup, iFleet, iTimeStep) * sArea / cCore.N_MONTHS
         End If
 
