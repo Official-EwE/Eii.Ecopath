@@ -146,8 +146,8 @@ Partial Class ucResults
         'm_tslbYear
         '
         Me.m_tslbYear.Name = "m_tslbYear"
-        Me.m_tslbYear.Size = New System.Drawing.Size(93, 22)
-        Me.m_tslbYear.Text = "Show &values for:"
+        Me.m_tslbYear.Size = New System.Drawing.Size(64, 22)
+        Me.m_tslbYear.Text = "Show &year:"
         '
         'm_tscbYear
         '

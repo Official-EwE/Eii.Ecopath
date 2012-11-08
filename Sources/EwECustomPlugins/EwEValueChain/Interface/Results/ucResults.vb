@@ -587,7 +587,7 @@ Public Class ucResults
         Dim iStepsPerYear As Integer = CInt(Me.m_data.Core.nEcosimTimeSteps / Math.Max(1, Me.m_data.Core.nEcosimYears))
 
         Me.m_tscbYear.Items.Clear()
-        For iYear As Integer = 0 To Me.m_data.Core.nEcosimYears - 1
+        For iYear As Integer = 1 To Me.m_data.Core.nEcosimYears
             Me.m_tscbYear.Items.Add(New cYearComboItem(iYear, CStr(iYearStart + iYear)))
         Next
         If (Me.m_tscbYear.Items.Count > 0) Then Me.m_tscbYear.SelectedIndex = 0
