@@ -37,6 +37,34 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Return the number of rows in the raster.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function NumRows() As Integer
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the number of columns in the raster.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function NumCols() As Integer
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the size of square cells in the raster.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function CellSize() As Double
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Return the top-left location of the raster.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Function TopLeft() As PointF
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Return a cell value for a given Ecospace row and column.
         ''' </summary>
         ''' <param name="iRow">One-based Ecospace row index</param>
