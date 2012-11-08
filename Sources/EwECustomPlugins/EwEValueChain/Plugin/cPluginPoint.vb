@@ -365,6 +365,9 @@ Public Class cPluginPoint
             Me.m_result.Reset(cModel.eRunTypes.Ecosim)
         End If
 
+        ' Prepare data
+        Me.m_data.InitRun()
+
     End Sub
 
     ''' -----------------------------------------------------------------------
