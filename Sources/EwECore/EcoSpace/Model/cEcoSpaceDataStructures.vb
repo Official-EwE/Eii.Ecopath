@@ -1584,8 +1584,8 @@ Public Class cEcospaceDataStructures
         startCost = EcopathCost(iFleet, 1) + (sFishEffort * EcopathCost(iFleet, 2) + sSailEffort * EcopathCost(iFleet, 3))
         endCost = EcopathCost(iFleet, 1) + (eFishEffort * EcopathCost(iFleet, 2) + eSailEffort * EcopathCost(iFleet, 3))
 
-        Console.WriteLine("Effort Fleet = " & iFleet.ToString & ", Start = " & sFishEffort.ToString & ", End = " & eFishEffort.ToString)
-        Console.WriteLine("Sail Fleet = " & iFleet.ToString & ", Start = " & sSailEffort.ToString & ", End = " & eSailEffort.ToString)
+        'Console.WriteLine("Effort Fleet = " & iFleet.ToString & ", Start = " & sFishEffort.ToString & ", End = " & eFishEffort.ToString)
+        'Console.WriteLine("Sail Fleet = " & iFleet.ToString & ", Start = " & sSailEffort.ToString & ", End = " & eSailEffort.ToString)
 
     End Sub
 
