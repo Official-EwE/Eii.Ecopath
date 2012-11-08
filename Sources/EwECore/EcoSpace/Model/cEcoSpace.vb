@@ -1512,9 +1512,12 @@ Public Class cEcoSpace
                         solver.SignalState.Reset()
 
                         solver.isOkToRun = False
-                        ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-                        'Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                        ' worker.Start()
+                        'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                        Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                        'This should not make any difference on Mono
+                        ' worker.Priority = ThreadPriority.AboveNormal
+                        ' System.Console.WriteLine(worker.Priority.ToString)
+                        worker.Start()
                         iFrstCell += m_Data.nCellsPerThread
 
                     Else
@@ -3313,9 +3316,17 @@ exitline:
         Dim Attract(,) As Single
         Dim arguments As cThreadedCallArgs
 
+        Dim stpwtch As Stopwatch
+
         Try
 
             arguments = DirectCast(obParam, cThreadedCallArgs)
+
+            Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+
+            Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+            Console.WriteLine("     N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
+            stpwtch = Stopwatch.StartNew
 
             ReDim Attract(m_Data.InRow, m_Data.InCol)
 
@@ -3395,6 +3406,10 @@ exitline:
 
         Dim AutoReSet As AutoResetEvent = TryCast(arguments.WaitHandle, AutoResetEvent)
         Debug.Assert(AutoReSet IsNot Nothing, "PredictEffortDistributionThreaded Exception AutoResetEvent is null.")
+       
+        Console.WriteLine("     Effort Distribution run time = " & stpwtch.Elapsed.TotalSeconds.ToString & ", End t = " & DateTime.Now.ToLongTimeString)
+        stpwtch.Stop()
+        stpwtch = Nothing
 
         'Set the AutoRestEvent this will release the wait on this thread
         If AutoReSet IsNot Nothing Then AutoReSet.Set()
@@ -3437,7 +3452,11 @@ exitline:
             'Distribute fishing effort across the map for the fleet indexes iFirstFleet to ilastfleet
             'this is threaded by fleet
             Dim waitOb As WaitHandle = New AutoResetEvent(False)
-            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
+            Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth)
+            Dim worker As Thread = New Thread(Sub() Me.PredictEffortDistributionThreaded(arg))
+            worker.Start()
+            ' ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
+
 
             lstOfCalls.Add(waitOb)
 

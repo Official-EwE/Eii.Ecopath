@@ -139,6 +139,8 @@ Public Class cSpaceSolver
     ''' <remarks>Added for Atlantis coupling. Local copy passes to SimDetritusMT() by each thread(this prevents cross thread corruption) then used to update map </remarks>
     Private GroupDetritus() As Single
 
+    Private m_stpWatch As Stopwatch
+
     Public Sub Init()
         'local spatial variables
         ReDim loss(m_Data.NGroups)
@@ -189,6 +191,8 @@ Public Class cSpaceSolver
 
         m_ConTracer.Init(m_TracerData, m_PathData, m_SimData, m_Stanza)
         m_ConTracer.CInitialize()
+
+        Me.m_stpWatch = New Stopwatch
 
     End Sub
 
@@ -249,8 +253,13 @@ Public Class cSpaceSolver
         If m_TracerData.EcoSpaceConSimOn Then
             ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
         End If
-        'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
-        ' Console.WriteLine("Solve OBID=" & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T=" & DateTime.Now.ToLongTimeString)
+
+        Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+        Console.WriteLine("Solve Derivt OBID = " & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+        Console.WriteLine("     N Map Cells = " & (iLstCell - iFrstCell + 1).ToString)
+
+        Me.m_stpWatch.Reset()
+        Me.m_stpWatch.Start()
 
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
@@ -295,6 +304,9 @@ Public Class cSpaceSolver
             'End If
 
         End Try
+
+        Me.m_stpWatch.Stop()
+        Console.WriteLine("     Solve Derivt run time " & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString & ", End T = " & DateTime.Now.ToLongTimeString)
 
     End Sub
 
