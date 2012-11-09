@@ -190,25 +190,25 @@ Namespace SpatialData
                 End If
 
                 sb.AppendLine("Ecospace spatial operations log")
-                sb.AppendLine("EwE version, " & cCore.Version)
-                sb.AppendLine("EwE model, " & Me.m_core.DataSource.ToString)
-                sb.AppendLine("Ecosim scenario," & Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name)
+                sb.AppendLine("EwE version, " & cStringUtils.ToCSVField(cCore.Version))
+                sb.AppendLine("EwE model, " & cStringUtils.ToCSVField(Me.m_core.DataSource.ToString))
+                sb.AppendLine("Ecosim scenario," & cStringUtils.ToCSVField(Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name))
                 If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
-                    sb.AppendLine("Ecosim timeseries," & Me.m_core.EcosimTimeSeries(Me.m_core.ActiveTimeSeriesDatasetIndex).Name)
+                    sb.AppendLine("Ecosim timeseries," & cStringUtils.ToCSVField(Me.m_core.EcosimTimeSeries(Me.m_core.ActiveTimeSeriesDatasetIndex).Name))
                 End If
-                sb.AppendLine("Ecospace scenario," & Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name)
-                sb.AppendLine("Run date, " & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
+                sb.AppendLine("Ecospace scenario," & cStringUtils.ToCSVField(Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name))
+                sb.AppendLine("Run date, " & cStringUtils.ToCSVField(Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString))
                 sb.AppendLine()
 
             End If
 
-            sb.AppendLine(Me.m_msgCurrent.Message)
+            sb.AppendLine("Message, " & cStringUtils.ToCSVField(Me.m_msgCurrent.Message))
             For Each vs As cVariableStatus In Me.m_msgCurrent.Variables
-                sb.AppendLine("   " & vs.Status.ToString & ", " & vs.Message)
+                sb.AppendLine("Status, " & cStringUtils.ToCSVField(vs.Status.ToString & ", " & vs.Message))
             Next
 
             If Not String.IsNullOrWhiteSpace(Me.m_msgCurrent.Hyperlink) Then
-                sb.AppendLine("Results written to: " & Me.m_msgCurrent.Hyperlink)
+                sb.AppendLine("Output, " & cStringUtils.ToCSVField(Me.m_msgCurrent.Hyperlink))
             End If
 
             cLog.WriteTextToFile(Me.m_strLogFileName, sb, Me.m_bLogStarted)

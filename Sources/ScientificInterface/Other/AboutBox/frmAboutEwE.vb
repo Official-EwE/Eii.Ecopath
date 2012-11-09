@@ -18,10 +18,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Reflection
 Imports EwECore
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -52,11 +52,12 @@ Namespace Other
 
             Dim strTitle As String = My.Resources.GENERIC_CAPTION
             Dim strBitApp As String = cSystemUtils.IIF(cSystemUtils.Is64BitOS, SharedResources.ABOUT_64BIT, SharedResources.ABOUT_32BIT)
+            Dim strCompileDate As String = cAssemblyUtils.GetCompileDate().ToShortDateString
 
             ' Format generic page
             Me.Text = String.Format(My.Resources.ABOUT_CAPTION, strTitle)
             Me.m_lbTitle.Text = strTitle
-            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, cCore.Version, strBitApp)
+            Me.m_lbVersion.Text = String.Format(My.Resources.ABOUT_VERSION, cCore.Version, strBitApp, strCompileDate)
             Me.m_lbCopyright.Text = String.Format(My.Resources.ABOUT_COPYRIGHT, My.Application.Info.Copyright, My.Application.Info.CompanyName)
 
             ' Format technical page

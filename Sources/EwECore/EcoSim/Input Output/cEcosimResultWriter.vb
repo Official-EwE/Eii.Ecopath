@@ -484,13 +484,13 @@ Namespace Ecosim
             Dim sb As New StringBuilder()
 
             ' File
-            sb.AppendLine("EwE version, " & cCore.Version)
-            sb.AppendLine("Date, " & Date.Now.ToString())
-            sb.AppendLine("ModelFile, " & Me.m_core.DataSource.ToString)
+            sb.AppendLine("EwE version, " & cStringUtils.ToCSVField(cCore.Version))
+            sb.AppendLine("Date, " & cStringUtils.ToCSVField(Date.Now.ToString()))
+            sb.AppendLine("ModelFile, " & cStringUtils.ToCSVField(Me.m_core.DataSource.ToString))
             'Add the model name
-            sb.AppendLine("ModelName, " & Me.m_core.EwEModel.Name)
+            sb.AppendLine("ModelName, " & cStringUtils.ToCSVField(Me.m_core.EwEModel.Name))
             'Add the active scenario name
-            sb.AppendLine("EcosimScenario, " & Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
+            sb.AppendLine("EcosimScenario, " & cStringUtils.ToCSVField(Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name))
 
             ' Append time series name to scenario, if any
             sb.Append("TimeSeries, ")

@@ -19,6 +19,7 @@ Option Strict On
 Imports EwECore
 Imports EwECore.cEcoSpace
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 Namespace EcoSeed
 
@@ -1035,7 +1036,7 @@ Namespace EcoSeed
             'sb.AppendLine(" , , " & String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}", _
             '                m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_data.BoundaryWeight))
             sb.AppendLine("EcoSeed Optimization output")
-            sb.AppendLine("Version," & cCore.Version)
+            sb.AppendLine("Version," & cStringUtils.ToCSVField(cCore.Version))
             sb.AppendLine("Date," & Date.Today.ToLongDateString)
 
             sb.AppendLine("<Objective weights for run>")

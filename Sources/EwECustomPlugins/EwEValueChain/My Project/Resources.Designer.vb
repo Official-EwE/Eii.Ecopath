@@ -499,6 +499,33 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Saved &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SAVERESULT_DETAIL() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SAVERESULT_DETAIL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value chain results failed to save to &apos;{0}&apos;. {1}.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SAVERESULTS_FAILED() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SAVERESULTS_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Value chain results save to &apos;{0}&apos;.
+        '''</summary>
+        Friend ReadOnly Property PROMPT_SAVERESULTS_SUCCESS() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_SAVERESULTS_SUCCESS", resourceCulture)
+            End Get
+        End Property
+        
         Friend ReadOnly Property retailer() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("retailer", resourceCulture)

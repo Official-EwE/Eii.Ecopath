@@ -38,48 +38,79 @@ Public Class cResultWriter
 
 #End Region ' Variables
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Shazaam!
+    ''' </summary>
+    ''' <param name="data"><see cref="cData">Value chain data</see> to plunder.</param>
+    ''' <param name="results"><see cref="cResults">Value chain results</see> to write.</param>
+    ''' -----------------------------------------------------------------------
     Public Sub New(ByVal data As cData, ByVal results As cResults)
         Me.m_data = data
         Me.m_results = results
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Write results to CSV file.
     ''' </summary>
     ''' <param name="agg">Data aggregation method in use during the run.</param>
-    ''' <returns>True if succesful</returns>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
     Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType) As Boolean
         Return Me.WriteResults(agg, 0, "")
     End Function
 
-    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType, iItem As Integer, strItem As String) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="agg"></param>
+    ''' <param name="iItem"></param>
+    ''' <param name="strItem"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType, _
+                                 ByVal iItem As Integer, _
+                                 ByVal strItem As String) As Boolean
 
         Dim strFile As String = Me.GetFileName(agg, strItem)
         Dim sw As StreamWriter = Nothing
         Dim vs As cVariableStatus = Nothing
 
+        ' Sanity check
         If String.IsNullOrWhiteSpace(strFile) Then Return False
 
+        ' Try to open file
         Try
             sw = New StreamWriter(strFile, False)
         Catch ex As Exception
-            Me.m_msg = New cMessage(String.Format("Value chain results failed to save to '{0}': {1}", Path.GetDirectoryName(strFile), ex.Message), _
+            ' Waah!
+            Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_FAILED, Path.GetDirectoryName(strFile), ex.Message), _
                                eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
             Return False
         End Try
 
-        ' Write header
+        ' -------------
+        ' Start write process
+
+        ' Write EwE header
+        sw.WriteLine(Me.GetModelDetails())
+        sw.WriteLine()
+
+        ' Write data header
         sw.Write("Unit, Type")
         For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
             sw.Write(",")
-            sw.Write(v.ToString)
+            sw.Write(cStringUtils.ToCSVField(v.ToString))
         Next
         sw.WriteLine("")
 
+        ' Write data
         For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
-            sw.Write(u.Name)
+            sw.Write(cStringUtils.ToCSVField(u.Name))
             sw.Write(",")
-            sw.Write(u.UnitType.ToString)
+            sw.Write(cStringUtils.ToCSVField(u.UnitType.ToString))
             For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
                 sw.Write(",")
                 sw.Write(Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v)))
@@ -88,20 +119,35 @@ Public Class cResultWriter
         Next
         sw.Close()
 
+        ' Already has save result message?
         If (Me.m_msg Is Nothing) Then
-            Me.m_msg = New cMessage(String.Format("Value chain results saved to '{0}'", Path.GetDirectoryName(strFile)), _
+            ' #No: create one
+            Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
                                eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Information)
+            ' Set hyperlink
             Me.m_msg.Hyperlink = Path.GetDirectoryName(strFile)
         End If
 
-        vs = New cVariableStatus(eStatusFlags.OK, String.Format("Saved '{0}'", strFile), EwEUtils.Core.eVarNameFlags.NotSet, EwEUtils.Core.eDataTypes.NotSet, EwEUtils.Core.eCoreComponentType.External, 0)
+        ' Add status to message
+        vs = New cVariableStatus(eStatusFlags.OK, String.Format(My.Resources.PROMPT_SAVERESULT_DETAIL, strFile), _
+                                 EwEUtils.Core.eVarNameFlags.NotSet, EwEUtils.Core.eDataTypes.NotSet, EwEUtils.Core.eCoreComponentType.External, 0)
         Me.m_msg.AddVariable(vs)
 
+        ' We're done, Jim
         Return True
 
     End Function
 
-    Private Function GetFileName(ByVal agg As cParameters.eAggregationModeType, ByVal strItem As String) As String
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="agg"></param>
+    ''' <param name="strItem"></param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Private Function GetFileName(ByVal agg As cParameters.eAggregationModeType, _
+                                 ByVal strItem As String) As String
 
         Dim strPath As String = ""
         Dim strFile As String = ""
@@ -138,5 +184,37 @@ Public Class cResultWriter
             Return Me.m_msg
         End Get
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get default model details to report in output file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Function GetModelDetails() As String
+
+        Dim sb As New StringBuilder()
+        Dim core As cCore = Me.m_data.Core
+
+        ' File
+        sb.AppendLine("EwE version, " & cStringUtils.ToCSVField(cCore.Version))
+        sb.AppendLine("Date, " & cStringUtils.ToCSVField(Date.Now.ToString()))
+        sb.AppendLine("ModelFile, " & cStringUtils.ToCSVField(core.DataSource.ToString))
+        'Add the model name
+        sb.AppendLine("ModelName, " & cStringUtils.ToCSVField(core.EwEModel.Name))
+        'Add the active scenario name
+        sb.AppendLine("EcosimScenario, " & cStringUtils.ToCSVField(core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name))
+        ' Append time series name to scenario, if any
+        sb.Append("TimeSeries, ")
+        If core.ActiveTimeSeriesDatasetIndex > 0 Then
+            sb.Append(cStringUtils.ToCSVField(core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex).Name))
+        Else
+            sb.Append("(none)")
+        End If
+        ' Append value chain run type
+        sb.AppendLine("RunType, " & cStringUtils.ToCSVField(Me.m_results.RunType.ToString()))
+
+        Return sb.ToString()
+
+    End Function
 
 End Class

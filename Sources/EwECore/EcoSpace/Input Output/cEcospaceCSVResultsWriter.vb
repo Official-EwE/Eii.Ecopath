@@ -165,7 +165,7 @@ Public Class cEcospaceCSVResultsWriter
             Dim ver As String = cCore.Version
 
             strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
-            strm.WriteLine("EwE version," & ver)
+            strm.WriteLine("EwE version," & cStringUtils.ToCSVField(ver))
             strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
 
             strm.WriteLine("EcoSim Scenario," & cStringUtils.ToCSVField(simScen))

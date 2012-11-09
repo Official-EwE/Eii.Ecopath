@@ -52,6 +52,22 @@ Namespace Utilities
 
 #End Region ' Internal helper classes
 
+        Private Shared m_executingAssembly As System.Reflection.Assembly
+        Private Shared m_compileDate As System.Nullable(Of System.DateTime)
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Gets the executing assembly.
+        ''' </summary>
+        ''' <value>The executing assembly.</value>
+        ''' -----------------------------------------------------------------------
+        Public Shared ReadOnly Property ExecutingAssembly() As System.Reflection.Assembly
+            Get
+                Return If(cAssemblyUtils.m_executingAssembly, _
+                          InlineAssignHelper(cAssemblyUtils.m_executingAssembly, Assembly.GetExecutingAssembly()))
+            End Get
+        End Property
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns the short name of an assembly.
@@ -78,6 +94,7 @@ Namespace Utilities
             Return cStringUtils.ToHexString(an.GetPublicKeyToken())
         End Function
 
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Returns the version number of an assembly.
@@ -89,10 +106,26 @@ Namespace Utilities
         ''' -----------------------------------------------------------------------
         Public Shared Function GetVersion(Optional ByVal an As AssemblyName = Nothing) As Version
             If (an Is Nothing) Then
-                an = Assembly.GetExecutingAssembly.GetName
+                an = ExecutingAssembly.GetName
             End If
             Return an.Version
         End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Gets the compile date of the <see cref="ExecutingAssembly">currently 
+        ''' executing assembly</see>.
+        ''' </summary>
+        ''' <value>The compile date.</value>
+        ''' -----------------------------------------------------------------------
+        Public Shared ReadOnly Property GetCompileDate() As System.DateTime
+            Get
+                If Not m_compileDate.HasValue Then
+                    m_compileDate = RetrieveLinkerTimestamp(ExecutingAssembly.Location)
+                End If
+                Return If(m_compileDate, New System.DateTime())
+            End Get
+        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -202,6 +235,64 @@ Namespace Utilities
             Return lAssemblies.ToArray()
 
         End Function
+
+#Region " Internals "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Retrieves the linker timestamp, as written in the assembly header file
+        ''' at a fixed position. This may fail one day in future .NET versions.
+        ''' Ideally, the link date and time would be stored in a universal time
+        ''' format in the code by the compiler.
+        ''' </summary>
+        ''' <param name="strAssemblyPath">Path of the assembly file to read the
+        ''' build time from.</param>
+        ''' <returns>The build date.</returns>
+        ''' <remarks>
+        ''' Taken from http://www.codinghorror.com/blog/2005/04/determining-build-date-the-hard-way.html
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Shared Function RetrieveLinkerTimestamp(strAssemblyPath As String) As System.DateTime
+
+            Const peHeaderOffset As Integer = 60
+            Const linkerTimestampOffset As Integer = 8
+            Dim b(2047) As Byte
+            Dim s As System.IO.FileStream = Nothing
+
+            Try
+                s = New System.IO.FileStream(strAssemblyPath, System.IO.FileMode.Open, System.IO.FileAccess.Read)
+                s.Read(b, 0, 2048)
+            Finally
+                If s IsNot Nothing Then
+                    s.Close()
+                End If
+            End Try
+            Dim dt As New System.DateTime(1970, 1, 1, 0, 0, 0)
+
+            dt = dt.AddSeconds(System.BitConverter.ToInt32(b, System.BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset))
+            Return dt.AddHours(System.TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours)
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Smart hack to set a static property at compile time.
+        ''' </summary>
+        ''' <typeparam name="T"></typeparam>
+        ''' <param name="target"></param>
+        ''' <param name="value"></param>
+        ''' <returns>The <paramref name="value"/></returns>
+        ''' <remarks>
+        ''' Obtained from http://stackoverflow.com/questions/2050396/getting-the-date-of-a-net-assembly.
+        ''' Some people are too bloody smart. This is amazingly simple yet efficient.
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Private Shared Function InlineAssignHelper(Of T)(ByRef target As T, value As T) As T
+            target = value
+            Return value
+        End Function
+
+#End Region
 
     End Class
 

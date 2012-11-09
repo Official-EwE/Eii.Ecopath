@@ -118,7 +118,7 @@ Public Class cEcospaceASCResultsWriter
             Dim ver As String = cCore.Version
 
             strm.WriteLine("EcoSpace .asc map output")
-            strm.WriteLine("EwE version," & ver)
+            strm.WriteLine("EwE version," & cStringUtils.ToCSVField(ver))
             strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
 
             strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
