@@ -675,8 +675,12 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Shared ReadOnly Property Version As String
         Get
-            Dim an As Reflection.AssemblyName = Reflection.Assembly.GetAssembly(GetType(cCore)).GetName
-            Return an.Version.ToString
+            Try
+                Dim an As Reflection.AssemblyName = cAssemblyUtils.GetAssemblyName(GetType(cCore))
+                Return String.Format("{0} (compiled {1})", cAssemblyUtils.GetVersion(an), cAssemblyUtils.GetCompileDate(an).ToShortDateString)
+            Catch ex As Exception
+                Return ""
+            End Try
         End Get
     End Property
 

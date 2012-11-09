@@ -1456,8 +1456,8 @@ Description: {2}</value>
     <comment>{0}=layer name</comment>
   </data>
   <data name="ABOUT_VERSION" xml:space="preserve">
-    <value>Version {0} ({1}, compiled {2})</value>
-    <comment>{0}=ewe version, {1}=32 / 64 bit indicator, {2}=build date</comment>
+    <value>Version {0} - {1}</value>
+    <comment>{0}=core version, {1}=32 / 64 bit indicator</comment>
   </data>
   <data name="CAPTION_EXTERNAL_DATASET_CONFIGURE" xml:space="preserve">
     <value>Configure external data connection</value>

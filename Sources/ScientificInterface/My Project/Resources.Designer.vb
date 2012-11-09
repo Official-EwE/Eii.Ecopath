@@ -79,7 +79,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Version {0} ({1}, compiled {2}).
+        '''  Looks up a localized string similar to Version {0} - {1}.
         '''</summary>
         Public ReadOnly Property ABOUT_VERSION() As String
             Get

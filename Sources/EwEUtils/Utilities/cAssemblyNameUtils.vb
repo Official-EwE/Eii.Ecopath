@@ -52,9 +52,6 @@ Namespace Utilities
 
 #End Region ' Internal helper classes
 
-        Private Shared m_executingAssembly As System.Reflection.Assembly
-        Private Shared m_compileDate As System.Nullable(Of System.DateTime)
-
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' Gets the executing assembly.
@@ -63,8 +60,7 @@ Namespace Utilities
         ''' -----------------------------------------------------------------------
         Public Shared ReadOnly Property ExecutingAssembly() As System.Reflection.Assembly
             Get
-                Return If(cAssemblyUtils.m_executingAssembly, _
-                          InlineAssignHelper(cAssemblyUtils.m_executingAssembly, Assembly.GetExecutingAssembly()))
+                Return Assembly.GetExecutingAssembly()
             End Get
         End Property
 
@@ -118,12 +114,19 @@ Namespace Utilities
         ''' </summary>
         ''' <value>The compile date.</value>
         ''' -----------------------------------------------------------------------
-        Public Shared ReadOnly Property GetCompileDate() As System.DateTime
+        Public Shared ReadOnly Property GetCompileDate(Optional ByVal an As AssemblyName = Nothing) As System.DateTime
             Get
-                If Not m_compileDate.HasValue Then
-                    m_compileDate = RetrieveLinkerTimestamp(ExecutingAssembly.Location)
+                Dim ass As Assembly = Nothing
+
+                Dim strFile As String = ""
+                If (an Is Nothing) Then
+                    ass = ExecutingAssembly
+                Else
+                    ass = Assembly.Load(an)
                 End If
-                Return If(m_compileDate, New System.DateTime())
+                Dim dt As DateTime = RetrieveLinkerTimestamp(ass.Location)
+                If (dt = Nothing) Then dt = New DateTime()
+                Return dt
             End Get
         End Property
 
@@ -272,24 +275,6 @@ Namespace Utilities
             dt = dt.AddSeconds(System.BitConverter.ToInt32(b, System.BitConverter.ToInt32(b, peHeaderOffset) + linkerTimestampOffset))
             Return dt.AddHours(System.TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours)
 
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Smart hack to set a static property at compile time.
-        ''' </summary>
-        ''' <typeparam name="T"></typeparam>
-        ''' <param name="target"></param>
-        ''' <param name="value"></param>
-        ''' <returns>The <paramref name="value"/></returns>
-        ''' <remarks>
-        ''' Obtained from http://stackoverflow.com/questions/2050396/getting-the-date-of-a-net-assembly.
-        ''' Some people are too bloody smart. This is amazingly simple yet efficient.
-        ''' </remarks>
-        ''' -----------------------------------------------------------------------
-        Private Shared Function InlineAssignHelper(Of T)(ByRef target As T, value As T) As T
-            target = value
-            Return value
         End Function
 
 #End Region
