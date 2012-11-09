@@ -330,8 +330,8 @@ Public Class gridEcopathResult
 
         If iYear > 0 Then
             Dim sSteps As Single = CSng(Me.Core.nEcosimTimeSteps / Me.Core.nEcosimYears)
-            iTimeMin = CInt((iYear - 1) * sSteps)
-            iTimeMax = CInt(iYear * sSteps) - 1
+            iTimeMin = CInt((iYear - 1) * sSteps) + 1
+            iTimeMax = CInt(iYear * sSteps)
         End If
 
         For iTimeStep As Integer = iTimeMin To iTimeMax
