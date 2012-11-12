@@ -2670,4 +2670,7 @@
     <value>Operating System {0} ({1})</value>
     <comment>{0}=OS version, {1}=32 or 64 bit</comment>
   </data>
+  <data name="HEADER_CSVFIELD" xml:space="preserve">
+    <value>CSV field name</value>
+  </data>
 </root>
