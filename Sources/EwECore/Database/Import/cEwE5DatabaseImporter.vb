@@ -93,7 +93,7 @@ Namespace Database
 
         ''' <summary>Primary keys lookup table</summary>
         Private m_adtKeys() As Dictionary(Of String, Integer)
-        ''' <summary>Dictionaries, per datatype, of EwE Poolcode index to EwE6 DatabaseID.</summary>
+        ''' <summary>Dictionaries, per datatype, of EwE group index to EwE6 DatabaseID.</summary>
         Private m_adtIndexes() As Dictionary(Of Integer, Integer)
 
 #End Region ' Private bits 
@@ -606,7 +606,7 @@ Namespace Database
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set a value in the primary keys hashtable.
+        ''' Get/set a group ID in the primary keys hashtable.
         ''' </summary>
         ''' <param name="dt">The <see cref="eDataTypes">data type</see> to access
         ''' the key for.</param>
@@ -615,7 +615,7 @@ Namespace Database
         ''' administration of EwE5 to EwE6 key mappings during the import 
         ''' process.</para>
         ''' -------------------------------------------------------------------
-        Private Property PoolCodeID(ByVal dt As eDataTypes, ByVal iEwE5Index As Integer) As Integer
+        Private Property MappedID(ByVal dt As eDataTypes, ByVal iEwE5Index As Integer) As Integer
             Get
                 ' Get proper dictionary
                 Dim dict As Dictionary(Of Integer, Integer) = Me.m_adtIndexes(CInt(dt))
@@ -996,7 +996,6 @@ Namespace Database
             Dim drow As DataRow = Nothing
             Dim nGroupID As Integer = 1
             Dim sTemp As Single = 0.0
-            Dim clrTemp As Color
             Dim nSequence As Integer = 1 ' Renumber sequence field
 
             Dim nNumGroups As Integer = CInt(m_dbEwE5.GetValue(String.Format("SELECT COUNT(*) FROM [Group Info] WHERE modelName='{0}'", Me.m_strModelName)))
@@ -1082,10 +1081,7 @@ Namespace Database
                 drow("Unassimilated") = Me.FixValue(reader, "Unassimilated")
                 drow("GroupIsFish") = Me.FixValue(reader, "GroupIsFish")
                 drow("GroupIsInvert") = Me.FixValue(reader, "GroupIsInvert")
-                ' JS070412: Poolcolor converted to 8digit hexadecimal string
-                clrTemp = Color.FromArgb(CInt(Me.FixValue(reader, "PoolColor", &H0)))
-                ' JS121026: retain transparency to make colour revert to default in UI
-                drow("Poolcolor") = String.Format("{0:x8}", ((clrTemp.A And &HFF) << 24) + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
+                drow("Poolcolor") = Me.FixColor(CInt(Me.FixValue(reader, "PoolColor", &H0)))
 
                 writer.AddRow(drow)
                 ' Commit to allow FK in Remark
@@ -1093,8 +1089,8 @@ Namespace Database
 
                 ' Remember group ID mapping
                 Me.HashKey(eDataTypes.EcoPathGroupInput, CStr(reader("groupName"))) = nGroupID
-                ' Remember group poolcode mapping
-                PoolCodeID(eDataTypes.EcoPathGroupInput, nSequence) = nGroupID
+                ' Remember group group index mapping
+                MappedID(eDataTypes.EcoPathGroupInput, nSequence) = nGroupID
 
                 ' Import Remarks
                 Me.AddRemark(reader("remarks"), eDataTypes.EcoPathGroupInput, nGroupID, eVarNameFlags.Name)
@@ -1275,7 +1271,6 @@ Namespace Database
             Dim reader As IDataReader = Nothing
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing
-            Dim clrTemp As Color
             Dim nFleetID As Integer = 1
             Dim nSequence As Integer = 1 ' Renumber sequence field
 
@@ -1297,18 +1292,15 @@ Namespace Database
                 drow("FixedCost") = Me.FixValue(reader, "fixedCost")
                 drow("VariableCost") = Me.FixValue(reader, "variableCost")
                 drow("SailingCost") = Me.FixValue(reader, "SailingCost")
-
-                clrTemp = Color.FromArgb(CInt(Me.FixValue(reader, "PoolColor", &H0)))
-                ' JS121026: retain transparency to make colour revert to default in UI
-                drow("Poolcolor") = String.Format("{0:x8}", ((clrTemp.A And &HFF) << 24) + ((clrTemp.R And &HFF) << 16) + ((clrTemp.G And &HFF) << 8) + (clrTemp.B And &HFF))
+                drow("Poolcolor") = Me.FixColor(CInt(Me.FixValue(reader, "PoolColor", &H0)))
 
                 writer.AddRow(drow)
                 writer.Commit()
 
                 ' Remember Fleet ID mapping
                 Me.HashKey(eDataTypes.FleetInput, CStr(reader("gearName"))) = nFleetID
-                ' Remember fleet poolcode mapping
-                PoolCodeID(eDataTypes.FleetInput, nSequence) = nFleetID
+                ' Remember fleet index mapping
+                MappedID(eDataTypes.FleetInput, nSequence) = nFleetID
 
                 ' Map remarks
                 Me.AddRemark(reader("remarksCost"), eDataTypes.FleetInput, nFleetID, eVarNameFlags.FixedCost)
@@ -2994,7 +2986,7 @@ Namespace Database
                     Case eTimeSeriesCategoryType.Fleet
 
                         iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
-                        iFleetID = Me.PoolCodeID(eDataTypes.FleetInput, CInt(reader("Pool")))
+                        iFleetID = Me.MappedID(eDataTypes.FleetInput, CInt(reader("Pool")))
 
                         ' Is this fleet missing?
                         If (iFleetID = 0) Then
@@ -3037,49 +3029,49 @@ Namespace Database
 
                     Case eTimeSeriesCategoryType.Group
 
-                            iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
-                            iGroupID = Me.PoolCodeID(eDataTypes.EcoPathGroupInput, CInt(reader("Pool")))
+                        iDatasetID = Me.HashKey(eDataTypes.TimeSeriesDataset, CStr(reader("Dataset")))
+                        iGroupID = Me.MappedID(eDataTypes.EcoPathGroupInput, CInt(reader("Pool")))
 
-                            ' Is this group missing?
-                            If (iGroupID = 0) Then
-                                Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
-                                        Me.FixValue(reader, "DatName", ""), _
-                                        Me.FixValue(reader, "Dataset", ""), _
-                                        CInt(reader("Pool"))), _
-                                        eMessageType.DataImport, eMessageImportance.Information, True)
-                            Else
-                                iTimeSeriesID += 1
-
-                                drow = writerTimeSeries.NewRow()
-                                drow("TimeSeriesID") = iTimeSeriesID
-                                drow("Sequence") = iTimeSeriesID
-                                drow("DatasetID") = iDatasetID
-                                drow("DatType") = eType
-                                drow("DatName") = Me.FixValue(reader, "DatName", "")
-                                'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
-
-                                strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
-                                drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
-                                'drow("NumYears") = CInt(strMemo.Length / 10)
-
-                                ' JS 29Nov07: Time series imported with weight of 1 (not 0!)
-                                drow("WtType") = 1.0! ' Me.FixValue(reader, "WtType", 1.0!)
-                                writerTimeSeries.AddRow(drow)
-
-                                drow = writerGroup.NewRow()
-                                drow("TimeSeriesID") = iTimeSeriesID
-                                drow("GroupID") = iGroupID
-                                drow("VariableName") = ""
-                                writerGroup.AddRow(drow)
-                            End If
-
-                    Case eTimeSeriesCategoryType.NotSet
-                            'Trying to import unkown time series type - ignore this TS
-                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
+                        ' Is this group missing?
+                        If (iGroupID = 0) Then
+                            Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESIERIESGROUP, _
                                     Me.FixValue(reader, "DatName", ""), _
                                     Me.FixValue(reader, "Dataset", ""), _
-                                    eType.ToString()), _
+                                    CInt(reader("Pool"))), _
                                     eMessageType.DataImport, eMessageImportance.Information, True)
+                        Else
+                            iTimeSeriesID += 1
+
+                            drow = writerTimeSeries.NewRow()
+                            drow("TimeSeriesID") = iTimeSeriesID
+                            drow("Sequence") = iTimeSeriesID
+                            drow("DatasetID") = iDatasetID
+                            drow("DatType") = eType
+                            drow("DatName") = Me.FixValue(reader, "DatName", "")
+                            'drow("FirstYear") = Me.FixValue(reader, "FirstYear", 1950)
+
+                            strMemo = CStr(Me.FixValue(reader, "MemoField", ""))
+                            drow("TimeValues") = Me.RebuildNumberListString(strMemo, CChar(" "), 10)
+                            'drow("NumYears") = CInt(strMemo.Length / 10)
+
+                            ' JS 29Nov07: Time series imported with weight of 1 (not 0!)
+                            drow("WtType") = 1.0! ' Me.FixValue(reader, "WtType", 1.0!)
+                            writerTimeSeries.AddRow(drow)
+
+                            drow = writerGroup.NewRow()
+                            drow("TimeSeriesID") = iTimeSeriesID
+                            drow("GroupID") = iGroupID
+                            drow("VariableName") = ""
+                            writerGroup.AddRow(drow)
+                        End If
+
+                    Case eTimeSeriesCategoryType.NotSet
+                        'Trying to import unkown time series type - ignore this TS
+                        Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_WARNING_TIMESERIESTYPE, _
+                                Me.FixValue(reader, "DatName", ""), _
+                                Me.FixValue(reader, "Dataset", ""), _
+                                eType.ToString()), _
+                                eMessageType.DataImport, eMessageImportance.Information, True)
 
                 End Select
 
@@ -4120,6 +4112,25 @@ Namespace Database
         End Sub
 
 #End Region ' Auxillary data
+
+#Region " Local utilities "
+
+        Private Function FixColor(ByVal iColor As Integer) As String
+
+            Dim clrTemp As Color = Color.FromArgb(iColor)
+            Dim a As Byte = clrTemp.A
+            Dim r As Byte = clrTemp.R
+            Dim g As Byte = clrTemp.G
+            Dim b As Byte = clrTemp.B
+
+            ' Alpha is not set in EwE5 - remove opacity when any color is present
+            If (r > 0) Or (g > 0) Or (b > 0) Then a = 255
+
+            Return String.Format("{0:x2}{1:x2}{2:x2}{3:x2}", a, r, g, b)
+
+        End Function
+
+#End Region ' utilities
 
     End Class
 
