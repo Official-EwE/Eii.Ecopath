@@ -1620,6 +1620,8 @@ Public Class cCore
     Private Function UpdateEcosimGroupTimeSeries() As Boolean
 
         Dim bSucces As Boolean = True
+        Dim cc As eCoreComponentType = eCoreComponentType.NotSet
+
         Try
             For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
 
@@ -1643,9 +1645,10 @@ Public Class cCore
                 Me.m_TSData.bEnable(ts.Index) = ts.Enabled
                 Me.ValidateTimeSeries(ts)
 
+                cc = ts.CoreComponent
             Next
 
-            DataSource.SetChanged(eCoreComponentType.EcoSim)
+            If (cc <> eCoreComponentType.NotSet) Then DataSource.SetChanged(cc)
 
         Catch ex As Exception
             bSucces = False
