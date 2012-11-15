@@ -182,7 +182,7 @@ Public Class gridTimeSeries
                 ts.WtType = CSng(cell.GetValue(p))
             Case Else
                 Dim iTime As Integer = p.Row - eRowType.FirstTime
-                ts.ShapeData(iTime) = CSng(cell.GetValue(p))
+                ts.ShapeData(iTime + 1) = CSng(cell.GetValue(p))
         End Select
 
         ' Do not invalidate individual shapes on a batch cell edit
