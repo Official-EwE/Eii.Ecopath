@@ -38,7 +38,6 @@ Public Class cGroupTimeSeries
     Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer)
         MyBase.New(core, iDBID)
         Me.m_datatype = eDataTypes.GroupTimeSeries
-        Me.m_coreComponent = eCoreComponentType.EcoSim
     End Sub
 
     ''' -----------------------------------------------------------------------

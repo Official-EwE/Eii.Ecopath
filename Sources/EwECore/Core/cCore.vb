@@ -1619,8 +1619,8 @@ Public Class cCore
 
     Private Function UpdateEcosimGroupTimeSeries() As Boolean
 
-        Dim bSucces As Boolean = True
         Dim cc As eCoreComponentType = eCoreComponentType.NotSet
+        Dim bSucces As Boolean = True
 
         Try
             For Each ts As cGroupTimeSeries In Me.m_timeSeriesGroup
@@ -1643,12 +1643,12 @@ Public Class cCore
                 Next iYear
 
                 Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+                cc = ts.CoreComponent
                 Me.ValidateTimeSeries(ts)
 
-                cc = ts.CoreComponent
             Next
 
-            If (cc <> eCoreComponentType.NotSet) Then DataSource.SetChanged(cc)
+            If (cc = eCoreComponentType.NotSet) Then Me.DataSource.SetChanged(cc)
 
         Catch ex As Exception
             bSucces = False
@@ -1660,7 +1660,9 @@ Public Class cCore
 
     Private Function UpdateEcosimFleetTimeSeries() As Boolean
 
+        Dim cc As eCoreComponentType = eCoreComponentType.NotSet
         Dim bSucces As Boolean = True
+
         Try
             For Each ts As cFleetTimeSeries In Me.m_timeSeriesFleet
 
@@ -1682,11 +1684,12 @@ Public Class cCore
                 Next iYear
 
                 Me.m_TSData.bEnable(ts.Index) = ts.Enabled
+                cc = ts.CoreComponent
                 Me.ValidateTimeSeries(ts)
 
             Next
 
-            DataSource.SetChanged(eCoreComponentType.EcoSim)
+            If (cc = eCoreComponentType.NotSet) Then Me.DataSource.SetChanged(cc)
 
         Catch ex As Exception
             bSucces = False
@@ -1957,8 +1960,8 @@ Public Class cCore
 
         ' Load enabled TS
         Me.m_TSData.loadEnabled()
-        ' Ecosim needs to run again
-        Me.StateMonitor.SetEcoSimLoaded(True)
+        ' Ecosim needs to run again, but do not screw up the data state
+        Me.StateMonitor.SetEcoSimLoaded(True, bResetDataState:=False)
 
         'setEcosimRunLength() will call DoDatValCalculations to re-load forcing data
         If Me.ActiveTimeSeriesDatasetIndex > 0 Then

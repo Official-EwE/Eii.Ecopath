@@ -38,7 +38,6 @@ Public Class cFleetTimeSeries
     Friend Sub New(ByVal core As cCore, ByVal iDBID As Integer)
         MyBase.New(core, iDBID)
         Me.m_datatype = eDataTypes.FleetTimeSeries
-        Me.m_coreComponent = eCoreComponentType.EcoSim
     End Sub
 
     ''' -----------------------------------------------------------------------

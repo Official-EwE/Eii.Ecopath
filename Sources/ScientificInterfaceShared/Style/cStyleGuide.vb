@@ -729,23 +729,8 @@ Namespace Style
 
         Public ReadOnly Property CurrencyUnitText(ByVal unit As eUnitCurrencyType) As String
             Get
-                Select Case unit
-                    Case eUnitCurrencyType.Calorie
-                        Return My.Resources.UNIT_CURRENCY_CALORIE
-                    Case eUnitCurrencyType.Carbon
-                        Return My.Resources.UNIT_CURRENCY_CARBON
-                    Case eUnitCurrencyType.DryWeight
-                        Return My.Resources.UNIT_CURRENCY_DRYWEIGHT
-                    Case eUnitCurrencyType.Joules
-                        Return My.Resources.UNIT_CURRENCY_JOULES
-                    Case eUnitCurrencyType.Nitrogen
-                        Return My.Resources.UNIT_CURRENCY_NITROGEN
-                    Case eUnitCurrencyType.Phosporous
-                        Return My.Resources.UNIT_CURRENCY_PHOSPOROUS
-                    Case eUnitCurrencyType.WetWeight
-                        Return My.Resources.UNIT_CURRENCY_WETWEIGHT
-                End Select
-                Return Me.CustomCurrencyUnitText()
+                Dim fmt As New cCurrencyUnitFormatter(Me.m_strUnitCurrencyCustom)
+                Return fmt.GetDescriptor(unit)
             End Get
         End Property
 

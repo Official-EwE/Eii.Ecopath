@@ -410,6 +410,9 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         Public Sub SetChanged(ByVal cc As eCoreComponentType) _
                 Implements IEwEDataSource.SetChanged
+            ' Ignore invalid set commands. Could be due to sloppy usage
+            If (cc = eCoreComponentType.NotSet) Then Return
+            ' Ignore external dirtying
             If (cc = eCoreComponentType.External) Then Return
             Me.m_dictChangedComponents.Item(cc) = True
         End Sub
