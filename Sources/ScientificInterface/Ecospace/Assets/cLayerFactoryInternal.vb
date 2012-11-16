@@ -37,9 +37,13 @@ Namespace Ecospace.Basemap.Layers
     Friend Class cLayerFactoryInternal
         Inherits cLayerFactoryBase
 
+#Region " Constants "
+
         Public Const cECOSEED_LAYER_NOVALUE As Integer = 0
         Public Const cECOSEED_LAYER_CURRENTVALUE As Integer = 1
         Public Const cECOSEED_LAYER_BESTVALUE As Integer = 2
+
+#End Region ' Constants
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -141,6 +145,9 @@ Namespace Ecospace.Basemap.Layers
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cLayerFactoryBase.GetLayerGroup"/>
+        ''' -------------------------------------------------------------------
         Public Overrides Function GetLayerGroup(ByVal varName As eVarNameFlags) As String
 
             Dim strGroup As String = ""
@@ -166,8 +173,8 @@ Namespace Ecospace.Basemap.Layers
         ''' <summary>
         ''' Get a collection with the EwE foundation layers.
         ''' </summary>
-        ''' <param name="uic"></param>
-        ''' <returns></returns>
+        ''' <param name="uic">The UI context to plunder layers from.</param>
+        ''' <returns>An array of <see cref="cRasterLayer"/>s.</returns>
         ''' -------------------------------------------------------------------
         Public Function BaseRasterLayers(uic As cUIContext) As cRasterLayer()
 
@@ -180,6 +187,8 @@ Namespace Ecospace.Basemap.Layers
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelPP))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerRelCin))
             lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerImportance))
+            ' Add driver layers to the base list
+            lLayers.AddRange(Me.GetLayers(uic, EwEUtils.Core.eVarNameFlags.LayerDriver))
 
             Return lLayers.ToArray()
 
