@@ -1234,6 +1234,7 @@ Namespace Core
         MSEResultsStartYear
         MSEResultsEndYear
 
+        ' ToDo_JB: evaluate if we still need these
         MSYRunSilent
         MSYEvalValue
         MSYStartTime
@@ -1522,6 +1523,22 @@ Namespace Core
         ''' <summary>No. regions in Ecospace</summary>
         ''' <remarks>JS 16Jan12: No. regions is now an input, no longer implicit.</remarks>
         EcospaceRegionNumber
+
+        ''' <summary>Group or fleet index targeted by MSY.</summary>
+        MSYFSelection
+        ''' <summary><see cref="eVarNameFlags.MSYFSelection"/> interpretation flag, 
+        ''' should be one of <see cref="eMSYFSelectionModeType">values</see>.</summary>
+        MSYFSelectionMode
+        ''' <summary>MSY assessment type.</summary>
+        MSYAssessment
+        ''' <summary>MSY equilibrium step size, as a fractio of 0 to <see cref="eVarNameFlags.MSYMaxFishingRate"/>.</summary>
+        MSYEquilibriumStepSize
+        ''' <summary>MSY max F to vary to.</summary>
+        MSYMaxFishingRate
+        ''' <summary>Number of MSY trial years.</summary>
+        MSYNumTrialYears
+        ''' <summary>Number of MSY trial years.</summary>
+        MSYRunLengthMode
 
     End Enum
 
@@ -2064,10 +2081,11 @@ Namespace Core
         EcospaceSpatialDataConnection = 107
         EcospaceSpatialDataSource = 108
 
-
         MSEFStats = 109
 
         MSYManager = 110
+        MSYParameters = 111
+
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.
@@ -2412,6 +2430,8 @@ Namespace Core
         MSE
         ''' <summary> EcoSeed </summary>
         MPAOptimization
+        ''' <summary>The message originated from the MSY module of EwE.</summary>
+        MSY
 
         MapResponseInteractionManager
 
@@ -2650,6 +2670,64 @@ Namespace Core
     End Enum
 
 #End Region ' MSE Batch
+
+#Region " MSY "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating how the MSY selects the groups that will have 
+    ''' their F varied.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eMSYFSelectionModeType As Integer
+        ''' <summary>All Groups that are fishing by this fleet will have there 
+        ''' F varied. F for all other groups will remain at Ecopath base F.</summary>
+        Fleets = 0
+        ''' <summary>Only this group will have its F varied. F for all other 
+        ''' groups will remain at Ecopath base F.</summary>
+        Groups
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating the supported types of MSY assessments.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eMSYAssessmentTypes As Integer
+        ''' <summary>MSY assessment with frozen pools.</summary>
+        StationarySystem = 0
+        ''' <summary>Full system assessment.</summary>
+        FullCompensation
+        ''' <summary>Redundant flag to tie EwE5 interface and code implementation together.</summary>
+        FreezePools = StationarySystem
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating types of supported MSY runs.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eMSYRunTypes As Integer
+        ''' <summary>MSY is running for a single Group or Fleet, in all supported
+        ''' <see cref="eMSYAssessmentTypes">assessment types</see>.</summary>
+        SingleRunMSY
+        ''' <summary>MSY is running the FMSY. Looping over all the groups.</summary>
+        FMSY
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type stating how the MSY selects the groups that will have there F varied
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eMSYRunLengthModeTypes As Integer
+        ''' <summary>MSY is running to a fixed (relative) F.</summary>
+        FixedF
+        ''' <summary>MSY is running until all catches are depleted.</summary>
+        ToDepletion
+    End Enum
+
+#End Region ' MSY
 
 #Region " TriState "
 

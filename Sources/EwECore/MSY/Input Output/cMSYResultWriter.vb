@@ -1,0 +1,313 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
+Imports System.IO
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
+
+#End Region ' Imports
+
+Namespace MSY
+
+    ''' <summary>
+    ''' Class for writing MSY run results.
+    ''' </summary>
+    Public Class cMSYResultWriter
+        Inherits cMSYResultWriterBase
+
+#Region " Construction "
+
+        Public Sub New(core As cCore)
+            MyBase.New(core)
+        End Sub
+
+#End Region ' Construction
+
+#Region " Public access "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write MSY results to CSV file when MSY has been ran for a group.
+        ''' </summary>
+        ''' <param name="strPath">Output file location.</param>
+        ''' <param name="iGroup">Group that MSY was ran for.</param>
+        ''' <param name="ass"><see cref="eMSYAssessmentTypes">Tee hee hee</see>.</param>
+        ''' <param name="FBase">Base F.</param>
+        ''' <param name="results">MSY results.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function WriteGroupResults(ByVal strPath As String, _
+                                          ByVal iGroup As Integer, _
+                                          ByVal ass As eMSYAssessmentTypes, _
+                                          ByVal FBase As Single, _
+                                          ByVal results As cMSYFResult(), _
+                                          ByVal optimum As cMSYOptimum) As Boolean
+
+            Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+            Dim strFile As String = ""
+            Dim sw As StreamWriter = Nothing
+            Dim r As cMSYFResult = Nothing
+            Dim bSuccess As Boolean = True
+
+            ' 2 Variables
+            For k As Integer = 0 To 1
+
+                strFile = Path.Combine(strPath, Me.CSVFileName(target, cSystemUtils.IIF(k = 0, "B", "Catch"), ass))
+                sw = Me.OpenWriter(strFile)
+
+                If (sw IsNot Nothing) Then
+                    Me.WriteHeader(sw, ass, "MSY")
+                    sw.WriteLine("Group, {0}", target.Name)
+                    sw.WriteLine("Fbase, {0}", cStringUtils.FormatSingle(FBase))
+                    sw.WriteLine("Fmsy, {0}", cSystemUtils.IIF(optimum.IsFopt(iGroup), _
+                                                               cStringUtils.FormatSingle(optimum.Fopt(iGroup)), _
+                                                               My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND))
+                    sw.WriteLine()
+
+                    ' Data header
+                    sw.Write("F")
+                    For j As Integer = 1 To Me.m_core.nGroups
+                        Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                        sw.Write(",{0}", cStringUtils.ToCSVField(grp.Name))
+                    Next
+                    sw.WriteLine()
+
+                    For i As Integer = 0 To results.Length - 1
+                        r = results(i)
+                        sw.Write(cStringUtils.FormatSingle(r.curF))
+                        For j As Integer = 1 To Me.m_core.nGroups
+                            Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                            sw.Write(",{0}", cStringUtils.FormatSingle(cSystemUtils.IIF(k = 0, r.B(j), r.Catch(j))))
+                        Next
+                        sw.WriteLine()
+                    Next
+                    bSuccess = bSuccess And Me.CloseWriter(sw, strFile)
+                Else
+                    bSuccess = False
+                End If
+            Next
+            Return bSuccess And Me.WriteGroupValueResults(strPath, iGroup, ass, FBase, results, optimum)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write MSY results to CSV file when MSY has been ran for a group.
+        ''' </summary>
+        ''' <param name="strPath">Output file location.</param>
+        ''' <param name="iGroup">Group that MSY was ran for.</param>
+        ''' <param name="ass"><see cref="eMSYAssessmentTypes">Tee hee hee</see>.</param>
+        ''' <param name="FBase">Base F.</param>
+        ''' <param name="results">MSY results.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function WriteGroupValueResults(ByVal strPath As String, _
+                                               ByVal iGroup As Integer, _
+                                               ByVal ass As eMSYAssessmentTypes, _
+                                               ByVal FBase As Single, _
+                                               ByVal results As cMSYFResult(), _
+                                               ByVal optimum As cMSYOptimum) As Boolean
+
+            Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
+            Dim strFile As String = ""
+            Dim sw As StreamWriter = Nothing
+            Dim r As cMSYFResult = Nothing
+            Dim bSuccess As Boolean = True
+
+            strFile = Path.Combine(strPath, Me.CSVFileName(target, "value", ass))
+            sw = Me.OpenWriter(strFile)
+
+            If (sw IsNot Nothing) Then
+                Me.WriteHeader(sw, ass)
+                sw.WriteLine("Group, {0}", target.Name)
+                sw.WriteLine("Fbase, {0}", FBase)
+                sw.WriteLine()
+                sw.WriteLine("Fmsy, {0}", cSystemUtils.IIF(optimum.IsFopt(iGroup), _
+                                                            cStringUtils.FormatSingle(optimum.Fopt(iGroup)), _
+                                                            My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND))
+
+                ' Data header
+                sw.Write("F, TotalValue")
+                sw.WriteLine()
+
+                For i As Integer = 0 To results.Length - 1
+                    r = results(i)
+                    sw.Write(cStringUtils.FormatSingle(r.curF))
+                    sw.Write(",")
+                    sw.Write(cStringUtils.FormatSingle(r.TotalValue))
+                    sw.WriteLine()
+                Next
+                bSuccess = bSuccess And Me.CloseWriter(sw, strFile)
+            Else
+                bSuccess = False
+            End If
+            Return bSuccess
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write MSY results to CSV file when MSY has been ran for a fleet.
+        ''' </summary>
+        ''' <param name="strPath">Output file location.</param>
+        ''' <param name="iFleet">Fleet that MSY was ran for.</param>
+        ''' <param name="assessment"><see cref="eMSYAssessmentTypes"/>.</param>
+        ''' <param name="results">MSY results.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function WriteFleetResults(ByVal strPath As String, _
+                                          ByVal iFleet As Integer, _
+                                          ByVal assessment As eMSYAssessmentTypes, _
+                                          ByVal results As cMSYFResult()) As Boolean
+
+            Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
+            Dim sw As StreamWriter = Nothing
+            Dim r As cMSYFResult = Nothing
+            Dim bSuccess As Boolean = True
+
+            ' 2 variables
+            For k As Integer = 0 To 1
+
+                strPath = Path.Combine(strPath, Me.CSVFileName(flt, cSystemUtils.IIF(k = 0, "B", "Catch"), assessment))
+                sw = Me.OpenWriter(strPath)
+                If (sw IsNot Nothing) Then
+
+                    Me.WriteHeader(sw, assessment)
+
+                    sw.WriteLine("Fleet, {0}", flt.Name)
+                    sw.WriteLine()
+
+                    ' Data header
+                    sw.Write("F")
+                    For j As Integer = 1 To Me.m_core.nGroups
+                        Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                        sw.Write(",{0}", cStringUtils.ToCSVField(grp.Name))
+                    Next
+                    sw.WriteLine()
+
+                    For i As Integer = 0 To results.Length - 1
+                        r = results(i)
+                        sw.Write(cStringUtils.FormatSingle(r.curF))
+                        For j As Integer = 1 To Me.m_core.nGroups
+                            Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                            sw.Write(",{0}", cStringUtils.FormatSingle(cSystemUtils.IIF(k = 0, r.B(j), r.Catch(j))))
+                        Next
+                        sw.WriteLine()
+                    Next
+
+                    bSuccess = bSuccess And Me.CloseWriter(sw, strPath)
+                Else
+                    bSuccess = False
+                End If
+            Next
+
+            Return bSuccess And Me.WriteFleetValueResults(strPath, iFleet, assessment, results)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write MSY results to CSV file when MSY has been ran for a fleet.
+        ''' </summary>
+        ''' <param name="strPath">Output file location.</param>
+        ''' <param name="iFleet">Fleet that MSY was ran for.</param>
+        ''' <param name="assessment"><see cref="eMSYAssessmentTypes"/>.</param>
+        ''' <param name="results">MSY results.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function WriteFleetValueResults(ByVal strPath As String, _
+                                               ByVal iFleet As Integer, _
+                                               ByVal assessment As eMSYAssessmentTypes, _
+                                               ByVal results As cMSYFResult()) As Boolean
+
+            Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
+            Dim sw As StreamWriter = Nothing
+            Dim r As cMSYFResult = Nothing
+            Dim bSuccess As Boolean = True
+
+            strPath = Path.Combine(strPath, Me.CSVFileName(flt, "value", assessment))
+            sw = Me.OpenWriter(strPath)
+            If (sw IsNot Nothing) Then
+
+                Me.WriteHeader(sw, assessment)
+
+                sw.WriteLine("Fleet, {0}", flt.Name)
+                sw.WriteLine()
+
+                ' Data header
+                sw.Write("F, TotalValue")
+                sw.WriteLine()
+
+                For i As Integer = 0 To results.Length - 1
+                    r = results(i)
+                    sw.Write(cStringUtils.FormatSingle(r.curF))
+                    sw.Write(",")
+                    sw.Write(cStringUtils.FormatSingle(r.TotalValue))
+                    sw.WriteLine()
+                Next
+
+                bSuccess = bSuccess And Me.CloseWriter(sw, strPath)
+            Else
+                bSuccess = False
+            End If
+
+            Return bSuccess
+
+        End Function
+
+#End Region ' Public access
+
+#Region " Internals "
+
+        Protected Overloads Sub WriteHeader(sw As StreamWriter, ass As eMSYAssessmentTypes)
+            MyBase.WriteHeader(sw, ass, "MSY")
+        End Sub
+
+        Protected Function CSVFileName(ByVal target As cCoreInputOutputBase, _
+                                       ByVal strVar As String, _
+                                       ByVal assessment As eMSYAssessmentTypes) As String
+            Return cFileUtils.ToValidFileName(target.Name & "_" & strVar & "_" & assessment.ToString() & ".csv", False)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cMSYResultWriterBase.ErrorMessage"/>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function ErrorMessage(strPath As String, strReason As String) As cMessage
+            Return New cMessage(String.Format(My.Resources.CoreMessages.MSY_RESULTS_SAVE_FAILED, strPath, strReason), _
+                                eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="cMSYResultWriterBase.SuccessMessage"/>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function SuccessMessage(strPath As String) As cMessage
+            Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.MSY_RESULTS_SAVE_SUCCESS, strPath), _
+                                               eMessageType.DataExport, eCoreComponentType.MSY, eMessageImportance.Information)
+            msg.Hyperlink = Path.GetDirectoryName(strPath)
+            Return msg
+        End Function
+
+#End Region ' Internals
+
+    End Class
+
+End Namespace

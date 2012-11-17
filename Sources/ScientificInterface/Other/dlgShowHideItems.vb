@@ -134,14 +134,14 @@ Namespace Ecosim
         Private Sub OnOK(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles OK_Button.Click
 
-            Dim iIndex As Integer = 0
-
             Me.m_uic.StyleGuide.SuspendEvents()
 
-            For iGroup As Integer = 1 To Me.m_uic.Core.nGroups
-                Me.m_uic.StyleGuide.GroupVisible(iGroup) = Me.m_clbGroups.GetItemChecked(iGroup - 1)
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                Dim grp As cCoreGroupBase = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_uic.StyleGuide.GroupVisible(grp.Index) = Me.m_clbGroups.GetItemChecked(i)
+                End If
             Next
-            iIndex += Me.m_uic.Core.nGroups
 
             For iFleet As Integer = 1 To Me.m_uic.Core.nFleets
                 Me.m_uic.StyleGuide.FleetVisible(iFleet) = Me.m_clbFleets.GetItemChecked(iFleet - 1)

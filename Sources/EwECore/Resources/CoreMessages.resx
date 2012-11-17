@@ -157,16 +157,16 @@
     <value>Error during validation of 'DietComp'. 'DietComp' will not be valid.</value>
   </data>
   <data name="DLLFACTORY_FILENOTFOUND" xml:space="preserve">
-    <value>The DLL file '{0}' could not be found.</value>
-    <comment>DLL file not found at path</comment>
+    <value>The file '{0}' could not be found.</value>
+    <comment>{0}=file name</comment>
   </data>
   <data name="DLLFACTORY_LOAD_ERROR" xml:space="preserve">
-    <value>Error loading '{0}' from DLL '{1}'. Error: {2}</value>
-    <comment>Error in DLLFactory</comment>
+    <value>Error loading '{0}' from file '{1}'. Error: {2}</value>
+    <comment>{0}=class type name, {1}=file name, {2}=error message</comment>
   </data>
   <data name="DLLFACTORY_TYPE_NOT_FOUND" xml:space="preserve">
-    <value>The Class/Type '{0}' could not be found in the DLL '{1}'.</value>
-    <comment>DLL file not found at path</comment>
+    <value>Component '{0}' could not be found in '{1}'.</value>
+    <comment>{0}=class type name, {1}=file name</comment>
   </data>
   <data name="ECOPATH_DIETCOMP_NOTSUMTOONE" xml:space="preserve">
     <value>DC does not sum to one for group {0}.</value>
@@ -264,8 +264,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Ecopath failed to run.</value>
   </data>
   <data name="ECOPATH_RUN_ERROR_EXCEPTION" xml:space="preserve">
-    <value>Ecopath failed to run.
-System Error: {0}</value>
+    <value>Ecopath failed to run. {0}</value>
+    <comment>{0}=error message</comment>
   </data>
   <data name="ECOPATH_RUN_SUCCESS" xml:space="preserve">
     <value>Ecopath run completed.</value>
@@ -388,11 +388,11 @@ System Error: {0}</value>
     <comment>{0} = shape ID, {1} = group name, {2} = scenario name</comment>
   </data>
   <data name="IMPORT_FIX_GROUPAREA" xml:space="preserve">
-    <value>Group {0} area corrected to {1}</value>
+    <value>Group '{0}' area corrected to {1}</value>
     <comment>{0} = group name, {1} = corrected Area value</comment>
   </data>
   <data name="IMPORT_FIX_GROUPUNASSIM" xml:space="preserve">
-    <value>Group {0} is a producer, Unassim corrected to {1}</value>
+    <value>Group '{0}' is a producer, Unassim corrected to {1}</value>
     <comment>{0} = group name, {1} = corrected Unassim value</comment>
   </data>
   <data name="IMPORT_NO_DESCRIPTION" xml:space="preserve">
@@ -638,7 +638,7 @@ System Error: {0}</value>
   </data>
   <data name="TIMESERIES_UNLOAD_FAILED" xml:space="preserve">
     <value>Time Series failed to unload. {0}</value>
-    <comment>{0}=error text</comment>
+    <comment>{0}=error message</comment>
   </data>
   <data name="TIMESERIES_UNLOAD_SUCCESS" xml:space="preserve">
     <value>Time Series unloaded successfully.</value>
@@ -845,11 +845,11 @@ System Error: {0}</value>
   </data>
   <data name="F2TS_ERROR" xml:space="preserve">
     <value>Fit to Time Series error '{0}'</value>
-    <comment>{0} = error text</comment>
+    <comment>{0} = error message</comment>
   </data>
   <data name="F2TS_ERROR_ESTIMATION" xml:space="preserve">
     <value>Estimation Error '{0}', original parameter values have been restored.</value>
-    <comment>{0} = error text</comment>
+    <comment>{0} = error message</comment>
   </data>
   <data name="F2TS_ERROR_INTERACTIONS" xml:space="preserve">
     <value>Nothing to estimate, exiting search. Sketch interactions before searching again.</value>
@@ -873,7 +873,8 @@ System Error: {0}</value>
     <value>Ecospace has completed a model run.</value>
   </data>
   <data name="ECOSPACE_RUN_ERROR" xml:space="preserve">
-    <value>Run Ecospace Error: </value>
+    <value>Run Ecospace Error. {0}</value>
+    <comment>{0}=error message</comment>
   </data>
   <data name="ECOSPACE_SIM_INIT_FAILED" xml:space="preserve">
     <value>Ecospace failed to initialize Ecosim. Please try loading a different Ecosim scenario and re-running Ecospace.</value>
@@ -1048,7 +1049,7 @@ System Error: {0}</value>
   </data>
   <data name="ECOSPACE_SAVEMAP_FAILED" xml:space="preserve">
     <value>Ecospace failed to save result maps. {0}</value>
-    <comment>{0}=error text</comment>
+    <comment>{0}=error message</comment>
   </data>
   <data name="STATUS_SPATIALTEMPORAL_ADAPTERROR" xml:space="preserve">
     <value>Failed to update cell({0}, {1}) with value {2}. {3}</value>
@@ -1089,6 +1090,25 @@ System Error: {0}</value>
     <value>Calculating scaling factor for '{0}' using data set '{1}', converter '{2}'</value>
     <comment>{0}=layer name, {1}=dataset name, {2}=converter name</comment>
   </data>
+  <data name="MSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save MSY results '{1}' to '{0}'</value>
+    <comment>{0}=file, {1}=details</comment>
+  </data>
+  <data name="MSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>MSY results saved to '{0}'</value>
+    <comment>{0}=file</comment>
+  </data>
+  <data name="MSY_WARNING_TIMESERIES" xml:space="preserve">
+    <value>MSY will not produce reliably results when there are time series loaded. It is advised to unload time series before running the MSY. Do you want to continue the MSY run?</value>
+  </data>
+  <data name="MSY_ERROR_RUN" xml:space="preserve">
+    <value>An error occurred while running MSY. {0}</value>
+    <comment>{0}=error message</comment>
+  </data>
+  <data name="MSY_ERROR_RUN_FMSY" xml:space="preserve">
+    <value>An error occurred while running FMSY. {0}</value>
+    <comment>{0}=error message</comment>
+  </data>
   <data name="STANZA_LEADINGB_ADJUSTED" xml:space="preserve">
     <value>Leading B adjusted for stanza {0}.</value>
     <comment>{0}=stanza name</comment>
@@ -1099,5 +1119,27 @@ System Error: {0}</value>
   </data>
   <data name="STANZA_LEADING_ADJUSTED" xml:space="preserve">
     <value>Leading B and/or CB groups have been adjusted for one or more multi-stanza groups, please validate.</value>
+  </data>
+  <data name="FMSY_STATUS_RUNNING" xml:space="preserve">
+    <value>Running Fmsy {0}, assessing {1}...</value>
+    <comment>{0}=assessment, {1}=group name</comment>
+  </data>
+  <data name="GENERIC_STATUS_INITIALIZING" xml:space="preserve">
+    <value>Initializing...</value>
+  </data>
+  <data name="MSY_STATUS_RUNNING" xml:space="preserve">
+    <value>Running MSY {0}...</value>
+    <comment>{0}=assessment</comment>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save MSY results '{1}' to '{0}'</value>
+    <comment>{0}=file, {1}=details</comment>
+  </data>
+  <data name="FMSY_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Fmsy results saved to '{0}'</value>
+    <comment>{0}=file</comment>
+  </data>
+  <data name="FMSY_STATUS_NOTFOUND" xml:space="preserve">
+    <value>Fmsy not found in given F range</value>
   </data>
 </root>

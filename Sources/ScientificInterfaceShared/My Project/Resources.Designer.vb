@@ -2839,15 +2839,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to CSV field name.
-        '''</summary>
-        Public ReadOnly Property HEADER_CSVFIELD() As String
-            Get
-                Return ResourceManager.GetString("HEADER_CSVFIELD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to CV.
         '''</summary>
         Public ReadOnly Property HEADER_CV() As String
@@ -3249,6 +3240,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_FISHING() As String
             Get
                 Return ResourceManager.GetString("HEADER_FISHING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Fishing effort modifier.
+        '''</summary>
+        Public ReadOnly Property HEADER_FISHING_EFFORT_MODIFIER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FISHING_EFFORT_MODIFIER", resourceCulture)
             End Get
         End Property
         

@@ -132,60 +132,40 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="strFile">The file to write to.</param>
     ''' <returns>True if successful.</returns>
     ''' -------------------------------------------------------------------
-    Public Function WriteXYFile(ByVal strFile As String, _
-                                ByVal strColField As String, ByVal strRowField As String, _
-                                ByVal strLonField As String, ByVal strLatField As String) As Boolean
+    Public Function WriteXYFile(ByVal strFile As String, strColField As String, strRowField As String) As Boolean
 
         Dim tw As TextWriter = Nothing
         Dim lstrFields As New List(Of String)
+        Dim strField As String = ""
         Dim sb As New StringBuilder()
-        Dim bWriteRC As Boolean = Not (String.IsNullOrWhiteSpace(strColField) Or String.IsNullOrWhiteSpace(strRowField))
-        Dim bWriteLL As Boolean = Not (String.IsNullOrWhiteSpace(strLatField) Or String.IsNullOrWhiteSpace(strLonField))
-
-        Debug.Assert(bWriteLL Or bWriteRC)
 
         lstrFields.AddRange(Me.m_astrFields)
         lstrFields.Remove(strRowField)
         lstrFields.Remove(strColField)
-        lstrFields.Remove(strLatField)
-        lstrFields.Remove(strLonField)
 
         ' Write header line
-        If (bWriteRC) Then
-            sb.Append(cStringUtils.ToCSVField(strColField))
-            sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(strRowField))
-        End If
-
-        If (bWriteLL) Then
-            If (bWriteRC) Then sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(strLonField))
-            sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(strLatField))
-        End If
-
+        sb.Append(strColField)
+        sb.Append(",")
+        sb.Append(strRowField)
         For iField As Integer = 0 To lstrFields.Count - 1
             sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(lstrFields(iField)))
+            ' Remove whitespace
+            strField = Me.Fields(iField).Trim
+            ' Remove quotes
+            strField.Replace("""", "")
+            ' Add quotes if field name contains a comma
+            If strField.Contains(","c) Then strField = """" & strField & """"
+            ' Oki
+            sb.Append(strField)
         Next
         sb.AppendLine()
 
         ' Write content
         For iRow As Integer = 1 To Me.m_bm.InRow
             For iCol As Integer = 1 To Me.m_bm.InCol
-                If (bWriteRC) Then
-                    sb.Append(iCol)
-                    sb.Append(",")
-                    sb.Append(iRow)
-                End If
-
-                If (bWriteLL) Then
-                    If (bWriteRC) Then sb.Append(",")
-                    sb.Append(Me.m_bm.ColToLon(iCol))
-                    sb.Append(",")
-                    sb.Append(Me.m_bm.RowToLat(iRow))
-                End If
-
+                sb.Append(iCol)
+                sb.Append(",")
+                sb.Append(iRow)
                 For iField As Integer = 0 To Me.Fields.Length - 1
                     sb.Append(",")
                     sb.Append(Me.Value(iRow, iCol, Me.Fields(iField)))

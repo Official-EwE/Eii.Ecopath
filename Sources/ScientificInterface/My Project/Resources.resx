@@ -1579,4 +1579,30 @@ Description: {2}</value>
   <data name="PROMPT_TRIM_SHAPES" xml:space="preserve">
     <value>Do you want to discard any forcing and egg production data past the current Ecosim run length? This operation cannot be undone.</value>
   </data>
+  <data name="HEADER_MSY" xml:space="preserve">
+    <value>Assessment of {0}</value>
+    <comment>{0}=group or fleet name</comment>
+  </data>
+  <data name="HEADER_STATIONARY" xml:space="preserve">
+    <value>Stationary system</value>
+  </data>
+  <data name="STATUS_MSY_INITIALIZING" xml:space="preserve">
+    <value>Initializing MSY...</value>
+  </data>
+  <data name="STATUS_MSY_RUNNING_FULLCOMPENSATION" xml:space="preserve">
+    <value>Running MSY full compensation assessment...</value>
+  </data>
+  <data name="STATUS_MSY_RUNNING_STATIONARYSTOCK" xml:space="preserve">
+    <value>Running MSY stationary stock assessment...</value>
+  </data>
+  <data name="HEADER_FISHING_EFFORT_MULTIPLIER" xml:space="preserve">
+    <value>Fishing effort multiplier</value>
+  </data>
+  <data name="MSY_LABEL_FMSY" xml:space="preserve">
+    <value>Fmsy {0}</value>
+    <comment>{0} = group name</comment>
+  </data>
+  <data name="Ecopath_easter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ecopath_easter.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

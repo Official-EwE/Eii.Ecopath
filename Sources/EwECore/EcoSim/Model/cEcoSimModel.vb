@@ -728,15 +728,15 @@ Namespace Ecosim
             ReDim QYear(m_EPData.NumFleet)
             ReDim QGrowUsed(m_EPData.NumFleet)
             ReDim RelFopt(nopt)
-            ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
-            ReDim BestTime(m_EPData.NumLiving)
-            ReDim BrecYear(nGroups)
-            ReDim BBAvg(nGroups)
-            ReDim LossAvg(nGroups)
-            ReDim EatenByAvg(nGroups)
-            ReDim EatenOfAvg(nGroups)
-            ReDim PredAvg(nGroups)
-            ReDim fCatch0(nGroups)
+            'ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
+            'ReDim BestTime(m_EPData.NumLiving)
+            'ReDim BrecYear(nGroups)
+            'ReDim BBAvg(nGroups)
+            'ReDim LossAvg(nGroups)
+            'ReDim EatenByAvg(nGroups)
+            'ReDim EatenOfAvg(nGroups)
+            'ReDim PredAvg(nGroups)
+            'ReDim fCatch0(nGroups)
 
             'Search--Search--Search--Search--Search--Search--Search--Search--Search--Search--Search----------
             '*
@@ -778,7 +778,7 @@ Namespace Ecosim
             InitialState()
             SetTimeSteps()
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'should the below be setting B to baseyear biomass instead?
+
             SetBBtoStartBiomass(nvar)
 
             t = 0
@@ -880,18 +880,14 @@ Namespace Ecosim
                     For i = 1 To m_Data.nGear : m_Data.FishRateGear(i, 0) = m_Data.FishRateGear(i, itime) : Next
 
                     Dim itt As Integer
-
                     If itime < NumberOfYears * Me.StepsPerYear Then
                         itt = itime
                     Else
                         itt = NumberOfYears * Me.StepsPerYear
                     End If
-                    'Set current values for time shape functions
-                    For i = 1 To m_Data.ForcingShapes
-                        'jb changed all forcing function data are stored by time 
-                        ' m_Data.tval(i) = IIf(i <= 6 / 2, m_Data.zscale(its, i), m_Data.zscale(itt, i))
-                        m_Data.tval(i) = m_Data.zscale(itt, i)
-                    Next
+
+                    'Set tval(nForcingShapes) to the forcing function values/multipliers for this timestep
+                    Me.settval(itt)
 
                     Me.m_MSE.VaryForcing(m_Data.tval)
 
@@ -1300,7 +1296,7 @@ Namespace Ecosim
 
 
 
-        Private Sub rk4(ByRef B() As Single, ByRef nvar As Integer, ByRef t As Single, ByRef DeltaT As Single, ByVal UpdateStanzaGroups As Boolean)
+        Friend Sub rk4(ByRef B() As Single, ByRef nvar As Integer, ByRef t As Single, ByRef DeltaT As Single, ByVal UpdateStanzaGroups As Boolean)
             'this version taken from CJW's simII 290597 vc
             'runge-kutta integration from Press et al 1992 ed p 707
             'jb the runge-kutta integration method looks like it came directly from Numerical Recipies in C
@@ -1447,7 +1443,7 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub clearMonthlyStanzaVars()
+        Friend Sub clearMonthlyStanzaVars()
             Array.Clear(Me.BBAvg, 0, nGroups + 1)
             Array.Clear(Me.LossAvg, 0, nGroups + 1)
 
@@ -3335,6 +3331,16 @@ Namespace Ecosim
             ReDim m_Data.StartBiomass(nGroups)
             ReDim SimQB(nGroups)
 
+            ReDim m_search.LastYearIncomeSpecies(m_EPData.NumFleet, m_EPData.NumGroups)
+            ReDim BestTime(m_EPData.NumLiving)
+            ReDim BrecYear(nGroups)
+            ReDim BBAvg(nGroups)
+            ReDim LossAvg(nGroups)
+            ReDim EatenByAvg(nGroups)
+            ReDim EatenOfAvg(nGroups)
+            ReDim PredAvg(nGroups)
+            ReDim fCatch0(nGroups)
+
         End Sub
 
         Private Sub BaseValueOfHarvest()
@@ -3358,19 +3364,16 @@ Namespace Ecosim
             For i = 1 To m_EPData.NumFleet
                 For j = 1 To m_EPData.NumGroups
                     m_Data.FishMGear(i, j) = 0
-                    ' Debug.Assert(j <> 3)
                     If m_EPData.fCatch(j) > 0 Then
                         m_Data.FishMGear(i, j) = m_Data.Fish1(j) * (m_EPData.Landing(i, j) + m_EPData.Discard(i, j)) / m_EPData.fCatch(j)
                     End If
                 Next
             Next
-            'Also set FishMGear for all gear combined:
+
+            'Also set FishMGear for all gear combined: m_EPData.NumFleet + 1
             For j = 1 To m_EPData.NumGroups
                 m_Data.FishMGear(m_EPData.NumFleet + 1, j) = m_Data.Fish1(j)
             Next
-            'For j = 1 To NGear
-            '    Ifm_Data.Fish1(i) > 0 Then FishMGear(i, j) = temp1(j) *m_Data.Fish1(i) / tempt Else FishMGear(i, j) = 0
-            'Next
 
         End Sub
         ''' <summary>
@@ -4181,7 +4184,7 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="BB">Biomass use to set Qmult()</param>
         ''' <remarks>Called at each time step to set density dependent catchability to biomass at the current time step</remarks>
-        Private Sub setDenDepCatchMult(ByVal BB() As Single)
+        Friend Sub setDenDepCatchMult(ByVal BB() As Single)
 
             ReDim Qmult(m_Data.nGroups)
             'Density dependent catchability recalculation
@@ -4221,6 +4224,26 @@ Namespace Ecosim
                 End If
 
             Next i
+
+        End Sub
+
+        ''' <summary>
+        ''' Populate cEcosimDataStructures.tval(nForcingShapes) with forcing function values/multiplers for this time step
+        ''' </summary>
+        ''' <param name="iTime">Cumulative monthly index of this timestep</param>
+        Friend Sub settval(ByVal iTime As Integer)
+            'Set current values for time shape functions
+            Try
+                For iShp As Integer = 1 To m_Data.ForcingShapes
+                    'jb changed all forcing function data are stored by time 
+                    ' m_Data.tval(i) = IIf(i <= 6 / 2, m_Data.zscale(its, i), m_Data.zscale(itt, i))
+                    m_Data.tval(iShp) = m_Data.zscale(iTime, iShp)
+                Next
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                System.Console.WriteLine(Me.ToString & ".settval() Exception: " & ex.Message)
+            End Try
 
         End Sub
 
@@ -4966,49 +4989,6 @@ Namespace Ecosim
             Return -1
 
         End Function
-
-#End Region
-
-#Region "Equilibrium"
-
-        Public Function runEcosimEquilibrium() As Boolean
-            'Run the EwE5 Ecosim Equilibrium 
-            'EwE 5 Sim.bas.EquilFish(PlotOn)
-            'Basic algo
-            'Make a series of Ecosim runs increasing and decreasing fishing effort or F by a small amount
-            'At the end of each 40 year run the interface plots Biomass, Catch...(other variables?) from the last timestep of the run
-            'User can set the individual Fleet or all Fleets(for effort) or Group (for F) that gets altered
-            'User can 'Freeze' biomass for other groups, this fixes the biomass for groups not being altered to Ecopath base values
-            'User can set the upper limit for effort
-
-            'EwE6 needs 
-            'Input object
-            'cEcosimEquilibriumModelParameters this object will contain the parameters that govern the the Equilibrium run
-            'Max Effort
-            'Fleet or Group to alter
-            'Freeze biomass for non altered groups
-
-            'Output object
-            'cEquilibriumIterationResults object contains the results (biomass & catch) for all groups for one iteration (effort or F at some level)
-            'Effort or F for the current iteration (x axis on the graph)
-            'Biomass() at the end of the run by group
-            'Catch() at the end of the run by group
-
-            'Running
-            'EcosimEquilibriumIterationDelegate(cEquilibriumIterationResults)
-            'Delegate that gets called at the end of each run with the results from the iteration
-            'cCore.RunEcosimEquilibrium() to start the run 
-            'cCore.RunEcosimEquilibrium(EcosimEquilibriumIterationDelegate) 
-            'Or
-            'Some kind of a manager cEcosimEquilibriumManager
-            'cCore.EcosimEquilibriumManager.Run()
-            'cCore.EcosimEquilibriumManager.Stop()
-            'cCore.EcosimEquilibriumManager.ModelParamaters() as cEcosimEquilibriumModelParameters
-            'cCore.EcosimEquilibriumManager.EcosimEquilibriumIterationDelegate as EcosimEquilibriumIterationDelegate
-
-
-        End Function
-
 
 #End Region
 

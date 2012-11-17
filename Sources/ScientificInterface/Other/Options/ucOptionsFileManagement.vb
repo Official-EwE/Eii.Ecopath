@@ -67,6 +67,7 @@ Namespace Other
             Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.Ecosim)
             Me.m_cbMonteCarlo.Checked = core.Autosave(eAutosaveTypes.MonteCarlo)
             Me.m_cbMSE.Checked = core.Autosave(eAutosaveTypes.MSE)
+            Me.m_cbMSY.Checked = core.Autosave(eAutosaveTypes.MSY)
             Me.m_cbSpaceCSV.Checked = core.Autosave(eAutosaveTypes.EcospaceCSV)
             Me.m_cbSpaceASCII.Checked = core.Autosave(eAutosaveTypes.EcospaceASC)
             Me.m_cbEcotracer.Checked = core.Autosave(eAutosaveTypes.Ecotracer)
@@ -87,6 +88,7 @@ Namespace Other
             Me.m_cbh.Add(Me.m_cbEcosimRun, Me.m_cbEcosim)
             Me.m_cbh.Add(Me.m_cbMonteCarlo, Me.m_cbEcosim)
             Me.m_cbh.Add(Me.m_cbMSE, Me.m_cbEcosim)
+            Me.m_cbh.Add(Me.m_cbMSY, Me.m_cbEcosim)
             Me.m_cbh.Add(Me.m_cbEcospace, Me.m_cbAutosaveAll)
             Me.m_cbh.Add(Me.m_cbSpaceASCII, Me.m_cbEcospace)
             Me.m_cbh.Add(Me.m_cbSpaceCSV, Me.m_cbEcospace)
@@ -108,6 +110,7 @@ Namespace Other
                 core.Autosave(eAutosaveTypes.Ecosim) = Me.m_cbEcosimRun.Checked
                 core.Autosave(eAutosaveTypes.MonteCarlo) = Me.m_cbMonteCarlo.Checked
                 core.Autosave(eAutosaveTypes.MSE) = Me.m_cbMSE.Checked
+                core.Autosave(eAutosaveTypes.MSY) = Me.m_cbMSY.Checked
                 core.Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSpaceCSV.Checked
                 core.Autosave(eAutosaveTypes.EcospaceASC) = Me.m_cbSpaceASCII.Checked
                 core.Autosave(eAutosaveTypes.Ecotracer) = Me.m_cbEcotracer.Checked
@@ -201,6 +204,7 @@ Namespace Other
             Me.UpdateAutosavePath(Me.m_tbxEcosim, core.DefaultOutputPath(eAutosaveTypes.Ecosim, strOutput, True))
             Me.UpdateAutosavePath(Me.m_tbxMC, core.DefaultOutputPath(eAutosaveTypes.MonteCarlo, strOutput, True))
             Me.UpdateAutosavePath(Me.m_tbxMSE, core.DefaultOutputPath(eAutosaveTypes.MSE, strOutput, True))
+            Me.UpdateAutosavePath(Me.m_tbxMSY, core.DefaultOutputPath(eAutosaveTypes.MSY, strOutput, True))
             Me.UpdateAutosavePath(Me.m_tbxASCII, core.DefaultOutputPath(eAutosaveTypes.EcospaceASC, strOutput, True))
             Me.UpdateAutosavePath(Me.m_tbxCSV, core.DefaultOutputPath(eAutosaveTypes.EcospaceCSV, strOutput, True))
             Me.UpdateAutosavePath(Me.m_tbxTracer, core.DefaultOutputPath(eAutosaveTypes.Ecotracer, strOutput, True))

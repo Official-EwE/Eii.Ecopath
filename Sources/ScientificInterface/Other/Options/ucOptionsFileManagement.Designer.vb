@@ -53,6 +53,8 @@ Namespace Other
             Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tbxOutputSample = New System.Windows.Forms.TextBox()
             Me.m_tbxBackupSample = New System.Windows.Forms.TextBox()
+            Me.m_cbMSY = New System.Windows.Forms.CheckBox()
+            Me.m_tbxMSY = New System.Windows.Forms.TextBox()
             Me.SuspendLayout()
             '
             'm_cbEcosimRun
@@ -88,7 +90,7 @@ Namespace Other
             'm_cbEcospace
             '
             Me.m_cbEcospace.AutoSize = True
-            Me.m_cbEcospace.Location = New System.Drawing.Point(23, 278)
+            Me.m_cbEcospace.Location = New System.Drawing.Point(23, 296)
             Me.m_cbEcospace.Name = "m_cbEcospace"
             Me.m_cbEcospace.Size = New System.Drawing.Size(74, 17)
             Me.m_cbEcospace.TabIndex = 18
@@ -98,17 +100,17 @@ Namespace Other
             'm_cbSpaceASCII
             '
             Me.m_cbSpaceASCII.AutoSize = True
-            Me.m_cbSpaceASCII.Location = New System.Drawing.Point(41, 301)
+            Me.m_cbSpaceASCII.Location = New System.Drawing.Point(41, 319)
             Me.m_cbSpaceASCII.Name = "m_cbSpaceASCII"
             Me.m_cbSpaceASCII.Size = New System.Drawing.Size(81, 17)
             Me.m_cbSpaceASCII.TabIndex = 19
-            Me.m_cbSpaceASCII.Text = "ASCII &maps"
+            Me.m_cbSpaceASCII.Text = "&ASCII maps"
             Me.m_cbSpaceASCII.UseVisualStyleBackColor = True
             '
             'm_cbSpaceCSV
             '
             Me.m_cbSpaceCSV.AutoSize = True
-            Me.m_cbSpaceCSV.Location = New System.Drawing.Point(41, 324)
+            Me.m_cbSpaceCSV.Location = New System.Drawing.Point(41, 342)
             Me.m_cbSpaceCSV.Name = "m_cbSpaceCSV"
             Me.m_cbSpaceCSV.Size = New System.Drawing.Size(75, 17)
             Me.m_cbSpaceCSV.TabIndex = 21
@@ -138,7 +140,7 @@ Namespace Other
             'm_cbEcotracer
             '
             Me.m_cbEcotracer.AutoSize = True
-            Me.m_cbEcotracer.Location = New System.Drawing.Point(23, 347)
+            Me.m_cbEcotracer.Location = New System.Drawing.Point(23, 365)
             Me.m_cbEcotracer.Name = "m_cbEcotracer"
             Me.m_cbEcotracer.Size = New System.Drawing.Size(72, 17)
             Me.m_cbEcotracer.TabIndex = 23
@@ -182,7 +184,7 @@ Namespace Other
             '
             Me.m_tbxASCII.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxASCII.Location = New System.Drawing.Point(158, 299)
+            Me.m_tbxASCII.Location = New System.Drawing.Point(158, 317)
             Me.m_tbxASCII.Name = "m_tbxASCII"
             Me.m_tbxASCII.ReadOnly = True
             Me.m_tbxASCII.Size = New System.Drawing.Size(395, 20)
@@ -193,7 +195,7 @@ Namespace Other
             '
             Me.m_tbxCSV.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxCSV.Location = New System.Drawing.Point(158, 322)
+            Me.m_tbxCSV.Location = New System.Drawing.Point(158, 340)
             Me.m_tbxCSV.Name = "m_tbxCSV"
             Me.m_tbxCSV.ReadOnly = True
             Me.m_tbxCSV.Size = New System.Drawing.Size(395, 20)
@@ -218,7 +220,7 @@ Namespace Other
             '
             Me.m_tbxTracer.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxTracer.Location = New System.Drawing.Point(158, 345)
+            Me.m_tbxTracer.Location = New System.Drawing.Point(158, 363)
             Me.m_tbxTracer.Name = "m_tbxTracer"
             Me.m_tbxTracer.ReadOnly = True
             Me.m_tbxTracer.Size = New System.Drawing.Size(395, 20)
@@ -323,7 +325,28 @@ Namespace Other
             Me.m_tbxBackupSample.Size = New System.Drawing.Size(395, 20)
             Me.m_tbxBackupSample.TabIndex = 8
             '
-            'ucOptionsAutosave
+            'm_cbMSY
+            '
+            Me.m_cbMSY.AutoSize = True
+            Me.m_cbMSY.Location = New System.Drawing.Point(41, 273)
+            Me.m_cbMSY.Name = "m_cbMSY"
+            Me.m_cbMSY.Size = New System.Drawing.Size(49, 17)
+            Me.m_cbMSY.TabIndex = 16
+            Me.m_cbMSY.Text = "&MSY"
+            Me.m_cbMSY.UseVisualStyleBackColor = True
+            '
+            'm_tbxMSY
+            '
+            Me.m_tbxMSY.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxMSY.Location = New System.Drawing.Point(158, 271)
+            Me.m_tbxMSY.Name = "m_tbxMSY"
+            Me.m_tbxMSY.ReadOnly = True
+            Me.m_tbxMSY.Size = New System.Drawing.Size(395, 20)
+            Me.m_tbxMSY.TabIndex = 17
+            Me.m_tbxMSY.TabStop = False
+            '
+            'ucOptionsFileManagement
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -336,6 +359,7 @@ Namespace Other
             Me.Controls.Add(Me.m_tbxTracer)
             Me.Controls.Add(Me.m_tbxCSV)
             Me.Controls.Add(Me.m_tbxASCII)
+            Me.Controls.Add(Me.m_tbxMSY)
             Me.Controls.Add(Me.m_tbxMSE)
             Me.Controls.Add(Me.m_tbxMC)
             Me.Controls.Add(Me.m_tbxBackupSample)
@@ -344,6 +368,7 @@ Namespace Other
             Me.Controls.Add(Me.m_cbEcotracer)
             Me.Controls.Add(Me.m_cbEcospace)
             Me.Controls.Add(Me.m_cbEcosim)
+            Me.Controls.Add(Me.m_cbMSY)
             Me.Controls.Add(Me.m_cbAutosaveAll)
             Me.Controls.Add(Me.m_cbMSE)
             Me.Controls.Add(Me.m_cbMonteCarlo)
@@ -352,8 +377,8 @@ Namespace Other
             Me.Controls.Add(Me.m_cbEcosimRun)
             Me.Controls.Add(Me.CEwEHeaderLabel1)
             Me.Controls.Add(Me.m_hdrAutosave)
-            Me.Name = "ucOptionsAutosave"
-            Me.Size = New System.Drawing.Size(553, 370)
+            Me.Name = "ucOptionsFileManagement"
+            Me.Size = New System.Drawing.Size(553, 387)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -383,6 +408,8 @@ Namespace Other
         Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_tbxOutputSample As System.Windows.Forms.TextBox
         Private WithEvents m_tbxBackupSample As System.Windows.Forms.TextBox
+        Private WithEvents m_cbMSY As System.Windows.Forms.CheckBox
+        Private WithEvents m_tbxMSY As System.Windows.Forms.TextBox
 
     End Class
 

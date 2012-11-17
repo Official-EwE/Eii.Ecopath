@@ -175,6 +175,12 @@ Public Class cCore
 
     Private m_settings As New cCoreSettings()
 
+    ''' <summary>
+    ''' Data for the Ecosim MSY search
+    ''' </summary>
+    ''' <remarks></remarks>
+    Friend m_MSYData As MSY.cMSYDataStructures
+
 #End Region ' Generic variables
 
 #Region " Private Initialization Flags "
@@ -625,6 +631,9 @@ Public Class cCore
         'Me.m_PSDData = New cPSDDatastructures(Me.m_EcoPathData)
         Me.m_MSEData = New cMSEDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
         Me.m_TaxonData = New cTaxonDataStructures(Me.m_EcoPathData, Me.m_Stanza)
+
+        Me.m_MSYData = New MSY.cMSYDataStructures(Me.m_EcoPathData, Me.m_EcoSimData)
+
         ' Create core state monitor and manager
         Me.m_StateMonitor = New cCoreStateMonitor(Me)
         Me.m_StateManager = New cCoreStateManager(Me)
@@ -2446,6 +2455,14 @@ Public Class cCore
 
                 Case eAutosaveTypes.MSE
                     strScenario = "MSE_"
+                    If (Me.ActiveEcosimScenarioIndex > 0) Then
+                        strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
+                    End If
+
+                Case eAutosaveTypes.MSY
+                    strScenario = "MSY_"
                     If (Me.ActiveEcosimScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name
                     Else
@@ -5903,10 +5920,8 @@ Public Class cCore
 
     Private m_EcoSimRun As cEcoSimModelParameters 'private copy of EcoSim model parameters. Public access will through a reference to this object
     Friend m_EcoSimGroups As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupInput, 1)
-    '   Friend m_EcoSimGroupOuputs As New cCoreInputOutputList(Of cEcosimGroupOutput)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimGroupOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimGroupOutput, 1)
     Friend m_EcoSimScenarios As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcoSimScenario, 1)
-    'Friend m_EcoSimGroupSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
     Friend m_EcosimFleetInputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.EcosimFleetInput, 1)
     Friend m_EcosimFleetOutputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Private m_MediatedInteractionManager As cMediatedInteractionManager
@@ -5916,20 +5931,11 @@ Public Class cCore
     Private m_EcosimOutputs As cEcosimOutput
     Private m_EcospaceStats As cEcospaceStats
 
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    'MULTI THREADING VARIABLES FOR ECOSIM
-
     'Delegate for Time-Step notification from the interface 
     Private m_InterfaceDelegate As Ecosim.EcoSimTimeStepDelegate
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
     Friend m_MSEData As cMSEDataStructures
-
-    ''thread that the EcoSim model is running on
-    'Private m_EcoSimThread As System.Threading.Thread
-
-    ''Semaphore object that is used to stop multiple instanse of EcoSim from running at one time
-    ''the EcoSim model itself is not thread safe 
-    'Private m_EcoSimSemaphor As System.Threading.Semaphore
 
 #End Region ' Variables
 
@@ -8371,7 +8377,7 @@ Public Class cCore
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
-            Me.m_publisher.SendMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR & ex.Message, _
+            Me.m_publisher.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_RUN_ERROR, ex.Message), _
                                       eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
 
             Return False
@@ -13458,6 +13464,8 @@ Public Class cCore
         Me.m_SearchManagers.Add(eDataTypes.FishingPolicyManager, New cFishingPolicyManager)
         Me.m_SearchManagers.Add(eDataTypes.FitToTimeSeries, New cF2TSManager(Me))
 
+        Me.m_SearchManagers.Add(eDataTypes.MSYManager, New MSY.cMSYManager(Me, Me.m_MSYData))
+
     End Sub
 
     Private Sub ClearSearchManagers()
@@ -13566,6 +13574,22 @@ Public Class cCore
                 cLog.Write(ex)
                 Return Nothing
             End Try
+        End Get
+    End Property
+
+#End Region
+
+#Region "MSY"
+
+    Public ReadOnly Property MSYManager() As MSY.cMSYManager
+        Get
+            Try
+                Return DirectCast(Me.m_SearchManagers.Item(eDataTypes.MSYManager), MSY.cMSYManager)
+            Catch ex As Exception
+                cLog.Write(ex)
+                Return Nothing
+            End Try
+
         End Get
     End Property
 

@@ -1009,6 +1009,9 @@ Public Class cEIIXMLDataSource
         mseDS.RedimVars()
         mseDS.setDefaultRegValues()
 
+        'jb 11-Oct-2012 Add MSY data
+        Me.m_core.m_MSYData.RedimVars()
+
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows
 

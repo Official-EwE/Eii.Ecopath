@@ -773,9 +773,14 @@ Public Class AppLauncher
 #Else
         Me.Icon = My.Resources.Ecopath
 #End If
+
         ' Egg
-        Dim d As Date = Date.Now
-        If d.DayOfYear > 345 And d.DayOfYear < 363 Then Me.Icon = My.Resources.Ecopath_hohoho
+        Select Case cDateUtils.GetNextEvent(15)
+            Case cDateUtils.eNextEvent.Easter
+                Me.Icon = My.Resources.Ecopath_easter
+            Case cDateUtils.eNextEvent.Xmas
+                Me.Icon = My.Resources.Ecopath_hohoho
+        End Select
 
         Me.ResumeLayout()
         My.Settings.Reload()

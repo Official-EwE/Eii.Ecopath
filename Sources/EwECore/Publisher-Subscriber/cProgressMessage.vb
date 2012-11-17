@@ -21,7 +21,6 @@ Imports EwEUtils.Core
 Public Class cProgressMessage
     Inherits cMessage
 
-    Private m_sMaxProgress As Single = 1.0!
     Private m_sProgress As Single = 0.0!
     'jb added state to identify what state the process is in
     Private m_state As eProgressState = eProgressState.Start
@@ -32,18 +31,23 @@ Public Class cProgressMessage
     ''' </summary>
     ''' <param name="state"><see cref="eProgressState">State</see> of a process.</param>
     ''' <param name="sMaxValue">Maximum progress scale.</param>
-    ''' <param name="sProgress">Current progress value [0, <paramref name="sMaxValue"/>]</param>
+    ''' <param name="sProgress">Current progress value [0, <paramref name="sMaxValue"/>], 
+    ''' which will be scaled to <paramref name="sMaxValue"/>.</param>
     ''' <param name="strMessage">Message text.</param>
     ''' <param name="msgType">Optional <see cref="eMessageType">type</see> of the message.</param>
     ''' <param name="msgDataType">Optional <see cref="eDataTypes">data type</see> associated with the message.</param>
     ''' -----------------------------------------------------------------------
-    Sub New(ByVal state As eProgressState, ByVal sMaxValue As Single, ByVal sProgress As Single, ByVal strMessage As String, _
-            Optional ByVal msgType As eMessageType = eMessageType.Progress, _
-            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+    Public Sub New(ByVal state As eProgressState, _
+                   ByVal sMaxValue As Single, ByVal sProgress As Single, _
+                   ByVal strMessage As String, _
+                   Optional ByVal msgType As eMessageType = eMessageType.Progress, _
+                   Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+
+        If (sMaxValue = 0) Then sMaxValue = 1
 
         Me.m_state = state
-        Me.m_sMaxProgress = sMaxValue
-        Me.m_sProgress = sProgress
+        ' Scale progress
+        Me.m_sProgress = sProgress / sMaxValue
         Me.Message = strMessage
         Me.Type = msgType
         Me.DataType = msgDataType
@@ -54,7 +58,7 @@ Public Class cProgressMessage
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the progress [0, <see cref="MaxProgress"/>] of the operation that this message
+    ''' Get the progress [0, 1] of the operation that this message
     ''' reports on.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -75,18 +79,5 @@ Public Class cProgressMessage
             Return Me.m_state
         End Get
     End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the maximum progress level of the operation that this
-    ''' message reports on.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property MaxProgress() As Single
-        Get
-            Return Me.m_sMaxProgress
-        End Get
-    End Property
-
 
 End Class

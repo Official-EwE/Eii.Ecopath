@@ -163,6 +163,14 @@
     <Compile Include="EcoSim\Input Output\cEcosimStats.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchTFMGroup.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchTACGroup.vb" />
+    <Compile Include="MSY\Input Output\cFMSYResults.vb" />
+    <Compile Include="MSY\Input Output\cMSYManager.vb" />
+    <Compile Include="MSY\Input Output\cMSYParameters.vb" />
+    <Compile Include="MSY\Input Output\cMSYResultWriter.vb" />
+    <Compile Include="MSY\Input Output\cMSYResultWriterFMSY.vb" />
+    <Compile Include="MSY\Input Output\cMSYResultWriterBase.vb" />
+    <Compile Include="MSY\Model\cMSY.vb" />
+    <Compile Include="MSY\Model\cMSYDataStructures.vb" />
     <Compile Include="Search\cSearchDatastructures.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceStats.vb" />
     <Compile Include="EcoSpace\Model\cGridSolver.vb" />

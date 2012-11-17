@@ -39,13 +39,11 @@ End Enum
 ''' <summary>
 ''' Call each time a monte carlo trial has been completed
 ''' </summary>
-''' <remarks></remarks>
 Public Delegate Sub MonteCarloTrialProgressDelegate()
 
 ''' <summary>
 ''' Call each time a Ecopath model has been run
 ''' </summary>
-''' <remarks></remarks>
 Public Delegate Sub MonteCarloEcopathProgressDelegate()
 
 ''' <summary>

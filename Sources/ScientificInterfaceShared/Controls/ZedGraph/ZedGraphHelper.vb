@@ -312,6 +312,7 @@ Namespace Controls
         ' == Legend ==
         ''' <summary>States whether this instance should show a legend if left to 'default'</summary>
         Private m_bShowLegend As Boolean = True
+        Private m_bAllowDuplicatesOnLegend As Boolean = False
 
         '== Axis labels ==
         ''' <summary>States whether this instance should show axis labels.</summary>
@@ -481,6 +482,25 @@ Namespace Controls
                 Me.ChangeNumPanels()
             End Set
 
+        End Property
+
+        ''' ---------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the legend is allowed to show multiple items for
+        ''' a single group or fleet.
+        ''' </summary>
+        ''' <remarks>
+        ''' Note that this setting only affects newly added lines; existing
+        ''' graph content will not be affected.
+        ''' </remarks>
+        ''' ---------------------------------------------------------------
+        Public Property AllowDuplicatesOnLegend As Boolean
+            Get
+                Return Me.m_bAllowDuplicatesOnLegend
+            End Get
+            Set(value As Boolean)
+                Me.m_bAllowDuplicatesOnLegend = value
+            End Set
         End Property
 
         ''' -------------------------------------------------------------------
@@ -825,7 +845,8 @@ Namespace Controls
                                             Dim info As cCurveInfo = Me.CurveInfo(li)
                                             If (info IsNot Nothing) Then
                                                 ' #1172: hide duplicate legend items
-                                                li.Label.IsVisible = li.Label.IsVisible And Not Me.ContainsCurve(info)
+                                                li.Label.IsVisible = li.Label.IsVisible And _
+                                                                     ((Me.ContainsCurve(info) = False) Or (Me.AllowDuplicatesOnLegend = True))
                                             End If
                                             ' Add curve
                                             .CurveList.Add(li)
@@ -1184,7 +1205,7 @@ Namespace Controls
                                                    Optional ByVal strLabel As String = "", _
                                                    Optional ByVal tag As Object = Nothing) As LineItem
             ' SAnity check
-            Debug.Assert(TypeOf (src) Is cEcoPathGroupInput Or TypeOf (src) Is cFleetInput Or _
+            Debug.Assert(TypeOf (src) Is cCoreGroupBase Or TypeOf (src) Is cFleetInput Or _
                          TypeOf (src) Is cGroupTimeSeries Or TypeOf (src) Is cFleetTimeSeries)
             Return Me.CreateLineItem(New cCurveInfo(src, Me.m_uic, strLabel, tag), ppl)
         End Function
@@ -1932,6 +1953,7 @@ Namespace Controls
                 Me.UpdateAxisLabels()
             End If
             Me.m_zgc.Invalidate()
+
         End Sub
 
         Private Function OnMouseDownEvent(ByVal zg As ZedGraphControl, ByVal args As MouseEventArgs) As Boolean
@@ -2181,7 +2203,7 @@ Namespace Controls
 
             Me.m_zgc.MasterPane.PaneList.Clear()
             For ipn As Integer = 1 To Me.m_nPanels
-                Me.m_zgc.MasterPane.PaneList.Add(New GraphPane)
+                Me.m_zgc.MasterPane.PaneList.Add(New GraphPane())
             Next
 
             'While Me.m_zgc.MasterPane.PaneList.Count < Me.m_nPanels
@@ -2214,7 +2236,7 @@ Namespace Controls
             For iPane As Integer = 1 To Me.m_nPanels
                 gp = Me.GetPane(iPane)
                 gp.Chart.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
-                gp.Fill = New Fill(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND))
+                gp.Chart.Border.IsVisible = False
 
                 bPaneCumulative = Me.IsPaneCumulative(iPane)
                 Me.RemoveCursor(iPane)
@@ -2282,6 +2304,9 @@ Namespace Controls
                     Next
                 End With
             Next iPane
+
+            ' Axis may have changed: reflect this properly
+            Me.RescaleAndRedraw()
 
         End Sub
 

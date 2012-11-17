@@ -50,10 +50,6 @@ Namespace Ecospace.Basemap
             Me.m_lblCol = New System.Windows.Forms.Label()
             Me.m_tbRow = New System.Windows.Forms.TextBox()
             Me.m_tbCol = New System.Windows.Forms.TextBox()
-            Me.m_lblLat = New System.Windows.Forms.Label()
-            Me.m_lblLon = New System.Windows.Forms.Label()
-            Me.m_tbLat = New System.Windows.Forms.TextBox()
-            Me.m_tbLon = New System.Windows.Forms.TextBox()
             Me.m_tlpOkCancel.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -105,7 +101,7 @@ Namespace Ecospace.Basemap
             Me.m_grid.AutoStretchColumnsToFitWidth = False
             Me.m_grid.AutoStretchRowsToFitHeight = False
             Me.m_grid.BackColor = System.Drawing.Color.White
-            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
                 Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
                 Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
@@ -146,38 +142,14 @@ Namespace Ecospace.Basemap
             resources.ApplyResources(Me.m_tbCol, "m_tbCol")
             Me.m_tbCol.Name = "m_tbCol"
             '
-            'm_lblLat
-            '
-            resources.ApplyResources(Me.m_lblLat, "m_lblLat")
-            Me.m_lblLat.Name = "m_lblLat"
-            '
-            'm_lblLon
-            '
-            resources.ApplyResources(Me.m_lblLon, "m_lblLon")
-            Me.m_lblLon.Name = "m_lblLon"
-            '
-            'm_tbLat
-            '
-            resources.ApplyResources(Me.m_tbLat, "m_tbLat")
-            Me.m_tbLat.Name = "m_tbLat"
-            '
-            'm_tbLon
-            '
-            resources.ApplyResources(Me.m_tbLon, "m_tbLon")
-            Me.m_tbLon.Name = "m_tbLon"
-            '
             'dlgExportLayerData
             '
             Me.AcceptButton = Me.m_bntOK
             Me.CancelButton = Me.m_btnCancel
             resources.ApplyResources(Me, "$this")
             Me.ControlBox = False
-            Me.Controls.Add(Me.m_tbLon)
-            Me.Controls.Add(Me.m_tbLat)
             Me.Controls.Add(Me.m_tbCol)
-            Me.Controls.Add(Me.m_lblLon)
             Me.Controls.Add(Me.m_tbRow)
-            Me.Controls.Add(Me.m_lblLat)
             Me.Controls.Add(Me.m_lblCol)
             Me.Controls.Add(Me.m_lblRow)
             Me.Controls.Add(Me.m_tlpOkCancel)
@@ -208,10 +180,6 @@ Namespace Ecospace.Basemap
         Private WithEvents m_lblCol As System.Windows.Forms.Label
         Private WithEvents m_tbRow As System.Windows.Forms.TextBox
         Private WithEvents m_tbCol As System.Windows.Forms.TextBox
-        Private WithEvents m_lblLat As System.Windows.Forms.Label
-        Private WithEvents m_lblLon As System.Windows.Forms.Label
-        Private WithEvents m_tbLat As System.Windows.Forms.TextBox
-        Private WithEvents m_tbLon As System.Windows.Forms.TextBox
 
     End Class
 

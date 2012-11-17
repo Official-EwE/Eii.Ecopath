@@ -677,7 +677,7 @@ Public Class cMessageHistory
                         strTmp = vs.Message
                         If Not String.IsNullOrEmpty(strTmp) Then
                             sb.AppendLine()
-                            sb.Append(strTmp)
+                            sb.Append(" - " & strTmp)
                             iNumSubLines += 1
                         End If
 

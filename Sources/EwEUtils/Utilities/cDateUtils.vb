@@ -124,6 +124,24 @@ Namespace Utilities
 
         End Function
 
+        Public Enum eNextEvent As Integer
+            None
+            Easter
+            Xmas
+        End Enum
+
+        Public Shared Function GetNextEvent(ByVal iNumDays As Integer) As eNextEvent
+
+            Dim dtNow As DateTime = Date.Now
+            Dim dtEaster As DateTime = cDateUtils.Easter(dtNow.Year)
+            Dim dtXMas As DateTime = New Date(dtNow.Year, 12, 25)
+
+            If (dtEaster >= dtNow) And (dtEaster.Subtract(dtNow).Days <= iNumDays) Then Return eNextEvent.Easter
+            If (dtXMas >= dtNow) And (dtXMas.Subtract(dtNow).Days <= iNumDays) Then Return eNextEvent.Xmas
+            Return eNextEvent.None
+
+        End Function
+
     End Class
 
 End Namespace

@@ -1,0 +1,600 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+
+#Region "Imports Complier directives"
+
+Option Strict On
+
+Imports System.IO
+Imports System.Text
+Imports System.Threading
+
+Imports EwECore
+Imports EwECore.Ecosim
+Imports EwECore.ExternalData
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports EwEPlugin
+Imports EwEPlugin.Data
+Imports EwECore.SearchObjectives
+Imports EwEUtils.SystemUtilities.cSystemUtils
+
+#End Region
+
+Namespace MSY
+
+    ''' <summary>
+    ''' Manager for interacting with the MSY routines.
+    ''' </summary>
+    Public Class cMSYManager
+        Inherits cThreadWaitBase
+        Implements ICoreInterface
+        Implements ISearchObjective
+
+#Region "Private variables"
+
+        Private m_Core As cCore = Nothing
+        Private m_MSY As cMSY = Nothing
+        Private m_msyData As cMSYDataStructures = Nothing
+
+        Private m_search As cSearchDatastructures = Nothing
+        Private m_searchObjective As cSearchObjective = Nothing
+
+        Private m_SyncOb As System.Threading.SynchronizationContext = Nothing
+
+        Private m_parameters As cMSYParameters = Nothing
+        Private m_fmsyresults As cFMSYResults = Nothing
+
+#End Region
+
+#Region "Construction Initialization"
+
+        Public Sub New(ByVal theCore As cCore, MSYData As cMSYDataStructures)
+
+            Debug.Assert(theCore IsNot Nothing, Me.ToString & ".New() Invalid core object!")
+            Debug.Assert(MSYData IsNot Nothing, Me.ToString & ".New() Invalid MSY Data object!")
+            Debug.Assert(theCore.m_EcoSim IsNot Nothing, Me.ToString & ".New() Invalid Ecosim Model object!")
+
+            Me.m_Core = theCore
+            Me.m_msyData = MSYData
+
+            Me.m_MSY = New cMSY(Me.m_Core.m_EcoSim, Me.m_msyData, Me.m_Core.m_EcoPathData)
+            Me.m_parameters = New cMSYParameters(Me.m_Core, Me.m_msyData)
+
+            Me.m_MSY.ProgressMessageDelegate = AddressOf Me.SendMessage
+        End Sub
+
+#End Region
+
+#Region " Running Saving (public and private) "
+
+        ''' <summary>
+        ''' Returns whether the MSY can run.
+        ''' </summary>
+        ''' <returns>True if allowed to run.</returns>
+        ''' <remarks>
+        ''' JS: Separated run check from run method because user may get prompted
+        ''' for every run, and run may be called several times in succession.
+        ''' </remarks>
+        Public Function IsAllowedToRun() As Boolean
+
+            Dim bEnabledTS As Boolean = False
+            Dim bOkToRun As Boolean = True
+
+            Try
+
+                If Me.m_Core.ActiveTimeSeriesDatasetIndex > 0 Then
+                    Dim tsds As cTimeSeriesDataset = Me.m_Core.TimeSeriesDataset(Me.m_Core.ActiveTimeSeriesDatasetIndex)
+                    For Each ts As cTimeSeries In tsds
+                        If ts.Enabled Then
+                            bEnabledTS = True
+                            Exit For
+                        End If
+                    Next
+
+                    'Is a time series loaded?
+                    If bEnabledTS Then
+                        ' #Yep: Ask the user what to do
+                        Dim fbMsg As cFeedbackMessage = New cFeedbackMessage(My.Resources.CoreMessages.MSY_WARNING_TIMESERIES, _
+                                                                             eCoreComponentType.MSY, eMessageType.StateNotMet, eMessageImportance.Question, _
+                                                                             cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+                        fbMsg.Suppressable = True
+                        Me.m_Core.Messages.SendMessage(fbMsg)
+                        bOkToRun = (fbMsg.Reply <> cFeedbackMessage.eReply.NO)
+                    End If 'bEnabledTS
+
+                End If 'Me.m_Core.ActiveTimeSeriesDatasetIndex > 0
+
+                If bOkToRun Then
+                    ' ToDo: notify users if forcing functions are loaded
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "cMSYManager::IsAllowedToRun")
+                System.Console.WriteLine(Me.ToString & ".IsAllowedToRun() Exception: " & ex.Message)
+                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MSY_ERROR_RUN, ex.Message), eMessageType.Any, eCoreComponentType.MSY, eMessageImportance.Critical)
+                Me.SendMessage(msg)
+            End Try
+
+            Return bOkToRun
+
+        End Function
+
+        ''' <summary>
+        ''' Run the FMSY search, quietly.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        Public Function RunFMSY() As Boolean
+
+            Dim bSuccess As Boolean = False
+            Me.m_fmsyresults = Nothing
+
+            Try
+                bSuccess = Me.m_MSY.RunFMSY()
+                Dim n As Integer = Me.m_Core.nGroups
+                Dim results As New cFMSYResults(n)
+                Array.Copy(Me.m_MSY.FmsySS, results.FMSY, n)
+                Array.Copy(Me.m_MSY.CmsySS, results.CMSY, n)
+
+                Array.Copy(Me.m_MSY.CatchAtFmsy, results.CatchAtFMSY, n)
+                Array.Copy(Me.m_MSY.ValueAtFmsy, results.ValueAtFMSY, n)
+
+                'get the base value of catch and F from the Core
+                Array.Copy(Me.m_Core.m_EcoPathData.fCatch, results.CMSYBase, n)
+                Array.Copy(Me.m_Core.m_EcoSimData.Fish1, results.FBase, n)
+
+                Array.Copy(Me.m_MSY.VmsySS, results.Value, n)
+                Array.Copy(Me.m_MSY.ValSumBase, results.ValueBase, n)
+
+                For i As Integer = 1 To n
+                    Dim t As cMSY.cFoptTracker = Me.m_MSY.m_FOptTracker(i)
+                    results.IsFopt(i) = t.IsFopt()
+                Next
+
+                Me.m_fmsyresults = results
+
+                ' JS 04Nov12: Always save FMSY results until FMSY has a user interface.
+                ' ToDo_JS: Use Autosave settings for FMSY when there is a user interface.
+                'If Me.IsAutoSaveOutput Then
+                Me.SaveFMSYOutput()
+                'End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "cMSYManager::RunFMSY")
+                System.Console.WriteLine(Me.ToString & ".RunFMSY() Exception: " & ex.Message)
+                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MSY_ERROR_RUN_FMSY, ex.Message), eMessageType.Any, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                Me.SendMessage(msg)
+            End Try
+            Return bSuccess
+
+        End Function
+
+        ''' <summary>
+        ''' Make a single run of the MSY using the current Parameters
+        ''' </summary>
+        ''' <returns>True if the MSY was successfully run.</returns>
+        Public Function Run() As Boolean
+            Dim bRan As Boolean = False
+            Try
+
+                If Me.m_MSY.RunMSY() Then
+                    bRan = True
+                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "cMSYManager::Run")
+                System.Console.WriteLine(Me.ToString & ".Run() Exception: " & ex.Message)
+                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.MSY_ERROR_RUN, ex.Message), eMessageType.Any, eCoreComponentType.MSY, eMessageImportance.Critical)
+                Me.SendMessage(msg)
+            End Try
+
+            Me.m_Core.Messages.sendAllMessages()
+
+            Return bRan
+
+        End Function
+
+
+        Public Sub RunMSYEcosimUnitTest()
+
+            Try
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Run the MSY with no groups frozen and the selected group at some value (Ecopath base by default but that should be changed for testing)
+                'Load an F time series for the selected group into Ecosim at the Ecopath Base
+                'Run Ecosim  for the same number of years as we ran the MSY
+                'We should be able to compare the Biomass outputs from both models
+                'to see how they match up
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                Dim Fs() As Single
+                Dim tsID As Integer
+                Dim dsID As Integer = 1
+                Dim tsName As String
+                Dim dsTS As cTimeSeriesDataset
+                Dim ActiveTS As cTimeSeries
+                Dim FishMortForTest As Single = Me.m_Core.m_EcoSimData.Fish1(Me.m_msyData.iSelGroupFleet)
+
+                Debug.Assert(Me.m_Core.nTimeSeriesDatasets > 0, "Oppss This model does not contain any Time Series Datasets. You can not run the MSY-Ecosim Unit Test.")
+                If Me.m_Core.nTimeSeriesDatasets < 1 Then
+                    Return
+                End If
+
+                System.Console.WriteLine("---------------Starting MSY Ecosim unit test---------------------")
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Run MSY
+                Me.m_msyData.Assessment = eMSYAssessmentTypes.FullCompensation
+                'Init MSY Varible
+                Me.m_MSY.InitForSingleRun()
+                'Init Ecosim Variables to run the RK4 without calling Ecosim.RunModelValue()
+                Me.m_MSY.InitEcosimForRK4()
+
+                Me.m_MSY.setFishingRates(FishMortForTest)
+
+                'Run the RK4. This runs the core ecosim (derivt()) calculations without any support from the core or Ecosim it self
+                Me.m_MSY.EcosimRK4(Me.m_msyData.nYearsPerTrial)
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Create an F time series from the Ecopath F for the seleted group
+                'All other timeseries will be disabled
+                Me.m_Core.LoadTimeSeries(dsID, True)
+                dsTS = Me.m_Core.TimeSeriesDataset(dsID)
+                Debug.Assert(dsTS IsNot Nothing, "MSY-Ecosim Unit Test Dataset not found.")
+
+                ReDim Fs(Me.m_msyData.nYears)
+                For iyr As Integer = 0 To Me.m_msyData.nYears
+                    Fs(iyr) = FishMortForTest
+                Next
+
+                tsName = "MSY_F_Test_" & Me.m_Core.m_EcoPathData.GroupName(Me.m_msyData.iSelGroupFleet)
+                If Me.m_Core.AddTimeSeries(tsName, Me.m_msyData.iSelGroupFleet, eTimeSeriesType.FishingMortality, 1.0, Fs, tsID) Then
+
+                    Me.m_Core.LoadTimeSeries(Me.m_Core.ActiveTimeSeriesDatasetIndex, True)
+                    dsTS = Me.m_Core.TimeSeriesDataset(dsID)
+
+                    For its As Integer = 0 To Me.m_Core.nTimeSeries - 1
+                        dsTS.Item(its).Enabled = False
+                    Next
+
+                    ActiveTS = dsTS.Item(Me.m_Core.nTimeSeries - 1)
+                    ActiveTS.Enabled = True
+                    Me.m_Core.UpdateTimeSeries()
+                End If
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Run Ecosim
+                Me.m_Core.EcoSimModelParameters.NumberYears = Me.m_msyData.nYearsPerTrial
+                Dim ntimesteps As Integer = Me.m_Core.nEcosimTimeSteps
+                Me.m_Core.m_EcoSimData.bTimestepOutput = True
+                Me.m_Core.RunEcoSim()
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Dump out the comparison
+                Dim delim As String = ", " 'cStringUtils.vbTab 
+                Dim ssError As Single
+                System.Console.WriteLine("---------------MSY Ecosim unit test output---------------------")
+                System.Console.WriteLine("Selected Group = " & Me.m_Core.m_EcoPathData.GroupName(Me.m_msyData.iSelGroupFleet))
+                System.Console.WriteLine("Test F = " & FishMortForTest.ToString)
+
+                For igrp As Integer = 1 To Me.m_msyData.nGroups
+                    Dim msyB As Single = Me.m_MSY.bb(igrp)
+                    Dim simB As Single = Me.m_Core.m_EcoSimData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, ntimesteps)
+                    ssError += CSng((msyB - simB) ^ 2.0)
+                    Dim msyError As Single = msyB / simB
+                    Dim F As Single = Me.m_Core.m_EcoSimData.FishTime(igrp)
+                    System.Console.WriteLine("Group " & Me.m_Core.m_EcoPathData.GroupName(igrp) & delim & "F = " & F.ToString & delim & _
+                                             "MSY / Ecosim = " & msyError.ToString & delim & "MSY = " & msyB.ToString & delim & "Ecosim = " & simB.ToString)
+                Next
+
+                System.Console.WriteLine("Last timestep Sum of Square error = " & ssError.ToString)
+                System.Console.WriteLine("---------------Done MSY Ecosim unit test---------------------")
+
+                'Remove the time series we created above
+                Me.m_Core.RemoveTimeSeries(ActiveTS)
+                Me.m_Core.UpdateTimeSeries()
+
+                'Unload the time series
+                Me.m_Core.LoadTimeSeries(0)
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                System.Console.WriteLine(Me.ToString & ".RunMSYUnitTest() Exception: " & ex.Message)
+            End Try
+
+        End Sub
+
+        Public Sub SaveMSYOutput()
+            Try
+
+                If (Me.MSYResults Is Nothing) Then Return
+                If (Me.MSYResults.Length = 0) Then Return
+
+                Dim writer As New cMSYResultWriter(Me.m_Core)
+                Dim bSuccess As Boolean = True
+
+                Select Case Me.m_parameters.FSelectionMode
+
+                    Case eMSYFSelectionModeType.Groups
+                        bSuccess = writer.WriteGroupResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
+                                                            Me.m_parameters.SelGroupFleetIndex, _
+                                                            Me.m_parameters.Assessment, _
+                                                            Me.BaseLineResults.curF, _
+                                                            Me.MSYResults, _
+                                                            Me.FMSY)
+
+                    Case eMSYFSelectionModeType.Fleets
+                        bSuccess = writer.WriteFleetResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
+                                                            Me.m_parameters.SelGroupFleetIndex, _
+                                                            Me.m_parameters.Assessment, _
+                                                            Me.MSYResults)
+
+                End Select
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, ex.Message)
+            End Try
+
+        End Sub
+
+        Public Function SaveFMSYOutput() As Boolean
+
+            Try
+                Dim w As New cMSYResultWriterFMSY(Me.m_Core)
+                Return w.WriteCSV(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
+                                  Me.m_parameters.Assessment, _
+                                  Me.m_fmsyresults)
+
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, ex.Message)
+            End Try
+            Return False
+
+        End Function
+
+        Private Sub SendMessage(ByRef msg As cMessage)
+            If Me.m_Core IsNot Nothing Then
+                Me.m_Core.Messages.SendMessage(msg)
+            End If
+        End Sub
+
+#End Region ' Running Saving (public and private)
+
+#Region " Public Properties "
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYParameters"/> to configure the MSY run.
+        ''' </summary>
+        Public Function Parameters() As cMSYParameters
+            Return Me.m_parameters
+        End Function
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYFResult">results list</see>, sorted by F.
+        ''' </summary>
+        Public Function MSYResults() As cMSYFResult()
+            Return Me.m_msyData.lstResults.ToArray
+        End Function
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYFResult">results</see> of a base line run.
+        ''' </summary>
+        Public Function BaseLineResults() As cMSYFResult
+            Return Me.m_msyData.BaseLineResult
+        End Function
+
+        ''' <summary>
+        ''' Returns the <see cref="cMSYOptimum">FMSY optimum results</see>.
+        ''' </summary>
+        Public Function FMSY() As cMSYOptimum
+            Return Me.m_msyData.Optimum
+        End Function
+
+        ''' <summary>
+        ''' Get/set whether output should be automatically saved to file.
+        ''' </summary>
+        Public Property IsAutoSaveOutput As Boolean
+            Get
+                Return Me.m_Core.Autosave(eAutosaveTypes.MSY)
+            End Get
+            Set(value As Boolean)
+                Me.m_Core.Autosave(eAutosaveTypes.MSY) = value
+            End Set
+        End Property
+
+        Public ReadOnly Property FMSYResults As cFMSYResults
+            Get
+                Return Me.m_fmsyresults
+            End Get
+        End Property
+
+        Public ReadOnly Property RunType As eMSYRunTypes
+            Get
+                Return Me.m_msyData.MSYRunType
+            End Get
+        End Property
+
+#End Region ' Public Properties
+
+#Region "ISearchObjective"
+
+        Friend Function Init(ByRef theCore As cCore) As Boolean Implements ISearchObjective.Init
+
+            m_Core = theCore
+            m_searchObjective = m_Core.SearchObjective
+            m_search = theCore.m_SearchData
+
+            Me.m_SyncOb = System.Threading.SynchronizationContext.Current
+            'if there is no current context then create a new one on this thread.
+            If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
+
+        End Function
+
+        Friend Function Load() As Boolean Implements ISearchObjective.Load
+
+            Try
+
+
+
+            Catch ex As Exception
+
+            End Try
+
+        End Function
+
+
+        ''' <summary>
+        ''' Update the underlying core data with edits from the interface
+        ''' </summary>
+        ''' <remarks>This is called by the core when a variable passes validation via cCore.OnValidated()</remarks>
+        Public Function Update(ByVal DataType As eDataTypes) As Boolean Implements ISearchObjective.Update
+
+            Try
+
+                System.Console.WriteLine(Me.ToString & ".Update(" & DataType.ToString & ")")
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+
+        End Function
+
+
+        Friend Sub Clear() Implements ISearchObjective.Clear
+            Try
+
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+        End Sub
+
+        Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
+            Get
+                Return Me.m_searchObjective.FleetObjectives(iFleet)
+            End Get
+        End Property
+
+        Public ReadOnly Property GroupObjectives(ByVal iGroup As Integer) As cSearchObjectiveGroupInput Implements ISearchObjective.GroupObjectives
+            Get
+                Return Me.m_searchObjective.GroupObjectives(iGroup)
+            End Get
+        End Property
+
+        Public ReadOnly Property ValueWeights() As cSearchObjectiveWeights Implements ISearchObjective.ValueWeights
+            Get
+                Return Me.m_searchObjective.ValueWeights
+            End Get
+        End Property
+
+        Public ReadOnly Property ObjectiveParameters() As SearchObjectives.cSearchObjectiveParameters Implements SearchObjectives.ISearchObjective.ObjectiveParameters
+            Get
+                Return Me.m_searchObjective.ObjectiveParameters
+            End Get
+        End Property
+
+#End Region
+
+#Region "ICoreInterface"
+
+        Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
+            Get
+                Return eDataTypes.MSYManager
+            End Get
+        End Property
+
+        Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
+            Get
+                Return eCoreComponentType.MSY
+            End Get
+        End Property
+
+        Public Property DBID() As Integer Implements ICoreInterface.DBID
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Set(ByVal value As Integer)
+
+            End Set
+        End Property
+
+        Public Function GetID() As String Implements ICoreInterface.GetID
+            Return cCore.NULL_VALUE.ToString
+        End Function
+
+        Public Property Index() As Integer Implements ICoreInterface.Index
+            Get
+                Return cCore.NULL_VALUE
+            End Get
+            Set(ByVal value As Integer)
+
+            End Set
+        End Property
+
+        Public Property Name() As String Implements ICoreInterface.Name
+            Get
+                Return "MSYmanager"
+            End Get
+            Set(ByVal value As String)
+
+            End Set
+        End Property
+
+#End Region
+
+#Region "cThreadWaitBase Overrides"
+
+
+        Public Overrides Function StopRun(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean ' Implements SearchObjectives.ISearchObjective.StopRun
+            Dim result As Boolean = True
+
+            If (Me.m_Core Is Nothing) Then Return True
+
+            Try
+
+                If WaitTimeInMillSec <> 0 Then
+                    Me.m_Core.StopEcoSim()
+                End If
+
+                result = Me.Wait(WaitTimeInMillSec)
+            Catch ex As Exception
+                result = False
+            End Try
+            Return result
+        End Function
+
+#End Region
+
+#Region " .Net Framework stuff "
+
+        Protected Overrides Sub Finalize()
+            Me.m_MSY.ProgressMessageDelegate = Nothing
+            MyBase.Finalize()
+        End Sub
+
+#End Region ' .Net Framework stuff 
+
+    End Class
+
+End Namespace

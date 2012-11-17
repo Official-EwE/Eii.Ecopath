@@ -3574,6 +3574,9 @@ Namespace DataSources
             mseDS.RedimVars()
             mseDS.setDefaultRegValues()
 
+            'jb 11-Oct-2012 Add MSY data
+            Me.m_core.m_MSYData.RedimVars()
+
             reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
             Try
                 ' Read the one record

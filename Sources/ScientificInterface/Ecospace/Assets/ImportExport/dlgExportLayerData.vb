@@ -49,11 +49,13 @@ Namespace Ecospace.Basemap
 
             ''' <summary>The layers to map upon.</summary>
             Private m_aLayers As cRasterLayer()
+            ''' <summary>Mappings. MAPPINGS!</summary>
+            Private m_dtLayerMapping As New Dictionary(Of cRasterLayer, String)
 
             Private Enum eColumnTypes As Integer
                 ColumnLayer = 0
-                ColumnExport
                 ColumnField
+                ' Show datatype columns?
             End Enum
 
 #End Region ' Private vars
@@ -73,20 +75,22 @@ Namespace Ecospace.Basemap
                     Return Nothing
                 End Get
                 Set(ByVal value As cRasterLayer())
+
                     Me.m_aLayers = value
+                    Me.m_dtLayerMapping.Clear()
+
+                    If value IsNot Nothing Then
+                        For Each l As cRasterLayer In value
+                            Me.m_dtLayerMapping(l) = l.DisplayText.Trim()
+                        Next
+                    End If
+
                     Me.RefreshContent()
                 End Set
             End Property
 
             Public Function Mappings() As Dictionary(Of cRasterLayer, String)
-                ' Only return enabled rows
-                Dim dt As New Dictionary(Of cRasterLayer, String)
-                For iRow As Integer = 1 To Me.RowsCount - 1
-                    If DirectCast(Me(iRow, eColumnTypes.ColumnExport), EwECheckboxCell).Checked Then
-                        dt(DirectCast(Rows(iRow).Tag, cRasterLayer)) = CStr(Me(iRow, eColumnTypes.ColumnField).Value)
-                    End If
-                Next
-                Return dt
+                Return Me.m_dtLayerMapping
             End Function
 
 #End Region ' Public interfaces
@@ -100,15 +104,12 @@ Namespace Ecospace.Basemap
 
                 Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
-                Me(0, eColumnTypes.ColumnExport) = New EwEColumnHeaderCell(SharedResources.HEADER_EXPORT)
                 Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
-                Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_CSVFIELD)
+                Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
 
                 Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                Me.Columns(eColumnTypes.ColumnExport).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
                 Me.Columns(eColumnTypes.ColumnField).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
 
-                Me.AutoStretchColumnsToFitWidth = True
                 Me.FixedColumns = 1
                 Me.FixedColumnWidths = False
 
@@ -129,10 +130,9 @@ Namespace Ecospace.Basemap
                     Me.AddRow()
                     layer = Me.m_aLayers(iLayer)
 
-                    ewec = New EwERowHeaderCell(layer.Name)
+                    ewec = New EwECell(layer.Name, GetType(String))
+                    ewec.Style = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
-
-                    Me(iLayer + 1, eColumnTypes.ColumnExport) = New EwECheckboxCell(True)
 
                     ewec = New EwECell(layer.Name, GetType(String))
                     ewec.Behaviors.Add(Me.EwEEditHandler)
@@ -148,6 +148,27 @@ Namespace Ecospace.Basemap
                 MyBase.FinishStyle()
                 Me.StretchColumnsToFitWidth()
             End Sub
+
+            Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+
+                MyBase.OnCellValueChanged(p, cell)
+
+                Dim strField As String = Me.FieldAtRow(p.Row)
+                Dim layer As cRasterLayer = Me.LayerAtRow(p.Row)
+
+                Try
+                    If String.IsNullOrWhiteSpace(strField) Then
+                        ' May be nothing
+                        Me.m_dtLayerMapping(layer) = String.Empty
+                    Else
+                        Me.m_dtLayerMapping(layer) = strField
+                    End If
+                Catch ex As Exception
+                End Try
+
+                Return True
+
+            End Function
 
             Private Function LayerAtRow(ByVal iRow As Integer) As cRasterLayer
                 If iRow > 0 And iRow < Me.RowsCount Then
@@ -177,6 +198,7 @@ Namespace Ecospace.Basemap
 
         Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cRasterLayer)
+        Private m_bDataValid As Boolean = False
         Private m_data As cEcospaceImportExportXYData = Nothing
 
 #End Region ' Private vars
@@ -221,7 +243,7 @@ Namespace Ecospace.Basemap
             Dim f As New cLayerFactoryInternal()
 
             ' Set default file
-            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.EcospaceCSV), "layers.csv")
+            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.EcospaceASC), "layers")
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
@@ -279,18 +301,13 @@ Namespace Ecospace.Basemap
 
         End Sub
 
-        Private Sub OnRCLLFieldChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_tbRow.TextChanged, m_tbCol.TextChanged, m_tbLat.TextChanged, m_tbLon.TextChanged
-
-            Me.UpdateControls()
-
-        End Sub
-
 #End Region ' Events
 
 #Region " Internals "
 
         Private Function SaveMappedLayers() As Boolean
+
+            ' ToDo: localize this method
 
             Dim dtMappings As Dictionary(Of cRasterLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
@@ -302,10 +319,6 @@ Namespace Ecospace.Basemap
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
 
-            ' Ensure that there is a file extension
-            If String.IsNullOrWhiteSpace(Path.GetExtension(strFile)) Then
-                strFile = Path.ChangeExtension(strFile, ".csv")
-            End If
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
 
             Try
@@ -336,7 +349,7 @@ Namespace Ecospace.Basemap
                     Next iCol
                 Next iRow
 
-                Me.m_data.WriteXYFile(strFile, Me.ColField, Me.RowField, Me.LonField, Me.LatField)
+                Me.m_data.WriteXYFile(strFile, Me.ColField, Me.RowField)
 
             Catch ex As Exception
 
@@ -345,9 +358,10 @@ Namespace Ecospace.Basemap
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             ' Log this
-            Dim msg As New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, "Layers data", strFile), _
+            ' ToDo: globalize this
+            Dim msg As New cMessage(String.Format("Layer data exported to '{0}'", strFile), _
                                     eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
-            msg.Hyperlink = Path.GetDirectoryName(strFile)
+            msg.Hyperlink = strFile
             Me.m_uic.Core.Messages.SendMessage(msg)
 
             Return True
@@ -372,33 +386,13 @@ Namespace Ecospace.Basemap
             End Set
         End Property
 
-        Private Property LatField() As String
-            Get
-                Return Me.m_tbLat.Text
-            End Get
-            Set(ByVal value As String)
-                Me.m_tbLat.Text = value
-            End Set
-        End Property
-
-        Private Property LonField() As String
-            Get
-                Return Me.m_tbLon.Text
-            End Get
-            Set(ByVal value As String)
-                Me.m_tbLon.Text = value
-            End Set
-        End Property
-
-        Private Function HasFields(ByVal f1 As String, ByVal f2 As String) As Boolean
-            Return (Not String.IsNullOrWhiteSpace(f1) And Not String.IsNullOrWhiteSpace(f2)) And (Not String.Equals(f1, f2))
-        End Function
-
         Private Sub UpdateControls()
 
-            Dim bHasRowCol As Boolean = Me.HasFields(Me.RowField, Me.ColField)
-            Dim bHasLatLon As Boolean = Me.HasFields(Me.LatField, Me.LonField)
-            Me.m_bntOK.Enabled = bHasLatLon Or bHasRowCol
+            'Me.m_cmbRow.Enabled = (Me.m_cmbRow.Items.Count > 0)
+            'Me.m_cmbCol.Enabled = (Me.m_cmbCol.Items.Count > 0)
+
+            'Me.m_grid.Enabled = Me.m_bDataValid
+            'Me.m_bntOK.Enabled = Me.m_bDataValid
 
         End Sub
 

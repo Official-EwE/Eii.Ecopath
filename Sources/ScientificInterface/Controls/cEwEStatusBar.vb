@@ -311,20 +311,19 @@ Public Class cEwEStatusBar
 
         ' Update
         Me.m_tsStatus.Text = strText
-        Select Case sProgress
-            Case 0
-                Me.m_tsbProgress.Visible = False
-                Me.m_tslStop.Visible = False
-            Case -1
-                Me.m_tsbProgress.Style = ProgressBarStyle.Marquee
-                Me.m_tsbProgress.Visible = True
-                Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
-            Case Else
-                Me.m_tsbProgress.Style = ProgressBarStyle.Continuous
-                Me.m_tsbProgress.Visible = True
-                Me.m_tsbProgress.Value = CInt(Math.Ceiling(Math.Max(Math.Min(100, sProgress * 100), 0)))
-                Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
-        End Select
+        If sProgress = 0 Then
+            Me.m_tsbProgress.Visible = False
+            Me.m_tslStop.Visible = False
+        ElseIf sProgress > 0 Then
+            Me.m_tsbProgress.Style = ProgressBarStyle.Continuous
+            Me.m_tsbProgress.Visible = True
+            Me.m_tsbProgress.Value = CInt(Math.Ceiling(Math.Max(Math.Min(100, sProgress * 100), 0)))
+            Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
+        Else
+            Me.m_tsbProgress.Style = ProgressBarStyle.Marquee
+            Me.m_tsbProgress.Visible = True
+            Me.m_tslStop.Visible = Me.m_uic.Core.CanStopRun
+        End If
 
         ' Redraw status bar immediately
         '   This is a known performace killer (issue #937)

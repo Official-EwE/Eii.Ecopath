@@ -174,7 +174,7 @@ Public Class cFleetInput
 
     End Property
 
-    <Obsolete("Use OffVesselStatus instead")> _
+    <Obsolete("Use OffVesselValue instead")> _
     Public Property OffVesselPrice() As Single()
 
         Get

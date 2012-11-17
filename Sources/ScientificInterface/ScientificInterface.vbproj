@@ -221,10 +221,10 @@
     <Compile Include="Ecopath\Input\frmDietComp.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\MSY\frmMSYSingleSpecies.Designer.vb">
-      <DependentUpon>frmMSYSingleSpecies.vb</DependentUpon>
+    <Compile Include="Ecosim\Tools\MSY\frmMSY.Designer.vb">
+      <DependentUpon>frmMSY.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Tools\MSY\frmMSYSingleSpecies.vb">
+    <Compile Include="Ecosim\Tools\MSY\frmMSY.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\cLayerFactoryInternal.vb" />
@@ -784,8 +784,8 @@
     <EmbeddedResource Include="Controls\dlgConfig.resx">
       <DependentUpon>dlgConfig.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Tools\MSY\frmMSYSingleSpecies.resx">
-      <DependentUpon>frmMSYSingleSpecies.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Tools\MSY\frmMSY.resx">
+      <DependentUpon>frmMSY.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Assets\ImportExport\dlgExportLayerData.resx">
       <DependentUpon>dlgExportLayerData.vb</DependentUpon>
@@ -1667,6 +1667,7 @@
     <None Include="Resources\EWE_forever.jpg" />
     <DesignDataWithDesignTimeCreatableTypes Include="Resources\Ecopath_doc.ico" />
     <None Include="Resources\Ecopath_install.png" />
+    <None Include="Resources\Ecopath_easter.ico" />
     <Content Include="Resources\logo_EU.jpg" />
     <None Include="Resources\ewe_wiki.url.txt" />
     <Content Include="Resources\logo_FIMR.jpg" />
