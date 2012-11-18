@@ -34,6 +34,8 @@ Imports EwEUtils.Commands
 
 #End Region
 
+' ToDo: globalize this form
+
 Public Class frmResults
 
 #Region "Enumerator(s)"
@@ -647,7 +649,7 @@ Public Class frmResults
 
     Private Sub chkYearly_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkYearly.CheckedChanged
         If chkYearly.Checked Then
-            nDataRows = CInt(Math.Floor(Core.nEcosimTimeSteps / 12))
+            nDataRows = CInt(Math.Floor(Core.nEcosimTimeSteps / cCore.N_MONTHS))
         Else
             nDataRows = Core.nEcosimTimeSteps
         End If
@@ -801,10 +803,10 @@ Public Class frmResults
             If chkYearly.Checked Then
                 For Year As Integer = 1 To Core.nEcosimYears
                     YearlyBiomass = 0
-                    For Month As Integer = 1 To 12
-                        YearlyBiomass += Core.EcoSimGroupOutputs(EwEIndex).Biomass((Year - 1) * 12 + Month)
+                    For Month As Integer = 1 To cCore.N_MONTHS
+                        YearlyBiomass += Core.EcoSimGroupOutputs(EwEIndex).Biomass((Year - 1) * cCore.N_MONTHS + Month)
                     Next
-                    ABiomass(ParentIndex + 1, Year) = YearlyBiomass / 12
+                    ABiomass(ParentIndex + 1, Year) = YearlyBiomass / cCore.N_MONTHS
                 Next
             Else
                 For TimeStep As Integer = 1 To nDataRows
@@ -858,7 +860,7 @@ Public Class frmResults
                     - Core.EcoPathGroupOutputs(EwEIndex).Biomass
 
                 'Calc. Integ. for step
-                IntegStep += (StartStepBiomass + EndStepBiomass) / (2 * 12) 'Gives units tons*year
+                IntegStep += (StartStepBiomass + EndStepBiomass) / (2 * cCore.N_MONTHS) 'Gives units tons*year
 
                 'Add step to array
             Next
@@ -921,14 +923,14 @@ Public Class frmResults
                 If chkYearly.Checked Then
                     For Year As Integer = 1 To Core.nEcosimYears
                         ConsumpCumul = 0
-                        For Month As Integer = 1 To 12
-                            ConsumpCumul += Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (Year - 1) * 12 + Month) _
-                                * Core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass((Year - 1) * 12 + Month) _
-                                * Core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass((Year - 1) * 12 + Month)
+                        For Month As Integer = 1 To cCore.N_MONTHS
+                            ConsumpCumul += Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (Year - 1) * cCore.N_MONTHS + Month) _
+                                * Core.EcoSimGroupOutputs(PredatorIndexEcosim).Biomass((Year - 1) * cCore.N_MONTHS + Month) _
+                                * Core.EcoSimGroupOutputs(PredatorIndexEcosim).ConsumpBiomass((Year - 1) * cCore.N_MONTHS + Month)
 
 
                         Next
-                        AConsPerPrey(PreyIndex, Year + 1) = ConsumpCumul / 12
+                        AConsPerPrey(PreyIndex, Year + 1) = ConsumpCumul / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
@@ -977,13 +979,13 @@ Public Class frmResults
 
                 For Year As Integer = 1 To Core.nEcosimYears
                     CumulFishingMortality = 0
-                    For Month As Integer = 1 To 12
+                    For Month As Integer = 1 To cCore.N_MONTHS
                         'Retrieve Fishing mortality for parent
                         CumulFishingMortality += _
-                                        Core.EcoSimGroupOutputs(EwEIndex).FishMort((Year - 1) * 12 + Month) - _
-                                        Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * 12 + Month)
+                                        Core.EcoSimGroupOutputs(EwEIndex).FishMort((Year - 1) * cCore.N_MONTHS + Month) - _
+                                        Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
                     Next
-                    AFishingMortality(ParentIndex, Year) = CumulFishingMortality / 12
+                    AFishingMortality(ParentIndex, Year) = CumulFishingMortality / cCore.N_MONTHS
                 Next
             Else
                 For TimeStep As Integer = 1 To nDataRows
@@ -1031,13 +1033,13 @@ Public Class frmResults
 
                 For Year As Integer = 1 To Core.nEcosimYears
                     CumulPredationMortality = 0
-                    For Month As Integer = 1 To 12
+                    For Month As Integer = 1 To cCore.N_MONTHS
                         'Retrieve Predation mortality for parent
                         CumulPredationMortality += _
-                                            Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * 12 + Month)
+                                            Core.EcoSimGroupOutputs(EwEIndex).PredMort((Year - 1) * cCore.N_MONTHS + Month)
 
                     Next
-                    APredationMortality(PredatorIndex, Year) = CumulPredationMortality / 12
+                    APredationMortality(PredatorIndex, Year) = CumulPredationMortality / cCore.N_MONTHS
                 Next
             Next
         Else
@@ -1109,14 +1111,14 @@ Public Class frmResults
                 If chkYearly.Checked Then
                     For nYear As Integer = 1 To Core.nEcosimYears
                         CumPredMort = 0
-                        For nMonth As Integer = 1 To 12
+                        For nMonth As Integer = 1 To cCore.N_MONTHS
                             Consumption = _
-                                Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, (nYear - 1) * 12 + nMonth) _
-                                * Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass((nYear - 1) * 12 + nMonth) _
-                                * Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass((nYear - 1) * 12 + nMonth)
-                            CumPredMort += Consumption / Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
+                                Core.EcoSimGroupOutputs(EwEIndexPredator).PreyPercentage(EwEIndexPrey, (nYear - 1) * cCore.N_MONTHS + nMonth) _
+                                * Core.EcoSimGroupOutputs(EwEIndexPredator).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth) _
+                                * Core.EcoSimGroupOutputs(EwEIndexPredator).ConsumpBiomass((nYear - 1) * cCore.N_MONTHS + nMonth)
+                            CumPredMort += Consumption / Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
-                        APredationMortality(ColPointer, nYear + 1) = CumPredMort / 12
+                        APredationMortality(ColPointer, nYear + 1) = CumPredMort / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
@@ -1193,12 +1195,12 @@ Public Class frmResults
                 If chkYearly.Checked Then
                     For nYear As Integer = 1 To Core.nEcosimYears
                         CumulFishingMort = 0
-                        For nMonth As Integer = 1 To 12
-                            FleetCatch = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
-                            Biomass = Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
+                        For nMonth As Integer = 1 To cCore.N_MONTHS
+                            FleetCatch = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
+                            Biomass = Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
                             CumulFishingMort += FleetCatch / Biomass
                         Next
-                        AFishingMortality(ColPointer, nYear + 1) = CumulFishingMort / 12
+                        AFishingMortality(ColPointer, nYear + 1) = CumulFishingMort / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
@@ -1275,12 +1277,12 @@ Public Class frmResults
                 If chkYearly.Checked Then
                     For nYear As Integer = 1 To Core.nEcosimYears
                         CumulEffort = 0
-                        For nMonth As Integer = 1 To 12
-                            PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth) / _
-                                        Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * 12 + nMonth)
+                        For nMonth As Integer = 1 To cCore.N_MONTHS
+                            PartialF = Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth) / _
+                                        Core.EcoSimGroupOutputs(EwEIndexPrey).Biomass((nYear - 1) * cCore.N_MONTHS + nMonth)
                             CumulEffort += PartialF
                         Next
-                        AEffort(FleetIndex, nYear + 1) = CumulEffort / (12 * InitialPartialF)
+                        AEffort(FleetIndex, nYear + 1) = CumulEffort / (cCore.N_MONTHS * InitialPartialF)
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
@@ -1334,10 +1336,10 @@ Public Class frmResults
             If chkYearly.Checked Then
                 For nYear As Integer = 1 To Core.nEcosimYears
                     CumulCatch = 0
-                    For nMonth = 1 To 12
-                        CumulCatch += Core.EcoSimGroupOutputs(EwEIndex).Yield((nYear - 1) * 12 + nMonth)
+                    For nMonth = 1 To cCore.N_MONTHS
+                        CumulCatch += Core.EcoSimGroupOutputs(EwEIndex).Yield((nYear - 1) * cCore.N_MONTHS + nMonth)
                     Next
-                    ACatch(ParentIndex, nYear) = CumulCatch / 12
+                    ACatch(ParentIndex, nYear) = CumulCatch / cCore.N_MONTHS
                 Next
             Else
                 For TimeStep As Integer = 1 To nDataRows
@@ -1397,10 +1399,10 @@ Public Class frmResults
                 If chkYearly.Checked Then
                     For nYear As Integer = 1 To Core.nEcosimYears
                         CumulCatch = 0
-                        For nMonth = 1 To 12
-                            CumulCatch += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
+                        For nMonth = 1 To cCore.N_MONTHS
+                            CumulCatch += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
-                        ACatchByFleet(ColPointer, nYear + 1) = CumulCatch / 12
+                        ACatchByFleet(ColPointer, nYear + 1) = CumulCatch / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Core.nEcosimTimeSteps
@@ -1481,10 +1483,10 @@ Public Class frmResults
                 'Loop through EwE datastructure getting biomass for current group at each timestep
                 If chkYearly.Checked Then
                     For nYear As Integer = 1 To Core.nEcosimYears
-                        For nMonth As Integer = 1 To 12
-                            ACatchByFleet(ColPointer, nYear - 1) += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
+                        For nMonth As Integer = 1 To cCore.N_MONTHS
+                            ACatchByFleet(ColPointer, nYear - 1) += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
-                        ALandingsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropLandings / 12
+                        ALandingsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropLandings / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Core.nEcosimTimeSteps
@@ -1567,10 +1569,10 @@ Public Class frmResults
                 'Loop through EwE datastructure getting discards for current group at each timestep
                 If chkYearly.Checked Then
                     For nYear As Integer = 1 To Core.nEcosimYears
-                        For nMonth As Integer = 1 To 12
-                            ACatchByFleet(ColPointer, nYear - 1) += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * 12 + nMonth)
+                        For nMonth As Integer = 1 To cCore.N_MONTHS
+                            ACatchByFleet(ColPointer, nYear - 1) += Core.EcoSimGroupOutputs(EwEIndexPrey).CatchByFleet(EwEIndexFleet, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
-                        ADiscardsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropDiscards / 12
+                        ADiscardsByFleet(ColPointer, nYear + 1) = ACatchByFleet(ColPointer, nYear - 1) * PropDiscards / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To Core.nEcosimTimeSteps
@@ -1632,10 +1634,10 @@ Public Class frmResults
                 If chkYearly.Checked Then
                     For nYear As Integer = 1 To Core.nEcosimYears
                         CumulDiet = 0
-                        For nMonth As Integer = 1 To 12
-                            CumulDiet += Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (nYear - 1) * 12 + nMonth)
+                        For nMonth As Integer = 1 To cCore.N_MONTHS
+                            CumulDiet += Core.EcoSimGroupOutputs(PredatorIndexEcosim).PreyPercentage(PreyIndexEcosim, (nYear - 1) * cCore.N_MONTHS + nMonth)
                         Next
-                        ADietOfPredator(PreyIndex, nYear) = CumulDiet / 12
+                        ADietOfPredator(PreyIndex, nYear) = CumulDiet / cCore.N_MONTHS
                     Next
                 Else
                     For TimeStep As Integer = 1 To nDataRows
@@ -1687,10 +1689,10 @@ Public Class frmResults
             If chkYearly.Checked Then
                 For nYear As Integer = 1 To Core.nEcosimYears
                     CumValue = 0
-                    For nMonth As Integer = 1 To 12
-                        CumValue += Core.EcosimFleetOutput(EwEIndexFleet).Value((nYear - 1) * 12 + nMonth)
+                    For nMonth As Integer = 1 To cCore.N_MONTHS
+                        CumValue += Core.EcosimFleetOutput(EwEIndexFleet).Value((nYear - 1) * cCore.N_MONTHS + nMonth)
                     Next
-                    AValue(FleetIndex, nYear) = CumValue / 12
+                    AValue(FleetIndex, nYear) = CumValue / cCore.N_MONTHS
                 Next
 
             Else
