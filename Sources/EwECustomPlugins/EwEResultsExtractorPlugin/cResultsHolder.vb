@@ -31,6 +31,8 @@ Public Class cResultsHolder
 
     Implements EwEPlugin.IUIContextPlugin
 
+    Implements EwEPlugin.IHelpPlugin
+
     Private ResultsForm As frmResults = Nothing
     Private m_core As cCore = Nothing
     Private m_uic As cUIContext = Nothing
@@ -227,5 +229,17 @@ Public Class cResultsHolder
     Public Sub UIContext(ByVal uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
         Me.m_uic = DirectCast(uic, cUIContext)
     End Sub
+
+    Public ReadOnly Property HelpTopic As String Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Get
+            Return ".\UserGuide\ResultsExtractorPlug.pdf"
+        End Get
+    End Property
+
+    Public ReadOnly Property HelpURL As String Implements EwEPlugin.IHelpPlugin.HelpURL
+        Get
+            Return Me.HelpTopic
+        End Get
+    End Property
 
 End Class
