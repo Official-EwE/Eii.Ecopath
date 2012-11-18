@@ -161,10 +161,10 @@ Public Class frmResults
 
         Try
             Dim ex As New Excel.Application
-            DataOutputter.POutputType = "excel"
+            DataOutputter.POutputType = cDataOutputer.eOutputTypes.Excel
             optExcel.Checked = True
         Catch anyname As Exception
-            DataOutputter.POutputType = "csv"
+            DataOutputter.POutputType = cDataOutputer.eOutputTypes.CSV
             optCSV.Checked = True
         End Try
 
@@ -203,200 +203,13 @@ Public Class frmResults
 #Region "Event Handlers"
 
     Private Sub btnSaveResults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveResults.Click
-
-        Dim NumberChecks As Integer = 0
-        Dim CurrentPredator As cCreatedObjects
-        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
-        Dim cmd As cCommand = Nothing
-        Dim cmdDir As cDirectoryOpenCommand = Nothing
-
-        If (cmdh Is Nothing) Then Return
-        cmd = cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME)
-        If (cmd Is Nothing) Then Return
-        If (Not TypeOf cmd Is cDirectoryOpenCommand) Then Return
-        cmdDir = DirectCast(cmd, cDirectoryOpenCommand)
-
-        ' Let EwE framework do the folder browsing
-        cmdDir.Invoke("Select folder for saving results")
-
-        If (cmdDir.Result = Windows.Forms.DialogResult.OK) Or (cmdDir.Result = Windows.Forms.DialogResult.Yes) Then
-
-            DataOutputter.PPath = cmdDir.Directory
-
-            'Count how many dataselections have been checked
-            If chkBiomass.Checked Then NumberChecks += 1
-            If chkBiomassInteg.Checked Then NumberChecks += 1
-            If chkConsumption.Checked Then NumberChecks += 1
-            If chkFishingMortality.Checked Then NumberChecks += 1
-            If chkPredationMortality.Checked Then NumberChecks += 1
-            If chkPredationPerPredator.Checked Then NumberChecks += 1
-            If chkFishMortFleetToPrey.Checked Then NumberChecks += 1
-            If chkEffort.Checked Then NumberChecks += 1
-            If chkCatch.Checked Then NumberChecks += 1
-            If chkDietProportions.Checked Then NumberChecks += 1
-            If chkCatchFleet.Checked Then NumberChecks += 1
-            If chkFleetValue.Checked Then NumberChecks += 1
-            If chkBasicEstimates.Checked Then NumberChecks += 1
-            If chkKeyIndices.Checked Then NumberChecks += 1
-            If chkMortalityCoefficients.Checked Then NumberChecks += 1
-            If chkInitPredMort.Checked Then NumberChecks += 1
-            If chkInitConsumption.Checked Then NumberChecks += 1
-            If chkInitFishMort.Checked Then NumberChecks += 1
-            If chkRespiration.Checked Then NumberChecks += 1
-            If chkPreyOverlap.Checked Then NumberChecks += 1
-            If chkPredOverlap.Checked Then NumberChecks += 1
-            If chkElectivity.Checked Then NumberChecks += 1
-            If chkInitFishingQuantities.Checked Then NumberChecks += 1
-            If chkSearchRates.Checked Then NumberChecks += 1
-            If chkInitFishingValues.Checked Then NumberChecks += 1
-            If chkresiduals.Checked Then NumberChecks += 1
-            If chkSS.Checked Then NumberChecks += 1
-
-            'Setup progress bar
-            lblPrgInfo.Show()
-            prgSave.Visible = True
-            prgSave.Minimum = 0
-            prgSave.Maximum = NumberChecks
-            prgSave.Value = 0
-            prgSave.Step = 1
-            Application.DoEvents()
-
-            If chkBiomass.Checked Then
-                CreateBiomassCSV()
-                prgSave.PerformStep()
-            End If
-
-            If chkBiomassInteg.Checked Then
-                CreateBiomassIntegratedCSV()
-                prgSave.PerformStep()
-            End If
-
-            If chkConsumption.Checked Then
-                If chkConsumption.Checked Then
-                    For PredatorIndex As Integer = 0 To PredatorPreySelection.CountSelected - 1
-                        'Get Predator Parent-Child Object
-                        CurrentPredator = PredatorPreySelection.GetSelectedItem(PredatorIndex)
-                        CreateConsumptionCSV(CurrentPredator)
-                    Next
-                    prgSave.PerformStep()
-                End If
-            End If
-            If chkFishingMortality.Checked Then
-                CreateFishingMortalityCSV()
-                prgSave.PerformStep()
-            End If
-            If chkPredationMortality.Checked Then
-                CreatePredationMortalityCSV()
-                prgSave.PerformStep()
-            End If
-            If chkPredationPerPredator.Checked Then
-                CreatePredationMortalityEachPredatorCSV()
-                prgSave.PerformStep()
-            End If
-            If chkFishMortFleetToPrey.Checked Then
-                CreateMortalityByFleetCSV()
-                prgSave.PerformStep()
-            End If
-            If chkEffort.Checked Then
-                CreateEffort()
-                prgSave.PerformStep()
-            End If
-            If chkCatch.Checked Then
-                CreateCatchCSV()
-                prgSave.PerformStep()
-            End If
-            If chkDietProportions.Checked Then
-                'Run for each Predator object
-                For PredatorIndex As Integer = 0 To PredatorPreySelection.GetSelected.Count - 1
-                    'Get Predator Parent-Child Object
-                    CurrentPredator = PredatorPreySelection.GetSelectedItem(PredatorIndex)
-                    CreateDietCSV(CurrentPredator)
-                Next
-
-                prgSave.PerformStep()
-            End If
-            If chkCatchFleet.Checked Then
-                CreateCatchByFleetCSV()
-                CreateLandingsByFleetCSV()
-                CreateDiscardsByFleetCSV()
-                prgSave.PerformStep()
-            End If
-            If chkFleetValue.Checked Then
-                CreateValueCSV()
-                prgSave.PerformStep()
-            End If
-            If chkBasicEstimates.Checked Then
-                CreateBasicEstimatesCSV()
-                prgSave.PerformStep()
-            End If
-            If chkKeyIndices.Checked Then
-                CreateKeyIndicesCSV()
-                prgSave.PerformStep()
-            End If
-            If chkMortalityCoefficients.Checked Then
-                CreateInitMortCoeffsCSV()
-                prgSave.PerformStep()
-            End If
-            If chkInitPredMort.Checked Then
-                CreateInitPredMortCSV()
-                prgSave.PerformStep()
-            End If
-            If chkInitFishMort.Checked Then
-                CreateInitFishingMortCSV()
-                prgSave.PerformStep()
-            End If
-            If chkInitConsumption.Checked Then
-                CreateInitConsumptionCSV()
-                prgSave.PerformStep()
-            End If
-            If chkRespiration.Checked Then
-                CreateRespirationCSV()
-                prgSave.PerformStep()
-            End If
-            If chkPreyOverlap.Checked Then
-                CreateOverlapPreyCSV()
-                prgSave.PerformStep()
-            End If
-            If chkPredOverlap.Checked Then
-                CreateOverlapPredCSV()
-                prgSave.PerformStep()
-            End If
-            If chkElectivity.Checked Then
-                CreateElectivityCSV()
-                prgSave.PerformStep()
-            End If
-            If chkInitFishingQuantities.Checked Then
-                CreateInitFishingQuantitiesCSV()
-                prgSave.PerformStep()
-            End If
-            If chkSearchRates.Checked Then
-                CreateSearchRatesCSV()
-                prgSave.PerformStep()
-            End If
-            If chkInitFishingValues.Checked Then
-                CreateInitFishingValuesCSV()
-                prgSave.PerformStep()
-            End If
-            If chkresiduals.Checked Then
-                CreateResiduals()
-                prgSave.PerformStep()
-            End If
-            If chkSS.Checked Then
-                CreateSS()
-                prgSave.PerformStep()
-            End If
-
-            prgSave.Visible = False
-            lblPrgInfo.Hide()
-
-            DataOutputter.OutputData()
-
-            Me.Close()
-
-        End If
-
-        ResetForm()
-
+        ' #1199: Made bullet proof to missing inputs
+        Try
+            Me.SaveResults()
+        Catch ex As Exception
+            Dim msg As New cMessage(My.Resources.PROMPT_INPUTS, eMessageType.TooManyMissingParameters, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+            Me.Core.Messages.SendMessage(msg)
+        End Try
     End Sub
 
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
@@ -656,11 +469,11 @@ Public Class frmResults
     End Sub
 
     Private Sub optCSV_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optCSV.CheckedChanged
-        DataOutputter.POutputType = "csv"
+        DataOutputter.POutputType = cDataOutputer.eOutputTypes.CSV
     End Sub
 
     Private Sub optExcel_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles optExcel.CheckedChanged
-        DataOutputter.POutputType = "excel"
+        DataOutputter.POutputType = cDataOutputer.eOutputTypes.Excel
     End Sub
 
     Private Sub chklog2res_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkresiduals.CheckedChanged
@@ -770,6 +583,216 @@ Public Class frmResults
 #End Region
 
 #Region "Subroutines"
+
+
+    Private Sub SaveResults()
+
+        Dim NumberChecks As Integer = 0
+        Dim CurrentPredator As cCreatedObjects
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmd As cCommand = Nothing
+        Dim cmdDir As cDirectoryOpenCommand = Nothing
+
+        If (cmdh Is Nothing) Then Return
+        cmd = cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME)
+        If (cmd Is Nothing) Then Return
+        If (Not TypeOf cmd Is cDirectoryOpenCommand) Then Return
+        cmdDir = DirectCast(cmd, cDirectoryOpenCommand)
+
+        Dim strPath As String = Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim)
+        If Not Directory.Exists(strPath) Then
+            strPath = Me.Core.OutputPath
+        End If
+
+        ' Let EwE framework do the folder browsing
+        ' JS 18Nov12: Start browsing at default Sim output dir
+        cmdDir.Invoke(strPath, My.Resources.PROMPT_FOLDER)
+
+        If (cmdDir.Result = Windows.Forms.DialogResult.OK) Or (cmdDir.Result = Windows.Forms.DialogResult.Yes) Then
+
+            DataOutputter.PPath = cmdDir.Directory
+
+            'Count how many dataselections have been checked
+            If chkBiomass.Checked Then NumberChecks += 1
+            If chkBiomassInteg.Checked Then NumberChecks += 1
+            If chkConsumption.Checked Then NumberChecks += 1
+            If chkFishingMortality.Checked Then NumberChecks += 1
+            If chkPredationMortality.Checked Then NumberChecks += 1
+            If chkPredationPerPredator.Checked Then NumberChecks += 1
+            If chkFishMortFleetToPrey.Checked Then NumberChecks += 1
+            If chkEffort.Checked Then NumberChecks += 1
+            If chkCatch.Checked Then NumberChecks += 1
+            If chkDietProportions.Checked Then NumberChecks += 1
+            If chkCatchFleet.Checked Then NumberChecks += 1
+            If chkFleetValue.Checked Then NumberChecks += 1
+            If chkBasicEstimates.Checked Then NumberChecks += 1
+            If chkKeyIndices.Checked Then NumberChecks += 1
+            If chkMortalityCoefficients.Checked Then NumberChecks += 1
+            If chkInitPredMort.Checked Then NumberChecks += 1
+            If chkInitConsumption.Checked Then NumberChecks += 1
+            If chkInitFishMort.Checked Then NumberChecks += 1
+            If chkRespiration.Checked Then NumberChecks += 1
+            If chkPreyOverlap.Checked Then NumberChecks += 1
+            If chkPredOverlap.Checked Then NumberChecks += 1
+            If chkElectivity.Checked Then NumberChecks += 1
+            If chkInitFishingQuantities.Checked Then NumberChecks += 1
+            If chkSearchRates.Checked Then NumberChecks += 1
+            If chkInitFishingValues.Checked Then NumberChecks += 1
+            If chkresiduals.Checked Then NumberChecks += 1
+            If chkSS.Checked Then NumberChecks += 1
+
+            'Setup progress bar
+            lblPrgInfo.Show()
+            prgSave.Visible = True
+            prgSave.Minimum = 0
+            prgSave.Maximum = NumberChecks
+            prgSave.Value = 0
+            prgSave.Step = 1
+            Application.DoEvents()
+
+            If chkBiomass.Checked Then
+                CreateBiomassCSV()
+                prgSave.PerformStep()
+            End If
+
+            If chkBiomassInteg.Checked Then
+                CreateBiomassIntegratedCSV()
+                prgSave.PerformStep()
+            End If
+
+            If chkConsumption.Checked Then
+                If chkConsumption.Checked Then
+                    For PredatorIndex As Integer = 0 To PredatorPreySelection.CountSelected - 1
+                        'Get Predator Parent-Child Object
+                        CurrentPredator = PredatorPreySelection.GetSelectedItem(PredatorIndex)
+                        CreateConsumptionCSV(CurrentPredator)
+                    Next
+                    prgSave.PerformStep()
+                End If
+            End If
+            If chkFishingMortality.Checked Then
+                CreateFishingMortalityCSV()
+                prgSave.PerformStep()
+            End If
+            If chkPredationMortality.Checked Then
+                CreatePredationMortalityCSV()
+                prgSave.PerformStep()
+            End If
+            If chkPredationPerPredator.Checked Then
+                CreatePredationMortalityEachPredatorCSV()
+                prgSave.PerformStep()
+            End If
+            If chkFishMortFleetToPrey.Checked Then
+                CreateMortalityByFleetCSV()
+                prgSave.PerformStep()
+            End If
+            If chkEffort.Checked Then
+                CreateEffort()
+                prgSave.PerformStep()
+            End If
+            If chkCatch.Checked Then
+                CreateCatchCSV()
+                prgSave.PerformStep()
+            End If
+            If chkDietProportions.Checked Then
+                'Run for each Predator object
+                For PredatorIndex As Integer = 0 To PredatorPreySelection.GetSelected.Count - 1
+                    'Get Predator Parent-Child Object
+                    CurrentPredator = PredatorPreySelection.GetSelectedItem(PredatorIndex)
+                    CreateDietCSV(CurrentPredator)
+                Next
+
+                prgSave.PerformStep()
+            End If
+            If chkCatchFleet.Checked Then
+                CreateCatchByFleetCSV()
+                CreateLandingsByFleetCSV()
+                CreateDiscardsByFleetCSV()
+                prgSave.PerformStep()
+            End If
+            If chkFleetValue.Checked Then
+                CreateValueCSV()
+                prgSave.PerformStep()
+            End If
+            If chkBasicEstimates.Checked Then
+                CreateBasicEstimatesCSV()
+                prgSave.PerformStep()
+            End If
+            If chkKeyIndices.Checked Then
+                CreateKeyIndicesCSV()
+                prgSave.PerformStep()
+            End If
+            If chkMortalityCoefficients.Checked Then
+                CreateInitMortCoeffsCSV()
+                prgSave.PerformStep()
+            End If
+            If chkInitPredMort.Checked Then
+                CreateInitPredMortCSV()
+                prgSave.PerformStep()
+            End If
+            If chkInitFishMort.Checked Then
+                CreateInitFishingMortCSV()
+                prgSave.PerformStep()
+            End If
+            If chkInitConsumption.Checked Then
+                CreateInitConsumptionCSV()
+                prgSave.PerformStep()
+            End If
+            If chkRespiration.Checked Then
+                CreateRespirationCSV()
+                prgSave.PerformStep()
+            End If
+            If chkPreyOverlap.Checked Then
+                CreateOverlapPreyCSV()
+                prgSave.PerformStep()
+            End If
+            If chkPredOverlap.Checked Then
+                CreateOverlapPredCSV()
+                prgSave.PerformStep()
+            End If
+            If chkElectivity.Checked Then
+                CreateElectivityCSV()
+                prgSave.PerformStep()
+            End If
+            If chkInitFishingQuantities.Checked Then
+                CreateInitFishingQuantitiesCSV()
+                prgSave.PerformStep()
+            End If
+            If chkSearchRates.Checked Then
+                CreateSearchRatesCSV()
+                prgSave.PerformStep()
+            End If
+            If chkInitFishingValues.Checked Then
+                CreateInitFishingValuesCSV()
+                prgSave.PerformStep()
+            End If
+            If chkresiduals.Checked Then
+                CreateResiduals()
+                prgSave.PerformStep()
+            End If
+            If chkSS.Checked Then
+                CreateSS()
+                prgSave.PerformStep()
+            End If
+
+            prgSave.Visible = False
+            lblPrgInfo.Hide()
+
+            ' Export all data
+            Dim msg As cMessage = DataOutputter.OutputData()
+
+            ' Send status message to the rest of the world
+            If (msg IsNot Nothing) Then
+                Me.Core.Messages.SendMessage(msg)
+            End If
+
+            Me.Close()
+
+        End If
+
+        ResetForm()
+
+    End Sub
 
     Private Sub CreateBiomassCSV()
 
@@ -2524,7 +2547,6 @@ Public Class frmResults
         End If
 
     End Sub
-
 
 #Region "KeyRun"
 

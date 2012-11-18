@@ -16,8 +16,12 @@
 ' ===============================================================================
 '
 
-Imports Microsoft.Office.Interop
+Option Strict On
 Imports System.IO
+Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports Microsoft.Office.Interop
 
 Public Class cDataOutputer
 
@@ -25,9 +29,15 @@ Public Class cDataOutputer
     Private mFisheriesData As List(Of cDataSheet)
     Private mIndicators As List(Of cDataSheet)
     Private mDiagnostics As List(Of cDataSheet)
-    Private mOutputType As String
+    Private mOutputType As eOutputTypes
     Private mStrPath As String
     Private mNDataItems As Integer
+    Private mMsg As cMessage = Nothing
+
+    Public Enum eOutputTypes As Integer
+        CSV
+        Excel
+    End Enum
 
     Public Sub New()
         mFunctionalGroupData = New List(Of cDataSheet)
@@ -61,22 +71,18 @@ Public Class cDataOutputer
     End Sub
 
     'Property that sets what file type to output
-    Public Property POutputType() As String
+    Public Property POutputType() As eOutputTypes
         Get
             Return mOutputType
         End Get
-        Set(ByVal value As String)
-            If value = "csv" Then
-                mOutputType = value
-            ElseIf value = "excel" Then
-                mOutputType = value
-            Else
-                MsgBox("Attempt by a client object to send and invalid file type to dataoutputter", MsgBoxStyle.Critical)
-            End If
+        Set(ByVal value As eOutputTypes)
+            mOutputType = value
         End Set
     End Property
 
-    'Sets and returns the directory path that the user wants to save data files to
+    ''' <summary>
+    ''' Sets and returns the directory path that the user wants to save data files to
+    ''' </summary>
     Public Property PPath() As String
         Get
             Return mStrPath
@@ -86,23 +92,41 @@ Public Class cDataOutputer
         End Set
     End Property
 
-    'Returns the number of data items that are held by the dataoutputer
+    ''' <summary>
+    ''' Returns the number of data items that are held by the dataoutputer
+    ''' </summary>
     Public ReadOnly Property GetNumDataItems() As Integer
         Get
             Return mNDataItems
         End Get
     End Property
 
-    'This is the subroutine that the client calls to output the data
-    Public Sub OutputData()
+    ''' <summary>
+    ''' This is the subroutine that the client calls to output the data
+    ''' </summary>
+    ''' <returns>
+    ''' An informational message with a summary of output results
+    ''' </returns>
+    Public Function OutputData() As cMessage
 
-        If mOutputType = "csv" Then
-            CreateCSVFiles()
-        ElseIf mOutputType = "excel" Then
-            CreateExcelFiles()
-        End If
+        Me.PrepareExportMessage()
 
-    End Sub
+        Try
+            Select Case Me.mOutputType
+                Case eOutputTypes.CSV
+                    CreateCSVFiles()
+                Case eOutputTypes.Excel
+                    CreateExcelFiles()
+                Case Else
+                    Debug.Assert(False, "Unsupported output format " & Me.mOutputType.ToString & " specified")
+            End Select
+        Catch ex As Exception
+            Me.LogException(ex.Message)
+        End Try
+
+        Return Me.CompleteExportMessage()
+
+    End Function
 
     Private Sub CreateCSVFiles()
 
@@ -117,79 +141,82 @@ Public Class cDataOutputer
         'Create the functional group files
         If mFunctionalGroupData.Count > 0 Then
             For Each i In mFunctionalGroupData
-                fileName = i.Name & CurrentTime & ".csv"
+                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
-                        DataItem = "" & ArrayData(x, y) & ""
+                        DataItem = cStringUtils.ToCSVField(ArrayData(x, y))
                         sw.Write(DataItem)
                         sw.Write(",")
                     Next
                     sw.WriteLine()
                 Next
                 sw.Close()
+                Me.LogExport(CStr(i.Name), fileName)
             Next
         End If
 
         'Create the fishery group files
         If mFisheriesData.Count > 0 Then
             For Each i In mFisheriesData
-                fileName = i.Name & CurrentTime & ".csv"
+                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
-                        DataItem = "" & ArrayData(x, y) & ""
+                        DataItem = cStringUtils.ToCSVField(ArrayData(x, y))
                         sw.Write(DataItem)
                         sw.Write(",")
                     Next
                     sw.WriteLine()
                 Next
                 sw.Close()
+                Me.LogExport(CStr(i.Name), fileName)
             Next
         End If
 
         'Create the indicator files
         If mIndicators.Count > 0 Then
             For Each i In mIndicators
-                fileName = i.Name & CurrentTime & ".csv"
+                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
-                        DataItem = """" & ArrayData(x, y) & """"
+                        DataItem = cStringUtils.ToCSVField(ArrayData(x, y))
                         sw.Write(DataItem)
                         sw.Write(",")
                     Next
                     sw.WriteLine()
                 Next
                 sw.Close()
+                Me.LogExport(CStr(i.Name), fileName)
             Next
         End If
 
         'Create the indicator files
         If mDiagnostics.Count > 0 Then
             For Each i In mDiagnostics
-                fileName = i.Name & CurrentTime & ".csv"
+                fileName = cFileUtils.ToValidFileName(String.Format(My.Resources.GENERIC_CSV_FILE, i.Name, CurrentTime), False)
                 Dim sw As StreamWriter = New StreamWriter(Path.Combine(mStrPath, fileName), False)
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For y = 0 To ArrayData.GetLength(1) - 1
                     For x = 0 To ArrayData.GetLength(0) - 1
-                        DataItem = """" & ArrayData(x, y) & """"
+                        DataItem = cStringUtils.ToCSVField(ArrayData(x, y))
                         sw.Write(DataItem)
                         sw.Write(",")
                     Next
                     sw.WriteLine()
                 Next
                 sw.Close()
+                Me.LogExport(CStr(i.Name), fileName)
             Next
         End If
 
     End Sub
 
     Private Sub CreateExcelFiles()
-
 
         Dim ex As New Excel.Application
         Dim FileExists As Boolean = False
@@ -213,31 +240,32 @@ Public Class cDataOutputer
             fileName = "FunctGroup" & CurrentTime
             FunctionalWB = ex.Workbooks.Add()
             For Each i In mFunctionalGroupData
-                sheet = FunctionalWB.Worksheets.Add()
+                sheet = CType(FunctionalWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For x = 0 To ArrayData.GetLength(0) - 1
                     For y = 0 To ArrayData.GetLength(1) - 1
                         sheet.Cells(y + 1, x + 1) = ArrayData(x, y)
                     Next
                 Next
+                Me.LogExport(CStr(i.Name), fileName)
             Next
             FunctionalWB.SaveAs(Path.Combine(mStrPath, fileName))
-
         End If
 
         If mFisheriesData.Count > 0 Then
             fileName = "Fisheries" & CurrentTime
             FisheriesWB = ex.Workbooks.Add()
             For Each i In mFisheriesData
-                sheet = FisheriesWB.Worksheets.Add()
+                sheet = CType(FisheriesWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For x = 0 To ArrayData.GetLength(0) - 1
                     For y = 0 To ArrayData.GetLength(1) - 1
                         sheet.Cells(y + 1, x + 1) = ArrayData(x, y)
                     Next
                 Next
+                Me.LogExport(CStr(i.Name), fileName)
             Next
             FisheriesWB.SaveAs(Path.Combine(mStrPath, fileName))
         End If
@@ -246,14 +274,15 @@ Public Class cDataOutputer
             fileName = "Indicators" & CurrentTime
             IndicatorsWB = ex.Workbooks.Add()
             For Each i In mIndicators
-                sheet = IndicatorsWB.Worksheets.Add()
+                sheet = CType(IndicatorsWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For x = 0 To ArrayData.GetLength(0) - 1
                     For y = 0 To ArrayData.GetLength(1) - 1
                         sheet.Cells(y + 1, x + 1) = ArrayData(x, y)
                     Next
                 Next
+                Me.LogExport(CStr(i.Name), fileName)
             Next
             IndicatorsWB.SaveAs(Path.Combine(mStrPath, fileName))
         End If
@@ -262,14 +291,15 @@ Public Class cDataOutputer
             fileName = "Diagnostics" & CurrentTime
             DiagnosticsWB = ex.Workbooks.Add()
             For Each i In mDiagnostics
-                sheet = DiagnosticsWB.Worksheets.Add()
+                sheet = CType(DiagnosticsWB.Worksheets.Add(), Excel.Worksheet)
                 sheet.Name = i.Name
-                ArrayData = CType(i.Data, Array)
+                ArrayData = CType(i.Data, Object(,))
                 For x = 0 To ArrayData.GetLength(0) - 1
                     For y = 0 To ArrayData.GetLength(1) - 1
                         sheet.Cells(y + 1, x + 1) = ArrayData(x, y)
                     Next
                 Next
+                Me.LogExport(CStr(i.Name), fileName)
             Next
             DiagnosticsWB.SaveAs(Path.Combine(mStrPath, fileName))
         End If
@@ -282,5 +312,50 @@ Public Class cDataOutputer
 
     End Sub
 
+
+#Region " Message "
+
+    Private Sub PrepareExportMessage()
+        Me.mMsg = New cMessage(String.Format(My.Resources.GENERIC_SAVE, Me.PPath), _
+                                        eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+        Me.mMsg.Hyperlink = PPath
+    End Sub
+
+    Private Sub LogException(ByVal strError As String)
+        Me.mMsg = New cMessage(String.Format(My.Resources.GENERIC_SAVE_EXCEPTION, Me.PPath, strError), _
+                               eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Warning)
+    End Sub
+
+    ''' <summary>
+    ''' Record the export of a given CSV file.
+    ''' </summary>
+    ''' <param name="strName">The data was exported for.</param>
+    ''' <param name="strFile">The file the data was exported to.</param>
+    ''' <param name="status">Export succes status.</param>
+    Private Sub LogExport(ByVal strName As String, _
+                          ByVal strFile As String, _
+                          Optional ByVal status As eStatusFlags = eStatusFlags.OK)
+        If (Me.mMsg Is Nothing) Then Return
+        Dim vs As cVariableStatus = Nothing
+        Select Case Me.mOutputType
+            Case eOutputTypes.CSV
+                vs = New cVariableStatus(status, _
+                                         String.Format(My.Resources.GENERIC_SAVE_CSV, strName, strFile), _
+                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
+            Case eOutputTypes.Excel
+                vs = New cVariableStatus(status, _
+                                         String.Format(My.Resources.GENERIC_SAVE_EXCEL, strName, strFile), _
+                                         eVarNameFlags.NotSet, eDataTypes.NotSet, eCoreComponentType.EcoSim, 0)
+        End Select
+        Me.mMsg.AddVariable(vs)
+    End Sub
+
+    Private Function CompleteExportMessage() As cMessage
+        Dim msg As cMessage = Me.mMsg
+        Me.mMsg = Nothing
+        Return msg
+    End Function
+
+#End Region ' Message
 
 End Class

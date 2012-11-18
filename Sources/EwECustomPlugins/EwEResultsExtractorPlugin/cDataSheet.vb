@@ -19,20 +19,20 @@ Public Class cDataSheet
     Private mData As Object
     Private mName As String
 
-    Public Property Data()
+    Public Property Data() As Object
         Get
             Return mData
         End Get
-        Set(ByVal value)
+        Set(ByVal value As Object)
             mData = value
         End Set
     End Property
 
-    Public Property Name()
+    Public Property Name() As String
         Get
             Return mName
         End Get
-        Set(ByVal value)
+        Set(ByVal value As String)
             mName = value
         End Set
     End Property
