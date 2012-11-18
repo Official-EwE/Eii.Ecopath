@@ -30,10 +30,10 @@ Imports System.Windows.Forms
 ''' ---------------------------------------------------------------------------
 Public Interface IHelpPlugin
 
-    ''' <summary>URL to plug-in help file.</summary>
+    ''' <summary>Get the URL to the help file for a plug-in.</summary>
     ReadOnly Property HelpURL As String
 
-    ''' <summary>URL to plug-in help page.</summary>
+    ''' <summary>Get the URL to the topic in the <see cref="HelpURL">help file</see>.</summary>
     ReadOnly Property HelpTopic As String
 
 End Interface

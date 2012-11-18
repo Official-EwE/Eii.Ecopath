@@ -27,6 +27,7 @@ Imports System.Text
 
 Public MustInherit Class cNavTreeControlPlugin
     Implements INavigationTreeItemPlugin
+    Implements IHelpPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdoc cref="EwEPlugin.IPlugin.Name"/>
@@ -131,4 +132,23 @@ Public MustInherit Class cNavTreeControlPlugin
     Protected Function NavTreeNodeRoot() As String
         Return "ndParameterization|ndEcopathOutputTools"
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdoc cref="EwEPlugin.IHelpPlugin.HelpTopic"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpTopic As String Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Get
+            Return Me.HelpURL
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdoc cref="EwEPlugin.IHelpPlugin.HelpURL"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpURL As String Implements EwEPlugin.IHelpPlugin.HelpURL
+        Get
+            Return ".\UserGuide\ChristensenValueChainMS.pdf"
+        End Get
+    End Property
+
 End Class

@@ -28,8 +28,11 @@ Imports EwEUtils.SystemUtilities
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' The plug-in point.
+''' The plug-in point for the Multi-Sim plug-in.
 ''' </summary>
+''' <remarks>
+''' Did you know that this plug-in was briefly called 'Multi-Runs'? Tee hee hee.
+''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class cPluginPoint
     Implements EwEPlugin.IUIContextPlugin
@@ -151,6 +154,30 @@ Public Class cPluginPoint
 
 #End Region ' Navigation tree
 
+#Region " Help! "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpTopic"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpTopic As String _
+        Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Get
+            Return ".\UserGuide\EwEMultiSimPlugin.pdf"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IHelpPlugin.HelpURL"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpURL As String _
+        Implements EwEPlugin.IHelpPlugin.HelpURL
+        Get
+            Return Me.HelpTopic
+        End Get
+    End Property
+
+#End Region ' Help!
+
 #End Region ' Plug-in point
 
 #Region " Private helper methods "
@@ -173,17 +200,5 @@ Public Class cPluginPoint
     End Function
 
 #End Region ' Private helper methods
-
-    Public ReadOnly Property HelpTopic As String Implements EwEPlugin.IHelpPlugin.HelpTopic
-        Get
-            Return Me.HelpURL
-        End Get
-    End Property
-
-    Public ReadOnly Property HelpURL As String Implements EwEPlugin.IHelpPlugin.HelpURL
-        Get
-            Return ".\UserGuide\EwEMultiSimPlugin.pdf"
-        End Get
-    End Property
 
 End Class
