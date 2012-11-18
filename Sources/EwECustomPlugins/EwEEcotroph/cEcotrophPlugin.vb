@@ -28,6 +28,7 @@ Public Class cEcotrophPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
+    Implements EwEPlugin.IHelpPlugin
 
 #Region " Internals "
 
@@ -169,6 +170,24 @@ Public Class cEcotrophPlugin
         ' Pass form reference back to calling app
         frmPlugin = frmET
     End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IHelpPlugin.HelpTopic"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpTopic As String Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Get
+            Return "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IHelpPlugin.HelpURL"/>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpURL As String Implements EwEPlugin.IHelpPlugin.HelpURL
+        Get
+            Return Me.HelpTopic
+        End Get
+    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="EwEPlugin.IMenuItemPlugin.MenuItemLocation"/>
