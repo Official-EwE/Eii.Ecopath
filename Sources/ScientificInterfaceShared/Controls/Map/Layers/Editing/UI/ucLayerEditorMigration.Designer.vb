@@ -79,7 +79,6 @@ Namespace Controls.Map.Layers
             resources.ApplyResources(Me.m_cmbGroup, "m_cmbGroup")
             Me.m_cmbGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbGroup.FormattingEnabled = True
-            Me.m_cmbGroup.Items.AddRange(New Object() {resources.GetString("m_cmbGroup.Items"), resources.GetString("m_cmbGroup.Items1"), resources.GetString("m_cmbGroup.Items2"), resources.GetString("m_cmbGroup.Items3"), resources.GetString("m_cmbGroup.Items4"), resources.GetString("m_cmbGroup.Items5"), resources.GetString("m_cmbGroup.Items6"), resources.GetString("m_cmbGroup.Items7"), resources.GetString("m_cmbGroup.Items8"), resources.GetString("m_cmbGroup.Items9"), resources.GetString("m_cmbGroup.Items10"), resources.GetString("m_cmbGroup.Items11")})
             Me.m_cmbGroup.Name = "m_cmbGroup"
             '
             'ucLayerEditorMigration

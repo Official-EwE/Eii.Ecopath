@@ -79,9 +79,14 @@ Namespace Controls.Map.Layers
         Public Overrides Sub UpdateContent(ByVal editor As cLayerEditor)
             MyBase.UpdateContent(editor)
 
+            If (Me.UIContext Is Nothing) Then Return
+
             If (Me.m_cmbGroup Is Nothing) Then Return
             If (Me.m_cmbMonth Is Nothing) Then Return
             If (Me.m_chkAutoRotate Is Nothing) Then Return
+
+            ' Should only be called after OnLoad, yet another bail-out.
+            If (Me.m_cmbGroup.Items.Count = 0) Then Return
 
             If (editor IsNot Nothing) Then
                 Try
@@ -112,6 +117,12 @@ Namespace Controls.Map.Layers
 
         Private Sub OnFormatItemText(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
             Handles m_cmbGroup.Format
+
+            If (Not Object.ReferenceEquals(sender, Me.m_cmbGroup)) Then
+                ' For some reason this Format may be called for the Month combo. Weird, weird, weird.
+                Return
+            End If
+
             Dim io As cCoreInputOutputBase = DirectCast(e.ListItem, cCoreInputOutputBase)
             Dim fmt As New cCoreInterfaceFormatter()
             e.Value = fmt.GetDescriptor(io)
