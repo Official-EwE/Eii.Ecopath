@@ -153,7 +153,7 @@ Public Class cHelp
                 If ctl Is Nothing Then Return
                 If Me.m_dtHelpTopics.ContainsKey(ctl) Then
                     topic = Me.m_dtHelpTopics(ctl)
-                    If String.IsNullOrEmpty(topic.AltURL) Then
+                    If String.IsNullOrWhiteSpace(topic.AltURL) Then
                         Help.ShowHelp(ctl, Me.m_strHelpFile, Path.Combine(Me.m_strHelpRoot, topic.Topic))
                     Else
                         Help.ShowHelp(ctl, topic.AltURL, topic.Topic)

@@ -35,6 +35,7 @@ Public Class cPluginPoint
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
+    Implements EwEPlugin.IHelpPlugin
 
 #Region " Private vars "
 
@@ -172,5 +173,17 @@ Public Class cPluginPoint
     End Function
 
 #End Region ' Private helper methods
+
+    Public ReadOnly Property HelpTopic As String Implements EwEPlugin.IHelpPlugin.HelpTopic
+        Get
+            Return Me.HelpURL
+        End Get
+    End Property
+
+    Public ReadOnly Property HelpURL As String Implements EwEPlugin.IHelpPlugin.HelpURL
+        Get
+            Return ".\UserGuide\EwEMultiSimPlugin.pdf"
+        End Get
+    End Property
 
 End Class

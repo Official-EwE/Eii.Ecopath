@@ -3920,9 +3920,8 @@ Public Class AppLauncher
                         pgcmd.Form.MdiParent = Me
                         pgcmd.Form.Show()
                     End If
-                    ' Switch help
-                    ' ToDo_JS: consider allowing plug-in provided help documents
-                    Me.Help.HelpTopic(pgcmd.Form) = ""
+                    ' Attach to help
+                    Me.Help.HelpTopic(pgcmd.Form, pgcmd.HelpURL) = pgcmd.HelpTopic
                 End If
             End If
         End If

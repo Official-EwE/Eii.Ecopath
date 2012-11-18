@@ -35,7 +35,7 @@ Imports System.Collections.Generic
 Public Class cPluginGUICommand
     Inherits cCommand
 
-    Public Shared COMMAND_NAME As String = "~launchguiplugin"
+#Region " Private vars "
 
     Private m_ip As IGUIPlugin = Nothing
     Private m_sender As Object = Nothing
@@ -44,25 +44,21 @@ Public Class cPluginGUICommand
     Private m_iDockState As Integer = 0 ' Unknown
     Private m_bHasRun As Boolean = False
 
+    ' - Help -
+    Private m_strHelpURL As String = ""
+    Private m_strHelpTopic As String = ""
+
+#End Region ' Private vars
+
     Public Sub New(ByVal cmdh As cCommandHandler)
         MyBase.New(cmdh, cPluginGUICommand.COMMAND_NAME)
     End Sub
 
-    Friend Overloads Sub Invoke(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)
-        Me.m_ip = ip
-        Me.m_sender = sender
-        Me.m_e = e
-        Me.m_bHasRun = False
-        Me.m_form = Nothing
-        ' Try to launch plugin via command structure first
-        MyBase.Invoke()
-        ' Try to run the plug-in manually
-        Me.RunPlugin()
-    End Sub
+    Public Shared COMMAND_NAME As String = "~launchguiplugin"
 
     Public ReadOnly Property CoreExecutionState() As eCoreExecutionState
         Get
-            If Me.m_ip Is Nothing Then Return eCoreExecutionState.Idle
+            If (Me.m_ip Is Nothing) Then Return eCoreExecutionState.Idle
             Return Me.m_ip.EnabledState
         End Get
     End Property
@@ -87,7 +83,7 @@ Public Class cPluginGUICommand
 
     Public Sub RunPlugin()
 
-        If Me.m_ip Is Nothing Then Return
+        If (Me.m_ip Is Nothing) Then Return
         If Me.m_bHasRun Then Return
 
         ' Get dockstate, if possible
@@ -103,6 +99,46 @@ Public Class cPluginGUICommand
             Me.m_bHasRun = True
         End Try
 
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the URL to the help file for this plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpURL As String
+        Get
+            Return Me.m_strHelpURL
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the URL to the help topic for this plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property HelpTopic As String
+        Get
+            Return Me.m_strHelpTopic
+        End Get
+    End Property
+
+    Friend Overloads Sub Invoke(ByVal ip As IGUIPlugin, ByVal sender As Object, ByVal e As EventArgs)
+        Me.m_ip = ip
+        Me.m_sender = sender
+        Me.m_e = e
+        Me.m_bHasRun = False
+        Me.m_form = Nothing
+
+        If (TypeOf ip Is IHelpPlugin) Then
+            Me.m_strHelpURL = DirectCast(ip, IHelpPlugin).HelpURL
+            Me.m_strHelpTopic = DirectCast(ip, IHelpPlugin).HelpTopic
+        End If
+
+        ' Try to launch plugin via command structure first
+        MyBase.Invoke()
+        ' Try to run the plug-in manually
+        Me.RunPlugin()
     End Sub
 
 End Class
