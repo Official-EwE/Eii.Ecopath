@@ -2508,7 +2508,7 @@ Public Class AppLauncher
     ''' <summary>
     ''' Command handler; update the 'close document' command state
     ''' </summary>
-    Private Sub OnUpdateCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate
+    Private Sub OnUpdateCloseDocument(ByVal cmd As cCommand) Handles m_cmdCloseDocument.OnUpdate, m_cmdCloseAllForms.OnUpdate
         cmd.Enabled = False
         ' Is the window docked?
         cmd.Enabled = Not Object.ReferenceEquals(Me.m_DockPanel.ActiveDocument, Nothing)
