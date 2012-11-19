@@ -19,9 +19,11 @@
 
 Option Strict On
 
+
 #End Region ' Imports
 
 Namespace Core
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -110,7 +112,7 @@ Namespace Core
         ''' </summary>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Function Solve(ByVal iTimeStepIndex As Integer) As Boolean
+        Function Solve(ByVal iTimeStepIndex As Integer) As Core.eSolverReturnValues
 
         ''' -------------------------------------------------------------------
         ''' <summary>

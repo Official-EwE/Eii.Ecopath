@@ -2607,7 +2607,7 @@ Public Class cEcoSpace
                         PFished = 1
                     End If
 
-                    Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
+                    'Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
 
                     If m_Data.Depth(i, j) > 0 Then
 

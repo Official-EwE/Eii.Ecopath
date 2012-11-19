@@ -1499,7 +1499,8 @@ Namespace MSE
                 Me.m_LPSolver.SetBounds(Me.m_GoalRowID, 0, Double.PositiveInfinity)
             Next
 
-            Me.m_LPSolver.Solve(t)
+            Dim lpSolveReturnValue As EwEUtils.Core.eSolverReturnValues
+            lpSolveReturnValue = Me.m_LPSolver.Solve(t)
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'MS Sensitivity Dual Values 
@@ -1528,10 +1529,25 @@ Namespace MSE
                 Next
             Next
 
-            For iFlt = 1 To Me.m_data.nFleets
-                Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)))
-                'System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
-            Next
+            If lpSolveReturnValue = eSolverReturnValues.OPTIMAL Then
+                For iFlt = 1 To Me.m_data.nFleets
+                    Me.m_esData.FishRateGear(iFlt, t) = CSng(Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)))
+                    'System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
+                Next
+            Else
+                'LP Solver failed to find an optimized solution 
+                'add the failed time step to the list of non optimal solutions
+                Me.m_data.lstNonOptSolutions.Add(t)
+
+                'populate Effort with the effort from the last time step
+                Dim tNonOpt As Integer = t - 1
+                If t = 1 Then tNonOpt = 1
+                For iFlt = 1 To Me.m_data.nFleets
+                    Me.m_esData.FishRateGear(iFlt, t) = Me.m_esData.FishRateGear(iFlt, tNonOpt)
+                    'System.Console.Write("Fleet ID " & Me.m_LPSolver.GetValue(Me.m_FleetCode(iFlt)).ToString)
+                Next
+
+            End If
 
         End Sub
 

@@ -2808,4 +2808,27 @@ Namespace Core
 
 #End Region ' Shape resolution
 
+#Region "LP Solver"
+
+    Public Enum eSolverReturnValues As Integer
+        NOMEMORY = -2
+        OPTIMAL = 0
+        SUBOPTIMAL = 1
+        INFEASIBLE = 2
+        UNBOUNDED = 3
+        DEGENERATE = 4
+        NUMFAILURE = 5
+        USERABORT = 6
+        TIMEOUT = 7
+        PRESOLVED = 9
+        PROCFAIL = 10
+        PROCBREAK = 11
+        FEASFOUND = 12
+        NOFEASFOUND = 13
+        [ERROR] = 14
+    End Enum
+
+#End Region
+
+
 End Namespace ' Core

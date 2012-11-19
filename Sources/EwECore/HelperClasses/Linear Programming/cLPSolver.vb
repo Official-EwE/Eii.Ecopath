@@ -599,17 +599,16 @@ Public Class cLPSolver
     ''' <see cref="IsSupported">is supported by the operating system</see>.
     ''' </returns>
     ''' -----------------------------------------------------------------------
-    Public Function Solve(ByVal iTimeStepIndex As Integer) As Boolean _
+    Public Function Solve(ByVal iTimeStepIndex As Integer) As EwEUtils.Core.eSolverReturnValues _
           Implements ILPSolver.Solve
-
-        Dim bSuccess As Boolean = False
+        Dim rv As eSolverReturnValues
 
         Debug.Assert(Me.m_iGoal > 0, "Goal not defined")
 
         ' Safety check
         If Not Me.IsSupported Then
             Debug.Assert(False, "lpsolve55 did not initialize")
-            Return False
+            Return eSolverReturnValues.ERROR
         End If
 
         Dim vars() As cVarDef = Me.Vars
@@ -620,11 +619,10 @@ Public Class cLPSolver
             lp = lpsolve55.make_lp(0, vars.Length)
         Catch ex As Exception
             cLog.Write(ex, "cLPSolver.Solve() Failed on make_lp(,)")
-            Return bSuccess
+            Return eSolverReturnValues.ERROR
         End Try
 
         Try
-            bSuccess = True
 
             For v As Integer = 0 To vars.Length - 1
                 Dim vd As cVarDef = vars(v)
@@ -674,7 +672,11 @@ Public Class cLPSolver
 
             Dim lpResult As lpsolve55.lpsolve_return
             lpResult = lpsolve55.solve(lp)
-            If lpResult <> lpsolve55.lpsolve_return.OPTIMAL Then
+
+            'this works because there is a one to one mapping for lpsolve55.lpsolve_return and eSolverReturnValues
+            rv = CType(lpResult, eSolverReturnValues)
+
+            If rv <> eSolverReturnValues.OPTIMAL Then
 
 #If DEBUG Then
                 'Need to find a better way to do this
@@ -714,14 +716,14 @@ Public Class cLPSolver
             '  lpsolve55.write_lp(lp, "cLPSolver.txt")
 
         Catch ex As Exception
-            bSuccess = False
+            rv = eSolverReturnValues.ERROR
         End Try
 
         'lpsolve55.write_lp(lp, "cLPSolver.txt")
 
         lpsolve55.delete_lp(lp)
 
-        Return bSuccess
+        Return rv
 
     End Function
 

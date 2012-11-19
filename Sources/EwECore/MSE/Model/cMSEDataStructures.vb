@@ -305,6 +305,8 @@ Namespace MSE
         Public LowLPEffort() As Single
         Public UpperLPEffort() As Single
 
+        Public lstNonOptSolutions As List(Of Integer)
+
 #End Region
 
 #Region "Private data"
@@ -786,6 +788,8 @@ Namespace MSE
 
                 ReDim QStar(Me.NGroups, Me.nFleets)
                 ReDim Qest(Me.NGroups, Me.nFleets)
+
+                Me.lstNonOptSolutions = New List(Of Integer)
 
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)

@@ -1156,6 +1156,12 @@ Namespace MSE
                         System.Console.WriteLine(Me.ToString & ".ProcessCallBack() Exception thrown from PluginManager. " & ex.Message)
                     End Try
 
+                    If Me.m_MSEdata.lstNonOptSolutions.Count > 0 Then
+                        'LP Solver failed to find optimal solution for 1 or more timesteps
+                        Dim msg As String = String.Format(My.Resources.CoreMessages.MSE_LPSOLVER_NONOPTIMAL, Me.m_MSEdata.lstNonOptSolutions.Count)
+                        Me.m_core.Messages.AddMessage(New cMessage(msg, eMessageType.ErrorEncountered, eCoreComponentType.MSE, eMessageImportance.Warning))
+                    End If
+
                     Me.m_core.Messages.sendAllMessages()
 
                     Me.m_MSE.Disconnect(AddressOf Me.OnMSECallBack, AddressOf Me.OnMSYCallBack)

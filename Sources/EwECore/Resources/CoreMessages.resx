@@ -1142,4 +1142,8 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
   <data name="FMSY_STATUS_NOTFOUND" xml:space="preserve">
     <value>Fmsy not found in given F range</value>
   </data>
+  <data name="MSE_LPSOLVER_NONOPTIMAL" xml:space="preserve">
+    <value>MSE Linear Programing Solution failed to find an optimal solution for '{0}' time steps. Check your target fishing mortality rates to make sure you have not overly constrained your model.</value>
+    <comment>{0} =Number of failed time steps</comment>
+  </data>
 </root>
