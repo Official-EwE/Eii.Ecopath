@@ -517,7 +517,7 @@ Public Class AppLauncher
 
         Me.m_cmdHelpReportIssue = New cCommand(cmdh, "ReportIssue")
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsmiHelpReportIssue)
-#If BETA Then
+#If BETA = 1 Then
         Me.m_cmdHelpReportIssue.AddControl(Me.m_tsbnBeta)
         Me.m_tsbnBeta.Visible = True
 #Else
