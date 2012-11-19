@@ -62,9 +62,9 @@ Namespace MSY
                                           ByVal optimum As cMSYOptimum) As Boolean
 
             Dim target As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
-            Dim strFile As String = ""
             Dim sw As StreamWriter = Nothing
             Dim r As cMSYFResult = Nothing
+            Dim strFile As String = ""
             Dim bSuccess As Boolean = True
 
             ' 2 Variables
@@ -181,13 +181,14 @@ Namespace MSY
             Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
             Dim sw As StreamWriter = Nothing
             Dim r As cMSYFResult = Nothing
+            Dim strFile As String = ""
             Dim bSuccess As Boolean = True
 
             ' 2 variables
             For k As Integer = 0 To 1
 
-                strPath = Path.Combine(strPath, Me.CSVFileName(flt, cSystemUtils.IIF(k = 0, "B", "Catch"), assessment))
-                sw = Me.OpenWriter(strPath)
+                strFile = Path.Combine(strPath, Me.CSVFileName(flt, cSystemUtils.IIF(k = 0, "B", "Catch"), assessment))
+                sw = Me.OpenWriter(strFile)
                 If (sw IsNot Nothing) Then
 
                     Me.WriteHeader(sw, assessment)
@@ -213,7 +214,7 @@ Namespace MSY
                         sw.WriteLine()
                     Next
 
-                    bSuccess = bSuccess And Me.CloseWriter(sw, strPath)
+                    bSuccess = bSuccess And Me.CloseWriter(sw, strFile)
                 Else
                     bSuccess = False
                 End If
