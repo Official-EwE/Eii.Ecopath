@@ -114,6 +114,9 @@ Namespace Properties
 
 #Region " Config "
 
+        Public Event OnPropertyAdded(ByVal prop As cProperty)
+        Public Event OnPropertyRemoved(ByVal prop As cProperty)
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Clears the properties cache, useful when loading new models.
@@ -123,23 +126,23 @@ Namespace Properties
 
             Select Case msgSource
                 Case eCoreComponentType.EcoPath
-                    Me.m_htGeneric.Clear()
-                    Me.m_htEcopath.Clear()
-                    Me.m_htEcosim.Clear()
-                    Me.m_htEcospace.Clear()
-                    Me.m_htEcotracer.Clear()
+                    Me.Clear(Me.m_htGeneric)
+                    Me.Clear(Me.m_htEcopath)
+                    Me.Clear(Me.m_htEcosim)
+                    Me.Clear(Me.m_htEcospace)
+                    Me.Clear(Me.m_htEcotracer)
 
                 Case eCoreComponentType.EcoSim, eCoreComponentType.MSE
-                    Me.m_htEcosim.Clear()
-                    Me.m_htEcospace.Clear()
-                    Me.m_htEcotracer.Clear()
+                    Me.Clear(Me.m_htEcosim)
+                    Me.Clear(Me.m_htEcospace)
+                    Me.Clear(Me.m_htEcotracer)
 
                 Case eCoreComponentType.EcoSpace
-                    Me.m_htEcospace.Clear()
-                    Me.m_htEcotracer.Clear()
+                    Me.Clear(Me.m_htEcospace)
+                    Me.Clear(Me.m_htEcotracer)
 
                 Case eCoreComponentType.Ecotracer
-                    Me.m_htEcotracer.Clear()
+                    Me.Clear(Me.m_htEcotracer)
 
             End Select
 
@@ -284,7 +287,7 @@ Namespace Properties
                 End Select
             End If
 
-            If prop Is Nothing Then Return Nothing
+            If (prop Is Nothing) Then Return Nothing
 
             ' Store property
             ht(strID) = prop
@@ -292,6 +295,12 @@ Namespace Properties
             prop.PropertyManager = Me
             ' Make sure property is up to date
             prop.Refresh()
+
+            Try
+                RaiseEvent OnPropertyAdded(prop)
+            Catch ex As Exception
+                ' Plop
+            End Try
 
             Return prop
 
@@ -526,6 +535,23 @@ Namespace Properties
                 cLog.Write(msg, "cPropertyManager.AllMessagesHandler")
             End Try
 
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Erase a property dictionary
+        ''' </summary>
+        ''' <param name="dic">The dictionary to clear.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub Clear(ByRef dic As Dictionary(Of String, cProperty))
+            Try
+                For Each prop As cProperty In dic.Values
+                    RaiseEvent OnPropertyRemoved(prop)
+                Next
+            Catch ex As Exception
+                ' MrNiceGuy--
+            End Try
+            dic.Clear()
         End Sub
 
 #End Region ' Refresh management

@@ -272,9 +272,9 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Private Sub OnRunFMSY(sender As System.Object, e As System.EventArgs) Handles m_btnRunFMSY.Click
+        Private Sub OnRunFindFMSY(sender As System.Object, e As System.EventArgs) Handles m_btnRunFMSY.Click
             Try
-                Me.RunFMSY()
+                Me.RunFindFMSY()
             Catch ex As Exception
                 cLog.Write(ex, "frmMSY::OnRunFMSY")
             End Try
@@ -666,7 +666,7 @@ Namespace Ecosim
         ''' Run FMSY.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub RunFMSY()
+        Private Sub RunFindFMSY()
 
             Dim bSucces As Boolean = True
 
@@ -684,10 +684,10 @@ Namespace Ecosim
 
             Try
                 Me.m_parms.Assessment = eMSYAssessmentTypes.FullCompensation
-                bSucces = bSucces Or Me.m_manager.RunFMSY()
+                bSucces = bSucces Or Me.m_manager.RunFindFMSY()
 
                 Me.m_parms.Assessment = eMSYAssessmentTypes.StationarySystem
-                bSucces = bSucces Or Me.m_manager.RunFMSY()
+                bSucces = bSucces Or Me.m_manager.RunFindFMSY()
 
             Catch ex As Exception
 

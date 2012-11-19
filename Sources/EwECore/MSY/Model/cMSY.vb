@@ -210,11 +210,11 @@ Namespace MSY
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Perform an FMSY run.
+        ''' Perform an Find FMSY run.
         ''' </summary>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function RunFMSY() As Boolean
+        Public Function RunFindFMSY() As Boolean
 
             Dim strAssessment As String = Me.m_msyData.Assessment.ToString
             Dim iNumSteps As Integer = 0

@@ -139,13 +139,13 @@ Namespace MSY
         ''' Run the FMSY search, quietly.
         ''' </summary>
         ''' <returns>True if succesful.</returns>
-        Public Function RunFMSY() As Boolean
+        Public Function RunFindFMSY() As Boolean
 
             Dim bSuccess As Boolean = False
             Me.m_fmsyresults = Nothing
 
             Try
-                bSuccess = Me.m_MSY.RunFMSY()
+                bSuccess = Me.m_MSY.RunFindFMSY()
                 Dim n As Integer = Me.m_Core.nGroups
                 Dim results As New cFMSYResults(n)
                 Array.Copy(Me.m_MSY.FmsySS, results.FMSY, n)
