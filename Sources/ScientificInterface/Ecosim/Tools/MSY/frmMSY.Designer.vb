@@ -50,7 +50,7 @@ Namespace Ecosim
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_sc = New System.Windows.Forms.SplitContainer()
             Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_plRun = New System.Windows.Forms.Panel()
+            Me.m_plRunSel = New System.Windows.Forms.Panel()
             Me.m_cmbTarget = New System.Windows.Forms.ComboBox()
             Me.m_rbFleet = New System.Windows.Forms.RadioButton()
             Me.m_rbGroup = New System.Windows.Forms.RadioButton()
@@ -70,25 +70,26 @@ Namespace Ecosim
             Me.m_hdrTools = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnRunFMSY = New System.Windows.Forms.Button()
             Me.m_btnTest = New System.Windows.Forms.Button()
-            Me.Panel1 = New System.Windows.Forms.Panel()
+            Me.m_plRun = New System.Windows.Forms.Panel()
+            Me.m_nudNumSteps = New System.Windows.Forms.NumericUpDown()
             Me.m_nudNumTrialYears = New System.Windows.Forms.NumericUpDown()
             Me.m_lblNumTrialYears = New System.Windows.Forms.Label()
             Me.m_nudMaxF = New System.Windows.Forms.NumericUpDown()
-            Me.m_tbxStepSize = New System.Windows.Forms.TextBox()
             Me.m_btnRun = New System.Windows.Forms.Button()
             Me.m_lblMaxRelF = New System.Windows.Forms.Label()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblNumSteps = New System.Windows.Forms.Label()
             Me.m_ts.SuspendLayout()
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_sc.Panel1.SuspendLayout()
             Me.m_sc.Panel2.SuspendLayout()
             Me.m_sc.SuspendLayout()
             Me.m_tlp.SuspendLayout()
-            Me.m_plRun.SuspendLayout()
+            Me.m_plRunSel.SuspendLayout()
             Me.m_plAssessment.SuspendLayout()
             Me.m_plData.SuspendLayout()
             Me.m_plMisc.SuspendLayout()
-            Me.Panel1.SuspendLayout()
+            Me.m_plRun.SuspendLayout()
+            CType(Me.m_nudNumSteps, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudNumTrialYears, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudMaxF, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
@@ -144,21 +145,21 @@ Namespace Ecosim
             'm_tlp
             '
             resources.ApplyResources(Me.m_tlp, "m_tlp")
-            Me.m_tlp.Controls.Add(Me.m_plRun, 0, 0)
+            Me.m_tlp.Controls.Add(Me.m_plRunSel, 0, 0)
             Me.m_tlp.Controls.Add(Me.m_plAssessment, 0, 2)
             Me.m_tlp.Controls.Add(Me.m_plData, 0, 3)
             Me.m_tlp.Controls.Add(Me.m_plMisc, 0, 4)
-            Me.m_tlp.Controls.Add(Me.Panel1, 0, 1)
+            Me.m_tlp.Controls.Add(Me.m_plRun, 0, 1)
             Me.m_tlp.Name = "m_tlp"
             '
-            'm_plRun
+            'm_plRunSel
             '
-            Me.m_plRun.Controls.Add(Me.m_cmbTarget)
-            Me.m_plRun.Controls.Add(Me.m_rbFleet)
-            Me.m_plRun.Controls.Add(Me.m_rbGroup)
-            Me.m_plRun.Controls.Add(Me.m_hdrRun)
-            resources.ApplyResources(Me.m_plRun, "m_plRun")
-            Me.m_plRun.Name = "m_plRun"
+            Me.m_plRunSel.Controls.Add(Me.m_cmbTarget)
+            Me.m_plRunSel.Controls.Add(Me.m_rbFleet)
+            Me.m_plRunSel.Controls.Add(Me.m_rbGroup)
+            Me.m_plRunSel.Controls.Add(Me.m_hdrRun)
+            resources.ApplyResources(Me.m_plRunSel, "m_plRunSel")
+            Me.m_plRunSel.Name = "m_plRunSel"
             '
             'm_cmbTarget
             '
@@ -298,17 +299,25 @@ Namespace Ecosim
             Me.m_btnTest.Name = "m_btnTest"
             Me.m_btnTest.UseVisualStyleBackColor = True
             '
-            'Panel1
+            'm_plRun
             '
-            Me.Panel1.Controls.Add(Me.m_nudNumTrialYears)
-            Me.Panel1.Controls.Add(Me.m_lblNumTrialYears)
-            Me.Panel1.Controls.Add(Me.m_nudMaxF)
-            Me.Panel1.Controls.Add(Me.m_tbxStepSize)
-            Me.Panel1.Controls.Add(Me.m_btnRun)
-            Me.Panel1.Controls.Add(Me.m_lblMaxRelF)
-            Me.Panel1.Controls.Add(Me.Label1)
-            resources.ApplyResources(Me.Panel1, "Panel1")
-            Me.Panel1.Name = "Panel1"
+            Me.m_plRun.Controls.Add(Me.m_nudNumSteps)
+            Me.m_plRun.Controls.Add(Me.m_nudNumTrialYears)
+            Me.m_plRun.Controls.Add(Me.m_lblNumTrialYears)
+            Me.m_plRun.Controls.Add(Me.m_nudMaxF)
+            Me.m_plRun.Controls.Add(Me.m_btnRun)
+            Me.m_plRun.Controls.Add(Me.m_lblMaxRelF)
+            Me.m_plRun.Controls.Add(Me.m_lblNumSteps)
+            resources.ApplyResources(Me.m_plRun, "m_plRun")
+            Me.m_plRun.Name = "m_plRun"
+            '
+            'm_nudNumSteps
+            '
+            resources.ApplyResources(Me.m_nudNumSteps, "m_nudNumSteps")
+            Me.m_nudNumSteps.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
+            Me.m_nudNumSteps.Minimum = New Decimal(New Integer() {5, 0, 0, 0})
+            Me.m_nudNumSteps.Name = "m_nudNumSteps"
+            Me.m_nudNumSteps.Value = New Decimal(New Integer() {30, 0, 0, 0})
             '
             'm_nudNumTrialYears
             '
@@ -330,11 +339,6 @@ Namespace Ecosim
             Me.m_nudMaxF.Name = "m_nudMaxF"
             Me.m_nudMaxF.Value = New Decimal(New Integer() {1, 0, 0, 0})
             '
-            'm_tbxStepSize
-            '
-            resources.ApplyResources(Me.m_tbxStepSize, "m_tbxStepSize")
-            Me.m_tbxStepSize.Name = "m_tbxStepSize"
-            '
             'm_btnRun
             '
             resources.ApplyResources(Me.m_btnRun, "m_btnRun")
@@ -346,10 +350,10 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblMaxRelF, "m_lblMaxRelF")
             Me.m_lblMaxRelF.Name = "m_lblMaxRelF"
             '
-            'Label1
+            'm_lblNumSteps
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblNumSteps, "m_lblNumSteps")
+            Me.m_lblNumSteps.Name = "m_lblNumSteps"
             '
             'frmMSY
             '
@@ -369,15 +373,16 @@ Namespace Ecosim
             CType(Me.m_sc, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_sc.ResumeLayout(False)
             Me.m_tlp.ResumeLayout(False)
-            Me.m_plRun.ResumeLayout(False)
-            Me.m_plRun.PerformLayout()
+            Me.m_plRunSel.ResumeLayout(False)
+            Me.m_plRunSel.PerformLayout()
             Me.m_plAssessment.ResumeLayout(False)
             Me.m_plAssessment.PerformLayout()
             Me.m_plData.ResumeLayout(False)
             Me.m_plData.PerformLayout()
             Me.m_plMisc.ResumeLayout(False)
-            Me.Panel1.ResumeLayout(False)
-            Me.Panel1.PerformLayout()
+            Me.m_plRun.ResumeLayout(False)
+            Me.m_plRun.PerformLayout()
+            CType(Me.m_nudNumSteps, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudNumTrialYears, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_nudMaxF, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -395,7 +400,7 @@ Namespace Ecosim
         Private WithEvents m_rbBiomass As System.Windows.Forms.RadioButton
         Private WithEvents m_plAssessment As System.Windows.Forms.Panel
         Private WithEvents m_btnRun As System.Windows.Forms.Button
-        Private WithEvents m_plRun As System.Windows.Forms.Panel
+        Private WithEvents m_plRunSel As System.Windows.Forms.Panel
         Private WithEvents m_hdrRun As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cmbTarget As System.Windows.Forms.ComboBox
         Private WithEvents m_rbFleet As System.Windows.Forms.RadioButton
@@ -405,9 +410,8 @@ Namespace Ecosim
         Private WithEvents m_rbBoth As System.Windows.Forms.RadioButton
         Private WithEvents m_rbStationary As System.Windows.Forms.RadioButton
         Private WithEvents m_rbFull As System.Windows.Forms.RadioButton
-        Private WithEvents m_tbxStepSize As System.Windows.Forms.TextBox
         Private WithEvents m_nudMaxF As System.Windows.Forms.NumericUpDown
-        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblNumSteps As System.Windows.Forms.Label
         Private WithEvents m_rbCatch As System.Windows.Forms.RadioButton
         Private WithEvents m_plMisc As System.Windows.Forms.Panel
         Private WithEvents m_btnTest As System.Windows.Forms.Button
@@ -416,8 +420,9 @@ Namespace Ecosim
         Private WithEvents m_btnRunFMSY As System.Windows.Forms.Button
         Private WithEvents m_nudNumTrialYears As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblNumTrialYears As System.Windows.Forms.Label
-        Friend WithEvents Panel1 As System.Windows.Forms.Panel
         Private WithEvents m_lblMaxRelF As System.Windows.Forms.Label
+        Private WithEvents m_plRun As System.Windows.Forms.Panel
+        Private WithEvents m_nudNumSteps As System.Windows.Forms.NumericUpDown
     End Class
 
 End Namespace

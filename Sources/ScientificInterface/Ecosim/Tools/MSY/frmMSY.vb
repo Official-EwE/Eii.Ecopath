@@ -81,7 +81,7 @@ Namespace Ecosim
         Private m_bStatAssessment As Boolean = True
 
         Private m_fpMaxF As cEwEFormatProvider = Nothing
-        Private m_fpStepSize As cEwEFormatProvider = Nothing
+        Private m_fpNumSteps As cEwEFormatProvider = Nothing
         Private m_fpNumTrialYears As cEwEFormatProvider = Nothing
 
 #End Region ' Privates
@@ -122,8 +122,8 @@ Namespace Ecosim
             Me.m_fpMaxF = New cEwEFormatProvider(Me.UIContext, Me.m_nudMaxF, GetType(Single), Me.m_parms.GetVariableMetadata(eVarNameFlags.MSYMaxFishingRate))
             Me.m_fpMaxF.Value = Me.m_parms.MaxFishingRate
 
-            Me.m_fpStepSize = New cEwEFormatProvider(Me.UIContext, Me.m_tbxStepSize, GetType(Single), Me.m_parms.GetVariableMetadata(eVarNameFlags.MSYEquilibriumStepSize))
-            Me.m_fpStepSize.Value = Me.m_parms.EquilibriumStepSize
+            Me.m_fpNumSteps = New cEwEFormatProvider(Me.UIContext, Me.m_nudNumSteps, GetType(Integer))
+            Me.m_fpNumSteps.Value = CInt(1 / Me.m_parms.EquilibriumStepSize)
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME)
             cmd.AddControl(Me.m_tsbnShowHide)
@@ -144,7 +144,7 @@ Namespace Ecosim
 
                 Me.m_fpNumTrialYears.Release()
                 Me.m_fpMaxF.Release()
-                Me.m_fpStepSize.Release()
+                Me.m_fpNumSteps.Release()
 
                 Me.m_zgh.Detach()
                 Me.m_zgh = Nothing
@@ -173,7 +173,7 @@ Namespace Ecosim
             Me.m_rbBiomass.Checked = (Me.m_dataMode = eViewDataModeType.Biomass)
             Me.m_rbValue.Checked = (Me.m_dataMode = eViewDataModeType.Value)
 
-            Me.m_fpStepSize.Enabled = (Me.m_rbGroup.Checked)
+            Me.m_fpNumSteps.Enabled = (Me.m_rbGroup.Checked)
 
             Me.m_bInUpdate = False
             Me.m_btnRun.Enabled = bCanRun
@@ -264,7 +264,7 @@ Namespace Ecosim
                 Me.m_parms.FSelectionMode = eMSYFSelectionModeType.Groups
                 Me.m_parms.SelGroupFleetIndex = Me.Target.Index
                 Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxF.Value)
-                Me.m_parms.EquilibriumStepSize = CSng(Me.m_fpStepSize.Value)
+                Me.m_parms.EquilibriumStepSize = 1.0! / CSng(Me.m_fpNumSteps.Value)
                 Me.m_parms.NumTrialYears = CInt(Me.m_fpNumTrialYears.Value)
                 Me.m_manager.RunMSYEcosimUnitTest()
             Catch ex As Exception
@@ -369,7 +369,7 @@ Namespace Ecosim
             Try
                 Me.m_parms.SelGroupFleetIndex = item.Index
                 Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxF.Value)
-                Me.m_parms.EquilibriumStepSize = CSng(Me.m_fpStepSize.Value)
+                Me.m_parms.EquilibriumStepSize = 1.0! / CSng(Me.m_fpNumSteps.Value)
                 Me.m_parms.NumTrialYears = CInt(Me.m_fpNumTrialYears.Value)
 
                 'If Me.m_rbFixedMax.Checked Then
@@ -673,7 +673,7 @@ Namespace Ecosim
             If Not Me.m_manager.IsAllowedToRun() Then Return
 
             Me.m_parms.MaxFishingRate = CSng(Me.m_fpMaxF.Value)
-            Me.m_parms.EquilibriumStepSize = CSng(Me.m_fpStepSize.Value)
+            Me.m_parms.EquilibriumStepSize = 1.0! / CSng(Me.m_fpNumSteps.Value)
             Me.m_parms.NumTrialYears = CInt(Me.m_fpNumTrialYears.Value)
 
             'If Me.m_rbFixedMax.Checked Then

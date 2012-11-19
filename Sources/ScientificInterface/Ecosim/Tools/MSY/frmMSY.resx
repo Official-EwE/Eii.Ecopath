@@ -156,7 +156,7 @@
     <value>m_ts</value>
   </data>
   <data name="&gt;&gt;m_ts.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.8550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.8553.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ts.Parent" xml:space="preserve">
     <value>$this</value>
@@ -220,7 +220,7 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_cmbTarget.Parent" xml:space="preserve">
-    <value>m_plRun</value>
+    <value>m_plRunSel</value>
   </data>
   <data name="&gt;&gt;m_cmbTarget.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -250,7 +250,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbFleet.Parent" xml:space="preserve">
-    <value>m_plRun</value>
+    <value>m_plRunSel</value>
   </data>
   <data name="&gt;&gt;m_rbFleet.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -277,7 +277,7 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_rbGroup.Parent" xml:space="preserve">
-    <value>m_plRun</value>
+    <value>m_plRunSel</value>
   </data>
   <data name="&gt;&gt;m_rbGroup.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -307,39 +307,39 @@
     <value>m_hdrRun</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8553.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.Parent" xml:space="preserve">
-    <value>m_plRun</value>
+    <value>m_plRunSel</value>
   </data>
   <data name="&gt;&gt;m_hdrRun.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="m_plRun.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="m_plRunSel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="m_plRun.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_plRunSel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="m_plRun.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_plRunSel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_plRun.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_plRunSel.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 92</value>
   </data>
-  <data name="m_plRun.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_plRunSel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;m_plRun.Name" xml:space="preserve">
-    <value>m_plRun</value>
+  <data name="&gt;&gt;m_plRunSel.Name" xml:space="preserve">
+    <value>m_plRunSel</value>
   </data>
-  <data name="&gt;&gt;m_plRun.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_plRunSel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_plRun.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_plRunSel.Parent" xml:space="preserve">
     <value>m_tlp</value>
   </data>
-  <data name="&gt;&gt;m_plRun.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_plRunSel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="m_rbBoth.AutoSize" type="System.Boolean, mscorlib">
@@ -454,7 +454,7 @@
     <value>m_hdrAssessment</value>
   </data>
   <data name="&gt;&gt;m_hdrAssessment.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8553.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrAssessment.Parent" xml:space="preserve">
     <value>m_plAssessment</value>
@@ -514,7 +514,7 @@
     <value>m_hdr</value>
   </data>
   <data name="&gt;&gt;m_hdr.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8553.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdr.Parent" xml:space="preserve">
     <value>m_plData</value>
@@ -694,7 +694,7 @@
     <value>m_hdrTools</value>
   </data>
   <data name="&gt;&gt;m_hdrTools.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8553.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrTools.Parent" xml:space="preserve">
     <value>m_plMisc</value>
@@ -783,6 +783,33 @@
   <data name="&gt;&gt;m_plMisc.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="m_nudNumSteps.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_nudNumSteps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 35</value>
+  </data>
+  <data name="m_nudNumSteps.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 3</value>
+  </data>
+  <data name="m_nudNumSteps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 20</value>
+  </data>
+  <data name="m_nudNumSteps.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_nudNumSteps.Name" xml:space="preserve">
+    <value>m_nudNumSteps</value>
+  </data>
+  <data name="&gt;&gt;m_nudNumSteps.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_nudNumSteps.Parent" xml:space="preserve">
+    <value>m_plRun</value>
+  </data>
+  <data name="&gt;&gt;m_nudNumSteps.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="m_nudNumTrialYears.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -805,10 +832,10 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudNumTrialYears.Parent" xml:space="preserve">
-    <value>Panel1</value>
+    <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_nudNumTrialYears.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="m_lblNumTrialYears.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -826,7 +853,7 @@
     <value>6</value>
   </data>
   <data name="m_lblNumTrialYears.Text" xml:space="preserve">
-    <value>&amp;No. of trial years:</value>
+    <value>No. of trial &amp;years:</value>
   </data>
   <data name="&gt;&gt;m_lblNumTrialYears.Name" xml:space="preserve">
     <value>m_lblNumTrialYears</value>
@@ -835,10 +862,10 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblNumTrialYears.Parent" xml:space="preserve">
-    <value>Panel1</value>
+    <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_lblNumTrialYears.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_nudMaxF.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -862,33 +889,9 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_nudMaxF.Parent" xml:space="preserve">
-    <value>Panel1</value>
+    <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_nudMaxF.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="m_tbxStepSize.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_tbxStepSize.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 35</value>
-  </data>
-  <data name="m_tbxStepSize.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 20</value>
-  </data>
-  <data name="m_tbxStepSize.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;m_tbxStepSize.Name" xml:space="preserve">
-    <value>m_tbxStepSize</value>
-  </data>
-  <data name="&gt;&gt;m_tbxStepSize.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tbxStepSize.Parent" xml:space="preserve">
-    <value>Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_tbxStepSize.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="m_btnRun.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -916,7 +919,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_btnRun.Parent" xml:space="preserve">
-    <value>Panel1</value>
+    <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_btnRun.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -946,63 +949,63 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;m_lblMaxRelF.Parent" xml:space="preserve">
-    <value>Panel1</value>
+    <value>m_plRun</value>
   </data>
   <data name="&gt;&gt;m_lblMaxRelF.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblNumSteps.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblNumSteps.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 38</value>
+  <data name="m_lblNumSteps.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 37</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
+  <data name="m_lblNumSteps.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 13</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblNumSteps.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
-    <value>Equil. step size:</value>
+  <data name="m_lblNumSteps.Text" xml:space="preserve">
+    <value>No. of &amp;steps:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_lblNumSteps.Name" xml:space="preserve">
+    <value>m_lblNumSteps</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumSteps.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
-    <value>Panel1</value>
+  <data name="&gt;&gt;m_lblNumSteps.Parent" xml:space="preserve">
+    <value>m_plRun</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblNumSteps.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="Panel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_plRun.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 92</value>
   </data>
-  <data name="Panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_plRun.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 3</value>
   </data>
-  <data name="Panel1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_plRun.Size" type="System.Drawing.Size, System.Drawing">
     <value>194, 126</value>
   </data>
-  <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_plRun.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;Panel1.Name" xml:space="preserve">
-    <value>Panel1</value>
+  <data name="&gt;&gt;m_plRun.Name" xml:space="preserve">
+    <value>m_plRun</value>
   </data>
-  <data name="&gt;&gt;Panel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_plRun.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Panel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_plRun.Parent" xml:space="preserve">
     <value>m_tlp</value>
   </data>
-  <data name="&gt;&gt;Panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_plRun.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="m_tlp.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -1036,7 +1039,7 @@
     <value>0</value>
   </data>
   <data name="m_tlp.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plRun" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plAssessment" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plData" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plMisc" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="Panel1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_plRunSel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plAssessment" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plData" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plMisc" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_plRun" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="&gt;&gt;m_sc.Panel1.Name" xml:space="preserve">
     <value>m_sc.Panel1</value>
@@ -1117,6 +1120,6 @@
     <value>frmMSY</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8550.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8553.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
