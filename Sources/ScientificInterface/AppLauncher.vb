@@ -587,7 +587,7 @@ Public Class AppLauncher
         Dim core As New cCore()
         Dim sg As New cStyleGuide()
         Dim cmdh As New cCommandHandler()
-        Dim pm As New cPropertyManager(core, sg, so)
+        Dim pm As New cPropertyManager(core, so)
         Dim fps As New cFormSettings()
         Dim help As New cHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
 

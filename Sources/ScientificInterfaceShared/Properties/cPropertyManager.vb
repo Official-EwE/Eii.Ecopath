@@ -40,8 +40,6 @@ Namespace Properties
 
         ''' <summary>Attached core.</summary>
         Private m_core As cCore = Nothing
-        ''' <summary>Attached style guide.</summary>
-        Private m_sg As cStyleGuide = Nothing
         ''' <summary>Message handler synchronizer.</summary>
         Private m_SyncObj As SynchronizationContext = Nothing
 
@@ -50,7 +48,7 @@ Namespace Properties
 
         ' ToDo: ideally this should become a dictionary of dictionaries,
         '       as dict(core component, dict(string, cProp)) in order to
-        '       automating the binning process of properties
+        '       automate the binning process of properties
 
         ''' <summary>Quick property lookup tables</summary>
         Private m_htGeneric As New Dictionary(Of String, cProperty)
@@ -67,13 +65,12 @@ Namespace Properties
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Constructor
+        ''' Constructor.
         ''' </summary>
         ''' <param name="core">Core instance providing property data.</param>
-        ''' <param name="sg">Styleguide instance providing formatting information.</param>
+        ''' <param name="so">Threading <see cref="SynchronizationContext"/>.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal core As cCore, _
-                       ByVal sg As cStyleGuide, _
                        ByVal so As SynchronizationContext)
 
             'Sanity checks
@@ -81,7 +78,6 @@ Namespace Properties
 
             ' Store important refs
             Me.m_core = core
-            Me.m_sg = sg
             Me.m_SyncObj = so
 
             ' Create No Data property
@@ -105,7 +101,6 @@ Namespace Properties
             Me.m_propNoData = Nothing
 
             Me.m_SyncObj = Nothing
-            Me.m_sg = Nothing
             Me.m_core = Nothing
 
         End Sub
@@ -151,12 +146,6 @@ Namespace Properties
         Friend ReadOnly Property Core() As cCore
             Get
                 Return Me.m_core
-            End Get
-        End Property
-
-        Friend ReadOnly Property StyleGuide() As cStyleGuide
-            Get
-                Return Me.m_sg
             End Get
         End Property
 
