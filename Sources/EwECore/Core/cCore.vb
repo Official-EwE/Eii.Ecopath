@@ -11803,7 +11803,7 @@ Public Class cCore
         Get
             Dim lAux As New List(Of cAuxiliaryData)
             For Each aux As cAuxiliaryData In Me.m_dtAuxiliaryData.Values
-                If Not String.IsNullOrEmpty(aux.Remark) Then
+                If Not String.IsNullOrWhiteSpace(aux.Remark) Then
                     lAux.Add(aux)
                 End If
             Next
