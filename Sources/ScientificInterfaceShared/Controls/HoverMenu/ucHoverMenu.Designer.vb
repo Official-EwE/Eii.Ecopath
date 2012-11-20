@@ -32,16 +32,17 @@ Namespace Controls
             Me.m_tsbnZoomIn = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomOut = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnZoomReset = New System.Windows.Forms.ToolStripButton()
+            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
             Me.m_tsbnShowLegends = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowAxisLabels = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
-            Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
+            Me.m_tsbnExport = New System.Windows.Forms.ToolStripButton()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_ts
             '
+            Me.m_ts.BackColor = System.Drawing.SystemColors.Control
             Me.m_ts.CanOverflow = False
             Me.m_ts.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
             Me.m_ts.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnZoomIn, Me.m_tsbnZoomOut, Me.m_tsbnZoomReset, Me.m_sep1, Me.m_tsbnShowLegends, Me.m_tsbnShowAxisLabels, Me.m_sep2, Me.m_tsbnExport})
@@ -79,12 +80,21 @@ Namespace Controls
             Me.m_tsbnZoomReset.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbnZoomReset.Text = "Reset all zoom"
             '
+            'm_sep1
+            '
+            Me.m_sep1.AutoSize = False
+            Me.m_sep1.Name = "m_sep1"
+            Me.m_sep1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_sep1.Size = New System.Drawing.Size(6, 23)
+            Me.m_sep1.Visible = False
+            '
             'm_tsbnShowLegends
             '
             Me.m_tsbnShowLegends.Checked = True
             Me.m_tsbnShowLegends.CheckState = System.Windows.Forms.CheckState.Checked
             Me.m_tsbnShowLegends.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.m_tsbnShowLegends.Image = Global.ScientificInterfaceShared.My.Resources.Resources.LegendHS
+            Me.m_tsbnShowLegends.Margin = New System.Windows.Forms.Padding(2, 1, 2, 2)
             Me.m_tsbnShowLegends.Name = "m_tsbnShowLegends"
             Me.m_tsbnShowLegends.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
             Me.m_tsbnShowLegends.Size = New System.Drawing.Size(23, 20)
@@ -94,10 +104,19 @@ Namespace Controls
             '
             Me.m_tsbnShowAxisLabels.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
             Me.m_tsbnShowAxisLabels.Image = Global.ScientificInterfaceShared.My.Resources.Resources.tag
+            Me.m_tsbnShowAxisLabels.Margin = New System.Windows.Forms.Padding(2, 1, 2, 2)
             Me.m_tsbnShowAxisLabels.Name = "m_tsbnShowAxisLabels"
             Me.m_tsbnShowAxisLabels.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-            Me.m_tsbnShowAxisLabels.Size = New System.Drawing.Size(32, 19)
+            Me.m_tsbnShowAxisLabels.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbnShowAxisLabels.Text = "Show axis labels"
+            '
+            'm_sep2
+            '
+            Me.m_sep2.AutoSize = False
+            Me.m_sep2.Name = "m_sep2"
+            Me.m_sep2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
+            Me.m_sep2.Size = New System.Drawing.Size(6, 23)
+            Me.m_sep2.Visible = False
             '
             'm_tsbnExport
             '
@@ -108,22 +127,6 @@ Namespace Controls
             Me.m_tsbnExport.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
             Me.m_tsbnExport.Size = New System.Drawing.Size(23, 20)
             Me.m_tsbnExport.Text = "Export to CSV..."
-            '
-            'm_sep2
-            '
-            Me.m_sep2.AutoSize = False
-            Me.m_sep2.Name = "m_sep2"
-            Me.m_sep2.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-            Me.m_sep2.Size = New System.Drawing.Size(6, 23)
-            Me.m_sep2.Visible = False
-            '
-            'm_sep1
-            '
-            Me.m_sep1.AutoSize = False
-            Me.m_sep1.Name = "m_sep1"
-            Me.m_sep1.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never
-            Me.m_sep1.Size = New System.Drawing.Size(6, 23)
-            Me.m_sep1.Visible = False
             '
             'ucHoverMenu
             '

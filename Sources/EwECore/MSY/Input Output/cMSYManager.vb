@@ -329,7 +329,7 @@ Namespace MSY
                 If (Me.MSYResults Is Nothing) Then Return
                 If (Me.MSYResults.Length = 0) Then Return
 
-                Dim writer As New cMSYResultWriter(Me.m_Core)
+                Dim writer As New cMSYResultWriterMSY(Me.m_Core)
                 Dim bSuccess As Boolean = True
 
                 Select Case Me.m_parameters.FSelectionMode
@@ -346,7 +346,8 @@ Namespace MSY
                         bSuccess = writer.WriteFleetResults(Me.m_Core.DefaultOutputPath(eAutosaveTypes.MSY), _
                                                             Me.m_parameters.SelGroupFleetIndex, _
                                                             Me.m_parameters.Assessment, _
-                                                            Me.MSYResults)
+                                                            Me.MSYResults, _
+                                                            Me.FMSY)
 
                 End Select
 

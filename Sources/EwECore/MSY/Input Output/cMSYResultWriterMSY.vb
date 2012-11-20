@@ -30,7 +30,7 @@ Namespace MSY
     ''' <summary>
     ''' Class for writing MSY run results.
     ''' </summary>
-    Public Class cMSYResultWriter
+    Public Class cMSYResultWriterMSY
         Inherits cMSYResultWriterBase
 
 #Region " Construction "
@@ -74,12 +74,7 @@ Namespace MSY
                 sw = Me.OpenWriter(strFile)
 
                 If (sw IsNot Nothing) Then
-                    Me.WriteHeader(sw, ass, "MSY")
-                    sw.WriteLine("Group, {0}", target.Name)
-                    sw.WriteLine("Fbase, {0}", cStringUtils.FormatSingle(FBase))
-                    sw.WriteLine("Fmsy, {0}", cSystemUtils.IIF(optimum.IsFopt(iGroup), _
-                                                               cStringUtils.FormatSingle(optimum.Fopt(iGroup)), _
-                                                               My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND))
+                    Me.WriteGroupHeader(sw, ass, target, FBase, optimum)
                     sw.WriteLine()
 
                     ' Data header
@@ -136,13 +131,8 @@ Namespace MSY
             sw = Me.OpenWriter(strFile)
 
             If (sw IsNot Nothing) Then
-                Me.WriteHeader(sw, ass)
-                sw.WriteLine("Group, {0}", target.Name)
-                sw.WriteLine("Fbase, {0}", FBase)
+                Me.WriteGroupHeader(sw, ass, target, FBase, optimum)
                 sw.WriteLine()
-                sw.WriteLine("Fmsy, {0}", cSystemUtils.IIF(optimum.IsFopt(iGroup), _
-                                                            cStringUtils.FormatSingle(optimum.Fopt(iGroup)), _
-                                                            My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND))
 
                 ' Data header
                 sw.Write("F, TotalValue")
@@ -176,7 +166,8 @@ Namespace MSY
         Public Function WriteFleetResults(ByVal strPath As String, _
                                           ByVal iFleet As Integer, _
                                           ByVal assessment As eMSYAssessmentTypes, _
-                                          ByVal results As cMSYFResult()) As Boolean
+                                          ByVal results As cMSYFResult(), _
+                                          ByVal optimum As cMSYOptimum) As Boolean
 
             Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
             Dim sw As StreamWriter = Nothing
@@ -191,9 +182,7 @@ Namespace MSY
                 sw = Me.OpenWriter(strFile)
                 If (sw IsNot Nothing) Then
 
-                    Me.WriteHeader(sw, assessment)
-
-                    sw.WriteLine("Fleet, {0}", flt.Name)
+                    Me.WriteFleetHeader(sw, assessment, flt, optimum)
                     sw.WriteLine()
 
                     ' Data header
@@ -220,7 +209,7 @@ Namespace MSY
                 End If
             Next
 
-            Return bSuccess And Me.WriteFleetValueResults(strPath, iFleet, assessment, results)
+            Return bSuccess And Me.WriteFleetValueResults(strPath, iFleet, assessment, results, optimum)
 
         End Function
 
@@ -237,7 +226,8 @@ Namespace MSY
         Public Function WriteFleetValueResults(ByVal strPath As String, _
                                                ByVal iFleet As Integer, _
                                                ByVal assessment As eMSYAssessmentTypes, _
-                                               ByVal results As cMSYFResult()) As Boolean
+                                               ByVal results As cMSYFResult(), _
+                                               ByVal optimum As cMSYOptimum) As Boolean
 
             Dim flt As cFleetInput = Me.m_core.FleetInputs(iFleet)
             Dim sw As StreamWriter = Nothing
@@ -248,9 +238,7 @@ Namespace MSY
             sw = Me.OpenWriter(strPath)
             If (sw IsNot Nothing) Then
 
-                Me.WriteHeader(sw, assessment)
-
-                sw.WriteLine("Fleet, {0}", flt.Name)
+                Me.WriteFleetHeader(sw, assessment, flt, optimum)
                 sw.WriteLine()
 
                 ' Data header
@@ -277,6 +265,39 @@ Namespace MSY
 #End Region ' Public access
 
 #Region " Internals "
+
+        Protected Sub WriteGroupHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes, _
+                                       ByVal target As cEcoPathGroupInput, _
+                                       ByVal fBase As Single, ByVal optimum As cMSYOptimum)
+            MyBase.WriteHeader(sw, ass, "MSY")
+            sw.WriteLine("Group, {0}", target.Name)
+            sw.WriteLine("Fbase, {0}", cStringUtils.FormatSingle(fBase))
+            sw.WriteLine("Fmsy, {0}", cSystemUtils.IIF(optimum.IsFopt(target.Index), _
+                                                       cStringUtils.FormatSingle(optimum.Fopt(target.Index)), _
+                                                       My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND))
+        End Sub
+
+        Protected Sub WriteFleetHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes, _
+                                       ByVal target As cFleetInput, ByVal optimum As cMSYOptimum)
+
+            Me.WriteHeader(sw, ass)
+
+            sw.WriteLine("Fleet, {0}", cStringUtils.ToCSVField(target.Name))
+            sw.WriteLine()
+
+            ' Fmsy found header
+            sw.Write("")
+            For j As Integer = 1 To Me.m_core.nGroups
+                Dim grp As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(j)
+                sw.Write(",{0}", cStringUtils.ToCSVField(grp.Name))
+            Next
+            sw.WriteLine()
+            sw.Write("FmsyFound")
+            For j As Integer = 1 To Me.m_core.nGroups
+                sw.Write(",{0}", cSystemUtils.IIF(optimum.IsFopt(j), 1, 0))
+            Next
+            sw.WriteLine()
+        End Sub
 
         Protected Overloads Sub WriteHeader(sw As StreamWriter, ass As eMSYAssessmentTypes)
             MyBase.WriteHeader(sw, ass, "MSY")

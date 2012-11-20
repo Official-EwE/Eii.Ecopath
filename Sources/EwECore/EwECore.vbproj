@@ -166,7 +166,7 @@
     <Compile Include="MSY\Input Output\cFMSYResults.vb" />
     <Compile Include="MSY\Input Output\cMSYManager.vb" />
     <Compile Include="MSY\Input Output\cMSYParameters.vb" />
-    <Compile Include="MSY\Input Output\cMSYResultWriter.vb" />
+    <Compile Include="MSY\Input Output\cMSYResultWriterMSY.vb" />
     <Compile Include="MSY\Input Output\cMSYResultWriterFMSY.vb" />
     <Compile Include="MSY\Input Output\cMSYResultWriterBase.vb" />
     <Compile Include="MSY\Model\cMSY.vb" />
