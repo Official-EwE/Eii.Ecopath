@@ -114,7 +114,7 @@ Public Class cEcopathModelFromEcosim
                 bSuccess = bSuccess And coreTgt.AddFleet(fltSrc.Name, iNew, iIDNew)
             Next
 
-            For iStanza As Integer = 1 To Me.m_core.nStanzas
+            For iStanza As Integer = 0 To Me.m_core.nStanzas - 1
                 Dim sgSrc As cStanzaGroup = Me.m_core.StanzaGroups(iStanza)
                 Dim aiGroupIDs(sgSrc.NStanzas) As Integer
                 Dim aiStartAges(sgSrc.NStanzas) As Integer
@@ -161,28 +161,33 @@ Public Class cEcopathModelFromEcosim
         ' Overwrite bits with Ecosim data at time step 'iTime'
         Dim sArea As Single = Me.m_core.EwEModel.Area
 
+        Dim simBB() As Single = Me.m_core.m_EcoSim.BB
+
         ' Populate groups
         For iGroup As Integer = 1 To Me.m_core.nGroups
 
             ' Bi(i) = DCPct(i, 1)
-            pathDest.Binput(iGroup) = simSrc.DCPct(iGroup, 1)
+
+            'jb 20-Nov-2012 remove DCPct() and populate the Ecopath variable directly from the Ecosim Variables
+            'this makes it easier to tell what how the Ecopath value was computed from the current Ecosim run
+            pathDest.Binput(iGroup) = simBB(iGroup) 'simSrc.DCPct(iGroup, 1)
             ' Catch(i) = Bi(i) * FishTime(i)
-            pathDest.fCatch(iGroup) = pathDest.Binput(iGroup) * simSrc.FishTime(iGroup)
+            pathDest.fCatch(iGroup) = simBB(iGroup) * simSrc.FishTime(iGroup)
             ' Ex(i) = Catch(i)
             pathDest.Ex(iGroup) = pathDest.fCatch(iGroup)
 
             ' PBi(i) = loss(i) / Bi(i)
-            pathDest.PBinput(iGroup) = simSrc.loss(iGroup) / pathDest.Binput(iGroup)
+            pathDest.PBinput(iGroup) = simSrc.loss(iGroup) / simBB(iGroup)
             ' QBi(i) = DCPct(i, 2) 'the following has been updated: Eatenby(i) / bb(i)
-            pathDest.QBinput(iGroup) = simSrc.DCPct(iGroup, 2)
+            pathDest.QBinput(iGroup) = simSrc.Eatenby(iGroup) / simBB(iGroup) ' simSrc.DCPct(iGroup, 2)
             ' EEi(i) = -99
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
-            pathDest.BA(iGroup) = (pathDest.Binput(iGroup) - simSrc.DCPct(iGroup, 0)) * simSrc.StepsPerMonth * cCore.N_MONTHS
+            pathDest.BA(iGroup) = (Me.m_core.m_EcoSim.BB(iGroup) - simSrc.DCPct(iGroup, 0)) * simSrc.StepsPerMonth * cCore.N_MONTHS
             ' Emigrationi(i) = Emig(i) * Bi(i) '
-            pathDest.Emigration(iGroup) = pathDest.Emig(iGroup) * pathDest.Binput(iGroup)
+            pathDest.Emigration(iGroup) = pathDest.Emig(iGroup) * simBB(iGroup)
             ' BHi(i) = Bi(i) / Area(i)
-            pathDest.BHinput(iGroup) = pathDest.Binput(iGroup) / pathSrc.Area(iGroup)
+            pathDest.BHinput(iGroup) = simBB(iGroup) / pathSrc.Area(iGroup)
 
         Next
 
@@ -191,7 +196,7 @@ Public Class cEcopathModelFromEcosim
                 'DCi(i, j) = 0        'don't leave any dc leftovers
                 pathDest.DCInput(i, j) = 0
                 'If QBi(i) > 0 Then DCi(i, j) = DCMean(i, j) '/ (QBi(i) * Bi(i))
-                If pathDest.QBinput(i) > 0 Then pathDest.DCInput(i, j) = simSrc.DCMean(i, j)
+                If pathDest.QBinput(i) > 0 Then pathDest.DCInput(i, j) = simSrc.simDCAtT(i, j)
             Next
         Next
         pathDest.SumDCToOne()
@@ -208,7 +213,7 @@ Public Class cEcopathModelFromEcosim
                 Dim Z As Single = pathSrc.Landing(j, i) + pathSrc.Discard(j, i)
                 ' If SumEf > 0 Then Sum = BB(i) * FishTime(i) * FishRateGear(j, iTime) * FishMGear(j, i) / SumEf
                 If SumEf > 0 And Z > 0 Then
-                    Dim BB As Single = results.Biomass(i) * simSrc.StartBiomass(i)
+                    Dim BB As Single = simBB(i) 'results.Biomass(i) * simSrc.StartBiomass(i)
                     Sum = BB * simSrc.FishTime(i) * simSrc.FishRateGear(j, iTime) * simSrc.FishMGear(j, i) / SumEf
                     pathDest.Landing(j, i) = Sum * pathSrc.Landing(j, i) / Z
                     pathDest.Discard(j, i) = Sum * pathSrc.Discard(j, i) / Z

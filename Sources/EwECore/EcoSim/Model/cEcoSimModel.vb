@@ -105,7 +105,7 @@ Namespace Ecosim
         Private GearIncludeInEquil() As Single
         Private BaseValue As Single
 
-        Private BB() As Single
+        Friend BB() As Single
 
         'by nGroups
         Private pbbase() As Single
@@ -1685,10 +1685,14 @@ Namespace Ecosim
                 m_Data.DCPct(i, 0) = BB(i)
             Next i 'save the biomass
 
+            'At this point
+            'simDCAtT(pred,prey) contains the biomass consumed by a pred on a prey
+            'DC(pred,prey) is the proportion of biomass that makes up a predators diet
+            'So we need to convert simDCAtT() from biomass to proportion of total diet
             For ii = 1 To m_Data.inlinks
                 i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
                 If m_Data.Eatenby(j) > 0 Then
-                    m_Data.DCMean(j, i) = m_Data.DCMean(j, i) / m_Data.Eatenby(j) 'DCmean just used for convenience to store the sim diets
+                    m_Data.simDCAtT(j, i) = m_Data.simDCAtT(j, i) / m_Data.Eatenby(j) 'simDCAtT just used for convenience to store the sim diets
                 End If
             Next ii
 
@@ -2435,7 +2439,7 @@ Namespace Ecosim
                     m_Data.Eatenof(i) = m_Data.Eatenof(i) + eat
                     m_Data.Eatenby(j) = m_Data.Eatenby(j) + eat
                     m_Data.Consumpt(i, j) = eat   'VILLY WHAT IS THIS USED FOR?  WRONG FOR COMPLEX ARENA CASES!
-                    m_Data.DCMean(j, i) = eat 'DCmean just used for convenience to store the sim diets
+                    m_Data.simDCAtT(j, i) = eat 'DCmean just used for convenience to store the sim diets
 
                     'ADDED CODE FOR CONTAMINANT ACCOUNTING
                     If m_TracerData.EcoSimConSimOn = True Then
