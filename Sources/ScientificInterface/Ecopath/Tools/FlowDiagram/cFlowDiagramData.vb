@@ -96,7 +96,7 @@ Namespace Ecopath.Controls.FlowDiagram
         End Property
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IFlowDiagramData.Biomass"/>
+        ''' <inheritdocs cref="IFlowDiagramData.Value"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property Biomass(ByVal iIndex As Integer) As Single _
                Implements IFlowDiagramData.Value
