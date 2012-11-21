@@ -153,7 +153,7 @@ Public Class cEwEModel
 
             ' IsEcopaceCoupled
             meta = New cVariableMetaData()
-            val = New cValue(New Boolean, eVarNameFlags.isEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.isEcospaceModelCoupled))
+            val = New cValue(New Boolean, eVarNameFlags.IsEcospaceModelCoupled, eStatusFlags.OK, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.IsEcospaceModelCoupled))
             m_values.Add(val.varName, val)
 
 
@@ -394,11 +394,11 @@ Public Class cEwEModel
 
     Public Property isEcoSpaceModelCoupled() As Boolean
         Get
-            Return CBool(GetVariable(eVarNameFlags.isEcospaceModelCoupled))
+            Return CBool(GetVariable(eVarNameFlags.IsEcospaceModelCoupled))
         End Get
 
         Set(ByVal bGroupDigits As Boolean)
-            SetVariable(eVarNameFlags.isEcospaceModelCoupled, bGroupDigits)
+            SetVariable(eVarNameFlags.IsEcospaceModelCoupled, bGroupDigits)
         End Set
     End Property
 

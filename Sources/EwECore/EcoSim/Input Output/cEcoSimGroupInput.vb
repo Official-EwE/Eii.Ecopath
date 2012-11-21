@@ -44,7 +44,8 @@ Public Class cEcoSimGroupInput
             Try
                 value = keyvalue.Value
                 'Status flag for VulMult and VulRate are set in cCore.LoadEcosimGroups
-                If value.varName <> eVarNameFlags.VulMult And value.varName <> eVarNameFlags.VulRate Then
+                'If value.varName <> eVarNameFlags.VulMult And value.varName <> eVarNameFlags.VulRate Then
+                If value.varName <> eVarNameFlags.VulMult Then
                     Select Case value.varType
                         Case eValueTypes.SingleArray, eValueTypes.IntArray, eValueTypes.BoolArray
                             For i = 0 To value.Length
@@ -184,11 +185,11 @@ Public Class cEcoSimGroupInput
             m_values.Add(val.varName, val)
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            ''arrayed values
-            'VulRate
-            meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.VulRate, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.VulRate))
-            m_values.Add(val.varName, val)
+            ' ''arrayed values
+            ''VulRate
+            'meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            'val = New cValueArray(eValueTypes.SingleArray, eVarNameFlags.VulRate, eStatusFlags.Null, eCoreCounterTypes.nGroups, AddressOf m_core.GetCoreCounter, meta, m_core.m_validators.getValidator(eVarNameFlags.VulRate))
+            'm_values.Add(val.varName, val)
 
             'VulMult
             meta = New cVariableMetaData(1, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
@@ -531,15 +532,15 @@ Public Class cEcoSimGroupInput
         End Set
     End Property
 
-    Public Property VulRateStatus(ByVal iGroup As Integer) As eStatusFlags
-        Get
-            Return GetStatus(eVarNameFlags.VulRate, iGroup)
-        End Get
+    'Public Property VulRateStatus(ByVal iGroup As Integer) As eStatusFlags
+    '    Get
+    '        Return GetStatus(eVarNameFlags.VulRate, iGroup)
+    '    End Get
 
-        Set(ByVal value As eStatusFlags)
-            SetStatus(eVarNameFlags.VulRate, value, iGroup)
-        End Set
-    End Property
+    '    Set(ByVal value As eStatusFlags)
+    '        SetStatus(eVarNameFlags.VulRate, value, iGroup)
+    '    End Set
+    'End Property
 
 #End Region
 

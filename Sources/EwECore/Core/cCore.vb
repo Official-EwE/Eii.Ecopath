@@ -6747,10 +6747,10 @@ Public Class cCore
 
                     If m_EcoSimData.SimDC(iPred, iGroup) > 0 Or (iGroup = iPred And m_EcoPathData.PP(iPred) = 1) Then
                         group.VulMultiStatus(iPred) = eStatusFlags.OK
-                        group.VulRateStatus(iPred) = eStatusFlags.OK
+                        'group.VulRateStatus(iPred) = eStatusFlags.OK
                     Else
                         group.VulMultiStatus(iPred) = eStatusFlags.NotEditable Or eStatusFlags.Null
-                        group.VulRateStatus(iPred) = eStatusFlags.NotEditable Or eStatusFlags.Null
+                        'group.VulRateStatus(iPred) = eStatusFlags.NotEditable Or eStatusFlags.Null
                     End If
 
                 Next
@@ -12419,7 +12419,7 @@ Public Class cCore
                 'EwEModel
                 Select Case value.varName
 
-                    Case eVarNameFlags.isEcospaceModelCoupled
+                    Case eVarNameFlags.IsEcospaceModelCoupled
                         If Me.m_StateMonitor.HasEcospaceLoaded Then
                             're-load Ecospace before the changes can take affect
                             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.RELOAD_ECOSPACE, eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Warning))

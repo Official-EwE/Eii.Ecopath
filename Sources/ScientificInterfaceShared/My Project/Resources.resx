@@ -2632,7 +2632,7 @@
   <data name="VARIABLE_QBOUTPUT" xml:space="preserve">
     <value>QB|Q/B||Consumption over biomass</value>
   </data>
-  <data name="VARIABLE_DETFATE" xml:space="preserve">
+  <data name="VARIABLE_DETRITUSFATE" xml:space="preserve">
     <value>Detritus fate</value>
   </data>
   <data name="VARIABLE_EMIG" xml:space="preserve">
@@ -2672,5 +2672,38 @@
   </data>
   <data name="HEADER_FISHING_EFFORT_MODIFIER" xml:space="preserve">
     <value>Fishing effort modifier</value>
+  </data>
+  <data name="VARIABLE_AREA" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="VARIABLE_CB" xml:space="preserve">
+    <value>CB||Consumption over Biomass</value>
+  </data>
+  <data name="VARIABLE_DISCARDFATE" xml:space="preserve">
+    <value>Discard fate</value>
+  </data>
+  <data name="VARIABLE_DISCARDS" xml:space="preserve">
+    <value>Discards</value>
+  </data>
+  <data name="VARIABLE_FISHMORTTOTMORT" xml:space="preserve">
+    <value>F/Z||Fishing mort. over total mort.|Fishing mortality over total mortality rate</value>
+  </data>
+  <data name="VARIABLE_LANDINGS" xml:space="preserve">
+    <value>Landings</value>
+  </data>
+  <data name="VARIABLE_PP" xml:space="preserve">
+    <value>PP|%PP|Percentage of Primary Production</value>
+  </data>
+  <data name="VARIABLE_TL" xml:space="preserve">
+    <value>TL||Trophic level</value>
+  </data>
+  <data name="VARIABLE_TTLX" xml:space="preserve">
+    <value>TTLX|||Trophic level</value>
+  </data>
+  <data name="VARIABLE_VBK" xml:space="preserve">
+    <value>K||von Bertalanffy curvature parameter</value>
+  </data>
+  <data name="VARIABLE_VULMULT" xml:space="preserve">
+    <value>v||Vulnerability</value>
   </data>
 </root>

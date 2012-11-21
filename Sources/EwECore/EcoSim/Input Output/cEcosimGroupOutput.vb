@@ -57,12 +57,12 @@ Public Class cEcosimGroupOutput
 
         'Boolean vars use same structures as other vars
         'isPred
-        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.isPred, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
+        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPred, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
                                 AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
         'isPrey
-        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.isPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
+        val = New cValueArray(eValueTypes.BoolArray, eVarNameFlags.IsPrey, eStatusFlags.NotEditable, eCoreCounterTypes.nGroups, _
                               AddressOf m_core.GetCoreCounter)
         m_values.Add(val.varName, val)
 
@@ -239,11 +239,11 @@ Public Class cEcosimGroupOutput
     Public Property isPred(ByVal iGroup As Integer) As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.isPred, iGroup))
+            Return CBool(GetVariable(eVarNameFlags.IsPred, iGroup))
         End Get
 
         Friend Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.isPred, value, iGroup)
+            SetVariable(eVarNameFlags.IsPred, value, iGroup)
         End Set
 
     End Property
@@ -255,11 +255,11 @@ Public Class cEcosimGroupOutput
     Public Property isPrey(ByVal iGroup As Integer) As Boolean
 
         Get
-            Return CBool(GetVariable(eVarNameFlags.isPrey, iGroup))
+            Return CBool(GetVariable(eVarNameFlags.IsPrey, iGroup))
         End Get
 
         Friend Set(ByVal value As Boolean)
-            SetVariable(eVarNameFlags.isPrey, value, iGroup)
+            SetVariable(eVarNameFlags.IsPrey, value, iGroup)
         End Set
 
     End Property

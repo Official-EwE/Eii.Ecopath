@@ -256,8 +256,8 @@ Namespace Core
         QBMaxQBio
         ''' <summary></summary>
         SwitchingPower
-        ''' <summary></summary>
-        VulRate
+        ' ''' <summary></summary>
+        'VulRate
         ''' <summary></summary>
         VulMult
         ''' <summary></summary>
@@ -449,8 +449,6 @@ Namespace Core
         StartAge
         ''' <summary>End age of a group in a stanza configuration (in months)</summary>
         EndAge
-        ''' <summary>Stanza Consumption over Biomass coefficient.</summary>
-        CB
         ''' <summary>A multiplier to change the number of packets for the IBM model.</summary>
         ''' <remarks>..but what about Dell? Acer? Toshiba? This is simply not fair!</remarks>
         PacketsMultiplier
@@ -638,23 +636,16 @@ Namespace Core
 
         ''' <summary>Number of fish in a monthly stanza age group </summary>
         StanzaNumberAtAge
-
         ''' <summary>Weight of individual fish in a monthly stanza age group </summary>
         StanzaWeightAtAge
-
         ''' <summary>Biomass in a monthly stanza age group [StanzaNumberAtAge]*[StanzaWeightAtAge]</summary>
         StanzaBiomassAtAge
-
         ''' <summary>Index to the Ecopath Groups in the Stanza Group </summary>
         StanzaGroup
-
         ''' <summary>Biomass for this a stanza iStanzaGroup</summary>
         StanzaBiomass
-
         ''' <summary>Consumption/Biomass for this a stanza iStanzaGroup Ecopath QB</summary>
         StanzaCB
-
-
         ''' <summary>Mortality for this a stanza iStanzaGroup Ecopath PB</summary>
         StanzaMortaility
 
@@ -663,7 +654,6 @@ Namespace Core
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
         'Ecospace multi thread vars
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
         nGridSolverThreads
         nGroupsPerThread
         nSpaceThreads
@@ -711,19 +701,16 @@ Namespace Core
         ''' <summary>
         ''' Ecosim value by group over time
         ''' </summary>
-        ''' <remarks></remarks>
         EcosimValueGroup
 
         ''' <summary>
         ''' Ecosim relative value by group, time
         ''' </summary>
-        ''' <remarks></remarks>
         EcosimValueGroupRel
 
         ''' <summary>
         ''' Ecosim value by group fleet over time
         ''' </summary>
-        ''' <remarks></remarks>
         EcosimValueGroupFleet
 
         ''' <summary> Fishing mortality by group fleet </summary>
@@ -751,7 +738,6 @@ Namespace Core
         ''' <summary>Is the catch for this group aggregated across all the fleet.</summary>
         EcosimIsCatchAggregated
 
-        'Joeh
         ''' <summary>Ecopath ouput data over time</summary>
         EcopathWeight
         EcopathNumber
@@ -760,7 +746,6 @@ Namespace Core
 
         ''' <summary>Particle size distribution</summary>
         PSD
-        'End Joeh
 
         ''' <summary>Consumption by Pred of this Prey over time </summary>
         EcosimPredConsumpTime
@@ -773,9 +758,8 @@ Namespace Core
         ''' <summary>Percentage of a group this group consumes over time</summary>
         EcosimPreyPercentageTime
 
-
-        isPred
-        isPrey
+        IsPred
+        IsPrey
 
         ''' <summary> Network analysis variables</summary>
         nTrophicLevels
@@ -1468,7 +1452,7 @@ Namespace Core
         ''' Is this model coupled to an external model Ecospace model
         ''' </summary>
         ''' <remarks>False by default.</remarks>
-        isEcospaceModelCoupled
+        IsEcospaceModelCoupled
 
         ''' <summary>Group assigned to a given taxon.</summary>
         TaxonGroup
