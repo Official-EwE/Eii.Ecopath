@@ -386,6 +386,22 @@ Namespace Properties
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns all registered properties. Eek.
+        ''' </summary>
+        ''' <returns>All registered properties.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function GetProperties() As cProperty()
+            Dim lProps As New List(Of cProperty)
+            lProps.AddRange(Me.m_htGeneric.Values)
+            lProps.AddRange(Me.m_htEcopath.Values)
+            lProps.AddRange(Me.m_htEcosim.Values)
+            lProps.AddRange(Me.m_htEcospace.Values)
+            lProps.AddRange(Me.m_htEcotracer.Values)
+            Return lProps.ToArray
+        End Function
+
 #End Region ' Public property access
 
 #Region " Refresh management "

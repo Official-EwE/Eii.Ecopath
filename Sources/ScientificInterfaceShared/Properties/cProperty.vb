@@ -657,7 +657,7 @@ Namespace Properties
         ''' <returns>True when remarks are present.</returns>
         ''' -------------------------------------------------------------------
         Public Function HasRemark() As Boolean
-            Return (Not String.IsNullOrEmpty(Me.Remark))
+            Return (Not String.IsNullOrWhiteSpace(Me.Remark))
         End Function
 
 #End Region ' Remarks
