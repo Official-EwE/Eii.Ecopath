@@ -29,30 +29,39 @@ Imports System.IO
 ''' <summary>
 ''' Class to export an Ecosim time step to a new Ecopath model.
 ''' </summary>
-''' <remarks>
-''' 30Mar11: NOT IN USE YET!
-''' </remarks>
 Public Class cEcopathModelFromEcosim
 
+#Region " Private variables "
+
+    ''' <summary>
+    ''' The core that holds the source model
+    ''' </summary>
     Private m_core As cCore = Nothing
+
+#End Region ' Private variables
+
+#Region " Construction "
 
     Public Sub New(ByVal core As cCore)
         Me.m_core = core
-
     End Sub
+
+#End Region ' Construction
+
+#Region " Generation "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Create a model from the current Ecosim time step.
     ''' </summary>
-    ''' <param name="strFileName"></param>
-    ''' <param name="strModelName"></param>
-    ''' <param name="results"></param>
-    ''' <returns></returns>
+    ''' <param name="strFileName">Full path to the model file to create.</param>
+    ''' <param name="strModelName">Name of the model to create.</param>
+    ''' <param name="iTime">The Ecosim time step to populate data from.</param>
+    ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveModel(ByVal strFileName As String, _
                               ByVal strModelName As String, _
-                              ByVal results As cEcoSimResults) As eDatasourceAccessType
+                              ByVal iTime As Integer) As eDatasourceAccessType
 
         Dim coreDest As New cCore()
         Dim db As cEwEDatabase = New cEwEAccessDatabase()
@@ -73,7 +82,7 @@ Public Class cEcopathModelFromEcosim
         If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
             If coreDest.LoadModel(ds) Then
                 If Me.CreateItems(coreDest) Then
-                    Me.PopulateItems(coreDest, results)
+                    Me.PopulateItems(coreDest, iTime)
                 End If
             End If
         End If
@@ -99,35 +108,38 @@ Public Class cEcopathModelFromEcosim
 
         Dim bSuccess As Boolean = True
         Dim aiGroupID(Me.m_core.nGroups) As Integer
-        Dim epd As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
 
         If Not coreNew.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
         Try
-            For iGroup As Integer = 1 To epd.NumGroups
+            For iGroup As Integer = 1 To pathSrc.NumGroups
                 Dim iNew As Integer = iGroup
                 Dim iIDNew As Integer = 0
-                bSuccess = bSuccess And coreNew.AddGroup(epd.GroupName(iGroup), epd.PP(iGroup), epd.vbK(iGroup), iNew, iIDNew)
+                bSuccess = bSuccess And coreNew.AddGroup(pathSrc.GroupName(iGroup), pathSrc.PP(iGroup), pathSrc.vbK(iGroup), iNew, iIDNew)
                 aiGroupID(iGroup) = iIDNew
             Next
 
             For iFleet As Integer = 1 To Me.m_core.nFleets
                 Dim iNew As Integer = iFleet
                 Dim iIDNew As Integer = 0
-                bSuccess = bSuccess And coreNew.AddFleet(epd.FleetName(iFleet), iNew, iIDNew)
+                bSuccess = bSuccess And coreNew.AddFleet(pathSrc.FleetName(iFleet), iNew, iIDNew)
             Next
 
             For iStanza As Integer = 1 To Me.m_core.nStanzas
-                Dim NStanza As Integer = stanzaDS.Nstanza(iStanza)
+
+                Dim NStanza As Integer = stanzaSrc.Nstanza(iStanza)
                 Dim aiGroupIDs(NStanza) As Integer
                 Dim aiStartAges(NStanza) As Integer
+                Dim iIDNew As Integer = 0
+
                 For iLifeStage As Integer = 1 To NStanza
-                    Dim iGroup As Integer = stanzaDS.EcopathCode(iStanza, iLifeStage)
+                    Dim iGroup As Integer = stanzaSrc.EcopathCode(iStanza, iLifeStage)
                     aiGroupIDs(iLifeStage - 1) = aiGroupID(iGroup)
-                    aiStartAges(iLifeStage - 1) = stanzaDS.Age1(iStanza, iLifeStage)
+                    aiStartAges(iLifeStage - 1) = stanzaSrc.Age1(iStanza, iLifeStage)
                 Next
-                bSuccess = bSuccess And coreNew.AppendStanza(stanzaDS.StanzaName(iStanza), aiGroupIDs, aiStartAges, iIDNew)
+                bSuccess = bSuccess And coreNew.AppendStanza(stanzaSrc.StanzaName(iStanza), aiGroupIDs, aiStartAges, iIDNew)
             Next
 
         Catch ex As Exception
@@ -145,19 +157,15 @@ Public Class cEcopathModelFromEcosim
     ''' Populate groups, fleets and stanza configurations in a new Ecopath model.
     ''' </summary>
     ''' <param name="coreNew">The core that holds the new model.</param>
-    ''' <param name="results">The Ecosim results to populate data from.</param>
+    ''' <param name="iTime">The Ecosim time step to populate data from.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function PopulateItems(ByVal coreNew As cCore, _
-                                   ByVal results As cEcoSimResults) As Boolean
+    Private Function PopulateItems(ByVal coreNew As cCore, ByVal iTime As Integer) As Boolean
 
-        ' ToDo: perhaps it is more efficient to obtain the needed ecosim data straight from the model results in memory
-
-        Dim bSuccess As Boolean = True
-        Dim iTime As Integer = CInt(results.CurrentT)
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData
+        Dim bSuccess As Boolean = True
 
         ' Dirty destination core
         coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
@@ -245,11 +253,12 @@ Public Class cEcopathModelFromEcosim
 
     End Function
 
-End Class
+#End Region ' Generation
+
 
 #Region " Original code "
 
-#If 0 Then ' From modSimEdit
+#If 0 Then ' From Ecopath v5, modSimEdit
 
 Public Sub SaveEcopathFromEcosim()
 Dim i As Integer
@@ -363,3 +372,5 @@ Dim Response As Variant
 End Sub
 #End If
 #End Region ' Original code
+
+End Class

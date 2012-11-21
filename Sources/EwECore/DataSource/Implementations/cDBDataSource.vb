@@ -1743,8 +1743,10 @@ Namespace DataSources
         ''' Adds a stanza group to the DB.
         ''' </summary>
         ''' <param name="strStanzaName">Name to assign to new stanza group.</param>
-        ''' <param name="aiGroupID">Array of <see cref="cEcoPathGroupInput">Ecopath group</see>
+        ''' <param name="aiGroupID">Zero-based array of <see cref="cEcoPathGroupInput">Ecopath group</see>
         ''' IDs to assign to this multi-stanza configuration.</param>
+        ''' <param name="iGroupAges">Zero-based array of start ages, corresponding
+        ''' to the <paramref name="aiGroupID">group ID list</paramref>.</param>
         ''' <param name="iStanzaID">Database ID assigned to the new stanza group.</param>
         ''' <returns>Always false.</returns>
         ''' -------------------------------------------------------------------

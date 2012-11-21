@@ -2678,7 +2678,7 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from &apos;{0}&apos; and try again.
         '''
-        '''EwE can attempt to continue and load the model in read-only mode, but this may not work. Do you wish to try this? You may need to grab a helmet..
+        '''EwE can attempt to continue and load the model in read-only mode. Be advised that important input parameters may be missing, and that you may get incomplete results. Do you wish to open the model in read-only mode?.
         '''</summary>
         Public ReadOnly Property PROMPT_ERROR_IMPORT_EWE6_TOO_NEW() As String
             Get

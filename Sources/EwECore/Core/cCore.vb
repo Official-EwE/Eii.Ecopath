@@ -10900,8 +10900,9 @@ Public Class cCore
     ''' Adds a stanza group to the data source.
     ''' </summary>
     ''' <param name="strStanzaName">Name to assign to new stanza group.</param>
-    ''' <param name="aiGroupID">ID of the first <see cref="cEcoPathGroupInput">Ecopath group</see>
-    ''' to assign to this mutli-stanza configuration.</param>
+    ''' <param name="aiGroupID">Zero-based array of <see cref="cEcoPathGroupInput">Ecopath group IDs</see>
+    ''' to assign to a multi-stanza configuration.</param>
+    ''' <param name="aiStartAge">Zero-based array of start ages for <paramref name="aiGroupID">these groups</paramref>.</param>
     ''' <param name="iDBID">Database ID assigned to the new stanza group.</param>
     ''' <returns>True if succesful.</returns>
     ''' <remarks>The EwE core cannot handle a situation where a stanza configuration
