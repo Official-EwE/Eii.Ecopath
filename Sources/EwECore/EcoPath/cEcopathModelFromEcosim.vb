@@ -38,6 +38,7 @@ Public Class cEcopathModelFromEcosim
 
     Public Sub New(ByVal core As cCore)
         Me.m_core = core
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -87,66 +88,80 @@ Public Class cEcopathModelFromEcosim
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create all groups and fleets in the target model.
+    ''' Create groups, fleets and stanza configurations in the new Ecopath model.
     ''' </summary>
-    ''' <param name="coreTgt"></param>
-    ''' <returns></returns>
-    Private Function CreateItems(ByVal coreTgt As cCore) As Boolean
+    ''' <param name="coreNew">The core that holds the new Ecopath model.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function CreateItems(ByVal coreNew As cCore) As Boolean
 
         Dim bSuccess As Boolean = True
-        Dim iNew As Integer = 0
-        Dim iIDNew As Integer = 0
         Dim aiGroupID(Me.m_core.nGroups) As Integer
+        Dim epd As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim stanzaDS As cStanzaDatastructures = Me.m_core.m_Stanza
 
-        If Not coreTgt.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+        If Not coreNew.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
         Try
-
-            For iGroup As Integer = 1 To Me.m_core.nGroups
-                Dim grpSrc As cEcoPathGroupInput = Me.m_core.EcoPathGroupInputs(iGroup)
-                bSuccess = bSuccess And coreTgt.AddGroup(grpSrc.Name, grpSrc.PP, grpSrc.VBK, iNew, iIDNew)
+            For iGroup As Integer = 1 To epd.NumGroups
+                Dim iNew As Integer = iGroup
+                Dim iIDNew As Integer = 0
+                bSuccess = bSuccess And coreNew.AddGroup(epd.GroupName(iGroup), epd.PP(iGroup), epd.vbK(iGroup), iNew, iIDNew)
                 aiGroupID(iGroup) = iIDNew
             Next
 
             For iFleet As Integer = 1 To Me.m_core.nFleets
-                Dim fltSrc As cFleetInput = Me.m_core.FleetInputs(iFleet)
-                bSuccess = bSuccess And coreTgt.AddFleet(fltSrc.Name, iNew, iIDNew)
+                Dim iNew As Integer = iFleet
+                Dim iIDNew As Integer = 0
+                bSuccess = bSuccess And coreNew.AddFleet(epd.FleetName(iFleet), iNew, iIDNew)
             Next
 
-            For iStanza As Integer = 0 To Me.m_core.nStanzas - 1
-                Dim sgSrc As cStanzaGroup = Me.m_core.StanzaGroups(iStanza)
-                Dim aiGroupIDs(sgSrc.NStanzas) As Integer
-                Dim aiStartAges(sgSrc.NStanzas) As Integer
-                For iLifeStage As Integer = 1 To sgSrc.NStanzas
-                    aiGroupIDs(iLifeStage) = aiGroupID(sgSrc.iGroups(iLifeStage))
-                    aiStartAges(iLifeStage) = sgSrc.StartAge(iLifeStage)
+            For iStanza As Integer = 1 To Me.m_core.nStanzas
+                Dim NStanza As Integer = stanzaDS.Nstanza(iStanza)
+                Dim aiGroupIDs(NStanza) As Integer
+                Dim aiStartAges(NStanza) As Integer
+                For iLifeStage As Integer = 1 To NStanza
+                    Dim iGroup As Integer = stanzaDS.EcopathCode(iStanza, iLifeStage)
+                    aiGroupIDs(iLifeStage - 1) = aiGroupID(iGroup)
+                    aiStartAges(iLifeStage - 1) = stanzaDS.Age1(iStanza, iLifeStage)
                 Next
-                bSuccess = bSuccess And coreTgt.AppendStanza(sgSrc.Name, aiGroupIDs, aiStartAges, iIDNew)
+                bSuccess = bSuccess And coreNew.AppendStanza(stanzaDS.StanzaName(iStanza), aiGroupIDs, aiStartAges, iIDNew)
             Next
 
         Catch ex As Exception
             bSuccess = False
         End Try
 
-        coreTgt.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
+        coreNew.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
 
         Return bSuccess
 
     End Function
 
-    Private Function PopulateItems(ByVal coreDest As cCore, _
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Populate groups, fleets and stanza configurations in a new Ecopath model.
+    ''' </summary>
+    ''' <param name="coreNew">The core that holds the new model.</param>
+    ''' <param name="results">The Ecosim results to populate data from.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -----------------------------------------------------------------------
+    Private Function PopulateItems(ByVal coreNew As cCore, _
                                    ByVal results As cEcoSimResults) As Boolean
+
+        ' ToDo: perhaps it is more efficient to obtain the needed ecosim data straight from the model results in memory
 
         Dim bSuccess As Boolean = True
         Dim iTime As Integer = CInt(results.CurrentT)
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
-        Dim pathDest As cEcopathDataStructures = coreDest.m_EcoPathData
+        Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData
 
         ' Dirty destination core
-        coreDest.DataSource.SetChanged(eCoreComponentType.EcoPath)
-        coreDest.StateMonitor.UpdateDataState(coreDest.DataSource)
+        coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
+        coreNew.StateMonitor.UpdateDataState(coreNew.DataSource)
 
         ' Copy Ecopath data but do not redim - preserve original data such as DBIDs
         pathSrc.copyTo(pathDest, False)
@@ -224,7 +239,7 @@ Public Class cEcopathModelFromEcosim
             Next j
         Next i
 
-        coreDest.SaveChanges(True, cCore.eBatchChangeLevelFlags.Ecopath)
+        coreNew.SaveChanges(True, cCore.eBatchChangeLevelFlags.Ecopath)
 
         Return True
 
