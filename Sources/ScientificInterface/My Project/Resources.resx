@@ -558,7 +558,7 @@ Description: {1}</value>
   <data name="PROMPT_ERROR_IMPORT_EWE6_TOO_NEW" xml:space="preserve">
     <value>This database was last accessed by a newer release of Ecopath with Ecosim. It is advised to download and install a new version of EwE from '{0}' and try again.
 
-EwE can attempt to continue and load the model in read-only mode, but this may not work. Do you wish to try this? You may need to grab a helmet.</value>
+EwE can attempt to continue and load the model in read-only mode. Be advised that important input parameters may be missing, and that you may get incomplete results. Do you wish to open the model in read-only mode?</value>
     <comment>{0}=EwE home URL</comment>
   </data>
   <data name="OPTIONS_COLORDLG_PROMPT_MODEL_MISSINGPARAM" xml:space="preserve">
