@@ -57,6 +57,7 @@ Namespace Controls
         Public Sub New()
             MyBase.New()
             Me.m_sfmt.LineAlignment = StringAlignment.Center
+            Me.m_sfmt.Alignment = StringAlignment.Far
         End Sub
 
 #End Region ' Constructor
@@ -146,14 +147,8 @@ Namespace Controls
                 Me.RecalculateLabelTextAndPlacement()
             End If
 
-            If (Me.RightToLeft = Windows.Forms.RightToLeft.Yes) Then
-                Me.m_sfmt.Alignment = StringAlignment.Near
-            Else
-                Me.m_sfmt.Alignment = StringAlignment.Far
-            End If
-
             If (Me.m_rcLabel.Width > 0) Then
-                br = DirectCast(IIf(Me.IsLabelHover, SystemBrushes.ControlText, SystemBrushes.ControlDark), Brush)
+                br = DirectCast(IIF(Me.IsLabelHover, SystemBrushes.ControlText, SystemBrushes.ControlDark), Brush)
                 e.Graphics.DrawString(Me.m_strLabel, Me.Font, br, Me.m_rcLabel, Me.m_sfmt)
             End If
 
@@ -215,7 +210,7 @@ Namespace Controls
         Private Sub RecalculateLabelTextAndPlacement()
 
             Dim iMin As Integer = 0
-            Dim iMax As Integer = Me.Width
+            Dim iMax As Integer = Me.ClientRectangle.Width
             Dim strTemp As String = String.Copy(Me.m_strPath)
             Dim sbTemp As New StringBuilder()
             Dim rcLabel As Rectangle = Nothing
@@ -233,14 +228,11 @@ Namespace Controls
             Next
 
             ' Calc conservative rect
-            rcLabel = New Rectangle(iMin + 2, 2, iMax - iMin - 4, Me.ClientRectangle.Height - 4)
+            rcLabel = New Rectangle(iMin, 0, iMax - iMin, Me.ClientRectangle.Height)
 
             If (rcLabel.Width > 0) Then
-                ' -10 to counter odd calculation effects that I do not understand
-                '   Issues seem font based, but no clue as to why the last few chars are sometimes 
-                '   not properly included in the label calculations
-                Dim sz As Size = TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(rcLabel.Width - 10, rcLabel.Height), _
-                                                          TextFormatFlags.Internal Or TextFormatFlags.PathEllipsis Or TextFormatFlags.ModifyString)
+                Dim sz As Size = TextRenderer.MeasureText(strTemp, Me.Font, New System.Drawing.Size(rcLabel.Width, rcLabel.Height), _
+                                                           TextFormatFlags.PathEllipsis Or TextFormatFlags.LeftAndRightPadding Or TextFormatFlags.ModifyString)
 
                 ' Chop off Nothing characters which will occur when string is shortened.
                 '   These chars are recognized and handled well by the String class, but 
@@ -252,10 +244,7 @@ Namespace Controls
                     sbTemp.Append(c)
                 Next
 
-                ' Adjust label rect
-                rcLabel.X += rcLabel.Width - sz.Width
-                rcLabel.Width = sz.Width
-            End If
+             End If
 
             ' Store
             Me.m_strLabel = sbTemp.ToString

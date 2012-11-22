@@ -519,7 +519,7 @@ Public Class cPluginManager
             plugAssem.Compatibility = Me.GetCompatibility(clsAssembly)
 
             ' Look for appropriate types
-            For Each clsType In clsAssembly.GetTypes
+            For Each clsType In clsAssembly.GetTypes()
                 ' Only look at types we can create
                 If (clsType.IsPublic = True) Then
                     ' Ignore abstract classes

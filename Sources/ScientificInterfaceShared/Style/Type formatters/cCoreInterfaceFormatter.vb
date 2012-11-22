@@ -34,6 +34,16 @@ Namespace Style
     Public Class cCoreInterfaceFormatter
         Implements ITypeFormatter
 
+        Private m_strNone As String = ""
+
+        Public Sub New()
+            Me.New(My.Resources.GENERIC_VALUE_NONE)
+        End Sub
+
+        Public Sub New(ByVal strNone As String)
+            Me.m_strNone = strNone
+        End Sub
+
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
             Return GetType(ICoreInterface)
@@ -43,7 +53,7 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
-            If (value Is Nothing) Then Return My.Resources.GENERIC_VALUE_NONE
+            If (value Is Nothing) Then Return Me.m_strNone
 
             Try
                 Dim obj As ICoreInterface = DirectCast(value, ICoreInterface)
