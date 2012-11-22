@@ -206,7 +206,7 @@ Public Class cEcopathModelFromEcosim
             ' EEi(i) = -99
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
-            pathDest.BA(iGroup) = (Me.m_core.m_EcoSim.BB(iGroup) - simSrc.DCPct(iGroup, 0)) * simSrc.StepsPerMonth * cCore.N_MONTHS
+            pathDest.BA(iGroup) = pathSrc.BA(iGroup) ' (simBB(iGroup) - simSrc.DCPct(iGroup, 0)) * simSrc.StepsPerMonth * cCore.N_MONTHS
             ' Emigrationi(i) = Emig(i) * Bi(i) '
             pathDest.Emigration(iGroup) = pathDest.Emig(iGroup) * simBB(iGroup)
             ' BHi(i) = Bi(i) / Area(i)
@@ -214,15 +214,23 @@ Public Class cEcopathModelFromEcosim
 
         Next
 
-        For i As Integer = 1 To Me.m_core.nGroups
-            For j As Integer = 1 To Me.m_core.nGroups
+        For iPred As Integer = 1 To Me.m_core.nGroups
+            For iPrey As Integer = 1 To Me.m_core.nGroups
                 'DCi(i, j) = 0        'don't leave any dc leftovers
-                pathDest.DCInput(i, j) = 0
+                pathDest.DCInput(iPred, iPrey) = 0
                 'If QBi(i) > 0 Then DCi(i, j) = DCMean(i, j) '/ (QBi(i) * Bi(i))
-                If pathDest.QBinput(i) > 0 Then pathDest.DCInput(i, j) = simSrc.simDCAtT(i, j)
+
+                If simSrc.Eatenby(iPred) > 0 Then
+                    'simDCAtT(pred,prey) contains biomass eaten by a predator of a prey in derivt()
+                    'Eatenby(pred) is the total biomass eaten by a predator
+                    'DC(pred,prey) is the proportion of diet made up by a prey
+                    'So get the proportion of diet 
+                    pathDest.DCInput(iPred, iPrey) = simSrc.simDCAtT(iPred, iPrey) / simSrc.Eatenby(iPred)
+                End If
+
             Next
         Next
-        pathDest.SumDCToOne()
+        pathDest.SumDCToOne(True)
 
         'immigration is constant rate and is not changed by ecosim so no need to change
         For i As Integer = 1 To Me.m_core.nGroups

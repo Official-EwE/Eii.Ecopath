@@ -1343,8 +1343,6 @@ Namespace Ecosim
                 m_ConTracer.Cupdate(B)
             End If
 
-            SaveEiiDataFromEcosim(B)
-
             For i = 1 To nGroups
                 LossSt(i) = m_Data.loss(i)
 
@@ -1678,33 +1676,33 @@ Namespace Ecosim
         'End Sub
 
 
-        Private Sub SaveEiiDataFromEcosim(ByVal BB() As Single)
-            Dim i As Integer, j As Integer, ii As Integer
+        'Private Sub SaveEiiDataFromEcosim(ByVal BB() As Single)
+        '    Dim i As Integer, j As Integer, ii As Integer
 
-            For i = 1 To nGroups
-                m_Data.DCPct(i, 0) = BB(i)
-            Next i 'save the biomass
+        '    For i = 1 To nGroups
+        '        m_Data.DCPct(i, 0) = BB(i)
+        '    Next i 'save the biomass
 
-            'At this point
-            'simDCAtT(pred,prey) contains the biomass consumed by a pred on a prey
-            'DC(pred,prey) is the proportion of biomass that makes up a predators diet
-            'So we need to convert simDCAtT() from biomass to proportion of total diet
-            For ii = 1 To m_Data.inlinks
-                i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
-                If m_Data.Eatenby(j) > 0 Then
-                    m_Data.simDCAtT(j, i) = m_Data.simDCAtT(j, i) / m_Data.Eatenby(j) 'simDCAtT just used for convenience to store the sim diets
-                End If
-            Next ii
+        '    'At this point
+        '    'simDCAtT(pred,prey) contains the biomass consumed by a pred on a prey
+        '    'DC(pred,prey) is the proportion of biomass that makes up a predators diet
+        '    'So we need to convert simDCAtT() from biomass to proportion of total diet
+        '    For ii = 1 To m_Data.inlinks
+        '        i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
+        '        If m_Data.Eatenby(j) > 0 Then
+        '            m_Data.simDCAtT(j, i) = m_Data.simDCAtT(j, i) / m_Data.Eatenby(j) 'simDCAtT just used for convenience to store the sim diets
+        '        End If
+        '    Next ii
 
-            For j = 1 To nGroups
-                m_Data.DCPct(j, 1) = BB(j)
-            Next j
+        '    For j = 1 To nGroups
+        '        m_Data.DCPct(j, 1) = BB(j)
+        '    Next j
 
-            For j = 1 To m_EPData.NumLiving
-                m_Data.DCPct(j, 2) = m_Data.Eatenby(j) / BB(j)
-            Next j
+        '    For j = 1 To m_EPData.NumLiving
+        '        m_Data.DCPct(j, 2) = m_Data.Eatenby(j) / BB(j)
+        '    Next j
 
-        End Sub
+        'End Sub
 
         ''' <summary>
         ''' Public Function to run the Ecosim Model 
