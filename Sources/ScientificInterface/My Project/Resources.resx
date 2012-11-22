@@ -511,7 +511,7 @@ Description: {1}</value>
     <value>Enter F~value (or enter a string of comma separated F's for all fleets)</value>
   </data>
   <data name="SELECTION_INDEXEDVAR" xml:space="preserve">
-    <value>{0} ({1},  {2})</value>
+    <value>{0} ({1} of {2})</value>
     <comment>{0}=selected object, {1}=selected variable name, {2}=selected secundary object</comment>
   </data>
   <data name="PROMPT_INVALIDTARGETPATH" xml:space="preserve">

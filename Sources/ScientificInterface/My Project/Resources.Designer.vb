@@ -3128,7 +3128,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to {0} ({1},  {2}).
+        '''  Looks up a localized string similar to {0} ({1} of {2}).
         '''</summary>
         Public ReadOnly Property SELECTION_INDEXEDVAR() As String
             Get
