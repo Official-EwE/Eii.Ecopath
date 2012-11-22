@@ -130,8 +130,8 @@ Public Class cEcopathModelFromEcosim
             For iStanza As Integer = 1 To Me.m_core.nStanzas
 
                 Dim NStanza As Integer = stanzaSrc.Nstanza(iStanza)
-                Dim aiGroupIDs(NStanza) As Integer
-                Dim aiStartAges(NStanza) As Integer
+                Dim aiGroupIDs(NStanza - 1) As Integer
+                Dim aiStartAges(NStanza - 1) As Integer
                 Dim iIDNew As Integer = 0
 
                 For iLifeStage As Integer = 1 To NStanza
@@ -163,8 +163,16 @@ Public Class cEcopathModelFromEcosim
     Private Function PopulateItems(ByVal coreNew As cCore, ByVal iTime As Integer) As Boolean
 
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
-        Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
         Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData
+        Dim GroupDBIDs(coreNew.nGroups) As Integer
+        Dim FleetDBIDs(coreNew.nFleets) As Integer
+
+        Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim stanzaDest As cStanzaDatastructures = coreNew.m_Stanza
+        Dim StanzaDBIDs(coreNew.nStanzas) As Integer
+
+        Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
+
         Dim bSuccess As Boolean = True
 
         ' Dirty destination core
@@ -172,7 +180,18 @@ Public Class cEcopathModelFromEcosim
         coreNew.StateMonitor.UpdateDataState(coreNew.DataSource)
 
         ' Copy Ecopath data but do not redim - preserve original data such as DBIDs
+        Array.Copy(pathDest.GroupDBID, GroupDBIDs, coreNew.nGroups)
+        Array.Copy(pathDest.FleetDBID, FleetDBIDs, coreNew.nFleets)
+        Array.Copy(stanzaDest.StanzaDBID, StanzaDBIDs, coreNew.nStanzas)
+
+        ' Copy bulk of data
         pathSrc.copyTo(pathDest, False)
+        stanzaSrc.copyTo(stanzaDest)
+
+        ' Restore DBIDs
+        Array.Copy(GroupDBIDs, pathDest.GroupDBID, coreNew.nGroups)
+        Array.Copy(FleetDBIDs, pathDest.FleetDBID, coreNew.nFleets)
+        Array.Copy(StanzaDBIDs, stanzaDest.StanzaDBID, coreNew.nStanzas)
 
         ' Clear data that is not going to be copied
         pathDest.NumEcosimScenarios = 0
