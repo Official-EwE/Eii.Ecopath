@@ -177,8 +177,8 @@ Public Class cEcopathModelFromEcosim
         Dim bLast As Single
 
         'Time index for the previous year
-        Dim iLastTime As Integer = iTime - 12
-        If iLastTime < 1 Then iLastTime = 1
+        Dim iPreviousTime As Integer = iTime - 12
+        If iPreviousTime < 1 Then iPreviousTime = 1
 
         ' Dirty destination core
         coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
@@ -213,10 +213,8 @@ Public Class cEcopathModelFromEcosim
         ' Populate groups
         For iGroup As Integer = 1 To Me.m_core.nGroups
 
-            ' Bi(i) = DCPct(i, 1)
-
             'jb 20-Nov-2012 remove DCPct() and populate the Ecopath variable directly from the Ecosim Variables
-            'this makes it easier to tell what how the Ecopath value was computed from the current Ecosim run
+            'this makes it easier to tell what and how the Ecopath value are computed from the current Ecosim run
             pathDest.Binput(iGroup) = simBB(iGroup) 'simSrc.DCPct(iGroup, 1)
             ' Catch(i) = Bi(i) * FishTime(i)
             pathDest.fCatch(iGroup) = simBB(iGroup) * simSrc.FishTime(iGroup)
@@ -230,8 +228,8 @@ Public Class cEcopathModelFromEcosim
             ' EEi(i) = -99
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
-            'bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, 0, 0)
-            pathDest.BA(iGroup) = pathSrc.BA(iGroup) ' (simBB(iGroup) - simSrc.DCPct(iGroup, 0)) * simSrc.StepsPerMonth * cCore.N_MONTHS
+            bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
+            pathDest.BA(iGroup) = (simBB(iGroup) - bLast) * simSrc.StepsPerMonth * cCore.N_MONTHS
             ' Emigrationi(i) = Emig(i) * Bi(i) '
             pathDest.Emigration(iGroup) = pathDest.Emig(iGroup) * simBB(iGroup)
             ' BHi(i) = Bi(i) / Area(i)
@@ -243,10 +241,9 @@ Public Class cEcopathModelFromEcosim
             For iPrey As Integer = 1 To Me.m_core.nGroups
                 'DCi(i, j) = 0        'don't leave any dc leftovers
                 pathDest.DCInput(iPred, iPrey) = 0
-                'If QBi(i) > 0 Then DCi(i, j) = DCMean(i, j) '/ (QBi(i) * Bi(i))
 
                 If simSrc.Eatenby(iPred) > 0 Then
-                    'simDCAtT(pred,prey) contains biomass eaten by a predator of a prey in derivt()
+                    'simDCAtT(pred,prey) contains biomass eaten by a predator on a prey populated in derivt()
                     'Eatenby(pred) is the total biomass eaten by a predator
                     'DC(pred,prey) is the proportion of diet made up by a prey
                     'So get the proportion of diet 
