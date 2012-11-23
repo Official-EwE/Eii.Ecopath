@@ -24,6 +24,10 @@ Public Class dlgConfig
     Private m_ctrl As Control = Nothing
     Private m_uic As cUIContext = Nothing
 
+    Public Sub New()
+        Me.InitializeComponent()
+    End Sub
+
     Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
         Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
         Get
