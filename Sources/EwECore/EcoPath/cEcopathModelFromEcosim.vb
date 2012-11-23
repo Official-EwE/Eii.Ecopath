@@ -174,6 +174,11 @@ Public Class cEcopathModelFromEcosim
         Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Dim bSuccess As Boolean = True
+        Dim bLast As Single
+
+        'Time index for the previous year
+        Dim iLastTime As Integer = iTime - 12
+        If iLastTime < 1 Then iLastTime = 1
 
         ' Dirty destination core
         coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
@@ -225,6 +230,7 @@ Public Class cEcopathModelFromEcosim
             ' EEi(i) = -99
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
+            'bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, 0, 0)
             pathDest.BA(iGroup) = pathSrc.BA(iGroup) ' (simBB(iGroup) - simSrc.DCPct(iGroup, 0)) * simSrc.StepsPerMonth * cCore.N_MONTHS
             ' Emigrationi(i) = Emig(i) * Bi(i) '
             pathDest.Emigration(iGroup) = pathDest.Emig(iGroup) * simBB(iGroup)
