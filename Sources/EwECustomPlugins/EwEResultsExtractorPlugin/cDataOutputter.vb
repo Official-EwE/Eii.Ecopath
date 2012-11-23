@@ -33,6 +33,7 @@ Public Class cDataOutputer
     Private mStrPath As String
     Private mNDataItems As Integer
     Private mMsg As cMessage = Nothing
+    Private mExcelInteropEnabled As Boolean = False
 
     Public Enum eOutputTypes As Integer
         CSV
@@ -45,6 +46,12 @@ Public Class cDataOutputer
         mIndicators = New List(Of cDataSheet)
         mDiagnostics = New List(Of cDataSheet)
 
+        Try
+            Dim ex As New Excel.Application
+            Me.mExcelInteropEnabled = True
+        Catch ex As Exception
+            Me.mExcelInteropEnabled = False
+        End Try
     End Sub
 
     'List containing all objects for each option selected that is a functional group
@@ -70,12 +77,22 @@ Public Class cDataOutputer
         mNDataItems += 1
     End Sub
 
+    ''' <summary>
+    ''' Returns whether Excel interop is enabled on a computer
+    ''' </summary>
+    Public ReadOnly Property ExcelInteropEnabled As Boolean
+        Get
+            Return Me.mExcelInteropEnabled
+        End Get
+    End Property
+
     'Property that sets what file type to output
     Public Property POutputType() As eOutputTypes
         Get
             Return mOutputType
         End Get
         Set(ByVal value As eOutputTypes)
+            If value = eOutputTypes.Excel And Not mExcelInteropEnabled Then value = eOutputTypes.CSV
             mOutputType = value
         End Set
     End Property

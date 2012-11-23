@@ -73,9 +73,9 @@ Public Class frmResults
     Private FleetOnlySelection As cSelectionData
     Private m_MyCheckBoxes As CheckBox()
     Private strPath As String
-    Private FunctGroupWB As Excel.Workbook
-    Private FisheriesWB As Excel.Workbook
-    Private IndicatorsWB As Excel.Workbook
+    'Private FunctGroupWB As Excel.Workbook
+    'Private FisheriesWB As Excel.Workbook
+    'Private IndicatorsWB As Excel.Workbook
     Private nDataRows As Integer
     Private Const FuncGroupsFileName As String = "FunctionalGroups"
     Private Const FishFleetsFileName As String = "FisheriesGroups"
@@ -159,14 +159,18 @@ Public Class frmResults
         ' Create FleetOnlySelection
         FleetOnlySelection = New cSelectionData("Fleet only", str2)
 
-        Try
-            Dim ex As New Excel.Application
-            DataOutputter.POutputType = cDataOutputer.eOutputTypes.Excel
-            optExcel.Checked = True
-        Catch anyname As Exception
-            DataOutputter.POutputType = cDataOutputer.eOutputTypes.CSV
-            optCSV.Checked = True
-        End Try
+        ' Try to set interop to Excel
+        DataOutputter.POutputType = cDataOutputer.eOutputTypes.Excel
+
+        ' See what happened. If output type is CSV then Excel was not accessible.
+        Select Case DataOutputter.POutputType
+            Case cDataOutputer.eOutputTypes.Excel
+                optExcel.Checked = True
+            Case Else
+                ' Disable Excel option
+                optCSV.Checked = True
+                optExcel.Enabled = False
+        End Select
 
     End Sub
 
@@ -489,18 +493,6 @@ Public Class frmResults
 #End Region
 
 #Region "Functions"
-
-    Protected Function CheckName(ByVal Name As String, ByVal wb As Excel.Workbook) As String
-
-        Dim s As Excel.Worksheet
-        For Each s In wb.Worksheets
-            If UCase(s.Name) = UCase(Name) Then
-                Name = CheckName(Name & "(1)", wb)
-            End If
-        Next
-        Return Name
-
-    End Function
 
     Public Function GetAllGroupNamesArray() As String()
         Dim str(Me.Core.nGroups - 1) As String
