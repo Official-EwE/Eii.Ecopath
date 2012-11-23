@@ -73,28 +73,6 @@ Namespace Commands
         ''' <summary>
         ''' </summary>
         ''' <param name="strFileName"></param>
-        ''' <param name="strDirectory"></param>
-        ''' <param name="strFileFilter"></param>
-        ''' <param name="iFilter"></param>
-        ''' <param name="strTitle">
-        ''' Optional dialog title. If left empty, the .NET default is used.
-        ''' </param>
-        ''' -----------------------------------------------------------------------
-        <Obsolete("Directory management has changed. Please use Invoke(str, str, int, str) instead")> _
-        Public Overloads Sub Invoke(ByVal strFileName As String, _
-                                    ByVal strDirectory As String, _
-                                    ByVal strFileFilter As String, _
-                                    Optional ByVal iFilter As Integer = 0, _
-                                    Optional ByVal strTitle As String = "")
-
-            Me.Invoke(Path.Combine(strDirectory, strFileName), strFileFilter, iFilter, strTitle)
-
-        End Sub
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' </summary>
-        ''' <param name="strFileName"></param>
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
         ''' <param name="strTitle">
@@ -114,7 +92,7 @@ Namespace Commands
             Me.m_iFilter = iFilter
 
             Try
-                ' Only update directory if a diretory has been specified
+                ' Only update directory if a directory has been specified
                 strPath = Path.GetDirectoryName(strFileName)
                 If Not String.IsNullOrEmpty(strPath) Then Me.m_strDirectory = strPath
             Catch ex As Exception
