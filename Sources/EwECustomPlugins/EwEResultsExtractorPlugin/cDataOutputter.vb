@@ -45,13 +45,7 @@ Public Class cDataOutputer
         mFisheriesData = New List(Of cDataSheet)
         mIndicators = New List(Of cDataSheet)
         mDiagnostics = New List(Of cDataSheet)
-
-        Try
-            Dim ex As New Excel.Application
-            Me.mExcelInteropEnabled = True
-        Catch ex As Exception
-            Me.mExcelInteropEnabled = False
-        End Try
+        Me.mExcelInteropEnabled = Me.IsExcelAccessible()
     End Sub
 
     'List containing all objects for each option selected that is a functional group
@@ -371,6 +365,17 @@ Public Class cDataOutputer
         Dim msg As cMessage = Me.mMsg
         Me.mMsg = Nothing
         Return msg
+    End Function
+
+    Private Function IsExcelAccessible() As Boolean
+        Try
+            Dim ex As New Excel.Application()
+            Dim wb As Excel.Workbook = ex.Workbooks.Add()
+            Return (wb IsNot Nothing)
+        Catch ex As Exception
+            cLog.Write(ex, "EwEResultExtractorPlugin::IsExcelAccessible")
+        End Try
+        Return False
     End Function
 
 #End Region ' Message
