@@ -59,23 +59,25 @@ Public Class AppLauncher
 
 #Region " Variables "
 
+    ''' <summary>
+    ''' The UI Context that the entire EwE application will operate on.
+    ''' </summary>
     Private m_uic As cUIContext = Nothing
 
+    ' - Message handlers 
     Private m_mhProgress As cMessageHandler = Nothing
     Private m_mhEcosim As cMessageHandler = Nothing
     Private m_mhEcospace As cMessageHandler = Nothing
     Private m_mhEcotracer As cMessageHandler = Nothing
     Private m_mhTimeseries As cMessageHandler = Nothing
 
+    ' - Big nasty UI objects
+    Private m_coreController As cCoreController = Nothing
     Private m_pluginManager As cPluginManager = Nothing
     Private m_pluginMenuHandler As cPluginMenuHandler = Nothing
-    Private m_coreController As cCoreController = Nothing
     Private m_FormStateHelper As cEwEFormStateHelper = Nothing
-    ''' <summary>Style guide updater.</summary>
     Private m_styleguideupdater As cStyleGuideUpdater = Nothing
     Private m_MessageHistory As cMessageHistory = Nothing
-    ''' <summary>Last used model directory.</summary>
-    Private m_strLastModelPath As String = ""
 
     ''' <summary>Status messages stack.</summary>
     Private m_lstrStatus As New List(Of String)
@@ -1847,6 +1849,7 @@ Public Class AppLauncher
             Me.UpdateCorePaths(True)
             ' Remember last used model directory
             My.Settings.LastSelectedDirectory = Path.GetDirectoryName(strFileName)
+            My.Settings.Save()
             Return True
         Else
             Dim msg As New cMessage(String.Format(My.Resources.GENERIC_ERROR_FILEOPEN, strFileName), eMessageType.Any, eCoreComponentType.Core, eMessageImportance.Critical)
@@ -1866,9 +1869,6 @@ Public Class AppLauncher
 
         If (Me.Core.Save(strFileName)) Then
             Me.AddRecentFilesSetting(strFileName)
-            ' Remember last used model directory
-            My.Settings.LastSelectedDirectory = Path.GetDirectoryName(strFileName)
-            ' Update
             Me.UpdateModelControls()
             Return True
         End If
@@ -2359,16 +2359,15 @@ Public Class AppLauncher
         dlgLoad = cEwEFileDialogHelper.OpenFileDialog(foc.Title, foc.FileName, foc.Filters, foc.FilterIndex, strPath, foc.AllowMultiple)
 
         foc.Result = dlgLoad.ShowDialog()
-        foc.FilterIndex = dlgLoad.FilterIndex
 
         If (foc.Result = Windows.Forms.DialogResult.OK) Then
             foc.FileName = dlgLoad.FileName
             foc.FileNames = dlgLoad.FileNames
+            foc.FilterIndex = dlgLoad.FilterIndex
 
-            My.Settings.LastSelectedDirectory = Path.GetDirectoryName(foc.FileName)
-            Me.SaveSettings()
-
-            foc.Directory = My.Settings.LastSelectedDirectory
+            If (foc.AllowMultiple = False) Then
+                foc.Directory = Path.GetDirectoryName(dlgLoad.FileName)
+            End If
         End If
 
     End Sub
@@ -2382,14 +2381,11 @@ Public Class AppLauncher
         dlgSave = cEwEFileDialogHelper.SaveFileDialog(fsc.Title, fsc.FileName, fsc.Filters, fsc.FilterIndex, strPath)
 
         fsc.Result = dlgSave.ShowDialog()
+
         If (fsc.Result = Windows.Forms.DialogResult.OK) Then
             fsc.FileName = dlgSave.FileName
             fsc.FilterIndex = dlgSave.FilterIndex
-
-            My.Settings.LastSelectedDirectory = Path.GetDirectoryName(fsc.FileName)
-            Me.SaveSettings()
-
-            fsc.Directory = My.Settings.LastSelectedDirectory
+            fsc.Directory = Path.GetDirectoryName(fsc.FileName)
         End If
 
     End Sub
@@ -2406,7 +2402,6 @@ Public Class AppLauncher
 
         If (doc.Result = Windows.Forms.DialogResult.OK) Then
             doc.Directory = dlgLoad.SelectedPath
-            My.Settings.LastSelectedDirectory = doc.Directory
         End If
 
     End Sub
@@ -2587,7 +2582,7 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
-    ''' Open Ecopath model from file
+    ''' Open Ecopath model from a given location
     ''' </summary>
     Private Sub OnLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnInvoke
 
@@ -2595,15 +2590,15 @@ Public Class AppLauncher
         Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
         Dim strFilter As String = SharedResources.FILEFILTER_MODEL_OPEN
 
-        ' Special case: invoke load model command on last used model path
-        Dim strPathTmp As String = cmdFO.Directory
-        cmdFO.Directory = My.Settings.LastSelectedDirectory
-        If cmd.Tag IsNot Nothing Then
+        If String.IsNullOrWhiteSpace(cmdFO.Directory) Then
+            cmdFO.Directory = My.Settings.LastSelectedDirectory
+        End If
+
+        If (cmd.Tag IsNot Nothing) Then
             cmdFO.Invoke(CStr(cmd.Tag), strFilter, 1)
         Else
             cmdFO.Invoke(strFilter, 1)
         End If
-        cmdFO.Directory = strPathTmp
 
         If (cmdFO.Result = DialogResult.OK) Then
 
@@ -2662,10 +2657,10 @@ Public Class AppLauncher
         End Select
 
         ' Special case: invoke save model command on last used model path
-        Dim strPathTmp As String = cmdFS.Directory
-        cmdFS.Directory = My.Settings.LastSelectedDirectory
+        If (String.IsNullOrWhiteSpace(cmdFS.Directory)) Then
+            cmdFS.Directory = My.Settings.LastSelectedDirectory
+        End If
         cmdFS.Invoke(SharedResources.DEFAULT_NEWMODELNAME, strFileFilter)
-        cmdFS.Directory = strPathTmp
 
         If (cmdFS.Result = Windows.Forms.DialogResult.OK) Then
 
@@ -3979,10 +3974,9 @@ Public Class AppLauncher
 
         Try
 
-            Me.m_strLastModelPath = My.Settings.LastSelectedDirectory
-            If Not Directory.Exists(Me.m_strLastModelPath) Then
-                'the last selected directory is not a valid directory; set it to My documents by default
-                Me.m_strLastModelPath = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+            ' Fix last selected dir
+            If Not Directory.Exists(My.Settings.LastSelectedDirectory) Then
+                My.Settings.LastSelectedDirectory = My.Computer.FileSystem.SpecialDirectories.MyDocuments
             End If
 
             ' Read form positions
