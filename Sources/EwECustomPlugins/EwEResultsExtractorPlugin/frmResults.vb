@@ -166,7 +166,7 @@ Public Class frmResults
         Select Case DataOutputter.POutputType
             Case cDataOutputer.eOutputTypes.Excel
                 optExcel.Checked = True
-            Case Else
+            Case cDataOutputer.eOutputTypes.CSV
                 ' Disable Excel option
                 optCSV.Checked = True
                 optExcel.Enabled = False
