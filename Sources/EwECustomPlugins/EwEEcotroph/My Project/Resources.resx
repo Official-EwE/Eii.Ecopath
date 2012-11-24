@@ -119,7 +119,6 @@
   </resheader>
   <data name="ERROR_LOAD" xml:space="preserve">
     <value>Cannot read file from disk. Original error: {0}</value>
-    <comment>{0}: error text</comment>
   </data>
   <data name="ERROR_NO_MODEL_LOADED" xml:space="preserve">
     <value>There is no model loaded, we can't find EcoTroph input data</value>

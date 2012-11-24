@@ -1,4 +1,4 @@
-Imports System
+﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
@@ -8,7 +8,7 @@ Imports System.Runtime.InteropServices
 
 ' Passez en revue les valeurs des attributs de l'assembly
 
-<Assembly: AssemblyTitle("EwEEcotroph")> 
+<Assembly: AssemblyTitle("Ecotroph")> 
 <Assembly: AssemblyDescription("Ecotroph plug-in for EwE")> 
 <Assembly: AssemblyCompany("Agrocampus Ouest - Fisheries and Aquatic Sciences Center ")> 
 <Assembly: AssemblyProduct("EwEEcotroph")> 
@@ -18,7 +18,7 @@ Imports System.Runtime.InteropServices
 <Assembly: ComVisible(False)> 
 
 'Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-<Assembly: Guid("5a92e53c-ccb8-491e-9ceb-23713a9d47bb")> 
+<Assembly: Guid("c77dc03b-536d-4af1-82c4-a402cb56416b")> 
 
 ' Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' en utilisant '*', comme indiqué ci-dessous :
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.3.8598.0")> 
-<Assembly: AssemblyFileVersion("1.1.0.0")> 
+<Assembly: AssemblyVersion("1.2.0.0")> 
+<Assembly: AssemblyFileVersion("1.2.0.0")> 
