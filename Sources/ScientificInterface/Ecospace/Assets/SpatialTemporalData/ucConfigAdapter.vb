@@ -232,6 +232,7 @@ Namespace Ecospace.Controls
                 Me.FillExistingDatasetBox()
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
+                cLog.Write(ex, "ucConficAdapter::OnConfigureDS")
             End Try
             Me.Cursor = Cursors.Default
             Me.LayerChanged()
@@ -601,10 +602,14 @@ Namespace Ecospace.Controls
             dsNew = CType(Activator.CreateInstance(dsSelected.GetType()), ISpatialDataSet)
             If (dsNew Is Nothing) Then Return
 
-            If Me.ConfigDS(dsNew) Then
-                Me.m_manSets.Add(dsNew)
-                Me.FillExistingDatasetBox(dsNew)
-            End If
+            Try
+                If Me.ConfigDS(dsNew) Then
+                    Me.m_manSets.Add(dsNew)
+                    Me.FillExistingDatasetBox(dsNew)
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "ucConficAdapter::CreateDS")
+            End Try
 
         End Sub
 
