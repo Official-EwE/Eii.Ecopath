@@ -107,13 +107,22 @@ Public Class cEcopathModelFromEcosim
     Private Function CreateItems(ByVal coreNew As cCore) As Boolean
 
         Dim bSuccess As Boolean = True
-        Dim aiGroupID(Me.m_core.nGroups) As Integer
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
+        Dim aiGroupID(pathSrc.NumGroups) As Integer
 
         If Not coreNew.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
 
         Try
+            ' Delete default group(s) and fleet(s)
+            For iGroup As Integer = 1 To coreNew.nGroups
+                coreNew.RemoveGroup(iGroup)
+            Next
+
+            For iFleet As Integer = 1 To coreNew.nFleets
+                coreNew.RemoveFleet(iFleet)
+            Next
+
             For iGroup As Integer = 1 To pathSrc.NumGroups
                 Dim iNew As Integer = iGroup
                 Dim iIDNew As Integer = 0
@@ -284,7 +293,6 @@ Public Class cEcopathModelFromEcosim
     End Function
 
 #End Region ' Generation
-
 
 #Region " Original code "
 
