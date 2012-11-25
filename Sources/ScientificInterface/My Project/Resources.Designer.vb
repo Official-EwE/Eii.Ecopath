@@ -236,13 +236,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property Ecopath() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
         Public ReadOnly Property ecopath_256x256() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ecopath_256x256", resourceCulture)
@@ -256,13 +249,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOPATH_ADDSTANZA_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_ADDSTANZA_ERROR", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Ecopath_beta() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath_beta", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
@@ -281,20 +267,6 @@ Namespace My.Resources
         Public ReadOnly Property ECOPATH_DELETESTANZA_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_DELETESTANZA_ERROR", resourceCulture)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Ecopath_doc() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath_doc", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
-        Public ReadOnly Property Ecopath_easter() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath_easter", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         
@@ -352,13 +324,6 @@ Namespace My.Resources
             End Get
         End Property
         
-        Public ReadOnly Property Ecopath_hohoho() As System.Drawing.Icon
-            Get
-                Dim obj As Object = ResourceManager.GetObject("Ecopath_hohoho", resourceCulture)
-                Return CType(obj,System.Drawing.Icon)
-            End Get
-        End Property
-        
         Public ReadOnly Property Ecopath_install() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Ecopath_install", resourceCulture)
@@ -381,6 +346,41 @@ Namespace My.Resources
         Public ReadOnly Property ECOPATH_UPDATESTANZA_ERROR() As String
             Get
                 Return ResourceManager.GetString("ECOPATH_UPDATESTANZA_ERROR", resourceCulture)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecopath0() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath0", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecopath1_doc() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath1_doc", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecopath2_beta() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath2_beta", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecopath3_easter() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath3_easter", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
+            End Get
+        End Property
+        
+        Public ReadOnly Property Ecopath4_hohoho() As System.Drawing.Icon
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Ecopath4_hohoho", resourceCulture)
+                Return CType(obj,System.Drawing.Icon)
             End Get
         End Property
         

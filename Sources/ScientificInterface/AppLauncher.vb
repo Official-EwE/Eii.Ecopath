@@ -769,20 +769,19 @@ Public Class AppLauncher
 
         ' Prepare caption
         Me.Text = My.Resources.GENERIC_CAPTION
-        ' Prepare icon
-#If BETA = 1 Then
-        Me.Icon = My.Resources.Ecopath_beta
-#Else
-        Me.Icon = My.Resources.Ecopath
-#End If
 
-        ' Egg
+        ' Prepare icon
         Select Case cDateUtils.GetNextEvent(15)
             Case cDateUtils.eNextEvent.Easter
-                Me.Icon = My.Resources.Ecopath_easter
+                Me.Icon = My.Resources.Ecopath3_easter
             Case cDateUtils.eNextEvent.Xmas
-                Me.Icon = My.Resources.Ecopath_hohoho
+                Me.Icon = My.Resources.Ecopath4_hohoho
+            Case cDateUtils.eNextEvent.None
+                Me.Icon = My.Resources.Ecopath0
         End Select
+#If BETA = 1 Then
+        Me.Icon = My.Resources.Ecopath1_beta
+#End If
 
         Me.ResumeLayout()
         My.Settings.Reload()
