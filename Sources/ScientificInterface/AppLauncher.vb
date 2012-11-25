@@ -780,7 +780,7 @@ Public Class AppLauncher
                 Me.Icon = My.Resources.Ecopath0
         End Select
 #If BETA = 1 Then
-        Me.Icon = My.Resources.Ecopath1_beta
+        Me.Icon = My.Resources.Ecopath2_beta
 #End If
 
         Me.ResumeLayout()
