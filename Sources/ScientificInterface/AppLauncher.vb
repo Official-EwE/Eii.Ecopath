@@ -1618,7 +1618,7 @@ Public Class AppLauncher
             ' Set form icon based on core state
             Select Case state
                 Case eCoreExecutionState.EcopathLoaded, eCoreExecutionState.EcopathCompleted, eCoreExecutionState.EcopathRunning
-                    frmNew.Icon = My.Resources.Ecopath
+                    frmNew.Icon = My.Resources.Ecopath0
                 Case eCoreExecutionState.EcosimLoaded, eCoreExecutionState.EcosimRunning, eCoreExecutionState.EcosimCompleted
                     frmNew.Icon = My.Resources.Ecosim
                 Case eCoreExecutionState.EcospaceLoaded, eCoreExecutionState.EcospaceRunning, eCoreExecutionState.EcospaceCompleted
