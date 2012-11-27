@@ -2415,6 +2415,7 @@ EndOfImp:
         Dim APred As Integer, Comp As Integer, pred As Integer, prey As Integer
         Dim Answer As Object = Nothing
         Dim Cnt As Integer
+        
 
         'Dim iProg As Integer
 
@@ -2431,6 +2432,13 @@ EndOfImp:
         ' Init1Dim(1, m_epdata.NumLiving, Cons())
         Array.Clear(Cons, 0, m_epdata.NumLiving)
         'Initialize
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ''Timing code
+        'Dim stpwRunTime As Stopwatch
+        'Dim stpwCompTime As Stopwatch
+        'stpwCompTime = New Stopwatch
+        'stpwRunTime = Stopwatch.StartNew
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'If m_epdata.NumLiving > 20 And DoneAlready = False Then
         ' If DoneAlready = False Then DoneAlready = True
@@ -2457,6 +2465,7 @@ EndOfImp:
                 End If
                 For Comp = LastComp(Level) To m_epdata.NumLiving
                     If m_epdata.DC(pred, Comp) > 0 Then
+
                         prey = Comp
                         Path(Level) = 0
                         CheckPath(pivot, prey)
@@ -2464,7 +2473,11 @@ EndOfImp:
                             GoTo NextComp 'In Path already
                         End If
 
+                        'Only the time spent in the computations
+                        'stpwCompTime.Start()
+
                         If pivot = Comp Then
+
                             Path(Level) = Comp
                             CyclePrint(CycDC, Cons)
                             Cnt = Cnt + 1
@@ -2479,15 +2492,20 @@ EndOfImp:
                             FindMinConsump(Cons, MinCons)
                             MinCycDC(CycDC, MinCons)
                             Path(Level) = 0
+
+                            'stpwCompTime.Stop()
                         Else
                             Path(Level) = Comp                     'Include group in Path
                             Path(Level + 1) = 0
                             LastComp(Level) = Comp
                             LastComp(Level + 1) = pivot
                             APred = 1
+
+                            'stpwCompTime.Stop()
                             Exit For              'exit Comp for loop when path found
                             'and continue to next Level
                         End If
+
                     End If
                     APred = 0          'if program doesn't use EXIT FOR it will reset APred
 NextComp:
@@ -2515,6 +2533,20 @@ NextPivot:
         'all done
         'prgmsg.ProgressState = eProgressState.Finished
         'm_publisher.SendMessage(prgmsg)
+
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        ''Timing code
+        'Try
+        '    stpwRunTime.Stop()
+        '    Dim InComp As Single = CSng(stpwCompTime.Elapsed.TotalMinutes / stpwRunTime.Elapsed.TotalMinutes)
+        '    System.Console.WriteLine("FindCycles Total run time (sec) = " & stpwRunTime.Elapsed.TotalSeconds.ToString)
+        '    System.Console.WriteLine("FindCycles Computation run time (sec) = " & stpwCompTime.Elapsed.TotalSeconds.ToString)
+        '    System.Console.WriteLine("FindCycles Percentage in computation (sec) = " & (InComp * 100).ToString)
+        'Catch ex As Exception
+        '    'opppssss
+        '    Debug.Assert(False)
+        'End Try
+        ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         System.Console.WriteLine("FindCycles Done")
 
