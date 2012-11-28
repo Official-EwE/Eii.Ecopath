@@ -275,9 +275,9 @@ Public Class gridTaxonSearchResults
             ti = Me.TaxonAtRow(iRow)
 
             If Me.m_dgtIsTaxonUseCallback.Invoke(ti) Then
-                cell.Style = cell.Style Or cStyleGuide.eStyleFlags.Checked
+                cell.Style = cell.Style Or cStyleGuide.eStyleFlags.Highlight
             Else
-                cell.Style = cell.Style And Not cStyleGuide.eStyleFlags.Checked
+                cell.Style = cell.Style And Not cStyleGuide.eStyleFlags.Highlight
             End If
             cell.Invalidate()
         Next
