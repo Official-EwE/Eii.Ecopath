@@ -90,6 +90,11 @@ Public Class frmEcotracerOutput
 
 #End Region ' Private vars
 
+    Public Sub New()
+        MyBase.new()
+        Me.InitializeComponent()
+    End Sub
+
 #Region " Form overrides "
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
