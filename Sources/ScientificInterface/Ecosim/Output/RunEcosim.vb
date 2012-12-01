@@ -227,11 +227,15 @@ Namespace Ecosim
         Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnRun.Click
 
-            If Not Me.IsRunning Then
-                Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
-                Me.m_graph.Refresh()
-                Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler, True)
-            End If
+            Try
+                If Not Me.IsRunning Then
+                    Me.m_iTimeSteps = Me.Core.nEcosimTimeSteps
+                    Me.m_graph.Refresh()
+                    Me.Core.RunEcoSim(AddressOf TimeStepFromEcoSim_handler, True)
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "form RunEcosim.OnRun")
+            End Try
 
         End Sub
 
