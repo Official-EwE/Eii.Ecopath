@@ -347,9 +347,11 @@ Namespace SpatialData
         Private Sub IndexDatasetThread()
             Dim ds As ISpatialDataSet = Me.m_dsIndex
             Try
-                ' Start building index at first time step
-                Me.m_dsIndex.BuildIndex(Me.m_core.EcospaceTimestepToAbsoluteTime(1), AddressOf OnSpatialIndexUpdated)
-                Me.OnSpatialIndexUpdated(Nothing)
+                ' Start building index for Ecospace run time
+                Me.m_dsIndex.BuildIndex(Me.m_core.EcospaceTimestepToAbsoluteTime(1), _
+                                        Me.m_core.EcospaceTimestepToAbsoluteTime(Me.m_core.nEcospaceTimeSteps + 1), _
+                                        New ISpatialDataSet.BuildIndexUpdateDelegate(AddressOf OnSpatialIndexUpdated))
+
                 If (Object.ReferenceEquals(Me.m_dsIndex, ds)) Then
                     Me.m_dsIndex = Nothing
                     Me.m_threadIndex = Nothing
@@ -362,12 +364,13 @@ Namespace SpatialData
                 cLog.Write(ex, "cSpatialDatasetManager::IndexDatasetThread(" & ds.DisplayName & ")")
                 Console.WriteLine(ex.Message)
             End Try
+            Me.OnSpatialIndexUpdated(Nothing)
         End Sub
 
         Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)
 
         Private Sub OnSpatialIndexUpdated(ds As ISpatialDataSet)
-            If (Me.m_core IsNot Nothing And Me.IsIndexing()) Then
+            If (Me.m_core IsNot Nothing) Then
                 Try
                     Me.m_core.Messages.SendMessage(New cMessage("Spatial dataset index updated", eMessageType.DataModified,
                                                                 EwEUtils.Core.eCoreComponentType.EcoSpace, _

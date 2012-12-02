@@ -183,12 +183,15 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Build the spatial extent index for the dataset.
+        ''' Build the spatial extent index for the dataset for the Ecospace
+        ''' run time.
         ''' </summary>
-        ''' <param name="datetime">Index start date.</param>
+        ''' <param name="dtStart">Index start date.</param>
+        ''' <param name="dtEnd">Index end date.</param>
         ''' <param name="updatedelegate">Optional <see cref="BuildIndexUpdateDelegate">delegate</see> for reporting progress.</param>
         ''' -------------------------------------------------------------------
-        Sub BuildIndex(ByVal datetime As DateTime, _
+        Sub BuildIndex(ByVal dtStart As DateTime, _
+                       ByVal dtEnd As DateTime, _
                        Optional ByVal updatedelegate As BuildIndexUpdateDelegate = Nothing)
 
         Enum eIndexStatus As Integer
