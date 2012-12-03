@@ -103,12 +103,7 @@ Namespace Database
                 ' Remember these
                 Me.m_db = db
                 Me.m_strTable = strTable
-                Me.m_dtSchema = Nothing
-
-                ' OLEDB hack
-                If TypeOf conn Is OleDbConnection Then
-                    Me.m_dtSchema = DirectCast(conn, OleDbConnection).GetSchema("Columns", New String() {Nothing, Nothing, strTable, Nothing})
-                End If
+                Me.m_dtSchema = db.GetSchema(strTable)
 
                 ' Get adapter
                 Me.m_apt = Me.m_db.GetAdapter(String.Format("Select * from {0}", strTable))
@@ -287,12 +282,14 @@ Namespace Database
             ''' ---------------------------------------------------------------
             ''' <summary>
             ''' Helper method; replaces DBNull values that are specified as not 
-            ''' Nullable in the underlying Access database schema with the default 
+            ''' Nullable in the underlying database schema with the default 
             ''' value in the schema.
             ''' </summary>
             ''' <param name="drow">The row to fix.</param>
             ''' ---------------------------------------------------------------
-            Private Sub FixUnwantedDBNulls(ByRef drow As DataRow)
+            Protected Sub FixUnwantedDBNulls(ByRef drow As DataRow)
+
+                ' Only works for OleDB databases!
 
                 Dim bIsValueNull As Boolean = False
                 Dim bIsNullable As Boolean = False
@@ -919,11 +916,9 @@ Namespace Database
                 '   JS: could be that 'COLUMN_NAME' should be used here!!
                 strPKKey = CStr(dtKeys.Rows(0)("PK_NAME"))
                 'strPKKey = CStr(drKeys(0)("COLUMN_NAME"))
-            End If
-
-            If (TypeOf conn Is SqlConnection) Then
+            ElseIf (TypeOf conn Is SqlConnection) Then
                 ' Not implemented yet
-
+                Throw New NotImplementedException("GetPkKeyName not implemented for MS SQL databases")
             End If
 
             Return strPKKey
@@ -965,11 +960,9 @@ Namespace Database
                     Next
                 Catch ex As Exception
                 End Try
-            End If
-
-            If (TypeOf conn Is SqlConnection) Then
+            ElseIf (TypeOf conn Is SqlConnection) Then
                 ' Not implemented yet
-
+                Throw New NotImplementedException("GetFkKeyName not implemented for MS SQL databases")
             End If
 
             Return strFKKey
@@ -1124,6 +1117,23 @@ Namespace Database
             If reader Is Nothing Then Return False
             reader.GetSchemaTable().DefaultView.RowFilter = "ColumnName= '" + strColumnName + "'"
             Return (reader.GetSchemaTable().DefaultView.Count > 0)
+        End Function
+
+        Protected Overridable Function GetSchema(ByVal strTable As String) As DataTable
+
+            Dim conn As IDbConnection = Me.GetConnection()
+
+            If TypeOf conn Is OleDbConnection Then
+                Dim oleconn As OleDbConnection = DirectCast(conn, OleDbConnection)
+                Return oleconn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, New String() {Nothing, Nothing, strTable, "TABLE"})
+
+            ElseIf TypeOf conn Is SqlConnection Then
+
+                ' Not sure if this works, has not been tested yet
+                Return DirectCast(conn, SqlConnection).GetSchema("Columns", New String() {Nothing, Nothing, strTable, Nothing})
+            End If
+
+            Return Nothing
         End Function
 
 #End Region ' Internals
@@ -2247,7 +2257,7 @@ Namespace Database
             Dim bFound As Boolean = False
 
             ' Obtain the list of columns for the desired table
-            dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, New String() {Nothing, Nothing, strTable, Nothing})
+            dt = Me.GetSchema(strTable)
 
             ' Obtain a list of storable property that do not have a column in the associated schema
             For iProp As Integer = 0 To api.Length - 1
@@ -2321,7 +2331,8 @@ Namespace Database
             ' Process this class
             strTable = t.Name()
             ' Obtain the list of columns for the desired table
-            dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, New String() {Nothing, Nothing, strTable, "TABLE"})
+            Me.GetSchema(strTable)
+            'dt = conn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, New String() {Nothing, Nothing, strTable, "TABLE"})
 
             ' Does table exist?
             If (dt.Rows.Count = 0) Then
