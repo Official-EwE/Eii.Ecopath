@@ -684,6 +684,7 @@ Namespace Utilities
         ''' Format a value for use in a CSV file.
         ''' </summary>
         ''' <param name="objValue">The value to format.</param>
+        ''' <param name="cQuote">Optional quote character to use for wrapping the value.</param>
         ''' <returns>A field fit for display in a CSV file.</returns>
         ''' <remarks>
         ''' Numbers will be en-US formatted.
@@ -691,7 +692,8 @@ Namespace Utilities
         ''' Values containing potential CSV separator characters will be encapsulated in double quotes.
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Shared Function ToCSVField(objValue As Object) As String
+        Public Shared Function ToCSVField(ByVal objValue As Object, _
+                                          Optional ByVal cQuote As Char = """"c) As String
 
             Dim strValue As String = ""
 
@@ -707,7 +709,7 @@ Namespace Utilities
                 strValue = strValue.Replace("""", "")
             End If
             If strValue.IndexOfAny(CSV_SEPARATORCHARS) > 0 Then
-                strValue = """"c & strValue & """"c
+                strValue = cQuote & strValue & cQuote
             End If
 
             Return strValue
