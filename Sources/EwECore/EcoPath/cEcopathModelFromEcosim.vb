@@ -48,7 +48,23 @@ Public Class cEcopathModelFromEcosim
 
 #End Region ' Construction
 
-#Region " Generation "
+#Region " Public access "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type indicating how BA should be calculated.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eBiomassAccumulationCalculationTypes
+        ''' <summary>BA is taken as the change in group biomass over an Ecosim year.</summary>
+        FromEcosimYear
+        ''' <summary>BA is taken as the change in group biomass over the Ecosim run.</summary>
+        FromEcosimStart
+        ''' <summary>BA kept at Ecopath base value.</summary>
+        FromEcopath
+        ''' <summary>BA is set to 0.</summary>
+        SetToZero
+    End Enum
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -57,11 +73,14 @@ Public Class cEcopathModelFromEcosim
     ''' <param name="strFileName">Full path to the model file to create.</param>
     ''' <param name="strModelName">Name of the model to create.</param>
     ''' <param name="iTime">The Ecosim time step to populate data from.</param>
+    ''' <param name="BACalculation"><see cref="eBiomassAccumulationCalculationTypes">Flag</see> 
+    ''' stating how BA should be calculated.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function SaveModel(ByVal strFileName As String, _
                               ByVal strModelName As String, _
-                              ByVal iTime As Integer) As eDatasourceAccessType
+                              ByVal iTime As Integer, _
+                              Optional ByVal BACalculation As eBiomassAccumulationCalculationTypes = eBiomassAccumulationCalculationTypes.FromEcosimYear) As eDatasourceAccessType
 
         Dim coreDest As New cCore()
         Dim db As cEwEDatabase = New cEwEAccessDatabase()
@@ -82,7 +101,7 @@ Public Class cEcopathModelFromEcosim
         If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
             If coreDest.LoadModel(ds) Then
                 If Me.CreateItems(coreDest) Then
-                    Me.PopulateItems(coreDest, iTime)
+                    Me.PopulateItems(coreDest, iTime, BACalculation)
                 End If
             End If
         End If
@@ -96,6 +115,10 @@ Public Class cEcopathModelFromEcosim
         Return eDatasourceAccessType.Created
 
     End Function
+
+#End Region
+
+#Region " Internals "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -167,9 +190,13 @@ Public Class cEcopathModelFromEcosim
     ''' </summary>
     ''' <param name="coreNew">The core that holds the new model.</param>
     ''' <param name="iTime">The Ecosim time step to populate data from.</param>
+    ''' <param name="BACalculation"><see cref="eBiomassAccumulationCalculationTypes">Flag</see> 
+    ''' stating how BA should be calculated.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Private Function PopulateItems(ByVal coreNew As cCore, ByVal iTime As Integer) As Boolean
+    Private Function PopulateItems(ByVal coreNew As cCore, _
+                                   ByVal iTime As Integer, _
+                                   ByVal BACalculation As eBiomassAccumulationCalculationTypes) As Boolean
 
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData
@@ -237,8 +264,18 @@ Public Class cEcopathModelFromEcosim
             ' EEi(i) = -99
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
-            bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
-            pathDest.BA(iGroup) = (simBB(iGroup) - bLast) * simSrc.StepsPerMonth * cCore.N_MONTHS
+            Select Case BACalculation
+                Case eBiomassAccumulationCalculationTypes.FromEcosimYear
+                    bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
+                    pathDest.BA(iGroup) = (simBB(iGroup) - bLast) * simSrc.StepsPerMonth * cCore.N_MONTHS
+                Case eBiomassAccumulationCalculationTypes.FromEcosimStart
+                    pathDest.BA(iGroup) = (simBB(iGroup) - pathDest.B(iGroup))
+                Case eBiomassAccumulationCalculationTypes.FromEcopath
+                    ' NOP
+                Case eBiomassAccumulationCalculationTypes.SetToZero
+                    pathDest.BA(iGroup) = 0
+            End Select
+
             ' Emigrationi(i) = Emig(i) * Bi(i) '
             pathDest.Emigration(iGroup) = pathDest.Emig(iGroup) * simBB(iGroup)
             ' BHi(i) = Bi(i) / Area(i)
@@ -292,7 +329,7 @@ Public Class cEcopathModelFromEcosim
 
     End Function
 
-#End Region ' Generation
+#End Region ' Internals
 
 #Region " Original code "
 
