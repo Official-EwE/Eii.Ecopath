@@ -244,8 +244,8 @@ Public Class frmEcotracerOutput
         Me.RefreshGraph()
     End Sub
 
-    Private Sub OnSortedChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-        Handles m_chkSortGroups.Click
+    Private Sub OnSortedChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+
         Me.RefreshData()
     End Sub
 
@@ -332,8 +332,6 @@ Public Class frmEcotracerOutput
 
         ' Config controls based on the display helper
         Me.m_zgc.GraphPane.Title.Text = Me.m_DisplayHelper.Title
-        Me.m_zgc.Enabled = Me.m_DisplayHelper.Enabled
-        Me.m_lbGroups.Enabled = m_DisplayHelper.Enabled
         Me.m_cmbRegions.Enabled = m_DisplayHelper.EnabledForSpace
 
         Me.m_btnRunSim.Enabled = (Not Me.IsRunning)
@@ -392,8 +390,6 @@ Public Class frmEcotracerOutput
             'it is used in DisplayHelperFactory()
             Me.m_curDisplayMode = modeNew
 
-            'get the sort order for the groups list box
-            Me.SortGroupList()
             Me.UpdateControls()
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -491,36 +487,6 @@ Public Class frmEcotracerOutput
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Sort the items in the group list box
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Private Sub SortGroupList()
-
-        ' JS 10apr10: Let group listbox do the sorting
-        Me.m_lbGroups.SuspendLayout()
-        Me.m_lbGroups.Sorted = False
-
-        ' User wants to sort by concentration values?
-        If Me.m_chkSortGroups.Checked Then
-            ' #Yes: sort listbox by value
-            ' First update sort values
-            For igrp As Integer = 1 To Me.Core.nGroups
-                Me.m_lbGroups.SortValue(igrp) = Me.m_DisplayHelper.GetGroupMax(igrp)
-            Next
-            ' Then set sort type, highest concentrations first
-            Me.m_lbGroups.SortType = cGroupListBox.eSortType.ValueDesc
-        Else
-            ' #No: just sort by group index, asc
-            Me.m_lbGroups.SortType = cGroupListBox.eSortType.GroupIndexAsc
-        End If
-
-        Me.m_lbGroups.Sorted = True
-        Me.m_lbGroups.ResumeLayout()
 
     End Sub
 
