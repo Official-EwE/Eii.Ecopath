@@ -104,7 +104,7 @@ Public Class frmEcotracerOutput
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_zgc)
-        'Me.m_zgc.
+        Me.m_zgh.ConfigurePane("", "", "", True)
         Me.m_lbGroups.Attach(Me.UIContext)
 
         Me.RefreshData()
@@ -135,20 +135,12 @@ Public Class frmEcotracerOutput
 
     End Sub
 
-    ' JS10Apr10: disabled, too erratic to be reliable
-    'Protected Overrides Sub OnActivated(ByVal e As System.EventArgs)
-    '    MyBase.OnActivated(e)
-    'End Sub
-
-    ' JS10Apr10: this probably needs to be refined to ONLY include run completed states
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+        ' JS10Apr10: this probably needs to be refined to ONLY include run completed states
         If (msg.Source = eCoreComponentType.EcoSim) Or _
            (msg.Source = eCoreComponentType.EcoSpace) Then
-
             'let the interface update to all core states
             Me.RefreshData()
-
-
         End If
     End Sub
 
@@ -184,10 +176,13 @@ Public Class frmEcotracerOutput
             'An Ecosim scenario was loaded when this form was loaded
             'so there is no need to check
             Me.m_bInUpdate = True
+            Dim bOldState As Boolean = Me.Core.EcoSimModelParameters.ContaminantTracing
             Me.Core.EcoSimModelParameters.ContaminantTracing = True
             Me.m_bInUpdate = False
             Me.StartModelRun()
             Me.Core.RunEcoSim(AddressOf Me.EcosimCallback)
+            ' Restore state
+            Me.Core.EcoSimModelParameters.ContaminantTracing = bOldState
             Me.RefreshGraph()
 
         Catch ex As Exception
@@ -211,11 +206,13 @@ Public Class frmEcotracerOutput
             'Make sure the scenario loaded successfully before trying to run Ecospace
             If Me.Core.StateMonitor.HasEcospaceLoaded Then
                 Me.m_bInUpdate = True
+                Dim bOldState As Boolean = Me.Core.EcospaceModelParameters.ContaminantTracing
                 Me.Core.EcospaceModelParameters.ContaminantTracing = True
                 Me.m_bInUpdate = False
                 Me.StartModelRun()
                 Me.Core.RunEcoSpace(AddressOf Me.EcospaceCallback)
                 Me.RefreshGraph()
+                Me.Core.EcospaceModelParameters.ContaminantTracing = bOldState
             End If
 
         Catch ex As Exception
@@ -745,6 +742,7 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property XAxisLabel() As String _
             Implements IDisplayModeHelper.XAxisLabel
             Get
+                ' ToDo: Globalize this
                 Return "X Axis"
             End Get
         End Property
@@ -752,6 +750,7 @@ Public Class frmEcotracerOutput
         Public ReadOnly Property YAxisLabel() As String _
             Implements IDisplayModeHelper.YAxisLabel
             Get
+                ' ToDo: Globalize this
                 Return "Y Axis"
             End Get
         End Property
