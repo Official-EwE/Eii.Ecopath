@@ -283,10 +283,14 @@ Public Class AppLauncher
 
         Dim astrCmd As String() = Environment.GetCommandLineArgs
 
-        If (astrCmd.Length > 0) Then
-            If (cDataSourceFactory.GetSupportedType(astrCmd(0)) <> eDataSourceTypes.NotSet) Then
-                ' Open the model
-                Me.LoadEcopathModel(astrCmd(0).Replace("""", ""), eLoadSourceType.CommandLine)
+        ' Has args?
+        If (astrCmd.Length > 1) Then
+            ' #Yes: get database parameter
+            Dim strDB As String = astrCmd(1).Replace("""", "")
+            ' #Yes: is compatible?
+            If (cDataSourceFactory.GetSupportedType(strDB) <> eDataSourceTypes.NotSet) Then
+                ' #Yes: try to open the model
+                Me.LoadEcopathModel(strDB, eLoadSourceType.CommandLine)
             End If
         End If
 
