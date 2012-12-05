@@ -176,13 +176,11 @@ Public Class frmEcotracerOutput
             'An Ecosim scenario was loaded when this form was loaded
             'so there is no need to check
             Me.m_bInUpdate = True
-            Dim bOldState As Boolean = Me.Core.EcoSimModelParameters.ContaminantTracing
             Me.Core.EcoSimModelParameters.ContaminantTracing = True
             Me.m_bInUpdate = False
             Me.StartModelRun()
             Me.Core.RunEcoSim(AddressOf Me.EcosimCallback)
             ' Restore state
-            Me.Core.EcoSimModelParameters.ContaminantTracing = bOldState
             Me.RefreshGraph()
 
         Catch ex As Exception
@@ -206,13 +204,11 @@ Public Class frmEcotracerOutput
             'Make sure the scenario loaded successfully before trying to run Ecospace
             If Me.Core.StateMonitor.HasEcospaceLoaded Then
                 Me.m_bInUpdate = True
-                Dim bOldState As Boolean = Me.Core.EcospaceModelParameters.ContaminantTracing
                 Me.Core.EcospaceModelParameters.ContaminantTracing = True
                 Me.m_bInUpdate = False
                 Me.StartModelRun()
                 Me.Core.RunEcoSpace(AddressOf Me.EcospaceCallback)
                 Me.RefreshGraph()
-                Me.Core.EcospaceModelParameters.ContaminantTracing = bOldState
             End If
 
         Catch ex As Exception
