@@ -44,13 +44,43 @@ Public Class cEcotracerResultWriter
 
 #End Region ' Construction
 
+#Region " Public interfaces "
+
     Public Function WriteEcosimResults() As Boolean
+
+        Dim sw As StreamWriter = Nothing
+        Dim scenario As cEcoSimScenario = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex)
+        Dim strFile As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer), _
+                                             cFileUtils.ToValidFileName("Ecosim_" & scenario.Name & ".csv", False))
+        sw = Me.OpenWriter(strFile)
+        If (sw Is Nothing) Then Return False
+
+        Me.WriteHeader(sw, False)
+        Me.WriteBody(sw)
+        Me.CloseWriter(sw, strFile)
+
+        Return True
 
     End Function
 
     Public Function WriteEcospaceResults() As Boolean
 
+        Dim sw As StreamWriter = Nothing
+        Dim scenario As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
+        Dim strFile As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer), _
+                                             cFileUtils.ToValidFileName("Ecosim_" & scenario.Name & ".csv", False))
+        sw = Me.OpenWriter(strFile)
+        If (sw Is Nothing) Then Return False
+
+        Me.WriteHeader(sw, True)
+        Me.WriteBody(sw)
+        Me.CloseWriter(sw, strFile)
+
+        Return True
+
     End Function
+
+#End Region ' Public interfaces
 
 #Region " Internals "
 
@@ -64,21 +94,18 @@ Public Class cEcotracerResultWriter
     ''' -------------------------------------------------------------------
     Protected Function OpenWriter(ByVal strFile As String) As StreamWriter
 
-        Dim msg As cMessage = Nothing
         Dim sw As StreamWriter = Nothing
 
         ' Abort if directory missing
         If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) = False Then
-            msg = Me.ErrorMessage(strFile, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING)
-            Me.m_core.Messages.SendMessage(msg)
+            Me.SendErrorMessage(strFile, My.Resources.CoreMessages.OUTPUT_DIRECTORY_MISSING)
             Return Nothing
         End If
 
         Try
             sw = New StreamWriter(strFile)
         Catch ex As Exception
-            msg = Me.ErrorMessage(strFile, ex.Message)
-            Me.m_core.Messages.SendMessage(msg)
+            Me.SendErrorMessage(strFile, ex.Message)
             Return Nothing
         End Try
 
@@ -96,20 +123,17 @@ Public Class cEcotracerResultWriter
     ''' -------------------------------------------------------------------
     Protected Function CloseWriter(sw As StreamWriter, strPath As String) As Boolean
 
-        Dim msg As cMessage = Nothing
         Dim bSuccess As Boolean = True
 
         Try
             sw.Flush()
             sw.Close()
-            msg = Me.SuccessMessage(strPath)
-
+            Me.SendSuccessMessage(strPath)
         Catch ex As Exception
-            msg = Me.ErrorMessage(strPath, ex.Message)
+            Me.SendErrorMessage(strPath, ex.Message)
             bSuccess = False
         End Try
 
-        Me.m_core.Messages.SendMessage(msg)
         Return bSuccess
 
     End Function
@@ -142,18 +166,24 @@ Public Class cEcotracerResultWriter
 
     End Sub
 
+    Protected Sub WriteBody(ByVal sw As StreamWriter)
+
+        ' To write
+
+    End Sub
+
     ''' -------------------------------------------------------------------
     ''' <summary>
     ''' Message to use to report an error.
     ''' </summary>
     ''' <param name="strPath">Output file name.</param>
     ''' <param name="strReason">Reason of failure, most likely the text obtained from an exception.</param>
-    ''' <returns>The message to use to report an error.</returns>
     ''' -------------------------------------------------------------------
-    Protected Function ErrorMessage(ByVal strPath As String, ByVal strReason As String) As cMessage
-        Return Nothing 'New cMessage(String.Format(My.Resources.CoreMessages.MSY_RESULTS_SAVE_FAILED, strPath, strReason), _
-
-    End Function
+    Protected Sub SendErrorMessage(ByVal strPath As String, ByVal strReason As String)
+        Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_FAILED, strPath, strReason), _
+                                           eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+        Me.m_core.Messages.SendMessage(msg)
+    End Sub
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -161,7 +191,11 @@ Public Class cEcotracerResultWriter
     ''' </summary>
     ''' <param name="strPath">Output file name.</param>
     ''' -------------------------------------------------------------------
-    Protected Function SuccessMessage(ByVal strPath As String) As cMessage
+    Protected Function SendSuccessMessage(ByVal strPath As String) As cMessage
+        Dim msg As cMessage = New cMessage(String.Format(My.Resources.CoreMessages.TRACER_RESULTS_SAVE_SUCCESS, strPath), _
+                                           eMessageType.DataExport, eCoreComponentType.Ecotracer, eMessageImportance.Information)
+        msg.Hyperlink = Path.GetDirectoryName(strPath)
+        Me.m_core.Messages.SendMessage(msg)
         Return Nothing
     End Function
 

@@ -1146,4 +1146,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>MSE Linear Programing Solution failed to find an optimal solution for '{0}' time steps. Check your target fishing mortality rates to make sure you have not overly constrained your model.</value>
     <comment>{0} =Number of failed time steps</comment>
   </data>
+  <data name="TRACER_RESULTS_SAVE_FAILED" xml:space="preserve">
+    <value>Failed to save contaminant tracer results '{1}' to '{0}'</value>
+    <comment>{0}=file, {1}=details</comment>
+  </data>
+  <data name="TRACER_RESULTS_SAVE_SUCCESS" xml:space="preserve">
+    <value>Contaminant tracer results saved to '{0}'</value>
+    <comment>{0}=file</comment>
+  </data>
 </root>

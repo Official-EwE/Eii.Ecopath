@@ -7664,8 +7664,8 @@ Public Class cCore
             End If
 
             If (Me.Autosave(eAutosaveTypes.Ecotracer) And Me.m_tracerData.EcoSimConSimOn) Then
-                Dim writer As New cEcotracerResultWriter(Me)
-                writer.WriteEcosimResults()
+                'Dim writer As New cEcotracerResultWriter(Me)
+                'writer.WriteEcosimResults()
             End If
             ' -------
 
