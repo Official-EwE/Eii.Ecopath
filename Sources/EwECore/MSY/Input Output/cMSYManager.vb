@@ -38,6 +38,18 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 
 Namespace MSY
 
+    '' <summary>
+    ''' Run states of the MSE 
+    ''' </summary>
+    ''' <remarks>Passed out via the MSEProgressDelegate</remarks>
+    Public Enum eMSYRunStates
+        Started
+        PartialRunCompleted
+        FullRunComplete
+    End Enum
+
+    Public Delegate Sub MSYRunStateDelegate(ByVal RunStateType As eMSYRunStates)
+
     ''' <summary>
     ''' Manager for interacting with the MSY routines.
     ''' </summary>
@@ -59,6 +71,8 @@ Namespace MSY
 
         Private m_parameters As cMSYParameters = Nothing
         Private m_fmsyresults As cFMSYResults = Nothing
+
+        Private m_RunStateDelegate As MSYRunStateDelegate
 
 #End Region
 
@@ -209,6 +223,48 @@ Namespace MSY
             Return bRan
 
         End Function
+
+        Public Function RunThreaded() As Boolean
+            Try
+                'ToDo there needs to be a way to block when a thread is already running
+                'either a boolean flag or a WaitHandle
+                Dim MSYThread As Thread = New Thread(AddressOf Me.runFullMSYSearch)
+                MSYThread.Start()
+
+                Return True
+            Catch ex As Exception
+
+            End Try
+
+        End Function
+
+
+        Private Sub runFullMSYSearch()
+            Try
+                Me.m_parameters.Assessment = eMSYAssessmentTypes.FullCompensation
+                Me.m_MSY.RunMSY()
+                If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+
+                Me.m_parameters.Assessment = eMSYAssessmentTypes.StationarySystem
+                Me.m_MSY.RunMSY()
+                If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+
+                'tell the interface that we are done
+                Me.onMSYRunStateChanged(eMSYRunStates.FullRunComplete)
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
+
+        Private Sub onMSYRunStateChanged(ByVal RunState As eMSYRunStates)
+            Try
+                m_SyncOb.Send(New System.Threading.SendOrPostCallback(AddressOf Me.fireRunStateDelegate), RunState)
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
 
         Public Sub RunMSYEcosimUnitTest()
@@ -380,6 +436,18 @@ Namespace MSY
             End If
         End Sub
 
+        Private Sub fireRunStateDelegate(ByVal obj As Object)
+            Try
+                'Debug.Assert(m_SyncOb IsNot Nothing And m_MSECallback IsNot Nothing, Me.ToString & ".OnMSECallBack() not connected properly.")
+                If Me.m_RunStateDelegate IsNot Nothing Then
+                    Dim cbType As eMSYRunStates = DirectCast(obj, eMSYRunStates)
+                    m_RunStateDelegate.Invoke(cbType)
+                End If
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString & " Error sending message to interface.")
+            End Try
+        End Sub
+
 #End Region ' Running Saving (public and private)
 
 #Region " Public Properties "
@@ -436,6 +504,18 @@ Namespace MSY
             End Get
         End Property
 
+        Public Property RunStateChangedDelegate As MSYRunStateDelegate
+            Get
+                Return Me.m_RunStateDelegate
+            End Get
+
+            Set(value As MSYRunStateDelegate)
+                Me.m_RunStateDelegate = Nothing
+                Me.m_RunStateDelegate = value
+            End Set
+
+        End Property
+
 #End Region ' Public Properties
 
 #Region "ISearchObjective"
@@ -449,6 +529,9 @@ Namespace MSY
             Me.m_SyncOb = System.Threading.SynchronizationContext.Current
             'if there is no current context then create a new one on this thread.
             If (Me.m_SyncOb Is Nothing) Then Me.m_SyncOb = New System.Threading.SynchronizationContext()
+
+            'Connect to the MSY callback
+            Me.m_MSY.Connect(AddressOf Me.onMSYRunStateChanged)
 
         End Function
 

@@ -104,6 +104,7 @@ Namespace Ecosim
 
             Me.m_manager = Me.Core.MSYManager
             Me.m_parms = Me.m_manager.Parameters
+            Me.m_manager.RunStateChangedDelegate = AddressOf Me.onMSYRunStateChanged
 
             ' Set up zedgraph
             Me.m_zgh = New cZedGraphHelper()
@@ -148,6 +149,9 @@ Namespace Ecosim
 
                 Me.m_zgh.Detach()
                 Me.m_zgh = Nothing
+
+                'this may not matter
+                Me.m_manager.RunStateChangedDelegate = Nothing
 
             End If
 
@@ -280,6 +284,34 @@ Namespace Ecosim
             End Try
         End Sub
 
+        Private Sub onMSYRunStateChanged(ByVal RunState As eMSYRunStates)
+            Try
+
+                If (RunState = eMSYRunStates.PartialRunCompleted) And (Me.m_parms.Assessment = eMSYAssessmentTypes.FullCompensation) Then
+                    Me.m_results.ResultsFull.AddRange(Me.m_manager.MSYResults)
+                    Me.m_results.ResultsBase = Me.m_manager.BaseLineResults
+                    Me.m_results.OptFull = Me.m_manager.FMSY
+
+                ElseIf (RunState = eMSYRunStates.PartialRunCompleted) And (Me.m_parms.Assessment = eMSYAssessmentTypes.StationarySystem) Then
+                    Me.m_results.ResultsStat.AddRange(Me.m_manager.MSYResults)
+                    Me.m_results.OptStat = Me.m_manager.FMSY
+
+                End If
+
+                If RunState = eMSYRunStates.FullRunComplete Then
+                    ' Trigger graph update
+                    Me.TotallyAndCompletelyRefreshPlot()
+                    ' Update control states
+                    Me.UpdateControls()
+
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
 #End Region ' Events
 
 #Region " Internals "
@@ -387,25 +419,31 @@ Namespace Ecosim
                 Me.m_results.SelMode = Me.m_parms.FSelectionMode
                 Me.m_results.Selection = Me.m_parms.SelGroupFleetIndex
 
-                Me.m_parms.Assessment = eMSYAssessmentTypes.FullCompensation
-                Me.m_manager.Run()
-                Me.m_results.ResultsFull.AddRange(Me.m_manager.MSYResults)
-                Me.m_results.ResultsBase = Me.m_manager.BaseLineResults
-                Me.m_results.OptFull = Me.m_manager.FMSY
+                'RunThreaded() will run both FullCompensation and StationarySystem on a thread 
+                'me.onMSYRunStateChanged(eMSYRunState) will be called during the run with state info
+                Me.m_manager.RunThreaded()
 
-                Me.m_parms.Assessment = eMSYAssessmentTypes.StationarySystem
-                Me.m_manager.Run()
-                Me.m_results.ResultsStat.AddRange(Me.m_manager.MSYResults)
-                Me.m_results.OptStat = Me.m_manager.FMSY
+                'All updating is handled in Me.onMSYRunStateChanged(eMSYRunState)
+
+                'Me.m_parms.Assessment = eMSYAssessmentTypes.FullCompensation
+                'Me.m_manager.Run()
+                'Me.m_results.ResultsFull.AddRange(Me.m_manager.MSYResults)
+                'Me.m_results.ResultsBase = Me.m_manager.BaseLineResults
+                'Me.m_results.OptFull = Me.m_manager.FMSY
+
+                'Me.m_parms.Assessment = eMSYAssessmentTypes.StationarySystem
+                'Me.m_manager.Run()
+                'Me.m_results.ResultsStat.AddRange(Me.m_manager.MSYResults)
+                'Me.m_results.OptStat = Me.m_manager.FMSY
 
             Catch ex As Exception
 
             End Try
 
-            ' Trigger graph update
-            Me.TotallyAndCompletelyRefreshPlot()
-            ' Update control states
-            Me.UpdateControls()
+            '' Trigger graph update
+            'Me.TotallyAndCompletelyRefreshPlot()
+            '' Update control states
+            'Me.UpdateControls()
 
         End Sub
 

@@ -159,6 +159,8 @@ Namespace MSY
 
         Friend m_FOptTracker() As cFoptTracker
 
+        Private m_RunStateDelegate As MSYRunStateDelegate
+
 #End Region
 
 #Region "Construction and Initialization"
@@ -177,6 +179,12 @@ Namespace MSY
 
         End Sub
 
+        Public Sub Connect(ByVal RunStateDelegate As MSYRunStateDelegate)
+            Debug.Assert(RunStateDelegate IsNot Nothing, "Oppss cMYS.Connect(MSYRunStateDelegate) delegate is NULL.")
+            m_RunStateDelegate = Nothing
+            m_RunStateDelegate = RunStateDelegate
+        End Sub
+
 #End Region
 
 #Region " Public interfaces "
@@ -188,6 +196,8 @@ Namespace MSY
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function RunMSY() As Boolean
+
+
 
             ' Do this once at the start of it all
             Me.InitTrackers()
@@ -1122,6 +1132,7 @@ Namespace MSY
                                   ByVal iNumSteps As Integer)
             Try
 
+                Me.ChangeRunState(eMSYRunStates.Started)
 
                 If (Me.m_dgtProgress IsNot Nothing) Then
 
@@ -1161,13 +1172,27 @@ Namespace MSY
         Private Sub EndProgress()
             Try
 
+                Me.ChangeRunState(eMSYRunStates.PartialRunCompleted)
+
                 If (Me.m_dgtProgress IsNot Nothing) Then
                     Me.m_dgtProgress.Invoke(New EwECore.cProgressMessage(eProgressState.Finished, Me.m_iNumSteps, Me.m_iNumSteps, ""))
                 End If
+
             Catch ex As Exception
                 System.Console.WriteLine(Me.ToString & ".EndProgress() Exception: " & ex.Message)
             End Try
 
+        End Sub
+
+        Private Sub ChangeRunState(runState As eMSYRunStates)
+            Try
+                If Me.m_RunStateDelegate IsNot Nothing Then
+                    Me.m_RunStateDelegate.Invoke(runState)
+                End If
+            Catch ex As Exception
+
+            End Try
+           
         End Sub
 
 #End Region ' Progress reporting
