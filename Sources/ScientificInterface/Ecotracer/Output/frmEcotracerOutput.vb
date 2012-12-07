@@ -116,7 +116,7 @@ Public Class frmEcotracerOutput
         AddHandler Me.m_propConcSimOn.PropertyChanged, AddressOf OnConcPropChanged
         AddHandler Me.m_propConcSpaceOn.PropertyChanged, AddressOf OnConcPropChanged
 
-        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
+        Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.Core, eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
     End Sub
 
@@ -136,12 +136,18 @@ Public Class frmEcotracerOutput
     End Sub
 
     Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
+
         ' JS10Apr10: this probably needs to be refined to ONLY include run completed states
         If (msg.Source = eCoreComponentType.EcoSim) Or _
            (msg.Source = eCoreComponentType.EcoSpace) Then
             'let the interface update to all core states
             Me.RefreshData()
         End If
+
+        If (msg.Source = eCoreComponentType.Core And msg.Type = eMessageType.GlobalSettingsChanged) Then
+            Me.m_cbAutosaveResults.Checked = Me.Core.Autosave(eAutosaveTypes.Ecotracer)
+        End If
+
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -259,6 +265,15 @@ Public Class frmEcotracerOutput
 
     End Sub
 
+    Private Sub OnAutoSaveChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbAutosaveResults.CheckedChanged
+        Try
+            If (Me.UIContext Is Nothing) Then Return
+            Me.Core.Autosave(eAutosaveTypes.Ecotracer) = Me.m_cbAutosaveResults.Checked
+        Catch ex As Exception
+
+        End Try
+    End Sub
 #End Region ' Events
 
 #Region " Internal bits "
@@ -325,6 +340,8 @@ Public Class frmEcotracerOutput
 
         Me.m_rbCB.Checked = (Me.PlotType = ePlotTypes.CB)
         Me.m_rbConc.Checked = (Me.PlotType = ePlotTypes.Conc)
+
+        Me.m_cbAutosaveResults.Checked = (Me.Core.Autosave(eAutosaveTypes.Ecotracer))
 
         ' Config controls based on the display helper
         Me.m_zgc.GraphPane.Title.Text = Me.m_DisplayHelper.Title

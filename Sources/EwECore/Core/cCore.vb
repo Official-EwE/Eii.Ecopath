@@ -7656,11 +7656,18 @@ Public Class cCore
             ' Send messages after
             m_publisher.sendAllMessages()
 
+            ' -------
             ' Write results if needed
             If Me.Autosave(eAutosaveTypes.Ecosim) Then
                 Dim writer As New cEcosimResultWriter(Me)
                 writer.WriteResults()
             End If
+
+            If (Me.Autosave(eAutosaveTypes.Ecotracer) And Me.m_tracerData.EcoSimConSimOn) Then
+                Dim writer As New cEcotracerResultWriter(Me)
+                writer.WriteEcosimResults()
+            End If
+            ' -------
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".EcoSimRunCompleted() Exception: " & ex.Message)

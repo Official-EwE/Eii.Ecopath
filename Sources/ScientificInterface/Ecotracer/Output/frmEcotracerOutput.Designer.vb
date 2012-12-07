@@ -49,6 +49,7 @@ Partial Class frmEcotracerOutput
         Me.m_hdrPlotOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_cmbRegions = New System.Windows.Forms.ComboBox()
         Me.m_btnShowHideGroups = New System.Windows.Forms.Button()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.m_lblRegion = New System.Windows.Forms.Label()
         Me.m_rbCB = New System.Windows.Forms.RadioButton()
         Me.m_rbConc = New System.Windows.Forms.RadioButton()
@@ -56,7 +57,7 @@ Partial Class frmEcotracerOutput
         Me.m_hdrRun = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_btnRunSpace = New System.Windows.Forms.Button()
         Me.m_btnRunSim = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_cbAutosaveResults = New System.Windows.Forms.CheckBox()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -79,7 +80,7 @@ Partial Class frmEcotracerOutput
         Me.m_zgc.ScrollMinX = 0.0R
         Me.m_zgc.ScrollMinY = 0.0R
         Me.m_zgc.ScrollMinY2 = 0.0R
-        Me.m_zgc.Size = New System.Drawing.Size(672, 504)
+        Me.m_zgc.Size = New System.Drawing.Size(672, 557)
         Me.m_zgc.TabIndex = 0
         '
         'm_lbGroups
@@ -101,7 +102,7 @@ Partial Class frmEcotracerOutput
         Me.m_lbGroups.SelectedGroup = Nothing
         Me.m_lbGroups.SelectedGroupIndex = -1
         Me.m_lbGroups.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.m_lbGroups.Size = New System.Drawing.Size(270, 238)
+        Me.m_lbGroups.Size = New System.Drawing.Size(270, 268)
         Me.m_lbGroups.SortThreshold = -9999.0!
         Me.m_lbGroups.SortType = ScientificInterfaceShared.Controls.cGroupListBox.eSortType.GroupIndexAsc
         Me.m_lbGroups.TabIndex = 1
@@ -121,7 +122,7 @@ Partial Class frmEcotracerOutput
         'm_scMain.Panel2
         '
         Me.m_scMain.Panel2.Controls.Add(Me.m_zgc)
-        Me.m_scMain.Size = New System.Drawing.Size(946, 504)
+        Me.m_scMain.Size = New System.Drawing.Size(946, 557)
         Me.m_scMain.SplitterDistance = 270
         Me.m_scMain.TabIndex = 0
         '
@@ -139,7 +140,7 @@ Partial Class frmEcotracerOutput
         Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.m_tlpControls.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.m_tlpControls.Size = New System.Drawing.Size(270, 504)
+        Me.m_tlpControls.Size = New System.Drawing.Size(270, 557)
         Me.m_tlpControls.TabIndex = 0
         '
         'm_plGroups
@@ -150,7 +151,7 @@ Partial Class frmEcotracerOutput
         Me.m_plGroups.Location = New System.Drawing.Point(0, 0)
         Me.m_plGroups.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plGroups.Name = "m_plGroups"
-        Me.m_plGroups.Size = New System.Drawing.Size(270, 256)
+        Me.m_plGroups.Size = New System.Drawing.Size(270, 286)
         Me.m_plGroups.TabIndex = 0
         '
         'm_hdrGroups
@@ -178,7 +179,7 @@ Partial Class frmEcotracerOutput
         Me.m_plOpions.Controls.Add(Me.m_rbCB)
         Me.m_plOpions.Controls.Add(Me.m_rbConc)
         Me.m_plOpions.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plOpions.Location = New System.Drawing.Point(0, 256)
+        Me.m_plOpions.Location = New System.Drawing.Point(0, 286)
         Me.m_plOpions.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plOpions.Name = "m_plOpions"
         Me.m_plOpions.Size = New System.Drawing.Size(270, 173)
@@ -222,10 +223,19 @@ Partial Class frmEcotracerOutput
         Me.m_btnShowHideGroups.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
         Me.m_btnShowHideGroups.UseVisualStyleBackColor = True
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(3, 53)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(61, 13)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Show &data:"
+        '
         'm_lblRegion
         '
         Me.m_lblRegion.AutoSize = True
-        Me.m_lblRegion.Location = New System.Drawing.Point(0, 127)
+        Me.m_lblRegion.Location = New System.Drawing.Point(3, 127)
         Me.m_lblRegion.Name = "m_lblRegion"
         Me.m_lblRegion.Size = New System.Drawing.Size(69, 13)
         Me.m_lblRegion.TabIndex = 5
@@ -255,14 +265,15 @@ Partial Class frmEcotracerOutput
         '
         'm_plRun
         '
+        Me.m_plRun.Controls.Add(Me.m_cbAutosaveResults)
         Me.m_plRun.Controls.Add(Me.m_hdrRun)
         Me.m_plRun.Controls.Add(Me.m_btnRunSpace)
         Me.m_plRun.Controls.Add(Me.m_btnRunSim)
         Me.m_plRun.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_plRun.Location = New System.Drawing.Point(0, 429)
+        Me.m_plRun.Location = New System.Drawing.Point(0, 459)
         Me.m_plRun.Margin = New System.Windows.Forms.Padding(0)
         Me.m_plRun.Name = "m_plRun"
-        Me.m_plRun.Size = New System.Drawing.Size(270, 75)
+        Me.m_plRun.Size = New System.Drawing.Size(270, 98)
         Me.m_plRun.TabIndex = 1
         '
         'm_hdrRun
@@ -301,20 +312,21 @@ Partial Class frmEcotracerOutput
         Me.m_btnRunSim.Text = "Run Ecos&im"
         Me.m_btnRunSim.UseVisualStyleBackColor = True
         '
-        'Label1
+        'm_cbAutosaveResults
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 53)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(61, 13)
-        Me.Label1.TabIndex = 5
-        Me.Label1.Text = "Show &data:"
+        Me.m_cbAutosaveResults.AutoSize = True
+        Me.m_cbAutosaveResults.Location = New System.Drawing.Point(6, 78)
+        Me.m_cbAutosaveResults.Name = "m_cbAutosaveResults"
+        Me.m_cbAutosaveResults.Size = New System.Drawing.Size(107, 17)
+        Me.m_cbAutosaveResults.TabIndex = 3
+        Me.m_cbAutosaveResults.Text = "&Auto-save results"
+        Me.m_cbAutosaveResults.UseVisualStyleBackColor = True
         '
         'frmEcotracerOutput
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(946, 505)
+        Me.ClientSize = New System.Drawing.Size(946, 558)
         Me.Controls.Add(Me.m_scMain)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "frmEcotracerOutput"
@@ -328,6 +340,7 @@ Partial Class frmEcotracerOutput
         Me.m_plOpions.ResumeLayout(False)
         Me.m_plOpions.PerformLayout()
         Me.m_plRun.ResumeLayout(False)
+        Me.m_plRun.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -349,4 +362,5 @@ Partial Class frmEcotracerOutput
     Private WithEvents m_plOpions As System.Windows.Forms.Panel
     Private WithEvents m_plRun As System.Windows.Forms.Panel
     Private WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_cbAutosaveResults As System.Windows.Forms.CheckBox
 End Class
