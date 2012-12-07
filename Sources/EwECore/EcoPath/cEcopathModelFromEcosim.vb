@@ -82,37 +82,47 @@ Public Class cEcopathModelFromEcosim
                               ByVal iTime As Integer, _
                               Optional ByVal BACalculation As eBiomassAccumulationCalculationTypes = eBiomassAccumulationCalculationTypes.FromEcosimYear) As eDatasourceAccessType
 
-        Dim coreDest As New cCore()
-        Dim db As cEwEDatabase = New cEwEAccessDatabase()
-        Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
-        Dim bSucces As Boolean = False
+        Dim returnVal As eDatasourceAccessType = eDatasourceAccessType.Created
+        Try
 
-        coreDest.InitCore()
-        coreDest.PluginManager = Nothing
+            Dim coreDest As New cCore()
+            Dim db As cEwEDatabase = New cEwEAccessDatabase()
+            Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
+            Dim bSucces As Boolean = False
 
-        If String.IsNullOrEmpty(Path.GetExtension(strFileName)) Then
-            strFileName &= cDataSourceFactory.GetDefaultExtension(eDataSourceTypes.Access2007)
-        End If
+            coreDest.InitCore()
+            coreDest.PluginManager = Nothing
 
-        atResult = db.Create(strFileName, strModelName, True, strAuthor:=Me.m_core.DefaultAuthor)
-        If (atResult <> eDatasourceAccessType.Created) Then Return atResult
+            If String.IsNullOrEmpty(Path.GetExtension(strFileName)) Then
+                strFileName &= cDataSourceFactory.GetDefaultExtension(eDataSourceTypes.Access2007)
+            End If
 
-        Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFileName)
-        If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
-            If coreDest.LoadModel(ds) Then
-                If Me.CreateItems(coreDest) Then
-                    Me.PopulateItems(coreDest, iTime, BACalculation)
+            atResult = db.Create(strFileName, strModelName, True, strAuthor:=Me.m_core.DefaultAuthor)
+            If (atResult <> eDatasourceAccessType.Created) Then Return atResult
+
+            Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFileName)
+            If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
+                If coreDest.LoadModel(ds) Then
+                    If Me.CreateItems(coreDest) Then
+                        Me.PopulateItems(coreDest, iTime, BACalculation)
+                    End If
                 End If
             End If
-        End If
 
-        coreDest.CloseModel()
+            coreDest.CloseModel()
 
-        db = Nothing
-        ds = Nothing
-        coreDest = Nothing
+            db = Nothing
+            ds = Nothing
+            coreDest = Nothing
 
-        Return eDatasourceAccessType.Created
+        Catch ex As Exception
+            returnVal = eDatasourceAccessType.Failed_Unknown
+            cLog.Write(ex)
+            Me.m_core.Messages.AddMessage(New cMessage("Error while saving Ecopath Model from Ecosim.", eMessageType.ErrorEncountered, eCoreComponentType.DataSource, eMessageImportance.Warning))
+        End Try
+
+        Me.m_core.Messages.sendAllMessages()
+        Return returnVal
 
     End Function
 
@@ -198,6 +208,8 @@ Public Class cEcopathModelFromEcosim
                                    ByVal iTime As Integer, _
                                    ByVal BACalculation As eBiomassAccumulationCalculationTypes) As Boolean
 
+        Debug.Assert(iTime >= 12, Me.ToString & ".PopulateItems(...) iTime must be at less one year.")
+
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData
         Dim GroupDBIDs(coreNew.nGroups) As Integer
@@ -215,6 +227,8 @@ Public Class cEcopathModelFromEcosim
         'Time index for the previous year
         Dim iPreviousTime As Integer = iTime - 12
         If iPreviousTime < 1 Then iPreviousTime = 1
+
+        Dim nYears As Integer = iTime \ (cCore.N_MONTHS * simSrc.StepsPerMonth)
 
         ' Dirty destination core
         coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
@@ -269,9 +283,13 @@ Public Class cEcopathModelFromEcosim
                     bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
                     pathDest.BA(iGroup) = (simBB(iGroup) - bLast) * simSrc.StepsPerMonth * cCore.N_MONTHS
                 Case eBiomassAccumulationCalculationTypes.FromEcosimStart
-                    pathDest.BA(iGroup) = (simBB(iGroup) - pathDest.B(iGroup))
+                    'BA is the Annual Accumulation of B 
+                    'So get the annual average accumulation (B(t)-B(0))/ number of years
+                    'Attributes the annual average change in Biomass to BiomassAccumulation
+                    pathDest.BA(iGroup) = (simBB(iGroup) - pathSrc.B(iGroup)) / nYears
                 Case eBiomassAccumulationCalculationTypes.FromEcopath
-                    ' NOP
+                    'Explicitly copy the data from the Ecopath source so you can tell it worked
+                    pathDest.BA(iGroup) = pathSrc.BA(iGroup)
                 Case eBiomassAccumulationCalculationTypes.SetToZero
                     pathDest.BA(iGroup) = 0
             End Select
