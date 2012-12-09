@@ -15,10 +15,15 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
 Option Strict On
 
-#Region "Contaminant tracing model"
+#End Region ' Imports
 
+''' <summary>
+''' Contaminant tracing model.
+''' </summary>
 Public Class cContaminantTracer
 
     ''' <summary>
@@ -255,179 +260,3 @@ Public Class cContaminantTracer
 
 
 End Class
-
-#End Region
-
-#Region "Data structures for contaminant tracer"
-
-
-''' <summary>
-''' Public variables need by the contaminant tracing model cContaminantTracer
-''' </summary>
-''' <remarks></remarks>
-Public Class cContaminantTracerDataStructures
-
-    'EwE5 ReadEcoTracer() for variables that are saved to database
-    Private m_nGroups As Integer = 0
-
-    ''' <summary>
-    ''' Decay rate per year
-    ''' </summary>
-    ''' <remarks>
-    ''' The zero element holds the Enviroment value 
-    ''' 1 to ngroups is for the groups
-    ''' </remarks>
-    Public cdecay() As Single
-
-    ''' <summary>
-    ''' Initial concentration of contaminants in t/km2
-    ''' </summary>
-    ''' <remarks>
-    ''' The zero element holds the Environment value 
-    ''' 1 to ngroups is for the groups
-    ''' </remarks>
-    Public Czero() As Single
-
-    ''' <summary>
-    ''' Base inflow rate to environment t/km2/year in Zero element
-    ''' </summary>
-    Public Cinflow() As Single
-
-    ''' <summary>
-    ''' Absorption rate t/t/t/year (concentration in prey/consumption/year ???)
-    ''' </summary>
-    Public Cenv() As Single
-
-    ''' <summary>
-    ''' Concentration in immigrating groups t/t
-    ''' </summary>
-    Public Cimmig() As Single
-
-    ''' <summary>
-    ''' Volume exchange loss rate zero element for environment
-    ''' </summary>
-    Public CoutFlow() As Single
-
-    ''' <summary>
-    ''' Pool excretion rate.
-    ''' </summary>
-    ''' <remarks>
-    ''' <para>C.J.Walters, per email 25Nov2007:</para>
-    ''' <para>
-    ''' One way to improve ecotracer would be to add a pool-specific instantaneous
-    ''' excretion rate, with the excretion flow going back into the 0 (environment)
-    ''' pool. Such flows should be very low for lipophilic compounds, close to the
-    ''' metabolic rate for compounds that are lost in proportion to routine tissue
-    ''' metabolism (eg conversion of carbon 14 organic form to c14-02).
-    ''' </para>
-    ''' </remarks>
-    Public CexcretionRate() As Single
-
-    Public ConForceNumber As Integer
-
-    ''' <summary>
-    ''' Plot contr/biomass
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public TracePlotCB As Boolean
-
-    ''' <summary>Results over time</summary>
-    Public TracerConc(,) As Single
-    ''' <summary>Concentration over time by region.</summary>
-    Public TracerConcByRegion(,,) As Single ' by region, group, time
-    ''' <summary>Concentration over biomass over time by region.</summary>
-    Public TracerCBRegion(,,) As Single ' by region, group, time
-
-    ''' <summary>Max concentration of contaminant at the current time step by group</summary>
-    Public ConcMax() As Single
-
-    ''' <summary>Ecosim tracer enabled state flag.</summary>
-    Friend EcoSimConSimOn As Boolean
-    ''' <summary>Ecospace tracer enabled state flag.</summary>
-    Friend m_bEcoSpaceConSimOn As Boolean
-
-
-
-    Friend Sub RedimByNGroups(ByVal nGroups As Integer)
-        'redimension variables needed for contaminant tracking
-        ReDim Czero(nGroups)
-        ReDim Cimmig(nGroups)
-        ReDim Cenv(nGroups)
-        ReDim cdecay(nGroups)
-        ReDim Cinflow(nGroups)
-        ReDim CoutFlow(nGroups)
-        ReDim CexcretionRate(nGroups)
-        Me.m_nGroups = nGroups
-    End Sub
-
-    Public Sub redimForEcosimRun(ByVal nGroups As Integer, ByVal nTime As Integer)
-        ReDim TracerConc(nGroups + 1, nTime)
-    End Sub
-
-    Public Sub redimForEcospaceRun(ByVal nRegions As Integer, ByVal nGroups As Integer, ByVal nTime As Integer)
-        ReDim TracerConcByRegion(nRegions, nGroups + 1, nTime)
-        ReDim TracerCBRegion(nRegions, nGroups + 1, nTime)
-    End Sub
-
-    Public Sub Clear()
-        Me.m_nGroups = 0
-
-        TracerConc = Nothing '(nGroups + 1, nTime)
-        TracerConcByRegion = Nothing '(nRegions, nGroups + 1, nTime)
-        TracerCBRegion = Nothing '(nRegions, nGroups + 1, nTime)
-
-        Czero = Nothing '(nGroups)
-        Cimmig = Nothing '(nGroups)
-        Cenv = Nothing '(nGroups)
-        cdecay = Nothing '(nGroups)
-        Cinflow = Nothing '(nGroups)
-        CoutFlow = Nothing '(nGroups)
-        CexcretionRate = Nothing '(nGroups)
-
-        'Me.RedimByNGroups(0)
-    End Sub
-
-    Public Sub CopyTo(ByRef d As cContaminantTracerDataStructures)
-        'EwE5 ReadEcoTracer() for variables that are saved to database
-
-        d.cdecay = CType(cdecay.Clone, Single())
-        d.Czero = CType(Czero.Clone, Single())
-        d.Cinflow = CType(Cinflow.Clone, Single())
-        d.Cenv = CType(Cenv.Clone, Single())
-        d.Cimmig = CType(Cimmig.Clone, Single())
-        d.CoutFlow = CType(CoutFlow.Clone, Single())
-        d.CexcretionRate = CType(CexcretionRate.Clone, Single())
-        d.ConForceNumber = ConForceNumber
-        d.EcoSimConSimOn = EcoSimConSimOn
-        d.EcoSpaceConSimOn = EcoSpaceConSimOn
-    End Sub
-
-    'Public Property EcoSimConSimOn() As Boolean
-    '    Get
-    '        Return Me.m_bEcoSimConSimOn
-    '        'Return ((Me.m_bEcoSimConSimOn = True) And (Me.m_nGroups > 0))
-    '    End Get
-    '    Set(ByVal value As Boolean)
-    '        m_bEcoSimConSimOn = value
-    '    End Set
-    'End Property
-
-
-    Public Property EcoSpaceConSimOn() As Boolean
-        Get
-            Return m_bEcoSpaceConSimOn
-            'jb this is not valid for Ecospace
-            'because of the mulithreading Ecospace gets a copy of the data initialized be the database
-            'RedimByNGroups() is never called on the actual object so m_nGroups is never set
-            '  Return ((Me.m_bEcoSpaceConSimOn = True) And (Me.m_nGroups > 0))
-        End Get
-        Set(ByVal value As Boolean)
-            m_bEcoSpaceConSimOn = value
-        End Set
-    End Property
-
-
-End Class
-
-#End Region
-

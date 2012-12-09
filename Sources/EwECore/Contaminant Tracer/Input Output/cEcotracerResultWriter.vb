@@ -55,8 +55,12 @@ Public Class cEcotracerResultWriter
         sw = Me.OpenWriter(strFile)
         If (sw Is Nothing) Then Return False
 
-        Me.WriteHeader(sw, False)
-        Me.WriteBody(sw)
+        Try
+            Me.WriteHeader(sw, False)
+            Me.WriteBody(sw)
+        Catch ex As Exception
+
+        End Try
         Me.CloseWriter(sw, strFile)
 
         Return True
@@ -68,14 +72,33 @@ Public Class cEcotracerResultWriter
         Dim sw As StreamWriter = Nothing
         Dim scenario As cEcospaceScenario = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex)
         Dim strFile As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer), _
-                                             cFileUtils.ToValidFileName("Ecosim_" & scenario.Name & ".csv", False))
+                                             cFileUtils.ToValidFileName("Ecospace_" & scenario.Name & ".csv", False))
         sw = Me.OpenWriter(strFile)
         If (sw Is Nothing) Then Return False
 
-        Me.WriteHeader(sw, True)
-        Me.WriteBody(sw)
+        Try
+            Me.WriteHeader(sw, True)
+            Me.WriteBody(sw)
+        Catch ex As Exception
+
+        End Try
         Me.CloseWriter(sw, strFile)
 
+        For i As Integer = 1 To Me.m_core.m_tracerData.m_nRegions
+            strFile = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecotracer), _
+                                   cFileUtils.ToValidFileName("Ecospace_" & scenario.Name & " region " & i & ".csv", False))
+            sw = Me.OpenWriter(strFile)
+            If (sw Is Nothing) Then Return False
+
+            Try
+                Me.WriteHeader(sw, True, i)
+                Me.WriteBody(sw, i)
+            Catch ex As Exception
+
+            End Try
+            Me.CloseWriter(sw, strFile)
+
+        Next
         Return True
 
     End Function
@@ -143,7 +166,7 @@ Public Class cEcotracerResultWriter
     ''' Write CSV header information.
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Protected Sub WriteHeader(ByVal sw As StreamWriter, ByVal bSpace As Boolean)
+    Protected Sub WriteHeader(ByVal sw As StreamWriter, ByVal bSpace As Boolean, Optional iRegion As Integer = 0)
 
         ' File
         sw.WriteLine("EwE version, " & cCore.Version)
@@ -154,6 +177,12 @@ Public Class cEcotracerResultWriter
         If bSpace Then
             Debug.Assert(Me.m_core.ActiveEcospaceScenarioIndex > 0)
             sw.WriteLine("EcospaceScenario, " & Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name)
+            sw.Write("Region, ")
+            If (iRegion = 0) Then
+                sw.WriteLine("(none)")
+            Else
+                sw.WriteLine(iRegion)
+            End If
         End If
 
         ' Append time series name to scenario, if any
@@ -166,9 +195,28 @@ Public Class cEcotracerResultWriter
 
     End Sub
 
-    Protected Sub WriteBody(ByVal sw As StreamWriter)
+    Protected Sub WriteBody(ByVal sw As StreamWriter, Optional iRegion As Integer = 0)
 
-        ' To write
+        Dim pathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
+        Dim tracerDS As cContaminantTracerDataStructures = Me.m_core.m_tracerData
+
+        sw.Write("time step")
+        For i As Integer = 1 To pathDS.NumGroups
+            sw.Write(", " & cStringUtils.ToCSVField(pathDS.GroupName(i)))
+        Next
+        sw.WriteLine()
+
+        For t As Integer = 1 To tracerDS.m_nTime
+            sw.Write(t)
+            For i As Integer = 1 To pathDS.NumGroups
+                If iRegion = 0 Then
+                    sw.Write(", " & cStringUtils.FormatNumber(tracerDS.TracerConc(i, t)))
+                Else
+                    sw.Write(", " & cStringUtils.FormatNumber(tracerDS.TracerConcByRegion(iRegion, i, t)))
+                End If
+            Next
+            sw.WriteLine()
+        Next
 
     End Sub
 

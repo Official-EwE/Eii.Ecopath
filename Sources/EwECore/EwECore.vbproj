@@ -133,6 +133,7 @@
     <Compile Include="Auxiliary\cReference.vb" />
     <Compile Include="Auxiliary\cVisualStyle.vb" />
     <Compile Include="Contaminant Tracer\Input Output\cEcotracerResultWriter.vb" />
+    <Compile Include="Contaminant Tracer\Model\cContaminanTracerDataStructures.vb" />
     <Compile Include="Core\cCoreSettings.vb" />
     <Compile Include="Database\cEwESQLServerDatabase.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_02_00_03.vb" />
@@ -157,7 +158,7 @@
     <Compile Include="HelperClasses\Threading\IThreadedProcess.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchFGroup.vb" />
     <Compile Include="MSE\BatchAnalysis\cMSEBatchParameters.vb" />
-    <Compile Include="Contaminant Tracer\cContaminantTracer.vb" />
+    <Compile Include="Contaminant Tracer\Model\cContaminantTracer.vb" />
     <Compile Include="Database\cDatabaseUpdater.vb" />
     <Compile Include="Database\cEwEAccessDatabase.vb" />
     <Compile Include="EcoSim\Input Output\cEcosimGroupOutput.vb" />

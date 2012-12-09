@@ -241,6 +241,7 @@ Namespace MSY
 
         Private Sub runFullMSYSearch()
             Try
+                Me.m_Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
                 Me.m_parameters.Assessment = eMSYAssessmentTypes.FullCompensation
                 Me.m_MSY.RunMSY()
                 If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
@@ -251,6 +252,7 @@ Namespace MSY
 
                 'tell the interface that we are done
                 Me.onMSYRunStateChanged(eMSYRunStates.FullRunComplete)
+                Me.m_Core.SetStopRunDelegate(Nothing)
             Catch ex As Exception
 
             End Try
@@ -662,6 +664,7 @@ Namespace MSY
                 End If
 
                 result = Me.Wait(WaitTimeInMillSec)
+                Me.m_Core.SetStopRunDelegate(Nothing)
             Catch ex As Exception
                 result = False
             End Try
