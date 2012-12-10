@@ -716,6 +716,22 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts an incoming string to UTF-8 encoding.
+        ''' </summary>
+        ''' <param name="strIn">The string to convert.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToUTF8(ByVal strIn As String) As String
+            ' Special cases
+            strIn = strIn.Replace("²"c, "2"c)
+            strIn = strIn.Replace("³"c, "3"c)
+            ' Shazaam
+            Dim data() As Byte = System.Text.Encoding.ASCII.GetBytes(strIn)
+            Return System.Text.Encoding.UTF8.GetString(data)
+        End Function
+
 #Region " Map array conversions "
 
         ''' -----------------------------------------------------------------------
