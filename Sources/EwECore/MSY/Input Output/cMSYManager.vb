@@ -38,7 +38,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 
 Namespace MSY
 
-    '' <summary>
+    ''' <summary>
     ''' Run states of the MSE 
     ''' </summary>
     ''' <remarks>Passed out via the MSEProgressDelegate</remarks>
