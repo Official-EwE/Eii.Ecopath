@@ -18,14 +18,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
-Imports System.Data
-Imports System.Text
 Imports System.Drawing
-Imports EwEUtils.Database
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 Imports System.Globalization
+Imports System.Text
+Imports EwEUtils.Core
+Imports EwEUtils.Database
+Imports EwEUtils.Utilities
 
 #End Region ' EwECore
 
@@ -168,201 +166,37 @@ Namespace Database
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdoc cref="cEwE5ModelImporter.GetModels"/>
+        ''' <inheritdoc cref="cEwE5ModelImporter.Models"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function GetModels() As cEwE5ModelImporter.cEwE5ModelInfo()
+        Public Overrides Function Models() As cExternalModelInfo()
 
             ' Pre
             Debug.Assert(Me.IsOpen())
 
-            Dim l As New List(Of cEwE5ModelImporter.cEwE5ModelInfo)
-            Dim mi As cEwE5ModelImporter.cEwE5ModelInfo = Nothing
+            Dim l As New List(Of cExternalModelInfo)
+            Dim mi As cExternalModelInfo = Nothing
             Dim r As IDataReader = Me.m_dbEwE5.GetReader("SELECT Models.modelName, Models.modelTitle, Models.remarks, (SELECT COUNT(*) FROM [Ecosim] WHERE (Models.modelName = Ecosim.modelName)) as NumScenarios FROM [Models] GROUP BY Models.modelName, Models.modelTitle, Models.remarks")
 
             If r Is Nothing Then Return Nothing
 
             While r.Read()
-                mi = New cEwE5ModelImporter.cEwE5ModelInfo(CStr(r(0)), CStr(r(1)), _
+                mi = New cExternalModelInfo(CStr(r(0)), CStr(r(1)), _
                     CStr(Me.FixValue(r, "remarks", My.Resources.CoreMessages.IMPORT_NO_DESCRIPTION)), CInt(r(3)))
                 l.Add(mi)
             End While
 
             ' Sort models
-            l.Sort(New cEwE5ModelInfoSort())
+            l.Sort(New cExternalModelInfoSorter())
 
             Return l.ToArray()
 
         End Function
 
-#End Region ' Interface implementation
-
-#Region " The import "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Imports and converts a model in an EwE5 database into a provided EwE6 database.
-        ''' </summary>
-        ''' <returns>True if succesful.</returns>
-        ''' -------------------------------------------------------------------
-        Protected Overrides Function PerformImport() As Boolean
-
-            ' Allocate primary key lookup tables
-            ReDim m_adtKeys(System.Enum.GetValues(GetType(eDataTypes)).Length)
-            ' Allocate object indexes lookup tables
-            ReDim Me.m_adtIndexes(System.Enum.GetValues(GetType(eDataTypes)).Length)
-
-            Me.Open()
-
-            ' Pre
-            Debug.Assert(Me.m_dbEwE6 IsNot Nothing, "Needs a valid EwE6 database instance")
-            Debug.Assert(Me.m_dbEwE6.GetConnection().State = ConnectionState.Open, "EwE6 database must already be open")
-
-            Dim dbUpd As cDatabaseUpdater = Nothing
-
-            ' Set progress info (fixed)
-            Me.m_iNumSteps = 29
-            Me.m_iStep = 0
-
-            ' Start the actual import process.
-            ' Note that VB6 function names are used here to make it easier to map to the old code.
-
-            ' -------
-            ' ECOPATH
-            ' -------
-
-            Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL, Me.m_strModelName))
-            Me.ImportModels()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_PEDIGREE)
-            Me.ImportPedigree()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
-            Me.ImportEcopathGroups()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
-            Me.ImportGroupSize()
-            Me.ImportBasicRemarks()
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_STANZA)
-            Me.ImportGroupStanza()
-
-            'ImportGroupTaxon Me.m_strModelName (discontinued in EwE5)
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_POGRESS_DIETCOMP)
-            Me.ImportGroupxGroup()
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FLEET)
-            Me.ImportGear()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 1/3")
-            Me.ImportCatch()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 2/3")
-            Me.ImportCatchCodes()
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 3/3")
-            Me.ImportDiscardFate()
-
-            ' Discontinued in EwE6, but throw a warning when EwE5 data exists
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECORANGER)
-            Me.ImportEcoranger()
-            'ImportEcoRangerN()
-            'ImportEcoRangerNxN1()
-
-            ' ------
-            ' ECOSIM
-            ' ------
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_SCENARIO)
-            If Me.ImportEcosim() Then
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMGROUPS)
-                Me.ImportEcosimN()
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGMEDIATION)
-                Me.ImportEcosimnShapes()
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 1/3")
-                Me.ImportEcosimNxNInteraction()
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 2/3")
-                Me.ImportEcosimNxN()
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 3/3")
-                Me.ImportEcosimMedWeights()
-
-                ' Discontinued in EwE6, but still throw a warning
-                Me.ImportEcosimPairs()
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FLEET)
-                Me.ImportEcosimFishGear()
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_TIMESERIES)
-                Me.ImportTimeSeries()
-
-            End If
-
-            ' --------
-            ' ECOSPACE
-            ' --------
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACESCENARIOS)
-            If (Me.ImportEcospaceScenario()) Then
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROPRESS_ECOSPACEHABITATS)
-                Me.ImportEcospaceHabitats()
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEGROUPS)
-                Me.ImportEcospaceGroups()
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEMPAS)
-                Me.ImportEcospaceMPA()
-
-                ' Import basemap after habitat, mpa and regions
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEBASEMAP)
-                Me.ImportEcospaceBasemap()
-
-                ' Import fleets after basemap
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEFLEETS)
-                Me.ImportEcospaceFleets()
-
-            End If
-
-            ' ---------
-            ' ECOTRACER
-            ' ---------
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOTRACER)
-            If (Me.ImportEcotracer()) Then
-
-                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOTRACERGROUPS)
-                Me.ImportEcotracerN()
-
-            End If
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_QUOTES)
-            Me.ImportQuotes()
-
-            'ImportFlowBox()
-            'ImportFlowConnector()
-            'ImportFlowLabel()
-            'ImportFlowLineSource()
-            'ImportFlowLines()
-            'ImportGroupTaxon()
-            'ImportOutputParam()
-            'ImportPyramidMain()
-            'ImportPyramidSource()
-            'ImportSummaryStatistics()
-
-            ' Set version
-            Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from Ecopath 5")
-
-            ' Now run all available updates on the new EwE6 database
-            dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
-            dbUpd.UpdateDatabase(Me.m_dbEwE6)
-            dbUpd = Nothing
-
-            Me.Close()
-
-            ' Release DB
-            Me.m_dbEwE6 = Nothing
-
-            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_COMPLETE, Me.m_iNumSteps)
-
+        Public Overrides Function CanImportFrom(strSource As String) As Boolean
             Return True
         End Function
 
-#End Region ' The import 
+#End Region ' Interface implementation
 
 #Region " Implementation "
 
@@ -732,6 +566,174 @@ Namespace Database
         End Function
 
 #End Region ' Generic
+
+#Region " The import "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Imports and converts a model in an EwE5 database into a provided EwE6 database.
+        ''' </summary>
+        ''' <returns>True if succesful.</returns>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function PerformImport() As Boolean
+
+            ' Allocate primary key lookup tables
+            ReDim m_adtKeys(System.Enum.GetValues(GetType(eDataTypes)).Length)
+            ' Allocate object indexes lookup tables
+            ReDim Me.m_adtIndexes(System.Enum.GetValues(GetType(eDataTypes)).Length)
+
+            Me.Open()
+
+            ' Pre
+            Debug.Assert(Me.m_dbEwE6 IsNot Nothing, "Needs a valid EwE6 database instance")
+            Debug.Assert(Me.m_dbEwE6.GetConnection().State = ConnectionState.Open, "EwE6 database must already be open")
+
+            Dim dbUpd As cDatabaseUpdater = Nothing
+
+            ' Set progress info (fixed)
+            Me.m_iNumSteps = 29
+            Me.m_iStep = 0
+
+            ' Start the actual import process.
+            ' Note that VB6 function names are used here to make it easier to map to the old code.
+
+            ' -------
+            ' ECOPATH
+            ' -------
+
+            Me.LogProgress(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_MODEL, Me.m_strModelName))
+            Me.ImportModels()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_PEDIGREE)
+            Me.ImportPedigree()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
+            Me.ImportEcopathGroups()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOPATHGROUPS)
+            Me.ImportGroupSize()
+            Me.ImportBasicRemarks()
+
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_STANZA)
+            Me.ImportGroupStanza()
+
+            'ImportGroupTaxon Me.m_strModelName (discontinued in EwE5)
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_POGRESS_DIETCOMP)
+            Me.ImportGroupxGroup()
+
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FLEET)
+            Me.ImportGear()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 1/3")
+            Me.ImportCatch()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 2/3")
+            Me.ImportCatchCodes()
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_CATCH & " 3/3")
+            Me.ImportDiscardFate()
+
+            ' Discontinued in EwE6, but throw a warning when EwE5 data exists
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECORANGER)
+            Me.ImportEcoranger()
+            'ImportEcoRangerN()
+            'ImportEcoRangerNxN1()
+
+            ' ------
+            ' ECOSIM
+            ' ------
+
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_SCENARIO)
+            If Me.ImportEcosim() Then
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSIMGROUPS)
+                Me.ImportEcosimN()
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGMEDIATION)
+                Me.ImportEcosimnShapes()
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 1/3")
+                Me.ImportEcosimNxNInteraction()
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 2/3")
+                Me.ImportEcosimNxN()
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FORCINGAPPLICATIONS & " 3/3")
+                Me.ImportEcosimMedWeights()
+
+                ' Discontinued in EwE6, but still throw a warning
+                Me.ImportEcosimPairs()
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_FLEET)
+                Me.ImportEcosimFishGear()
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_TIMESERIES)
+                Me.ImportTimeSeries()
+
+            End If
+
+            ' --------
+            ' ECOSPACE
+            ' --------
+
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACESCENARIOS)
+            If (Me.ImportEcospaceScenario()) Then
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROPRESS_ECOSPACEHABITATS)
+                Me.ImportEcospaceHabitats()
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEGROUPS)
+                Me.ImportEcospaceGroups()
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEMPAS)
+                Me.ImportEcospaceMPA()
+
+                ' Import basemap after habitat, mpa and regions
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEBASEMAP)
+                Me.ImportEcospaceBasemap()
+
+                ' Import fleets after basemap
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOSPACEFLEETS)
+                Me.ImportEcospaceFleets()
+
+            End If
+
+            ' ---------
+            ' ECOTRACER
+            ' ---------
+
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOTRACER)
+            If (Me.ImportEcotracer()) Then
+
+                Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_ECOTRACERGROUPS)
+                Me.ImportEcotracerN()
+
+            End If
+
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_QUOTES)
+            Me.ImportQuotes()
+
+            'ImportFlowBox()
+            'ImportFlowConnector()
+            'ImportFlowLabel()
+            'ImportFlowLineSource()
+            'ImportFlowLines()
+            'ImportGroupTaxon()
+            'ImportOutputParam()
+            'ImportPyramidMain()
+            'ImportPyramidSource()
+            'ImportSummaryStatistics()
+
+            ' Set version
+            Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from Ecopath 5")
+
+            ' Now run all available updates on the new EwE6 database
+            dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
+            dbUpd.UpdateDatabase(Me.m_dbEwE6)
+            dbUpd = Nothing
+
+            Me.Close()
+
+            ' Release DB
+            Me.m_dbEwE6 = Nothing
+
+            Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_COMPLETE, Me.m_iNumSteps)
+
+            Return True
+        End Function
+
+#End Region ' The import
 
 #Region " Model "
 

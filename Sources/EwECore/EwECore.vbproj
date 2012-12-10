@@ -354,7 +354,7 @@
     <Compile Include="Database\Compact\cCompactJRO.vb" />
     <Compile Include="Database\Compact\cDatabaseCompactFactory.vb" />
     <Compile Include="Database\Compact\IDatabaseCompact.vb" />
-    <Compile Include="Database\Import\cEwE5ModelImporterFactory.vb" />
+    <Compile Include="Database\Import\cModelImporterFactory.vb" />
     <Compile Include="Database\Import\cEwE5DatabaseImporter.vb" />
     <Compile Include="Database\Import\cEwE5EIIImporter.vb" />
     <Compile Include="Database\Import\cEwE5ModelImporter.vb" />

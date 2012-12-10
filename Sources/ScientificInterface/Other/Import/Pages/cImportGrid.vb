@@ -23,6 +23,7 @@ Imports EwEUtils.Utilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
+Imports EwEUtils.Database
 
 #End Region ' Imports
 
@@ -85,7 +86,7 @@ Namespace Import
         ''' -----------------------------------------------------------------------
         Public Event OnEdited(ByVal grid As cImportGrid)
 
-        Public ReadOnly Property SelectedModelInfo As cEwE5ModelImporter.cEwE5ModelInfo
+        Public ReadOnly Property SelectedModelInfo As cExternalModelInfo
             Get
                 If Me.SelectedRow < 0 Then Return Nothing
                 Return Me.ImportSettings(Me.SelectedRow).ModelInfo

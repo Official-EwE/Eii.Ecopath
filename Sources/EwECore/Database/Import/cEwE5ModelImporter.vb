@@ -34,95 +34,21 @@ Namespace Database
     ''' </summary>
     ''' -------------------------------------------------------------------
     Public MustInherit Class cEwE5ModelImporter
+        Implements IModelImporter
 
 #Region " Public helper classes "
 
-        Protected Class cEwE5ModelInfoSort
-            Implements IComparer(Of cEwE5ModelInfo)
+        Protected Class cExternalModelInfoSorter
+            Implements IComparer(Of cExternalModelInfo)
 
-            Public Function Compare(ByVal x As cEwE5ModelInfo, ByVal y As cEwE5ModelInfo) As Integer _
-                Implements IComparer(Of cEwE5ModelInfo).Compare
+            Public Function Compare(ByVal x As cExternalModelInfo, ByVal y As cExternalModelInfo) As Integer _
+                Implements IComparer(Of cExternalModelInfo).Compare
                 Return String.Compare(x.Name, y.Name)
             End Function
 
         End Class
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper class, provides information of an EwE5 model found in the 
-        ''' source database.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Class cEwE5ModelInfo
-
-            Private m_strID As String = ""
-            Private m_strName As String = ""
-            Private m_strDescription As String = ""
-            Private m_nScenarios As Integer = 0
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Constructor, initializes a new instance of this class.
-            ''' </summary>
-            ''' <param name="strID">EwE5 modelName for this model.</param>
-            ''' <param name="strName">EwE5 modelTitle for this model.</param>
-            ''' <param name="strDescription">EwE5 model Remarks for this model.</param>
-            ''' <param name="nScenarios">Number of EwE5 scenarios in this model.</param>
-            ''' ---------------------------------------------------------------
-            Public Sub New(ByVal strID As String, ByVal strName As String, ByVal strDescription As String, ByVal nScenarios As Integer)
-                Me.m_strID = strID
-                Me.m_strName = strName
-                Me.m_strDescription = strDescription
-                Me.m_nScenarios = nScenarios
-            End Sub
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the internal model ID (EwE5 field modelName) for this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property ID() As String
-                Get
-                    Return Me.m_strID
-                End Get
-            End Property
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the human readable model name (EwE5 field modelTitle) for this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property Name() As String
-                Get
-                    Return Me.m_strName
-                End Get
-            End Property
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the model description (EwE5 field Remarks) for this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property Description() As String
-                Get
-                    Return Me.m_strDescription
-                End Get
-            End Property
-
-            ''' ---------------------------------------------------------------
-            ''' <summary>
-            ''' Gets the number of scenarios in this model.
-            ''' </summary>
-            ''' ---------------------------------------------------------------
-            Public ReadOnly Property NumScenarios() As Integer
-                Get
-                    Return Me.m_nScenarios
-                End Get
-            End Property
-
-        End Class
-
-#End Region ' Public helper classes
+#End Region ' Internal helper classes
 
 #Region " Private vars "
 
@@ -177,7 +103,8 @@ Namespace Database
         ''' disconnected via the <see cref="Close">Close</see> method.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Open() As Boolean
+        Public MustOverride Function Open() As Boolean _
+            Implements IModelImporter.Open
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -188,7 +115,8 @@ Namespace Database
         ''' method must be disconnected via the Close method.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public MustOverride Sub Close()
+        Public MustOverride Sub Close() _
+            Implements IModelImporter.Close
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -196,7 +124,8 @@ Namespace Database
         ''' via the <see cref="Open">Open</see> method.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function IsOpen() As Boolean
+        Public MustOverride Function IsOpen() As Boolean _
+            Implements IModelImporter.IsOpen
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -204,53 +133,30 @@ Namespace Database
         ''' </summary>
         ''' <returns>True if succesful.</returns>
         ''' -------------------------------------------------------------------
-        Protected MustOverride Function PerformImport() As Boolean
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get a <see cref="cEwE5ModelInfo">descriptive list of models</see> 
-        ''' that can be imported from an attached EwE5 document.
-        ''' </summary>
-        ''' <returns></returns>
-        ''' -------------------------------------------------------------------
-        Public MustOverride Function GetModels() As cEwE5ModelInfo()
-
-#End Region ' Overridables
-
-#Region " Public access "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Imports and converts a model in an EwE5 database into a new EwE6 database.
-        ''' </summary>
-        ''' <param name="strModelName">Name of the model in the EwE5 database to import.</param>
-        ''' <param name="db">Database to import into.</param>
-        ''' <param name="strLogfileName">File to log import progress to.</param>
-        ''' <returns>True if succesful.</returns>
-        ''' -------------------------------------------------------------------
-        Public Function Import(ByVal strModelName As String, _
+        Public Function Import(ByVal info As cExternalModelInfo, _
                                ByVal db As cEwEDatabase, _
-                               ByRef strLogfileName As String) As Boolean
+                               ByRef strLogfileName As String) As Boolean _
+            Implements IModelImporter.Import
 
             Dim bSucces As Boolean = False
 
             Me.m_sbLog.Length = 0
             Me.m_dbEwE6 = db
-            Me.m_strModelName = strModelName
+            Me.m_strModelName = info.ID
 
             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_STARTED, _
-                                        strModelName, Date.Now.ToString()), _
+                                        Me.m_strModelName, Date.Now.ToString()), _
                                         eMessageType.DataImport, eMessageImportance.Information, True)
 
             bSucces = Me.PerformImport()
 
             If bSucces Then
                 Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_SUCCES, _
-                                            strModelName, Date.Now.ToString()), _
+                                            Me.m_strModelName, Date.Now.ToString()), _
                                             eMessageType.NotSet, eMessageImportance.Information, True)
             Else
                 Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_FAILED, _
-                                            strModelName, Date.Now.ToString()), _
+                                            Me.m_strModelName, Date.Now.ToString()), _
                                             eMessageType.DataImport, eMessageImportance.Information, True)
             End If
 
@@ -266,7 +172,35 @@ Namespace Database
 
         End Function
 
-#End Region ' Public access
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get a <see cref="cExternalModelInfo">descriptive list of models</see> 
+        ''' that can be imported from an attached EwE5 document.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function Models() As cExternalModelInfo() _
+            Implements IModelImporter.Models
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether this importer can import from a given source.
+        ''' </summary>
+        ''' <param name="strSource">The source to explore.</param>
+        ''' <returns>True if this importer can import from the given source.</returns>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function CanImportFrom(ByVal strSource As String) As Boolean _
+            Implements IModelImporter.CanImportFrom
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Actual implementation of the import process.
+        ''' </summary>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function PerformImport() As Boolean
+
+#End Region ' Overridables
 
 #Region " Status logging "
 

@@ -25,6 +25,7 @@ Imports EwECore.DataSources
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports EwEUtils.Commands
+Imports EwEUtils.Database
 
 #End Region ' Imports
 
@@ -234,7 +235,7 @@ Namespace Import
         End Sub
 
         Private Sub OnModelSelectionChanged(ByVal sel As SourceGrid2.CellVirtualCollection)
-            Dim inf As cEwE5ModelImporter.cEwE5ModelInfo = Me.m_grid.SelectedModelInfo
+            Dim inf As cExternalModelInfo = Me.m_grid.SelectedModelInfo
             If inf Is Nothing Then
                 Me.m_lblComments.Text = ""
             Else

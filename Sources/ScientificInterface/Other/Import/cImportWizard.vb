@@ -21,10 +21,10 @@ Option Strict On
 
 Imports System.IO
 Imports EwECore
-Imports EwECore.Database
 Imports EwECore.DataSources
-Imports EwEUtils.Database
+Imports EwEPlugin
 Imports EwEUtils.Core
+Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
 
@@ -44,7 +44,7 @@ Namespace Import
 #Region " Private bits "
 
         ''' <summary>The actual importer.</summary>
-        Private m_dbImp As cEwE5ModelImporter = Nothing
+        Private m_dbImp As IModelImporter = Nothing
         ''' <summary>A setting for each EwE5 model.</summary>
         Private m_lImportSettings As New List(Of cImportSettings)
         ''' <summary>Folder to place imported models into.</summary>
@@ -70,7 +70,7 @@ Namespace Import
 #Region " Privates vars "
 
             ''' <summary>EwE5 model info.</summary>
-            Private m_mi As cEwE5ModelImporter.cEwE5ModelInfo = Nothing
+            Private m_mi As cExternalModelInfo = Nothing
             ''' <summary>Flag stating whether this EwE5 model should be imported.</summary>
             Private m_bImport As Boolean = False
             ''' <summary>EwE6 name of the model to import into.</summary>
@@ -84,12 +84,10 @@ Namespace Import
             ''' <summary>
             ''' Create a new import setting for an EwE5 model.
             ''' </summary>
-            ''' <param name="mi">
-            ''' The <see cref="cEwE5ModelImporter.cEwE5ModelInfo">EwE5 model</see>
-            ''' to create import settings for.
-            ''' </param>
+            ''' <param name="mi">The <see cref="cExternalModelInfo">importable model</see>
+            ''' to create import settings for.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub New(ByVal mi As cEwE5ModelImporter.cEwE5ModelInfo)
+            Public Sub New(ByVal mi As cExternalModelInfo)
                 Me.m_mi = mi
                 Me.m_bImport = False
                 Me.m_strEwE6Name = mi.Name
@@ -97,11 +95,11 @@ Namespace Import
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Get the <see cref="cEwE5ModelImporter.cEwE5ModelInfo">EwE5 model 
+            ''' Get the <see cref="cExternalModelInfo">importable model 
             ''' information</see> associated with this import setting.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public ReadOnly Property ModelInfo() As cEwE5ModelImporter.cEwE5ModelInfo
+            Public ReadOnly Property ModelInfo() As cExternalModelInfo
                 Get
                     Return Me.m_mi
                 End Get
@@ -183,17 +181,21 @@ Namespace Import
 
             MyBase.New(uic, parent, content, nav)
 
+            ' Sanity checks
+            Debug.Assert(uic IsNot Nothing)
+            Debug.Assert(uic.Core IsNot Nothing)
+
             ' Hook up with data
-            Me.m_dbImp = cEwE5ModelImporterFactory.GetEwE5ModelImporter(Core, strEwE5File)
+            Me.m_dbImp = cModelImporterFactory.GetModelImporter(Core, strEwE5File, uic.Core.PluginManager)
             Me.m_dbImp.Open()
 
             Me.m_strDatabase = strEwE5File
             Me.m_strOutputFolder = Path.GetDirectoryName(strEwE5File)
 
             ' Prepare import settings
-            For Each mi As cEwE5ModelImporter.cEwE5ModelInfo In Me.m_dbImp.GetModels
+            For Each mi As cExternalModelInfo In Me.m_dbImp.Models
                 Dim imp As New cImportSettings(mi)
-                imp.SelectedForImport = (Me.m_dbImp.GetModels.Count = 1)
+                imp.SelectedForImport = (Me.m_dbImp.Models.Count = 1)
                 Me.m_lImportSettings.Add(imp)
             Next
 
@@ -339,7 +341,7 @@ Namespace Import
                 ' #Yes: Open target model
                 db.Open(strModel)
                 ' Able to import?
-                If Me.m_dbImp.Import(setting.ModelInfo.ID, db, strLogFile) Then
+                If Me.m_dbImp.Import(setting.ModelInfo, db, strLogFile) Then
                     ' #Yes: remember last imported model file
                     Me.m_strFileName = strModel
                     ' Succes

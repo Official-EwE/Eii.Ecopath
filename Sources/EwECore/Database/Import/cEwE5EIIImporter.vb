@@ -129,15 +129,19 @@ Namespace Database
         End Function
 
         ''' -----------------------------------------------------------------------
-        ''' <inheritdoc cref="cEwE5ModelImporter.GetModels"/>
+        ''' <inheritdoc cref="cEwE5ModelImporter.Models"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function GetModels() As cEwE5ModelImporter.cEwE5ModelInfo()
+        Public Overrides Function Models() As cExternalModelInfo()
 
             'Debug.Assert(Me.IsOpen())
 
-            Dim info As New cEwE5ModelImporter.cEwE5ModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strEwE5File), "Ecopath 5 EII file", 0)
-            Return New cEwE5ModelImporter.cEwE5ModelInfo() {info}
+            Dim info As New cExternalModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strEwE5File), "Ecopath 5 EII file", 0)
+            Return New cExternalModelInfo() {info}
 
+        End Function
+
+        Public Overrides Function CanImportFrom(strSource As String) As Boolean
+            Return True
         End Function
 
 #End Region ' Overrides 

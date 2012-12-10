@@ -20,6 +20,7 @@
 Option Strict On
 Imports EwECore.Database
 Imports EwECore.DataSources
+Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
 
@@ -30,7 +31,7 @@ Imports EwEUtils.Database
 ''' Factory class; builds a <see cref="cEwE5ModelImporter">EwE5 model importer</see>.
 ''' </summary>
 ''' ===========================================================================
-Public Class cEwE5ModelImporterFactory
+Public Class cModelImporterFactory
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -43,8 +44,9 @@ Public Class cEwE5ModelImporterFactory
     ''' <returns>A <see cref="cEwE5ModelImporter">EwE5 model importer</see>, if
     ''' all went well, or Nothing otherwise.</returns>
     ''' -----------------------------------------------------------------------
-    Public Shared Function GetEwE5ModelImporter(ByVal core As cCore, _
-                                               ByVal strFilename As String) As cEwE5ModelImporter
+    Public Shared Function GetModelImporter(ByVal core As cCore, _
+                                            ByVal strFilename As String, _
+                                            ByVal pm As cPluginManager) As IModelImporter
 
         Select Case cDataSourceFactory.GetSupportedType(strFilename)
 
@@ -55,6 +57,16 @@ Public Class cEwE5ModelImporterFactory
                 Return New cEwE5EIIImporter(core, strFilename)
 
         End Select
+
+        ' Explore if a plug-in is provided that can do this too
+        If (pm IsNot Nothing) Then
+            For Each pi As IPlugin In pm.GetPlugins(GetType(EwEPlugin.Data.IModelImportPlugin))
+                Dim imp As EwEPlugin.Data.IModelImportPlugin = DirectCast(pi, EwEPlugin.Data.IModelImportPlugin)
+                If imp.CanImportFrom(strFilename) Then
+                    Return imp
+                End If
+            Next
+        End If
 
         Return Nothing
 
