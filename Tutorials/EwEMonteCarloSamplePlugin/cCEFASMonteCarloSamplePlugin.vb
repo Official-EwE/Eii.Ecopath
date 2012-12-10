@@ -151,6 +151,18 @@ Public Class cCEFASMonteCarloSamplePlugin
     End Sub
 
 
+    Private Sub testMultipleEcosimRuns()
+        Dim n As Integer = 5
+
+        For irun As Integer = 1 To n
+            Me.RunEcosim()
+            'dumps out some Ecosim results
+            Me.getEcosimResults()
+        Next
+
+    End Sub
+
+
     Private Function InitMonteCarloParameters() As Boolean
         Try
 
@@ -356,7 +368,10 @@ Public Class cCEFASMonteCarloSamplePlugin
 
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
         Try
-            TestMonteCarlo()
+
+            testMultipleEcosimRuns()
+
+            ' TestMonteCarlo()
         Catch ex As Exception
 
         End Try
