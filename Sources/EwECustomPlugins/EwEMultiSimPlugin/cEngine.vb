@@ -154,7 +154,7 @@ Friend Class cEngine
     ''' <param name="dgtComplete">Delegate to call when the run has finished.</param>
     ''' <param name="astrFiles">The files to read and apply.</param>
     ''' <param name="strOutFolder">Output folder.</param>
-    ''' <param name="bReadMonthly">States whether files should be read as monthly (true) or annual (false) values.</param>
+    ''' <param name="bReadMonthly">States whether files should be read as monthly (true) or annual (false) values.
     ''' annual values (<see cref="TriState.[False]"/>), or in both modes (<see cref="TriState.UseDefault"/>).</param>
     ''' <param name="options"><see cref="cEcosimResultWriter.eResultTypes">Output options</see>.</param>
     ''' -----------------------------------------------------------------------
