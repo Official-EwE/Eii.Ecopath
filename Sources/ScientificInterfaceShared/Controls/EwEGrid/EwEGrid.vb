@@ -28,13 +28,13 @@ Imports System.Threading
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports SourceGrid2.Cells.Real
-Imports EwEUtils.Utilities
-Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region
 

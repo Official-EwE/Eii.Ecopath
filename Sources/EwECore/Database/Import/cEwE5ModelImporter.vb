@@ -58,7 +58,7 @@ Namespace Database
         ''' <summary>Status log.</summary>
         Protected m_sbLog As New StringBuilder
         ''' <summary>Source database file name.</summary>
-        Protected m_strEwE5File As String = ""
+        Protected m_strSource As String = ""
         ''' <summary>Target database in EwE6 format.</summary>
         Protected m_dbEwE6 As cEwEDatabase ' Import to (write)
         ''' <summary>
@@ -83,9 +83,8 @@ Namespace Database
 
 #Region " Construction "
 
-        Public Sub New(ByVal core As cCore, ByVal strEwE5File As String)
+        Public Sub New(ByVal core As cCore)
             Me.m_core = core
-            Me.m_strEwE5File = strEwE5File
         End Sub
 
 #End Region ' Construction
@@ -103,7 +102,7 @@ Namespace Database
         ''' disconnected via the <see cref="Close">Close</see> method.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public MustOverride Function Open() As Boolean _
+        Public MustOverride Function Open(ByVal strSource As String) As Boolean _
             Implements IModelImporter.Open
 
         ''' -------------------------------------------------------------------
@@ -141,14 +140,25 @@ Namespace Database
             Dim bSucces As Boolean = False
 
             Me.m_sbLog.Length = 0
-            Me.m_dbEwE6 = db
             Me.m_strModelName = info.ID
 
             Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_STARTED, _
-                                        Me.m_strModelName, Date.Now.ToString()), _
-                                        eMessageType.DataImport, eMessageImportance.Information, True)
+                              Me.m_strModelName, Date.Now.ToString()), _
+                              eMessageType.DataImport, eMessageImportance.Information, True)
 
-            bSucces = Me.PerformImport()
+            ' Set DB
+            Me.m_dbEwE6 = db
+
+            Me.Open(Me.m_strSource)
+            Try
+                bSucces = Me.PerformImport()
+            Catch ex As Exception
+                bSucces = False
+            End Try
+            Me.Close()
+
+            ' Release DB
+            Me.m_dbEwE6 = Nothing
 
             If bSucces Then
                 Me.LogMessage(String.Format(My.Resources.CoreMessages.IMPORT_PROGRESS_SUCCES, _

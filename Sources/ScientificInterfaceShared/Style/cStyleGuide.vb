@@ -38,7 +38,6 @@ Namespace Style
     ''' interface color feedback.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    <CLSCompliant(True)> _
     Public Class cStyleGuide
         Implements IDisposable
 

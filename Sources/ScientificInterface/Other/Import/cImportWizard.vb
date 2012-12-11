@@ -45,7 +45,7 @@ Namespace Import
 
         ''' <summary>The actual importer.</summary>
         Private m_dbImp As IModelImporter = Nothing
-        ''' <summary>A setting for each EwE5 model.</summary>
+        ''' <summary>A setting for each external model to import.</summary>
         Private m_lImportSettings As New List(Of cImportSettings)
         ''' <summary>Folder to place imported models into.</summary>
         Private m_strOutputFolder As String = ""
@@ -69,9 +69,9 @@ Namespace Import
 
 #Region " Privates vars "
 
-            ''' <summary>EwE5 model info.</summary>
+            ''' <summary>External model info.</summary>
             Private m_mi As cExternalModelInfo = Nothing
-            ''' <summary>Flag stating whether this EwE5 model should be imported.</summary>
+            ''' <summary>Flag stating whether this external model should be imported.</summary>
             Private m_bImport As Boolean = False
             ''' <summary>EwE6 name of the model to import into.</summary>
             Private m_strEwE6Name As String = ""
@@ -82,7 +82,7 @@ Namespace Import
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Create a new import setting for an EwE5 model.
+            ''' Create a new import setting for an external model.
             ''' </summary>
             ''' <param name="mi">The <see cref="cExternalModelInfo">importable model</see>
             ''' to create import settings for.</param>
@@ -107,7 +107,7 @@ Namespace Import
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Get/set whether this EwE5 model should be imported.
+            ''' Get/set whether this external model should be imported.
             ''' </summary>
             ''' -----------------------------------------------------------------------
             Public Property SelectedForImport() As Boolean
@@ -149,13 +149,13 @@ Namespace Import
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Convert a EwE5 model name to an EwE6 model name.
+            ''' Convert a external model name to an EwE6 model name.
             ''' </summary>
-            ''' <param name="strEwE5Model"></param>
+            ''' <param name="strexternalModel"></param>
             ''' <returns></returns>
             ''' -----------------------------------------------------------------------
-            Private Function ToEwE6ModelName(ByVal strEwE5Model As String) As String
-                Return cFileUtils.ToValidFileName(strEwE5Model, False)
+            Private Function ToEwE6ModelName(ByVal strexternalModel As String) As String
+                Return cFileUtils.ToValidFileName(strexternalModel, False)
             End Function
 
         End Class
@@ -169,12 +169,13 @@ Namespace Import
         ''' Construct a new import wizard.
         ''' </summary>
         ''' <param name="uic">The UI context to operate on.</param>
+        ''' <param name="strSource">External model to import.</param>
         ''' <param name="parent">The form hosting the wizard UI.</param>
         ''' <param name="content">The panel where this wizard can display its pages.</param>
         ''' <param name="nav">The navigation that controls this wizard.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByVal strEwE5File As String, _
+                       ByVal strSource As String, _
                        ByVal parent As Form, _
                        ByVal content As Panel, _
                        ByVal nav As IWizardNavigation)
@@ -186,20 +187,20 @@ Namespace Import
             Debug.Assert(uic.Core IsNot Nothing)
 
             ' Hook up with data
-            Me.m_dbImp = cModelImporterFactory.GetModelImporter(Core, strEwE5File, uic.Core.PluginManager)
-            Me.m_dbImp.Open()
+            Me.m_dbImp = cModelImporterFactory.GetModelImporter(Core, strSource, uic.Core.PluginManager)
+            If Me.m_dbImp.Open(strSource) Then
+                Me.m_strDatabase = strSource
+                Me.m_strOutputFolder = Path.GetDirectoryName(strSource)
 
-            Me.m_strDatabase = strEwE5File
-            Me.m_strOutputFolder = Path.GetDirectoryName(strEwE5File)
+                ' Prepare import settings
+                For Each mi As cExternalModelInfo In Me.m_dbImp.Models
+                    Dim imp As New cImportSettings(mi)
+                    imp.SelectedForImport = (Me.m_dbImp.Models.Count = 1)
+                    Me.m_lImportSettings.Add(imp)
+                Next
 
-            ' Prepare import settings
-            For Each mi As cExternalModelInfo In Me.m_dbImp.Models
-                Dim imp As New cImportSettings(mi)
-                imp.SelectedForImport = (Me.m_dbImp.Models.Count = 1)
-                Me.m_lImportSettings.Add(imp)
-            Next
-
-            Me.m_dbImp.Close()
+                Me.m_dbImp.Close()
+            End If
 
             ' Add pages
             Me.AddPage(GetType(ucImportPageWelcome))
@@ -215,7 +216,7 @@ Namespace Import
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the <see cref="cImportSettings">import settings</see> for
-        ''' the current selected EwE5 database.
+        ''' the current selected external database.
         ''' </summary>
         ''' <returns>
         ''' An array of <see cref="cImportSettings">import settings</see>.

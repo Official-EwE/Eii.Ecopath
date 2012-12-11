@@ -103,11 +103,10 @@ Namespace Database
         ''' Constructor, initializes a new instance of this class.
         ''' </summary>
         ''' <param name="core">The core to import into.</param>
-        ''' <param name="strEwE5File">Path to the Ecopath 5 document to import.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, ByVal strEwE5File As String)
+        Public Sub New(ByVal core As cCore)
 
-            MyBase.New(core, strEwE5File)
+            MyBase.New(core)
 
             Me.m_lImportedForcingShapes.Clear()
             Me.m_dicPedigreeLevels.Clear()
@@ -129,14 +128,15 @@ Namespace Database
         ''' -------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.Open"/>
         ''' -------------------------------------------------------------------
-        Public Overrides Function Open() As Boolean
+        Public Overrides Function Open(ByVal strSource As String) As Boolean
 
             ' Pre
             Debug.Assert(Not Me.IsOpen())
 
             ' Create db
             Dim db As New cEwEAccessDatabase()
-            If db.Open(Me.m_strEwE5File) = eDatasourceAccessType.Opened Then
+            Me.m_strSource = strSource
+            If db.Open(Me.m_strSource) = eDatasourceAccessType.Opened Then
                 Me.m_dbEwE5 = db
             End If
 
@@ -582,8 +582,6 @@ Namespace Database
             ' Allocate object indexes lookup tables
             ReDim Me.m_adtIndexes(System.Enum.GetValues(GetType(eDataTypes)).Length)
 
-            Me.Open()
-
             ' Pre
             Debug.Assert(Me.m_dbEwE6 IsNot Nothing, "Needs a valid EwE6 database instance")
             Debug.Assert(Me.m_dbEwE6.GetConnection().State = ConnectionState.Open, "EwE6 database must already be open")
@@ -722,11 +720,6 @@ Namespace Database
             dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
             dbUpd.UpdateDatabase(Me.m_dbEwE6)
             dbUpd = Nothing
-
-            Me.Close()
-
-            ' Release DB
-            Me.m_dbEwE6 = Nothing
 
             Me.LogProgress(My.Resources.CoreMessages.IMPORT_PROGRESS_COMPLETE, Me.m_iNumSteps)
 

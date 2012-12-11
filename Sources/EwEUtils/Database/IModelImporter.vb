@@ -40,7 +40,7 @@ Namespace Database
         ''' via the <see cref="Close"/>.
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Function Open() As Boolean
+        Function Open(ByVal strSource As String) As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>

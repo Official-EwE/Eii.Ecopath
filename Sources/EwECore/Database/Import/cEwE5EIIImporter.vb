@@ -72,10 +72,9 @@ Namespace Database
         ''' Constructor, initializes a new instance of this class.
         ''' </summary>
         ''' <param name="core">The core to import into.</param>
-        ''' <param name="strEwE5File">Path to the Ecopath 5 document to import.</param>
         ''' -------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, ByVal strEwE5File As String)
-            MyBase.New(core, strEwE5File)
+        Public Sub New(ByVal core As cCore)
+            MyBase.New(core)
 
             m_data = New cImportData(Me.m_core.Messages)
 
@@ -88,7 +87,7 @@ Namespace Database
         ''' -----------------------------------------------------------------------
         ''' <inheritdoc cref="cEwE5ModelImporter.Close"/>
         ''' -----------------------------------------------------------------------
-        Public Overrides Function Open() As Boolean
+        Public Overrides Function Open(ByVal strSource As String) As Boolean
 
             Debug.Assert(False, Me.ToString & ".Open() removed for Mono compatibility.")
             'Debug.Assert(Not Me.IsOpen())
@@ -135,7 +134,7 @@ Namespace Database
 
             'Debug.Assert(Me.IsOpen())
 
-            Dim info As New cExternalModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strEwE5File), "Ecopath 5 EII file", 0)
+            Dim info As New cExternalModelInfo("1", Path.GetFileNameWithoutExtension(Me.m_strSource), "Ecopath 5 EII file", 0)
             Return New cExternalModelInfo() {info}
 
         End Function
@@ -167,7 +166,7 @@ Namespace Database
             End If
 
             ' Set version
-            Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from EII file '" & Me.m_strEwE5File & "'")
+            Me.m_dbEwE6.SetVersion(Me.m_dbEwE6.GetVersion(), "Imported from EII file '" & Me.m_strSource & "'")
 
             ' Now run all available updates on the new EwE6 database
             dbUpd = New cDatabaseUpdater(Me.m_core, 6.0!)
@@ -201,23 +200,23 @@ Namespace Database
             Dim quotes() As Char = {CChar(""""), CChar(" ")}
             Dim eiiStrm As System.IO.StreamReader
 
-            If Not File.Exists(Me.m_strEwE5File) Then
+            If Not File.Exists(Me.m_strSource) Then
                 cLog.Write(Me.ToString + ".LoadEcopath(...) No file name specified.")
                 Return False
             End If
 
             Try
-                eiiStrm = New System.IO.StreamReader(Me.m_strEwE5File)
+                eiiStrm = New System.IO.StreamReader(Me.m_strSource)
             Catch ex As Exception
-                cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strEwE5File & "' Error:" + ex.Message())
+                cLog.Write(Me.ToString + ".LoadEcopath(...) Error opening eii file. '" & Me.m_strSource & "' Error:" + ex.Message())
                 Return False
             End Try
 
             'fake model data
             ecopathDS.ModelDBID = 1
-            ecopathDS.ModelName = Path.GetFileName(Me.m_strEwE5File)
+            ecopathDS.ModelName = Path.GetFileName(Me.m_strSource)
             ecopathDS.ModelNumDigits = 3
-            ecopathDS.ModelDescription = "Simulated model read from EII file " & Me.m_strEwE5File
+            ecopathDS.ModelDescription = "Simulated model read from EII file " & Me.m_strSource
 
             'read the file
             Try
@@ -741,8 +740,8 @@ Namespace Database
 
             drow = writer.NewRow()
             drow("ModelID") = 1
-            drow("Name") = Path.GetFileNameWithoutExtension(Me.m_strEwE5File)
-            drow("Description") = "Imported from EII file '" & Path.GetFileName(Me.m_strEwE5File) & "'"
+            drow("Name") = Path.GetFileNameWithoutExtension(Me.m_strSource)
+            drow("Description") = "Imported from EII file '" & Path.GetFileName(Me.m_strSource) & "'"
             drow("NumDigits") = 3
 
             drow("UnitCurrency") = Me.m_data.ModelUnitCurrency
