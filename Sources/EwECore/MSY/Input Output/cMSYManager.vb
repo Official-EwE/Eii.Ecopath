@@ -38,15 +38,6 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 
 Namespace MSY
 
-    ''' <summary>
-    ''' Run states of the MSE 
-    ''' </summary>
-    ''' <remarks>Passed out via the MSEProgressDelegate</remarks>
-    Public Enum eMSYRunStates
-        Started
-        PartialRunCompleted
-        FullRunComplete
-    End Enum
 
     Public Delegate Sub MSYRunStateDelegate(ByVal RunStateType As eMSYRunStates)
 
@@ -241,21 +232,31 @@ Namespace MSY
 
         Private Sub runFullMSYSearch()
             Try
+
+                Me.SetWait()
+
                 Me.m_Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.StopRun))
                 Me.m_parameters.Assessment = eMSYAssessmentTypes.FullCompensation
-                Me.m_MSY.RunMSY()
-                If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                If Me.m_MSY.RunMSY() Then
+                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                End If
 
                 Me.m_parameters.Assessment = eMSYAssessmentTypes.StationarySystem
-                Me.m_MSY.RunMSY()
-                If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                If Me.m_MSY.RunMSY() Then
+                    If Me.IsAutoSaveOutput Then Me.SaveMSYOutput()
+                End If
+
+                Dim runState As eMSYRunStates = eMSYRunStates.MSYRunComplete
+                If Me.m_msyData.bStopRun Then runState = eMSYRunStates.MSYRunStopped
 
                 'tell the interface that we are done
-                Me.onMSYRunStateChanged(eMSYRunStates.FullRunComplete)
+                Me.onMSYRunStateChanged(runState)
                 Me.m_Core.SetStopRunDelegate(Nothing)
             Catch ex As Exception
 
             End Try
+
+            Me.ReleaseWait()
 
         End Sub
 
@@ -298,7 +299,7 @@ Namespace MSY
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Run MSY
-                Me.m_msyData.Assessment = eMSYAssessmentTypes.FullCompensation
+                Me.m_msyData.AssessmentType = eMSYAssessmentTypes.FullCompensation
                 'Init MSY Varible
                 Me.m_MSY.InitForSingleRun()
                 'Init Ecosim Variables to run the RK4 without calling Ecosim.RunModelValue()
@@ -658,11 +659,7 @@ Namespace MSY
             If (Me.m_Core Is Nothing) Then Return True
 
             Try
-
-                If WaitTimeInMillSec <> 0 Then
-                    Me.m_Core.StopEcoSim()
-                End If
-
+                Me.m_msyData.bStopRun = True
                 result = Me.Wait(WaitTimeInMillSec)
                 Me.m_Core.SetStopRunDelegate(Nothing)
             Catch ex As Exception
@@ -677,6 +674,7 @@ Namespace MSY
 
         Protected Overrides Sub Finalize()
             Me.m_MSY.ProgressMessageDelegate = Nothing
+            Me.m_MSY.Connect(Nothing)
             MyBase.Finalize()
         End Sub
 

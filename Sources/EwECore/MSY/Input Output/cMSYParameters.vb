@@ -131,10 +131,10 @@ Namespace MSY
 
         Public Property Assessment As eMSYAssessmentTypes
             Set(value As eMSYAssessmentTypes)
-                Me.m_msyData.Assessment = value
+                Me.m_msyData.AssessmentType = value
             End Set
             Get
-                Return Me.m_msyData.Assessment
+                Return Me.m_msyData.AssessmentType
             End Get
         End Property
 

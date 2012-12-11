@@ -35,6 +35,11 @@ Namespace Ecosim
     ''' </summary>
     Public Class frmMSY
 
+        'ToDo frmMSY now that it is multithreaded it needs to protect against the user doing stupid things during a run
+        'Closing the form!
+        'Changing model parameters...
+
+
 #Region " Privates "
 
         Private Class cMSYRunResults
@@ -287,18 +292,20 @@ Namespace Ecosim
         Private Sub onMSYRunStateChanged(ByVal RunState As eMSYRunStates)
             Try
 
-                If (RunState = eMSYRunStates.PartialRunCompleted) And (Me.m_parms.Assessment = eMSYAssessmentTypes.FullCompensation) Then
+                If RunState = eMSYRunStates.FullCompRunCompleted Then
                     Me.m_results.ResultsFull.AddRange(Me.m_manager.MSYResults)
                     Me.m_results.ResultsBase = Me.m_manager.BaseLineResults
                     Me.m_results.OptFull = Me.m_manager.FMSY
 
-                ElseIf (RunState = eMSYRunStates.PartialRunCompleted) And (Me.m_parms.Assessment = eMSYAssessmentTypes.StationarySystem) Then
+                ElseIf RunState = eMSYRunStates.StationaryRunCompleted Then
                     Me.m_results.ResultsStat.AddRange(Me.m_manager.MSYResults)
                     Me.m_results.OptStat = Me.m_manager.FMSY
 
                 End If
 
-                If RunState = eMSYRunStates.FullRunComplete Then
+                'Only update the interface if the Run Completed
+                'this will not update if the run was stopped
+                If RunState = eMSYRunStates.MSYRunComplete Then
                     ' Trigger graph update
                     Me.TotallyAndCompletelyRefreshPlot()
                     ' Update control states

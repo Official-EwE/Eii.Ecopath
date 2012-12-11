@@ -52,7 +52,7 @@ Namespace MSY
         ''' <remarks></remarks>
         Public ForceGroupB() As Boolean
 
-        Public Assessment As eMSYAssessmentTypes
+        Public AssessmentType As eMSYAssessmentTypes
 
         Public RunLengthMode As eMSYRunLengthModeTypes = eMSYRunLengthModeTypes.FixedF
         Public MaxRelF As Single
@@ -72,6 +72,9 @@ Namespace MSY
         ''' </summary>
         ''' <remarks></remarks>
         Public MSYRunType As eMSYRunTypes
+
+
+        Public bStopRun As Boolean
 
 
 #End Region
@@ -105,7 +108,7 @@ Namespace MSY
 
         Public Sub SetDefaultParameters()
             nYearsPerTrial = 40
-            Assessment = eMSYAssessmentTypes.FreezePools
+            AssessmentType = eMSYAssessmentTypes.StationarySystem
             MaxRelF = F_MAX
             FStepSize = F_STEPSIZE
             FSelectionMode = eMSYFSelectionModeType.Groups

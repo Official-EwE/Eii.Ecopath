@@ -180,7 +180,6 @@ Namespace MSY
         End Sub
 
         Public Sub Connect(ByVal RunStateDelegate As MSYRunStateDelegate)
-            Debug.Assert(RunStateDelegate IsNot Nothing, "Oppss cMYS.Connect(MSYRunStateDelegate) delegate is NULL.")
             m_RunStateDelegate = Nothing
             m_RunStateDelegate = RunStateDelegate
         End Sub
@@ -197,7 +196,9 @@ Namespace MSY
         ''' -------------------------------------------------------------------
         Public Function RunMSY() As Boolean
 
-
+            If Me.m_msyData.bStopRun Then
+                Return False
+            End If
 
             ' Do this once at the start of it all
             Me.InitTrackers()
@@ -208,7 +209,7 @@ Namespace MSY
 
             Dim bRan As Boolean = False
             Dim iNumSteps As Integer = CInt(Me.m_Fmax / Me.m_Fstep)
-            Dim strAssessment As String = Me.m_msyData.Assessment.ToString
+            Dim strAssessment As String = Me.m_msyData.AssessmentType.ToString
 
             Me.StartProgress(String.Format(My.Resources.CoreMessages.MSY_STATUS_RUNNING, strAssessment), iNumSteps)
             bRan = runSingleSpecies()
@@ -226,7 +227,7 @@ Namespace MSY
         ''' -------------------------------------------------------------------
         Public Function RunFindFMSY() As Boolean
 
-            Dim strAssessment As String = Me.m_msyData.Assessment.ToString
+            Dim strAssessment As String = Me.m_msyData.AssessmentType.ToString
             Dim iNumSteps As Integer = 0
             Dim bRan As Boolean = False
 
@@ -255,7 +256,7 @@ Namespace MSY
                             If Not Me.runSingleSpecies() Then
                                 'WTF
                                 'Failed to run the single species MSY search
-                                'Really... what now... just plow on
+                                'Really... what now... just plough on
                                 cLog.Write(Me.ToString & ".RunFMSY() Failed to run MSY Search for group " & iGrp.ToString)
                             End If
                         Else
@@ -365,6 +366,7 @@ Namespace MSY
 
             Try
                 'other initializtion here???
+                Me.m_msyData.bStopRun = False
                 Me.m_msyData.lstResults.Clear()
                 Me.m_msyData.MSYRunType = eMSYRunTypes.SingleRunMSY
 
@@ -381,8 +383,8 @@ Namespace MSY
 
         Friend Sub setForcedGroupB()
 
-            Select Case Me.m_msyData.Assessment
-                Case eMSYAssessmentTypes.FreezePools
+            Select Case Me.m_msyData.AssessmentType
+                Case eMSYAssessmentTypes.StationarySystem
 
                     If Me.m_msyData.FSelectionMode = eMSYFSelectionModeType.Groups Then
                         'GROUP SELECTED
@@ -566,7 +568,7 @@ Namespace MSY
         End Sub
 
         Private Function runSingleSpeciesFixedF() As Boolean
-
+            Dim bReturn As Boolean = True
             Try
                 Me.InitEcosimForRK4()
                 'Runs Ecosim with base line values
@@ -577,7 +579,7 @@ Namespace MSY
 
                 For F As Single = Me.m_FBase To -0.00000000001 Step -Me.m_Fstep
 
-                    'System.Console.WriteLine("F = " & F.ToString)
+                    If Me.m_msyData.bStopRun Then Exit For
 
                     Me.IncrementProgress()
                     Me.setFishingRates(F)
@@ -597,7 +599,7 @@ Namespace MSY
                 'A base line run was done above in setBaseLineValues()
                 For F As Single = (Me.m_FBase + Me.m_Fstep) To Me.m_Fmax Step Me.m_Fstep
 
-                    'System.Console.WriteLine("F = " & F.ToString)
+                    If Me.m_msyData.bStopRun Then Exit For
 
                     Me.IncrementProgress()
                     Me.setFishingRates(F)
@@ -606,8 +608,11 @@ Namespace MSY
 
                 Next F
 
-                Me.GetOptimumResults()
-                'Me.SortResults()
+                If Not Me.m_msyData.bStopRun Then
+                    'Dont get the results if the user stopped the run
+                    'Hope this is correct!!!
+                    Me.GetOptimumResults()
+                End If
 
 #If DEBUG Then
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -624,10 +629,14 @@ Namespace MSY
             Catch ex As Exception
                 cLog.Write(ex)
                 System.Console.WriteLine(Me.ToString & ".runSingleSpecies() Exception: " & ex.Message)
-                Return False
+                bReturn = False
             End Try
 
-            Return True
+            If Me.m_msyData.bStopRun Then
+                bReturn = False
+            End If
+
+            Return bReturn
         End Function
 
 #Region " Running to depletion "
@@ -1132,7 +1141,7 @@ Namespace MSY
                                   ByVal iNumSteps As Integer)
             Try
 
-                Me.ChangeRunState(eMSYRunStates.Started)
+                Me.ChangeRunState(eMSYRunStates.MSYRunStarted)
 
                 If (Me.m_dgtProgress IsNot Nothing) Then
 
@@ -1171,8 +1180,14 @@ Namespace MSY
 
         Private Sub EndProgress()
             Try
-
-                Me.ChangeRunState(eMSYRunStates.PartialRunCompleted)
+                'Figure out the run state from the AssessmentType
+                Dim runState As eMSYRunStates
+                If Me.m_msyData.AssessmentType = eMSYAssessmentTypes.FullCompensation Then
+                    runState = eMSYRunStates.FullCompRunCompleted
+                ElseIf Me.m_msyData.AssessmentType = eMSYAssessmentTypes.StationarySystem Then
+                    runState = eMSYRunStates.StationaryRunCompleted
+                End If
+                Me.ChangeRunState(runState)
 
                 If (Me.m_dgtProgress IsNot Nothing) Then
                     Me.m_dgtProgress.Invoke(New EwECore.cProgressMessage(eProgressState.Finished, Me.m_iNumSteps, Me.m_iNumSteps, ""))
@@ -1186,13 +1201,16 @@ Namespace MSY
 
         Private Sub ChangeRunState(runState As eMSYRunStates)
             Try
+                'I don't think this should happen
+                'If it does better figure out why
+                Debug.Assert(Me.m_RunStateDelegate IsNot Nothing, Me.ToString & ".ChangeRunState(eMSYRunStates) RunStateDelegate = Nothing!")
                 If Me.m_RunStateDelegate IsNot Nothing Then
                     Me.m_RunStateDelegate.Invoke(runState)
                 End If
             Catch ex As Exception
 
             End Try
-           
+
         End Sub
 
 #End Region ' Progress reporting

@@ -2682,8 +2682,8 @@ Namespace Core
         StationarySystem = 0
         ''' <summary>Full system assessment.</summary>
         FullCompensation
-        ''' <summary>Redundant flag to tie EwE5 interface and code implementation together.</summary>
-        FreezePools = StationarySystem
+        '''' <summary>Redundant flag to tie EwE5 interface and code implementation together.</summary>
+        'FreezePools = StationarySystem
     End Enum
 
     ''' -----------------------------------------------------------------------
@@ -2709,6 +2709,19 @@ Namespace Core
         FixedF
         ''' <summary>MSY is running until all catches are depleted.</summary>
         ToDepletion
+    End Enum
+
+
+    ''' <summary>
+    ''' Run states of the MSE 
+    ''' </summary>
+    ''' <remarks>Passed out via the MSEProgressDelegate</remarks>
+    Public Enum eMSYRunStates
+        MSYRunStarted
+        FullCompRunCompleted
+        StationaryRunCompleted
+        MSYRunComplete
+        MSYRunStopped
     End Enum
 
 #End Region ' MSY
