@@ -1862,11 +1862,11 @@
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
-      <Name>EwEFlowDiagramPlugin %28EwE custom plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
+      <Name>EwEFlowDiagramPlugin %28EwE plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj">
       <Project>{C73CF657-456C-4397-B6A1-5DC8FA68AD48}</Project>
-      <Name>EwEMultiSimPlugin %28EwE custom plugins\EwEMultiSimPlugin\EwEMultiSimPlugin%29</Name>
+      <Name>EwEMultiSimPlugin %28EwE plugins\EwEMultiSimPlugin\EwEMultiSimPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwENetworkAnalysis\EwENetworkAnalysisPlugin.vbproj">
       <Project>{6385C388-96F0-40F5-90A6-2B4838E0610E}</Project>
@@ -1878,11 +1878,11 @@
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEShapeGridPlugin\EwEShapeGridPlugin.vbproj">
       <Project>{5E7BEAC5-84D8-4BC5-9B53-8C7888FC9786}</Project>
-      <Name>EwEShapeGridPlugin %28EwE custom plugins\EwEShapeGridPlugin\EwEShapeGridPlugin%29</Name>
+      <Name>EwEShapeGridPlugin %28EwE plugins\EwEShapeGridPlugin\EwEShapeGridPlugin%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEValueChain\EwEValueChain.vbproj">
       <Project>{E87E552B-C82F-4984-9249-631DAC727633}</Project>
-      <Name>EwEValueChain %28EwE custom plugins\EwEValueChain\EwEValueChain%29</Name>
+      <Name>EwEValueChain %28EwE plugins\EwEValueChain\EwEValueChain%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
