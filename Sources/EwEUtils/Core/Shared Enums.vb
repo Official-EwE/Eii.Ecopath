@@ -1302,11 +1302,9 @@ Namespace Core
         GameGroupFishingMortRates
         ''' <summary>Traffic lights the client can request from the server.</summary>
         GameViewTrafficLights
-
         ''' <summary>Type of data available during a simulation (TimeStep or Progress)</summary>
         GameAvailableRunData
 
-        ' EcosimResults
         GameSimulationTimeStep
         ''' <summary>Game absolute biomass.</summary>
         GameBiomass
@@ -1398,6 +1396,9 @@ Namespace Core
         GameFleetEffortIteration
         ''' <summary></summary>
         GameFleetValueIteration
+
+        ''' <summary>Visualization settings for a 3D game environment</summary>
+        Game3DVizSettings
 
         PSDEnabled
         PSDComputed

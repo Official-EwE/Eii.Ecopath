@@ -117,4 +117,727 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_cbEcosimRun.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="m_cbEcosimRun.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 204</value>
+  </data>
+  <data name="m_cbEcosimRun.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 17</value>
+  </data>
+  <data name="m_cbEcosimRun.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="m_cbEcosimRun.Text" xml:space="preserve">
+    <value>&amp;Run results</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosimRun.Name" xml:space="preserve">
+    <value>m_cbEcosimRun</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosimRun.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosimRun.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosimRun.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="m_cbMonteCarlo.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbMonteCarlo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 227</value>
+  </data>
+  <data name="m_cbMonteCarlo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 17</value>
+  </data>
+  <data name="m_cbMonteCarlo.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="m_cbMonteCarlo.Text" xml:space="preserve">
+    <value>&amp;Monte Carlo</value>
+  </data>
+  <data name="&gt;&gt;m_cbMonteCarlo.Name" xml:space="preserve">
+    <value>m_cbMonteCarlo</value>
+  </data>
+  <data name="&gt;&gt;m_cbMonteCarlo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMonteCarlo.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbMonteCarlo.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="m_cbAutosaveAll.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbAutosaveAll.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 158</value>
+  </data>
+  <data name="m_cbAutosaveAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 17</value>
+  </data>
+  <data name="m_cbAutosaveAll.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_cbAutosaveAll.Text" xml:space="preserve">
+    <value>&amp;Auto-save all</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutosaveAll.Name" xml:space="preserve">
+    <value>m_cbAutosaveAll</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutosaveAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutosaveAll.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbAutosaveAll.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="m_cbEcospace.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbEcospace.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 296</value>
+  </data>
+  <data name="m_cbEcospace.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 17</value>
+  </data>
+  <data name="m_cbEcospace.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="m_cbEcospace.Text" xml:space="preserve">
+    <value>&amp;Ecospace</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcospace.Name" xml:space="preserve">
+    <value>m_cbEcospace</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcospace.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcospace.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcospace.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="m_cbSpaceASCII.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbSpaceASCII.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 319</value>
+  </data>
+  <data name="m_cbSpaceASCII.Size" type="System.Drawing.Size, System.Drawing">
+    <value>81, 17</value>
+  </data>
+  <data name="m_cbSpaceASCII.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="m_cbSpaceASCII.Text" xml:space="preserve">
+    <value>&amp;ASCII maps</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceASCII.Name" xml:space="preserve">
+    <value>m_cbSpaceASCII</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceASCII.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceASCII.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceASCII.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="m_cbSpaceCSV.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbSpaceCSV.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 342</value>
+  </data>
+  <data name="m_cbSpaceCSV.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 17</value>
+  </data>
+  <data name="m_cbSpaceCSV.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="m_cbSpaceCSV.Text" xml:space="preserve">
+    <value>&amp;CSV maps</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceCSV.Name" xml:space="preserve">
+    <value>m_cbSpaceCSV</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceCSV.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceCSV.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbSpaceCSV.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="m_cbEcosim.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbEcosim.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 181</value>
+  </data>
+  <data name="m_cbEcosim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 17</value>
+  </data>
+  <data name="m_cbEcosim.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_cbEcosim.Text" xml:space="preserve">
+    <value>&amp;Ecosim</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosim.Name" xml:space="preserve">
+    <value>m_cbEcosim</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosim.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcosim.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="m_cbMSE.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbMSE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 250</value>
+  </data>
+  <data name="m_cbMSE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 17</value>
+  </data>
+  <data name="m_cbMSE.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="m_cbMSE.Text" xml:space="preserve">
+    <value>&amp;MSE</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSE.Name" xml:space="preserve">
+    <value>m_cbMSE</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSE.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSE.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="m_cbEcotracer.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbEcotracer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 365</value>
+  </data>
+  <data name="m_cbEcotracer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 17</value>
+  </data>
+  <data name="m_cbEcotracer.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="m_cbEcotracer.Text" xml:space="preserve">
+    <value>&amp;Ecotracer</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcotracer.Name" xml:space="preserve">
+    <value>m_cbEcotracer</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcotracer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcotracer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbEcotracer.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="m_tbxEcosim.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxEcosim.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 202</value>
+  </data>
+  <data name="m_tbxEcosim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxEcosim.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEcosim.Name" xml:space="preserve">
+    <value>m_tbxEcosim</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEcosim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEcosim.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxEcosim.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="m_tbxMC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxMC.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 225</value>
+  </data>
+  <data name="m_tbxMC.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxMC.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMC.Name" xml:space="preserve">
+    <value>m_tbxMC</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMC.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMC.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMC.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="m_tbxMSE.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxMSE.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 248</value>
+  </data>
+  <data name="m_tbxMSE.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxMSE.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSE.Name" xml:space="preserve">
+    <value>m_tbxMSE</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSE.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSE.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSE.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="m_tbxASCII.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxASCII.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 317</value>
+  </data>
+  <data name="m_tbxASCII.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxASCII.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="&gt;&gt;m_tbxASCII.Name" xml:space="preserve">
+    <value>m_tbxASCII</value>
+  </data>
+  <data name="&gt;&gt;m_tbxASCII.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxASCII.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxASCII.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="m_tbxCSV.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxCSV.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 340</value>
+  </data>
+  <data name="m_tbxCSV.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxCSV.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;m_tbxCSV.Name" xml:space="preserve">
+    <value>m_tbxCSV</value>
+  </data>
+  <data name="&gt;&gt;m_tbxCSV.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxCSV.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxCSV.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="m_hdrAutosave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_hdrAutosave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 131</value>
+  </data>
+  <data name="m_hdrAutosave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>553, 18</value>
+  </data>
+  <data name="m_hdrAutosave.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_hdrAutosave.Text" xml:space="preserve">
+    <value>Auto-save results</value>
+  </data>
+  <data name="m_hdrAutosave.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.Name" xml:space="preserve">
+    <value>m_hdrAutosave</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8670.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_hdrAutosave.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="m_tbxTracer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxTracer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 363</value>
+  </data>
+  <data name="m_tbxTracer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxTracer.TabIndex" type="System.Int32, mscorlib">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;m_tbxTracer.Name" xml:space="preserve">
+    <value>m_tbxTracer</value>
+  </data>
+  <data name="&gt;&gt;m_tbxTracer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxTracer.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxTracer.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="m_fieldpickBackup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_fieldpickBackup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>481, 74</value>
+  </data>
+  <data name="m_fieldpickBackup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 21</value>
+  </data>
+  <data name="m_fieldpickBackup.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickBackup.Name" xml:space="preserve">
+    <value>m_fieldpickBackup</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickBackup.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.8670.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickBackup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickBackup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="m_fieldpickOutput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_fieldpickOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>481, 21</value>
+  </data>
+  <data name="m_fieldpickOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 21</value>
+  </data>
+  <data name="m_fieldpickOutput.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickOutput.Name" xml:space="preserve">
+    <value>m_fieldpickOutput</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickOutput.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.ucFieldPicker, ScientificInterfaceShared, Version=6.3.8670.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickOutput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_fieldpickOutput.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_tbBackupMask.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbBackupMask.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 74</value>
+  </data>
+  <data name="m_tbBackupMask.Size" type="System.Drawing.Size, System.Drawing">
+    <value>317, 20</value>
+  </data>
+  <data name="m_tbBackupMask.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;m_tbBackupMask.Name" xml:space="preserve">
+    <value>m_tbBackupMask</value>
+  </data>
+  <data name="&gt;&gt;m_tbBackupMask.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbBackupMask.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbBackupMask.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="m_lblBackupFolder.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblBackupFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblBackupFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 77</value>
+  </data>
+  <data name="m_lblBackupFolder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 13</value>
+  </data>
+  <data name="m_lblBackupFolder.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="m_lblBackupFolder.Text" xml:space="preserve">
+    <value>&amp;Back-up models as:</value>
+  </data>
+  <data name="&gt;&gt;m_lblBackupFolder.Name" xml:space="preserve">
+    <value>m_lblBackupFolder</value>
+  </data>
+  <data name="&gt;&gt;m_lblBackupFolder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblBackupFolder.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblBackupFolder.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="m_tbOutputMask.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbOutputMask.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 21</value>
+  </data>
+  <data name="m_tbOutputMask.Size" type="System.Drawing.Size, System.Drawing">
+    <value>321, 20</value>
+  </data>
+  <data name="m_tbOutputMask.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.Name" xml:space="preserve">
+    <value>m_tbOutputMask</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbOutputMask.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="m_lblOutput.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_lblOutput.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_lblOutput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 24</value>
+  </data>
+  <data name="m_lblOutput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="m_lblOutput.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="m_lblOutput.Text" xml:space="preserve">
+    <value>&amp;Output location:</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.Name" xml:space="preserve">
+    <value>m_lblOutput</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_lblOutput.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>553, 18</value>
+  </data>
+  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+    <value>File management options</value>
+  </data>
+  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
+    <value>CEwEHeaderLabel1</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8670.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="m_tbxOutputSample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxOutputSample.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 47</value>
+  </data>
+  <data name="m_tbxOutputSample.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxOutputSample.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutputSample.Name" xml:space="preserve">
+    <value>m_tbxOutputSample</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutputSample.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutputSample.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxOutputSample.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="m_tbxBackupSample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxBackupSample.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 100</value>
+  </data>
+  <data name="m_tbxBackupSample.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxBackupSample.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;m_tbxBackupSample.Name" xml:space="preserve">
+    <value>m_tbxBackupSample</value>
+  </data>
+  <data name="&gt;&gt;m_tbxBackupSample.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxBackupSample.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxBackupSample.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="m_cbMSY.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="m_cbMSY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 273</value>
+  </data>
+  <data name="m_cbMSY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 17</value>
+  </data>
+  <data name="m_cbMSY.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="m_cbMSY.Text" xml:space="preserve">
+    <value>&amp;MSY</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSY.Name" xml:space="preserve">
+    <value>m_cbMSY</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSY.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_cbMSY.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="m_tbxMSY.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="m_tbxMSY.Location" type="System.Drawing.Point, System.Drawing">
+    <value>158, 271</value>
+  </data>
+  <data name="m_tbxMSY.Size" type="System.Drawing.Size, System.Drawing">
+    <value>395, 20</value>
+  </data>
+  <data name="m_tbxMSY.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSY.Name" xml:space="preserve">
+    <value>m_tbxMSY</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSY.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSY.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_tbxMSY.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>553, 387</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ucOptionsFileManagement</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

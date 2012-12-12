@@ -28,6 +28,7 @@ Namespace Other
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsFileManagement))
             Me.m_cbEcosimRun = New System.Windows.Forms.CheckBox()
             Me.m_cbMonteCarlo = New System.Windows.Forms.CheckBox()
             Me.m_cbAutosaveAll = New System.Windows.Forms.CheckBox()
@@ -59,296 +60,184 @@ Namespace Other
             '
             'm_cbEcosimRun
             '
-            Me.m_cbEcosimRun.AutoSize = True
-            Me.m_cbEcosimRun.Location = New System.Drawing.Point(41, 204)
+            resources.ApplyResources(Me.m_cbEcosimRun, "m_cbEcosimRun")
             Me.m_cbEcosimRun.Name = "m_cbEcosimRun"
-            Me.m_cbEcosimRun.Size = New System.Drawing.Size(79, 17)
-            Me.m_cbEcosimRun.TabIndex = 12
-            Me.m_cbEcosimRun.Text = "&Run results"
             Me.m_cbEcosimRun.UseVisualStyleBackColor = True
             '
             'm_cbMonteCarlo
             '
-            Me.m_cbMonteCarlo.AutoSize = True
-            Me.m_cbMonteCarlo.Location = New System.Drawing.Point(41, 227)
+            resources.ApplyResources(Me.m_cbMonteCarlo, "m_cbMonteCarlo")
             Me.m_cbMonteCarlo.Name = "m_cbMonteCarlo"
-            Me.m_cbMonteCarlo.Size = New System.Drawing.Size(83, 17)
-            Me.m_cbMonteCarlo.TabIndex = 14
-            Me.m_cbMonteCarlo.Text = "&Monte Carlo"
             Me.m_cbMonteCarlo.UseVisualStyleBackColor = True
             '
             'm_cbAutosaveAll
             '
-            Me.m_cbAutosaveAll.AutoSize = True
-            Me.m_cbAutosaveAll.Location = New System.Drawing.Point(6, 158)
+            resources.ApplyResources(Me.m_cbAutosaveAll, "m_cbAutosaveAll")
             Me.m_cbAutosaveAll.Name = "m_cbAutosaveAll"
-            Me.m_cbAutosaveAll.Size = New System.Drawing.Size(87, 17)
-            Me.m_cbAutosaveAll.TabIndex = 10
-            Me.m_cbAutosaveAll.Text = "&Auto-save all"
             Me.m_cbAutosaveAll.UseVisualStyleBackColor = True
             '
             'm_cbEcospace
             '
-            Me.m_cbEcospace.AutoSize = True
-            Me.m_cbEcospace.Location = New System.Drawing.Point(23, 296)
+            resources.ApplyResources(Me.m_cbEcospace, "m_cbEcospace")
             Me.m_cbEcospace.Name = "m_cbEcospace"
-            Me.m_cbEcospace.Size = New System.Drawing.Size(74, 17)
-            Me.m_cbEcospace.TabIndex = 18
-            Me.m_cbEcospace.Text = "&Ecospace"
             Me.m_cbEcospace.UseVisualStyleBackColor = True
             '
             'm_cbSpaceASCII
             '
-            Me.m_cbSpaceASCII.AutoSize = True
-            Me.m_cbSpaceASCII.Location = New System.Drawing.Point(41, 319)
+            resources.ApplyResources(Me.m_cbSpaceASCII, "m_cbSpaceASCII")
             Me.m_cbSpaceASCII.Name = "m_cbSpaceASCII"
-            Me.m_cbSpaceASCII.Size = New System.Drawing.Size(81, 17)
-            Me.m_cbSpaceASCII.TabIndex = 19
-            Me.m_cbSpaceASCII.Text = "&ASCII maps"
             Me.m_cbSpaceASCII.UseVisualStyleBackColor = True
             '
             'm_cbSpaceCSV
             '
-            Me.m_cbSpaceCSV.AutoSize = True
-            Me.m_cbSpaceCSV.Location = New System.Drawing.Point(41, 342)
+            resources.ApplyResources(Me.m_cbSpaceCSV, "m_cbSpaceCSV")
             Me.m_cbSpaceCSV.Name = "m_cbSpaceCSV"
-            Me.m_cbSpaceCSV.Size = New System.Drawing.Size(75, 17)
-            Me.m_cbSpaceCSV.TabIndex = 21
-            Me.m_cbSpaceCSV.Text = "&CSV maps"
             Me.m_cbSpaceCSV.UseVisualStyleBackColor = True
             '
             'm_cbEcosim
             '
-            Me.m_cbEcosim.AutoSize = True
-            Me.m_cbEcosim.Location = New System.Drawing.Point(23, 181)
+            resources.ApplyResources(Me.m_cbEcosim, "m_cbEcosim")
             Me.m_cbEcosim.Name = "m_cbEcosim"
-            Me.m_cbEcosim.Size = New System.Drawing.Size(60, 17)
-            Me.m_cbEcosim.TabIndex = 11
-            Me.m_cbEcosim.Text = "&Ecosim"
             Me.m_cbEcosim.UseVisualStyleBackColor = True
             '
             'm_cbMSE
             '
-            Me.m_cbMSE.AutoSize = True
-            Me.m_cbMSE.Location = New System.Drawing.Point(41, 250)
+            resources.ApplyResources(Me.m_cbMSE, "m_cbMSE")
             Me.m_cbMSE.Name = "m_cbMSE"
-            Me.m_cbMSE.Size = New System.Drawing.Size(49, 17)
-            Me.m_cbMSE.TabIndex = 16
-            Me.m_cbMSE.Text = "&MSE"
             Me.m_cbMSE.UseVisualStyleBackColor = True
             '
             'm_cbEcotracer
             '
-            Me.m_cbEcotracer.AutoSize = True
-            Me.m_cbEcotracer.Location = New System.Drawing.Point(23, 365)
+            resources.ApplyResources(Me.m_cbEcotracer, "m_cbEcotracer")
             Me.m_cbEcotracer.Name = "m_cbEcotracer"
-            Me.m_cbEcotracer.Size = New System.Drawing.Size(72, 17)
-            Me.m_cbEcotracer.TabIndex = 23
-            Me.m_cbEcotracer.Text = "&Ecotracer"
             Me.m_cbEcotracer.UseVisualStyleBackColor = True
             '
             'm_tbxEcosim
             '
-            Me.m_tbxEcosim.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxEcosim.Location = New System.Drawing.Point(158, 202)
+            resources.ApplyResources(Me.m_tbxEcosim, "m_tbxEcosim")
             Me.m_tbxEcosim.Name = "m_tbxEcosim"
             Me.m_tbxEcosim.ReadOnly = True
-            Me.m_tbxEcosim.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxEcosim.TabIndex = 13
             Me.m_tbxEcosim.TabStop = False
             '
             'm_tbxMC
             '
-            Me.m_tbxMC.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxMC.Location = New System.Drawing.Point(158, 225)
+            resources.ApplyResources(Me.m_tbxMC, "m_tbxMC")
             Me.m_tbxMC.Name = "m_tbxMC"
             Me.m_tbxMC.ReadOnly = True
-            Me.m_tbxMC.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxMC.TabIndex = 15
             Me.m_tbxMC.TabStop = False
             '
             'm_tbxMSE
             '
-            Me.m_tbxMSE.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxMSE.Location = New System.Drawing.Point(158, 248)
+            resources.ApplyResources(Me.m_tbxMSE, "m_tbxMSE")
             Me.m_tbxMSE.Name = "m_tbxMSE"
             Me.m_tbxMSE.ReadOnly = True
-            Me.m_tbxMSE.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxMSE.TabIndex = 17
             Me.m_tbxMSE.TabStop = False
             '
             'm_tbxASCII
             '
-            Me.m_tbxASCII.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxASCII.Location = New System.Drawing.Point(158, 317)
+            resources.ApplyResources(Me.m_tbxASCII, "m_tbxASCII")
             Me.m_tbxASCII.Name = "m_tbxASCII"
             Me.m_tbxASCII.ReadOnly = True
-            Me.m_tbxASCII.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxASCII.TabIndex = 20
             Me.m_tbxASCII.TabStop = False
             '
             'm_tbxCSV
             '
-            Me.m_tbxCSV.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxCSV.Location = New System.Drawing.Point(158, 340)
+            resources.ApplyResources(Me.m_tbxCSV, "m_tbxCSV")
             Me.m_tbxCSV.Name = "m_tbxCSV"
             Me.m_tbxCSV.ReadOnly = True
-            Me.m_tbxCSV.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxCSV.TabIndex = 22
             Me.m_tbxCSV.TabStop = False
             '
             'm_hdrAutosave
             '
-            Me.m_hdrAutosave.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_hdrAutosave, "m_hdrAutosave")
             Me.m_hdrAutosave.CanCollapseParent = False
             Me.m_hdrAutosave.CollapsedParentHeight = 0
             Me.m_hdrAutosave.IsCollapsed = False
-            Me.m_hdrAutosave.Location = New System.Drawing.Point(0, 131)
             Me.m_hdrAutosave.Name = "m_hdrAutosave"
-            Me.m_hdrAutosave.Size = New System.Drawing.Size(553, 18)
-            Me.m_hdrAutosave.TabIndex = 9
-            Me.m_hdrAutosave.Text = "Auto-save results"
-            Me.m_hdrAutosave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tbxTracer
             '
-            Me.m_tbxTracer.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxTracer.Location = New System.Drawing.Point(158, 363)
+            resources.ApplyResources(Me.m_tbxTracer, "m_tbxTracer")
             Me.m_tbxTracer.Name = "m_tbxTracer"
             Me.m_tbxTracer.ReadOnly = True
-            Me.m_tbxTracer.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxTracer.TabIndex = 24
             Me.m_tbxTracer.TabStop = False
             '
             'm_fieldpickBackup
             '
-            Me.m_fieldpickBackup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_fieldpickBackup, "m_fieldpickBackup")
             Me.m_fieldpickBackup.Fields = Nothing
             Me.m_fieldpickBackup.Label = "Fields"
-            Me.m_fieldpickBackup.Location = New System.Drawing.Point(481, 74)
             Me.m_fieldpickBackup.Name = "m_fieldpickBackup"
             Me.m_fieldpickBackup.ShowDirectoryPicker = True
-            Me.m_fieldpickBackup.Size = New System.Drawing.Size(75, 21)
-            Me.m_fieldpickBackup.TabIndex = 7
             Me.m_fieldpickBackup.TypeFormatter = Nothing
             Me.m_fieldpickBackup.UIContext = Nothing
             '
             'm_fieldpickOutput
             '
-            Me.m_fieldpickOutput.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.m_fieldpickOutput, "m_fieldpickOutput")
             Me.m_fieldpickOutput.Fields = Nothing
             Me.m_fieldpickOutput.Label = "Fields"
-            Me.m_fieldpickOutput.Location = New System.Drawing.Point(481, 21)
             Me.m_fieldpickOutput.Name = "m_fieldpickOutput"
             Me.m_fieldpickOutput.ShowDirectoryPicker = True
-            Me.m_fieldpickOutput.Size = New System.Drawing.Size(72, 21)
-            Me.m_fieldpickOutput.TabIndex = 3
             Me.m_fieldpickOutput.TypeFormatter = Nothing
             Me.m_fieldpickOutput.UIContext = Nothing
             '
             'm_tbBackupMask
             '
-            Me.m_tbBackupMask.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbBackupMask.Location = New System.Drawing.Point(158, 74)
+            resources.ApplyResources(Me.m_tbBackupMask, "m_tbBackupMask")
             Me.m_tbBackupMask.Name = "m_tbBackupMask"
-            Me.m_tbBackupMask.Size = New System.Drawing.Size(317, 20)
-            Me.m_tbBackupMask.TabIndex = 6
             '
             'm_lblBackupFolder
             '
-            Me.m_lblBackupFolder.AutoSize = True
-            Me.m_lblBackupFolder.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblBackupFolder.Location = New System.Drawing.Point(3, 77)
+            resources.ApplyResources(Me.m_lblBackupFolder, "m_lblBackupFolder")
             Me.m_lblBackupFolder.Name = "m_lblBackupFolder"
-            Me.m_lblBackupFolder.Size = New System.Drawing.Size(100, 13)
-            Me.m_lblBackupFolder.TabIndex = 5
-            Me.m_lblBackupFolder.Text = "&Back-up models as:"
             '
             'm_tbOutputMask
             '
-            Me.m_tbOutputMask.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbOutputMask.Location = New System.Drawing.Point(158, 21)
+            resources.ApplyResources(Me.m_tbOutputMask, "m_tbOutputMask")
             Me.m_tbOutputMask.Name = "m_tbOutputMask"
-            Me.m_tbOutputMask.Size = New System.Drawing.Size(321, 20)
-            Me.m_tbOutputMask.TabIndex = 2
             '
             'm_lblOutput
             '
-            Me.m_lblOutput.AutoSize = True
-            Me.m_lblOutput.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblOutput.Location = New System.Drawing.Point(3, 24)
+            resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
             Me.m_lblOutput.Name = "m_lblOutput"
-            Me.m_lblOutput.Size = New System.Drawing.Size(82, 13)
-            Me.m_lblOutput.TabIndex = 1
-            Me.m_lblOutput.Text = "&Output location:"
             '
             'CEwEHeaderLabel1
             '
-            Me.CEwEHeaderLabel1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
             Me.CEwEHeaderLabel1.CanCollapseParent = False
             Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
             Me.CEwEHeaderLabel1.IsCollapsed = False
-            Me.CEwEHeaderLabel1.Location = New System.Drawing.Point(0, 0)
             Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
-            Me.CEwEHeaderLabel1.Size = New System.Drawing.Size(553, 18)
-            Me.CEwEHeaderLabel1.TabIndex = 0
-            Me.CEwEHeaderLabel1.Text = "File management options"
-            Me.CEwEHeaderLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
             '
             'm_tbxOutputSample
             '
-            Me.m_tbxOutputSample.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxOutputSample.Location = New System.Drawing.Point(158, 47)
+            resources.ApplyResources(Me.m_tbxOutputSample, "m_tbxOutputSample")
             Me.m_tbxOutputSample.Name = "m_tbxOutputSample"
             Me.m_tbxOutputSample.ReadOnly = True
-            Me.m_tbxOutputSample.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxOutputSample.TabIndex = 4
             '
             'm_tbxBackupSample
             '
-            Me.m_tbxBackupSample.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxBackupSample.Location = New System.Drawing.Point(158, 100)
+            resources.ApplyResources(Me.m_tbxBackupSample, "m_tbxBackupSample")
             Me.m_tbxBackupSample.Name = "m_tbxBackupSample"
             Me.m_tbxBackupSample.ReadOnly = True
-            Me.m_tbxBackupSample.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxBackupSample.TabIndex = 8
             '
             'm_cbMSY
             '
-            Me.m_cbMSY.AutoSize = True
-            Me.m_cbMSY.Location = New System.Drawing.Point(41, 273)
+            resources.ApplyResources(Me.m_cbMSY, "m_cbMSY")
             Me.m_cbMSY.Name = "m_cbMSY"
-            Me.m_cbMSY.Size = New System.Drawing.Size(49, 17)
-            Me.m_cbMSY.TabIndex = 16
-            Me.m_cbMSY.Text = "&MSY"
             Me.m_cbMSY.UseVisualStyleBackColor = True
             '
             'm_tbxMSY
             '
-            Me.m_tbxMSY.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_tbxMSY.Location = New System.Drawing.Point(158, 271)
+            resources.ApplyResources(Me.m_tbxMSY, "m_tbxMSY")
             Me.m_tbxMSY.Name = "m_tbxMSY"
             Me.m_tbxMSY.ReadOnly = True
-            Me.m_tbxMSY.Size = New System.Drawing.Size(395, 20)
-            Me.m_tbxMSY.TabIndex = 17
             Me.m_tbxMSY.TabStop = False
             '
             'ucOptionsFileManagement
             '
-            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_fieldpickBackup)
             Me.Controls.Add(Me.m_fieldpickOutput)
@@ -378,7 +267,6 @@ Namespace Other
             Me.Controls.Add(Me.CEwEHeaderLabel1)
             Me.Controls.Add(Me.m_hdrAutosave)
             Me.Name = "ucOptionsFileManagement"
-            Me.Size = New System.Drawing.Size(553, 387)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
