@@ -35,7 +35,12 @@ Public Interface IThreadedProcess
     ''' <summary>
     ''' Block the calling thread until the model has finished running
     ''' </summary>
-    ''' <param name="WaitTimeinMillSec">Length of time in milliseconds to wait for the process to complete, -1 to wait indefinitely.</param>
+    ''' <param name="WaitTimeinMillSec">
+    ''' Length of time in milliseconds to wait for the process to complete,
+    '''  -1 to wait indefinitely,
+    '''  0 return immediately with True if the process has completed False if it is still running,
+    '''  > 0 (any positive integer) then wait for WaitTimeInMillSec return True if process completed False otherwise.
+    ''' </param>
     ''' <returns>True if the process was stop within the wait time, False if it timed out.</returns>
     ''' <remarks>This can be used by an interface to call the model then wait for results before continuing processing.</remarks>
     ''' ---------------------------------------------------------------------------
@@ -62,5 +67,9 @@ Public Interface IThreadedProcess
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     ReadOnly Property IsRunning() As Boolean
+
+
+    WriteOnly Property MessagePump As cCore.MessagePumpDelegate
+
 
 End Interface

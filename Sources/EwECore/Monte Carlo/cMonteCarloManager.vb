@@ -145,12 +145,12 @@ Public Class cMonteCarloManager
 
 #Region "Running"
 
-    Protected Overrides Sub SetWait()
+    Public Overrides Sub SetWait()
         Me.m_core.m_SearchData.SearchMode = eSearchModes.MonteCarlo
         MyBase.SetWait()
     End Sub
 
-    Protected Overrides Sub ReleaseWait()
+    Public Overrides Sub ReleaseWait()
         Me.m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
         MyBase.ReleaseWait()
     End Sub
@@ -171,7 +171,6 @@ Public Class cMonteCarloManager
                     If (m_core.m_TSData.NdatType > 0) Then
 
                         Me.SetWait()
-
                         Me.update()
 
                         thrdMC = New Thread(AddressOf m_mc.Run)
@@ -301,9 +300,6 @@ Public Class cMonteCarloManager
 
         Try
 
-            'make the interface has setup the manager properly
-            'Debug.Assert(m_SyncObject IsNot Nothing)
-            'Debug.Assert(Me.m_dlgMCTrialStepHandler IsNot Nothing)
 
             'tell the interface
             If m_SyncObject IsNot Nothing And m_dlgMCTrialStepHandler IsNot Nothing Then
@@ -395,8 +391,9 @@ Public Class cMonteCarloManager
         Dim result As Boolean = True
         If (Me.m_core Is Nothing) Then Return True
         Try
-            Me.m_core.StopEcoSim()
             m_mc.StopTrial = True
+            Me.m_core.StopEcoSim()
+
             result = Me.Wait(WaitTimeInMillSec)
         Catch ex As Exception
 

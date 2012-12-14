@@ -692,7 +692,9 @@ Public Class cEcoSpace
     ''' <remarks></remarks>
     Private Sub RunSpace()
 
+        Me.SetWait()
         Me.Run()
+        Me.ReleaseWait()
 
     End Sub
 

@@ -41,6 +41,8 @@ Public MustInherit Class cThreadWaitBase
 
     Private m_bIsRunning As Boolean
 
+    Private m_MessagePump As cCore.MessagePumpDelegate
+
 #End Region ' Private vars
 
     ''' ---------------------------------------------------------------------------
@@ -61,55 +63,87 @@ Public MustInherit Class cThreadWaitBase
     ''' ---------------------------------------------------------------------------
     ''' <inheritdocs cref="IThreadedProcess.Wait"/>
     ''' ---------------------------------------------------------------------------
-    Public Overridable Function Wait(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean _
-        Implements IThreadedProcess.Wait
-
-        Dim result As Boolean
-        Dim waitTime As Integer = WaitTimeInMillSec
-        Dim totTime As Integer
-        Dim processing As Boolean = True
-        Dim n As Integer
-
-        'System.Console.WriteLine("Starting Waiting.")
-
+    Public Overridable Function Wait(Optional ByVal WaitTimeInMillSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
         'if WaitTimeInMillSec  = -1 wait until completed(WaitOne returns True) no matter how long
         'if WaitTimeInMillSec = 0 then wait for zero time even if WaitOne returns False, process has not completed
         'WaitTimeInMillSec > 0 (any positive integer) then wait for WaitTimeInMillSec or until WaitOne returns True
-        If waitTime > 0 Then waitTime = 100
+
+        Dim result As Boolean
+        Dim waitTime As Integer
+        Dim totTime As Integer
+        Dim processing As Boolean = True
+        Dim waitForever As Boolean
+        Dim stpwWaitTime As Stopwatch
+        Dim n As Integer
+
+        'Thread is not running
+        'The Waithandle is in a nonsignaled state (the door is open)
+        If Not Me.IsRunning Then Return True
+
+        'No Wait Time this just checks if the thread is blocked
+        If WaitTimeInMillSec = 0 Then Return Me.m_SignalState.WaitOne(0)
+
+
+        If WaitTimeInMillSec = -1 Then
+            waitForever = True
+        Else
+            waitForever = False
+            'use a separate timer to figure out if the wait has timed out
+            stpwWaitTime = Stopwatch.StartNew
+        End If
+
 
         'Wait is in a loop because
         'm_SignalState is signaled when a thread is running
         'm_SignalState.WaitOne will block the calling thread (the interface) while the signal is set
-        'this allows the running thread to keep going.
         'If the running thread calls out to the interface there will be a deadlock, it is block by WaitOne.
-        'The loop allows the interface to unblock and process any calls from the thread 
-        'then reblock and finish any processing on the thread
+        'This loop pumps any interface messages so running threads don't block waiting for the interface to process messages it sent out
         Do
             n += 1
 
-            'remove for Mono compatibilty
-            Windows.Forms.Application.DoEvents()
-            
+            'Let the interface process any messages that have been sent out by the running process
+            'Without this the interace will deadlock 
+            'if the thread makes a call to the interface before it has a chance to exit
+            Me.RunInterfaceMessagePump()
 
-            'WaitOne() will return False if it timed out, the process has not completed
-            'True if the wait was completed or there was no wait 
-            result = Me.m_SignalState.WaitOne(waitTime)
+            'WaitOne() will return True if the WaitHandle has been released be the thread
+            result = Me.m_SignalState.WaitOne(0)
             totTime += waitTime
 
             If result = True Then processing = False
-            If totTime >= WaitTimeInMillSec Then processing = False
+            If Not waitForever Then
+                If stpwWaitTime.ElapsedMilliseconds >= WaitTimeInMillSec Then
+                    'Timed out result will = False
+                    processing = False
+                End If
+            End If
 
         Loop While processing
+
+        If n > 1 Then
+            System.Console.WriteLine("Waiting for running process " & n.ToString & " iterations.")
+        End If
 
         'System.Console.WriteLine("Finished waiting " & totTime.ToString & " milliseconds, " & n.ToString & " iterations")
         Return result
 
     End Function
 
+
+    Private Sub RunInterfaceMessagePump()
+        Try
+            If Me.m_MessagePump IsNot Nothing Then
+                Me.m_MessagePump.Invoke()
+            End If
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+    End Sub
+
     ''' ---------------------------------------------------------------------------
     ''' <inheritdocs cref="IThreadedProcess.SetWait"/>
     ''' ---------------------------------------------------------------------------
-    Protected Overridable Sub SetWait() _
+    Public Overridable Sub SetWait() _
         Implements IThreadedProcess.SetWait
 
         'set the isRunning flag
@@ -123,7 +157,7 @@ Public MustInherit Class cThreadWaitBase
     ''' ---------------------------------------------------------------------------
     ''' <inheritdocs cref="IThreadedProcess.ReleaseWait"/>
     ''' ---------------------------------------------------------------------------
-    Protected Overridable Sub ReleaseWait() _
+    Public Overridable Sub ReleaseWait() _
         Implements IThreadedProcess.ReleaseWait
 
         m_bIsRunning = False
@@ -143,4 +177,9 @@ Public MustInherit Class cThreadWaitBase
         End Get
     End Property
 
+    Public WriteOnly Property MessagePump As cCore.MessagePumpDelegate Implements IThreadedProcess.MessagePump
+        Set(value As cCore.MessagePumpDelegate)
+            m_MessagePump = value
+        End Set
+    End Property
 End Class

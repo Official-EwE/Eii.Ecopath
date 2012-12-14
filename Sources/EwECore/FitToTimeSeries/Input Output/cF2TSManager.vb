@@ -28,8 +28,6 @@ Public Class cF2TSManager
     Implements SearchObjectives.ISearchObjective
     Implements IThreadedProcess
 
-
-
     'ToDo_jb Firstyear and LastYear need to be set for the time series data
 
 #Region " Construction, Initialization and Destruction"
@@ -55,31 +53,15 @@ Public Class cF2TSManager
     'this is for marshalling messages across thread boundaries
     Private Delegate Sub SendMessagesToCoreDelegate()
 
-    'Multi threading
-    ''' <summary>
-    ''' m_SignalState is use by an calling routine to block its thread until the model has completed
-    ''' </summary>
-    ''' <remarks>See Wait()</remarks>
-    Private m_SignalState As ManualResetEvent '(True)
-
-    ''' <summary>
-    ''' m_semaphore is use to block the model from being called while it is running
-    ''' </summary>
-    Private m_semaphore As Semaphore
-
     Private m_searchObjective As cSearchObjective
+
+    Private m_nonBlockingWait As cNonBlockingWaitHandle
 
 
     Friend Sub New(ByRef theCore As cCore)
         MyBase.New(theCore)
 
-
-        Me.m_semaphore = New Semaphore(0, 1)
-        Me.m_SignalState = New ManualResetEvent(True)
-
         Me.m_lstMessages = New List(Of cMessage)
-
-        Me.m_semaphore.Release()
 
         Dim val As cValue = Nothing
         Dim meta As cVariableMetaData = Nothing
@@ -93,6 +75,7 @@ Public Class cF2TSManager
         Me.m_ESData = theCore.m_EcoSimData
 
         m_searchObjective = theCore.SearchObjective
+        Me.m_nonBlockingWait = New cNonBlockingWaitHandle
 
         'default OK status used for setVariable
         m_ValidationStatus = New cVariableStatus(Me, eStatusFlags.OK, "", eVarNameFlags.NotSet)
@@ -557,40 +540,26 @@ Public Class cF2TSManager
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property IsRunning() As Boolean Implements IThreadedProcess.IsRunning
         Get
-
-            If (Me.m_thrdRun Is Nothing) Then
-                'the thread is not running!!!
-                Return False
-            End If
-            'this is for robustness
-            Return (Me.m_thrdRun.ThreadState = ThreadState.Running)
+            Return Me.m_nonBlockingWait.IsRunning
         End Get
     End Property
 
-     
+
     ''' <summary>
     ''' Block the calling thread until the model has finished running
     ''' </summary>
     ''' <remarks>This can be used by an interface to call the model then wait for results before continuing processing.</remarks>
     Public Function Wait(Optional ByVal WaitTimeInMilSec As Integer = -1) As Boolean Implements IThreadedProcess.Wait
-        Dim result As Boolean
-        'System.Console.WriteLine("Fit to time series: Waiting.")
-
-        'block until m_SignalState changes
-        result = Me.m_SignalState.WaitOne(WaitTimeInMilSec)
-
-        'System.Console.WriteLine("Fit to time series: Finished waiting.")
-        Return result
-
+        Return Me.m_nonBlockingWait.Wait(WaitTimeInMilSec)
     End Function
 
 
     Public Sub ReleaseWait() Implements IThreadedProcess.ReleaseWait
-
+        Me.m_nonBlockingWait.ReleaseWait()
     End Sub
 
     Public Sub SetWait() Implements IThreadedProcess.SetWait
-
+        Me.m_nonBlockingWait.setwait()
     End Sub
 
 
@@ -663,13 +632,9 @@ Public Class cF2TSManager
         If Not CanRun() Then Return False
 
         Try
-
+            Me.SetWait()
             ' Sanity check
             Debug.Assert(Me.m_thrdRun Is Nothing)
-
-            'block if the semaphore is already set
-            Me.m_semaphore.WaitOne()
-            Me.m_SignalState.Reset()
 
             ' Make sure model can access manager variables from the shared data structures
             Me.Update(Me.m_dataType)
@@ -685,9 +650,7 @@ Public Class cF2TSManager
             Return True
 
         Catch ex As Exception
-
-            Me.m_SignalState.Set()
-            Me.m_semaphore.Release()
+            Me.ReleaseWait()
             cLog.Write(ex)
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator prey search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
@@ -714,9 +677,8 @@ Public Class cF2TSManager
         Me.m_core.CheckResetDefaultVulnerabilities()
 
         Try
-            'block if the semaphore is already set
-            Me.m_semaphore.WaitOne()
-            Me.m_SignalState.Reset()
+
+            Me.SetWait()
             ' Sanity check
             Debug.Assert(Me.m_thrdRun Is Nothing)
 
@@ -735,7 +697,7 @@ Public Class cF2TSManager
 
         Catch ex As Exception
 
-            Me.m_SignalState.Set()
+            Me.ReleaseWait()
             cLog.Write(ex)
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: Sensitvity to predator search. " & ex.Message, eMessageType.ErrorEncountered, _
                                     eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Critical, Me.m_dataType))
@@ -766,9 +728,7 @@ Public Class cF2TSManager
 
         Try
 
-            'block if the semaphore is already set
-            Me.m_semaphore.WaitOne()
-            Me.m_SignalState.Reset()
+            Me.SetWait()
 
             ' Make sure model can access manager variables from the shared data structures
             Me.Update(Me.m_dataType)
@@ -785,7 +745,7 @@ Public Class cF2TSManager
             Return bret
 
         Catch ex As Exception
-            Me.m_SignalState.Set()
+            Me.ReleaseWait()
             Me.m_runSilent = False
             cLog.Write(ex)
             Me.SendMessageCallback(New cMessage("Fit to timeseries Error: " & ex.Message, eMessageType.ErrorEncountered, _
@@ -920,18 +880,14 @@ Public Class cF2TSManager
             Dim dlgRunStopped As RunStoppedDelegate = AddressOf Me.ThreadSafeRunStopped
             m_SyncObject.BeginInvoke(dlgRunStopped, objs)
 
-            'once all the processing has completed clear the semaphore and set the signal
-            Me.m_semaphore.Release()
-            m_SignalState.Set()
-            Me.m_runSilent = False
+            Me.ReleaseWait()
 
+            Me.m_runSilent = False
             Me.m_thrdRun = Nothing
 
         Catch ex As Exception
 
-            Me.m_semaphore.Release()
-            m_SignalState.Set()
-
+            Me.ReleaseWait()
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
         End Try
@@ -1049,7 +1005,6 @@ Public Class cF2TSManager
 
 #End Region ' Internal model handling
 
-
 #Region "ISearchObjective implementation"
 
     Public ReadOnly Property FleetObjectives(ByVal iFleet As Integer) As cSearchObjectiveFleetInput Implements ISearchObjective.FleetObjectives
@@ -1100,6 +1055,22 @@ Public Class cF2TSManager
 
     'End Function
 
-  
+
+
+    Public WriteOnly Property MessagePump As cCore.MessagePumpDelegate Implements IThreadedProcess.MessagePump
+        Set(value As cCore.MessagePumpDelegate)
+            Me.m_nonBlockingWait.MessagePump = value
+        End Set
+    End Property
+
+
+    Private Class cNonBlockingWaitHandle
+        Inherits cThreadWaitBase
+
+        Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
+
+            Return True
+        End Function
+    End Class
 
 End Class

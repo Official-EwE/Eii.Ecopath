@@ -649,6 +649,16 @@ Public Class AppLauncher
         Me.m_styleguideupdater = New cStyleGuideUpdater(Me.UIContext)
         Me.m_styleguideupdater.Load()
 
+        Me.Core.SetMessagePumpDelegate(AddressOf Me.onPumpCoreMessages)
+
+    End Sub
+
+    Private Sub onPumpCoreMessages()
+        Try
+            Windows.Forms.Application.DoEvents()
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub InitEventHandlers()

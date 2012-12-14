@@ -109,6 +109,12 @@ Public Class cCore
     ''' </summary>
     Public Delegate Sub StopRunDelegate()
 
+    ''' <summary>
+    ''' Delegate used by <see cref="cThreadWaitBase">cThreadWaitBase</see> to run the interface message pump when waiting for a thread to complete 
+    ''' </summary>
+    ''' <remarks>Set <see cref="cCore.setMessagePumpDelegate">cCore.setMessagePumpDelegate(MessagePumpDelegate)</see> from the interface to allow the interface to process messages while waiting for a thread to complete.</remarks>
+    Public Delegate Sub MessagePumpDelegate()
+
 #End Region ' Public delegates
 
 #Region " Generic variables "
@@ -2573,7 +2579,7 @@ Public Class cCore
     ''' -----------------------------------------------------------------------
     Public Property DefaultAuthor As String
         Get
-             Return Me.m_settings.Author
+            Return Me.m_settings.Author
         End Get
         Set(value As String)
             Me.m_settings.Author = value
@@ -2649,16 +2655,32 @@ Public Class cCore
         Me.m_dgtStop = dgt
     End Sub
 
+
+    ''' <summary>
+    ''' Sets a delegate that a Manager can use to pump messages in the interface waiting for a process/thread to complete.
+    ''' </summary>
+    ''' <param name="InterfaceMessagePumpDelegate">Delegate from an interface to run the interfaces message pump.</param>
+    ''' <remarks>This is used to prevent a thread deadlock when a Manager is waiting for a process to complete. </remarks>
+    Public Sub SetMessagePumpDelegate(InterfaceMessagePumpDelegate As MessagePumpDelegate)
+        Try
+            For Each threadProcess As IThreadedProcess In Me.m_ThreadedProcesses
+                threadProcess.MessagePump = InterfaceMessagePumpDelegate
+            Next
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
 #End Region ' Generic helper methods
 
 #Region " Datasource "
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' The <see cref="IEwEDataSource">data source</see> that the core will use
-    ''' for reading and writing model data.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' The <see cref="IEwEDataSource">data source</see> that the core will use
+        ''' for reading and writing model data.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
     Public Property DataSource() As IEwEDataSource
         Get
             Return Me.m_DataSource

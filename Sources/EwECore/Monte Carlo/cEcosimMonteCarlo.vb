@@ -628,7 +628,7 @@ Friend Class cEcosimMonteCarlo
             Me.nEcopathIterations = iEcopathIterations
 
             If dlgEcopathIterationHandler IsNot Nothing Then
-                dlgEcopathIterationHandler()
+                dlgEcopathIterationHandler.Invoke()
             End If
         Catch ex As Exception
             'Bogus Dude.....the interface has thrown an error 
@@ -643,7 +643,7 @@ Friend Class cEcosimMonteCarlo
     Private Sub CompletedCallback()
         Try
             If dlgMonteCarloCompletedHandler IsNot Nothing Then
-                Me.dlgMonteCarloCompletedHandler()
+                Me.dlgMonteCarloCompletedHandler.Invoke()
             End If
         Catch ex As Exception
             Debug.Assert(False, "Monte Carlo CompletedCallback Exception: " & ex.Message)
