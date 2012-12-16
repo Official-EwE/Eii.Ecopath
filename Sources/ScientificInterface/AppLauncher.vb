@@ -4211,4 +4211,8 @@ Public Class AppLauncher
 
 #End Region  ' Big and evil event handlers
 
+    Private Sub m_tsmiViewLog_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiViewLog.Click
+        Me.m_cmdBrowseURI.Invoke(cLog.LogFile)
+    End Sub
+
 End Class

@@ -56,6 +56,7 @@ Partial Public Class AppLauncher
         Dim sep3 As System.Windows.Forms.ToolStripSeparator
         Dim sep2 As System.Windows.Forms.ToolStripSeparator
         Dim sep1 As System.Windows.Forms.ToolStripSeparator
+        Dim m_tssHelp3 As System.Windows.Forms.ToolStripSeparator
         Me.m_tsmiEcospaceNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceLoad = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceSave = New System.Windows.Forms.ToolStripMenuItem()
@@ -76,6 +77,7 @@ Partial Public Class AppLauncher
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiForums = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuWindows = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiWindowsClose = New System.Windows.Forms.ToolStripMenuItem()
@@ -157,6 +159,7 @@ Partial Public Class AppLauncher
         sep3 = New System.Windows.Forms.ToolStripSeparator()
         sep2 = New System.Windows.Forms.ToolStripSeparator()
         sep1 = New System.Windows.Forms.ToolStripSeparator()
+        m_tssHelp3 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_menuMain.SuspendLayout()
         Me.m_tsModel.SuspendLayout()
         Me.SuspendLayout()
@@ -317,6 +320,11 @@ Partial Public Class AppLauncher
         sep1.Name = "sep1"
         resources.ApplyResources(sep1, "sep1")
         '
+        'm_tssHelp3
+        '
+        m_tssHelp3.Name = "m_tssHelp3"
+        resources.ApplyResources(m_tssHelp3, "m_tssHelp3")
+        '
         'm_tsmiHelpContents
         '
         Me.m_tsmiHelpContents.Name = "m_tsmiHelpContents"
@@ -324,7 +332,7 @@ Partial Public Class AppLauncher
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpReportIssue, Me.m_tsmiForums, m_tssHelp2, Me.m_tsmiHelpAbout})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpReportIssue, Me.m_tsmiForums, m_tssHelp2, Me.m_tsmiViewLog, m_tssHelp3, Me.m_tsmiHelpAbout})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -347,6 +355,11 @@ Partial Public Class AppLauncher
         '
         Me.m_tsmiForums.Name = "m_tsmiForums"
         resources.ApplyResources(Me.m_tsmiForums, "m_tsmiForums")
+        '
+        'm_tsmiViewLog
+        '
+        Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
+        resources.ApplyResources(Me.m_tsmiViewLog, "m_tsmiViewLog")
         '
         'm_tsmiHelpAbout
         '
@@ -803,6 +816,7 @@ Partial Public Class AppLauncher
     Friend WithEvents ToolStripSeparator5 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnAutosaveResults As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnBeta As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsmiViewLog As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

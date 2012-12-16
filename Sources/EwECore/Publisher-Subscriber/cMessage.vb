@@ -229,7 +229,7 @@ Public Class cMessage
     End Property
 
     ''' <summary>
-    ''' Helper method, compares this message to another object
+    ''' Helper method, compares this message to another object.
     ''' </summary>
     ''' <param name="obj">The object to compare to</param>
     ''' <returns>True if equals</returns>
@@ -253,6 +253,11 @@ Public Class cMessage
             Return MyBase.Equals(obj)
         End If
     End Function
+
+    Public Overrides Function ToString() As String
+        Return Me.GetType.ToString() & " " & Me.m_strMessage
+    End Function
+
 End Class
 
 

@@ -746,52 +746,56 @@ Namespace Utilities
             Return cStringUtils.ToUTF8(strIn, Encoding.ASCII)
         End Function
 
+        ''' <summary>Default string split delimiters, in order of decreasing relevance.</summary>
+        Public Shared c_DELIMITERS As Char() = New Char() {Convert.ToChar(Keys.Tab), ";"c, Convert.ToChar(Keys.Space)}
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the most likely delimiter character in a string.
         ''' </summary>
         ''' <param name="strIn">The string to explore.</param>
+        ''' <param name="cQualifier">Qualifier character for enveloping non-splittable strings.</param>
+        ''' <param name="candidates">An array of possible delimiter characters. If 
+        ''' an empty array is provided or this parameter is omitted, the default 
+        ''' array <see cref="c_DELIMITERS"/> is used.</param>
         ''' <returns>The most likely character used to split a string. If no
-        ''' candidate can be found, a comma (,) is returned.</returns>
-        ''' <remarks><para>If the <paramref name="strIn">string</paramref> can be
-        ''' split by any non-comma character (such as space, tab, semi-colon, etc) 
-        ''' then this character is returned. If no such split was possible, a 
-        ''' comma is assumed.</para>
-        ''' <para>This rather blunt logic correctly captures European number
-        ''' formats with commas for decimal separators. Neat, no?</para>
+        ''' candidate can be found the default comma (,) is returned.</returns>
+        ''' <remarks><para>This method splits <paramref name="strIn"/> by each 
+        ''' delimiter character in <paramref name="candidates"/> in order. If a 
+        ''' split returns more than one sub-string the split character is returned.
+        ''' If no split was possible the default comma character is returned.</para>
         ''' </remarks>
         ''' -------------------------------------------------------------------
-        Public Shared Function FindBestDelimiter(ByVal strIn As String, _
-                                                 Optional ByVal cQualifier As Char = """"c) As Char
+        Public Shared Function FindStringDelimiter(ByVal strIn As String, _
+                                                   Optional ByVal cQualifier As Char = """"c, _
+                                                   Optional ByVal candidates As Char() = Nothing) As Char
 
-            ' Candidate delimiter characters, except for commas
-            Dim candidates As Char() = New Char() {";"c, Convert.ToChar(Keys.Space), Convert.ToChar(Keys.Tab)}
-            ' Candidate demimiter that yielded the highest number of string segments
-            Dim cMax As Char = ","c
-            ' Number of segments for cMax
-            Dim iMax As Integer = -1
-
-            ' Early bail-out
-            If String.IsNullOrWhiteSpace(strIn) Then
-                Return cMax
+            ' Ensure that there are candidate delimiters
+            If (candidates Is Nothing) Then
+                candidates = c_DELIMITERS
             End If
 
-            ' Determine max number of segments for candidate delimiters
-            For Each c As Char In candidates
-                ' Does candidate occur in string?
-                If strIn.IndexOf(c) >= 0 Then
-                    ' #Yes: Perform qualified split
-                    Dim iTmp As Integer = cStringUtils.SplitQualified(strIn, c, cQualifier).Length
-                    ' Is new max?
-                    If (iTmp > iMax) Then
-                        ' #Yes: store max
-                        cMax = c
-                        iMax = iTmp
-                    End If
-                End If
-            Next
+            If candidates.Length = 0 Then
+                candidates = c_DELIMITERS
+            End If
 
-            Return cMax
+            ' Did receive any data to split?
+            If Not String.IsNullOrWhiteSpace(strIn) Then
+                ' #Yes: find most relevant split character
+                For Each c As Char In candidates
+                    ' Does candidate occur in string?
+                    If strIn.IndexOf(c) >= 0 Then
+                        ' #Yes: Does split yield more than one substring?
+                        If (cStringUtils.SplitQualified(strIn, c, cQualifier).Length > 1) Then
+                            ' #Yes: return this character
+                            Return c
+                        End If
+                    End If
+                Next
+            End If
+
+            ' Return default
+            Return ","c
 
         End Function
 

@@ -1253,12 +1253,11 @@ Namespace Controls.EwEGrid
             Dim iDX As Integer = 0
 
             ' Determine most likely delimiter used in text
-            If (iDY > 0) Then cSplit = cStringUtils.FindBestDelimiter(astrLines(0))
+            If (iDY > 0) Then cSplit = cStringUtils.FindStringDelimiter(astrLines(0))
 
             If (Me.Core IsNot Nothing) Then
                 Dim fmt As New cCharFormatter()
-                Dim msg As New cMessage("Grid " & Me.ToString & " paste data using " & fmt.GetDescriptor(cSplit), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Maintenance)
-                Me.Core.Messages.SendMessage(msg)
+                cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste using " & fmt.GetDescriptor(cSplit), eVerboseLevel.Detailed)
             End If
 
             For Each strLine As String In astrLines
@@ -1327,6 +1326,8 @@ Namespace Controls.EwEGrid
                                             End If
                                         Catch ex As Exception
                                             ' Whoah
+                                            cLog.Write("Grid " & Me.ToString & "::OnClipboardPaste failed on data type " & cell.DataModel.ValueType.ToString, _
+                                                       eVerboseLevel.Detailed)
                                         End Try
                                         If cell.DataModel.IsValidValue(objValue) Then
                                             cell.SetValue(pos, objValue)
@@ -1409,6 +1410,7 @@ Namespace Controls.EwEGrid
                 Me.RaiseSelectionChangeEvent()
             Catch ex As Exception
                 ' Woops
+                cLog.Write(ex, "EwEGrid::OnSelectionChange(" & Me.ToString & ")")
             End Try
 
         End Sub
@@ -1523,13 +1525,17 @@ Namespace Controls.EwEGrid
             Dim iCol As Integer = 0
             Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
             Dim nfi As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+            Dim cSplit As Char = ","c
 
             nfi.NumberDecimalSeparator = "."
 
             Try
                 While Not sr.EndOfStream And iRow < Me.RowsCount
                     strLine = sr.ReadLine()
-                    astrCells = strLine.Split(","c)
+                    If (iRow = 0) Then
+                        cSplit = cStringUtils.FindStringDelimiter(strLine)
+                    End If
+                    astrCells = strLine.Split(cSplit)
                     For iCol = 0 To Math.Min(Me.ColumnsCount, astrCells.Length) - 1
                         cell = Me(iRow, iCol)
                         If cell IsNot Nothing Then
@@ -1562,6 +1568,7 @@ Namespace Controls.EwEGrid
                     iRow += 1
                 End While
             Catch ex As Exception
+                cLog.Write(ex, "EwEGrid::ReadContent(" & Me.ToString & ")")
                 Return False
             End Try
             Return True
@@ -1570,21 +1577,18 @@ Namespace Controls.EwEGrid
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Write the content of the grid content to a stream writer.
+        ''' Write the content of the grid content to a stream writer. Note that
+        ''' content will be written with north-american decimal separators.
         ''' </summary>
         ''' <param name="sw">The <see cref="StreamWriter">stream writer</see> to
         ''' write grid values to.</param>
-        ''' <returns>True if succesful.</returns>
+        ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function WriteContent(ByVal sw As StreamWriter) As Boolean
 
             Dim cell As ICell = Nothing
             Dim cellValue As Object = Nothing
             Dim strValue As String = ""
-            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
-            Dim nfi As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
-
-            nfi.NumberDecimalSeparator = "."
 
             Try
                 For iRow As Integer = 0 To Me.RowsCount - 1
@@ -1597,7 +1601,7 @@ Namespace Controls.EwEGrid
                                 If TypeOf (cellValue) Is String Then
                                     sw.Write(cell.DisplayText)
                                 Else
-                                    strValue = Convert.ToString(cell.GetValue(New SourceGrid2.Position(iRow, iCol)), nfi)
+                                    strValue = cStringUtils.FormatNumber(cell.GetValue(New SourceGrid2.Position(iRow, iCol)))
                                     sw.Write(strValue)
                                 End If
                             End If
@@ -1621,7 +1625,7 @@ Namespace Controls.EwEGrid
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' StyleGuide change event handler; makes sure cells are redrawn
+        ''' StyleGuide change event handler; makes sure cells are redrawn.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Protected Overridable Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
