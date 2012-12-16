@@ -31,9 +31,8 @@ Namespace Style
     ''' Class for providing a textual description of core variables.
     ''' </summary>
     ''' <remarks>
-    ''' <para>This class tries to obtain a string from the ScientificShared resources
-    ''' to describe a <see cref="eVarNameFlags">core variable</see>. The string is
-    ''' expected to be formatted as follows:</para>
+    ''' <para>This class tries to obtain a string from the ScientificShared resources.
+    ''' The resource string is expected to be named and formatted as follows:</para>
     ''' <para>VARIABLE_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
     ''' </remarks>
     ''' ---------------------------------------------------------------------------

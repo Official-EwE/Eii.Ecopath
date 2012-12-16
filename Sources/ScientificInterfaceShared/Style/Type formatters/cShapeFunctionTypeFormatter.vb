@@ -30,6 +30,11 @@ Namespace Style
     ''' <summary>
     ''' Class for providing a textual description of <see cref="eShapeFunctionType"/>.
     ''' </summary>
+    ''' <remarks>
+    ''' <para>This class tries to obtain a string from the ScientificShared resources.
+    ''' The resource string is expected to be named and formatted as follows:</para>
+    ''' <para>SHAPEFUNCTION_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
+    ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cShapeFunctionTypeFormatter
         Implements ITypeFormatter

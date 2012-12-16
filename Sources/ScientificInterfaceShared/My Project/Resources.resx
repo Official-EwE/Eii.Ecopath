@@ -2706,4 +2706,17 @@
   <data name="VARIABLE_VULMULT" xml:space="preserve">
     <value>v||Vulnerability</value>
   </data>
+  <data name="GENERIC_CHAR_ENTER" xml:space="preserve">
+    <value>(enter)</value>
+  </data>
+  <data name="GENERIC_CHAR_ESCAPE" xml:space="preserve">
+    <value>(escape)</value>
+  </data>
+  <data name="GENERIC_CHAR_SPACE" xml:space="preserve">
+    <value>(space)</value>
+  </data>
+  <data name="GENERIC_CHAR_TAB" xml:space="preserve">
+    <value>(tab)</value>
+    <comment>'Colon' character description</comment>
+  </data>
 </root>

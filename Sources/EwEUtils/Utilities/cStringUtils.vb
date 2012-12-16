@@ -721,15 +721,78 @@ Namespace Utilities
         ''' Converts an incoming string to UTF-8 encoding.
         ''' </summary>
         ''' <param name="strIn">The string to convert.</param>
-        ''' <returns></returns>
+        ''' <param name="encIn">The current encoding of <paramref name="strIn"/>.</param>
+        ''' <returns>A UTF-8 encoded version of the string.</returns>
         ''' -------------------------------------------------------------------
-        Public Shared Function ToUTF8(ByVal strIn As String) As String
+        Public Shared Function ToUTF8(ByVal strIn As String, _
+                                      ByVal encIn As Encoding) As String
             ' Special cases
             strIn = strIn.Replace("²"c, "2"c)
             strIn = strIn.Replace("³"c, "3"c)
             ' Shazaam
-            Dim data() As Byte = System.Text.Encoding.ASCII.GetBytes(strIn)
-            Return System.Text.Encoding.UTF8.GetString(data)
+            Dim data() As Byte = encIn.GetBytes(strIn)
+            Return Encoding.UTF8.GetString(data)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts an incoming string to UTF-8 encoding, assuming that the
+        ''' incoming string encoded as ASCII (.NET default).
+        ''' </summary>
+        ''' <param name="strIn">The string to convert.</param>
+        ''' <returns>A UTF-8 encoded version of the string.</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function ToUTF8(ByVal strIn As String) As String
+            Return cStringUtils.ToUTF8(strIn, Encoding.ASCII)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the most likely delimiter character in a string.
+        ''' </summary>
+        ''' <param name="strIn">The string to explore.</param>
+        ''' <returns>The most likely character used to split a string. If no
+        ''' candidate can be found, a comma (,) is returned.</returns>
+        ''' <remarks><para>If the <paramref name="strIn">string</paramref> can be
+        ''' split by any non-comma character (such as space, tab, semi-colon, etc) 
+        ''' then this character is returned. If no such split was possible, a 
+        ''' comma is assumed.</para>
+        ''' <para>This rather blunt logic correctly captures European number
+        ''' formats with commas for decimal separators. Neat, no?</para>
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Shared Function FindBestDelimiter(ByVal strIn As String, _
+                                                 Optional ByVal cQualifier As Char = """"c) As Char
+
+            ' Candidate delimiter characters, except for commas
+            Dim candidates As Char() = New Char() {";"c, Convert.ToChar(Keys.Space), Convert.ToChar(Keys.Tab)}
+            ' Candidate demimiter that yielded the highest number of string segments
+            Dim cMax As Char = ","c
+            ' Number of segments for cMax
+            Dim iMax As Integer = -1
+
+            ' Early bail-out
+            If String.IsNullOrWhiteSpace(strIn) Then
+                Return cMax
+            End If
+
+            ' Determine max number of segments for candidate delimiters
+            For Each c As Char In candidates
+                ' Does candidate occur in string?
+                If strIn.IndexOf(c) >= 0 Then
+                    ' #Yes: Perform qualified split
+                    Dim iTmp As Integer = cStringUtils.SplitQualified(strIn, c, cQualifier).Length
+                    ' Is new max?
+                    If (iTmp > iMax) Then
+                        ' #Yes: store max
+                        cMax = c
+                        iMax = iTmp
+                    End If
+                End If
+            Next
+
+            Return cMax
+
         End Function
 
 #Region " Map array conversions "

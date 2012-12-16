@@ -34,7 +34,6 @@ Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells
-Imports SourceGrid2.Cells.Real
 
 #End Region
 
@@ -872,6 +871,10 @@ Namespace Controls.EwEGrid
 
         End Sub
 
+        Public Overrides Function ToString() As String
+            Return Me.GetType().ToString & "(" & Me.Name & ")"
+        End Function
+
 #End Region ' Appearance
 
 #Region " Data "
@@ -1231,6 +1234,7 @@ Namespace Controls.EwEGrid
 
             Dim strData As String = CStr(dtObj.GetData(DataFormats.Text)).Replace(cStringUtils.vbCrLf, cStringUtils.vbLf)
             Dim astrLines() As String = strData.Split(New Char() {CChar(cStringUtils.vbCr), CChar(cStringUtils.vbLf)})
+            Dim cSplit As Char = Convert.ToChar(Keys.Tab)
             Dim r As Range = Me.Selection.GetRange()
             Dim pos As Position = Nothing
             Dim cell As SourceGrid2.Cells.ICell = Nothing
@@ -1247,8 +1251,19 @@ Namespace Controls.EwEGrid
             ' Diagnose dimensions of pasted data
             Dim iDY As Integer = astrLines.Length
             Dim iDX As Integer = 0
+
+            ' Determine most likely delimiter used in text
+            If (iDY > 0) Then cSplit = cStringUtils.FindBestDelimiter(astrLines(0))
+
+            If (Me.Core IsNot Nothing) Then
+                Dim fmt As New cCharFormatter()
+                Dim msg As New cMessage("Grid " & Me.ToString & " paste data using " & fmt.GetDescriptor(cSplit), eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Maintenance)
+                Me.Core.Messages.SendMessage(msg)
+            End If
+
             For Each strLine As String In astrLines
-                Dim astrBits As String() = strLine.Split(CChar(cStringUtils.vbTab))
+                ' JS 16dec12: use qualified split
+                Dim astrBits As String() = cStringUtils.SplitQualified(strLine, cSplit)
                 iDX = Math.Max(iDX, astrBits.Length)
             Next
 

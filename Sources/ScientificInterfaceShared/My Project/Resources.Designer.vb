@@ -1262,6 +1262,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (enter).
+        '''</summary>
+        Public ReadOnly Property GENERIC_CHAR_ENTER() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_ENTER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (escape).
+        '''</summary>
+        Public ReadOnly Property GENERIC_CHAR_ESCAPE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_ESCAPE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to . (period).
         '''</summary>
         Public ReadOnly Property GENERIC_CHAR_PERIOD() As String
@@ -1276,6 +1294,24 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_CHAR_SEMICOLON() As String
             Get
                 Return ResourceManager.GetString("GENERIC_CHAR_SEMICOLON", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (space).
+        '''</summary>
+        Public ReadOnly Property GENERIC_CHAR_SPACE() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_SPACE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (tab).
+        '''</summary>
+        Public ReadOnly Property GENERIC_CHAR_TAB() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_CHAR_TAB", resourceCulture)
             End Get
         End Property
         

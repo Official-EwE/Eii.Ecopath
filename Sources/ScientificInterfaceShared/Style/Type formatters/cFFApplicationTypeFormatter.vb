@@ -28,8 +28,14 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eClimateTypes"/>.
+    ''' Class for providing a textual description of <see cref="eForcingApplicationTypes"/>.
     ''' </summary>
+    ''' <remarks>
+    ''' <para>This class tries to obtain a string from the ScientificShared resources
+    ''' to describe a <see cref="eForcingApplicationTypes">Forcing Function application types</see>.
+    ''' The string is expected to be formatted as follows:</para>
+    ''' <para>FFAPPLICATION_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
+    ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cFFApplicationTypeFormatter
         Implements ITypeFormatter

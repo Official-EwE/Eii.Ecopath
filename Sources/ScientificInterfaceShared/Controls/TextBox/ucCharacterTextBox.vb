@@ -15,35 +15,12 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
-'==============================================================================
-'
-' $Log: ucCharacterTextBox.vb,v $
-' Revision 1.2  2008/12/15 15:37:28  jeroens
-' no message
-'
-' Revision 1.1  2008/09/26 07:31:19  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.3  2008/07/14 17:05:22  jeroens
-' Fixed designer properties
-' Backspace key eaten up
-'
-' Revision 1.2  2008/07/14 16:14:01  jeroens
-' Eats up 'Del' press
-' No copy/paste
-' Mask can be used to exclude characters
-'
-' Revision 1.1  2008/07/14 14:40:17  jeroens
-' Initial version
-'
-'==============================================================================
-
 #Region " Imports "
 
 Option Strict On
 Imports System.Windows.Forms
 Imports System.ComponentModel
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -61,7 +38,7 @@ Namespace Controls
 
 #Region " Private variables "
 
-        ''' <summary></summary>
+        ''' <summary>Default character code.</summary>
         Private m_iChar As Integer = 32
         ''' <summary></summary>
         Private m_strCharMask As String = ""
@@ -125,30 +102,39 @@ Namespace Controls
             End Get
             Set(ByVal value As Int32)
 
-                Dim strText As String = ""
-
                 ' Check if character is supported by the control
                 If Not Me.SupportsChar(DirectCast(value, Keys)) Then Return
 
                 ' #Yes: ok, gobble it up
                 Me.m_iChar = value
 
-                ' Create texttual representation of the char
-                strText = DirectCast(m_iChar, Keys).ToString
-                Select Case DirectCast(m_iChar, Keys)
-                    Case Keys.Space, Keys.Tab, Keys.Enter, Keys.Escape, Keys.None
-                        strText = DirectCast(m_iChar, Keys).ToString
-                    Case Else
-                        strText = Me.Character()
+                Dim fmt As New cCharFormatter()
+                Me.Text = fmt.GetDescriptor(Me.Character)
 
-                        Select Case Convert.ToChar(m_iChar)
-                            Case "."c : strText = My.Resources.GENERIC_CHAR_PERIOD
-                            Case ","c : strText = My.Resources.GENERIC_CHAR_COMMA
-                            Case ":"c : strText = My.Resources.GENERIC_CHAR_COLON
-                            Case ";"c : strText = My.Resources.GENERIC_CHAR_SEMICOLON
-                        End Select
-                End Select
-                Me.Text = strText
+                'Dim strText As String = ""
+                '' Create texttual representation of the char
+                'Select Case DirectCast(m_iChar, Keys)
+                '    Case Keys.None, Keys.F1 To Keys.F24
+                '        strText = DirectCast(m_iChar, Keys).ToString
+                '    Case Keys.Enter
+                '        strText = My.Resources.GENERIC_CHAR_ENTER
+                '    Case Keys.Escape
+                '        strText = My.Resources.GENERIC_CHAR_ESCAPE
+                '    Case Keys.Space
+                '        strText = My.Resources.GENERIC_CHAR_SPACE
+                '    Case Keys.Tab
+                '        strText = My.Resources.GENERIC_CHAR_TAB
+                '    Case Else
+                '        Select Case Convert.ToChar(m_iChar)
+                '            Case "."c : strText = My.Resources.GENERIC_CHAR_PERIOD
+                '            Case ","c : strText = My.Resources.GENERIC_CHAR_COMMA
+                '            Case ":"c : strText = My.Resources.GENERIC_CHAR_COLON
+                '            Case ";"c : strText = My.Resources.GENERIC_CHAR_SEMICOLON
+                '            Case Else
+                '                strText = Me.Character()
+                '        End Select
+                'End Select
+                'Me.Text = strText
             End Set
         End Property
 

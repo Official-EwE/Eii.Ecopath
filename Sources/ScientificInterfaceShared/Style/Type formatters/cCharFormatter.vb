@@ -28,15 +28,10 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eAutosaveTypes"/>.
+    ''' Class for providing a textual description of a <see cref="Char">character</see>.
     ''' </summary>
-    ''' <remarks>
-    ''' <para>This class tries to obtain a string from the ScientificShared resources.
-    ''' The resource string is expected to be named and formatted as follows:</para>
-    ''' <para>AUTOSAVE_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
-    ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cAutosaveTypeFormatter
+    Public Class cCharFormatter
         Implements ITypeFormatter
 
         Public Function GetDescriptor(ByVal value As Object, _
@@ -45,41 +40,43 @@ Namespace Style
 
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))
 
-            Dim strValue As String = value.ToString
-            Dim strDescr As String = cResourceUtils.LoadString("AUTOSAVE_" & strValue.ToUpper, Me.GetType.Assembly)
-            Dim astrBits As String() = Nothing
-            Dim iNumBits As Integer = 0
-            Dim strBit As String = ""
+            Dim iChar As Integer = 0
+            Dim c As Char = Nothing
+            Dim strText As String
 
-            If (strDescr IsNot Nothing) Then
-                astrBits = strDescr.Split("|"c)
-                iNumBits = astrBits.Length
-            End If
+            c = DirectCast(value, Char)
+            iChar = Convert.ToInt16(c)
 
-            For i As Integer = 0 To Math.Min(descriptor, iNumBits)
+            ' Create texttual representation of the char
+            Select Case DirectCast(iChar, Keys)
 
-                ' Is first part?
-                If (i = 0) Then
-                    ' #Yes: remember default
-                    strBit = strValue
-                End If
-
-                If i < iNumBits Then
-                    ' Has a part?
-                    If Not String.IsNullOrEmpty(astrBits(i)) Then
-                        ' #Yes: update bit
-                        strBit = astrBits(i).Trim
-                    End If
-                End If
-
-            Next
-            Return strBit
+                Case Keys.None, Keys.F1 To Keys.F24
+                    strText = DirectCast(iChar, Keys).ToString
+                Case Keys.Enter
+                    strText = My.Resources.GENERIC_CHAR_ENTER
+                Case Keys.Escape
+                    strText = My.Resources.GENERIC_CHAR_ESCAPE
+                Case Keys.Space
+                    strText = My.Resources.GENERIC_CHAR_SPACE
+                Case Keys.Tab
+                    strText = My.Resources.GENERIC_CHAR_TAB
+                Case Else
+                    Select Case c
+                        Case "."c : strText = My.Resources.GENERIC_CHAR_PERIOD
+                        Case ","c : strText = My.Resources.GENERIC_CHAR_COMMA
+                        Case ":"c : strText = My.Resources.GENERIC_CHAR_COLON
+                        Case ";"c : strText = My.Resources.GENERIC_CHAR_SEMICOLON
+                        Case Else
+                            strText = c
+                    End Select
+            End Select
+            Return strText
 
         End Function
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(eAutosaveTypes)
+            Return GetType(Char)
         End Function
 
     End Class

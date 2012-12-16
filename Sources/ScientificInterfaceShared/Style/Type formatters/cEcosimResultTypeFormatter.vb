@@ -29,14 +29,8 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of core variables.
+    ''' Class for providing a textual description of <see cref="cEcosimResultWriter.eResultTypes"/>.
     ''' </summary>
-    ''' <remarks>
-    ''' <para>This class tries to obtain a string from the ScientificShared resources
-    ''' to describe a <see cref="eVarNameFlags">core variable</see>. The string is
-    ''' expected to be formatted as follows:</para>
-    ''' <para>VARIABLE_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
-    ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Public Class cEcosimResultTypeFormatter
         Implements ITypeFormatter
