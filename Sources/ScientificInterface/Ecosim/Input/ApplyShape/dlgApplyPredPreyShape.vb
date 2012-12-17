@@ -33,7 +33,7 @@ Imports EwEUtils.Core
 Namespace Ecosim
 
     ''' <summary>
-    ''' Interface to manage assign forcing punctions to pred/prey interactions.
+    ''' Interface to manage assign forcing functions to pred/prey interactions.
     ''' </summary>
     Public Class dlgApplyPredPreyShape
 
@@ -571,17 +571,10 @@ Namespace Ecosim
 
         Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTypeFormatter()
+            Dim fmt As New cFFApplicationTargetTypeFormatter(Me.m_targetType)
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Tag = appl
-
-            ' Formatting issue: show 'Search Rate' for PP as 'Prod Rate'
-            If (appl = eForcingFunctionApplication.SearchRate) And _
-               (Me.m_targetType = eApplyTargetTypes.PrimaryProducer) Then
-                appl = eForcingFunctionApplication.ProductionRate
-            End If
-
             item.SubItems(1).Text = fmt.GetDescriptor(appl)
 
         End Sub

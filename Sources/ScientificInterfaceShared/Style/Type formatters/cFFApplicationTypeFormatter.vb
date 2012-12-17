@@ -21,6 +21,7 @@ Option Strict On
 Imports EwECore
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -28,29 +29,38 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eForcingApplicationTypes"/>.
+    ''' Class for providing a textual description of <see cref="eApplyTargetTypes"/>.
     ''' </summary>
     ''' <remarks>
     ''' <para>This class tries to obtain a string from the ScientificShared resources
-    ''' to describe a <see cref="eForcingApplicationTypes">Forcing Function application types</see>.
+    ''' to describe a <see cref="eApplyTargetTypes">Forcing Function 
+    ''' application target types</see>.
     ''' The string is expected to be formatted as follows:</para>
-    ''' <para>FFAPPLICATION_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
+    ''' <para>FFAPPLICATIONTARGET_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
-    Public Class cFFApplicationTypeFormatter
+    Public Class cFFApplicationTargetTypeFormatter
         Implements ITypeFormatter
+
+        Private m_mode As eApplyTargetTypes = eApplyTargetTypes.NotSet
+
+        Public Sub New(ByVal mode As eApplyTargetTypes)
+            Me.m_mode = mode
+        End Sub
 
         Public Function GetDescribedType() As System.Type _
             Implements ITypeFormatter.GetDescribedType
-            Return GetType(eForcingApplicationTypes)
+            Return GetType(eForcingFunctionApplication)
         End Function
 
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
+            Debug.Assert(Me.GetDescribedType() Is value.GetType())
+
             Dim strValue As String = value.ToString
-            Dim strDescr As String = cResourceUtils.LoadString("FFAPPLICATION_" & strValue.ToUpper, Me.GetType.Assembly)
+            Dim strDescr As String = cResourceUtils.LoadString("FFAPPLICATIONTARGET_" & strValue.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
             Dim strBit As String = ""

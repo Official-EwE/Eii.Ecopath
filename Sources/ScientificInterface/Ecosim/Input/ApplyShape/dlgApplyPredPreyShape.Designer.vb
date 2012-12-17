@@ -40,29 +40,29 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyPredPreyShape))
-            Me.OK_Button = New System.Windows.Forms.Button
-            Me.Cancel_Button = New System.Windows.Forms.Button
-            Me.m_lblPred = New System.Windows.Forms.Label
-            Me.m_lblPrey = New System.Windows.Forms.Label
-            Me.m_lblAvailableFF = New System.Windows.Forms.Label
-            Me.lblSearchRate = New System.Windows.Forms.Label
-            Me.m_txbPreyName = New System.Windows.Forms.TextBox
-            Me.m_txbPredName = New System.Windows.Forms.TextBox
-            Me.m_gbMultipliers = New System.Windows.Forms.GroupBox
-            Me.m_rbSearchRate = New System.Windows.Forms.RadioButton
-            Me.m_rbVulArea = New System.Windows.Forms.RadioButton
-            Me.m_rbProdRate = New System.Windows.Forms.RadioButton
-            Me.m_rbArea = New System.Windows.Forms.RadioButton
-            Me.m_rbVul = New System.Windows.Forms.RadioButton
-            Me.m_btnAdd = New System.Windows.Forms.Button
-            Me.m_lvAppliedShapes = New System.Windows.Forms.ListView
-            Me.m_colhdrShape = New System.Windows.Forms.ColumnHeader
-            Me.m_colhdrModifier = New System.Windows.Forms.ColumnHeader
-            Me.m_lvAllShapes = New System.Windows.Forms.ListView
-            Me.m_btnRemove = New System.Windows.Forms.Button
-            Me.m_lblTitle = New System.Windows.Forms.Label
-            Me.m_lblAppliedFF = New System.Windows.Forms.Label
-            Me.m_gbMultipliers.SuspendLayout()
+            Me.OK_Button = New System.Windows.Forms.Button()
+            Me.Cancel_Button = New System.Windows.Forms.Button()
+            Me.m_lblPred = New System.Windows.Forms.Label()
+            Me.m_lblPrey = New System.Windows.Forms.Label()
+            Me.m_lblAvailableFF = New System.Windows.Forms.Label()
+            Me.m_txbPreyName = New System.Windows.Forms.TextBox()
+            Me.m_txbPredName = New System.Windows.Forms.TextBox()
+            Me.m_rbSearchRate = New System.Windows.Forms.RadioButton()
+            Me.m_rbVulArea = New System.Windows.Forms.RadioButton()
+            Me.m_rbProdRate = New System.Windows.Forms.RadioButton()
+            Me.m_rbArea = New System.Windows.Forms.RadioButton()
+            Me.m_rbVul = New System.Windows.Forms.RadioButton()
+            Me.m_btnAdd = New System.Windows.Forms.Button()
+            Me.m_lvAppliedShapes = New System.Windows.Forms.ListView()
+            Me.m_colhdrShape = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_colhdrModifier = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+            Me.m_lvAllShapes = New System.Windows.Forms.ListView()
+            Me.m_btnRemove = New System.Windows.Forms.Button()
+            Me.m_lblTitle = New System.Windows.Forms.Label()
+            Me.m_lblAppliedFF = New System.Windows.Forms.Label()
+            Me.m_tlpApplications = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_lblApplyTo = New System.Windows.Forms.Label()
+            Me.m_tlpApplications.SuspendLayout()
             Me.SuspendLayout()
             '
             'OK_Button
@@ -91,11 +91,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblAvailableFF, "m_lblAvailableFF")
             Me.m_lblAvailableFF.Name = "m_lblAvailableFF"
             '
-            'lblSearchRate
-            '
-            resources.ApplyResources(Me.lblSearchRate, "lblSearchRate")
-            Me.lblSearchRate.Name = "lblSearchRate"
-            '
             'm_txbPreyName
             '
             resources.ApplyResources(Me.m_txbPreyName, "m_txbPreyName")
@@ -107,18 +102,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_txbPredName, "m_txbPredName")
             Me.m_txbPredName.Name = "m_txbPredName"
             Me.m_txbPredName.ReadOnly = True
-            '
-            'm_gbMultipliers
-            '
-            resources.ApplyResources(Me.m_gbMultipliers, "m_gbMultipliers")
-            Me.m_gbMultipliers.Controls.Add(Me.m_rbSearchRate)
-            Me.m_gbMultipliers.Controls.Add(Me.m_rbVulArea)
-            Me.m_gbMultipliers.Controls.Add(Me.m_rbProdRate)
-            Me.m_gbMultipliers.Controls.Add(Me.m_rbArea)
-            Me.m_gbMultipliers.Controls.Add(Me.m_rbVul)
-            Me.m_gbMultipliers.Controls.Add(Me.lblSearchRate)
-            Me.m_gbMultipliers.Name = "m_gbMultipliers"
-            Me.m_gbMultipliers.TabStop = False
             '
             'm_rbSearchRate
             '
@@ -204,12 +187,29 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblAppliedFF, "m_lblAppliedFF")
             Me.m_lblAppliedFF.Name = "m_lblAppliedFF"
             '
+            'm_tlpApplications
+            '
+            resources.ApplyResources(Me.m_tlpApplications, "m_tlpApplications")
+            Me.m_tlpApplications.Controls.Add(Me.m_rbVulArea, 4, 0)
+            Me.m_tlpApplications.Controls.Add(Me.m_rbSearchRate, 0, 0)
+            Me.m_tlpApplications.Controls.Add(Me.m_rbArea, 3, 0)
+            Me.m_tlpApplications.Controls.Add(Me.m_rbProdRate, 1, 0)
+            Me.m_tlpApplications.Controls.Add(Me.m_rbVul, 2, 0)
+            Me.m_tlpApplications.Name = "m_tlpApplications"
+            '
+            'm_lblApplyTo
+            '
+            resources.ApplyResources(Me.m_lblApplyTo, "m_lblApplyTo")
+            Me.m_lblApplyTo.Name = "m_lblApplyTo"
+            '
             'dlgApplyPredPreyShape
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
+            Me.Controls.Add(Me.m_lblApplyTo)
+            Me.Controls.Add(Me.m_tlpApplications)
             Me.Controls.Add(Me.Cancel_Button)
             Me.Controls.Add(Me.OK_Button)
             Me.Controls.Add(Me.m_txbPredName)
@@ -221,7 +221,6 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_btnRemove)
             Me.Controls.Add(Me.m_lblTitle)
             Me.Controls.Add(Me.m_btnAdd)
-            Me.Controls.Add(Me.m_gbMultipliers)
             Me.Controls.Add(Me.m_lblAppliedFF)
             Me.Controls.Add(Me.m_lblAvailableFF)
             Me.MaximizeBox = False
@@ -230,8 +229,8 @@ Namespace Ecosim
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-            Me.m_gbMultipliers.ResumeLayout(False)
-            Me.m_gbMultipliers.PerformLayout()
+            Me.m_tlpApplications.ResumeLayout(False)
+            Me.m_tlpApplications.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -240,10 +239,8 @@ Namespace Ecosim
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_lblPred As System.Windows.Forms.Label
         Private WithEvents m_lblPrey As System.Windows.Forms.Label
-        Private WithEvents lblSearchRate As System.Windows.Forms.Label
         Private WithEvents m_txbPreyName As System.Windows.Forms.TextBox
         Private WithEvents m_txbPredName As System.Windows.Forms.TextBox
-        Private WithEvents m_gbMultipliers As System.Windows.Forms.GroupBox
         Private WithEvents m_btnAdd As System.Windows.Forms.Button
         Private WithEvents m_lvAppliedShapes As System.Windows.Forms.ListView
         Private WithEvents m_lvAllShapes As System.Windows.Forms.ListView
@@ -258,6 +255,8 @@ Namespace Ecosim
         Private WithEvents m_lblTitle As System.Windows.Forms.Label
         Private WithEvents m_lblAvailableFF As System.Windows.Forms.Label
         Private WithEvents m_lblAppliedFF As System.Windows.Forms.Label
+        Private WithEvents m_tlpApplications As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_lblApplyTo As System.Windows.Forms.Label
 
     End Class
 

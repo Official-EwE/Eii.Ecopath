@@ -468,7 +468,7 @@ Namespace Ecosim
 
         Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTypeFormatter()
+            Dim fmt As New cFFApplicationTargetTypeFormatter(eApplyTargetTypes.Consumer)
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Text = fmt.GetDescriptor(appl)

@@ -990,54 +990,63 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized string similar to Arena area (A).
         '''</summary>
-        Public ReadOnly Property FFAPPLICATION_ARENAAREA() As String
+        Public ReadOnly Property FFAPPLICATIONTARGET_ARENAAREA() As String
             Get
-                Return ResourceManager.GetString("FFAPPLICATION_ARENAAREA", resourceCulture)
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_ARENAAREA", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Immigration.
+        '''</summary>
+        Public ReadOnly Property FFAPPLICATIONTARGET_IMMIG() As String
+            Get
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_IMMIG", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Off-vessel price.
         '''</summary>
-        Public ReadOnly Property FFAPPLICATION_OFFVESSELPRICE() As String
+        Public ReadOnly Property FFAPPLICATIONTARGET_OFFVESSELPRICE() As String
             Get
-                Return ResourceManager.GetString("FFAPPLICATION_OFFVESSELPRICE", resourceCulture)
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_OFFVESSELPRICE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Prod. rate.
+        '''  Looks up a localized string similar to Prod. rate or Immigration.
         '''</summary>
-        Public ReadOnly Property FFAPPLICATION_PRODUCTIONRATE() As String
+        Public ReadOnly Property FFAPPLICATIONTARGET_PRODUCTIONRATE() As String
             Get
-                Return ResourceManager.GetString("FFAPPLICATION_PRODUCTIONRATE", resourceCulture)
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_PRODUCTIONRATE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Search rate (a).
         '''</summary>
-        Public ReadOnly Property FFAPPLICATION_SEARCHRATE() As String
+        Public ReadOnly Property FFAPPLICATIONTARGET_SEARCHRATE() As String
             Get
-                Return ResourceManager.GetString("FFAPPLICATION_SEARCHRATE", resourceCulture)
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_SEARCHRATE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Vul (v) and area (A).
         '''</summary>
-        Public ReadOnly Property FFAPPLICATION_VULANDAREA() As String
+        Public ReadOnly Property FFAPPLICATIONTARGET_VULANDAREA() As String
             Get
-                Return ResourceManager.GetString("FFAPPLICATION_VULANDAREA", resourceCulture)
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_VULANDAREA", resourceCulture)
             End Get
         End Property
         
         '''<summary>
         '''  Looks up a localized string similar to Vulnerability (v).
         '''</summary>
-        Public ReadOnly Property FFAPPLICATION_VULNERABILITY() As String
+        Public ReadOnly Property FFAPPLICATIONTARGET_VULNERABILITY() As String
             Get
-                Return ResourceManager.GetString("FFAPPLICATION_VULNERABILITY", resourceCulture)
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_VULNERABILITY", resourceCulture)
             End Get
         End Property
         

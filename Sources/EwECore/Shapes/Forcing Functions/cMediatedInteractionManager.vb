@@ -117,16 +117,12 @@ Public Class cMediatedInteractionManager
         Get
             Try
 
-                'True for primary producer pairs
-                If PredIndex = PreyIndex And m_EPData.PP(PreyIndex) = 1 Then
-                    Return True
+                'True for primary producer and detritus pairs
+                If ((Me.m_EPData.PP(PreyIndex) = 1) Or (PredIndex > Me.m_EPData.NumLiving) Or (PreyIndex > Me.m_EPData.NumLiving)) Then
+                    Return (PredIndex = PreyIndex)
                 End If
+                Return (Me.m_EPData.DC(PredIndex, PreyIndex) > 0)
 
-                If m_EPData.DC(PredIndex, PreyIndex) > 0 Then
-                    Return True
-                Else
-                    Return False
-                End If
             Catch ex As Exception
                 Return False
             End Try

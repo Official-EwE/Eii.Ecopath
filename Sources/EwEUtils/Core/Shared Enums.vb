@@ -2450,19 +2450,19 @@ Namespace Core
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Enumerator for forcing functions, describing to which Predator/Prey or 
-    ''' Fleet/Group interaction a forcing function is applied.
+    ''' Enumerator for forcing functions, describing the target of a Predator/Prey or 
+    ''' Fleet/Group interaction forcing application.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
-    Public Enum eForcingFunctionApplication
+    Public Enum eForcingFunctionApplication As Integer
         NotSet = 0
         SearchRate = 1
         Vulnerability = 2
         ArenaArea = 3
         VulAndArea = 4
         OffVesselPrice = 5
-        ''' <summary>Production rate and search rate are synonymous</summary>
-        ProductionRate = SearchRate
+        ProductionRate = 1
+        Immigration = 1
     End Enum
 
 #End Region ' Forcing function application targets

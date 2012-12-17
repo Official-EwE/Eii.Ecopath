@@ -1920,22 +1920,22 @@
   <data name="ECOSIM_DEFAULT_NEWLANDINGSSHAPE" xml:space="preserve">
     <value>Price elasticity of supply {0}</value>
   </data>
-  <data name="FFAPPLICATION_ARENAAREA" xml:space="preserve">
+  <data name="FFAPPLICATIONTARGET_ARENAAREA" xml:space="preserve">
     <value>Arena area (A)</value>
   </data>
-  <data name="FFAPPLICATION_OFFVESSELPRICE" xml:space="preserve">
+  <data name="FFAPPLICATIONTARGET_OFFVESSELPRICE" xml:space="preserve">
     <value>Off-vessel price</value>
   </data>
-  <data name="FFAPPLICATION_PRODUCTIONRATE" xml:space="preserve">
-    <value>Prod. rate</value>
+  <data name="FFAPPLICATIONTARGET_PRODUCTIONRATE" xml:space="preserve">
+    <value>Prod. rate or Immigration</value>
   </data>
-  <data name="FFAPPLICATION_SEARCHRATE" xml:space="preserve">
+  <data name="FFAPPLICATIONTARGET_SEARCHRATE" xml:space="preserve">
     <value>Search rate (a)</value>
   </data>
-  <data name="FFAPPLICATION_VULANDAREA" xml:space="preserve">
+  <data name="FFAPPLICATIONTARGET_VULANDAREA" xml:space="preserve">
     <value>Vul (v) and area (A)</value>
   </data>
-  <data name="FFAPPLICATION_VULNERABILITY" xml:space="preserve">
+  <data name="FFAPPLICATIONTARGET_VULNERABILITY" xml:space="preserve">
     <value>Vulnerability (v)</value>
   </data>
   <data name="HEADER_ASSIGNED_GROUPS_FLEETS" xml:space="preserve">
@@ -2718,5 +2718,8 @@
   <data name="GENERIC_CHAR_TAB" xml:space="preserve">
     <value>(tab)</value>
     <comment>'Colon' character description</comment>
+  </data>
+  <data name="FFAPPLICATIONTARGET_IMMIG" xml:space="preserve">
+    <value>Immigration</value>
   </data>
 </root>

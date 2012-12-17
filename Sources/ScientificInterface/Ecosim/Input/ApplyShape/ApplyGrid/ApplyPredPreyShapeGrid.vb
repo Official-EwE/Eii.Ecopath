@@ -166,7 +166,7 @@ Namespace Ecosim
                         columnIndex = columnIndex + 1
                     End If
                 ElseIf ((Me.m_applyTargetMode And eApplyTargetTypes.PrimaryProducer) = eApplyTargetTypes.PrimaryProducer) Then
-                    If source.PP = 1 Then
+                    If source.PP = 1 Or i > Me.Core.nLivingGroups Then
                         Me.InsertColumn(source, columnIndex)
                         columnIndex = columnIndex + 1
                     End If
