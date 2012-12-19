@@ -2298,12 +2298,18 @@ Namespace Ecosim
             Dim i As Integer, j As Integer, ii As Integer
             Dim eat As Single, Bprey As Single
             Dim aeff() As Single, Veff() As Single
+            Dim Hdent() As Single
+            'Primary Production forcing function multiplier
+            Dim Pmult As Single
+            'Imported Detritus forcing function multiplier
+            Dim DtImpMult As Single
+            'Imported Detritus after forcing function has been applied
+            Dim DtImp As Single
+
             ReDim aeff(m_Data.inlinks)
             ReDim Veff(m_Data.inlinks)
-            Dim Hdent() As Single
             ReDim Hdent(nGroups)
 
-            Dim Pmult As Single
             Dim ia As Integer, Vbiom() As Single, Vdenom() As Single
             Try
 
@@ -2495,10 +2501,15 @@ Namespace Ecosim
                         'VC: Follow the logic for the living groups; assume no pbmaxs for detritus
                         'VC: I will ignore tval(SeasonType()) for detritus
                         'VC: Emig(i) should include export of detritus??? How about biomass accumulation???
+                        DtImpMult = 1
+                        ApplyAVmodifiers(DtImpMult, 0, i, i, True)
+                        'Imported Detritus for non-living groups is copied from DtImp(i) to Immig(i) is SetupSimVariables() Really...
+                        DtImp = m_EPData.Immig(i) * DtImpMult
+
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.Emig(i) + m_Data.DetritusOut(i)) * Biomass(i)
-                        deriv(i) = m_EPData.Immig(i) + m_Data.ToDetritus(i - m_EPData.NumLiving) - m_Data.loss(i)
-                        If m_Data.loss(i) <> 0 And Biomass(i) > 0 And m_EPData.Immig(i) + m_Data.ToDetritus(i - m_EPData.NumLiving) > 0 Then
-                            biomeq(i) = (m_EPData.Immig(i) + m_Data.ToDetritus(i - m_EPData.NumLiving)) / (m_Data.loss(i) / Biomass(i))
+                        deriv(i) = DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving) - m_Data.loss(i)
+                        If m_Data.loss(i) <> 0 And Biomass(i) > 0 And DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving) > 0 Then
+                            biomeq(i) = (DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving)) / (m_Data.loss(i) / Biomass(i))
                         Else
                             biomeq(i) = 1.0E-20
                         End If
@@ -4137,7 +4148,8 @@ Namespace Ecosim
 
                 Select Case m_Data.BioMedData.FunctionType(i, j, K)
                     Case eForcingFunctionApplication.SearchRate, _
-                         eForcingFunctionApplication.ProductionRate
+                         eForcingFunctionApplication.ProductionRate, _
+                         eForcingFunctionApplication.Import
                         A = A * Mult
                     Case eForcingFunctionApplication.Vulnerability
                         v = v * Mult
