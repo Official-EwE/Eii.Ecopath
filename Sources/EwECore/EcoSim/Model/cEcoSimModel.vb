@@ -4149,7 +4149,7 @@ Namespace Ecosim
                 Select Case m_Data.BioMedData.FunctionType(i, j, K)
                     Case eForcingFunctionApplication.SearchRate, _
                          eForcingFunctionApplication.ProductionRate, _
-                         eForcingFunctionApplication.Import
+                         eForcingFunctionApplication.ImportDetritus
                         A = A * Mult
                     Case eForcingFunctionApplication.Vulnerability
                         v = v * Mult

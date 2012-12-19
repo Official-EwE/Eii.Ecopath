@@ -2462,7 +2462,7 @@ Namespace Core
         VulAndArea = 4
         OffVesselPrice = 5
         ProductionRate = 6
-        Import = 7
+        ImportDetritus = 7
     End Enum
 
 #End Region ' Forcing function application targets

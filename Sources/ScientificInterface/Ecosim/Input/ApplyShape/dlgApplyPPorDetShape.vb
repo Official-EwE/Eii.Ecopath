@@ -532,7 +532,7 @@ Namespace Ecosim
                     Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
 
                 Case eApplyTargetTypes.Detritus
-                    Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
+                    Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ImportDetritus)
                     Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
                     Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
                     Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)

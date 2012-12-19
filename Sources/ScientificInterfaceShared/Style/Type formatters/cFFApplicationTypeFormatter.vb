@@ -64,7 +64,7 @@ Namespace Style
                 Case eApplyTargetTypes.PrimaryProducer
                     If CInt(value) = 1 Then value = eForcingFunctionApplication.ProductionRate
                 Case eApplyTargetTypes.Detritus
-                    If CInt(value) = 1 Then value = eForcingFunctionApplication.Import
+                    If CInt(value) = 1 Then value = eForcingFunctionApplication.ImportDetritus
             End Select
 
             Dim strValue As String = value.ToString
