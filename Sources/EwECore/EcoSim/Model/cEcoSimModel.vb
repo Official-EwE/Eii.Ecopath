@@ -2508,6 +2508,7 @@ Namespace Ecosim
 
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.Emig(i) + m_Data.DetritusOut(i)) * Biomass(i)
                         deriv(i) = DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving) - m_Data.loss(i)
+
                         If m_Data.loss(i) <> 0 And Biomass(i) > 0 And DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving) > 0 Then
                             biomeq(i) = (DtImp + m_Data.ToDetritus(i - m_EPData.NumLiving)) / (m_Data.loss(i) / Biomass(i))
                         Else

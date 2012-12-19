@@ -566,6 +566,11 @@ Public Class cSpaceSolver
         Dim Dwe As Single
         Dim Bprey As Single
 
+        'Imported Detritus forcing function multiplier
+        Dim DtImpMult As Single
+        'Imported Detritus after forcing function has been applied
+        Dim DtImp As Single
+
         Dim aeff() As Single, Veff() As Single
         ReDim aeff(m_SimData.inlinks), Veff(m_SimData.inlinks)
 
@@ -760,7 +765,10 @@ Public Class cSpaceSolver
                     'deriv(i) = Immig(i) + ToDetritus(i - n) - loss(i)
                     If loss(i) <> 0 And Biomass(i) > 0 Then
                         'biomeq(i) = (Immig(i) + ToDetritus(i - n)) / (loss(i) / Biomass(i))
-                        Flowin(i) = (m_PathData.Immig(i) + ToDetritus(i - m_Data.nLiving))
+                        DtImpMult = 1
+                        ApplyAVmodifiers(DtImpMult, 0, i, i, True, iRow, iCol)
+
+                        Flowin(i) = (m_PathData.Immig(i) * DtImpMult + ToDetritus(i - m_Data.nLiving))
                         FlowoutRate(i) = loss(i) / Biomass(i)
                     Else
                         Flowin(i) = 1.0E-20
