@@ -37,7 +37,7 @@ Public MustInherit Class cMediatedInteraction
     ''' </summary>
     Protected Class cShapeFunctionTypePair
         Public Shape As cForcingFunction = Nothing
-        Public FunctionType As eForcingFunctionApplication
+        Public FunctionType As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
     End Class
 
 #End Region

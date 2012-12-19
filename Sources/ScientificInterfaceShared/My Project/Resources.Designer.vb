@@ -997,11 +997,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Immigration.
+        '''  Looks up a localized string similar to Import.
         '''</summary>
-        Public ReadOnly Property FFAPPLICATIONTARGET_IMMIG() As String
+        Public ReadOnly Property FFAPPLICATIONTARGET_IMPORT() As String
             Get
-                Return ResourceManager.GetString("FFAPPLICATIONTARGET_IMMIG", resourceCulture)
+                Return ResourceManager.GetString("FFAPPLICATIONTARGET_IMPORT", resourceCulture)
             End Get
         End Property
         
@@ -1015,7 +1015,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Prod. rate or Immigration.
+        '''  Looks up a localized string similar to Prod. rate.
         '''</summary>
         Public ReadOnly Property FFAPPLICATIONTARGET_PRODUCTIONRATE() As String
             Get

@@ -145,7 +145,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;OK_Button.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -172,13 +172,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;Cancel_Button.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="m_lblAvailableFF.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="m_lblAvailableFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 36</value>
+    <value>12, 9</value>
   </data>
   <data name="m_lblAvailableFF.Size" type="System.Drawing.Size, System.Drawing">
     <value>99, 13</value>
@@ -199,7 +199,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblAvailableFF.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="m_rbOpt1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -392,16 +392,28 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnAdd.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="m_lvAppliedShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="m_colhdrShape.Text" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="m_colhdrShape.Width" type="System.Int32, mscorlib">
+    <value>160</value>
+  </data>
+  <data name="m_colhdrModifier.Text" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="m_colhdrModifier.Width" type="System.Int32, mscorlib">
+    <value>96</value>
+  </data>
   <data name="m_lvAppliedShapes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>245, 54</value>
+    <value>245, 25</value>
   </data>
   <data name="m_lvAppliedShapes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 267</value>
+    <value>272, 296</value>
   </data>
   <data name="m_lvAppliedShapes.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -416,28 +428,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lvAppliedShapes.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="m_colhdrShape.Text" xml:space="preserve">
-    <value>Shape</value>
-  </data>
-  <data name="m_colhdrShape.Width" type="System.Int32, mscorlib">
-    <value>160</value>
-  </data>
-  <data name="m_colhdrModifier.Text" xml:space="preserve">
-    <value>Modifier</value>
-  </data>
-  <data name="m_colhdrModifier.Width" type="System.Int32, mscorlib">
-    <value>96</value>
+    <value>4</value>
   </data>
   <data name="m_lvAllShapes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
   </data>
   <data name="m_lvAllShapes.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 54</value>
+    <value>12, 25</value>
   </data>
   <data name="m_lvAllShapes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 267</value>
+    <value>195, 296</value>
   </data>
   <data name="m_lvAllShapes.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -452,7 +452,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lvAllShapes.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="m_btnRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -492,7 +492,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_btnRemove.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="m_lblAppliedFF.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -501,7 +501,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblAppliedFF.Location" type="System.Drawing.Point, System.Drawing">
-    <value>242, 36</value>
+    <value>242, 9</value>
   </data>
   <data name="m_lblAppliedFF.Size" type="System.Drawing.Size, System.Drawing">
     <value>91, 13</value>
@@ -522,7 +522,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblAppliedFF.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="m_tlpApplications.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -552,7 +552,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_tlpApplications.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="m_tlpApplications.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_rbOpt1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="m_rbOpt4" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="m_rbOpt2" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_rbOpt3" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
@@ -585,127 +585,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblApplyTo.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpInfo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="m_tlpInfo.ColumnCount" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.Name" xml:space="preserve">
-    <value>m_lblPred</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.Name" xml:space="preserve">
-    <value>m_lblPrey</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="m_tlpInfo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="m_tlpInfo.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_tlpInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>505, 23</value>
-  </data>
-  <data name="m_tlpInfo.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.Name" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;m_tlpInfo.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_tlpInfo.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="m_lblPred" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="m_lblPrey" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="m_lblPred.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblPred.Location" type="System.Drawing.Point, System.Drawing">
-    <value>51, 0</value>
-  </data>
-  <data name="m_lblPred.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_lblPred.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 13</value>
-  </data>
-  <data name="m_lblPred.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_lblPred.Text" xml:space="preserve">
-    <value>Predator {0}</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.Name" xml:space="preserve">
-    <value>m_lblPred</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblPred.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_lblPrey.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="m_lblPrey.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="m_lblPrey.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="m_lblPrey.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 6, 0</value>
-  </data>
-  <data name="m_lblPrey.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 13</value>
-  </data>
-  <data name="m_lblPrey.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="m_lblPrey.Text" xml:space="preserve">
-    <value>Prey {0}</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.Name" xml:space="preserve">
-    <value>m_lblPrey</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.Parent" xml:space="preserve">
-    <value>m_tlpInfo</value>
-  </data>
-  <data name="&gt;&gt;m_lblPrey.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -738,7 +618,7 @@
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>dlgApplyPredPreyShape</value>
+    <value>dlgApplyPPorDetShape</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

@@ -1,4 +1,6 @@
-﻿' ===============================================================================
+﻿Imports EwEUtils.Core
+
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -63,7 +65,7 @@ Public Class cMediationDataStructures
 
     Public FunctionNumber(,,) As Integer
     Public IsMedFunction(,,) As Boolean
-    Public FunctionType(,,) As Integer
+    Public FunctionType(,,) As eForcingFunctionApplication
 
     Protected m_nGroups As Integer
     Protected m_nFleets As Integer

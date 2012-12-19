@@ -60,11 +60,11 @@ Namespace Ecosim
 
 #Region " Base functionality "
 
-        Protected Sub ClearAllPairs()
+        Protected Sub ClearAll()
             Me.Grid.ClearAllPairs()
         End Sub
 
-        Protected Sub SetAllPairs()
+        Protected Sub SetAll()
             Me.Grid.SetAllPairs()
         End Sub
 

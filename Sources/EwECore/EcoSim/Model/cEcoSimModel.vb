@@ -15,19 +15,18 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-Option Strict Off
+#Region " Imports "
+
+Option Strict On
 Option Explicit On
 
 Imports EwEPlugin
 Imports EwEUtils.Core
-
 Imports EwEUtils.SystemUtilities.cSystemUtils
-
 Imports System.Threading
 Imports EwECore.MSE
-Imports EwECore.FishingPolicy
 
-
+#End Region ' Imports
 
 Namespace Ecosim
 
@@ -59,6 +58,7 @@ Namespace Ecosim
     Public Delegate Sub EcoSimRunCompletedDelegate(ByVal obj As Object)
 
 #End Region
+
     ''' <summary>
     ''' Class to encapsulate EcoSim Model
     ''' </summary>
@@ -66,7 +66,6 @@ Namespace Ecosim
     Public Class cEcoSimModel
 
 #Region "Data Private and Public"
-
 
         'ToDo_jb Ecosim Core comunication. Implementation needs to be completed. 
         'Ecosim comunicates with the core via Ecosim's message publisher which the core can add a handler to.
@@ -89,9 +88,9 @@ Namespace Ecosim
 
         ' Private Ntimes As Integer
         Private StepsPerYear As Integer
-        Private TimeNow As Single
+        Private TimeNow As Integer
         Private DeltaT As Single 'delta time in years one month set in SetTimeSteps
-        Private nvar As Single
+        Private nvar As Integer
 
         Private DoingEiiSaving2Round As Boolean
         Private MakeTestData As Boolean
@@ -102,7 +101,7 @@ Namespace Ecosim
 
         Private dydx() As Single
 
-        Private GearIncludeInEquil() As Single
+        'Private GearIncludeInEquil() As Single
         Private BaseValue As Single
 
         Friend BB() As Single
@@ -223,7 +222,6 @@ Namespace Ecosim
         Private Rbase() As Single
         Private BrecYear() As Single
 
-        Private DoingEiiSaving1Round As Boolean
         Private Dfitness() As Single
         Private Deatenby() As Single
         Private Deatenof() As Single
@@ -600,8 +598,7 @@ Namespace Ecosim
         Public Sub CalculateAssimilationEfficiencies()
             '041012 VC calculating assimilation efficiency for variable p/q
             'following Kerims African paper
-            Dim i As Long
-            For i = 1 To m_EPData.NumLiving
+            For i As Integer = 1 To m_EPData.NumLiving
                 If m_EPData.vbK(i) > 0 Then m_Data.AssimEff(i) = m_EPData.GE(i) / m_EPData.PB(i) * (m_EPData.PB(i) + 3 * m_EPData.vbK(i))
             Next
         End Sub
@@ -690,7 +687,7 @@ Namespace Ecosim
 
             Dim itime As Integer
             Dim i As Integer
-            Dim ipct As Single
+            Dim ipct As Integer
             Dim j As Integer
             Dim t As Single
             Dim iyr As Integer, iyf As Integer
@@ -751,7 +748,7 @@ Namespace Ecosim
                 'If m_search.MaxEffort < 60 Then m_search.MaxEffort = 60
                 For i = 1 To nopt
                     If frateopt(i) < Math.Log(m_search.MaxEffort) Then
-                        RelFopt(i) = Math.Exp(frateopt(i))
+                        RelFopt(i) = CSng(Math.Exp(frateopt(i)))
                     Else
                         RelFopt(i) = m_search.MaxEffort
                     End If
@@ -798,7 +795,7 @@ Namespace Ecosim
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             For iyr = 1 To NumberOfYears + ExtraTime
                 'Constrain the Ecosim year index to the run length passed in as the arguement NumberOfYears
-                iyf = IIf(iyr <= NumberOfYears, iyr, NumberOfYears)
+                iyf = IIF(iyr <= NumberOfYears, iyr, NumberOfYears)
 
                 'set Fgear() fishing effort at timestep that can be modified by a search routine
                 Me.SetFGear(Fgear, RelFopt, QYear, iyr)
@@ -842,7 +839,7 @@ Namespace Ecosim
 
                     If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimBeginTimeStep(BB, m_Data, itime)
 
-                    If ipct = 6 Then AccumulateDataInfo(Math.Truncate(itime / 12), BB, m_Data.loss)
+                    If ipct = 6 Then AccumulateDataInfo(CInt(Math.Truncate(itime / 12)), BB, m_Data.loss)
 
                     'Set FishTime() (fishing mort at timestep)
                     Me.setFishTime(itime, iyr)
@@ -1229,7 +1226,7 @@ Namespace Ecosim
 
                     'PoolForceZ(iGroup,0) is used in Derivt() to force mortality
                     If iYear <= Me.m_RefData.NdatYear Then
-                        Me.m_RefData.PoolForceZ(iGrp, 0) = IIf(Me.m_RefData.PoolForceZ(iGrp, iYear) > 0, Me.m_RefData.PoolForceZ(iGrp, iYear), 0)
+                        Me.m_RefData.PoolForceZ(iGrp, 0) = IIF(Me.m_RefData.PoolForceZ(iGrp, iYear) > 0, Me.m_RefData.PoolForceZ(iGrp, iYear), 0)
                     End If
 
                 Next iGrp
@@ -1263,7 +1260,7 @@ Namespace Ecosim
             'Constrain the year index to the Ecosim run length
             'When run for the Fishing Policy Search Ecosim is run past the end of the run length
             'This makes sure the iYear index is not out of bounds
-            Dim iyf As Integer = CInt(IIf(iYear <= Me.m_Data.NumYears, iYear, Me.m_Data.NumYears))
+            Dim iyf As Integer = CInt(IIF(iYear <= Me.m_Data.NumYears, iYear, Me.m_Data.NumYears))
 
             'Set Fgear() to values entered by the user
             For iFlt As Integer = 1 To Me.m_EPData.NumFleet
@@ -1330,8 +1327,8 @@ Namespace Ecosim
             'Avoid changing Ecosim time step (not needed for our important variables), 
             'instead change the linkage variables and add fast variables as needed into the GTM models
 
-            dh = DeltaT / 2.0
-            d6 = DeltaT / 6.0
+            dh = CSng(DeltaT / 2.0)
+            d6 = CSng(DeltaT / 6.0)
             th = t + dh
 
             Derivt(t, B, dydx)
@@ -1428,11 +1425,11 @@ Namespace Ecosim
                         CBlast(i) = Me.EatenByAvg(i) / Me.PredAvg(i)
                     End If
 
-                    RiskRate(i) = Me.EatenOfAvg(i) / Me.BBAvg(i) + m_Data.mo(i) + 0.0000000001
+                    RiskRate(i) = CSng(Me.EatenOfAvg(i) / Me.BBAvg(i) + m_Data.mo(i) + 0.0000000001)
                     Qopt(i) = m_Data.Qmain(i) + m_Data.Qrisk(i) / RiskRate(i)
 
                     If CBlast(i) > 0 And (m_Data.NoIntegrate(i) = i Or m_Data.NoIntegrate(i) < 0) Then
-                        m_Data.Ftime(i) = 0.1 + 0.9 * m_Data.Ftime(i) * (1 - m_Data.FtimeAdjust(i) + m_Data.FtimeAdjust(i) * Qopt(i) / Me.CBlast(i))
+                        m_Data.Ftime(i) = CSng(0.1 + 0.9 * m_Data.Ftime(i) * (1 - m_Data.FtimeAdjust(i) + m_Data.FtimeAdjust(i) * Qopt(i) / Me.CBlast(i)))
                     End If
                     If m_Data.Ftime(i) > m_Data.FtimeMax(i) Then m_Data.Ftime(i) = m_Data.FtimeMax(i)
                 Next
@@ -1501,7 +1498,7 @@ Namespace Ecosim
                         ieco = m_stanza.EcopathCode(isp, ist)
                         'jb 16-Feb-2010 changed to use monthly averaged biomass and loss 
                         'Su = Math.Exp(-m_Data.loss(ieco) / 12.0# / B(ieco))
-                        Su = Math.Exp(-LossAvg(ieco) / 12.0# / BAvg(ieco))
+                        Su = CSng(Math.Exp(-LossAvg(ieco) / 12.0# / BAvg(ieco)))
                         Gf = m_Data.Eatenby(ieco) / m_Data.pred(ieco)  '(month factor here included in splitalpha scaling setup)
                         For ia = m_stanza.Age1(isp, ist) To m_stanza.Age2(isp, ist)
                             m_stanza.NageS(isp, ia) = m_stanza.NageS(isp, ia) * Su
@@ -1544,7 +1541,7 @@ Namespace Ecosim
                         m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) = m_stanza.RscaleSplit(isp) * m_Data.tval(m_stanza.EggProdShapeSplit(isp)) * m_stanza.RzeroS(isp) * m_Data.tval(m_stanza.HatchCode(isp))
                     End If
                     If m_stanza.HatchCode(isp) = 0 Then
-                        m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) = m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) * (m_stanza.EggsStanza(isp) / m_stanza.BaseEggsStanza(isp)) ^ m_stanza.RecPowerSplit(isp)
+                        m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) = CSng(m_stanza.NageS(isp, m_stanza.Age1(isp, 1)) * (m_stanza.EggsStanza(isp) / m_stanza.BaseEggsStanza(isp)) ^ m_stanza.RecPowerSplit(isp))
                     End If
                     m_stanza.WageS(isp, m_stanza.Age1(isp, 1)) = 0
                 End If
@@ -1804,7 +1801,7 @@ Namespace Ecosim
         End Sub
 
         Private Sub callTimeStep(ByVal Args As Object)
-            Dim itime As Integer = Args
+            Dim itime As Integer = CInt(Args)
             Me.m_OnTimeStepDelegate(itime, Me.m_Results)
         End Sub
 
@@ -2149,23 +2146,23 @@ Namespace Ecosim
 
                             '0, 1 
                             Case eTimeSeriesType.BiomassRel, eTimeSeriesType.BiomassAbs '0, 1 Abundance Data
-                                If MakeTestData Then m_RefData.DatVal(iDyear, j) = BB(m_RefData.DatPool(j)) * Math.Exp(SDtest * RandomNormal()) ' to test with random error data
-                                Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / BB(m_RefData.DatPool(j)))
-                                m_RefData.Yhat(m_RefData.Iobs) = Math.Log(BB(m_RefData.DatPool(j)))
+                                If MakeTestData Then m_RefData.DatVal(iDyear, j) = CSng(BB(m_RefData.DatPool(j)) * Math.Exp(SDtest * RandomNormal())) ' to test with random error data
+                                Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / BB(m_RefData.DatPool(j))))
+                                m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(BB(m_RefData.DatPool(j))))
 
                             Case eTimeSeriesType.TotalMortality      '5 Total mortality Data
                                 'Zest = m_data.mo(m_refData.DatPool(j)) + Eatenof(m_refData.DatPool(j)) / bb(m_refData.DatPool(j))
                                 Zest = loss(m_RefData.DatPool(j)) / BB(m_RefData.DatPool(j))
-                                If MakeTestData Then m_RefData.DatVal(iDyear, j) = Zest * Math.Exp(SDtest * RandomNormal()) ' to test with random error data
-                                Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / Zest)
-                                m_RefData.Yhat(m_RefData.Iobs) = Math.Log(Zest)
+                                If MakeTestData Then m_RefData.DatVal(iDyear, j) = CSng(Zest * Math.Exp(SDtest * RandomNormal())) ' to test with random error data
+                                Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / Zest))
+                                m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(Zest))
 
                             Case eTimeSeriesType.Catches, eTimeSeriesType.CatchesForcing  '6, -6 Absolute Catch Data, Martell, Jan 02
 
                                 If m_Data.FishTime(m_RefData.DatPool(j)) > 0 Then
-                                    Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / (BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j))))
+                                    Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / (BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j)))))
                                     If MakeTestData Then m_RefData.DatVal(iDyear, j) = BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j))
-                                    m_RefData.Yhat(m_RefData.Iobs) = Math.Log(BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j)))
+                                    m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(BB(m_RefData.DatPool(j)) * m_Data.FishTime(m_RefData.DatPool(j))))
                                 End If
 
                             Case eTimeSeriesType.AverageWeight    '7 Mean body weith data Martell, Jan 02
@@ -2180,12 +2177,12 @@ Namespace Ecosim
                                     'Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_stanza.EcopathCode(i, j), iti)
                                     Zest = m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.AvgWeight, m_RefData.DatPool(j), iti)
                                     If Zest > 0 Then
-                                        Zstat = Math.Log(m_RefData.DatVal(iDyear, j) / Zest)
-                                        m_RefData.Yhat(m_RefData.Iobs) = Math.Log(Zest)
+                                        Zstat = CSng(Math.Log(m_RefData.DatVal(iDyear, j) / Zest))
+                                        m_RefData.Yhat(m_RefData.Iobs) = CSng(Math.Log(Zest))
                                     End If
 
                                     If MakeTestData Then
-                                        m_RefData.DatVal(iDyear, j) = Zest * Math.Exp(SDtest * RandomNormal())
+                                        m_RefData.DatVal(iDyear, j) = CSng(Zest * Math.Exp(SDtest * RandomNormal()))
                                     End If
 
                                 End If
@@ -2277,7 +2274,7 @@ Namespace Ecosim
                 End If
             Next
 
-            DeltaT = 1 / (12 * Me.m_Data.StepsPerMonth)
+            DeltaT = CSng(1 / (12 * Me.m_Data.StepsPerMonth))
 
         End Sub
 
@@ -2366,7 +2363,7 @@ Namespace Ecosim
                     End If
                     If m_Data.BoutFeeding Then
                         If Vdenom(ia) > 0 Then
-                            Vbiom(ia) = Veff(ia) * Bprey * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia)
+                            Vbiom(ia) = CSng(Veff(ia) * Bprey * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia))
                         Else
                             Vbiom(ia) = Veff(ia) * Bprey
                         End If
@@ -2403,7 +2400,7 @@ Namespace Ecosim
 
                     If m_Data.BoutFeeding Then
                         If Vdenom(ia) > 0 Then
-                            Vbiom(ia) = Veff(ia) * Bprey * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia)
+                            Vbiom(ia) = CSng(Veff(ia) * Bprey * (1 - Math.Exp(-Vdenom(ia))) / Vdenom(ia))
                         Else
                             Vbiom(ia) = Veff(ia) * Bprey
                         End If 'If Vdenom(ia) > 0 Then
@@ -2432,7 +2429,7 @@ Namespace Ecosim
                     End Select
 
                     'predation mort by link
-                    m_Data.MPred(ii) = eat / (Bprey + 1.0E-20)
+                    m_Data.MPred(ii) = CSng(eat / (Bprey + 1.0E-20))
 
                     m_Data.Eatenof(i) = m_Data.Eatenof(i) + eat
                     m_Data.Eatenby(j) = m_Data.Eatenby(j) + eat
@@ -2597,7 +2594,7 @@ Namespace Ecosim
                 If m_Data.SwitchPower(j) > 0 Then
                     '    m_Data.RelaSwitch(ii) = 1
                     'Else
-                    m_Data.RelaSwitch(ii) = A(i, j) * B(i) ^ m_Data.SwitchPower(j) / (PredDen(j) + 1.0E-20) / m_Data.BaseTimeSwitch(ii)
+                    m_Data.RelaSwitch(ii) = CSng(A(i, j) * B(i) ^ m_Data.SwitchPower(j) / (PredDen(j) + 1.0E-20) / m_Data.BaseTimeSwitch(ii))
                 End If
             Next
         End Sub
@@ -2626,7 +2623,7 @@ Namespace Ecosim
             For i = 1 To m_EPData.NumLiving
                 m_Data.NutFreeBase(i) = (m_Data.PBmaxs(i) - 1) * m_Data.NutFree
             Next
-            m_Data.NutMin = 0.00101 * m_Data.NutFree
+            m_Data.NutMin = CSng(0.00101 * m_Data.NutFree)
 
             If m_TracerData.EcoSimConSimOn = True Then initConTracer()
 
@@ -2659,7 +2656,7 @@ Namespace Ecosim
                 m_Data.Cbase(i) = StartEatenBy(i) / m_Data.pred(i)
                 CBlast(i) = m_Data.Cbase(i)
                 m_Data.Qmain(i) = (1 - m_Data.RiskTime(i)) * m_Data.Cbase(i)
-                m_Data.Qrisk(i) = m_Data.RiskTime(i) * m_Data.Cbase(i) * (StartEatenOf(i) / m_Data.StartBiomass(i) + m_Data.mo(i) + 0.0000000001)
+                m_Data.Qrisk(i) = CSng(m_Data.RiskTime(i) * m_Data.Cbase(i) * (StartEatenOf(i) / m_Data.StartBiomass(i) + m_Data.mo(i) + 0.0000000001))
             Next
 
             ReDim PredPerBiomass(nGroups)
@@ -2689,7 +2686,7 @@ Namespace Ecosim
 
             For ii = 1 To m_Data.inlinks
                 i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
-                m_Data.BaseTimeSwitch(ii) = A(i, j) * m_Data.StartBiomass(i) ^ m_Data.SwitchPower(j) / (PredDen(j) + 1.0E-20)
+                m_Data.BaseTimeSwitch(ii) = CSng(A(i, j) * m_Data.StartBiomass(i) ^ m_Data.SwitchPower(j) / (PredDen(j) + 1.0E-20))
             Next
 
         End Sub
@@ -3009,7 +3006,7 @@ Namespace Ecosim
                 For iGrp = 1 To Me.nGroups
                     For iflt As Integer = 1 To Me.m_Data.nGear
                         For iFnt As Integer = 1 To cMediationDataStructures.MAXFUNCTIONS
-                            If m_Data.PriceMedData.PriceMedFuncNum(iGrp, iflt, iFnt) Then        'MF() ranges from 0 to MediationShapes (=9)
+                            If (m_Data.PriceMedData.PriceMedFuncNum(iGrp, iflt, iFnt) > 0) Then        'MF() ranges from 0 to MediationShapes (=9)
                                 PriceMedData.MedIsUsed(m_Data.PriceMedData.PriceMedFuncNum(iGrp, iflt, iFnt)) = True
                             End If
                         Next
@@ -3173,9 +3170,9 @@ Namespace Ecosim
                         'VC Sep 2008 placed forced catches here, as it often is so that the catches can't be 
                         'replicated by ecosim.
 
-                        m_RefData.DatSS(j) = DatSumZ2(j) - DatSumZ(j) ^ 2 / DatNobs(j)
+                        m_RefData.DatSS(j) = CSng(DatSumZ2(j) - DatSumZ(j) ^ 2 / DatNobs(j))
                         m_RefData.DatQ(j) = DatSumZ(j) / DatNobs(j)
-                        m_RefData.eDatQ(j) = Math.Exp(m_RefData.DatQ(j))
+                        m_RefData.eDatQ(j) = CSng(Math.Exp(m_RefData.DatQ(j)))
 
                         'If m_RefData.DatType(j) = eTimeSeriesType.AverageWeight Then
                         '    Start_Wt = mean_BdyWt(m_RefData.DatPool(j), 6)
@@ -3213,11 +3210,11 @@ Namespace Ecosim
                         'prediction of logN
                         m_RefData.Erpred(m_RefData.Iobs) = m_RefData.Erpred(m_RefData.Iobs) - m_RefData.DatQ(j)
                         DatDev(j, i) = m_RefData.Erpred(m_RefData.Iobs)
-                        Ss = Ss + m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2
-                        m_RefData.SSPredErr(j) += m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2
+                        Ss = CSng(Ss + m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2)
+                        m_RefData.SSPredErr(j) = CSng(m_RefData.SSPredErr(j) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
                         'Next is to calculate the SS by group:
                         If bSSgrp Then
-                            SSgroup(m_RefData.DatPool(j)) += m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2
+                            SSgroup(m_RefData.DatPool(j)) = CSng(SSgroup(m_RefData.DatPool(j)) + (m_RefData.Wt(m_RefData.Iobs) * m_RefData.Erpred(m_RefData.Iobs) ^ 2))
                         End If
                         m_RefData.Yhat(m_RefData.Iobs) = m_RefData.Yhat(m_RefData.Iobs) + m_RefData.DatQ(j)
                     End If
@@ -3532,7 +3529,7 @@ Namespace Ecosim
                 'Calculate how many month this group is to reach 90% of rel. Winf; K is monthly
                 'Since wa = (1-exp(-Ka))^3 we have a =
                 'Second(Stanza) = Log(1 - 0.9 ^ (1 / 3)) / (-vbK / 12)
-                Second(Stanza) = 40.3978 / vbK   'this is the same as above, to avoid integer division overrun
+                Second(Stanza) = CInt(40.3978 / vbK)   'this is the same as above, to avoid integer division overrun
                 If Second(Stanza) < first(Stanza) + 12 Then Second(Stanza) = first(Stanza) + 12
                 If Second(Stanza) > cCore.MAX_AGE Then Second(Stanza) = cCore.MAX_AGE
                 'above limit ok for vbk>=0.1 (most cases)
@@ -3546,8 +3543,8 @@ Namespace Ecosim
                 m_stanza.vBM(isp) = 1 - 3 * vbK / 12
                 For Age = 0 To Second(Stanza)         'weight will be zero if age is zero!!!!!
                     'm_stanza.SplitWage(isp, Age) = (1 - Math.Exp(-vbK * (Age + 0.5F) / 12)) ^ 3
-                    m_stanza.SplitWage(isp, Age) = (1 - Math.Exp(-vbK * Age / 12)) ^ 3
-                    m_stanza.WWa(isp, Age) = m_stanza.SplitWage(isp, Age) ^ (2 / 3)
+                    m_stanza.SplitWage(isp, Age) = CSng((1 - Math.Exp(-vbK * Age / 12)) ^ 3)
+                    m_stanza.WWa(isp, Age) = CSng(m_stanza.SplitWage(isp, Age) ^ (2 / 3))
                 Next
 
                 'Estimate monthly survival rate, Sa, for age a, from Z estimates by age range
@@ -3555,7 +3552,7 @@ Namespace Ecosim
                 PrevSurv = 1
                 For Grp = 1 To Stanza
                     'get the mortality rate that is to be used for the previous age cohort
-                    Surv = Math.Exp(-(Z(Grp) + BaB) / 12)
+                    Surv = CSng(Math.Exp(-(Z(Grp) + BaB) / 12))
                     If Surv > 0 Then
                         'For the first month use the survival for the previous stanza:
                         If first(Grp) > 0 Then
@@ -3606,7 +3603,7 @@ Namespace Ecosim
                 End If
 
                 Recruits = Bio(BaseStanza) / SumB
-                m_stanza.RzeroS(isp) = Recruits * Math.Exp(BaB / 12)
+                m_stanza.RzeroS(isp) = CSng(Recruits * Math.Exp(BaB / 12))
                 'Get the number at age for each monthly cohort:
                 For Age = 0 To Second(Stanza)
                     m_stanza.SplitNo(isp, Age) = Recruits * Survive(Age)
@@ -3689,7 +3686,7 @@ Namespace Ecosim
                         FWMax = 1.2!
                     Else
                         If (Me.m_Data.mo(iGroup) + Me.StartEatenOf(iGroup) > 0) Then
-                            FWMax = 1.1 * Me.m_Data.Fish1(iGroup) / (Me.m_Data.mo(iGroup) + Me.StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup))
+                            FWMax = CSng(1.1 * Me.m_Data.Fish1(iGroup) / (Me.m_Data.mo(iGroup) + Me.StartEatenOf(iGroup) / Me.m_Data.StartBiomass(iGroup)))
                         Else
                             FWMax = cCore.NULL_VALUE
                         End If
@@ -3790,7 +3787,7 @@ Namespace Ecosim
             'If there are fishing rates over time then use them for scaling
             For i = 1 To m_EPData.NumLiving
                 For j = 1 To m_Data.NTimes
-                    If m_Data.FishRateNo(i, j) > m_Data.FishRateMax(i) Then m_Data.FishRateMax(i) = 1.2 * m_Data.FishRateNo(i, j)
+                    If m_Data.FishRateNo(i, j) > m_Data.FishRateMax(i) Then m_Data.FishRateMax(i) = CSng(1.2 * m_Data.FishRateNo(i, j))
                 Next
             Next
             For i = m_EPData.NumLiving + 1 To nGroups
@@ -3917,18 +3914,18 @@ Namespace Ecosim
                 m_search.FLimit(igrp) = 1000
             Next
 
-            ReDim GearIncludeInEquil(m_EPData.NumFleet)
-            'vc What if no fishery? If mEPData.NumGear < 1 Then mEPData.NumGear = 1
-            For i = 1 To m_EPData.NumFleet
-                GearIncludeInEquil(i) = True
-            Next
+            'ReDim GearIncludeInEquil(m_EPData.NumFleet)
+            ''vc What if no fishery? If mEPData.NumGear < 1 Then mEPData.NumGear = 1
+            'For i = 1 To m_EPData.NumFleet
+            '    GearIncludeInEquil(i) = True
+            'Next
 
             For i = 1 To nGroups     'prey
                 If (m_EPData.vbK(i) <= 0 Or m_EPData.vbK(i) = CSng(0.3)) And m_EPData.PP(i) < 1 And m_EPData.StanzaGroup(i) = False Then 'vbK(i) = vbK(0) '0.1
                     '041210VC: Carl wrote:
                     'if we "hardwire" the typical A=0.6 into the relationship, need not make user enter K for every species,
                     'since can use an apparent K*=Zo/3[0.6/GEo-1] where Zo and GEo are the present ecopath base input values.
-                    m_EPData.vbK(i) = m_EPData.PB(i) / 3 * (0.6 / m_EPData.GE(i) - 1)
+                    m_EPData.vbK(i) = CSng(m_EPData.PB(i) / 3 * (0.6 / m_EPData.GE(i) - 1))
                 End If
                 For j = 1 To nGroups 'consumer; Doesn't make much sense for detritus
                     m_Data.FlowType(i, j) = 2
@@ -4087,9 +4084,9 @@ Namespace Ecosim
             Dim Mult As Single
 
             If CurVal < Optim Then
-                Mult = Math.Exp(-0.5 * ((CurVal - Optim) / (StdLeft + 0.0000001)) ^ 2)
+                Mult = CSng(Math.Exp(-0.5 * ((CurVal - Optim) / (StdLeft + 0.0000001)) ^ 2))
             Else
-                Mult = Math.Exp(-0.5 * ((CurVal - Optim) / (StdRight + 0.0000001)) ^ 2)
+                Mult = CSng(Math.Exp(-0.5 * ((CurVal - Optim) / (StdRight + 0.0000001)) ^ 2))
             End If
 
             ' Mult = Math.Exp(-0.5 * ((Sal - m_Data.SalOpt(j)) / (m_Data.SdSal(j) + 0.0000001)) ^ 2)
@@ -4139,14 +4136,15 @@ Namespace Ecosim
                 End If
 
                 Select Case m_Data.BioMedData.FunctionType(i, j, K)
-                    Case 1 'multiply rate of search
+                    Case eForcingFunctionApplication.SearchRate, _
+                         eForcingFunctionApplication.ProductionRate
                         A = A * Mult
-                    Case 2 'multiply vulnerability
+                    Case eForcingFunctionApplication.Vulnerability
                         v = v * Mult
-                    Case 3 'multiply foraging area
-                        A = A / (Mult + 0.0000000001)
-                    Case 4 ' multiply foraging area and vulnerability
-                        A = A / (Mult + 0.0000000001)
+                    Case eForcingFunctionApplication.ArenaArea
+                        A = CSng(A / (Mult + 0.0000000001))
+                    Case eForcingFunctionApplication.VulAndArea
+                        A = CSng(A / (Mult + 0.0000000001))
                         v = v * Mult
                 End Select
 
@@ -4391,12 +4389,12 @@ Namespace Ecosim
                 i = m_Data.Iarena(ii)
                 j = m_Data.Jarena(ii)
                 If m_Data.VulMult(i, j) > 10000000000.0# Then m_Data.VulMult(i, j) = 10000000000.0#
-                m_Data.VulArena(ii) = (m_Data.VulMult(i, j) + 0.0000000001) * Qarena(ii) / m_Data.StartBiomass(i)
+                m_Data.VulArena(ii) = CSng((m_Data.VulMult(i, j) + 0.0000000001) * Qarena(ii) / m_Data.StartBiomass(i))
                 If m_Data.VulArena(ii) = 0 Then m_Data.VulArena(ii) = 1
                 If m_Data.BoutFeeding Then
-                    VulBiom(ii) = -Qarena(ii) / Math.Log(1 - 1 / (m_Data.VulMult(i, j) + 0.0000000001))
+                    VulBiom(ii) = CSng(-Qarena(ii) / Math.Log(1 - 1 / (m_Data.VulMult(i, j) + 0.0000000001)))
                 Else
-                    VulBiom(ii) = (m_Data.VulMult(i, j) + 0.0000000001 - 1.0#) * Qarena(ii) / (2 * m_Data.VulArena(ii))
+                    VulBiom(ii) = CSng((m_Data.VulMult(i, j) + 0.0000000001 - 1.0#) * Qarena(ii) / (2 * m_Data.VulArena(ii)))
                 End If
                 If VulBiom(ii) = 0 Then VulBiom(ii) = 1
 
@@ -4424,7 +4422,7 @@ Namespace Ecosim
             'and current effort capacity Captime(ig)
             Dim ig As Integer, Ipower As Single
             For ig = 1 To m_Data.nGear
-                Ipower = CurrentIncome(ig) ^ m_Data.Epower(ig)
+                Ipower = CSng(CurrentIncome(ig) ^ m_Data.Epower(ig))
                 m_Data.FishRateGear(ig, t) = CapTime(ig) * Ipower / (EscalePar(ig) + Ipower)
                 'jb m_Data.FishRateGear(gear,time) is bounded by MaxEffort() in SetFtimeFromGear()
                 'If m_Data.FishRateGear(ig, t) <> m_Data.FishRateGear(ig, t) Or m_Data.FishRateGear(ig, t) > 1000 Then Stop
@@ -4439,7 +4437,7 @@ Namespace Ecosim
             For ig = 1 To m_Data.nGear
                 TotIncome = 0
                 For i = 1 To m_Data.nGroups
-                    Fg = Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20)
+                    Fg = CSng(Qmult(i) * m_Data.FishMGear(ig, i) * (m_Data.FishRateGear(ig, t) + 1.0E-20))
                     'jb use time varing proportion of landings
                     TotIncome = TotIncome + Fg * BB(i) * m_EPData.Market(ig, i) * Me.m_Data.PropLandedTime(ig, i)
                 Next
@@ -4447,7 +4445,7 @@ Namespace Ecosim
                 CurrentProfit(ig) = TotIncome - TotCost
                 'If CurrentProfit(ig) <> CurrentProfit(ig) Then Stop
                 If CurrentProfit(ig) < 0 Then CurrentProfit(ig) = 0
-                CurrentIncome(ig) = TotIncome / (m_Data.FishRateGear(ig, t) + 1.0E-20)
+                CurrentIncome(ig) = CSng(TotIncome / (m_Data.FishRateGear(ig, t) + 1.0E-20))
             Next
             'Debug.Print CurrentProfit(1), CurrentProfit(2), CurrentProfit(3)
         End Sub
@@ -4496,8 +4494,8 @@ Namespace Ecosim
             Next
             FindCurrentProfit(m_Data.StartBiomass, 0)
             For ig = 1 To m_Data.nGear
-                EscalePar(ig) = (CapBase(ig) - 1) * CurrentIncome(ig) ^ m_Data.Epower(ig)
-                CapGrowthFactor(ig) = CapBase(ig) * (m_Data.CapBaseGrowth(ig) + m_Data.CapDepreciate(ig)) / (CurrentProfit(ig) + 1.0E-20)
+                EscalePar(ig) = CSng((CapBase(ig) - 1) * CurrentIncome(ig) ^ m_Data.Epower(ig))
+                CapGrowthFactor(ig) = CSng(CapBase(ig) * (m_Data.CapBaseGrowth(ig) + m_Data.CapDepreciate(ig)) / (CurrentProfit(ig) + 1.0E-20))
             Next
 
         End Sub
@@ -4558,45 +4556,45 @@ Namespace Ecosim
                 d.IsDatWtSet = IsDatWtSet
 
                 d.BaseValue = BaseValue
-                d.A = A.Clone
-                d.dydx = dydx.Clone
-                '     ConKdet.clone 
-                d.GearIncludeInEquil = GearIncludeInEquil.Clone
+                d.A = DirectCast(A.Clone, Single(,))
+                d.dydx = DirectCast(dydx.Clone, Single())
+                'ConKdet.clone 
+                'd.GearIncludeInEquil = GearIncludeInEquil.Clone
 
-                d.BB = BB.Clone
-                d.pbbase = pbbase.Clone
-                d.StartEatenBy = StartEatenBy.Clone
-                d.EatenByBase = EatenByBase.Clone
-                d.StartEatenOf = StartEatenOf.Clone
-                d.SimQB = SimQB.Clone
-                d.Mtotal = Mtotal.Clone
+                d.BB = DirectCast(BB.Clone, Single())
+                d.pbbase = DirectCast(pbbase.Clone, Single())
+                d.StartEatenBy = DirectCast(StartEatenBy.Clone, Single())
+                d.EatenByBase = DirectCast(EatenByBase.Clone, Single())
+                d.StartEatenOf = DirectCast(StartEatenOf.Clone, Single())
+                d.SimQB = DirectCast(SimQB.Clone, Single())
+                d.Mtotal = DirectCast(Mtotal.Clone, Single())
 
-                d.SimGES = SimGES.Clone
-                d.IadCode = IadCode.Clone
-                d.IjuCode = IjuCode.Clone
-                d.IecoCode = IecoCode.Clone
+                d.SimGES = DirectCast(SimGES.Clone, Single())
+                d.IadCode = DirectCast(IadCode.Clone, Integer())
+                d.IjuCode = DirectCast(IjuCode.Clone, Integer())
+                d.IecoCode = DirectCast(IecoCode.Clone, Integer())
 
                 d.nGroups = nGroups
                 'd.Sc = Sc.Clone
                 d.Irun = Irun
                 'd.mean_BdyWt = mean_BdyWt.Clone
-                d.Qmult = Qmult.Clone
+                d.Qmult = DirectCast(Qmult.Clone, Single())
                 'd.CurrentProfit = CurrentProfit.Clone
                 'd.CurrentIncome = CurrentIncome.Clone
                 'd.CapBase = CapBase.Clone
                 'd.PcapBase = PcapBase.Clone
-                d.EscalePar = EscalePar.Clone
+                d.EscalePar = DirectCast(EscalePar.Clone, Single())
                 'd.CapTime = CapTime.Clone
                 'd.Epower = Epower.Clone
                 '  d.PredictSimEffort = PredictSimEffort
                 'd.CapDepreciate = CapDepreciate.Clone
                 'd.CapBaseGrowth = CapBaseGrowth.Clone
-                d.CapGrowthFactor = CapGrowthFactor.Clone
+                d.CapGrowthFactor = DirectCast(CapGrowthFactor.Clone, Single())
                 d.CostPenaltyConstant = CostPenaltyConstant
                 '      d.UseCostPenalty = UseCostPenalty
                 '     d.CostRatio = CostRatio.Clone
                 'd.PoolForceTemp = PoolForceTemp.Clone
-                d.BestTime = BestTime.Clone
+                d.BestTime = DirectCast(BestTime.Clone, Single())
                 '   d.AssessPower = AssessPower
                 'd.GstockPred = GstockPred.Clone
                 'd.RstockPred = RstockPred.Clone
@@ -4606,7 +4604,7 @@ Namespace Ecosim
                 '       CapDepreciate(ig)  capital depreciation rate, default 0.06
                 '       CapBaseGrowth(ig) initial capital growth rate (proportional, /year), default 0.2
 
-                d.BaseConsumption = BaseConsumption.Clone
+                d.BaseConsumption = DirectCast(BaseConsumption.Clone, Single(,))
 
 
                 ' d.XplotLast = XplotLast.Clone
@@ -4623,22 +4621,22 @@ Namespace Ecosim
                 d.equilstock = equilstock
                 d.LinScale = LinScale
                 'd.Save = Save.Clone
-                d.Srec = Srec.Clone
+                d.Srec = DirectCast(Srec.Clone, Single())
                 d.TimeSeriesFile = TimeSeriesFile
 
 
                 'm_refData.NdatType , m_refData.NdatYear , DatName.clone As String, m_refData.DatPool.clone 
                 'DatType.clone , m_refData.DatVal.clone , m_refData.DatYear.clone 
-                d.DatSumZ = DatSumZ.Clone
-                d.DatSumZ2 = DatSumZ2.Clone
-                d.DatNobs = DatNobs.Clone
+                d.DatSumZ = DirectCast(DatSumZ.Clone, Single())
+                d.DatSumZ2 = DirectCast(DatSumZ2.Clone, Single())
+                d.DatNobs = DirectCast(DatNobs.Clone, Integer())
 
                 ' Datq.clone , m_refdata.DatSS.clone 
 
-                d.NobsTime = NobsTime.Clone
-                d.m_RefData.Erpred = m_RefData.Erpred.Clone
-                d.m_RefData.Yhat = m_RefData.Yhat.Clone
-                d.DatDev = DatDev.Clone
+                d.NobsTime = DirectCast(NobsTime.Clone, Single())
+                d.m_RefData.Erpred = DirectCast(m_RefData.Erpred.Clone, Single())
+                d.m_RefData.Yhat = DirectCast(m_RefData.Yhat.Clone, Single())
+                d.DatDev = DirectCast(DatDev.Clone, Single(,))
                 ' m_refdata.Iobs 
 
                 d.NutPBmax = NutPBmax
@@ -4649,39 +4647,38 @@ Namespace Ecosim
 
                 'Ftime.clone 
                 'Publicm_data.Hden.clone 
-                d.CBlast = CBlast.Clone
-                d.PredPerBiomass = PredPerBiomass.Clone
+                d.CBlast = DirectCast(CBlast.Clone, Single())
+                d.PredPerBiomass = DirectCast(PredPerBiomass.Clone, Single())
 
                 ' d.ResetPred = ResetPred.Clone
 
 
                 ' ConKtrophic.clone 
-                d.pbb = pbb.Clone
-                d.SimGEtemp = SimGEtemp.Clone
-                d.biomeq = biomeq.Clone
+                d.pbb = DirectCast(pbb.Clone, Single())
+                d.SimGEtemp = DirectCast(SimGEtemp.Clone, Single())
+                d.biomeq = DirectCast(biomeq.Clone, Single())
 
                 ' Wt.clone 
                 '  WtType.clone 
-                d.deriv = deriv.Clone
-                d.RiskRate = RiskRate.Clone
-                d.Qopt = Qopt.Clone
-                d.yt = yt.Clone
-                d.dyt = dyt.Clone
-                d.dym = dym.Clone
-                d.Nrec = Nrec.Clone
-                d.Brec = Brec.Clone
+                d.deriv = DirectCast(deriv.Clone, Single())
+                d.RiskRate = DirectCast(RiskRate.Clone, Single())
+                d.Qopt = DirectCast(Qopt.Clone, Single())
+                d.yt = DirectCast(yt.Clone, Single())
+                d.dyt = DirectCast(dyt.Clone, Single())
+                d.dym = DirectCast(dym.Clone, Single())
+                d.Nrec = DirectCast(Nrec.Clone, Single())
+                d.Brec = DirectCast(Brec.Clone, Single())
 
                 'changed to public
-                d.AhatStanza = AhatStanza.Clone
-                d.RhatStanza = RhatStanza.Clone
-                d.Rbase = Rbase.Clone
-                d.BrecYear = BrecYear.Clone
-                d.DoingEiiSaving1Round = DoingEiiSaving1Round
-                d.Dfitness = Dfitness.Clone
-                d.Deatenby = Deatenby.Clone
-                d.Deatenof = Deatenof.Clone
+                d.AhatStanza = DirectCast(AhatStanza.Clone, Single())
+                d.RhatStanza = DirectCast(RhatStanza.Clone, Single())
+                d.Rbase = DirectCast(Rbase.Clone, Single())
+                d.BrecYear = DirectCast(BrecYear.Clone, Single())
+                d.Dfitness = DirectCast(Dfitness.Clone, Single())
+                d.Deatenby = DirectCast(Deatenby.Clone, Single())
+                d.Deatenof = DirectCast(Deatenof.Clone, Single())
                 '  DetPassedProp.clone 
-                d.Bstore = Bstore.Clone
+                d.Bstore = DirectCast(Bstore.Clone, Single(,))
 
                 '=m_Data As cEcosimDatastructures
                 '=m_stanza As cStanzaDatastructures
@@ -4730,8 +4727,8 @@ Namespace Ecosim
                         Me.m_Data.TLSim(i) = m_EPData.TTLX(i)
                     Else
                         ' #No: total FiB terms for all groups
-                        sFiBT += fCatch ^ (Me.m_Data.TLSim(i) - 1)
-                        sFiB0 += fCatch0(i) ^ (Me.m_Data.TLSim(i) - 1)
+                        sFiBT = CSng(sFiBT + (fCatch ^ (Me.m_Data.TLSim(i) - 1)))
+                        sFiB0 = CSng(sFiB0 + (fCatch0(i) ^ (Me.m_Data.TLSim(i) - 1)))
                     End If
                 Next
 
@@ -4752,7 +4749,7 @@ Namespace Ecosim
 
                 If m_Data.CatchSim(0) > 0 Then
                     ' Calculate TL of catch
-                    Me.m_Data.TLC(TimeStep) = totalTL / (Me.m_Data.CatchSim(TimeStep) + 1.0E-20)
+                    Me.m_Data.TLC(TimeStep) = CSng(totalTL / (Me.m_Data.CatchSim(TimeStep) + 1.0E-20))
 
                     'jb 17-Mar-2011 move calculation of Kemptons() outside CatchSim(0) > 0
                     '' Calculate keptons Q
@@ -4763,7 +4760,7 @@ Namespace Ecosim
                     'End If
                 Else
                     ' ?!
-                    m_EPData.TLcatch = totalTL / (m_Data.CatchSim(TimeStep) + 1.0E-20)
+                    m_EPData.TLcatch = CSng(totalTL / (m_Data.CatchSim(TimeStep) + 1.0E-20))
                 End If
 
             Catch ex As Exception

@@ -96,6 +96,7 @@ Namespace Definitions
         NotSet = 0
         Consumer
         PrimaryProducer
+        Detritus
     End Enum
 
     Public Enum eApplyShapeTypes As Integer

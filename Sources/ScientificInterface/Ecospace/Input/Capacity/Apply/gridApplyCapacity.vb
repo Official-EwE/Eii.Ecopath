@@ -60,7 +60,7 @@ Namespace Ecospace
 
                 map = mapManager.Map(imap)
                 Me(0, 1 + imap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
-                Me(0, 1 + imap).Behaviors.Add(Me.m_RowColClick)
+                Me(0, 1 + imap).Behaviors.Add(Me.m_bmRowCol)
 
             Next imap
 
@@ -71,11 +71,11 @@ Namespace Ecospace
                 group = Core.EcoPathGroupInputs(iGroup)
                 ' # Group name row header cells
                 Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, 0).Behaviors.Add(Me.m_RowColClick)
+                Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
 
                 ' # Group name row header cells
                 Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                Me(iGroup, 1).Behaviors.Add(Me.m_RowColClick)
+                Me(iGroup, 1).Behaviors.Add(Me.m_bmRowCol)
             Next
 
         End Sub
@@ -100,7 +100,7 @@ Namespace Ecospace
 
                         Me(igrp, imap + 1) = New Cells.Real.Cell(label)
                         Me(igrp, imap + 1).DataModel = Me.m_editor
-                        Me(igrp, imap + 1).Behaviors.Add(Me.m_BehaviorClick)
+                        Me(igrp, imap + 1).Behaviors.Add(Me.m_bmCell)
 
                     Next
 

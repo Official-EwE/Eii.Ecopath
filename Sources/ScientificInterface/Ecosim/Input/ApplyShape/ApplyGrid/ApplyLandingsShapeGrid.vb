@@ -103,18 +103,18 @@ Namespace Ecosim
             For iFleet As Integer = 1 To Me.Core.nFleets
                 fleet = Me.Core.FleetInputs(iFleet)
                 Me(0, 1 + iFleet) = New EwEColumnHeaderCell(fleet.Name)
-                Me(0, 1 + iFleet).Behaviors.Add(Me.m_RowColClick)
+                Me(0, 1 + iFleet).Behaviors.Add(Me.m_bmRowCol)
             Next
 
             For iGroup As Integer = 1 To Core.nLivingGroups
                 group = Core.EcoPathGroupInputs(iGroup)
                 ' # Group name row header cells
                 Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, 0).Behaviors.Add(Me.m_RowColClick)
+                Me(iGroup, 0).Behaviors.Add(Me.m_bmRowCol)
 
                 ' # Group name row header cells
                 Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-                Me(iGroup, 1).Behaviors.Add(Me.m_RowColClick)
+                Me(iGroup, 1).Behaviors.Add(Me.m_bmRowCol)
             Next
 
         End Sub
@@ -155,7 +155,7 @@ Namespace Ecosim
 
                         Me(iGroup, iFleet + 1) = New Cells.Real.Cell(sb.ToString)
                         Me(iGroup, iFleet + 1).DataModel = Me.m_editor
-                        Me(iGroup, iFleet + 1).Behaviors.Add(Me.m_BehaviorClick)
+                        Me(iGroup, iFleet + 1).Behaviors.Add(Me.m_bmCell)
 
                     Else
                         ' #No: cannot assign FF to this pred/prey combo

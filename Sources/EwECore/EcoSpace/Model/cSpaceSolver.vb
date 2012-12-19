@@ -20,6 +20,7 @@ Option Strict On
 
 Imports System
 Imports System.Threading
+Imports EwEUtils.Core
 
 Public Class cSpaceSolver
 
@@ -282,12 +283,12 @@ Public Class cSpaceSolver
 
             Next iCell
 
-                'thread has finished it is ok to run this again
-                isOkToRun = True
+            'thread has finished it is ok to run this again
+            isOkToRun = True
 
-                'set signal state to 'signaled' 
-                'the processing has finished SignalState.WaitOne() will return immediately
-                SignalState.Set()
+            'set signal state to 'signaled' 
+            'the processing has finished SignalState.WaitOne() will return immediately
+            SignalState.Set()
 
         Catch ex As Exception
             cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
@@ -850,6 +851,7 @@ Public Class cSpaceSolver
         End If
 
     End Sub
+
     '***********************
     'THIS FUNCTION IS COPIED from cEcosimModel.vb
     'Changes here will NOT be copy over to there
@@ -896,13 +898,14 @@ Public Class cSpaceSolver
             End If
 
             Select Case m_SimData.BioMedData.FunctionType(i, j, K)
-                Case 1 'multiply rate of search
+                Case eForcingFunctionApplication.SearchRate, _
+                     eForcingFunctionApplication.ProductionRate
                     A = A * Mult
-                Case 2 'multiply vulnerability
+                Case eForcingFunctionApplication.Vulnerability
                     v = v * Mult
-                Case 3 'multiply foraging area
+                Case eForcingFunctionApplication.ArenaArea
                     A = A / (Mult + 1.0E-10F)
-                Case 4 ' multiply foraging area and vulnerability
+                Case eForcingFunctionApplication.VulAndArea
                     A = A / (Mult + 1.0E-10F)
                     v = v * Mult
             End Select

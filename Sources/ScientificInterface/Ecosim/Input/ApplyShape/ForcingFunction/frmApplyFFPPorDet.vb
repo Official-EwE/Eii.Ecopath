@@ -29,11 +29,11 @@ Namespace Ecosim
 
     ''' =======================================================================
     ''' <summary>
-    ''' Form implementing the Ecosim 'Apply Mediation to Primary Producer' 
-    ''' interface.
+    ''' Form implementing the Ecosim 'Apply Forcing to Primary Producer or 
+    ''' Detritus' interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class frmApplyFFPrimaryProducer
+    Public Class frmApplyFFPPorDet
         Inherits frmApplyShapeBase
 
 #Region " Constructor "
@@ -54,14 +54,9 @@ Namespace Ecosim
 
 #Region " Event handlers "
 
-        Private Sub tsBtnClearAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub OnClearAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles tsBtnClearAll.Click
-            Me.ClearAllPairs()
-        End Sub
-
-        Private Sub tsBtnSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles tsBtnSetAll.Click
-            Me.SetAllPairs()
+            Me.ClearAll()
         End Sub
 
 #End Region ' Event handlers

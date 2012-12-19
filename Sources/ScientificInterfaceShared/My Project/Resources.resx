@@ -1927,7 +1927,7 @@
     <value>Off-vessel price</value>
   </data>
   <data name="FFAPPLICATIONTARGET_PRODUCTIONRATE" xml:space="preserve">
-    <value>Prod. rate or Immigration</value>
+    <value>Prod. rate</value>
   </data>
   <data name="FFAPPLICATIONTARGET_SEARCHRATE" xml:space="preserve">
     <value>Search rate (a)</value>
@@ -2719,7 +2719,7 @@
     <value>(tab)</value>
     <comment>'Colon' character description</comment>
   </data>
-  <data name="FFAPPLICATIONTARGET_IMMIG" xml:space="preserve">
-    <value>Immigration</value>
+  <data name="FFAPPLICATIONTARGET_IMPORT" xml:space="preserve">
+    <value>Import</value>
   </data>
 </root>

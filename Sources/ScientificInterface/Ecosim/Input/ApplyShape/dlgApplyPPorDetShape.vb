@@ -33,20 +33,9 @@ Imports EwEUtils.Core
 Namespace Ecosim
 
     ''' <summary>
-    ''' Interface to manage assign forcing functions to pred/prey interactions.
+    ''' Interface to manage assign forcing functions to PP or Detritus groups.
     ''' </summary>
-    Public Class dlgApplyPredPreyShape
-
-        Public Enum eEditMode As Integer
-            ''' <summary>Dialog opened for a single pred/prey combination.</summary>
-            PredPrey = 0
-            ''' <summary>Dialog opened for all diets involving this unfortunate prey.</summary>
-            Prey
-            ''' <summary>Dialog opened for all diets of a predator.</summary>
-            Predator
-            ''' <summary>Dialog opened for all diets.</summary>
-            All
-        End Enum
+    Public Class dlgApplyPPorDetShape
 
 #Region " Private vars "
 
@@ -56,100 +45,36 @@ Namespace Ecosim
         Private m_lFFs As New List(Of cForcingFunction)
         Private m_appl As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
 
-        Private m_iSelPrey As Integer = -1
-        Private m_iSelPred As Integer = -1
+        Private m_iSelGroup As Integer = -1
 
         ''' <summary>Image list used for displaying small thumbnails.</summary>
         Private m_ilSmall As New ImageList()
-
-        Private m_editMode As eEditMode = eEditMode.PredPrey
         Private m_nGroups As Integer = 0
 
         Private m_shapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
+        Private m_targetType As eApplyTargetTypes = eApplyTargetTypes.NotSet
 
 #End Region ' Private vars
 
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext, _
-                       ByVal iPrey As Integer, ByVal iPred As Integer, _
-                       ByVal shapeType As eApplyShapeTypes)
+                       ByVal iGroup As Integer, _
+                       ByVal shapeType As eApplyShapeTypes, _
+                       ByVal targetType As eApplyTargetTypes)
             Try
 
-                Me.Init(uic, eEditMode.PredPrey, shapeType)
+                Me.Init(uic, shapeType, targetType)
 
                 ' the index for selected prey and predator index
-                Me.m_iSelPrey = iPrey
-                Me.m_iSelPred = iPred
+                Me.m_iSelGroup = iGroup
 
-                Me.m_lInteractions.Add(Me.m_InteractionManager.PredPreyInteraction(Me.m_iSelPred, Me.m_iSelPrey))
+                Me.m_lInteractions.Add(Me.m_InteractionManager.PredPreyInteraction(Me.m_iSelGroup, Me.m_iSelGroup))
 
             Catch ex As Exception
                 ' NOP
             End Try
 
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Created the dialog for a single predator or prey.
-        ''' </summary>
-        ''' <param name="iGroup">Group this dialog was opened for.</param>
-        ''' <param name="editMode">Flag stating how this group should be interpreted.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal iGroup As Integer, _
-                       ByVal editMode As eEditMode, _
-                       ByVal shapeType As eApplyShapeTypes)
-
-            Me.Init(uic, editMode, shapeType)
-
-            Select Case editMode
-
-                Case eEditMode.Prey
-                    Me.m_iSelPrey = iGroup
-
-                    For i As Integer = 1 To m_nGroups
-                        If Me.m_InteractionManager.isPredPrey(i, Me.m_iSelPrey) Then
-                            Me.m_lInteractions.Add(m_InteractionManager.PredPreyInteraction(i, Me.m_iSelPrey))
-                        End If
-                    Next
-
-                Case eEditMode.Predator
-                    Me.m_iSelPred = iGroup
-
-                    For i As Integer = 1 To m_nGroups
-                        If Me.m_InteractionManager.isPredPrey(Me.m_iSelPred, i) Then
-                            Me.m_lInteractions.Add(m_InteractionManager.PredPreyInteraction(Me.m_iSelPred, i))
-                        End If
-                    Next
-
-                Case Else
-                    Debug.Assert(False, String.Format("Invalid editmode {0} provided, expected Pred or Prey", editMode.ToString))
-
-            End Select
-
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Create the dialog for all diets
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Sub New(ByVal uic As cUIContext, _
-                       ByVal shapeType As eApplyShapeTypes)
-
-            Me.Init(uic, eEditMode.All, shapeType)
-
-            For iPred As Integer = 1 To Me.m_uic.Core.nLivingGroups
-                ' For each row (rowIndex - Prey)
-                For iPrey As Integer = 1 To Me.m_uic.Core.nGroups
-                    ' Can assign FF at this spot in the matrix?
-                    If Me.m_InteractionManager.isPredPrey(iPred, iPrey) Then
-                        Me.m_lInteractions.Add(m_InteractionManager.PredPreyInteraction(iPred, iPrey))
-                    End If
-                Next
-            Next
         End Sub
 
 #End Region ' Constructors
@@ -165,22 +90,6 @@ Namespace Ecosim
             Me.LoadAvailableShapes()
             Me.LoadMultiplierOption()
             Me.LoadAppliedShapes()
-
-            ' Load Prey and predator pair name
-            Select Case m_editMode
-                Case eEditMode.PredPrey
-                    Me.m_lblPrey.Text = String.Format(Me.m_lblPrey.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblPred.Text = String.Format(Me.m_lblPred.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
-                Case eEditMode.Prey
-                    Me.m_lblPrey.Text = String.Format(Me.m_lblPrey.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblPred.Visible = False
-                Case eEditMode.Predator
-                    Me.m_lblPrey.Visible = False
-                    Me.m_lblPred.Text = String.Format(Me.m_lblPred.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
-                Case eEditMode.All
-                    Me.m_lblPrey.Text = String.Format(Me.m_lblPrey.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblPred.Text = String.Format(Me.m_lblPred.Text, SharedResources.GENERIC_VALUE_ALL)
-            End Select
 
             Me.UpdateControls()
 
@@ -334,12 +243,12 @@ Namespace Ecosim
         ''' Populate the dialog.
         ''' </summary>
         ''' <param name="uic"></param>
-        ''' <param name="editMode"></param>
         ''' <param name="shapeType"></param>
-         ''' -------------------------------------------------------------------
+        ''' <param name="targetType"></param>
+        ''' -------------------------------------------------------------------
         Private Sub Init(ByVal uic As cUIContext, _
-                         ByVal editMode As eEditMode, _
-                         ByVal shapeType As eApplyShapeTypes)
+                         ByVal shapeType As eApplyShapeTypes, _
+                         ByVal targetType As eApplyTargetTypes)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -347,9 +256,9 @@ Namespace Ecosim
             ' Get the Prey - Pred interaction manager
             Me.m_InteractionManager = Me.m_uic.Core.MediatedInteractionManager
 
-            Me.m_editMode = editMode
             Me.m_shapeMode = shapeType
- 
+            Me.m_targetType = targetType
+
             ' Set title
             Select Case Me.m_shapeMode
                 Case eApplyShapeTypes.Forcing
@@ -515,7 +424,7 @@ Namespace Ecosim
 
         Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTargetTypeFormatter(eApplyTargetTypes.Consumer)
+            Dim fmt As New cFFApplicationTargetTypeFormatter(Me.m_targetType)
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Tag = appl
@@ -577,30 +486,27 @@ Namespace Ecosim
 
         Private Sub LoadAppliedShapes()
 
-            If (m_editMode = eEditMode.PredPrey) Then
+            Dim ppi As cMediatedInteraction = Me.m_lInteractions(0)
+            Dim item As ListViewItem = Nothing
+            Dim shape As cForcingFunction = Nothing
+            Dim ffappl As eForcingFunctionApplication
 
-                Dim ppi As cMediatedInteraction = Me.m_lInteractions(0)
-                Dim item As ListViewItem = Nothing
-                Dim shape As cForcingFunction = Nothing
-                Dim ffappl As eForcingFunctionApplication
+            If ppi Is Nothing Then Return
+            For i As Integer = 1 To ppi.NAppliedShapes
 
-                If ppi Is Nothing Then Return
-                For i As Integer = 1 To ppi.NAppliedShapes
+                ppi.getShape(i, shape, ffappl)
 
-                    ppi.getShape(i, shape, ffappl)
+                item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
+                item.ImageIndex = Me.m_lFFs.IndexOf(shape)
+                item.SubItems.Add("")
+                item.Tag = shape
 
-                    item = New ListViewItem(String.Format(SharedResources.GENERIC_LABEL_INDEXED, shape.Index, shape.Name))
-                    item.ImageIndex = Me.m_lFFs.IndexOf(shape)
-                    item.SubItems.Add("")
-                    item.Tag = shape
+                If Not Me.IsAllowedShape(shape) Then item.ForeColor = SystemColors.GrayText
 
-                    If Not Me.IsAllowedShape(shape) Then item.ForeColor = SystemColors.GrayText
+                Me.UpdateAppliedShape(item, ffappl)
+                Me.m_lvAppliedShapes.Items.Add(item)
 
-                    Me.UpdateAppliedShape(item, ffappl)
-                    Me.m_lvAppliedShapes.Items.Add(item)
-
-                Next
-            End If
+            Next
 
             Me.m_lvAppliedShapes.View = View.Details
             Me.m_lvAppliedShapes.SmallImageList = m_ilSmall
@@ -617,19 +523,38 @@ Namespace Ecosim
 
         Private Sub LoadMultiplierOption()
 
-            Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.SearchRate)
-            Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.Vulnerability)
-            Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.ArenaArea)
-            Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.VulAndArea)
+            Select Case Me.m_targetType
+
+                Case eApplyTargetTypes.PrimaryProducer
+                    Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ProductionRate)
+                    Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                    Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                    Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+
+                Case eApplyTargetTypes.Detritus
+                    Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
+                    Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                    Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                    Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+
+                Case Else
+                    Debug.Assert(False)
+
+            End Select
+
             Me.m_rbOpt1.Checked = True
 
         End Sub
 
         Private Sub ConfigureRadioButton(ByVal rb As RadioButton, ByVal tag As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTargetTypeFormatter(eApplyTargetTypes.Consumer)
-            rb.Text = fmt.GetDescriptor(tag)
-            rb.Tag = tag
+            Dim fmt As New cFFApplicationTargetTypeFormatter(Me.m_targetType)
+            If tag = eForcingFunctionApplication.NotSet Then
+                rb.Visible = False
+            Else
+                rb.Text = fmt.GetDescriptor(tag)
+                rb.Tag = tag
+            End If
 
         End Sub
 

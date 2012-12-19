@@ -38,10 +38,10 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Protected m_RowColClick As New BehaviorModels.CustomEvents
-        Protected m_BehaviorClick As BehaviorModels.CustomEvents
-        Protected m_editor As DataModels.EditorTextBox
-        Protected m_InteractionManager As cMediatedInteractionManager
+        Protected m_editor As DataModels.EditorTextBox = Nothing
+        Protected m_InteractionManager As cMediatedInteractionManager = Nothing
+        Protected m_bmRowCol As BehaviorModels.CustomEvents = Nothing
+        Protected m_bmCell As BehaviorModels.CustomEvents = Nothing
 
 #End Region ' Private vars
 
@@ -51,19 +51,23 @@ Namespace Ecosim
             MyBase.New()
 
             Me.m_editor = New DataModels.EditorTextBox(GetType(Integer))
-            Me.m_BehaviorClick = New BehaviorModels.CustomEvents()
-            AddHandler m_RowColClick.Click, New SourceGrid2.PositionEventHandler(AddressOf OnRowColClicked)
-            AddHandler m_BehaviorClick.Click, AddressOf CellClick
+            Me.m_bmRowCol = New BehaviorModels.CustomEvents()
+            Me.m_bmCell = New BehaviorModels.CustomEvents()
+
+            AddHandler m_bmRowCol.Click, New SourceGrid2.PositionEventHandler(AddressOf OnRowColClicked)
+            AddHandler m_bmCell.Click, AddressOf CellClick
+
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             MyBase.Dispose(disposing)
 
-            If Me.m_editor IsNot Nothing Then
-                RemoveHandler m_RowColClick.Click, New SourceGrid2.PositionEventHandler(AddressOf OnRowColClicked)
-                RemoveHandler m_BehaviorClick.Click, AddressOf CellClick
+            If (Me.m_editor IsNot Nothing) Then
+                RemoveHandler m_bmRowCol.Click, New SourceGrid2.PositionEventHandler(AddressOf OnRowColClicked)
+                RemoveHandler m_bmCell.Click, AddressOf CellClick
                 Me.m_editor = Nothing
-                Me.m_BehaviorClick = Nothing
+                Me.m_bmCell = Nothing
+                Me.m_bmRowCol = Nothing
             End If
 
         End Sub
@@ -114,6 +118,46 @@ Namespace Ecosim
         Protected MustOverride Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
 
         Protected MustOverride Sub OnRowColClicked(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the group at a given row.
+        ''' </summary>
+        ''' <param name="iRow"></param>
+        ''' -------------------------------------------------------------------
+        Protected Property GroupAtRow(ByVal iRow As Integer) As Integer
+            Get
+                If (1 <= iRow And iRow < Me.RowsCount) Then
+                    Return CInt(Me.Rows(iRow).Tag)
+                End If
+                Return 0
+            End Get
+            Set(value As Integer)
+                If (1 <= iRow And iRow < Me.RowsCount) Then
+                    Me.Rows(iRow).Tag = value
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the group at a given column.
+        ''' </summary>
+        ''' <param name="iCol"></param>
+        ''' -------------------------------------------------------------------
+        Protected Property GroupAtColumn(ByVal iCol As Integer) As Integer
+            Get
+                If (2 <= iCol And iCol < Me.ColumnsCount) Then
+                    Return CInt(Me.Columns(iCol).Tag)
+                End If
+                Return 0
+            End Get
+            Set(value As Integer)
+                If (2 <= iCol And iCol < Me.ColumnsCount) Then
+                    Me.Columns(iCol).Tag = value
+                End If
+            End Set
+        End Property
 
 #End Region ' Internals
 

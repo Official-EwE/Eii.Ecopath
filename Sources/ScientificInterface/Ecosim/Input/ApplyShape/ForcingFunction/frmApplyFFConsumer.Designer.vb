@@ -75,7 +75,6 @@ Namespace Ecosim
             '
             Me.m_grid.AllowBlockSelect = True
             Me.m_grid.ApplyShapeMode = ScientificInterfaceShared.Definitions.eApplyShapeTypes.Forcing
-            Me.m_grid.ApplyTargetMode = ScientificInterfaceShared.Definitions.eApplyTargetTypes.Consumer
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False

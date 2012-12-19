@@ -19,7 +19,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-    Partial Class dlgApplyPredPreyShape
+    Partial Class dlgApplyPPorDetShape
         Inherits System.Windows.Forms.Form
 
         'Form overrides dispose to clean up the component list.
@@ -39,7 +39,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyPredPreyShape))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgApplyPPorDetShape))
             Me.OK_Button = New System.Windows.Forms.Button()
             Me.Cancel_Button = New System.Windows.Forms.Button()
             Me.m_lblAvailableFF = New System.Windows.Forms.Label()
@@ -56,11 +56,7 @@ Namespace Ecosim
             Me.m_lblAppliedFF = New System.Windows.Forms.Label()
             Me.m_tlpApplications = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblApplyTo = New System.Windows.Forms.Label()
-            Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_lblPred = New System.Windows.Forms.Label()
-            Me.m_lblPrey = New System.Windows.Forms.Label()
             Me.m_tlpApplications.SuspendLayout()
-            Me.m_tlpInfo.SuspendLayout()
             Me.SuspendLayout()
             '
             'OK_Button
@@ -161,30 +157,12 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_lblApplyTo, "m_lblApplyTo")
             Me.m_lblApplyTo.Name = "m_lblApplyTo"
             '
-            'm_tlpInfo
-            '
-            resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
-            Me.m_tlpInfo.Controls.Add(Me.m_lblPred, 1, 0)
-            Me.m_tlpInfo.Controls.Add(Me.m_lblPrey, 0, 0)
-            Me.m_tlpInfo.Name = "m_tlpInfo"
-            '
-            'm_lblPred
-            '
-            resources.ApplyResources(Me.m_lblPred, "m_lblPred")
-            Me.m_lblPred.Name = "m_lblPred"
-            '
-            'm_lblPrey
-            '
-            resources.ApplyResources(Me.m_lblPrey, "m_lblPrey")
-            Me.m_lblPrey.Name = "m_lblPrey"
-            '
-            'dlgApplyPredPreyShape
+            'dlgApplyPPorDetShape
             '
             Me.AcceptButton = Me.OK_Button
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
-            Me.Controls.Add(Me.m_tlpInfo)
             Me.Controls.Add(Me.m_lblApplyTo)
             Me.Controls.Add(Me.m_tlpApplications)
             Me.Controls.Add(Me.Cancel_Button)
@@ -197,14 +175,12 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_lblAvailableFF)
             Me.MaximizeBox = False
             Me.MinimizeBox = False
-            Me.Name = "dlgApplyPredPreyShape"
+            Me.Name = "dlgApplyPPorDetShape"
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
             Me.m_tlpApplications.ResumeLayout(False)
             Me.m_tlpApplications.PerformLayout()
-            Me.m_tlpInfo.ResumeLayout(False)
-            Me.m_tlpInfo.PerformLayout()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -225,9 +201,6 @@ Namespace Ecosim
         Private WithEvents m_lblAppliedFF As System.Windows.Forms.Label
         Private WithEvents m_tlpApplications As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblApplyTo As System.Windows.Forms.Label
-        Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_lblPred As System.Windows.Forms.Label
-        Private WithEvents m_lblPrey As System.Windows.Forms.Label
 
     End Class
 

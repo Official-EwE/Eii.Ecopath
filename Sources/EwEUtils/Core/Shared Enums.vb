@@ -2461,8 +2461,8 @@ Namespace Core
         ArenaArea = 3
         VulAndArea = 4
         OffVesselPrice = 5
-        ProductionRate = 1
-        Immigration = 1
+        ProductionRate = 6
+        Import = 7
     End Enum
 
 #End Region ' Forcing function application targets

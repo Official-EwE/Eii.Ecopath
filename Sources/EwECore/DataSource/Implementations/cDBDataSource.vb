@@ -5249,11 +5249,8 @@ Namespace DataSources
                         If iShape <> -1 Then
                             ' Update sim fields
                             ecosimDS.BioMedData.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
-                            Dim iFT As Integer = CInt(reader("FunctionType"))
-                            ' Fixes #980: eForcingFunctionApplication types ProductionRate and SearchRate are now synonymous.
-                            '             ProdRate = 6 is discontinued. If a 6 occurs and pred=prey (which indicates PP) a default of 1 is substituted.
-                            If (iFT = 6) And (iPredator = iPrey) Then iFT = eForcingFunctionApplication.ProductionRate
-                            ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = iFT
+                            Dim appl As eForcingFunctionApplication = CType(CInt(reader("FunctionType")), eForcingFunctionApplication)
+                            ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
                         Else
                             Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))
                         End If
