@@ -4149,8 +4149,7 @@ Namespace Ecosim
 
                 Select Case m_Data.BioMedData.FunctionType(i, j, K)
                     Case eForcingFunctionApplication.SearchRate, _
-                         eForcingFunctionApplication.ProductionRate, _
-                         eForcingFunctionApplication.ImportDetritus
+                         eForcingFunctionApplication.ProductionRate
                         A = A * Mult
                     Case eForcingFunctionApplication.Vulnerability
                         v = v * Mult
@@ -4159,6 +4158,8 @@ Namespace Ecosim
                     Case eForcingFunctionApplication.VulAndArea
                         A = CSng(A / (Mult + 0.0000000001))
                         v = v * Mult
+                    Case eForcingFunctionApplication.Import
+                        ' Hmm.... Joe?!
                 End Select
 
             Next

@@ -1682,6 +1682,14 @@ Public Class cEIIXMLDataSource
                         ' Update sim fields
                         ecosimDS.BioMedData.FunctionNumber(iPrey, iPredator, iFNo(iPrey, iPredator)) = iShape
                         Dim appl As eForcingFunctionApplication = CType(CInt(drow("FunctionType")), eForcingFunctionApplication)
+                        ' Minor correction which does not warrant a database update.
+                        If appl = eForcingFunctionApplication.SearchRate Then
+                            If ecopathDS.PP(iPredator) = 1.0 Then
+                                appl = eForcingFunctionApplication.ProductionRate
+                            ElseIf ecopathDS.PP(iPredator) = 2.0 Then
+                                appl = eForcingFunctionApplication.Import
+                            End If
+                        End If
                         ecosimDS.BioMedData.FunctionType(iPrey, iPredator, iFNo(iPrey, iPredator)) = appl
                     Else
                         Me.LogMessage(String.Format("Shape {0} cannot be used for pred/prey interactions; assignment discarded", iShapeID))

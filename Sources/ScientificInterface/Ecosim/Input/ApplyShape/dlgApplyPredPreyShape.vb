@@ -515,7 +515,7 @@ Namespace Ecosim
 
         Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTargetTypeFormatter(eApplyTargetTypes.Consumer)
+            Dim fmt As New cFFApplicationTargetTypeFormatter()
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Tag = appl
@@ -627,7 +627,7 @@ Namespace Ecosim
 
         Private Sub ConfigureRadioButton(ByVal rb As RadioButton, ByVal tag As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTargetTypeFormatter(eApplyTargetTypes.Consumer)
+            Dim fmt As New cFFApplicationTargetTypeFormatter()
             rb.Text = fmt.GetDescriptor(tag)
             rb.Tag = tag
 

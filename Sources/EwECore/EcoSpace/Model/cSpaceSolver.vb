@@ -908,8 +908,7 @@ Public Class cSpaceSolver
             Select Case m_SimData.BioMedData.FunctionType(i, j, K)
                 'SearchRate, Production and ImportedDetritus are all applied to the A multiplier
                 Case eForcingFunctionApplication.SearchRate, _
-                     eForcingFunctionApplication.ProductionRate, _
-                     eForcingFunctionApplication.ImportDetritus
+                     eForcingFunctionApplication.ProductionRate
                     A = A * Mult
                 Case eForcingFunctionApplication.Vulnerability
                     v = v * Mult
@@ -918,6 +917,8 @@ Public Class cSpaceSolver
                 Case eForcingFunctionApplication.VulAndArea
                     A = A / (Mult + 1.0E-10F)
                     v = v * Mult
+                Case eForcingFunctionApplication.Import
+                    ' Hmm. Joe?!
             End Select
 
         Next

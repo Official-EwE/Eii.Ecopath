@@ -52,7 +52,6 @@ Namespace Ecosim
         Private m_nGroups As Integer = 0
 
         Private m_shapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
-        Private m_targetType As eApplyTargetTypes = eApplyTargetTypes.NotSet
 
 #End Region ' Private vars
 
@@ -60,11 +59,10 @@ Namespace Ecosim
 
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal iGroup As Integer, _
-                       ByVal shapeType As eApplyShapeTypes, _
-                       ByVal targetType As eApplyTargetTypes)
+                       ByVal shapeType As eApplyShapeTypes)
             Try
 
-                Me.Init(uic, shapeType, targetType)
+                Me.Init(uic, shapeType)
 
                 ' the index for selected prey and predator index
                 Me.m_iSelGroup = iGroup
@@ -244,11 +242,9 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="uic"></param>
         ''' <param name="shapeType"></param>
-        ''' <param name="targetType"></param>
         ''' -------------------------------------------------------------------
         Private Sub Init(ByVal uic As cUIContext, _
-                         ByVal shapeType As eApplyShapeTypes, _
-                         ByVal targetType As eApplyTargetTypes)
+                         ByVal shapeType As eApplyShapeTypes)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -257,7 +253,6 @@ Namespace Ecosim
             Me.m_InteractionManager = Me.m_uic.Core.MediatedInteractionManager
 
             Me.m_shapeMode = shapeType
-            Me.m_targetType = targetType
 
             ' Set title
             Select Case Me.m_shapeMode
@@ -424,7 +419,7 @@ Namespace Ecosim
 
         Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTargetTypeFormatter(Me.m_targetType)
+            Dim fmt As New cFFApplicationTargetTypeFormatter()
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Tag = appl
@@ -523,24 +518,19 @@ Namespace Ecosim
 
         Private Sub LoadMultiplierOption()
 
-            Select Case Me.m_targetType
+            Dim grp As cCoreGroupBase = Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelGroup)
 
-                Case eApplyTargetTypes.PrimaryProducer
-                    Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ProductionRate)
-                    Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
-                    Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
-                    Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
-
-                Case eApplyTargetTypes.Detritus
-                    Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ImportDetritus)
-                    Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
-                    Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
-                    Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
-
-                Case Else
-                    Debug.Assert(False)
-
-            End Select
+            If grp.IsProducer Then
+                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ProductionRate)
+                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            Else
+                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
+                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            End If
 
             Me.m_rbOpt1.Checked = True
 
@@ -548,7 +538,7 @@ Namespace Ecosim
 
         Private Sub ConfigureRadioButton(ByVal rb As RadioButton, ByVal tag As eForcingFunctionApplication)
 
-            Dim fmt As New cFFApplicationTargetTypeFormatter(Me.m_targetType)
+            Dim fmt As New cFFApplicationTargetTypeFormatter()
             If tag = eForcingFunctionApplication.NotSet Then
                 rb.Visible = False
             Else

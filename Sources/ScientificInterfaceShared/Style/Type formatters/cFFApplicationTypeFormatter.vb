@@ -42,10 +42,7 @@ Namespace Style
     Public Class cFFApplicationTargetTypeFormatter
         Implements ITypeFormatter
 
-        Private m_mode As eApplyTargetTypes = eApplyTargetTypes.NotSet
-
-        Public Sub New(ByVal mode As eApplyTargetTypes)
-            Me.m_mode = mode
+        Public Sub New()
         End Sub
 
         Public Function GetDescribedType() As System.Type _
@@ -58,14 +55,6 @@ Namespace Style
                                       Implements ITypeFormatter.GetDescriptor
 
             Debug.Assert(Me.GetDescribedType() Is value.GetType())
-
-            ' Ugh! Minor correction
-            Select Case Me.m_mode
-                Case eApplyTargetTypes.PrimaryProducer
-                    If CInt(value) = 1 Then value = eForcingFunctionApplication.ProductionRate
-                Case eApplyTargetTypes.Detritus
-                    If CInt(value) = 1 Then value = eForcingFunctionApplication.ImportDetritus
-            End Select
 
             Dim strValue As String = value.ToString
             Dim strDescr As String = cResourceUtils.LoadString("FFAPPLICATIONTARGET_" & strValue.ToUpper, Me.GetType.Assembly)

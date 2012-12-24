@@ -303,7 +303,7 @@ Namespace Ecospace
         Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
 
             ' Hmm, may not be accurate
-            Dim fmt As New cFFApplicationTargetTypeFormatter(eApplyTargetTypes.Consumer)
+            Dim fmt As New cFFApplicationTargetTypeFormatter()
             Dim shape As cForcingFunction = Me.Shape(item)
 
             item.SubItems(1).Text = fmt.GetDescriptor(appl)

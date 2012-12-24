@@ -92,13 +92,6 @@ Namespace Definitions
         Fixed
     End Enum
 
-    Public Enum eApplyTargetTypes As Integer
-        NotSet = 0
-        Consumer
-        PrimaryProducer
-        Detritus
-    End Enum
-
     Public Enum eApplyShapeTypes As Integer
         NotSet = 0
         Forcing

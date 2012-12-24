@@ -217,18 +217,11 @@ Namespace Ecosim
         Protected Overrides Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
 
             Dim iGroup As Integer = GroupAtRow(e.Position.Row)
-            Dim appl As eApplyTargetTypes = eApplyTargetTypes.NotSet
             Dim group As cCoreGroupBase = Nothing
 
             If (iGroup = 0) Then Return
 
-            group = Me.Core.EcoPathGroupInputs(iGroup)
-            If (group.IsDetritus) Then appl = eApplyTargetTypes.Detritus
-            If (group.IsProducer) Then appl = eApplyTargetTypes.PrimaryProducer
-
-            If (appl = eApplyTargetTypes.NotSet) Then Return
-
-            Dim dlg As New dlgApplyPPorDetShape(Me.UIContext, iGroup, Me.m_applyShapeMode, appl)
+            Dim dlg As New dlgApplyPPorDetShape(Me.UIContext, iGroup, Me.m_applyShapeMode)
             dlg.ShowDialog()
 
         End Sub
