@@ -132,7 +132,7 @@ Namespace Utilities
 
         Public Shared Function GetNextEvent(ByVal iNumDays As Integer) As eNextEvent
 
-            Dim dtNow As DateTime = Date.Now
+            Dim dtNow As DateTime = New Date(Date.Now.Year, Date.Now.Month, Date.Now.Day)
             Dim dtEaster As DateTime = cDateUtils.Easter(dtNow.Year)
             Dim dtXMas As DateTime = New Date(dtNow.Year, 12, 25)
 
