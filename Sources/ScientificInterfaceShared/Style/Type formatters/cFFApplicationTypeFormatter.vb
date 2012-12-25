@@ -29,11 +29,11 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Class for providing a textual description of <see cref="eApplyTargetTypes"/>.
+    ''' Class for providing a textual description of <see cref="eForcingFunctionApplication"/>.
     ''' </summary>
     ''' <remarks>
     ''' <para>This class tries to obtain a string from the ScientificShared resources
-    ''' to describe a <see cref="eApplyTargetTypes">Forcing Function 
+    ''' to describe a <see cref="eForcingFunctionApplication">Forcing Function 
     ''' application target types</see>.
     ''' The string is expected to be formatted as follows:</para>
     ''' <para>FFAPPLICATIONTARGET_[varname] = "[symbol]|[abbr]|[name]|[description]"</para>
