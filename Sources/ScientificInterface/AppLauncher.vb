@@ -2879,8 +2879,19 @@ Public Class AppLauncher
         ' Check if any autosave option set
         Dim bIsAutosaving As Boolean = False
         For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
-            bIsAutosaving = bIsAutosaving Or Me.Core.Autosave(setting)
+            If Me.Core.Autosave(setting) Then
+                bIsAutosaving = True
+                Exit For
+            End If
         Next
+        If (Not bIsAutosaving) And (Me.m_pluginManager IsNot Nothing) Then
+            For Each pi As IAutoSavePlugin In Me.m_pluginManager.GetPlugins(GetType(IAutoSavePlugin))
+                If pi.AutoSave Then
+                    bIsAutosaving = True
+                    Exit For
+                End If
+            Next
+        End If
         cmd.Checked = bIsAutosaving
     End Sub
 

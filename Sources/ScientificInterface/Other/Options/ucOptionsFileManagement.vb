@@ -36,184 +36,6 @@ Namespace Other
     Public Class ucOptionsFileManagement
         Implements IOptionsPage
 
-#Region " Private classes "
-
-        Private Class cPluginSorter
-            Implements IComparer(Of IAutoSavePlugin)
-
-            Public Function Compare(x As EwEPlugin.IAutoSavePlugin, _
-                                    y As EwEPlugin.IAutoSavePlugin) As Integer _
-                                Implements IComparer(Of EwEPlugin.IAutoSavePlugin).Compare
-                Return String.Compare(x.Name, y.Name)
-            End Function
-
-        End Class
-
-        Private Class cAutoSaveItemEngine
-            Implements IDisposable
-
-            Private m_uic As cUIContext = Nothing
-            Private m_pl As Panel = Nothing
-            Private m_cbh As cCheckboxHierarchy = Nothing
-            Private m_lControls As List(Of ucAutosaveOption) = Nothing
-
-            Public Sub New(ByVal uic As cUIContext)
-                Me.m_uic = uic
-                Me.m_lControls = New List(Of ucAutosaveOption)
-            End Sub
-
-            Public Sub Attach(pl As Panel)
-
-                Me.m_pl = pl
-
-                Dim core As cCore = Me.m_uic.Core
-                Dim pm As cPluginManager = core.PluginManager
-                Dim lPlugins([Enum].GetValues(GetType(eAutosaveTypes)).Length - 1) As List(Of IAutoSavePlugin)
-
-                For Each t As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
-                    lPlugins(t) = New List(Of IAutoSavePlugin)
-                Next
-
-                ' Make inventory of autosave plug-ins
-                If (pm IsNot Nothing) Then
-                    For Each pi As IPlugin In pm.GetPlugins(GetType(IAutoSavePlugin))
-                        Dim aspi As IAutoSavePlugin = DirectCast(pi, IAutoSavePlugin)
-                        lPlugins(aspi.AutoSaveType).Add(aspi)
-                    Next pi
-                End If
-                Me.BuildControlTree(eAutosaveTypes.NotSet, Nothing, 0, lPlugins)
-                Me.m_cbh.ManageCheckedStates = True
-
-            End Sub
-
-            Public Sub Apply()
-                For Each uc As ucAutosaveOption In Me.m_lControls
-                    uc.Apply()
-                Next
-            End Sub
-
-            Public Sub Detach()
-                Me.m_pl.SuspendLayout()
-                For Each uc As ucAutosaveOption In Me.m_lControls
-                    Me.m_pl.Controls.Remove(uc)
-                Next
-                Me.m_lControls.Clear()
-                Me.m_pl.ResumeLayout()
-                Me.m_pl = Nothing
-                Me.m_cbh.Dispose()
-                Me.m_cbh = Nothing
-
-            End Sub
-
-            Public Sub SetOutputMask(ByVal strMask As String)
-                For Each uc As ucAutosaveOption In Me.m_lControls
-                    uc.SetOutputMask(strMask)
-                Next
-            End Sub
-
-            Public Sub Dispose() Implements IDisposable.Dispose
-                Me.Detach()
-                Me.m_cbh.Dispose()
-                GC.SuppressFinalize(Me)
-            End Sub
-
-            Private Sub BuildControlTree(ByVal t As eAutosaveTypes, _
-                                         ByVal parent As CheckBox, _
-                                         ByVal iIndent As Integer, _
-                                         ByVal lPlugins() As List(Of IAutoSavePlugin))
-
-                Dim cbParent As CheckBox = Nothing
-                Dim ctrl As ucAutosaveOption = Nothing
-
-                Select Case t
-                    Case eAutosaveTypes.NotSet
-                        ctrl = New ucAutosaveOption(Me.m_uic, "Auto-save all", 0)
-                        Me.Add(ctrl, Nothing)
-                        Dim cbRoot As CheckBox = ctrl.Checkbox
-
-                        ctrl = New ucAutosaveOption(Me.m_uic, "Ecopath", 1)
-                        Me.Add(ctrl, cbRoot)
-                        Me.BuildControlTree(eAutosaveTypes.Ecopath, ctrl.Checkbox, 2, lPlugins)
-
-                        ctrl = New ucAutosaveOption(Me.m_uic, "Ecosim", 1)
-                        Me.Add(ctrl, cbRoot)
-                        Me.BuildControlTree(eAutosaveTypes.Ecosim, ctrl.Checkbox, 2, lPlugins)
-
-                        ctrl = New ucAutosaveOption(Me.m_uic, "Ecospace", 1)
-                        Me.Add(ctrl, cbRoot)
-                        Me.BuildControlTree(eAutosaveTypes.Ecospace, ctrl.Checkbox, 2, lPlugins)
-
-                        Me.BuildControlTree(eAutosaveTypes.Ecotracer, ctrl.Checkbox, 1, lPlugins)
-
-                    Case eAutosaveTypes.Ecopath
-                        Me.Add(lPlugins(t), parent, iIndent)
-
-                    Case eAutosaveTypes.Ecosim
-                        ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                        Me.Add(ctrl, parent)
-                        Me.BuildControlTree(eAutosaveTypes.MonteCarlo, ctrl.Checkbox, iIndent, lPlugins)
-                        Me.BuildControlTree(eAutosaveTypes.MSE, ctrl.Checkbox, iIndent, lPlugins)
-                        Me.BuildControlTree(eAutosaveTypes.MSY, ctrl.Checkbox, iIndent, lPlugins)
-                        Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
-
-                    Case eAutosaveTypes.Ecospace
-                        ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                        Me.Add(ctrl, parent)
-                        Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
-
-                    Case eAutosaveTypes.Ecotracer
-                        ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                        Me.Add(ctrl, parent)
-
-                    Case eAutosaveTypes.MonteCarlo
-                        ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                        Me.Add(ctrl, parent)
-                        Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
-
-                    Case eAutosaveTypes.MSY
-                        ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                        Me.Add(ctrl, parent)
-                        Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
-
-                    Case eAutosaveTypes.MSE
-                        ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                        Me.Add(ctrl, parent)
-                        Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
-
-                End Select
-            End Sub
-
-            Private Sub Add(ByVal uc As ucAutosaveOption, ByVal parent As CheckBox)
-                Me.m_pl.Controls.Add(uc)
-                uc.Location = New Point(0, (Me.m_pl.Controls.Count - 1) * uc.Height)
-                uc.Width = Me.m_pl.Width
-                uc.Anchor = AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Top
-
-                If (parent IsNot Nothing) Then
-                    Me.m_cbh.Add(uc.Checkbox, parent)
-                Else
-                    Me.m_cbh = New cCheckboxHierarchy(uc.Checkbox)
-                End If
-
-                Me.m_lControls.Add(uc)
-            End Sub
-
-            Private Sub Add(ByVal l As List(Of IAutoSavePlugin), _
-                            ByVal parent As CheckBox, _
-                            ByVal iIndent As Integer)
-
-                Dim api As IAutoSavePlugin() = l.ToArray
-                Array.Sort(api, New cPluginSorter())
-                For Each pi As IAutoSavePlugin In api
-                    Me.Add(New ucAutosaveOption(Me.m_uic, pi), parent)
-                Next
-
-            End Sub
-
-        End Class
-
-#End Region ' Private class
-
 #Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
@@ -221,7 +43,7 @@ Namespace Other
         Private m_strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
         Private m_cbh As cCheckboxHierarchy = Nothing
         Private m_options As New List(Of ucAutosaveOption)
-        Private m_engine As cAutoSaveItemEngine = Nothing
+        Private m_autosaveoptions As cAutoSaveItemEngine = Nothing
 
 #End Region ' Private vars
 
@@ -235,7 +57,7 @@ Namespace Other
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             If disposing AndAlso components IsNot Nothing Then
                 components.Dispose()
-                Me.m_engine.Dispose()
+                Me.m_autosaveoptions.Dispose()
             End If
             MyBase.Dispose(disposing)
         End Sub
@@ -247,17 +69,9 @@ Namespace Other
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Me.m_engine = New cAutoSaveItemEngine(Me.m_uic)
-            Me.m_engine.Attach(Me.m_plAutoSave)
-
-
-            'Me.m_cbEcosimRun.Checked = core.Autosave(eAutosaveTypes.Ecosim)
-            'Me.m_cbMonteCarlo.Checked = core.Autosave(eAutosaveTypes.MonteCarlo)
-            'Me.m_cbMSE.Checked = core.Autosave(eAutosaveTypes.MSE)
-            'Me.m_cbMSY.Checked = core.Autosave(eAutosaveTypes.MSY)
-            'Me.m_cbSpaceCSV.Checked = core.Autosave(eAutosaveTypes.EcospaceCSV)
-            'Me.m_cbSpaceASCII.Checked = core.Autosave(eAutosaveTypes.EcospaceASC)
-            'Me.m_cbEcotracer.Checked = core.Autosave(eAutosaveTypes.Ecotracer)
+            ' Autosave
+            Me.m_autosaveoptions = New cAutoSaveItemEngine(Me.m_uic)
+            Me.m_autosaveoptions.Attach(Me.m_plAutoSave)
 
             ' Output path
             Me.m_fieldpickOutput.UIContext = Me.m_uic
@@ -269,18 +83,6 @@ Namespace Other
             Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
             Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
 
-            '' Configure checkbox hierarchy
-            'Me.m_cbh.Add(Me.m_cbEcosim, Me.m_cbAutosaveAll)
-            'Me.m_cbh.Add(Me.m_cbEcosimRun, Me.m_cbEcosim)
-            'Me.m_cbh.Add(Me.m_cbMonteCarlo, Me.m_cbEcosim)
-            'Me.m_cbh.Add(Me.m_cbMSE, Me.m_cbEcosim)
-            'Me.m_cbh.Add(Me.m_cbMSY, Me.m_cbEcosim)
-            'Me.m_cbh.Add(Me.m_cbEcospace, Me.m_cbAutosaveAll)
-            'Me.m_cbh.Add(Me.m_cbSpaceASCII, Me.m_cbEcospace)
-            'Me.m_cbh.Add(Me.m_cbSpaceCSV, Me.m_cbEcospace)
-            'Me.m_cbh.Add(Me.m_cbEcotracer, Me.m_cbAutosaveAll)
-            'Me.m_cbh.ManageCheckedStates = True
-
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -288,21 +90,14 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
 
-            Dim core As cCore = Me.m_uic.Core
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
             Try
 
-                'core.Autosave(eAutosaveTypes.Ecosim) = Me.m_cbEcosimRun.Checked
-                'core.Autosave(eAutosaveTypes.MonteCarlo) = Me.m_cbMonteCarlo.Checked
-                'core.Autosave(eAutosaveTypes.MSE) = Me.m_cbMSE.Checked
-                'core.Autosave(eAutosaveTypes.MSY) = Me.m_cbMSY.Checked
-                'core.Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSpaceCSV.Checked
-                'core.Autosave(eAutosaveTypes.EcospaceASC) = Me.m_cbSpaceASCII.Checked
-                'core.Autosave(eAutosaveTypes.Ecotracer) = Me.m_cbEcotracer.Checked
-
                 My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
                 My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
+
+                Me.m_autosaveoptions.Apply()
 
             Catch ex As Exception
                 cLog.Write(ex, "ucOptionsAutosave::Apply")
@@ -385,7 +180,7 @@ Namespace Other
             Me.UpdateSample(Me.m_tbxOutputSample, Me.m_tbOutputMask.Text)
             Me.UpdateSample(Me.m_tbxBackupSample, Me.m_tbBackupMask.Text)
 
-            Me.m_engine.SetOutputMask(Me.m_tbOutputMask.Text)
+            Me.m_autosaveoptions.SetOutputMask(Me.m_tbOutputMask.Text)
 
         End Sub
 

@@ -191,7 +191,9 @@ Namespace Other
             Me.m_cbOption.Width -= Me.m_iIndent * 20
 
             ' Set initial state
-            If (Me.m_autosavetype <> eAutosaveTypes.NotSet) Then
+            If (Me.m_pi IsNot Nothing) Then
+                Me.m_cbOption.Checked = Me.m_pi.AutoSave
+            ElseIf (Me.m_autosavetype <> eAutosaveTypes.NotSet) Then
                 Me.m_cbOption.Checked = (Me.UIContext.Core.Autosave(Me.m_autosavetype) = True)
             End If
 

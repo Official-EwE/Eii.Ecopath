@@ -302,10 +302,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\cSelectionMonitor.vb" />
-    <Compile Include="Other\Options\ucAutosaveOption.Designer.vb">
+    <Compile Include="Other\Options\AutoSaveOptionAssets\cAutoSaveItemEngine.vb" />
+    <Compile Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.Designer.vb">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
     </Compile>
-    <Compile Include="Other\Options\ucAutosaveOption.vb">
+    <Compile Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.vb">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\ucOptionsMap.Designer.vb">
@@ -915,7 +916,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>RunEcospace.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Other\Options\ucAutosaveOption.resx">
+    <EmbeddedResource Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.resx">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsMap.resx">
