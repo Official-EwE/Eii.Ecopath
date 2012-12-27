@@ -18,6 +18,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
 
@@ -25,6 +26,11 @@ Imports EwEUtils.Core
 
 Namespace Other
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Helper class to sort plug-ins by name.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Friend Class cPluginSorter
         Implements IComparer(Of IAutoSavePlugin)
 
@@ -36,27 +42,72 @@ Namespace Other
 
     End Class
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Auto-save UI item engine. This engine creates a hierarchy of 
+    ''' <see cref="ucAutosaveOption"/> controls that reflect the various
+    ''' components in EwE that support auto-save functionality.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Friend Class cAutoSaveItemEngine
         Implements IDisposable
+
+#Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
         Private m_pl As Panel = Nothing
         Private m_cbh As cCheckboxHierarchy = Nothing
         Private m_lControls As List(Of ucAutosaveOption) = Nothing
 
+#End Region ' Private vars
+
+#Region " Constructor "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor.
+        ''' </summary>
+        ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
+        ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext)
             Me.m_uic = uic
             Me.m_lControls = New List(Of ucAutosaveOption)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Disposal.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Dispose() Implements IDisposable.Dispose
+            Me.Detach()
+            Me.m_cbh.Dispose()
+            GC.SuppressFinalize(Me)
+        End Sub
+
+#End Region ' Constructor
+
+#Region " Public access "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Attach the engine to a <see cref="Panel"/>. This will create the
+        ''' auto-save control hierarchy. Do not forget to call <see cref="Detach"/> 
+        ''' to clean up.
+        ''' </summary>
+        ''' <param name="pl">The <see cref="Panel"/> to create the control
+        ''' hierarchy into.</param>
+        ''' -------------------------------------------------------------------
         Public Sub Attach(pl As Panel)
 
+            ' Store panel ref
             Me.m_pl = pl
 
             Dim core As cCore = Me.m_uic.Core
             Dim pm As cPluginManager = core.PluginManager
             Dim lPlugins([Enum].GetValues(GetType(eAutosaveTypes)).Length - 1) As List(Of IAutoSavePlugin)
 
+            ' Build lists of auto-saving plug-ins, per type
             For Each t As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
                 lPlugins(t) = New List(Of IAutoSavePlugin)
             Next
@@ -68,42 +119,72 @@ Namespace Other
                     lPlugins(aspi.AutoSaveType).Add(aspi)
                 Next pi
             End If
+
+            ' Build control tree
             Me.BuildControlTree(eAutosaveTypes.NotSet, Nothing, 0, lPlugins)
+
+            ' Start!
             Me.m_cbh.ManageCheckedStates = True
 
         End Sub
 
-        Public Sub Apply()
-            For Each uc As ucAutosaveOption In Me.m_lControls
-                uc.Apply()
-            Next
-        End Sub
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Detach the engine from the UI.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub Detach()
+
             Me.m_pl.SuspendLayout()
             For Each uc As ucAutosaveOption In Me.m_lControls
                 Me.m_pl.Controls.Remove(uc)
             Next
-            Me.m_lControls.Clear()
             Me.m_pl.ResumeLayout()
             Me.m_pl = Nothing
+
+            Me.m_lControls.Clear()
             Me.m_cbh.Dispose()
             Me.m_cbh = Nothing
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Update the output mask for file destinations. This mask is used to
+        ''' show the preview paths for the individual autosave options.
+        ''' </summary>
+        ''' <param name="strMask">The mask to set.</param>
+        ''' -------------------------------------------------------------------
         Public Sub SetOutputMask(ByVal strMask As String)
             For Each uc As ucAutosaveOption In Me.m_lControls
                 uc.SetOutputMask(strMask)
             Next
         End Sub
 
-        Public Sub Dispose() Implements IDisposable.Dispose
-            Me.Detach()
-            Me.m_cbh.Dispose()
-            GC.SuppressFinalize(Me)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Apply control changes to the underlying components.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Apply()
+            For Each uc As ucAutosaveOption In Me.m_lControls
+                uc.Apply()
+            Next
         End Sub
 
+#End Region ' Public access
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Recursive core to build the hierarchy control structure.
+        ''' </summary>
+        ''' <param name="t"><see cref="eAutosaveTypes"/> to build a node for.</param>
+        ''' <param name="parent">Parent checkbox, if any.</param>
+        ''' <param name="iIndent">Control indentation.</param>
+        ''' <param name="lPlugins">2-dimensional list of autosaving plug-ins.</param>
+        ''' -------------------------------------------------------------------
         Private Sub BuildControlTree(ByVal t As eAutosaveTypes, _
                                      ByVal parent As CheckBox, _
                                      ByVal iIndent As Integer, _
@@ -172,7 +253,15 @@ Namespace Other
             End Select
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a <see cref="ucAutosaveOption"/> control to the managed panel.
+        ''' </summary>
+        ''' <param name="uc">The control to add.</param>
+        ''' <param name="parent">The parent checkbox for this control, if any.</param>
+        ''' -------------------------------------------------------------------
         Private Sub Add(ByVal uc As ucAutosaveOption, ByVal parent As CheckBox)
+
             Me.m_pl.Controls.Add(uc)
             uc.Location = New Point(0, (Me.m_pl.Controls.Count - 1) * uc.Height)
             uc.Width = Me.m_pl.Width
@@ -187,6 +276,14 @@ Namespace Other
             Me.m_lControls.Add(uc)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add controls for a list of plug-ins.
+        ''' </summary>
+        ''' <param name="l"></param>
+        ''' <param name="parent"></param>
+        ''' <param name="iIndent"></param>
+        ''' -------------------------------------------------------------------
         Private Sub Add(ByVal l As List(Of IAutoSavePlugin), _
                         ByVal parent As CheckBox, _
                         ByVal iIndent As Integer)
@@ -198,6 +295,8 @@ Namespace Other
             Next
 
         End Sub
+
+#End Region ' Internals
 
     End Class
 
