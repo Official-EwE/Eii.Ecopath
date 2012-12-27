@@ -35,6 +35,10 @@ Public Class cEcospaceCSVResultsWriter
 
 #Region "IEcospaceResultsWriter Implementation"
 
+    Protected Overrides Function GetFileExtension() As String
+        Return ".csv"
+    End Function
+
     Public Overrides Sub StartWrite()
         Try
             Me.CreateOutputDir()
@@ -85,12 +89,6 @@ Public Class cEcospaceCSVResultsWriter
 #End Region
 
 #Region "Private methods"
-
-    Protected Overrides ReadOnly Property OuputType() As eAutosaveTypes
-        Get
-            Return eAutosaveTypes.EcospaceCSV
-        End Get
-    End Property
 
     Private Sub saveCSV(ByRef strm As StreamWriter, ByVal timestep As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
 
@@ -188,6 +186,5 @@ Public Class cEcospaceCSVResultsWriter
     End Sub
 
 #End Region
-
 
 End Class

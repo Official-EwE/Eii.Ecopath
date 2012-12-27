@@ -2766,10 +2766,8 @@ Namespace Core
         MSE
         ''' <summary>MSY results</summary>
         MSY
-        ''' <summary>Ecospace run results, in ASCII format</summary>
-        EcospaceASC
-        ''' <summary>Ecospace run results, in CSV format</summary>
-        EcospaceCSV
+        ''' <summary>Ecospace run results</summary>
+        Ecospace
         ''' <summary>Ecotracer run results</summary>
         Ecotracer
     End Enum

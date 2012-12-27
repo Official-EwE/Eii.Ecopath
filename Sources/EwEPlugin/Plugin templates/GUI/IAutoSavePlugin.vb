@@ -29,6 +29,14 @@ Imports EwEUtils.Core
 ''' setting in the user interface. The plug-in is responsible for triggering and
 ''' implementing the auto-save behaviour.
 ''' </summary>
+''' <remarks>
+''' <para>The EwE framework expects an AutoSave plug-in to store its files in a
+''' location that is determined as follows:</para>
+''' <code>Dim strPath as string = Path.Combine(core.DefaultOutputPath(Me.AutoSaveType), Me.AutoSaveSubPath)</code>
+''' <para>The EwE auto-save options interface will display this storage location
+''' for auto-save plug-ins. Developers are responsible to follow this folder
+''' convention when implementing auto-save behaviour.</para>
+''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Interface IAutoSavePlugin
     : Inherits IPlugin

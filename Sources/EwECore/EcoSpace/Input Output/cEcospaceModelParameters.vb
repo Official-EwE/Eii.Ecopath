@@ -245,10 +245,12 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property SaveASC As Boolean
         Get
-            Return Me.m_core.Autosave(eAutosaveTypes.EcospaceASC)
+            Return (Me.m_core.Autosave(eAutosaveTypes.Ecospace) = True) And _
+                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace), ".asc", True) = 0)
         End Get
         Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceASC) = value
+            Me.m_core.Autosave(eAutosaveTypes.Ecospace) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".asc"
         End Set
     End Property
 
@@ -260,10 +262,12 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property SaveCSV As Boolean
         Get
-            Return Me.m_core.Autosave(eAutosaveTypes.EcospaceCSV)
+            Return (Me.m_core.Autosave(eAutosaveTypes.Ecospace) = True) And _
+                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace), ".csv", True) = 0)
         End Get
         Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.EcospaceCSV) = value
+            Me.m_core.Autosave(eAutosaveTypes.Ecospace) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".csv"
         End Set
     End Property
 

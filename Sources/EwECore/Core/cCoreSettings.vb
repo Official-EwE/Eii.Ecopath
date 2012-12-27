@@ -29,20 +29,91 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Friend Class cCoreSettings
 
+#Region " Private vars "
+
     ''' <summary>Autosave flags</summary>
-    Public Autosave() As Boolean
+    Private m_bAutosave() As Boolean
+    ''' <summary>Autosave formats</summary>
+    Private m_strAutosaveFormat() As String
     ''' <summary>Path for EwE core processes to write output information to.</summary>
-    Public OutputPath As String = ""
+    Private m_strOutputPath As String = ""
     ''' <summary>Path for the core to write backup files to.</summary>
-    Public BackupFileMask As String = ""
+    Private m_strBackupFileMask As String = ""
 
     ''' <summary>Default author name.</summary>
-    Public Author As String = ""
+    Private m_strAuthor As String = ""
     ''' <summary>Default author contact information.</summary>
-    Public Contact As String = ""
+    Private m_strContact As String = ""
+
+#End Region ' Private vars
+
+#Region " Constructor "
 
     Public Sub New()
-        ReDim Autosave([Enum].GetValues(GetType(eAutosaveTypes)).Length)
+        ReDim m_bAutosave([Enum].GetValues(GetType(eAutosaveTypes)).Length)
+        ReDim m_strAutosaveFormat([Enum].GetValues(GetType(eAutosaveTypes)).Length)
     End Sub
+
+#End Region ' Constructor
+
+#Region " Accessors "
+
+    Public Property Autosave(t As eAutosaveTypes) As Boolean
+        Get
+            Return Me.m_bAutosave(t)
+        End Get
+        Set(value As Boolean)
+            Me.m_bAutosave(t) = value
+        End Set
+    End Property
+
+    Public Property AutosaveFormat(t As eAutosaveTypes) As String
+        Get
+            Dim str As String = Me.m_strAutosaveFormat(t)
+            If String.IsNullOrWhiteSpace(str) Then str = ".csv"
+            Return str
+        End Get
+        Set(value As String)
+            Me.m_strAutosaveFormat(t) = value
+        End Set
+    End Property
+
+    Public Property OutputPath As String
+        Get
+            Return Me.m_strOutputPath
+        End Get
+        Set(value As String)
+            Me.m_strOutputPath = value
+        End Set
+    End Property
+
+    Public Property BackupFileMask As String
+        Get
+            Return Me.m_strBackupFileMask
+        End Get
+        Set(value As String)
+            Me.m_strBackupFileMask = value
+        End Set
+    End Property
+
+    Public Property Author As String
+        Get
+            Return Me.m_strAuthor
+        End Get
+        Set(value As String)
+            Me.m_strAuthor = value
+        End Set
+    End Property
+
+    Public Property Contact As String
+        Get
+            Return Me.m_strContact
+        End Get
+        Set(value As String)
+            Me.m_strContact = value
+        End Set
+    End Property
+
+#End Region ' Accessors
 
 End Class

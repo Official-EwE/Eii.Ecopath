@@ -125,6 +125,9 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwE6, Version=6.3.8695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
+      <ExecutableExtension>.exe</ExecutableExtension>
+    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -299,8 +302,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\cSelectionMonitor.vb" />
-    <Compile Include="Other\Options\gridAutoSave.vb">
-      <SubType>Component</SubType>
+    <Compile Include="Other\Options\ucAutosaveOption.Designer.vb">
+      <DependentUpon>ucAutosaveOption.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucAutosaveOption.vb">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Other\Options\ucOptionsMap.Designer.vb">
       <DependentUpon>ucOptionsMap.vb</DependentUpon>
@@ -908,6 +914,9 @@
     <EmbeddedResource Include="Ecospace\Output\RunEcospace.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RunEcospace.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucAutosaveOption.resx">
+      <DependentUpon>ucAutosaveOption.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsMap.resx">
       <DependentUpon>ucOptionsMap.vb</DependentUpon>

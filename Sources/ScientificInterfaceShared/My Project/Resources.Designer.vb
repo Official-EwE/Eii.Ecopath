@@ -125,7 +125,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath results.
+        '''  Looks up a localized string similar to Ecopath run results.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOPATH() As String
             Get
@@ -143,25 +143,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace result maps (ASCII format).
+        '''  Looks up a localized string similar to Ecospace run result maps.
         '''</summary>
-        Public ReadOnly Property AUTOSAVE_ECOSPACEASC() As String
+        Public ReadOnly Property AUTOSAVE_ECOSPACE() As String
             Get
-                Return ResourceManager.GetString("AUTOSAVE_ECOSPACEASC", resourceCulture)
+                Return ResourceManager.GetString("AUTOSAVE_ECOSPACE", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace result maps (CSV format).
-        '''</summary>
-        Public ReadOnly Property AUTOSAVE_ECOSPACECSV() As String
-            Get
-                Return ResourceManager.GetString("AUTOSAVE_ECOSPACECSV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Ecotracer results.
+        '''  Looks up a localized string similar to Ecotracer run results.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOTRACER() As String
             Get

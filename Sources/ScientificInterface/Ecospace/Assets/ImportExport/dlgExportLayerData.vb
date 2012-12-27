@@ -243,7 +243,7 @@ Namespace Ecospace.Basemap
             Dim f As New cLayerFactoryInternal()
 
             ' Set default file
-            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.EcospaceASC), "layers")
+            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), "layers")
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then

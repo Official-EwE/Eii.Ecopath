@@ -76,8 +76,6 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
-            Me.m_cbSaveASC = New System.Windows.Forms.CheckBox()
-            Me.m_cbSaveCSV = New System.Windows.Forms.CheckBox()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
@@ -90,6 +88,8 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_cmbAutosaveFormat = New System.Windows.Forms.ComboBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -315,10 +315,10 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
+            Me.m_gbRunTime.Controls.Add(Me.m_cmbAutosaveFormat)
+            Me.m_gbRunTime.Controls.Add(Me.Label1)
             Me.m_gbRunTime.Controls.Add(Me.m_lbNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_nudNumThreads)
-            Me.m_gbRunTime.Controls.Add(Me.m_cbSaveASC)
-            Me.m_gbRunTime.Controls.Add(Me.m_cbSaveCSV)
             Me.m_gbRunTime.Controls.Add(Me.m_tbSOR)
             Me.m_gbRunTime.Controls.Add(Me.m_tbTolerance)
             Me.m_gbRunTime.Controls.Add(Me.m_tbNumTimeStepsPerYear)
@@ -333,18 +333,6 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_nudMaxIterations)
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
-            '
-            'm_cbSaveASC
-            '
-            resources.ApplyResources(Me.m_cbSaveASC, "m_cbSaveASC")
-            Me.m_cbSaveASC.Name = "m_cbSaveASC"
-            Me.m_cbSaveASC.UseVisualStyleBackColor = True
-            '
-            'm_cbSaveCSV
-            '
-            resources.ApplyResources(Me.m_cbSaveCSV, "m_cbSaveCSV")
-            Me.m_cbSaveCSV.Name = "m_cbSaveCSV"
-            Me.m_cbSaveCSV.UseVisualStyleBackColor = True
             '
             'm_cbContaminantTracing
             '
@@ -413,6 +401,19 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
             Me.m_plBiomass.Controls.Add(Me.m_hdrInitialization)
             Me.m_plBiomass.Name = "m_plBiomass"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_cmbAutosaveFormat
+            '
+            Me.m_cmbAutosaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbAutosaveFormat.FormattingEnabled = True
+            Me.m_cmbAutosaveFormat.Items.AddRange(New Object() {resources.GetString("m_cmbAutosaveFormat.Items"), resources.GetString("m_cmbAutosaveFormat.Items1"), resources.GetString("m_cmbAutosaveFormat.Items2")})
+            resources.ApplyResources(Me.m_cmbAutosaveFormat, "m_cmbAutosaveFormat")
+            Me.m_cmbAutosaveFormat.Name = "m_cmbAutosaveFormat"
             '
             'EcospaceParameters
             '
@@ -486,8 +487,6 @@ Namespace Ecospace
         Private WithEvents m_rbHab As System.Windows.Forms.RadioButton
         Private WithEvents m_rbCap As System.Windows.Forms.RadioButton
         Private WithEvents m_rbCapHap As System.Windows.Forms.RadioButton
-        Private WithEvents m_cbSaveCSV As System.Windows.Forms.CheckBox
-        Private WithEvents m_cbSaveASC As System.Windows.Forms.CheckBox
         Private WithEvents m_gbEffort As System.Windows.Forms.GroupBox
         Private WithEvents m_lbNumThreads As System.Windows.Forms.Label
         Private WithEvents m_nudNumThreads As ScientificInterfaceShared.Controls.cEwENumericUpDown
@@ -497,6 +496,8 @@ Namespace Ecospace
         Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
         Private WithEvents m_rbEcopathEffort As System.Windows.Forms.RadioButton
         Private WithEvents m_rbPredictEffort As System.Windows.Forms.RadioButton
+        Private WithEvents m_cmbAutosaveFormat As System.Windows.Forms.ComboBox
+        Friend WithEvents Label1 As System.Windows.Forms.Label
     End Class
 
 End Namespace

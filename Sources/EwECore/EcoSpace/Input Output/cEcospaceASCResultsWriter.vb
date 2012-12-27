@@ -94,11 +94,9 @@ Public Class cEcospaceASCResultsWriter
 
 #Region "Private methods"
 
-    Protected Overrides ReadOnly Property OuputType() As eAutosaveTypes
-        Get
-            Return eAutosaveTypes.EcospaceASC
-        End Get
-    End Property
+    Protected Overrides Function GetFileExtension() As String
+        Return ".asc"
+    End Function
 
     Protected Function CellSize() As Single
         Dim cellSizeDegrees As Single = Me.SpaceData.CellSize

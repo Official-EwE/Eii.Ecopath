@@ -175,7 +175,7 @@ Namespace SpatialData
                 ' Allowed to use smart directory?
                 If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
                     ' #Yes: use core smartness
-                    strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceCSV)
+                    strPath = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
                 Else
                     ' #No: use base output directory
                     Me.m_strLogFileName = Me.m_core.OutputPath

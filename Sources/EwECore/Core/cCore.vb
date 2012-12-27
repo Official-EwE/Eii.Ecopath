@@ -2475,16 +2475,8 @@ Public Class cCore
                         strScenario = strScenario & "{scenario}"
                     End If
 
-                Case eAutosaveTypes.EcospaceASC
-                    strScenario = "Ecospace_ASC_"
-                    If (Me.ActiveEcospaceScenarioIndex > 0) Then
-                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
-                    Else
-                        strScenario = strScenario & "{scenario}"
-                    End If
-
-                Case eAutosaveTypes.EcospaceCSV
-                    strScenario = "Ecospace_CSV_"
+                Case eAutosaveTypes.Ecospace
+                    strScenario = "Ecospace_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
                     Else
@@ -2569,6 +2561,15 @@ Public Class cCore
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
             End Try
+        End Set
+    End Property
+
+    Public Property AutosaveFormat(savetype As eAutosaveTypes) As String
+        Get
+
+        End Get
+        Set(value As String)
+
         End Set
     End Property
 
@@ -8143,8 +8144,7 @@ Public Class cCore
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
-    Friend m_EcospaceResultsCSVWriter As EwEUtils.Core.IEcospaceResultsWriter
-    Friend m_EcospaceResultsASCWriter As EwEUtils.Core.IEcospaceResultsWriter
+    Friend m_EcospaceResultsWriter As EwEUtils.Core.IEcospaceResultsWriter = Nothing
 
     Friend m_mapInteractionManager As cMapResponseInteractionManager
 
@@ -8208,12 +8208,6 @@ Public Class cCore
 
         'this will initialize local Ecospace variables to default values as well as some dimensioning
         m_Ecospace.InitToDefaults()
-
-        m_EcospaceResultsCSVWriter = New cEcospaceCSVResultsWriter
-        m_EcospaceResultsCSVWriter.Init(Me)
-
-        m_EcospaceResultsASCWriter = New cEcospaceASCResultsWriter
-        m_EcospaceResultsASCWriter.Init(Me)
 
         m_mapInteractionManager = New cMapResponseInteractionManager(Me)
         m_mapInteractionManager.Init(Me.m_EcoSpaceData, Me.m_EcoSimData.CapEnvResData)
@@ -8375,9 +8369,14 @@ Public Class cCore
                         Me.m_StateMonitor.SetEcospaceRun()
                         Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
-                        'Tell the Ecospace results writer that a run has started
-                        If Me.Autosave(eAutosaveTypes.EcospaceCSV) Then Me.m_EcospaceResultsCSVWriter.StartWrite()
-                        If Me.Autosave(eAutosaveTypes.EcospaceASC) Then Me.m_EcospaceResultsASCWriter.StartWrite()
+                        ' Create ecospace result writer, if desired
+                        If Me.Autosave(eAutosaveTypes.Ecospace) Then
+                            Me.m_EcospaceResultsWriter = cEcospaceResultWriterFactory.GetWriter(Me.AutosaveFormat(eAutosaveTypes.Ecospace))
+                            If (Me.m_EcospaceResultsWriter IsNot Nothing) Then
+                                Me.m_EcospaceResultsWriter.Init(Me)
+                                Me.m_EcospaceResultsWriter.StartWrite()
+                            End If
+                        End If
 
                         'make sure Ecospace is not paused
                         Me.m_Ecospace.isPaused = False
@@ -8424,12 +8423,14 @@ Public Class cCore
             End If
 
             Try
-                If Me.Autosave(eAutosaveTypes.EcospaceASC) Then m_EcospaceResultsASCWriter.EndWrite()
-                If Me.Autosave(eAutosaveTypes.EcospaceCSV) Then m_EcospaceResultsCSVWriter.EndWrite()
+                If (Me.m_EcospaceResultsWriter IsNot Nothing) Then
+                    Me.m_EcospaceResultsWriter.EndWrite()
+                End If
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
                 cLog.Write(ex, "cCore::onEcospaceRunCompleted SaveResults")
             End Try
+            Me.m_EcospaceResultsWriter = Nothing
 
             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                           eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
@@ -8602,24 +8603,14 @@ Public Class cCore
 
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
         Try
-            If (m_EcospaceResultsCSVWriter IsNot Nothing) And (Me.Autosave(eAutosaveTypes.EcospaceCSV)) Then
+            If (Me.m_EcospaceResultsWriter IsNot Nothing) Then
                 Try
-                    Me.m_EcospaceResultsCSVWriter.WriteResults(Me.m_spaceresults)
+                    Me.m_EcospaceResultsWriter.WriteResults(Me.m_spaceresults)
                 Catch ex As Exception
-                    System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
-                    cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults(CSV) #" & SpaceResults.iTimeStep)
+                    System.Console.WriteLine("Core.SaveEcospaceResults() m_EcospaceResultsWriter Exception: " & ex.Message)
+                    cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
                 End Try
             End If
-
-            If (m_EcospaceResultsASCWriter IsNot Nothing) And (Me.Autosave(eAutosaveTypes.EcospaceASC)) Then
-                Try
-                    Me.m_EcospaceResultsASCWriter.WriteResults(Me.m_spaceresults)
-                Catch ex As Exception
-                    System.Console.WriteLine("Core.SaveEcospaceResults() cEcospaceResultsCSVWriter Exception: " & ex.Message)
-                    cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults(ASC) #" & SpaceResults.iTimeStep)
-                End Try
-            End If
-
         Catch ex As Exception
             cLog.Write(ex)
         End Try

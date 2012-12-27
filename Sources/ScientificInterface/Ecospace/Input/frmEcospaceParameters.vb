@@ -200,8 +200,13 @@ Namespace Ecospace
             Me.m_rbCap.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Capacity)
             Me.m_rbHab.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
 
-            Me.m_cbSaveASC.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceASC)
-            Me.m_cbSaveCSV.Checked = Me.Core.Autosave(eAutosaveTypes.EcospaceCSV)
+            If Me.Core.Autosave(eAutosaveTypes.Ecospace) = False Then
+                Me.m_cmbAutosaveFormat.SelectedIndex = 0
+            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace), ".asc", False) = 0 Then
+                Me.m_cmbAutosaveFormat.SelectedIndex = 1
+            Else
+                Me.m_cmbAutosaveFormat.SelectedIndex = 2
+            End If
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
             Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
@@ -320,22 +325,19 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub OnSaveCSVClicked(sender As Object, e As EventArgs) _
-            Handles m_cbSaveCSV.Click
-            Try
-                Me.Core.Autosave(eAutosaveTypes.EcospaceCSV) = Me.m_cbSaveCSV.Checked
-            Catch ex As Exception
-                ' Ouch
-            End Try
-        End Sub
+        Private Sub OnSpaceSaveFormatChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_cmbAutosaveFormat.SelectedIndexChanged
+            Select Case Me.m_cmbAutosaveFormat.SelectedIndex
+                Case 0
+                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = False
+                Case 1
+                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = True
+                    Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".asc"
+                Case 2
+                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = True
+                    Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".csv"
 
-        Private Sub OnSaveASCIIClicked(sender As Object, e As EventArgs) _
-            Handles m_cbSaveASC.Click
-            Try
-                Me.Core.Autosave(eAutosaveTypes.EcospaceASC) = Me.m_cbSaveASC.Checked
-            Catch ex As Exception
-                ' Ouch
-            End Try
+            End Select
         End Sub
 
 #End Region ' Control events

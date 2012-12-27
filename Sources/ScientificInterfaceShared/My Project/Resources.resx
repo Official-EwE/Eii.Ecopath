@@ -2530,19 +2530,16 @@
     <value>(All fleets)</value>
   </data>
   <data name="AUTOSAVE_ECOPATH" xml:space="preserve">
-    <value>Ecopath results</value>
+    <value>Ecopath run results</value>
   </data>
   <data name="AUTOSAVE_ECOSIM" xml:space="preserve">
     <value>Ecosim run results</value>
   </data>
-  <data name="AUTOSAVE_ECOSPACEASC" xml:space="preserve">
-    <value>Ecospace result maps (ASCII format)</value>
-  </data>
-  <data name="AUTOSAVE_ECOSPACECSV" xml:space="preserve">
-    <value>Ecospace result maps (CSV format)</value>
+  <data name="AUTOSAVE_ECOSPACE" xml:space="preserve">
+    <value>Ecospace run result maps</value>
   </data>
   <data name="AUTOSAVE_ECOTRACER" xml:space="preserve">
-    <value>Ecotracer results</value>
+    <value>Ecotracer run results</value>
   </data>
   <data name="AUTOSAVE_MONTECARLO" xml:space="preserve">
     <value>Monte Carlo trial results</value>

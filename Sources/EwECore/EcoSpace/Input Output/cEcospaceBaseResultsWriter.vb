@@ -24,11 +24,31 @@ Imports EwEUtils.Core
 
 #End Region
 
+''' ---------------------------------------------------------------------------
+''' <summary>
+''' Factory class for creating an <see cref="IEcospaceResultsWriter"/>
+''' </summary>
+''' ---------------------------------------------------------------------------
+Public Class cEcospaceResultWriterFactory
 
+    Public Shared Function GetWriter(ByVal strExt As String) As IEcospaceResultsWriter
+
+        Select Case strExt.ToLower
+            Case ".csv" : Return New cEcospaceCSVResultsWriter()
+            Case ".asc" : Return New cEcospaceASCResultsWriter()
+        End Select
+        Return Nothing
+
+    End Function
+
+End Class
+
+''' ---------------------------------------------------------------------------
 ''' <summary>
 ''' Base implementation of <see cref="EwEUtils.Core.IEcospaceResultsWriter">IEcospaceResultsWriter</see>
 ''' </summary>
 ''' <remarks>Provides directory creation and file naming functionality for derived classes</remarks>
+''' ---------------------------------------------------------------------------
 Public MustInherit Class cEcospaceBaseResultsWriter
     Implements EwEUtils.Core.IEcospaceResultsWriter
 
@@ -58,11 +78,6 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         Me.m_core = DirectCast(theCore, cCore)
     End Sub
 
-    ''' <summary>
-    ''' Implementation must provide an OutputType
-    ''' </summary>
-    Protected MustOverride ReadOnly Property OuputType() As eAutosaveTypes
-
 #End Region
 
 #Region "Protected methods"
@@ -77,7 +92,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Overridable Sub CreateOutputDir()
 
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
-            m_TimeStampDirName = Me.m_core.DefaultOutputPath(Me.OuputType)
+            m_TimeStampDirName = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
         Else
             'Use the output directroy set by the user
             m_TimeStampDirName = Me.m_core.OutputPath ' 
@@ -91,21 +106,9 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     End Sub
 
     ''' <summary>
-    ''' Turn the OuputType into a string that can be used in the output directory name
+    ''' Return the file extension for a writer.
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Protected Function GetFileExtension() As String
-
-        Select Case Me.OuputType
-            Case eAutosaveTypes.EcospaceASC
-                Return "ASC"
-            Case eAutosaveTypes.EcospaceCSV
-                Return "CSV"
-        End Select
-        Return ""
-
-    End Function
+    Protected MustOverride Function GetFileExtension() As String
 
     ''' <summary>
     ''' Get the current time as a string to be used in the ouput directory name
