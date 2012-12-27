@@ -121,7 +121,9 @@ Namespace Other
             End If
 
             ' Build control tree
+            Me.m_pl.SuspendLayout()
             Me.BuildControlTree(eAutosaveTypes.NotSet, Nothing, 0, lPlugins)
+            Me.m_pl.ResumeLayout()
 
             ' Start!
             Me.m_cbh.ManageCheckedStates = True

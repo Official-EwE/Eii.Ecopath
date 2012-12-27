@@ -52,6 +52,21 @@ Namespace Other
         Public Sub New(ByVal uic As cUIContext)
             Me.m_uic = uic
             Me.InitializeComponent()
+
+            ' Autosave
+            Me.m_autosaveoptions = New cAutoSaveItemEngine(Me.m_uic)
+            Me.m_autosaveoptions.Attach(Me.m_plAutoSave)
+
+            ' Output path
+            Me.m_fieldpickOutput.UIContext = Me.m_uic
+            Me.m_fieldpickOutput.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
+            Me.m_tbOutputMask.Text = My.Settings.OutputPathMask
+
+            ' Backup path masks
+            Me.m_fieldpickBackup.UIContext = Me.m_uic
+            Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
+            Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
+
         End Sub
 
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
@@ -68,21 +83,6 @@ Namespace Other
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
-
-            ' Autosave
-            Me.m_autosaveoptions = New cAutoSaveItemEngine(Me.m_uic)
-            Me.m_autosaveoptions.Attach(Me.m_plAutoSave)
-
-            ' Output path
-            Me.m_fieldpickOutput.UIContext = Me.m_uic
-            Me.m_fieldpickOutput.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
-            Me.m_tbOutputMask.Text = My.Settings.OutputPathMask
-
-            ' Backup path masks
-            Me.m_fieldpickBackup.UIContext = Me.m_uic
-            Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
-            Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
-
         End Sub
 
         ''' -------------------------------------------------------------------
