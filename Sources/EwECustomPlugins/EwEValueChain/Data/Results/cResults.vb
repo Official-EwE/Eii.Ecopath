@@ -25,7 +25,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 
 ''' ===========================================================================
 ''' <summary>
-''' Computed ECost results.
+''' Value Chain results holder.
 ''' </summary>
 ''' ===========================================================================
 Public Class cResults

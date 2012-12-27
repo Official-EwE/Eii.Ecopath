@@ -233,7 +233,6 @@ Public Class cModel
     ''' <param name="iTimeStep">1 when running Ecopath.</param>
     ''' <param name="ecosimResults"></param>
     ''' <param name="ecosimDS"></param>
-    ''' <returns></returns>
     Public Function RunTimeStep(ByVal data As cData, _
                         ByVal result As cResults, _
                         ByVal iTimeStep As Integer, _
@@ -527,7 +526,7 @@ Public Class cModel
 
     End Function
 
-    Friend Sub SaveResults(data As cData, result As cResults, iTimeStep As Integer)
+    Friend Sub SaveResults(data As cData, result As cResults)
 
         Try
 

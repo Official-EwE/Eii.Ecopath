@@ -107,14 +107,15 @@ Namespace Other
         ''' item with.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                         ByVal pi As IAutoSavePlugin)
+                       ByVal pi As IAutoSavePlugin, _
+                       ByVal iIndent As Integer)
             Me.New()
 
             Me.UIContext = uic
             Me.m_pi = pi
             Me.m_autosavetype = pi.AutoSaveType
             Me.m_cbOption.Text = pi.AutoSaveName
-            Me.m_iIndent = 2
+            Me.m_iIndent = iIndent
 
         End Sub
 

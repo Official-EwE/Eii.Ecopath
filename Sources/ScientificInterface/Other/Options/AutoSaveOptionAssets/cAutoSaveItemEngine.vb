@@ -216,6 +216,7 @@ Namespace Other
                     Me.BuildControlTree(eAutosaveTypes.Ecospace, ctrl.Checkbox, 2, lPlugins)
 
                     Me.BuildControlTree(eAutosaveTypes.Ecotracer, ctrl.Checkbox, 1, lPlugins)
+                    Me.Add(lPlugins(eAutosaveTypes.NotSet), cbRoot, 1)
 
                 Case eAutosaveTypes.Ecopath
                     Me.Add(lPlugins(t), parent, iIndent)
@@ -234,18 +235,18 @@ Namespace Other
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
 
                 Case eAutosaveTypes.Ecotracer
-                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
+                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent + 1)
                     Me.Add(ctrl, parent)
 
                 Case eAutosaveTypes.MonteCarlo
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
                     Me.Add(ctrl, parent)
-                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
+                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
 
                 Case eAutosaveTypes.MSY
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
                     Me.Add(ctrl, parent)
-                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
+                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
 
                 Case eAutosaveTypes.MSE
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
@@ -293,7 +294,7 @@ Namespace Other
             Dim api As IAutoSavePlugin() = l.ToArray
             Array.Sort(api, New cPluginSorter())
             For Each pi As IAutoSavePlugin In api
-                Me.Add(New ucAutosaveOption(Me.m_uic, pi), parent)
+                Me.Add(New ucAutosaveOption(Me.m_uic, pi, iIndent), parent)
             Next
 
         End Sub

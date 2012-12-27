@@ -99,21 +99,19 @@ Public Class cResultWriter
         sw.WriteLine()
 
         ' Write data header
-        sw.Write("Unit, Type")
-        For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
+        sw.Write("Variable")
+        For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
             sw.Write(",")
-            sw.Write(cStringUtils.ToCSVField(v.ToString))
+            sw.Write(cStringUtils.ToCSVField(u.Name))
         Next
         sw.WriteLine("")
 
         ' Write data
-        For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
-            sw.Write(cStringUtils.ToCSVField(u.Name))
-            sw.Write(",")
-            sw.Write(cStringUtils.ToCSVField(u.UnitType.ToString))
-            For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
+        For Each v As cResults.eVariableType In [Enum].GetValues(GetType(cResults.eVariableType))
+            sw.Write(cStringUtils.ToCSVField(v.ToString))
+            For Each u As cUnit In Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
                 sw.Write(",")
-                sw.Write(Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v)))
+                sw.Write(cStringUtils.FormatNumber(Me.m_results.GetTotal(v, New cUnit() {u}, iItem, cResults.GetVariableContributionType(v))))
             Next
             sw.WriteLine("")
         Next
@@ -154,9 +152,9 @@ Public Class cResultWriter
 
         Select Case m_results.RunType
             Case cModel.eRunTypes.Ecopath
-                strPath = Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath)
+                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath), cData.SaveSubPath)
             Case cModel.eRunTypes.Ecosim
-                strPath = Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
+                strPath = Path.Combine(Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim), cData.SaveSubPath)
             Case cModel.eRunTypes.Equilibrium
                 Return ""
                 'strPath = Me.m_data.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecopath, strPrefix:="ValueChain_")
@@ -201,15 +199,19 @@ Public Class cResultWriter
         sb.AppendLine("ModelFile, " & cStringUtils.ToCSVField(core.DataSource.ToString))
         'Add the model name
         sb.AppendLine("ModelName, " & cStringUtils.ToCSVField(core.EwEModel.Name))
-        'Add the active scenario name
-        sb.AppendLine("EcosimScenario, " & cStringUtils.ToCSVField(core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name))
-        ' Append time series name to scenario, if any
-        sb.Append("TimeSeries, ")
-        If core.ActiveTimeSeriesDatasetIndex > 0 Then
-            sb.Append(cStringUtils.ToCSVField(core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex).Name))
-        Else
-            sb.Append("(none)")
+
+        If (m_results.RunType = cModel.eRunTypes.Ecosim) Or (Me.m_results.RunType = cModel.eRunTypes.Equilibrium) Then
+            'Add the active scenario name
+            sb.AppendLine("EcosimScenario, " & cStringUtils.ToCSVField(core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name))
+            ' Append time series name to scenario, if any
+            sb.Append("TimeSeries, ")
+            If core.ActiveTimeSeriesDatasetIndex > 0 Then
+                sb.Append(cStringUtils.ToCSVField(core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex).Name))
+            Else
+                sb.Append("(none)")
+            End If
         End If
+
         ' Append value chain run type
         sb.AppendLine("RunType, " & cStringUtils.ToCSVField(Me.m_results.RunType.ToString()))
 

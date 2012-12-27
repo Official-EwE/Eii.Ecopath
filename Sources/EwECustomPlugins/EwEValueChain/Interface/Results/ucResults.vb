@@ -246,6 +246,8 @@ Public Class ucResults
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.m_tsbnSave.Image = SharedResources.saveHS
+
         Dim iSel As Integer = 0
 
         Me.m_tscmbGraphData.Items.Clear()
@@ -372,6 +374,15 @@ Public Class ucResults
         If (sel Is Nothing) Then Return
         If (Not TypeOf sel Is cAggregationComboItem) Then Return
         Me.m_data.Parameters.AggregationMode = DirectCast(sel, cAggregationComboItem).AggregationMode
+    End Sub
+
+    Private Sub OnSaveResults(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnSave.Click
+        Try
+            Me.m_model.SaveResults(Me.m_data, Me.m_result)
+        Catch ex As Exception
+            ' Whahoo!
+        End Try
     End Sub
 
 #Region " Commands "

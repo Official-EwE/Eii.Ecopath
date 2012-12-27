@@ -55,6 +55,8 @@ Partial Class ucResults
         Me.m_btnRunEquilibrium = New System.Windows.Forms.Button()
         Me.m_lblAgg = New System.Windows.Forms.Label()
         Me.m_cmbAgg = New System.Windows.Forms.ComboBox()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnSave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsResults.SuspendLayout()
         CType(Me.m_scResults, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scResults.Panel1.SuspendLayout()
@@ -75,7 +77,7 @@ Partial Class ucResults
         'm_tsResults
         '
         Me.m_tsResults.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslItem, Me.m_tscmbItems, Me.m_tslUnit, Me.m_tscmbUnit, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tslbYear, Me.m_tscbYear, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium})
+        Me.m_tsResults.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tslblData, Me.m_tscmbGraphData, Me.m_tssSep3, Me.m_tslItem, Me.m_tscmbItems, Me.m_tslUnit, Me.m_tscmbUnit, Me.m_tssep1, Me.m_tsbShowFlow, Me.m_tssep2, Me.m_tslbYear, Me.m_tscbYear, Me.m_tsbEcopath, Me.m_tsbEcosim, Me.m_tsbEquilibrium, Me.ToolStripSeparator1, Me.m_tsbnSave})
         Me.m_tsResults.Location = New System.Drawing.Point(0, 0)
         Me.m_tsResults.Name = "m_tsResults"
         Me.m_tsResults.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -259,6 +261,19 @@ Partial Class ucResults
         Me.m_cmbAgg.Size = New System.Drawing.Size(121, 21)
         Me.m_cmbAgg.TabIndex = 5
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        '
+        'm_tsbnSave
+        '
+        Me.m_tsbnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsbnSave.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tsbnSave.Name = "m_tsbnSave"
+        Me.m_tsbnSave.Size = New System.Drawing.Size(23, 22)
+        Me.m_tsbnSave.Text = "&Save results"
+        '
         'ucResults
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -305,5 +320,7 @@ Partial Class ucResults
     Private WithEvents m_lblAgg As System.Windows.Forms.Label
     Private WithEvents m_cmbAgg As System.Windows.Forms.ComboBox
     Private WithEvents m_tslbYear As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+    Private WithEvents m_tsbnSave As System.Windows.Forms.ToolStripButton
 
 End Class

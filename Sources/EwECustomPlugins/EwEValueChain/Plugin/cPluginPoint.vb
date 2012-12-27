@@ -18,16 +18,15 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Reflection
+Imports System.Text
+Imports System.Threading
 Imports EwECore
 Imports EwEPlugin
-Imports System.Text
-Imports System.Reflection
-Imports System.Threading
+Imports EwEPlugin.Data
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEPlugin.Data
-Imports EwEUtils
 
 #End Region ' Imports
 
@@ -335,7 +334,7 @@ Public Class cPluginPoint
         Me.BroadcastResults(1)
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result, 1)
+            Me.m_model.SaveResults(Me.m_data, Me.m_result)
         End If
 
     End Sub
@@ -418,7 +417,7 @@ Public Class cPluginPoint
         End If
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result, 1)
+            Me.m_model.SaveResults(Me.m_data, Me.m_result)
         End If
 
     End Sub
@@ -714,7 +713,13 @@ Public Class cPluginPoint
 
 #End Region ' Helpers
 
-    Public Property AutoSave As Boolean Implements EwEPlugin.IAutoSavePlugin.AutoSave
+#Region " Autosave "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IAutoSavePlugin.AutoSave"/>
+    ''' -----------------------------------------------------------------------
+    Public Property AutoSave As Boolean _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSave
         Get
             Return My.Settings.AutosaveResults
         End Get
@@ -724,16 +729,30 @@ Public Class cPluginPoint
         End Set
     End Property
 
-    Public Function AutoSaveName() As String Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveName"/>
+    ''' -----------------------------------------------------------------------
+    Public Function AutoSaveName() As String _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveName
         Return My.Resources.GENERIC_CAPTION
     End Function
 
-    Public Function AutoSaveSubPath() As String Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
-        Return "ValueChain"
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveSubPath"/>
+    ''' -----------------------------------------------------------------------
+    Public Function AutoSaveSubPath() As String _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveSubPath
+        Return cData.SaveSubPath()
     End Function
 
-    Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
-        Return eAutosaveTypes.Ecopath
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IAutoSavePlugin.AutoSaveType"/>
+    ''' -----------------------------------------------------------------------
+    Public Function AutoSaveType() As EwEUtils.Core.eAutosaveTypes _
+        Implements EwEPlugin.IAutoSavePlugin.AutoSaveType
+        Return eAutosaveTypes.NotSet
     End Function
+
+#End Region ' Autosave
 
 End Class
