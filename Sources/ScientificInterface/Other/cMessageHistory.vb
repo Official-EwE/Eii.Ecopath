@@ -526,6 +526,8 @@ Public Class cMessageHistory
                 mbb = MessageBoxButtons.YesNo
             Case cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
                 mbb = MessageBoxButtons.YesNoCancel
+            Case cFeedbackMessage.eReplyStyle.OK
+                mbb = MessageBoxButtons.OK
         End Select
 
         Select Case msg.Importance

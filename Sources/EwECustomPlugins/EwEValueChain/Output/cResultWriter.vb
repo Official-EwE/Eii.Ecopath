@@ -55,10 +55,13 @@ Public Class cResultWriter
     ''' Write results to CSV file.
     ''' </summary>
     ''' <param name="agg">Data aggregation method in use during the run.</param>
+    ''' <param name="bNotifyUser">Flag, stating whether the user should be notified
+    ''' explicitly about the save operation result.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType) As Boolean
-        Return Me.WriteResults(agg, 0, "")
+    Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType, _
+                                 ByVal bNotifyUser As Boolean) As Boolean
+        Return Me.WriteResults(agg, 0, "", bNotifyUser)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -72,7 +75,8 @@ Public Class cResultWriter
     ''' -----------------------------------------------------------------------
     Public Function WriteResults(ByVal agg As cParameters.eAggregationModeType, _
                                  ByVal iItem As Integer, _
-                                 ByVal strItem As String) As Boolean
+                                 ByVal strItem As String,
+                                 ByVal bNotifyUser As Boolean) As Boolean
 
         Dim strFile As String = Me.GetFileName(agg, strItem)
         Dim sw As StreamWriter = Nothing
@@ -87,7 +91,7 @@ Public Class cResultWriter
         Catch ex As Exception
             ' Waah!
             Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_FAILED, Path.GetDirectoryName(strFile), ex.Message), _
-                               eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
+                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
             Return False
         End Try
 
@@ -120,8 +124,14 @@ Public Class cResultWriter
         ' Already has save result message?
         If (Me.m_msg Is Nothing) Then
             ' #No: create one
-            Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
-                               eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Information)
+            If bNotifyUser Then
+                Me.m_msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
+                                                EwEUtils.Core.eCoreComponentType.External, eMessageType.DataExport, _
+                                                eMessageImportance.Information, cFeedbackMessage.eReplyStyle.OK)
+            Else
+                Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
+                                        eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+            End If
             ' Set hyperlink
             Me.m_msg.Hyperlink = Path.GetDirectoryName(strFile)
         End If

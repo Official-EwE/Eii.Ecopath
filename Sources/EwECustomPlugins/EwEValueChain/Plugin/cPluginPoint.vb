@@ -334,7 +334,7 @@ Public Class cPluginPoint
         Me.BroadcastResults(1)
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result)
+            Me.m_model.SaveResults(Me.m_data, Me.m_result, False)
         End If
 
     End Sub
@@ -417,7 +417,7 @@ Public Class cPluginPoint
         End If
 
         If Me.AutoSave Then
-            Me.m_model.SaveResults(Me.m_data, Me.m_result)
+            Me.m_model.SaveResults(Me.m_data, Me.m_result, False)
         End If
 
     End Sub

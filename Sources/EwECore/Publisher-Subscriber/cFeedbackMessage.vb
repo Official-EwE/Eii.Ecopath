@@ -113,6 +113,8 @@ Public Class cFeedbackMessage
         YES_NO
         ''' <summary>The reply expected by a message with this <see cref="ReplyStyle">reply style</see> must be <see cref="eReply.YES">YES</see>, <see cref="eReply.NO">NO</see> or <see cref="eReply.CANCEL">CANCEL</see>.</summary>
         YES_NO_CANCEL
+        ''' <summary>The reply expected by a message with this <see cref="ReplyStyle">reply style</see> can only be <see cref="eReply.OK">OK</see>.</summary>
+        OK
     End Enum
 
 #End Region ' Public helper classes and enumerators 

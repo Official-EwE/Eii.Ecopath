@@ -379,7 +379,7 @@ Public Class ucResults
     Private Sub OnSaveResults(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnSave.Click
         Try
-            Me.m_model.SaveResults(Me.m_data, Me.m_result)
+            Me.m_model.SaveResults(Me.m_data, Me.m_result, True)
         Catch ex As Exception
             ' Whahoo!
         End Try
