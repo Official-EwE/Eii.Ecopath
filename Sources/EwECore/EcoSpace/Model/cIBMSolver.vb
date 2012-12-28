@@ -378,7 +378,6 @@ Public Class cIBMSolver
                 m_Stanza.AgeIndex1(isp) = 0
             End If
 
-
             'finally set abundance at youngest age to recruitment rate
             If m_Stanza.BaseEggsStanza(isp) > 0 Then TotRecruits = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
             If m_Stanza.HatchCode(isp) = 0 Then TotRecruits = TotRecruits * (m_Stanza.EggsStanza(isp) / (m_Stanza.BaseEggsStanza(isp))) ^ m_Stanza.RecPowerSplit(isp)
@@ -413,14 +412,40 @@ Public Class cIBMSolver
                     Next
                 Next
             Else
-                'simple model for random distribution of packets over nursery cells for the species
+                ''simple model for random distribution of packets over nursery cells for the species
+                'For ip = 1 To m_Stanza.Npackets
+                '    iNurse = 1 + Me.m_rand.NextDouble * (m_Stanza.Nnursery(isp) - 1)
+                '    m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Me.m_rand.NextDouble
+                '    m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble
+                'Next
+
+                'simple model for random distribution of packets over nursery cells for the species'
+                'this has been modified to make settlement probs for each nursery cell proportional
+                'to the habitat capacities for the cells m_Data.HabCap(i, j, ieco) for approp ieco
+                ieco = m_Stanza.EcopathCode(isp, 1)
                 For ip = 1 To m_Stanza.Npackets
-                    iNurse = 1 + Me.m_rand.NextDouble * (m_Stanza.Nnursery(isp) - 1)
-                    m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Me.m_rand.NextDouble
-                    m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble
-                Next
-            End If
-        End If
+                    'randomly select the nursery cell
+                    iNurse = 1 + Me.m_rand.NextDouble() * (m_Stanza.Nnursery(isp) - 1)
+                    'randomly select where in the cell to put the packet
+                    m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Me.m_rand.NextDouble()
+                    m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble()
+
+                    'Now randomly move some of the packets again if this is a low quality habitat
+                    If Me.m_rand.NextDouble() > Me.m_Data.HabCap(m_Stanza.iNursery(isp, iNurse), m_Stanza.jNursery(isp, iNurse), ieco) Then
+                        'If Me.m_rand.NextDouble() > Me.m_Data.HabCap(i, j, ieco) Then
+                        'try up to 10 alternative locations
+                        For icheck As Integer = 1 To 10
+                            iNurse = 1 + Me.m_rand.NextDouble() * (m_Stanza.Nnursery(isp) - 1)
+                            If Me.m_rand.NextDouble() < Me.m_Data.HabCap(m_Stanza.iNursery(isp, iNurse), m_Stanza.jNursery(isp, iNurse), ieco) Then
+                                m_Stanza.iPacket(isp, ia1, ip) = m_Stanza.iNursery(isp, iNurse) + Me.m_rand.NextDouble()
+                                m_Stanza.jPacket(isp, ia1, ip) = m_Stanza.jNursery(isp, iNurse) + Me.m_rand.NextDouble()
+                                Exit For
+                            End If
+                        Next icheck
+                    End If 'Me.m_rand.NextDouble() > Me.m_Data.HabCap(i, j, ieco)
+                Next ip
+            End If ' m_Stanza.EggAtSpawn(isp)
+        End If 'm_Ecosim.ResetPred(ieco) = False
 
     End Sub
 
@@ -466,6 +491,7 @@ Public Class cIBMSolver
     Public Sub New(ByVal ThreadNumber As Integer)
         isOkToRun = True
         ThreadID = ThreadNumber
-        Me.m_rand = New Random
+        Me.m_rand = New Random(CInt(Date.Now.Ticks And &HFFFF))
+
     End Sub
 End Class
