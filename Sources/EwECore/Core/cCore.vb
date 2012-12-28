@@ -181,10 +181,7 @@ Public Class cCore
 
     Private m_settings As New cCoreSettings()
 
-    ''' <summary>
-    ''' Data for the Ecosim MSY search
-    ''' </summary>
-    ''' <remarks></remarks>
+    ''' <summary>Data for the Ecosim MSY search.</summary>
     Friend m_MSYData As MSY.cMSYDataStructures
 
 #End Region ' Generic variables
@@ -2556,7 +2553,7 @@ Public Class cCore
             Try
                 If (value <> Me.m_settings.Autosave(savetype)) Then
                     Me.m_settings.Autosave(savetype) = value
-                    Me.Messages.SendMessage(New cMessage("Autosave settings have changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
+                    Me.OnSettingsChanged()
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
@@ -2564,14 +2561,49 @@ Public Class cCore
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the file format for an <see cref="eAutosaveTypes">auto-save capable component</see>.
+    ''' </summary>
+    ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save capable component</see>
+    ''' to access this setting for.</param>
+    ''' <remarks>Note that this value may not be honoured by a component. In fact,
+    ''' at the time of implementation, only the Ecospace result writer routines 
+    ''' support two file formats, .csv and .asc.</remarks>
+    ''' -----------------------------------------------------------------------
     Public Property AutosaveFormat(savetype As eAutosaveTypes) As String
         Get
-
+            Try
+                Return Me.m_settings.AutosaveFormat(savetype)
+            Catch ex As Exception
+                cLog.Write(ex, "cCore::Autosave(" & savetype.ToString & ")")
+            End Try
+            Return ".csv"
         End Get
         Set(value As String)
-
+            Try
+                If (String.Compare(value, Me.m_settings.AutosaveFormat(savetype), True) <> 0) Then
+                    Me.m_settings.AutosaveFormat(savetype) = value
+                    Me.OnSettingsChanged()
+                End If
+            Catch ex As Exception
+                cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
+            End Try
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Notify the core that core settings have changed.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub OnSettingsChanged()
+        Try
+            Me.Messages.SendMessage(New cMessage("Autosave settings have changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
+        Catch ex As Exception
+
+        End Try
+    End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

@@ -220,9 +220,10 @@ Public Class ucParameters
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub OnAutoSaveChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-         Handles m_cbAutoSave.CheckedChanged
+        Handles m_cbAutoSave.CheckedChanged
         If Me.m_bInUpdate Then Return
         My.Settings.AutosaveResults = Me.m_cbAutoSave.Checked
+        Me.m_uic.Core.OnSettingsChanged()
     End Sub
 
     Private Sub m_nudEffortMin_ValueChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _

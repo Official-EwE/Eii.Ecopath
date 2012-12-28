@@ -58,6 +58,13 @@ Friend Class cCoreSettings
 
 #Region " Accessors "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether a component is allowed to auto-save.
+    ''' </summary>
+    ''' <param name="t">The <see cref="eAutosaveTypes">auto-save enabled component</see>
+    ''' to enable or disable.</param>
+    ''' -----------------------------------------------------------------------
     Public Property Autosave(t As eAutosaveTypes) As Boolean
         Get
             Return Me.m_bAutosave(t)
@@ -67,6 +74,13 @@ Friend Class cCoreSettings
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the file format for autosaving a given component.
+    ''' </summary>
+    ''' <param name="t">The <see cref="eAutosaveTypes">auto-save enabled component</see>
+    ''' to access the format for.</param>
+    ''' -----------------------------------------------------------------------
     Public Property AutosaveFormat(t As eAutosaveTypes) As String
         Get
             Dim str As String = Me.m_strAutosaveFormat(t)
@@ -78,6 +92,11 @@ Friend Class cCoreSettings
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the core output path.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property OutputPath As String
         Get
             Return Me.m_strOutputPath
@@ -87,6 +106,11 @@ Friend Class cCoreSettings
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the model backup path mask.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property BackupFileMask As String
         Get
             Return Me.m_strBackupFileMask
@@ -96,6 +120,11 @@ Friend Class cCoreSettings
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the default EwE author.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Author As String
         Get
             Return Me.m_strAuthor
@@ -105,6 +134,11 @@ Friend Class cCoreSettings
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the default EwE author contact.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property Contact As String
         Get
             Return Me.m_strContact
