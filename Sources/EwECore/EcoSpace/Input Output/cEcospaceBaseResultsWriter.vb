@@ -92,7 +92,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Overridable Sub CreateOutputDir()
 
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
-            m_TimeStampDirName = Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace)
+            m_TimeStampDirName = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), Me.GetFileExtension())
         Else
             'Use the output directroy set by the user
             m_TimeStampDirName = Me.m_core.OutputPath ' 
@@ -106,7 +106,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     End Sub
 
     ''' <summary>
-    ''' Return the file extension for a writer.
+    ''' Return the file extension for a writer WITHOUT the dot extension separator. Please. Without.
     ''' </summary>
     Protected MustOverride Function GetFileExtension() As String
 

@@ -204,8 +204,10 @@ Namespace Ecospace
                 Me.m_cmbAutosaveFormat.SelectedIndex = 0
             ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace), ".asc", False) = 0 Then
                 Me.m_cmbAutosaveFormat.SelectedIndex = 1
-            Else
+            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace), ".csv", False) = 0 Then
                 Me.m_cmbAutosaveFormat.SelectedIndex = 2
+            Else
+                Me.m_cmbAutosaveFormat.SelectedIndex = 3
             End If
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
@@ -336,7 +338,9 @@ Namespace Ecospace
                 Case 2
                     Me.Core.Autosave(eAutosaveTypes.Ecospace) = True
                     Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".csv"
-
+                Case 3
+                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = True
+                    Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".csv;.asc"
             End Select
         End Sub
 

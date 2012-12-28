@@ -2708,12 +2708,12 @@ Public Class cCore
 
 #Region " Datasource "
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' The <see cref="IEwEDataSource">data source</see> that the core will use
-        ''' for reading and writing model data.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' The <see cref="IEwEDataSource">data source</see> that the core will use
+    ''' for reading and writing model data.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Property DataSource() As IEwEDataSource
         Get
             Return Me.m_DataSource
@@ -8176,7 +8176,7 @@ Public Class cCore
     Friend m_EcospaceRegionSummaries As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 0)
     Friend m_EcospaceGroupOuputs As New cCoreInputOutputList(Of cCoreInputOutputBase)(eDataTypes.NotSet, 1)
 
-    Friend m_EcospaceResultsWriter As EwEUtils.Core.IEcospaceResultsWriter = Nothing
+    Friend m_EcospaceResultsWriters As New List(Of EwEUtils.Core.IEcospaceResultsWriter)
 
     Friend m_mapInteractionManager As cMapResponseInteractionManager
 
@@ -8401,14 +8401,17 @@ Public Class cCore
                         Me.m_StateMonitor.SetEcospaceRun()
                         Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
-                        ' Create ecospace result writer, if desired
+                        ' Create ecospace result writers, if desired
                         If Me.Autosave(eAutosaveTypes.Ecospace) Then
-                            Me.m_EcospaceResultsWriter = cEcospaceResultWriterFactory.GetWriter(Me.AutosaveFormat(eAutosaveTypes.Ecospace))
-                            If (Me.m_EcospaceResultsWriter IsNot Nothing) Then
-                                Me.m_EcospaceResultsWriter.Init(Me)
-                                Me.m_EcospaceResultsWriter.StartWrite()
-                            End If
+                            For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.Ecospace).Split(";"c)
+                                Me.m_EcospaceResultsWriters.Add(cEcospaceResultWriterFactory.GetWriter(strExt))
+                            Next
                         End If
+
+                        For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+                            writer.Init(Me)
+                            writer.StartWrite()
+                        Next
 
                         'make sure Ecospace is not paused
                         Me.m_Ecospace.isPaused = False
@@ -8455,14 +8458,14 @@ Public Class cCore
             End If
 
             Try
-                If (Me.m_EcospaceResultsWriter IsNot Nothing) Then
-                    Me.m_EcospaceResultsWriter.EndWrite()
-                End If
+                For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
+                    writer.EndWrite()
+                Next
             Catch ex As Exception
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
                 cLog.Write(ex, "cCore::onEcospaceRunCompleted SaveResults")
             End Try
-            Me.m_EcospaceResultsWriter = Nothing
+            Me.m_EcospaceResultsWriters.Clear()
 
             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                           eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
@@ -8635,14 +8638,14 @@ Public Class cCore
 
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
         Try
-            If (Me.m_EcospaceResultsWriter IsNot Nothing) Then
+            For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
                 Try
-                    Me.m_EcospaceResultsWriter.WriteResults(Me.m_spaceresults)
+                    writer.WriteResults(Me.m_spaceresults)
                 Catch ex As Exception
                     System.Console.WriteLine("Core.SaveEcospaceResults() m_EcospaceResultsWriter Exception: " & ex.Message)
                     cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
                 End Try
-            End If
+            Next
         Catch ex As Exception
             cLog.Write(ex)
         End Try

@@ -36,7 +36,7 @@ Public Class cEcospaceCSVResultsWriter
 #Region "IEcospaceResultsWriter Implementation"
 
     Protected Overrides Function GetFileExtension() As String
-        Return ".csv"
+        Return "csv"
     End Function
 
     Public Overrides Sub StartWrite()

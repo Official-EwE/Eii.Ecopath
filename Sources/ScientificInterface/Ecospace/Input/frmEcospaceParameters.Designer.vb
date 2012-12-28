@@ -76,6 +76,8 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
+            Me.m_cmbAutosaveFormat = New System.Windows.Forms.ComboBox()
+            Me.Label1 = New System.Windows.Forms.Label()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
@@ -88,8 +90,6 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
-            Me.Label1 = New System.Windows.Forms.Label()
-            Me.m_cmbAutosaveFormat = New System.Windows.Forms.ComboBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -334,6 +334,19 @@ Namespace Ecospace
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
             '
+            'm_cmbAutosaveFormat
+            '
+            Me.m_cmbAutosaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbAutosaveFormat.FormattingEnabled = True
+            Me.m_cmbAutosaveFormat.Items.AddRange(New Object() {resources.GetString("m_cmbAutosaveFormat.Items"), resources.GetString("m_cmbAutosaveFormat.Items1"), resources.GetString("m_cmbAutosaveFormat.Items2"), resources.GetString("m_cmbAutosaveFormat.Items3")})
+            resources.ApplyResources(Me.m_cmbAutosaveFormat, "m_cmbAutosaveFormat")
+            Me.m_cmbAutosaveFormat.Name = "m_cmbAutosaveFormat"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
             'm_cbContaminantTracing
             '
             resources.ApplyResources(Me.m_cbContaminantTracing, "m_cbContaminantTracing")
@@ -401,19 +414,6 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
             Me.m_plBiomass.Controls.Add(Me.m_hdrInitialization)
             Me.m_plBiomass.Name = "m_plBiomass"
-            '
-            'Label1
-            '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
-            '
-            'm_cmbAutosaveFormat
-            '
-            Me.m_cmbAutosaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbAutosaveFormat.FormattingEnabled = True
-            Me.m_cmbAutosaveFormat.Items.AddRange(New Object() {resources.GetString("m_cmbAutosaveFormat.Items"), resources.GetString("m_cmbAutosaveFormat.Items1"), resources.GetString("m_cmbAutosaveFormat.Items2")})
-            resources.ApplyResources(Me.m_cmbAutosaveFormat, "m_cmbAutosaveFormat")
-            Me.m_cmbAutosaveFormat.Name = "m_cmbAutosaveFormat"
             '
             'EcospaceParameters
             '

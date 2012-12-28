@@ -565,6 +565,8 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Public PPScale As Double
 
+    Public SaveASC As Boolean = False
+    Public SaveCSV As Boolean = False
 
 #End Region
 

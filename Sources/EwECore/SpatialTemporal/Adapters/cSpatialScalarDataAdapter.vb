@@ -230,7 +230,8 @@ Namespace SpatialData
 
                 Next
             Catch ex As Exception
-
+                ' Log error
+                cLog.Write(ex, eVerboseLevel.Detailed, "Failed to calculate scaling factor for dataset " & ds.DisplayName)
             End Try
             Me.m_core.Messages.SendMessage(New cProgressMessage(eProgressState.Finished, 1.0!, 1.0!, "", eMessageType.Progress))
 

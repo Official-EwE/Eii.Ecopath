@@ -95,7 +95,7 @@ Public Class cEcospaceASCResultsWriter
 #Region "Private methods"
 
     Protected Overrides Function GetFileExtension() As String
-        Return ".asc"
+        Return "asc"
     End Function
 
     Protected Function CellSize() As Single
