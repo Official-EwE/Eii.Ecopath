@@ -215,42 +215,57 @@ Namespace Other
                     Me.Add(ctrl, cbRoot)
                     Me.BuildControlTree(eAutosaveTypes.Ecospace, ctrl.Checkbox, 2, lPlugins)
 
-                    Me.BuildControlTree(eAutosaveTypes.Ecotracer, ctrl.Checkbox, 1, lPlugins)
+                    Me.BuildControlTree(eAutosaveTypes.Ecotracer, cbRoot, 1, lPlugins)
                     Me.Add(lPlugins(eAutosaveTypes.NotSet), cbRoot, 1)
 
                 Case eAutosaveTypes.Ecopath
                     Me.Add(lPlugins(t), parent, iIndent)
 
                 Case eAutosaveTypes.Ecosim
+                    ' Add Ecosim node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
                     Me.Add(ctrl, parent)
+                    ' Add Ecosim child nodes
                     Me.BuildControlTree(eAutosaveTypes.MonteCarlo, ctrl.Checkbox, iIndent, lPlugins)
                     Me.BuildControlTree(eAutosaveTypes.MSE, ctrl.Checkbox, iIndent, lPlugins)
                     Me.BuildControlTree(eAutosaveTypes.MSY, ctrl.Checkbox, iIndent, lPlugins)
+                    ' Add Ecosim plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
 
                 Case eAutosaveTypes.Ecospace
+                    ' Add Ecospace node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
                     Me.Add(ctrl, parent)
+                    ' ToDo: add MPA optimizations node?
+                    ' Add Ecospace plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
 
                 Case eAutosaveTypes.Ecotracer
-                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent + 1)
-                    Me.Add(ctrl, parent)
-
-                Case eAutosaveTypes.MonteCarlo
+                    ' Add tracer node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
                     Me.Add(ctrl, parent)
+                    ' Add tracer plug-in nodes
+                    Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
+
+                Case eAutosaveTypes.MonteCarlo
+                    ' Add MC node
+                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
+                    Me.Add(ctrl, parent)
+                    ' Add MC plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
 
                 Case eAutosaveTypes.MSY
+                    ' Add MSY node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
                     Me.Add(ctrl, parent)
+                    ' Add MSY plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent + 1)
 
                 Case eAutosaveTypes.MSE
+                    ' Add MSE node
                     ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
                     Me.Add(ctrl, parent)
+                    ' Add MSE plug-in nodes
                     Me.Add(lPlugins(t), ctrl.Checkbox, iIndent)
 
             End Select
