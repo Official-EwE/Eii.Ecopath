@@ -1123,12 +1123,13 @@ Public Class cEIIXMLDataSource
                 ecosimDS.CmCo(iGroup) = CSng(drow("CmCo"))
                 ecosimDS.SwitchPower(iGroup) = CSng(drow("SwitchPower"))
                 ecosimDS.GroupFishRateNoDBID(iGroup) = CInt(drow("FishMortShapeID"))
-                ecosimDS.SalOpt(iGroup) = CSng(Me.ReadSafe(drow, "SalOpt", 35.0!))
-                ecosimDS.SdSalLeft(iGroup) = CSng(Me.ReadSafe(drow, "SdSalLeft", 1000.0!))
-                ecosimDS.SdSalRight(iGroup) = CSng(Me.ReadSafe(drow, "SdSalRight", 1000.0!))
-                ecosimDS.TempOpt(iGroup) = CSng(Me.ReadSafe(drow, "TempOpt", 10.0!))
-                ecosimDS.TempLeft(iGroup) = CSng(Me.ReadSafe(drow, "TempLeft", 1000.0!))
-                ecosimDS.TempRight(iGroup) = CSng(Me.ReadSafe(drow, "TempRight", 1000.0!))
+                ' ToDo: make number of response functions flexible
+                ecosimDS.EnvResponseOpt(1, iGroup) = CSng(Me.ReadSafe(drow, "SalOpt", 35.0!))
+                ecosimDS.EnvResponseSdLeft(1, iGroup) = CSng(Me.ReadSafe(drow, "SdSalLeft", 1000.0!))
+                ecosimDS.EnvResponseSdRight(1, iGroup) = CSng(Me.ReadSafe(drow, "SdSalRight", 1000.0!))
+                ecosimDS.EnvResponseOpt(2, iGroup) = CSng(Me.ReadSafe(drow, "TempOpt", 10.0!))
+                ecosimDS.EnvResponseSdLeft(2, iGroup) = CSng(Me.ReadSafe(drow, "TempLeft", 1000.0!))
+                ecosimDS.EnvResponseSdRight(2, iGroup) = CSng(Me.ReadSafe(drow, "TempRight", 1000.0!))
 
                 mseDS.Blim(iGroup) = CSng(Me.ReadSafe(drow, "Blim", mseDS.Blim(iGroup), cCore.NULL_VALUE))
                 mseDS.Bbase(iGroup) = CSng(Me.ReadSafe(drow, "Bbase", mseDS.Bbase(iGroup), cCore.NULL_VALUE))
@@ -1430,10 +1431,11 @@ Public Class cEIIXMLDataSource
             ' Read and assign scenario forcing shape number(s)
             iForcingShape = CInt(Me.ReadSafe(drow, "NutForcingShapeID", 0))
             ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+            ' ToDo: make this flexible
             iForcingShape = CInt(Me.ReadSafe(drow, "SalinityForcingShapeID", 0))
-            ecosimDS.SalinityForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+            ecosimDS.EnvResponseForceNo(1) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
             iForcingShape = CInt(Me.ReadSafe(drow, "TemperatureForcingShapeID", 0))
-            ecosimDS.TemperatureForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+            ecosimDS.EnvResponseForceNo(2) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
         Catch ex As Exception
             bSucces = False
         End Try

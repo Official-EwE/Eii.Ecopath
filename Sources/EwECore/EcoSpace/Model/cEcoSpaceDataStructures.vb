@@ -271,6 +271,15 @@ Public Class cEcospaceDataStructures
     ''' <summary>Environmental layer data (layer, row, col)</summary>
     Public EnvironmentalLayerMap(,,) As Single
 
+    ' ### FOR CARL
+    ''' <summary>Link an Environemtnal Layer to an Ecosim environmental response function.
+    ''' 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public EnvironmentalResponseFN() As Integer
+
+    ' ### FOR CARL
+
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'Summary data
 

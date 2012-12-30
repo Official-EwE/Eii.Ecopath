@@ -16,6 +16,7 @@
 ' ===============================================================================
 '
 
+'ToDo: Enable Option Strict On
 'Option Strict On
 
 Imports EwEUtils.Core
@@ -134,27 +135,29 @@ Public Class cEcosimDatastructures
     ''' <summary>Base proportion of free nutrients.</summary>
     Public NutBaseFreeProp As Single
 
-    ' ToDo: make number of environmental responses open-ended
-    'Public NumEnvResponseFunctions As Integer
-    'Public EnvResponseForceNo() As Integer
-    'Public EnvResponseOpt(,) As Single
-    'Public EnvResponseLeft(,) As Single
-    'Public EnvResponseRight(,) As Single
+    ' Allocate room for 6 env functions max. Should this number be flexible?
+    Public NumEnvResponseFunctions As Integer = 6
+    Public EnvResponseForceName() As String
+    Public EnvResponseForceNo() As Integer
+    ''' <summary>Environmental response optimum (function x group)</summary>
+    Public EnvResponseOpt(,) As Single
+    ''' <summary>Environmental response left (function x group)</summary>
+    Public EnvResponseSdLeft(,) As Single
+    ''' <summary>Environmental response right (function x group)</summary>
+    Public EnvResponseSdRight(,) As Single
 
-    'Salinity 
-    Public SalinityForceNo As Integer
-    ' Public SdSal() As Single
+    ''Salinity 
+    'Public SalinityForceNo As Integer
+    'Public SdSalLeft() As Single
+    'Public SdSalRight() As Single
+    'Public SalOpt() As Single
 
-    Public SdSalLeft() As Single
-    Public SdSalRight() As Single
-    Public SalOpt() As Single
+    ''VC Hobart Sep 2008: adding Temperature parameters
 
-    'VC Hobart Sep 2008: adding Temperature parameters
-
-    Public TemperatureForceNo As Integer
-    Public TempLeft() As Single
-    Public TempRight() As Single
-    Public TempOpt() As Single
+    'Public TemperatureForceNo As Integer
+    'Public TempLeft() As Single
+    'Public TempRight() As Single
+    'Public TempOpt() As Single
 
     'dimensions for nutrient calculation
     Public NutMin As Single
@@ -595,14 +598,18 @@ Public Class cEcosimDatastructures
 
         ReDim GroupDBID(nGroups)
 
-        ReDim SalOpt(nGroups)
-        ReDim SdSalLeft(nGroups)
-        ReDim SdSalRight(nGroups)
+        ReDim EnvResponseForceNo(NumEnvResponseFunctions)
+        ReDim EnvResponseForceName(NumEnvResponseFunctions)
+        ReDim EnvResponseOpt(NumEnvResponseFunctions, nGroups)
+        ReDim EnvResponseSdLeft(NumEnvResponseFunctions, nGroups)
+        ReDim EnvResponseSdRight(NumEnvResponseFunctions, nGroups)
 
-        'VC Hobart Sep 2008: Adding temperature optimum
-        ReDim TempOpt(nGroups)
-        ReDim TempLeft(nGroups)
-        ReDim TempRight(nGroups)
+        'ReDim SalOpt(nGroups)
+        'ReDim SdSalLeft(nGroups)
+        'ReDim SdSalRight(nGroups)
+        'ReDim TempOpt(nGroups)
+        'ReDim TempLeft(nGroups)
+        'ReDim TempRight(nGroups)
 
         'ReDim BaseTimeSwitch(nGroups)
         ReDim SwitchPower(nGroups)
@@ -735,14 +742,18 @@ Public Class cEcosimDatastructures
 
         Me.GroupDBID = Nothing ' (nGroups)
 
-        Me.SalOpt = Nothing ' (nGroups)
-        Me.SdSalLeft = Nothing ' (nGroups)
-        Me.SdSalRight = Nothing ' (nGroups)
+        Me.EnvResponseForceName = Nothing
+        Me.EnvResponseOpt = Nothing
+        Me.EnvResponseSdLeft = Nothing
+        Me.EnvResponseSdRight = Nothing
+        'Me.SalOpt = Nothing ' (nGroups)
+        'Me.SdSalLeft = Nothing ' (nGroups)
+        'Me.SdSalRight = Nothing ' (nGroups)
 
-        'VC Hobart Sep 2008: Adding temperature optimum
-        Me.TempOpt = Nothing ' (nGroups)
-        Me.TempLeft = Nothing ' (nGroups)
-        Me.TempRight = Nothing ' (nGroups)
+        ''VC Hobart Sep 2008: Adding temperature optimum
+        'Me.TempOpt = Nothing ' (nGroups)
+        'Me.TempLeft = Nothing ' (nGroups)
+        'Me.TempRight = Nothing ' (nGroups)
 
         'me.BaseTimeSwitch = nothing ' (nGroups)
         Me.SwitchPower = Nothing ' (nGroups)
@@ -1161,16 +1172,17 @@ Public Class cEcosimDatastructures
             MoPred(i) = MoPred(0)
             RiskTime(i) = 0
 
-            'set defalt values for every group for Salopt=35, and Sdsal=1000
-            SalOpt(i) = 35
-            SdSalLeft(i) = 1000
-            SdSalRight(i) = 1000
-
-            'VC Hobart Sep 2008: adding Temp Optimum parameter
-            TempOpt(i) = 10
-            TempLeft(i) = 1000
-            TempRight(i) = 1000
-
+            For iFN As Integer = 1 To NumEnvResponseFunctions
+                If (iFN = 1) Then
+                    'set defalt values for every group for Salopt=35
+                    EnvResponseOpt(iFN, i) = 35
+                Else
+                    ' Temperature or other
+                    EnvResponseOpt(iFN, i) = 10
+                End If
+                EnvResponseSdLeft(iFN, i) = 1000
+                EnvResponseSdRight(iFN, i) = 1000
+            Next
         Next
 
         For iflt As Integer = 1 To Me.nGear
@@ -1188,7 +1200,6 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Set the summary time periods to using the Ecoism run length (NTime)
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub DefaultSummaryPeriods()
         Try
             Debug.Assert(NumYears <> 0 And NumStep <> 0 And NumStepsPerYear <> 0, "DefaultSummaryPeriods() could not be set!")
@@ -1222,7 +1233,6 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Redim preserve the Fishing Rate and Fish Mort arrays to the number of time steps the model will run for.
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub redimFishingRates(ByVal nTimeSteps As Integer)
 
         'NTimes is the number of time step for the current number of years
@@ -1286,7 +1296,6 @@ Public Class cEcosimDatastructures
     ''' <summary>
     ''' Erase all the results arrays 
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub eraseResults()
 
         Erase ResultsOverTime
@@ -1379,6 +1388,10 @@ Public Class cEcosimDatastructures
 
     End Sub
 
+    ''' <summary>
+    ''' Deep-copy Ecosim data structures to another instance.
+    ''' </summary>
+    ''' <param name="d">The instance to copy to.</param>
     Public Sub CopyTo(ByRef d As cEcosimDatastructures)
         Try
 

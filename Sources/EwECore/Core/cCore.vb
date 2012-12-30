@@ -6787,12 +6787,13 @@ Public Class cCore
             group.DenDepCatchability = m_EcoSimData.QmQo(iGroup)
             group.QBMaxQBio = m_EcoSimData.CmCo(iGroup)
             group.SwitchingPower = m_EcoSimData.SwitchPower(iGroup)
-            group.SalinityOpt = m_EcoSimData.SalOpt(iGroup)
-            group.SalinitySpreadLeft = m_EcoSimData.SdSalLeft(iGroup)
-            group.SalinitySpreadRight = m_EcoSimData.SdSalRight(iGroup)
-            group.TemperatureOpt = m_EcoSimData.TempOpt(iGroup)
-            group.TemperatureSpreadLeft = m_EcoSimData.TempLeft(iGroup)
-            group.TemperatureSpreadRight = m_EcoSimData.TempRight(iGroup)
+            ' ToDo: make number of response functions flexible
+            group.SalinityOpt = m_EcoSimData.EnvResponseOpt(1, iGroup)
+            group.SalinitySpreadLeft = m_EcoSimData.EnvResponseSdLeft(1, iGroup)
+            group.SalinitySpreadRight = m_EcoSimData.EnvResponseSdRight(1, iGroup)
+            group.TemperatureOpt = m_EcoSimData.EnvResponseOpt(2, iGroup)
+            group.TemperatureSpreadLeft = m_EcoSimData.EnvResponseSdLeft(2, iGroup)
+            group.TemperatureSpreadRight = m_EcoSimData.EnvResponseSdRight(2, iGroup)
             group.PP = m_EcoPathData.PP(iGroup)
 
             Try
@@ -7254,12 +7255,13 @@ Public Class cCore
             m_EcoSimData.RiskTime(iGroup) = group.PredEffectFeedingTime
             m_EcoSimData.CmCo(iGroup) = group.QBMaxQBio
             m_EcoSimData.SwitchPower(iGroup) = group.SwitchingPower
-            m_EcoSimData.SdSalLeft(iGroup) = group.SalinitySpreadLeft
-            m_EcoSimData.SdSalRight(iGroup) = group.SalinitySpreadRight
-            m_EcoSimData.SalOpt(iGroup) = group.SalinityOpt
-            m_EcoSimData.TempOpt(iGroup) = group.TemperatureOpt
-            m_EcoSimData.TempLeft(iGroup) = group.TemperatureSpreadLeft
-            m_EcoSimData.TempRight(iGroup) = group.TemperatureSpreadRight
+            ' ToDo: make number of response functions flexible
+            m_EcoSimData.EnvResponseSdLeft(1, iGroup) = group.SalinitySpreadLeft
+            m_EcoSimData.EnvResponseSdRight(1, iGroup) = group.SalinitySpreadRight
+            m_EcoSimData.EnvResponseOpt(1, iGroup) = group.SalinityOpt
+            m_EcoSimData.EnvResponseOpt(2, iGroup) = group.TemperatureOpt
+            m_EcoSimData.EnvResponseSdLeft(2, iGroup) = group.TemperatureSpreadLeft
+            m_EcoSimData.EnvResponseSdRight(2, iGroup) = group.TemperatureSpreadRight
 
             For iPred As Integer = 1 To nGroups
                 ' m_EcoSimData.vulrate(iGroup, i) = grp.VulRate(i)
@@ -7853,8 +7855,8 @@ Public Class cCore
             m_EcoSimRun.SystemRecovery = m_EcoSim.m_Data.SystemRecovery
             m_EcoSimRun.UseVarPQ = m_EcoSim.m_Data.UseVarPQ
 
-            m_EcoSimRun.SalinityForceFunctionNumber = m_EcoSim.m_Data.SalinityForceNo
-            m_EcoSimRun.TemperatureForceFunctionNumber = m_EcoSim.m_Data.TemperatureForceNo
+            m_EcoSimRun.SalinityForceFunctionNumber = m_EcoSim.m_Data.EnvResponseForceNo(1)
+            m_EcoSimRun.TemperatureForceFunctionNumber = m_EcoSim.m_Data.EnvResponseForceNo(2)
 
             m_EcoSimRun.ContaminantTracing = Me.m_tracerData.EcoSimConSimOn
             m_EcoSimRun.PredictEffort = m_EcoSim.m_Data.PredictSimEffort
@@ -7894,8 +7896,8 @@ Public Class cCore
 
             Me.m_tracerData.EcoSimConSimOn = m_EcoSimRun.ContaminantTracing
 
-            m_EcoSim.m_Data.SalinityForceNo = m_EcoSimRun.SalinityForceFunctionNumber
-            m_EcoSim.m_Data.TemperatureForceNo = m_EcoSimRun.TemperatureForceFunctionNumber
+            m_EcoSim.m_Data.EnvResponseForceNo(1) = m_EcoSimRun.SalinityForceFunctionNumber
+            m_EcoSim.m_Data.EnvResponseForceNo(2) = m_EcoSimRun.TemperatureForceFunctionNumber
 
             m_EcoSim.m_Data.PredictSimEffort = m_EcoSimRun.PredictEffort
 

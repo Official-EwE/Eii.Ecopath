@@ -3725,8 +3725,9 @@ Namespace DataSources
 
                 drow("NutBaseFreeProp") = ecosimDS.NutBaseFreeProp
                 drow("NutForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.NutForceNumber)
-                drow("SalinityForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.SalinityForceNo)
-                drow("TemperatureForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.TemperatureForceNo)
+                ' ToDo: make number of response functions flexible
+                drow("SalinityForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.EnvResponseForceNo(1))
+                drow("TemperatureForcingShapeID") = ecosimDS.ForcingDBIDs(ecosimDS.EnvResponseForceNo(2))
                 drow("NutPBmax") = ecosimDS.NutPBmax
                 'drow("UseVarPQ") = ecosimDS.UseVarPQ
                 ' ------------------------------------------
@@ -4217,12 +4218,13 @@ Namespace DataSources
                     ecosimDS.CmCo(iEcopathGroup) = CSng(reader("CmCo"))
                     ecosimDS.SwitchPower(iEcopathGroup) = CSng(reader("SwitchPower"))
                     ecosimDS.GroupFishRateNoDBID(iEcopathGroup) = CInt(reader("FishMortShapeID"))
-                    ecosimDS.SalOpt(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SalOpt", 35.0!))
-                    ecosimDS.SdSalLeft(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalLeft", 1000.0!))
-                    ecosimDS.SdSalRight(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalRight", 1000.0!))
-                    ecosimDS.TempOpt(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempOpt", 10.0!))
-                    ecosimDS.TempLeft(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempLeft", 1000.0!))
-                    ecosimDS.TempRight(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempRight", 1000.0!))
+                    ' ToDo: make number of response functions flexible. Requires DB restructuring
+                    ecosimDS.EnvResponseOpt(1, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SalOpt", 35.0!))
+                    ecosimDS.EnvResponseSdLeft(1, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalLeft", 1000.0!))
+                    ecosimDS.EnvResponseSdRight(1, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "SdSalRight", 1000.0!))
+                    ecosimDS.EnvResponseOpt(2, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempOpt", 10.0!))
+                    ecosimDS.EnvResponseSdLeft(2, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempLeft", 1000.0!))
+                    ecosimDS.EnvResponseSdRight(2, iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "TempRight", 1000.0!))
 
                     mseDS.Blim(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Blim", mseDS.Blim(iEcopathGroup), cCore.NULL_VALUE))
                     mseDS.Bbase(iEcopathGroup) = CSng(Me.m_db.ReadSafe(reader, "Bbase", mseDS.Bbase(iEcopathGroup), cCore.NULL_VALUE))
@@ -4596,12 +4598,13 @@ Namespace DataSources
                     End If
                     drow("FishMortShapeID") = idm.GetID(eDataTypes.FishMort, ecosimDS.GroupFishRateNoDBID(i))
 
-                    drow("SalOpt") = ecosimDS.SalOpt(i)
-                    drow("SdSalLeft") = ecosimDS.SdSalLeft(i)
-                    drow("SdSalRight") = ecosimDS.SdSalRight(i)
-                    drow("TempOpt") = ecosimDS.TempOpt(i)
-                    drow("TempLeft") = ecosimDS.TempLeft(i)
-                    drow("TempRight") = ecosimDS.TempRight(i)
+                    ' ToDo: make number of response functions flexible. Requires database restructuring
+                    drow("SalOpt") = ecosimDS.EnvResponseOpt(1, i)
+                    drow("SdSalLeft") = ecosimDS.EnvResponseSdLeft(1, i)
+                    drow("SdSalRight") = ecosimDS.EnvResponseSdRight(1, i)
+                    drow("TempOpt") = ecosimDS.EnvResponseOpt(2, i)
+                    drow("TempLeft") = ecosimDS.EnvResponseSdLeft(2, i)
+                    drow("TempRight") = ecosimDS.EnvResponseSdRight(2, i)
 
                     drow("Blim") = mseDS.Blim(i)
                     drow("Bbase") = mseDS.Bbase(i)
@@ -5031,14 +5034,15 @@ Namespace DataSources
 
             Try
                 ' Read and assign scenario forcing shape number(s)
+                ' ToDo: make number of response functions flexible
                 reader = Me.m_db.GetReader(String.Format("SELECT NutForcingShapeID, SalinityForcingShapeID, TemperatureForcingShapeID FROM EcosimScenario WHERE (ScenarioID={0})", iScenarioID))
                 reader.Read()
                 iForcingShape = CInt(Me.m_db.ReadSafe(reader, "NutForcingShapeID", 0))
                 ecosimDS.NutForceNumber = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
                 iForcingShape = CInt(Me.m_db.ReadSafe(reader, "SalinityForcingShapeID", 0))
-                ecosimDS.SalinityForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+                ecosimDS.EnvResponseForceNo(1) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
                 iForcingShape = CInt(Me.m_db.ReadSafe(reader, "TemperatureForcingShapeID", 0))
-                ecosimDS.TemperatureForceNo = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
+                ecosimDS.EnvResponseForceNo(2) = Math.Max(0, Array.IndexOf(ecosimDS.ForcingDBIDs, iForcingShape))
                 Me.m_db.ReleaseReader(reader)
                 reader = Nothing
             Catch ex As Exception

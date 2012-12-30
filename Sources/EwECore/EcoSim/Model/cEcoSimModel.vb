@@ -4101,7 +4101,7 @@ Namespace Ecosim
                 Mult = CSng(Math.Exp(-0.5 * ((CurVal - Optim) / (StdRight + 0.0000001)) ^ 2))
             End If
 
-            ' Mult = Math.Exp(-0.5 * ((Sal - m_Data.SalOpt(j)) / (m_Data.SdSal(j) + 0.0000001)) ^ 2)
+            ' Mult = Math.Exp(-0.5 * ((Sal - m_Data.EnvResponseOpt(1, j)) / (m_Data.SdSal(j) + 0.0000001)) ^ 2)
             A = A * Mult
 
         End Sub
@@ -4119,7 +4119,6 @@ Namespace Ecosim
         ''' <param name="i">i Index</param>
         ''' <param name="j">j Index</param>
         ''' <param name="UseTime">True if the modifier is over time (Ecosim), False if not (Ecospace) </param>
-        ''' <remarks></remarks>
         Public Sub ApplyAVmodifiers(ByRef A As Single, ByRef v As Single, ByVal i As Integer, ByVal j As Integer, ByVal UseTime As Boolean)
             Dim K As Integer, Mult As Single
             'following lines are old ecosim lines to modify a by time forcing only and v by mediation only
@@ -4128,14 +4127,12 @@ Namespace Ecosim
             'V = V * MedVal(MF(i, j))
             'Exit Sub  'MUST REMOVE THIS LINE TO INVOKE NEW MULTIFUNCTION APPROACH
 
-            If m_Data.SalinityForceNo > 0 And UseTime Then
-                ApplySalinityModifier(A, m_Data.tval(m_Data.SalinityForceNo), m_Data.SalOpt(j), m_Data.SdSalLeft(j), m_Data.SdSalRight(j))
-            End If
-
-            'VC Hobart Sep 2008 Adding temperature handling:
-            If m_Data.TemperatureForceNo > 0 And UseTime Then
-                ApplySalinityModifier(A, m_Data.tval(m_Data.TemperatureForceNo), m_Data.TempOpt(j), m_Data.TempLeft(j), m_Data.TempRight(j))
-            End If
+            ' JS Dec12: Apply looped environmental response handing
+            For fn As Integer = 1 To m_Data.NumEnvResponseFunctions
+                If m_Data.EnvResponseForceNo(fn) > 0 And UseTime Then
+                    ApplySalinityModifier(A, m_Data.tval(m_Data.EnvResponseForceNo(fn)), m_Data.EnvResponseOpt(fn, j), m_Data.EnvResponseSdLeft(fn, j), m_Data.EnvResponseSdRight(fn, j))
+                End If
+            Next
 
             For K = 1 To cMediationDataStructures.MAXFUNCTIONS
 
