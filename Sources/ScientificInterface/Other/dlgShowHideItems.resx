@@ -121,6 +121,9 @@
   <data name="OK_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
+  <data name="OK_Button.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="OK_Button.Location" type="System.Drawing.Point, System.Drawing">
     <value>227, 499</value>
@@ -149,6 +152,9 @@
   </data>
   <data name="Cancel_Button.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
+  </data>
+  <data name="Cancel_Button.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="Cancel_Button.Location" type="System.Drawing.Point, System.Drawing">
     <value>300, 499</value>
@@ -229,7 +235,7 @@
     <value>m_tpGroups</value>
   </data>
   <data name="&gt;&gt;m_btnAllGroups.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="m_btnNoneGroups.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -259,7 +265,7 @@
     <value>m_tpGroups</value>
   </data>
   <data name="&gt;&gt;m_btnNoneGroups.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="m_tcDisplayBits.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -269,6 +275,9 @@
   </data>
   <data name="m_hdrFilterGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_hdrFilterGroup.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_hdrFilterGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>259, 57</value>
@@ -280,7 +289,7 @@
     <value>3</value>
   </data>
   <data name="m_hdrFilterGroup.Text" xml:space="preserve">
-    <value>Filter</value>
+    <value>Quick select</value>
   </data>
   <data name="m_hdrFilterGroup.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -289,7 +298,7 @@
     <value>m_hdrFilterGroup</value>
   </data>
   <data name="&gt;&gt;m_hdrFilterGroup.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8341.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8709.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrFilterGroup.Parent" xml:space="preserve">
     <value>m_tpGroups</value>
@@ -304,7 +313,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnLiving.Location" type="System.Drawing.Point, System.Drawing">
-    <value>259, 144</value>
+    <value>260, 146</value>
   </data>
   <data name="m_btnLiving.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -334,7 +343,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnNonLiving.Location" type="System.Drawing.Point, System.Drawing">
-    <value>259, 173</value>
+    <value>260, 175</value>
   </data>
   <data name="m_btnNonLiving.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -343,7 +352,7 @@
     <value>7</value>
   </data>
   <data name="m_btnNonLiving.Text" xml:space="preserve">
-    <value>&amp;Non-living</value>
+    <value>Non-&amp;living</value>
   </data>
   <data name="&gt;&gt;m_btnNonLiving.Name" xml:space="preserve">
     <value>m_btnNonLiving</value>
@@ -356,6 +365,36 @@
   </data>
   <data name="&gt;&gt;m_btnNonLiving.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="m_btnStanza.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnStanza.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnStanza.Location" type="System.Drawing.Point, System.Drawing">
+    <value>259, 275</value>
+  </data>
+  <data name="m_btnStanza.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 23</value>
+  </data>
+  <data name="m_btnStanza.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="m_btnStanza.Text" xml:space="preserve">
+    <value>&amp;Stanza</value>
+  </data>
+  <data name="&gt;&gt;m_btnStanza.Name" xml:space="preserve">
+    <value>m_btnStanza</value>
+  </data>
+  <data name="&gt;&gt;m_btnStanza.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnStanza.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnStanza.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="m_btnConsumers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -385,7 +424,37 @@
     <value>m_tpGroups</value>
   </data>
   <data name="&gt;&gt;m_btnConsumers.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
+  </data>
+  <data name="m_btnNonStanza.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnNonStanza.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnNonStanza.Location" type="System.Drawing.Point, System.Drawing">
+    <value>259, 304</value>
+  </data>
+  <data name="m_btnNonStanza.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 23</value>
+  </data>
+  <data name="m_btnNonStanza.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="m_btnNonStanza.Text" xml:space="preserve">
+    <value>Non-&amp;stanza</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonStanza.Name" xml:space="preserve">
+    <value>m_btnNonStanza</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonStanza.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonStanza.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonStanza.ZOrder" xml:space="preserve">
+    <value>6</value>
   </data>
   <data name="m_btnProducers.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -415,7 +484,37 @@
     <value>m_tpGroups</value>
   </data>
   <data name="&gt;&gt;m_btnProducers.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
+  </data>
+  <data name="m_btnNonFished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnNonFished.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnNonFished.Location" type="System.Drawing.Point, System.Drawing">
+    <value>260, 241</value>
+  </data>
+  <data name="m_btnNonFished.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 23</value>
+  </data>
+  <data name="m_btnNonFished.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="m_btnNonFished.Text" xml:space="preserve">
+    <value>Non-&amp;fished</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonFished.Name" xml:space="preserve">
+    <value>m_btnNonFished</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonFished.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonFished.Parent" xml:space="preserve">
+    <value>m_tpGroups</value>
+  </data>
+  <data name="&gt;&gt;m_btnNonFished.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
   <data name="m_btnFished.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -424,7 +523,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_btnFished.Location" type="System.Drawing.Point, System.Drawing">
-    <value>259, 210</value>
+    <value>260, 212</value>
   </data>
   <data name="m_btnFished.Size" type="System.Drawing.Size, System.Drawing">
     <value>94, 23</value>
@@ -445,7 +544,7 @@
     <value>m_tpGroups</value>
   </data>
   <data name="&gt;&gt;m_btnFished.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="m_tpGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
@@ -614,6 +713,9 @@
   </data>
   <data name="m_cbSyncGroupsAndFleets.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="m_cbSyncGroupsAndFleets.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="m_cbSyncGroupsAndFleets.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 475</value>

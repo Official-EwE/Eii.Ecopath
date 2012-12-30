@@ -177,6 +177,7 @@
     <Compile Include="Controls\cEwEStatusBar.designer.vb">
       <DependentUpon>cEwEStatusBar.vb</DependentUpon>
     </Compile>
+    <Compile Include="Controls\cGroupOrder.vb" />
     <Compile Include="Controls\dlgConfig.Designer.vb">
       <DependentUpon>dlgConfig.vb</DependentUpon>
     </Compile>

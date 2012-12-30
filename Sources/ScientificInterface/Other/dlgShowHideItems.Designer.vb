@@ -48,8 +48,11 @@ Namespace Ecosim
             Me.m_hdrFilterGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnLiving = New System.Windows.Forms.Button()
             Me.m_btnNonLiving = New System.Windows.Forms.Button()
+            Me.m_btnStanza = New System.Windows.Forms.Button()
             Me.m_btnConsumers = New System.Windows.Forms.Button()
+            Me.m_btnNonStanza = New System.Windows.Forms.Button()
             Me.m_btnProducers = New System.Windows.Forms.Button()
+            Me.m_btnNonFished = New System.Windows.Forms.Button()
             Me.m_btnFished = New System.Windows.Forms.Button()
             Me.m_tpFleets = New System.Windows.Forms.TabPage()
             Me.m_clbFleets = New System.Windows.Forms.CheckedListBox()
@@ -104,8 +107,11 @@ Namespace Ecosim
             Me.m_tpGroups.Controls.Add(Me.m_clbGroups)
             Me.m_tpGroups.Controls.Add(Me.m_btnLiving)
             Me.m_tpGroups.Controls.Add(Me.m_btnNonLiving)
+            Me.m_tpGroups.Controls.Add(Me.m_btnStanza)
             Me.m_tpGroups.Controls.Add(Me.m_btnConsumers)
+            Me.m_tpGroups.Controls.Add(Me.m_btnNonStanza)
             Me.m_tpGroups.Controls.Add(Me.m_btnProducers)
+            Me.m_tpGroups.Controls.Add(Me.m_btnNonFished)
             Me.m_tpGroups.Controls.Add(Me.m_btnFished)
             Me.m_tpGroups.Controls.Add(Me.m_btnAllGroups)
             Me.m_tpGroups.Controls.Add(Me.m_btnNoneGroups)
@@ -130,15 +136,30 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_btnNonLiving, "m_btnNonLiving")
             Me.m_btnNonLiving.Name = "m_btnNonLiving"
             '
+            'm_btnStanza
+            '
+            resources.ApplyResources(Me.m_btnStanza, "m_btnStanza")
+            Me.m_btnStanza.Name = "m_btnStanza"
+            '
             'm_btnConsumers
             '
             resources.ApplyResources(Me.m_btnConsumers, "m_btnConsumers")
             Me.m_btnConsumers.Name = "m_btnConsumers"
             '
+            'm_btnNonStanza
+            '
+            resources.ApplyResources(Me.m_btnNonStanza, "m_btnNonStanza")
+            Me.m_btnNonStanza.Name = "m_btnNonStanza"
+            '
             'm_btnProducers
             '
             resources.ApplyResources(Me.m_btnProducers, "m_btnProducers")
             Me.m_btnProducers.Name = "m_btnProducers"
+            '
+            'm_btnNonFished
+            '
+            resources.ApplyResources(Me.m_btnNonFished, "m_btnNonFished")
+            Me.m_btnNonFished.Name = "m_btnNonFished"
             '
             'm_btnFished
             '
@@ -220,6 +241,9 @@ Namespace Ecosim
         Private WithEvents OK_Button As System.Windows.Forms.Button
         Private WithEvents Cancel_Button As System.Windows.Forms.Button
         Private WithEvents m_cbSyncGroupsAndFleets As System.Windows.Forms.CheckBox
+        Private WithEvents m_btnStanza As System.Windows.Forms.Button
+        Private WithEvents m_btnNonStanza As System.Windows.Forms.Button
+        Private WithEvents m_btnNonFished As System.Windows.Forms.Button
     End Class
 
 End Namespace

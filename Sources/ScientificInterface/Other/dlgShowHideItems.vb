@@ -282,6 +282,67 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub OnSelectNonFished(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnNonFished.Click
+
+            Dim core As cCore = Me.m_uic.Core
+            Dim asIsFished(core.nGroups) As Boolean
+
+            For iFleet As Integer = 1 To core.nFleets
+                Dim fleet As cFleetInput = core.FleetInputs(iFleet)
+                For iGroup As Integer = 1 To core.nGroups
+                    asIsFished(iGroup) = asIsFished(iGroup) Or ((fleet.Landings(iGroup) > 0) Or (fleet.Discards(iGroup) > 0))
+                Next
+            Next
+
+            Dim grp As cCoreGroupBase = Nothing
+
+            Me.m_clbGroups.SuspendLayout()
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, Not asIsFished(grp.Index))
+                End If
+            Next
+            Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
+
+        End Sub
+
+        Private Sub OnSelectStanza(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnStanza.Click
+
+            Dim grp As cCoreGroupBase = Nothing
+
+            Me.m_clbGroups.SuspendLayout()
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, grp.isMultiStanza)
+                End If
+            Next
+            Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
+
+        End Sub
+
+        Private Sub OnSelectNonStanza(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnNonStanza.Click
+
+            Dim grp As cCoreGroupBase = Nothing
+
+            Me.m_clbGroups.SuspendLayout()
+            For i As Integer = 0 To Me.m_clbGroups.Items.Count - 1
+                grp = Me.GroupAt(i)
+                If (grp IsNot Nothing) Then
+                    Me.m_clbGroups.SetItemChecked(i, Not grp.isMultiStanza)
+                End If
+            Next
+            Me.m_clbGroups.ResumeLayout()
+            Me.SyncFleets()
+
+        End Sub
+
         Private Sub OnSelectAllFleets(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnAllFleets.Click
 
