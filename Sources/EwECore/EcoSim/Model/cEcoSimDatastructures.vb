@@ -134,6 +134,13 @@ Public Class cEcosimDatastructures
     ''' <summary>Base proportion of free nutrients.</summary>
     Public NutBaseFreeProp As Single
 
+    ' ToDo: make number of environmental responses open-ended
+    'Public NumEnvResponseFunctions As Integer
+    'Public EnvResponseForceNo() As Integer
+    'Public EnvResponseOpt(,) As Single
+    'Public EnvResponseLeft(,) As Single
+    'Public EnvResponseRight(,) As Single
+
     'Salinity 
     Public SalinityForceNo As Integer
     ' Public SdSal() As Single
