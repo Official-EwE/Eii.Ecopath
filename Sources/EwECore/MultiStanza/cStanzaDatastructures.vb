@@ -41,9 +41,24 @@ Public Class cStanzaDatastructures
     ''' </summary>
     Public jPacket(,,) As Single
 
+    ''' <summary>
+    ''' Row Index in map of cells used for a nursery. Cells that are populated by the first life stage of a multi-stanza group.
+    ''' </summary>
+    ''' <remarks>Populated in <see cref="cEcoSpace.InitPackets"> InitPackets</see></remarks>
     Public iNursery(,) As Integer
+
+    ''' <summary>
+    ''' Col Index in map of cells used for a nursery. Cells that are populated by the first life stage of a multi-stanza group.
+    ''' </summary>
+    ''' <remarks>Populated in <see cref="cEcoSpace.InitPackets"> InitPackets</see></remarks>
     Public jNursery(,) As Integer
+
+    ''' <summary>
+    ''' Total number of Nersery cell in the map by Multi-stanza groups
+    ''' </summary>
+    ''' <remarks>Populated in <see cref="cEcoSpace.InitPackets"> InitPackets</see></remarks>
     Public Nnursery() As Integer
+
     Public Zcell(,,) As Single   'mortality rate by cell and species
     Public MaxAgeSpecies() As Integer
     Public Npackets As Integer  'total # of packets per age
