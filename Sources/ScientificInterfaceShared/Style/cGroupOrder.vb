@@ -27,15 +27,14 @@ Namespace Style
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Helper class that orders EwE groups by multi-stanza configurations
+    ''' Helper class that orders EwE groups by multi-stanza configurations.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class cGroupOrder
 
 #Region " Private vars "
 
-        Private m_bIncludeStanza As Boolean = False
-        Private m_lItems As New List(Of cCoreInputOutputBase)
+        Private m_lGroups As New List(Of cCoreGroupBase)
 
 #End Region ' Private vars
 
@@ -45,47 +44,44 @@ Namespace Style
         ''' <summary>
         ''' Create a new instance of this class.
         ''' </summary>
-        ''' <param name="core">The core to grab groups and stanza configurations from.</param>
-        ''' <param name="bIncludeStanza">Flag, stating whether the resulting list should
-        ''' include <see cref="cStanzaGroup"/> instances.</param>
+        ''' <param name="core">The core that contains the data to order.</param>
+        ''' <remarks>Note that this code does NOT attempt to sort stanza life stages
+        ''' by age. This is left to the user to organize.</remarks>
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal core As cCore, _
-                       ByVal bIncludeStanza As Boolean)
-
-            Me.m_bIncludeStanza = bIncludeStanza
+        Public Sub New(ByVal core As cCore)
 
             Dim grp As cCoreGroupBase = Nothing
-            Dim stz As cStanzaGroup = Nothing
-            Dim lStanza(core.nStanzas) As List(Of cCoreGroupBase)
-            Dim lGroups As New List(Of cCoreGroupBase)
+            Dim grpTest As cCoreGroupBase = Nothing
+            Dim bIncluded(core.nGroups) As Boolean
 
-            ' Pass one: build filtered lists
+            ' For all groups:
             For i As Integer = 1 To core.nGroups
+                ' Get group
                 grp = core.EcoPathGroupInputs(i)
-                If grp.isMultiStanza Then
-                    If lStanza(grp.iStanza) Is Nothing Then
-                        lStanza(grp.iStanza) = New List(Of cCoreGroupBase)
-                        ' Add first group in stanza
-                        lGroups.Add(grp)
+                ' Group not included in final list?
+                If Not bIncluded(i) Then
+                    ' #Yes: add group
+                    Me.m_lGroups.Add(grp)
+                    ' Is multi-stanza?
+                    If (grp.isMultiStanza) Then
+                        ' #Yes: Add all related stanza for this group:
+                        For j As Integer = i + 1 To core.nGroups
+                            ' Get remaining group
+                            grpTest = core.EcoPathGroupInputs(j)
+                            ' Is of same stanza?
+                            If (grpTest.iStanza = grp.iStanza) Then
+                                ' #Yes: add below current group
+                                Me.m_lGroups.Add(grpTest)
+                                ' Remember that this group has been included already
+                                bIncluded(j) = True
+                            End If
+                        Next j
+                        grpTest = Nothing
                     End If
-                    lStanza(grp.iStanza).Add(grp)
-                Else
-                    lGroups.Add(grp)
                 End If
-            Next
+            Next i
 
-            ' Pass two: sequence it all together
-            For i As Integer = 0 To lGroups.Count - 1
-                grp = lGroups(i)
-                If grp.isMultiStanza Then
-                    If bIncludeStanza Then
-                        Me.m_lItems.Add(core.StanzaGroups(grp.iStanza))
-                    End If
-                    Me.m_lItems.AddRange(lStanza(grp.iStanza))
-                Else
-                    Me.m_lItems.Add(grp)
-                End If
-            Next
+            grp = Nothing
 
         End Sub
 
@@ -99,21 +95,9 @@ Namespace Style
         ''' <see cref="cStanzaGroup"/> items.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Items As cCoreInputOutputBase()
+        Public ReadOnly Property Groups As cCoreGroupBase()
             Get
-                Return Me.m_lItems.ToArray
-            End Get
-        End Property
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Get whether <see cref="cStanzaGroup"/>s are included in the 
-        ''' <see cref="Items"/> list.
-        ''' </summary>
-        ''' -----------------------------------------------------------------------
-        Public ReadOnly Property StanzaIncluded As Boolean
-            Get
-                Return Me.m_bIncludeStanza
+                Return Me.m_lGroups.ToArray
             End Get
         End Property
 

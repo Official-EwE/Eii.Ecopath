@@ -50,7 +50,7 @@ Namespace Ecopath.Input
             ' Test for UI context to prevent core from being accessed
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim source As cCoreInputOutputBase = Nothing
+            Dim source As cCoreGroupBase = Nothing
 
             'Define grid dimensions
             Me.Redim(Core.nGroups + 1, 4 + Core.nDetritusGroups)
@@ -76,8 +76,9 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim source As cCoreInputOutputBase = Nothing
+            Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
+            Dim order As New cGroupOrder(Me.Core)
 
             Dim prop As cProperty = Nothing
             Dim propSum As cSingleProperty = Nothing
@@ -90,27 +91,12 @@ Namespace Ecopath.Input
 
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim blnStanza(Core.nGroups) As Boolean
-            Dim aiStanza(Core.nGroups) As Integer 'Hold the stanza group number
             Dim iStanzaPrev As Integer = -1
 
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-
-            For i As Integer = 1 To Core.nGroups : aiStanza(i) = -1 : Next
 
             'Remove existing rows
             Me.RowsCount = 1
-
-            'Tag stanza group first
-            For iStanzaGroup As Integer = 0 To Core.nStanzas - 1
-                sg = Core.StanzaGroups(iStanzaGroup)
-                For iStanza As Integer = 1 To sg.NStanzas
-                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
-                    blnStanza(source.Index) = True
-                    aiStanza(source.Index) = iStanzaGroup
-                Next
-            Next
 
             ' Configure static SUM prop
             propSum = New cSingleProperty()
@@ -118,12 +104,12 @@ Namespace Ecopath.Input
             propSum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 
             ' Create rows for all groups
-            For rowIndex As Integer = 1 To Core.nGroups
+            For i As Integer = 0 To order.Groups.Count - 1
 
-                source = Core.EcoPathGroupInputs(rowIndex)
+                source = order.Groups(i)
                 alProp.Clear()
 
-                If aiStanza(source.Index) = -1 Then 'If group is non-stanza Then display group info
+                If (Not source.isMultiStanza) Then
                     iRow = Me.AddRow
                     For iCol As Integer = 1 To Core.nDetritusGroups
 
@@ -150,19 +136,18 @@ Namespace Ecopath.Input
 
                 Else ' Group is stanza
 
-                    sg = Core.StanzaGroups(aiStanza(source.Index))
-                    If aiStanza(source.Index) <> iStanzaPrev Then 'If stanza group appears the first time Then display + control
+                    sg = Core.StanzaGroups(source.iStanza)
+                    ' Entering a new stanza group?
+                    If (source.iStanza <> iStanzaPrev) Then
                         iRow = Me.AddRow()
                         hgcStanza = New EwEHierarchyGridCell()
-                        dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         'Complete row with dummy cells
-                        For i As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        iStanzaPrev = aiStanza(source.Index)
+                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        iStanzaPrev = source.iStanza
                         iRow = Me.AddRow()
                     Else
-                        hgcStanza = dtStanzaCells(sg)
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
 

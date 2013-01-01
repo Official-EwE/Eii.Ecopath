@@ -82,40 +82,23 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim source As cCoreInputOutputBase = Nothing
+            Dim order As New cGroupOrder(Me.Core)
+            Dim source As cCoreGroupBase = Nothing
             Dim cell As EwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim abInStanza(Core.nGroups) As Boolean
-            Dim aiStanza(Core.nGroups) As Integer 'Hold the stanza group number
             Dim iStanzaPrev As Integer = -1
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
-
-            For i As Integer = 1 To Core.nGroups : aiStanza(i) = -1 : Next
-
-            ' Create stanza groups first
-            ' Oh yes, this core exposed list(!) is zero-based
-            For stanzaIndex As Integer = 0 To Core.nStanzas - 1
-                sg = Core.StanzaGroups(stanzaIndex)
-
-                ' The group list of a StanzaGroup is one-based! Are you confused yet?
-                For iStanza As Integer = 1 To sg.NStanzas
-                    source = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
-                    abInStanza(source.Index) = True
-                    aiStanza(source.Index) = stanzaIndex
-                Next
-            Next
 
             ' Remove existing rows
             Me.RowsCount = 1
 
             ' Create rows for all groups
-            For groupIndex As Integer = 1 To Core.nGroups
+            For i As Integer = 0 To order.Groups.Count - 1
 
-                source = Core.EcoPathGroupInputs(groupIndex)
+                source = order.Groups(i)
 
-                If aiStanza(source.Index) = -1 Then 'If group is non-stanza Then display group info
+                If Not source.isMultiStanza Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow()
                     Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
                     Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
@@ -143,24 +126,27 @@ Namespace Ecopath.Input
                     Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
                     Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DetImp)
 
+                    ' Forget any stanza links
+                    iStanzaPrev = -1
+
                 Else 'Group is stanza
 
-                    sg = Core.StanzaGroups(aiStanza(source.Index))
-                    If aiStanza(source.Index) <> iStanzaPrev Then 'If stanza group appears the first time Then diplay the + control
+                    sg = Core.StanzaGroups(source.iStanza)
+
+                    ' Create hierarchy cell if entering a new stanza config
+                    If source.iStanza <> iStanzaPrev Then
 
                         ' Fill row with dummy cells. We'll do something fancy here one day
                         iRow = Me.AddRow()
-                        For i As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
+                        For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
 
                         hgcStanza = New EwEHierarchyGridCell()
-                        dtStanzaCells.Add(sg, hgcStanza)
                         Me(iRow, eColumnTypes.Index) = hgcStanza
                         Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
-                        iStanzaPrev = aiStanza(source.Index)
+                        iStanzaPrev = source.iStanza
                         iRow = Me.AddRow()
                     Else
-                        hgcStanza = dtStanzaCells(sg)
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
 
@@ -199,7 +185,7 @@ Namespace Ecopath.Input
 
                 End If
 
-            Next groupIndex
+            Next i
 
         End Sub
 
