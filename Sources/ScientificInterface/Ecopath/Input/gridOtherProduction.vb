@@ -72,77 +72,49 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
+            Dim order As New cGroupOrder(Me.Core)
             Dim source As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim blnStanza(Core.nLivingGroups) As Boolean
-            Dim intStanza(Core.nLivingGroups) As Integer 'Hold the stanza group number
-            Dim intStanzaPrev As Integer = -1
+            Dim iStanzaPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-
-            For i As Integer = 1 To Core.nLivingGroups : intStanza(i) = -1 : Next
 
             'Remove existing rows
             Me.RowsCount = 1
 
-            'Tag stanza group first
-            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
-                sg = Core.StanzaGroups(stanzaGroupIndex)
-                For stanzaIndex As Integer = 1 To sg.NStanzas
-                    source = Core.EcoPathGroupInputs(sg.iGroups(stanzaIndex))
-                    blnStanza(source.Index) = True
-                    intStanza(source.Index) = stanzaGroupIndex
-                Next
-            Next
-
             'Create rows for all groups
-            For groupIndex As Integer = 1 To Core.nLivingGroups
-                source = Core.EcoPathGroupInputs(groupIndex)
+            For i As Integer = 0 To order.Groups.Count - 1
 
-                If intStanza(source.Index) = -1 Then 'If group is non-stanza Then display group info
+                source = order.Groups(i)
 
-                    iRow = Me.AddRow
-                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Immig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Immig)
-                    Me(iRow, eColumnTypes.Emig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Emig)
-                    Me(iRow, eColumnTypes.EmigRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EmigRate)
-                    Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
-                    Me(iRow, eColumnTypes.BioAccumRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRate)
-
-                Else 'Group is stanza
-
-                    sg = Core.StanzaGroups(intStanza(source.Index))
-                    If intStanza(source.Index) <> intStanzaPrev Then 'If stanza group appears the first time Then display + control
+                If source.isMultiStanza Then
+                    sg = Core.StanzaGroups(source.iStanza)
+                    If (source.iStanza <> iStanzaPrev) Then
+                        ' Create stanza header row
+                        iRow = Me.AddRow
                         hgcStanza = New EwEHierarchyGridCell()
-                        dtStanzaCells.Add(sg, hgcStanza)
-                        iRow = Me.AddRow()
-
                         Me(iRow, eColumnTypes.Index) = hgcStanza
                         Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-
-                        'Complete row with dummy cells
-                        For i As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        intStanzaPrev = intStanza(source.Index)
-                        iRow = Me.AddRow
-                    Else
-                        hgcStanza = dtStanzaCells(sg)
-                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
+                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        iStanzaPrev = source.iStanza
                     End If
-
-                    'Display group info
+                    ' Add group row as child to stanza
+                    iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
-
-                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Immig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Immig)
-                    Me(iRow, eColumnTypes.Emig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Emig)
-                    Me(iRow, eColumnTypes.EmigRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EmigRate)
-                    Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
-                    Me(iRow, eColumnTypes.BioAccumRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRate)
-
+                Else
+                    ' Add regular group row
+                    iRow = Me.AddRow
+                    iStanzaPrev = -1
                 End If
+
+                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Immig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Immig)
+                Me(iRow, eColumnTypes.Emig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Emig)
+                Me(iRow, eColumnTypes.EmigRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EmigRate)
+                Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
+                Me(iRow, eColumnTypes.BioAccumRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRate)
+
             Next
 
         End Sub
