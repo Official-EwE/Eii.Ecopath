@@ -57,55 +57,33 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim group As cEcoPathGroupInput = Nothing
+            Dim order As New cGroupOrder(Me.Core)
+            Dim group As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim intStanzaGroupIndex(Core.nGroups) As Integer 'Hold the stanza group index
-            Dim intStanzaGroupIndexPrev As Integer = -1
+            Dim iStanzaPrev As Integer = -1
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-
-            For i As Integer = 1 To Core.nGroups : intStanzaGroupIndex(i) = -1 : Next
-
-            'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To Core.nStanzas - 1
-                sg = Core.StanzaGroups(stanzaGroupIndex)
-
-                For iStanza As Integer = 1 To sg.NStanzas
-                    group = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
-                    intStanzaGroupIndex(group.Index) = stanzaGroupIndex
-                Next
-            Next
 
             'Remove existing rows
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For rowIndex As Integer = 1 To Core.nGroups
-                group = Core.EcoPathGroupInputs(rowIndex)
-                ' Is group stanza?
-                If intStanzaGroupIndex(group.Index) = -1 Then
-                    ' #No: display group info
+            For i As Integer = 0 To order.Groups.Count - 1
+                group = order.Groups(i)
+                If Not group.isMultiStanza Then
                     iRow = Me.AddRow
                     FillInRows(iRow, group)
                 Else
-                    '#Yes: Group is stanza
-                    sg = Core.StanzaGroups(intStanzaGroupIndex(group.Index))
-                    If intStanzaGroupIndex(group.Index) <> intStanzaGroupIndexPrev Then 'If stanza group appears the first time Then diplay the + control
+                    sg = Core.StanzaGroups(group.iStanza)
+                    If group.iStanza <> iStanzaPrev Then
                         hgcStanza = New EwEHierarchyGridCell()
-                        dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        ' Complete row with dummy cells
-                        For i As Integer = 2 To 2 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        intStanzaGroupIndexPrev = intStanzaGroupIndex(group.Index)
-                        iRow = Me.AddRow
-                    Else
-                        hgcStanza = dtStanzaCells(sg)
-                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
+                        For j As Integer = 2 To 2 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        iStanzaPrev = group.iStanza
                     End If
-                    'Display group info
+                    iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
                     FillInRows(iRow, group, True)
                 End If
@@ -114,7 +92,7 @@ Namespace Ecopath.Input
         End Sub
 
         Private Sub FillInRows(ByVal iRow As Integer, _
-                               ByVal group As cEcoPathGroupInput, _
+                               ByVal group As cCoreGroupBase, _
                                Optional ByVal isIndented As Boolean = False)
 
             ' Get the group name from EcopathInput
