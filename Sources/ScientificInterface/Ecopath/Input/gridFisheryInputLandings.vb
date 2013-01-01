@@ -77,12 +77,12 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim source As cCoreInputOutputBase = Nothing
-            Dim sourceSec As cCoreInputOutputBase = Nothing
+            Dim order As New cGroupOrder(Me.Core)
+            Dim source As cCoreGroupBase = Nothing
+            Dim sourceSec As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
-            Dim aiStanzaGroups(Core.nGroups) As Integer 'Hold the stanza group index
-            Dim iStanzaGroupPrev As Integer = -1
+            Dim iStanzaPrev As Integer = -1
 
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim prop As cProperty = Nothing
@@ -100,19 +100,6 @@ Namespace Ecopath.Input
             Dim propSumCol As cFormulaProperty = Nothing
 
             Dim hgcStanza As EwEHierarchyGridCell = Nothing
-            Dim dtStanzaCells As New Dictionary(Of cStanzaGroup, EwEHierarchyGridCell)
-
-            For i As Integer = 1 To Core.nGroups : aiStanzaGroups(i) = -1 : Next
-
-            'Tag stanza group
-            For stanzaGroupIndex As Integer = 0 To Me.Core.nStanzas - 1
-                sg = Me.Core.StanzaGroups(stanzaGroupIndex)
-
-                For iStanza As Integer = 1 To sg.NStanzas
-                    source = Me.Core.EcoPathGroupInputs(sg.iGroups(iStanza))
-                    aiStanzaGroups(source.Index) = stanzaGroupIndex
-                Next
-            Next
 
             'Remove existing rows
             Me.RowsCount = 1
@@ -121,33 +108,33 @@ Namespace Ecopath.Input
             If Core.nFleets = 0 Then Return
 
             'Create rows for all groups
-            For rowIndex As Integer = 1 To Me.Core.nGroups
+            For i As Integer = 0 To order.Groups.Count - 1
 
                 ' Clear the arrayList for the new row
                 alSumRow.Clear()
                 ' Get the Ecopath input for this specific group
-                source = Core.EcoPathGroupInputs(rowIndex)
+                source = order.Groups(i)
 
-                If aiStanzaGroups(source.Index) = -1 Then 'If group is non-stanza Then display group info
+                'If group is non-stanza Then display group info
+                If Not source.isMultiStanza Then
                     iRow = Me.AddRow
                     FillInRows(iRow, source, alSumRow, alSumAll)
+                    iStanzaPrev = 0
                 Else 'Group is stanza
-                    sg = Core.StanzaGroups(aiStanzaGroups(source.Index))
-                    If aiStanzaGroups(source.Index) <> iStanzaGroupPrev Then 'If stanza group appears the first time Then diplay the + control
+                    sg = Core.StanzaGroups(source.iStanza)
+                    ' Switching stanza?
+                    If (iStanzaPrev <> source.iStanza) Then
+                        ' #Yes: create hierarchy box
                         hgcStanza = New EwEHierarchyGridCell()
-                        dtStanzaCells.Add(sg, hgcStanza)
                         iRow = Me.AddRow()
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
-                        ' Complete row with dummy cells
-                        For i As Integer = 2 To Core.nFleets + 2 : Me(iRow, i) = New EwERowHeaderCell() : Next
-                        iStanzaGroupPrev = aiStanzaGroups(source.Index)
+                        For j As Integer = 2 To Core.nFleets + 2 : Me(iRow, j) = New EwERowHeaderCell() : Next
                         iRow = Me.AddRow
                     Else
-                        hgcStanza = dtStanzaCells(sg)
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
-                    'Display group info
+                    iStanzaPrev = source.iStanza
                     hgcStanza.AddChildRow(iRow)
                     FillInRows(iRow, source, alSumRow, alSumAll, True)
                 End If
@@ -163,12 +150,12 @@ Namespace Ecopath.Input
             Me(iRow, 0) = New EwERowHeaderCell(CStr(iRow))
             Me(iRow, 1) = New EwERowHeaderCell(SharedResources.HEADER_SUM)
             For fleetIndex As Integer = 1 To Core.nFleets
-                source = Core.FleetInputs(fleetIndex)
+                Dim fleet As cFleetInput = Core.FleetInputs(fleetIndex)
                 alSumCol.Clear()
 
                 For rowIndex As Integer = 1 To Core.nGroups
                     sourceSec = Core.EcoPathGroupInputs(rowIndex)
-                    prop = pm.GetProperty(source, eVarNameFlags.Landings, sourceSec)
+                    prop = pm.GetProperty(fleet, eVarNameFlags.Landings, sourceSec)
                     alSumCol.Add(prop)
                 Next
                 opSumCol = New cMultiOperation(cMultiOperation.eOperatorType.Sum, alSumCol.ToArray())
