@@ -91,8 +91,7 @@ Namespace Style
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Get the ordered list of <see cref="cCoreGroupBase"/> and 
-        ''' <see cref="cStanzaGroup"/> items.
+        ''' Get the ordered list of <see cref="cCoreGroupBase">groups</see>.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property Groups As cCoreGroupBase()
