@@ -640,7 +640,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Settings\cFormSetting.vb" />
-    <Compile Include="Style\cGroupOrder.vb" />
     <Compile Include="Style\ColorRamps\cARGBColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cSAUPColorRamp.vb" />

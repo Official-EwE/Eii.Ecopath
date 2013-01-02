@@ -57,7 +57,7 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim order As New cGroupOrder(Me.Core)
+            Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
             Dim group As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
@@ -68,8 +68,8 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For i As Integer = 0 To order.Groups.Count - 1
-                group = order.Groups(i)
+            For i As Integer = 0 To groups.Count - 1
+                group = groups(i)
                 If Not group.isMultiStanza Then
                     iRow = Me.AddRow
                     FillInRows(iRow, group)

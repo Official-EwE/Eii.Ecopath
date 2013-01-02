@@ -72,8 +72,8 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim order As New cGroupOrder(Me.Core)
-            Dim source As cCoreGroupBase = Nothing
+            Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
+            Dim group As cCoreGroupBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
             Dim iStanzaPrev As Integer = -1
@@ -83,20 +83,20 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             'Create rows for all groups
-            For i As Integer = 0 To order.Groups.Count - 1
+            For i As Integer = 0 To groups.Count - 1
 
-                source = order.Groups(i)
+                group = groups(i)
 
-                If source.isMultiStanza Then
-                    sg = Core.StanzaGroups(source.iStanza)
-                    If (source.iStanza <> iStanzaPrev) Then
+                If group.isMultiStanza Then
+                    sg = Core.StanzaGroups(group.iStanza)
+                    If (group.iStanza <> iStanzaPrev) Then
                         ' Create stanza header row
                         iRow = Me.AddRow
                         hgcStanza = New EwEHierarchyGridCell()
                         Me(iRow, eColumnTypes.Index) = hgcStanza
                         Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
-                        iStanzaPrev = source.iStanza
+                        iStanzaPrev = group.iStanza
                     End If
                     ' Add group row as child to stanza
                     iRow = Me.AddRow
@@ -107,13 +107,13 @@ Namespace Ecopath.Input
                     iStanzaPrev = -1
                 End If
 
-                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                Me(iRow, eColumnTypes.Immig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Immig)
-                Me(iRow, eColumnTypes.Emig) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Emig)
-                Me(iRow, eColumnTypes.EmigRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EmigRate)
-                Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccum)
-                Me(iRow, eColumnTypes.BioAccumRate) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BioAccumRate)
+                Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, eColumnTypes.Immig) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Immig)
+                Me(iRow, eColumnTypes.Emig) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Emig)
+                Me(iRow, eColumnTypes.EmigRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.EmigRate)
+                Me(iRow, eColumnTypes.BioAccum) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccum)
+                Me(iRow, eColumnTypes.BioAccumRate) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BioAccumRate)
 
             Next
 

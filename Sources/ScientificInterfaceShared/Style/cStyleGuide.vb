@@ -1475,8 +1475,6 @@ Namespace Style
             End Get
         End Property
 
-#End Region ' Generics
-
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Calculate a series of alternating <see cref="HSV">HSV colors</see> 
@@ -1523,6 +1521,8 @@ Namespace Style
             Return New HSV(hsvGroup.Hue, hsvGroup.Saturation - iLifeStage * sTick, hsvGroup.Value - (iNumLifeStages - iLifeStage - 1) * vTick)
 
         End Function
+
+#End Region ' Generics
 
 #End Region ' Color access
 
@@ -1742,6 +1742,59 @@ Namespace Style
         End Sub
 
 #End Region ' Item visibility
+
+#Region " Item order "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns an array of <see cref="cCoreGroupBase">all groups</see>,
+        ''' sorted by multi-stanza.
+        ''' </summary>
+        ''' <param name="core">The core to extract groups from.</param>
+        ''' <remarks>This central method enables centralized sort options, 
+        ''' such as sorting by stanza age (asc), stanza first, etc.</remarks>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Groups(core As cCore) As cCoreGroupBase()
+            Get
+                Dim grp As cCoreGroupBase = Nothing
+                Dim grpTest As cCoreGroupBase = Nothing
+                Dim bIncluded(core.nGroups) As Boolean
+                Dim lGroups As New List(Of cCoreGroupBase)
+
+                ' For all groups:
+                For i As Integer = 1 To Core.nGroups
+                    ' Get group
+                    grp = Core.EcoPathGroupInputs(i)
+                    ' Group not included in final list?
+                    If Not bIncluded(i) Then
+                        ' #Yes: add group
+                        lGroups.Add(grp)
+                        ' Is multi-stanza?
+                        If (grp.isMultiStanza) Then
+                            ' #Yes: Add all related stanza for this group:
+                            For j As Integer = i + 1 To Core.nGroups
+                                ' Get remaining group
+                                grpTest = Core.EcoPathGroupInputs(j)
+                                ' Is of same stanza?
+                                If (grpTest.iStanza = grp.iStanza) Then
+                                    ' #Yes: add below current group
+                                    lGroups.Add(grpTest)
+                                    ' Remember that this group has been included already
+                                    bIncluded(j) = True
+                                End If
+                            Next j
+                            grpTest = Nothing
+                        End If
+                    End If
+                Next i
+
+                grp = Nothing
+                Return lGroups.ToArray()
+
+            End Get
+        End Property
+
+#End Region ' Item order
 
 #Region " Visual Styles "
 

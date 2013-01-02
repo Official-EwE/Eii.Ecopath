@@ -82,8 +82,8 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim order As New cGroupOrder(Me.Core)
-            Dim source As cCoreGroupBase = Nothing
+            Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
+            Dim group As cCoreGroupBase = Nothing
             Dim cell As EwECellBase = Nothing
             Dim sg As cStanzaGroup = Nothing
             Dim iRow As Integer = -1
@@ -94,17 +94,17 @@ Namespace Ecopath.Input
             Me.RowsCount = 1
 
             ' Create rows for all groups
-            For i As Integer = 0 To order.Groups.Count - 1
+            For i As Integer = 0 To groups.Count - 1
 
-                source = order.Groups(i)
+                group = groups(i)
 
-                If Not source.isMultiStanza Then 'If group is non-stanza Then display group info
+                If Not group.isMultiStanza Then 'If group is non-stanza Then display group info
                     iRow = Me.AddRow()
-                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
+                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Area)
 
-                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaInput)
+                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BiomassAreaInput)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.BA) = cell
 
@@ -112,29 +112,29 @@ Namespace Ecopath.Input
                     cell.Style = cStyleGuide.eStyleFlags.NotEditable
                     Me(iRow, eColumnTypes.Z) = cell
 
-                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBInput)
+                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.PBInput)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.PB) = cell
 
-                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBInput)
+                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.QBInput)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.QB) = cell
 
-                    Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEInput)
-                    Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortInput)
-                    Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEInput)
-                    Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
-                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DetImp)
+                    Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.EEInput)
+                    Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.OtherMortInput)
+                    Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.GEInput)
+                    Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.GS)
+                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.DetImp)
 
                     ' Forget any stanza links
                     iStanzaPrev = -1
 
                 Else 'Group is stanza
 
-                    sg = Core.StanzaGroups(source.iStanza)
+                    sg = Core.StanzaGroups(group.iStanza)
 
                     ' Create hierarchy cell if entering a new stanza config
-                    If source.iStanza <> iStanzaPrev Then
+                    If group.iStanza <> iStanzaPrev Then
 
                         ' Fill row with dummy cells. We'll do something fancy here one day
                         iRow = Me.AddRow()
@@ -144,22 +144,22 @@ Namespace Ecopath.Input
                         Me(iRow, eColumnTypes.Index) = hgcStanza
                         Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
 
-                        iStanzaPrev = source.iStanza
+                        iStanzaPrev = group.iStanza
                         iRow = Me.AddRow()
                     Else
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
                     End If
 
-                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.Area)
+                    Me(iRow, eColumnTypes.Index) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                    Me(iRow, eColumnTypes.Name) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                    Me(iRow, eColumnTypes.Area) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.Area)
 
-                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.BiomassAreaInput)
+                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.BiomassAreaInput)
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.BA) = cell
 
-                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.PBInput)
+                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.PBInput)
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.Z) = cell
@@ -169,17 +169,17 @@ Namespace Ecopath.Input
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     Me(iRow, eColumnTypes.PB) = cell
 
-                    cell = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.QBInput)
+                    cell = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.QBInput)
                     cell.Behaviors.Add(Me.EwEEditHandler)
                     cell.SuppressZero = True
                     Me(iRow, eColumnTypes.QB) = cell
 
-                    Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.EEInput)
-                    Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.OtherMortInput)
-                    Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GEInput)
+                    Me(iRow, eColumnTypes.EE) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.EEInput)
+                    Me(iRow, eColumnTypes.OtherMort) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.OtherMortInput)
+                    Me(iRow, eColumnTypes.GE) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.GEInput)
                     Me(iRow, eColumnTypes.GE).Behaviors.Add(Me.EwEEditHandler)
-                    Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.GS)
-                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, source, eVarNameFlags.DetImp)
+                    Me(iRow, eColumnTypes.GS) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.GS)
+                    Me(iRow, eColumnTypes.DetImp) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.DetImp)
 
                     hgcStanza.AddChildRow(iRow)
 

@@ -78,7 +78,7 @@ Namespace Ecopath.Input
 
             Dim source As cCoreGroupBase = Nothing
             Dim sourceSec As cCoreInputOutputBase = Nothing
-            Dim order As New cGroupOrder(Me.Core)
+            Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
 
             Dim prop As cProperty = Nothing
             Dim propSum As cSingleProperty = Nothing
@@ -104,9 +104,9 @@ Namespace Ecopath.Input
             propSum.SetStyle(cStyleGuide.eStyleFlags.Sum Or cStyleGuide.eStyleFlags.NotEditable)
 
             ' Create rows for all groups
-            For i As Integer = 0 To order.Groups.Count - 1
+            For i As Integer = 0 To groups.Count - 1
 
-                source = order.Groups(i)
+                source = groups(i)
                 alProp.Clear()
 
                 If (Not source.isMultiStanza) Then
