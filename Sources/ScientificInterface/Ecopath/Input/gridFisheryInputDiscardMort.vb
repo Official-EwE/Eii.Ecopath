@@ -66,26 +66,46 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim group As cCoreInputOutputBase = Nothing
+            Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
+            Dim group As cCoreGroupBase = Nothing
+            Dim sg As cStanzaGroup = Nothing
             Dim fleet As cFleetInput = Nothing
-            Dim cell As ICell = Nothing
+            Dim iRow As Integer = 0
+            Dim iStanzaPrev As Integer = -1
+            Dim hgcStanza As EwEHierarchyGridCell = Nothing
 
             ' For each group
-            For iGroup As Integer = 1 To core.nGroups
+            For i As Integer = 0 To groups.Count - 1
 
-                Me.AddRow()
-
-                'Get the group info
-                group = core.EcoPathGroupInputs(iGroup)
+                group = groups(i)
+                If group.isMultiStanza Then
+                    sg = Core.StanzaGroups(group.iStanza)
+                    If (group.iStanza <> iStanzaPrev) Then
+                        ' Create stanza header row
+                        iRow = Me.AddRow
+                        hgcStanza = New EwEHierarchyGridCell()
+                        Me(iRow, 0) = hgcStanza
+                        Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
+                        For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
+                        iStanzaPrev = group.iStanza
+                    End If
+                    ' Add group row as child to stanza
+                    iRow = Me.AddRow
+                    hgcStanza.AddChildRow(iRow)
+                Else
+                    ' Add regular group row
+                    iRow = Me.AddRow
+                    iStanzaPrev = -1
+                End If
 
                 ' Fleet name As row header
-                Me(iGroup, 0) = New EwERowHeaderCell(CStr(iGroup))
-                Me(iGroup, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                Me(iRow, 0) = New EwERowHeaderCell(CStr(i))
+                Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
                 ' Fleet cells
                 For iFleet As Integer = 1 To Me.Core.nFleets
                     fleet = Core.FleetInputs(iFleet)
-                    Me(iGroup, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.DiscardMortality, group)
+                    Me(iRow, 1 + iFleet) = New PropertyCell(Me.PropertyManager, fleet, eVarNameFlags.DiscardMortality, group)
                 Next
             Next
 

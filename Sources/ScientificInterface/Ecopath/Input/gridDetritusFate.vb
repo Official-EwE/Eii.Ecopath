@@ -76,9 +76,9 @@ Namespace Ecopath.Input
 
         Protected Overrides Sub FillData()
 
-            Dim source As cCoreGroupBase = Nothing
-            Dim sourceSec As cCoreInputOutputBase = Nothing
             Dim groups As cCoreGroupBase() = Me.StyleGuide.Groups(Me.Core)
+            Dim group As cCoreGroupBase = Nothing
+            Dim groupSec As cCoreInputOutputBase = Nothing
 
             Dim prop As cProperty = Nothing
             Dim propSum As cSingleProperty = Nothing
@@ -106,18 +106,18 @@ Namespace Ecopath.Input
             ' Create rows for all groups
             For i As Integer = 0 To groups.Count - 1
 
-                source = groups(i)
+                group = groups(i)
                 alProp.Clear()
 
-                If (Not source.isMultiStanza) Then
+                If (Not group.isMultiStanza) Then
                     iRow = Me.AddRow
                     For iCol As Integer = 1 To Core.nDetritusGroups
 
-                        sourceSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
+                        groupSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
 
-                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                        Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                        prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, Core.nGroups - Core.nDetritusGroups)
+                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                        Me(iRow, 1) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                        prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Core.nGroups - Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New PropertyCell(prop)
                         alProp.Add(prop)
                     Next
@@ -136,16 +136,16 @@ Namespace Ecopath.Input
 
                 Else ' Group is stanza
 
-                    sg = Core.StanzaGroups(source.iStanza)
+                    sg = Core.StanzaGroups(group.iStanza)
                     ' Entering a new stanza group?
-                    If (source.iStanza <> iStanzaPrev) Then
+                    If (group.iStanza <> iStanzaPrev) Then
                         iRow = Me.AddRow()
                         hgcStanza = New EwEHierarchyGridCell()
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         'Complete row with dummy cells
                         For j As Integer = 2 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
-                        iStanzaPrev = source.iStanza
+                        iStanzaPrev = group.iStanza
                         iRow = Me.AddRow()
                     Else
                         iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
@@ -155,11 +155,11 @@ Namespace Ecopath.Input
                     hgcStanza.AddChildRow(iRow)
                     For iCol As Integer = 1 To Core.nDetritusGroups
 
-                        sourceSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
+                        groupSec = Core.EcoPathGroupInputs(Core.nGroups - Core.nDetritusGroups + iCol)
 
-                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                        Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                        prop = Me.PropertyManager.GetProperty(source, eVarNameFlags.DetritusFate, sourceSec, True, Core.nGroups - Core.nDetritusGroups)
+                        Me(iRow, 0) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Index)
+                        Me(iRow, 1) = New PropertyRowHeaderChildCell(Me.PropertyManager, group, eVarNameFlags.Name)
+                        prop = Me.PropertyManager.GetProperty(group, eVarNameFlags.DetritusFate, groupSec, True, Core.nGroups - Core.nDetritusGroups)
                         Me(iRow, iCol + 1) = New PropertyCell(prop)
                         alProp.Add(prop)
                     Next
