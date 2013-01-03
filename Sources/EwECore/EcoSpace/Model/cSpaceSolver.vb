@@ -25,28 +25,31 @@ Imports EwEUtils.Core
 Public Class cSpaceSolver
 
     ''' <summary>
-    ''' Signal mechanism used by the calling thread for thread Synchronization
+    ''' Wait handle 
     ''' </summary>
     ''' <remarks>
     ''' When the Solve() thread is running (SignalState in a non-signaled state SignalState.Reset()) 
     ''' calls to SignalState.WaitOne() will block until Solve() has completed (SignalState in a signaled state SignalState.Set())
     ''' </remarks>
-    Public SignalState As New ManualResetEvent(True)
+    Public WaitHandle As ManualResetEvent
+    Public Shared ThreadIncrementer As Integer
+
+    Public RunTimeSeconds As Double
+    Public lstCellCompTimes As New List(Of Double)
 
     Private m_ConTracer As cContaminantTracer
 
     Public iYear As Integer ' current year
 
-    ''' <summary>
-    ''' Delegate for posting error messages.
-    ''' </summary>
-    ''' <remarks>
-    ''' All error handling must be done on the same thread. Errors can not be thrown from one thread to another.
-    ''' A delegate must be used to cross the thread boundary. EcospaceErrorHandler is a delegate to a sub on the main Ecospace thread.
-    ''' </remarks>
-    Public EcospaceErrorHandler As cEcoSpace.SolverErrorDelegate
+    ' ''' <summary>
+    ' ''' Delegate for posting error messages.
+    ' ''' </summary>
+    ' ''' <remarks>
+    ' ''' All error handling must be done on the same thread. Errors can not be thrown from one thread to another.
+    ' ''' A delegate must be used to cross the thread boundary. EcospaceErrorHandler is a delegate to a sub on the main Ecospace thread.
+    ' ''' </remarks>
+    'Public EcospaceErrorHandler As cEcoSpace.SolverErrorDelegate
 
-    Public isOkToRun As Boolean
     Public ThreadID As Integer
 
     'references
@@ -112,6 +115,31 @@ Public Class cSpaceSolver
     Public TotPredThread() As Single
     Public TotIFDweightThread() As Single
 
+    ''' <summary>
+    ''' Sum of Effort, Sailing Effort, Catch and Value across cells by fleet
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public ResultsByFleet(,) As Single
+
+    ''' <summary>
+    ''' Sum of Biomass, Relative Biomass and Catch by group across cells by group
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public ResultsByGroup(,) As Single
+
+    ''' <summary>
+    ''' Sum of Catch and Value across cells by fleet group
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public ResultsByFleetGroup(,,) As Single
+    Public ResultsCatchRegionGearGroup(,,) As Single
+
+    ''' <summary>
+    ''' Sum of Landings across cells by group fleet
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Landings(,) As Single
+
     'the ip groups to solve
     Private iFrstCell As Integer
     Private iLstCell As Integer
@@ -142,6 +170,18 @@ Public Class cSpaceSolver
 
     Private m_stpWatch As Stopwatch
 
+
+    Public Sub InitForTimestep()
+
+        Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
+        Array.Clear(Me.TotLossThread, 0, m_Data.NGroups)
+        Array.Clear(Me.TotEatenByThread, 0, m_Data.NGroups)
+        Array.Clear(Me.TotBiomThread, 0, m_Data.NGroups)
+        Array.Clear(Me.TotPredThread, 0, m_Data.NGroups)
+        Array.Clear(Me.TotIFDweightThread, 0, m_Data.NGroups)
+
+    End Sub
+
     Public Sub Init()
         'local spatial variables
         ReDim loss(m_Data.NGroups)
@@ -170,7 +210,6 @@ Public Class cSpaceSolver
         'and both Sim and Space can use the same methods... 
         ReDim FishRateGear(m_Data.nFleets, 0)
 
-
         'thread copy of global sums
         ReDim BtimeLocal(m_Data.NGroups)
         ReDim TotLossThread(m_Data.NGroups)
@@ -179,6 +218,16 @@ Public Class cSpaceSolver
         ReDim TotPredThread(m_Data.NGroups)
         ReDim TotIFDweightThread(m_Data.NGroups)
         ReDim GroupDetritus(m_Data.NGroups)
+
+        Dim nEcospaceTimeSteps As Integer
+        nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
+        ReDim ResultsByGroup(cEcospaceDataStructures.N_RESULTS_GROUPS, m_Data.NGroups)
+        ReDim ResultsByFleet(cEcospaceDataStructures.N_RESULTS_FLEETS, m_Data.nFleets)
+        ReDim ResultsByFleetGroup(cEcospaceDataStructures.N_RESULTS_FLEETGROUPS, m_Data.nFleets, m_Data.NGroups)
+        ReDim Landings(m_Data.NGroups, m_Data.nFleets)
+
+        ' ReDim ResultsRegionGroup(nRegions, NGroups, NumberOfTimeSteps)
+        ReDim ResultsCatchRegionGearGroup(m_Data.nRegions, m_Data.nFleets, m_Data.NGroups)
 
         'local copies are initialized from the ecosim data
         Array.Copy(m_SimData.Hden, Hden, m_Data.NGroups + 1)
@@ -255,19 +304,14 @@ Public Class cSpaceSolver
             ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
         End If
 
-        Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
-        Console.WriteLine("Solve Derivt OBID = " & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
-        Console.WriteLine("     N Map Cells = " & (iLstCell - iFrstCell + 1).ToString)
+        'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+        'Console.WriteLine("Solve Derivt OBID = " & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+        'Console.WriteLine("     N Map Cells = " & (iLstCell - iFrstCell + 1).ToString)
 
         Me.m_stpWatch.Reset()
         Me.m_stpWatch.Start()
 
-        'if this is running on a thread this may not work
-        'all flags need to be set outside the thread
-        isOkToRun = False
         Try
-            'set signal state to 'non-signaled' SignalState.WaitOne() will block
-            SignalState.Reset()
             Dim iCell As Integer
 
             'do the processing here
@@ -277,37 +321,27 @@ Public Class cSpaceSolver
                 'it is now converted into a row/col index for use in the rest of the algorithm
                 'i = (iGrp - 1) \ m_Data.InCol + 1
                 'j = (iGrp - 1) Mod m_Data.InCol + 1
-
+                Dim st As Double = Me.m_stpWatch.Elapsed.TotalMilliseconds
                 'now do the computations
                 SolveCell(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
 
+                Me.lstCellCompTimes.Add(Me.m_stpWatch.Elapsed.TotalMilliseconds - st)
             Next iCell
-
-            'thread has finished it is ok to run this again
-            isOkToRun = True
-
-            'set signal state to 'signaled' 
-            'the processing has finished SignalState.WaitOne() will return immediately
-            SignalState.Set()
 
         Catch ex As Exception
             cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
-
-            'prevent this thread from blocking forever if it throws an error
-            SignalState.Set()
-            isOkToRun = True
-
-            'tell the main thread that this solver has had a problem
-            'If EcospaceErrorHandler IsNot Nothing Then
-            'Me.EcospaceErrorHandler(Me.ThreadID, ex.Message)
-            'Else
             Debug.Assert(False, ex.Message)
-            'End If
-
         End Try
 
+        'set signal state to 'signaled' 
+        'the processing has finished SignalState.WaitOne() will return immediately
+        If Interlocked.Decrement(cSpaceSolver.ThreadIncrementer) = 0 Then
+            WaitHandle.Set()
+        End If
+
         Me.m_stpWatch.Stop()
-        Console.WriteLine("     Solve Derivt run time " & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString & ", End T = " & DateTime.Now.ToLongTimeString)
+        Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
+        'Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time " & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
 
     End Sub
 
@@ -319,8 +353,9 @@ Public Class cSpaceSolver
         Dim PopWt As Single
 
         Try
-
-            'this changes the timestep for higher order numerical sceme.  the timestep isn't actuall different, it's a multiplier
+            ' Debug.Assert(Me.m_Data.Depth(i, j) > 0)
+            ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
+            'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
             TimeStep2 = m_Data.TimeStep * 0.66667F
 
             If m_TracerData.EcoSpaceConSimOn Then
@@ -399,7 +434,7 @@ Public Class cSpaceSolver
 
             Next iGrp
 
-            m_EcospaceModel.accumCatchData(itt, iYear, BB, FishTime, i, j)
+            Me.accumCatchData(itt, iYear, BB, FishTime, i, j)
 
             For isc = 1 To m_Data.Nvarsplit
                 ieco = Ecode(isc)
@@ -589,8 +624,10 @@ Public Class cSpaceSolver
 
             setpred(Biomass)
 
-            ReDim Eatenof(m_Data.NGroups)
-            ReDim Eatenby(m_Data.NGroups)
+            ' ReDim Eatenof(m_Data.NGroups)
+            'ReDim Eatenby(m_Data.NGroups)
+            Array.Clear(Eatenof, 0, Eatenof.Length)
+            Array.Clear(Eatenby, 0, Eatenof.Length)
 
             Dwe = 0.5
 
@@ -799,9 +836,13 @@ Public Class cSpaceSolver
     Sub SetRelaSwitch(ByVal B() As Single)     'Switching
         Dim i As Integer, j As Integer, ii As Integer
         Dim PredDen() As Double
-
         ReDim PredDen(m_Data.NGroups)
-        ReDim RelaSwitch(m_SimData.inlinks)
+
+        If RelaSwitch Is Nothing Then
+            ReDim RelaSwitch(m_SimData.inlinks)
+        Else
+            Array.Clear(RelaSwitch, 0, m_SimData.inlinks + 1)
+        End If
 
         'throw an error for error testing
         'PredDen(m_Data.NGroups + 1) = 0
@@ -925,6 +966,80 @@ Public Class cSpaceSolver
 
     End Sub
 
+
+    ''' <summary>
+    ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
+    ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
+    ''' </summary>
+    ''' <param name="Biomass">Biomass for all the groups at this time step</param>
+    ''' <param name="iRow">Map row</param>
+    ''' <param name="iCol">Map col</param>
+    ''' <remarks></remarks>
+    Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+        Dim cellCatch As Single, iFlt As Integer, igrp As Integer
+
+        Try
+
+            For iFlt = 1 To m_Data.nFleets
+                'Effort
+                Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt) += m_Data.EffortSpace(iFlt, iRow, iCol)
+                'SailingEffort: at this point SailingEffort is  sum of [fishing effort] * [effort of fishing each cell (Sail(iFlt, iRow, iCol))] /  SailScale(ifleet)
+                'Effort of fishing all the cells
+                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
+
+                'sum values into All Fleets 0 index 
+                Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0) 'm_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime)
+                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0) 'm_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime)
+
+                ''To get the original effort the effortspace is divided by the fishrategear for the month
+                'If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
+                '    m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, iCumTime) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
+                'End If
+
+            Next
+
+            For igrp = 1 To Me.m_Data.NGroups
+
+                If Me.m_PathData.fCatch(igrp) > 0 Then
+                    'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
+                    'use fishing mortality rate passed in instead 
+                    'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
+                    Dim bCatch As Single = Biomass(igrp) * FMortByGroup(igrp) * m_Data.Width(iRow)
+                    Me.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp) += bCatch '= m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
+                    m_Data.CatchMap(iRow, iCol, igrp) += bCatch
+                    'Next value of catch, depends on what gear was used:
+                    For iFlt = 1 To Me.m_PathData.NumFleet
+                        If Me.m_PathData.Landing(iFlt, igrp) + Me.m_PathData.Discard(iFlt, igrp) > 0 Then
+                            'First get catch
+                            cellCatch = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp) * m_Data.Width(iRow)
+
+                            'Sum the total catch by gear
+                            Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
+                            'sum all fleets
+                            Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0) += cellCatch
+
+                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp) += cellCatch
+                            'sum all fleets into the zero fleet index
+                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp) += cellCatch
+
+                            'Next line is for adding up catch by region etc
+                            If m_Data.nRegions > 0 Then
+                                Me.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp) += cellCatch
+                            End If
+
+                            Me.Landings(igrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, igrp)
+                        End If
+                    Next iFlt
+                End If 'If m_EPdata.fCatch(igrp) > 0 Then
+            Next igrp
+
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
+
     Public Sub New(ByVal ThreadNumber As Integer)
 
         ThreadID = ThreadNumber
@@ -934,8 +1049,7 @@ Public Class cSpaceSolver
         'this will get a copy of the data that has been initialized by the database in cEcospace.InitSpaceSolverThreads()
         m_TracerData = New cContaminantTracerDataStructures
 
-        isOkToRun = True
-
     End Sub
+
 
 End Class

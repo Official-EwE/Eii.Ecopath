@@ -2594,8 +2594,10 @@ Namespace Ecosim
         Public Sub SetRelaSwitch(ByVal B() As Single)     'Switching
             Dim i As Integer, j As Integer, ii As Integer
             Dim PredDen() As Double
+
             ReDim PredDen(nGroups)
             ReDim m_Data.RelaSwitch(m_Data.inlinks)
+
             For ii = 1 To m_Data.inlinks
                 i = m_Data.ilink(ii) : j = m_Data.jlink(ii)
                 PredDen(j) = PredDen(j) + A(i, j) * B(i) ^ m_Data.SwitchPower(j)

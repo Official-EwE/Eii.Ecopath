@@ -1244,9 +1244,10 @@ Public Class cEcospaceDataStructures
 
             Me.allocate(Bcell, InRow + 1, InCol + 1, nvartot)
             Me.allocate(Blast, InRow + 1, InCol + 1, nvartot)
-            Me.allocate(Me.HabCap, InRow + 1, InCol + 1, nvartot)
+
             Me.allocate(Me.HabCapInput, InRow + 1, InCol + 1, nvartot)
             Me.allocate(CatchMap, InRow, InCol, nvartot)
+            Me.allocate(Me.HabCap, InRow + 1, InCol + 1, NGroups)
             Me.allocate(PHabType, InRow, InCol, NoHabitats)
 
             Me.allocate(Xv, InRow + 1, InCol + 1, cCore.N_MONTHS)

@@ -27,11 +27,10 @@ Public Class cGridSolver
     ''' Signal mechanism used by the calling thread for thread Synchronization
     ''' </summary>
     ''' <remarks>
-    ''' When the Solve() thread is running (SignalState in a non-signaled state SignalState.Reset()) 
-    ''' calls to SignalState.WaitOne() will block until Solve() has completed (SignalState in a signaled state SignalState.Set())
+    ''' When the Solve() thread is running (SignalState in a non-signaled state WaitHandle.Reset()) 
+    ''' calls to WaitHandle.WaitOne() will block until Solve() has completed (SignalState in a signaled state WaitHandle.Set())
     ''' </remarks>
-    Public SignalState As New ManualResetEvent(True)
-    Public isOkToRunning As Boolean
+    Public WaitHandle As New ManualResetEvent(True)
 
     Public iterThread As Integer 'total iterations 
 #End Region
@@ -87,7 +86,7 @@ Public Class cGridSolver
 #Region "Constructor and Initialization"
 
     Public Sub New(ByVal ThreadNumber As Integer)
-        isOkToRunning = True
+        'isOkToRunning = True
         ThreadID = ThreadNumber
         Me.m_rand = New Random
     End Sub
@@ -161,25 +160,19 @@ Public Class cGridSolver
         ' Dim timeTemp As Double = Timer
         'if this is running on a thread this may not work
         'all flags need to be set outside the thread
-        isOkToRunning = False
+        'isOkToRunning = False
         iterThread = 0
         Dim iGrp As Integer
         Dim i As Integer
         Try
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
-            SignalState.Reset()
-
-
+            WaitHandle.Reset()
             alternateRowCol = True
-            'useExact = True
 
             'do the processing here
             'System.Console.WriteLine("Solve() " & iFrstGrp.ToString & "," & iLastGrp.ToString)
             For i = iFrstGrp To iLastGrp
                 iGrp = threadGroups(ThreadID, i)
-                'System.Console.WriteLine("Solve() " & iGrp.ToString)
-                ' imig = iGrp
-                'If imig > isMigratory.Length - 1 Then imig = 0
 
                 If ByPassIntegrate(iGrp) = False Then
                     If useExact And isMigratory(iGrp) Then
@@ -194,24 +187,17 @@ Public Class cGridSolver
 
             Next i
 
-            'set signal state to 'signaled' 
-            'the processing has finished SignalState.WaitOne() will return immediately
-            ' threadTime = threadTime + Microsoft.VisualBasic.Timer - timeTemp
-            'thread has finished it is ok to run this again
-            isOkToRunning = True
-            SignalState.Set()
-
         Catch ex As Exception
             cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
-
             Debug.Assert(False, ex.Message)
-            'prevent this thread from blocking forever if it throws an error
-            SignalState.Reset()
-            'not sure about this
-            '  Throw New ApplicationException("Error in " & Me.ToString & ".Solve()", ex)
-            isOkToRunning = True
-
+            
         End Try
+
+        'set signal state to 'signaled' 
+        'the processing has finished SignalState.WaitOne() will return immediately
+        If Interlocked.Decrement(cSpaceSolver.ThreadIncrementer) = 0 Then
+            WaitHandle.Set()
+        End If
 
 
     End Sub

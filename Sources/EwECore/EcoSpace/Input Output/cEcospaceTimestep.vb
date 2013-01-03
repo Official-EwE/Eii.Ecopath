@@ -146,7 +146,7 @@ Public Class cEcospaceTimestep
             ReDim m_relativebiomass(Me.m_simData.nGroups)
             ReDim m_ConMax(Me.m_simData.nGroups)
             ReDim m_biomassByRegion(Me.m_simData.nGroups, Me.m_spaceData.nRegions)
-            'ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
+            ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".New() Error: " & ex.Message)
         End Try
@@ -155,7 +155,8 @@ Public Class cEcospaceTimestep
 
     Friend Sub ComputeSumEffortMap()
 
-        ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
+        Array.Clear(m_sumEffortMap, 0, m_sumEffortMap.Length)
+        'ReDim m_sumEffortMap(Me.m_spaceData.InRow, Me.m_spaceData.InCol)
 
         For iRow As Integer = 1 To Me.m_spaceData.InRow
             For iCol As Integer = 1 To Me.m_spaceData.InCol

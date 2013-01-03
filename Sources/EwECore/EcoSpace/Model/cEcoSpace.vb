@@ -33,21 +33,30 @@ Public Delegate Sub EcoSpaceRunCompletedDelegate(ByVal Succeeded As Boolean)
 Public Class cEcoSpace
     Inherits cThreadWaitBase
 
+    'ToDo_4-Dec-2012 Temporary changes for Hungabee threading 
+    'Commented out runGridSolverThreads
+
+
     'ToDo_jb Change summary values to be across all time steps
 
 #Region "Helper Class Arguments for PredictEffortDistributionThreaded(cEffortDistArgs)"
+
+    Private Shared m_ThreadIncrementCount As Integer
+    Private Const THREAD_TIMEOUT As Integer = 5 * 60 * 1000 '5 minutes
 
     ''' <summary>
     ''' Arguments for PredictEffortDistributionThreaded()
     ''' </summary>
     ''' <remarks></remarks>
     Private Class cThreadedCallArgs
-        Public WaitHandle As WaitHandle
+        Public WaitHandle As AutoResetEvent
         Public iFirst As Integer
         Public iLast As Integer
         Public iCumMonth As Integer
         Public iMonth As Integer
-        Public Sub New(ByRef theWaitHandle As WaitHandle, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer)
+
+
+        Public Sub New(ByRef theWaitHandle As AutoResetEvent, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer, ByVal iMonthOfyear As Integer, ByVal iCumMonthIndex As Integer)
             WaitHandle = theWaitHandle
             iFirst = iFirstIndex
             iLast = iLastIndex
@@ -55,15 +64,15 @@ Public Class cEcoSpace
             iMonth = iMonthOfyear
         End Sub
 
-        Public Sub New(ByRef theWaitHandle As WaitHandle, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer)
+        Public Sub New(ByRef theWaitHandle As AutoResetEvent, ByVal iFirstIndex As Integer, ByVal iLastIndex As Integer)
             WaitHandle = theWaitHandle
             iFirst = iFirstIndex
             iLast = iLastIndex
             iCumMonth = cCore.NULL_VALUE
             iMonth = cCore.NULL_VALUE
         End Sub
-    End Class
 
+    End Class
 
 #End Region
 
@@ -1146,6 +1155,7 @@ Public Class cEcoSpace
                     m_search.calcBaseYearCost(m_Data.YearNow, m_Data.nWaterCells)
                 End If
 
+                GC.Collect()
                 'post notification that a time step has been completed
                 marshallOnTimeStep(itt)
 
@@ -1413,35 +1423,46 @@ Public Class cEcoSpace
         Dim solver As cGridSolver
         Dim iFstGrp As Integer
         Dim iLstgrp As Integer
+        Dim nRunning As Integer
 
         iFstGrp = 1
         iLstgrp = 0
 
         Try
-            'this loop should only excecute once
-            'Do While iLstgrp < m_Data.totalIntegratedGroups
-            'loop through each solver object, make sure it's okay to run, and run it
-            'each thread will do several groups at a time
+
+
+            'Create one WaitHandle and pass it to all the threads
+            'Once the cSpaceSolver.ThreadIncrementer hits zero the thread(cSpaceSolver) object will call ManualResetEvent.Set()  
+            'this allows any waiting threads to continue
+            Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
+
+            'set the shared thread increment counter to the number of threads
+            cSpaceSolver.ThreadIncrementer = m_gridSolvers.Count
+
             For Each solver In m_gridSolvers
+                nRunning += 1
+                'same wait object for all the threads
+                'Once the thread counter has been Decrement to Zero
+                'the Wait object will be released by the solver
+                solver.WaitHandle = WaitOb
 
-                If solver.isOkToRunning Then
+                ' If solver.isOkToRunning Then
 
-                    'iLstgrp = iFstGrp + m_Data.nGroupsPerThread - 1
-                    'If iLstgrp > m_Data.totalIntegratedGroups Then iLstgrp = m_Data.totalIntegratedGroups 'm_Data.nvartot Then iLstgrp = m_Data.nvartot
+                'iLstgrp = iFstGrp + m_Data.nGroupsPerThread - 1
+                'If iLstgrp > m_Data.totalIntegratedGroups Then iLstgrp = m_Data.totalIntegratedGroups 'm_Data.nvartot Then iLstgrp = m_Data.nvartot
 
-                    'solver.FirstLastGroups(m_Data.integratedGroups(iFstGrp), m_Data.integratedGroups(iLstgrp))
-                    solver.FirstLastGroups(1, nGroupsInThread(solver.ThreadID))
-                    solver.SignalState.Reset()
+                'solver.FirstLastGroups(m_Data.integratedGroups(iFstGrp), m_Data.integratedGroups(iLstgrp))
+                solver.FirstLastGroups(1, nGroupsInThread(solver.ThreadID))
 
-                    solver.isOkToRunning = False
-                    'Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                    'worker.Start()
-                    ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                'solver.isOkToRunning = False
+                'Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                'worker.Start()
+                ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
 
-                    'iFstGrp += m_Data.nGroupsPerThread
-                Else
-                    'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & m_Data.TimeNow)
-                End If
+                'iFstGrp += m_Data.nGroupsPerThread
+                ' Else
+                'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & m_Data.TimeNow)
+                ' End If
 
                 'If iLstgrp >= m_Data.totalIntegratedGroups Then
                 'Exit For
@@ -1449,15 +1470,22 @@ Public Class cEcoSpace
             Next solver
             'Loop
 
-            ' wait for all the threads to finish before starting the next time step
-            Dim solvCtr As Integer = 1
-            Dim iterTime As Single
-            For Each solver In m_gridSolvers
-                solver.SignalState.WaitOne()
-                totalIterThread(solvCtr) = totalIterThread(solvCtr) + solver.iterThread
-                iterTime = iterTime + solver.iterThread
-                solvCtr = solvCtr + 1
-            Next
+            'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
+            If Not WaitOb.WaitOne(THREAD_TIMEOUT) Then
+                Debug.Assert(False, "Timed out!")
+                cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
+            End If
+
+
+            '' wait for all the threads to finish before starting the next time step
+            'Dim solvCtr As Integer = 1
+            'Dim iterTime As Single
+            'For Each solver In m_gridSolvers
+            '    solver.WaitHandle.WaitOne()
+            '    totalIterThread(solvCtr) = totalIterThread(solvCtr) + solver.iterThread
+            '    iterTime = iterTime + solver.iterThread
+            '    solvCtr = solvCtr + 1
+            'Next
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1472,88 +1500,117 @@ Public Class cEcoSpace
         Dim iFrstCell As Integer
         Dim iLstCell As Integer
         Dim ieco As Integer
-        ReDim Btime(m_Data.NGroups)
-        ReDim TotLoss(m_Data.NGroups)
-        ReDim TotEatenBy(m_Data.NGroups)
-        ReDim TotBiom(m_Data.NGroups)
-        ReDim TotPred(m_Data.NGroups)
-        ReDim TotIFDweight(m_Data.NGroups)
+        Dim cpuTime As Single
+
+        GC.Collect()
+
+        Array.Clear(Btime, 0, Btime.Length)
+        Array.Clear(TotLoss, 0, TotLoss.Length)
+        Array.Clear(TotEatenBy, 0, TotEatenBy.Length)
+        Array.Clear(TotBiom, 0, TotBiom.Length)
+        Array.Clear(TotPred, 0, TotPred.Length)
+        Array.Clear(TotIFDweight, 0, TotIFDweight.Length)
 
         'redims cumulative variable for each thread
-        'this could be done inside the thread, but if solve gets run on the 
-        'same thread, which it shouldn't, variables will be deleted
         For Each solver In m_spaceSolvers
-            ReDim solver.BtimeLocal(m_Data.NGroups)
-            ReDim solver.TotLossThread(m_Data.NGroups)
-            ReDim solver.TotEatenByThread(m_Data.NGroups)
-            ReDim solver.TotBiomThread(m_Data.NGroups)
-            ReDim solver.TotPredThread(m_Data.NGroups)
-            ReDim solver.TotIFDweightThread(m_Data.NGroups)
+            solver.InitForTimestep()
         Next
 
         iFrstCell = 1
         iLstCell = 0
 
+        'Me.dumpRunningThreadInfo()
+
         ' Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
         ' Console.WriteLine("Ecospace ThreadID = " & thrdID.ToString)
 
+        'Create one WaitHandle and pass it to all the threads
+        'Once the cSpaceSolver.ThreadIncrementer hits zero the thread(cSpaceSolver) object will call ManualResetEvent.Set()  
+        'this allows any waiting threads to continue
+        Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
+        Dim stpTotRun As Stopwatch = Stopwatch.StartNew
+
         Try
-            'this do loop should only execute once
-            Do While iLstCell < m_Data.iTotalWaterCells 'm_data.iTotalCells
-                'loop through each solver, create a thread for it, and run it
-                For Each solver In m_spaceSolvers
 
-                    If solver.isOkToRun Then
+            'set the shared thread increment counter to the number of threads
+            cSpaceSolver.ThreadIncrementer = m_spaceSolvers.Count
 
-                        iLstCell = iFrstCell + m_Data.nCellsPerThread - 1
-                        If iLstCell > m_Data.iTotalWaterCells Then
-                            iLstCell = m_Data.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
-                        End If
-                       
-                        solver.FirstLastCells(iFrstCell, iLstCell)
-                        solver.SignalState.Reset()
+            'Number of cells to compute for the current thread
+            Dim nCells As Integer
+            'Total number of cells that have been computed
+            Dim nCellsCompleted As Integer
+            'Loop counter
+            Dim iSolve As Integer
 
-                        solver.isOkToRun = False
-                        'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-                        Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                        'This should not make any difference on Mono
-                        ' worker.Priority = ThreadPriority.AboveNormal
-                        ' System.Console.WriteLine(worker.Priority.ToString)
-                        worker.Start()
-                        iFrstCell += m_Data.nCellsPerThread
+            System.Console.WriteLine("Cells")
 
-                    Else
-                        'this shouldn't happen
-                        Debug.Assert(False, "Attempting to use an already running thread")
-                    End If ' If solver.isOkToRunning Then
-
-                    If iLstCell >= m_Data.iTotalWaterCells Then 'iTotalCells Then
-                        Exit For
-                    End If
-
-                    If m_bsolverError Then
-                        'one of the solver threads has thrown an error that was handled in the thread
-                        're-throw the error here
-                        Throw New ApplicationException("Ecospace error " & m_solverErrorMsg & " ThreadID = " & m_solverErrorID.ToString)
-                    End If
-
-                Next solver
-
-            Loop ' Do While iLstCell < iTotalCells
-
-            Dim solvCtr As Integer = 1
-
-            ' wait for all the threads to finish before starting the next time step
+            'loop through each solver, create a thread for it, and run it
             For Each solver In m_spaceSolvers
-                solver.SignalState.WaitOne()
-                solvCtr = solvCtr + 1
-            Next
+                iSolve += 1
+                'Compute the work load for each thread on the fly
+                'this prevents any rounding weirdness that could cause cSpaceSolver.ThreadIncrementer to not hit Zero
+                'Causing a deadlock on WaitOb.WaitOne()
+                nCells = Me.computeThreadLoad(m_Data.iTotalWaterCells, nCellsCompleted, m_spaceSolvers.Count, iSolve)
+
+                nCellsCompleted += nCells
+
+                iLstCell = iFrstCell + nCells - 1
+                If iLstCell > m_Data.iTotalWaterCells Then
+                    iLstCell = m_Data.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
+                End If
+
+                solver.FirstLastCells(iFrstCell, iLstCell)
+                'same wait object for all the threads
+                'Once the thread counter has been Decrement to Zero
+                'the Wait object will be released by the solver
+                solver.WaitHandle = WaitOb
+
+                'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                ' worker.Name = "Derivt_" & iSolve.ToString
+                worker.Start()
+                iFrstCell += nCells
+
+            Next solver
+
+            Debug.Assert((iSolve = Me.m_Data.nSpaceSolverThreads) And (m_spaceSolvers.Count = Me.m_Data.nSpaceSolverThreads), "Ecospace.runSpaceSolverThreads() Thread counters are incorrect.")
+            Debug.Assert(nCellsCompleted = m_Data.iTotalWaterCells, "Ecospace.runSpaceSolverThreads() may have computed the wrong number of cells. You need to check this.")
+            System.Console.WriteLine("Solver init threads time, " & stpTotRun.Elapsed.TotalSeconds.ToString)
+
+            'Me.dumpRunningThreadInfo("Before")
+
+            'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
+            If Not WaitOb.WaitOne() Then
+                Debug.Assert(False, "Timed out!")
+                cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
+            End If
+
+            ' Me.dumpRunningThreadInfo("After")
 
             'Gather data from across all threads
             For Each solver In m_spaceSolvers
-                'For ip As Integer = 1 To m_Data.NGroups
-                '    Btime(ip) = solver.BtimeLocal(ip) + Btime(ip)
-                'Next
+
+                cpuTime += solver.RunTimeSeconds
+                Me.dumpCellComputeTimes(solver.lstCellCompTimes)
+
+                For igrp As Integer = 1 To m_Data.NGroups
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp)
+                Next igrp
+
+                For iflt As Integer = 0 To Me.m_Data.nFleets
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
+
+                    For igrp As Integer = 1 To m_Data.NGroups
+                        m_Data.Landings(igrp, iflt) += solver.Landings(igrp, iflt)
+                        m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)
+                        m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) += solver.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp)
+
+                        For irgn As Integer = 1 To m_Data.nRegions
+                            m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
+                        Next irgn
+                    Next igrp
+                Next iflt
 
                 If m_Data.NewMultiStanza Then
                     For isp As Integer = 1 To m_Stanza.Nsplit
@@ -1574,6 +1631,12 @@ Public Class cEcoSpace
                     Next
                 End If
             Next
+            stpTotRun.Stop()
+            System.Console.WriteLine("Solver total run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
+            System.Console.WriteLine("Solver [Run Time] / [CPU time], " & (stpTotRun.Elapsed.TotalSeconds / cpuTime * 100).ToString)
+
+            WaitOb.Dispose()
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1581,7 +1644,32 @@ Public Class cEcoSpace
             Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
         End Try
 
+        GC.Collect()
+
     End Sub
+
+    Private Sub dumpRunningThreadInfo(msg As String)
+        System.Console.WriteLine(msg)
+        For Each Thread As ProcessThread In Process.GetCurrentProcess.Threads
+            System.Console.WriteLine("Thread ID, " & Thread.Id.ToString & ", Start time, " & Thread.StartTime.ToLongTimeString & _
+                                     ", Total time, " & Thread.TotalProcessorTime.TotalMilliseconds.ToString & ", CPU time " & Thread.UserProcessorTime.TotalMilliseconds.ToString)
+        Next
+
+       
+
+        'Process.GetCurrentProcess().TotalProcessorTime
+
+    End Sub
+
+
+    Private Sub dumpCellComputeTimes(ByVal lstTimes As List(Of Double))
+
+        For Each t As Double In lstTimes
+            System.Console.Write(t.ToString & ",")
+        Next
+        System.Console.WriteLine()
+    End Sub
+
 
 
     Public Function initSpatialEquilibrium() As Boolean
@@ -1951,7 +2039,6 @@ Public Class cEcoSpace
                 System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of group threads limited to number of water cells.")
             End If
 
-
             Dim thread As Integer
             ReDim nGroupsInThread(m_Data.nGridSolverThreads)
             ReDim threadGroups(m_Data.nGridSolverThreads, m_Data.nvartot)
@@ -2090,6 +2177,11 @@ Public Class cEcoSpace
             If Me.m_EPdata.isEcospaceModelCoupled Then Me.m_Data.allocate(m_Data.GroupDetritus, m_Data.InRow, m_Data.InCol, m_Data.NGroups)
 
             ReDim Btime(m_Data.NGroups)
+            ReDim TotLoss(m_Data.NGroups)
+            ReDim TotEatenBy(m_Data.NGroups)
+            ReDim TotBiom(m_Data.NGroups)
+            ReDim TotPred(m_Data.NGroups)
+            ReDim TotIFDweight(m_Data.NGroups)
 
             ReDim m_Data.ByPassIntegrate(m_Data.nvartot)
             ReDim m_Data.BBase(m_Data.NGroups)
@@ -3323,98 +3415,97 @@ exitline:
         Try
 
             arguments = DirectCast(obParam, cThreadedCallArgs)
+            'Make sure the number of fleets is in bounds
+            'This could happen because of rounding error in the number of fleets per thread
+            If arguments.iFirst <= Me.m_Data.nFleets Then
 
-            Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+                'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
 
-            Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
-            Console.WriteLine("     N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
-            stpwtch = Stopwatch.StartNew
+                'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+                'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
+                stpwtch = Stopwatch.StartNew
 
-            ReDim Attract(m_Data.InRow, m_Data.InCol)
+                ReDim Attract(m_Data.InRow, m_Data.InCol)
 
-            For iFlt As Integer = arguments.iFirst To arguments.iLast - 1
-                'check the bounds
-                If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
+                For iFlt As Integer = arguments.iFirst To arguments.iLast
+                    'check the bounds
+                    If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
+                    'System.Console.WriteLine("  Fleet " & iFlt.ToString)
+                    TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
 
-                TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
+                    'jb Attract() gets cleared out for each fleet
+                    Array.Clear(Attract, 0, Attract.Length)
+                    TotAttract = 0.0000000001
 
-                'jb Attract() gets cleared out for each fleet
-                Array.Clear(Attract, 0, Attract.Length)
-                TotAttract = 0.0000000001
+                    'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
+                    If m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail) = 0 Then
+                        EffortCost = 0
+                        SailCost = 1
+                    Else
+                        EffortCost = m_EPdata.cost(iFlt, eCostIndex.CUPE) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+                        SailCost = m_EPdata.cost(iFlt, eCostIndex.Sail) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+                    End If
 
-                'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-                If m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail) = 0 Then
-                    EffortCost = 0
-                    SailCost = 1
-                    'If NoSailing = False Then
-                    '    ''ToDo_jb Feedback Message?? or some other type of message that gets posted immediately
-                    '    'MsgBox("No variable or sailing cost has been specified for " + GearName(ig), vbInformation + vbOKOnly, "Check cost of fishing in Ecopath")
-                    '    NoSailing = True
-                    'End If
-                Else
-                    EffortCost = m_EPdata.cost(iFlt, eCostIndex.CUPE) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
-                    SailCost = m_EPdata.cost(iFlt, eCostIndex.Sail) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
-                End If
+                    '
+                    For i = 1 To m_Data.InRow
+                        For j = 1 To m_Data.InCol
+                            'Moved to InitSpatialEquilibrium
+                            If Me.m_Data.IsFished(iFlt, i, j) Then
+                                'Water and (Not closed by MPA) and (Fished by this gear)
+                                'mpamonth(Month, MPAType) is false if closed, True if open.
+                                Valt = 0
+                                For isp = 1 To m_Data.NGroups
+                                    Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
+                                Next
 
-                '
-                For i = 1 To m_Data.InRow
-                    For j = 1 To m_Data.InCol
-                        'Moved to InitSpatialEquilibrium
-                        'If m_Data.MPA(i, j) > m_Data.MPAno Then m_Data.MPA(i, j) = 0 'This type of MPA may have been deleted
-                        If Me.m_Data.IsFished(iFlt, i, j) Then
-                            'Water and (Not closed by MPA) and (Fished by this gear)
-                            'mpamonth(Month, MPAType) is false if closed, True if open.
-                            Valt = 0
-                            For isp = 1 To m_Data.NGroups
-                                Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
-                            Next
+                                'jb Move to InitSpatialEquilibrium()
+                                ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
 
-                            'jb Move to InitSpatialEquilibrium()
-                            ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
-
-                            'VC Sail() above: to avoid dividing with zero
-                            Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
-                            Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
-                            TotAttract = TotAttract + Valt * Me.m_Data.PAreaFished(i, j, iFlt)
-                        End If
+                                'VC Sail() above: to avoid dividing with zero
+                                Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                                Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
+                                TotAttract = TotAttract + Valt * Me.m_Data.PAreaFished(i, j, iFlt)
+                            End If
+                        Next
                     Next
-                Next
 
-                For i = 1 To m_Data.InRow
-                    For j = 1 To m_Data.InCol
-                        'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
-                        If Me.m_Data.IsFished(iFlt, i, j) Then
+                    For i = 1 To m_Data.InRow
+                        For j = 1 To m_Data.InCol
+                            'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
+                            If Me.m_Data.IsFished(iFlt, i, j) Then
 
-                            'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
-                            m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
+                                'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
+                                m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
 
-                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                            'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
-                            'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
-                            '        For isp = 1 To m_Data.NGroups
-                            '            'Fishing Mort
-                            '            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(iFlt, i, j) * m_SimData.relQ(iFlt, isp) / Me.m_Data.PAreaFished(i, j, iFlt)
-                            '        Next isp
-                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
+                                'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
+                                '        For isp = 1 To m_Data.NGroups
+                                '            'Fishing Mort
+                                '            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(iFlt, i, j) * m_SimData.relQ(iFlt, isp) / Me.m_Data.PAreaFished(i, j, iFlt)
+                                '        Next isp
+                                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-                        End If
-                    Next j
-                Next i
-            Next iFlt
+                            End If
+                        Next j
+                    Next i
+                Next iFlt
+
+            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
+                'First Fleet Index > Number of Fleets
+                'We still need to Decrement the Interlock counter
+                System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+            End If
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
 
-        Dim AutoReSet As AutoResetEvent = TryCast(arguments.WaitHandle, AutoResetEvent)
-        Debug.Assert(AutoReSet IsNot Nothing, "PredictEffortDistributionThreaded Exception AutoResetEvent is null.")
-       
-        Console.WriteLine("     Effort Distribution run time = " & stpwtch.Elapsed.TotalSeconds.ToString & ", End t = " & DateTime.Now.ToLongTimeString)
-        stpwtch.Stop()
-        stpwtch = Nothing
+        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
+            arguments.WaitHandle.Set()
+        End If
 
-        'Set the AutoRestEvent this will release the wait on this thread
-        If AutoReSet IsNot Nothing Then AutoReSet.Set()
+        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
 
     End Sub
 
@@ -3426,70 +3517,180 @@ exitline:
     ''' <param name="iCumMonth"></param>
     ''' <remarks></remarks>
     Private Sub runPredictEffortDistributionThreads(ByVal iMonth As Integer, ByVal iCumMonth As Integer)
-
-        Me.m_Data.allocate(m_Data.Ftot, m_Data.NGroups, m_Data.InRow, m_Data.InCol)
-        Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
-
-        'list of wait handles that get passed to the worker threads
-        'used to wait for the routines to finish once all the worker threads have been started
-        Dim lstOfCalls As List(Of WaitHandle) = New List(Of WaitHandle)
-
-        Dim nFltsPerThread As Integer = Me.m_Data.nFleets \ Me.m_Data.nSpaceSolverThreads + 1
+        Dim stpwTotRunTime As Stopwatch
+        ' Dim stpwF As Stopwatch
+        Dim nThrds As Integer
+        Dim nFltsPerThread As Integer
         Dim iFirstFleet As Integer = 1
         Dim iLastFleet As Integer
-        Dim bDone As Boolean
+        Dim nCompFleets As Integer
 
-        For ithrd As Integer = 1 To Me.m_Data.nSpaceSolverThreads
+        GC.Collect()
 
-            'Get the first and last fleet index for this thread
-            iLastFleet = iFirstFleet + nFltsPerThread
+        Array.Clear(m_Data.Ftot, 0, m_Data.Ftot.Length)
+        Array.Clear(m_Data.EffortSpace, 0, m_Data.EffortSpace.Length)
 
-            'bound the fleet index
-            If iLastFleet > Me.m_Data.nFleets Then
-                iLastFleet = Me.m_Data.nFleets + 1
-                'Computed all the fleets before we ran out of threads
-                bDone = True
-            End If
+        nThrds = Me.m_Data.nSpaceSolverThreads
+        'Constrain the number of fleet threads to the number of fleets
+        If nThrds > Me.m_Data.nFleets Then nThrds = Me.m_Data.nFleets
+        'Set the thread increment counter
+        cEcoSpace.m_ThreadIncrementCount = nThrds
+
+        Dim waitOb As WaitHandle = New AutoResetEvent(False)
+
+        stpwTotRunTime = Stopwatch.StartNew
+        For ithrd As Integer = 1 To nThrds
+
+            nFltsPerThread = Me.computeThreadLoad(Me.m_Data.nFleets, nCompFleets, nThrds, ithrd)
+            nCompFleets += nFltsPerThread
+
+            iLastFleet = iFirstFleet + nFltsPerThread - 1
+            If iLastFleet > m_Data.nFleets Then iLastFleet = m_Data.nFleets
 
             'Distribute fishing effort across the map for the fleet indexes iFirstFleet to ilastfleet
-            'this is threaded by fleet
-            Dim waitOb As WaitHandle = New AutoResetEvent(False)
+
             Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth)
             Dim worker As Thread = New Thread(Sub() Me.PredictEffortDistributionThreaded(arg))
             worker.Start()
-            ' ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
-
-
-            lstOfCalls.Add(waitOb)
-
-            If bDone Then Exit For
-
-            iFirstFleet = iLastFleet
-
+            'ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
+            iFirstFleet += nFltsPerThread
         Next ithrd
 
-        For Each waitob As WaitHandle In lstOfCalls
-            waitob.WaitOne()
+        Debug.Assert(nCompFleets = m_Data.nFleets)
+
+        'waitOb will AutoReset so the next call to WaitOne will block until Set() is called
+        If Not waitOb.WaitOne() Then
+            System.Console.WriteLine("EffortDistribution PredictEffortDistributionThreaded() Timed Out WTF!")
+            'Ok something has to happen here
+            'Maybe pitch an error
+            cLog.Write(Me.ToString & ".runPredictEffortDistributionThreads() PredictEffortDistributionThreaded timed out.")
+        End If
+
+        waitOb.Dispose()
+        waitOb = Nothing
+
+        'stpwTotRunTime.Stop()
+        'System.Console.WriteLine("EffortDistribution compute time " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        'stpwF = Stopwatch.StartNew
+
+        'Figure out the number of threads
+        Dim nMortThrds As Integer = Me.m_Data.nSpaceSolverThreads
+        If nMortThrds > m_Data.iTotalWaterCells Then nThrds = m_Data.iTotalWaterCells
+        cEcoSpace.m_ThreadIncrementCount = nMortThrds
+
+        waitOb = New AutoResetEvent(False)
+        Dim iFirstCell As Integer = 1
+        Dim iLastcell As Integer
+
+        'Number of cell to compute for the current thread
+        'Computed on the fly in the loop
+        Dim nCells As Integer
+
+        'Total number of cells that have been computed
+        Dim nCellCompleted As Integer
+
+        For iThrd As Integer = 1 To nMortThrds
+            'Compute the work load for each thread on the fly
+            'this prevents any rounding weirdness that could cause m_ThreadIncrementCount to not hit Zero
+            'Causing a deadlock on WaitOb.WaitOne()
+            nCells = Me.computeThreadLoad(m_Data.iTotalWaterCells, nCellCompleted, nMortThrds, iThrd)
+            nCellCompleted += nCells
+
+            iLastcell = iFirstCell + nCells - 1
+            If iLastcell > m_Data.iTotalWaterCells Then iLastcell = m_Data.iTotalWaterCells
+
+            'System.Console.WriteLine("FirstCell = " & iFirstCell.ToString & " LastCell = " & iLastcell.ToString)
+
+            Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstCell, iLastcell)
+            Dim worker As Thread = New Thread(Sub() Me.setFishMortFromEffort(arg))
+            worker.Start()
+
+            'ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.setFishMortFromEffort), New cThreadedCallArgs(waitOb, iFirstCell, iLastcell))
+
+            iFirstCell += nCells
+
         Next
 
-        'Update the Fishing Mortality into groups 
-        'This cannot be done on the distribution fleet threads because it is summed by groups not fleets like the threads
-        'This would/was cause(ing) a thread bug as different threads try to sum into the same values at the same time
-        For iflt As Integer = 1 To Me.m_Data.nFleets
-            For irow As Integer = 1 To m_Data.InRow
-                For icol As Integer = 1 To m_Data.InCol
-                    'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
-                    If Me.m_Data.IsFished(iflt, irow, icol) Then
-                        For igrp As Integer = 1 To m_Data.NGroups
-                            'Fishing Mort Rate in a cell by group
-                            m_Data.Ftot(igrp, irow, icol) += m_Data.EffortSpace(iflt, irow, icol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(irow, icol, iflt)
-                        Next igrp
-                    End If ' m_Data.Depth(i, j) > 0
-                Next icol
-            Next
-        Next
+        Debug.Assert(nCellCompleted = m_Data.iTotalWaterCells)
+
+        ' System.Console.WriteLine("EffortDistribution Waiting for setFishMortFromEffort()")
+        If Not waitOb.WaitOne() Then
+            System.Console.WriteLine("EffortDistribution setFishMortFromEffort() Timed Out WTF!")
+            'Ok something has to happen here
+            'Maybe pitch an error
+            cLog.Write(Me.ToString & ".runPredictEffortDistributionThreads() setFishMortFromEffort timed out.")
+        End If
+        waitOb.Dispose()
+        waitOb = Nothing
+
+        '  stpwF.Stop()
+        System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        GC.Collect()
 
     End Sub
+
+
+    Private Function computeThreadLoad(TotalWork As Integer, WorkCompleted As Integer, TotalThreads As Integer, CurrentThread As Integer) As Integer
+        Return CInt(TotalWork - WorkCompleted) / (TotalThreads - (CurrentThread - 1))
+    End Function
+
+    'Private Shared Property ThreadIncrementCount As Integer
+    '    Set(value As Integer)
+    '        m_ThreadIncrementCount = value
+    '    End Set
+    '    Get
+    '        Return m_ThreadIncrementCount
+    '    End Get
+    'End Property
+
+
+    ''' <summary>
+    ''' Populates Ftot(group,row,col) map from effort (EffortSpace) ,  fishing mortality rate (relQ)  and percentage of area fished (PAreaFished)
+    ''' </summary>
+    ''' <param name="obParam"></param>
+    ''' <remarks>
+    ''' Update the Fishing Mortality into groups 
+    ''' This cannot be done on the distribution fleet threads because it is summed by groups not fleets like the threads
+    ''' This would/was cause(ing) a thread bug as different threads try to sum into the same values at the same time
+    '''</remarks>
+    Private Sub setFishMortFromEffort(ByVal obParam As Object)
+        Dim irow As Integer
+        Dim jcol As Integer
+        Dim args As cThreadedCallArgs
+        Try
+
+            Debug.Assert(TypeOf obParam Is cThreadedCallArgs, "Ecospace.setFishMortFromEffort() parameter is not the correct type.")
+            args = DirectCast(obParam, cThreadedCallArgs)
+
+            For icell As Integer = args.iFirst To args.iLast
+                irow = m_Data.iWaterCellIndex(icell)
+                jcol = m_Data.jWaterCellIndex(icell)
+
+                For iflt As Integer = 1 To Me.m_Data.nFleets
+
+                    'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
+                    If Me.m_Data.IsFished(iflt, irow, jcol) Then
+                        For igrp As Integer = 1 To m_Data.NGroups
+                            'Fishing Mort Rate in a cell by group
+                            m_Data.Ftot(igrp, irow, jcol) += m_Data.EffortSpace(iflt, irow, jcol) * m_SimData.relQ(iflt, igrp) / Me.m_Data.PAreaFished(irow, jcol, iflt)
+                        Next igrp
+                    End If ' m_Data.Depth(i, j) > 0
+
+                Next iflt
+            Next icell
+
+        Catch ex As Exception
+            cLog.Write(ex, " Error computing Fishing Mortality")
+            System.Console.WriteLine("Ecospace.setFishMortFromEffort() Exception: " & ex.Message)
+        End Try
+
+        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
+            args.WaitHandle.Set()
+        End If
+
+    End Sub
+
+
 
     ''' <summary>
     ''' This is a modified version of PredictEffortDistribution, to be called only once at around simulation
@@ -3611,12 +3812,9 @@ exitline:
     Private Sub SetMigGrad()
         'set habitat quality gradient maps for all habitat types, for use in biased movement assessments
         Dim i As Integer, j As Integer, ii As Integer, jj As Integer, ihab As Integer
-        'Dim Thab As Single, Nobs As Single, Habadd As Single
         Dim i1 As Integer, i2 As Integer, j1 As Integer, j2 As Integer, Sweep As Integer, imonth As Integer
         Dim nsweep As Integer
         Dim smallestDist As Single
-        'Dim smallestI As Integer
-        'Dim smallestJ As Integer
         Dim pathFound As Integer
 
         Dim nMig As Integer
@@ -4082,30 +4280,9 @@ exitline:
         CalcHabitatArea()
         'calculate habitat area used by each biomass type
         ReDim HabAreaUsed(m_Data.NGroups)
-        'VC Hobart Sep 2008; Adding distribution envelopes by functional group makes it necessary 
-        'to change how Habareaused is calculated. 
-        'ThabArea = 0
-        'For iRo As Integer = 1 To m_Data.InRow
-        '    For iCo As Integer = 1 To m_Data.InCol
-        '        If m_Data.Depth(iRo, iCo) > 0 Then
-        '            ThabArea = ThabArea + 1
-        '            'm_Data.HabArea(m_Data.HabType(i, j)) = m_Data.HabArea(m_Data.HabType(i, j)) + 1
-        '            For iGr As Integer = 1 To m_Data.NGroups
-        '                If ((m_Data.PrefHab(iGr, m_Data.HabType(iRo, iCo)) > 0) Or (m_Data.PrefHab(iGr, 0)) > 0) And _
-        '                m_Data.DistributionEnvelope(iRo, iCo, iGr) Then
-        '                    HabAreaUsed(iGr) += 1
-        '                End If
-
-        '            Next iGr
-        '        End If ' m_Data.Depth(iRo, iCo) > 0
-        '    Next iCo
-        'Next iRo
 
         For i = 1 To m_Data.NGroups
-            'VC Hobart Sep 2008: next replaced by calculation above with Distribution Envelope
-            'For j = 1 To m_Data.NoHabitats
-            '    If m_Data.PrefHab(i, j) Or m_Data.PrefHab(i, 0) Then HabAreaUsed(i) = HabAreaUsed(i) + m_Data.HabArea(j)
-            'Next
+
             If Me.m_Data.TotHabCap(i) > 0 Then
                 Basebiomass(i) = ThabArea * m_SimData.StartBiomass(i) / Me.m_Data.TotHabCap(i) ' HabAreaUsed(i)
                 BRatio(i) = ThabArea / Me.m_Data.TotHabCap(i) 'HabAreaUsed(i)
@@ -4242,121 +4419,121 @@ exitline:
 
 #Region "Data summary"
 
-    ''' <summary>
-    ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
-    ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
-    ''' </summary>
-    ''' <param name="Biomass">Biomass for all the groups at this time step</param>
-    ''' <param name="iRow">Map row</param>
-    ''' <param name="iCol">Map col</param>
-    ''' <remarks></remarks>
-    Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
-        Dim cellCatch As Single, iFlt As Integer, igrp As Integer
-        'Dim Landings(,) As Single
+    ' ''' <summary>
+    ' ''' Accumulate the fisheries data (catch) for a single group for this map cell. 
+    ' ''' This is called before DerivtRed(), in the time step, so it is the condition at the start of the time step.
+    ' ''' </summary>
+    ' ''' <param name="Biomass">Biomass for all the groups at this time step</param>
+    ' ''' <param name="iRow">Map row</param>
+    ' ''' <param name="iCol">Map col</param>
+    ' ''' <remarks></remarks>
+    'Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
+    '    Dim cellCatch As Single, iFlt As Integer, igrp As Integer
+    '    'Dim Landings(,) As Single
 
-        'ReDim Landings(Me.m_EPdata.NumGroups, Me.m_EPdata.NumFleet)
+    '    'ReDim Landings(Me.m_EPdata.NumGroups, Me.m_EPdata.NumFleet)
 
-        'Only one thread can use this code at a time
-        'block all others
-        Me.m_SpaceCatchSemaphor.WaitOne()
+    '    'Only one thread can use this code at a time
+    '    'block all others
+    '    Me.m_SpaceCatchSemaphor.WaitOne()
 
-        Try
+    '    Try
 
-            For iFlt = 1 To m_Data.nFleets
-                'Effort
-                m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime) += m_Data.EffortSpace(iFlt, iRow, iCol)
-                'SailingEffort: at this point SailingEffort is  sum of [fishing effort] * [effort of fishing each cell (Sail(iFlt, iRow, iCol))] /  SailScale(ifleet)
-                'Effort of fishing all the cells
-                m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
+    '        For iFlt = 1 To m_Data.nFleets
+    '            'Effort
+    '            m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime) += m_Data.EffortSpace(iFlt, iRow, iCol)
+    '            'SailingEffort: at this point SailingEffort is  sum of [fishing effort] * [effort of fishing each cell (Sail(iFlt, iRow, iCol))] /  SailScale(ifleet)
+    '            'Effort of fishing all the cells
+    '            m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
 
-                'sum values into All Fleets 0 index 
-                m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime)
-                m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime)
+    '            'sum values into All Fleets 0 index 
+    '            m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime)
+    '            m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0, iCumTime) += m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime)
 
-                ''To get the original effort the effortspace is divided by the fishrategear for the month
-                'If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
-                '    m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, iCumTime) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
-                'End If
+    '            ''To get the original effort the effortspace is divided by the fishrategear for the month
+    '            'If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
+    '            '    m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, iCumTime) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
+    '            'End If
 
-            Next
+    '        Next
 
-            For igrp = 1 To Me.m_Data.NGroups
+    '        For igrp = 1 To Me.m_Data.NGroups
 
-                If m_EPdata.fCatch(igrp) > 0 Then
-                    'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
-                    'use fishing mortality rate passed in instead 
-                    'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
-                    Dim bCatch As Single = Biomass(igrp) * FMortByGroup(igrp) * m_Data.Width(iRow)
-                    m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
-                    m_Data.CatchMap(iRow, iCol, igrp) += bCatch
-                    'Next value of catch, depends on what gear was used:
-                    For iFlt = 1 To m_EPdata.NumFleet
-                        If m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp) > 0 Then
-                            'First get catch
-                            cellCatch = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp) * m_Data.Width(iRow)
+    '            If m_EPdata.fCatch(igrp) > 0 Then
+    '                'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
+    '                'use fishing mortality rate passed in instead 
+    '                'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
+    '                Dim bCatch As Single = Biomass(igrp) * FMortByGroup(igrp) * m_Data.Width(iRow)
+    '                m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) = m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
+    '                m_Data.CatchMap(iRow, iCol, igrp) += bCatch
+    '                'Next value of catch, depends on what gear was used:
+    '                For iFlt = 1 To m_EPdata.NumFleet
+    '                    If m_EPdata.Landing(iFlt, igrp) + m_EPdata.Discard(iFlt, igrp) > 0 Then
+    '                        'First get catch
+    '                        cellCatch = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp) * m_Data.Width(iRow)
 
-                            'Sum the total catch by gear
-                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += cellCatch
-                            'sum all fleets
-                            m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0, iCumTime) += cellCatch
+    '                        'Sum the total catch by gear
+    '                        m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt, iCumTime) += cellCatch
+    '                        'sum all fleets
+    '                        m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0, iCumTime) += cellCatch
 
-                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iCumTime) += cellCatch
-                            'sum all fleets into the zero fleet index
-                            m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp, iCumTime) += cellCatch
+    '                        m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp, iCumTime) += cellCatch
+    '                        'sum all fleets into the zero fleet index
+    '                        m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp, iCumTime) += cellCatch
 
-                            'Next line is for adding up catch by region etc
-                            If m_Data.nRegions > 0 Then
-                                m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += cellCatch
-                            End If
+    '                        'Next line is for adding up catch by region etc
+    '                        If m_Data.nRegions > 0 Then
+    '                            m_Data.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp, iCumTime) += cellCatch
+    '                        End If
 
-                            m_Data.Landings(igrp, iFlt) += cellCatch * Me.m_EPdata.PropLanded(iFlt, igrp)
-                        End If
-                    Next iFlt
-                End If 'If m_EPdata.fCatch(igrp) > 0 Then
-            Next igrp
-
-
-        Catch ex As Exception
-            cLog.Write(ex)
-        End Try
-
-        Me.m_SpaceCatchSemaphor.Release()
+    '                        m_Data.Landings(igrp, iFlt) += cellCatch * Me.m_EPdata.PropLanded(iFlt, igrp)
+    '                    End If
+    '                Next iFlt
+    '            End If 'If m_EPdata.fCatch(igrp) > 0 Then
+    '        Next igrp
 
 
+    '    Catch ex As Exception
+    '        cLog.Write(ex)
+    '    End Try
 
-        '                        '060109VC: Adding Time Series Reference Data to Ecospace
-        '                        'Will only save data for once per year, (at half year)
-        '                        'save at iYear = int(timenow)
-        '                        'ReDim SpaceBiomassByRegion(totalTime, m_data.nGroups, NoRegions)
-        '                        'ReDim SpaceCatchByRegion(totalTime, m_data.nGroups, NoRegions)
-        '                        If StoreTimeSeriesData Then
-        '                            SpaceBiomassByRegion(iYear, iGrp, 0) = SpaceBiomassByRegion(iYear, iGrp, 0) + Biomass(iGrp)
-        '                            SpaceBiomassByRegion(iYear, iGrp, Region(iRow, iCol)) = SpaceBiomassByRegion(iYear, iGrp, Region(iRow, iCol)) + Biomass(iGrp)
-        '                            SpaceBiomassByRegionCount(iYear, iGrp, 0) = SpaceBiomassByRegionCount(iYear, iGrp, 0) + 1
-        '                            SpaceBiomassByRegionCount(iYear, iGrp, Region(iRow, iCol)) = SpaceBiomassByRegionCount(iYear, iGrp, Region(iRow, iCol)) + 1
-        '                    If Catch(iGrp) > 0 Then
-        '                                SpaceCatchByRegion(iYear, iGrp, 0) = SpaceCatchByRegion(iYear, iGrp, 0) + Biomass(iGrp) * FishTime(iGrp)
-        '                                SpaceCatchByRegion(iYear, iGrp, Region(iRow, iCol)) = SpaceCatchByRegion(iYear, iGrp, Region(iRow, iCol)) + Biomass(iGrp) * FishTime(iGrp)
-        '                                SpaceCatchByRegionCount(iYear, iGrp, 0) = SpaceCatchByRegionCount(iYear, iGrp, 0) + 1
-        '                                SpaceCatchByRegionCount(iYear, iGrp, Region(iRow, iCol)) = SpaceCatchByRegionCount(iYear, iGrp, Region(iRow, iCol)) + 1
-        '                            End If
-        '                            If iGrp = 1 Then
-        '                                ForiFlt= 1 To NumGear
-        '                                    SpaceEffortByRegionFleet(iYear, ig, 0) = SpaceEffortByRegionFleet(iYear, ig, 0) + EffortSpace(ig, iRow, iCol)
-        '                                    SpaceEffortByRegionFleet(iYear, ig, Region(iRow, iCol)) = SpaceEffortByRegionFleet(iYear, ig, Region(iRow, iCol)) + EffortSpace(ig, iRow, iCol)
-        '                                    SpaceEffortByRegionFleetCount(iYear, ig, 0) = SpaceEffortByRegionFleetCount(iYear, ig, 0) + 1
-        '                                    SpaceEffortByRegionFleetCount(iYear, ig, Region(iRow, iCol)) = SpaceEffortByRegionFleetCount(iYear, ig, Region(iRow, iCol)) + 1
-        '                                Next
-        '                            End If
-        '                        End If
+    '    Me.m_SpaceCatchSemaphor.Release()
 
-        '                        'abmpa: use this routine for ecoseed abmpa
-        '                        If En1 >= 0 And chkMPA.value = Checked Then
-        '                            If Shadow(iGrp) > 0 Then Ecoseed.CalcBioValSeed(iRow, iCol, ebb(), iGrp, En1)
-        '                    If Catch(iGrp) > 0 Then Ecoseed.CalcGearValSeed iRow, iCol, ebb(), iGrp, En1
-        '                        End If
 
-    End Sub
+
+    '    '                        '060109VC: Adding Time Series Reference Data to Ecospace
+    '    '                        'Will only save data for once per year, (at half year)
+    '    '                        'save at iYear = int(timenow)
+    '    '                        'ReDim SpaceBiomassByRegion(totalTime, m_data.nGroups, NoRegions)
+    '    '                        'ReDim SpaceCatchByRegion(totalTime, m_data.nGroups, NoRegions)
+    '    '                        If StoreTimeSeriesData Then
+    '    '                            SpaceBiomassByRegion(iYear, iGrp, 0) = SpaceBiomassByRegion(iYear, iGrp, 0) + Biomass(iGrp)
+    '    '                            SpaceBiomassByRegion(iYear, iGrp, Region(iRow, iCol)) = SpaceBiomassByRegion(iYear, iGrp, Region(iRow, iCol)) + Biomass(iGrp)
+    '    '                            SpaceBiomassByRegionCount(iYear, iGrp, 0) = SpaceBiomassByRegionCount(iYear, iGrp, 0) + 1
+    '    '                            SpaceBiomassByRegionCount(iYear, iGrp, Region(iRow, iCol)) = SpaceBiomassByRegionCount(iYear, iGrp, Region(iRow, iCol)) + 1
+    '    '                    If Catch(iGrp) > 0 Then
+    '    '                                SpaceCatchByRegion(iYear, iGrp, 0) = SpaceCatchByRegion(iYear, iGrp, 0) + Biomass(iGrp) * FishTime(iGrp)
+    '    '                                SpaceCatchByRegion(iYear, iGrp, Region(iRow, iCol)) = SpaceCatchByRegion(iYear, iGrp, Region(iRow, iCol)) + Biomass(iGrp) * FishTime(iGrp)
+    '    '                                SpaceCatchByRegionCount(iYear, iGrp, 0) = SpaceCatchByRegionCount(iYear, iGrp, 0) + 1
+    '    '                                SpaceCatchByRegionCount(iYear, iGrp, Region(iRow, iCol)) = SpaceCatchByRegionCount(iYear, iGrp, Region(iRow, iCol)) + 1
+    '    '                            End If
+    '    '                            If iGrp = 1 Then
+    '    '                                ForiFlt= 1 To NumGear
+    '    '                                    SpaceEffortByRegionFleet(iYear, ig, 0) = SpaceEffortByRegionFleet(iYear, ig, 0) + EffortSpace(ig, iRow, iCol)
+    '    '                                    SpaceEffortByRegionFleet(iYear, ig, Region(iRow, iCol)) = SpaceEffortByRegionFleet(iYear, ig, Region(iRow, iCol)) + EffortSpace(ig, iRow, iCol)
+    '    '                                    SpaceEffortByRegionFleetCount(iYear, ig, 0) = SpaceEffortByRegionFleetCount(iYear, ig, 0) + 1
+    '    '                                    SpaceEffortByRegionFleetCount(iYear, ig, Region(iRow, iCol)) = SpaceEffortByRegionFleetCount(iYear, ig, Region(iRow, iCol)) + 1
+    '    '                                Next
+    '    '                            End If
+    '    '                        End If
+
+    '    '                        'abmpa: use this routine for ecoseed abmpa
+    '    '                        If En1 >= 0 And chkMPA.value = Checked Then
+    '    '                            If Shadow(iGrp) > 0 Then Ecoseed.CalcBioValSeed(iRow, iCol, ebb(), iGrp, En1)
+    '    '                    If Catch(iGrp) > 0 Then Ecoseed.CalcGearValSeed iRow, iCol, ebb(), iGrp, En1
+    '    '                        End If
+
+    'End Sub
 
 
     Private Sub calcValue(ByVal iCumTime As Integer, ByVal iYear As Integer)
@@ -4886,7 +5063,7 @@ exitline:
                 solver.MinChange = MinChange
                 solver.Init()
 
-                solver.EcospaceErrorHandler = AddressOf Me.SolverErrorHandler
+                'solver.EcospaceErrorHandler = AddressOf Me.SolverErrorHandler
 
                 m_spaceSolvers.Add(solver)
             Next i
@@ -6032,9 +6209,13 @@ exitline:
         End If
 
         'set up array of relative habitat capacities by cell and group
-        Me.m_Data.allocate(m_Data.HabCap, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        ReDim m_Data.TotHabCap(m_Data.NGroups)
-        ReDim m_Data.MaxHabCap(m_Data.NGroups)
+        Array.Clear(m_Data.HabCap, 0, m_Data.HabCap.Length)
+        Array.Clear(m_Data.TotHabCap, 0, m_Data.TotHabCap.Length)
+        Array.Clear(m_Data.MaxHabCap, 0, m_Data.MaxHabCap.Length)
+
+        'Me.m_Data.allocate(m_Data.HabCap, m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
+        'ReDim m_Data.TotHabCap(m_Data.NGroups)
+        'ReDim m_Data.MaxHabCap(m_Data.NGroups)
 
         'Sum the capacity input map into HabCap
         Me.setHabCapFromCapInputMap()
@@ -6075,38 +6256,49 @@ exitline:
     ''' </summary>
     ''' <remarks></remarks>
     Private Sub runAjustLowHabCapsThreaded()
-        Dim nGrpsPerThread As Integer = Me.m_Data.NGroups \ Me.m_Data.nGridSolverThreads + 1
         Dim iFirstGrp As Integer = 1
         Dim ilastGrp As Integer
-        Dim bDone As Boolean
-        Dim lstOfCalls As List(Of WaitHandle) = New List(Of WaitHandle)
+        Dim nGrpsPerThread As Integer
+        Dim nCompleted As Integer
+        Dim nRun As Integer
 
-        For ithrd As Integer = 1 To Me.m_Data.nSpaceSolverThreads
+        Dim waitOb As AutoResetEvent = New AutoResetEvent(False)
+        Dim nThreads As Integer = Me.m_Data.nGridSolverThreads
+        If nThreads > Me.m_Data.NGroups Then nThreads = Me.m_Data.NGroups
 
-            ilastGrp = iFirstGrp + nGrpsPerThread
+        cEcoSpace.m_ThreadIncrementCount = nThreads
 
-            'bound the fleet index
+        For ithrd As Integer = 1 To nThreads
+
+            'Amount of work remaining / resourses remaining
+            nGrpsPerThread = Me.computeThreadLoad(Me.m_Data.NGroups, nCompleted, nThreads, ithrd)
+
+            nCompleted += nGrpsPerThread
+            nRun += 1
+
+            ilastGrp = iFirstGrp + nGrpsPerThread - 1
+
+            'bound the group index
             If ilastGrp > Me.m_Data.NGroups Then
                 ilastGrp = Me.m_Data.NGroups + 1
-                'Computed all the fleets before we ran out of threads
-                bDone = True
             End If
 
-            'create a AutoResetEvent that the worker thread will signal once it has completed
-            Dim waitOb As WaitHandle = New AutoResetEvent(False)
-            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.AdjustLowHabCapsThreaded), New cThreadedCallArgs(waitOb, iFirstGrp, ilastGrp))
-            lstOfCalls.Add(waitOb)
+            'ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.AdjustLowHabCapsThreaded), New cThreadedCallArgs(waitOb, iFirstGrp, ilastGrp))
 
-            If bDone Then Exit For
+            Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstGrp, ilastGrp)
+            Dim worker As Thread = New Thread(Sub() Me.AdjustLowHabCapsThreaded(arg))
+            worker.Start()
 
-            iFirstGrp = ilastGrp
+            iFirstGrp += nGrpsPerThread
 
         Next ithrd
 
-        'wait for all the worker threads to signal the AutoResetEvent
-        For Each waitob As WaitHandle In lstOfCalls
-            waitob.WaitOne()
-        Next
+        Debug.Assert(nCompleted = Me.m_Data.NGroups)
+        If Not waitOb.WaitOne(THREAD_TIMEOUT) Then
+            cLog.Write(Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
+            Debug.Assert(False, Me.ToString & ".runAjustLowHabCapsThreaded() AdjustLowHabCapsThreaded timed out.")
+        End If
+
 
     End Sub
 
@@ -6128,6 +6320,9 @@ exitline:
         Try
 
             grpArgs = DirectCast(ArgsOb, cThreadedCallArgs)
+
+            Debug.Assert(grpArgs.iFirst > 0)
+
 
             'bounds checking 
             If grpArgs.iFirst < 1 Then grpArgs.iFirst = 1
@@ -6226,15 +6421,11 @@ exitline:
             System.Console.WriteLine("Ecospace.AdjustLowHabCapsThreaded Exception: " & ex.Message)
         End Try
 
-
         Try
-            'Make sure the waithandle gets signaled 
-            'if this messes up there will be a deadlock waiting for this worker thread
-            Dim AutoRest As AutoResetEvent = TryCast(grpArgs.WaitHandle, AutoResetEvent)
-            Debug.Assert(AutoRest IsNot Nothing, "AdjustLowHapCapsThreaded Exception AutoResetEvent is null.")
 
-            'Set the AutoRestEvent this will release the wait on this thread
-            If AutoRest IsNot Nothing Then AutoRest.Set()
+            If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
+                grpArgs.WaitHandle.Set()
+            End If
 
         Catch ex As Exception
             System.Console.WriteLine("Ecospace.AdjustLowHabCapsThreaded Exception: " & ex.Message)
@@ -6520,7 +6711,7 @@ exitline:
 
     End Sub
 
-   
+
 
 #End Region
 
