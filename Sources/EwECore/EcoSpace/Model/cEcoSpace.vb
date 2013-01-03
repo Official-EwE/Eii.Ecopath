@@ -1430,14 +1430,13 @@ Public Class cEcoSpace
 
         Try
 
-
             'Create one WaitHandle and pass it to all the threads
             'Once the cSpaceSolver.ThreadIncrementer hits zero the thread(cSpaceSolver) object will call ManualResetEvent.Set()  
             'this allows any waiting threads to continue
             Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
 
             'set the shared thread increment counter to the number of threads
-            cSpaceSolver.ThreadIncrementer = m_gridSolvers.Count
+            cGridSolver.ThreadIncrementer = m_gridSolvers.Count
 
             For Each solver In m_gridSolvers
                 nRunning += 1
@@ -1446,53 +1445,25 @@ Public Class cEcoSpace
                 'the Wait object will be released by the solver
                 solver.WaitHandle = WaitOb
 
-                ' If solver.isOkToRunning Then
-
-                'iLstgrp = iFstGrp + m_Data.nGroupsPerThread - 1
-                'If iLstgrp > m_Data.totalIntegratedGroups Then iLstgrp = m_Data.totalIntegratedGroups 'm_Data.nvartot Then iLstgrp = m_Data.nvartot
-
-                'solver.FirstLastGroups(m_Data.integratedGroups(iFstGrp), m_Data.integratedGroups(iLstgrp))
                 solver.FirstLastGroups(1, nGroupsInThread(solver.ThreadID))
 
-                'solver.isOkToRunning = False
-                'Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                'worker.Start()
-                ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                worker.Start()
+                ' ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
 
-                'iFstGrp += m_Data.nGroupsPerThread
-                ' Else
-                'System.Console.WriteLine("Solver thread blocked ID:" & solver.ThreadID & " Group:" & solver.iFirstIndex & " time:" & m_Data.TimeNow)
-                ' End If
-
-                'If iLstgrp >= m_Data.totalIntegratedGroups Then
-                'Exit For
-                'End If
             Next solver
-            'Loop
 
             'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
             If Not WaitOb.WaitOne(THREAD_TIMEOUT) Then
-                Debug.Assert(False, "Timed out!")
+                Debug.Assert(False, "runGridSolverThreads() Timed out!")
                 cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
             End If
-
-
-            '' wait for all the threads to finish before starting the next time step
-            'Dim solvCtr As Integer = 1
-            'Dim iterTime As Single
-            'For Each solver In m_gridSolvers
-            '    solver.WaitHandle.WaitOne()
-            '    totalIterThread(solvCtr) = totalIterThread(solvCtr) + solver.iterThread
-            '    iterTime = iterTime + solver.iterThread
-            '    solvCtr = solvCtr + 1
-            'Next
 
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, ex.Message)
             Throw New ApplicationException("Error in runSolverThreads()", ex)
         End Try
-
 
     End Sub
     Private Sub runSpaceSolverThreads()

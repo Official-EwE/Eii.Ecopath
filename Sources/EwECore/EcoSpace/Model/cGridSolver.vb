@@ -32,7 +32,11 @@ Public Class cGridSolver
     ''' </remarks>
     Public WaitHandle As New ManualResetEvent(True)
 
+    Public Shared ThreadIncrementer As Integer
+
     Public iterThread As Integer 'total iterations 
+
+
 #End Region
 
 #Region "Private data"
@@ -195,7 +199,7 @@ Public Class cGridSolver
 
         'set signal state to 'signaled' 
         'the processing has finished SignalState.WaitOne() will return immediately
-        If Interlocked.Decrement(cSpaceSolver.ThreadIncrementer) = 0 Then
+        If Interlocked.Decrement(cGridSolver.ThreadIncrementer) = 0 Then
             WaitHandle.Set()
         End If
 
