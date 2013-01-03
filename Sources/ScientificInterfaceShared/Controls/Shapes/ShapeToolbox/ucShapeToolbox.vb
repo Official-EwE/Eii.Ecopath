@@ -407,9 +407,14 @@ Namespace Controls
         ''' </remarks>
         ''' -------------------------------------------------------------------
         Private Sub UpdateThumbnails()
+            If Not Me.Created Then Return
             If Me.m_bUpdateRequested Then Return
             Me.m_bUpdateRequested = True
-            Me.BeginInvoke(New MethodInvoker(AddressOf DelayUpdateThumbnails))
+            Try
+                Me.BeginInvoke(New MethodInvoker(AddressOf DelayUpdateThumbnails))
+            Catch ex As Exception
+                ' Whoah!
+            End Try
         End Sub
 
         Private Sub DelayUpdateThumbnails()
