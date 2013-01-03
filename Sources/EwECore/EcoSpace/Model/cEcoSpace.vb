@@ -1591,7 +1591,7 @@ Public Class cEcoSpace
             For Each solver In m_spaceSolvers
 
                 cpuTime += solver.RunTimeSeconds
-                Me.dumpCellComputeTimes(solver.lstCellCompTimes)
+                'Me.dumpCellComputeTimes(solver.lstCellCompTimes)
 
                 For igrp As Integer = 1 To m_Data.NGroups
                     m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp)
