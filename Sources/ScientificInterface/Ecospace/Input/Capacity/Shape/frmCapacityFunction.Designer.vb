@@ -92,9 +92,9 @@ Partial Class frmCapacityFunction
         Me.m_sketchPad.NumDataPoints = -9999
         Me.m_sketchPad.Shape = Nothing
         Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
-        Me.m_sketchPad.ShowValueTooltip = True
-        Me.m_sketchPad.ShowXMark = True
-        Me.m_sketchPad.ShowYMark = True
+        Me.m_sketchPad.ShowValueTooltip = False
+        Me.m_sketchPad.ShowXMark = False
+        Me.m_sketchPad.ShowYMark = False
         Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
         Me.m_sketchPad.UIContext = Nothing
         Me.m_sketchPad.XAxisLabel = "Input value"
@@ -151,6 +151,7 @@ Partial Class frmCapacityFunction
         Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
         Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
         Me.m_shapeToolBox.UIContext = Nothing
+        Me.m_shapeToolBox.XAxisMaxValue = -9999
         Me.m_shapeToolBox.YAxisMinValue = -9999.0!
         '
         'm_shapeToolboxToolbar

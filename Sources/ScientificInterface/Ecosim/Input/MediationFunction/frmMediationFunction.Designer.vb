@@ -77,9 +77,11 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_sketchPadToolbar, "m_sketchPadToolbar")
             Me.m_sketchPadToolbar.Handler = Nothing
             Me.m_sketchPadToolbar.Name = "m_sketchPadToolbar"
+            Me.m_sketchPadToolbar.UIContext = Nothing
             '
             'm_sketchPad
             '
+            Me.m_sketchPad.AllowedEdits = ScientificInterfaceShared.Controls.ucSketchPad.eMouseInteractionMode.DrawDragX
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
@@ -87,12 +89,11 @@ Namespace Ecosim
             Me.m_sketchPad.Editable = True
             Me.m_sketchPad.Handler = Nothing
             Me.m_sketchPad.IsSeasonal = False
-            Me.m_sketchPad.AllowedEdits = ucSketchPad.eMouseInteractionMode.DrawShape Or ucSketchPad.eMouseInteractionMode.DragXMark
             Me.m_sketchPad.Name = "m_sketchPad"
             Me.m_sketchPad.NumDataPoints = -9999
             Me.m_sketchPad.Shape = Nothing
             Me.m_sketchPad.ShapeColor = System.Drawing.Color.AliceBlue
-            Me.m_sketchPad.ShowValueTooltip = True
+            Me.m_sketchPad.ShowValueTooltip = False
             Me.m_sketchPad.ShowXMark = True
             Me.m_sketchPad.ShowYMark = True
             Me.m_sketchPad.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
@@ -151,6 +152,7 @@ Namespace Ecosim
             Me.m_shapeToolBox.Selection = New EwECore.cShapeData(-1) {}
             Me.m_shapeToolBox.SketchDrawMode = ScientificInterfaceShared.Definitions.eSketchDrawModeTypes.Fill
             Me.m_shapeToolBox.UIContext = Nothing
+            Me.m_shapeToolBox.XAxisMaxValue = -9999
             Me.m_shapeToolBox.YAxisMinValue = -9999.0!
             '
             'm_shapeToolboxToolbar

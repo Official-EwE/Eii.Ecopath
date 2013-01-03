@@ -59,6 +59,8 @@ Namespace Controls
             DragXMark = 2
             ''' <summary>User is dragging the Y mark line.</summary>
             DragYMark = 4
+            DrawDragX = DrawShape Or DragXMark
+            DrawDragY = DrawShape Or DragYMark
             ''' <summary>User can do all of the above.</summary>
             All = DrawShape Or DragXMark Or DragYMark
         End Enum

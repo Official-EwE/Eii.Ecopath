@@ -122,12 +122,6 @@ Namespace Controls
 
             MyBase.Attach(uic, stb, stbtb, sp, sptb, ma, mat)
 
-            Me.SketchPad.ShowXMark = True
-            Me.SketchPad.AllowedEdits = ucSketchPad.eMouseInteractionMode.DrawShape Or ucSketchPad.eMouseInteractionMode.DragXMark
-
-            ' Tooltip does not make much sense for mediation functions
-            Me.SketchPad.ShowValueTooltip = False
-
             Me.MediationAssignments = ma
             If (Me.MediationAssignments IsNot Nothing) Then
                 Me.MediationAssignments.Title = ""
