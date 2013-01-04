@@ -491,6 +491,8 @@ Public Class cIBMSolver
     Public Sub New(ByVal ThreadNumber As Integer)
         isOkToRun = True
         ThreadID = ThreadNumber
+        'Seed the random number generator 
+        'So it will return a different sequence for each run of Ecospace
         Me.m_rand = New Random(CInt(Date.Now.Ticks And &HFFFF))
 
     End Sub
