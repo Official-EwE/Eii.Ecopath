@@ -15,52 +15,59 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-#Region "Import"
+#Region " Imports "
 
 Option Strict On
 Imports System.IO
-Imports System.Text
 Imports EwEUtils.Core
-Imports EwEUtils.Utilities
 
-#End Region
+#End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
-''' to write Ecospace output a ESRI ASC files. 
+''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
+''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
+''' to write Ecospace output to ESRI ASCII files. 
 ''' </summary>
-''' <remarks>Each ASC file will contain Biomass of a group for a time step</remarks>
+''' <remarks>Each ASCII file will contain an Ecospace value for a given group and time step</remarks>
+''' ---------------------------------------------------------------------------
 Public Class cEcospaceASCResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
-#Region "IEcospaceResultsWriter Implementation"
+#Region " Base writer overrides "
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.StartWrite"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub StartWrite()
         Try
             Me.CreateOutputDir()
-            Me.WriteInfoFile()
+            Me.WriteRunInfoFile()
         Catch ex As Exception
             Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
         End Try
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.WriteResults"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
         Try
 
             Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
             Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
-            Dim strm As StreamWriter
-            Dim fn As String
+            Dim strm As StreamWriter = Nothing
+            Dim strFile As String = ""
 
             For Each varname As eVarNameFlags In vars
 
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-                    fn = Me.getGroupFileName(varname, igrp, Me.GetFileExtension(), tsData.iTimeStep)
-                    strm = New StreamWriter(fn, False)
+                    strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension(), tsData.iTimeStep)
+                    strm = New StreamWriter(strFile, False)
 
-                    saveASC(strm, tsData, igrp, varname)
+                    Me.SaveASCFile(strm, tsData, igrp, varname)
 
                     strm.Close()
                     strm = Nothing
@@ -68,9 +75,9 @@ Public Class cEcospaceASCResultsWriter
             Next
 
             ' Sum space effort
-            fn = Me.getFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.GetFileExtension(), tsData.iTimeStep)
-            strm = New StreamWriter(fn, False)
-            saveASC(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
+            strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
+            strm = New StreamWriter(strFile, False)
+            SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
             strm.Close()
             strm = Nothing
 
@@ -81,6 +88,9 @@ Public Class cEcospaceASCResultsWriter
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.EndWrite"/>
+    ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
         ' ToDo_JS: globalize this message
         Dim msg As New cMessage("Ecospace result ASCII files have been written to " & Me.m_TimeStampDirName, _
@@ -90,100 +100,111 @@ Public Class cEcospaceASCResultsWriter
         Me.m_core.Messages.SendMessage(msg)
     End Sub
 
-#End Region
-
-#Region "Private methods"
-
-    Protected Overrides Function GetFileExtension() As String
-        Return "asc"
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.FileExtension"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function FileExtension() As String
+        Return ".asc"
     End Function
 
-    Protected Function CellSize() As Single
-        Dim cellSizeDegrees As Single = Me.SpaceData.CellSize
-        If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.SpaceData.CellLength)
-        Return cellSizeDegrees
-    End Function
+#End Region ' Base writer overrides
 
-    Private Sub WriteInfoFile()
+#Region " Internals "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write the run information file to accompany the run results.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub WriteRunInfoFile()
+
         Try
-            Dim fn As String
-            Dim strm As StreamWriter
-            fn = Path.Combine(Me.OutputDirectory, ".Ecospace RunInfo.txt")
-            strm = New StreamWriter(fn, False)
-
-            Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
-            Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
-            Dim ver As String = cCore.Version
+            Dim strFN As String = Path.Combine(Me.OutputDirectory, ".Ecospace RunInfo.txt")
+            Dim strm As New StreamWriter(strFN, False)
 
             strm.WriteLine("EcoSpace .asc map output")
-            strm.WriteLine("EwE version," & cStringUtils.ToCSVField(ver))
-            strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
+            Me.WriteRunInfo(strm)
 
-            strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
-            strm.WriteLine("EcoSim Scenario," & cStringUtils.ToCSVField(simScen))
-            strm.WriteLine("EcoSpace Scenario," & cStringUtils.ToCSVField(SpaceScen))
-            strm.WriteLine("Map rows," & Me.SpaceData.InRow)
-            strm.WriteLine("Map cols," & Me.SpaceData.InCol)
-            strm.WriteLine("Map cell length," & Me.SpaceData.CellLength)
-            strm.WriteLine("Map cell size," & Me.CellSize())
-            strm.WriteLine("Map Latitude," & Me.SpaceData.Lat1)
-            strm.WriteLine("Map Longitude," & Me.SpaceData.Lon1)
-            strm.WriteLine("EcoSpace time step length," & Me.SpaceData.TimeStep.ToString)
-
+            strm.Flush()
             strm.Close()
+            strm = Nothing
 
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub saveASC(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal igrp As Integer, varName As eVarNameFlags)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write an entire ASCII file for a group, time step and variable.
+    ''' </summary>
+    ''' <param name="strm"></param>
+    ''' <param name="SpaceTSData"></param>
+    ''' <param name="igrp"></param>
+    ''' <param name="varName"></param>
+    ''' -----------------------------------------------------------------------
+    Protected Sub SaveASCFile(ByVal strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, _
+                              ByVal igrp As Integer, ByVal varName As eVarNameFlags)
         Try
-            Me.WriteHeader(strm)
-            Me.WriteBody(strm, SpaceTSData, igrp, varName)
+            Me.WriteASCIIHeader(strm)
+            Me.WriteASCIIBody(strm, SpaceTSData, igrp, varName)
         Catch ex As Exception
             System.Console.WriteLine(Me.ToString & ".WriteResults() Exception: " & ex.Message)
         End Try
     End Sub
 
-    Protected Sub WriteHeader(ByRef writer As StreamWriter)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write ESRI ASCII header block.
+    ''' </summary>
+    ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
+    ''' -----------------------------------------------------------------------
+    Protected Sub WriteASCIIHeader(ByVal writer As StreamWriter)
 
-        Dim latLL As Single = Me.SpaceData.Lat1 - (Me.SpaceData.InRow + 1) * Me.CellSize()
-
-        writer.WriteLine("ncols         " & Me.SpaceData.InCol)
-        writer.WriteLine("nrows         " & Me.SpaceData.InRow)
-        writer.WriteLine("xllcorner     " & Me.SpaceData.Lon1)
-        writer.WriteLine("yllcorner     " & latLL)
-        'writer.WriteLine("xllcenter     " & (Me.SpaceData.Lon1 + 0.5 * cellSizeDegrees))
-        'writer.WriteLine("yllcenter     " & (latLL + 0.5 * cellSizeDegrees))
+        writer.WriteLine("ncols         " & Me.EcospaceData.InCol)
+        writer.WriteLine("nrows         " & Me.EcospaceData.InRow)
+        writer.WriteLine("xllcorner     " & Me.EcospaceData.Lon1)
+        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow + 1) * Me.CellSize())
         writer.WriteLine("cellsize      " & Me.CellSize())
         writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
 
     End Sub
 
-    Protected Sub WriteBody(ByRef strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, ByVal iIndex As Integer, varname As eVarNameFlags)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write ESRI ASCII body block.
+    ''' </summary>
+    ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
+    ''' <param name="iIndex">The layer index to write the data for.</param>
+    ''' <param name="SpaceTSData">The Ecospace data structures to use for spatial referencing.</param>
+    ''' <param name="varname">The variable to write.</param>
+    ''' -----------------------------------------------------------------------
+    Protected Sub WriteASCIIBody(ByVal writer As StreamWriter, _
+                                 ByVal SpaceTSData As cEcospaceTimestep, _
+                                 ByVal iIndex As Integer, _
+                                 ByVal varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
         Dim value As Single
 
         Debug.Assert(map IsNot Nothing)
 
-        For ir As Integer = 1 To Me.SpaceData.InRow
-            For ic As Integer = 1 To Me.SpaceData.InCol
-                If ic > 1 Then strm.Write(" ")
-                If Me.SpaceData.Depth(ir, ic) > 0 Then
+        For ir As Integer = 1 To Me.EcospaceData.InRow
+            For ic As Integer = 1 To Me.EcospaceData.InCol
+                If ic > 1 Then writer.Write(" ")
+                If Me.EcospaceData.Depth(ir, ic) > 0 Then
                     value = CSng(map.Cell(ir, ic))
                 Else
                     'land as NODATAVALUE
                     value = cCore.NULL_VALUE
                 End If
-                strm.Write(value)
+                writer.Write(value)
             Next
-            strm.WriteLine("")
+            writer.WriteLine("")
         Next
 
     End Sub
 
-#End Region
+#End Region ' Internals
 
 End Class

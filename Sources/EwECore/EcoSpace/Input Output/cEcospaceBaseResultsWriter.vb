@@ -15,14 +15,15 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-#Region "Import"
+#Region " Imports "
 
 Option Strict On
 Imports System.IO
-Imports EwEUtils.Utilities
+Imports EwEPlugin
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
-#End Region
+#End Region ' Imports
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -31,12 +32,34 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Public Class cEcospaceResultWriterFactory
 
-    Public Shared Function GetWriter(ByVal strExt As String) As IEcospaceResultsWriter
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Factory method.
+    ''' </summary>
+    ''' <param name="strExt">The file extension to find a writer for.</param>
+    ''' <returns>A <see cref="IEcospaceResultsWriter"/> instance, or Nothing if
+    ''' no writer could be found for the provided extension.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Shared Function GetWriter(ByVal strExt As String, _
+                                     ByVal pm As cPluginManager) As IEcospaceResultsWriter
 
         Select Case strExt.ToLower
             Case ".csv" : Return New cEcospaceCSVResultsWriter()
             Case ".asc" : Return New cEcospaceASCResultsWriter()
         End Select
+
+        ' Plug-in manager provided?
+        If (pm IsNot Nothing) Then
+            ' #Yes: see if a plug-in based writer supports the requested format
+            For Each ip As IEcospaceResultWriterPlugin In pm.GetPlugins(GetType(IEcospaceResultWriterPlugin))
+                ' Does plug-in support this format?
+                If (String.Compare(strExt, ip.FileExtension, True) = 0) Then
+                    ' #Yes: use it
+                    Return ip
+                End If
+            Next
+        End If
+
         Return Nothing
 
     End Function
@@ -52,50 +75,77 @@ End Class
 Public MustInherit Class cEcospaceBaseResultsWriter
     Implements EwEUtils.Core.IEcospaceResultsWriter
 
-#Region "Protected data "
+#Region " Protected data "
 
-    Protected m_core As cCore
+    ''' <summary>Zhe core.</summary>
+    Protected m_core As cCore = Nothing
+    ''' <summary>The complete path to the directory containing result files.</summary>
     Protected m_TimeStampDirName As String
 
+#End Region ' Protected data
+
+#Region " Constructor "
+
     Public Sub New()
+        ' NOP
     End Sub
 
-#End Region
+#End Region ' Constructor
 
-#Region "IEcospaceResultsWriter Interfaces"
+#Region " IEcospaceResultsWriter implementation "
 
-    Public MustOverride Sub WriteResults(ByVal SpaceTimeStepResults As Object) Implements EwEUtils.Core.IEcospaceResultsWriter.WriteResults
-
-    Public MustOverride Sub EndWrite() Implements EwEUtils.Core.IEcospaceResultsWriter.EndWrite
-
-    Public MustOverride Sub StartWrite() Implements EwEUtils.Core.IEcospaceResultsWriter.StartWrite
-
-#End Region
-
-#Region "MustOverride and Overridable methods of cEcospaceBaseResultsWriter "
-
-    Public Overridable Sub Init(ByVal theCore As Object) Implements EwEUtils.Core.IEcospaceResultsWriter.Init
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.Init"/>
+    ''' -----------------------------------------------------------------------
+    Public Overridable Sub Init(ByVal theCore As Object) _
+        Implements EwEUtils.Core.IEcospaceResultsWriter.Init
         Me.m_core = DirectCast(theCore, cCore)
     End Sub
 
-#End Region
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.StartWrite"/>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride Sub StartWrite() _
+        Implements EwEUtils.Core.IEcospaceResultsWriter.StartWrite
 
-#Region "Protected methods"
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.WriteResults"/>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride Sub WriteResults(ByVal SpaceTimeStepResults As Object) _
+        Implements EwEUtils.Core.IEcospaceResultsWriter.WriteResults
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.EndWrite"/>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride Sub EndWrite() _
+        Implements EwEUtils.Core.IEcospaceResultsWriter.EndWrite
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="IEcospaceResultsWriter.FileExtension"/>
+    ''' -----------------------------------------------------------------------
+    Public MustOverride Function FileExtension() As String _
+        Implements IEcospaceResultsWriter.FileExtension
+
+#End Region ' IEcospaceResultsWriter implementation
+
+#Region " Internals "
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create the time stamped ouput directory
+    ''' Create the time stamped ouput directory.
     ''' </summary>
     ''' <remarks>
     ''' Directory will be created on the default output path in the format "Ecopace {datatype} {y-m-d h-m-s}
-    ''' i.e. "Ecospace ASC 11-07-11 16-40-50" </remarks>
+    ''' i.e. "Ecospace ASC 11-07-11 16-40-50".</remarks>
+    ''' -----------------------------------------------------------------------
     Protected Overridable Sub CreateOutputDir()
 
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
-            m_TimeStampDirName = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), Me.GetFileExtension())
+            ' Write to "Ecospace output dir\ext\"
+            Me.m_TimeStampDirName = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), Me.FileExtension())
         Else
             'Use the output directroy set by the user
-            m_TimeStampDirName = Me.m_core.OutputPath ' 
+            Me.m_TimeStampDirName = Me.m_core.OutputPath
         End If
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
@@ -105,107 +155,137 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Return the file extension for a writer WITHOUT the dot extension separator. Please. Without.
+    ''' Get the full path name of the current output directory.
     ''' </summary>
-    Protected MustOverride Function GetFileExtension() As String
-
-    ''' <summary>
-    ''' Get the current time as a string to be used in the ouput directory name
-    ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks>format year-month-day hour-minute-second</remarks>
-    Protected Overridable Function getTimeStamp() As String
-        Return Date.Now.ToString("y-MM-dd HH-mm-ss")
-    End Function
-
-    ''' <summary>
-    ''' Full path name of the current output directory
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>Initialized by <see cref="CreateOutputDir"/></remarks>
+    ''' <remarks>Initialized by <see cref="CreateOutputDir"/>.</remarks>
+    ''' -----------------------------------------------------------------------
     Protected Overridable ReadOnly Property OutputDirectory() As String
         Get
             Return Me.m_TimeStampDirName
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Convert the variable, group index, extention and model time step into a valid file name
+    ''' Convert the variable, group index, extention and model time step into a 
+    ''' valid group-based file name.
     ''' </summary>
-    ''' <param name="varname">Variable i.e. Biomass</param>
-    ''' <param name="iGrp">Index of the group</param>
-    ''' <param name="Ext">Extention of the file</param>
-    ''' <param name="ModelTimeStep">Time step for the current file. If this is not supplied then no time stamp will appear in the filename </param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Protected Overridable Function getGroupFileName(ByVal varname As eVarNameFlags, ByVal iGrp As Integer, ByVal Ext As String, Optional ByRef ModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    ''' <param name="varname">Variable, i.e. Biomass.</param>
+    ''' <param name="iGrp">Index of the group.</param>
+    ''' <param name="strExt">Extention of the file.</param>
+    ''' <param name="iModelTimeStep">Time step for the current file. If this is 
+    ''' not supplied then no time stamp will appear in the filename.</param>
+    ''' <returns>A file name.</returns>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags, _
+                                                    ByVal iGrp As Integer, _
+                                                    ByVal strExt As String, _
+                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
-        Dim Timestep As String = ""
+        Dim strTimestep As String = ""
 
-        'Is there a time step in the file name
-        If ModelTimeStep <> cCore.NULL_VALUE Then
-            'Yes so include it in the file name
-            Timestep = String.Format("-{0:00000}", ModelTimeStep)
+        ' Is there a time step in the file name?
+        If (iModelTimeStep > 0) Then
+            ' #Yes: include it in the file name
+            strTimestep = String.Format("-{0:00000}", iModelTimeStep)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", cin.GetVarName(varname), grpName, Timestep, Ext), False)
-        Return System.IO.Path.Combine(Me.OutputDirectory, fn)
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", _
+                                                                                       cin.GetVarName(varname), grpName, strTimestep, strExt.Replace(".", "")), _
+                                                                         False)
+        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Convert the variable, fleet index, extention and model time step into a valid file name
+    ''' Convert the variable, fleet index, extention and model time step into a 
+    ''' valid fleet-based file name.
     ''' </summary>
-    ''' <param name="varname">Variable i.e. Biomass</param>
-    ''' <param name="iFlt">Index of the fleet</param>
-    ''' <param name="Ext">Extention of the file</param>
-    ''' <param name="ModelTimeStep">Time step for the current file. If this is not supplied then no time stamp will appear in the filename </param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Protected Overridable Function getFleetFileName(ByVal varname As eVarNameFlags, ByVal iFlt As Integer, ByVal Ext As String, Optional ByRef ModelTimeStep As Integer = cCore.NULL_VALUE) As String
+    ''' <param name="varname">Variable, i.e. Biomass.</param>
+    ''' <param name="iFlt">Index of the fleet.</param>
+    ''' <param name="strExt">Extention of the file WITHOUT a period.</param>
+    ''' <param name="iModelTimeStep">Time step for the current file. If this is 
+    ''' not supplied then no time stamp will appear in the filename.</param>
+    ''' <returns>A file name.</returns>
+    ''' -----------------------------------------------------------------------
+    Protected Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags, _
+                                                    ByVal iFlt As Integer, _
+                                                    ByVal strExt As String, _
+                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim fltName As String = Me.m_core.m_EcoPathData.FleetName(iFlt)
-        Dim Timestep As String = ""
+        Dim strTimestep As String = ""
 
-        'Is there a time step in the file name
-        If ModelTimeStep <> cCore.NULL_VALUE Then
-            'Yes so include it in the file name
-            Timestep = String.Format("-{0:00000}", ModelTimeStep)
+        ' Is there a time step in the file name?
+        If (iModelTimeStep > 0) Then
+            ' #Yes: include it in the file name
+            strTimestep = String.Format("-{0:00000}", iModelTimeStep)
         End If
 
-        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", cin.GetVarName(varname), fltName, Timestep, Ext), False)
-        Return System.IO.Path.Combine(Me.OutputDirectory, fn)
+        Dim fn As String = EwEUtils.Utilities.cFileUtils.ToValidFileName(String.Format("{0}-{1}{2}.{3}", _
+                                                                                       cin.GetVarName(varname), fltName, strTimestep, strExt.Replace(".", "")), _
+                                                                         False)
+        Return System.IO.Path.Combine(Me.OutputDirectory, fn.Replace("..", "."))
 
     End Function
 
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Ecopath data structure
+    ''' Get the <see cref="cEcopathDataStructures">Ecopath data structure</see>.
     ''' </summary>
-    Protected ReadOnly Property PathData() As cEcopathDataStructures
+    ''' -----------------------------------------------------------------------
+    Protected ReadOnly Property EcopathData() As cEcopathDataStructures
         Get
             Return Me.m_core.m_EcoPathData
         End Get
     End Property
 
-
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Ecospace data structure
+    ''' Get the <see cref="cEcospaceDataStructures">Ecospace data structures</see>.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Protected ReadOnly Property SpaceData() As cEcospaceDataStructures
+    ''' -----------------------------------------------------------------------
+    Protected ReadOnly Property EcospaceData() As cEcospaceDataStructures
         Get
             Return Me.m_core.m_EcoSpaceData
         End Get
     End Property
 
-#End Region
+    Protected Sub WriteRunInfo(ByVal strm As StreamWriter)
+
+        Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
+        Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
+        Dim ver As String = cCore.Version
+
+        strm.WriteLine("EwE version," & cStringUtils.ToCSVField(ver))
+        strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
+
+        strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
+        strm.WriteLine("EcoSim scenario," & cStringUtils.ToCSVField(simScen))
+        strm.WriteLine("EcoSpace scenario," & cStringUtils.ToCSVField(SpaceScen))
+        strm.WriteLine("Run start," & cStringUtils.ToCSVField(Me.m_core.EcosimFirstYear))
+        strm.WriteLine("Map rows," & Me.EcospaceData.InRow)
+        strm.WriteLine("Map cols," & Me.EcospaceData.InCol)
+        strm.WriteLine("Map cell length," & Me.EcospaceData.CellLength)
+        strm.WriteLine("Map cell size," & Me.CellSize())
+        strm.WriteLine("Map Latitude," & Me.EcospaceData.Lat1)
+        strm.WriteLine("Map Longitude," & Me.EcospaceData.Lon1)
+        strm.WriteLine("EcoSpace time step length," & Me.EcospaceData.TimeStep.ToString)
+
+    End Sub
+
+    Protected Function CellSize() As Single
+        Dim cellSizeDegrees As Single = Me.EcospaceData.CellSize
+        If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.EcospaceData.CellLength)
+        Return cellSizeDegrees
+    End Function
+
+#End Region ' Internals
 
 End Class

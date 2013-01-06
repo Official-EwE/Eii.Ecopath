@@ -8406,7 +8406,7 @@ Public Class cCore
                         ' Create ecospace result writers, if desired
                         If Me.Autosave(eAutosaveTypes.Ecospace) Then
                             For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.Ecospace).Split(";"c)
-                                Me.m_EcospaceResultsWriters.Add(cEcospaceResultWriterFactory.GetWriter(strExt))
+                                Me.m_EcospaceResultsWriters.Add(cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager))
                             Next
                         End If
 

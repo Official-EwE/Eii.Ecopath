@@ -15,41 +15,47 @@
 ' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
+
+Option Strict On
+
+#End Region ' Imports
 
 Namespace Core
 
     ''' <summary>
     ''' Interface for writing Ecospace time step results to file
     ''' </summary>
-    ''' <remarks></remarks>
     Public Interface IEcospaceResultsWriter
 
         ''' <summary>
-        ''' Save time step data to file
+        ''' Save time step data to file.
         ''' </summary>
         ''' <param name="SpaceTimeStepResults">cEcospaceTimestep as object containing the data to save.</param>
-        ''' <remarks></remarks>
         Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
         ''' <summary>
-        ''' Init to the current cCore
+        ''' Init to the current cCore.
         ''' </summary>
-        ''' <param name="theCore"></param>
-        ''' <remarks></remarks>
+        ''' <param name="theCore">The core to initialize with.</param>
         Sub Init(ByVal theCore As Object)
 
         ''' <summary>
-        ''' Called when as Ecospace model run is about to start
+        ''' Called when as Ecospace model run is about to start.
         ''' </summary>
-        ''' <remarks>This can be used to initialized and file data at the start of a run</remarks>
+        ''' <remarks>This can be used to initialized and file data at the start of a run.</remarks>
         Sub StartWrite()
 
         ''' <summary>
-        ''' Called at the end of an Ecospace model run
+        ''' Called at the end of an Ecospace model run.
         ''' </summary>
-        ''' <remarks>Cleanup after an Ecospace run has completed</remarks>
+        ''' <remarks>Cleanup after an Ecospace run has completed.</remarks>
         Sub EndWrite()
 
+        ''' <summary>
+        ''' Return the file extension that this writer supports.
+        ''' </summary>
+        Function FileExtension() As String
 
     End Interface
 
