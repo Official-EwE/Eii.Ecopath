@@ -1513,8 +1513,6 @@ Public Class cEcoSpace
             'Loop counter
             Dim iSolve As Integer
 
-            System.Console.WriteLine("Cells")
-
             'loop through each solver, create a thread for it, and run it
             For Each solver In m_spaceSolvers
                 iSolve += 1
