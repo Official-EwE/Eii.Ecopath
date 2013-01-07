@@ -29,80 +29,83 @@ Imports EwEUtils.Core
 ''' </remarks>
 Public Class cMessage
 
-    ''' <summary>
-    ''' A string describing the message
-    ''' </summary>
-    Private m_strMessage As String
+#Region " Private variables "
 
-    ''' <summary>
-    ''' Message <see cref="eMessageType">Type</see> indicates
-    ''' </summary>
-    Private m_type As eMessageType
+    ''' <summary>A string describing the message.</summary>
+    Private m_strMessage As String = ""
 
-    ''' <summary>
-    ''' Enumerated type discribing the <see cref="eCoreComponentType">Source</see> of the message,
-    ''' indicating what part of the EwE core a message originated from.
-    ''' </summary>
-    Private m_source As eCoreComponentType
+    ''' <summary>The <see cref="eMessageType">type</see> of the message, which 
+    ''' encodes the internal event that a message pertains to.</summary>
+    Private m_type As eMessageType = eMessageType.NotSet
 
-    ''' <summary>
-    ''' Message <see cref="eMessageImportance">Importance</see> indicates the impact 
-    ''' that the event, discribed in the message, has on the workings of the EwE Core.
-    ''' </summary>
-    Private m_importance As eMessageImportance
+    ''' <summary>The <see cref="eCoreComponentType">source within EwE</see> 
+    ''' that the message originated from.</summary>
+    Private m_source As eCoreComponentType = eCoreComponentType.NotSet
 
-    ''' <summary>
-    ''' Group of <see cref="eDataTypes">data types</see> that this message has affected.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private m_dataType As eDataTypes
+    ''' <summary>The <see cref="eMessageImportance">importance</see> of the 
+    ''' message.</summary>
+    Private m_importance As eMessageImportance = eMessageImportance.Maintenance
 
-    ''' <summary>
-    ''' List of <see cref="cVariableStatus">variables</see> that are affected by the event 
-    ''' that is described in the message.
-    ''' </summary>
+    ''' <summary>The <see cref="eDataTypes">type of object</see> that this 
+    ''' message has affected. Use this flag with care; the EwE core will interpret
+    ''' this flag as change notifications of <see cref="ICoreInterface"/> instances
+    ''' that need further processing.</summary>
+    Private m_dataType As eDataTypes = eDataTypes.NotSet
+
+    ''' <summary>List of <see cref="cVariableStatus">variables</see> attached
+    ''' to the message. These variables are presumed affected by the event described 
+    ''' in the message, and will be used to update core contents. User interfaces are
+    ''' encouraged to use these variables to provide detailed event feedback.</summary>
     Private m_variables As New List(Of cVariableStatus)
 
-    ''' <summary>
-    ''' Flag stating whether this message may be suppressed by the user
-    ''' </summary>
+    ''' <summary>Flag stating whether this message may be suppressed by the user.</summary>
     Private m_bSuppressable As Boolean = False
 
-    ''' <summary>
-    ''' Hyperlink that may accompany the message
-    ''' </summary>
+    ''' <summary>Hyperlink that may accompany the message.</summary>
     Private m_strHyperlink As String = ""
 
-    ''' <summary>
-    ''' List of cVariableStatus objects that are associated with this message
-    ''' </summary>
-    ''' <value></value>
-    ''' <remarks>
-    ''' Not every type of message contains variable information. 
-    ''' Check the Variables.Count property to find out if there are variables in this message
-    ''' </remarks>
-    Public ReadOnly Property Variables() As List(Of cVariableStatus)
-        Get
-            Return m_variables
-        End Get
-    End Property
+#End Region ' Private variables
 
+#Region " Constructor "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a default <see cref="eMessageImportance.Maintenance">maintenance</see> message.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Sub New()
-        Me.Message = ""
-        Me.Type = eMessageType.NotSet
-        Me.Source = eCoreComponentType.NotSet
-        Me.Importance = eMessageImportance.Maintenance
-        Me.DataType = eDataTypes.NotSet
+        Me.m_strMessage = ""
+        Me.m_type = eMessageType.NotSet
+        Me.m_source = eCoreComponentType.NotSet
+        Me.m_importance = eMessageImportance.Maintenance
+        Me.m_dataType = eDataTypes.NotSet
     End Sub
 
-    Sub New(ByVal msgStr As String, ByVal msgType As eMessageType, ByVal msgSource As eCoreComponentType, ByVal msgImportance As eMessageImportance, Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
-        Me.Message = msgStr
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Create a message.
+    ''' </summary>
+    ''' <param name="strMessage">The message <see cref="Message">text</see>.</param>
+    ''' <param name="msgType">The <see cref="Type"/> of the message.</param>
+    ''' <param name="msgSource">The <see cref="Source"/> of the message.</param>
+    ''' <param name="msgImportance">The <see cref="Importance"/> of the message.</param>
+    ''' <param name="msgDataType">The <see cref="DataType"/> of the message.</param>
+    ''' -----------------------------------------------------------------------
+    Sub New(ByVal strMessage As String, _
+            ByVal msgType As eMessageType, _
+            ByVal msgSource As eCoreComponentType, _
+            ByVal msgImportance As eMessageImportance, _
+            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet)
+        Me.Message = strMessage
         Me.Type = msgType
         Me.Source = msgSource
         Me.Importance = msgImportance
         Me.DataType = msgDataType
     End Sub
 
+#End Region ' Constructor
+
+#Region " Public access "
 
     ''' <summary>
     ''' Add a cVariableStatus object to the list of variables that this message applies to.
@@ -148,7 +151,7 @@ Public Class cMessage
     ''' <param name="varname"></param>
     ''' <returns></returns>
     Public Function HasVariable(ByVal varname As eVarNameFlags) As Boolean
-        For Each vs As cVariableStatus In Me.Variables
+        For Each vs As cVariableStatus In Me.m_variables
             If (vs.VarName = varname) Then
                 Return True
             End If
@@ -156,8 +159,20 @@ Public Class cMessage
         Return False
     End Function
 
+    ''' <summary>Get the <see cref="cVariableStatus">variables</see> associated with 
+    ''' this message.</summary>
+    ''' <remarks>
+    ''' Not every type of message contains variable information. Check the Variables.Count 
+    ''' property to find out if there are variables in this message
+    ''' </remarks>
+    Public ReadOnly Property Variables() As List(Of cVariableStatus)
+        Get
+            Return m_variables
+        End Get
+    End Property
+
     ''' <summary>
-    ''' Get or set message Text.
+    ''' Get/set the text of the message.
     ''' </summary>
     Public Property Message() As String
         Get
@@ -168,6 +183,9 @@ Public Class cMessage
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the <see cref="eMessageType">event type</see> of the message.
+    ''' </summary>
     Public Property Type() As eMessageType
         Get
             Return Me.m_type
@@ -177,6 +195,10 @@ Public Class cMessage
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the <see cref="eCoreComponentType">source witin EwE</see> that
+    ''' the message originates from.
+    ''' </summary>
     Public Property Source() As eCoreComponentType
         Get
             Return Me.m_source
@@ -186,6 +208,9 @@ Public Class cMessage
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the <see cref="eMessageImportance">importance</see> of the message.
+    ''' </summary>
     Public Property Importance() As eMessageImportance
         Get
             Return Me.m_importance
@@ -195,6 +220,10 @@ Public Class cMessage
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the <see cref="eDataTypes">core objects</see> that the message
+    ''' describes.
+    ''' </summary>
     Public Property DataType() As eDataTypes
         Get
             Return Me.m_dataType
@@ -240,7 +269,7 @@ Public Class cMessage
     ''' equal values, AND neither message contain attached <see cref="Variables">Variables</see>.
     ''' </remarks>
     Public Overrides Function Equals(ByVal obj As Object) As Boolean
-        If TypeOf obj Is cMessage Then
+        If (TypeOf obj Is cMessage) Then
             Dim msg As cMessage = DirectCast(obj, cMessage)
 
             ' Compare main msg properties
@@ -257,6 +286,8 @@ Public Class cMessage
     Public Overrides Function ToString() As String
         Return Me.GetType.ToString() & " " & Me.m_strMessage
     End Function
+
+#End Region ' Public access
 
 End Class
 
