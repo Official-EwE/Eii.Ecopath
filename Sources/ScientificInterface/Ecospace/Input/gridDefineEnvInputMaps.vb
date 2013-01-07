@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Explicit On
@@ -31,7 +32,7 @@ Imports SourceGrid2
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class gridDefineInputMaps
+    Public Class gridDefineEnvInputMaps
         Inherits EwEGrid
 
         ''' <summary>A number representing the row that contains the first Layer</summary>

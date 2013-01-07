@@ -12,14 +12,16 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
 Imports System.IO
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -62,24 +64,28 @@ Public Class cEcospaceASCResultsWriter
             Dim strFile As String = ""
 
             For Each varname As eVarNameFlags In vars
-
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
                     strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension(), tsData.iTimeStep)
-                    strm = New StreamWriter(strFile, False)
-
-                    Me.SaveASCFile(strm, tsData, igrp, varname)
-
-                    strm.Close()
-                    strm = Nothing
+                    strm = cFileUtils.GetStreamWriter(strFile, False)
+                    If (strm IsNot Nothing) Then
+                        Me.SaveASCFile(strm, tsData, igrp, varname)
+                        strm.Flush()
+                        strm.Close()
+                        strm = Nothing
+                    End If
                 Next
             Next
+            strm = New StreamWriter(">")
 
             ' Sum space effort
             strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
-            strm = New StreamWriter(strFile, False)
-            SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
-            strm.Close()
-            strm = Nothing
+            strm = cFileUtils.GetStreamWriter(strFile, False)
+            If (strm IsNot Nothing) Then
+                Me.SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
+                strm.Flush()
+                strm.Close()
+                strm = Nothing
+            End If
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)

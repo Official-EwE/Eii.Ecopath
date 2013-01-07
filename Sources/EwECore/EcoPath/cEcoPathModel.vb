@@ -12,13 +12,15 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEPlugin
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 
 Namespace Ecopath
 
@@ -1062,11 +1064,7 @@ Namespace Ecopath
 
         End Function
 
-        Public Function DumpResults(ByVal filename As String) As Boolean
-            Return m_Data.DumpResults(filename)
-        End Function
-
-        Function FindMissing() As Boolean
+        Private Function FindMissing() As Boolean
             Dim i As Integer
 
             'jb in Ewe this also included a test for Biomass/Area bh() for detritus groups 

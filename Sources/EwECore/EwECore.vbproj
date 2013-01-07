@@ -149,6 +149,7 @@
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_12_00_13.vb" />
     <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />
+    <Compile Include="EcoPath\cEcopathResultWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />

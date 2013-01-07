@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Explicit On
@@ -47,22 +48,18 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 
+        ''' Exclusive mouse interaction modes.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Enum eMouseInteractionMode As Integer
+        Protected Enum eMouseInteractionMode As Integer
             ''' <summary>Not drawing.</summary>
-            None = 0
+            None
             ''' <summary>User is drawing the shape.</summary>
-            DrawShape = 1
+            DrawShape
             ''' <summary>User is dragging the X mark line.</summary>
-            DragXMark = 2
+            DragXMark
             ''' <summary>User is dragging the Y mark line.</summary>
-            DragYMark = 4
-            DrawDragX = DrawShape Or DragXMark
-            DrawDragY = DrawShape Or DragYMark
-            ''' <summary>User can do all of the above.</summary>
-            All = DrawShape Or DragXMark Or DragYMark
+            DragYMark
         End Enum
 
         Private Const cCLICK_TOLERANCE As Integer = 4
@@ -112,8 +109,6 @@ Namespace Controls
         Private m_bShowTooltip As Boolean = True
         ''' <summary>Current edit mode</summary>
         Private m_editMode As eMouseInteractionMode = eMouseInteractionMode.None
-        ''' <summary>Current edit mode</summary>
-        Private m_editAllowed As eMouseInteractionMode = eMouseInteractionMode.DrawShape
         ''' <summary>Style of the control.</summary>
         Private m_style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
@@ -412,6 +407,15 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set whether the vertical (X mark) line can be dragged.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        <Category("Sketchpad"), _
+         Description("Flag stating whether the vertical (X mark) line can be dragged.")> _
+        Public Property AllowDragXMark() As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Value for vertical (X mark) line.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -622,17 +626,9 @@ Namespace Controls
 
         End Sub
 
-        <Category("Sketchpad"), _
-          Description("States the possible operations that the user can perform.")> _
-        Public Property AllowedEdits As eMouseInteractionMode
-            Get
-                Return Me.m_editAllowed
-            End Get
-            Set(ByVal value As eMouseInteractionMode)
-                Me.m_editAllowed = value
-            End Set
-        End Property
-
+        ''' <summary>
+        ''' Current mouse interaction mode.
+        ''' </summary>
         <Browsable(False)> _
         Protected Property EditMode As eMouseInteractionMode
             Get
@@ -959,11 +955,11 @@ Namespace Controls
             ' Determine interaction mode only when not capturing input
             If (Me.Editable = True) And (Me.Capture = False) Then
 
-                If (Me.IsNearXMark(e.X) And ((Me.m_editAllowed And eMouseInteractionMode.DragXMark) > 0)) Then
+                If (Me.IsNearXMark(e.X) And (Me.AllowDragXMark)) Then
                     Me.EditMode = eMouseInteractionMode.DragXMark
-                ElseIf (Me.IsNearYMark(e.Y) And ((Me.m_editAllowed And eMouseInteractionMode.DragYMark) > 0)) Then
-                    Me.EditMode = eMouseInteractionMode.DragYMark
-                ElseIf (Me.Editable And ((Me.m_editAllowed And eMouseInteractionMode.DrawShape) > 0)) Then
+                    'ElseIf (Me.IsNearYMark(e.Y) And ((Me.m_editAllowed And eMouseInteractionMode.DragYMark) > 0)) Then
+                    '    Me.EditMode = eMouseInteractionMode.DragYMark
+                ElseIf (Me.Editable) Then
                     Me.EditMode = eMouseInteractionMode.DrawShape
                 End If
 

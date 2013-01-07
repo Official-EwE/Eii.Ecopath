@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
@@ -66,21 +67,21 @@ Public Class cEcospaceCSVResultsWriter
         Try
             Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
             Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
-            Dim strm As StreamWriter
-            Dim fn As String
+            Dim strm As StreamWriter = Nothing
+            Dim strFN As String = ""
 
             For Each varname As eVarNameFlags In vars
-
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
 
-                    fn = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
-                    strm = New StreamWriter(fn, True)
-                    SaveCSV(strm, tsData, igrp, varname)
-
-                    strm.Close()
-                    strm = Nothing
+                    strFN = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
+                    strm = cFileUtils.GetStreamWriter(strFN, True)
+                    If (strm IsNot Nothing) Then
+                        Me.SaveCSV(strm, tsData, igrp, varname)
+                        strm.Flush()
+                        strm.Close()
+                        strm = Nothing
+                    End If
                 Next
-
             Next
 
         Catch ex As Exception

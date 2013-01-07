@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
@@ -797,6 +798,16 @@ Namespace Utilities
             ' Return default
             Return ","c
 
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the current time as a string to be used in file names.
+        ''' </summary>
+        ''' <remarks>The time stamp is formatted as 'year-month-day hour-minute-second'.</remarks>
+        ''' -----------------------------------------------------------------------
+        Protected Overridable Function Now() As String
+            Return Date.Now.ToString("y-MM-dd HH-mm-ss")
         End Function
 
 #Region " Map array conversions "

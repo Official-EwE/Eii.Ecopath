@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 #Region " Imports "
 
 Option Strict On
@@ -2211,7 +2212,7 @@ Public Class cCore
     ''' <param name="source">Source of the message</param>
     ''' <param name="MessageType">Type of message</param>
     ''' <returns>A new cMessage Object</returns>
-    ''' <remarks>Used as a simple way to build a new object</remarks>
+    ''' <remarks>Used as a simple way to build a new message instance.</remarks>
     Private Function CreateMessage(ByVal message As String, ByVal source As eCoreComponentType, ByVal MessageType As eMessageType) As cMessage
         Dim msg As New cMessage
         msg.Message = message
@@ -4752,6 +4753,19 @@ Public Class cCore
                 End If
                 bSuccessEcopath = True
 
+                If Me.Autosave(eAutosaveTypes.Ecopath) Then
+                    Dim strFN As String = Path.Combine(Me.DefaultOutputPath(eAutosaveTypes.Ecopath), "estimates.csv")
+                    Dim writer As New cEcopathResultWriter(Me)
+                    If writer.WriteCSV(strFN) Then
+                        msg = CreateMessage(String.Format(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_SUCCESS, strFN), eCoreComponentType.External, eMessageType.DataExport)
+                        msg.Importance = eMessageImportance.Information
+                        msg.Hyperlink = Path.GetDirectoryName(strFN)
+                    Else
+                        msg = CreateMessage(String.Format(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_FAILED, strFN), eCoreComponentType.External, eMessageType.DataExport)
+                        msg.Importance = eMessageImportance.Warning
+                    End If
+                    Me.m_publisher.AddMessage(msg)
+                End If
             Else
                 'Assuming here that if EcoPath returned false it has already sent a message that explains the problem 
                 'No need to send another message

@@ -12,12 +12,14 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
 #Region " Imports "
 
 Option Strict On
+Option Explicit On
+
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Other
 Imports EwECore
@@ -31,6 +33,7 @@ Public Class ucCVBlockSelector
     Implements IUIElement
     Implements IBlockSelector
 
+
 #Region " Private vars "
 
     'ToDo_jb 8-march-2010 ucCVBlockSelector has no way to change the number of blocks
@@ -39,15 +42,6 @@ Public Class ucCVBlockSelector
     Private m_uic As cUIContext
     Private m_numBlocks As Integer
     Private m_cvs() As Single
-
-    ''' <inheritdocs cref="IBlockSelector.OnBlockSelected"/>
-    Public Event OnBlockSelected(ByVal sender As IBlockSelector) Implements IBlockSelector.OnBlockSelected
-
-    ''' <inheritdocs cref="IBlockSelector.OnNumBlocksChanged"/>
-    Public Event OnNumBlocksChanged(ByVal sender As IBlockSelector) Implements IBlockSelector.OnNumBlocksChanged
-
-    ''' <inheritdocs cref="IBlockSelector.OnValueChanged"/>
-    Public Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer) Implements IBlockSelector.OnValueChanged
 
 #End Region ' Private vars
 
@@ -288,5 +282,14 @@ Public Class ucCVBlockSelector
     End Sub
 
 #End Region ' Internals
+
+    ''' <inheritdocs cref="IBlockSelector.OnBlockSelected"/>
+    Public Event OnBlockSelected(sender As Ecosim.IBlockSelector) Implements Ecosim.IBlockSelector.OnBlockSelected
+
+    ''' <inheritdocs cref="IBlockSelector.OnNumBlocksChanged"/>
+    Public Event OnNumBlocksChanged(sender As Ecosim.IBlockSelector) Implements Ecosim.IBlockSelector.OnNumBlocksChanged
+
+    ''' <inheritdocs cref="IBlockSelector.OnValueChanged"/>
+    Public Event OnValueChanged(newValue As Single, Index As Integer) Implements Ecosim.IBlockSelector.OnValueChanged
 
 End Class

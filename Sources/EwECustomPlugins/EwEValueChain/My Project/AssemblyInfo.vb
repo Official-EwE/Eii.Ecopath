@@ -12,9 +12,12 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
+Imports System.Resources
+
 Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
@@ -33,7 +36,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTrademark("")> 
 <Assembly: CLSCompliant(True)> 
 
-<Assembly: ComVisible(False)>
+<Assembly: ComVisible(False)> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("005815d4-70e8-49f1-bda8-69c5bbae5ea7")> 
@@ -51,3 +54,5 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyVersion("6.3.8751.0")> 
 <Assembly: AssemblyFileVersion("6.3.1125")> 
+
+<Assembly: NeutralResourcesLanguageAttribute("en-CA")> 

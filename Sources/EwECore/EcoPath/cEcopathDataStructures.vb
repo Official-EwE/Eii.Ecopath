@@ -12,12 +12,14 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Option Strict Off ' OUCH
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
+Imports EwEUtils.Utilities
 
 ''' <summary>
 ''' Wrapper for the underlying data structures of the EcoPath model. 
@@ -1052,63 +1054,6 @@ Public Class cEcopathDataStructures
 
 #End Region
 
-#Region "Debugging stuff"
-
-
-    ''' <summary>
-    ''' Dump the estimated parameters to a csv file.
-    ''' </summary>
-    ''' <param name="FileName">
-    ''' Name of the dump file.
-    ''' </param>
-    ''' <returns>
-    ''' True if no error Encountered.
-    ''' False if an error.
-    ''' </returns>
-    ''' <remarks></remarks>
-    Public Function DumpResults(ByVal FileName As String) As Boolean
-        Dim stream As System.IO.StreamWriter
-        Dim i As Integer, returnvalue As Boolean
-
-        Try
-            stream = New System.IO.StreamWriter(FileName)
-        Catch ex As Exception
-            DumpResults = False
-            cLog.Write(Me.ToString + ".DumpResults() failed to open file.")
-            Exit Function
-        End Try
-
-        Try
-            stream.WriteLine("GroupName,Biomass(B),Prod/Biomass(PB),Cons/Biomass(QB),Ecotrophic eff.(EE),Prod/Consum(GE)")
-            For i = 1 To NumGroups
-                stream.Write(GroupName(i))
-                stream.Write(",")
-                stream.Write(B(i))
-                stream.Write(",")
-                stream.Write(PB(i))
-                stream.Write(",")
-                stream.Write(QB(i))
-                stream.Write(",")
-                stream.Write(EE(i))
-                stream.Write(",")
-                stream.Write(GE(i))
-
-                stream.Write(Environment.NewLine)
-            Next
-
-            stream.Close()
-
-        Catch ex As Exception
-            stream.Close()
-            returnvalue = False
-        End Try
-
-        returnvalue = True
-
-        DumpResults = returnvalue
-
-    End Function
-
     ''' <summary>
     ''' Run any post initialization validation
     ''' </summary>
@@ -1169,9 +1114,6 @@ Public Class cEcopathDataStructures
         End Try
 
     End Sub
-
-
-#End Region
 
     Friend Sub copyTo(ByRef dest As cEcopathDataStructures, Optional ByVal bRedim As Boolean = True)
         Try

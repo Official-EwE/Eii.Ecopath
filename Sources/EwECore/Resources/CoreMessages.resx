@@ -1154,4 +1154,12 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Contaminant tracer results saved to '{0}'</value>
     <comment>{0}=file</comment>
   </data>
+  <data name="ECOPATH_RESULTS_SAVED_FAILED" xml:space="preserve">
+    <value>Ecopath estimates failed to save to '{0}'</value>
+    <comment>{0}=file</comment>
+  </data>
+  <data name="ECOPATH_RESULTS_SAVED_SUCCESS" xml:space="preserve">
+    <value>Ecopath estimates saved to '{0}'</value>
+    <comment>{0}=file</comment>
+  </data>
 </root>

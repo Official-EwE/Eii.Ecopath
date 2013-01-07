@@ -12,14 +12,15 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
 
-<Assembly: System.Resources.NeutralResourcesLanguage("")> 
+<Assembly: System.Resources.NeutralResourcesLanguage("en")> 
 ' General Information about an assembly is controlled through the following 
 ' set of attributes. Change these attribute values to modify the information
 ' associated with an assembly.

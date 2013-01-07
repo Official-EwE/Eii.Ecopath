@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Option Strict On
 Imports System.Math
 Imports EwECore.SpatialData
@@ -522,7 +523,7 @@ Public Class cEcospaceDataStructures
 
     Public Width() As Single
 
-    Public SaveAnnual As Boolean = True
+    Public SaveAnnual As Boolean = False
 
     ''' <summary>
     ''' Use the Ecospace Output directory defined by the core. If True this path will include Model-name/Ecopath_6. Scenario-name/

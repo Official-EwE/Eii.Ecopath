@@ -12,12 +12,13 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Namespace Ecospace
 
-    Partial Class dlgDefineInputMaps
+    Partial Class dlgDefineEnvInputMaps
         Inherits System.Windows.Forms.Form
 
         'Form overrides dispose to clean up the component list.
@@ -38,8 +39,8 @@ Namespace Ecospace
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineInputMaps))
-            Me.m_grid = New ScientificInterface.Ecospace.gridDefineInputMaps()
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgDefineEnvInputMaps))
+            Me.m_grid = New ScientificInterface.Ecospace.gridDefineEnvInputMaps()
             Me.epNumHabitats = New System.Windows.Forms.ErrorProvider(Me.components)
             Me.m_btnAddHabitat = New System.Windows.Forms.Button()
             Me.m_btnRemoveHabitat = New System.Windows.Forms.Button()
@@ -138,7 +139,7 @@ Namespace Ecospace
             Me.ResumeLayout(False)
 
         End Sub
-        Private WithEvents m_grid As gridDefineInputMaps
+        Private WithEvents m_grid As gridDefineEnvInputMaps
         Private WithEvents epNumHabitats As System.Windows.Forms.ErrorProvider
         Private WithEvents m_btnRemoveHabitat As System.Windows.Forms.Button
         Private WithEvents m_btnAddHabitat As System.Windows.Forms.Button

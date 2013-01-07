@@ -125,9 +125,6 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EwE6, Version=6.3.8695.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
-      <ExecutableExtension>.exe</ExecutableExtension>
-    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -150,7 +147,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="ScientificInterface.Controls" />
     <Import Include="ScientificInterfaceShared.Controls" />
     <Import Include="ScientificInterfaceShared.Controls.EwEGrid" />
     <Import Include="ScientificInterfaceShared.Definitions" />
@@ -275,10 +271,10 @@
     <Compile Include="Ecospace\Assets\SpatialTemporalData\ucSpatialTimeSeriesToolbox.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineInputMaps.Designer.vb">
-      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
+    <Compile Include="Ecospace\Input\dlgDefineEnvInputMaps.Designer.vb">
+      <DependentUpon>dlgDefineEnvInputMaps.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Input\dlgDefineInputMaps.vb">
+    <Compile Include="Ecospace\Input\dlgDefineEnvInputMaps.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgEditLayer.Designer.vb">
@@ -831,8 +827,8 @@
       <DependentUpon>dlgDefineImportanceMaps.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Input\dlgDefineInputMaps.resx">
-      <DependentUpon>dlgDefineInputMaps.vb</DependentUpon>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineEnvInputMaps.resx">
+      <DependentUpon>dlgDefineEnvInputMaps.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgEditLayer.resx">
@@ -1539,7 +1535,7 @@
     <Compile Include="Ecospace\Assets\ImportExport\dlgImportLayerData.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridDefineInputMaps.vb">
+    <Compile Include="Ecospace\Input\gridDefineEnvInputMaps.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cEcospaceZedGraphHelper.vb">
@@ -1875,6 +1871,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Ecopath6_internal\Sources\EwECustomPlugins\EwESpatialAssetsPlugin\EwESpatialAssetsPlugin.vbproj">
+      <Project>{C1081265-6A9D-4087-8BB5-E907D86FD719}</Project>
+      <Name>EwESpatialAssetsPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>

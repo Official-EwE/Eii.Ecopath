@@ -12,9 +12,10 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+
 Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
@@ -95,7 +96,6 @@ Namespace Ecosim
             '
             'm_sketchPad
             '
-            Me.m_sketchPad.AllowedEdits = ScientificInterfaceShared.Controls.ucSketchPad.eMouseInteractionMode.DrawShape
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
             Me.m_sketchPad.DisplayAxis = True
