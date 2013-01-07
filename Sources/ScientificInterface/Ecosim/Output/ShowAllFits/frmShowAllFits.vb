@@ -510,7 +510,7 @@ Namespace Ecosim
                 sw = cFileUtils.GetStreamWriter(strTargetPath, False)
                 If (sw Is Nothing) Then
                     ' Notify user
-                    msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                    msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, "Unable to access path"), _
                             eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                     bSucces = False
                 End If
