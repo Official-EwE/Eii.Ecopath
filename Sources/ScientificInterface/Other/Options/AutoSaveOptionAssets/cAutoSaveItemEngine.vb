@@ -21,6 +21,7 @@ Option Strict On
 Imports EwECore
 Imports EwEPlugin
 Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -195,23 +196,21 @@ Namespace Other
             Dim cbParent As CheckBox = Nothing
             Dim ctrl As ucAutosaveOption = Nothing
 
-            ' ToDo: globalize this method
-
             Select Case t
                 Case eAutosaveTypes.NotSet
-                    ctrl = New ucAutosaveOption(Me.m_uic, "Auto-save all", 0)
+                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.AUTOSAVE_ALL, 0)
                     Me.Add(ctrl, Nothing)
                     Dim cbRoot As CheckBox = ctrl.Checkbox
 
-                    ctrl = New ucAutosaveOption(Me.m_uic, "Ecopath", 1)
+                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.HEADER_ECOPATH, 1)
                     Me.Add(ctrl, cbRoot)
                     Me.BuildControlTree(eAutosaveTypes.Ecopath, ctrl.Checkbox, 2, lPlugins)
 
-                    ctrl = New ucAutosaveOption(Me.m_uic, "Ecosim", 1)
+                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.HEADER_ECOSIM, 1)
                     Me.Add(ctrl, cbRoot)
                     Me.BuildControlTree(eAutosaveTypes.Ecosim, ctrl.Checkbox, 2, lPlugins)
 
-                    ctrl = New ucAutosaveOption(Me.m_uic, "Ecospace", 1)
+                    ctrl = New ucAutosaveOption(Me.m_uic, SharedResources.HEADER_ECOSPACE, 1)
                     Me.Add(ctrl, cbRoot)
                     Me.BuildControlTree(eAutosaveTypes.Ecospace, ctrl.Checkbox, 2, lPlugins)
 
@@ -219,6 +218,10 @@ Namespace Other
                     Me.Add(lPlugins(eAutosaveTypes.NotSet), cbRoot, 1)
 
                 Case eAutosaveTypes.Ecopath
+                    ' Add Ecopath estimates node
+                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
+                    Me.Add(ctrl, parent)
+                    ' Add plug-ins
                     Me.Add(lPlugins(t), parent, iIndent)
 
                 Case eAutosaveTypes.Ecosim

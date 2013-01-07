@@ -125,7 +125,16 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecopath run results.
+        '''  Looks up a localized string similar to Auto-save all.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ALL() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ALL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecopath estimates.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOPATH() As String
             Get
@@ -175,6 +184,15 @@ Namespace My.Resources
         Public ReadOnly Property AUTOSAVE_MSE() As String
             Get
                 Return ResourceManager.GetString("AUTOSAVE_MSE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to MSY iterations.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_MSY() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_MSY", resourceCulture)
             End Get
         End Property
         
@@ -2965,6 +2983,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecopath.
+        '''</summary>
+        Public ReadOnly Property HEADER_ECOPATH() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecopath area.
         '''</summary>
         Public ReadOnly Property HEADER_ECOPATH_AREA() As String
@@ -2983,11 +3010,29 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ecosim.
+        '''</summary>
+        Public ReadOnly Property HEADER_ECOSIM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOSIM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Ecosim years.
         '''</summary>
         Public ReadOnly Property HEADER_ECOSIM_YEARS() As String
             Get
                 Return ResourceManager.GetString("HEADER_ECOSIM_YEARS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace.
+        '''</summary>
+        Public ReadOnly Property HEADER_ECOSPACE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOSPACE", resourceCulture)
             End Get
         End Property
         
@@ -3024,6 +3069,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_ECOSYSTEM_STRUCTURE_ABBR() As String
             Get
                 Return ResourceManager.GetString("HEADER_ECOSYSTEM_STRUCTURE_ABBR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecotracer.
+        '''</summary>
+        Public ReadOnly Property HEADER_ECOTRACER() As String
+            Get
+                Return ResourceManager.GetString("HEADER_ECOTRACER", resourceCulture)
             End Get
         End Property
         

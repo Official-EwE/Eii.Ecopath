@@ -2530,7 +2530,7 @@
     <value>(All fleets)</value>
   </data>
   <data name="AUTOSAVE_ECOPATH" xml:space="preserve">
-    <value>Ecopath run results</value>
+    <value>Ecopath estimates</value>
   </data>
   <data name="AUTOSAVE_ECOSIM" xml:space="preserve">
     <value>Ecosim run results</value>
@@ -2718,5 +2718,23 @@
   </data>
   <data name="FFAPPLICATIONTARGET_DETRITUSIMPORT" xml:space="preserve">
     <value>Import</value>
+  </data>
+  <data name="HEADER_ECOPATH" xml:space="preserve">
+    <value>Ecopath</value>
+  </data>
+  <data name="HEADER_ECOSIM" xml:space="preserve">
+    <value>Ecosim</value>
+  </data>
+  <data name="HEADER_ECOSPACE" xml:space="preserve">
+    <value>Ecospace</value>
+  </data>
+  <data name="HEADER_ECOTRACER" xml:space="preserve">
+    <value>Ecotracer</value>
+  </data>
+  <data name="AUTOSAVE_ALL" xml:space="preserve">
+    <value>Auto-save all</value>
+  </data>
+  <data name="AUTOSAVE_MSY" xml:space="preserve">
+    <value>MSY iterations</value>
   </data>
 </root>

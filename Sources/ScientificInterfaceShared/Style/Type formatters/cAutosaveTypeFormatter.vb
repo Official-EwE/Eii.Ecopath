@@ -46,6 +46,8 @@ Namespace Style
             Debug.Assert(value.GetType.IsAssignableFrom(Me.GetDescribedType()))
 
             Dim strValue As String = value.ToString
+            If (eAutosaveTypes.NotSet.Equals(value)) Then strValue = "ALL"
+
             Dim strDescr As String = cResourceUtils.LoadString("AUTOSAVE_" & strValue.ToUpper, Me.GetType.Assembly)
             Dim astrBits As String() = Nothing
             Dim iNumBits As Integer = 0
