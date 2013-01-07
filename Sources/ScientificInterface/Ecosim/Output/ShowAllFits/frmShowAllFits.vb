@@ -507,15 +507,13 @@ Namespace Ecosim
                 End Select
                 strTargetPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False))
 
-                Try
-                    sw = New StreamWriter(strTargetPath, False)
-                Catch ex As Exception
+                sw = cFileUtils.GetStreamWriter(strTargetPath, False)
+                If (sw Is Nothing) Then
                     ' Notify user
                     msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
                             eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
                     bSucces = False
-                    sw = Nothing
-                End Try
+                End If
 
                 If (sw IsNot Nothing) Then
 
@@ -531,23 +529,23 @@ Namespace Ecosim
                             Select Case i
                                 Case 1
                                     If ts.TimeSeriesType = eTimeSeriesType.BiomassRel Or ts.TimeSeriesType = eTimeSeriesType.BiomassAbs Then
-                                        sw.Write("Predicted " & ts.Name)
+                                        sw.Write(cStringUtils.ToCSVField("Predicted " & ts.Name))
                                         sw.Write(",")
-                                        sw.Write("Observed " & ts.Name)
+                                        sw.Write(cStringUtils.ToCSVField("Observed " & ts.Name))
                                         sw.Write(",")
                                     End If
                                 Case 2
                                     If ts.TimeSeriesType = eTimeSeriesType.TotalMortality Then
-                                        sw.Write(String.Format("Predicted {0} Z", ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField(String.Format("Predicted {0} Z", ts.Name)))
                                         sw.Write(",")
-                                        sw.Write(String.Format("Observed {0} Z", ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField(String.Format("Observed {0} Z", ts.Name)))
                                         sw.Write(",")
                                     End If
                                 Case 3
                                     If ts.TimeSeriesType = eTimeSeriesType.Catches Or ts.TimeSeriesType = eTimeSeriesType.CatchesForcing Then
-                                        sw.Write(String.Format("Predicted {0} Yield", ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField(String.Format("Predicted {0} Yield", ts.Name)))
                                         sw.Write(",")
-                                        sw.Write(String.Format("Observed {0} Yield", ts.Name))
+                                        sw.Write(cStringUtils.ToCSVField(String.Format("Observed {0} Yield", ts.Name)))
                                         sw.Write(",")
                                     End If
                             End Select
@@ -556,7 +554,7 @@ Namespace Ecosim
 
                         Dim iPt As Integer = CInt(Math.Floor(cCore.N_MONTHS / 2))
                         For k As Integer = 1 To Me.Core.nEcosimTimeSteps \ 12
-                            sw.Write((Me.Core.EcosimFirstYear + k - 1).ToString)
+                            sw.Write(cStringUtils.FormatInteger(Me.Core.EcosimFirstYear + k - 1))
                             sw.Write(",")
                             For j As Integer = 1 To Me.m_lPlots.Count
 
@@ -569,9 +567,9 @@ Namespace Ecosim
                                             sw.Write(plot.SimData(iPt))
                                             sw.Write(",")
                                             If ts.ShapeData(k) > 0 Then
-                                                sw.Write(ts.ShapeData(k) * plot.TSDataScale)
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
                                             Else
-                                                sw.Write(" ")
+                                                sw.Write("")
                                             End If
                                             sw.Write(",")
                                         End If
@@ -580,9 +578,9 @@ Namespace Ecosim
                                             sw.Write(plot.SimData(iPt))
                                             sw.Write(",")
                                             If ts.ShapeData(k) > 0 Then
-                                                sw.Write(ts.ShapeData(k) * plot.TSDataScale)
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
                                             Else
-                                                sw.Write(" ")
+                                                sw.Write("")
                                             End If
                                             sw.Write(",")
                                         End If
@@ -591,16 +589,16 @@ Namespace Ecosim
                                             sw.Write(plot.SimData(iPt))
                                             sw.Write(",")
                                             If ts.ShapeData(k) > 0 Then
-                                                sw.Write(ts.ShapeData(k) * plot.TSDataScale)
+                                                sw.Write(cStringUtils.FormatNumber(ts.ShapeData(k) * plot.TSDataScale))
                                             Else
-                                                sw.Write(" ")
+                                                sw.Write("")
                                             End If
                                             sw.Write(",")
                                         End If
                                 End Select
 
                             Next
-                            iPt = iPt + cCore.N_MONTHS
+                            iPt += cCore.N_MONTHS
                             sw.WriteLine()
                         Next
                     Catch ex As Exception
@@ -654,7 +652,7 @@ Namespace Ecosim
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
 
-            cmdFS.Invoke(Path.Combine(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim), "all_fits"), SharedResources.FILEFILTER_IMAGE)
+            cmdFS.Invoke(SharedResources.FILEFILTER_IMAGE)
             If cmdFS.Result = Windows.Forms.DialogResult.OK Then
 
                 Select Case cmdFS.FilterIndex
