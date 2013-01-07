@@ -499,11 +499,11 @@ Namespace Ecosim
             For i As Integer = 1 To 3
                 Select Case i
                     Case 1
-                        strFileName &= "_Allfit_Biomass.csv"
+                        strFileName &= "_allfit_biomass.csv"
                     Case 2 'Mortality Data
-                        strFileName &= "_Allfit_Mortality.csv"
+                        strFileName &= "_allfit_mortality.csv"
                     Case 3 'Catch Data
-                        strFileName &= "_Allfit_Catches.csv"
+                        strFileName &= "_allfit_catches.csv"
                 End Select
                 strTargetPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False))
 
@@ -682,7 +682,7 @@ Namespace Ecosim
 
             dlgPrint.Document = Me.m_printdocAllFits
             If dlgPrint.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                m_printdocAllFits.DocumentName = "Show all fits"
+                m_printdocAllFits.DocumentName = Me.Text
                 m_printdocAllFits.Print()
             End If
 
@@ -699,8 +699,8 @@ Namespace Ecosim
             Try
                 dlg.ShowDialog()
             Catch ex As Exception
-                ' ToDo: globalize this
-                msg = New cMessage("Unable to preview: " & ex.ToString, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Critical)
+                msg = New cMessage(String.Format(My.Resources.STATUS_PRINT_PREVIEW_FAILED, ex.Message), _
+                                   eMessageType.Any, eCoreComponentType.External, eMessageImportance.Warning)
                 Me.Core.Messages.SendMessage(msg)
             End Try
 

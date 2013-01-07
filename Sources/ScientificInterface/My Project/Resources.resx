@@ -24060,4 +24060,8 @@ Description: {2}</value>
         AACAAQAAgAEAAIABAACAAQAAwAMAAMADAADgBwAA4AcAAPAPAAD4HwAA/D8AAA==
 </value>
   </data>
+  <data name="STATUS_PRINT_PREVIEW_FAILED" xml:space="preserve">
+    <value>Unable to show print preview. {0}</value>
+    <comment>{0}=error message</comment>
+  </data>
 </root>
