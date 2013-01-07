@@ -4159,7 +4159,7 @@ Namespace Ecosim
                         A = CSng(A / (Mult + 0.0000000001))
                         v = v * Mult
                     Case eForcingFunctionApplication.Import
-                        ' Hmm.... Joe?!
+                        A = A * Mult
                 End Select
 
             Next
