@@ -227,8 +227,16 @@ Namespace Ecosim
 #Region " Selections "
 
         Private Sub lvAppliedShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_lvAppliedShapes.SelectedIndexChanged
+             Handles m_lvAppliedShapes.SelectedIndexChanged, m_lvAllShapes.SelectedIndexChanged
             Me.UpdateControls()
+        End Sub
+
+        Private Sub OnAllShapesGotFocus(sender As Object, e As System.EventArgs) Handles m_lvAllShapes.GotFocus
+            Me.m_lvAppliedShapes.SelectedIndices.Clear()
+        End Sub
+
+        Private Sub OnAppliedShapesGotFocus(sender As Object, e As System.EventArgs) Handles m_lvAppliedShapes.GotFocus
+            Me.m_lvAllShapes.SelectedIndices.Clear()
         End Sub
 
 #End Region ' Selections

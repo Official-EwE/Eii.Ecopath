@@ -183,6 +183,7 @@ Namespace Ecosim
                     Me.m_lblPred.Text = String.Format(Me.m_lblPred.Text, SharedResources.GENERIC_VALUE_ALL)
             End Select
 
+            Me.SetMultiplier(eForcingFunctionApplication.SearchRate)
             Me.UpdateControls()
 
         End Sub
@@ -318,8 +319,16 @@ Namespace Ecosim
 #Region " Selections "
 
         Private Sub lvAppliedShapes_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
-            Handles m_lvAppliedShapes.SelectedIndexChanged
+            Handles m_lvAppliedShapes.SelectedIndexChanged, m_lvAllShapes.SelectedIndexChanged
             Me.UpdateControls()
+        End Sub
+
+        Private Sub OnAllShapesGotFocus(sender As Object, e As System.EventArgs) Handles m_lvAllShapes.GotFocus
+            Me.m_lvAppliedShapes.SelectedIndices.Clear()
+        End Sub
+
+        Private Sub OnAppliedShapesGotFocus(sender As Object, e As System.EventArgs) Handles m_lvAppliedShapes.GotFocus
+            Me.m_lvAllShapes.SelectedIndices.Clear()
         End Sub
 
 #End Region ' Selections
@@ -510,11 +519,11 @@ Namespace Ecosim
             Me.m_btnAdd.Enabled = (iAvailableSelected > 0) And (iApplied < Me.m_InteractionManager.MaxNShapes)
             Me.m_btnRemove.Enabled = (iAppliedSelected > 0)
 
-            Dim bMultEnabled As Boolean = (iAppliedSelected > 0)
-            Me.m_rbOpt1.Enabled = bMultEnabled
-            Me.m_rbOpt2.Enabled = bMultEnabled
-            Me.m_rbOpt3.Enabled = bMultEnabled
-            Me.m_rbOpt4.Enabled = bMultEnabled
+            'Dim bMultEnabled As Boolean = (iAppliedSelected > 0)
+            'Me.m_rbOpt1.Enabled = bMultEnabled
+            'Me.m_rbOpt2.Enabled = bMultEnabled
+            'Me.m_rbOpt3.Enabled = bMultEnabled
+            'Me.m_rbOpt4.Enabled = bMultEnabled
 
         End Sub
 
