@@ -467,6 +467,7 @@ Namespace Ecosim
                     itemSrc.ImageIndex = Me.m_lFFs.IndexOf(shapeSelected)
                     itemSrc.SubItems.Add("")
                     itemSrc.Tag = shapeSelected
+                    itemSrc.Selected = True
                     Me.UpdateAppliedShape(itemSrc, Me.m_appl)
 
                     Me.m_lvAppliedShapes.Items.Add(itemSrc)
