@@ -55,7 +55,7 @@ Namespace Ecosim
         Private m_InteractionManager As cMediatedInteractionManager
         Private m_lInteractions As New List(Of cMediatedInteraction)
         Private m_lFFs As New List(Of cForcingFunction)
-        Private m_appl As eForcingFunctionApplication = eForcingFunctionApplication.NotSet
+        Private m_appl As eForcingFunctionApplication = eForcingFunctionApplication.SearchRate
 
         Private m_iSelPrey As Integer = -1
         Private m_iSelPred As Integer = -1

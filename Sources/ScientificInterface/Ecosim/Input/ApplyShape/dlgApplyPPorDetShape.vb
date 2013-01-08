@@ -534,11 +534,13 @@ Namespace Ecosim
                 Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
                 Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
                 Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+                Me.m_appl = eForcingFunctionApplication.ProductionRate
             Else
                 Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
                 Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
                 Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
                 Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+                Me.m_appl = eForcingFunctionApplication.Import
             End If
 
             Me.m_rbOpt1.Checked = True
