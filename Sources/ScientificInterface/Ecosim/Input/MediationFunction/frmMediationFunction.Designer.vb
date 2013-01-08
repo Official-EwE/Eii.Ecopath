@@ -82,6 +82,7 @@ Namespace Ecosim
             '
             'm_sketchPad
             '
+            Me.m_sketchPad.AllowDragXMark = True
             resources.ApplyResources(Me.m_sketchPad, "m_sketchPad")
             Me.m_sketchPad.BackColor = System.Drawing.SystemColors.Window
             Me.m_sketchPad.Cursor = System.Windows.Forms.Cursors.Cross
