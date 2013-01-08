@@ -299,8 +299,7 @@ Namespace Ecosim
 
 #Region " Multipliers "
 
-        Private Sub OnSetMultiplier(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_rbOpt1.CheckedChanged, m_rbOpt2.CheckedChanged, m_rbOpt3.CheckedChanged, m_rbOpt4.CheckedChanged
+        Private Sub OnSetMultiplier(sender As Object, e As System.EventArgs) Handles m_rbOpt1.Click, m_rbOpt2.Click, m_rbOpt3.Click, m_rbOpt4.Click
 
             Try
 
@@ -312,7 +311,6 @@ Namespace Ecosim
             Catch ex As Exception
                 ' Whoah!
             End Try
-
         End Sub
 
 #End Region ' Multipliers 
@@ -511,6 +509,12 @@ Namespace Ecosim
 
             Me.m_btnAdd.Enabled = (iAvailableSelected > 0) And (iApplied < Me.m_InteractionManager.MaxNShapes)
             Me.m_btnRemove.Enabled = (iAppliedSelected > 0)
+
+            Dim bMultEnabled As Boolean = (iAppliedSelected > 0)
+            Me.m_rbOpt1.Enabled = bMultEnabled
+            Me.m_rbOpt2.Enabled = bMultEnabled
+            Me.m_rbOpt3.Enabled = bMultEnabled
+            Me.m_rbOpt4.Enabled = bMultEnabled
 
         End Sub
 
