@@ -72,14 +72,15 @@ Public Class cEcospaceCSVResultsWriter
 
             For Each varname As eVarNameFlags In vars
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-
                     strFN = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
-                    strm = cFileUtils.GetStreamWriter(strFN, True)
-                    If (strm IsNot Nothing) Then
-                        Me.SaveCSV(strm, tsData, igrp, varname)
-                        strm.Flush()
-                        strm.Close()
-                        strm = Nothing
+                    If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN), True) Then
+                        strm = New StreamWriter(strFN, True)
+                        If (strm IsNot Nothing) Then
+                            Me.SaveCSV(strm, tsData, igrp, varname)
+                            strm.Flush()
+                            strm.Close()
+                            strm = Nothing
+                        End If
                     End If
                 Next
             Next
@@ -200,13 +201,13 @@ Public Class cEcospaceCSVResultsWriter
     Private Sub WriteFileHeaders(ByVal varname As eVarNameFlags)
 
         Dim strm As StreamWriter
-        Dim fn As String
+        Dim strFN As String
 
         For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-            fn = Me.GetGroupFileName(varname, igrp, "CSV")
+            strFN = Me.GetGroupFileName(varname, igrp, "csv")
             'Create a new file when writting the header
             'this overwrites the data in the current directory
-            strm = New StreamWriter(fn)
+            strm = New StreamWriter(strFN)
             Me.WriteHeader(strm, igrp, varname)
             strm.Close()
             strm = Nothing

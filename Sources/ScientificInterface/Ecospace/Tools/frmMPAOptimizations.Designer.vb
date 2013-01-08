@@ -56,7 +56,6 @@ Namespace Ecospace
             Me.m_cmbMPA = New System.Windows.Forms.ComboBox()
             Me.m_rbRandom = New System.Windows.Forms.RadioButton()
             Me.m_rbEcoseed = New System.Windows.Forms.RadioButton()
-            Me.m_hdrParameters = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_lbMPA = New System.Windows.Forms.Label()
             Me.m_lblEndYear = New System.Windows.Forms.Label()
             Me.m_nudIterations = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
@@ -93,15 +92,13 @@ Namespace Ecospace
             Me.m_nudDiscRate = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_nudGenDiscRate = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_lblGenDiscRate = New System.Windows.Forms.Label()
+            Me.m_cbAutoSave = New System.Windows.Forms.CheckBox()
             Me.m_tcConfiguration = New System.Windows.Forms.TabControl()
             Me.m_tabParameters = New System.Windows.Forms.TabPage()
             Me.m_tlpObjectives = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_lblObjectives = New System.Windows.Forms.Label()
-            Me.m_gridGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
-            Me.m_gridFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
             Me.m_gridObjectives = New ScientificInterface.Ecosim.gridSearchObjectivesWeight()
-            Me.m_lbFleet = New System.Windows.Forms.Label()
-            Me.m_lblGroup = New System.Windows.Forms.Label()
+            Me.m_gridFleet = New ScientificInterface.Ecosim.gridSearchObjectivesFleet()
+            Me.m_gridGroup = New ScientificInterface.Ecosim.gridSearchObjectivesGroup()
             Me.m_tabMap = New System.Windows.Forms.TabPage()
             Me.m_tlpMap = New System.Windows.Forms.TableLayoutPanel()
             Me.m_scMap = New System.Windows.Forms.SplitContainer()
@@ -111,8 +108,8 @@ Namespace Ecospace
             Me.m_plLayers = New System.Windows.Forms.Panel()
             Me.m_hdrLayers = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_scContent = New System.Windows.Forms.SplitContainer()
-            Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-            Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+            Me.m_pbDuke = New System.Windows.Forms.PictureBox()
+            Me.m_pbLenfest = New System.Windows.Forms.PictureBox()
             Me.m_bntReset = New System.Windows.Forms.Button()
             Me.m_tsMap.SuspendLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -143,8 +140,8 @@ Namespace Ecospace
             Me.m_scContent.Panel1.SuspendLayout()
             Me.m_scContent.Panel2.SuspendLayout()
             Me.m_scContent.SuspendLayout()
-            CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbDuke, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_btnRun
@@ -171,7 +168,6 @@ Namespace Ecospace
             'm_tsbMPA
             '
             Me.m_tsbMPA.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearMPA, Me.m_tsmSetAllMPA})
-            Me.m_tsbMPA.Image = SharedResources.MPA
             resources.ApplyResources(Me.m_tsbMPA, "m_tsbMPA")
             Me.m_tsbMPA.Name = "m_tsbMPA"
             '
@@ -188,7 +184,6 @@ Namespace Ecospace
             'm_tsbSeed
             '
             Me.m_tsbSeed.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmClearSeed, Me.m_tsmSetAllSeed})
-            Me.m_tsbSeed.Image = SharedResources.Seed
             resources.ApplyResources(Me.m_tsbSeed, "m_tsbSeed")
             Me.m_tsbSeed.Name = "m_tsbSeed"
             '
@@ -204,7 +199,6 @@ Namespace Ecospace
             '
             'm_tsbEditLayers
             '
-            Me.m_tsbEditLayers.Image = SharedResources.Importance
             resources.ApplyResources(Me.m_tsbEditLayers, "m_tsbEditLayers")
             Me.m_tsbEditLayers.Name = "m_tsbEditLayers"
             '
@@ -226,14 +220,6 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_rbEcoseed, "m_rbEcoseed")
             Me.m_rbEcoseed.Name = "m_rbEcoseed"
             Me.m_rbEcoseed.UseVisualStyleBackColor = True
-            '
-            'm_hdrParameters
-            '
-            resources.ApplyResources(Me.m_hdrParameters, "m_hdrParameters")
-            Me.m_hdrParameters.CanCollapseParent = False
-            Me.m_hdrParameters.CollapsedParentHeight = 0
-            Me.m_hdrParameters.IsCollapsed = False
-            Me.m_hdrParameters.Name = "m_hdrParameters"
             '
             'm_lbMPA
             '
@@ -463,6 +449,7 @@ Namespace Ecospace
             Me.m_tlbParameters.Controls.Add(Me.m_nudDiscRate, 7, 0)
             Me.m_tlbParameters.Controls.Add(Me.m_nudGenDiscRate, 7, 1)
             Me.m_tlbParameters.Controls.Add(Me.m_lblGenDiscRate, 6, 1)
+            Me.m_tlbParameters.Controls.Add(Me.m_cbAutoSave, 6, 2)
             Me.m_tlbParameters.Name = "m_tlbParameters"
             '
             'm_lblMinArea
@@ -525,6 +512,12 @@ Namespace Ecospace
             resources.ApplyResources(Me.m_lblGenDiscRate, "m_lblGenDiscRate")
             Me.m_lblGenDiscRate.Name = "m_lblGenDiscRate"
             '
+            'm_cbAutoSave
+            '
+            resources.ApplyResources(Me.m_cbAutoSave, "m_cbAutoSave")
+            Me.m_cbAutoSave.Name = "m_cbAutoSave"
+            Me.m_cbAutoSave.UseVisualStyleBackColor = True
+            '
             'm_tcConfiguration
             '
             Me.m_tcConfiguration.Controls.Add(Me.m_tabParameters)
@@ -545,79 +538,10 @@ Namespace Ecospace
             'm_tlpObjectives
             '
             resources.ApplyResources(Me.m_tlpObjectives, "m_tlpObjectives")
-            Me.m_tlpObjectives.Controls.Add(Me.m_lblObjectives, 0, 0)
-            Me.m_tlpObjectives.Controls.Add(Me.m_gridGroup, 4, 1)
-            Me.m_tlpObjectives.Controls.Add(Me.m_gridFleet, 2, 1)
-            Me.m_tlpObjectives.Controls.Add(Me.m_gridObjectives, 0, 1)
-            Me.m_tlpObjectives.Controls.Add(Me.m_lbFleet, 2, 0)
-            Me.m_tlpObjectives.Controls.Add(Me.m_lblGroup, 4, 0)
+            Me.m_tlpObjectives.Controls.Add(Me.m_gridObjectives, 0, 0)
+            Me.m_tlpObjectives.Controls.Add(Me.m_gridFleet, 2, 0)
+            Me.m_tlpObjectives.Controls.Add(Me.m_gridGroup, 4, 0)
             Me.m_tlpObjectives.Name = "m_tlpObjectives"
-            '
-            'm_lblObjectives
-            '
-            resources.ApplyResources(Me.m_lblObjectives, "m_lblObjectives")
-            Me.m_lblObjectives.Name = "m_lblObjectives"
-            '
-            'm_gridGroup
-            '
-            Me.m_gridGroup.AllowBlockSelect = True
-            Me.m_gridGroup.AutoSizeMinHeight = 10
-            Me.m_gridGroup.AutoSizeMinWidth = 10
-            Me.m_gridGroup.AutoStretchColumnsToFitWidth = True
-            Me.m_gridGroup.AutoStretchRowsToFitHeight = False
-            Me.m_gridGroup.BackColor = System.Drawing.Color.White
-            Me.m_gridGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridGroup.CustomSort = False
-            resources.ApplyResources(Me.m_gridGroup, "m_gridGroup")
-            Me.m_gridGroup.FixedColumnWidths = False
-            Me.m_gridGroup.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridGroup.GridToolTipActive = True
-            Me.m_gridGroup.Manager = Nothing
-            Me.m_gridGroup.Name = "m_gridGroup"
-            Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridGroup.UIContext = Nothing
-            '
-            'm_gridFleet
-            '
-            Me.m_gridFleet.AllowBlockSelect = True
-            Me.m_gridFleet.AutoSizeMinHeight = 10
-            Me.m_gridFleet.AutoSizeMinWidth = 10
-            Me.m_gridFleet.AutoStretchColumnsToFitWidth = True
-            Me.m_gridFleet.AutoStretchRowsToFitHeight = False
-            Me.m_gridFleet.BackColor = System.Drawing.Color.White
-            Me.m_gridFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-            Me.m_gridFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
-            Me.m_gridFleet.CustomSort = False
-            resources.ApplyResources(Me.m_gridFleet, "m_gridFleet")
-            Me.m_gridFleet.FixedColumnWidths = False
-            Me.m_gridFleet.FocusStyle = SourceGrid2.FocusStyle.None
-            Me.m_gridFleet.GridToolTipActive = True
-            Me.m_gridFleet.IsMaximizeByFleetValue = False
-            Me.m_gridFleet.Manager = Nothing
-            Me.m_gridFleet.Name = "m_gridFleet"
-            Me.m_gridFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-                Or SourceGrid2.GridSpecialKeys.Delete) _
-                Or SourceGrid2.GridSpecialKeys.Arrows) _
-                Or SourceGrid2.GridSpecialKeys.Tab) _
-                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-                Or SourceGrid2.GridSpecialKeys.Enter) _
-                Or SourceGrid2.GridSpecialKeys.Escape) _
-                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
-            Me.m_gridFleet.UIContext = Nothing
             '
             'm_gridObjectives
             '
@@ -651,15 +575,66 @@ Namespace Ecospace
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_gridObjectives.UIContext = Nothing
             '
-            'm_lbFleet
+            'm_gridFleet
             '
-            resources.ApplyResources(Me.m_lbFleet, "m_lbFleet")
-            Me.m_lbFleet.Name = "m_lbFleet"
+            Me.m_gridFleet.AllowBlockSelect = True
+            Me.m_gridFleet.AutoSizeMinHeight = 10
+            Me.m_gridFleet.AutoSizeMinWidth = 10
+            Me.m_gridFleet.AutoStretchColumnsToFitWidth = True
+            Me.m_gridFleet.AutoStretchRowsToFitHeight = False
+            Me.m_gridFleet.BackColor = System.Drawing.Color.White
+            Me.m_gridFleet.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridFleet.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridFleet.CustomSort = False
+            resources.ApplyResources(Me.m_gridFleet, "m_gridFleet")
+            Me.m_gridFleet.FixedColumnWidths = False
+            Me.m_gridFleet.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridFleet.GridToolTipActive = True
+            Me.m_gridFleet.IsMaximizeByFleetValue = False
+            Me.m_gridFleet.Manager = Nothing
+            Me.m_gridFleet.Name = "m_gridFleet"
+            Me.m_gridFleet.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridFleet.UIContext = Nothing
             '
-            'm_lblGroup
+            'm_gridGroup
             '
-            resources.ApplyResources(Me.m_lblGroup, "m_lblGroup")
-            Me.m_lblGroup.Name = "m_lblGroup"
+            Me.m_gridGroup.AllowBlockSelect = True
+            Me.m_gridGroup.AutoSizeMinHeight = 10
+            Me.m_gridGroup.AutoSizeMinWidth = 10
+            Me.m_gridGroup.AutoStretchColumnsToFitWidth = True
+            Me.m_gridGroup.AutoStretchRowsToFitHeight = False
+            Me.m_gridGroup.BackColor = System.Drawing.Color.White
+            Me.m_gridGroup.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridGroup.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridGroup.CustomSort = False
+            resources.ApplyResources(Me.m_gridGroup, "m_gridGroup")
+            Me.m_gridGroup.FixedColumnWidths = False
+            Me.m_gridGroup.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridGroup.GridToolTipActive = True
+            Me.m_gridGroup.Manager = Nothing
+            Me.m_gridGroup.Name = "m_gridGroup"
+            Me.m_gridGroup.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridGroup.UIContext = Nothing
             '
             'm_tabMap
             '
@@ -742,20 +717,20 @@ Namespace Ecospace
             Me.m_scContent.Panel2.Controls.Add(Me.m_hdrOutput)
             Me.m_scContent.Panel2.Controls.Add(Me.m_tcResults)
             '
-            'PictureBox1
+            'm_pbDuke
             '
-            resources.ApplyResources(Me.PictureBox1, "PictureBox1")
-            Me.PictureBox1.BackColor = System.Drawing.Color.White
-            Me.PictureBox1.Name = "PictureBox1"
-            Me.PictureBox1.TabStop = False
+            resources.ApplyResources(Me.m_pbDuke, "m_pbDuke")
+            Me.m_pbDuke.BackColor = System.Drawing.Color.White
+            Me.m_pbDuke.Name = "m_pbDuke"
+            Me.m_pbDuke.TabStop = False
             '
-            'PictureBox2
+            'm_pbLenfest
             '
-            resources.ApplyResources(Me.PictureBox2, "PictureBox2")
-            Me.PictureBox2.BackColor = System.Drawing.Color.White
-            Me.PictureBox2.Image = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
-            Me.PictureBox2.Name = "PictureBox2"
-            Me.PictureBox2.TabStop = False
+            resources.ApplyResources(Me.m_pbLenfest, "m_pbLenfest")
+            Me.m_pbLenfest.BackColor = System.Drawing.Color.White
+            Me.m_pbLenfest.Image = Global.ScientificInterface.My.Resources.Resources.logo_LENFEST
+            Me.m_pbLenfest.Name = "m_pbLenfest"
+            Me.m_pbLenfest.TabStop = False
             '
             'm_bntReset
             '
@@ -774,14 +749,15 @@ Namespace Ecospace
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_scContent)
             Me.Controls.Add(Me.m_rbRandom)
-            Me.Controls.Add(Me.m_hdrParameters)
             Me.Controls.Add(Me.m_lblSearchType)
             Me.Controls.Add(Me.m_rbEcoseed)
-            Me.Controls.Add(Me.PictureBox2)
-            Me.Controls.Add(Me.PictureBox1)
+            Me.Controls.Add(Me.m_pbLenfest)
+            Me.Controls.Add(Me.m_pbDuke)
             Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcospaceLoaded
             Me.DoubleBuffered = True
             Me.Name = "frmMPAOptimizations"
+            Me.ShowIcon = False
+            Me.ShowInTaskbar = False
             Me.m_tsMap.ResumeLayout(False)
             Me.m_tsMap.PerformLayout()
             CType(Me.m_nudIterations, System.ComponentModel.ISupportInitialize).EndInit()
@@ -803,7 +779,6 @@ Namespace Ecospace
             Me.m_tcConfiguration.ResumeLayout(False)
             Me.m_tabParameters.ResumeLayout(False)
             Me.m_tlpObjectives.ResumeLayout(False)
-            Me.m_tlpObjectives.PerformLayout()
             Me.m_tabMap.ResumeLayout(False)
             Me.m_tlpMap.ResumeLayout(False)
             Me.m_tlpMap.PerformLayout()
@@ -817,8 +792,8 @@ Namespace Ecospace
             Me.m_scContent.Panel2.ResumeLayout(False)
             CType(Me.m_scContent, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scContent.ResumeLayout(False)
-            CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbDuke, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbLenfest, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -846,7 +821,6 @@ Namespace Ecospace
         Private WithEvents m_graphResults As ZedGraph.ZedGraphControl
         Private WithEvents m_gridResults As ScientificInterface.gridMPAOptimizations
         Private WithEvents m_lblSearchType As System.Windows.Forms.Label
-        Private WithEvents m_hdrParameters As cEwEHeaderLabel
         Private WithEvents m_lblEndYear As System.Windows.Forms.Label
         Private WithEvents m_lblStartYear As System.Windows.Forms.Label
         Private WithEvents m_tlbParameters As System.Windows.Forms.TableLayoutPanel
@@ -867,9 +841,6 @@ Namespace Ecospace
         Private WithEvents m_lblStep As System.Windows.Forms.Label
         Private WithEvents m_lblIterations As System.Windows.Forms.Label
         Private WithEvents m_tlpObjectives As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_lblObjectives As System.Windows.Forms.Label
-        Private WithEvents m_lbFleet As System.Windows.Forms.Label
-        Private WithEvents m_lblGroup As System.Windows.Forms.Label
         Private WithEvents m_gridFleet As gridSearchObjectivesFleet
         Private WithEvents m_gridObjectives As gridSearchObjectivesWeight
         Private WithEvents m_btnSave As System.Windows.Forms.Button
@@ -879,8 +850,8 @@ Namespace Ecospace
         Private WithEvents m_scContent As System.Windows.Forms.SplitContainer
         Private WithEvents m_lblDiscRate As System.Windows.Forms.Label
         Private WithEvents m_lblGenDiscRate As System.Windows.Forms.Label
-        Private WithEvents PictureBox1 As System.Windows.Forms.PictureBox
-        Private WithEvents PictureBox2 As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbDuke As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbLenfest As System.Windows.Forms.PictureBox
         Private WithEvents m_bntReset As System.Windows.Forms.Button
         Private WithEvents m_tlpMap As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_ucZoomBar As ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar
@@ -894,5 +865,6 @@ Namespace Ecospace
         Private WithEvents m_nudBaseYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudDiscRate As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_nudGenDiscRate As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_cbAutoSave As System.Windows.Forms.CheckBox
     End Class
 End Namespace

@@ -21,6 +21,7 @@ Imports EwECore
 Imports EwECore.cEcoSpace
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
+Imports System.IO
 
 Namespace EcoSeed
 
@@ -32,7 +33,6 @@ Namespace EcoSeed
 
     Public Class cEcoSeed
         Implements IMPASearchModel
-
 
 #Region "Private data"
 
@@ -48,7 +48,6 @@ Namespace EcoSeed
         Private m_bRunning As Boolean
         Private m_esStartTime As Single
         Private EcoSeedOn As Boolean
-        Private m_bWriteFile As Boolean
 
         'results of each iterations
         Private m_lstObjectiveResults As New List(Of cObjectiveResult)
@@ -56,9 +55,19 @@ Namespace EcoSeed
 
         Private m_cellComputedCallback As cMPAOptManager.SearchIterationDelegate
         Private m_StateCallback As cMPAOptManager.SearchRunStateDelegate
-        Private m_nIters As Integer
+        Private m_SendMessageDelegate As cMPAOptManager.SendMessageDelegate
+        Private m_nIters As Integer = 0
 
-        Private m_filename As String
+        ' -- Autosave settings --
+
+        ''' <summary>Auto-save file name.</summary>
+        Private Const c_FILENAME As String = "MPA_Ecoseed_output.csv"
+        ''' <summary>Flag, stating whether autosave is enabled.</summary>
+        Private m_bAutosaveResults As Boolean = False
+        ''' <summary>Auto-save folder.</summary>
+        Private m_strOutputPath As String = ""
+        ''' <summary>Auto-save file header.</summary>
+        Private m_strHeader As String = ""
 
 #Region "Modeling data from EwE5"
 
@@ -130,13 +139,13 @@ Namespace EcoSeed
                            ByVal OnSendMessage As cMPAOptManager.SendMessageDelegate) Implements IMPASearchModel.Connect
             m_cellComputedCallback = OnSearchInteration
             m_StateCallback = OnRunStateChanged
+            m_SendMessageDelegate = OnSendMessage
         End Sub
 
 
 #End Region
 
 #Region "Public Properties and Methods"
-
 
         Public Property EcoSeedData() As cMPAOptDataStructures Implements IMPASearchModel.MPAOptData
             Get
@@ -169,7 +178,6 @@ Namespace EcoSeed
 
             End Get
         End Property
-
 
         Public ReadOnly Property isRunning() As Boolean Implements IMPASearchModel.isRunning
             Get
@@ -248,16 +256,6 @@ Namespace EcoSeed
             End Get
         End Property
 
-        Public Property OutPutFilename() As String Implements IMPASearchModel.OutPutFilename
-            Get
-                Return Me.m_filename
-            End Get
-            Set(ByVal value As String)
-                Me.m_filename = value
-            End Set
-        End Property
-
-
         Public ReadOnly Property OKtoRun() As Boolean Implements IMPASearchModel.OKtoRun
             Get
                 '
@@ -286,6 +284,14 @@ Namespace EcoSeed
             End Get
         End Property
 
+        ''' <inheritdocs cref="IMPASearchModel.ConfigureAutosave"/>
+        Public Sub ConfigureAutosave(ByVal bAutosave As Boolean, ByVal strOutputPath As String, ByVal strHeader As String) _
+            Implements IMPASearchModel.ConfigureAutosave
+            Me.m_bAutosaveResults = bAutosave
+            Me.m_strOutputPath = strOutputPath
+            Me.m_strHeader = strHeader
+        End Sub
+
 #End Region
 
 #Region "Running the model"
@@ -293,17 +299,11 @@ Namespace EcoSeed
         Private Sub initForRun()
 
             Try
-
                 'Ecoseed does not listen to the Ecospace time steps
                 Me.m_EcoSpace.TimeStepDelegate = Nothing
 
-                If Not String.IsNullOrEmpty(Me.m_filename) Then
-                    'if there is a filename then write the output file
-                    m_bWriteFile = True
-                End If
-
                 'create a new list to store the results
-                m_lstObjectiveResults = New List(Of cObjectiveResult)
+                Me.m_lstObjectiveResults = New List(Of cObjectiveResult)
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -339,6 +339,7 @@ Namespace EcoSeed
 
             'total objective sum of the current search 
             Dim CurSum As Single
+            Dim writer As StreamWriter = Nothing
 
             Try
                 Debug.Assert(m_data IsNot Nothing, "Ecoseed: data not initialized")
@@ -364,7 +365,20 @@ Namespace EcoSeed
                 getBaseValues()
                 System.Console.WriteLine("------------Ecoseed----------------")
 
-                WriteOutputFileHeader()
+                If Me.m_bAutosaveResults And Not String.IsNullOrWhiteSpace(Me.m_strOutputPath) Then
+                    If cFileUtils.IsDirectoryAvailable(Me.m_strOutputPath, True) Then
+                        Try
+                            writer = New StreamWriter(Path.Combine(Me.m_strOutputPath, c_FILENAME))
+                        Catch ex As Exception
+
+                        End Try
+                    End If
+                End If
+                Try
+                    WriteOutputFileHeader(writer)
+                Catch ex As Exception
+
+                End Try
 
                 Me.setRunState(cMPAOptManager.eRunStates.Searching)
 
@@ -413,7 +427,7 @@ Namespace EcoSeed
                             m_data.objFuncMandatedValue = m_search.manvalue / ManValueBase
                             m_data.objFuncSocialValue = m_search.Employ / EmployBase
                             m_data.objFuncEconomicValue = m_search.totval / TotValBase
-                            m_data.objFuncBiomassDiv = m_search.KemptonQ / BioDiversityBase
+                            m_data.objFuncBiodiversity = m_search.KemptonQ / BioDiversityBase
                             m_data.objFuncAreaBorder = AreaBordary / areaBoundBase
                             m_data.objFuncTotal = (m_search.WeightedTotal + AreaBordary * m_data.BoundaryWeight) / Me.TotWeightedValueBase
 
@@ -449,7 +463,7 @@ Namespace EcoSeed
                     'Select the next set of seed cells to test
                     If m_data.bestrow > 0 And m_data.bestcol > 0 Then
 
-                        StoreObjectiveFunctionResults()
+                        StoreObjectiveFunctionResults(writer)
 
                         'Tell the delegate that a new best cell has been selected. 
                         'this needs to be synchronous because the best row/col are set back to -1 (not selected) right after
@@ -479,10 +493,15 @@ Namespace EcoSeed
 
             Catch ex As Exception
                 cLog.Write(ex)
-                m_bRunning = False
+                Me.m_bRunning = False
                 Debug.Assert(False, ex.StackTrace)
-                Throw New ApplicationException("EcoSeed Error: " & ex.Message, ex)
             End Try
+
+            If (writer IsNot Nothing) Then
+                writer.Flush()
+                writer.Close()
+                writer.Dispose()
+            End If
 
         End Sub
 
@@ -991,15 +1010,11 @@ Namespace EcoSeed
         ''' Store the best row and col for this search interation
         ''' </summary>
         ''' <remarks>Right now this is writting the results file and memory</remarks>
-        Private Sub StoreObjectiveFunctionResults()
+        Private Sub StoreObjectiveFunctionResults(ByVal writer As StreamWriter)
 
             Try
-
-                'write the data to file
-                WriteOutputData()
-
-                'keep the results in memory
-                m_lstObjectiveResults.Add(New cObjectiveResult(m_data, m_SpaceData))
+                Me.WriteOutputData(writer)
+                Me.m_lstObjectiveResults.Add(New cObjectiveResult(Me.m_data, Me.m_SpaceData))
 
                 ''Memory management for results
                 'If Me.m_lstObjectiveResults.Count >= N_MAX_RESULTS Then
@@ -1018,78 +1033,73 @@ Namespace EcoSeed
 
         End Sub
 
+        ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a new ouput csv file and write the header
+        ''' Write a Ecoseed file header to file.
         ''' </summary>
-        ''' <remarks>This will destroy any existing file with the same name as OutputCVSFileName  </remarks>
-        Private Sub WriteOutputFileHeader()
+        ''' <param name="writer">The file to write the header to.</param>
+        ''' -------------------------------------------------------------------
+        Private Sub WriteOutputFileHeader(ByVal writer As StreamWriter)
 
-            If Not m_bWriteFile Then
-                'not writing to file
-                Return
-            End If
+            If (writer Is Nothing) Then Return
+
             'EwE5
             'Write #fnum, "row", "col", "econ", "social", "mandated", "ecosystem", "Area/Border"
             'Write #fnum, "", "", ValWeight(1), ValWeight(2), ValWeight(3), ValWeight(4), BoundaryWeight
 
-            Dim sb As New Text.StringBuilder
-            'sb.AppendLine("Row, Col, Economic, Social, Mandated, Ecosystem, Area/Border")
-            'sb.AppendLine(" , , " & String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}", _
-            '                m_search.ValWeight(1), m_search.ValWeight(2), m_search.ValWeight(3), m_search.ValWeight(4), m_data.BoundaryWeight))
-            sb.AppendLine("EcoSeed Optimization output")
-            sb.AppendLine("Version," & cStringUtils.ToCSVField(cCore.Version))
-            sb.AppendLine("Date," & Date.Today.ToLongDateString)
+            writer.WriteLine("EcoSeed Optimization output")
+            writer.WriteLine(Me.m_strHeader)
+            writer.WriteLine("Objective weights for run")
+            writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
+            writer.WriteLine()
+            writer.WriteLine("{0},{1},{2},{3},{4},{5}", _
+                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue)), _
+                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Employment)), _
+                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb)), _
+                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.Ecological)), _
+                    cStringUtils.FormatNumber(Me.m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity)), _
+                    cStringUtils.FormatNumber(Me.m_data.BoundaryWeight))
+            writer.WriteLine()
+            writer.WriteLine("Base Values")
+            writer.WriteLine("Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
+            writer.WriteLine("{0},{1},{2},{3},{4},{5}", _
+                    cStringUtils.FormatNumber(TotValBase), _
+                    cStringUtils.FormatNumber(EmployBase), _
+                    cStringUtils.FormatNumber(ManValueBase), _
+                    cStringUtils.FormatNumber(EcoValueBase), _
+                    cStringUtils.FormatNumber(BioDiversityBase), _
+                    cStringUtils.FormatNumber(areaBoundBase))
+            writer.WriteLine()
+            writer.WriteLine("Data Format")
+            writer.WriteLine("Row,Col,Economic,Social,Mandated,Ecosystem,Biodiversity,Area/Border")
 
-            sb.AppendLine("<Objective weights for run>")
-            sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
-
-            sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}, {5:F}", _
-                    m_search.ValWeight(eSearchCriteriaResultTypes.TotalValue), _
-                    m_search.ValWeight(eSearchCriteriaResultTypes.Employment), _
-                    m_search.ValWeight(eSearchCriteriaResultTypes.MandateReb), _
-                    m_search.ValWeight(eSearchCriteriaResultTypes.Ecological), _
-                    m_search.ValWeight(eSearchCriteriaResultTypes.BioDiversity), _
-                    m_data.BoundaryWeight))
-
-            sb.AppendLine("<Base Values>")
-            sb.AppendLine("Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
-            sb.AppendLine(String.Format("{0:F}, {1:F}, {2:F}, {3:F}, {4:F}, {5:F}", _
-                    TotValBase, EmployBase, ManValueBase, EcoValueBase, BioDiversityBase, areaBoundBase))
-
-            sb.AppendLine("<Data Format>")
-            sb.AppendLine("Row, Col, Economic, Social, Mandated, Ecosystem, Biomass Diversity, Area/Border")
-
-            'this will create a new file each time
-            cLog.WriteTextToFile(Me.m_filename, sb, False)
+            ' ToDo: globalize this
+            ' ToDo: send at end of autosave, include result
+            Dim msg As New cMessage(String.Format("MPA search output saved to '{0}'", Path.Combine(Me.m_strOutputPath, c_FILENAME)), _
+                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+            msg.Hyperlink = Me.m_strOutputPath
+            Me.SendMessage(msg)
 
         End Sub
 
         ''' <summary>
         ''' Write the objective function values to file
         ''' </summary>
-        ''' <remarks></remarks>
-        Private Sub WriteOutputData()
+        Private Sub WriteOutputData(ByVal writer As StreamWriter)
 
-            Try
+            If (writer Is Nothing) Then Return
 
-                If Not m_bWriteFile Then
-                    'not writing to file
-                    Return
-                End If
-                'EwE5
-                'Write #fnum, bestrow, bestcol, ObjF(0), ObjF(1), ObjF(2), ObjF(3), ObjF(4)
-
-                Dim sb As New Text.StringBuilder
-                sb.Append(String.Format("{0:N}, {1:N}, {2:F}, {3:N}, {4:N}, {5:N}, {6:N}, {7:N}", _
-                                m_data.bestrow, m_data.bestcol, m_data.objFuncEconomicValue, m_data.objFuncSocialValue, m_data.objFuncMandatedValue, m_data.objFuncEcologicalValue, m_data.objFuncBiomassDiv, m_data.objFuncAreaBorder))
-
-                cLog.WriteTextToFile(Me.m_filename, sb, True)
-
-            Catch ex As Exception
-                cLog.Write(ex)
-                Throw New ApplicationException("WriteOutputData() Error. " & ex.Message)
-            End Try
-
+            'EwE5
+            'Write #fnum, bestrow, bestcol, ObjF(0), ObjF(1), ObjF(2), ObjF(3), ObjF(4)
+            writer.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7}", _
+                            cStringUtils.FormatNumber(Me.m_data.bestrow), _
+                            cStringUtils.FormatNumber(Me.m_data.bestcol), _
+                            cStringUtils.FormatNumber(Me.m_data.objFuncEconomicValue), _
+                            cStringUtils.FormatNumber(Me.m_data.objFuncSocialValue), _
+                            cStringUtils.FormatNumber(Me.m_data.objFuncMandatedValue), _
+                            cStringUtils.FormatNumber(Me.m_data.objFuncEcologicalValue), _
+                            cStringUtils.FormatNumber(Me.m_data.objFuncBiodiversity), _
+                            cStringUtils.FormatNumber(Me.m_data.objFuncAreaBorder))
         End Sub
 
 #End Region
@@ -1148,7 +1158,19 @@ Namespace EcoSeed
         End Sub
 #End Region
 
-    End Class
+#Region " Message handling "
 
+        Private Sub SendMessage(ByVal msg As cMessage)
+            Try
+                If (Me.m_SendMessageDelegate IsNot Nothing) Then Me.m_SendMessageDelegate.Invoke(msg)
+            Catch ex As Exception
+                cLog.Write(ex)
+                Debug.Assert(False, Me.ToString & ".setRunState() " & ex.Message)
+            End Try
+        End Sub
+
+#End Region ' Message handling
+
+    End Class
 
 End Namespace

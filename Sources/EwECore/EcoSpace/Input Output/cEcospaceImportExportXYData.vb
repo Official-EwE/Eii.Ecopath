@@ -135,9 +135,8 @@ Public Class cEcospaceImportExportXYData
     ''' -------------------------------------------------------------------
     Public Function WriteXYFile(ByVal strFile As String, strColField As String, strRowField As String) As Boolean
 
-        Dim tw As TextWriter = Nothing
+        Dim strm As TextWriter = Nothing
         Dim lstrFields As New List(Of String)
-        Dim strField As String = ""
         Dim sb As New StringBuilder()
 
         lstrFields.AddRange(Me.m_astrFields)
@@ -150,14 +149,7 @@ Public Class cEcospaceImportExportXYData
         sb.Append(strRowField)
         For iField As Integer = 0 To lstrFields.Count - 1
             sb.Append(",")
-            ' Remove whitespace
-            strField = Me.Fields(iField).Trim
-            ' Remove quotes
-            strField.Replace("""", "")
-            ' Add quotes if field name contains a comma
-            If strField.Contains(","c) Then strField = """" & strField & """"
-            ' Oki
-            sb.Append(strField)
+            sb.Append(cStringUtils.ToCSVField(Me.Fields(iField).Trim))
         Next
         sb.AppendLine()
 
@@ -169,7 +161,7 @@ Public Class cEcospaceImportExportXYData
                 sb.Append(iRow)
                 For iField As Integer = 0 To Me.Fields.Length - 1
                     sb.Append(",")
-                    sb.Append(Me.Value(iRow, iCol, Me.Fields(iField)))
+                    sb.Append(Me.Value(iRow, iCol, cStringUtils.FormatNumber(Me.Fields(iField))))
                 Next iField
                 sb.AppendLine()
             Next iCol
@@ -177,9 +169,9 @@ Public Class cEcospaceImportExportXYData
 
         If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
             Try
-                tw = New StreamWriter(strFile)
-                tw.Write(sb.ToString())
-                tw.Close()
+                strm = New StreamWriter(strFile)
+                strm.Write(sb.ToString())
+                strm.Close()
             Catch ex As Exception
                 Return False
             End Try

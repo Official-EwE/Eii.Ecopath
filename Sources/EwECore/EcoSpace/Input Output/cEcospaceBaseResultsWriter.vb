@@ -259,33 +259,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     End Property
 
     Protected Sub WriteRunInfo(ByVal strm As StreamWriter)
-
-        Dim simScen As String = Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name
-        Dim SpaceScen As String = Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name
-        Dim ver As String = cCore.Version
-
-        strm.WriteLine("EwE version," & cStringUtils.ToCSVField(ver))
-        strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
-
-        strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
-        strm.WriteLine("EcoSim scenario," & cStringUtils.ToCSVField(simScen))
-        strm.WriteLine("EcoSpace scenario," & cStringUtils.ToCSVField(SpaceScen))
-        strm.WriteLine("Run start," & cStringUtils.ToCSVField(Me.m_core.EcosimFirstYear))
-        strm.WriteLine("Map rows," & Me.EcospaceData.InRow)
-        strm.WriteLine("Map cols," & Me.EcospaceData.InCol)
-        strm.WriteLine("Map cell length," & Me.EcospaceData.CellLength)
-        strm.WriteLine("Map cell size," & Me.CellSize())
-        strm.WriteLine("Map Latitude," & Me.EcospaceData.Lat1)
-        strm.WriteLine("Map Longitude," & Me.EcospaceData.Lon1)
-        strm.WriteLine("EcoSpace time step length," & Me.EcospaceData.TimeStep.ToString)
-
+        strm.Write(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
     End Sub
-
-    Protected Function CellSize() As Single
-        Dim cellSizeDegrees As Single = Me.EcospaceData.CellSize
-        If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.EcospaceData.CellLength)
-        Return cellSizeDegrees
-    End Function
 
 #End Region ' Internals
 

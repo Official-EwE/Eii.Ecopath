@@ -507,18 +507,22 @@ Namespace Ecosim
                 End Select
                 strTargetPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strFileName, False))
 
-                sw = cFileUtils.GetStreamWriter(strTargetPath, False)
-                If (sw Is Nothing) Then
-                    ' Notify user
-                    msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, "Unable to access path"), _
-                            eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
-                    bSucces = False
+                If cFileUtils.IsDirectoryAvailable(strPath, True) Then
+                    Try
+                        sw = New StreamWriter(strTargetPath, False)
+                    Catch ex As Exception
+                        ' Notify user
+                        msg = New cMessage(String.Format(My.Resources.STATUS_DATA_SAVING_FAILURE, strPath, ex.Message), _
+                                eMessageType.NotSet, eCoreComponentType.EcoSim, eMessageImportance.Critical)
+                        bSucces = False
+                    End Try
                 End If
 
                 If (sw IsNot Nothing) Then
 
                     Try
-
+                        sw.Write(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                        sw.WriteLine()
                         sw.Write("Year")
                         sw.Write(",")
                         For j As Integer = 1 To Me.Core.nTimeSeries

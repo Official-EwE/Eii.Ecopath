@@ -113,38 +113,29 @@ Namespace MSY
         ''' <summary>
         ''' Write CSV header information.
         ''' </summary>
-        ''' <param name="sw"></param>
+        ''' <param name="writer">Writer to write to. Yippee.</param>
+        ''' <param name="ass">Type of MSY <see cref="eMSYAssessmentTypes"/>.</param>
+        ''' <param name="strRun">Name of the run</param>
         ''' -------------------------------------------------------------------
-        Protected Overridable Sub WriteHeader(ByVal sw As StreamWriter, _
+        Protected Overridable Sub WriteHeader(ByVal writer As StreamWriter, _
                                               ByVal ass As eMSYAssessmentTypes, _
                                               ByVal strRun As String)
 
+            If (writer Is Nothing) Then Return
+
             ' File
-            sw.WriteLine("EwE version, " & cCore.Version)
-            sw.WriteLine("Date, " & Date.Now.ToString())
-            sw.WriteLine("ModelFile, " & Me.m_core.DataSource.ToString)
-            sw.WriteLine("ModelName, " & Me.m_core.EwEModel.Name)
-            sw.WriteLine("EcosimScenario, " & Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name)
-
-            ' Append time series name to scenario, if any
-            sw.Write("TimeSeries, ")
-            If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-                sw.WriteLine(cStringUtils.ToCSVField(Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name))
-            Else
-                sw.WriteLine("(none)")
-            End If
-
-            sw.WriteLine("MSY run, " & strRun)
-            sw.Write("Assessment, ")
+            writer.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSY))
+            writer.WriteLine()
+            writer.WriteLine("MSY run," & cStringUtils.ToCSVField(strRun))
+            writer.Write("Assessment,")
             Select Case ass
                 Case eMSYAssessmentTypes.StationarySystem
-                    sw.WriteLine("stationary_stock")
+                    writer.WriteLine("stationary_stock")
                 Case eMSYAssessmentTypes.FullCompensation
-                    sw.WriteLine("full_compensation")
+                    writer.WriteLine("full_compensation")
                 Case Else
                     Debug.Assert(False)
             End Select
-
 
         End Sub
 

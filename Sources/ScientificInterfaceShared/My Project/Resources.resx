@@ -2737,4 +2737,10 @@
   <data name="AUTOSAVE_MSY" xml:space="preserve">
     <value>MSY iterations</value>
   </data>
+  <data name="AUTOSAVE_MPAOPT" xml:space="preserve">
+    <value>MPA optimizations</value>
+  </data>
+  <data name="HEADER_OBJECTIVE" xml:space="preserve">
+    <value>Search objective</value>
+  </data>
 </root>

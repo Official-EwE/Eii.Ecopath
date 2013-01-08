@@ -96,7 +96,7 @@ Public Class cMPAOptOutput
         Me.MandatedValue = mpaData.objFuncMandatedValue
         Me.SocialValue = mpaData.objFuncSocialValue
         Me.TotalValue = mpaData.objFuncTotal
-        Me.BiomassDiversityValue = mpaData.objFuncBiomassDiv
+        Me.BiomassDiversityValue = mpaData.objFuncBiodiversity
         Me.AreaBoundaryValue = mpaData.objFuncAreaBorder
 
         Dim nTotCells As Integer = SpaceData.nWaterCells

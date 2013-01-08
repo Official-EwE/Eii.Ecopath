@@ -102,6 +102,7 @@ Namespace Ecosim
             MyBase.FinishStyle()
             Me.FixedColumns = 1
             Me.FixedColumnWidths = False
+            Me.Columns(0).Width = 20
         End Sub
 
     End Class

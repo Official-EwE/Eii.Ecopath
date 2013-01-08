@@ -2757,19 +2757,21 @@ Namespace Core
     Public Enum eAutosaveTypes As Integer
         ''' <summary>Hmm</summary>
         NotSet = 0
-        ''' <summary>Ecopath run results</summary>
+        ''' <summary>Ecopath run results.</summary>
         Ecopath
-        ''' <summary>Ecosim run results</summary>
+        ''' <summary>Ecosim run results.</summary>
         Ecosim
-        ''' <summary>Monte Carlo results</summary>
+        ''' <summary>Monte Carlo results.</summary>
         MonteCarlo
-        ''' <summary>MSE results</summary>
+        ''' <summary>MSE results.</summary>
         MSE
-        ''' <summary>MSY results</summary>
+        ''' <summary>MSY results.</summary>
         MSY
-        ''' <summary>Ecospace run results</summary>
+        ''' <summary>Ecospace run results.</summary>
         Ecospace
-        ''' <summary>Ecotracer run results</summary>
+        ''' <summary>MPA optimizations.</summary>
+        MPAOpt
+        ''' <summary>Ecotracer run results.</summary>
         Ecotracer
     End Enum
 

@@ -18,8 +18,8 @@
 #Region " Imports "
 
 Option Strict On
-
 Imports EwEUtils.Utilities
+Imports System.IO
 
 #End Region ' Imports
 
@@ -64,15 +64,20 @@ Public Class cEcopathResultWriter
     Public Function WriteCSV(strFN As String) As Boolean
 
         ' Extracted this logic from the Ecopath datastructures 'Dump' method
+        If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN)) Then Return False
 
-        Dim strm As System.IO.StreamWriter = cFileUtils.GetStreamWriter(strFN)
+        Dim strm As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
+
+        Try
+            strm = New StreamWriter(strFN)
+        Catch ex As Exception
+            bSuccess = False
+        End Try
 
         If (strm IsNot Nothing) Then
 
-            strm.WriteLine("EwE version," & cStringUtils.ToCSVField(cCore.Version))
-            strm.WriteLine("Run date," & Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString)
-            strm.WriteLine("Model," & cStringUtils.ToCSVField(Me.m_core.DataSource.FileName))
+            strm.Write(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
             strm.WriteLine()
 
             strm.WriteLine("Group,Biomass(B),Prod/Biomass(PB),Cons/Biomass(QB),Ecotrophic eff.(EE),Prod/Consum(GE)")

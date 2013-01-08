@@ -190,16 +190,8 @@ Namespace SpatialData
                     cLog.Write("cSpatialOperationsLog: saving to " & Me.m_strLogFileName, eVerboseLevel.Detailed)
                 End If
 
+                sb.AppendLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
                 sb.AppendLine("Ecospace spatial operations log")
-                sb.AppendLine("EwE version, " & cStringUtils.ToCSVField(cCore.Version))
-                sb.AppendLine("EwE model, " & cStringUtils.ToCSVField(Me.m_core.DataSource.ToString))
-                sb.AppendLine("Ecosim scenario," & cStringUtils.ToCSVField(Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name))
-                If Me.m_core.ActiveTimeSeriesDatasetIndex > -1 Then
-                    sb.AppendLine("Ecosim timeseries," & cStringUtils.ToCSVField(Me.m_core.EcosimTimeSeries(Me.m_core.ActiveTimeSeriesDatasetIndex).Name))
-                End If
-                sb.AppendLine("Ecospace scenario," & cStringUtils.ToCSVField(Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name))
-                sb.AppendLine("Run date, " & cStringUtils.ToCSVField(Date.Now.ToLongDateString & " " & Date.Now.ToLongTimeString))
-                sb.AppendLine()
 
             End If
 

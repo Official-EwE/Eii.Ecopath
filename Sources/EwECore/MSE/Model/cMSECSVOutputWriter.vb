@@ -194,9 +194,7 @@ Friend Class cMSECSVOutputWriter
             header = New StringBuilder()
             Dim d As DateTime = Date.Now
 
-            header.Append("MSE " & DataDescription & Environment.NewLine)
-            header.Append("Date, '" & d.ToLongDateString & " " & d.ToLongTimeString & Environment.NewLine)
-            header.Append("Group, '" & GroupFleet & "'" & Environment.NewLine)
+            header.AppendLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSE))
             header.Append("Rows = MSE Run, Columns = Time" & Environment.NewLine)
 
             For it As Integer = 1 To Me.m_core.nEcosimTimeSteps

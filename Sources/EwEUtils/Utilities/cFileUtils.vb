@@ -432,32 +432,6 @@ Namespace Utilities
 
         End Function
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Obtain a streamwriter to a file. Any target directory is created if
-        ''' if does not yet exist. 
-        ''' </summary>
-        ''' <param name="strPath">The path to stream writer.</param>
-        ''' <param name="bAppend">Optional flag, stating whether the streamwriter
-        ''' should be opened for appending or overwriting.</param>
-        ''' <returns>A streamwriter, or Nothing if an error occurred.</returns>
-        ''' -------------------------------------------------------------------
-        Public Shared Function GetStreamWriter(ByVal strPath As String, _
-                                               Optional ByVal bAppend As Boolean = False) As StreamWriter
-
-            Dim sw As StreamWriter = Nothing
-
-            If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strPath), True, False) Then
-                Try
-                    sw = New StreamWriter(strPath, bAppend)
-                Catch ex As Exception
-                    ' Whoopy
-                End Try
-            End If
-            Return sw
-
-        End Function
-
     End Class
 
 End Namespace

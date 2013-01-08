@@ -106,25 +106,13 @@ Friend Class cMonteCarloResultsWriter
         Try
             If Not Me.MC.bSaveOutput Then Exit Sub
 
-            Dim header As StringBuilder
             Dim strm As StreamWriter
             Dim ver As String = System.Reflection.Assembly.GetAssembly(GetType(cCore)).GetName.Version.ToString
             Dim d As Date = Date.Now
 
-            header = New StringBuilder()
-
-            'save a bunch of crap here....
-            'model name blaaaaaa
-            header.AppendLine(cStringUtils.ToCSVField("EwE Monte Carlo version number") & "," & ver) 'version number
-            header.AppendLine(cStringUtils.ToCSVField("Model name") & "," & cStringUtils.ToCSVField(Me.ModelName))
-            header.AppendLine(cStringUtils.ToCSVField("Ecosim scenario") & "," & cStringUtils.ToCSVField(Me.ScenarioName))
-            header.AppendLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
-            header.AppendLine(cStringUtils.ToCSVField("Run Date") & "," & cStringUtils.ToCSVField(d.ToShortDateString & " " & d.ToShortTimeString))
-
-            'strm = New StreamWriter(Me.OuputFilename, True)
-            'Create a new file if this one already exists!
             strm = New StreamWriter(Me.OutputFilename)
-            strm.WriteLine(header)
+            strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+            strm.WriteLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
             strm.Close()
 
         Catch ex As Exception
@@ -137,7 +125,6 @@ Friend Class cMonteCarloResultsWriter
     ''' Save both iteration and baseline data to file
     ''' </summary>
     ''' <param name="isBaseLineData"></param>
-    ''' <remarks></remarks>
     Public Sub Save(ByVal isBaseLineData As Boolean)
         Dim strm As StreamWriter
 

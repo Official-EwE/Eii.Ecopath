@@ -1813,6 +1813,12 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+    Public Function GetCellSize() As Single
+        Dim cellSizeDegrees As Single = Me.CellSize
+        If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.CellLength)
+        Return cellSizeDegrees
+    End Function
+
 #End Region
 
 End Class

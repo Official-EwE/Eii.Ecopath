@@ -392,6 +392,7 @@ Namespace Ecosim
                                         ByVal strDataDetails As String, _
                                         ByVal strGroupNames As String) As Boolean
 
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFileName)) Then Return False
             Try
                 'Overwritten the file
                 Using sw As StreamWriter = New StreamWriter(strFileName, False)
@@ -481,27 +482,7 @@ Namespace Ecosim
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Function GetModelDetails() As String
-
-            Dim sb As New StringBuilder()
-
-            ' File
-            sb.AppendLine("EwE version, " & cStringUtils.ToCSVField(cCore.Version))
-            sb.AppendLine("Date, " & cStringUtils.ToCSVField(Date.Now.ToString()))
-            sb.AppendLine("ModelFile, " & cStringUtils.ToCSVField(Me.m_core.DataSource.ToString))
-            'Add the model name
-            sb.AppendLine("ModelName, " & cStringUtils.ToCSVField(Me.m_core.EwEModel.Name))
-            'Add the active scenario name
-            sb.AppendLine("EcosimScenario, " & cStringUtils.ToCSVField(Me.m_core.EcosimScenarios(m_core.ActiveEcosimScenarioIndex).Name))
-
-            ' Append time series name to scenario, if any
-            sb.Append("TimeSeries, ")
-            If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-                sb.Append(cStringUtils.ToCSVField(Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name))
-            Else
-                sb.Append("(none)")
-            End If
-            Return sb.ToString()
-
+            Return Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim)
         End Function
 
         Private Function GetAllGroupNames() As String

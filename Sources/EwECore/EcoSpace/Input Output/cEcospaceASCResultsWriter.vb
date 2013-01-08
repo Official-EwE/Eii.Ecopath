@@ -66,12 +66,15 @@ Public Class cEcospaceASCResultsWriter
             For Each varname As eVarNameFlags In vars
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
                     strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension(), tsData.iTimeStep)
-                    strm = cFileUtils.GetStreamWriter(strFile, False)
-                    If (strm IsNot Nothing) Then
-                        Me.SaveASCFile(strm, tsData, igrp, varname)
-                        strm.Flush()
-                        strm.Close()
-                        strm = Nothing
+                    ' Create directory any time; user may have deleted it during a run
+                    If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
+                        strm = New StreamWriter(strFile, False)
+                        If (strm IsNot Nothing) Then
+                            Me.SaveASCFile(strm, tsData, igrp, varname)
+                            strm.Flush()
+                            strm.Close()
+                            strm = Nothing
+                        End If
                     End If
                 Next
             Next
@@ -79,7 +82,7 @@ Public Class cEcospaceASCResultsWriter
 
             ' Sum space effort
             strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
-            strm = cFileUtils.GetStreamWriter(strFile, False)
+            strm = New StreamWriter(strFile, False)
             If (strm IsNot Nothing) Then
                 Me.SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
                 strm.Flush()
@@ -170,8 +173,8 @@ Public Class cEcospaceASCResultsWriter
         writer.WriteLine("ncols         " & Me.EcospaceData.InCol)
         writer.WriteLine("nrows         " & Me.EcospaceData.InRow)
         writer.WriteLine("xllcorner     " & Me.EcospaceData.Lon1)
-        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow + 1) * Me.CellSize())
-        writer.WriteLine("cellsize      " & Me.CellSize())
+        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow + 1) * Me.EcospaceData.GetCellSize())
+        writer.WriteLine("cellsize      " & Me.EcospaceData.GetCellSize())
         writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
 
     End Sub

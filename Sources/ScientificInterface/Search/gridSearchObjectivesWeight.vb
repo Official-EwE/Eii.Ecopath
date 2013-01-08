@@ -109,7 +109,7 @@ Namespace Ecosim
             ' == Add columns (for details refer to NumCols) ==
 
             ' Standard cols
-            Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE_COMPONENT) : iCol += 1
+            Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_OBJECTIVE) : iCol += 1
             ' Batch run specific cols
             If Me.m_bIsBatchRun Then
                 Me(0, iCol) = New EwEColumnHeaderCell(SharedResources.HEADER_MINWEIGHT) : iCol += 1

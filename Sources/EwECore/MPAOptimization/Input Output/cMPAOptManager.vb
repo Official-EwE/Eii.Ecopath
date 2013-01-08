@@ -15,7 +15,6 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
@@ -81,7 +80,6 @@ Public Class cMPAOptManager
     Private m_syncObject As System.ComponentModel.ISynchronizeInvoke
     Private m_bConnected As Boolean
 
-    'Private m_seed As cEcoSeed
     Private m_MPASearch As IMPASearchModel
     Private m_core As cCore
     Private m_searchObjectives As cSearchObjective
@@ -95,9 +93,8 @@ Public Class cMPAOptManager
 
     Private m_orgMPAConfig(,) As Integer
 
-    'directory for the output data
-    'this can be switched to use a default data directory supplied by the core
-    Private m_dataDir As String
+    ''' <summary>directory for the output data</summary>
+    Private m_dataDir As String = ""
 
 #End Region
 
@@ -141,13 +138,9 @@ Public Class cMPAOptManager
 
     End Sub
 
-
     Private Sub setDefaults()
-
         'set the default period to run the model to be the same as the interface
         Me.m_core.MPAOptData.EcoSpaceEndYear = Me.m_core.nEcospaceYears
-        Me.m_dataDir = System.AppDomain.CurrentDomain.BaseDirectory()
-
     End Sub
 
 #End Region
@@ -163,24 +156,19 @@ Public Class cMPAOptManager
             Return Me.m_MPASearch
         End If
 
-        Dim search As IMPASearchModel
+        Dim search As IMPASearchModel = Nothing
+
         Select Case SearchType
 
             Case eMPAOptimizationModels.EcoSeed
-                search = New cEcoSeed
-
-                'Data directory can be switched to come from the core (if that ever exists)
-                search.OutPutFilename = System.IO.Path.Combine(Me.m_dataDir, "MPAOpt_EcoSeed_Output.csv")
+                search = New cEcoSeed()
 
             Case eMPAOptimizationModels.RandomSearch
-                search = New cMPARandomSearch
-                search.OutPutFilename = System.IO.Path.Combine(Me.m_dataDir, "MPAOpt_Random_Output.csv")
+                search = New cMPARandomSearch()
 
         End Select
 
         Return search
-
-        Throw New ApplicationException(Me.ToString & ".SearchModelFactory() " & Me.m_core.MPAOptData.SearchType.ToString & " is not a supported Search Model type.")
 
     End Function
 
@@ -307,6 +295,14 @@ Public Class cMPAOptManager
                 Me.m_core.Messages.SendMessage(msg)
                 If msg.Reply = cFeedbackMessage.eReply.NO Then Return False
             End If
+
+            Dim strBaseDir As String = Me.m_dataDir
+            If String.IsNullOrWhiteSpace(strBaseDir) Then
+                strBaseDir = Me.m_core.DefaultOutputPath(eAutosaveTypes.MPAOpt)
+            End If
+
+            ' Configure autosave behaviour
+            Me.m_MPASearch.ConfigureAutosave(Me.m_core.Autosave(eAutosaveTypes.MPAOpt), strBaseDir, Me.m_core.DefaultFileHeader(eAutosaveTypes.MPAOpt))
 
             Me.SetWait()
 
@@ -509,15 +505,6 @@ Public Class cMPAOptManager
         End Get
     End Property
 
-    Public Property OutputFileName() As String
-        Get
-            Return Me.m_MPASearch.OutPutFilename
-        End Get
-        Set(ByVal value As String)
-            Me.m_MPASearch.OutPutFilename = value
-        End Set
-    End Property
-
 #End Region ' Public properties
 
 #Region "ICoreInterface"
@@ -698,9 +685,15 @@ Public Interface IMPASearchModel
     ReadOnly Property Results() As List(Of cObjectiveResult)
     ReadOnly Property nInterationsCompleted() As Integer
 
-    Property OutPutFilename() As String
-
     Sub YearTimeStep(ByRef iYear As Integer, ByVal Biomass() As Single)
+
+    ''' <summary>
+    ''' Configure the search for auto-saving.
+    ''' </summary>
+    ''' <param name="bAutosave">Turn auto-saving on or off.</param>
+    ''' <param name="strOutputPath">Path to auto-save to.</param>
+    ''' <param name="strHeader">Header information to report when auto-saving.</param>
+    Sub ConfigureAutosave(ByVal bAutosave As Boolean, ByVal strOutputPath As String, ByVal strHeader As String)
 
 End Interface
 
@@ -741,7 +734,7 @@ Public Class cObjectiveResult
         objFuncMandatedValue = MPAData.objFuncMandatedValue
         objFuncSocialValue = MPAData.objFuncSocialValue
         objFuncEcologicalValue = MPAData.objFuncEcologicalValue
-        objBiomassDiversity = MPAData.objFuncBiomassDiv
+        objBiomassDiversity = MPAData.objFuncBiodiversity
 
         objFuncAreaBorder = MPAData.objFuncAreaBorder
 
@@ -765,7 +758,7 @@ Public Class cObjectiveResult
             objFuncSocialValue = MPAData.objFuncSocialValue
             objFuncEcologicalValue = MPAData.objFuncEcologicalValue
             objFuncAreaBorder = MPAData.objFuncAreaBorder
-            objBiomassDiversity = MPAData.objFuncBiomassDiv
+            objBiomassDiversity = MPAData.objFuncBiodiversity
             objFuncTotal = MPAData.objFuncTotal
 
             Select Case MPAData.SearchType

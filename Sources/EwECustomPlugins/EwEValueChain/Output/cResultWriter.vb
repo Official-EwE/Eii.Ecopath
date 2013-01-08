@@ -204,27 +204,14 @@ Public Class cResultWriter
         Dim sb As New StringBuilder()
         Dim core As cCore = Me.m_data.Core
 
-        ' File
-        sb.AppendLine("EwE version, " & cStringUtils.ToCSVField(cCore.Version))
-        sb.AppendLine("Date, " & cStringUtils.ToCSVField(Date.Now.ToString()))
-        sb.AppendLine("ModelFile, " & cStringUtils.ToCSVField(core.DataSource.ToString))
-        'Add the model name
-        sb.AppendLine("ModelName, " & cStringUtils.ToCSVField(core.EwEModel.Name))
-
-        If (m_results.RunType = cModel.eRunTypes.Ecosim) Or (Me.m_results.RunType = cModel.eRunTypes.Equilibrium) Then
-            'Add the active scenario name
-            sb.AppendLine("EcosimScenario, " & cStringUtils.ToCSVField(core.EcosimScenarios(core.ActiveEcosimScenarioIndex).Name))
-            ' Append time series name to scenario, if any
-            sb.Append("TimeSeries, ")
-            If core.ActiveTimeSeriesDatasetIndex > 0 Then
-                sb.Append(cStringUtils.ToCSVField(core.TimeSeriesDataset(core.ActiveTimeSeriesDatasetIndex).Name))
-            Else
-                sb.Append("(none)")
-            End If
+        ' Append header
+        If (Me.m_results.RunType = cModel.eRunTypes.Ecopath) Then
+            sb.AppendLine(core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
+        Else
+            sb.AppendLine(core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecosim))
         End If
-
         ' Append value chain run type
-        sb.AppendLine("RunType, " & cStringUtils.ToCSVField(Me.m_results.RunType.ToString()))
+        sb.AppendLine("RunType," & cStringUtils.ToCSVField(Me.m_results.RunType.ToString()))
 
         Return sb.ToString()
 

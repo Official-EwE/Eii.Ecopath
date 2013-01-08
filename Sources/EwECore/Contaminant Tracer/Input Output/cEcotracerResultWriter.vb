@@ -169,29 +169,15 @@ Public Class cEcotracerResultWriter
     ''' -------------------------------------------------------------------
     Protected Sub WriteHeader(ByVal sw As StreamWriter, ByVal bSpace As Boolean, Optional iRegion As Integer = 0)
 
-        ' File
-        sw.WriteLine("EwE version, " & cCore.Version)
-        sw.WriteLine("Date, " & Date.Now.ToString())
-        sw.WriteLine("ModelFile, " & Me.m_core.DataSource.ToString)
-        sw.WriteLine("ModelName, " & Me.m_core.EwEModel.Name)
-        sw.WriteLine("EcosimScenario, " & Me.m_core.EcosimScenarios(Me.m_core.ActiveEcosimScenarioIndex).Name)
+        sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecotracer))
+
         If bSpace Then
-            Debug.Assert(Me.m_core.ActiveEcospaceScenarioIndex > 0)
-            sw.WriteLine("EcospaceScenario, " & Me.m_core.EcospaceScenarios(Me.m_core.ActiveEcospaceScenarioIndex).Name)
-            sw.Write("Region, ")
+            sw.Write("Region,")
             If (iRegion = 0) Then
                 sw.WriteLine("(none)")
             Else
                 sw.WriteLine(iRegion)
             End If
-        End If
-
-        ' Append time series name to scenario, if any
-        sw.Write("TimeSeries, ")
-        If Me.m_core.ActiveTimeSeriesDatasetIndex > 0 Then
-            sw.WriteLine(cStringUtils.ToCSVField(Me.m_core.TimeSeriesDataset(Me.m_core.ActiveTimeSeriesDatasetIndex).Name))
-        Else
-            sw.WriteLine("(none)")
         End If
 
     End Sub
@@ -203,7 +189,7 @@ Public Class cEcotracerResultWriter
 
         sw.Write("time step")
         For i As Integer = 1 To pathDS.NumGroups
-            sw.Write(", " & cStringUtils.ToCSVField(pathDS.GroupName(i)))
+            sw.Write("," & cStringUtils.ToCSVField(pathDS.GroupName(i)))
         Next
         sw.WriteLine()
 
@@ -211,9 +197,9 @@ Public Class cEcotracerResultWriter
             sw.Write(t)
             For i As Integer = 1 To pathDS.NumGroups
                 If iRegion = 0 Then
-                    sw.Write(", " & cStringUtils.FormatNumber(tracerDS.TracerConc(i, t)))
+                    sw.Write("," & cStringUtils.FormatNumber(tracerDS.TracerConc(i, t)))
                 Else
-                    sw.Write(", " & cStringUtils.FormatNumber(tracerDS.TracerConcByRegion(iRegion, i, t)))
+                    sw.Write("," & cStringUtils.FormatNumber(tracerDS.TracerConcByRegion(iRegion, i, t)))
                 End If
             Next
             sw.WriteLine()

@@ -271,11 +271,11 @@ Namespace MSY
                                        ByVal target As cEcoPathGroupInput, _
                                        ByVal fBase As Single, ByVal optimum As cMSYOptimum)
             MyBase.WriteHeader(sw, ass, "MSY")
-            sw.WriteLine("Group, {0}", target.Name)
-            sw.WriteLine("Fbase, {0}", cStringUtils.FormatSingle(fBase))
-            sw.WriteLine("Fmsy, {0}", cSystemUtils.IIF(optimum.IsFopt(target.Index), _
+            sw.WriteLine("Group,{0}", cStringUtils.ToCSVField(target.Name))
+            sw.WriteLine("Fbase,{0}", cStringUtils.FormatSingle(fBase))
+            sw.WriteLine("Fmsy,{0}", cSystemUtils.IIF(optimum.IsFopt(target.Index), _
                                                        cStringUtils.FormatSingle(optimum.Fopt(target.Index)), _
-                                                       My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND))
+                                                       cStringUtils.ToCSVField(My.Resources.CoreMessages.FMSY_STATUS_NOTFOUND)))
         End Sub
 
         Protected Sub WriteFleetHeader(ByVal sw As StreamWriter, ByVal ass As eMSYAssessmentTypes, _
@@ -283,7 +283,7 @@ Namespace MSY
 
             Me.WriteHeader(sw, ass)
 
-            sw.WriteLine("Fleet, {0}", cStringUtils.ToCSVField(target.Name))
+            sw.WriteLine("Fleet,{0}", cStringUtils.ToCSVField(target.Name))
             sw.WriteLine()
 
             ' Fmsy found header

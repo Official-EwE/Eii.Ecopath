@@ -2481,6 +2481,14 @@ Public Class cCore
                         strScenario = strScenario & "{scenario}"
                     End If
 
+                Case eAutosaveTypes.MPAOpt
+                    strScenario = "MPA_opt_"
+                    If (Me.ActiveEcospaceScenarioIndex > 0) Then
+                        strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
+                    Else
+                        strScenario = strScenario & "{scenario}"
+                    End If
+
                 Case eAutosaveTypes.Ecotracer
                     strScenario = "Ecotracer_"
                     If (Me.ActiveEcotracerScenarioIndex > 0) Then
@@ -2592,6 +2600,68 @@ Public Class cCore
             End Try
         End Set
     End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns a default file header for text files for a given 
+    ''' <see cref="eAutosaveTypes">auto-save type</see>, representing loaded
+    ''' aspects of ecopath, ecosim, ecospace and ecotracer, where applicable.
+    ''' This header block can be integrated in CSV files.
+    ''' </summary>
+    ''' <param name="savetype">The <see cref="eAutosaveTypes">auto-save type</see>
+    ''' to obtain the generic file header for.</param>
+    ''' <returns>A text block safe for integration in CSV files.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function DefaultFileHeader(ByVal savetype As eAutosaveTypes) As String
+
+        Dim sb As New StringBuilder()
+
+        sb.AppendLine("EwE version," & cStringUtils.ToCSVField(cCore.Version))
+        sb.AppendLine("Date," & cStringUtils.ToCSVField(Date.Now.ToString()))
+
+        If (Me.StateMonitor.HasEcopathLoaded) Then
+
+            'Add the model name
+            sb.AppendLine("ModelName," & cStringUtils.ToCSVField(Me.EwEModel.Name))
+
+            ' Has Ecosim?
+            If (savetype >= eAutosaveTypes.Ecosim) Then
+                ' #Yes: add ecosim scenario details
+                sb.AppendLine("EcosimScenario," & cStringUtils.ToCSVField(Me.EcosimScenarios(Me.ActiveEcosimScenarioIndex).Name))
+                ' Append time series name to scenario, if any
+                sb.Append("TimeSeries,")
+                If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
+                    sb.Append(cStringUtils.ToCSVField(Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name))
+                Else
+                    sb.Append("(none)")
+                End If
+                sb.AppendLine("StartYear," & cStringUtils.ToCSVField(Me.EcosimFirstYear))
+            End If
+
+            ' Has Ecospace?
+            If (savetype >= eAutosaveTypes.Ecospace) Then
+                ' #Yes: add ecospace scenario details
+                sb.AppendLine("EcospaceScenario," & cStringUtils.ToCSVField(Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name))
+                sb.AppendLine("Map rows," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InRow))
+                sb.AppendLine("Map cols," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.InCol))
+                sb.AppendLine("Map cell length," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.CellLength))
+                sb.AppendLine("Map cell size," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.GetCellSize()))
+                sb.AppendLine("Map Latitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lat1))
+                sb.AppendLine("Map Longitude," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.Lon1))
+                sb.AppendLine("EcoSpace time step length," & cStringUtils.FormatNumber(Me.m_EcoSpaceData.TimeStep))
+            End If
+
+            ' Has Ecotracer?
+            If (savetype >= eAutosaveTypes.Ecotracer) Then
+                ' #Yes: add ecotracer scenario details
+                sb.AppendLine("EcotracerScenario," & cStringUtils.ToCSVField(Me.EcotracerScenarios(Me.ActiveEcotracerScenarioIndex).Name))
+            End If
+
+        End If
+
+        Return sb.ToString
+
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <summary>

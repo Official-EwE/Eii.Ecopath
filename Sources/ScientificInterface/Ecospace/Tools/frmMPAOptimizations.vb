@@ -211,7 +211,7 @@ Namespace Ecospace
             Me.m_fpDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchDiscountRate)
             Me.m_fpGenDiscRate = New cPropertyFormatProvider(Me.UIContext, Me.m_nudGenDiscRate, Me.m_manager.ObjectiveParameters, eVarNameFlags.SearchGenDiscRate)
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
 
             ' Configure graphs
             Me.InitProgressGraph()
@@ -394,11 +394,7 @@ Namespace Ecospace
         ''' <summary>
         ''' Event handler, responds to the user exploring the progress graph.
         ''' </summary>
-        ''' <param name="zgh"></param>
-        ''' <param name="iPane"></param>
-        ''' <param name="sPos"></param>
-        ''' <remarks></remarks>
-        Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+         Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
             Try
                 Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
             Catch ex As Exception
@@ -469,6 +465,15 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnAutoSaveOutputChecked(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbAutoSave.CheckedChanged
+            Try
+                Me.Core.Autosave(eAutosaveTypes.MPAOpt) = Me.m_cbAutoSave.Checked
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
 #End Region ' Controls
 
 #Region " Search manager "
@@ -515,12 +520,22 @@ Namespace Ecospace
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             MyBase.OnCoreMessage(msg)
 
-            If (msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved) Then
-                ' Reload data
-                Me.Reload()
-                ' Cascade mode down
-                Me.RunMode = eFormModeTypes.Prepare
-            End If
+            Select Case msg.Source
+
+                Case eCoreComponentType.EcoSpace
+                    If (msg.Type = eMessageType.DataAddedOrRemoved) Then
+                        ' Reload data
+                        Me.Reload()
+                        ' Cascade mode down
+                        Me.RunMode = eFormModeTypes.Prepare
+                    End If
+
+                Case eCoreComponentType.Core
+                    If (msg.Type = eMessageType.GlobalSettingsChanged) Then
+                        Me.UpdateControls()
+                    End If
+
+            End Select
 
         End Sub
 
@@ -1612,6 +1627,8 @@ Namespace Ecospace
 
             ' Update map
             Me.m_ucZoom.Map.Editable = bIsPreparing
+
+            Me.m_cbAutoSave.Checked = Me.Core.Autosave(eAutosaveTypes.MPAOpt)
 
         End Sub
 
