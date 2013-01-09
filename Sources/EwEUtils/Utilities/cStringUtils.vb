@@ -806,8 +806,113 @@ Namespace Utilities
         ''' </summary>
         ''' <remarks>The time stamp is formatted as 'year-month-day hour-minute-second'.</remarks>
         ''' -----------------------------------------------------------------------
-        Protected Overridable Function Now() As String
+        Public Shared Function Now() As String
             Return Date.Now.ToString("y-MM-dd HH-mm-ss")
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' <para>Computes the Damerau-Levenshtein Distance between two strings. This method
+        ''' Includes an optional threshold which can be used to indicate the maximum 
+        ''' allowable distance between the two strings.</para>
+        ''' <para>http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance</para>
+        ''' </summary>
+        ''' <param name="strSrc">The first string to compare.</param>
+        ''' <param name="strTarget">The second string to compare.</param>
+        ''' <param name="iThreshold">Maximum allowable distance</param>
+        ''' <returns>Integer.MaxValue if the threshhold is exceeded; otherwise the Damerau-Leveshteim 
+        ''' distance between the strings.</returns>
+        ''' <remarks>
+        ''' Converted from a frigtheningly smart piece of code by http://stackoverflow.com/users/842685/jmh-gr
+        ''' http://stackoverflow.com/questions/9453731/how-to-calculate-distance-similarity-measure-of-given-2-strings/9454016#9454016
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Function DamerauLevenshteinDistance(strSrc As String, _
+                                                   strTarget As String, _
+                                                   Optional iThreshold As Integer = Integer.MaxValue) As Integer
+
+            Dim length1 As Integer = strSrc.Length
+            Dim length2 As Integer = strTarget.Length
+
+            ' Return trivial case - difference in string lengths exceeds threshhold
+            If (Math.Abs(length1 - length2) > iThreshold) Then Return Integer.MaxValue
+
+            ' Ensure arrays [i] / length1 use shorter length 
+            If (length1 > length2) Then
+                Dim str As String = strTarget : strTarget = strSrc : strSrc = str
+                Dim i As Integer = length1 : length1 = length2 : length2 = i
+            End If
+
+            Dim maxi As Integer = length1
+            Dim maxj As Integer = length2
+
+            Dim dCurrent(maxi + 1) As Integer
+            Dim dMinus1(maxi + 1) As Integer
+            Dim dMinus2(maxi + 1) As Integer
+            Dim dSwap() As Integer = Nothing
+
+            For i As Integer = 0 To maxi : dCurrent(i) = i : Next
+
+            Dim jm1 As Integer = 0
+            Dim im1 As Integer = 0
+            Dim im2 As Integer = -1
+
+            For j As Integer = 1 To maxj
+
+                ' Rotate
+                dSwap = dMinus2
+                dMinus2 = dMinus1
+                dMinus1 = dCurrent
+                dCurrent = dSwap
+
+                ' Initialize
+                Dim minDistance As Integer = Integer.MaxValue
+                dCurrent(0) = j
+                im1 = 0
+                im2 = -1
+
+                For i As Integer = 1 To maxi
+
+                    Dim cost As Integer = 1
+                    If (strSrc(im1) = strTarget(jm1)) Then cost = 0
+
+                    Dim del As Integer = dCurrent(im1) + 1
+                    Dim ins As Integer = dMinus1(i) + 1
+                    Dim [sub] As Integer = dMinus1(im1) + cost
+
+                    Dim min As Integer = 0
+                    If (del > ins) Then
+                        If (ins > [sub]) Then
+                            min = [sub]
+                        Else
+                            min = ins
+                        End If
+                    Else
+                        If (del > [sub]) Then
+                            min = [sub]
+                        Else
+                            min = del
+                        End If
+                    End If
+
+                    If (i > 1 And j > 1) Then
+                        If (strSrc(im2) = strTarget(jm1) And strSrc(im1) = strTarget(j - 2)) Then
+                            min = Math.Min(min, dMinus2(im2) + cost)
+                        End If
+                    End If
+
+                    dCurrent(i) = min
+                    If (min < minDistance) Then minDistance = min
+                    im1 += 1
+                    im2 += 1
+                Next i
+                jm1 += 1
+                If (minDistance > iThreshold) Then Return Integer.MaxValue
+            Next j
+
+            If dCurrent(maxi) > iThreshold Then Return Integer.MaxValue
+            Return dCurrent(maxi)
+
         End Function
 
 #Region " Map array conversions "
