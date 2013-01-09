@@ -827,9 +827,9 @@ Namespace Utilities
         ''' http://stackoverflow.com/questions/9453731/how-to-calculate-distance-similarity-measure-of-given-2-strings/9454016#9454016
         ''' </remarks>
         ''' -----------------------------------------------------------------------
-        Public Function DamerauLevenshteinDistance(strSrc As String, _
-                                                   strTarget As String, _
-                                                   Optional iThreshold As Integer = Integer.MaxValue) As Integer
+        Public Shared Function DamerauLevenshteinDistance(ByVal strSrc As String, _
+                                                          ByVal strTarget As String, _
+                                                          Optional ByVal iThreshold As Integer = Integer.MaxValue) As Integer
 
             Dim length1 As Integer = strSrc.Length
             Dim length2 As Integer = strTarget.Length
