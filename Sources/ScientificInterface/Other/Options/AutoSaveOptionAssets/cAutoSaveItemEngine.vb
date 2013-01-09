@@ -223,10 +223,13 @@ Namespace Other
                     Me.Add(lPlugins(eAutosaveTypes.NotSet), cbRoot, 1)
 
                 Case eAutosaveTypes.Ecopath
-                    ' Add Ecopath estimates node
-                    ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
-                    Me.Add(ctrl, parent)
-                    ' Add plug-ins
+
+                    ' JS 130109: do not provide a UI for saving Ecopath estimations
+                    '' Add Ecopath estimates node
+                    'ctrl = New ucAutosaveOption(Me.m_uic, t, iIndent)
+                    'Me.Add(ctrl, parent)
+
+                    ' Add Ecopath plug-ins
                     Me.Add(lPlugins(t), parent, iIndent)
 
                 Case eAutosaveTypes.Ecosim
