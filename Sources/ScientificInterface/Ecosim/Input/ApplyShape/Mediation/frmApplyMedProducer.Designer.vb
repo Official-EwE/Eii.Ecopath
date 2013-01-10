@@ -20,7 +20,7 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
 
-    Partial Class frmApplyMedPPorDet
+    Partial Class frmApplyMedPP
         Inherits frmApplyShapeBase
 
         'Form overrides dispose to clean up the component list.
@@ -40,7 +40,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyMedPPorDet))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyMedPP))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton()
             Me.m_grid = New ScientificInterface.Ecosim.ApplyPredPreyShapeGrid()
@@ -79,8 +79,8 @@ Namespace Ecosim
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
+            Me.m_grid.IsPredatorGrid = ScientificInterfaceShared.Definitions.eGroupFilter.Producer
             Me.m_grid.Name = "m_grid"
-            Me.m_grid.IsPredatorGrid = eGroupFilter.Producer
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
                 Or SourceGrid2.GridSpecialKeys.Delete) _
@@ -92,13 +92,13 @@ Namespace Ecosim
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'frmApplyMedPPorDet
+            'frmApplyMedPP
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
-            Me.Name = "frmApplyMedPPorDet"
+            Me.Name = "frmApplyMedPP"
             Me.TabText = "Apply shapes"
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()

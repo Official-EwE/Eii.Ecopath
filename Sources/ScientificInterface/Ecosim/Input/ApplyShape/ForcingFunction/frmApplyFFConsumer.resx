@@ -228,11 +228,8 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>643, 405</value>
   </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt</value>
-  </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>Apply FF (cons)</value>
+    <value>Apply FF (consumer)</value>
   </data>
   <data name="&gt;&gt;tsBtnClearAll.Name" xml:space="preserve">
     <value>tsBtnClearAll</value>

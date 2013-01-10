@@ -30,11 +30,11 @@ Namespace Ecosim
 
     ''' =======================================================================
     ''' <summary>
-    ''' Form implementing the Ecosim 'Apply Mediation to Primary Producer' 
+    ''' Form implementing the Ecosim 'Apply Mediation to detritus' 
     ''' interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class frmApplyMedPP
+    Public Class frmApplyMedDetritus
         Inherits frmApplyShapeBase
 
 #Region " Constructor "

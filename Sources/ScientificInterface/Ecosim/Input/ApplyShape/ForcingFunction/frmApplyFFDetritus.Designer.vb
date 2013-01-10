@@ -12,15 +12,14 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 Imports ScientificInterfaceShared.Forms
 
 Namespace Ecosim
 
-    Partial Class frmApplyFFConsumer
+    Partial Class frmApplyFFDetritus
         Inherits frmApplyShapeBase
 
         'Form overrides dispose to clean up the component list.
@@ -40,7 +39,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyFFConsumer))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyFFDetritus))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
@@ -92,7 +91,7 @@ Namespace Ecosim
             Me.m_grid.FixedColumnWidths = False
             Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
             Me.m_grid.GridToolTipActive = True
-            Me.m_grid.IsPredatorGrid = ScientificInterfaceShared.Definitions.eGroupFilter.Consumer
+            Me.m_grid.IsPredatorGrid = ScientificInterfaceShared.Definitions.eGroupFilter.Detritus
             Me.m_grid.Name = "m_grid"
             Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
                 Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
@@ -105,14 +104,14 @@ Namespace Ecosim
                 Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
             Me.m_grid.UIContext = Nothing
             '
-            'frmApplyFFConsumer
+            'frmApplyFFDetritus
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_grid)
             Me.Controls.Add(Me.m_ts)
-            Me.Name = "frmApplyFFConsumer"
-            Me.TabText = "Apply FF (cons)"
+            Me.Name = "frmApplyFFDetritus"
+            Me.TabText = "Apply shapes"
             Me.m_ts.ResumeLayout(False)
             Me.m_ts.PerformLayout()
             Me.ResumeLayout(False)

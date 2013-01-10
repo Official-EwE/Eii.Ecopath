@@ -12,10 +12,9 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
@@ -34,7 +33,7 @@ Namespace Ecosim
     ''' interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class frmApplyMedPP
+    Public Class frmApplyFFDetritus
         Inherits frmApplyShapeBase
 
 #Region " Constructor "
@@ -51,13 +50,18 @@ Namespace Ecosim
             End Get
         End Property
 
-#End Region ' Constructor
+#End Region
 
 #Region " Event handlers "
 
-        Private Sub OnClearAll(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub tsBtnClearAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles tsBtnClearAll.Click
             Me.ClearAll()
+        End Sub
+
+        Private Sub tsBtnSetAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles tsBtnSetAll.Click
+            Me.SetAll()
         End Sub
 
 #End Region ' Event handlers
