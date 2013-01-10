@@ -58,8 +58,8 @@ Namespace Ecosim
             Me.m_tlpApplications = New System.Windows.Forms.TableLayoutPanel()
             Me.m_lblApplyTo = New System.Windows.Forms.Label()
             Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_lblPred = New System.Windows.Forms.Label()
-            Me.m_lblPrey = New System.Windows.Forms.Label()
+            Me.m_lblTarget = New System.Windows.Forms.Label()
+            Me.m_lblSource = New System.Windows.Forms.Label()
             Me.m_tlpApplications.SuspendLayout()
             Me.m_tlpInfo.SuspendLayout()
             Me.SuspendLayout()
@@ -165,19 +165,19 @@ Namespace Ecosim
             'm_tlpInfo
             '
             resources.ApplyResources(Me.m_tlpInfo, "m_tlpInfo")
-            Me.m_tlpInfo.Controls.Add(Me.m_lblPred, 1, 0)
-            Me.m_tlpInfo.Controls.Add(Me.m_lblPrey, 0, 0)
+            Me.m_tlpInfo.Controls.Add(Me.m_lblTarget, 1, 0)
+            Me.m_tlpInfo.Controls.Add(Me.m_lblSource, 0, 0)
             Me.m_tlpInfo.Name = "m_tlpInfo"
             '
-            'm_lblPred
+            'm_lblTarget
             '
-            resources.ApplyResources(Me.m_lblPred, "m_lblPred")
-            Me.m_lblPred.Name = "m_lblPred"
+            resources.ApplyResources(Me.m_lblTarget, "m_lblTarget")
+            Me.m_lblTarget.Name = "m_lblTarget"
             '
-            'm_lblPrey
+            'm_lblSource
             '
-            resources.ApplyResources(Me.m_lblPrey, "m_lblPrey")
-            Me.m_lblPrey.Name = "m_lblPrey"
+            resources.ApplyResources(Me.m_lblSource, "m_lblSource")
+            Me.m_lblSource.Name = "m_lblSource"
             '
             'dlgApplyPredPreyShape
             '
@@ -227,8 +227,8 @@ Namespace Ecosim
         Private WithEvents m_tlpApplications As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_lblApplyTo As System.Windows.Forms.Label
         Private WithEvents m_tlpInfo As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_lblPred As System.Windows.Forms.Label
-        Private WithEvents m_lblPrey As System.Windows.Forms.Label
+        Private WithEvents m_lblTarget As System.Windows.Forms.Label
+        Private WithEvents m_lblSource As System.Windows.Forms.Label
 
     End Class
 

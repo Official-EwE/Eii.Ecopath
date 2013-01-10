@@ -67,7 +67,7 @@ Namespace Ecosim
         Private m_nGroups As Integer = 0
 
         Private m_shapeMode As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
-        Private m_bConsumers As eGroupFilter
+        Private m_groupfilter As eGroupFilter = eGroupFilter.Consumer
 
 #End Region ' Private vars
 
@@ -168,26 +168,25 @@ Namespace Ecosim
             Dim fmt As New cCoreInterfaceFormatter()
 
             Me.LoadAvailableShapes()
-            Me.LoadMultiplierOption()
+            Me.ConfigureApplicationControls()
             Me.LoadAppliedShapes()
 
             ' Load Prey and predator pair name
             Select Case m_editMode
                 Case eEditMode.PredPrey
-                    Me.m_lblPrey.Text = String.Format(Me.m_lblPrey.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblPred.Text = String.Format(Me.m_lblPred.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.Prey
-                    Me.m_lblPrey.Text = String.Format(Me.m_lblPrey.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
-                    Me.m_lblPred.Visible = False
+                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPrey)))
+                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
                 Case eEditMode.Predator
-                    Me.m_lblPrey.Visible = False
-                    Me.m_lblPred.Text = String.Format(Me.m_lblPred.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
+                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, fmt.GetDescriptor(Me.m_uic.Core.EcoPathGroupInputs(Me.m_iSelPred)))
                 Case eEditMode.All
-                    Me.m_lblPrey.Text = String.Format(Me.m_lblPrey.Text, SharedResources.GENERIC_VALUE_ALL)
-                    Me.m_lblPred.Text = String.Format(Me.m_lblPred.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblSource.Text = String.Format(Me.m_lblSource.Text, SharedResources.GENERIC_VALUE_ALL)
+                    Me.m_lblTarget.Text = String.Format(Me.m_lblTarget.Text, SharedResources.GENERIC_VALUE_ALL)
             End Select
 
-            Me.SetMultiplier(eForcingFunctionApplication.SearchRate)
             Me.UpdateControls()
 
         End Sub
@@ -363,7 +362,7 @@ Namespace Ecosim
 
             Me.m_editMode = editMode
             Me.m_shapeMode = shapeType
-            Me.m_bConsumers = bConsumers
+            Me.m_groupfilter = bConsumers
 
             ' Set title
             Select Case Me.m_shapeMode
@@ -631,29 +630,34 @@ Namespace Ecosim
             End If
         End Function
 
-        Private Sub LoadMultiplierOption()
+        Private Sub ConfigureApplicationControls()
 
-            If Me.m_bConsumers = eGroupFilter.Consumer Then
-                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.SearchRate)
-                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.Vulnerability)
-                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.ArenaArea)
-                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.VulAndArea)
-            ElseIf Me.m_bConsumers = eGroupFilter.Producer Then
-                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ProductionRate)
-                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
-                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
-                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
-            ElseIf Me.m_bConsumers = eGroupFilter.Detritus Then
-                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
-                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
-                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
-                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            If Me.m_groupfilter = eGroupFilter.Consumer Then
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.SearchRate)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.Vulnerability)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.ArenaArea)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.VulAndArea)
+            ElseIf Me.m_groupfilter = eGroupFilter.Producer Then
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ProductionRate)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            ElseIf Me.m_groupfilter = eGroupFilter.Detritus Then
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                Me.ConfigureApplicationRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            Else
+                Debug.Assert(False, "Dialog not properly invoked")
             End If
+
+            ' Yo
+            Me.m_appl = DirectCast(Me.m_rbOpt1.Tag, eForcingFunctionApplication)
             Me.m_rbOpt1.Checked = True
 
         End Sub
 
-        Private Sub ConfigureRadioButton(ByVal rb As RadioButton, ByVal tag As eForcingFunctionApplication)
+        Private Sub ConfigureApplicationRadioButton(ByVal rb As RadioButton, ByVal tag As eForcingFunctionApplication)
 
             Dim fmt As New cFFApplicationTargetTypeFormatter()
             rb.Text = fmt.GetDescriptor(tag)
