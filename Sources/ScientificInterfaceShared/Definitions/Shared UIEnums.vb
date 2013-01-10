@@ -92,12 +92,6 @@ Namespace Definitions
         Fixed
     End Enum
 
-    Public Enum eApplyShapeTypes As Integer
-        NotSet = 0
-        Forcing
-        Mediation
-    End Enum
-
     Public Enum eTracerRunModeTypes As Integer
         Disabled = 0
         RunSim
@@ -183,6 +177,12 @@ Namespace Definitions
         Autosave
         ''' <summary>Presentation mode options.</summary>
         PresentationMode
+    End Enum
+
+    Public Enum eGroupFilter As Integer
+        Consumer
+        Producer
+        Detritus
     End Enum
 
 End Namespace
