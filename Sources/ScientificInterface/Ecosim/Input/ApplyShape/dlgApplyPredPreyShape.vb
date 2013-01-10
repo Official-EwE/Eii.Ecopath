@@ -66,7 +66,8 @@ Namespace Ecosim
         Private m_editMode As eEditMode = eEditMode.PredPrey
         Private m_nGroups As Integer = 0
 
-        Private m_shapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
+        Private m_shapeMode As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
+        Private m_bConsumers As Boolean = False
 
 #End Region ' Private vars
 
@@ -74,10 +75,11 @@ Namespace Ecosim
 
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal iPrey As Integer, ByVal iPred As Integer, _
-                       ByVal shapeType As eApplyShapeTypes)
+                       ByVal shapeType As eShapeCategoryTypes, _
+                       ByVal bConsumers As Boolean)
             Try
 
-                Me.Init(uic, eEditMode.PredPrey, shapeType)
+                Me.Init(uic, eEditMode.PredPrey, shapeType, bConsumers)
 
                 ' the index for selected prey and predator index
                 Me.m_iSelPrey = iPrey
@@ -101,9 +103,10 @@ Namespace Ecosim
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal iGroup As Integer, _
                        ByVal editMode As eEditMode, _
-                       ByVal shapeType As eApplyShapeTypes)
+                       ByVal shapeType As eShapeCategoryTypes, _
+                       ByVal bConsumers As Boolean)
 
-            Me.Init(uic, editMode, shapeType)
+            Me.Init(uic, editMode, shapeType, bConsumers)
 
             Select Case editMode
 
@@ -138,9 +141,10 @@ Namespace Ecosim
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByVal shapeType As eApplyShapeTypes)
+                       ByVal shapeType As eShapeCategoryTypes, _
+                       ByVal bConsumers As Boolean)
 
-            Me.Init(uic, eEditMode.All, shapeType)
+            Me.Init(uic, eEditMode.All, shapeType, bConsumers)
 
             For iPred As Integer = 1 To Me.m_uic.Core.nLivingGroups
                 ' For each row (rowIndex - Prey)
@@ -344,10 +348,12 @@ Namespace Ecosim
         ''' <param name="uic"></param>
         ''' <param name="editMode"></param>
         ''' <param name="shapeType"></param>
-         ''' -------------------------------------------------------------------
+        ''' <param name="bConsumers"></param>
+        ''' -------------------------------------------------------------------
         Private Sub Init(ByVal uic As cUIContext, _
                          ByVal editMode As eEditMode, _
-                         ByVal shapeType As eApplyShapeTypes)
+                         ByVal shapeType As eShapeCategoryTypes, _
+                         ByVal bConsumers As Boolean)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -357,12 +363,13 @@ Namespace Ecosim
 
             Me.m_editMode = editMode
             Me.m_shapeMode = shapeType
- 
+            Me.m_bConsumers = bConsumers
+
             ' Set title
             Select Case Me.m_shapeMode
-                Case eApplyShapeTypes.Forcing
+                Case eShapeCategoryTypes.Forcing
                     Me.Text = My.Resources.ECOSIM_CAPTION_APPLYFF
-                Case eApplyShapeTypes.Mediation
+                Case eShapeCategoryTypes.Mediation
                     Me.Text = My.Resources.ECOSIM_CAPTION_APPLYMED
                 Case Else
                     Debug.Assert(False, String.Format("Mode {0} not supported by dialog", Me.m_shapeMode.ToString()))
@@ -520,12 +527,6 @@ Namespace Ecosim
             Me.m_btnAdd.Enabled = (iAvailableSelected > 0) And (iApplied < Me.m_InteractionManager.MaxNShapes)
             Me.m_btnRemove.Enabled = (iAppliedSelected > 0)
 
-            'Dim bMultEnabled As Boolean = (iAppliedSelected > 0)
-            'Me.m_rbOpt1.Enabled = bMultEnabled
-            'Me.m_rbOpt2.Enabled = bMultEnabled
-            'Me.m_rbOpt3.Enabled = bMultEnabled
-            'Me.m_rbOpt4.Enabled = bMultEnabled
-
         End Sub
 
         Private Sub UpdateAppliedShape(ByVal item As ListViewItem, ByVal appl As eForcingFunctionApplication)
@@ -624,18 +625,25 @@ Namespace Ecosim
 
         Private Function IsAllowedShape(ByVal shape As cShapeData) As Boolean
             If (TypeOf shape Is cMediationBaseFunction) Then
-                Return (Me.m_shapeMode = eApplyShapeTypes.Mediation)
+                Return (Me.m_shapeMode = eShapeCategoryTypes.Mediation)
             Else
-                Return (Me.m_shapeMode = eApplyShapeTypes.Forcing)
+                Return (Me.m_shapeMode = eShapeCategoryTypes.Forcing)
             End If
         End Function
 
         Private Sub LoadMultiplierOption()
 
-            Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.SearchRate)
-            Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.Vulnerability)
-            Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.ArenaArea)
-            Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.VulAndArea)
+            If Me.m_bConsumers Then
+                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.SearchRate)
+                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.Vulnerability)
+                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.ArenaArea)
+                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.VulAndArea)
+            Else
+                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ProductionRate)
+                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            End If
             Me.m_rbOpt1.Checked = True
 
         End Sub
@@ -645,6 +653,7 @@ Namespace Ecosim
             Dim fmt As New cFFApplicationTargetTypeFormatter()
             rb.Text = fmt.GetDescriptor(tag)
             rb.Tag = tag
+            rb.Visible = (tag <> eForcingFunctionApplication.NotSet)
 
         End Sub
 

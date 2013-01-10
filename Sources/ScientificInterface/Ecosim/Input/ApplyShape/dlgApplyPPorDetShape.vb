@@ -52,7 +52,7 @@ Namespace Ecosim
         Private m_ilSmall As New ImageList()
         Private m_nGroups As Integer = 0
 
-        Private m_shapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
+        Private m_shapeMode As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
 
 #End Region ' Private vars
 
@@ -60,7 +60,7 @@ Namespace Ecosim
 
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal iGroup As Integer, _
-                       ByVal shapeType As eApplyShapeTypes)
+                       ByVal shapeType As eShapeCategoryTypes)
             Try
 
                 Me.Init(uic, shapeType)
@@ -253,7 +253,7 @@ Namespace Ecosim
         ''' <param name="shapeType"></param>
         ''' -------------------------------------------------------------------
         Private Sub Init(ByVal uic As cUIContext, _
-                         ByVal shapeType As eApplyShapeTypes)
+                         ByVal shapeType As eShapeCategoryTypes)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -265,9 +265,9 @@ Namespace Ecosim
 
             ' Set title
             Select Case Me.m_shapeMode
-                Case eApplyShapeTypes.Forcing
+                Case eShapeCategoryTypes.Forcing
                     Me.Text = My.Resources.ECOSIM_CAPTION_APPLYFF
-                Case eApplyShapeTypes.Mediation
+                Case eShapeCategoryTypes.Mediation
                     Me.Text = My.Resources.ECOSIM_CAPTION_APPLYMED
                 Case Else
                     Debug.Assert(False, String.Format("Mode {0} not supported by dialog", Me.m_shapeMode.ToString()))
@@ -519,9 +519,9 @@ Namespace Ecosim
 
         Private Function IsAllowedShape(ByVal shape As cShapeData) As Boolean
             If (TypeOf shape Is cMediationBaseFunction) Then
-                Return (Me.m_shapeMode = eApplyShapeTypes.Mediation)
+                Return (Me.m_shapeMode = eShapeCategoryTypes.Mediation)
             Else
-                Return (Me.m_shapeMode = eApplyShapeTypes.Forcing)
+                Return (Me.m_shapeMode = eShapeCategoryTypes.Forcing)
             End If
         End Function
 

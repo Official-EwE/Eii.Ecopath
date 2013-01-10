@@ -34,7 +34,7 @@ Namespace Ecosim
     Public Class VulnerabilitiesEwEGrid
         Inherits EwEGrid
 
-        Private m_RowColClick As New BehaviorModels.CustomEvents
+        Private m_bmRowCol As New BehaviorModels.CustomEvents
         Private m_VisDiagonal As New SourceGrid2.VisualModels.Common
 
         Public Sub New()
@@ -66,16 +66,16 @@ Namespace Ecosim
                 source = Me.Core.EcoPathGroupInputs(i)
                 ' Group index header cell
                 Me(i, 0) = New EwERowHeaderCell(CStr(i))
-                'Me(i, 0).Behaviors.Add(m_RowColClick)
+                'Me(i, 0).Behaviors.Add(m_bmRowCol)
 
                 ' # Group name row header cells
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
-                'Me(i, 1).Behaviors.Add(m_RowColClick)
+                'Me(i, 1).Behaviors.Add(m_bmRowCol)
 
                 If source.PP < 1 Then
                     Me.Columns.Insert(columnIndex)
                     Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-                    'Me(0, columnIndex).Behaviors.Add(m_RowColClick)
+                    'Me(0, columnIndex).Behaviors.Add(m_bmRowCol)
                     columnIndex = columnIndex + 1
                 End If
             Next

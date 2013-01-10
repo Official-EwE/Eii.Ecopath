@@ -43,7 +43,7 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyMedPPorDet))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton()
-            Me.m_grid = New ScientificInterface.Ecosim.ApplyPredPPorDetShapeGrid()
+            Me.m_grid = New ScientificInterface.Ecosim.ApplyPredPreyShapeGrid()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -64,7 +64,7 @@ Namespace Ecosim
             'm_grid
             '
             Me.m_grid.AllowBlockSelect = True
-            Me.m_grid.ApplyShapeMode = ScientificInterfaceShared.Definitions.eApplyShapeTypes.Mediation
+            Me.m_grid.ApplyShapeMode = ScientificInterfaceShared.Definitions.eShapeCategoryTypes.Mediation
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False
@@ -107,7 +107,7 @@ Namespace Ecosim
         End Sub
         Private WithEvents tsBtnClearAll As System.Windows.Forms.ToolStripButton
         Private WithEvents m_ts As cEwEToolstrip
-        Private WithEvents m_grid As ScientificInterface.Ecosim.ApplyPredPPorDetShapeGrid
+        Private WithEvents m_grid As ScientificInterface.Ecosim.ApplyPredPreyShapeGrid
 
     End Class
 End Namespace

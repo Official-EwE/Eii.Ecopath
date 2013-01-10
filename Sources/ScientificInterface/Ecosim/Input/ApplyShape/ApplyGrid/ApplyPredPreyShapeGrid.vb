@@ -12,10 +12,9 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Explicit On
@@ -38,7 +37,8 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_applyShapeMode As eApplyShapeTypes = eApplyShapeTypes.NotSet
+        Private m_bIsPredatorGrid As Boolean = False
+        Private m_applyShapeMode As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
 
 #End Region ' Private vars
 
@@ -52,13 +52,25 @@ Namespace Ecosim
 
 #Region " Public access "
 
-        Public Property ApplyShapeMode() As eApplyShapeTypes
+        Public Property ApplyShapeMode() As eShapeCategoryTypes
             Get
                 Return Me.m_applyShapeMode
             End Get
-            Set(ByVal value As eApplyShapeTypes)
+            Set(ByVal value As eShapeCategoryTypes)
                 If (Me.m_applyShapeMode <> value) Then
                     Me.m_applyShapeMode = value
+                    Me.RefreshContent()
+                End If
+            End Set
+        End Property
+
+        Public Property IsPredatorGrid() As Boolean
+            Get
+                Return Me.m_bIsPredatorGrid
+            End Get
+            Set(ByVal value As Boolean)
+                If (value <> Me.m_bIsPredatorGrid) Then
+                    Me.m_bIsPredatorGrid = value
                     Me.RefreshContent()
                 End If
             End Set
@@ -89,12 +101,12 @@ Namespace Ecosim
 
                             ' Only delete pairs of current type
                             If (TypeOf ff Is cMediationBaseFunction) And _
-                               (Me.m_applyShapeMode = eApplyShapeTypes.Mediation) Then
+                               (Me.m_applyShapeMode = eShapeCategoryTypes.Mediation) Then
                                 interaction.setShape(i, Nothing)
                             End If
 
                             If (TypeOf ff Is cForcingFunction) And _
-                               (Me.m_applyShapeMode = eApplyShapeTypes.Forcing) Then
+                               (Me.m_applyShapeMode = eShapeCategoryTypes.Forcing) Then
                                 interaction.setShape(i, Nothing)
                             End If
                         Next
@@ -111,8 +123,10 @@ Namespace Ecosim
         End Sub
 
         Public Overrides Sub SetAllPairs()
-            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, Me.m_applyShapeMode)
+
+            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
             dlg.ShowDialog()
+
         End Sub
 
 #End Region ' Public properties
@@ -124,8 +138,8 @@ Namespace Ecosim
             MyBase.InitStyle()
 
             If (Me.UIContext Is Nothing) Then Return
-            If (Me.m_applyShapeMode = eApplyShapeTypes.NotSet) Then Return
- 
+            If (Me.m_applyShapeMode = eShapeCategoryTypes.NotSet) Then Return
+
             Dim source As cCoreGroupBase = Nothing
 
             ' Define grid dimensions
@@ -135,7 +149,7 @@ Namespace Ecosim
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_PREYPREDATOR)
 
-            Dim iCol As Integer = 2
+            Dim columnIndex As Integer = 2
 
             For i As Integer = 1 To Core.nGroups
                 source = Core.EcoPathGroupInputs(i)
@@ -147,12 +161,16 @@ Namespace Ecosim
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 Me(i, 1).Behaviors.Add(m_bmRowCol)
 
-                If (source.PP < 1) Then
-                    Me.InsertColumn(source, iCol)
-                    Me.GroupAtColumn(iCol) = source.Index
-                    iCol += 1
+                If (Me.m_bIsPredatorGrid) And (source.IsConsumer) Then
+                    Me.InsertColumn(source, columnIndex)
+                    columnIndex = columnIndex + 1
+                End If
+                If (Not Me.m_bIsPredatorGrid) And (source.IsProducer) Then
+                    Me.InsertColumn(source, columnIndex)
+                    columnIndex = columnIndex + 1
                 End If
             Next
+
 
         End Sub
 
@@ -161,21 +179,22 @@ Namespace Ecosim
             Dim cellDefault As EwECell = Nothing
             Dim ff As cForcingFunction = Nothing
             Dim PPI As cMediatedInteraction = Nothing
-            Dim iPred As Integer = 0
-            Dim iPrey As Integer = 0
 
             If (Me.m_InteractionManager Is Nothing) Then Return
-            If (Me.m_applyShapeMode = eApplyShapeTypes.NotSet) Then Return
+            If (Me.m_applyShapeMode = eShapeCategoryTypes.NotSet) Then Return
 
-            For iCol As Integer = 2 To Me.Columns.Count - 1
-                iPred = Me.GroupAtColumn(iCol)
-                For iRow As Integer = 1 To Core.nGroups
-                    iPrey = iRow
+            Dim iCol As Integer = 2
+            ' For each column  (groupIndex - Predator)
+            For groupIndex As Integer = 1 To Me.Columns.Count - 2
+                ' For each row (rowIndex - Prey)
+                For rowIndex As Integer = 1 To Core.nGroups
+
+                    Dim iGroup As Integer = CInt(Me(0, groupIndex + 1).Value)
 
                     ' Can assign FF at this spot in the matrix?
-                    If m_InteractionManager.isPredPrey(iPred, iPrey) Then
+                    If m_InteractionManager.isPredPrey(iGroup, rowIndex) Then
 
-                        PPI = m_InteractionManager.PredPreyInteraction(iPred, iPrey)
+                        PPI = m_InteractionManager.PredPreyInteraction(iGroup, rowIndex)
                         Dim shape As cForcingFunction = Nothing
                         Dim aplType As eForcingFunctionApplication
                         Dim sb As New StringBuilder()
@@ -186,12 +205,12 @@ Namespace Ecosim
 
                                 ' Is med?
                                 If (TypeOf shape Is cMediationFunction) Then
-                                    If ((Me.m_applyShapeMode And eApplyShapeTypes.Mediation) = eApplyShapeTypes.Mediation) Then
+                                    If ((Me.m_applyShapeMode And eShapeCategoryTypes.Mediation) = eShapeCategoryTypes.Mediation) Then
                                         If sb.Length > 0 Then sb.Append(" ")
                                         sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_MEDIATION, shape.Index))
                                     End If
                                 Else
-                                    If ((Me.m_applyShapeMode And eApplyShapeTypes.Forcing) = eApplyShapeTypes.Forcing) Then
+                                    If ((Me.m_applyShapeMode And eShapeCategoryTypes.Forcing) = eShapeCategoryTypes.Forcing) Then
                                         If sb.Length > 0 Then sb.Append(" ")
                                         sb.Append(String.Format(My.Resources.ECOSIM_APPLYFF_FFTYPE_FORCING, shape.Index))
                                     End If
@@ -202,10 +221,9 @@ Namespace Ecosim
                             sb.Append("X")
                         End If
 
-                        Me(iRow, iCol) = New Cells.Real.Cell(sb.ToString)
-                        Me(iRow, iCol).DataModel = m_editor
-                        Me(iRow, iCol).Behaviors.Add(m_bmCell)
-                        Me.GroupAtRow(iRow) = iPrey
+                        Me(rowIndex, iCol) = New Cells.Real.Cell(sb.ToString)
+                        Me(rowIndex, iCol).DataModel = m_editor
+                        Me(rowIndex, iCol).Behaviors.Add(m_bmCell)
 
                     Else
                         ' #No: cannot assign FF to this pred/prey combo
@@ -213,11 +231,14 @@ Namespace Ecosim
                         '  Setup default cell
                         cellDefault.Style = (cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                         ' Apply cell to the grid
-                        Me(iRow, iCol) = cellDefault
+                        Me(rowIndex, iCol) = cellDefault
                     End If
 
-                Next iRow
-            Next iCol
+                Next rowIndex
+
+                iCol += 1
+
+            Next groupIndex
 
         End Sub
 
@@ -232,9 +253,9 @@ Namespace Ecosim
 
         Protected Overrides Sub CellClick(ByVal sender As Object, ByVal e As PositionEventArgs)
 
-            Dim iPred As Integer = Me.GroupAtColumn(e.Position.Column)
-            Dim iPrey As Integer = Me.GroupAtRow(e.Position.Row)
-            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, iPrey, iPred, Me.m_applyShapeMode)
+            'Row num, column num starts from one, which is consistent with group index scheme (from one)
+            Dim iPred As Integer = CInt(Me(0, e.Position.Column).Value)
+            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, e.Position.Row, iPred, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
 
             dlg.ShowDialog()
 
@@ -255,8 +276,8 @@ Namespace Ecosim
                 ' #Yes: Predator column clicked?
                 If iCol > 1 Then
                     ' #Yes: launch dialog for all diets of this predator
-                    Dim iPred As Integer = Me.GroupAtColumn(iCol)
-                    dlg = New dlgApplyPredPreyShape(Me.UIContext, iPred, dlgApplyPredPreyShape.eEditMode.Predator, Me.m_applyShapeMode)
+                    Dim iPred As Integer = CInt(Me(0, iCol).Value)
+                    dlg = New dlgApplyPredPreyShape(Me.UIContext, iPred, dlgApplyPredPreyShape.eEditMode.Predator, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
                 End If
             Else
                 ' #No: Prey row header clicked?
@@ -264,8 +285,7 @@ Namespace Ecosim
                     ' #Yes: Prey row clicked?
                     If iRow > 0 Then
                         ' #Yes: launch dialog for all predation of this prey
-                        Dim iPrey As Integer = Me.GroupAtRow(iRow)
-                        dlg = New dlgApplyPredPreyShape(Me.UIContext, iPrey, dlgApplyPredPreyShape.eEditMode.Prey, Me.m_applyShapeMode)
+                        dlg = New dlgApplyPredPreyShape(Me.UIContext, iRow, dlgApplyPredPreyShape.eEditMode.Prey, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
                     End If
                 End If
             End If
@@ -280,14 +300,11 @@ Namespace Ecosim
 
         End Sub
 
-        Protected Sub InsertColumn(ByRef source As cCoreGroupBase, ByVal iCol As Integer)
-
-            Me.Columns.Insert(iCol)
-
+        Protected Sub InsertColumn(ByRef source As cCoreGroupBase, ByVal columnIndex As Integer)
+            Me.Columns.Insert(columnIndex)
             ' # Group name column header cells
-            Me(0, iCol) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
-            Me(0, iCol).Behaviors.Add(m_bmRowCol)
-
+            Me(0, columnIndex) = New PropertyColumnHeaderCell(Me.PropertyManager, source, eVarNameFlags.Index)
+            Me(0, columnIndex).Behaviors.Add(m_bmRowCol)
         End Sub
 
 #End Region ' Internals
