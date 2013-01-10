@@ -78,7 +78,7 @@ Namespace Ecosim
             '
             Me.m_grid.AllowBlockSelect = True
             Me.m_grid.ApplyShapeMode = ScientificInterfaceShared.Definitions.eShapeCategoryTypes.Forcing
-            Me.m_grid.IsPredatorGrid = True
+            Me.m_grid.IsPredatorGrid = eGroupFilter.Consumer
             Me.m_grid.AutoSizeMinHeight = 10
             Me.m_grid.AutoSizeMinWidth = 10
             Me.m_grid.AutoStretchColumnsToFitWidth = False

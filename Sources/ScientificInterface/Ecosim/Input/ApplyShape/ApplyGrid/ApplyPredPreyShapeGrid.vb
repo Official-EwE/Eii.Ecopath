@@ -37,7 +37,7 @@ Namespace Ecosim
 
 #Region " Private vars "
 
-        Private m_bIsPredatorGrid As Boolean = False
+        Private m_groupfilter As eGroupFilter = eGroupFilter.Consumer
         Private m_applyShapeMode As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
 
 #End Region ' Private vars
@@ -64,13 +64,13 @@ Namespace Ecosim
             End Set
         End Property
 
-        Public Property IsPredatorGrid() As Boolean
+        Public Property IsPredatorGrid() As eGroupFilter
             Get
-                Return Me.m_bIsPredatorGrid
+                Return Me.m_groupfilter
             End Get
-            Set(ByVal value As Boolean)
-                If (value <> Me.m_bIsPredatorGrid) Then
-                    Me.m_bIsPredatorGrid = value
+            Set(ByVal value As eGroupFilter)
+                If (value <> Me.m_groupfilter) Then
+                    Me.m_groupfilter = value
                     Me.RefreshContent()
                 End If
             End Set
@@ -124,7 +124,7 @@ Namespace Ecosim
 
         Public Overrides Sub SetAllPairs()
 
-            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
+            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, Me.m_applyShapeMode, Me.m_groupfilter)
             dlg.ShowDialog()
 
         End Sub
@@ -161,11 +161,9 @@ Namespace Ecosim
                 Me(i, 1) = New PropertyRowHeaderCell(Me.PropertyManager, source, eVarNameFlags.Name)
                 Me(i, 1).Behaviors.Add(m_bmRowCol)
 
-                If (Me.m_bIsPredatorGrid) And (source.IsConsumer) Then
-                    Me.InsertColumn(source, columnIndex)
-                    columnIndex = columnIndex + 1
-                End If
-                If (Not Me.m_bIsPredatorGrid) And (source.IsProducer) Then
+                If ((Me.m_groupfilter = eGroupFilter.Consumer) And (source.IsConsumer)) Or _
+                   ((Me.m_groupfilter = eGroupFilter.Producer) And (source.IsProducer)) Or _
+                   ((Me.m_groupfilter = eGroupFilter.Detritus) And (source.IsDetritus)) Then
                     Me.InsertColumn(source, columnIndex)
                     columnIndex = columnIndex + 1
                 End If
@@ -255,7 +253,7 @@ Namespace Ecosim
 
             'Row num, column num starts from one, which is consistent with group index scheme (from one)
             Dim iPred As Integer = CInt(Me(0, e.Position.Column).Value)
-            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, e.Position.Row, iPred, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
+            Dim dlg As New dlgApplyPredPreyShape(Me.UIContext, e.Position.Row, iPred, Me.m_applyShapeMode, Me.m_groupfilter)
 
             dlg.ShowDialog()
 
@@ -277,7 +275,7 @@ Namespace Ecosim
                 If iCol > 1 Then
                     ' #Yes: launch dialog for all diets of this predator
                     Dim iPred As Integer = CInt(Me(0, iCol).Value)
-                    dlg = New dlgApplyPredPreyShape(Me.UIContext, iPred, dlgApplyPredPreyShape.eEditMode.Predator, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
+                    dlg = New dlgApplyPredPreyShape(Me.UIContext, iPred, dlgApplyPredPreyShape.eEditMode.Predator, Me.m_applyShapeMode, Me.m_groupfilter)
                 End If
             Else
                 ' #No: Prey row header clicked?
@@ -285,7 +283,7 @@ Namespace Ecosim
                     ' #Yes: Prey row clicked?
                     If iRow > 0 Then
                         ' #Yes: launch dialog for all predation of this prey
-                        dlg = New dlgApplyPredPreyShape(Me.UIContext, iRow, dlgApplyPredPreyShape.eEditMode.Prey, Me.m_applyShapeMode, Me.m_bIsPredatorGrid)
+                        dlg = New dlgApplyPredPreyShape(Me.UIContext, iRow, dlgApplyPredPreyShape.eEditMode.Prey, Me.m_applyShapeMode, Me.m_groupfilter)
                     End If
                 End If
             End If

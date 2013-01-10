@@ -67,7 +67,7 @@ Namespace Ecosim
         Private m_nGroups As Integer = 0
 
         Private m_shapeMode As eShapeCategoryTypes = eShapeCategoryTypes.NotSet
-        Private m_bConsumers As Boolean = False
+        Private m_bConsumers As eGroupFilter
 
 #End Region ' Private vars
 
@@ -76,7 +76,7 @@ Namespace Ecosim
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal iPrey As Integer, ByVal iPred As Integer, _
                        ByVal shapeType As eShapeCategoryTypes, _
-                       ByVal bConsumers As Boolean)
+                       ByVal bConsumers As eGroupFilter)
             Try
 
                 Me.Init(uic, eEditMode.PredPrey, shapeType, bConsumers)
@@ -104,7 +104,7 @@ Namespace Ecosim
                        ByVal iGroup As Integer, _
                        ByVal editMode As eEditMode, _
                        ByVal shapeType As eShapeCategoryTypes, _
-                       ByVal bConsumers As Boolean)
+                       ByVal bConsumers As eGroupFilter)
 
             Me.Init(uic, editMode, shapeType, bConsumers)
 
@@ -142,7 +142,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
                        ByVal shapeType As eShapeCategoryTypes, _
-                       ByVal bConsumers As Boolean)
+                       ByVal bConsumers As eGroupFilter)
 
             Me.Init(uic, eEditMode.All, shapeType, bConsumers)
 
@@ -353,7 +353,7 @@ Namespace Ecosim
         Private Sub Init(ByVal uic As cUIContext, _
                          ByVal editMode As eEditMode, _
                          ByVal shapeType As eShapeCategoryTypes, _
-                         ByVal bConsumers As Boolean)
+                         ByVal bConsumers As eGroupFilter)
 
             Me.InitializeComponent()
             Me.m_uic = uic
@@ -633,13 +633,18 @@ Namespace Ecosim
 
         Private Sub LoadMultiplierOption()
 
-            If Me.m_bConsumers Then
+            If Me.m_bConsumers = eGroupFilter.Consumer Then
                 Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.SearchRate)
                 Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.Vulnerability)
                 Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.ArenaArea)
                 Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.VulAndArea)
-            Else
+            ElseIf Me.m_bConsumers = eGroupFilter.Producer Then
                 Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.ProductionRate)
+                Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
+                Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
+            ElseIf Me.m_bConsumers = eGroupFilter.Detritus Then
+                Me.ConfigureRadioButton(Me.m_rbOpt1, eForcingFunctionApplication.Import)
                 Me.ConfigureRadioButton(Me.m_rbOpt2, eForcingFunctionApplication.NotSet)
                 Me.ConfigureRadioButton(Me.m_rbOpt3, eForcingFunctionApplication.NotSet)
                 Me.ConfigureRadioButton(Me.m_rbOpt4, eForcingFunctionApplication.NotSet)
