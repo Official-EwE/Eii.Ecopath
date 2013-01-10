@@ -228,10 +228,22 @@
     <Compile Include="Ecosim\Input\ApplyShape\dlgApplyPPorDetShape.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFDetritus.Designer.vb">
+      <DependentUpon>frmApplyFFDetritus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFDetritus.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.Designer.vb">
       <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.Designer.vb">
+      <DependentUpon>frmApplyMedProducer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\MSY\frmMSY.Designer.vb">
@@ -805,8 +817,15 @@
       <DependentUpon>dlgApplyPPorDetShape.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFDetritus.resx">
+      <DependentUpon>frmApplyFFDetritus.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\ForcingFunction\frmApplyFFPrimaryProducer.resx">
       <DependentUpon>frmApplyFFPrimaryProducer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.resx">
+      <DependentUpon>frmApplyMedProducer.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\MSY\frmMSY.resx">
       <DependentUpon>frmMSY.vb</DependentUpon>
@@ -1071,8 +1090,8 @@
       <DependentUpon>frmApplyMedConsumer.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.resx">
-      <DependentUpon>frmApplyMedProducer.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedDetritus.resx">
+      <DependentUpon>frmApplyMedDetritus.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\PriceElasticity\frmApplyPriceElasticy.resx">
@@ -1344,10 +1363,10 @@
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedConsumer.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.Designer.vb">
-      <DependentUpon>frmApplyMedProducer.vb</DependentUpon>
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedDetritus.Designer.vb">
+      <DependentUpon>frmApplyMedDetritus.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.vb">
+    <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedDetritus.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\PriceElasticity\frmApplyPriceElasticy.vb">
