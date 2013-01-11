@@ -180,6 +180,7 @@ Namespace Definitions
     End Enum
 
     Public Enum eGroupFilter As Integer
+        NotSet = 0
         Consumer
         Producer
         Detritus
