@@ -8559,6 +8559,8 @@ Public Class cCore
             Me.m_StateMonitor.SetEcospaceCompleted()
             Me.m_publisher.sendAllMessages()
 
+            If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onEcoSpaceRunCompleted() Exception: " & ex.Message)
         End Try
