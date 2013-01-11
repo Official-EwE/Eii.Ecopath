@@ -39,7 +39,12 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Public Class frmMain
 
+#Region " Private vars "
+
+    ''' <summary>The engine that does all the work.</summary>
     Private m_engine As cEngine = Nothing
+
+#End Region ' Private vars
 
 #Region " Form overrides "
 
