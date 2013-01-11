@@ -196,9 +196,10 @@ Public Class frmMain
                 lFiles.Add(CStr(item))
             Next
 
-            Me.m_engine.ValidateFiles(New cEngine.ValidationFailedDelegate(AddressOf ValidationResultCallback), _
-                                      New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
-                                      lFiles.ToArray())
+            Me.m_engine.ValidateFiles(New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
+                                      New cEngine.DisableFileDelegate(AddressOf DisableFileCallback), _
+                                      lFiles.ToArray(), _
+                                      Me.m_tbxDest.Text)
 
         Catch ex As Exception
             ' Whoah
@@ -298,13 +299,13 @@ Public Class frmMain
 
 #Region " Callbacks "
 
-    Private Delegate Sub ValidationResultMarshall(strFile As String, strMessage As String, bOk As Boolean)
+    Private Delegate Sub DisableFileMarshall(strFile As String)
 
-    Private Sub ValidationResultCallback(strFile As String, strMessage As String, bOk As Boolean)
+    Private Sub DisableFileCallback(strFile As String)
         If Me.InvokeRequired Then
-            Me.Invoke(New ValidationResultMarshall(AddressOf ValidationResultCallback), New Object() {strFile, strMessage, bOk})
+            Me.Invoke(New DisableFileMarshall(AddressOf DisableFileCallback), New Object() {strFile})
         Else
-            Me.LogValidationSuccess(strFile, strMessage, bOk)
+            Me.DisableFile(strFile)
         End If
     End Sub
 
@@ -380,11 +381,12 @@ Public Class frmMain
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Validate the function names in all selected files.
+    ''' Disable a file in the UI
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub LogValidationSuccess(strFile As String, strMessage As String, bOK As Boolean)
-
+    Private Sub DisableFile(strFile As String)
+        ' Remove file from UI
+        Me.m_clbFilesSrc.Items.Remove(strFile)
     End Sub
 
 #End Region ' Internals

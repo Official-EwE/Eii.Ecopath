@@ -43,7 +43,7 @@ Friend Class cEngine
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Helper item to cache the data of a forcing function.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Class cFFCache
@@ -94,7 +94,7 @@ Friend Class cEngine
 
     Private m_dgtProgress As cEngine.RunProgressDelegate = Nothing
     Private m_dgtComplete As cEngine.RunCompletedDelegate = Nothing
-    Private m_dgtValidate As cEngine.ValidationFailedDelegate = Nothing
+    Private m_dgtDisableFile As DisableFileDelegate = Nothing
     Private m_bStopRun As Boolean = False
 
     Private m_bCreateRunFolder As Boolean = False
@@ -146,17 +146,43 @@ Friend Class cEngine
         End Get
     End Property
 
-    Public Delegate Sub ValidationFailedDelegate(strFile As String, strMessage As String, bOk As Boolean)
-
-    Public Sub ValidateFiles(ByVal dgtProgress As ValidationFailedDelegate, _
-                             ByVal dgtComplete As RunCompletedDelegate, _
-                             astrFiles As String())
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="dgtComplete"></param>
+    ''' <param name="astrFiles"></param>
+    ''' <param name="strOutFolder">The output folder to write a log file to.</param>
+    ''' -----------------------------------------------------------------------
+    Public Sub ValidateFiles(ByVal dgtComplete As RunCompletedDelegate, _
+                             ByVal dgtDisableFile As DisableFileDelegate, _
+                             ByVal astrFiles As String(), _
+                             ByVal strOutFolder As String)
 
         If Me.IsRunning Then Return
 
+        Me.BuildFFNameCache()
+
+        Me.m_strOutFolder = strOutFolder
+        Me.m_astrFiles = astrFiles
+
         Me.m_dgtProgress = Nothing
         Me.m_dgtComplete = dgtComplete
-        Me.m_dgtValidate = m_dgtValidate
+        Me.m_dgtDisableFile = dgtDisableFile
+
+        If Not cFileUtils.IsDirectoryAvailable(strOutFolder, True) Then
+            ' ToDo: panic
+            Return
+        End If
+
+        Me.SetWait()
+
+        Try
+            Dim thrd As New Threading.Thread(AddressOf ValidateFilesThreaded)
+            thrd.Start()
+        Catch ex As Exception
+            ' Whoah!
+        End Try
 
     End Sub
 
@@ -201,9 +227,7 @@ Friend Class cEngine
             Me.m_strOutFolder = strOutFolder
         End If
 
-        For Each ff As cForcingFunction In Me.m_man
-            Me.m_FFCache(ff.Name) = New cFFCache(ff)
-        Next
+        Me.BuildFFNameCache()
 
         Me.m_dgtProgress = dgtProgress
         Me.m_dgtComplete = dgtComplete
@@ -218,6 +242,13 @@ Friend Class cEngine
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Stop a run.
+    ''' </summary>
+    ''' <param name="WaitTimeInMillSec"></param>
+    ''' <returns>Always true. Why not?!</returns>
+    ''' -----------------------------------------------------------------------
     Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
         Me.m_bStopRun = True
         Return True
@@ -227,6 +258,24 @@ Friend Class cEngine
 
 #Region " Internals "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Build the cache of forcing function names (lower-case).
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub BuildFFNameCache()
+        Me.m_FFCache.Clear()
+        For Each ff As cForcingFunction In Me.m_man
+            Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff)
+        Next
+    End Sub
+
+#Region " Running "
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strFileName"></param>
     Private Sub ReadCSVIntoFF(ByVal strFileName As String)
 
         Dim reader As StreamReader = Nothing
@@ -255,7 +304,7 @@ Friend Class cEngine
             values = cStringUtils.SplitQualified(reader.ReadLine(), ","c)
             ' Map to FF Cache items
             For i As Integer = 0 To values.Length - 1
-                strName = values(i).Trim
+                strName = values(i).Trim.ToLower()
                 If Me.m_FFCache.ContainsKey(strName) Then
                     lff.Add(Me.m_FFCache(strName))
                 Else
@@ -336,25 +385,9 @@ Friend Class cEngine
 
     End Sub
 
-    Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String, _
-                             ByVal outputs As cEcosimResultWriter.eResultTypes())
-
-        Dim resultsWriter As New cEcosimResultWriter(Me.m_uic.Core)
-        resultsWriter.WriteResults(strPath, outputs)
-
-    End Sub
-
-    Private Sub UpdateProgress(ByVal strMessage As String, status As eStatusFlags)
-
-        Try
-            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
-            Me.m_uic.Core.Messages.SendMessage(msg)
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
+    ''' <summary>
+    ''' 
+    ''' </summary>
     Private Sub RunThreaded()
 
         Dim core As cCore = Me.m_uic.Core
@@ -418,6 +451,164 @@ Friend Class cEngine
         '= agk ='
         Me.ReleaseWait()
         If (Me.m_dgtComplete IsNot Nothing) Then Me.m_dgtComplete.Invoke()
+
+    End Sub
+
+#End Region ' Running
+
+#Region " File validation "
+
+    Public Delegate Sub DisableFileDelegate(strFile As String)
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    Private Sub ValidateFilesThreaded()
+
+        Dim core As cCore = Me.m_uic.Core
+        Dim sw As StreamWriter = Nothing
+        Dim strLogFileName As String = Path.Combine(Me.m_strOutFolder, cFileUtils.ToValidFileName("MultiSim_validation_log.txt", False))
+        Dim msg As cMessage = Nothing
+        Dim bAllGood As Boolean = True
+        Me.m_bStopRun = False
+
+        core.SetBatchLock(cCore.eBatchLockType.Update)
+        core.SetStopRunDelegate(AddressOf StopRun)
+
+        Try
+            sw = New StreamWriter(strLogFileName)
+            sw.WriteLine(Me.m_uic.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            sw.WriteLine()
+        Catch ex As Exception
+        End Try
+
+        If (sw IsNot Nothing) Then
+            Me.BuildFFNameCache()
+            Try
+                For Each strFileName As String In Me.m_astrFiles
+                    bAllGood = bAllGood And Me.ValidateFile(strFileName, sw)
+                Next
+            Catch ex As Exception
+                ' Panic
+            End Try
+
+            sw.Flush()
+            sw.Close()
+            sw.Dispose()
+
+            ' ToDo: globalize this
+            If bAllGood Then
+                msg = New cMessage("MultiSim validation log saved to '" & strLogFileName & "'", eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+            Else
+                msg = New cMessage("MultiSim found errors, see '" & strLogFileName & "' for details.", eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+            End If
+            msg.Hyperlink = Me.m_strOutFolder
+            core.Messages.SendMessage(msg)
+
+        End If
+
+        GC.Collect()
+
+        core.SetStopRunDelegate(Nothing)
+        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+        cApplicationStatusNotifier.EndProgress(core)
+
+        '= agk ='
+        Me.ReleaseWait()
+        If (Me.m_dgtComplete IsNot Nothing) Then Me.m_dgtComplete.Invoke()
+
+
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strFileName"></param>
+    Private Function ValidateFile(strFileName As String, sw As StreamWriter) As Boolean
+
+        Dim reader As StreamReader = Nothing
+        Dim values() As String = Nothing
+        Dim strName As String = ""
+        Dim iNumErrors As Integer = 0
+        Dim bResult As Boolean = True
+
+        sw.WriteLine("Validating file '" & strFileName & "'")
+
+        If File.Exists(strFileName) Then
+
+            Try
+                ' Open the CSV file for reading
+                reader = New StreamReader(strFileName) 'read in csv files x1,x2,x3 etc
+
+                ' First line holds FF names
+                values = cStringUtils.SplitQualified(reader.ReadLine(), ","c)
+                ' Validate FF names
+                For i As Integer = 0 To values.Length - 1
+                    ' Get file
+                    strName = values(i).Trim()
+                    ' Does exist?
+                    If Not Me.m_FFCache.ContainsKey(strName.ToLower()) Then
+                        ' #No: count error
+                        iNumErrors += 1
+                        ' Log event
+                        sw.WriteLine("! Cannot find forcing function '" & strName & "'")
+                        ' Can call home?
+                        If (Me.m_dgtDisableFile IsNot Nothing) Then
+                            ' #Yes: call home
+                            Me.m_dgtDisableFile.Invoke(strName)
+                        End If
+                    End If
+                Next
+
+                If (iNumErrors = 0) Then
+                    sw.WriteLine("  OK: all forcing functions found")
+                Else
+                    sw.WriteLine("! File is missing " & iNumErrors & " function(s)")
+                    bResult = False
+                End If
+            Catch ex As Exception
+                sw.WriteLine("! error reading: " & ex.Message)
+                bResult = False
+            End Try
+        Else
+            sw.WriteLine("! File not found")
+            bResult = False
+        End If
+
+        Return bResult
+
+    End Function
+
+#End Region ' File validation
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strPath"></param>
+    ''' <param name="strFile"></param>
+    ''' <param name="outputs"></param>
+    Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String, _
+                             ByVal outputs As cEcosimResultWriter.eResultTypes())
+
+        Dim resultsWriter As New cEcosimResultWriter(Me.m_uic.Core)
+        resultsWriter.WriteResults(strPath, outputs)
+
+    End Sub
+
+    ''' <summary>
+    ''' 
+    ''' </summary>
+    ''' <param name="strMessage"></param>
+    ''' <param name="status"></param>
+    ''' <remarks></remarks>
+    Private Sub UpdateProgress(ByVal strMessage As String, status As eStatusFlags)
+
+        Try
+            Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+            Me.m_uic.Core.Messages.SendMessage(msg)
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 

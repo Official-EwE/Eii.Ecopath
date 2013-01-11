@@ -46,6 +46,7 @@ Partial Class frmMain
         Me.m_clbFilesSrc = New System.Windows.Forms.CheckedListBox()
         Me.m_hdrIn = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_lblSource = New System.Windows.Forms.Label()
+        Me.m_btnValidate = New System.Windows.Forms.Button()
         Me.m_btnAllSrc = New System.Windows.Forms.Button()
         Me.m_rbAnnual = New System.Windows.Forms.RadioButton()
         Me.m_tbxSource = New System.Windows.Forms.TextBox()
@@ -62,7 +63,6 @@ Partial Class frmMain
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
-        Me.m_btnValidate = New System.Windows.Forms.Button()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_csMain.Panel1.SuspendLayout()
         Me.m_csMain.Panel2.SuspendLayout()
@@ -125,6 +125,12 @@ Partial Class frmMain
         '
         resources.ApplyResources(Me.m_lblSource, "m_lblSource")
         Me.m_lblSource.Name = "m_lblSource"
+        '
+        'm_btnValidate
+        '
+        resources.ApplyResources(Me.m_btnValidate, "m_btnValidate")
+        Me.m_btnValidate.Name = "m_btnValidate"
+        Me.m_btnValidate.UseVisualStyleBackColor = True
         '
         'm_btnAllSrc
         '
@@ -225,12 +231,6 @@ Partial Class frmMain
         Me.m_pbLogo.BackgroundImage = Global.EwEMultiSimPlugin.My.Resources.Resources.logo_canada_large
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
-        '
-        'm_btnValidate
-        '
-        resources.ApplyResources(Me.m_btnValidate, "m_btnValidate")
-        Me.m_btnValidate.Name = "m_btnValidate"
-        Me.m_btnValidate.UseVisualStyleBackColor = True
         '
         'frmMain
         '
