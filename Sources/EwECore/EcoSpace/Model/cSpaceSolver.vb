@@ -928,10 +928,10 @@ Public Class cSpaceSolver
 
         If m_Data.SpatialFieldsInUse Then
             For iSF As Integer = 1 To m_Data.nSpatialFields
-                m_Ecosim.ApplySalinityModifier(A, m_Data.SpatialField(iRow, iCol, i), _
-                                               m_Data.SpatialFieldOptimum(i, iSF), _
-                                               m_Data.SpatialFieldStdLeft(i, iSF), _
-                                               m_Data.SpatialFieldStdRight(i, iSF))
+                m_Ecosim.ApplySalinityModifier(A, m_Data.SpatialField(iRow, iCol, j), _
+                                               m_Data.SpatialFieldOptimum(j, iSF), _
+                                               m_Data.SpatialFieldStdLeft(j, iSF), _
+                                               m_Data.SpatialFieldStdRight(j, iSF))
             Next
         End If
 
@@ -960,7 +960,7 @@ Public Class cSpaceSolver
                     A = A / (Mult + 1.0E-10F)
                     v = v * Mult
                 Case eForcingFunctionApplication.Import
-                    ' Hmm. Joe?!
+                    A = A * Mult
             End Select
 
         Next

@@ -4144,7 +4144,11 @@ Namespace Ecosim
                 If m_Data.BioMedData.IsMedFunction(i, j, K) Then
                     Mult = m_Data.BioMedData.MedVal(m_Data.BioMedData.FunctionNumber(i, j, K))
                 Else
-                    If UseTime = True Then Mult = m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K)) Else Mult = 1
+                    If UseTime = True Then
+                        Mult = m_Data.tval(m_Data.BioMedData.FunctionNumber(i, j, K))
+                    Else
+                        Mult = 1
+                    End If
                 End If
 
                 Select Case m_Data.BioMedData.FunctionType(i, j, K)

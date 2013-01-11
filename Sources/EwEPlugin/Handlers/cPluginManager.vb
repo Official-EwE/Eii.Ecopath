@@ -1319,6 +1319,12 @@ Public Class cPluginManager
 
     End Function
 
+    Public Function EcospaceInitRunCompleted(ByVal EcospaceDataStructures As Object) As Boolean
+
+        Return Me.TryInvokeMethod(GetType(IEcospaceInitRunCompletedPlugin), "EcospaceInitRunCompleted", New Object() {EcospaceDataStructures})
+
+    End Function
+
 #End Region ' Ecospace
 
 #Region " Ecotracer "

@@ -913,6 +913,8 @@ Public Class cEcoSpace
                 End If
             End If
 
+            'Run initialization has completed Call the plugin point
+            If (Me.PluginManager IsNot Nothing) Then Me.PluginManager.EcospaceInitRunCompleted(Me.m_Data)
             stpwchTotRunTime.Start()
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -1739,7 +1741,7 @@ Public Class cEcoSpace
             Next
 
             'VC Hobart Sep 2008 
-            ReDim m_Data.SpatialField(m_Data.InRow, m_Data.InCol, m_Data.nSpatialFields)
+            ReDim m_Data.SpatialField(m_Data.InRow, m_Data.InCol, m_Data.nLiving)
             ReDim m_Data.SpatialFieldOptimum(m_Data.nLiving, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldStdLeft(m_Data.nLiving, m_Data.nSpatialFields)
             ReDim m_Data.SpatialFieldStdRight(m_Data.nLiving, m_Data.nSpatialFields)
@@ -2090,6 +2092,39 @@ Public Class cEcoSpace
         End Try
 
     End Function
+
+
+    ''' <summary>
+    ''' Copy the salinity modifiers from the Ecosim into Ecospace spatial salinity modifiers
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub InitSalinityFromEcosim()
+        'WARNING this is for testing only and should NOT be call during a normal run
+        'Copy the salinity modifiers from Ecosim into the Ecospace spatial salinity modifiers
+        Debug.Assert(False, "WARNING Salinity modifiers from Ecosim will be copied to Ecospace. This has not been properly implemented!")
+
+        'Turn on the Spatial fields
+        m_Data.SpatialFieldsInUse = True
+
+        'In Ecosim the Salinity Modifiers are stored in the first index
+        'Ecosim also contains fields for Temperature (in the second index) and a bunch of place holders that are empty
+        m_Data.nSpatialFields = 1
+
+        'Redim SpatialFields the default size will be wrong
+        ReDim m_Data.SpatialField(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
+        ReDim m_Data.SpatialFieldOptimum(m_Data.NGroups, m_Data.nSpatialFields)
+        ReDim m_Data.SpatialFieldStdLeft(m_Data.NGroups, m_Data.nSpatialFields)
+        ReDim m_Data.SpatialFieldStdRight(m_Data.NGroups, m_Data.nSpatialFields)
+
+        'Copy salinity modifiers from the Ecosim variables into the equivalent Ecospace variables
+        For igrp As Integer = 1 To Me.m_Data.NGroups
+            'In Ecosim salintiy modifiers are stored in the first index
+            m_Data.SpatialFieldOptimum(igrp, 1) = Me.m_SimData.EnvResponseOpt(1, igrp)
+            m_Data.SpatialFieldStdLeft(igrp, 1) = Me.m_SimData.EnvResponseSdLeft(1, igrp)
+            m_Data.SpatialFieldStdRight(igrp, 1) = Me.m_SimData.EnvResponseSdRight(1, igrp)
+        Next
+
+    End Sub
 
 
 
