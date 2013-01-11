@@ -118,12 +118,12 @@ Public Class cMediatedInteractionManager
         Get
             Try
                 'True for primary producer pairs
-                If PredIndex = PreyIndex And m_EPData.PP(PreyIndex) = 1 Then
+                If (PredIndex = PreyIndex) And m_EPData.PP(PreyIndex) = 1 Then
                     Return True
                 End If
 
                 'Detritus Groups
-                If PredIndex >= m_EPData.NumLiving Then
+                If (PredIndex >= m_EPData.NumLiving) Then
                     If PredIndex = PreyIndex Then
                         'this is the detritus diagonal that appears in the grids
                         Return True
@@ -133,11 +133,9 @@ Public Class cMediatedInteractionManager
                     Return False
                 End If
 
-                If m_EPData.DC(PredIndex, PreyIndex) > 0 Then
-                    Return True
-                Else
-                    Return False
-                End If
+                ' Return whether there is a predation interaction
+                Return (m_EPData.DC(PredIndex, PreyIndex) > 0)
+
             Catch ex As Exception
                 Return False
             End Try
