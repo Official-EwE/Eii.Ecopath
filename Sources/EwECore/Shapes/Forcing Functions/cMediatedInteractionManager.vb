@@ -117,13 +117,27 @@ Public Class cMediatedInteractionManager
     Public ReadOnly Property isPredPrey(ByVal PredIndex As Integer, ByVal PreyIndex As Integer) As Boolean
         Get
             Try
-
-                'True for primary producer and detritus pairs
-                If ((Me.m_EPData.PP(PreyIndex) = 1) Or (PredIndex > Me.m_EPData.NumLiving) Or (PreyIndex > Me.m_EPData.NumLiving)) Then
-                    Return (PredIndex = PreyIndex)
+                'True for primary producer pairs
+                If PredIndex = PreyIndex And m_EPData.PP(PreyIndex) = 1 Then
+                    Return True
                 End If
-                Return (Me.m_EPData.DC(PredIndex, PreyIndex) > 0)
 
+                'Detritus Groups
+                If PredIndex >= m_EPData.NumLiving Then
+                    If PredIndex = PreyIndex Then
+                        'this is the detritus diagonal that appears in the grids
+                        Return True
+                    End If
+                    'the DC() matrix will contain values for detrius as a predator for all consumer groups
+                    'So this needs to return false for all detritus groups that are not Pred = Prey (diagonal in the matrix)
+                    Return False
+                End If
+
+                If m_EPData.DC(PredIndex, PreyIndex) > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
             Catch ex As Exception
                 Return False
             End Try
