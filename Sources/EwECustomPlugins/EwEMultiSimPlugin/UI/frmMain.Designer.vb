@@ -62,6 +62,7 @@ Partial Class frmMain
         Me.m_btnChooseOut = New System.Windows.Forms.Button()
         Me.m_lblVars = New System.Windows.Forms.Label()
         Me.m_pbLogo = New System.Windows.Forms.PictureBox()
+        Me.m_btnValidate = New System.Windows.Forms.Button()
         CType(Me.m_csMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_csMain.Panel1.SuspendLayout()
         Me.m_csMain.Panel2.SuspendLayout()
@@ -80,6 +81,7 @@ Partial Class frmMain
         Me.m_csMain.Panel1.Controls.Add(Me.m_clbFilesSrc)
         Me.m_csMain.Panel1.Controls.Add(Me.m_hdrIn)
         Me.m_csMain.Panel1.Controls.Add(Me.m_lblSource)
+        Me.m_csMain.Panel1.Controls.Add(Me.m_btnValidate)
         Me.m_csMain.Panel1.Controls.Add(Me.m_btnAllSrc)
         Me.m_csMain.Panel1.Controls.Add(Me.m_rbAnnual)
         Me.m_csMain.Panel1.Controls.Add(Me.m_tbxSource)
@@ -224,6 +226,12 @@ Partial Class frmMain
         Me.m_pbLogo.Name = "m_pbLogo"
         Me.m_pbLogo.TabStop = False
         '
+        'm_btnValidate
+        '
+        resources.ApplyResources(Me.m_btnValidate, "m_btnValidate")
+        Me.m_btnValidate.Name = "m_btnValidate"
+        Me.m_btnValidate.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AcceptButton = Me.m_btnRun
@@ -266,4 +274,5 @@ Partial Class frmMain
     Private WithEvents m_pbLogo As System.Windows.Forms.PictureBox
     Private WithEvents m_btnRun As System.Windows.Forms.Button
     Private WithEvents m_cbCreateRunFolder As System.Windows.Forms.CheckBox
+    Private WithEvents m_btnValidate As System.Windows.Forms.Button
 End Class

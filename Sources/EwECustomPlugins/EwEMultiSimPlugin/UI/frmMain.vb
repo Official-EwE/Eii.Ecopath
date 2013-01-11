@@ -28,6 +28,7 @@ Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.IO
 Imports System.Windows.Forms
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -38,7 +39,6 @@ Imports System.Windows.Forms
 ''' ---------------------------------------------------------------------------
 Public Class frmMain
 
-    'Private m_bRunning As Boolean = False
     Private m_engine As cEngine = Nothing
 
 #Region " Form overrides "
@@ -118,7 +118,7 @@ Public Class frmMain
         Handles m_btnAllSrc.Click
 
         Try
-            Me.CheckAll(Me.m_clbFilesSrc)
+            Me.SetAllOptionsChecked(Me.m_clbFilesSrc)
             Me.UpdateControls()
         Catch ex As Exception
             ' Whoah
@@ -144,7 +144,7 @@ Public Class frmMain
         Handles m_btnAllVars.Click
 
         Try
-            Me.CheckAll(Me.m_clbValues)
+            Me.SetAllOptionsChecked(Me.m_clbValues)
             Me.UpdateControls()
         Catch ex As Exception
             ' Whoah
@@ -178,6 +178,30 @@ Public Class frmMain
         Me.BeginInvoke(New MethodInvoker(AddressOf UpdateControls), Nothing)
     End Sub
 
+    Private Sub OnValidateFiles(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnValidate.Click
+
+        If Me.m_engine.IsRunning Then
+            Return
+        End If
+
+        Try
+            Dim lFiles As New List(Of String)
+            For Each item As Object In Me.m_clbFilesSrc.CheckedItems
+                lFiles.Add(CStr(item))
+            Next
+
+            Me.m_engine.ValidateFiles(New cEngine.ValidationFailedDelegate(AddressOf ValidationResultCallback), _
+                                      New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
+                                      lFiles.ToArray())
+
+        Catch ex As Exception
+            ' Whoah
+            cLog.Write(ex, "OnValidateFiles")
+        End Try
+
+    End Sub
+
     Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRun.Click
 
@@ -199,23 +223,15 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
-            Me.m_engine.Run(New cEngine.RunCompletedDelegate(AddressOf RunDone), lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
+            Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf RunProgressCallback), _
+                            New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
+                            lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
 
         Catch ex As Exception
             ' Whoah
             cLog.Write(ex, "OnRun")
         End Try
 
-    End Sub
-
-    Private Delegate Sub RunDoneDelegate()
-
-    Private Sub RunDone()
-        If Me.InvokeRequired Then
-            Me.Invoke(New RunDoneDelegate(AddressOf RunDone))
-        Else
-            Me.UpdateControls()
-        End If
     End Sub
 
 #End Region ' Event handlers
@@ -265,15 +281,54 @@ Public Class frmMain
             For Each strFile In astrFiles
                 Me.m_clbFilesSrc.Items.Add(strFile)
             Next
-            Me.CheckAll(Me.m_clbFilesSrc)
+            Me.SetAllOptionsChecked(Me.m_clbFilesSrc)
         ElseIf Not String.IsNullOrWhiteSpace(strFolder) Then
             Me.m_tbxSource.Text = strFolder
-            Me.CheckAll(Me.m_clbFilesSrc)
+            Me.SetAllOptionsChecked(Me.m_clbFilesSrc)
         End If
         MyBase.OnDragDrop(e)
     End Sub
 
 #End Region ' Drag and drop
+
+#Region " Callbacks "
+
+    Private Delegate Sub ValidationResultMarshall(strFile As String, strMessage As String, bOk As Boolean)
+
+    Private Sub ValidationResultCallback(strFile As String, strMessage As String, bOk As Boolean)
+        If Me.InvokeRequired Then
+            Me.Invoke(New ValidationResultMarshall(AddressOf ValidationResultCallback), New Object() {strFile, strMessage, bOk})
+        Else
+            Me.LogValidationSuccess(strFile, strMessage, bOk)
+        End If
+    End Sub
+
+    Private Delegate Sub RunProgressMarshall(strMessage As String)
+
+    Private Sub RunProgressCallback(strMessage As String)
+        If Me.InvokeRequired Then
+            Me.Invoke(New RunProgressMarshall(AddressOf RunProgressCallback), New Object() {strMessage})
+        Else
+            Try
+                Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
+                Me.UIContext.Core.Messages.SendMessage(msg)
+            Catch ex As Exception
+
+            End Try
+        End If
+    End Sub
+
+    Private Delegate Sub RunDoneMarshall()
+
+    Private Sub RunDoneCallback()
+        If Me.InvokeRequired Then
+            Me.Invoke(New RunDoneMarshall(AddressOf RunDoneCallback))
+        Else
+            Me.UpdateControls()
+        End If
+    End Sub
+
+#End Region ' Callbacks
 
 #Region " Internals "
 
@@ -297,7 +352,13 @@ Public Class frmMain
 
     End Sub
 
-    Private Sub CheckAll(ByVal clb As CheckedListBox)
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Set all items in a CheckedListBox to 'Checked'
+    ''' </summary>
+    ''' <param name="clb"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub SetAllOptionsChecked(ByVal clb As CheckedListBox)
         For i As Integer = 0 To clb.Items.Count - 1
             clb.SetItemChecked(i, True)
         Next
@@ -310,6 +371,15 @@ Public Class frmMain
         If cmdFO.Result = Windows.Forms.DialogResult.OK Then
             tbx.Text = cmdFO.Directory
         End If
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Validate the function names in all selected files.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub LogValidationSuccess(strFile As String, strMessage As String, bOK As Boolean)
+
     End Sub
 
 #End Region ' Internals

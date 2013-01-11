@@ -214,7 +214,7 @@
     <value>m_hdrIn</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8082.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8764.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Parent" xml:space="preserve">
     <value>m_csMain.Panel1</value>
@@ -252,6 +252,36 @@
   <data name="&gt;&gt;m_lblSource.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="m_btnValidate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_btnValidate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="m_btnValidate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>526, 186</value>
+  </data>
+  <data name="m_btnValidate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="m_btnValidate.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="m_btnValidate.Text" xml:space="preserve">
+    <value>&amp;Validate...</value>
+  </data>
+  <data name="&gt;&gt;m_btnValidate.Name" xml:space="preserve">
+    <value>m_btnValidate</value>
+  </data>
+  <data name="&gt;&gt;m_btnValidate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_btnValidate.Parent" xml:space="preserve">
+    <value>m_csMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_btnValidate.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="m_btnAllSrc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -280,7 +310,7 @@
     <value>m_csMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_btnAllSrc.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="m_rbAnnual.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -313,7 +343,7 @@
     <value>m_csMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbAnnual.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_tbxSource.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -337,7 +367,7 @@
     <value>m_csMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_tbxSource.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_rbMonthly.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -370,7 +400,7 @@
     <value>m_csMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_rbMonthly.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="m_btnChooseSrc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -400,7 +430,7 @@
     <value>m_csMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_btnChooseSrc.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="m_lblReadAs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -433,7 +463,7 @@
     <value>m_csMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_lblReadAs.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;m_csMain.Panel1.Name" xml:space="preserve">
     <value>m_csMain.Panel1</value>
@@ -505,7 +535,7 @@
     <value>m_hrdOut</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8082.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8764.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Parent" xml:space="preserve">
     <value>m_csMain.Panel2</value>
@@ -799,6 +829,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8082.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8764.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -94,6 +94,7 @@ Friend Class cEngine
 
     Private m_dgtProgress As cEngine.RunProgressDelegate = Nothing
     Private m_dgtComplete As cEngine.RunCompletedDelegate = Nothing
+    Private m_dgtValidate As cEngine.ValidationFailedDelegate = Nothing
     Private m_bStopRun As Boolean = False
 
     Private m_bCreateRunFolder As Boolean = False
@@ -145,7 +146,21 @@ Friend Class cEngine
         End Get
     End Property
 
-    Public Delegate Sub RunProgressDelegate()
+    Public Delegate Sub ValidationFailedDelegate(strFile As String, strMessage As String, bOk As Boolean)
+
+    Public Sub ValidateFiles(ByVal dgtProgress As ValidationFailedDelegate, _
+                             ByVal dgtComplete As RunCompletedDelegate, _
+                             astrFiles As String())
+
+        If Me.IsRunning Then Return
+
+        Me.m_dgtProgress = Nothing
+        Me.m_dgtComplete = dgtComplete
+        Me.m_dgtValidate = m_dgtValidate
+
+    End Sub
+
+    Public Delegate Sub RunProgressDelegate(strMessage As String)
     Public Delegate Sub RunCompletedDelegate()
 
     ''' -----------------------------------------------------------------------
@@ -159,7 +174,8 @@ Friend Class cEngine
     ''' annual values (<see cref="TriState.[False]"/>), or in both modes (<see cref="TriState.UseDefault"/>).</param>
     ''' <param name="options"><see cref="cEcosimResultWriter.eResultTypes">Output options</see>.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Run(ByVal dgtComplete As RunCompletedDelegate, _
+    Public Sub Run(ByVal dgtProgress As RunProgressDelegate, _
+                   ByVal dgtComplete As RunCompletedDelegate, _
                    ByVal astrFiles As String(), _
                    ByVal strOutFolder As String, _
                    ByVal bReadMonthly As Boolean, _
@@ -189,6 +205,7 @@ Friend Class cEngine
             Me.m_FFCache(ff.Name) = New cFFCache(ff)
         Next
 
+        Me.m_dgtProgress = dgtProgress
         Me.m_dgtComplete = dgtComplete
         Me.SetWait()
 
