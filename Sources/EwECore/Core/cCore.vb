@@ -2631,9 +2631,9 @@ Public Class cCore
                 ' Append time series name to scenario, if any
                 sb.Append("TimeSeries,")
                 If (Me.ActiveTimeSeriesDatasetIndex > 0) Then
-                    sb.Append(cStringUtils.ToCSVField(Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name))
+                    sb.AppendLine(cStringUtils.ToCSVField(Me.TimeSeriesDataset(Me.ActiveTimeSeriesDatasetIndex).Name))
                 Else
-                    sb.Append("(none)")
+                    sb.AppendLine("(none)")
                 End If
                 sb.AppendLine("StartYear," & cStringUtils.ToCSVField(Me.EcosimFirstYear))
             End If
