@@ -25,14 +25,76 @@ Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
+''' ---------------------------------------------------------------------------
 ''' <summary>
-''' 
+''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
+''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
+''' to write Ecospace output by region to csv files. 
 ''' </summary>
+''' ---------------------------------------------------------------------------
 Public Class cEcospaceRegionResultWriter
     Inherits cEcospaceBaseResultsWriter
 
     Public Sub New()
     End Sub
+
+#Region " Public access "
+
+    Public Overrides Function FileExtension() As String
+        Return ".csv"
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.StartWrite"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Sub StartWrite()
+
+        ' Just create output directory here.
+        Try
+            Me.CreateOutputDir()
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.WriteResults"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
+        ' Take no action. Ecospace results by region are provided only when
+        ' Ecospace has finished running.
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.EndWrite"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Sub EndWrite()
+
+        ' ToDo: globalize this method
+
+        Dim msg As cMessage = Nothing
+
+        Try
+            ' Write it all
+            Me.WriteContent()
+            ' Notify user
+            msg = New cMessage("Ecospace results by region have been saved to '" & Me.OutputDirectory & "'", _
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+            msg.Hyperlink = Me.OutputDirectory
+        Catch ex As Exception
+            ' Notify user of error
+            msg = New cMessage("Ecospace results by region could not be saved to '" & Me.OutputDirectory & "'. " & ex.Message, _
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
+        End Try
+        ' Done
+        Me.m_core.Messages.SendMessage(msg)
+
+    End Sub
+
+#End Region ' Public access
+
+#Region " Internals "
 
     Protected Overrides Sub CreateOutputDir()
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
@@ -43,40 +105,10 @@ Public Class cEcospaceRegionResultWriter
         End If
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
-            Debug.Assert(False, Me.ToString & ".CreateTimeStampedDir() cannot create directory")
-            cLog.Write("Ecospace output writer failed to create directory " & Me.OutputDirectory)
+            Debug.Assert(False, Me.ToString & ".CreateOutputDir() cannot create directory")
+            cLog.Write("cEcospaceRegionResultWriter failed to create directory " & Me.OutputDirectory)
         End If
     End Sub
-
-    Public Overrides Function FileExtension() As String
-        Return ".csv"
-    End Function
-
-    Public Overrides Sub StartWrite()
-
-        Try
-            Me.CreateOutputDir()
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-    Public Overrides Sub WriteResults(SpaceTimeStepResults As Object)
-        ' NOP - can only write when done
-    End Sub
-
-    Public Overrides Sub EndWrite()
-
-        Try
-            Me.WriteContent()
-        Catch ex As Exception
-
-        End Try
-
-    End Sub
-
-#Region " Internals "
 
     Private Sub WriteContent()
 
@@ -87,11 +119,13 @@ Public Class cEcospaceRegionResultWriter
         Dim strDescriptor As String = ""
         Dim sValue As Single = 0
 
+        ' For all groups
         For iGroup As Integer = 1 To Me.m_core.nGroups
+            ' Get name
+            strName = Me.EcopathData.GroupName(iGroup)
+            ' For all data (0 = biomass, 1 = catch))
             For iData As Integer = 0 To 1
-
-                strName = Me.EcopathData.GroupName(iGroup)
-
+                ' Define file name and data descriptor
                 If (iData = 0) Then
                     strFile = cFileUtils.ToValidFileName(String.Format("Biomass_{0}.csv", strName), False)
                     strDescriptor = "Biomass by region"
@@ -100,12 +134,14 @@ Public Class cEcospaceRegionResultWriter
                     strDescriptor = "Catch by region"
                 End If
 
+                ' Start writing
                 sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
                 sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
                 sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
                 sw.WriteLine("Group," & cStringUtils.ToCSVField(strName))
                 sw.WriteLine()
 
+                ' Write data header
                 sw.Write("TimeStep")
                 For iRegion As Integer = 0 To Me.m_core.nRegions
                     r = Me.m_core.EcospaceRegionOutput(iRegion)
@@ -113,6 +149,7 @@ Public Class cEcospaceRegionResultWriter
                 Next iRegion
                 sw.WriteLine()
 
+                ' Write data
                 For iTime As Integer = 1 To Me.m_core.nEcospaceTimeSteps
                     sw.Write(iTime)
                     For iRegion As Integer = 0 To Me.m_core.nRegions
@@ -129,11 +166,15 @@ Public Class cEcospaceRegionResultWriter
                     Next iRegion
                     sw.WriteLine()
                 Next iTime
-                sw.WriteLine()
+
+                ' Clean up
                 sw.Flush()
                 sw.Close()
+                sw.Dispose()
+
             Next iData
         Next iGroup
+
     End Sub
 
 #End Region
