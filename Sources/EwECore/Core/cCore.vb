@@ -9012,6 +9012,7 @@ Public Class cCore
 
                 ess.DBID = m_EcoPathData.EcospaceScenarioDBID(iScenario)
                 ess.Name = m_EcoPathData.EcospaceScenarioName(iScenario)
+                ess.Description = m_EcoPathData.EcospaceScenarioDescription(iScenario)
                 ess.Author = m_EcoPathData.EcospaceScenarioAuthor(iScenario)
                 ess.Contact = m_EcoPathData.EcospaceScenarioContact(iScenario)
                 ess.LastSaved = m_EcoPathData.EcospaceScenarioLastSaved(iScenario)
