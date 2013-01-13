@@ -291,8 +291,6 @@ Public Class cEcoSpace
 
     Private m_SpaceCatchSemaphor As Semaphore
 
-    Private m_ResultsWriter As IEcospaceResultsWriter
-
     Private m_rand As Random
 
 #End Region

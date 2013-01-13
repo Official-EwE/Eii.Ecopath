@@ -77,8 +77,8 @@ Namespace Ecospace
             Me.m_tbTolerance = New System.Windows.Forms.TextBox()
             Me.m_tbSOR = New System.Windows.Forms.TextBox()
             Me.m_gbRunTime = New System.Windows.Forms.GroupBox()
-            Me.m_cmbAutosaveFormat = New System.Windows.Forms.ComboBox()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_cmbAutosaveMapFormat = New System.Windows.Forms.ComboBox()
+            Me.m_lblAutosaveResultMaps = New System.Windows.Forms.Label()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
@@ -91,6 +91,7 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
+            Me.m_cbAutosaveResultRegions = New System.Windows.Forms.CheckBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -316,8 +317,8 @@ Namespace Ecospace
             'm_gbRunTime
             '
             resources.ApplyResources(Me.m_gbRunTime, "m_gbRunTime")
-            Me.m_gbRunTime.Controls.Add(Me.m_cmbAutosaveFormat)
-            Me.m_gbRunTime.Controls.Add(Me.Label1)
+            Me.m_gbRunTime.Controls.Add(Me.m_cmbAutosaveMapFormat)
+            Me.m_gbRunTime.Controls.Add(Me.m_lblAutosaveResultMaps)
             Me.m_gbRunTime.Controls.Add(Me.m_lbNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_nudNumThreads)
             Me.m_gbRunTime.Controls.Add(Me.m_tbSOR)
@@ -325,6 +326,7 @@ Namespace Ecospace
             Me.m_gbRunTime.Controls.Add(Me.m_tbNumTimeStepsPerYear)
             Me.m_gbRunTime.Controls.Add(Me.m_tbTotalTime)
             Me.m_gbRunTime.Controls.Add(Me.m_cbContaminantTracing)
+            Me.m_gbRunTime.Controls.Add(Me.m_cbAutosaveResultRegions)
             Me.m_gbRunTime.Controls.Add(Me.m_cbUseExact)
             Me.m_gbRunTime.Controls.Add(Me.m_lbSOR)
             Me.m_gbRunTime.Controls.Add(Me.m_lbTolerance)
@@ -335,18 +337,18 @@ Namespace Ecospace
             Me.m_gbRunTime.Name = "m_gbRunTime"
             Me.m_gbRunTime.TabStop = False
             '
-            'm_cmbAutosaveFormat
+            'm_cmbAutosaveMapFormat
             '
-            Me.m_cmbAutosaveFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbAutosaveFormat.FormattingEnabled = True
-            Me.m_cmbAutosaveFormat.Items.AddRange(New Object() {resources.GetString("m_cmbAutosaveFormat.Items"), resources.GetString("m_cmbAutosaveFormat.Items1"), resources.GetString("m_cmbAutosaveFormat.Items2"), resources.GetString("m_cmbAutosaveFormat.Items3")})
-            resources.ApplyResources(Me.m_cmbAutosaveFormat, "m_cmbAutosaveFormat")
-            Me.m_cmbAutosaveFormat.Name = "m_cmbAutosaveFormat"
+            Me.m_cmbAutosaveMapFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbAutosaveMapFormat.FormattingEnabled = True
+            Me.m_cmbAutosaveMapFormat.Items.AddRange(New Object() {resources.GetString("m_cmbAutosaveMapFormat.Items"), resources.GetString("m_cmbAutosaveMapFormat.Items1"), resources.GetString("m_cmbAutosaveMapFormat.Items2"), resources.GetString("m_cmbAutosaveMapFormat.Items3")})
+            resources.ApplyResources(Me.m_cmbAutosaveMapFormat, "m_cmbAutosaveMapFormat")
+            Me.m_cmbAutosaveMapFormat.Name = "m_cmbAutosaveMapFormat"
             '
-            'Label1
+            'm_lblAutosaveResultMaps
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblAutosaveResultMaps, "m_lblAutosaveResultMaps")
+            Me.m_lblAutosaveResultMaps.Name = "m_lblAutosaveResultMaps"
             '
             'm_cbContaminantTracing
             '
@@ -415,6 +417,12 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
             Me.m_plBiomass.Controls.Add(Me.m_hdrInitialization)
             Me.m_plBiomass.Name = "m_plBiomass"
+            '
+            'm_cbAutosaveResultRegions
+            '
+            resources.ApplyResources(Me.m_cbAutosaveResultRegions, "m_cbAutosaveResultRegions")
+            Me.m_cbAutosaveResultRegions.Name = "m_cbAutosaveResultRegions"
+            Me.m_cbAutosaveResultRegions.UseVisualStyleBackColor = True
             '
             'EcospaceParameters
             '
@@ -497,8 +505,9 @@ Namespace Ecospace
         Private WithEvents lbPacketsMultiplier As System.Windows.Forms.Label
         Private WithEvents m_rbEcopathEffort As System.Windows.Forms.RadioButton
         Private WithEvents m_rbPredictEffort As System.Windows.Forms.RadioButton
-        Private WithEvents m_cmbAutosaveFormat As System.Windows.Forms.ComboBox
-        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_cmbAutosaveMapFormat As System.Windows.Forms.ComboBox
+        Private WithEvents m_cbAutosaveResultRegions As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblAutosaveResultMaps As System.Windows.Forms.Label
     End Class
 
 End Namespace

@@ -201,14 +201,16 @@ Namespace Ecospace
             Me.m_rbCap.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Capacity)
             Me.m_rbHab.Checked = (parms.CapacityCalculationType = eEcospaceCapacityCalType.Habitat)
 
-            If Me.Core.Autosave(eAutosaveTypes.Ecospace) = False Then
-                Me.m_cmbAutosaveFormat.SelectedIndex = 0
-            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace), ".asc", False) = 0 Then
-                Me.m_cmbAutosaveFormat.SelectedIndex = 1
-            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace), ".csv", False) = 0 Then
-                Me.m_cmbAutosaveFormat.SelectedIndex = 2
+            Me.m_cbAutosaveResultRegions.Checked = Me.Core.Autosave(eAutosaveTypes.Ecospace)
+
+            If Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False Then
+                Me.m_cmbAutosaveMapFormat.SelectedIndex = 0
+            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".asc", False) = 0 Then
+                Me.m_cmbAutosaveMapFormat.SelectedIndex = 1
+            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".csv", False) = 0 Then
+                Me.m_cmbAutosaveMapFormat.SelectedIndex = 2
             Else
-                Me.m_cmbAutosaveFormat.SelectedIndex = 3
+                Me.m_cmbAutosaveMapFormat.SelectedIndex = 3
             End If
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
@@ -328,20 +330,25 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub OnAutsosaveRegionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_cbAutosaveResultRegions.CheckedChanged
+            Me.Core.Autosave(eAutosaveTypes.Ecospace) = Me.m_cbAutosaveResultRegions.Checked
+        End Sub
+
         Private Sub OnSpaceSaveFormatChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_cmbAutosaveFormat.SelectedIndexChanged
-            Select Case Me.m_cmbAutosaveFormat.SelectedIndex
+            Handles m_cmbAutosaveMapFormat.SelectedIndexChanged
+            Select Case Me.m_cmbAutosaveMapFormat.SelectedIndex
                 Case 0
-                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = False
+                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False
                 Case 1
-                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = True
-                    Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".asc"
+                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
+                    Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".asc"
                 Case 2
-                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = True
-                    Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".csv"
+                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
+                    Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".csv"
                 Case 3
-                    Me.Core.Autosave(eAutosaveTypes.Ecospace) = True
-                    Me.Core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".csv;.asc"
+                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
+                    Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".csv;.asc"
             End Select
         End Sub
 

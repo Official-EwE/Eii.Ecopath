@@ -151,6 +151,7 @@
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />
     <Compile Include="EcoPath\cEcopathResultWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceImportExportXYData.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceRegionResultWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayerBoolean.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerDriver.vb" />
     <Compile Include="EcoSpace\Input Output\IEcospaceLayerManager.vb" />
@@ -332,8 +333,8 @@
     <Compile Include="EcoPath\cEcopathModelFromEcosim.vb" />
     <Compile Include="EcoSim\Model\cMediationDataStructures.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceBaseResultsWriter.vb" />
-    <Compile Include="EcoSpace\Input Output\cEcospaceCSVResultsWriter.vb" />
-    <Compile Include="EcoSpace\Input Output\cEcospaceASCResultsWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceCSVMapResultsWriter.vb" />
+    <Compile Include="EcoSpace\Input Output\cEcospaceASCMapResultsWriter.vb" />
     <Compile Include="EcoSpace\Input Output\cEnviroInputMap.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\cEcospaceLayerHabitatCapacity.vb" />
     <Compile Include="EcoSpace\Model\IEnviroInputMap.vb" />

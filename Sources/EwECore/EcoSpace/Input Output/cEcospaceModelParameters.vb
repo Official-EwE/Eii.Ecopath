@@ -240,18 +240,34 @@ Public Class cEcospaceModelParameters
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Get/set whether Ecospace should automatically save region summary output 
+    ''' for every time step.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SaveRegions As Boolean
+        Get
+            Return (Me.m_core.Autosave(eAutosaveTypes.Ecospace) = True)
+        End Get
+        Set(value As Boolean)
+            Me.m_core.Autosave(eAutosaveTypes.Ecospace) = value
+        End Set
+    End Property
+
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Get/set whether Ecospace should automatically save ASC files for every
     ''' time step.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property SaveASC As Boolean
         Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.Ecospace) = True) And _
-                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace), ".asc", True) = 0)
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = True) And _
+                   (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".asc", True) = 0)
         End Get
         Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.Ecospace) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".asc"
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".asc"
         End Set
     End Property
 
@@ -263,12 +279,12 @@ Public Class cEcospaceModelParameters
     ''' -----------------------------------------------------------------------
     Public Property SaveCSV As Boolean
         Get
-            Return (Me.m_core.Autosave(eAutosaveTypes.Ecospace) = True) And _
-                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace), ".csv", True) = 0)
+            Return (Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = True) And _
+                  (String.Compare(Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".csv", True) = 0)
         End Get
         Set(value As Boolean)
-            Me.m_core.Autosave(eAutosaveTypes.Ecospace) = value
-            Me.m_core.AutosaveFormat(eAutosaveTypes.Ecospace) = ".csv"
+            Me.m_core.Autosave(eAutosaveTypes.EcospaceMaps) = value
+            Me.m_core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".csv"
         End Set
     End Property
 

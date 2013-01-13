@@ -45,8 +45,8 @@ Public Class cEcospaceResultWriterFactory
                                      ByVal pm As cPluginManager) As IEcospaceResultsWriter
 
         Select Case strExt.ToLower
-            Case ".csv" : Return New cEcospaceCSVResultsWriter()
-            Case ".asc" : Return New cEcospaceASCResultsWriter()
+            Case ".csv" : Return New cEcospaceCSVMapResultsWriter()
+            Case ".asc" : Return New cEcospaceASCMapResultsWriter()
         End Select
 
         ' Plug-in manager provided?

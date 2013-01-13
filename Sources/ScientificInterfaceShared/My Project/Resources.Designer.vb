@@ -152,11 +152,20 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace run result maps.
+        '''  Looks up a localized string similar to Ecospace run results.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOSPACE() As String
             Get
                 Return ResourceManager.GetString("AUTOSAVE_ECOSPACE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecospace run result maps.
+        '''</summary>
+        Public ReadOnly Property AUTOSAVE_ECOSPACEMAPS() As String
+            Get
+                Return ResourceManager.GetString("AUTOSAVE_ECOSPACEMAPS", resourceCulture)
             End Get
         End Property
         

@@ -15,7 +15,6 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
@@ -2473,7 +2472,7 @@ Public Class cCore
                         strScenario = strScenario & "{scenario}"
                     End If
 
-                Case eAutosaveTypes.Ecospace
+                Case eAutosaveTypes.Ecospace, eAutosaveTypes.EcospaceMaps
                     strScenario = "Ecospace_"
                     If (Me.ActiveEcospaceScenarioIndex > 0) Then
                         strScenario = strScenario & Me.EcospaceScenarios(Me.ActiveEcospaceScenarioIndex).Name
@@ -8487,17 +8486,21 @@ Public Class cCore
                         Me.m_StateMonitor.SetEcospaceRun()
                         Me.SetStopRunDelegate(New StopRunDelegate(AddressOf StopEcospace))
 
+                        ' ---
                         ' Create ecospace result writers, if desired
                         If Me.Autosave(eAutosaveTypes.Ecospace) Then
-                            For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.Ecospace).Split(";"c)
+                            Me.m_EcospaceResultsWriters.Add(New cEcospaceRegionResultWriter())
+                        End If
+                        If Me.Autosave(eAutosaveTypes.EcospaceMaps) Then
+                            For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceMaps).Split(";"c)
                                 Me.m_EcospaceResultsWriters.Add(cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager))
                             Next
                         End If
-
                         For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
                             writer.Init(Me)
                             writer.StartWrite()
                         Next
+                        ' ---
 
                         'make sure Ecospace is not paused
                         Me.m_Ecospace.isPaused = False

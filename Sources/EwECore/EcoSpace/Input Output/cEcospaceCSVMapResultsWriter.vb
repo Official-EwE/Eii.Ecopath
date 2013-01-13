@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports System.IO
+Imports System.Text
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 
@@ -29,14 +30,21 @@ Imports EwEUtils.Utilities
 ''' <summary>
 ''' Implementation of <see cref="IEcospaceResultsWriter">IEcospaceResultsWriter</see> 
 ''' and <see cref="cEcospaceBaseResultsWriter">cEcospaceBaseResultsWriter</see> 
-''' to write Ecospace output to ESRI ASCII files. 
+''' to save Ecospace results to a series of CSV files.
 ''' </summary>
-''' <remarks>Each ASCII file will contain an Ecospace value for a given group and time step</remarks>
+''' <remarks>There will be one CSV file for each group containing data for all the time steps.</remarks>
 ''' ---------------------------------------------------------------------------
-Public Class cEcospaceASCResultsWriter
+Public Class cEcospaceCSVMapResultsWriter
     Inherits cEcospaceBaseResultsWriter
 
-#Region " Base writer overrides "
+#Region " Overrides "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.FileExtension"/>
+    ''' -----------------------------------------------------------------------
+    Public Overrides Function FileExtension() As String
+        Return ".csv"
+    End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.StartWrite"/>
@@ -44,7 +52,7 @@ Public Class cEcospaceASCResultsWriter
     Public Overrides Sub StartWrite()
         Try
             Me.CreateOutputDir()
-            Me.WriteRunInfoFile()
+            Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
         Catch ex As Exception
             Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
@@ -57,20 +65,18 @@ Public Class cEcospaceASCResultsWriter
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
         Try
-
             Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
             Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
             Dim strm As StreamWriter = Nothing
-            Dim strFile As String = ""
+            Dim strFN As String = ""
 
             For Each varname As eVarNameFlags In vars
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-                    strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension(), tsData.iTimeStep)
-                    ' Create directory any time; user may have deleted it during a run
-                    If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
-                        strm = New StreamWriter(strFile, False)
+                    strFN = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
+                    If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN), True) Then
+                        strm = New StreamWriter(strFN, True)
                         If (strm IsNot Nothing) Then
-                            Me.SaveASCFile(strm, tsData, igrp, varname)
+                            Me.SaveCSV(strm, tsData, igrp, varname)
                             strm.Flush()
                             strm.Close()
                             strm = Nothing
@@ -78,22 +84,10 @@ Public Class cEcospaceASCResultsWriter
                     End If
                 Next
             Next
-            strm = New StreamWriter(">")
-
-            ' Sum space effort
-            strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
-            strm = New StreamWriter(strFile, False)
-            If (strm IsNot Nothing) Then
-                Me.SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
-                strm.Flush()
-                strm.Close()
-                strm = Nothing
-            End If
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)
         End Try
-
 
     End Sub
 
@@ -102,114 +96,121 @@ Public Class cEcospaceASCResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
         ' ToDo_JS: globalize this message
-        Dim msg As New cMessage("Ecospace result ASCII files have been written to " & Me.m_TimeStampDirName, _
+        Dim msg As New cMessage("Ecospace result CSV files have been written to " & Me.m_TimeStampDirName, _
                                 eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         ' Provide hyperlink to the directory with the files
         msg.Hyperlink = Me.m_TimeStampDirName
         Me.m_core.Messages.SendMessage(msg)
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <inheritdocs cref="cEcospaceBaseResultsWriter.FileExtension"/>
-    ''' -----------------------------------------------------------------------
-    Public Overrides Function FileExtension() As String
-        Return ".asc"
-    End Function
-
-#End Region ' Base writer overrides
+#End Region ' Overrides
 
 #Region " Internals "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write the run information file to accompany the run results.
+    ''' Write run info header.
     ''' </summary>
+    ''' <param name="strm">The writer to write to.</param>
+    ''' <param name="igrp">The group to write the header for.</param>
+    ''' <param name="varname">The variable name to write the header for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteRunInfoFile()
+    Private Sub WriteHeader(ByRef strm As StreamWriter, ByVal igrp As Integer, ByVal varname As eVarNameFlags)
 
         Try
-            Dim strFN As String = Path.Combine(Me.OutputDirectory, ".Ecospace RunInfo.txt")
-            Dim strm As New StreamWriter(strFN, False)
-
-            strm.WriteLine("EcoSpace .asc map output")
             Me.WriteRunInfo(strm)
-
-            strm.Flush()
-            strm.Close()
-            strm = Nothing
+            strm.WriteLine("Variable," & varname.ToString())
+            strm.WriteLine("Group name," & cStringUtils.ToCSVField(Me.EcopathData.GroupName(igrp)))
+            strm.WriteLine()
 
         Catch ex As Exception
-
+            Debug.Assert(False, ex.Message)
         End Try
+
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write an entire ASCII file for a group, time step and variable.
+    ''' Save the data to a CSV file.
     ''' </summary>
     ''' <param name="strm"></param>
-    ''' <param name="SpaceTSData"></param>
-    ''' <param name="igrp"></param>
-    ''' <param name="varName"></param>
+    ''' <param name="timestep">Time step results providing the values to write.</param>
+    ''' <param name="iIndex"></param>
+    ''' <param name="varname"></param>
     ''' -----------------------------------------------------------------------
-    Protected Sub SaveASCFile(ByVal strm As StreamWriter, ByVal SpaceTSData As cEcospaceTimestep, _
-                              ByVal igrp As Integer, ByVal varName As eVarNameFlags)
-        Try
-            Me.WriteASCIIHeader(strm)
-            Me.WriteASCIIBody(strm, SpaceTSData, igrp, varName)
-        Catch ex As Exception
-            System.Console.WriteLine(Me.ToString & ".WriteResults() Exception: " & ex.Message)
-        End Try
-    End Sub
+    Private Sub SaveCSV(ByVal strm As StreamWriter, _
+                        ByVal timestep As cEcospaceTimestep, _
+                        ByVal iIndex As Integer, _
+                        ByVal varname As eVarNameFlags)
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Write ESRI ASCII header block.
-    ''' </summary>
-    ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
-    ''' -----------------------------------------------------------------------
-    Protected Sub WriteASCIIHeader(ByVal writer As StreamWriter)
-
-        writer.WriteLine("ncols         " & Me.EcospaceData.InCol)
-        writer.WriteLine("nrows         " & Me.EcospaceData.InRow)
-        writer.WriteLine("xllcorner     " & Me.EcospaceData.Lon1)
-        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow + 1) * Me.EcospaceData.GetCellSize())
-        writer.WriteLine("cellsize      " & Me.EcospaceData.GetCellSize())
-        writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
-
-    End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Write ESRI ASCII body block.
-    ''' </summary>
-    ''' <param name="writer">The <see cref="StreamWriter"/> to write to.</param>
-    ''' <param name="iIndex">The layer index to write the data for.</param>
-    ''' <param name="SpaceTSData">The Ecospace data structures to use for spatial referencing.</param>
-    ''' <param name="varname">The variable to write.</param>
-    ''' -----------------------------------------------------------------------
-    Protected Sub WriteASCIIBody(ByVal writer As StreamWriter, _
-                                 ByVal SpaceTSData As cEcospaceTimestep, _
-                                 ByVal iIndex As Integer, _
-                                 ByVal varname As eVarNameFlags)
-
-        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
-        Dim value As Single
+        Dim map As cEcospaceLayer = timestep.Layer(varname, iIndex)
+        Dim sbBuff As New StringBuilder()
 
         Debug.Assert(map IsNot Nothing)
 
+        strm.WriteLine("Step," & timestep.iTimeStep.ToString)
+        'TimeNow is the loop counter in Ecospace and is not updated until the end of the loop
+        'For the Year of this time step we need to add delta T
+        strm.WriteLine("Year," & timestep.TimeStepinYears.ToString)
         For ir As Integer = 1 To Me.EcospaceData.InRow
             For ic As Integer = 1 To Me.EcospaceData.InCol
-                If ic > 1 Then writer.Write(" ")
-                If Me.EcospaceData.Depth(ir, ic) > 0 Then
-                    value = CSng(map.Cell(ir, ic))
-                Else
-                    'land as NODATAVALUE
-                    value = cCore.NULL_VALUE
-                End If
-                writer.Write(value)
+                If ic > 1 Then sbBuff.Append(",")
+                sbBuff.Append(cStringUtils.FormatSingle(CSng(map.Cell(ir, ic))))
             Next
-            writer.WriteLine("")
+            strm.WriteLine(sbBuff.ToString)
+            sbBuff.Length = 0
+        Next
+        strm.WriteLine()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Saves the data to a XYZ formatted file.
+    ''' </summary>
+    ''' <param name="strm"></param>
+    ''' <param name="SpaceTSData"></param>
+    ''' <param name="iIndex"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub saveXYZ(ByVal strm As StreamWriter, _
+                        ByVal SpaceTSData As cEcospaceTimestep, _
+                        ByVal iIndex As Integer,
+                        ByVal varname As eVarNameFlags)
+
+        Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
+
+        Debug.Assert(map IsNot Nothing)
+
+        ' Write header
+        strm.WriteLine("X,Y,Z")
+        ' Write data
+        For ir As Integer = 1 To Me.EcospaceData.InRow
+            For ic As Integer = 1 To Me.EcospaceData.InCol
+                strm.WriteLine("{0},{1},{2}", ic, ir, cStringUtils.FormatSingle(CSng(map.Cell(ir, ic))))
+            Next
+        Next
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write headers for the all groups for the given variable.
+    ''' </summary>
+    ''' <param name="varname"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub WriteFileHeaders(ByVal varname As eVarNameFlags)
+
+        Dim strm As StreamWriter
+        Dim strFN As String
+
+        For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+            strFN = Me.GetGroupFileName(varname, igrp, "csv")
+            'Create a new file when writting the header
+            'this overwrites the data in the current directory
+            strm = New StreamWriter(strFN)
+            Me.WriteHeader(strm, igrp, varname)
+            strm.Close()
+            strm = Nothing
         Next
 
     End Sub

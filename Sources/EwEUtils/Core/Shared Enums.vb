@@ -2767,8 +2767,10 @@ Namespace Core
         MSE
         ''' <summary>MSY results.</summary>
         MSY
-        ''' <summary>Ecospace run results.</summary>
+        ''' <summary>Ecospace run result summary.</summary>
         Ecospace
+        ''' <summary>Ecospace run result maps.</summary>
+        EcospaceMaps
         ''' <summary>MPA optimizations.</summary>
         MPAOpt
         ''' <summary>Ecotracer run results.</summary>
