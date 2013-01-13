@@ -2536,7 +2536,7 @@
     <value>Ecosim run results</value>
   </data>
   <data name="AUTOSAVE_ECOSPACE" xml:space="preserve">
-    <value>Ecospace run results</value>
+    <value>Ecospace results by region</value>
   </data>
   <data name="AUTOSAVE_ECOTRACER" xml:space="preserve">
     <value>Ecotracer run results</value>
@@ -2744,6 +2744,6 @@
     <value>Search objective</value>
   </data>
   <data name="AUTOSAVE_ECOSPACEMAPS" xml:space="preserve">
-    <value>Ecospace run result maps</value>
+    <value>Ecospace result maps</value>
   </data>
 </root>

@@ -152,7 +152,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace run results.
+        '''  Looks up a localized string similar to Ecospace results by region.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOSPACE() As String
             Get
@@ -161,7 +161,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Ecospace run result maps.
+        '''  Looks up a localized string similar to Ecospace result maps.
         '''</summary>
         Public ReadOnly Property AUTOSAVE_ECOSPACEMAPS() As String
             Get
