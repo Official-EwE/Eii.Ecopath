@@ -1121,6 +1121,10 @@ Public Class cEcoSpace
 
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
+
+                            Dim iRgn As Integer = m_Data.Region(i, j)
+                            If iRgn > m_Data.nRegions Then iRgn = 0
+
                             For ip = 0 To m_Data.NGroups
                                 'If SpaceTime = False Then Wtr = Exp(AMmTr(i, j, ip) * TimeStep) Else Wtr = 0
                                 Wtr = Math.Exp(m_Data.AMmTr(i, j, ip) * m_Data.TimeStep)
@@ -1129,8 +1133,8 @@ Public Class cEcoSpace
 
                                 If m_Data.Ccell(i, j, ip) > m_tracerData.ConcMax(ip) Then m_tracerData.ConcMax(ip) = m_Data.Ccell(i, j, ip)
 
-                                m_tracerData.TracerConcByRegion(m_Data.Region(i, j), ip, itt) = m_tracerData.TracerConcByRegion(m_Data.Region(i, j), ip, itt) + m_Data.Ccell(i, j, ip)
-                                m_tracerData.TracerCBRegion(m_Data.Region(i, j), ip, itt) = m_tracerData.TracerCBRegion(m_Data.Region(i, j), ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
+                                m_tracerData.TracerConcByRegion(iRgn, ip, itt) = m_tracerData.TracerConcByRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip)
+                                m_tracerData.TracerCBRegion(iRgn, ip, itt) = m_tracerData.TracerCBRegion(iRgn, ip, itt) + m_Data.Ccell(i, j, ip) / m_Data.Bcell(i, j, ip)
 
                             Next ip
                         Next j
@@ -4620,6 +4624,7 @@ exitline:
             For ir As Integer = 1 To Me.m_Data.InRow
                 For ic As Integer = 1 To Me.m_Data.InCol
                     irgn = Me.m_Data.Region(ir, ic)
+                    If (irgn > Me.m_Data.nRegions) Then irgn = 0
                     For igrp = 1 To Me.m_Data.NGroups
                         Me.m_Data.ResultsRegionGroup(irgn, igrp, iTimeStep) += Me.m_Data.Bcell(ir, ic, igrp)
                     Next

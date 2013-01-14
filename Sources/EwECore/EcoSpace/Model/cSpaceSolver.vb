@@ -1025,7 +1025,9 @@ Public Class cSpaceSolver
 
                             'Next line is for adding up catch by region etc
                             If m_Data.nRegions > 0 Then
-                                Me.ResultsCatchRegionGearGroup(m_Data.Region(iRow, iCol), iFlt, igrp) += cellCatch
+                                Dim iRgn As Integer = m_Data.Region(iRow, iCol)
+                                If (iRgn > m_Data.nRegions) Then iRgn = 0
+                                Me.ResultsCatchRegionGearGroup(iRgn, iFlt, igrp) += cellCatch
                             End If
 
                             Me.Landings(igrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, igrp)
