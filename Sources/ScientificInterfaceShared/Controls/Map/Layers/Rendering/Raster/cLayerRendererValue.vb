@@ -103,26 +103,34 @@ Namespace Controls.Map.Layers
             If (sValMax = cCore.NULL_VALUE) Then sValMax = layer.MaxValue
             If (sValMin = cCore.NULL_VALUE) Then sValMin = layer.MinValue
 
+            Dim bOutOfRange As Boolean = (sValue > sValMax)
+
             Try
                 If Me.m_brFore Is Nothing Then Me.Update()
 
                 ' Draw background
-                ' Render value on top for highlighted layers
                 If (value IsNot Nothing) And (Me.m_ft IsNot Nothing) Then
 
-                    Dim sValRange As Single = (sValMax - sValMin)
-
-                    ' Has a range? draw background
-                    If (sValRange > 0.0) Then
-                        ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
-                        ' not (0, sValueMax)!!!
-                        Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
+                    If bOutOfRange Then
+                        Using br As New SolidBrush(Color.Magenta)
                             g.FillRectangle(br, rc)
                         End Using
                     Else
-                        Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
-                            g.FillRectangle(br, rc)
-                        End Using
+                        ' Render value on top for highlighted layers
+                        Dim sValRange As Single = (sValMax - sValMin)
+
+                        ' Has a range? draw background
+                        If (sValRange > 0.0) Then
+                            ' Calculate the cell color based on the cell value RELATIVE TO [sValueMin, sValueMax),
+                            ' not (0, sValueMax)!!!
+                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue - sValMin, sValMax - sValMin))
+                                g.FillRectangle(br, rc)
+                            End Using
+                        Else
+                            Using br As New SolidBrush(m_colorRamp.GetColor(sValue, sValMax))
+                                g.FillRectangle(br, rc)
+                            End Using
+                        End If
                     End If
                     ' Draw value
                     g.DrawString(String.Format("{0}", value), Me.m_ft, Me.m_brFore, rc)
