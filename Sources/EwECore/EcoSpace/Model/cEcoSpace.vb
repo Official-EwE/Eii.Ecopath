@@ -1581,7 +1581,7 @@ Public Class cEcoSpace
                         m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)
                         m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) += solver.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp)
 
-                        For irgn As Integer = 1 To m_Data.nRegions
+                        For irgn As Integer = 0 To m_Data.nRegions
                             m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
                         Next irgn
                     Next igrp
@@ -1630,7 +1630,7 @@ Public Class cEcoSpace
                                      ", Total time, " & Thread.TotalProcessorTime.TotalMilliseconds.ToString & ", CPU time " & Thread.UserProcessorTime.TotalMilliseconds.ToString)
         Next
 
-       
+
 
         'Process.GetCurrentProcess().TotalProcessorTime
 

@@ -988,7 +988,7 @@ Public Class cSpaceSolver
     ''' <param name="iCol">Map col</param>
     ''' <remarks></remarks>
     Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
-        Dim cellCatch As Single, iFlt As Integer, igrp As Integer
+        Dim cellCatch As Single, iFlt As Integer, iGrp As Integer
 
         Try
 
@@ -1010,42 +1010,42 @@ Public Class cSpaceSolver
 
             Next
 
-            For igrp = 1 To Me.m_Data.NGroups
+            For iGrp = 1 To Me.m_Data.NGroups
 
-                If Me.m_PathData.fCatch(igrp) > 0 Then
+                If Me.m_PathData.fCatch(iGrp) > 0 Then
                     'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
                     'use fishing mortality rate passed in instead 
                     'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
-                    Dim bCatch As Single = Biomass(igrp) * FMortByGroup(igrp) * m_Data.Width(iRow)
-                    Me.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp) += bCatch '= m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
-                    m_Data.CatchMap(iRow, iCol, igrp) += bCatch
+                    Dim bCatch As Single = Biomass(iGrp) * FMortByGroup(iGrp) * m_Data.Width(iRow)
+                    Me.ResultsByGroup(eSpaceResultsGroups.CatchBio, iGrp) += bCatch '= m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
+                    m_Data.CatchMap(iRow, iCol, iGrp) += bCatch
                     'Next value of catch, depends on what gear was used:
                     For iFlt = 1 To Me.m_PathData.NumFleet
-                        If Me.m_PathData.Landing(iFlt, igrp) + Me.m_PathData.Discard(iFlt, igrp) > 0 Then
+                        If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
                             'First get catch
-                            cellCatch = Biomass(igrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, igrp) * m_Data.Width(iRow)
+                            cellCatch = Biomass(iGrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, iGrp) * m_Data.Width(iRow)
 
                             'Sum the total catch by gear
                             Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
                             'sum all fleets
                             Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0) += cellCatch
 
-                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, igrp) += cellCatch
+                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, iGrp) += cellCatch
                             'sum all fleets into the zero fleet index
-                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, igrp) += cellCatch
+                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, iGrp) += cellCatch
 
                             'Next line is for adding up catch by region etc
-                            If m_Data.nRegions > 0 Then
+                            If m_Data.nRegions >= 1 Then
                                 Dim iRgn As Integer = m_Data.Region(iRow, iCol)
                                 If (iRgn > m_Data.nRegions) Then iRgn = 0
-                                Me.ResultsCatchRegionGearGroup(iRgn, iFlt, igrp) += cellCatch
+                                Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
                             End If
 
-                            Me.Landings(igrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, igrp)
+                            Me.Landings(iGrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, iGrp)
                         End If
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
-            Next igrp
+            Next iGrp
 
         Catch ex As Exception
             cLog.Write(ex)

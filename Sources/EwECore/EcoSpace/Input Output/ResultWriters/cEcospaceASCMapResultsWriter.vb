@@ -102,10 +102,10 @@ Public Class cEcospaceASCMapResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
         ' ToDo_JS: globalize this message
-        Dim msg As New cMessage("Ecospace result ASCII files have been written to " & Me.m_TimeStampDirName, _
+        Dim msg As New cMessage("Ecospace result ASCII files have been written to " & Me.m_OutputPath, _
                                 eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         ' Provide hyperlink to the directory with the files
-        msg.Hyperlink = Me.m_TimeStampDirName
+        msg.Hyperlink = Me.m_OutputPath
         Me.m_core.Messages.SendMessage(msg)
     End Sub
 

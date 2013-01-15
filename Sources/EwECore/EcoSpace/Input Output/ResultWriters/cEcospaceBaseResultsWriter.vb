@@ -81,7 +81,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' <summary>Zhe core.</summary>
     Protected m_core As cCore = Nothing
     ''' <summary>The complete path to the directory containing result files.</summary>
-    Protected m_TimeStampDirName As String
+    Protected m_OutputPath As String
 
 #End Region ' Protected data
 
@@ -143,10 +143,10 @@ Public MustInherit Class cEcospaceBaseResultsWriter
 
         If Me.m_core.m_EcoSpaceData.UseCoreOutputDir Then
             ' Write to "Ecospace output dir\ext\"
-            Me.m_TimeStampDirName = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), Me.FileExtension())
+            Me.m_OutputPath = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.Ecospace), Me.FileExtension())
         Else
             'Use the output directroy set by the user
-            Me.m_TimeStampDirName = Me.m_core.OutputPath
+            Me.m_OutputPath = Me.m_core.OutputPath
         End If
 
         If (Not cFileUtils.IsDirectoryAvailable(Me.OutputDirectory, True)) Then
@@ -164,7 +164,7 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     ''' -----------------------------------------------------------------------
     Protected Overridable ReadOnly Property OutputDirectory() As String
         Get
-            Return Me.m_TimeStampDirName
+            Return Me.m_OutputPath
         End Get
     End Property
 
