@@ -494,7 +494,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerPort(iFleet As Integer) As cEcospaceLayerPort
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerPort)(iFleet - 1), cEcospaceLayerPort)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerPort)(iFleet), cEcospaceLayerPort)
         End Get
     End Property
 
@@ -505,7 +505,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property LayerSailingCost(iFleet As Integer) As cEcospaceLayerSail
         Get
-            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerSail)(iFleet - 1), cEcospaceLayerSail)
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerSail)(iFleet), cEcospaceLayerSail)
         End Get
     End Property
 
