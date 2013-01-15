@@ -121,7 +121,7 @@ Namespace Ecopath.Input
                 If Not group.isMultiStanza Then
                     iRow = Me.AddRow
                     FillInRows(iRow, group, alSumRow, alSumAll)
-                    iStanzaPrev = 0
+                    iStanzaPrev = -1
                 Else 'Group is stanza
                     sg = Core.StanzaGroups(group.iStanza)
                     ' Switching stanza?
@@ -132,11 +132,9 @@ Namespace Ecopath.Input
                         Me(iRow, 0) = hgcStanza
                         Me(iRow, 1) = New PropertyRowHeaderParentCell(Me.PropertyManager, sg, eVarNameFlags.Name, Nothing, hgcStanza)
                         For j As Integer = 2 To Core.nFleets + 2 : Me(iRow, j) = New EwERowHeaderCell() : Next
-                        iRow = Me.AddRow
-                    Else
-                        iRow = Me.AddRow(hgcStanza.Row + hgcStanza.NumChildRows + 1)
+                        iStanzaPrev = group.iStanza
                     End If
-                    iStanzaPrev = group.iStanza
+                    iRow = Me.AddRow
                     hgcStanza.AddChildRow(iRow)
                     FillInRows(iRow, group, alSumRow, alSumAll, True)
                 End If
