@@ -34,4 +34,13 @@ Public Class cEcospaceLayerRegion
         Me.m_dataType = eDataTypes.EcospaceLayerRegion
     End Sub
 
+    ''' <summary>
+    ''' Overridden to return the max region value.
+    ''' </summary>
+    Public Overrides ReadOnly Property MaxValue As Single
+        Get
+            Return Me.m_core.nRegions
+        End Get
+    End Property
+
 End Class
