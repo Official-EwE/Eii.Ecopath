@@ -33,7 +33,8 @@ Namespace Controls.Map.Layers
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            If (Me.UIContext Is Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim iNumRegions As Integer = Me.UIContext.Core.nRegions
 
             Me.Editor.CellValueMax = iNumRegions
@@ -84,8 +85,8 @@ Namespace Controls.Map.Layers
 
 #Region " Event handlers "
 
-        Private Sub OnCreateFromCell(sender As System.Object, e As System.EventArgs) _
-            Handles m_btnFromCell.Click
+        Private Sub OnCreateFromCell(sender As System.Object, e As System.EventArgs)
+
             If (TypeOf Me.Editor Is cLayerEditorRegion) Then
                 Try
                     DirectCast(Me.Editor, cLayerEditorRegion).CreateCellRegions(CInt(Me.m_nudClusterSize.Value))
@@ -117,10 +118,11 @@ Namespace Controls.Map.Layers
             End If
         End Sub
 
-        Private Sub OnNumRegionsChanged(sender As System.Object, e As System.EventArgs) _
-            Handles m_nudNoRegions.ValueChanged
+        Private Sub m_btnSet_Click(sender As System.Object, e As System.EventArgs) Handles m_btnSet.Click
 
             If (Me.UIContext Is Nothing) Then Return
+
+            ' ToDo: validate map content
 
             Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
             parms.nRegions = CInt(Me.m_nudNoRegions.Value)
@@ -142,6 +144,7 @@ Namespace Controls.Map.Layers
         End Sub
 
 #End Region ' Event handlers
+
 
     End Class
 
