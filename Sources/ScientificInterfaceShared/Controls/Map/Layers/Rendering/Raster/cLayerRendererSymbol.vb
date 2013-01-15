@@ -44,18 +44,7 @@ Namespace Controls.Map.Layers
         Public Overrides Sub RenderPreview(ByVal g As Graphics, _
                                            ByVal rc As Rectangle)
 
-            If Me.IsStyleValid() Then
-                rc.Inflate(CInt(-rc.Width * 0.75), CInt(-rc.Height * 0.75))
-                Using p As New Pen(Color.White, 3)
-                    g.DrawEllipse(p, rc)
-                End Using
-                Using br As New SolidBrush(Me.VisualStyle.ForeColour)
-                    g.FillEllipse(br, rc)
-                End Using
-                g.DrawEllipse(Pens.Black, rc)
-            Else
-                Me.RenderError(g, rc)
-            End If
+            Me.RenderSymbol(g, rc, Me.VisualStyle.ForeColour)
 
         End Sub
 
@@ -64,16 +53,46 @@ Namespace Controls.Map.Layers
                                         ByVal layer As cEcospaceLayer, _
                                         ByVal value As Object, _
                                         ByVal style As cStyleGuide.eStyleFlags)
-            Me.RenderPreview(g, rc)
+            Me.RenderSymbol(g, rc, Me.GetSymbolColor(value, style))
         End Sub
+
+        Public Overrides Function GetDisplayText(value As Object) As String
+            Return ""
+        End Function
+
+#Region " Internals "
 
         Protected Overrides Function IsStyleValid() As Boolean
             Return True
         End Function
 
-        Public Overrides Function GetDisplayText(value As Object) As String
-            Return ""
+        Protected Sub RenderSymbol(ByVal g As Graphics, _
+                                   ByVal rc As Rectangle, _
+                                   ByVal colorFill As Color)
+            If Me.IsStyleValid() Then
+                rc.Inflate(CInt(-rc.Width * 0.75), CInt(-rc.Height * 0.75))
+                Using p As New Pen(Color.White, 3)
+                    g.DrawEllipse(p, rc)
+                End Using
+                Using br As New SolidBrush(colorFill)
+                    g.FillEllipse(br, rc)
+                End Using
+                g.DrawEllipse(Pens.Black, rc)
+            Else
+                Me.RenderError(g, rc)
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' Override to change the colour of the layer symbol.
+        ''' </summary>
+        ''' <param name="value"></param>
+        ''' <param name="style"></param>
+        Protected Overridable Function GetSymbolColor(value As Object, style As cStyleGuide.eStyleFlags) As Color
+            Return Me.VisualStyle.ForeColour
         End Function
+
+#End Region ' Internals
 
     End Class
 

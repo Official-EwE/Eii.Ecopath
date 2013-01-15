@@ -64,6 +64,24 @@ Public Class cEcospaceLayerDepth
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' States if a given cell is a land cell that lies beside water.
+    ''' </summary>
+    ''' <param name="iRow">The row of the cell to check.</param>
+    ''' <param name="iCol">The column of the cell to check.</param>
+    ''' <returns>True if the given cell is a coastal cell.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function IsCoastalCell(ByVal iRow As Integer, ByVal iCol As Integer) As Boolean
+        If Not Me.IsLandCell(iRow, iCol) Then Return False
+        For i As Integer = iRow - 1 To iRow + 1
+            For j As Integer = iCol - 1 To iCol + 1
+                If IsWaterCell(i, j) Then Return True
+            Next
+        Next
+        Return False
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Returns the number of water cells in the map.
     ''' </summary>
     ''' <returns>The number of water cells in the map.</returns>

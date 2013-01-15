@@ -20,6 +20,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwECore
 
 #End Region ' Imports 
 
@@ -69,6 +70,28 @@ Namespace Controls.Map.Layers
                 End If
             End Set
         End Property
+
+        ''' <summary>
+        ''' Overridden to set coastal cells only
+        ''' </summary>
+        ''' <param name="ptSet"></param>
+        ''' <param name="value"></param>
+        ''' <param name="e"></param>
+        ''' <param name="ptClick"></param>
+        Protected Overrides Sub SetCellValue(ptSet As System.Drawing.Point, _
+                                             value As Object, _
+                                             e As System.Windows.Forms.MouseEventArgs, _
+                                             ptClick As System.Drawing.Point)
+
+            Dim core As cCore = Me.UIContext.Core
+            Dim bm As cEcospaceBasemap = core.EcospaceBasemap
+            Dim depth As cEcospaceLayerDepth = bm.LayerDepth
+
+            If depth.IsCoastalCell(ptSet.Y, ptSet.X) Then
+                MyBase.SetCellValue(ptSet, value, e, ptClick)
+            End If
+
+        End Sub
 
 #End Region ' Public interfaces
 
