@@ -922,6 +922,8 @@ Public Class cEcoSpace
 
                 Me.m_PauseSignal.WaitOne()
 
+
+
                 'set time step counters
                 'itt is the cumulative time counter
                 itt += 1
@@ -2127,9 +2129,6 @@ Public Class cEcoSpace
         Next
 
     End Sub
-
-
-
 
     ''' <summary>
     ''' Redim or Clear all variables that are needed for an Ecospace run
@@ -4274,14 +4273,11 @@ exitline:
         'set ecospace basebiomass using proportions of usable habitat for each pool, and adjust
         'vulnerability, search parameters to mean biomasses in habitats used
         Dim i As Integer, j As Integer, ii As Integer, ia As Integer
-        'Dim K As Integer
-        'Dim Temp As Single, Bpred As Single, Bprey As Single
-        Dim BRatio() As Single
         Dim Qarena() As Single, VulBiom() As Single
 
         'just set v and a to base values, do not change basebiomass unless adjustspace=true
         'get habitat areas
-        ReDim BRatio(m_Data.NGroups)
+        ReDim m_Data.BRatio(m_Data.NGroups)
 
         CalcHabitatArea()
         'calculate habitat area used by each biomass type
@@ -4291,15 +4287,15 @@ exitline:
 
             If Me.m_Data.TotHabCap(i) > 0 Then
                 Basebiomass(i) = ThabArea * m_SimData.StartBiomass(i) / Me.m_Data.TotHabCap(i) ' HabAreaUsed(i)
-                BRatio(i) = ThabArea / Me.m_Data.TotHabCap(i) 'HabAreaUsed(i)
-                If m_Data.AdjustSpace = False Then BRatio(i) = 1
+                m_Data.BRatio(i) = ThabArea / Me.m_Data.TotHabCap(i) 'HabAreaUsed(i)
+                If m_Data.AdjustSpace = False Then m_Data.BRatio(i) = 1
             Else
                 Basebiomass(i) = m_SimData.StartBiomass(i) 'don't really need this; set before routine called
-                BRatio(i) = 1
+                m_Data.BRatio(i) = 1
             End If
         Next
-        'adjust vulnerability and search parameters for these basebiomass values in preferred habitats
 
+        'adjust vulnerability and search parameters for these basebiomass values in preferred habitats
         ReDim m_Data.Vspace(m_SimData.Narena), m_Data.Aspace(m_SimData.inlinks)
 
         'find total consumptions of prey type for each arena, added over predators
@@ -4308,14 +4304,14 @@ exitline:
             i = m_SimData.ilink(ii)
             j = m_SimData.jlink(ii)
             ia = m_SimData.ArenaLink(ii)
-            Qarena(ia) = Qarena(ia) + m_SimData.Qlink(ii) * BRatio(j)
+            Qarena(ia) = Qarena(ia) + m_SimData.Qlink(ii) * m_Data.BRatio(j)
         Next
         'then set initial vulnerable biomasses (V) by arena
         For ii = 1 To m_SimData.Narena
             i = m_SimData.Iarena(ii)
             j = m_SimData.Jarena(ii)
             If m_SimData.VulMult(i, j) > 10000000000.0# Then m_SimData.VulMult(i, j) = 10000000000.0#
-            m_Data.Vspace(ii) = (m_SimData.VulMult(i, j) + 0.0000000001) * Qarena(ii) / (m_SimData.StartBiomass(i) * BRatio(i))
+            m_Data.Vspace(ii) = (m_SimData.VulMult(i, j) + 0.0000000001) * Qarena(ii) / (m_SimData.StartBiomass(i) * m_Data.BRatio(i))
             If m_Data.Vspace(ii) = 0 Then m_Data.Vspace(ii) = 1
             ' CJW 12jun11: Fix possible cause of the jumps in biomass of spatially restricted groups.
             '              This correction is aimed at preventing underestimation of predation mortality rates 
@@ -4355,7 +4351,7 @@ exitline:
         For i = 1 To m_Data.NGroups
             If m_SimData.pbm(i) > 0 Then 'primary producer
                 ' PbSpace(i) = m_SimData.pbbiomass(i) * m_SimData.StartBiomass(i) / Basebiomass(i)
-                PbSpace(i) = m_SimData.pbbiomass(i) / BRatio(i)
+                PbSpace(i) = m_SimData.pbbiomass(i) / m_Data.BRatio(i)
             End If
         Next
 

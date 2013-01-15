@@ -171,6 +171,8 @@ Public Class cSpaceSolver
 
     Private m_stpWatch As Stopwatch
 
+    Private BBRatio() As Single
+
 
     Public Sub InitForTimestep()
 
@@ -219,6 +221,8 @@ Public Class cSpaceSolver
         ReDim TotPredThread(m_Data.NGroups)
         ReDim TotIFDweightThread(m_Data.NGroups)
         ReDim GroupDetritus(m_Data.NGroups)
+
+        ReDim BBRatio(m_Data.NGroups)
 
         Dim nEcospaceTimeSteps As Integer
         nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
@@ -897,7 +901,14 @@ Public Class cSpaceSolver
         'called from derivt, derivtred if MedIsUsed(0)=true to set
         'current Y value of each active trophic mediation function
         If m_SimData.BioMedData.MedIsUsed(0) Then
-            Me.m_SimData.BioMedData.SetMedFunctions(Biom, Me.FishRateGear, 0, Me.MedVal)
+
+            'Calculate B/BRatio
+            For i As Integer = 1 To m_Data.NGroups
+                BBRatio(i) = Biom(i) / (m_Data.BRatio(i) + 1.0E-20F)
+            Next
+
+            'Calculate MedVal() from the B/BRatio
+            Me.m_SimData.BioMedData.SetMedFunctions(BBRatio, Me.FishRateGear, 0, Me.MedVal)
         End If
 
     End Sub

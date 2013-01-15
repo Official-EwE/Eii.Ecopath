@@ -569,6 +569,15 @@ Public Class cEcospaceDataStructures
     Public SaveASC As Boolean = False
     Public SaveCSV As Boolean = False
 
+    ''' <summary>
+    ''' Ratio of habitat area to total habitat capacity 
+    ''' </summary>
+    ''' <remarks>
+    ''' BRatio(group) = ThabArea / TotHabCap(group) 
+    ''' [total habitat area] / [sum of habitat capacity by group] 
+    ''' </remarks>
+    Public BRatio() As Single
+
 #End Region
 
 #Region "Private Data"
