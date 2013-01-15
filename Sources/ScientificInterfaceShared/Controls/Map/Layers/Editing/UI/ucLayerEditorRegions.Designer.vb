@@ -151,6 +151,7 @@ Namespace Controls.Map.Layers
             '
             'm_btnSet
             '
+            Me.m_btnSet.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_btnSet.Location = New System.Drawing.Point(152, 93)
             Me.m_btnSet.Name = "m_btnSet"
             Me.m_btnSet.Size = New System.Drawing.Size(45, 23)
