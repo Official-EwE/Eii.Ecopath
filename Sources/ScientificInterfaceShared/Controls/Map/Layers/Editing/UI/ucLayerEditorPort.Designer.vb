@@ -19,7 +19,7 @@
 Namespace Controls.Map.Layers
 
     Partial Class ucLayerEditorPort
-        Inherits ucLayerEditor
+        Inherits ucLayerEditorDefault
 
         'UserControl overrides dispose to clean up the component list.
         <System.Diagnostics.DebuggerNonUserCode()> _
@@ -52,15 +52,15 @@ Namespace Controls.Map.Layers
             'm_tlpButtons
             '
             Me.m_tlpButtons.ColumnCount = 2
-            Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+            Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.44444!))
+            Me.m_tlpButtons.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.55556!))
             Me.m_tlpButtons.Controls.Add(Me.m_btnClear, 0, 0)
             Me.m_tlpButtons.Controls.Add(Me.m_btnSet, 1, 0)
-            Me.m_tlpButtons.Location = New System.Drawing.Point(49, 48)
+            Me.m_tlpButtons.Location = New System.Drawing.Point(65, 69)
             Me.m_tlpButtons.Name = "m_tlpButtons"
             Me.m_tlpButtons.RowCount = 1
-            Me.m_tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-            Me.m_tlpButtons.Size = New System.Drawing.Size(148, 23)
+            Me.m_tlpButtons.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpButtons.Size = New System.Drawing.Size(132, 23)
             Me.m_tlpButtons.TabIndex = 3
             '
             'm_btnClear
@@ -69,7 +69,7 @@ Namespace Controls.Map.Layers
             Me.m_btnClear.Location = New System.Drawing.Point(0, 0)
             Me.m_btnClear.Margin = New System.Windows.Forms.Padding(0, 0, 3, 0)
             Me.m_btnClear.Name = "m_btnClear"
-            Me.m_btnClear.Size = New System.Drawing.Size(71, 23)
+            Me.m_btnClear.Size = New System.Drawing.Size(55, 23)
             Me.m_btnClear.TabIndex = 0
             Me.m_btnClear.Text = "&Clear"
             Me.m_btnClear.UseVisualStyleBackColor = True
@@ -77,7 +77,7 @@ Namespace Controls.Map.Layers
             'm_btnSet
             '
             Me.m_btnSet.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_btnSet.Location = New System.Drawing.Point(77, 0)
+            Me.m_btnSet.Location = New System.Drawing.Point(61, 0)
             Me.m_btnSet.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_btnSet.Name = "m_btnSet"
             Me.m_btnSet.Size = New System.Drawing.Size(71, 23)
@@ -91,17 +91,17 @@ Namespace Controls.Map.Layers
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_cmbFleet.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbFleet.FormattingEnabled = True
-            Me.m_cmbFleet.Location = New System.Drawing.Point(49, 21)
+            Me.m_cmbFleet.Location = New System.Drawing.Point(65, 42)
             Me.m_cmbFleet.MaxDropDownItems = 12
             Me.m_cmbFleet.Name = "m_cmbFleet"
-            Me.m_cmbFleet.Size = New System.Drawing.Size(148, 21)
+            Me.m_cmbFleet.Size = New System.Drawing.Size(132, 21)
             Me.m_cmbFleet.TabIndex = 5
             '
             'm_lblFleet
             '
             Me.m_lblFleet.AutoSize = True
             Me.m_lblFleet.ImeMode = System.Windows.Forms.ImeMode.NoControl
-            Me.m_lblFleet.Location = New System.Drawing.Point(0, 24)
+            Me.m_lblFleet.Location = New System.Drawing.Point(0, 45)
             Me.m_lblFleet.Name = "m_lblFleet"
             Me.m_lblFleet.Size = New System.Drawing.Size(33, 13)
             Me.m_lblFleet.TabIndex = 4
@@ -115,7 +115,7 @@ Namespace Controls.Map.Layers
             Me.Controls.Add(Me.m_lblFleet)
             Me.Controls.Add(Me.m_tlpButtons)
             Me.Name = "ucLayerEditorPort"
-            Me.Size = New System.Drawing.Size(200, 77)
+            Me.Size = New System.Drawing.Size(200, 98)
             Me.Controls.SetChildIndex(Me.m_tlpButtons, 0)
             Me.Controls.SetChildIndex(Me.m_lblFleet, 0)
             Me.Controls.SetChildIndex(Me.m_cmbFleet, 0)
