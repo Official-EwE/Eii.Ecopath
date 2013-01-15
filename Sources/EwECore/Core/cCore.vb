@@ -8470,6 +8470,10 @@ Public Class cCore
 
             If Me.m_StateMonitor.HasEcospaceLoaded Then
 
+                ' Prepare outputs at the beginning of the run
+                InitEcospaceOutputs()
+                InitEcotracerOutputs()
+
                 If checkHabitats() Then
 
                     If CheckSpatialDataTimeSteps() Then
@@ -9246,8 +9250,9 @@ Public Class cCore
             Me.m_AdvectionManager.Init(Me, Me.m_Ecospace)
             Me.m_AdvectionManager.Load()
 
-            InitEcospaceOutputs()
-            InitEcotracerOutputs()
+            ' JS 15Jan13: moved this to RunEcospace. Region dimensions are off, and output objects should not be used at this point anyway
+            'InitEcospaceOutputs()
+            'InitEcotracerOutputs()
 
             SpatialDataConnectionManager.Load()
 
