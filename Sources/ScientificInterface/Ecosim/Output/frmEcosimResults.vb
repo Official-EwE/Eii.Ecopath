@@ -34,7 +34,7 @@ Namespace Ecosim
     ''' Form implementing the Ecosim results grids interface.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Class EcosimResults
+    Public Class frmEcosimResults
 
 #Region " Private variables "
 
@@ -114,8 +114,8 @@ Namespace Ecosim
             If (Me.UIContext Is Nothing) Then Return
             If (Me.m_grid Is Nothing) Then Return
 
-            If (TypeOf Me.m_grid Is EcosimResultsGridGroup) Then
-                DirectCast(Me.m_grid, EcosimResultsGridGroup).SelectedFleetIndex = m_cmbFleets.SelectedIndex
+            If (TypeOf Me.m_grid Is gridEcosimResultsGroup) Then
+                DirectCast(Me.m_grid, gridEcosimResultsGroup).SelectedFleetIndex = m_cmbFleets.SelectedIndex
             End If
 
         End Sub
@@ -161,14 +161,14 @@ Namespace Ecosim
 
                 Select Case Me.m_displayMode
                     Case eDisplayModeTypes.Groups
-                        Me.m_grid = New EcosimResultsGridGroup()
+                        Me.m_grid = New gridEcosimResultsGroup()
                         Me.m_grid.UIContext = Me.UIContext
-                        DirectCast(Me.m_grid, EcosimResultsGridGroup).SelectedFleetIndex = Me.m_cmbFleets.SelectedIndex
+                        DirectCast(Me.m_grid, gridEcosimResultsGroup).SelectedFleetIndex = Me.m_cmbFleets.SelectedIndex
                     Case eDisplayModeTypes.Fleets
-                        Me.m_grid = New EcosimResultsGridFleet()
+                        Me.m_grid = New gridEcosimResultsFleet()
                         Me.m_grid.UIContext = Me.UIContext
                     Case eDisplayModeTypes.Indices
-                        Me.m_grid = New EcosimResultsGridIndices()
+                        Me.m_grid = New gridEcosimResultsIndices()
                         Me.m_grid.UIContext = Me.UIContext
                 End Select
 

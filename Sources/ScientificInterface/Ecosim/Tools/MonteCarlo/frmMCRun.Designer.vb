@@ -53,22 +53,22 @@ Namespace Ecosim
             Me.m_cbShowBioTraj = New System.Windows.Forms.CheckBox()
             Me.m_txTol = New System.Windows.Forms.TextBox()
             Me.m_tbpB = New System.Windows.Forms.TabPage()
-            Me.m_gridB = New ScientificInterface.Ecosim.MCRunInputGrid()
+            Me.m_gridB = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsB = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnLoadPedB = New System.Windows.Forms.ToolStripButton()
             Me.m_tbpBP = New System.Windows.Forms.TabPage()
-            Me.m_gridPB = New ScientificInterface.Ecosim.MCRunInputGrid()
+            Me.m_gridPB = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsPB = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnLoadPedPB = New System.Windows.Forms.ToolStripButton()
             Me.m_tbpQB = New System.Windows.Forms.TabPage()
-            Me.m_gridQB = New ScientificInterface.Ecosim.MCRunInputGrid()
+            Me.m_gridQB = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsQB = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnLoadPedQB = New System.Windows.Forms.ToolStripButton()
             Me.m_tbpEE = New System.Windows.Forms.TabPage()
-            Me.m_gridEE = New ScientificInterface.Ecosim.MCRunInputGrid()
+            Me.m_gridEE = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsEE = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tbpBA = New System.Windows.Forms.TabPage()
-            Me.m_gridBA = New ScientificInterface.Ecosim.MCRunInputGrid()
+            Me.m_gridBA = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsBA = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tbpBPlot = New System.Windows.Forms.TabPage()
             Me.m_spPlot = New System.Windows.Forms.SplitContainer()
@@ -76,7 +76,7 @@ Namespace Ecosim
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_lblGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage()
-            Me.m_gridBestFit = New ScientificInterface.Ecosim.MCRunOutputGrid()
+            Me.m_gridBestFit = New ScientificInterface.Ecosim.gridMCRunOutput()
             Me.m_cbSave = New System.Windows.Forms.CheckBox()
             Me.lblTrial = New System.Windows.Forms.Label()
             Me.lblERun = New System.Windows.Forms.Label()
@@ -708,7 +708,7 @@ Namespace Ecosim
         Private WithEvents lblBestSS As System.Windows.Forms.Label
         Private WithEvents lbSSOrg As System.Windows.Forms.Label
         Private WithEvents m_tlpOutputs As System.Windows.Forms.TableLayoutPanel
-        Private WithEvents m_gridBestFit As ScientificInterface.Ecosim.MCRunOutputGrid
+        Private WithEvents m_gridBestFit As ScientificInterface.Ecosim.gridMCRunOutput
         Private WithEvents m_tbpBPlot As System.Windows.Forms.TabPage
         Private WithEvents m_tbpBestTrial As System.Windows.Forms.TabPage
         Private WithEvents m_tbpBA As System.Windows.Forms.TabPage
@@ -728,18 +728,18 @@ Namespace Ecosim
         Private WithEvents m_cbRetainEstimates As System.Windows.Forms.CheckBox
         Private WithEvents m_cbRetainCurPattern As System.Windows.Forms.CheckBox
         Private WithEvents m_cbShowBioTraj As System.Windows.Forms.CheckBox
-        Private WithEvents m_gridB As ScientificInterface.Ecosim.MCRunInputGrid
+        Private WithEvents m_gridB As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_tsB As cEwEToolstrip
         Private WithEvents m_tsbnLoadPedB As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_gridPB As ScientificInterface.Ecosim.MCRunInputGrid
+        Private WithEvents m_gridPB As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_tsPB As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_tsbnLoadPedPB As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_gridQB As ScientificInterface.Ecosim.MCRunInputGrid
+        Private WithEvents m_gridQB As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_tsQB As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_tsbnLoadPedQB As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_gridEE As ScientificInterface.Ecosim.MCRunInputGrid
+        Private WithEvents m_gridEE As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_tsEE As ScientificInterfaceShared.Controls.cEwEToolstrip
-        Private WithEvents m_gridBA As ScientificInterface.Ecosim.MCRunInputGrid
+        Private WithEvents m_gridBA As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_tsBA As ScientificInterfaceShared.Controls.cEwEToolstrip
     End Class
 

@@ -38,7 +38,7 @@ Namespace Ecosim
     ''' <summary>
     ''' Form, implementing the Ecosim output plots interface.
     ''' </summary>
-    Public Class EcosimOutputPlots
+    Public Class frmEcosimOutputPlots
 
 #Region " Private helper class "
 
@@ -169,7 +169,7 @@ Namespace Ecosim
             Me.ConfigurePlots(False)
 
             Me.CoreComponents = Nothing
- 
+
             Me.m_paneMaster = Nothing
             Me.m_zgh = Nothing
 
@@ -334,7 +334,7 @@ Namespace Ecosim
                 Else
                     Me.m_aiPlotPane(plot) = cCore.NULL_VALUE
                 End If
-             Next plot
+            Next plot
 
             Try
                 For Each item As ToolStripItem In Me.m_tsDDShowHidePlots.DropDownItems

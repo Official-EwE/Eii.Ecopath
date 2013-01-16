@@ -30,7 +30,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
-    Public Class GrowthEstimatesEwEGrid
+    Public Class gridPSDGrowthEstimates
         : Inherits EwEGrid
 
         Public Sub New()

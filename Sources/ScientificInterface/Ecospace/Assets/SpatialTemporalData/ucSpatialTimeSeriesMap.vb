@@ -19,7 +19,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing.Drawing2D
+Imports System.ComponentModel
 Imports System.Text
 Imports EwECore
 Imports EwECore.SpatialData
@@ -55,6 +55,13 @@ Namespace Ecospace
         Private m_bShowRefMap As Boolean = False
         Private m_bShowGrid As Boolean = False
 
+        ' -- automated zoom --
+        Private m_bUseBasemap As Boolean = True
+        ''' <summary>Manual map display extent (min lon, max lat, width, height).</summary>
+        Private m_rcfMapExtent As New RectangleF(0, 0, 0, 0)
+        ''' <summary>Manual map display grid (#cols, #rows)</summary>
+        Private m_szMap As New Size(10, 10)
+
         Public Sub New()
             MyBase.New()
             Me.InitializeComponent()
@@ -73,6 +80,7 @@ Namespace Ecospace
 
 #Region " Public access "
 
+        <Browsable(False)> _
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
             Get
@@ -97,6 +105,7 @@ Namespace Ecospace
             End Set
         End Property
 
+        <Browsable(False)> _
         Public Property SelectedDataset As ISpatialDataSet
             Get
                 Return Me.m_ds
@@ -138,6 +147,8 @@ Namespace Ecospace
             End Set
         End Property
 
+        Public Property UseBuiltInReferenceMap As Boolean
+
         Public Property ShowGrid As Boolean
             Get
                 Return Me.m_bShowGrid
@@ -148,46 +159,94 @@ Namespace Ecospace
             End Set
         End Property
 
+        Public Property ShowLabels As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the map extent and size are automatically calculated from the
+        ''' Ecospace base map (true), or must be provided manually (false).
+        ''' </summary>
+        ''' <remarks>
+        ''' The manual extent must be provided via <see cref="MapExtent"/>. The
+        ''' manual map size must be provided via <see cref="MapSize"/>.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        <DefaultValue(True)> _
+        <Description("Determines whether the map extent is calculated from the Ecospace scenario (true) or is manually provided (false).")> _
+        Public Property UseBasemap As Boolean
+            Get
+                Return Me.m_bUseBasemap
+            End Get
+            Set(value As Boolean)
+                If (Me.m_bUseBasemap <> value) Then
+                    Me.m_bUseBasemap = value
+                    Me.RefreshContent()
+                End If
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the top-left corner, width and height (in decimal degrees lon, lat) for the 
+        ''' manual extent of the map to display.
+        ''' </summary>
+        ''' <remarks>
+        ''' This value is only effective if the <see cref="UseBasemap"/>
+        ''' is set to false.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property MapExtent As RectangleF
+            Get
+                If (Me.UIContext IsNot Nothing) And (Me.m_bUseBasemap = True) Then
+                    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+                    If (bm IsNot Nothing) Then
+                        Dim ptfTL As PointF = bm.PosTopLeft
+                        Dim ptfBR As PointF = bm.PosBottomRight
+                        Return New RectangleF(ptfTL, New SizeF(ptfBR.X - ptfTL.X, ptfBR.Y - ptfTL.Y))
+                    End If
+                End If
+                Return Me.m_rcfMapExtent
+            End Get
+            Set(value As RectangleF)
+                Me.m_rcfMapExtent = value
+                If Not Me.UseBasemap Then Me.RefreshContent()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the number of rows and columns to display in the grid.
+        ''' </summary>
+        ''' <remarks>
+        ''' This value is only effective if the <see cref="UseBasemap"/>
+        ''' is set to false.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Public Property MapSize As Size
+            Get
+                If (Me.UIContext IsNot Nothing) And (Me.m_bUseBasemap = True) Then
+                    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
+                    If (bm IsNot Nothing) Then
+                        Return New Size(bm.InCol, bm.InRow)
+                    End If
+                End If
+                Return Me.m_szMap
+            End Get
+            Set(value As Size)
+                Me.m_szMap = value
+                If Not Me.m_bUseBasemap Then Me.RefreshContent()
+            End Set
+        End Property
+
         Public Sub RefreshContent()
 
             If (Me.m_uic Is Nothing) Then Return
 
-            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-
-            Me.m_rcfEcospaceExtent = Me.ToDisplayRect(bm.PosTopLeft, bm.PosBottomRight)
-            Me.m_lExternalDataMapExtents.Clear()
-
-            Me.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
-            Me.Invalidate()
-
-            If (Me.m_ds Is Nothing) Then Return
-
-            Dim iTimeStart As Integer = 1
-            Dim iTimeEnd As Integer = Me.m_uic.Core.nEcospaceTimeSteps
-            Dim ptfTL As PointF = Nothing
-            Dim ptfBR As PointF = Nothing
-
-            If Me.m_ds.TimeStart > Date.MinValue Then
-                iTimeStart = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.m_ds.TimeStart)
-            End If
-
-            If Me.m_ds.TimeEnd < Date.MaxValue Then
-                iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.m_ds.TimeEnd)
-            End If
-
-            Me.m_iCurrentTimeStepExtent = -1
-            For iStep As Integer = iTimeStart To iTimeEnd
-                If Me.m_ds.GetExtentAtT(Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep), ptfTL, ptfBR) Then
-                    ' Is data is for current time step?
-                    If (iStep = Me.m_iTimeStep) Then
-                        ' #Yes: remember current time step index
-                        Me.m_iCurrentTimeStepExtent = Me.m_lExternalDataMapExtents.Count
-                    End If
-                    ' Add map extent
-                    Me.m_lExternalDataMapExtents.Add(ToDisplayRect(ptfTL, ptfBR))
-                End If
-            Next
+            Try
+                Me.RecalcDisplayBits()
+            Catch ex As Exception
+                ' Whoah!
+            End Try
 
         End Sub
 
@@ -209,6 +268,46 @@ Namespace Ecospace
 #End Region ' Events
 
 #Region " Rendering "
+
+        Private Sub RecalcDisplayBits()
+
+            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim rcf As RectangleF = Me.MapExtent
+            Dim ptfTL As PointF = rcf.Location
+            Dim ptfBR As PointF = rcf.Location + rcf.Size
+
+            Me.m_rcfEcospaceExtent = Me.ToDisplayRect(ptfTL, ptfBR)
+            Me.m_lExternalDataMapExtents.Clear()
+
+            Me.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.PLOT_BACKGROUND)
+            Me.Invalidate()
+
+            If (Me.m_ds Is Nothing) Then Return
+
+            Dim iTimeStart As Integer = 1
+            Dim iTimeEnd As Integer = Me.m_uic.Core.nEcospaceTimeSteps
+
+            If Me.m_ds.TimeStart > Date.MinValue Then
+                iTimeStart = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.m_ds.TimeStart)
+            End If
+
+            If Me.m_ds.TimeEnd < Date.MaxValue Then
+                iTimeEnd = Me.m_uic.Core.AbsoluteTimeToEcospaceTimestep(Me.m_ds.TimeEnd)
+            End If
+
+            Me.m_iCurrentTimeStepExtent = -1
+            For iStep As Integer = iTimeStart To iTimeEnd
+                If Me.m_ds.GetExtentAtT(Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(iStep), ptfTL, ptfBR) Then
+                    ' Is data is for current time step?
+                    If (iStep = Me.m_iTimeStep) Then
+                        ' #Yes: remember current time step index
+                        Me.m_iCurrentTimeStepExtent = Me.m_lExternalDataMapExtents.Count
+                    End If
+                    ' Add map extent
+                    Me.m_lExternalDataMapExtents.Add(ToDisplayRect(ptfTL, ptfBR))
+                End If
+            Next
+        End Sub
 
         Private Sub DoPaint(g As Graphics, rc As Rectangle)
 
@@ -268,6 +367,8 @@ Namespace Ecospace
 
         Private Sub DrawDataRectangles(g As Graphics)
 
+            ' Only draw data rectangles if external data is available
+            If (Me.m_ds Is Nothing) Then Return
             If (Me.m_lExternalDataMapExtents.Count = 0) Then Return
 
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
@@ -326,14 +427,24 @@ Namespace Ecospace
 
             If (Not Me.ShowReferenceMap) Then Return
 
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-            Dim img As Image = sg.MapReferenceImage
+            Dim img As Image = Nothing
+            Dim ptfTL As PointF
+            Dim ptfBR As PointF
+
+            If Me.UseBuiltInReferenceMap Then
+                img = My.Resources.urf
+                ptfTL = New PointF(-180, 90)
+                ptfBR = New PointF(180, -90)
+            Else
+                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+                img = sg.MapReferenceImage
+                ptfTL = sg.MapReferenceLayerTL
+                ptfBR = sg.MapReferenceLayerBR
+            End If
 
             If (img IsNot Nothing) Then
                 Try
-                    g.DrawImage(img, _
-                                sg.MapReferenceLayerTL.X, -sg.MapReferenceLayerTL.Y, _
-                                (sg.MapReferenceLayerBR.X - sg.MapReferenceLayerTL.X), (sg.MapReferenceLayerTL.Y - sg.MapReferenceLayerBR.Y))
+                    g.DrawImage(img, ptfTL.X, -ptfTL.Y, (ptfBR.X - ptfTL.X), (ptfTL.Y - ptfBR.Y))
                 Catch ex As Exception
                     Debug.Assert(False, ex.Message)
                 End Try
@@ -342,6 +453,8 @@ Namespace Ecospace
         End Sub
 
         Private Sub DrawLabels(g As Graphics, rc As Rectangle)
+
+            If Not Me.ShowLabels Then Return
 
             Dim sg As cStyleGuide = Me.m_uic.StyleGuide
             Dim tmpFont As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
@@ -375,6 +488,13 @@ Namespace Ecospace
 
         End Sub
 
+        ''' <summary>
+        ''' Draw lat, lon grid lines
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="rc"></param>
+        ''' <param name="rcfView"></param>
+        ''' <remarks></remarks>
         Private Sub DrawGridLines(g As Graphics, rc As Rectangle, rcfView As RectangleF)
 
             If (Not Me.m_bShowGrid) Then Return

@@ -50,7 +50,7 @@ Namespace Ecosim
             End Try
         End Sub
 
-        Protected Overrides ReadOnly Property Grid() As ApplyShapeGrid
+        Protected Overrides ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Me.m_grid
             End Get
@@ -59,12 +59,12 @@ Namespace Ecosim
 #Region " Designer bits "
 
         Private components As System.ComponentModel.IContainer
-        Private WithEvents m_grid As ScientificInterface.Ecosim.ApplyLandingsShapeGrid
+        Private WithEvents m_grid As ScientificInterface.Ecosim.gridApplyLandingsShape
 
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyPriceElasticy))
-            Me.m_grid = New ScientificInterface.Ecosim.ApplyLandingsShapeGrid
+            Me.m_grid = New ScientificInterface.Ecosim.gridApplyLandingsShape
             Me.SuspendLayout()
             '
             'm_grid

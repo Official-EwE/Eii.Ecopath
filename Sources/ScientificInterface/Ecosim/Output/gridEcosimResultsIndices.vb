@@ -29,7 +29,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class EcosimResultsGridIndices
+    Public Class gridEcosimResultsIndices
         : Inherits EwEGrid
 
         Public Sub New()

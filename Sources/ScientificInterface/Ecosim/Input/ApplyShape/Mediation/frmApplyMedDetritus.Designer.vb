@@ -43,7 +43,7 @@ Namespace Ecosim
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmApplyMedDetritus))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton()
-            Me.m_grid = New ScientificInterface.Ecosim.ApplyPredPreyShapeGrid()
+            Me.m_grid = New ScientificInterface.Ecosim.gridApplyPredPreyShape()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -108,7 +108,7 @@ Namespace Ecosim
         End Sub
         Private WithEvents tsBtnClearAll As System.Windows.Forms.ToolStripButton
         Private WithEvents m_ts As cEwEToolstrip
-        Private WithEvents m_grid As ScientificInterface.Ecosim.ApplyPredPreyShapeGrid
+        Private WithEvents m_grid As ScientificInterface.Ecosim.gridApplyPredPreyShape
 
     End Class
 End Namespace

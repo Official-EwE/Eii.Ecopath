@@ -30,7 +30,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class MCRunOutputGrid
+    Public Class gridMCRunOutput
         : Inherits EwEGrid
 
         Private m_mcmanager As cMonteCarloManager = Nothing

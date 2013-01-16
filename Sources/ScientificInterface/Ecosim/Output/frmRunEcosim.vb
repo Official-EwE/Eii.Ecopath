@@ -39,7 +39,7 @@ Namespace Ecosim
     ''' Form, implementing the Run Ecosim interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class RunEcosim
+    Public Class frmRunEcosim
 
 #Region " Variables "
 

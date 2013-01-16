@@ -69,7 +69,7 @@ Namespace Ecospace
         End Sub
 
         <CLSCompliant(False)> _
-        Protected Overrides ReadOnly Property Grid() As Ecosim.ApplyShapeGrid
+        Protected Overrides ReadOnly Property Grid() As Ecosim.gridApplyShapeBase
             Get
                 Return Me.m_grid
             End Get

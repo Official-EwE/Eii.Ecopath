@@ -34,7 +34,7 @@ Imports System.ComponentModel
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public MustInherit Class ApplyShapeGrid
+    Public MustInherit Class gridApplyShapeBase
         Inherits EwEGrid
 
 #Region " Private vars "

@@ -32,8 +32,8 @@ Imports SourceLibrary
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class ApplyPredPreyShapeGrid
-        Inherits ApplyShapeGrid
+    Public Class gridApplyPredPreyShape
+        Inherits gridApplyShapeBase
 
 #Region " Private vars "
 

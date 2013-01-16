@@ -21,7 +21,7 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
 
-    Partial Class EcosimResults
+    Partial Class frmEcosimResults
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -41,7 +41,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimResults))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimResults))
             Me.m_lblNumTimeSteps = New System.Windows.Forms.Label
             Me.udNumTimeSteps = New cEwENumericUpDown
             Me.m_nudSumEnd = New cEwENumericUpDown

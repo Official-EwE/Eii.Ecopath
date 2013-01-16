@@ -37,7 +37,7 @@ Namespace Ecospace
     ''' </summary>
     ''' =======================================================================
     <CLSCompliant(False)> _
-     Public Class DispersalEwEGrid
+    Public Class gridEcospaceDispersal
         : Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer

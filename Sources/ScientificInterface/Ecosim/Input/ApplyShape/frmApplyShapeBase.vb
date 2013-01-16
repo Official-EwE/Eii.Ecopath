@@ -74,7 +74,7 @@ Namespace Ecosim
 #Region " Mandatory overrides "
 
         <CLSCompliant(False)> _
-        Protected Overridable ReadOnly Property Grid() As ApplyShapeGrid
+        Protected Overridable ReadOnly Property Grid() As gridApplyShapeBase
             Get
                 Return Nothing
             End Get

@@ -33,7 +33,7 @@ Imports SourceGrid2.Cells.Real
 Namespace Ecopath.Output
 
     <CLSCompliant(False)> _
-    Public Class PSDContributionResult
+    Public Class gridPSDContributionResult
         : Inherits EwEGrid
 
         Private m_frm As Form = Nothing

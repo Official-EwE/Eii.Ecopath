@@ -44,7 +44,7 @@ Namespace Ecosim
             Me.tsBtnClearAll = New System.Windows.Forms.ToolStripButton()
             Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
             Me.tsBtnSetAll = New System.Windows.Forms.ToolStripButton()
-            Me.m_grid = New ScientificInterface.Ecosim.ApplyPredPreyShapeGrid()
+            Me.m_grid = New ScientificInterface.Ecosim.gridApplyPredPreyShape()
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -122,7 +122,7 @@ Namespace Ecosim
         Private WithEvents tsBtnSetAll As System.Windows.Forms.ToolStripButton
         Private WithEvents ToolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
         Private WithEvents m_ts As cEwEToolstrip
-        Private WithEvents m_grid As ScientificInterface.Ecosim.ApplyPredPreyShapeGrid
+        Private WithEvents m_grid As ScientificInterface.Ecosim.gridApplyPredPreyShape
 
     End Class
 End Namespace

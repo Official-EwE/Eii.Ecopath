@@ -31,7 +31,7 @@ Imports SourceGrid2
 Namespace Ecospace
 
     <CLSCompliant(False)> _
-    Public Class gridFishery
+    Public Class gridEcospaceFishery
         : Inherits EwEGrid
 
         Private m_ah As New SourceGrid2.BehaviorModels.CustomEvents
@@ -87,7 +87,7 @@ Namespace Ecospace
             Me(0, Me.ColumnsCount - 2) = New EwEColumnHeaderCell(SharedResources.HEADER_EFFPOWER)
             'Column header cell - Tot.Eff.Multip.
             Me(0, Me.ColumnsCount - 1) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTEFFMULTI)
-           
+
 
         End Sub
 

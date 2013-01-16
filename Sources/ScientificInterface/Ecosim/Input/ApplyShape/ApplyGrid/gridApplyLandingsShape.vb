@@ -33,8 +33,8 @@ Imports SourceLibrary
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class ApplyLandingsShapeGrid
-        Inherits ApplyShapeGrid
+    Public Class gridApplyLandingsShape
+        Inherits gridApplyShapeBase
 
         Public Sub New()
             MyBase.New()

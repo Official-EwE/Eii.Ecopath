@@ -40,7 +40,7 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     <CLSCompliant(False)> _
     Public Class ucApplyMapResponseGrid
-        Inherits Ecosim.ApplyShapeGrid
+        Inherits Ecosim.gridApplyShapeBase
 
 #Region " Overrides "
 

@@ -162,9 +162,9 @@ Public Class frmNavigationPanel
             .Add("ndRunPSD", eCoreExecutionState.EcopathLoaded, GetType(RunPSD), "") ' ToDo: connect to help
 
             ' PSD Output
-            .Add("ndGrowthEstimates", eCoreExecutionState.PSDCompleted, GetType(GrowthEstimatesEwEGrid), "") ' ToDo: connect to help
+            .Add("ndGrowthEstimates", eCoreExecutionState.PSDCompleted, GetType(gridPSDGrowthEstimates), "") ' ToDo: connect to help
             .Add("ndPSDContributionPlot", eCoreExecutionState.PSDCompleted, GetType(PSDContributionPlot), "") ' ToDo: connect to help
-            .Add("ndPSDContributionResult", eCoreExecutionState.PSDCompleted, GetType(PSDContributionResult), "") ' ToDo: connect to help
+            .Add("ndPSDContributionResult", eCoreExecutionState.PSDCompleted, GetType(gridPSDContributionResult), "") ' ToDo: connect to help
             .Add("ndPSDPlotByGroup", eCoreExecutionState.PSDCompleted, GetType(PSDPlotByGroup), "") ' ToDo: connect to help
             .Add("ndSizeWeightPlot", eCoreExecutionState.PSDCompleted, GetType(SizeWeightPlot), "") ' ToDo: connect to help
 
@@ -192,9 +192,9 @@ Public Class frmNavigationPanel
             .Add("ndApplyPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmApplyPriceElasticy)) ' ToDo: connect to help
 
             ' Ecosim Output
-            .Add("ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.RunEcosim), "Run Ecosim.htm")
-            .Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimOutputPlots), "Ecosim plot.htm")
-            .Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.EcosimResults), "Ecosim results.htm")
+            .Add("ndRunEcosim", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmRunEcosim), "Run Ecosim.htm")
+            .Add("ndEcosimPlots", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimOutputPlots), "Ecosim plot.htm")
+            .Add("ndEcosimResults", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmEcosimResults), "Ecosim results.htm")
             .Add("ndEcosimAllFits", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.frmShowAllFits), "Ecosim results.htm")
             .Add("ndSRPlot", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmStockRecruitmentPlot), "Stock recruitment S R plot.htm")
             .Add("ndSuitabilityPlot", eCoreExecutionState.EcosimCompleted, GetType(Ecosim.SuitabilityPlot)) ' ToDo: connect to help
@@ -206,11 +206,11 @@ Public Class frmNavigationPanel
             .Add("ndMSY", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMSY), "") ' ToDo: connect to help
 
             ' Ecospace
-            .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.DispersalEwEGrid), "Dispersal.htm")
+            .Add("ndDispersal", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceDispersal), "Dispersal.htm")
             .Add("ndEcospaceParameters", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceParameters), "Ecospace parameters.htm")
             .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap.frmEcospaceMap), "Basemap.htm") ' ToDo: connect to help
             .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
-            .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridFishery), "Ecospace Fishery.htm")
+            .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.dlgEcospaceScenario)) ' ToDo: connect to help
             .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.RunEcospace), "Run Ecospace.htm")
             .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Advection.frmAdvection), "")

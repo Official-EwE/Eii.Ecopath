@@ -32,7 +32,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class MCRunInputGrid
+    Public Class gridMCRunInput
         : Inherits EwEGrid
 
         Private m_value As eMCRunDisplayInputValueTypes = 0

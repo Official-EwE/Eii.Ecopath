@@ -22,7 +22,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecosim
 
-    Partial Class RunEcosim
+    Partial Class frmRunEcosim
         Inherits frmEwE
 
         'UserControl overrides dispose to clean up the component list.
@@ -43,7 +43,7 @@ Namespace Ecosim
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim sep1 As System.Windows.Forms.ToolStripSeparator
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(RunEcosim))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRunEcosim))
             Dim sep2 As System.Windows.Forms.ToolStripSeparator
             Dim ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
             Me.m_btnRun = New System.Windows.Forms.Button()

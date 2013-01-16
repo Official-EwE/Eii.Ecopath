@@ -125,6 +125,9 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwE6, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
+      <ExecutableExtension>.exe</ExecutableExtension>
+    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -238,6 +241,12 @@
       <DependentUpon>frmApplyMedProducer.vb</DependentUpon>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Ecosim\Output\frmStockRecruitmentPlot.Designer.vb">
+      <DependentUpon>frmStockRecruitmentPlot.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecosim\Output\frmStockRecruitmentPlot.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\MSY\frmMSY.Designer.vb">
@@ -440,10 +449,10 @@
     <Compile Include="Ecosim\Tools\MonteCarlo\frmMCRun.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\MonteCarlo\MCRunInputGrid.vb">
+    <Compile Include="Ecosim\Tools\MonteCarlo\gridMCRunInput.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Tools\MonteCarlo\MCRunOutputGrid.vb">
+    <Compile Include="Ecosim\Tools\MonteCarlo\gridMCRunOutput.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\dlgSelectAllFitsPlots.Designer.vb">
@@ -473,34 +482,28 @@
     <Compile Include="Ecosim\Input\MediationFunction\frmMediationFunction.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputPlots.Designer.vb">
-      <DependentUpon>EcosimOutputPlots.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\frmEcosimOutputPlots.Designer.vb">
+      <DependentUpon>frmEcosimOutputPlots.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimOutputPlots.vb">
+    <Compile Include="Ecosim\Output\frmEcosimOutputPlots.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimResults.Designer.vb">
-      <DependentUpon>EcosimResults.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\frmEcosimResults.Designer.vb">
+      <DependentUpon>frmEcosimResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimResults.vb">
+    <Compile Include="Ecosim\Output\frmEcosimResults.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimResultsGridFleet.vb">
+    <Compile Include="Ecosim\Output\gridEcosimResultsFleet.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\EcosimResultsGridGroup.vb">
+    <Compile Include="Ecosim\Output\gridEcosimResultsGroup.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Other\dlgShowHideItems.Designer.vb">
       <DependentUpon>dlgShowHideItems.vb</DependentUpon>
     </Compile>
     <Compile Include="Other\dlgShowHideItems.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Ecosim\Output\SRplot.Designer.vb">
-      <DependentUpon>SRplot.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Ecosim\Output\SRplot.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Tools\Fit to time series\dlgSensitivityOfSStoV.Designer.vb">
@@ -590,7 +593,7 @@
     <Compile Include="Ecospace\Input\gridDefineMPAs.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridDispersal.vb">
+    <Compile Include="Ecospace\Input\gridEcospaceDispersal.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgDefineHabitats.Designer.vb">
@@ -605,7 +608,7 @@
     <Compile Include="Ecospace\Input\dlgDefineMPAs.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecospace\Input\gridFishery.vb">
+    <Compile Include="Ecospace\Input\gridEcospaceFishery.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\cMapDrawer.vb" />
@@ -748,10 +751,10 @@
     <Compile Include="Ecosim\Input\Vulnerabilities\gridVulnerabilities.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Output\RunEcosim.Designer.vb">
-      <DependentUpon>RunEcosim.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\frmRunEcosim.Designer.vb">
+      <DependentUpon>frmRunEcosim.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\RunEcosim.vb">
+    <Compile Include="Ecosim\Output\frmRunEcosim.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="cCoreController.vb" />
@@ -816,6 +819,9 @@
     <EmbeddedResource Include="Ecosim\Input\ApplyShape\Mediation\frmApplyMedProducer.resx">
       <DependentUpon>frmApplyMedProducer.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecosim\Output\frmStockRecruitmentPlot.resx">
+      <DependentUpon>frmStockRecruitmentPlot.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Tools\MSY\frmMSY.resx">
       <DependentUpon>frmMSY.vb</DependentUpon>
@@ -890,13 +896,13 @@
       <SubType>Designer</SubType>
       <DependentUpon>frmMediationFunction.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimOutputPlots.resx">
+    <EmbeddedResource Include="Ecosim\Output\frmEcosimOutputPlots.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>EcosimOutputPlots.vb</DependentUpon>
+      <DependentUpon>frmEcosimOutputPlots.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\EcosimResults.resx">
+    <EmbeddedResource Include="Ecosim\Output\frmEcosimResults.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>EcosimResults.vb</DependentUpon>
+      <DependentUpon>frmEcosimResults.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
@@ -906,10 +912,6 @@
     <EmbeddedResource Include="Other\dlgShowHideItems.resx">
       <SubType>Designer</SubType>
       <DependentUpon>dlgShowHideItems.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\SRplot.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>SRplot.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Input\dlgDefineHabitats.resx">
       <SubType>Designer</SubType>
@@ -954,8 +956,8 @@
       <DependentUpon>frmEcosimParameters.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\RunEcosim.resx">
-      <DependentUpon>RunEcosim.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Output\frmRunEcosim.resx">
+      <DependentUpon>frmRunEcosim.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsFileManagement.resx">
@@ -1168,8 +1170,8 @@
       <DependentUpon>dlgEstimateVs.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Output\SuitabilityPlot.resx">
-      <DependentUpon>SuitabilityPlot.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Output\frmSuitabilityPlot.resx">
+      <DependentUpon>frmSuitabilityPlot.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\ucSuitabilityPlot.resx">
@@ -1287,7 +1289,7 @@
     <Compile Include="Ecopath\Output\gridFleetFishingMortality.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecopath\Output\gridGrowthEstimates.vb">
+    <Compile Include="Ecopath\Output\gridPSDGrowthEstimates.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\frmPSDContributionPlot.Designer.vb">
@@ -1317,13 +1319,13 @@
     <Compile Include="Ecopath\Output\frmSizeWeight.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\ApplyLandingsShapeGrid.vb">
+    <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyLandingsShape.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\ApplyPredPreyShapeGrid.vb">
+    <Compile Include="Ecosim\Input\ApplyShape\ApplyGrid\gridApplyPredPreyShape.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\ApplyShape\ApplyShapeGrid.vb">
+    <Compile Include="Ecosim\Input\ApplyShape\gridApplyShape.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ApplyShape\dlgApplyLandingShape.Designer.vb">
@@ -1514,14 +1516,14 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\EcosimOutputLineGraph\cEcosimOutputPlotHelper.vb" />
-    <Compile Include="Ecosim\Output\EcosimResultsGridIndices.vb">
+    <Compile Include="Ecosim\Output\gridEcosimResultsIndices.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ShowAllFits\cShowAllFitsPlotData.vb" />
-    <Compile Include="Ecosim\Output\SuitabilityPlot.Designer.vb">
-      <DependentUpon>SuitabilityPlot.vb</DependentUpon>
+    <Compile Include="Ecosim\Output\frmSuitabilityPlot.Designer.vb">
+      <DependentUpon>frmSuitabilityPlot.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Output\SuitabilityPlot.vb">
+    <Compile Include="Ecosim\Output\frmSuitabilityPlot.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\ucSuitabilityPlot.Designer.vb">

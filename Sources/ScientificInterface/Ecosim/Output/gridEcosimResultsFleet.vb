@@ -30,7 +30,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class EcosimResultsGridFleet
+    Public Class gridEcosimResultsFleet
         : Inherits gridResultsBase
 
         Private m_iNumVisibleFleets As Integer = 0

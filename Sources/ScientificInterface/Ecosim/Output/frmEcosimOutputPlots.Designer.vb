@@ -21,7 +21,7 @@ Imports ScientificInterfaceShared.Controls
 
 Namespace Ecosim
 
-    Partial Class EcosimOutputPlots
+    Partial Class frmEcosimOutputPlots
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -41,7 +41,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimOutputPlots))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimOutputPlots))
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_btnSaveData = New System.Windows.Forms.Button()
