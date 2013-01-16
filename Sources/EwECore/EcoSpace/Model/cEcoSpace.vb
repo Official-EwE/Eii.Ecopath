@@ -922,8 +922,6 @@ Public Class cEcoSpace
 
                 Me.m_PauseSignal.WaitOne()
 
-
-
                 'set time step counters
                 'itt is the cumulative time counter
                 itt += 1
@@ -1488,11 +1486,6 @@ Public Class cEcoSpace
         Array.Clear(TotPred, 0, TotPred.Length)
         Array.Clear(TotIFDweight, 0, TotIFDweight.Length)
 
-        'redims cumulative variable for each thread
-        For Each solver In m_spaceSolvers
-            solver.InitForTimestep()
-        Next
-
         iFrstCell = 1
         iLstCell = 0
 
@@ -1542,15 +1535,15 @@ Public Class cEcoSpace
 
                 'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
                 Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                ' worker.Name = "Derivt_" & iSolve.ToString
                 worker.Start()
+
                 iFrstCell += nCells
 
             Next solver
 
             Debug.Assert((iSolve = Me.m_Data.nSpaceSolverThreads) And (m_spaceSolvers.Count = Me.m_Data.nSpaceSolverThreads), "Ecospace.runSpaceSolverThreads() Thread counters are incorrect.")
             Debug.Assert(nCellsCompleted = m_Data.iTotalWaterCells, "Ecospace.runSpaceSolverThreads() may have computed the wrong number of cells. You need to check this.")
-            System.Console.WriteLine("Solver init threads time, " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            ' System.Console.WriteLine("Solver init threads time, " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
             'Me.dumpRunningThreadInfo("Before")
 
@@ -1574,16 +1567,17 @@ Public Class cEcoSpace
 
                 For iflt As Integer = 0 To Me.m_Data.nFleets
                     m_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
-                    m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iflt)
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iflt)
+                    m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)
 
                     For igrp As Integer = 1 To m_Data.NGroups
                         m_Data.Landings(igrp, iflt) += solver.Landings(igrp, iflt)
-                        m_Data.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt, itt) += solver.ResultsByFleet(eSpaceResultsFleets.CatchBio, iflt)
                         m_Data.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp, itt) += solver.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iflt, igrp)
 
                         For irgn As Integer = 0 To m_Data.nRegions
                             m_Data.ResultsCatchRegionGearGroup(irgn, iflt, igrp, itt) += solver.ResultsCatchRegionGearGroup(irgn, iflt, igrp)
                         Next irgn
+
                     Next igrp
                 Next iflt
 
@@ -1605,11 +1599,12 @@ Public Class cEcoSpace
                         Next
                     Next
                 End If
-            Next
+            Next solver
+
             stpTotRun.Stop()
-            System.Console.WriteLine("Solver total run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
-            System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
-            System.Console.WriteLine("Solver [Run Time] / [CPU time], " & (stpTotRun.Elapsed.TotalSeconds / cpuTime * 100).ToString)
+            'System.Console.WriteLine("Solver total run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
+            'System.Console.WriteLine("Solver [Run Time] / [CPU time], " & (stpTotRun.Elapsed.TotalSeconds / cpuTime * 100).ToString)
 
             WaitOb.Dispose()
 
@@ -3543,7 +3538,7 @@ exitline:
 
         Dim waitOb As WaitHandle = New AutoResetEvent(False)
 
-        stpwTotRunTime = Stopwatch.StartNew
+        'stpwTotRunTime = Stopwatch.StartNew
         For ithrd As Integer = 1 To nThrds
 
             nFltsPerThread = Me.computeThreadLoad(Me.m_Data.nFleets, nCompFleets, nThrds, ithrd)
@@ -3629,7 +3624,7 @@ exitline:
         waitOb = Nothing
 
         '  stpwF.Stop()
-        System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        '  System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
         GC.Collect()
 
     End Sub

@@ -173,18 +173,6 @@ Public Class cSpaceSolver
 
     Private BBRatio() As Single
 
-
-    Public Sub InitForTimestep()
-
-        Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
-        Array.Clear(Me.TotLossThread, 0, m_Data.NGroups)
-        Array.Clear(Me.TotEatenByThread, 0, m_Data.NGroups)
-        Array.Clear(Me.TotBiomThread, 0, m_Data.NGroups)
-        Array.Clear(Me.TotPredThread, 0, m_Data.NGroups)
-        Array.Clear(Me.TotIFDweightThread, 0, m_Data.NGroups)
-
-    End Sub
-
     Public Sub Init()
         'local spatial variables
         ReDim loss(m_Data.NGroups)
@@ -224,14 +212,10 @@ Public Class cSpaceSolver
 
         ReDim BBRatio(m_Data.NGroups)
 
-        Dim nEcospaceTimeSteps As Integer
-        nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
         ReDim ResultsByGroup(cEcospaceDataStructures.N_RESULTS_GROUPS, m_Data.NGroups)
         ReDim ResultsByFleet(cEcospaceDataStructures.N_RESULTS_FLEETS, m_Data.nFleets)
         ReDim ResultsByFleetGroup(cEcospaceDataStructures.N_RESULTS_FLEETGROUPS, m_Data.nFleets, m_Data.NGroups)
         ReDim Landings(m_Data.NGroups, m_Data.nFleets)
-
-        ' ReDim ResultsRegionGroup(nRegions, NGroups, NumberOfTimeSteps)
         ReDim ResultsCatchRegionGearGroup(m_Data.nRegions, m_Data.nFleets, m_Data.NGroups)
 
         'local copies are initialized from the ecosim data
@@ -242,12 +226,11 @@ Public Class cSpaceSolver
         Array.Copy(m_SimData.pred, pred, m_Data.NGroups + 1)
         Array.Copy(m_SimData.Eatenof, Eatenof, m_Data.NGroups + 1)
         Array.Copy(m_SimData.Eatenby, Eatenby, m_Data.NGroups + 1)
-        '  Array.Copy(m_SimData.BioMedData.MedVal, MedVal, m_SimData.BioMedData.MediationShapes + 1)
 
         m_ConTracer.Init(m_TracerData, m_PathData, m_SimData, m_Stanza)
         m_ConTracer.CInitialize()
 
-        Me.m_stpWatch = New Stopwatch
+        'Me.m_stpWatch = New Stopwatch
 
     End Sub
 
@@ -294,6 +277,35 @@ Public Class cSpaceSolver
 
     End Sub
 
+
+    Private Sub InitForTimestep()
+
+        Try
+
+            If m_TracerData.EcoSpaceConSimOn Then
+                ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
+            End If
+
+            'Clear out the results
+            Array.Clear(Me.Landings, 0, Me.Landings.Length)
+            Array.Clear(Me.ResultsByGroup, 0, Me.ResultsByGroup.Length)
+            Array.Clear(Me.ResultsByFleet, 0, Me.ResultsByFleet.Length)
+            Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
+            Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
+
+            Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
+            Array.Clear(Me.TotLossThread, 0, m_Data.NGroups)
+            Array.Clear(Me.TotEatenByThread, 0, m_Data.NGroups)
+            Array.Clear(Me.TotBiomThread, 0, m_Data.NGroups)
+            Array.Clear(Me.TotPredThread, 0, m_Data.NGroups)
+            Array.Clear(Me.TotIFDweightThread, 0, m_Data.NGroups)
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
 #Region "Public 'Solve'"
 
     ''' <summary>
@@ -305,16 +317,14 @@ Public Class cSpaceSolver
         'For our purposes here we are ignoring the obParam argument 
         'this sub signature is required by the ThreadPool.QueueUserWorkItem(...)
 
-        If m_TracerData.EcoSpaceConSimOn Then
-            ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
-        End If
+        Me.InitForTimestep()
 
         'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
         'Console.WriteLine("Solve Derivt OBID = " & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
         'Console.WriteLine("     N Map Cells = " & (iLstCell - iFrstCell + 1).ToString)
 
-        Me.m_stpWatch.Reset()
-        Me.m_stpWatch.Start()
+        ' Me.m_stpWatch.Reset()
+        ' Me.m_stpWatch.Start()
 
         Try
             Dim iCell As Integer
@@ -326,11 +336,11 @@ Public Class cSpaceSolver
                 'it is now converted into a row/col index for use in the rest of the algorithm
                 'i = (iGrp - 1) \ m_Data.InCol + 1
                 'j = (iGrp - 1) Mod m_Data.InCol + 1
-                Dim st As Double = Me.m_stpWatch.Elapsed.TotalMilliseconds
+                'Dim st As Double = Me.m_stpWatch.Elapsed.TotalMilliseconds
                 'now do the computations
                 SolveCell(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
 
-                Me.lstCellCompTimes.Add(Me.m_stpWatch.Elapsed.TotalMilliseconds - st)
+                'Me.lstCellCompTimes.Add(Me.m_stpWatch.Elapsed.TotalMilliseconds - st)
             Next iCell
 
         Catch ex As Exception
@@ -344,8 +354,8 @@ Public Class cSpaceSolver
             WaitHandle.Set()
         End If
 
-        Me.m_stpWatch.Stop()
-        Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
+        'Me.m_stpWatch.Stop()
+        'Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
         'Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time " & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
 
     End Sub
@@ -1000,13 +1010,8 @@ Public Class cSpaceSolver
                 Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
 
                 'sum values into All Fleets 0 index 
-                Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0) 'm_Data.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt, iCumTime)
-                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0) 'm_Data.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt, iCumTime)
-
-                ''To get the original effort the effortspace is divided by the fishrategear for the month
-                'If m_ESData.FishRateGear(iFlt, iCumTime) > 0 Then
-                '    m_Data.SumCostInit(iSumIndex, iFlt) = m_Data.SumCostInit(iSumIndex, iFlt) + m_Data.EffortSpace(iFlt, iRow, iCol) / m_ESData.FishRateGear(iFlt, iCumTime) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt)
-                'End If
+                Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt)
+                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt)
 
             Next
 
