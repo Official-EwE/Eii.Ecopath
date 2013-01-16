@@ -2175,7 +2175,7 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Friend Function LoadEcospaceScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
 
-        Dim dlg As EcospaceScenarioDlg = Nothing
+        Dim dlg As dlgEcospaceScenario = Nothing
         Dim bSucces As Boolean = False
         Dim es As cEcospaceScenario = Nothing
 
@@ -2196,16 +2196,16 @@ Public Class AppLauncher
         ' No scenario found yet?
         If (es Is Nothing) Then
             ' #No scenario: invoke ecospace scenario selection dialog
-            dlg = New EcospaceScenarioDlg(Me.UIContext, EcospaceScenarioDlg.eDialogModeType.LoadScenario)
+            dlg = New dlgEcospaceScenario(Me.UIContext, dlgEcospaceScenario.eDialogModeType.LoadScenario)
             If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 
                 Select Case dlg.Mode
-                    Case EcospaceScenarioDlg.eDialogModeType.CreateScenario
+                    Case dlgEcospaceScenario.eDialogModeType.CreateScenario
                         ' User wants to create a scenario instead
                         Return Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription, _
                                 dlg.ScenarioAuthor, dlg.ScenarioContact, _
                                 10, 10, 0, 0, 0.5)
-                    Case EcospaceScenarioDlg.eDialogModeType.LoadScenario
+                    Case dlgEcospaceScenario.eDialogModeType.LoadScenario
                         ' User wants to load a scenario
                         es = DirectCast(dlg.Scenario, cEcospaceScenario)
                     Case Else
@@ -2275,7 +2275,7 @@ Public Class AppLauncher
     ''' -----------------------------------------------------------------------
     Friend Function LoadEcotracerScenario(Optional ByVal bTryReuse As Boolean = False) As Boolean
 
-        Dim dlg As EcotracerScenarioDlg = Nothing
+        Dim dlg As dlgEcotracerScenario = Nothing
         Dim bSucces As Boolean = False
         Dim es As cEcotracerScenario = Nothing
 
@@ -2301,14 +2301,14 @@ Public Class AppLauncher
         ' No scenario found yet?
         If (es Is Nothing) Then
             ' #No scenario: invoke ecotracer scenario selection dialog
-            dlg = New EcotracerScenarioDlg(Me.UIContext, EcotracerScenarioDlg.eDialogModeType.LoadScenario)
+            dlg = New dlgEcotracerScenario(Me.UIContext, dlgEcotracerScenario.eDialogModeType.LoadScenario)
             If (dlg.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 
                 Select Case dlg.Mode
-                    Case EcotracerScenarioDlg.eDialogModeType.CreateScenario
+                    Case dlgEcotracerScenario.eDialogModeType.CreateScenario
                         ' User wants to create a scenario instead
                         Return Me.CreateEcotracerScenario(dlg.ScenarioName, dlg.ScenarioDescription, dlg.ScenarioAuthor, dlg.ScenarioContact)
-                    Case EcotracerScenarioDlg.eDialogModeType.LoadScenario
+                    Case dlgEcotracerScenario.eDialogModeType.LoadScenario
                         ' User wants to load a scenario
                         es = DirectCast(dlg.Scenario, cEcotracerScenario)
                     Case Else
@@ -3436,18 +3436,18 @@ Public Class AppLauncher
     Private Sub OnNewEcospaceScenario(ByVal cmd As cCommand) _
         Handles m_cmdNewEcospaceScenario.OnInvoke
 
-        Dim dlg As New EcospaceScenarioDlg(Me.UIContext, EcospaceScenarioDlg.eDialogModeType.CreateScenario)
+        Dim dlg As New dlgEcospaceScenario(Me.UIContext, dlgEcospaceScenario.eDialogModeType.CreateScenario)
 
         If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
 
             Select Case dlg.Mode
-                Case EcospaceScenarioDlg.eDialogModeType.CreateScenario
+                Case dlgEcospaceScenario.eDialogModeType.CreateScenario
                     Me.CreateEcospaceScenario(dlg.ScenarioName, dlg.ScenarioDescription, _
                             dlg.ScenarioAuthor, dlg.ScenarioContact, _
                             10, 10, 0, 0, 0.5)
-                Case EcospaceScenarioDlg.eDialogModeType.LoadScenario
+                Case dlgEcospaceScenario.eDialogModeType.LoadScenario
                     Me.LoadEcospaceScenario(DirectCast(dlg.Scenario, cEcospaceScenario))
-                Case EcospaceScenarioDlg.eDialogModeType.DeleteScenario
+                Case dlgEcospaceScenario.eDialogModeType.DeleteScenario
                     Return
                 Case Else
                     Debug.Assert(False)
@@ -3478,8 +3478,8 @@ Public Class AppLauncher
     Private Sub OnSaveEcospaceScenarioAs(ByVal cmd As cCommand) _
         Handles m_cmdSaveEcospaceScenarioAS.OnInvoke
 
-        Dim dlg As New EcospaceScenarioDlg(Me.UIContext, _
-                                           EcospaceScenarioDlg.eDialogModeType.SaveScenario, _
+        Dim dlg As New dlgEcospaceScenario(Me.UIContext, _
+                                           dlgEcospaceScenario.eDialogModeType.SaveScenario, _
                                            Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex))
         Dim scenarioTarget As cEcospaceScenario = Nothing
 
@@ -3543,7 +3543,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnInvokeDeleteEcospaceScenario(ByVal cmd As cCommand) _
          Handles m_cmdDeleteEcospaceScenario.OnInvoke
-        Dim dlg As New EcospaceScenarioDlg(Me.UIContext, EwEScenarioDlg.eDialogModeType.DeleteScenario)
+        Dim dlg As New dlgEcospaceScenario(Me.UIContext, dlgScenario.eDialogModeType.DeleteScenario)
         dlg.ShowDialog(Me)
     End Sub
 
@@ -3740,14 +3740,14 @@ Public Class AppLauncher
         ' Not succesful? abort
         If Not Me.Core.StateMonitor.HasEcosimLoaded Then Return
 
-        Dim dlg As New EcotracerScenarioDlg(Me.UIContext, EcotracerScenarioDlg.eDialogModeType.CreateScenario)
+        Dim dlg As New dlgEcotracerScenario(Me.UIContext, dlgEcotracerScenario.eDialogModeType.CreateScenario)
 
         If dlg.ShowDialog = Windows.Forms.DialogResult.OK Then
 
             Select Case dlg.Mode
-                Case EcotracerScenarioDlg.eDialogModeType.CreateScenario
+                Case dlgEcotracerScenario.eDialogModeType.CreateScenario
                     Me.CreateEcotracerScenario(dlg.ScenarioName, dlg.ScenarioDescription, dlg.ScenarioAuthor, dlg.ScenarioContact)
-                Case EcotracerScenarioDlg.eDialogModeType.LoadScenario
+                Case dlgEcotracerScenario.eDialogModeType.LoadScenario
                     Me.LoadEcotracerScenario(DirectCast(dlg.Scenario, cEcotracerScenario))
                 Case Else
                     Debug.Assert(False)
@@ -3786,8 +3786,8 @@ Public Class AppLauncher
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
         Handles m_cmdSaveEcotracerScenarioAS.OnInvoke
 
-        Dim dlg As New EcotracerScenarioDlg(Me.UIContext, _
-                                            EcotracerScenarioDlg.eDialogModeType.SaveScenario, _
+        Dim dlg As New dlgEcotracerScenario(Me.UIContext, _
+                                            dlgEcotracerScenario.eDialogModeType.SaveScenario, _
                                             Me.Core.EcotracerScenarios(Me.Core.ActiveEcotracerScenarioIndex))
 
         If dlg.ShowDialog() = Windows.Forms.DialogResult.OK Then
@@ -3833,7 +3833,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnDeleteEcotracerScenario(ByVal cmd As cCommand) _
          Handles m_cmdDeleteEcotracerScenario.OnInvoke
-        Dim dlg As New EcotracerScenarioDlg(Me.UIContext, EwEScenarioDlg.eDialogModeType.DeleteScenario)
+        Dim dlg As New dlgEcotracerScenario(Me.UIContext, dlgScenario.eDialogModeType.DeleteScenario)
         dlg.ShowDialog(Me)
     End Sub
 

@@ -30,7 +30,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class FisheryInputFleetSizeDynamicsEwEGrid
+    Public Class gridEcosimFleetSizeDynamics
         : Inherits EwEGrid
 
         Public Sub New()

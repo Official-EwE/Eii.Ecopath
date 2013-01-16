@@ -40,24 +40,24 @@ Partial Class dlgEditBasemap
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditBasemap))
-        Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel
-        Me.m_btnOk = New System.Windows.Forms.Button
-        Me.m_btnCancel = New System.Windows.Forms.Button
-        Me.m_NumRows = New System.Windows.Forms.Label
-        Me.m_lblNumCols = New System.Windows.Forms.Label
-        Me.m_nudRowCount = New cEwENumericUpDown
-        Me.m_nudColCount = New cEwENumericUpDown
-        Me.m_lblCellLength = New System.Windows.Forms.Label
-        Me.m_pbLink = New System.Windows.Forms.PictureBox
-        Me.m_lblLonTL = New System.Windows.Forms.Label
-        Me.m_nudCellSize = New cEwENumericUpDown
-        Me.m_nudCellLength = New cEwENumericUpDown
-        Me.m_nudLonTL = New cEwENumericUpDown
-        Me.m_nudLatTL = New cEwENumericUpDown
-        Me.m_lblLatTL = New System.Windows.Forms.Label
-        Me.m_lblCellSize = New System.Windows.Forms.Label
-        Me.m_hdrDimensions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-        Me.m_hdrSpatialReference = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Me.m_tlpButtons = New System.Windows.Forms.TableLayoutPanel()
+        Me.m_btnOk = New System.Windows.Forms.Button()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_NumRows = New System.Windows.Forms.Label()
+        Me.m_lblNumCols = New System.Windows.Forms.Label()
+        Me.m_nudRowCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudColCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_lblCellLength = New System.Windows.Forms.Label()
+        Me.m_pbLink = New System.Windows.Forms.PictureBox()
+        Me.m_lblLonTL = New System.Windows.Forms.Label()
+        Me.m_nudCellSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudCellLength = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudLonTL = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_nudLatTL = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_lblLatTL = New System.Windows.Forms.Label()
+        Me.m_lblCellSize = New System.Windows.Forms.Label()
+        Me.m_hdrDimensions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrSpatialReference = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
         Me.m_tlpButtons.SuspendLayout()
         CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -117,7 +117,6 @@ Partial Class dlgEditBasemap
         '
         'm_pbLink
         '
-        Me.m_pbLink.Image = ScientificInterfaceShared.My.Resources.chain_vert
         resources.ApplyResources(Me.m_pbLink, "m_pbLink")
         Me.m_pbLink.Name = "m_pbLink"
         Me.m_pbLink.TabStop = False
@@ -167,12 +166,18 @@ Partial Class dlgEditBasemap
         '
         'm_hdrDimensions
         '
+        Me.m_hdrDimensions.CanCollapseParent = False
+        Me.m_hdrDimensions.CollapsedParentHeight = 0
+        Me.m_hdrDimensions.IsCollapsed = False
         resources.ApplyResources(Me.m_hdrDimensions, "m_hdrDimensions")
         Me.m_hdrDimensions.Name = "m_hdrDimensions"
         '
         'm_hdrSpatialReference
         '
+        Me.m_hdrSpatialReference.CanCollapseParent = False
+        Me.m_hdrSpatialReference.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_hdrSpatialReference, "m_hdrSpatialReference")
+        Me.m_hdrSpatialReference.IsCollapsed = False
         Me.m_hdrSpatialReference.Name = "m_hdrSpatialReference"
         '
         'dlgEditBasemap
@@ -217,19 +222,19 @@ Partial Class dlgEditBasemap
     Private WithEvents m_btnCancel As System.Windows.Forms.Button
     Private WithEvents m_NumRows As System.Windows.Forms.Label
     Private WithEvents m_lblNumCols As System.Windows.Forms.Label
-    Private WithEvents m_nudRowCount As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudColCount As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblCellLength As System.Windows.Forms.Label
     Private WithEvents m_lblLonTL As System.Windows.Forms.Label
     Private WithEvents m_lblLatTL As System.Windows.Forms.Label
-    Private WithEvents m_nudCellLength As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudLonTL As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudLatTL As System.Windows.Forms.NumericUpDown
-    Private WithEvents m_nudCellSize As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblCellSize As System.Windows.Forms.Label
     Private WithEvents m_pbLink As System.Windows.Forms.PictureBox
     Private WithEvents m_hdrDimensions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_hdrSpatialReference As ScientificInterfaceShared.Controls.cEwEHeaderLabel
     Private WithEvents m_tlpButtons As System.Windows.Forms.TableLayoutPanel
+    Private WithEvents m_nudRowCount As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudColCount As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudCellLength As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudLonTL As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudLatTL As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_nudCellSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
 End Class

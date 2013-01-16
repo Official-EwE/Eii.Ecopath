@@ -32,12 +32,12 @@ Namespace Ecosim
 
     ''' =======================================================================
     ''' <summary>
-    ''' Dialog implementing a <see cref="EwEScenarioDlg">EwEScenarioDlg</see> for
+    ''' Dialog implementing a <see cref="dlgScenario">scenario dialog</see> for
     ''' interacting with Ecosim scenarios.
     ''' </summary>
     ''' =======================================================================
     Public Class EcosimScenarioDlg
-        Inherits EwEScenarioDlg
+        Inherits dlgScenario
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -70,7 +70,7 @@ Namespace Ecosim
             Return SharedResources.DEFAULT_NEWECOSIMSCENARIO
         End Function
 
-        Protected Overrides Function GetDialogCaption(ByVal mode As Wizard.EwEScenarioDlg.eDialogModeType, ByVal strEwEModelName As String) As String
+        Protected Overrides Function GetDialogCaption(ByVal mode As Wizard.dlgScenario.eDialogModeType, ByVal strEwEModelName As String) As String
             Dim strCaption As String = ""
             Select Case mode
                 Case eDialogModeType.CreateScenario

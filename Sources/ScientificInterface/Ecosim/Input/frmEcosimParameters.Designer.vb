@@ -21,7 +21,7 @@ Imports ScientificInterface.Controls
 
 Namespace Ecosim
 
-    Partial Class EcosimParameters
+    Partial Class frmEcosimParameters
         : Inherits frmEwE
 
         'UserControl overrides dispose to clean up the component list.
@@ -41,7 +41,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EcosimParameters))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcosimParameters))
             Me.m_nudNutBaseFreeProp = New cEwENumericUpDown
             Me.m_nudNumberYears = New cEwENumericUpDown
             Me.m_cmbSalinityForcing = New System.Windows.Forms.ComboBox

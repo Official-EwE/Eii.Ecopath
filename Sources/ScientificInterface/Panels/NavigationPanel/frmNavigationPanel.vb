@@ -169,8 +169,8 @@ Public Class frmNavigationPanel
             .Add("ndSizeWeightPlot", eCoreExecutionState.PSDCompleted, GetType(SizeWeightPlot), "") ' ToDo: connect to help
 
             ' Ecosim Input
-            .Add("ndEcosimParameters", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.EcosimParameters), "Ecosim parameters.htm")
-            .Add("ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.GroupInfoEwEGrid), "Group info.htm")
+            .Add("ndEcosimParameters", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmEcosimParameters), "Ecosim parameters.htm")
+            .Add("ndGroupInfo", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridEcosimGroupInput), "Group info.htm")
             .Add("ndVulnerabilities", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmVulnerabilities), "Vulnerabilities flow control.htm")
             .Add("ndTimeSeries", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTimeSeries), "Time series.htm")
             .Add("ndMediation", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmMediationFunction), "Mediation.htm")
@@ -186,7 +186,7 @@ Public Class frmNavigationPanel
             .Add("ndFishingEffort", eCoreExecutionState.EcosimLoaded, GetType(frmFishingEffort)) ' ToDo: connect to help
             .Add("ndFleetQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.gridQuotaShare)) ' ToDo: connect to help
             '.Add("ndSpeciesQuotas", eCoreExecutionState.EcosimLoaded, GetType(Ecosim.frmTargetFishingMortalityPolicy)) ' ToDo: connect to help
-            .Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(FisheryInputFleetSizeDynamicsEwEGrid), "Fleet size dynamics.htm")
+            .Add("ndFleetSizeDynamics", eCoreExecutionState.EcosimLoaded, GetType(gridEcosimFleetSizeDynamics), "Fleet size dynamics.htm")
             .Add("ndFishingMortality", eCoreExecutionState.EcosimLoaded, GetType(frmFishingMortality)) ' ToDo: connect to help
             .Add("ndPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmPriceElasticity)) ' ToDo: connect to help
             .Add("ndApplyPriceElasticity", eCoreExecutionState.EcosimLoaded, GetType(frmApplyPriceElasticy)) ' ToDo: connect to help
@@ -211,7 +211,7 @@ Public Class frmNavigationPanel
             .Add("ndBasemap", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Basemap.frmEcospaceMap), "Basemap.htm") ' ToDo: connect to help
             .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
             .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridFishery), "Ecospace Fishery.htm")
-            .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.EcospaceScenarioDlg)) ' ToDo: connect to help
+            .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.dlgEcospaceScenario)) ' ToDo: connect to help
             .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.RunEcospace), "Run Ecospace.htm")
             .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Advection.frmAdvection), "")
             .Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAOptimizations), "EcoSeed.htm")

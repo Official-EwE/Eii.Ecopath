@@ -31,7 +31,7 @@ Imports SourceGrid2
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class VulnerabilitiesEwEGrid
+    Public Class gridVulnerabilities
         Inherits EwEGrid
 
         Private m_bmRowCol As New BehaviorModels.CustomEvents

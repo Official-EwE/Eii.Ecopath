@@ -20,7 +20,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Wizard
 
-    Partial Class EwEScenarioDlg
+    Partial Class dlgScenario
         Inherits System.Windows.Forms.Form
 
         'Form overrides dispose to clean up the component list.
@@ -42,7 +42,7 @@ Namespace Wizard
         Private Sub InitializeComponent()
             Me.components = New System.ComponentModel.Container
             Dim chCreate2 As System.Windows.Forms.ColumnHeader
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EwEScenarioDlg))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgScenario))
             Dim chCreate3 As System.Windows.Forms.ColumnHeader
             Dim chLoad2 As System.Windows.Forms.ColumnHeader
             Dim chLoad3 As System.Windows.Forms.ColumnHeader

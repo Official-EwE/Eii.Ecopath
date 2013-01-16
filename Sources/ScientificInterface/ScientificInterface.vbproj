@@ -382,7 +382,7 @@
     <Compile Include="Ecospace\Tools\frmMPAOptimizations.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecotracer\Input\EcotracerInputGrid.vb">
+    <Compile Include="Ecotracer\Input\gridEcotracerInput.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecopath\Output\cellNichePropertyColour.vb" />
@@ -401,7 +401,7 @@
     <Compile Include="Ecosim\Input\EggProduction\frmEggProduction.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\FisheryInputFleetSizeDynamicsEwEGrid.vb">
+    <Compile Include="Ecosim\Input\gridEcosimFleetSizeDynamics.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\FishingEffort\frmFishingEffort.Designer.vb">
@@ -458,7 +458,7 @@
     <Compile Include="Ecosim\Output\ShowAllFits\frmShowAllFits.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\EcosimScenarioDlg.vb">
+    <Compile Include="Ecosim\dlgEcosimScenario.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecosim\Input\ForcingFunction\frmForcingFunction.Designer.vb">
@@ -560,7 +560,7 @@
     <Compile Include="Search\gridSearchObjectivesWeight.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\EcospaceScenarioDlg.vb">
+    <Compile Include="Ecospace\dlgEcospaceScenario.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\frmEcospaceMap.Designer.vb">
@@ -630,7 +630,7 @@
     <Compile Include="Ecospace\Output\RunEcospace.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecotracer\EcotracerScenarioDlg.vb">
+    <Compile Include="Ecotracer\dlgEcotracerScenario.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecotracer\Input\frmEcotracerInput.Designer.vb">
@@ -736,16 +736,16 @@
     <Compile Include="Ecopath\Output\gridSearchRates.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\GroupInfoEwEGrid.vb">
+    <Compile Include="Ecosim\Input\gridEcosimGroupInput.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\EcosimParameters.Designer.vb">
-      <DependentUpon>EcosimParameters.vb</DependentUpon>
+    <Compile Include="Ecosim\Input\frmEcosimParameters.Designer.vb">
+      <DependentUpon>frmEcosimParameters.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecosim\Input\EcosimParameters.vb">
+    <Compile Include="Ecosim\Input\frmEcosimParameters.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Ecosim\Input\Vulnerabilities\VulnerabilitiesEwEGrid.vb">
+    <Compile Include="Ecosim\Input\Vulnerabilities\gridVulnerabilities.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecosim\Output\RunEcosim.Designer.vb">
@@ -950,8 +950,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>ucOptionsGeneral.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecosim\Input\EcosimParameters.resx">
-      <DependentUpon>EcosimParameters.vb</DependentUpon>
+    <EmbeddedResource Include="Ecosim\Input\frmEcosimParameters.resx">
+      <DependentUpon>frmEcosimParameters.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecosim\Output\RunEcosim.resx">

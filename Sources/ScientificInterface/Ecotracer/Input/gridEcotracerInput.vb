@@ -28,7 +28,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Namespace Ecotracer
 
     <CLSCompliant(False)> _
-    Public Class EcotracerInputGrid
+    Public Class gridEcotracerInput
         Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer

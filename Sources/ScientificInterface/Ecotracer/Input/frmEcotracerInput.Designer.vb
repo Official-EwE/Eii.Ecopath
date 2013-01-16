@@ -59,7 +59,7 @@ Namespace Ecotracer
             Me.m_tbCInflowEnv = New System.Windows.Forms.TextBox
             Me.m_tbCLossEnv = New System.Windows.Forms.TextBox
             Me.m_tbCZeroEnv = New System.Windows.Forms.TextBox
-            Me.m_grid = New ScientificInterface.Ecotracer.EcotracerInputGrid
+            Me.m_grid = New ScientificInterface.Ecotracer.gridEcotracerInput
             Me.m_hdrInit = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
             Me.m_tlpGroups = New System.Windows.Forms.TableLayoutPanel
             Me.m_plAaargh.SuspendLayout()
@@ -224,7 +224,7 @@ Namespace Ecotracer
         Private WithEvents m_tbCInflowEnv As System.Windows.Forms.TextBox
         Private WithEvents m_tbCLossEnv As System.Windows.Forms.TextBox
         Private WithEvents m_tbCZeroEnv As System.Windows.Forms.TextBox
-        Private WithEvents m_grid As ScientificInterface.Ecotracer.EcotracerInputGrid
+        Private WithEvents m_grid As ScientificInterface.Ecotracer.gridEcotracerInput
         Private WithEvents m_hdrInit As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_tlpGroups As System.Windows.Forms.TableLayoutPanel
     End Class

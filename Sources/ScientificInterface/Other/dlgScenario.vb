@@ -40,7 +40,7 @@ Namespace Wizard
     ''' <list type="bullet">
     ''' <item>
     ''' <term>
-    ''' <see cref="EwEScenarioDlg.eDialogModeType.LoadScenario">LoadScenario</see>
+    ''' <see cref="dlgScenario.eDialogModeType.LoadScenario">LoadScenario</see>
     ''' </term>
     ''' <description>
     ''' Opens the dialog for loading an existing scenario.
@@ -48,7 +48,7 @@ Namespace Wizard
     ''' </item>
     ''' <item>
     ''' <term>
-    ''' <see cref="EwEScenarioDlg.eDialogModeType.CreateScenario">CreateScenario</see>
+    ''' <see cref="dlgScenario.eDialogModeType.CreateScenario">CreateScenario</see>
     ''' </term>
     ''' <description>
     ''' Opens the dialog for creating a new scenario.
@@ -56,7 +56,7 @@ Namespace Wizard
     ''' </item>
     ''' <item>
     ''' <term>
-    ''' <see cref="EwEScenarioDlg.eDialogModeType.SaveScenario">SaveScenario</see>
+    ''' <see cref="dlgScenario.eDialogModeType.SaveScenario">SaveScenario</see>
     ''' </term>
     ''' <description>
     ''' Opens the dialog for saving the current loaded scenario.
@@ -64,7 +64,7 @@ Namespace Wizard
     ''' </item>
     ''' <item>
     ''' <term>
-    ''' <see cref="EwEScenarioDlg.eDialogModeType.DeleteScenario">DeleteScenario</see>
+    ''' <see cref="dlgScenario.eDialogModeType.DeleteScenario">DeleteScenario</see>
     ''' </term>
     ''' <description>
     ''' Opens the dialog for deleting an existing scenario.
@@ -72,7 +72,7 @@ Namespace Wizard
     ''' </item>
     ''' </list>
     ''' </remarks>
-    Public Class EwEScenarioDlg
+    Public Class dlgScenario
         Implements IUIElement
 
         ''' <summary>

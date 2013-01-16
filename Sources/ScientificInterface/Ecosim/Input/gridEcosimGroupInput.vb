@@ -31,7 +31,7 @@ Imports EwEUtils.Core
 Namespace Ecosim
 
     <CLSCompliant(False)> _
-    Public Class GroupInfoEwEGrid
+    Public Class gridEcosimGroupInput
         Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer

@@ -35,7 +35,7 @@ Namespace Ecosim
     ''' Form implementing the Ecosim parameters user interface.
     ''' </summary>
     ''' =======================================================================
-    Public Class EcosimParameters
+    Public Class frmEcosimParameters
 
 #Region " Private vars "
 

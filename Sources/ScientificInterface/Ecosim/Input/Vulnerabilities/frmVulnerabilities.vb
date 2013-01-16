@@ -44,7 +44,7 @@ Namespace Ecosim
 #Region " Constructor "
 
         Public Sub New()
-            MyBase.New(New VulnerabilitiesEwEGrid())
+            MyBase.New(New gridVulnerabilities())
             Me.InitializeComponent()
         End Sub
 
