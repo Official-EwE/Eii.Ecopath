@@ -301,7 +301,8 @@ Public Class cSpaceSolver
             Array.Clear(Me.TotIFDweightThread, 0, m_Data.NGroups)
 
         Catch ex As Exception
-
+            Debug.Assert(False, ex.Message)
+            cLog.Write(ex)
         End Try
 
     End Sub
@@ -639,8 +640,6 @@ Public Class cSpaceSolver
 
             setpred(Biomass)
 
-            ' ReDim Eatenof(m_Data.NGroups)
-            'ReDim Eatenby(m_Data.NGroups)
             Array.Clear(Eatenof, 0, Eatenof.Length)
             Array.Clear(Eatenby, 0, Eatenof.Length)
 
@@ -732,11 +731,7 @@ Public Class cSpaceSolver
             For ii = 1 To m_SimData.inlinks
                 i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
                 If m_SimData.TrophicOff Then Bprey = m_SimData.StartBiomass(i) Else Bprey = Biomass(i)
-                'Debug.Assert(i <> 41)
-                'prey
-                ' For j = 1 To N  'VC ignore detritus; CJW had NumGroups 'predator
-                '    aeff = A(i, j) * tval(SeasonType(i, j)) * Ftime(j)
-                '    Veff = vulrate(i, j) * Ftime(i) * MedVal(MF(i, j))
+
                 Select Case m_SimData.FlowType(i, j) 'prey always first
                     Case 1 'donor controlled flow
                         eat = aeff(ii) * Bprey
@@ -750,12 +745,8 @@ Public Class cSpaceSolver
                         eat = 0
                 End Select
 
-                If iRow = 3 And iCol = 42 And i = 26 Then
-                    ' Debug.Assert(False, "derivt")
-                End If
                 Eatenof(i) = Eatenof(i) + eat
                 Eatenby(j) = Eatenby(j) + eat
-
 
                 If Me.m_PathData.isEcospaceModelCoupled Then
                     'predation mort by link
@@ -780,10 +771,6 @@ Public Class cSpaceSolver
             m_Ecosim.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
-
-                'If iRow = 3 And iCol = 42 And i = 26 Then
-                '    Debug.Assert(False, "derivt")
-                'End If
 
                 Eatenby(i) = Eatenby(i) + m_SimData.QBoutside(i) * Biomass(i)
 
@@ -858,9 +845,6 @@ Public Class cSpaceSolver
         Else
             Array.Clear(RelaSwitch, 0, m_SimData.inlinks + 1)
         End If
-
-        'throw an error for error testing
-        'PredDen(m_Data.NGroups + 1) = 0
 
         For ii = 1 To m_SimData.inlinks
             i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii)
@@ -946,7 +930,6 @@ Public Class cSpaceSolver
 
         'VC Hobart Sep 2008. Adding temperature and salinity fields to Ecospace,
         'for now it's just readable in code, we'll need interface and database handling as well
-
         If m_Data.SpatialFieldsInUse Then
             For iSF As Integer = 1 To m_Data.nSpatialFields
                 m_Ecosim.ApplySalinityModifier(A, m_Data.SpatialField(iRow, iCol, j), _
@@ -955,7 +938,6 @@ Public Class cSpaceSolver
                                                m_Data.SpatialFieldStdRight(j, iSF))
             Next
         End If
-
 
         For K = 1 To cMediationDataStructures.MAXFUNCTIONS
 
