@@ -1451,9 +1451,9 @@ Public Class cEcoSpace
 
                 solver.FirstLastGroups(1, nGroupsInThread(solver.ThreadID))
 
-                Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                worker.Start()
-                ' ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                'Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                'worker.Start()
+                ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
 
             Next solver
 
@@ -1533,9 +1533,9 @@ Public Class cEcoSpace
                 'the Wait object will be released by the solver
                 solver.WaitHandle = WaitOb
 
-                'ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
-                Dim worker As Thread = New Thread(AddressOf solver.Solve)
-                worker.Start()
+                ThreadPool.QueueUserWorkItem(AddressOf solver.Solve)
+                'Dim worker As Thread = New Thread(AddressOf solver.Solve)
+                'worker.Start()
 
                 iFrstCell += nCells
 
@@ -3549,10 +3549,10 @@ exitline:
 
             'Distribute fishing effort across the map for the fleet indexes iFirstFleet to ilastfleet
 
-            Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth)
-            Dim worker As Thread = New Thread(Sub() Me.PredictEffortDistributionThreaded(arg))
-            worker.Start()
-            'ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
+            'Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth)
+            'Dim worker As Thread = New Thread(Sub() Me.PredictEffortDistributionThreaded(arg))
+            'worker.Start()
+            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
             iFirstFleet += nFltsPerThread
         Next ithrd
 
@@ -3601,11 +3601,11 @@ exitline:
 
             'System.Console.WriteLine("FirstCell = " & iFirstCell.ToString & " LastCell = " & iLastcell.ToString)
 
-            Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstCell, iLastcell)
-            Dim worker As Thread = New Thread(Sub() Me.setFishMortFromEffort(arg))
-            worker.Start()
+            'Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstCell, iLastcell)
+            'Dim worker As Thread = New Thread(Sub() Me.setFishMortFromEffort(arg))
+            'worker.Start()
 
-            'ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.setFishMortFromEffort), New cThreadedCallArgs(waitOb, iFirstCell, iLastcell))
+            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.setFishMortFromEffort), New cThreadedCallArgs(waitOb, iFirstCell, iLastcell))
 
             iFirstCell += nCells
 
