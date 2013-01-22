@@ -2373,8 +2373,24 @@ Public Class cEcoSpace
 
 
 
-
-    Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProd As Single)
+    ''' <summary>
+    ''' Local version of derivtRed() used by Ecospace during initialization ONLY 
+    ''' </summary>
+    ''' <param name="Biomass">Input Biomass of all the groups</param>
+    ''' <param name="Flowin">Ouput Flow of biomass into a cell  </param>
+    ''' <param name="FlowoutRate">Output Rate of biomass flow out of a cell</param>
+    ''' <param name="EatEff">Input consumption efficiency 1 by default</param>
+    ''' <param name="VulPred">Input predation vulnerability 1 by default</param>
+    ''' <param name="RelProd">Input relative primary production 1 by default</param>
+    ''' <remarks>
+    ''' WARNING This version of derivtRed() is used only during initialization NOT during main time loop. <see cref="cSpaceSolver" >cSpaceSolver.derivtRed()</see> for time loop derivtRed().
+    ''' </remarks>
+    Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByVal EatEff() As Single, ByRef VulPred() As Single, ByVal RelProd As Single)
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'WARNING() not used for biomass calculation during the main time loop
+        'This is used for initialization only 
+        'Look at cSpaceSolver.derivtRed() for biomass calculation during the time loop
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'reduced derivatives for MPA equilibration procedure
         Dim i As Integer, j As Integer, ii As Integer
         Dim eat As Single, Pmult As Single
@@ -2399,7 +2415,6 @@ Public Class cEcoSpace
         'in EcoSpace this is the only place it is used so its scope is local to EcoSpace
         Dim ToDetritus() As Single
         ReDim ToDetritus(m_Data.NGroups)
-
 
         If m_SimData.BioMedData.MedIsUsed(0) Then m_Ecosim.SetMedFunctions(Biomass)
 
