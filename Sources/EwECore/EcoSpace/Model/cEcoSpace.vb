@@ -1489,8 +1489,6 @@ Public Class cEcoSpace
         iFrstCell = 1
         iLstCell = 0
 
-        'Me.dumpRunningThreadInfo()
-
         ' Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
         ' Console.WriteLine("Ecospace ThreadID = " & thrdID.ToString)
 
@@ -1553,13 +1551,12 @@ Public Class cEcoSpace
                 cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
             End If
 
-            ' Me.dumpRunningThreadInfo("After")
+            'Me.dumpRunningThreadInfo("After")
 
             'Gather data from across all threads
             For Each solver In m_spaceSolvers
 
                 cpuTime += solver.RunTimeSeconds
-                'Me.dumpCellComputeTimes(solver.lstCellCompTimes)
 
                 For igrp As Integer = 1 To m_Data.NGroups
                     m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp)
@@ -1604,7 +1601,8 @@ Public Class cEcoSpace
             stpTotRun.Stop()
             'System.Console.WriteLine("Solver total run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
             'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
-            'System.Console.WriteLine("Solver [Run Time] / [CPU time], " & (stpTotRun.Elapsed.TotalSeconds / cpuTime * 100).ToString)
+
+            'Me.dumpCellComputeTimes()
 
             WaitOb.Dispose()
 
@@ -1618,28 +1616,27 @@ Public Class cEcoSpace
 
     End Sub
 
+
     Private Sub dumpRunningThreadInfo(msg As String)
         System.Console.WriteLine(msg)
         For Each Thread As ProcessThread In Process.GetCurrentProcess.Threads
-            System.Console.WriteLine("Thread ID, " & Thread.Id.ToString & ", Start time, " & Thread.StartTime.ToLongTimeString & _
+            System.Console.WriteLine("Thread ID, " & Thread.Id.ToString & ", Priority, " & Thread.CurrentPriority.ToString & ", Start time, " & Thread.StartTime.ToLongTimeString & _
                                      ", Total time, " & Thread.TotalProcessorTime.TotalMilliseconds.ToString & ", CPU time " & Thread.UserProcessorTime.TotalMilliseconds.ToString)
         Next
 
-
-
-        'Process.GetCurrentProcess().TotalProcessorTime
-
     End Sub
 
+    Private Sub dumpCellComputeTimes()
+        System.Console.WriteLine("Cell compute times")
+        For Each solver As cSpaceSolver In Me.m_spaceSolvers
 
-    Private Sub dumpCellComputeTimes(ByVal lstTimes As List(Of Double))
-
-        For Each t As Double In lstTimes
-            System.Console.Write(t.ToString & ",")
-        Next
-        System.Console.WriteLine()
+            System.Console.Write("Cells " & solver.iFrstCell.ToString & " - " & solver.iLstCell.ToString & ", Run time(sec) " & solver.RunTimeSeconds.ToString)
+            For Each t As Double In solver.lstCellCompTimes
+                System.Console.Write("," & t.ToString)
+            Next
+            System.Console.WriteLine()
+        Next solver
     End Sub
-
 
 
     Public Function initSpatialEquilibrium() As Boolean
