@@ -142,8 +142,8 @@ Public Class cSpaceSolver
     Public Landings(,) As Single
 
     'the ip groups to solve
-    Private iFrstCell As Integer
-    Private iLstCell As Integer
+    Public iFrstCell As Integer
+    Public iLstCell As Integer
 
     'variables from m_ESData, used locally
     Private Hden() As Single
@@ -230,7 +230,7 @@ Public Class cSpaceSolver
         m_ConTracer.Init(m_TracerData, m_PathData, m_SimData, m_Stanza)
         m_ConTracer.CInitialize()
 
-        'Me.m_stpWatch = New Stopwatch
+        Me.m_stpWatch = New Stopwatch
 
     End Sub
 
@@ -324,8 +324,8 @@ Public Class cSpaceSolver
         'Console.WriteLine("Solve Derivt OBID = " & Me.ThreadID.ToString & ", ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
         'Console.WriteLine("     N Map Cells = " & (iLstCell - iFrstCell + 1).ToString)
 
-        ' Me.m_stpWatch.Reset()
-        ' Me.m_stpWatch.Start()
+        Me.m_stpWatch.Reset()
+        Me.m_stpWatch.Start()
 
         Try
             Dim iCell As Integer
@@ -355,8 +355,8 @@ Public Class cSpaceSolver
             WaitHandle.Set()
         End If
 
-        'Me.m_stpWatch.Stop()
-        'Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
+        Me.m_stpWatch.Stop()
+        Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
         'Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time " & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
 
     End Sub
@@ -619,8 +619,6 @@ Public Class cSpaceSolver
 
         'Imported Detritus forcing function multiplier
         Dim DtImpMult As Single
-        'Imported Detritus after forcing function has been applied
-        Dim DtImp As Single
 
         Dim aeff() As Single, Veff() As Single
         ReDim aeff(m_SimData.inlinks), Veff(m_SimData.inlinks)
@@ -768,6 +766,8 @@ Public Class cSpaceSolver
             Next
 
             'Make the detritus calculations here:
+
+            'SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
             m_Ecosim.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
@@ -777,7 +777,9 @@ Public Class cSpaceSolver
                 If i <= m_Data.nLiving Then      'Living group
                     Pmult = 1.0#
                     ApplyAVmodifiers(Pmult, Veff(1), i, i, False, iRow, iCol)
-                    pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i)
+                    'Email from Carl
+                    'I found a problem with the way primary production multipliers are applied in derivtred, cSpaceSolver.vb; the multiplier should be applied to the pbb(i) calculation as well as nutrient calculation.
+                    pbb(i) = CSng(RelProdScaler * Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i))
                     'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
                     'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
@@ -1040,7 +1042,6 @@ Public Class cSpaceSolver
 
     End Sub
 
-
     Public Sub New(ByVal ThreadNumber As Integer)
 
         ThreadID = ThreadNumber
@@ -1051,6 +1052,70 @@ Public Class cSpaceSolver
         m_TracerData = New cContaminantTracerDataStructures
 
     End Sub
+
+
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'FOR DEGUGGING ONLY HAS NOT BEEN TESTED
+    'SimDetritus from Ecosim moved here to see if calling Ecosim is slowing down the threading
+    'Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
+    '    ' Dim Surplus As Single
+    '    Dim i As Integer, j As Integer, K As Integer
+    '    Dim ToDet As Single, DetFlowN As Single
+    '    DetFlowN = 0
+
+    '    'DetritusByGroup() needs to be cleared because the values are summed into it
+    '    Array.Clear(DetritusByGroup, 0, Me.m_Data.NGroups)
+
+    '    For i = 1 To m_PathData.NumLiving
+    '        For j = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+    '            'First take egestion
+    '            ToDet = m_PathData.GS(i) * Eatenby(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+    '            'Add dying organisms
+    '            ToDet = ToDet + m_SimData.mo(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+
+    '            If m_PathData.NumFleet > 0 Then     'Only if there is fishery
+    '                For K = 1 To m_PathData.NumFleet
+    '                    If m_SimData.FirstTime = True Then
+    '                        DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * m_PathData.PropDiscard(K, i) * Biomass(i) * m_SimData.FishMGear(K, i)
+    '                    Else
+    '                        'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
+    '                        'discard mort is included in Propdiscardtime() by initialization and MSE 
+    '                        DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_SimData.FishMGear(K, i) * Me.m_SimData.Propdiscardtime(K, i)
+    '                        'DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * m_PathData.PropDiscard(K, i) * Biomass(i) * m_simdata.FishRateGear(K, 0) * m_simdata.FishMGear(K, i) + Me.m_Quota.RegDiscard(K, i)
+    '                    End If
+    '                    ToDet = ToDet + DetFlowN
+
+    '                    If m_TracerData.EcoSimConSimOn = True Then
+    '                        m_ConTracer.ConKdet(i, j, K) = DetFlowN / Biomass(i)
+    '                    End If
+
+    '                Next K
+    '            End If 'If m_PathData.NumFleet > 0 Then    
+
+    '            ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + ToDet
+
+    '            DetritusByGroup(i) += ToDet
+
+    '        Next j
+    '    Next i
+
+    '    'Next add flow from other detritus groups
+    '    For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+    '        For j = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+    '            If i <> j Then ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + m_PathData.DetPassedProp(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+    '        Next
+    '    Next
+
+    '    If m_SimData.FirstTime = True Then
+    '        For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+    '            m_SimData.DetritusOut(i) = (ToDetritus(i - m_PathData.NumLiving) - m_PathData.BA(i) + m_PathData.Immig(i) - EatenOf(i)) / Biomass(i) - m_SimData.Emig(i)
+    '            'DetritusOut(i) = (ToDetritus(i - mEPData.NumLiving) - BA(i) + DetPassedOn(i) + EX(i) + Immig(i) - Eatenof(i)) / Biomass(i) - Emig(i)
+    '        Next i
+    '    End If
+    '    m_SimData.FirstTime = False
+
+    'End Sub
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 End Class
