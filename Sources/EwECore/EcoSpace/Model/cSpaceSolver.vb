@@ -611,8 +611,6 @@ Public Class cSpaceSolver
         'reduced derivatives for MPA equilibration procedure
         Dim i As Integer, j As Integer, ii As Integer
         Dim eat As Single, Pmult As Single
-        'Dim Vprey As Single 'not used
-        'Dim Shown As Boolean 'not used
         Dim SimGEt As Single
         Dim Dwe As Single
         Dim Bprey As Single
@@ -766,8 +764,6 @@ Public Class cSpaceSolver
             Next
 
             'Make the detritus calculations here:
-
-            'SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
             m_Ecosim.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
@@ -777,16 +773,12 @@ Public Class cSpaceSolver
                 If i <= m_Data.nLiving Then      'Living group
                     Pmult = 1.0#
                     ApplyAVmodifiers(Pmult, Veff(1), i, i, False, iRow, iCol)
-                    'Email from Carl
-                    'I found a problem with the way primary production multipliers are applied in derivtred, cSpaceSolver.vb; the multiplier should be applied to the pbb(i) calculation as well as nutrient calculation.
-                    pbb(i) = CSng(RelProdScaler * Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i))
+                    pbb(i) = Pmult * EatEff(i) * m_SimData.PBmaxs(i) * NutFree / (NutFree + m_SimData.NutFreeBase(i)) * m_SimData.pbm(i) / (1 + Biomass(i) * PbSpace(i)) * EatEff(i)
                     'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
                     'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
                     'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
 
-                    'jb change layout so I could read it
-                    'SimGEt = IIf(m_ESData.UseVarPQ And m_EPdata.vbK(i) > 0, m_ESData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_EPdata.vbK(i)), m_ESData.SimGE(i))
                     If m_SimData.UseVarPQ And m_PathData.vbK(i) > 0 Then
                         SimGEt = m_SimData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_PathData.vbK(i))
                     Else
@@ -800,8 +792,10 @@ Public Class cSpaceSolver
                     Else
                         FlowoutRate(i) = 100
                     End If
-                    'If Abs(Flowin(i) - loss(i)) > 0.1 * loss(i) Then Stop
-                Else                'Detritus group
+
+                Else 'i <= m_Data.nLiving
+                    'Detritus(group)
+
                     loss(i) = Eatenof(i) + m_PathData.Emig(i) + m_SimData.DetritusOut(i) * Biomass(i)
                     'deriv(i) = Immig(i) + ToDetritus(i - n) - loss(i)
                     If loss(i) <> 0 And Biomass(i) > 0 Then
@@ -824,7 +818,6 @@ Public Class cSpaceSolver
             Next
 
         Catch ex As Exception
-            '   Debug.Assert(False)
             Throw New ApplicationException(Me.ToString & ".derivtRed() Error: " & ex.Message)
         End Try
     End Sub
