@@ -78,7 +78,6 @@ Public Class cEcospaceASCMapResultsWriter
                     End If
                 Next
             Next
-            strm = New StreamWriter(">")
 
             ' Sum space effort
             strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
