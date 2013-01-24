@@ -57,8 +57,8 @@ Public Class cEcopathModelFromEcosim
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Enum eBiomassAccumulationCalculationTypes
-        ''' <summary>BA is taken as the change in group biomass over an Ecosim year.</summary>
-        FromEcosimYear
+        ''' <summary>BA is calculated from an average over X number of years.</summary>
+        FromEcosimYearsAverage
         ''' <summary>BA is taken as the change in group biomass over the Ecosim run.</summary>
         FromEcosimStart
         ''' <summary>BA kept at Ecopath base value.</summary>
@@ -81,7 +81,8 @@ Public Class cEcopathModelFromEcosim
     Public Function SaveModel(ByVal strFileName As String, _
                               ByVal strModelName As String, _
                               ByVal iTime As Integer, _
-                              Optional ByVal BACalculation As eBiomassAccumulationCalculationTypes = eBiomassAccumulationCalculationTypes.FromEcosimYear) As eDatasourceAccessType
+                              ByVal BACalculation As eBiomassAccumulationCalculationTypes, _
+                              ByVal iNumYearsAverage As Integer) As eDatasourceAccessType
 
         Dim returnVal As eDatasourceAccessType = eDatasourceAccessType.Created
         Try
@@ -105,7 +106,7 @@ Public Class cEcopathModelFromEcosim
             If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
                 If coreDest.LoadModel(ds) Then
                     If Me.CreateItems(coreDest) Then
-                        Me.PopulateItems(coreDest, iTime, BACalculation)
+                        Me.PopulateItems(coreDest, iTime, BACalculation, iNumYearsAverage)
                     End If
                 End If
             End If
@@ -207,7 +208,8 @@ Public Class cEcopathModelFromEcosim
     ''' -----------------------------------------------------------------------
     Private Function PopulateItems(ByVal coreNew As cCore, _
                                    ByVal iTime As Integer, _
-                                   ByVal BACalculation As eBiomassAccumulationCalculationTypes) As Boolean
+                                   ByVal BACalculation As eBiomassAccumulationCalculationTypes, _
+                                   ByVal iNumYearsAverage As Integer) As Boolean
 
         Debug.Assert(iTime >= 12, Me.ToString & ".PopulateItems(...) iTime must be at less one year.")
 
@@ -280,7 +282,7 @@ Public Class cEcopathModelFromEcosim
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
             Select Case BACalculation
-                Case eBiomassAccumulationCalculationTypes.FromEcosimYear
+                Case eBiomassAccumulationCalculationTypes.FromEcosimYearsAverage
                     bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
                     pathDest.BA(iGroup) = (simBB(iGroup) - bLast) * simSrc.StepsPerMonth * cCore.N_MONTHS
                 Case eBiomassAccumulationCalculationTypes.FromEcosimStart
