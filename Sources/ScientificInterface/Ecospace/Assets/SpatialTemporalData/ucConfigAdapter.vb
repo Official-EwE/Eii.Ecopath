@@ -595,7 +595,10 @@ Namespace Ecospace.Controls
 
         Private Sub CreateDS()
 
-            Dim dsSelected As ISpatialDataSet = DirectCast(Me.m_cmbNewDS.SelectedItem, ISpatialDataSet)
+            Dim item As Object = Me.m_cmbNewDS.SelectedItem
+            If Not TypeOf (item) Is ISpatialDataSet Then Return
+
+            Dim dsSelected As ISpatialDataSet = DirectCast(item, ISpatialDataSet)
             Dim dsNew As ISpatialDataSet = Nothing
 
             If (dsSelected Is Nothing) Then Return
