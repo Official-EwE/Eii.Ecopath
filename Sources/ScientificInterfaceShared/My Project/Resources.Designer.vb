@@ -6615,6 +6615,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to View folder.
+        '''</summary>
+        Public ReadOnly Property TOOLTIP_VIEWFOLDER() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_VIEWFOLDER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Average weight.
         '''</summary>
         Public ReadOnly Property TS_TYPE_AVERAGEWEIGHT() As String

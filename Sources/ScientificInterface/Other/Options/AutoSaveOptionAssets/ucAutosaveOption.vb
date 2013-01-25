@@ -15,7 +15,6 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
@@ -24,6 +23,9 @@ Imports System.IO
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwECore
+Imports EwEUtils.Commands
+Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -45,6 +47,8 @@ Namespace Other
         Private m_autosavetype As eAutosaveTypes = eAutosaveTypes.NotSet
         Private m_iIndent As Integer = 0
         Private m_pi As IAutoSavePlugin = Nothing
+
+        Private m_strPath As String = ""
 
 #Region " Construction / destruction "
 
@@ -199,6 +203,9 @@ Namespace Other
                 Me.m_cbOption.Checked = (Me.UIContext.Core.Autosave(Me.m_autosavetype) = True)
             End If
 
+            Me.m_pbVisit.Image = SharedResources.openOutputHS
+            cToolTipShared.GetInstance().SetToolTip(Me.m_pbVisit, SharedResources.TOOLTIP_VIEWFOLDER)
+
         End Sub
 
         Protected Overrides Sub OnSizeChanged(e As System.EventArgs)
@@ -208,20 +215,42 @@ Namespace Other
 
 #End Region ' Overrides
 
+#Region " Events "
+
+        Private Sub OnVisitPath(sender As System.Object, e As System.EventArgs) Handles m_pbVisit.Click
+
+            If (Me.m_uic IsNot Nothing) Then
+                Try
+                    Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+                    Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                    cmd.Invoke(Me.m_strPath)
+                Catch ex As Exception
+                    cLog.Write(ex, "ucAutoSaveOption::OnVisitPath")
+                End Try
+            End If
+
+        End Sub
+
+#End Region ' Events 
+
 #Region " Internals "
 
         Private Sub UpdateControls()
 
             If (Me.m_autosavetype = eAutosaveTypes.NotSet) Then
                 Me.m_lblPath.Visible = False
+                Me.m_pbVisit.Visible = False
             Else
                 Dim strPath As String = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask, True)
                 If (Me.m_pi IsNot Nothing) Then
                     strPath = Path.Combine(strPath, Me.m_pi.AutoSaveSubPath)
                 End If
+                Me.m_strPath = String.Copy(strPath)
+
                 TextRenderer.MeasureText(strPath, Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
                 Me.m_lblPath.Text = strPath
                 Me.m_lblPath.Visible = True
+                Me.m_pbVisit.Visible = Directory.Exists(Me.m_strPath)
             End If
 
         End Sub

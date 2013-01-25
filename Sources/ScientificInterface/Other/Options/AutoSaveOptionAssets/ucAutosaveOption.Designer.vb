@@ -31,6 +31,8 @@ Namespace Other
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucAutosaveOption))
             Me.m_cbOption = New System.Windows.Forms.CheckBox()
             Me.m_lblPath = New System.Windows.Forms.Label()
+            Me.m_pbVisit = New System.Windows.Forms.PictureBox()
+            CType(Me.m_pbVisit, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_cbOption
@@ -44,18 +46,27 @@ Namespace Other
             resources.ApplyResources(Me.m_lblPath, "m_lblPath")
             Me.m_lblPath.Name = "m_lblPath"
             '
+            'm_pbVisit
+            '
+            resources.ApplyResources(Me.m_pbVisit, "m_pbVisit")
+            Me.m_pbVisit.Name = "m_pbVisit"
+            Me.m_pbVisit.TabStop = False
+            '
             'ucAutosaveOption
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_pbVisit)
             Me.Controls.Add(Me.m_lblPath)
             Me.Controls.Add(Me.m_cbOption)
             Me.Name = "ucAutosaveOption"
+            CType(Me.m_pbVisit, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
         Private WithEvents m_cbOption As System.Windows.Forms.CheckBox
         Private WithEvents m_lblPath As System.Windows.Forms.Label
+        Private WithEvents m_pbVisit As System.Windows.Forms.PictureBox
 
     End Class
 

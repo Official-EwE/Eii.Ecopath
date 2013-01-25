@@ -2746,4 +2746,7 @@
   <data name="AUTOSAVE_ECOSPACEMAPS" xml:space="preserve">
     <value>Ecospace result maps</value>
   </data>
+  <data name="TOOLTIP_VIEWFOLDER" xml:space="preserve">
+    <value>View folder</value>
+  </data>
 </root>

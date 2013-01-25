@@ -633,30 +633,6 @@ Namespace Utilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Replace all occurrences of a pattern in a source string with a replacement.
-        ''' </summary>
-        ''' <param name="strSrc">Source string the replace all instances into.</param>
-        ''' <param name="strPattern">The search pattern to replace.</param>
-        ''' <param name="strReplace">The search pattern replacement string.</param>
-        ''' <returns>An amphetamine-addicted monk seal.</returns>
-        ''' -----------------------------------------------------------------------
-        Public Shared Function ReplaceAll(ByVal strSrc As String, ByVal strPattern As String, ByVal strReplace As String) As String
-
-            ' Very simple error testing. Feel free to elaborate. This code is not monkey proof!
-            If strReplace.Contains(strPattern) Then
-                Debug.Assert(False, "Replacement string cannot contain pattern string")
-                Return strSrc
-            End If
-
-            While strSrc.Contains(strPattern)
-                strSrc = strSrc.Replace(strPattern, strReplace)
-            End While
-            Return strSrc
-
-        End Function
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
         ''' String truncation method, blatantly copied from 
         ''' http://www.codeproject.com/KB/vb/NewPathCompactPath.aspx
         ''' </summary>
@@ -914,6 +890,65 @@ Namespace Utilities
             Return dCurrent(maxi)
 
         End Function
+
+#Region " Replace "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Replace all occurrences of a pattern in a source string with a replacement.
+        ''' </summary>
+        ''' <param name="strSrc">Source string the replace all instances into.</param>
+        ''' <param name="strPattern">The search pattern to replace.</param>
+        ''' <param name="strReplacement">The search pattern replacement string.</param>
+        ''' <returns>An amphetamine-addicted monk seal.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function ReplaceAll(ByVal strSrc As String, _
+                                          ByVal strPattern As String, _
+                                          ByVal strReplacement As String) As String
+
+            ' Rerouted
+            Return cStringUtils.Replace(strSrc, strPattern, strReplacement, StringComparison.CurrentCulture)
+
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' <see cref="[String].Replace"/> alternative that offers comparison
+        ''' options. This method is significantly faster than RegEx equivalents.
+        ''' Implementation adapted from http://www.codeproject.com/Articles/10890/Fastest-C-Case-Insenstive-String-Replace.
+        ''' </summary>
+        ''' <param name="strSrc">Source string the replace all instances into.</param>
+        ''' <param name="strPattern">The search pattern to replace.</param>
+        ''' <param name="strReplacement">The search pattern replacement string.</param>
+        ''' <param name="comparisonType">The <see cref="StringComparison"/> option to use.</param>
+        ''' <returns>A string.</returns>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function Replace(ByVal strSrc As String, ByVal strPattern As String, _
+                                       ByVal strReplacement As String, ByVal comparisonType As StringComparison) As String
+
+            If String.IsNullOrWhiteSpace(strSrc) Then Return String.Empty
+
+            Dim posCurrent As Integer = 0
+            Dim lenPattern As Integer = strPattern.Length
+            Dim idxNext As Integer = strSrc.IndexOf(strPattern, comparisonType)
+            Dim result As New StringBuilder()
+
+            While idxNext >= 0
+                result.Append(strSrc, posCurrent, idxNext - posCurrent)
+                result.Append(strReplacement)
+
+                posCurrent = idxNext + lenPattern
+
+                idxNext = strSrc.IndexOf(strPattern, posCurrent, comparisonType)
+            End While
+
+            result.Append(strSrc, posCurrent, strSrc.Length - posCurrent)
+
+            Return result.ToString()
+
+        End Function
+
+#End Region ' Replace
 
 #Region " Map array conversions "
 

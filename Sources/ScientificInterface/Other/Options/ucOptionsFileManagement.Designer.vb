@@ -41,6 +41,10 @@ Namespace Other
             Me.m_tbxOutputSample = New System.Windows.Forms.TextBox()
             Me.m_tbxBackupSample = New System.Windows.Forms.TextBox()
             Me.m_plAutoSave = New System.Windows.Forms.Panel()
+            Me.m_pbVisitOutputLoc = New System.Windows.Forms.PictureBox()
+            Me.m_pbVisitBackupFolder = New System.Windows.Forms.PictureBox()
+            CType(Me.m_pbVisitOutputLoc, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_pbVisitBackupFolder, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_hdrAutosave
@@ -116,10 +120,24 @@ Namespace Other
             resources.ApplyResources(Me.m_plAutoSave, "m_plAutoSave")
             Me.m_plAutoSave.Name = "m_plAutoSave"
             '
+            'm_pbVisitOutputLoc
+            '
+            resources.ApplyResources(Me.m_pbVisitOutputLoc, "m_pbVisitOutputLoc")
+            Me.m_pbVisitOutputLoc.Name = "m_pbVisitOutputLoc"
+            Me.m_pbVisitOutputLoc.TabStop = False
+            '
+            'm_pbVisitBackupFolder
+            '
+            resources.ApplyResources(Me.m_pbVisitBackupFolder, "m_pbVisitBackupFolder")
+            Me.m_pbVisitBackupFolder.Name = "m_pbVisitBackupFolder"
+            Me.m_pbVisitBackupFolder.TabStop = False
+            '
             'ucOptionsFileManagement
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_pbVisitBackupFolder)
+            Me.Controls.Add(Me.m_pbVisitOutputLoc)
             Me.Controls.Add(Me.m_plAutoSave)
             Me.Controls.Add(Me.m_fieldpickBackup)
             Me.Controls.Add(Me.m_fieldpickOutput)
@@ -132,6 +150,8 @@ Namespace Other
             Me.Controls.Add(Me.CEwEHeaderLabel1)
             Me.Controls.Add(Me.m_hdrAutosave)
             Me.Name = "ucOptionsFileManagement"
+            CType(Me.m_pbVisitOutputLoc, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_pbVisitBackupFolder, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -147,6 +167,8 @@ Namespace Other
         Private WithEvents m_tbxOutputSample As System.Windows.Forms.TextBox
         Private WithEvents m_tbxBackupSample As System.Windows.Forms.TextBox
         Private WithEvents m_plAutoSave As System.Windows.Forms.Panel
+        Private WithEvents m_pbVisitOutputLoc As System.Windows.Forms.PictureBox
+        Private WithEvents m_pbVisitBackupFolder As System.Windows.Forms.PictureBox
 
     End Class
 

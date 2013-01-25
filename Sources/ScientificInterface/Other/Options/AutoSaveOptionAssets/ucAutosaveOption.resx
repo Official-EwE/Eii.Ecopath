@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_cbOption.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="m_lblPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -160,7 +160,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_lblPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>195, 23</value>
+    <value>172, 23</value>
   </data>
   <data name="m_lblPath.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -181,6 +181,33 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="m_pbVisit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="m_pbVisit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 3</value>
+  </data>
+  <data name="m_pbVisit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_pbVisit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="m_pbVisit.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_pbVisit.Name" xml:space="preserve">
+    <value>m_pbVisit</value>
+  </data>
+  <data name="&gt;&gt;m_pbVisit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;m_pbVisit.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;m_pbVisit.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

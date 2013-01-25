@@ -84,7 +84,7 @@ Public Class cPathUtility
         If (core.StateMonitor.HasEcopathLoaded) Then
             Return cPathUtility.ResolvePath(strMask, core.DataSource.FileName, core.DataSource.Directory, core.DataSource.Extension, core.DataSource.Version.ToString, strPathOut)
         End If
-        Return cPathUtility.ResolvePath(strMask, "", "", "", "", strPathOut)
+        Return cPathUtility.ResolvePath(strMask, "(file)", "(path)", "(ext)", "(version)", strPathOut)
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -127,10 +127,14 @@ Public Class cPathUtility
 
         ' loop-ti-loop
         For Each pht As ePathPlaceholderTypes In [Enum].GetValues(GetType(ePathPlaceholderTypes))
-            strPathOut = Regex.Replace(strPathOut, _
-                                       "{" & pht.ToString & "}", _
-                                       ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
-                                       RegexOptions.IgnoreCase Or RegexOptions.IgnorePatternWhitespace)
+            strPathOut = cStringUtils.Replace(strPathOut, _
+                                              "{" & pht.ToString & "}", _
+                                              ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
+                                              StringComparison.CurrentCultureIgnoreCase)
+            'strPathOut = Regex.Replace(strPathOut, _
+            '                           "{" & pht.ToString & "}", _
+            '                           ResolvePlaceholder(pht, strModelFile, strModelPath, strModelExt, strModelVersion), _
+            '                           RegexOptions.IgnoreCase Or RegexOptions.IgnorePatternWhitespace)
         Next
 
         ' Remove invalid path chars

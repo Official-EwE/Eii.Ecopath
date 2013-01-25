@@ -15,15 +15,15 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports EwECore
+Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
-Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEPlugin
 
 #End Region ' Imports
 
@@ -84,6 +84,13 @@ Namespace Other
 
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
+
+            Me.m_pbVisitOutputLoc.Image = SharedResources.openOutputHS
+            cToolTipShared.GetInstance().SetToolTip(Me.m_pbVisitOutputLoc, SharedResources.TOOLTIP_VIEWFOLDER)
+
+            Me.m_pbVisitBackupFolder.Image = SharedResources.openOutputHS
+            cToolTipShared.GetInstance().SetToolTip(Me.m_pbVisitBackupFolder, SharedResources.TOOLTIP_VIEWFOLDER)
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -170,6 +177,19 @@ Namespace Other
 
         End Sub
 
+        Private Sub OnVisitFolder(sender As System.Object, e As System.EventArgs) _
+            Handles m_pbVisitOutputLoc.Click, m_pbVisitBackupFolder.Click
+            If (Me.m_uic IsNot Nothing) Then
+                Try
+                    Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+                    Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
+                    cmd.Invoke(CStr(DirectCast(sender, Control).Tag))
+                Catch ex As Exception
+                    cLog.Write(ex, "ucOptionsFileManagement::OnVisitFolder")
+                End Try
+            End If
+        End Sub
+
 #End Region ' Event handlers
 
 #Region " Internals "
@@ -178,20 +198,32 @@ Namespace Other
 
             Dim core As cCore = Me.m_uic.Core
 
-            Me.UpdateSample(Me.m_tbxOutputSample, Me.m_tbOutputMask.Text)
-            Me.UpdateSample(Me.m_tbxBackupSample, Me.m_tbBackupMask.Text)
+            Me.UpdateSample(Me.m_tbxOutputSample, Me.m_tbOutputMask.Text, Me.m_pbVisitOutputLoc, False)
+            Me.UpdateSample(Me.m_tbxBackupSample, Me.m_tbBackupMask.Text, Me.m_pbVisitBackupFolder, True)
 
             Me.m_autosaveoptions.SetOutputMask(Me.m_tbOutputMask.Text)
 
         End Sub
 
-        Private Sub UpdateSample(ByVal tbx As TextBox, ByVal strMask As String)
+        Private Sub UpdateSample(ByVal tbx As TextBox, ByVal strMask As String, pb As PictureBox, bIsFile As Boolean)
 
             Dim strSample As String = ""
+            Dim strPath As String = ""
 
             If Not cPathUtility.ResolvePath(strMask, Me.m_uic.Core, strSample) Then
                 cPathUtility.ResolvePath(strMask, "{model}", m_strDocDir, ".eweaccdb", m_strVersion, strSample)
             End If
+
+            If (String.IsNullOrWhiteSpace(strSample)) Then Return
+
+            If (bIsFile) Then
+                strPath = String.Copy(Path.GetDirectoryName(strSample))
+            Else
+                strPath = String.Copy(strSample)
+            End If
+            pb.Visible = Directory.Exists(strPath)
+            pb.Tag = strPath
+
             tbx.Text = cStringUtils.CompactString(strSample, tbx.ClientRectangle.Width, tbx.Font, TextFormatFlags.PathEllipsis)
 
         End Sub

@@ -2427,6 +2427,7 @@ Public Class cCore
         Get
             Dim strModel As String = ""
             Dim strScenario As String = ""
+            Dim strPath As String = ""
 
             If (Me.DataSource IsNot Nothing) Then
                 strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
@@ -2498,11 +2499,11 @@ Public Class cCore
 
             End Select
 
-            Dim strPath As String = strBasePath
+            cPathUtility.ResolvePath(strBasePath, Me, strPath)
 
-            If Not String.IsNullOrWhiteSpace(strModel) Then
-                strPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strModel, False))
-            End If
+            'If Not String.IsNullOrWhiteSpace(strModel) Then
+            '    strPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strModel, False))
+            'End If
 
             If Not String.IsNullOrWhiteSpace(strScenario) Then
                 strPath = Path.Combine(strPath, cFileUtils.ToValidFileName(strScenario, False))
