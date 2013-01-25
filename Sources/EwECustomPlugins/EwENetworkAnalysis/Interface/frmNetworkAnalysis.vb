@@ -318,6 +318,7 @@ Public Class frmNetworkAnalysis
         If (Me.m_contentmanager IsNot Nothing) Then
             Try
                 Me.m_contentmanager.DisplayData()
+                Me.Invalidate(True)
             Catch ex As Exception
             End Try
         End If
@@ -495,6 +496,7 @@ Public Class frmNetworkAnalysis
                 Try
                     ' Display data if succesful
                     Me.m_contentmanager.DisplayData()
+                    Me.Invalidate(True)
                 Catch ex As Exception
 
                 End Try

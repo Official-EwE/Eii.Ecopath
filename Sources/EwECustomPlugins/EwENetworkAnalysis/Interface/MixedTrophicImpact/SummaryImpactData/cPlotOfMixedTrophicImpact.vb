@@ -84,22 +84,43 @@ Public Class cPlotOfMixedTrophicImpact
 
     Public Overrides Sub DisplayData()
 
-        ReDim m_asData(NetworkManager.nGroups + NetworkManager.nFleets - 1, NetworkManager.nGroups + NetworkManager.nFleets - 1)
-        ReDim m_astrLabelsX(NetworkManager.nGroups + NetworkManager.nFleets - 1)
-        ReDim m_astrLabelsY(NetworkManager.nGroups + NetworkManager.nFleets - 1)
+        ' ID mapper
+        Dim aIDS(NetworkManager.nGroups + NetworkManager.nFleets) As Integer
+        Dim iNumItems As Integer = 0
+        For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
+            aIDS(i) = -1
+            If i <= NetworkManager.nGroups Then
+                If Me.StyleGuide.GroupVisible(i) Then
+                    aIDS(i) = iNumItems
+                    iNumItems += 1
+                End If
+            Else
+                If Me.StyleGuide.FleetVisible(i) Then
+                    aIDS(i) = iNumItems
+                    iNumItems += 1
+                End If
+            End If
+        Next
+
+        ReDim m_asData(iNumItems - 1, iNumItems - 1)
+        ReDim m_astrLabelsX(iNumItems - 1)
+        ReDim m_astrLabelsY(iNumItems - 1)
         For i As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
             For j As Integer = 1 To NetworkManager.nGroups + NetworkManager.nFleets
-                If j <= NetworkManager.nGroups Then
-                    m_astrLabelsX(j - 1) = NetworkManager.GroupName(j)
-                Else
-                    m_astrLabelsX(j - 1) = NetworkManager.FleetName(j - NetworkManager.nGroups)
+                If (aIDS(j) >= 0) And (aIDS(i) >= 0) Then
+                    If j <= NetworkManager.nGroups Then
+                        m_astrLabelsX(aIDS(j)) = NetworkManager.GroupName(j)
+                    Else
+                        m_astrLabelsX(aIDS(j)) = NetworkManager.FleetName(j - NetworkManager.nGroups)
+                    End If
+                    m_astrLabelsY(aIDS(j)) = m_astrLabelsX(aIDS(j))
+                    m_asData(aIDS(i), aIDS(j)) = NetworkManager.MixedTrophicImpacts(j, i)
                 End If
-                m_astrLabelsY(j - 1) = m_astrLabelsX(j - 1)
-                m_asData(i - 1, j - 1) = NetworkManager.MixedTrophicImpacts(j, i)
             Next j
         Next i
 
         Me.Plot.Invalidate()
+        GC.Collect()
 
     End Sub
 
