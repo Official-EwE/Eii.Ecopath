@@ -178,10 +178,10 @@ Public Class cArrayGraphRenderer
         Dim iArea3Height As Integer = rcRender.Height - iArea1Height
         Dim iArea1Width As Integer = rcRender.Width - iArea3Width
 
-        Dim rcArea1 As Rectangle = New Rectangle(0, 0, iArea1Width, iArea1Height)
-        Dim rcArea2 As Rectangle = New Rectangle(0, iArea1Height, rcArea1.Width, iArea3Height)
-        Dim rcArea3 As Rectangle = New Rectangle(rcArea1.Width, rcArea1.Height, iArea3Width, iArea3Height)
-        Dim rcArea4 As Rectangle = New Rectangle(rcArea1.Width, 0, rcArea1.Height, rcArea3.Width)
+        Dim rcArea1 As Rectangle = New Rectangle(rcRender.X, rcRender.Y, iArea1Width, iArea1Height)
+        Dim rcArea2 As Rectangle = New Rectangle(rcRender.X, rcRender.Y + iArea1Height, rcArea1.Width, iArea3Height)
+        Dim rcArea3 As Rectangle = New Rectangle(rcRender.X + rcArea1.Width, rcRender.Y + rcArea1.Height, iArea3Width, iArea3Height)
+        Dim rcArea4 As Rectangle = New Rectangle(rcRender.X + rcArea1.Width, rcRender.Y, rcArea1.Height, rcArea3.Width)
 
         ' Figure out where to draw the graphs
         szCellSize = CalcGridSize(rcArea2, asData.GetUpperBound(0) + 1, asData.GetUpperBound(1) + 1)
@@ -299,7 +299,7 @@ Public Class cArrayGraphRenderer
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Draw labels in Area 1.
     ''' </summary>
     ''' <param name="g"></param>
     ''' <param name="ftScale">Font to render scales with.</param>
@@ -338,16 +338,16 @@ Public Class cArrayGraphRenderer
         ' must be moved by {szLabelMaxSize.height} * Math.Cos(sAngle)
 
         For i As Integer = 0 To astrLabels.GetUpperBound(0)
-             DrawAngledText(g, ftScale, astrLabels(i), _
-                 CInt(i * szCellSize.Width), _
-                 CInt(rect.Height + Math.Cos(sAngle) * szLabelMaxSize.Height), sAngle)
+            DrawAngledText(g, ftScale, astrLabels(i), _
+                rect.X + CInt(i * szCellSize.Width), _
+                rect.Y + CInt(rect.Height + Math.Cos(sAngle) * szLabelMaxSize.Height), sAngle)
         Next
 
     End Sub
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Draw labels in area 3.
     ''' </summary>
     ''' <param name="g"></param>
     ''' <param name="ftScale">Font to render scales with.</param>
