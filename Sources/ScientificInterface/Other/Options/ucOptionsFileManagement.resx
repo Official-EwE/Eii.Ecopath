@@ -130,7 +130,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="m_hdrAutosave.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="m_hdrAutosave.Text" xml:space="preserve">
     <value>Auto-save results</value>
@@ -160,7 +160,7 @@
     <value>68, 21</value>
   </data>
   <data name="m_fieldpickBackup.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_fieldpickBackup.Name" xml:space="preserve">
     <value>m_fieldpickBackup</value>
@@ -178,10 +178,10 @@
     <value>Top, Right</value>
   </data>
   <data name="m_fieldpickOutput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>481, 21</value>
+    <value>485, 21</value>
   </data>
   <data name="m_fieldpickOutput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 21</value>
+    <value>64, 21</value>
   </data>
   <data name="m_fieldpickOutput.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -208,7 +208,7 @@
     <value>317, 20</value>
   </data>
   <data name="m_tbBackupMask.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;m_tbBackupMask.Name" xml:space="preserve">
     <value>m_tbBackupMask</value>
@@ -235,7 +235,7 @@
     <value>100, 13</value>
   </data>
   <data name="m_lblBackupFolder.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="m_lblBackupFolder.Text" xml:space="preserve">
     <value>&amp;Back-up models as:</value>
@@ -306,34 +306,34 @@
   <data name="&gt;&gt;m_lblOutput.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="CEwEHeaderLabel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_hdrMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="CEwEHeaderLabel1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_hdrMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="CEwEHeaderLabel1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_hdrMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>553, 18</value>
   </data>
-  <data name="CEwEHeaderLabel1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_hdrMain.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="CEwEHeaderLabel1.Text" xml:space="preserve">
+  <data name="m_hdrMain.Text" xml:space="preserve">
     <value>File management options</value>
   </data>
-  <data name="CEwEHeaderLabel1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+  <data name="m_hdrMain.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Name" xml:space="preserve">
-    <value>CEwEHeaderLabel1</value>
+  <data name="&gt;&gt;m_hdrMain.Name" xml:space="preserve">
+    <value>m_hdrMain</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrMain.Type" xml:space="preserve">
     <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8843.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrMain.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;CEwEHeaderLabel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_hdrMain.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
   <data name="m_tbxOutputSample.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -370,7 +370,7 @@
     <value>317, 20</value>
   </data>
   <data name="m_tbxBackupSample.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;m_tbxBackupSample.Name" xml:space="preserve">
     <value>m_tbxBackupSample</value>
@@ -397,7 +397,7 @@
     <value>543, 232</value>
   </data>
   <data name="m_plAutoSave.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="&gt;&gt;m_plAutoSave.Name" xml:space="preserve">
     <value>m_plAutoSave</value>
@@ -411,58 +411,55 @@
   <data name="&gt;&gt;m_plAutoSave.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="m_pbVisitOutputLoc.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnVisitOutputFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_pbVisitOutputLoc.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="m_btnVisitOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>485, 45</value>
   </data>
-  <data name="m_pbVisitOutputLoc.Location" type="System.Drawing.Point, System.Drawing">
-    <value>485, 48</value>
+  <data name="m_btnVisitOutputFolder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 23</value>
   </data>
-  <data name="m_pbVisitOutputLoc.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
+  <data name="m_btnVisitOutputFolder.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="m_pbVisitOutputLoc.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="&gt;&gt;m_btnVisitOutputFolder.Name" xml:space="preserve">
+    <value>m_btnVisitOutputFolder</value>
   </data>
-  <data name="&gt;&gt;m_pbVisitOutputLoc.Name" xml:space="preserve">
-    <value>m_pbVisitOutputLoc</value>
+  <data name="&gt;&gt;m_btnVisitOutputFolder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbVisitOutputLoc.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_pbVisitOutputLoc.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnVisitOutputFolder.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_pbVisitOutputLoc.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnVisitOutputFolder.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_pbVisitBackupFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnVisitBackupFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_pbVisitBackupFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_btnVisitBackupFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="m_pbVisitBackupFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>485, 101</value>
+  <data name="m_btnVisitBackupFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>485, 98</value>
   </data>
-  <data name="m_pbVisitBackupFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
+  <data name="m_btnVisitBackupFolder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 23</value>
   </data>
-  <data name="m_pbVisitBackupFolder.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="m_btnVisitBackupFolder.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
   </data>
-  <data name="&gt;&gt;m_pbVisitBackupFolder.Name" xml:space="preserve">
-    <value>m_pbVisitBackupFolder</value>
+  <data name="&gt;&gt;m_btnVisitBackupFolder.Name" xml:space="preserve">
+    <value>m_btnVisitBackupFolder</value>
   </data>
-  <data name="&gt;&gt;m_pbVisitBackupFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_btnVisitBackupFolder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbVisitBackupFolder.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnVisitBackupFolder.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_pbVisitBackupFolder.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnVisitBackupFolder.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

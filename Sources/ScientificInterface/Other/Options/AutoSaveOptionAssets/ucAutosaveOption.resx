@@ -154,7 +154,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_lblPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 0</value>
+    <value>197, -1</value>
   </data>
   <data name="m_lblPath.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -183,31 +183,46 @@
   <data name="&gt;&gt;m_lblPath.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="m_pbVisit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="m_btnVisitFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="m_pbVisit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>376, 3</value>
+  <data name="m_btnVisitFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
+        BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
+        nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
+        P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
+        S/Eg5eRews7tmI1UqIlE0ELEf4lrrRcJeI34XQbVRosFbXx714asPdlrJpP0sjhpgSnrSt6KtYl6GD0P
+        I6cZ7KriXM2uqBbyNzE77oD3bu50euh75M4/tOwV9C+hQADeRHWcObR1VgjWax2tZr6+tjD1tIFMwk1u
+        wgzDJ/KCwRro36fCieczCr0QWE6Wsb9ybYv6zO3eBr4MGbgZdzHwRDQZrRWCYzBwkNyz3cw/3q5CASGR
+        yPmBHevYUL6mXAn8TiPDPSZuxZ0wboJXh+HFXuZ7dxYCskFBIOYVQlIhF6WgrbmOdMRB9u4p+n1agT73
+        Knrsq9WJxQ2Wwkrgs17AZ9bTbDhC/dlqebMcrapkz7ZNbNmsY6OuTJyWl0iWh5Wg1N+4tC+DxWG59wuN
+        hHoCb1zptgAAAABJRU5ErkJggg==
+</value>
   </data>
-  <data name="m_pbVisit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="m_btnVisitFolder.Location" type="System.Drawing.Point, System.Drawing">
+    <value>370, 0</value>
+  </data>
+  <data name="m_btnVisitFolder.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="m_pbVisit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
+  <data name="m_btnVisitFolder.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
   </data>
-  <data name="m_pbVisit.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="m_btnVisitFolder.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;m_pbVisit.Name" xml:space="preserve">
-    <value>m_pbVisit</value>
+  <data name="&gt;&gt;m_btnVisitFolder.Name" xml:space="preserve">
+    <value>m_btnVisitFolder</value>
   </data>
-  <data name="&gt;&gt;m_pbVisit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;m_btnVisitFolder.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_pbVisit.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_btnVisitFolder.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_pbVisit.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_btnVisitFolder.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

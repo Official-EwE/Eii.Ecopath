@@ -15,6 +15,7 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Other
 
@@ -37,14 +38,12 @@ Namespace Other
             Me.m_lblBackupFolder = New System.Windows.Forms.Label()
             Me.m_tbOutputMask = New System.Windows.Forms.TextBox()
             Me.m_lblOutput = New System.Windows.Forms.Label()
-            Me.CEwEHeaderLabel1 = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrMain = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tbxOutputSample = New System.Windows.Forms.TextBox()
             Me.m_tbxBackupSample = New System.Windows.Forms.TextBox()
             Me.m_plAutoSave = New System.Windows.Forms.Panel()
-            Me.m_pbVisitOutputLoc = New System.Windows.Forms.PictureBox()
-            Me.m_pbVisitBackupFolder = New System.Windows.Forms.PictureBox()
-            CType(Me.m_pbVisitOutputLoc, System.ComponentModel.ISupportInitialize).BeginInit()
-            CType(Me.m_pbVisitBackupFolder, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_btnVisitOutputFolder = New System.Windows.Forms.Button()
+            Me.m_btnVisitBackupFolder = New System.Windows.Forms.Button()
             Me.SuspendLayout()
             '
             'm_hdrAutosave
@@ -95,13 +94,13 @@ Namespace Other
             resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
             Me.m_lblOutput.Name = "m_lblOutput"
             '
-            'CEwEHeaderLabel1
+            'm_hdrMain
             '
-            resources.ApplyResources(Me.CEwEHeaderLabel1, "CEwEHeaderLabel1")
-            Me.CEwEHeaderLabel1.CanCollapseParent = False
-            Me.CEwEHeaderLabel1.CollapsedParentHeight = 0
-            Me.CEwEHeaderLabel1.IsCollapsed = False
-            Me.CEwEHeaderLabel1.Name = "CEwEHeaderLabel1"
+            resources.ApplyResources(Me.m_hdrMain, "m_hdrMain")
+            Me.m_hdrMain.CanCollapseParent = False
+            Me.m_hdrMain.CollapsedParentHeight = 0
+            Me.m_hdrMain.IsCollapsed = False
+            Me.m_hdrMain.Name = "m_hdrMain"
             '
             'm_tbxOutputSample
             '
@@ -120,24 +119,26 @@ Namespace Other
             resources.ApplyResources(Me.m_plAutoSave, "m_plAutoSave")
             Me.m_plAutoSave.Name = "m_plAutoSave"
             '
-            'm_pbVisitOutputLoc
+            'm_btnVisitOutputFolder
             '
-            resources.ApplyResources(Me.m_pbVisitOutputLoc, "m_pbVisitOutputLoc")
-            Me.m_pbVisitOutputLoc.Name = "m_pbVisitOutputLoc"
-            Me.m_pbVisitOutputLoc.TabStop = False
+            resources.ApplyResources(Me.m_btnVisitOutputFolder, "m_btnVisitOutputFolder")
+            Me.m_btnVisitOutputFolder.Name = "m_btnVisitOutputFolder"
+            Me.m_btnVisitOutputFolder.UseVisualStyleBackColor = True
+            Me.m_btnVisitOutputFolder.Image = SharedResources.openOutputHS
             '
-            'm_pbVisitBackupFolder
+            'm_btnVisitBackupFolder
             '
-            resources.ApplyResources(Me.m_pbVisitBackupFolder, "m_pbVisitBackupFolder")
-            Me.m_pbVisitBackupFolder.Name = "m_pbVisitBackupFolder"
-            Me.m_pbVisitBackupFolder.TabStop = False
+            resources.ApplyResources(Me.m_btnVisitBackupFolder, "m_btnVisitBackupFolder")
+            Me.m_btnVisitBackupFolder.Name = "m_btnVisitBackupFolder"
+            Me.m_btnVisitBackupFolder.UseVisualStyleBackColor = True
+            Me.m_btnVisitBackupFolder.Image = SharedResources.openOutputHS
             '
             'ucOptionsFileManagement
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_pbVisitBackupFolder)
-            Me.Controls.Add(Me.m_pbVisitOutputLoc)
+            Me.Controls.Add(Me.m_btnVisitBackupFolder)
+            Me.Controls.Add(Me.m_btnVisitOutputFolder)
             Me.Controls.Add(Me.m_plAutoSave)
             Me.Controls.Add(Me.m_fieldpickBackup)
             Me.Controls.Add(Me.m_fieldpickOutput)
@@ -147,11 +148,9 @@ Namespace Other
             Me.Controls.Add(Me.m_lblOutput)
             Me.Controls.Add(Me.m_tbxBackupSample)
             Me.Controls.Add(Me.m_tbxOutputSample)
-            Me.Controls.Add(Me.CEwEHeaderLabel1)
+            Me.Controls.Add(Me.m_hdrMain)
             Me.Controls.Add(Me.m_hdrAutosave)
             Me.Name = "ucOptionsFileManagement"
-            CType(Me.m_pbVisitOutputLoc, System.ComponentModel.ISupportInitialize).EndInit()
-            CType(Me.m_pbVisitBackupFolder, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
@@ -163,12 +162,12 @@ Namespace Other
         Private WithEvents m_lblBackupFolder As System.Windows.Forms.Label
         Private WithEvents m_tbOutputMask As System.Windows.Forms.TextBox
         Private WithEvents m_lblOutput As System.Windows.Forms.Label
-        Private WithEvents CEwEHeaderLabel1 As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_hdrMain As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_tbxOutputSample As System.Windows.Forms.TextBox
         Private WithEvents m_tbxBackupSample As System.Windows.Forms.TextBox
         Private WithEvents m_plAutoSave As System.Windows.Forms.Panel
-        Private WithEvents m_pbVisitOutputLoc As System.Windows.Forms.PictureBox
-        Private WithEvents m_pbVisitBackupFolder As System.Windows.Forms.PictureBox
+        Private WithEvents m_btnVisitOutputFolder As System.Windows.Forms.Button
+        Private WithEvents m_btnVisitBackupFolder As System.Windows.Forms.Button
 
     End Class
 

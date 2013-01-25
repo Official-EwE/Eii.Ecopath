@@ -203,8 +203,7 @@ Namespace Other
                 Me.m_cbOption.Checked = (Me.UIContext.Core.Autosave(Me.m_autosavetype) = True)
             End If
 
-            Me.m_pbVisit.Image = SharedResources.openOutputHS
-            cToolTipShared.GetInstance().SetToolTip(Me.m_pbVisit, SharedResources.TOOLTIP_VIEWFOLDER)
+             cToolTipShared.GetInstance().SetToolTip(Me.m_btnVisitFolder, SharedResources.TOOLTIP_VIEWFOLDER)
 
         End Sub
 
@@ -217,7 +216,8 @@ Namespace Other
 
 #Region " Events "
 
-        Private Sub OnVisitPath(sender As System.Object, e As System.EventArgs) Handles m_pbVisit.Click
+        Private Sub OnVisitFolder(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnVisitFolder.Click
 
             If (Me.m_uic IsNot Nothing) Then
                 Try
@@ -239,7 +239,7 @@ Namespace Other
 
             If (Me.m_autosavetype = eAutosaveTypes.NotSet) Then
                 Me.m_lblPath.Visible = False
-                Me.m_pbVisit.Visible = False
+                Me.m_btnVisitFolder.Visible = False
             Else
                 Dim strPath As String = Me.UIContext.Core.DefaultOutputPath(Me.m_autosavetype, Me.m_strOutputMask, True)
                 If (Me.m_pi IsNot Nothing) Then
@@ -250,7 +250,8 @@ Namespace Other
                 TextRenderer.MeasureText(strPath, Font, New Drawing.Size(Me.m_lblPath.ClientSize.Width, 0), TextFormatFlags.ModifyString Or TextFormatFlags.PathEllipsis)
                 Me.m_lblPath.Text = strPath
                 Me.m_lblPath.Visible = True
-                Me.m_pbVisit.Visible = Directory.Exists(Me.m_strPath)
+                Me.m_btnVisitFolder.Visible = True
+                Me.m_btnVisitFolder.Enabled = Directory.Exists(Me.m_strPath)
             End If
 
         End Sub

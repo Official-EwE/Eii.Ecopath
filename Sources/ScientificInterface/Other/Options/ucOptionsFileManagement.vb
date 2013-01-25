@@ -85,11 +85,11 @@ Namespace Other
         Protected Overrides Sub OnLoad(e As System.EventArgs)
             MyBase.OnLoad(e)
 
-            Me.m_pbVisitOutputLoc.Image = SharedResources.openOutputHS
-            cToolTipShared.GetInstance().SetToolTip(Me.m_pbVisitOutputLoc, SharedResources.TOOLTIP_VIEWFOLDER)
+            Me.m_btnVisitOutputFolder.Image = SharedResources.openOutputHS
+            cToolTipShared.GetInstance().SetToolTip(Me.m_btnVisitOutputFolder, SharedResources.TOOLTIP_VIEWFOLDER)
 
-            Me.m_pbVisitBackupFolder.Image = SharedResources.openOutputHS
-            cToolTipShared.GetInstance().SetToolTip(Me.m_pbVisitBackupFolder, SharedResources.TOOLTIP_VIEWFOLDER)
+            Me.m_btnVisitBackupFolder.Image = SharedResources.openOutputHS
+            cToolTipShared.GetInstance().SetToolTip(Me.m_btnVisitBackupFolder, SharedResources.TOOLTIP_VIEWFOLDER)
 
         End Sub
 
@@ -178,7 +178,8 @@ Namespace Other
         End Sub
 
         Private Sub OnVisitFolder(sender As System.Object, e As System.EventArgs) _
-            Handles m_pbVisitOutputLoc.Click, m_pbVisitBackupFolder.Click
+            Handles m_btnVisitBackupFolder.Click, m_btnVisitOutputFolder.Click
+
             If (Me.m_uic IsNot Nothing) Then
                 Try
                     Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
@@ -198,14 +199,14 @@ Namespace Other
 
             Dim core As cCore = Me.m_uic.Core
 
-            Me.UpdateSample(Me.m_tbxOutputSample, Me.m_tbOutputMask.Text, Me.m_pbVisitOutputLoc, False)
-            Me.UpdateSample(Me.m_tbxBackupSample, Me.m_tbBackupMask.Text, Me.m_pbVisitBackupFolder, True)
+            Me.UpdateSample(Me.m_tbxOutputSample, Me.m_tbOutputMask.Text, Me.m_btnVisitOutputFolder, False)
+            Me.UpdateSample(Me.m_tbxBackupSample, Me.m_tbBackupMask.Text, Me.m_btnVisitBackupFolder, True)
 
             Me.m_autosaveoptions.SetOutputMask(Me.m_tbOutputMask.Text)
 
         End Sub
 
-        Private Sub UpdateSample(ByVal tbx As TextBox, ByVal strMask As String, pb As PictureBox, bIsFile As Boolean)
+        Private Sub UpdateSample(ByVal tbx As TextBox, ByVal strMask As String, btn As Button, bIsFile As Boolean)
 
             Dim strSample As String = ""
             Dim strPath As String = ""
@@ -221,8 +222,8 @@ Namespace Other
             Else
                 strPath = String.Copy(strSample)
             End If
-            pb.Visible = Directory.Exists(strPath)
-            pb.Tag = strPath
+            btn.Enabled = Directory.Exists(strPath)
+            btn.Tag = strPath
 
             tbx.Text = cStringUtils.CompactString(strSample, tbx.ClientRectangle.Width, tbx.Font, TextFormatFlags.PathEllipsis)
 
