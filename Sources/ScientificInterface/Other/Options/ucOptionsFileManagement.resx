@@ -414,6 +414,24 @@
   <data name="m_btnVisitOutputFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="m_btnVisitOutputFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
+        BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
+        nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
+        P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
+        S/Eg5eRews7tmI1UqIlE0ELEf4lrrRcJeI34XQbVRosFbXx714asPdlrJpP0sjhpgSnrSt6KtYl6GD0P
+        I6cZ7KriXM2uqBbyNzE77oD3bu50euh75M4/tOwV9C+hQADeRHWcObR1VgjWax2tZr6+tjD1tIFMwk1u
+        wgzDJ/KCwRro36fCieczCr0QWE6Wsb9ybYv6zO3eBr4MGbgZdzHwRDQZrRWCYzBwkNyz3cw/3q5CASGR
+        yPmBHevYUL6mXAn8TiPDPSZuxZ0wboJXh+HFXuZ7dxYCskFBIOYVQlIhF6WgrbmOdMRB9u4p+n1agT73
+        Knrsq9WJxQ2Wwkrgs17AZ9bTbDhC/dlqebMcrapkz7ZNbNmsY6OuTJyWl0iWh5Wg1N+4tC+DxWG59wuN
+        hHoCb1zptgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_btnVisitOutputFolder.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
+  </data>
   <data name="m_btnVisitOutputFolder.Location" type="System.Drawing.Point, System.Drawing">
     <value>485, 45</value>
   </data>
@@ -437,6 +455,24 @@
   </data>
   <data name="m_btnVisitBackupFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="m_btnVisitBackupFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
+        BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
+        nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
+        P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
+        S/Eg5eRews7tmI1UqIlE0ELEf4lrrRcJeI34XQbVRosFbXx714asPdlrJpP0sjhpgSnrSt6KtYl6GD0P
+        I6cZ7KriXM2uqBbyNzE77oD3bu50euh75M4/tOwV9C+hQADeRHWcObR1VgjWax2tZr6+tjD1tIFMwk1u
+        wgzDJ/KCwRro36fCieczCr0QWE6Wsb9ybYv6zO3eBr4MGbgZdzHwRDQZrRWCYzBwkNyz3cw/3q5CASGR
+        yPmBHevYUL6mXAn8TiPDPSZuxZ0wboJXh+HFXuZ7dxYCskFBIOYVQlIhF6WgrbmOdMRB9u4p+n1agT73
+        Knrsq9WJxQ2Wwkrgs17AZ9bTbDhC/dlqebMcrapkz7ZNbNmsY6OuTJyWl0iWh5Wg1N+4tC+DxWG59wuN
+        hHoCb1zptgAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_btnVisitBackupFolder.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomCenter</value>
   </data>
   <data name="m_btnVisitBackupFolder.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>

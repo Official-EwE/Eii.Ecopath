@@ -124,14 +124,12 @@ Namespace Other
             resources.ApplyResources(Me.m_btnVisitOutputFolder, "m_btnVisitOutputFolder")
             Me.m_btnVisitOutputFolder.Name = "m_btnVisitOutputFolder"
             Me.m_btnVisitOutputFolder.UseVisualStyleBackColor = True
-            Me.m_btnVisitOutputFolder.Image = SharedResources.openOutputHS
             '
             'm_btnVisitBackupFolder
             '
             resources.ApplyResources(Me.m_btnVisitBackupFolder, "m_btnVisitBackupFolder")
             Me.m_btnVisitBackupFolder.Name = "m_btnVisitBackupFolder"
             Me.m_btnVisitBackupFolder.UseVisualStyleBackColor = True
-            Me.m_btnVisitBackupFolder.Image = SharedResources.openOutputHS
             '
             'ucOptionsFileManagement
             '
