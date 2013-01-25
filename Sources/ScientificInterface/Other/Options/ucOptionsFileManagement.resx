@@ -202,10 +202,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbBackupMask.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 74</value>
+    <value>109, 74</value>
   </data>
   <data name="m_tbBackupMask.Size" type="System.Drawing.Size, System.Drawing">
-    <value>317, 20</value>
+    <value>366, 20</value>
   </data>
   <data name="m_tbBackupMask.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -256,10 +256,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbOutputMask.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 21</value>
+    <value>109, 21</value>
   </data>
   <data name="m_tbOutputMask.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 20</value>
+    <value>370, 20</value>
   </data>
   <data name="m_tbOutputMask.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -340,10 +340,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxOutputSample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 47</value>
+    <value>109, 47</value>
   </data>
   <data name="m_tbxOutputSample.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 20</value>
+    <value>370, 20</value>
   </data>
   <data name="m_tbxOutputSample.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -364,10 +364,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxBackupSample.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 100</value>
+    <value>109, 100</value>
   </data>
   <data name="m_tbxBackupSample.Size" type="System.Drawing.Size, System.Drawing">
-    <value>317, 20</value>
+    <value>366, 20</value>
   </data>
   <data name="m_tbxBackupSample.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -417,7 +417,7 @@
   <data name="m_btnVisitOutputFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
+        YQUAAAAJcEhZcwAACxAAAAsQAa0jvXUAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
         BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
         nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
         P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
@@ -459,7 +459,7 @@
   <data name="m_btnVisitBackupFolder.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
+        YQUAAAAJcEhZcwAACxAAAAsQAa0jvXUAAAIASURBVDhPxZPdS5NRAIffiy666qq/IBAvgt1YF3WbUFEE
         BWlR9CG0PimEQjZzbTrmvqfWyA1rn226Wa2Coi6EwpA+NNRhYmrWRUSFaYGR4p7OOcOlK9plBx44nPP+
         nvN7z8urAdq/0EqN/y/ojvuqBRRzv8vuke1KDhkcGwrzYyat+DmdYOFziFTEQyZubSwpSEe9zE0nV4QX
         P7azkK0led1BLGAjdKWRYIuJq24jl+11otjvi9c6wy7mPoULJ+dEmDEjZI//lT8ENzrsfP8QVLVl+GG3
