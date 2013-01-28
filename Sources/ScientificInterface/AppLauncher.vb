@@ -552,7 +552,8 @@ Public Class AppLauncher
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
 
         ' Special cases: hide spatial data framework UI
-        Me.m_cmdEcospaceDataConnections.IsAvailable = My.Settings.EnableSpatialFramework
+        ' For the current development version make the Spatial Assets interface always available
+        ' Me.m_cmdEcospaceDataConnections.IsAvailable = My.Settings.EnableSpatialFramework
 
     End Sub
 
