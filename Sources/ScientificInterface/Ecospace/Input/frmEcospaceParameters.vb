@@ -337,6 +337,9 @@ Namespace Ecospace
 
         Private Sub OnSpaceSaveFormatChanged(sender As System.Object, e As System.EventArgs) _
             Handles m_cmbAutosaveMapFormat.SelectedIndexChanged
+
+            If Me.m_bInUpdate Then Return
+
             Select Case Me.m_cmbAutosaveMapFormat.SelectedIndex
                 Case 0
                     Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False
