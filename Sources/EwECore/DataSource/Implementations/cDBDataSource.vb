@@ -7194,6 +7194,7 @@ Namespace DataSources
                 ecospaceDS.IFDPower = CSng(reader("IFDPower"))
                 ecospaceDS.nSpaceSolverThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nGridSolverThreads = CInt(reader("NumThreads"))
+                ecospaceDS.nEffortDistThreads = CInt(reader("NumThreads"))
                 ecospaceDS.nRegions = CInt(Me.m_db.ReadSafe(reader, "NumRegions", 0))
                 ecospaceDS.AdjustSpace = (CInt(reader("AdjustSpace")) <> 0)
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)

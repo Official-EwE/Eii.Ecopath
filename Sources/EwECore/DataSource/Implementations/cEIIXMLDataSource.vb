@@ -1975,6 +1975,7 @@ Public Class cEIIXMLDataSource
             ecospaceDS.IFDPower = CSng(drow("IFDPower"))
             ecospaceDS.nSpaceSolverThreads = CInt(drow("NumThreads"))
             ecospaceDS.nGridSolverThreads = CInt(drow("NumThreads"))
+            ecospaceDS.nEffortDistThreads = CInt(drow("NumThreads"))
             ecospaceDS.nRegions = CInt(Me.ReadSafe(drow, "NumRegions", 0))
             ecospaceDS.AdjustSpace = (CInt(drow("AdjustSpace")) <> 0)
             ecospaceDS.UseExact = (CInt(drow("UseExact")) <> 0)

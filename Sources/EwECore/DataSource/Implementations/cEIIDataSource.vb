@@ -1106,6 +1106,7 @@ Public Class cEIIDataSource
             ecospaceDS.IFDPower = 0.5
             ecospaceDS.nSpaceSolverThreads = 1
             ecospaceDS.nGridSolverThreads = 1
+            ecospaceDS.nEffortDistThreads = 1
             ecospaceDS.nRegions = 0
             ecospaceDS.AdjustSpace = True
             ecospaceDS.UseExact = False

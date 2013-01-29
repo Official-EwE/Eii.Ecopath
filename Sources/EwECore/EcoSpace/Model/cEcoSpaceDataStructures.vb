@@ -23,12 +23,6 @@ Imports EwEUtils.Core
 
 Public Class cEcospaceDataStructures
 
-    ''' <summary>
-    ''' Multiplier to convert KM to Degrees
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Const KM_TO_DEGREES As Single = 1 / (40007.86291736 / 360.0)
-
 #Region "Public Fields"
 
     Public EcosimScenarioDBID As Integer
@@ -380,19 +374,14 @@ Public Class cEcospaceDataStructures
     Public nGridSolverThreads As Integer
 
     ''' <summary>
-    ''' Number of groups for each solver thread
-    ''' </summary>
-    Public nGroupsPerThread As Integer
-
-    ''' <summary>
     ''' Number of threads to run the groups biomass calculations on 
     ''' </summary>
     Public nSpaceSolverThreads As Integer
 
     ''' <summary>
-    ''' Number of cells per biomass thread
+    ''' Number of effort distribution threads
     ''' </summary>
-    Public nCellsPerThread As Integer
+    Public nEffortDistThreads As Integer
 
     'number of species per thread for the IBM stuff
     Public nIBMGroupsPerThread As Integer
@@ -858,12 +847,11 @@ Public Class cEcospaceDataStructures
     Public Sub SetDefaultThreads()
         'multi threading defaults
         ' JS 08jun07: added 0 check since the datasource may have provided these values
-        If (Me.nGridSolverThreads <= 0) Then
+        If (Me.nSpaceSolverThreads <= 0) Then
             Me.nGridSolverThreads = System.Environment.ProcessorCount
             Me.nSpaceSolverThreads = System.Environment.ProcessorCount
+            Me.nEffortDistThreads = System.Environment.ProcessorCount
         End If
-        Me.nGroupsPerThread = Me.nvartot \ Me.nGridSolverThreads + 1
-        Me.nCellsPerThread = Me.InRow * Me.InCol \ Me.nGridSolverThreads + 1 '?????
 
     End Sub
 

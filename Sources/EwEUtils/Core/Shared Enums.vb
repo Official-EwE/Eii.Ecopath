@@ -656,9 +656,9 @@ Namespace Core
         'Ecospace multi thread vars
         ''''''''''''''''''''''''''''''''''''''''''''''''''''''
         nGridSolverThreads
-        nGroupsPerThread
         nSpaceThreads
-        nMapCellsPerThread
+        nEffortDistThreads
+
         IFDPower
         UseIBM
         UseNewMultiStanza

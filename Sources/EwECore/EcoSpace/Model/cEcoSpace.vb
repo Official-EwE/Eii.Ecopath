@@ -1599,8 +1599,8 @@ Public Class cEcoSpace
             Next solver
 
             stpTotRun.Stop()
-            'System.Console.WriteLine("Solver total run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
-            'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
+            System.Console.WriteLine("Solver total run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
 
             'Me.dumpCellComputeTimes()
 
@@ -1612,10 +1612,9 @@ Public Class cEcoSpace
             Throw New ApplicationException("Error in runSpaceSolverThreads() " & ex.Message, ex)
         End Try
 
-        GC.Collect()
+        ' GC.Collect()
 
     End Sub
-
 
     Private Sub dumpRunningThreadInfo(msg As String)
         System.Console.WriteLine(msg)
@@ -1996,6 +1995,11 @@ Public Class cEcoSpace
                 End If
             Next
 
+            If Me.m_Data.nEffortDistThreads > Me.m_Data.nFleets Then
+                Me.m_Data.nEffortDistThreads = Me.m_Data.nFleets
+                System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of effort distribution threads limited to number of fleets.")
+            End If
+
             If Me.m_Data.nGridSolverThreads > Me.m_Data.NGroups Then
                 Me.m_Data.nGridSolverThreads = Me.m_Data.NGroups
                 System.Console.WriteLine(Me.ToString & " Initializing threads. WARNING number of grid threads limited to number of groups.")
@@ -2068,16 +2072,7 @@ Public Class cEcoSpace
 
             End If
 
-            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            'ToDo_jb initSpatialEquilibrium() Still need to  implement reading of the nutrient maps
-            'and 
-            '        ReDim SimPlot(NumGroups, 7, TotalTime / TimeStep + 1)
-            '        ReadNutrientMaps()
-
             m_Ecosim.InitializeDataInfo()
-
-            'm_Data.nGroupsPerThread = (m_Data.totalIntegratedGroups + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads 'm_Data.nvartot \ m_Data.nGridSolverThreads + 1
-            m_Data.nCellsPerThread = (m_Data.iTotalWaterCells + m_Data.nSpaceSolverThreads - 1) \ m_Data.nSpaceSolverThreads
             m_Data.nIBMGroupsPerThread = (m_Stanza.Nsplit + m_Data.nGridSolverThreads - 1) \ m_Data.nGridSolverThreads
 
             Return True
@@ -3550,7 +3545,7 @@ exitline:
 
         Dim waitOb As WaitHandle = New AutoResetEvent(False)
 
-        'stpwTotRunTime = Stopwatch.StartNew
+        stpwTotRunTime = Stopwatch.StartNew
         For ithrd As Integer = 1 To nThrds
 
             nFltsPerThread = Me.computeThreadLoad(Me.m_Data.nFleets, nCompFleets, nThrds, ithrd)
@@ -3594,7 +3589,7 @@ exitline:
         Dim iFirstCell As Integer = 1
         Dim iLastcell As Integer
 
-        'Number of cell to compute for the current thread
+        'Number of cells to compute for the current thread
         'Computed on the fly in the loop
         Dim nCells As Integer
 
@@ -3635,9 +3630,10 @@ exitline:
         waitOb.Dispose()
         waitOb = Nothing
 
-        '  stpwF.Stop()
-        '  System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
-        GC.Collect()
+        stpwTotRunTime.Stop()
+        'System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+
+        'GC.Collect()
 
     End Sub
 

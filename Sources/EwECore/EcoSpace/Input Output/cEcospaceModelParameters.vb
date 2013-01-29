@@ -114,21 +114,15 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            'groups per threads
-            meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(1, eVarNameFlags.nGroupsPerThread, eStatusFlags.Null, eValueTypes.Int, _
-                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
-            m_values.Add(val.varName, val)
-
             'space threads
             meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
             val = New cValue(1, eVarNameFlags.nSpaceThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
-            'cells per thread
+            'Number of effort distribution threads
             meta = New cVariableMetaData(0, N_CORES_HUNGABEE, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
-            val = New cValue(1, eVarNameFlags.nMapCellsPerThread, eStatusFlags.Null, eValueTypes.Int, _
+            val = New cValue(1, eVarNameFlags.nEffortDistThreads, eStatusFlags.Null, eValueTypes.Int, _
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
@@ -422,14 +416,21 @@ Public Class cEcospaceModelParameters
 
     End Property
 
-    Public Property nGroupsPerThread() As Integer
+
+    ''' <summary>
+    ''' Number of Effort distrubtion threads
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>Not used by the Scientific Interface provided here so it can be set via code.</remarks>
+    Public Property nEffortDistThreads() As Integer
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.nGroupsPerThread))
+            Return CInt(GetVariable(eVarNameFlags.nEffortDistThreads))
         End Get
 
         Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.nGroupsPerThread, value)
+            SetVariable(eVarNameFlags.nEffortDistThreads, value)
         End Set
 
     End Property
@@ -443,18 +444,6 @@ Public Class cEcospaceModelParameters
 
         Set(ByVal value As Integer)
             SetVariable(eVarNameFlags.nSpaceThreads, value)
-        End Set
-
-    End Property
-
-    Public Property nMapCellsPerThread() As Integer
-
-        Get
-            Return CInt(GetVariable(eVarNameFlags.nMapCellsPerThread))
-        End Get
-
-        Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.nMapCellsPerThread, value)
         End Set
 
     End Property

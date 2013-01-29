@@ -44,8 +44,9 @@ Namespace Ecospace
         Private m_fpContact As cEwEFormatProvider = Nothing
 
         ' Threading
-        Private m_fpNumThreads As cEwEFormatProvider = Nothing
-        Private m_fpNumThreads2 As cEwEFormatProvider = Nothing
+        Private m_fpNGridThreads As cEwEFormatProvider = Nothing
+        Private m_fpNBiomassThreads As cEwEFormatProvider = Nothing
+        Private m_fpNEffortThreads As cEwEFormatProvider = Nothing
         Private m_fpNumPackets As cEwEFormatProvider = Nothing
 
         ' Model
@@ -91,14 +92,15 @@ Namespace Ecospace
             Me.m_bpAdjustSpace = Nothing
             Me.m_bpConTracing = Nothing
             Me.m_bpEffort = Nothing
- 
+
             Me.m_fpScenarioName.Release()
             Me.m_fpScenarioDescription.Release()
             Me.m_fpAuthor.Release()
             Me.m_fpContact.Release()
 
-            Me.m_fpNumThreads.Release()
-            Me.m_fpNumThreads2.Release()
+            Me.m_fpNGridThreads.Release()
+            Me.m_fpNBiomassThreads.Release()
+            Me.m_fpNEffortThreads.Release()
             Me.m_fpNumPackets.Release()
             Me.m_fpTotalTime.Release()
             Me.m_fpNumTSpYear.Release()
@@ -126,9 +128,11 @@ Namespace Ecospace
 
             Me.UpdateControls()
 
-            ' Hmm, connecting one control to two live properties - this could be dangerous
-            Me.m_fpNumThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nGridSolverThreads)
-            Me.m_fpNumThreads2 = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
+            ' Hmm, connecting one control to three live properties - this could be dangerous
+            Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nGridSolverThreads)
+            Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
+            Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nEffortDistThreads)
+
             Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
 
             ' Model

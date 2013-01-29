@@ -9583,11 +9583,12 @@ Public Class cCore
 
             'Grid threads
             m_EcospaceModelParams.nGridSolverThreads = m_EcoSpaceData.nGridSolverThreads
-            m_EcospaceModelParams.nGroupsPerThread = m_EcoSpaceData.nGroupsPerThread
 
             'Group Threads
             m_EcospaceModelParams.nSpaceThreads = m_EcoSpaceData.nSpaceSolverThreads
-            m_EcospaceModelParams.nMapCellsPerThread = m_EcoSpaceData.nCellsPerThread
+
+            'Effort dist threads
+            m_EcospaceModelParams.nEffortDistThreads = m_EcoSpaceData.nEffortDistThreads
 
             m_EcospaceModelParams.IFDPower = m_EcoSpaceData.IFDPower
             m_EcospaceModelParams.UseIBM = m_EcoSpaceData.UseIBM
@@ -9635,11 +9636,9 @@ Public Class cCore
         m_EcoSpaceData.AdjustSpace = m_EcospaceModelParams.AdjustSpace
         m_EcoSpaceData.nRegions = m_EcospaceModelParams.nRegions
 
-        m_EcoSpaceData.nGroupsPerThread = m_EcospaceModelParams.nGroupsPerThread
         m_EcoSpaceData.nGridSolverThreads = m_EcospaceModelParams.nGridSolverThreads
-
+        m_EcoSpaceData.nEffortDistThreads = m_EcospaceModelParams.nEffortDistThreads
         m_EcoSpaceData.nSpaceSolverThreads = m_EcospaceModelParams.nSpaceThreads
-        m_EcoSpaceData.nCellsPerThread = m_EcospaceModelParams.nMapCellsPerThread
 
         m_EcoSpaceData.IFDPower = m_EcospaceModelParams.IFDPower
         m_EcoSpaceData.UseIBM = m_EcospaceModelParams.UseIBM
