@@ -3537,7 +3537,7 @@ exitline:
         Array.Clear(m_Data.Ftot, 0, m_Data.Ftot.Length)
         Array.Clear(m_Data.EffortSpace, 0, m_Data.EffortSpace.Length)
 
-        nThrds = Me.m_Data.nSpaceSolverThreads
+        nThrds = Me.m_Data.nEffortDistThreads
         'Constrain the number of fleet threads to the number of fleets
         If nThrds > Me.m_Data.nFleets Then nThrds = Me.m_Data.nFleets
         'Set the thread increment counter
