@@ -1202,12 +1202,14 @@ Public Class cEcoSpace
             Dim GridRunTime As Double = stpwchGrid.Elapsed.TotalMinutes
             Dim EffortRunTime As Double = stpwchEffort.Elapsed.TotalMinutes
 
-            System.Console.WriteLine("FindSpatialEquilibrium() Number of Time Steps = " & itt.ToString)
-            System.Console.WriteLine("FindSpatialEquilibrium() Total run time(min.) = " & totRunTime.ToString)
-            System.Console.WriteLine("FindSpatialEquilibrium() Average per Timestep(min.) = " & (totRunTime / itt).ToString)
-            System.Console.WriteLine("FindSpatialEquilibrium() Percent in Trophic = " & (SpaceRunTime / totRunTime * 100).ToString)
-            System.Console.WriteLine("FindSpatialEquilibrium() Percent in GridSolver = " & (GridRunTime / totRunTime * 100).ToString)
-            System.Console.WriteLine("FindSpatialEquilibrium() Percent in Effort distribution = " & (EffortRunTime / totRunTime * 100).ToString)
+            System.Console.WriteLine("---------------FindSpatialEquilibrium() Timing-------------")
+            System.Console.WriteLine(" Number of Time Steps = " & itt.ToString)
+            System.Console.WriteLine(" Total run time(min.) = " & totRunTime.ToString)
+            System.Console.WriteLine(" Average per Timestep(min.) = " & (totRunTime / itt).ToString)
+            System.Console.WriteLine(" Trophic time(min.)= " & SpaceRunTime.ToString & " (%)" & (SpaceRunTime / totRunTime * 100).ToString)
+            System.Console.WriteLine(" GridSolver time(min.)= " & GridRunTime.ToString & " (%)" & (GridRunTime / totRunTime * 100).ToString)
+            System.Console.WriteLine(" Effort dist. time(min.)= " & EffortRunTime.ToString & " (%)" & (EffortRunTime / totRunTime * 100).ToString)
+            System.Console.WriteLine("-----------------------------------------------------------")
 
         Catch ex As Exception
             cLog.Write(ex, "cEcospace::FindSpatialEquilibrium")
@@ -1439,6 +1441,8 @@ Public Class cEcoSpace
             'this allows any waiting threads to continue
             Dim WaitOb As ManualResetEvent = New ManualResetEvent(False)
 
+            Dim stpTotRun As Stopwatch = Stopwatch.StartNew
+
             'set the shared thread increment counter to the number of threads
             cGridSolver.ThreadIncrementer = m_gridSolvers.Count
 
@@ -1462,6 +1466,9 @@ Public Class cEcoSpace
                 Debug.Assert(False, "runGridSolverThreads() Timed out!")
                 cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
             End If
+
+            stpTotRun.Stop()
+            System.Console.WriteLine("Grid total run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1543,7 +1550,8 @@ Public Class cEcoSpace
             Debug.Assert(nCellsCompleted = m_Data.iTotalWaterCells, "Ecospace.runSpaceSolverThreads() may have computed the wrong number of cells. You need to check this.")
             ' System.Console.WriteLine("Solver init threads time, " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
-            'Me.dumpRunningThreadInfo("Before")
+            'Not implemented on MONO
+            ' Me.dumpRunningThreadInfo("Before")
 
             'The WaitObject will be signaled once the threads have counted down the ThreadIncrementer to zero
             If Not WaitOb.WaitOne() Then
@@ -1551,11 +1559,11 @@ Public Class cEcoSpace
                 cLog.Write(Me.ToString & ".runSpaceSolverThreads() Timed out.")
             End If
 
-            'Me.dumpRunningThreadInfo("After")
 
             'Gather data from across all threads
             For Each solver In m_spaceSolvers
 
+                Console.WriteLine("SpaceSolver.Solve() ID " & solver.ThreadID.ToString & " Run time(sec)" & solver.RunTimeSeconds.ToString)
                 cpuTime += solver.RunTimeSeconds
 
                 For igrp As Integer = 1 To m_Data.NGroups
@@ -1617,10 +1625,32 @@ Public Class cEcoSpace
     End Sub
 
     Private Sub dumpRunningThreadInfo(msg As String)
-        System.Console.WriteLine(msg)
+        'WARNING ProcessThread's not implemented on MONO...
+        'so this won't dump out anything
+        System.Console.WriteLine("---------------" & msg & "---------------------")
+        System.Console.WriteLine(" Number of threads = " & Process.GetCurrentProcess.Threads.Count.ToString)
+        dumpRunningThreadInfo(bRunningOnly:=True)
+        dumpRunningThreadInfo(bRunningOnly:=False)
+
+    End Sub
+
+    Private Sub dumpRunningThreadInfo(bRunningOnly As Boolean)
+        'WARNING ProcessThread's not implemented on MONO...
         For Each Thread As ProcessThread In Process.GetCurrentProcess.Threads
-            System.Console.WriteLine("Thread ID, " & Thread.Id.ToString & ", Priority, " & Thread.CurrentPriority.ToString & ", Start time, " & Thread.StartTime.ToLongTimeString & _
-                                     ", Total time, " & Thread.TotalProcessorTime.TotalMilliseconds.ToString & ", CPU time " & Thread.UserProcessorTime.TotalMilliseconds.ToString)
+            If (bRunningOnly = (Thread.ThreadState = Diagnostics.ThreadState.Running)) Then
+                If Thread.ThreadState = Diagnostics.ThreadState.Wait Then
+                    System.Console.WriteLine(" State = " & Thread.ThreadState.ToString & " Reason = " & Thread.WaitReason.ToString)
+                Else
+                    System.Console.WriteLine(" State = " & Thread.ThreadState.ToString)
+                End If
+
+                System.Console.WriteLine(" Thread ID = " & Thread.Id.ToString)
+                System.Console.WriteLine(" Priority = " & Thread.CurrentPriority.ToString)
+                System.Console.WriteLine(" Start time = " & Thread.StartTime.ToLongTimeString)
+                System.Console.WriteLine(" Total time(sec) = " & Thread.TotalProcessorTime.TotalSeconds.ToString)
+                System.Console.WriteLine(" CPU time(sec) = " & Thread.UserProcessorTime.TotalSeconds.ToString)
+                System.Console.WriteLine()
+            End If
         Next
 
     End Sub
@@ -3631,7 +3661,7 @@ exitline:
         waitOb = Nothing
 
         stpwTotRunTime.Stop()
-        'System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
 
         'GC.Collect()
 

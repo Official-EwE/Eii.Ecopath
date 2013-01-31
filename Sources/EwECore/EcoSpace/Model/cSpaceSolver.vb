@@ -183,7 +183,6 @@ Public Class cSpaceSolver
         ReDim FlowoutRate(m_Data.nvartot)
         'ReDim ebb(m_Data.nvartot)
         ReDim BB(m_Data.nvartot)
-        ReDim pbb(m_Data.NGroups)
 
         'local versions of ecosim variables
         ReDim Hden(m_Data.NGroups)
@@ -332,13 +331,11 @@ Public Class cSpaceSolver
 
             'do the processing here
             For iCell = iFrstCell To iLstCell
-                'iCell is the linear index of the two dimensional spatial array
 
-                'it is now converted into a row/col index for use in the rest of the algorithm
-                'i = (iGrp - 1) \ m_Data.InCol + 1
-                'j = (iGrp - 1) Mod m_Data.InCol + 1
+                Debug.Assert(Me.m_Data.Depth(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell)) > 0, "Opps Ecospace iWaterCellIndex() and jWaterCellIndex() contain land cells.")
+                'iCell is the linear index of the two dimensional spatial array
+                'iWaterCellIndex(iCell) and jWaterCellIndex(iCell) were populted with the indexes(irow,jcol) of water cells only during initialization
                 'Dim st As Double = Me.m_stpWatch.Elapsed.TotalMilliseconds
-                'now do the computations
                 SolveCell(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
 
                 'Me.lstCellCompTimes.Add(Me.m_stpWatch.Elapsed.TotalMilliseconds - st)
@@ -357,7 +354,7 @@ Public Class cSpaceSolver
 
         Me.m_stpWatch.Stop()
         Me.RunTimeSeconds = Me.m_stpWatch.Elapsed.TotalSeconds
-        'Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time " & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
+        ' Console.WriteLine("SpaceSolver.Solve() ID " & Me.ThreadID.ToString & " Run time(sec)" & (Me.m_stpWatch.Elapsed.TotalSeconds).ToString)
 
     End Sub
 
