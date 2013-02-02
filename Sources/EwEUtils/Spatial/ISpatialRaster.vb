@@ -115,6 +115,16 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Return the standard deviation of values in the raster.
+        ''' </summary>
+        ''' <returns>The standard deviation in the raster.</returns>
+        ''' <remarks>A return value of -9999 is expected to signal that an error 
+        ''' occurred and that no usable value is available.</remarks>
+        ''' -------------------------------------------------------------------
+        Function StandardDeviation() As Double
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Return the no data value in the raster.
         ''' </summary>
         ''' <returns>The no data value in the raster.</returns>

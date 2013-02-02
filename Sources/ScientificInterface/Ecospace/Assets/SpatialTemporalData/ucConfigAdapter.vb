@@ -25,6 +25,7 @@ Imports EwECore.SpatialData
 Imports EwEPlugin
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports System.IO
 
 #End Region ' Imports
 
@@ -427,6 +428,66 @@ Namespace Ecospace.Controls
 
         End Sub
 
+        Private Sub OnSaveStats(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnSaveStats.Click
+
+            ' This is very deliberately hidden functionality!
+            Dim ds As ISpatialDataSet = Me.SelectedDataset
+            Dim cv As ISpatialDataConverter = Me.SelectedConverter
+            Dim sw As StreamWriter = Nothing
+            Dim core As cCore = Me.m_uic.Core
+            Dim bm As cEcospaceBasemap = core.EcospaceBasemap
+            Dim strFile As String = ""
+
+            If (ds Is Nothing) Or (cv Is Nothing) Then Return
+
+            Try
+                strFile = Path.Combine(Me.m_uic.Core.OutputPath(), cFileUtils.ToValidFileName(ds.DisplayName & "_stats.csv", False))
+                sw = New StreamWriter(strFile)
+            Catch ex As Exception
+                Return
+            End Try
+
+            sw.WriteLine("timestep,date,min,max,mean,stdev")
+            Dim iStart As Integer = Math.Max(0, core.AbsoluteTimeToEcospaceTimestep(ds.TimeStart))
+            Dim iEnd As Integer = Math.Min(core.AbsoluteTimeToEcospaceTimestep(ds.TimeEnd), core.nEcospaceTimeSteps)
+            Dim t As Date = Nothing
+            Dim rs As ISpatialRaster = Nothing
+
+            Try
+
+                For i As Integer = iStart To iEnd
+                    t = core.EcospaceTimestepToAbsoluteTime(i)
+                    If ds.HasDataAtT(t) Then
+                        Console.WriteLine("Getting stats for time step " & i & " [" & iStart & ", " & iEnd & "]")
+                        If (ds.LockDataAtT(t, bm.CellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
+                            rs = ds.GetRaster(cv, "")
+                            sw.WriteLine("{0},{1},{2},{3},{4},{5}", _
+                                              i, cStringUtils.ToCSVField(t.ToShortDateString()), _
+                                              cStringUtils.FormatNumber(rs.Min), _
+                                              cStringUtils.FormatNumber(rs.Max), _
+                                              cStringUtils.FormatNumber(rs.Mean), _
+                                              cStringUtils.FormatNumber(rs.StandardDeviation))
+                            ds.Unlock()
+                        End If
+                    End If
+                Next
+            Catch ex As Exception
+                sw.WriteLine(cStringUtils.ToCSVField(ex.Message))
+            End Try
+            sw.Flush()
+            sw.Close()
+
+            Try
+                Dim msg As New cMessage("External data statistics saved to " & strFile, eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strFile)
+                core.Messages.SendMessage(msg)
+            Catch ex As Exception
+
+            End Try
+
+        End Sub
+
 #End Region ' Control events
 
 #Region " Internals "
@@ -449,6 +510,13 @@ Namespace Ecospace.Controls
             Me.m_btnDeleteDS.Enabled = (ds IsNot Nothing)
             Me.m_btnConfigureCV.Enabled = bCanConfigCV
             Me.m_btnClearCache.Enabled = (Me.m_bHasCachedData = True)
+
+#If DEBUG Then
+            Me.m_btnSaveStats.Visible = True
+            Me.m_btnSaveStats.Enabled = bIsConnected
+#Else
+            Me.m_btnSaveStats.Visible = False
+#End If
 
             If (bIsConnected) Then
                 Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, Me.m_layer.Name)

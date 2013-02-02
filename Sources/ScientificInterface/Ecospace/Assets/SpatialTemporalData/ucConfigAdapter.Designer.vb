@@ -62,6 +62,7 @@ Namespace Ecospace.Controls
             Me.m_tbxScale = New System.Windows.Forms.TextBox()
             Me.m_rbRelative = New System.Windows.Forms.RadioButton()
             Me.m_rbAbsolute = New System.Windows.Forms.RadioButton()
+            Me.m_btnSaveStats = New System.Windows.Forms.Button()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnectionConverter.SuspendLayout()
             CType(Me.m_pbCompatibility, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -80,6 +81,7 @@ Namespace Ecospace.Controls
             Me.m_plConnectionConverter.Controls.Add(Me.m_lblCompatibility)
             Me.m_plConnectionConverter.Controls.Add(Me.m_pbCompatibility)
             Me.m_plConnectionConverter.Controls.Add(Me.m_cmbConverter)
+            Me.m_plConnectionConverter.Controls.Add(Me.m_btnSaveStats)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnClearCache)
             Me.m_plConnectionConverter.Controls.Add(Me.m_cmbNewDS)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnConfigureCV)
@@ -215,6 +217,12 @@ Namespace Ecospace.Controls
             Me.m_rbAbsolute.TabStop = True
             Me.m_rbAbsolute.UseVisualStyleBackColor = True
             '
+            'm_btnSaveStats
+            '
+            resources.ApplyResources(Me.m_btnSaveStats, "m_btnSaveStats")
+            Me.m_btnSaveStats.Name = "m_btnSaveStats"
+            Me.m_btnSaveStats.UseVisualStyleBackColor = True
+            '
             'ucConfigAdapter
             '
             resources.ApplyResources(Me, "$this")
@@ -251,6 +259,7 @@ Namespace Ecospace.Controls
         Private WithEvents m_lblCompatibility As System.Windows.Forms.Label
         Private WithEvents m_pbCompatibility As System.Windows.Forms.PictureBox
         Private WithEvents m_hdrScaling As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_btnSaveStats As System.Windows.Forms.Button
 
     End Class
 
