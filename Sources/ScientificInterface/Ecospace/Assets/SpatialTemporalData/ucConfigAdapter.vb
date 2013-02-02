@@ -494,38 +494,38 @@ Namespace Ecospace.Controls
 
         Private Sub UpdateControls()
 
-            Dim bIsConnected As Boolean = (Me.m_adt IsNot Nothing) And (Me.m_layer IsNot Nothing)
+            Dim bHasContext As Boolean = (Me.m_adt IsNot Nothing) And (Me.m_layer IsNot Nothing)
             Dim ds As ISpatialDataSet = Me.SelectedDataset
             Dim cv As ISpatialDataConverter = Me.SelectedConverter
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
-            Dim bIsConfigured As Boolean = bIsConnected AndAlso Me.m_adt.IsConnected(Me.m_layer.Index)
+            Dim bIsConfigured As Boolean = bHasContext And Me.m_adt.IsConnected(Me.m_layer.Index)
             Dim bIsIndexing As Boolean = Me.m_manSets.IsIndexing(ds)
 
-            If (ds IsNot Nothing) Then bCanConfigDS = bIsConnected And (TypeOf ds Is IConfigurablePlugin)
-            If (cv IsNot Nothing) Then bCanConfigCV = bIsConnected And (TypeOf cv Is IConfigurablePlugin)
+            If (ds IsNot Nothing) Then bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurablePlugin)
+            If (cv IsNot Nothing) Then bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurablePlugin)
 
             Me.m_btnCreateDS.Enabled = (Me.m_cmbNewDS.SelectedIndex >= 0)
-            Me.m_btnConfigDS.Enabled = bCanConfigDS
+            Me.m_btnConfigDS.Visible = bCanConfigDS
             Me.m_btnDeleteDS.Enabled = (ds IsNot Nothing)
             Me.m_btnConfigureCV.Enabled = bCanConfigCV
             Me.m_btnClearCache.Enabled = (Me.m_bHasCachedData = True)
 
 #If DEBUG Then
             Me.m_btnSaveStats.Visible = True
-            Me.m_btnSaveStats.Enabled = bIsConnected
+            Me.m_btnSaveStats.Enabled = bIsConfigured
 #Else
             Me.m_btnSaveStats.Visible = False
 #End If
 
-            If (bIsConnected) Then
+            If (bHasContext) Then
                 Me.m_hdrSource.Text = String.Format(My.Resources.CAPTION_EXTERNAL_DATA_DETAIL, Me.m_layer.Name)
             Else
                 Me.m_hdrSource.Text = My.Resources.CAPTION_EXTERNAL_DATA
             End If
 
-            Me.m_lbxExistingDS.Enabled = bIsConnected
-            Me.m_cmbConverter.Enabled = bIsConnected
+            Me.m_lbxExistingDS.Enabled = bHasContext
+            Me.m_cmbConverter.Enabled = bHasContext
             Me.m_btnCalculate.Enabled = bIsConfigured
 
             ' -- Indexing status --
