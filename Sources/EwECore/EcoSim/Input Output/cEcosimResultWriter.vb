@@ -396,9 +396,13 @@ Namespace Ecosim
             Try
                 'Overwritten the file
                 Using sw As StreamWriter = New StreamWriter(strFileName, False)
-                    sw.WriteLine(strModelDetails)
-                    sw.WriteLine(strDataDetails)
-                    sw.WriteLine()
+
+                    If Me.m_core.SaveWithFileHeader Then
+                        sw.WriteLine(strModelDetails)
+                        sw.WriteLine(strDataDetails)
+                        sw.WriteLine()
+                    End If
+
                     sw.WriteLine(strGroupNames)
                     If bSaveYearly Then
                         Dim simYears As Integer = CInt(Math.Floor((data.GetLength(1) - 1) / cCore.N_MONTHS))

@@ -173,10 +173,12 @@ Public Class cEcospaceRegionResultWriter
 
                 ' Start writing
                 sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
-                sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
-                sw.WriteLine("Group," & cStringUtils.ToCSVField(strName))
-                sw.WriteLine()
+                If Me.m_core.SaveWithFileHeader Then
+                    sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+                    sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
+                    sw.WriteLine("Group," & cStringUtils.ToCSVField(strName))
+                    sw.WriteLine()
+                End If
 
                 ' Write data header
                 sw.Write("TimeStep")
@@ -252,10 +254,12 @@ Public Class cEcospaceRegionResultWriter
 
                 ' Start writing
                 sw = New StreamWriter(Path.Combine(Me.OutputDirectory, strFile))
-                sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
-                sw.WriteLine("Region," & cStringUtils.ToCSVField(strName))
-                sw.WriteLine()
+                If Me.m_core.SaveWithFileHeader Then
+                    sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+                    sw.WriteLine("Data," & cStringUtils.ToCSVField(strDescriptor))
+                    sw.WriteLine("Region," & cStringUtils.ToCSVField(strName))
+                    sw.WriteLine()
+                End If
 
                 If iData = 0 Then
                     Me.WriteBiomassData(sw, r)

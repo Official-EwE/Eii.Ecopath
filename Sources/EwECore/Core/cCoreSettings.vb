@@ -34,6 +34,8 @@ Friend Class cCoreSettings
 
     ''' <summary>Autosave flags</summary>
     Private m_bAutosave() As Boolean
+    ''' <summary>Flag, stating if autosave info should carry standard EwE header information</summary>
+    Private m_bAutosaveHeaders As Boolean
     ''' <summary>Autosave formats</summary>
     Private m_strAutosaveFormat() As String
     ''' <summary>Path for EwE core processes to write output information to.</summary>
@@ -72,6 +74,20 @@ Friend Class cCoreSettings
         End Get
         Set(value As Boolean)
             Me.m_bAutosave(t) = value
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set whether a component is allowed to auto-save.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property AutosaveHeaders() As Boolean
+        Get
+            Return Me.m_bAutosaveHeaders
+        End Get
+        Set(value As Boolean)
+            Me.m_bAutosaveHeaders = value
         End Set
     End Property
 

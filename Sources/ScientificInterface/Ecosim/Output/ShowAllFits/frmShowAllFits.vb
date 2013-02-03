@@ -521,8 +521,11 @@ Namespace Ecosim
                 If (sw IsNot Nothing) Then
 
                     Try
-                        sw.Write(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-                        sw.WriteLine()
+                        If Me.Core.SaveWithFileHeader Then
+                            sw.Write(Me.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                            sw.WriteLine()
+                        End If
+
                         sw.Write("Year")
                         sw.Write(",")
                         For j As Integer = 1 To Me.Core.nTimeSeries

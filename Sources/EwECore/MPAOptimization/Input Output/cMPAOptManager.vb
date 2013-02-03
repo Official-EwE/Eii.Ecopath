@@ -301,8 +301,11 @@ Public Class cMPAOptManager
                 strBaseDir = Me.m_core.DefaultOutputPath(eAutosaveTypes.MPAOpt)
             End If
 
+            Dim strHeader As String = ""
+            If Me.m_core.SaveWithFileHeader Then Me.m_core.DefaultFileHeader(eAutosaveTypes.MPAOpt)
+
             ' Configure autosave behaviour
-            Me.m_MPASearch.ConfigureAutosave(Me.m_core.Autosave(eAutosaveTypes.MPAOpt), strBaseDir, Me.m_core.DefaultFileHeader(eAutosaveTypes.MPAOpt))
+            Me.m_MPASearch.ConfigureAutosave(Me.m_core.Autosave(eAutosaveTypes.MPAOpt), strBaseDir, strHeader)
 
             Me.SetWait()
 

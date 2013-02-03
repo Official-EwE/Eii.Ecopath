@@ -92,7 +92,9 @@ Public Class cEcotracerResultWriter
             If (sw Is Nothing) Then Return False
 
             Try
-                Me.WriteHeader(sw, True, i)
+                If Me.m_core.SaveWithFileHeader Then
+                    Me.WriteHeader(sw, True, i)
+                End If
                 Me.WriteBody(sw, i)
             Catch ex As Exception
 

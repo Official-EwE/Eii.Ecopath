@@ -645,6 +645,8 @@ Public Class cCore
         'if there is no current context then create a new one on this thread. 
         If (Me.m_SyncObj Is Nothing) Then Me.m_SyncObj = New System.Threading.SynchronizationContext()
 
+        Me.SaveWithFileHeader = True
+
     End Sub
 
     Private m_bDisposed As Boolean = False        ' To detect redundant calls
@@ -2598,6 +2600,22 @@ Public Class cCore
             Catch ex As Exception
                 cLog.Write(ex, "cCore::AutosaveFormat(" & savetype.ToString & ")")
             End Try
+        End Set
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Flag, stating whether results shouldbe saved with <see cref="DefaultFileHeader">header</see>
+    ''' information.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property SaveWithFileHeader As Boolean
+        Get
+            Return Me.m_settings.AutosaveHeaders
+        End Get
+        Set(value As Boolean)
+            Me.m_settings.AutosaveHeaders = value
+            Me.OnSettingsChanged()
         End Set
     End Property
 

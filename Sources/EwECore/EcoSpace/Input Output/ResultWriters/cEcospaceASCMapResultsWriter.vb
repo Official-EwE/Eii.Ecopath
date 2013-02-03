@@ -44,7 +44,9 @@ Public Class cEcospaceASCMapResultsWriter
     Public Overrides Sub StartWrite()
         Try
             Me.CreateOutputDir()
-            Me.WriteRunInfoFile()
+            If Me.m_core.SaveWithFileHeader Then
+                Me.WriteRunInfoFile()
+            End If
         Catch ex As Exception
             Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))

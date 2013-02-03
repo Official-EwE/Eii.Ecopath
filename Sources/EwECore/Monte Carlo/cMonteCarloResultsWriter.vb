@@ -111,7 +111,9 @@ Friend Class cMonteCarloResultsWriter
             Dim d As Date = Date.Now
 
             strm = New StreamWriter(Me.OutputFilename)
-            strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+            If Me.m_core.SaveWithFileHeader Then
+                strm.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MonteCarlo))
+            End If
             strm.WriteLine(cStringUtils.ToCSVField("Num. groups") & "," & Me.m_core.nGroups)
             strm.Close()
 

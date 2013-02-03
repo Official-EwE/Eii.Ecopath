@@ -31,48 +31,21 @@ Namespace Other
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucOptionsFileManagement))
-            Me.m_hdrAutosave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-            Me.m_fieldpickBackup = New ScientificInterfaceShared.Controls.ucFieldPicker()
-            Me.m_fieldpickOutput = New ScientificInterfaceShared.Controls.ucFieldPicker()
             Me.m_tbBackupMask = New System.Windows.Forms.TextBox()
             Me.m_lblBackupFolder = New System.Windows.Forms.Label()
             Me.m_tbOutputMask = New System.Windows.Forms.TextBox()
             Me.m_lblOutput = New System.Windows.Forms.Label()
-            Me.m_hdrMain = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tbxOutputSample = New System.Windows.Forms.TextBox()
             Me.m_tbxBackupSample = New System.Windows.Forms.TextBox()
             Me.m_plAutoSave = New System.Windows.Forms.Panel()
             Me.m_btnVisitOutputFolder = New System.Windows.Forms.Button()
             Me.m_btnVisitBackupFolder = New System.Windows.Forms.Button()
+            Me.m_cbSaveWithHeader = New System.Windows.Forms.CheckBox()
+            Me.m_fieldpickBackup = New ScientificInterfaceShared.Controls.ucFieldPicker()
+            Me.m_fieldpickOutput = New ScientificInterfaceShared.Controls.ucFieldPicker()
+            Me.m_hdrMain = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrAutosave = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.SuspendLayout()
-            '
-            'm_hdrAutosave
-            '
-            resources.ApplyResources(Me.m_hdrAutosave, "m_hdrAutosave")
-            Me.m_hdrAutosave.CanCollapseParent = False
-            Me.m_hdrAutosave.CollapsedParentHeight = 0
-            Me.m_hdrAutosave.IsCollapsed = False
-            Me.m_hdrAutosave.Name = "m_hdrAutosave"
-            '
-            'm_fieldpickBackup
-            '
-            resources.ApplyResources(Me.m_fieldpickBackup, "m_fieldpickBackup")
-            Me.m_fieldpickBackup.Fields = Nothing
-            Me.m_fieldpickBackup.Label = "Fields"
-            Me.m_fieldpickBackup.Name = "m_fieldpickBackup"
-            Me.m_fieldpickBackup.ShowDirectoryPicker = True
-            Me.m_fieldpickBackup.TypeFormatter = Nothing
-            Me.m_fieldpickBackup.UIContext = Nothing
-            '
-            'm_fieldpickOutput
-            '
-            resources.ApplyResources(Me.m_fieldpickOutput, "m_fieldpickOutput")
-            Me.m_fieldpickOutput.Fields = Nothing
-            Me.m_fieldpickOutput.Label = "Fields"
-            Me.m_fieldpickOutput.Name = "m_fieldpickOutput"
-            Me.m_fieldpickOutput.ShowDirectoryPicker = True
-            Me.m_fieldpickOutput.TypeFormatter = Nothing
-            Me.m_fieldpickOutput.UIContext = Nothing
             '
             'm_tbBackupMask
             '
@@ -93,14 +66,6 @@ Namespace Other
             '
             resources.ApplyResources(Me.m_lblOutput, "m_lblOutput")
             Me.m_lblOutput.Name = "m_lblOutput"
-            '
-            'm_hdrMain
-            '
-            resources.ApplyResources(Me.m_hdrMain, "m_hdrMain")
-            Me.m_hdrMain.CanCollapseParent = False
-            Me.m_hdrMain.CollapsedParentHeight = 0
-            Me.m_hdrMain.IsCollapsed = False
-            Me.m_hdrMain.Name = "m_hdrMain"
             '
             'm_tbxOutputSample
             '
@@ -131,10 +96,53 @@ Namespace Other
             Me.m_btnVisitBackupFolder.Name = "m_btnVisitBackupFolder"
             Me.m_btnVisitBackupFolder.UseVisualStyleBackColor = True
             '
+            'm_cbSaveWithHeader
+            '
+            resources.ApplyResources(Me.m_cbSaveWithHeader, "m_cbSaveWithHeader")
+            Me.m_cbSaveWithHeader.Name = "m_cbSaveWithHeader"
+            Me.m_cbSaveWithHeader.UseVisualStyleBackColor = True
+            '
+            'm_fieldpickBackup
+            '
+            resources.ApplyResources(Me.m_fieldpickBackup, "m_fieldpickBackup")
+            Me.m_fieldpickBackup.Fields = Nothing
+            Me.m_fieldpickBackup.Label = "Fields"
+            Me.m_fieldpickBackup.Name = "m_fieldpickBackup"
+            Me.m_fieldpickBackup.ShowDirectoryPicker = True
+            Me.m_fieldpickBackup.TypeFormatter = Nothing
+            Me.m_fieldpickBackup.UIContext = Nothing
+            '
+            'm_fieldpickOutput
+            '
+            resources.ApplyResources(Me.m_fieldpickOutput, "m_fieldpickOutput")
+            Me.m_fieldpickOutput.Fields = Nothing
+            Me.m_fieldpickOutput.Label = "Fields"
+            Me.m_fieldpickOutput.Name = "m_fieldpickOutput"
+            Me.m_fieldpickOutput.ShowDirectoryPicker = True
+            Me.m_fieldpickOutput.TypeFormatter = Nothing
+            Me.m_fieldpickOutput.UIContext = Nothing
+            '
+            'm_hdrMain
+            '
+            resources.ApplyResources(Me.m_hdrMain, "m_hdrMain")
+            Me.m_hdrMain.CanCollapseParent = False
+            Me.m_hdrMain.CollapsedParentHeight = 0
+            Me.m_hdrMain.IsCollapsed = False
+            Me.m_hdrMain.Name = "m_hdrMain"
+            '
+            'm_hdrAutosave
+            '
+            resources.ApplyResources(Me.m_hdrAutosave, "m_hdrAutosave")
+            Me.m_hdrAutosave.CanCollapseParent = False
+            Me.m_hdrAutosave.CollapsedParentHeight = 0
+            Me.m_hdrAutosave.IsCollapsed = False
+            Me.m_hdrAutosave.Name = "m_hdrAutosave"
+            '
             'ucOptionsFileManagement
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.Controls.Add(Me.m_cbSaveWithHeader)
             Me.Controls.Add(Me.m_btnVisitBackupFolder)
             Me.Controls.Add(Me.m_btnVisitOutputFolder)
             Me.Controls.Add(Me.m_plAutoSave)
@@ -166,6 +174,7 @@ Namespace Other
         Private WithEvents m_plAutoSave As System.Windows.Forms.Panel
         Private WithEvents m_btnVisitOutputFolder As System.Windows.Forms.Button
         Private WithEvents m_btnVisitBackupFolder As System.Windows.Forms.Button
+        Private WithEvents m_cbSaveWithHeader As System.Windows.Forms.CheckBox
 
     End Class
 

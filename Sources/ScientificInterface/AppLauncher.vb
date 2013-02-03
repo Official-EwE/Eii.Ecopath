@@ -4046,6 +4046,8 @@ Public Class AppLauncher
                 End If
             Next
 
+            Me.Core.SaveWithFileHeader = My.Settings.AutosaveHeaders
+
         Catch ex As Exception
 
         End Try
@@ -4104,6 +4106,7 @@ Public Class AppLauncher
             strAutosave = strAutosave & CChar(cSystemUtils.IIF(Me.Core.Autosave(setting), "1"c, "0"c))
         Next
         My.Settings.AutoSave = strAutosave
+        My.Settings.AutosaveHeaders = Me.Core.SaveWithFileHeader
 
         args.Cancel = False
 

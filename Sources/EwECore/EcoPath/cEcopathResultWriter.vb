@@ -66,37 +66,39 @@ Public Class cEcopathResultWriter
         ' Extracted this logic from the Ecopath datastructures 'Dump' method
         If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN)) Then Return False
 
-        Dim strm As StreamWriter = Nothing
+        Dim sw As StreamWriter = Nothing
         Dim bSuccess As Boolean = True
 
         Try
-            strm = New StreamWriter(strFN)
+            sw = New StreamWriter(strFN)
         Catch ex As Exception
             bSuccess = False
         End Try
 
-        If (strm IsNot Nothing) Then
+        If (sw IsNot Nothing) Then
 
-            strm.Write(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
-            strm.WriteLine()
+            If Me.m_core.SaveWithFileHeader Then
+                sw.Write(Me.m_core.DefaultFileHeader(EwEUtils.Core.eAutosaveTypes.Ecopath))
+                sw.WriteLine()
+            End If
 
-            strm.WriteLine("Group,Biomass(B),Prod/Biomass(PB),Cons/Biomass(QB),Ecotrophic eff.(EE),Prod/Consum(GE)")
+            sw.WriteLine("Group,Biomass(B),Prod/Biomass(PB),Cons/Biomass(QB),Ecotrophic eff.(EE),Prod/Consum(GE)")
             For i As Integer = 1 To Me.m_data.NumGroups
-                strm.Write(cStringUtils.ToCSVField(Me.m_data.GroupName(i)))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatSingle(Me.m_data.B(i)))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatSingle(Me.m_data.PB(i)))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatSingle(Me.m_data.QB(i)))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatSingle(Me.m_data.EE(i)))
-                strm.Write(",")
-                strm.Write(cStringUtils.FormatSingle(Me.m_data.GE(i)))
-                strm.WriteLine()
+                sw.Write(cStringUtils.ToCSVField(Me.m_data.GroupName(i)))
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(Me.m_data.B(i)))
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(Me.m_data.PB(i)))
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(Me.m_data.QB(i)))
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(Me.m_data.EE(i)))
+                sw.Write(",")
+                sw.Write(cStringUtils.FormatSingle(Me.m_data.GE(i)))
+                sw.WriteLine()
             Next
-            strm.Flush()
-            strm.Close()
+            sw.Flush()
+            sw.Close()
         Else
             bSuccess = False
             cLog.Write(Me.ToString + ".WriteCSV() failed to open file.")

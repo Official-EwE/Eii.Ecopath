@@ -208,7 +208,9 @@ Public Class cEcospaceCSVMapResultsWriter
             'Create a new file when writting the header
             'this overwrites the data in the current directory
             strm = New StreamWriter(strFN)
-            Me.WriteHeader(strm, igrp, varname)
+            If Me.m_core.SaveWithFileHeader Then
+                Me.WriteHeader(strm, igrp, varname)
+            End If
             strm.Close()
             strm = Nothing
         Next

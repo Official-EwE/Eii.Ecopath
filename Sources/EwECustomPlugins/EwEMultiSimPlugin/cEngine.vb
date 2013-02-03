@@ -477,8 +477,10 @@ Friend Class cEngine
 
         Try
             sw = New StreamWriter(strLogFileName)
-            sw.WriteLine(Me.m_uic.Core.DefaultFileHeader(eAutosaveTypes.Ecosim))
-            sw.WriteLine()
+            If core.SaveWithFileHeader Then
+                sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+                sw.WriteLine()
+            End If
         Catch ex As Exception
         End Try
 

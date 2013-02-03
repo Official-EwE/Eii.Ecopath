@@ -124,18 +124,20 @@ Namespace MSY
             If (writer Is Nothing) Then Return
 
             ' File
-            writer.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSY))
-            writer.WriteLine()
-            writer.WriteLine("MSY run," & cStringUtils.ToCSVField(strRun))
-            writer.Write("Assessment,")
-            Select Case ass
-                Case eMSYAssessmentTypes.StationarySystem
-                    writer.WriteLine("stationary_stock")
-                Case eMSYAssessmentTypes.FullCompensation
-                    writer.WriteLine("full_compensation")
-                Case Else
-                    Debug.Assert(False)
-            End Select
+            If Me.m_core.SaveWithFileHeader Then
+                writer.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSY))
+                writer.WriteLine()
+                writer.WriteLine("MSY run," & cStringUtils.ToCSVField(strRun))
+                writer.Write("Assessment,")
+                Select Case ass
+                    Case eMSYAssessmentTypes.StationarySystem
+                        writer.WriteLine("stationary_stock")
+                    Case eMSYAssessmentTypes.FullCompensation
+                        writer.WriteLine("full_compensation")
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+            End If
 
         End Sub
 

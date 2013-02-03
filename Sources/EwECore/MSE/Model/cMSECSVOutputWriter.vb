@@ -194,8 +194,10 @@ Friend Class cMSECSVOutputWriter
             header = New StringBuilder()
             Dim d As DateTime = Date.Now
 
-            header.AppendLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSE))
-            header.Append("Rows = MSE Run, Columns = Time" & Environment.NewLine)
+            If Me.m_core.SaveWithFileHeader Then
+                header.AppendLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.MSE))
+                header.AppendLine("Rows = MSE Run, Columns = Time")
+            End If
 
             For it As Integer = 1 To Me.m_core.nEcosimTimeSteps
                 If it > 1 Then header.Append(", ")

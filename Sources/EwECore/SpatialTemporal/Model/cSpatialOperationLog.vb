@@ -190,8 +190,10 @@ Namespace SpatialData
                     cLog.Write("cSpatialOperationsLog: saving to " & Me.m_strLogFileName, eVerboseLevel.Detailed)
                 End If
 
-                sb.AppendLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
-                sb.AppendLine("Ecospace spatial operations log")
+                If Me.m_core.SaveWithFileHeader Then
+                    sb.AppendLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
+                    sb.AppendLine("Ecospace spatial operations log")
+                End If
 
             End If
 

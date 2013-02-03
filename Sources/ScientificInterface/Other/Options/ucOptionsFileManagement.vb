@@ -91,6 +91,7 @@ Namespace Other
             Me.m_btnVisitBackupFolder.Image = SharedResources.openOutputHS
             cToolTipShared.GetInstance().SetToolTip(Me.m_btnVisitBackupFolder, SharedResources.TOOLTIP_VIEWFOLDER)
 
+            Me.m_cbSaveWithHeader.Checked = My.Settings.AutosaveHeaders
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -104,6 +105,7 @@ Namespace Other
 
                 My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
                 My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
+                My.Settings.AutosaveHeaders = Me.m_cbSaveWithHeader.Checked
 
                 Me.m_autosaveoptions.Apply()
 
@@ -124,6 +126,7 @@ Namespace Other
             Try
                 Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
                 Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
+                Me.m_cbSaveWithHeader.Checked = CBool(My.Settings.GetDefaultValue("AutosaveHeaders"))
             Catch ex As Exception
                 cLog.Write(ex, "ucOptionsAutosave::SetDefaults")
             End Try

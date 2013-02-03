@@ -100,8 +100,10 @@ Public Class cResultWriter
         ' Start write process
 
         ' Write EwE header
-        sw.WriteLine(Me.GetModelDetails())
-        sw.WriteLine()
+        If Me.m_data.Core.SaveWithFileHeader Then
+            sw.WriteLine(Me.GetModelDetails())
+            sw.WriteLine()
+        End If
 
         ' Write data header
         sw.Write("Variable")
