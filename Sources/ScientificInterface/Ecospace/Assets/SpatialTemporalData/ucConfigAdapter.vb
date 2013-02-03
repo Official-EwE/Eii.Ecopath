@@ -499,11 +499,16 @@ Namespace Ecospace.Controls
             Dim cv As ISpatialDataConverter = Me.SelectedConverter
             Dim bCanConfigDS As Boolean = False
             Dim bCanConfigCV As Boolean = False
-            Dim bIsConfigured As Boolean = bHasContext And Me.m_adt.IsConnected(Me.m_layer.Index)
+            Dim bIsConfigured As Boolean = False
             Dim bIsIndexing As Boolean = Me.m_manSets.IsIndexing(ds)
 
-            If (ds IsNot Nothing) Then bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurablePlugin)
-            If (cv IsNot Nothing) Then bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurablePlugin)
+            If (ds IsNot Nothing) Then
+                bCanConfigDS = bHasContext And (TypeOf ds Is IConfigurablePlugin)
+                bIsConfigured = bHasContext And Me.m_adt.IsConnected(Me.m_layer.Index)
+            End If
+            If (cv IsNot Nothing) Then
+                bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurablePlugin)
+            End If
 
             Me.m_btnCreateDS.Enabled = (Me.m_cmbNewDS.SelectedIndex >= 0)
             Me.m_btnConfigDS.Visible = bCanConfigDS
