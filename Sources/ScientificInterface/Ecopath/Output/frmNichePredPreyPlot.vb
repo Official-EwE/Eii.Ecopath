@@ -162,6 +162,13 @@ Namespace Ecopath.Output
             Me.UpdatePlot()
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ScientificInterfaceShared.Forms.frmEwE.OnStyleGuideChanged"/>
+        ''' -------------------------------------------------------------------
+        Protected Overrides Function GetPrintContent(rc As System.Drawing.Rectangle) As System.Drawing.Image
+            Return Me.m_graph.GetImage()
+        End Function
+
 #End Region ' Form overrides
 
 #Region " Internals "
@@ -173,8 +180,6 @@ Namespace Ecopath.Output
         ''' -------------------------------------------------------------------
         Private Sub UpdatePlot()
 
-            ' ToDo: globalize this method
-
             Dim prey As cEcoPathGroupOutput = Nothing
             Dim pred As cEcoPathGroupOutput = Nothing
             Dim ppl As PointPairList = Nothing
@@ -183,7 +188,7 @@ Namespace Ecopath.Output
             Dim label As ZedGraph.TextObj = Nothing
 
             ' Configure graph pane
-            pane = Me.m_zgh.ConfigurePane("Niche overlap", "Predator overlap index", "Prey overlap index", False)
+            pane = Me.m_zgh.ConfigurePane(My.Resources.CAPTION_NICHEPLOT_HEADER, My.Resources.CAPTION_NICHEPLOT_XAXIS_LABEL, My.Resources.CAPTION_NICHEPLOT_YAXIS_LABEL, False)
             pane.XAxis.Scale.Max = 1.1!
             pane.YAxis.Scale.Max = 1.1!
 

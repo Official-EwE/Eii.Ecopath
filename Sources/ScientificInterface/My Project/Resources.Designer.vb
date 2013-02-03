@@ -147,6 +147,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Niche overlap.
+        '''</summary>
+        Public ReadOnly Property CAPTION_NICHEPLOT_HEADER() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_NICHEPLOT_HEADER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Predator overlap index.
+        '''</summary>
+        Public ReadOnly Property CAPTION_NICHEPLOT_XAXIS_LABEL() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_NICHEPLOT_XAXIS_LABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Prey overlap index.
+        '''</summary>
+        Public ReadOnly Property CAPTION_NICHEPLOT_YAXIS_LABEL() As String
+            Get
+                Return ResourceManager.GetString("CAPTION_NICHEPLOT_YAXIS_LABEL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Apply price elasticity to all landings.
         '''</summary>
         Public ReadOnly Property CAPTION_PRICEELASTICITY_ALL() As String

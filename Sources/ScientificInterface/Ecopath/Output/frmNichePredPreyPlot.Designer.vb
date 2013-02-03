@@ -45,20 +45,20 @@ Namespace Ecopath.Output
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.components = New System.ComponentModel.Container
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNichePredPreyPlot))
-            Me.m_graph = New ZedGraph.ZedGraphControl
-            Me.m_scMain = New System.Windows.Forms.SplitContainer
-            Me.m_cbLabels = New System.Windows.Forms.CheckBox
-            Me.m_lblColours = New System.Windows.Forms.Label
-            Me.m_btnShowHideGroups = New System.Windows.Forms.Button
-            Me.m_rbNone = New System.Windows.Forms.RadioButton
-            Me.m_rbOverlap = New System.Windows.Forms.RadioButton
-            Me.m_rbPrey = New System.Windows.Forms.RadioButton
-            Me.m_rbPredator = New System.Windows.Forms.RadioButton
-            Me.m_nudCutOff = New cEwENumericUpDown
-            Me.m_hdrDisplay = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_lblCutOff = New System.Windows.Forms.Label
+            Me.m_graph = New ZedGraph.ZedGraphControl()
+            Me.m_scMain = New System.Windows.Forms.SplitContainer()
+            Me.m_cbLabels = New System.Windows.Forms.CheckBox()
+            Me.m_lblColours = New System.Windows.Forms.Label()
+            Me.m_btnShowHideGroups = New System.Windows.Forms.Button()
+            Me.m_rbNone = New System.Windows.Forms.RadioButton()
+            Me.m_rbOverlap = New System.Windows.Forms.RadioButton()
+            Me.m_rbPrey = New System.Windows.Forms.RadioButton()
+            Me.m_rbPredator = New System.Windows.Forms.RadioButton()
+            Me.m_nudCutOff = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_hdrDisplay = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblCutOff = New System.Windows.Forms.Label()
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_scMain.Panel1.SuspendLayout()
             Me.m_scMain.Panel2.SuspendLayout()
             Me.m_scMain.SuspendLayout()
@@ -69,16 +69,17 @@ Namespace Ecopath.Output
             '
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0
-            Me.m_graph.ScrollMaxX = 0
-            Me.m_graph.ScrollMaxY = 0
-            Me.m_graph.ScrollMaxY2 = 0
-            Me.m_graph.ScrollMinX = 0
-            Me.m_graph.ScrollMinY = 0
-            Me.m_graph.ScrollMinY2 = 0
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
             '
             'm_scMain
             '
+            Me.m_scMain.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             resources.ApplyResources(Me.m_scMain, "m_scMain")
             Me.m_scMain.Name = "m_scMain"
             '
@@ -152,6 +153,9 @@ Namespace Ecopath.Output
             'm_hdrDisplay
             '
             resources.ApplyResources(Me.m_hdrDisplay, "m_hdrDisplay")
+            Me.m_hdrDisplay.CanCollapseParent = False
+            Me.m_hdrDisplay.CollapsedParentHeight = 0
+            Me.m_hdrDisplay.IsCollapsed = False
             Me.m_hdrDisplay.Name = "m_hdrDisplay"
             '
             'm_lblCutOff
@@ -168,6 +172,7 @@ Namespace Ecopath.Output
             Me.m_scMain.Panel1.ResumeLayout(False)
             Me.m_scMain.Panel1.PerformLayout()
             Me.m_scMain.Panel2.ResumeLayout(False)
+            CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_scMain.ResumeLayout(False)
             CType(Me.m_nudCutOff, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
@@ -175,7 +180,6 @@ Namespace Ecopath.Output
         End Sub
         Private WithEvents m_graph As ZedGraph.ZedGraphControl
         Private WithEvents m_scMain As System.Windows.Forms.SplitContainer
-        Private WithEvents m_nudCutOff As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblCutOff As System.Windows.Forms.Label
         Private WithEvents m_rbOverlap As System.Windows.Forms.RadioButton
         Private WithEvents m_rbPrey As System.Windows.Forms.RadioButton
@@ -185,6 +189,7 @@ Namespace Ecopath.Output
         Private WithEvents m_btnShowHideGroups As System.Windows.Forms.Button
         Private WithEvents m_hdrDisplay As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_cbLabels As System.Windows.Forms.CheckBox
+        Private WithEvents m_nudCutOff As ScientificInterfaceShared.Controls.cEwENumericUpDown
     End Class
 
 End Namespace
