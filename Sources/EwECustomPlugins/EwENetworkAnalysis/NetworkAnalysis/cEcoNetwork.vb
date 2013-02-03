@@ -322,6 +322,9 @@ Public Class cEcoNetwork
     Public Ascendency() As Single
     Public AMI() As Single
     Public Entropy() As Single
+    Public TotTransferEfficiency() As Single
+    Public DetTransferEfficiency() As Single
+    Public PPTransferEfficiency() As Single
 
 #End Region
 
@@ -2416,7 +2419,7 @@ EndOfImp:
         Dim APred As Integer, Comp As Integer, pred As Integer, prey As Integer
         Dim Answer As Object = Nothing
         Dim Cnt As Integer
-        
+
 
         'Dim iProg As Integer
 
@@ -4111,6 +4114,9 @@ NextPivot:
             ReDim Preserve Ascendency(Round)
             ReDim Preserve AMI(Round)
             ReDim Preserve Entropy(Round)
+            ReDim Preserve TotTransferEfficiency(Round)
+            ReDim Preserve DetTransferEfficiency(Round)
+            ReDim Preserve PPTransferEfficiency(Round)
             Throughput(Round) = TruPut
             CapacityEcosim(Round) = Capacity
             AscendImport(Round) = Aop
@@ -4134,6 +4140,12 @@ NextPivot:
             Ascendency(Round) = (AscendImport(Round) + AscendFlow(Round) + AscendExport(Round) + AscendResp(Round)) * CapacityEcosim(Round) / 100
             AMI(Round) = Ascendency(Round) / Throughput(Round)
             Entropy(Round) = CapacityEcosim(Round) / Throughput(Round)
+            For i = 1 To Me.m_manager.nTrophicLevels
+                If (i = 1) Then TotTransferEfficiency(Round) = 0 : DetTransferEfficiency(Round) = 0 : PPTransferEfficiency(Round) = 0
+                DetTransferEfficiency(Round) += m_manager.DetTransferEfficiency(i)
+                PPTransferEfficiency(Round) += m_manager.PPTransferEfficiency(i)
+                TotTransferEfficiency(Round) += m_manager.TotTransferEfficiency(i)
+            Next
 
             'If PPRon Then Write #FF, RaiseToPP(0), RaiseToDet(0) Else Write #FF,
             If PPRon Then

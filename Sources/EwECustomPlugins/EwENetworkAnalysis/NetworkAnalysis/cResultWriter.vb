@@ -26,6 +26,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Utilities
 Imports EwECore.DataSources
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -37,6 +38,62 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Public Class cResultWriter
 
     Private m_manager As cNetworkManager = Nothing
+
+    Private Class cColTypeFormatter
+        Implements ITypeFormatter
+
+        Public Function GetDescribedType() As System.Type _
+            Implements ITypeFormatter.GetDescribedType
+            Return GetType(eColTypes)
+        End Function
+
+        Public Function GetDescriptor(value As Object, Optional descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+            Implements ITypeFormatter.GetDescriptor
+
+            Dim strVar As String = value.ToString()
+            Dim strCol As String = cResourceUtils.LoadString("COL_HDR_" & strVar.ToUpper, Me.GetType.Assembly)
+
+            If String.IsNullOrWhiteSpace(strCol) Then Return strVar
+            Return strCol
+
+        End Function
+
+    End Class
+
+    Private Enum eColTypes As Integer
+        YEAR = 0
+        THROUGHPUT
+        CAPACITY_ECOSIM
+        ASCEND_IMPORT
+        ASCEND_FLOW
+        ASCEND_EXPORT
+        ASCEND_RESP
+        OVERHEAD_IMPORT
+        OVERHEAD_FLOW
+        OVERHEAD_EXPORT
+        OVERHEAD_RESP
+        PCI
+        FCI
+        PATH_LEN
+        EXPORT
+        RESP_ECOSIM
+        PRIM_PROD
+        PROD
+        BIOMASS
+        [CATCH]
+        PROP_FLOW_DET
+        ASCEND_TOTAL
+        AMI
+        ENTROPY
+        TLc
+        KEMPTONS
+        FIB
+        DET_TE
+        PP_TE
+        TOT_TE
+        CATCH_PPR
+        CATCH_DET_REQ
+    End Enum
 
     Public Sub New(ByVal manager As cNetworkManager)
         Me.m_manager = manager
@@ -130,67 +187,20 @@ Public Class cResultWriter
 
     Private Function GetIndicesWithoutPPRData(ByVal bAnnualAverage As Boolean) As String
 
-        Const cNUMCOLS As Integer = 26
-
-        Dim sb As New StringBuilder()
-        Dim asValues(cNUMCOLS) As Single
+        Dim cols As eColTypes() = DirectCast([Enum].GetValues(GetType(eColTypes)), eColTypes())
+        Dim iNumCols As Integer = cols.Length - 2 ' Exclude PPR columns
+        Dim asValues(iNumCols) As Single
         Dim iMonth As Integer = 0
         Dim iYear As Integer = 0
         Dim bLineAdded As Boolean = False
+        Dim sb As New StringBuilder()
+        Dim fmt As New cColTypeFormatter()
 
-        sb.Append(My.Resources.COL_HDR_YEAR)            ' 0
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_THROUGHPUT)      ' 1
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM) ' 2
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_IMPORT)   ' 3
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_FLOW)     ' 4
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_EXPORT)   ' 5
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_RESP)     ' 6
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_IMPORT) ' 7
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_FLOW)   ' 8
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_EXPORT) ' 9
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_RESP)   ' 10
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PCI)             ' 11
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_FCI)             ' 12
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PATH_LEN)        ' 13
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_EXPORT)          ' 14
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_RESP_ECOSIM)     ' 15
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PRIM_PROD)       ' 16
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROD)            ' 17
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_BIOMASS)         ' 18
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CATCH)           ' 19
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROP_FLOW_DET)   ' 20
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_TOTAL)    ' 21
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_AMI)             ' 22
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ENTROPY)         ' 23
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_TLc)             ' 24
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_KEMPTONS)        ' 25
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_FIB)             ' 26
+        ' Header line
+        For j As Integer = 0 To iNumCols - 1
+            If (j > 0) Then sb.Append(",")
+            sb.Append(cStringUtils.ToCSVField(fmt.GetDescriptor(cols(j))))
+        Next
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -202,7 +212,7 @@ Public Class cResultWriter
             bLineAdded = False
 
             ' For every var to output
-            For j As Integer = 1 To cNUMCOLS
+            For j As Integer = 1 To iNumCols - 1
 
                 ' Reset total when either processing monthly values OR processing January
                 If (bAnnualAverage = False) Or (iMonth = 0) Then
@@ -210,33 +220,37 @@ Public Class cResultWriter
                 End If
 
                 ' Add indicator to total
-                Select Case j
-                    Case 1 : asValues(j) += Me.NetworkManager.ThroughputEcosim(i)
-                    Case 2 : asValues(j) += Me.NetworkManager.CapacityEcosim(i)
-                    Case 3 : asValues(j) += Me.NetworkManager.AscendImportEcosim(i)
-                    Case 4 : asValues(j) += Me.NetworkManager.AscendFlowEcosim(i)
-                    Case 5 : asValues(j) += Me.NetworkManager.AscendExportEcosim(i)
-                    Case 6 : asValues(j) += Me.NetworkManager.AscendRespEcosim(i)
-                    Case 7 : asValues(j) += Me.NetworkManager.OverheadImportEcosim(i)
-                    Case 8 : asValues(j) += Me.NetworkManager.OverheadFlowEcosim(i)
-                    Case 9 : asValues(j) += Me.NetworkManager.OverheadExportEcosim(i)
-                    Case 10 : asValues(j) += Me.NetworkManager.OverheadRespEcosim(i)
-                    Case 11 : asValues(j) += Me.NetworkManager.PCIEcosim(i)
-                    Case 12 : asValues(j) += Me.NetworkManager.FCIEcosim(i)
-                    Case 13 : asValues(j) += Me.NetworkManager.PathLengthEcosim(i)
-                    Case 14 : asValues(j) += Me.NetworkManager.ExportEcosim(i)
-                    Case 15 : asValues(j) += Me.NetworkManager.RespEcosim(i)
-                    Case 16 : asValues(j) += Me.NetworkManager.PrimaryProdEcosim(i)
-                    Case 17 : asValues(j) += Me.NetworkManager.ProdEcosim(i)
-                    Case 18 : asValues(j) += Me.NetworkManager.BiomassEcosim(i)
-                    Case 19 : asValues(j) += Me.NetworkManager.CatchEcosim(i)
-                    Case 20 : asValues(j) += Me.NetworkManager.PropFlowDetEcosim(i)
-                    Case 21 : asValues(j) += Me.NetworkManager.AscendTotalEcosim(i)
-                    Case 22 : asValues(j) += Me.NetworkManager.AMIEcosim(i)
-                    Case 23 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
-                    Case 24 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
-                    Case 25 : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
-                    Case 26 : asValues(j) += Me.NetworkManager.FIB(i)
+                Select Case cols(j)
+
+                    Case eColTypes.THROUGHPUT : asValues(j) += Me.NetworkManager.ThroughputEcosim(i)
+                    Case eColTypes.CAPACITY_ECOSIM : asValues(j) += Me.NetworkManager.CapacityEcosim(i)
+                    Case eColTypes.ASCEND_IMPORT : asValues(j) += Me.NetworkManager.AscendImportEcosim(i)
+                    Case eColTypes.ASCEND_FLOW : asValues(j) += Me.NetworkManager.AscendFlowEcosim(i)
+                    Case eColTypes.ASCEND_EXPORT : asValues(j) += Me.NetworkManager.AscendExportEcosim(i)
+                    Case eColTypes.ASCEND_RESP : asValues(j) += Me.NetworkManager.AscendRespEcosim(i)
+                    Case eColTypes.OVERHEAD_IMPORT : asValues(j) += Me.NetworkManager.OverheadImportEcosim(i)
+                    Case eColTypes.OVERHEAD_FLOW : asValues(j) += Me.NetworkManager.OverheadFlowEcosim(i)
+                    Case eColTypes.OVERHEAD_EXPORT : asValues(j) += Me.NetworkManager.OverheadExportEcosim(i)
+                    Case eColTypes.OVERHEAD_RESP : asValues(j) += Me.NetworkManager.OverheadRespEcosim(i)
+                    Case eColTypes.PCI : asValues(j) += Me.NetworkManager.PCIEcosim(i)
+                    Case eColTypes.FCI : asValues(j) += Me.NetworkManager.FCIEcosim(i)
+                    Case eColTypes.PATH_LEN : asValues(j) += Me.NetworkManager.PathLengthEcosim(i)
+                    Case eColTypes.EXPORT : asValues(j) += Me.NetworkManager.ExportEcosim(i)
+                    Case eColTypes.RESP_ECOSIM : asValues(j) += Me.NetworkManager.RespEcosim(i)
+                    Case eColTypes.PRIM_PROD : asValues(j) += Me.NetworkManager.PrimaryProdEcosim(i)
+                    Case eColTypes.PROD : asValues(j) += Me.NetworkManager.ProdEcosim(i)
+                    Case eColTypes.BIOMASS : asValues(j) += Me.NetworkManager.BiomassEcosim(i)
+                    Case eColTypes.CATCH : asValues(j) += Me.NetworkManager.CatchEcosim(i)
+                    Case eColTypes.PROP_FLOW_DET : asValues(j) += Me.NetworkManager.PropFlowDetEcosim(i)
+                    Case eColTypes.ASCEND_TOTAL : asValues(j) += Me.NetworkManager.AscendTotalEcosim(i)
+                    Case eColTypes.AMI : asValues(j) += Me.NetworkManager.AMIEcosim(i)
+                    Case eColTypes.ENTROPY : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
+                    Case eColTypes.TLc : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
+                    Case eColTypes.KEMPTONS : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
+                    Case eColTypes.FIB : asValues(j) += Me.NetworkManager.FIB(i)
+                    Case eColTypes.DET_TE : asValues(j) += Me.NetworkManager.DetTransferEfficiencyEcosim(i)
+                    Case eColTypes.PP_TE : asValues(j) += Me.NetworkManager.PPTransferEfficiencyEcosim(i)
+                    Case eColTypes.TOT_TE : asValues(j) += Me.NetworkManager.TotTransferEfficiencyEcosim(i)
 
                 End Select
 
@@ -280,71 +294,20 @@ Public Class cResultWriter
 
     Private Function GetIndicesWithPPRData(ByVal bAnnualAverage As Boolean) As String
 
-        Const cNUMCOLS As Integer = 28
-
-        Dim sb As New StringBuilder()
-        Dim asValues(cNUMCOLS) As Single
+        Dim cols As eColTypes() = DirectCast([Enum].GetValues(GetType(eColTypes)), eColTypes())
+        Dim iNumCols As Integer = cols.Length - 2 ' Exclude PPR columns
+        Dim asValues(iNumCols) As Single
         Dim iMonth As Integer = 0
         Dim iYear As Integer = 0
         Dim bLineAdded As Boolean = False
+        Dim sb As New StringBuilder()
+        Dim fmt As New cColTypeFormatter()
 
-        sb.Append(My.Resources.COL_HDR_YEAR)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_THROUGHPUT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CAPACITY_ECOSIM)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_IMPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_FLOW)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_EXPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_RESP)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_IMPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_FLOW)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_EXPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_OVERHEAD_RESP)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PCI)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_FCI)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PATH_LEN)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_EXPORT)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_RESP_ECOSIM)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PRIM_PROD)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROD)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_BIOMASS)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CATCH)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_PROP_FLOW_DET)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CATCH_PPR)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_CATCH_DET_REQ)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ASCEND_TOTAL)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_AMI)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_ENTROPY)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_TLc)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_KEMPTONS)
-        sb.Append(", ")
-        sb.Append(My.Resources.COL_HDR_FIB)
+        ' Header line
+        For j As Integer = 0 To iNumCols - 1
+            If (j > 0) Then sb.Append(",")
+            sb.Append(cStringUtils.ToCSVField(fmt.GetDescriptor(cols(j))))
+        Next
         sb.AppendLine("")
 
         For i As Integer = 1 To Me.NetworkManager.nEcosimTimesteps
@@ -356,7 +319,7 @@ Public Class cResultWriter
             bLineAdded = False
 
             ' For every var to output
-            For j As Integer = 1 To cNUMCOLS
+            For j As Integer = 1 To iNumCols - 1
 
                 ' Reset total when either processing monthly values OR processing January
                 If (bAnnualAverage = False) Or (iMonth = 0) Then
@@ -364,36 +327,39 @@ Public Class cResultWriter
                 End If
 
                 ' Add indicator to total
-                Select Case j
-                    Case 1 : asValues(j) += Me.NetworkManager.ThroughputEcosim(i)
-                    Case 2 : asValues(j) += Me.NetworkManager.CapacityEcosim(i)
-                    Case 3 : asValues(j) += Me.NetworkManager.AscendImportEcosim(i)
-                    Case 4 : asValues(j) += Me.NetworkManager.AscendFlowEcosim(i)
-                    Case 5 : asValues(j) += Me.NetworkManager.AscendExportEcosim(i)
-                    Case 6 : asValues(j) += Me.NetworkManager.AscendRespEcosim(i)
-                    Case 7 : asValues(j) += Me.NetworkManager.OverheadImportEcosim(i)
-                    Case 8 : asValues(j) += Me.NetworkManager.OverheadFlowEcosim(i)
-                    Case 9 : asValues(j) += Me.NetworkManager.OverheadExportEcosim(i)
-                    Case 10 : asValues(j) += Me.NetworkManager.OverheadRespEcosim(i)
-                    Case 11 : asValues(j) += Me.NetworkManager.PCIEcosim(i)
-                    Case 12 : asValues(j) += Me.NetworkManager.FCIEcosim(i)
-                    Case 13 : asValues(j) += Me.NetworkManager.PathLengthEcosim(i)
-                    Case 14 : asValues(j) += Me.NetworkManager.ExportEcosim(i)
-                    Case 15 : asValues(j) += Me.NetworkManager.RespEcosim(i)
-                    Case 16 : asValues(j) += Me.NetworkManager.PrimaryProdEcosim(i)
-                    Case 17 : asValues(j) += Me.NetworkManager.ProdEcosim(i)
-                    Case 18 : asValues(j) += Me.NetworkManager.BiomassEcosim(i)
-                    Case 19 : asValues(j) += Me.NetworkManager.CatchEcosim(i)
-                    Case 20 : asValues(j) += Me.NetworkManager.PropFlowDetEcosim(i)
-                    Case 21 : asValues(j) += Me.NetworkManager.RaiseToPPEcosim(i)
-                    Case 22 : asValues(j) += Me.NetworkManager.RaiseToDetEcosim(i)
-                    Case 23 : asValues(j) += Me.NetworkManager.AscendTotalEcosim(i)
-                    Case 24 : asValues(j) += Me.NetworkManager.AMIEcosim(i)
-                    Case 25 : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
-                    Case 26 : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
-                    Case 27 : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
-                    Case 28 : asValues(j) += Me.NetworkManager.FIB(i)
+                Select Case cols(j)
 
+                    Case eColTypes.THROUGHPUT : asValues(j) += Me.NetworkManager.ThroughputEcosim(i)
+                    Case eColTypes.CAPACITY_ECOSIM : asValues(j) += Me.NetworkManager.CapacityEcosim(i)
+                    Case eColTypes.ASCEND_IMPORT : asValues(j) += Me.NetworkManager.AscendImportEcosim(i)
+                    Case eColTypes.ASCEND_FLOW : asValues(j) += Me.NetworkManager.AscendFlowEcosim(i)
+                    Case eColTypes.ASCEND_EXPORT : asValues(j) += Me.NetworkManager.AscendExportEcosim(i)
+                    Case eColTypes.ASCEND_RESP : asValues(j) += Me.NetworkManager.AscendRespEcosim(i)
+                    Case eColTypes.OVERHEAD_IMPORT : asValues(j) += Me.NetworkManager.OverheadImportEcosim(i)
+                    Case eColTypes.OVERHEAD_FLOW : asValues(j) += Me.NetworkManager.OverheadFlowEcosim(i)
+                    Case eColTypes.OVERHEAD_EXPORT : asValues(j) += Me.NetworkManager.OverheadExportEcosim(i)
+                    Case eColTypes.OVERHEAD_RESP : asValues(j) += Me.NetworkManager.OverheadRespEcosim(i)
+                    Case eColTypes.PCI : asValues(j) += Me.NetworkManager.PCIEcosim(i)
+                    Case eColTypes.FCI : asValues(j) += Me.NetworkManager.FCIEcosim(i)
+                    Case eColTypes.PATH_LEN : asValues(j) += Me.NetworkManager.PathLengthEcosim(i)
+                    Case eColTypes.EXPORT : asValues(j) += Me.NetworkManager.ExportEcosim(i)
+                    Case eColTypes.RESP_ECOSIM : asValues(j) += Me.NetworkManager.RespEcosim(i)
+                    Case eColTypes.PRIM_PROD : asValues(j) += Me.NetworkManager.PrimaryProdEcosim(i)
+                    Case eColTypes.PROD : asValues(j) += Me.NetworkManager.ProdEcosim(i)
+                    Case eColTypes.BIOMASS : asValues(j) += Me.NetworkManager.BiomassEcosim(i)
+                    Case eColTypes.CATCH : asValues(j) += Me.NetworkManager.CatchEcosim(i)
+                    Case eColTypes.PROP_FLOW_DET : asValues(j) += Me.NetworkManager.PropFlowDetEcosim(i)
+                    Case eColTypes.ASCEND_TOTAL : asValues(j) += Me.NetworkManager.AscendTotalEcosim(i)
+                    Case eColTypes.AMI : asValues(j) += Me.NetworkManager.AMIEcosim(i)
+                    Case eColTypes.ENTROPY : asValues(j) += Me.NetworkManager.EntropyEcosim(i)
+                    Case eColTypes.TLc : asValues(j) += Me.NetworkManager.TLCatchPlot(i)
+                    Case eColTypes.KEMPTONS : asValues(j) += Me.NetworkManager.RelativeKemptonsPlot(i)
+                    Case eColTypes.FIB : asValues(j) += Me.NetworkManager.FIB(i)
+                    Case eColTypes.DET_TE : asValues(j) += Me.NetworkManager.DetTransferEfficiencyEcosim(i)
+                    Case eColTypes.PP_TE : asValues(j) += Me.NetworkManager.PPTransferEfficiencyEcosim(i)
+                    Case eColTypes.TOT_TE : asValues(j) += Me.NetworkManager.TotTransferEfficiencyEcosim(i)
+                    Case eColTypes.CATCH_PPR : asValues(j) += Me.NetworkManager.RaiseToPPEcosim(i)
+                    Case eColTypes.CATCH_DET_REQ : asValues(j) += Me.NetworkManager.RaiseToDetEcosim(i)
                 End Select
 
                 ' Processing annual averages?

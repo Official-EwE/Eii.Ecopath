@@ -4577,4 +4577,13 @@ ozm8Eni5lw1AitsyI2flY0anwvm8OjSm79/8uLuoH5reHe98Vi7oA+P/AKT/AP/ZCw==</value>
   <data name="PROMPT_NETWORK_COMPLEXDIET" xml:space="preserve">
     <value>Network Analysis may run slow on complex diet matrices, and may take several hours to days (!) to complete. Are you sure you want to continue?</value>
   </data>
+  <data name="COL_HDR_DET_TE" xml:space="preserve">
+    <value>Transfer Eff (Det)</value>
+  </data>
+  <data name="COL_HDR_PP_TE" xml:space="preserve">
+    <value>Transfer Eff (PP)</value>
+  </data>
+  <data name="COL_HDR_TOT_TE" xml:space="preserve">
+    <value>Transfer Eff (Total)</value>
+  </data>
 </root>

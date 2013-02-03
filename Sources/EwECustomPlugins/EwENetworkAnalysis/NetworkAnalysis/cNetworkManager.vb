@@ -1831,9 +1831,6 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Ecosim plot "FIB index"
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property FIB() As Single()
         Get
             Return Me.EcosimData.FIB
@@ -1843,9 +1840,6 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Ecosim plot "Total catch "
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property RelativeSumOfCatchPlot() As Single()
         Get
             Return Me.m_econetwork.RelativeSumOfCatchPlot
@@ -1855,9 +1849,6 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Ecosim plot "Kemptons Q"
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property RelativeKemptonsPlot() As Single()
         Get
             Return Me.m_econetwork.RelativeKemptonsPlot
@@ -1867,9 +1858,6 @@ Public Class cNetworkManager
     ''' <summary>
     '''  EwE5 Ecosim plot "TL of catch "
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property TLCatchPlot() As Single()
         Get
             Return Me.m_econetwork.TLCatchPlot
@@ -1879,22 +1867,15 @@ Public Class cNetworkManager
     ''' <summary>
     '''  EwE5 Ecosim plot TL (trophic level of all groups)
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property TLSimPlot(ByVal iGroup As Integer, ByVal iTime As Integer) As Single
         Get
             Return Me.m_econetwork.TLSimPlot(iGroup, iTime)
         End Get
     End Property
 
-
     ''' <summary>
     ''' EwE5 Ecosim plot "Catch PPR "
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property RelativeCatchPPRPlot() As Single()
         Get
             Return Me.m_econetwork.RelativeCatchPPR
@@ -1904,9 +1885,6 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Ecosim plot "Catch detritus req."
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property RelativeDetritusReqPlot() As Single()
         Get
             Return Me.m_econetwork.RelativeCatchDetReq
@@ -1916,9 +1894,6 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Ecosim csv parameter "TruPut"
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property ThroughputEcosim() As Single()
         Get
             Return Me.m_econetwork.Throughput
@@ -2066,6 +2041,24 @@ Public Class cNetworkManager
     Public ReadOnly Property EntropyEcosim() As Single()
         Get
             Return Me.m_econetwork.Entropy
+        End Get
+    End Property
+
+    Public ReadOnly Property DetTransferEfficiencyEcosim() As Single()
+        Get
+            Return Me.m_econetwork.DetTransferEfficiency
+        End Get
+    End Property
+
+    Public ReadOnly Property PPTransferEfficiencyEcosim() As Single()
+        Get
+            Return Me.m_econetwork.PPTransferEfficiency
+        End Get
+    End Property
+
+    Public ReadOnly Property TotTransferEfficiencyEcosim() As Single()
+        Get
+            Return Me.m_econetwork.TotTransferEfficiency
         End Get
     End Property
 

@@ -244,7 +244,7 @@
     <value>m_plot</value>
   </data>
   <data name="&gt;&gt;m_plot.Type" xml:space="preserve">
-    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.3.1103.0, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
+    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.3.8868.0, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
   </data>
   <data name="&gt;&gt;m_plot.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -268,7 +268,7 @@
     <value>m_graph</value>
   </data>
   <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.19206, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
   </data>
   <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -373,7 +373,7 @@
     <value>&amp;Refresh</value>
   </data>
   <data name="tsmiRun.ToolTipText" xml:space="preserve">
-    <value>Recalculate Network Analysis data when data has changed</value>
+    <value>Recalculate Network Analysis output when data has changed</value>
   </data>
   <data name="tsbtnOptions.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -502,7 +502,7 @@
     <value>m_toolstrip</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.1103.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.8868.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Parent" xml:space="preserve">
     <value>m_scNetworkAnalysis.Panel2</value>
@@ -568,7 +568,7 @@
     <value>m_hdrPage</value>
   </data>
   <data name="&gt;&gt;m_hdrPage.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.1103.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8868.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPage.Parent" xml:space="preserve">
     <value>$this</value>
@@ -3031,6 +3031,6 @@
     <value>frmNetworkAnalysis</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.3729.14004, Culture=neutral, PublicKeyToken=de94e906589de6fe</value>
+    <value>WeifenLuo.WinFormsUI.Docking.DockContent, WeifenLuo.WinFormsUI.Docking, Version=2.3.4392.30540, Culture=neutral, PublicKeyToken=dd4210ebb9723de9</value>
   </data>
 </root>
