@@ -172,7 +172,7 @@ Namespace SpatialData
             ' Invalidate connection count
             Me.m_iNumConnected = cCore.NULL_VALUE
 
-            Me.m_core.onChanged(Me)
+            Me.m_core.onChanged(Me, eMessageType.DataModified)
 
         End Sub
 
