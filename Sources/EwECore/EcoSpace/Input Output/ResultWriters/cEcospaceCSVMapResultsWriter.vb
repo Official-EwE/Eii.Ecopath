@@ -145,6 +145,7 @@ Public Class cEcospaceCSVMapResultsWriter
 
         Dim map As cEcospaceLayer = timestep.Layer(varname, iIndex)
         Dim sbBuff As New StringBuilder()
+        Dim value As Double = 0
 
         Debug.Assert(map IsNot Nothing)
 
@@ -155,7 +156,11 @@ Public Class cEcospaceCSVMapResultsWriter
         For ir As Integer = 1 To Me.EcospaceData.InRow
             For ic As Integer = 1 To Me.EcospaceData.InCol
                 If ic > 1 Then sbBuff.Append(",")
-                sbBuff.Append(cStringUtils.FormatSingle(CSng(map.Cell(ir, ic))))
+                value = CDbl(map.Cell(ir, ic))
+                If (value <> cCore.NULL_VALUE) Then
+                    value = Me.ScaleValue(value, timestep, iIndex, varname)
+                End If
+                sbBuff.Append(cStringUtils.FormatNumber(value))
             Next
             strm.WriteLine(sbBuff.ToString)
             sbBuff.Length = 0

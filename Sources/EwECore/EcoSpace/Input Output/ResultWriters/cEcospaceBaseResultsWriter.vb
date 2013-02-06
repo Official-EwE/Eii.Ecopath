@@ -262,6 +262,22 @@ Public MustInherit Class cEcospaceBaseResultsWriter
         strm.Write(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecospace))
     End Sub
 
+    ''' <summary>
+    ''' Recalculate / rescale a value before it is written to the 
+    ''' output file.
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <param name="SpaceTSData"></param>
+    ''' <param name="iIndex"></param>
+    ''' <param name="varname"></param>
+    ''' <returns></returns>
+    Protected Overridable Function ScaleValue(ByVal value As Double, _
+                                              ByVal SpaceTSData As cEcospaceTimestep, _
+                                              ByVal iIndex As Integer, _
+                                              ByVal varname As eVarNameFlags) As Double
+        Return value
+    End Function
+
 #End Region ' Internals
 
 End Class

@@ -195,7 +195,7 @@ Public Class cEcospaceASCMapResultsWriter
                                  ByVal varname As eVarNameFlags)
 
         Dim map As cEcospaceLayer = SpaceTSData.Layer(varname, iIndex)
-        Dim value As Single
+        Dim value As Double = 0
 
         Debug.Assert(map IsNot Nothing)
 
@@ -204,11 +204,14 @@ Public Class cEcospaceASCMapResultsWriter
                 If ic > 1 Then writer.Write(" ")
                 If Me.EcospaceData.Depth(ir, ic) > 0 Then
                     value = CSng(map.Cell(ir, ic))
+                    If (value <> cCore.NULL_VALUE) Then
+                        value = Me.ScaleValue(value, SpaceTSData, iIndex, varname)
+                    End If
                 Else
                     'land as NODATAVALUE
                     value = cCore.NULL_VALUE
                 End If
-                writer.Write(value)
+                writer.Write(cStringUtils.FormatNumber(value))
             Next
             writer.WriteLine("")
         Next

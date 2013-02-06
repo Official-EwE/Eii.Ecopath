@@ -80,6 +80,7 @@ Namespace Ecospace
             Me.m_cmbAutosaveMapFormat = New System.Windows.Forms.ComboBox()
             Me.m_lblAutosaveResultMaps = New System.Windows.Forms.Label()
             Me.m_cbContaminantTracing = New System.Windows.Forms.CheckBox()
+            Me.m_cbAutosaveResultRegions = New System.Windows.Forms.CheckBox()
             Me.m_cbUseExact = New System.Windows.Forms.CheckBox()
             Me.m_tbContact = New System.Windows.Forms.TextBox()
             Me.m_tbAuthor = New System.Windows.Forms.TextBox()
@@ -91,7 +92,6 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
-            Me.m_cbAutosaveResultRegions = New System.Windows.Forms.CheckBox()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -356,6 +356,12 @@ Namespace Ecospace
             Me.m_cbContaminantTracing.Name = "m_cbContaminantTracing"
             Me.m_cbContaminantTracing.UseVisualStyleBackColor = True
             '
+            'm_cbAutosaveResultRegions
+            '
+            resources.ApplyResources(Me.m_cbAutosaveResultRegions, "m_cbAutosaveResultRegions")
+            Me.m_cbAutosaveResultRegions.Name = "m_cbAutosaveResultRegions"
+            Me.m_cbAutosaveResultRegions.UseVisualStyleBackColor = True
+            '
             'm_cbUseExact
             '
             resources.ApplyResources(Me.m_cbUseExact, "m_cbUseExact")
@@ -417,12 +423,6 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_rbAdjustedBiomass)
             Me.m_plBiomass.Controls.Add(Me.m_hdrInitialization)
             Me.m_plBiomass.Name = "m_plBiomass"
-            '
-            'm_cbAutosaveResultRegions
-            '
-            resources.ApplyResources(Me.m_cbAutosaveResultRegions, "m_cbAutosaveResultRegions")
-            Me.m_cbAutosaveResultRegions.Name = "m_cbAutosaveResultRegions"
-            Me.m_cbAutosaveResultRegions.UseVisualStyleBackColor = True
             '
             'EcospaceParameters
             '

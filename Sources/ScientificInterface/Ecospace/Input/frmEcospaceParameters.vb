@@ -68,6 +68,46 @@ Namespace Ecospace
 
 #End Region ' Private vars
 
+        Private Class cEcospaceResultWriterItem
+
+            ' ToDo: globalize this class 
+
+            Private m_items As IEcospaceResultsWriter()
+            Private m_strLabel As String = ""
+
+            Public Sub New(strLabel As String)
+                Me.m_items = New IEcospaceResultsWriter() {}
+                Me.m_strLabel = strLabel
+            End Sub
+
+            Public Sub New(item As IEcospaceResultsWriter)
+                Me.m_items = New IEcospaceResultsWriter() {item}
+                Me.m_strLabel = String.Format("Save as {0} maps", Me.Extensions)
+            End Sub
+
+            Public Sub New(items As IEcospaceResultsWriter())
+                Me.m_items = items
+                Me.m_strLabel = String.Format("Save maps in multiple formats ({0})", Me.Extensions)
+            End Sub
+
+            Public Overrides Function ToString() As String
+                Return Me.m_strLabel
+            End Function
+
+            Public ReadOnly Property Extensions As String
+                Get
+                    Dim strExts As String = ""
+                    For i As Integer = 0 To Me.m_items.Count - 1
+                        If (i > 0) Then strExts = strExts & ";"
+                        strExts = strExts & Me.m_items(i).FileExtension
+                    Next
+                    Return strExts
+                End Get
+
+            End Property
+
+        End Class
+
 #Region " Form events "
 
         Public Sub New()
@@ -87,28 +127,34 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
-            Me.m_bpUseIBM = Nothing
-            Me.m_bpUseNewStanza = Nothing
-            Me.m_bpAdjustSpace = Nothing
-            Me.m_bpConTracing = Nothing
-            Me.m_bpEffort = Nothing
+            Try
 
-            Me.m_fpScenarioName.Release()
-            Me.m_fpScenarioDescription.Release()
-            Me.m_fpAuthor.Release()
-            Me.m_fpContact.Release()
+                Me.m_bpUseIBM = Nothing
+                Me.m_bpUseNewStanza = Nothing
+                Me.m_bpAdjustSpace = Nothing
+                Me.m_bpConTracing = Nothing
+                Me.m_bpEffort = Nothing
 
-            Me.m_fpNGridThreads.Release()
-            Me.m_fpNBiomassThreads.Release()
-            Me.m_fpNEffortThreads.Release()
-            Me.m_fpNumPackets.Release()
-            Me.m_fpTotalTime.Release()
-            Me.m_fpNumTSpYear.Release()
-            Me.m_fpTolerance.Release()
-            Me.m_fpSOR.Release()
-            Me.m_fpMaxIterations.Release()
-            Me.m_fpUseExact.Release()
-            Me.m_fpMovePackets.Release()
+                Me.m_fpScenarioName.Release()
+                Me.m_fpScenarioDescription.Release()
+                Me.m_fpAuthor.Release()
+                Me.m_fpContact.Release()
+
+                Me.m_fpNGridThreads.Release()
+                Me.m_fpNBiomassThreads.Release()
+                Me.m_fpNEffortThreads.Release()
+                Me.m_fpNumPackets.Release()
+                Me.m_fpTotalTime.Release()
+                Me.m_fpNumTSpYear.Release()
+                Me.m_fpTolerance.Release()
+                Me.m_fpSOR.Release()
+                Me.m_fpMaxIterations.Release()
+                Me.m_fpUseExact.Release()
+                Me.m_fpMovePackets.Release()
+
+            Catch ex As Exception
+
+            End Try
 
             MyBase.OnFormClosed(e)
         End Sub
@@ -116,15 +162,30 @@ Namespace Ecospace
         Private Sub InitContent()
 
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
-            Dim pm As cPropertyManager = Me.PropertyManager
+            Dim propMan As cPropertyManager = Me.PropertyManager
 
             ' Start listening to props
-            Me.m_bpUseIBM = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
-            Me.m_bpUseNewStanza = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
-            Me.m_bpAdjustSpace = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
-            Me.m_bpEffort = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
+            Me.m_bpUseIBM = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
+            Me.m_bpUseNewStanza = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
+            Me.m_bpAdjustSpace = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
+            Me.m_bpEffort = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
 
-            Me.m_bpConTracing = DirectCast(pm.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+            Me.m_bpConTracing = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+
+            ' Configure writers
+            Dim wrAsc As New cEcospaceASCMapResultsWriter()
+            Dim wrCSV As New cEcospaceCSVMapResultsWriter()
+
+            Me.m_cmbAutosaveMapFormat.Items.Clear()
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem("Do not auto-save results"))
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrAsc))
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrCSV))
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(New IEcospaceResultsWriter() {wrAsc, wrCSV}))
+            If (Me.Core.PluginManager IsNot Nothing) Then
+                For Each ip As EwEPlugin.IEcospaceResultWriterPlugin In Me.Core.PluginManager.GetPlugins(GetType(EwEPlugin.IEcospaceResultWriterPlugin))
+                    Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(ip))
+                Next ip
+            End If
 
             Me.UpdateControls()
 
@@ -144,7 +205,6 @@ Namespace Ecospace
             Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
 
             Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, ecospaceModelParams, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
-
             Me.UpdateScenarioFormatProviders()
 
         End Sub
@@ -207,15 +267,14 @@ Namespace Ecospace
 
             Me.m_cbAutosaveResultRegions.Checked = Me.Core.Autosave(eAutosaveTypes.Ecospace)
 
-            If Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False Then
-                Me.m_cmbAutosaveMapFormat.SelectedIndex = 0
-            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".asc", False) = 0 Then
-                Me.m_cmbAutosaveMapFormat.SelectedIndex = 1
-            ElseIf String.Compare(Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), ".csv", False) = 0 Then
-                Me.m_cmbAutosaveMapFormat.SelectedIndex = 2
-            Else
-                Me.m_cmbAutosaveMapFormat.SelectedIndex = 3
-            End If
+            ' Compare by extension
+            For Each item As cEcospaceResultWriterItem In Me.m_cmbAutosaveMapFormat.Items
+                If (item IsNot Nothing) Then
+                    If String.Compare(item.Extensions, Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps), True) = 0 Then
+                        Me.m_cmbAutosaveMapFormat.SelectedItem = item
+                    End If
+                End If
+            Next
 
             Me.m_rbPredictEffort.Checked = CBool(Me.m_bpEffort.GetValue())
             Me.m_rbEcopathEffort.Checked = Not CBool(Me.m_bpEffort.GetValue())
@@ -344,19 +403,17 @@ Namespace Ecospace
 
             If Me.m_bInUpdate Then Return
 
-            Select Case Me.m_cmbAutosaveMapFormat.SelectedIndex
-                Case 0
-                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False
-                Case 1
-                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
-                    Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".asc"
-                Case 2
-                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
-                    Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".csv"
-                Case 3
-                    Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
-                    Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = ".csv;.asc"
-            End Select
+            Dim strExt As String = ""
+            If Me.m_cmbAutosaveMapFormat.SelectedIndex <> -1 Then
+                strExt = DirectCast(Me.m_cmbAutosaveMapFormat.SelectedItem, cEcospaceResultWriterItem).Extensions
+            End If
+
+            If String.IsNullOrWhiteSpace(strExt) Then
+                Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False
+            Else
+                Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
+                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = strExt
+            End If
         End Sub
 
 #End Region ' Control events

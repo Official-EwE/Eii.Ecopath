@@ -434,6 +434,7 @@ Namespace SpatialData
 
             ' Early bail out
             If (Not Me.RestoreLayerContent) Then Return
+            If (bm.ValueDescriptor(Me.m_varName)) Is Nothing Then Return
 
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
