@@ -45,7 +45,6 @@ Public Class cGridSolver
     Public ThreadID As Integer
 
     'arguments from original code
-    'Sub SolveGrid(ByVal ip As Integer, ByVal Aloc(,,) As Single, ByVal Floc(,,) As Single, ByVal X(,,) As Single, ByVal M As Integer, ByVal NomCols As Integer, ByVal Tol As Single, ByVal jord() As Integer, ByVal W As Single)
     Private X(,,) As Single
     Private Aloc(,,) As Single
     Private Floc(,,) As Single
@@ -295,7 +294,6 @@ Public Class cGridSolver
         Dim Wold As Single = W
 
         'System.Console.WriteLine("SolveGrid() " & ip.ToString)
-        'Debug.Assert(ip < 28, False)
         Try
             'first compute LU decomposition elements for each column j
             'If StopRun = 1 Then Exit Sub
@@ -355,15 +353,12 @@ iterate:
                 For i = iStartRow(j) + 1 To iEndRow(j)
                     G(i) = (rhs(i, j) - Bcw(i, j, ip) * G(i - 1)) / alfa(i, j)
                 Next
+
                 X(iEndRow(j), j, ip) = G(iEndRow(j))
                 For i = iEndRow(j) - 1 To iStartRow(j) Step -1
                     X(i, j, ip) = G(i) - gam(i, j) * X(i + 1, j, ip)
                 Next
-                'IF iflag > 0 THEN
-                '        FOR i = 1 TO m: PRINT x(i, j), xold(i, j): NEXT
-                '        PRINT FRE(-1), FRE(-2)
-                '        : STOP
-                'END IF
+
                 For i = iStartRow(j) To iEndRow(j)
                     X(i, j, ip) = (1 - W) * Xold(i, j) + W * X(i, j, ip)
                 Next
@@ -392,11 +387,7 @@ iterate:
                     End If
                 Next
             Next
-            If (ip = 3 Or ip = 17) Then 'And iter > maxIter / 4 Then
-                'Debug.Print("SG   iter:  " + iter.ToString + "  ip: " + ip.ToString + "   ic:  " + ic.ToString + "   totDiff:  " + (totDiff / totOld).ToString + "   " + (totdiff2 / totOld).ToString)
-            End If
-            'LOCATE 1, 1: Print "SOR it="; iter;: LOCATE 2, 1: Print "    nc="; ic;
-            ' Label12.Caption = iter : Label13.Caption = ic 'DoEvents
+
             If alternateRowCol Then
                 For i = 1 To M
                     ' If StopRun = 1 Then Exit Sub
@@ -409,24 +400,19 @@ iterate:
                     'now solve for x(i,j) over i using these forcing inputs to one dimensional
                     'tridiagonal solver
                     G2(jStartCol(i)) = rhs(i, jStartCol(i)) / alfa2(i, jStartCol(i))
-                    'IF iflag > 0 THEN FOR i = 1 TO m: PRINT x(i, j), xold(i, j): NEXT: STOP
                     For j = jStartCol(i) To jEndCol(i)
                         G2(j) = (rhs(i, j) - d(i, j - 1, ip) * G2(j - 1)) / alfa2(i, j)
                     Next
+
                     X(i, jEndCol(i), ip) = G2(jEndCol(i))
                     For j = jEndCol(i) - 1 To jStartCol(i) Step -1
                         X(i, j, ip) = G2(j) - gam2(i, j) * X(i, j + 1, ip)
                     Next
-                    'IF iflag > 0 THEN
-                    '        FOR i = 1 TO m: PRINT x(i, j), xold(i, j): NEXT
-                    '        PRINT FRE(-1), FRE(-2)
-                    '        : STOP
-                    'END IF
+
                     For j = jStartCol(i) To jEndCol(i)
                         X(i, j, ip) = (1 - W) * Xold(i, j) + W * X(i, j, ip)
                     Next
                 Next
-
 
                 totDiff = 0
                 totdiff2 = 0
@@ -458,17 +444,10 @@ iterate:
                 '    W = Wold
                 'End If
 
-                If (ip = 3 Or ip = 17) Then 'And iter > maxIter / 4 Then
-                    'Debug.Print("SGR  iter:  " + iter.ToString + "  ip: " + ip.ToString + "   ic:  " + ic.ToString + "   totDiff:  " + (totDiff / totOld).ToString + "   " + (totdiff2 / totOld).ToString)
-                End If
             End If
 
             iter = iter + 1
             If ic > 0 And iter < maxIter Then GoTo iterate
-            'CLS
-            'LOCATE 1, 1
-            'FOR i = 1 TO 20: PRINT USING "## "; i; : FOR j = 1 TO nomcols: PRINT USING " .##"; x(i, j); : NEXT: PRINT : NEXT
-            'WHILE INKEY$ = "": WEND
 exitline:
 
             Erase alfa, gam, rhs, G, Xold
@@ -476,9 +455,6 @@ exitline:
                 iter = iter * 2
             End If
             iterThread = iterThread + iter
-            'If (ip = 3 Or ip = 17) And iter > maxIter / 4 Then
-            '    'Debug.Print("SG  iter:  " + iter.ToString + "  ip: " + ip.ToString + "   ic:  " + ic.ToString + "   totDiff:  " + (totDiff / totOld).ToString)
-            'End If
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
@@ -553,22 +529,19 @@ iterate:
             Next
             rhs(i, jStartCol(i)) = rhs(i, jStartCol(i)) - d(i, jStartCol(i) - 1, ip) * X(i, jStartCol(i) - 1, ip)
             rhs(i, jEndCol(i)) = rhs(i, jEndCol(i)) - e(i, jEndCol(i) + 1, ip) * X(i, jEndCol(i) + 1, ip)
+
             'now solve for x(i,j) over i using these forcing inputs to one dimensional
             'tridiagonal solver
             G(jStartCol(i)) = rhs(i, jStartCol(i)) / alfa(i, jStartCol(i))
-            'IF iflag > 0 THEN FOR i = 1 TO m: PRINT x(i, j), xold(i, j): NEXT: STOP
             For j = jStartCol(i) To jEndCol(i)
                 G(j) = (rhs(i, j) - d(i, j - 1, ip) * G(j - 1)) / alfa(i, j)
             Next
+
             X(i, jEndCol(i), ip) = G(jEndCol(i))
             For j = jEndCol(i) - 1 To jStartCol(i) Step -1
                 X(i, j, ip) = G(j) - gam(i, j) * X(i, j + 1, ip)
             Next
-            'IF iflag > 0 THEN
-            '        FOR i = 1 TO m: PRINT x(i, j), xold(i, j): NEXT
-            '        PRINT FRE(-1), FRE(-2)
-            '        : STOP
-            'END IF
+
             For j = jStartCol(i) To jEndCol(i)
                 X(i, j, ip) = (1 - W) * Xold(i, j) + W * X(i, j, ip)
             Next
@@ -599,23 +572,13 @@ iterate:
                 End If
             Next j
         Next i
-        If (ip = 3 Or ip = 17) Then 'And iter > maxIter / 4 Then
-            'Debug.Print("SGR  iter:  " + iter.ToString + "  ip: " + ip.ToString + "   ic:  " + ic.ToString + "   totDiff:  " + (totDiff / totOld).ToString)
-        End If
-        'LOCATE 1, 1: Print "SOR it="; iter;: LOCATE 2, 1: Print "    nc="; ic;
-        ' Label12.Caption = iter: Label13.Caption = ic: 'DoEvents
+
         iter = iter + 1
         If ic > 0 And iter < maxIter Then GoTo iterate
-        'CLS
-        'LOCATE 1, 1
-        'FOR i = 1 TO 20: PRINT USING "## "; i; : FOR j = 1 TO nomcols: PRINT USING " .##"; x(i, j); : NEXT: PRINT : NEXT
-        'WHILE INKEY$ = "": WEND
+
 exitline:
         Erase alfa, gam, rhs, G, Xold
         iterThread = iterThread + iter
-        If (ip = 3 Or ip = 17) And iter > maxIter / 4 Then
-            'Debug.Print("SGR:   ip: " + ip.ToString + "   ic:  " + ic.ToString + "   totDiff:  " + (totDiff / totOld).ToString)
-        End If
     End Sub
 
     Private Function arrangeMatrix(ByRef Amm(,,) As Single, ByRef Bcw(,,) As Single, ByRef C(,,) As Single, ByRef d(,,) As Single, ByRef e(,,) As Single, ByVal ip As Integer, ByVal M As Integer, ByVal N As Integer) As Double(,)

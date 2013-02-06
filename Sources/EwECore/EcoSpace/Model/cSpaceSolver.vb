@@ -729,10 +729,8 @@ Public Class cSpaceSolver
                     Case 1 'donor controlled flow
                         eat = aeff(ii) * Bprey
                     Case 3 'limited total flow
-                        'MsgBox ("invalid flow control type setting; edit your mdb")
                         eat = aeff(ii) * Bprey * pred(j) / (1 + aeff(ii) * pred(j) * Bprey / m_SimData.maxflow(i, j))
                     Case 2 'prey limited flow
-                        'Vprey = Veff(ii) * Bprey / (vulrate(i, j) + Veff(ii) + aeff(ii) * pred(j) / Hden(j))
                         eat = aeff(ii) * Vbiom(ia) * pred(j) / Hden(j)
                     Case Else
                         eat = 0
