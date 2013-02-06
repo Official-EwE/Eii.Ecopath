@@ -204,7 +204,7 @@ Namespace Ecosim
         ''' <param name="newValue"></param>
         ''' <param name="Index"></param>
         ''' <remarks>Not used for this implementation</remarks>
-        Public Event onValueChanged(ByVal newValue As Single, ByVal Index As Integer) Implements IBlockSelector.OnValueChanged
+        Public Event OnValueChanged(ByVal newValue As Single, ByVal Index As Integer) Implements IBlockSelector.OnValueChanged
 
 
 #End Region ' Public events
