@@ -230,6 +230,34 @@ Namespace Controls.Map
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all the group controls in this control.
+        ''' </summary>
+          ''' -------------------------------------------------------------------
+        Public ReadOnly Property Groups As ucLayerGroup()
+            Get
+                Dim aug(Math.Max(0, Me.m_dtGroups.Count - 1)) As ucLayerGroup
+                Me.m_dtGroups.Values.CopyTo(aug, 0)
+                Return aug
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all group names registered to this control.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property GroupNames As String()
+            Get
+                Dim lstr As New List(Of String)
+                For Each str As String In Me.m_dtGroups.Keys
+                    lstr.Add(str)
+                Next
+                Return lstr.ToArray()
+            End Get
+        End Property
+
 #End Region ' Item access
 
 #Region " Events "

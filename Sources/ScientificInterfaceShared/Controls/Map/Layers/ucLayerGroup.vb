@@ -156,15 +156,22 @@ Namespace Controls.Map
             Return Me.m_fpItems.Controls.Count
         End Function
 
-        Public Function Layers() As cLayer()
-            Dim al As New List(Of cLayer)
-            ' Get all layers
-            For Each uc As UserControl In Me.m_fpItems.Controls
-                Dim lc As ucLayer = DirectCast(uc, ucLayer)
-                al.Add(lc.Layer)
-            Next
-            Return al.ToArray
-        End Function
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all layers attached to this group.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Layers() As cLayer()
+            Get
+                Dim al As New List(Of cLayer)
+                ' Get all layers
+                For Each uc As UserControl In Me.m_fpItems.Controls
+                    Dim lc As ucLayer = DirectCast(uc, ucLayer)
+                    al.Add(lc.Layer)
+                Next
+                Return al.ToArray
+            End Get
+        End Property
 
         Public Sub LockUpdates()
             Me.m_bLocked = True

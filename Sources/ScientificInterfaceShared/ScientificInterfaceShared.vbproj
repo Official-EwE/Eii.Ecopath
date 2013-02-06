@@ -639,7 +639,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Settings\cFormSetting.vb" />
+    <Compile Include="Settings\cFormSettings.vb" />
+    <Compile Include="Settings\IXMLDocSettings.vb" />
     <Compile Include="Style\ColorRamps\cARGBColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cColorRamp.vb" />
     <Compile Include="Style\ColorRamps\cSAUPColorRamp.vb" />
@@ -908,9 +909,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Controls\EwEGrid\_Visualizers_.cd" />
-    <None Include="Controls\EwEGrid\_Cells_.cd" />
-    <None Include="Controls\EwEGrid\_Grid_.cd" />
+    <None Include="_ Design _\Controls.cd" />
+    <None Include="_ Design _\Forms.cd" />
+    <None Include="_ Design _\Maps.cd" />
+    <None Include="_ Design _\_Visualizers_.cd" />
+    <None Include="_ Design _\_Cells_.cd" />
+    <None Include="_ Design _\_Grid_.cd" />
     <None Include="Controls\Shapes\ShapeMediation\_mediation_shape_UI.cd" />
     <None Include="Controls\Shapes\SketchPad\_sketch pads.cd" />
     <None Include="Controls\Shapes\_shape handlers.cd" />
@@ -1092,9 +1096,7 @@
     <Service Include="{94E38DFF-614B-4CBD-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\ConfigPage\" />
     <Folder Include="Controls\Map\Layers\Rendering\Vector\" />
-    <Folder Include="Controls\WebBrowser\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -4039,14 +4039,8 @@ Public Class AppLauncher
                 My.Settings.Author = EwEUtils.SystemUtilities.cSystemUtils.GetUserName()
             End If
 
-            Dim strAutosave As String = My.Settings.AutoSave
-            For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
-                If strAutosave.Length > setting Then
-                    Me.Core.Autosave(setting) = (strAutosave(setting) = "1"c)
-                End If
-            Next
-
             Me.Core.SaveWithFileHeader = My.Settings.AutosaveHeaders
+            cAutosaveSettingsHelper.LoadFromSettings(My.Settings.AutosaveResults, Me.Core)
 
         Catch ex As Exception
 
@@ -4105,8 +4099,8 @@ Public Class AppLauncher
         For Each setting As eAutosaveTypes In [Enum].GetValues(GetType(eAutosaveTypes))
             strAutosave = strAutosave & CChar(cSystemUtils.IIF(Me.Core.Autosave(setting), "1"c, "0"c))
         Next
-        My.Settings.AutoSave = strAutosave
-        My.Settings.AutosaveHeaders = Me.Core.SaveWithFileHeader
+
+        My.Settings.AutosaveResults = cAutosaveSettingsHelper.SaveToSettings(Me.Core)
 
         args.Cancel = False
 

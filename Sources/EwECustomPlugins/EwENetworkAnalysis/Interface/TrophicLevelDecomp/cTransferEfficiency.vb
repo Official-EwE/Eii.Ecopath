@@ -80,10 +80,10 @@ Public Class cTransferEfficiency
         strRowContent(0) = My.Resources.ROW_HDR_PRODUCER
         For i As Integer = 2 To NetworkManager.nTrophicLevels
             strRowContent(i - 1) = ""
-            Dim sngTemp As Single = Me.NetworkManager.PPTransferEfficiency(i)
-            If (100.0 * sngTemp) > 0 Then
-                strRowContent(i - 1) = (100.0 * sngTemp).ToString("F1")
-                If i <= 4 Then TRavgP(i) = sngTemp
+            Dim sTemp As Single = Me.NetworkManager.PPTransferEfficiency(i)
+            If (100.0 * sTemp) > 0 Then
+                strRowContent(i - 1) = (100.0 * sTemp).ToString("F1")
+                If i <= 4 Then TRavgP(i) = sTemp
             End If
         Next
         Grid.Rows(1).SetValues(strRowContent)
@@ -92,10 +92,10 @@ Public Class cTransferEfficiency
         strRowContent(0) = My.Resources.ROW_HDR_DET
         For i As Integer = 2 To NetworkManager.nTrophicLevels
             strRowContent(i - 1) = ""
-            Dim sngTemp As Single = NetworkManager.DetTransferEfficiency(i)
-            If (100.0 * sngTemp) > 0 Then
-                strRowContent(i - 1) = (100.0 * sngTemp).ToString("F1")
-                If i <= 4 Then TRavgD(i) = sngTemp
+            Dim sTmp As Single = NetworkManager.DetTransferEfficiency(i)
+            If (100.0 * sTmp) > 0 Then
+                strRowContent(i - 1) = (100.0 * sTmp).ToString("F1")
+                If i <= 4 Then TRavgD(i) = sTmp
             End If
         Next
         Grid.Rows(2).SetValues(strRowContent)
@@ -103,16 +103,16 @@ Public Class cTransferEfficiency
 
         strRowContent(0) = My.Resources.ROW_HDR_ALL_FLOWS
         For i As Integer = 2 To NetworkManager.nTrophicLevels
-            Dim sngTr1 As Single = NetworkManager.PPConsByPred(i) + NetworkManager.DetConsByPred(i)
-            If sngTr1 > 0 Then
+            Dim sTr1 As Single = NetworkManager.PPConsByPred(i) + NetworkManager.DetConsByPred(i)
+            If sTr1 > 0 Then
                 If NetworkManager.PPThroughtput(i) + NetworkManager.DetThroughtput(i) > 0 Then
-                    NetworkManager.TrEm1(i) = sngTr1 / (NetworkManager.PPThroughtput(i) + NetworkManager.DetThroughtput(i))
+                    NetworkManager.TrEm1(i) = sTr1 / (NetworkManager.PPThroughtput(i) + NetworkManager.DetThroughtput(i))
                 End If
             End If
-            Dim sngTotTr As Single = NetworkManager.TotTransferEfficiency(i)
-            If (sngTotTr > 0) Then
-                strRowContent(i - 1) = (100.0 * sngTotTr).ToString("F1")
-                If i <= 4 Then TRavgT(i) = sngTotTr
+            Dim sTotTr As Single = NetworkManager.TotTransferEfficiency(i)
+            If (sTotTr > 0) Then
+                strRowContent(i - 1) = (100.0 * sTotTr).ToString("F1")
+                If i <= 4 Then TRavgT(i) = sTotTr
             Else
                 NetworkManager.TrEm1(i) = 0
                 strRowContent(i - 1) = ""

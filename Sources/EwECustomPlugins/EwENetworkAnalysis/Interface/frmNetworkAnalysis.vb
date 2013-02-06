@@ -123,7 +123,12 @@ Public Class frmNetworkAnalysis
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
-            Me.m_cmdDisplayGroups.AddControl(Me.tsmiDisplayGroups)
+            ' JS 02Feb13: This one is tricky. For some views the 'display groups' button must be hidden, which happens 
+            '             through the content manager that sets the button visible style. Connecting the button to the 
+            '             display groups command means that the button Available setting will toggle, which overrides 
+            '             the visible flag. Connecting the command thus means that we have lost control over button visibility.
+            '             Instead, simply invoke the command on a button click
+            'Me.m_cmdDisplayGroups.AddControl(Me.tsmiDisplayGroups)
             AddHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
         End If
 
@@ -134,7 +139,7 @@ Public Class frmNetworkAnalysis
     Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
 
         If (Me.m_cmdDisplayGroups IsNot Nothing) Then
-            Me.m_cmdDisplayGroups.RemoveControl(Me.tsmiDisplayGroups)
+            'Me.m_cmdDisplayGroups.RemoveControl(Me.tsmiDisplayGroups)
             RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnPostInvokeDisplayGroups
             Me.m_cmdDisplayGroups = Nothing
         End If
@@ -149,7 +154,19 @@ Public Class frmNetworkAnalysis
     ''' Re-run Network Analysis bit.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Private Sub m_tsbnRun_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnDisplayGroups(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles tsmiDisplayGroups.Click
+        If (Me.m_cmdDisplayGroups IsNot Nothing) Then
+            Me.m_cmdDisplayGroups.Invoke()
+        End If
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Re-run Network Analysis bit.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Private Sub OnRun(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles tsmiRun.Click
         ' Shazaam
         Me.ShowPage(Me.m_pageCurrent)

@@ -165,6 +165,31 @@ Namespace Controls.Map
             End Set
         End Property
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all <see cref="ucMapZoom">zoom containers</see> that are
+        ''' <see cref="AddZoomContainer">added</see> to this control.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property ZoomContainers As ucMapZoom()
+            Get
+                Return Me.m_lZoomContainers.ToArray
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Get all layers that this control has pilfered from its registered
+        ''' <see cref="ZoomContainers">containers</see>. The control tracks the 
+        ''' layers to provide layer data export and import interface elements.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property Layers As cLayer()
+            Get
+                Return Me.m_lLayers.ToArray
+            End Get
+        End Property
+
 #End Region ' Public access
 
 #Region " Overrides "

@@ -167,9 +167,7 @@
     <Compile Include="AppLauncher.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AppLauncher_helpers.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Other\cStyleGuideUpdater.vb" />
     <Compile Include="Controls\cEwEStatusBar.designer.vb">
       <DependentUpon>cEwEStatusBar.vb</DependentUpon>
     </Compile>
@@ -338,6 +336,8 @@
     <Compile Include="Other\Options\ucOptionsFileManagement.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Other\cAutosaveSettingsHelper.vb" />
+    <Compile Include="Other\cFormStateHelper.vb" />
     <Compile Include="Tools\MSEBatch\gridMSEBatchFixedFIter.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -754,7 +754,7 @@
     <Compile Include="Ecosim\Output\frmRunEcosim.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="cCoreController.vb" />
+    <Compile Include="Other\cCoreController.vb" />
     <Compile Include="Panels\RemarkPanel\frmRemarkPanel.Designer.vb">
       <DependentUpon>frmRemarkPanel.vb</DependentUpon>
     </Compile>
@@ -867,6 +867,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="_Designs_\EwE6 application layout.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Ecopath\Tools\FlowDiagram\frmFlowDiagram.resx">
@@ -1920,6 +1921,8 @@
       <Name>ScientificInterfaceShared %28ScientificInterfaceShared\ScientificInterfaceShared%29</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Other\Settings\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

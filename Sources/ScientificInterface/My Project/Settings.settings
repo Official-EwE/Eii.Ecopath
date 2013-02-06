@@ -155,9 +155,6 @@
     <Setting Name="Contact" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AutoSave" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="ColorPrey" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">LimeGreen</Value>
     </Setting>
@@ -175,6 +172,9 @@
     </Setting>
     <Setting Name="AutosaveHeaders" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AutosaveResults" Type="System.Xml.XmlDocument" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

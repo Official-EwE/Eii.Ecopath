@@ -676,18 +676,6 @@ Partial Friend NotInheritable Class Settings
     
     <Global.System.Configuration.UserScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("")>  _
-    Public Property AutoSave() As String
-        Get
-            Return CType(Me("AutoSave"),String)
-        End Get
-        Set
-            Me("AutoSave") = value
-        End Set
-    End Property
-    
-    <Global.System.Configuration.UserScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Configuration.DefaultSettingValueAttribute("LimeGreen")>  _
     Public Property ColorPrey() As Global.System.Drawing.Color
         Get
@@ -755,6 +743,17 @@ Partial Friend NotInheritable Class Settings
         End Get
         Set
             Me("AutosaveHeaders") = value
+        End Set
+    End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute()>  _
+    Public Property AutosaveResults() As Global.System.Xml.XmlDocument
+        Get
+            Return CType(Me("AutosaveResults"),Global.System.Xml.XmlDocument)
+        End Get
+        Set
+            Me("AutosaveResults") = value
         End Set
     End Property
 End Class

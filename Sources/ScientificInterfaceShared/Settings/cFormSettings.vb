@@ -38,6 +38,7 @@ Imports WeifenLuo.WinFormsUI
 ''' </summary>
 ''' ===========================================================================
 Public Class cFormSettings
+    Implements IXMLDocSettings
 
 #Region " Helper classes "
 
@@ -272,11 +273,10 @@ Public Class cFormSettings
 #Region " Public interfaces "
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get/set the setting to maintain in this class
-    ''' </summary>
+    ''' <inheritdocs cref="IXMLDocSettings"/>
     ''' -----------------------------------------------------------------------
-    Public Property Setting() As XmlDocument
+    Public Property Setting() As XmlDocument _
+        Implements IXMLDocSettings.Settings
         Get
             Return Me.Content()
         End Get

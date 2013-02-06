@@ -16,35 +16,24 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: ucFormSeparator.vb,v $
-' Revision 1.1  2008/09/26 07:31:18  sherman
-' --== DELETED HISTORY ==--
-'
-' Revision 1.1  2008/06/01 23:45:10  jeroens
-' Separated from Scientific Interface
-'
-' Revision 1.4  2007/12/11 15:04:43  jeroens
-' * Light colour was too dark still
-'
-' Revision 1.3  2007/12/10 16:54:40  jeroens
-' - Simplified
-'
-'==============================================================================
-
 Option Strict On
 
 Namespace Controls
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Control that draws a horizontal or vertical line.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     <ToolboxBitmap(GetType(ucFormSeparator), "ucFormSeparator.ico")> _
     Public Class ucFormSeparator
 
-        Private m_bHorizontal As Boolean = True
-
         Public Sub New()
-            InitializeComponent()
+            Me.InitializeComponent()
+            Me.Horizontal = True
         End Sub
+
+        Public Property Horizontal As Boolean
 
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
 
@@ -52,7 +41,7 @@ Namespace Controls
                 e.Graphics.FillRectangle(br, 0, 0, Width, Height)
             End Using
 
-            If Me.m_bHorizontal Then
+            If Me.Horizontal Then
                 Using p As New Pen(System.Drawing.SystemColors.ControlDark, 1)
                     e.Graphics.DrawLine(p, 0, 0, Me.Width, 0)
                 End Using

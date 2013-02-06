@@ -68,6 +68,7 @@ Public Class cPlotOfMixedTrophicImpact
         Me.Toolstrip.Visible = bSucces
         Me.ToolstripShowOptionEMF()
         Me.ToolstripShowOptionOptions()
+        Me.ToolstripShowDisplayGroups()
 
         AddHandler Me.Plot.Content.Paint, AddressOf OnPaintPlot
         AddHandler Me.Plot.Resize, AddressOf OnResizePlot
