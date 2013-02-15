@@ -3093,14 +3093,24 @@ Namespace Ecosim
 
         End Sub
 
-
+        ''' <summary>
+        ''' Sets pbbiomass() and clears pbm() for Primary Producer groups
+        ''' </summary>
+        ''' <remarks>
+        ''' pbm() and pbbiomass() must be zero for groups that are not primary producers. 
+        ''' This prevents Derivt() from calculating primary production on non PP groups.  
+        ''' </remarks>
         Public Sub Set_pbm_pbbiomass()
             Dim i As Integer
             'VC: Only used for p.producers
             For i = 1 To nGroups
                 If m_Data.SimGE(i) > 0 Then
+                    'Clear pbm for consumer and detritus groups
+                    'This stops the calculation of PP on Non PP groups in Derivt
                     m_Data.pbm(i) = 0
                 ElseIf pbbase(i) > 0 Then
+                    'set pbbiomass for primary produces only
+                    'm_Data.SimGE(i) will be zero for primary producers and detritus groups
                     m_Data.pbbiomass(i) = (m_Data.pbm(i) / pbbase(i) - 1) / m_Data.StartBiomass(i)
                 Else
                     m_Data.pbbiomass(i) = 0

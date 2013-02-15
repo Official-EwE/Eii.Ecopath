@@ -333,6 +333,9 @@ Public Class cEcosimDatastructures
     Public SimGE() As Single
 
     Public StartBiomass() As Single
+
+    ''' <summary>pbbiomass = (PB * MaxPB / PB - 1) / B </summary>
+    ''' <remarks>For primary producers only. Will be zero for all other groups</remarks>
     Public pbbiomass() As Single
     Public loss() As Single
 
