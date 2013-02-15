@@ -209,18 +209,6 @@ Public Class cEcospaceDataStructures
     Public Xv(,,) As Single, Yv(,,) As Single 'SM, 3d arrays for time varying current velocities.
     Public flow(,) As Single
 
-    'jb 12-Dec-2011 moved to cEcospace
-    'Public BcwNomig(,,) As Single
-    'Public CNomig(,,) As Single
-    'Public dNomig(,,) As Single
-    'Public Enomig(,,) As Single
-    'Public F(,,) As Single
-    'Public Bcw(,,) As Single
-    'Public C(,,) As Single
-    'Public d(,,) As Single
-    'Public E(,,) As Single
-    'Public AMm(,,) As Single
-
     Public Region(,) As Integer
     Public MPA(,) As Integer
     Public RelPP(,) As Single
@@ -232,11 +220,6 @@ Public Class cEcospaceDataStructures
     ''' <remarks>RelPP can be changed by external data this is use to restore RelPP to its original value</remarks>
     Public relPP0(,) As Single
 
-    'Public DepthOrig(,) As Integer    'for use with habitat change
-    'Public HabTypeorig(,) As Integer  'for use with habitat change
-    'Public MPAorig(,) As Integer      'for use with habitat change
-    'Public RelPPorig(,) As Single     'for use with habitat change
-    'Public RelCinorig(,) As Single    'for use with habitat change
     Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
 

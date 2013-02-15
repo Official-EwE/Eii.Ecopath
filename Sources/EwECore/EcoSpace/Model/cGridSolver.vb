@@ -37,6 +37,8 @@ Public Class cGridSolver
 
     Public iterThread As Integer 'total iterations 
 
+    Public CPUTime As Single
+
 
 #End Region
 
@@ -137,6 +139,12 @@ Public Class cGridSolver
         End Get
     End Property
 
+    Public ReadOnly Property nGroupsComputed As Integer
+        Get
+            Return iLastGrp - iFirstIndex + 1
+        End Get
+    End Property
+
 
     ''' <summary>
     ''' Set the groups to iterate over.
@@ -168,7 +176,10 @@ Public Class cGridSolver
         iterThread = 0
         Dim iGrp As Integer
         Dim i As Integer
+        Me.CPUTime = 0
+        Dim stpw As Stopwatch = Stopwatch.StartNew
         Try
+
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             WaitHandle.Reset()
             alternateRowCol = True
@@ -194,7 +205,7 @@ Public Class cGridSolver
         Catch ex As Exception
             cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
             Debug.Assert(False, ex.Message)
-            
+
         End Try
 
         'set signal state to 'signaled' 
@@ -203,6 +214,7 @@ Public Class cGridSolver
             WaitHandle.Set()
         End If
 
+        Me.CPUTime = CSng(stpw.Elapsed.TotalSeconds)
 
     End Sub
 
@@ -451,10 +463,10 @@ iterate:
 exitline:
 
             Erase alfa, gam, rhs, G, Xold
+            iterThread = iterThread + iter
             If alternateRowCol Then
                 iter = iter * 2
             End If
-            iterThread = iterThread + iter
 
         Catch ex As Exception
             Debug.Assert(False, ex.Message)

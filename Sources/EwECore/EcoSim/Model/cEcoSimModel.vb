@@ -2333,6 +2333,7 @@ Namespace Ecosim
                     m_Data.NutBiom = m_Data.NutBiom + Biomass(i)
                 Next i
                 'jb m_data.NutTot was set in InitState
+                'Nf = Nt-sum(Bi)
                 m_Data.NutFree = m_Data.NutTot * m_Data.tval(m_Data.NutForceNumber) - m_Data.NutBiom
                 If m_Data.NutFree < m_Data.NutMin Then m_Data.NutFree = m_Data.NutMin
 
@@ -2475,21 +2476,20 @@ Namespace Ecosim
                         'pbm is 0 for consumers
                         Pmult = 1.0
                         ApplyAVmodifiers(Pmult, Veff(1), i, i, True)
+                        'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                         pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
+
                         'VC051011: To accomodate constant Z policies I've included a recalculation of F = Z - Pred - Other Mortality - Emigration:
                         If m_RefData.PoolForceZ(i, 0) > 0 Then 'constant Z for this group, saved in array 0 for convenience
                             m_Data.FishTime(i) = m_RefData.PoolForceZ(i, 0) - m_Data.Eatenof(i) / Biomass(i) - (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i))
                             If m_Data.FishTime(i) < 0 Then m_Data.FishTime(i) = 0
                         End If
 
-                        'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.mo(i) * (1 - m_Data.MoPred(i) + m_Data.MoPred(i) * m_Data.Ftime(i)) + m_Data.Emig(i) + m_Data.FishTime(i)) * Biomass(i)
+
                         'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
                         'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
                         '(dB/dt from it is ignored anyway) for split groups, so not worth avoiding doing it for them.
-
-                        'jb Ewe5 Code changed to make it fit across one screen
-                        ' m_data.SimGEtemp(i) = IIf(m_Data.UseVarPQ And m_stanza.vbK(i) > 0, AssimEff(i) * m_data.loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_stanza.vbK(i)), m_data.SimGE(i))
                         If (m_Data.UseVarPQ And m_EPData.vbK(i) > 0) Then
                             SimGEtemp(i) = m_Data.AssimEff(i) * m_Data.loss(i) / Biomass(i) / (m_Data.loss(i) / Biomass(i) + 3 * m_EPData.vbK(i))
                         Else
@@ -2631,7 +2631,9 @@ Namespace Ecosim
 
             If m_Data.NutBaseFreeProp < 0.1 Then m_Data.NutBaseFreeProp = 0.1
             If m_Data.NutPBmax < 1.1 Then m_Data.NutPBmax = 1.1
+            'Nt0 = sum(Bi)/(1-pf)
             m_Data.NutTot = m_Data.NutBiom / (1 - m_Data.NutBaseFreeProp)
+            'Nf = Nt0 - sum(Bi)
             m_Data.NutFree = m_Data.NutTot - m_Data.NutBiom
 
             ReDim m_Data.NutFreeBase(nGroups)
@@ -3778,7 +3780,6 @@ Namespace Ecosim
                 If m_EPData.PP(i) = 1 Then m_Data.SimGE(i) = 0 'Else pbbase(i) = 0
                 If m_Data.SimGE(i) < 0 Then m_Data.SimGE(i) = 0
                 If i >= m_EPData.NumLiving + 1 Then pbbase(i) = 0 : m_Data.SimGE(i) = 1
-                'pbmaxs(i) = 2
                 If m_Data.PBmaxs(i) <= 0 Then m_Data.PBmaxs(i) = 2
 
                 m_Data.pbm(i) = m_Data.PBmaxs(i) * pbbase(i)

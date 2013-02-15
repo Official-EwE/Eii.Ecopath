@@ -146,23 +146,18 @@ Public Class cEcosimDatastructures
     ''' <summary>Environmental response right (function x group)</summary>
     Public EnvResponseSdRight(,) As Single
 
-    ''Salinity 
-    'Public SalinityForceNo As Integer
-    'Public SdSalLeft() As Single
-    'Public SdSalRight() As Single
-    'Public SalOpt() As Single
-
-    ''VC Hobart Sep 2008: adding Temperature parameters
-
-    'Public TemperatureForceNo As Integer
-    'Public TempLeft() As Single
-    'Public TempRight() As Single
-    'Public TempOpt() As Single
-
     'dimensions for nutrient calculation
     Public NutMin As Single
+
+    ''' <summary>Sum of biomass across all groups </summary>
     Public NutBiom As Single
+
+    ''' <summary>Total nutrient bound in system </summary>
+    ''' <remarks>NutTot = NutBiom / (1 - NutBaseFreeProp)</remarks>
     Public NutTot As Single
+
+    ''' <summary>Nutrient free in the enviroment  </summary>
+    ''' <remarks>NutFree = NutTot - NutBiom</remarks>
     Public NutFree As Single
     Public NutFreeBase() As Single
 
@@ -428,6 +423,8 @@ Public Class cEcosimDatastructures
     Public EggProdShape() As Single
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+    ''' <summary> Max PB = PBmax*PB </summary>
+    ''' <remarks></remarks>
     Public pbm() As Single
     Public pred() As Single
     Public Qmain() As Single
