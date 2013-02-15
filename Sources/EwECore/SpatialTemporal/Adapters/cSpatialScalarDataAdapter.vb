@@ -27,11 +27,14 @@ Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
-#Region "cSpatialScalarDataAdapter"
+#Region " cSpatialScalarDataAdapter "
+
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Implementation of <see cref="cSpatialScalarDataAdapterBase">cSpatialScalarDataAdapterBase</see> to scale data by <see cref="cSpatialScalarDataAdapterBase.DataScale"> DataScale</see>
+    ''' Implementation of <see cref="cSpatialScalarDataAdapterBase"/> to scale data by 
+    ''' a given <see cref="cSpatialScalarDataAdapterBase.DataScale">scale</see>.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Class cSpatialScalarDataAdapter
         Inherits cSpatialScalarDataAdapterBase
 
@@ -43,7 +46,7 @@ Namespace SpatialData
 
 #End Region ' Constructor
 
-#Region "Overrides"
+#Region " Overrides "
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
@@ -63,13 +66,13 @@ Namespace SpatialData
 
         End Function
 
-#End Region
+#End Region ' Overrides
 
     End Class
 
 #End Region
 
-#Region "Base Class"
+#Region " Base class "
 
     ''' <summary>
     ''' Derived spatial data adapter to insert scaled external spatial/temporal map data into
@@ -279,6 +282,6 @@ Namespace SpatialData
 
     End Class
 
-#End Region
+#End Region ' Base class
 
 End Namespace

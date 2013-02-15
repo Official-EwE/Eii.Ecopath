@@ -26,13 +26,15 @@ Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Data Adapter specific to Relative PP
+    ''' Data Adapter specific to Relative PP.
     ''' </summary>
     ''' <remarks>
-    ''' Does not actually scale the data rather it sets <see cref="cEcospaceDataStructures.PPScale"> EcoSpace PPScale</see> 
-    ''' which is used by <see cref="cSpaceSolver"> cSpaceSolver.deritvRed </see> to scale RelPP.
+    ''' Does not actually scale the data rather it sets <see cref="cEcospaceDataStructures.PPScale"/> 
+    ''' which is used by <see cref="cSpaceSolver">cSpaceSolver.derivtRed</see> to scale RelPP.
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Public Class cRelPPDataAdapter
         Inherits cSpatialScalarDataAdapterBase
 
