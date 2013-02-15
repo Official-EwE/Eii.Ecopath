@@ -19,10 +19,11 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
+Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports System.IO
 
 #End Region ' Imports
 
@@ -85,6 +86,14 @@ Namespace SpatialData
 #End Region ' Constructor
 
 #Region " Basic bits "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether intermediate rasters will be saved to disk when
+        ''' obtained from an exernal data connection.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property SaveIntermediateResults As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -253,6 +262,8 @@ Namespace SpatialData
                                     ' Stop any validation
                                     Dim bAllow As Boolean = layer.AllowValidation
                                     layer.AllowValidation = False
+
+                                    Me.DumpRaster(iTime, dataExternal)
 
                                     ' Integrate data
                                     Me.Adapt(bm, layer, iTime, dt, dataExternal)
@@ -501,6 +512,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub RestoreLayerData(bm As cEcospaceBasemap)
 
+            If (bm.ValueDescriptor(Me.m_varName)) Is Nothing Then Return
+
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
             Dim tData As Type = Nothing
@@ -544,6 +557,40 @@ Namespace SpatialData
         End Sub
 
 #End Region ' Layer rescue
+
+#Region " Debugging "
+
+        Protected Sub DumpRaster(iTime As Integer, dataExternal As ISpatialRaster)
+
+            If Not Me.SaveIntermediateResults Then Return
+
+            Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
+            Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & ".asc", False))
+
+            If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
+
+            Dim writer As New StreamWriter(strFile)
+            writer.WriteLine("ncols         " & dataExternal.NumCols)
+            writer.WriteLine("nrows         " & dataExternal.NumRows)
+            writer.WriteLine("xllcorner     " & dataExternal.TopLeft.X)
+            writer.WriteLine("yllcorner     " & dataExternal.TopLeft.Y - dataExternal.NumRows * dataExternal.CellSize)
+            writer.WriteLine("cellsize      " & dataExternal.CellSize)
+            writer.WriteLine("NODATA_value  " & dataExternal.NoData)
+
+            For ir As Integer = 1 To dataExternal.NumRows
+                For ic As Integer = 1 To dataExternal.NumCols
+                    If ic > 1 Then writer.Write(" ")
+                    writer.Write(cStringUtils.FormatNumber(dataExternal.Cell(ir, ic)))
+                Next ic
+                writer.WriteLine("")
+            Next ir
+            writer.Flush()
+            writer.Close()
+            writer.Dispose()
+
+        End Sub
+
+#End Region ' Debugging
 
     End Class
 
