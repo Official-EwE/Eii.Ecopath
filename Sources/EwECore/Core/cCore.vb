@@ -8511,12 +8511,14 @@ Public Class cCore
 
                         ' ---
                         ' Create ecospace result writers, if desired
+                        Me.m_EcospaceResultsWriters.Clear()
                         If Me.Autosave(eAutosaveTypes.Ecospace) Then
                             Me.m_EcospaceResultsWriters.Add(New cEcospaceRegionResultWriter())
                         End If
                         If Me.Autosave(eAutosaveTypes.EcospaceMaps) Then
                             For Each strExt As String In Me.AutosaveFormat(eAutosaveTypes.EcospaceMaps).Split(";"c)
-                                Me.m_EcospaceResultsWriters.Add(cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager))
+                                Dim writer As IEcospaceResultsWriter = cEcospaceResultWriterFactory.GetWriter(strExt, Me.PluginManager)
+                                If (writer IsNot Nothing) Then Me.m_EcospaceResultsWriters.Add(writer)
                             Next
                         End If
                         For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
