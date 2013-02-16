@@ -174,7 +174,7 @@ Public Class cEcospaceASCMapResultsWriter
         writer.WriteLine("ncols         " & Me.EcospaceData.InCol)
         writer.WriteLine("nrows         " & Me.EcospaceData.InRow)
         writer.WriteLine("xllcorner     " & Me.EcospaceData.Lon1)
-        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow + 1) * Me.EcospaceData.GetCellSize())
+        writer.WriteLine("yllcorner     " & Me.EcospaceData.Lat1 - (Me.EcospaceData.InRow) * Me.EcospaceData.GetCellSize())
         writer.WriteLine("cellsize      " & Me.EcospaceData.GetCellSize())
         writer.WriteLine("NODATA_value  " & cCore.NULL_VALUE)
 
