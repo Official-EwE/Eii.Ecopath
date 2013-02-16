@@ -23,6 +23,7 @@ Option Strict On
 Imports System.Drawing.Drawing2D
 Imports System.Globalization
 Imports System.Threading
+Imports System.IO
 Imports EwECore
 Imports EwECore.Auxiliary
 Imports EwEUtils.Core
@@ -1006,7 +1007,9 @@ Namespace Style
             Get
                 If (Me.m_img Is Nothing) Then
                     Try
-                        Me.m_img = Image.FromFile(Me.MapReferenceLayerFile)
+                        If (File.Exists(Me.MapReferenceLayerFile)) Then
+                            Me.m_img = Image.FromFile(Me.MapReferenceLayerFile)
+                        End If
                     Catch ex As Exception
 
                     End Try

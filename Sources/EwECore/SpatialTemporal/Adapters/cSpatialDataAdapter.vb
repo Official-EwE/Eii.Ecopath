@@ -78,7 +78,7 @@ Namespace SpatialData
             Me.m_coreComponent = eCoreComponentType.EcoSpace
             Me.m_coreCounter = cc
             Me.m_varName = varName
-
+            Me.AllowSaveIntermediateResults = False
             Me.DBID = -1
             Me.AllowValidation = True
         End Sub
@@ -93,7 +93,7 @@ Namespace SpatialData
         ''' obtained from an exernal data connection.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property SaveIntermediateResults As Boolean
+        Public Property AllowSaveIntermediateResults As Boolean
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -263,7 +263,7 @@ Namespace SpatialData
                                     Dim bAllow As Boolean = layer.AllowValidation
                                     layer.AllowValidation = False
 
-                                    Me.DumpRaster(iTime, dataExternal)
+                                    Me.SaveIntermediateResults(iTime, dataExternal)
 
                                     ' Integrate data
                                     Me.Adapt(bm, layer, iTime, dt, dataExternal)
@@ -560,9 +560,9 @@ Namespace SpatialData
 
 #Region " Debugging "
 
-        Protected Sub DumpRaster(iTime As Integer, dataExternal As ISpatialRaster)
+        Protected Sub SaveIntermediateResults(iTime As Integer, dataExternal As ISpatialRaster)
 
-            If Not Me.SaveIntermediateResults Then Return
+            If Not Me.AllowSaveIntermediateResults Then Return
 
             Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
             Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & ".asc", False))
