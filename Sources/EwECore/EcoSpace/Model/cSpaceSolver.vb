@@ -773,6 +773,9 @@ Public Class cSpaceSolver
 
                     loss(i) = Eatenof(i) + (m_SimData.mo(i) * (1 - m_SimData.MoPred(i) + m_SimData.MoPred(i) * Ftime(i)) + m_PathData.Emig(i) + FishTime(i)) * Biomass(i)
 
+                    'on the use of variable GE CJW wrote to VC on 041210: just need to modify derivt to calculate GE for each time step
+                    'from GE=0.6Z/(Z+3K*), where Z=loss/B, in the last loop over groups.  That calculation will automatically be overwritten
+                    '(dB/dt from it is ignored anyway) for split groups, so not worth avoiding doing it for them.
                     If m_SimData.UseVarPQ And m_PathData.vbK(i) > 0 Then
                         SimGEt = m_SimData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_PathData.vbK(i))
                     Else

@@ -2476,6 +2476,7 @@ Namespace Ecosim
                         'pbm is 0 for consumers
                         Pmult = 1.0
                         ApplyAVmodifiers(Pmult, Veff(1), i, i, True)
+                        'pbm(i) = 0 for all non PP groups
                         'pbb becomes pbmaxs= pb times a max increase factor = pbm for consumers
                         pbb(i) = m_Data.PBmaxs(i) * m_Data.NutFree / (m_Data.NutFree + m_Data.NutFreeBase(i)) * Pmult * m_Data.pbm(i) / (1 + Biomass(i) * m_Data.pbbiomass(i))
 
@@ -2504,7 +2505,7 @@ Namespace Ecosim
                         'VC: Emig(i) should include export of detritus??? How about biomass accumulation???
                         DtImpMult = 1
                         ApplyAVmodifiers(DtImpMult, 0, i, i, True)
-                        'Imported Detritus for non-living groups is copied from DtImp(i) to Immig(i) is SetupSimVariables() Really...
+                        'Imported Detritus for non-living groups is copied from DtImp(i) to Immig(i) in SetupSimVariables() Really...
                         DtImp = m_EPData.Immig(i) * DtImpMult
 
                         m_Data.loss(i) = m_Data.Eatenof(i) + (m_Data.Emig(i) + m_Data.DetritusOut(i)) * Biomass(i)
