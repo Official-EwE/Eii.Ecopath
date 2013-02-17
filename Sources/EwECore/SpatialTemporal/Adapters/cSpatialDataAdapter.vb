@@ -333,16 +333,18 @@ Namespace SpatialData
             Dim msg As cMessage = Nothing
             Dim sValue As Double = 0
             Dim bSuccess As Boolean = True ' Think positive. Really
+            Dim iNumRows As Integer = bm.InRow
+            Dim iNumCols As Integer = bm.InCol
             Dim iRow As Integer
             Dim iCol As Integer
 
             Try
                 ' For all rows
                 iRow = 1
-                While (iRow <= bm.InRow) And (bSuccess = True)
+                While (iRow <= iNumRows) And (bSuccess = True)
                     ' For all columns
                     iCol = 1
-                    While (iCol <= bm.InCol) And (bSuccess = True)
+                    While (iCol <= iNumCols) And (bSuccess = True)
                         ' Is a water cell or is this layer affecting depth?
                         If layerDepth.IsWaterCell(iRow, iCol) Or (Me.m_varName = eVarNameFlags.LayerDepth) Then
                             ' #Yes: get value
