@@ -138,7 +138,7 @@ Namespace SpatialData
                                     ' Assign GUID
                                     ds.GUID = Guid.Parse(xa.InnerText)
 
-                                    If TypeOf ds Is IPlugin Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
+                                    If (TypeOf ds Is IPlugin) Then DirectCast(ds, IPlugin).Initialize(Me.m_core)
 
                                 End If
 

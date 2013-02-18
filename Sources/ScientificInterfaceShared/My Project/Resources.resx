@@ -2749,4 +2749,7 @@
   <data name="TOOLTIP_VIEWFOLDER" xml:space="preserve">
     <value>View folder</value>
   </data>
+  <data name="LABEL_VALUE_AT" xml:space="preserve">
+    <value>{0} ({1})</value>
+  </data>
 </root>

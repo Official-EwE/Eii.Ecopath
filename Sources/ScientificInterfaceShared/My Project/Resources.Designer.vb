@@ -5725,6 +5725,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to {0} ({1}).
+        '''</summary>
+        Public ReadOnly Property LABEL_VALUE_AT() As String
+            Get
+                Return ResourceManager.GetString("LABEL_VALUE_AT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0} ({1} -).
         '''</summary>
         Public ReadOnly Property LABEL_VALUE_FROM() As String

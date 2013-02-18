@@ -564,31 +564,14 @@ Namespace SpatialData
 
         Protected Sub SaveIntermediateResults(iTime As Integer, dataExternal As ISpatialRaster)
 
-            If Not Me.AllowSaveIntermediateResults Then Return
+            'If Not Me.AllowSaveIntermediateResults Then Return
 
             Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
             Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & ".asc", False))
 
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
 
-            Dim writer As New StreamWriter(strFile)
-            writer.WriteLine("ncols         " & dataExternal.NumCols)
-            writer.WriteLine("nrows         " & dataExternal.NumRows)
-            writer.WriteLine("xllcorner     " & dataExternal.TopLeft.X)
-            writer.WriteLine("yllcorner     " & dataExternal.TopLeft.Y - dataExternal.NumRows * dataExternal.CellSize)
-            writer.WriteLine("cellsize      " & dataExternal.CellSize)
-            writer.WriteLine("NODATA_value  " & dataExternal.NoData)
-
-            For ir As Integer = 1 To dataExternal.NumRows
-                For ic As Integer = 1 To dataExternal.NumCols
-                    If ic > 1 Then writer.Write(" ")
-                    writer.Write(cStringUtils.FormatNumber(dataExternal.Cell(ir, ic)))
-                Next ic
-                writer.WriteLine("")
-            Next ir
-            writer.Flush()
-            writer.Close()
-            writer.Dispose()
+            dataExternal.Save(strFile)
 
         End Sub
 

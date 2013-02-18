@@ -695,6 +695,10 @@ Namespace Ecospace.Controls
             If (ds Is Nothing) Then Return False
             If (Not TypeOf ds Is IConfigurablePlugin) Then Return True
 
+            If (TypeOf ds Is IPlugin) Then
+                DirectCast(ds, IPlugin).Initialize(Me.m_uic.Core)
+            End If
+
             Dim dsConf As IConfigurablePlugin = DirectCast(ds, IConfigurablePlugin)
             Dim ctrl As Control = dsConf.GetConfigUI()
 

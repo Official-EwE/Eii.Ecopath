@@ -59,6 +59,8 @@ Namespace Style
                                 Else
                                     If (obj.TimeEnd = DateTime.MaxValue) Then
                                         Return String.Format(My.Resources.LABEL_VALUE_FROM, obj.DisplayName, obj.TimeStart.ToShortDateString)
+                                    ElseIf (obj.TimeEnd = obj.TimeStart) Then
+                                        Return String.Format(My.Resources.LABEL_VALUE_AT, obj.DisplayName, obj.TimeStart.ToShortDateString)
                                     Else
                                         Return String.Format(My.Resources.LABEL_VALUE_RANGE, obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
                                     End If

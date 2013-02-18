@@ -59,7 +59,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Return the top-left location of the raster.
+        ''' Return the top-left location of the data in the raster.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Function TopLeft() As PointF
@@ -76,7 +76,7 @@ Namespace SpatialData
         ''' column are invalid, or if the cell does not hold any data.</returns>
         ''' -------------------------------------------------------------------
         Function Cell(ByVal iRow As Integer, ByVal iCol As Integer, _
-                         Optional ByVal dNoDataValue As Double = -9999) As Double
+                      Optional ByVal dNoDataValue As Double = -9999) As Double
 
 #End Region ' Data access
 
@@ -143,6 +143,15 @@ Namespace SpatialData
         ''' occurred and that no usable value is available.</remarks>
         ''' -------------------------------------------------------------------
         Function NumValueCells() As Long
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save the raster to file.
+        ''' </summary>
+        ''' <param name="strFile"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Function Save(strFile As String) As Boolean
 
 #End Region 'Diagnostics
 
