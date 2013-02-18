@@ -43,46 +43,62 @@ Namespace Style
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                       Implements ITypeFormatter.GetDescriptor
 
+            Dim strResult As String = ""
+
             Try
                 If (value IsNot Nothing) Then
-                    Dim obj As ISpatialDataSet = DirectCast(value, ISpatialDataSet)
-                    Select Case descriptor
-                        Case eDescriptorTypes.Name
-                            If (obj.IsConfigured) Then
 
-                                If (obj.TimeStart = DateTime.MinValue) Then
-                                    If (obj.TimeEnd = DateTime.MaxValue) Then
-                                        Return obj.DisplayName
-                                    Else
-                                        Return String.Format(My.Resources.LABEL_VALUE_UPTO, obj.DisplayName, obj.TimeEnd.ToShortDateString)
-                                    End If
-                                Else
-                                    If (obj.TimeEnd = DateTime.MaxValue) Then
-                                        Return String.Format(My.Resources.LABEL_VALUE_FROM, obj.DisplayName, obj.TimeStart.ToShortDateString)
-                                    ElseIf (obj.TimeEnd = obj.TimeStart) Then
-                                        Return String.Format(My.Resources.LABEL_VALUE_AT, obj.DisplayName, obj.TimeStart.ToShortDateString)
-                                    Else
-                                        Return String.Format(My.Resources.LABEL_VALUE_RANGE, obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
-                                    End If
-                                End If
-                            Else
-                                Return obj.DisplayName()
+                    Dim obj As ISpatialDataSet = DirectCast(value, ISpatialDataSet)
+                    strResult = obj.DisplayName
+
+                    Select Case descriptor
+
+                        Case eDescriptorTypes.Name
+                            ' Has configuration?
+                            If (obj.IsConfigured) Then
+                                ' #Yes: filter by lower time limit
+                                Select Case obj.TimeStart
+
+                                    Case DateTime.MinValue
+                                        ' Has upper range set?
+                                        If (obj.TimeEnd < DateTime.MaxValue) Then
+                                            ' #Yes: Return <inf,upper] range
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_UPTO, obj.DisplayName, obj.TimeEnd.ToShortDateString)
+                                        End If
+
+                                    Case DateTime.MaxValue
+                                        ' Something is screwed
+                                        Debug.Assert(False)
+
+                                    Case obj.TimeEnd
+                                        ' Start = end, and neither is inf: show a single date
+                                        strResult = String.Format(My.Resources.LABEL_VALUE_AT, obj.DisplayName, obj.TimeStart.ToShortDateString)
+
+                                    Case Else
+                                        ' Has upper range set?
+                                        If (obj.TimeEnd < DateTime.MaxValue) Then
+                                            ' #Yes: show [lower, upper] range
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_RANGE, obj.DisplayName, obj.TimeStart.ToShortDateString, obj.TimeEnd.ToShortDateString)
+                                        Else
+                                            ' #No: show [lower, inf> range
+                                            strResult = String.Format(My.Resources.LABEL_VALUE_FROM, obj.DisplayName, obj.TimeStart.ToShortDateString)
+                                        End If
+
+                                End Select
                             End If
 
                         Case eDescriptorTypes.Description
-                            Return obj.Description
+                            strResult = obj.Description
                     End Select
-
-                    Return obj.DisplayName
+                Else
+                    strResult = My.Resources.GENERIC_VALUE_NONE
                 End If
-
-                Return My.Resources.GENERIC_VALUE_NONE
 
             Catch ex As Exception
                 Debug.Assert(False)
             End Try
 
-            Return ""
+            Return strResult
 
         End Function
 
