@@ -242,14 +242,15 @@ Namespace Ecosim
 
                 Case eResultTypes.Prey
 
-                    For iGroup As Integer = 1 To Me.m_core.nGroups
+                    ' For all predators
+                    For iGroup As Integer = 1 To Me.m_core.nLivingGroups
 
                         grpOutput = m_core.EcoSimGroupOutputs(iGroup)
 
                         Dim iNumPrey As Integer = 0
                         Dim preyNames As New StringBuilder
 
-                        For i As Integer = 1 To m_core.nLivingGroups
+                        For i As Integer = 1 To m_core.nGroups
                             If grpOutput.isPrey(i) Then
                                 iNumPrey += 1
                                 preyNames.Append("""" & m_core.EcoSimGroupOutputs(i).Name & """")
@@ -260,14 +261,14 @@ Namespace Ecosim
                         If (preyNames.Length > 0) Then
 
                             Dim preyData(iNumPrey, m_core.nEcosimTimeSteps) As Single
-                            iNumPrey = 1
+                            iNumPrey = 0
 
-                            For i As Integer = 1 To m_core.nLivingGroups
+                            For i As Integer = 1 To m_core.nGroups
                                 If grpOutput.isPrey(i) Then
+                                    iNumPrey += 1
                                     For j As Integer = 1 To m_core.nEcosimTimeSteps
                                         preyData(iNumPrey, j) = grpOutput.PreyPercentage(i, j)
                                     Next
-                                    iNumPrey += 1
                                 End If
                             Next
 
