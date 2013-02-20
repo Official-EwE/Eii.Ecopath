@@ -383,32 +383,10 @@ Public Class cEcosimDatastructures
     'Public MediationShapeParams() As ShapeParameters 'parameters that where used to create a curve from the Database Table and Fields i.e. EcoSimShapes.YZero
     Public ForcingShapeParams() As ShapeParameters 'Time and EggProd
 
-    'jb April-25-06 added to hold titles of mediation shapes
-    'Public MediationTitles() As String
-
     ''jb May-09-2006 Database ID's Unique ID from the Database for each object
-    'Public MediationDBIDs() As Integer
     Public ForcingDBIDs() As Integer 'because Time(Forcing) and EggProd shapes are stored in the same arrays and this is for both shape types
     'is this shape a seasonal forcing shape
     Public isSeasonal() As Boolean
-
-    ''xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    ''Mediation vars 
-    ''these may get moved into their own class
-    'Public MediationShapes As Integer
-    'Public NMedPoints As Integer 'number of points per mediation function
-    'Public Medpoints(,) As Single 'mediation function points
-    'Public MedWeights(,) As Single 'defines biomass weights for med X
-    'Public NMedXused() As Integer 'number of biomasses (mediation weights) in an iMediation
-    'Public IMedUsed(,) As Integer 'groups used in med function X IMedUsed(nGroups + nGear, MediationShapes)
-    'Public MedXbase() As Single 'ecopath base value of med function X
-    'Public MedYbase() As Single 'value of med function at ecopath base X
-    'Public MedIsUsed() As Boolean 'true if med function iMediation is used
-    'Public MedVal() As Single 'current value of mediation function
-
-    ''IMedBase() index of ecopath base biomass vertical line on mediation plot
-    ''integer X positions for ecopath base X
-    'Public IMedBase() As Integer
 
     Public inlinks As Integer 'total number of links/flow between groups
     Public ilink() As Integer 'iPrey for inlinks 

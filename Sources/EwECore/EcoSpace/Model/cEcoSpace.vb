@@ -1034,6 +1034,9 @@ Public Class cEcoSpace
                 runGridSolverThreads()
                 stpwchGrid.Stop()
 
+                'Debugging dump grid CPU times to the console
+                'dumpGridRunTimes()
+
                 'make sure none of the biomass cells are zero
                 For ip = 1 To m_Data.nvartot
                     For i = 1 To m_Data.InRow
@@ -1622,6 +1625,16 @@ Public Class cEcoSpace
 
         ' GC.Collect()
 
+    End Sub
+
+
+    Private Sub dumpGridRunTimes()
+        Dim totCPU As Single
+        For Each grid As cGridSolver In Me.m_gridSolvers
+            totCPU += grid.CPUTime
+            System.Console.WriteLine("Grid ID = " & grid.ThreadID.ToString & ", N Iters = " & grid.iterThread.ToString & ", CPU Time(sec)= " & grid.CPUTime.ToString & ", N = " & grid.nGroupsComputed.ToString)
+        Next
+        System.Console.WriteLine("Grid CPU time(sec)," & totCPU.ToString)
     End Sub
 
     Private Sub dumpRunningThreadInfo(msg As String)
@@ -2256,14 +2269,6 @@ Public Class cEcoSpace
             If m_EPdata.PB(i) > 0 Then Kmovefit(i) = 2.197225 / (PzoTOmove(i) * m_EPdata.PB(i))
         Next
 
-        'jb Move to RedimForRun
-        'ReDim RelMoveFit(m_Data.InRow + 1, m_Data.InCol + 1)
-        'ReDim m_Data.Blast(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.nvartot)
-        'ReDim FtimeCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        'ReDim HdenCell(m_Data.InRow + 1, m_Data.InCol + 1, m_Data.NGroups)
-        'ReDim LastB(m_Data.nGroups)
-        'ReDim Btime(m_Data.NGroups)
-
     End Sub
 
 
@@ -2299,7 +2304,6 @@ Public Class cEcoSpace
         m_Ecosim.CalcStartEatenOfBy()
 
         m_Ecosim.SetBBtoStartBiomass(m_Data.NGroups)
-        ' ReDim der(m_Data.NGroups)
 
         m_Ecosim.Derivt(0, m_SimData.StartBiomass, der)
 
@@ -2452,7 +2456,7 @@ Public Class cEcoSpace
         'set ecosim nutrients
         m_SimData.NutBiom = 0
         For i = 1 To m_Data.NGroups
-            m_SimData.NutBiom = m_SimData.NutBiom + Biomass(i)
+            m_SimData.NutBiom += Biomass(i)
         Next
         m_SimData.NutFree = m_SimData.NutTot * RelProd - m_SimData.NutBiom
         If m_SimData.NutFree < m_SimData.NutMin Then m_SimData.NutFree = m_SimData.NutMin
@@ -2582,8 +2586,6 @@ Public Class cEcoSpace
                 'deriv(i) = Immig(i) + Biomass(i) * pbb(i) + simGE(i) * Eatenby(i) - loss(i)
                 'biomeq(i) = (Immig(i) + simGE(i) * Eatenby(i) + pbb(i) * Biomass(i)) / (loss(i) / Biomass(i))
 
-                'jb change layout so I could read it
-                'SimGEt = IIf(m_ESData.UseVarPQ And m_EPdata.vbK(i) > 0, m_ESData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_EPdata.vbK(i)), m_ESData.SimGE(i))
                 If m_SimData.UseVarPQ And m_EPdata.vbK(i) > 0 Then
                     SimGEt = m_SimData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_EPdata.vbK(i))
                 Else
