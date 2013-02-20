@@ -564,7 +564,7 @@ Namespace SpatialData
 
         Protected Sub SaveIntermediateResults(iTime As Integer, dataExternal As ISpatialRaster)
 
-            'If Not Me.AllowSaveIntermediateResults Then Return
+            If Not Me.AllowSaveIntermediateResults Then Return
 
             Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
             Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & ".asc", False))
