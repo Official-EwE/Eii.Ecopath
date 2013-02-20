@@ -85,7 +85,9 @@ Friend Class cEngine
 #Region " Privates "
 
     Private m_uic As cUIContext = Nothing
-    Private m_man As cForcingFunctionManager = Nothing
+    Private m_core As cCore = Nothing
+    Private m_lManagers As New List(Of cBaseShapeManager)
+
     Private m_astrFiles As String()
     Private m_strOutFolder As String = ""
     Private m_bReadMonthly As Boolean = False
@@ -109,14 +111,16 @@ Friend Class cEngine
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Create the worker.
+    ''' Create the engine.
     ''' </summary>
     ''' <param name="uic">The UI context to operate onto.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal uic As cUIContext)
 
         Me.m_uic = uic
-        Me.m_man = uic.Core.ForcingShapeManager
+        Me.m_core = uic.Core
+
+        Me.m_lManagers.Add(Me.m_core.ForcingShapeManager)
 
     End Sub
 
@@ -208,9 +212,7 @@ Friend Class cEngine
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
         If Me.IsRunning Then Return
-
-        Dim core As cCore = Me.m_uic.Core
-        If Not core.SaveChanges() Then Return
+        If Not Me.m_core.SaveChanges() Then Return
 
         Me.m_bReadMonthly = bReadMonthly
         Me.m_astrFiles = astrFiles
@@ -264,10 +266,15 @@ Friend Class cEngine
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub BuildFFNameCache()
+
         Me.m_FFCache.Clear()
-        For Each ff As cForcingFunction In Me.m_man
-            Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff)
+
+        For Each man As cBaseShapeManager In Me.m_lManagers
+            For Each ff As cForcingFunction In man
+                Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff)
+            Next
         Next
+
     End Sub
 
 #Region " Running "
@@ -302,6 +309,7 @@ Friend Class cEngine
 
             ' First line holds FF names
             values = cStringUtils.SplitQualified(reader.ReadLine(), ","c)
+
             ' Map to FF Cache items
             For i As Integer = 0 To values.Length - 1
                 strName = values(i).Trim.ToLower()
@@ -325,7 +333,7 @@ Friend Class cEngine
             Next
 
             If (msgStatus IsNot Nothing) Then
-                Me.m_uic.Core.Messages.SendMessage(msgStatus)
+                Me.m_core.Messages.SendMessage(msgStatus)
             Else
 
                 ' Check if the end of the file is not reached, the peek would return 0 if at the end of the file
@@ -374,7 +382,10 @@ Friend Class cEngine
                 For Each ffc As cFFCache In m_FFCache.Values
                     ffc.EndEdit()
                 Next
-                Me.m_man.Update()
+
+                For Each man As cBaseShapeManager In Me.m_lManagers
+                    man.Update()
+                Next
 
             End If
 
@@ -390,12 +401,12 @@ Friend Class cEngine
     ''' </summary>
     Private Sub RunThreaded()
 
-        Dim core As cCore = Me.m_uic.Core
         Me.m_bStopRun = False
 
-        core.SetBatchLock(cCore.eBatchLockType.Update)
-        core.SetStopRunDelegate(AddressOf StopRun)
-        cApplicationStatusNotifier.StartProgress(core, My.Resources.STATUS_INITIALIZING, -1)
+        Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
+        Me.m_core.SetStopRunDelegate(AddressOf StopRun)
+        cApplicationStatusNotifier.StartProgress(Me.m_core, My.Resources.STATUS_INITIALIZING, -1)
+
         Try
             Dim iNum As Integer = Me.m_astrFiles.Length
             Dim i As Integer = 0
@@ -411,20 +422,20 @@ Friend Class cEngine
                 End If
 
                 If Not Me.m_bStopRun Then
-                    core.SetStopRunDelegate(AddressOf StopRun)
-                    cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
+                    Me.m_core.SetStopRunDelegate(AddressOf StopRun)
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, String.Format(My.Resources.STATUS_LOADING, strFileShort), CSng((1 + i * 4) / (iNum * 4)))
                     Me.ReadCSVIntoFF(strFile)
                 End If
 
                 If Not Me.m_bStopRun Then
-                    core.SetStopRunDelegate(AddressOf StopRun)
-                    cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
-                    core.RunEcoSim(Nothing, False)
+                    Me.m_core.SetStopRunDelegate(AddressOf StopRun)
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, String.Format(My.Resources.STATUS_RUNNING, strFileShort), CSng((2 + i * 4) / (iNum * 4)))
+                    Me.m_core.RunEcoSim(Nothing, False)
                 End If
 
                 If Not Me.m_bStopRun Then
-                    core.SetStopRunDelegate(AddressOf StopRun)
-                    cApplicationStatusNotifier.UpdateProgress(core, String.Format(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
+                    Me.m_core.SetStopRunDelegate(AddressOf StopRun)
+                    cApplicationStatusNotifier.UpdateProgress(Me.m_core, String.Format(My.Resources.STATUS_SAVING, strFileShort), CSng((3 + i * 4) / (iNum * 4)))
                     Me.WriteResults(strFolder, strFile, Me.m_options)
                 End If
 
@@ -435,18 +446,21 @@ Friend Class cEngine
             Debug.Assert(False, ex.Message)
         End Try
 
-        cApplicationStatusNotifier.UpdateProgress(core, My.Resources.STATUS_RESTORING, -1)
+        cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RESTORING, -1)
         For Each ffc As cFFCache In Me.m_FFCache.Values
             ffc.Restore()
         Next
 
-        Me.m_man.Update()
-        core.DiscardChanges()
+        For Each man As cBaseShapeManager In Me.m_lManagers
+            man.Update()
+        Next man
+
+        Me.m_core.DiscardChanges()
         GC.Collect()
 
-        core.SetStopRunDelegate(Nothing)
-        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
-        cApplicationStatusNotifier.EndProgress(core)
+        Me.m_core.SetStopRunDelegate(Nothing)
+        Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
 
         '= agk ='
         Me.ReleaseWait()
@@ -465,20 +479,20 @@ Friend Class cEngine
     ''' </summary>
     Private Sub ValidateFilesThreaded()
 
-        Dim core As cCore = Me.m_uic.Core
         Dim sw As StreamWriter = Nothing
         Dim strLogFileName As String = Path.Combine(Me.m_strOutFolder, cFileUtils.ToValidFileName("MultiSim_validation_log.txt", False))
         Dim msg As cMessage = Nothing
         Dim bAllGood As Boolean = True
+
         Me.m_bStopRun = False
 
-        core.SetBatchLock(cCore.eBatchLockType.Update)
-        core.SetStopRunDelegate(AddressOf StopRun)
+        Me.m_core.SetBatchLock(cCore.eBatchLockType.Update)
+        Me.m_core.SetStopRunDelegate(AddressOf StopRun)
 
         Try
             sw = New StreamWriter(strLogFileName)
-            If core.SaveWithFileHeader Then
-                sw.WriteLine(core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+            If Me.m_core.SaveWithFileHeader Then
+                sw.WriteLine(m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
                 sw.WriteLine()
             End If
         Catch ex As Exception
@@ -498,24 +512,25 @@ Friend Class cEngine
             sw.Close()
             sw.Dispose()
 
-            ' ToDo: globalize this
             If bAllGood Then
-                msg = New cMessage("MultiSim validation log saved to '" & strLogFileName & "'", eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg = New cMessage(String.Format(My.Resources.STATUS_SUCCESS, strLogFileName), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             Else
-                msg = New cMessage("MultiSim found errors, see '" & strLogFileName & "' for details.", eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg = New cMessage(String.Format(My.Resources.STATUS_ERROR, strLogFileName), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             End If
             msg.Hyperlink = Me.m_strOutFolder
-            core.Messages.SendMessage(msg)
+            Me.m_core.Messages.SendMessage(msg)
 
         End If
 
         GC.Collect()
 
-        core.SetStopRunDelegate(Nothing)
-        core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
-        cApplicationStatusNotifier.EndProgress(core)
+        Me.m_core.SetStopRunDelegate(Nothing)
+        Me.m_core.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.NotSet)
+        cApplicationStatusNotifier.EndProgress(Me.m_core)
 
-        '= agk ='
+        '= agk =
         Me.ReleaseWait()
         If (Me.m_dgtComplete IsNot Nothing) Then Me.m_dgtComplete.Invoke()
 
@@ -592,7 +607,7 @@ Friend Class cEngine
     Private Sub WriteResults(ByVal strPath As String, ByVal strFile As String, _
                              ByVal outputs As cEcosimResultWriter.eResultTypes())
 
-        Dim resultsWriter As New cEcosimResultWriter(Me.m_uic.Core)
+        Dim resultsWriter As New cEcosimResultWriter(Me.m_core)
         resultsWriter.WriteResults(strPath, outputs)
 
     End Sub
@@ -607,7 +622,7 @@ Friend Class cEngine
 
         Try
             Dim msg As New cMessage(strMessage, eMessageType.Any, eCoreComponentType.External, eMessageImportance.Information)
-            Me.m_uic.Core.Messages.SendMessage(msg)
+            Me.m_core.Messages.SendMessage(msg)
         Catch ex As Exception
 
         End Try

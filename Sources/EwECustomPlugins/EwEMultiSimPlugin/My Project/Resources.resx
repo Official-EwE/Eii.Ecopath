@@ -156,4 +156,12 @@
   <data name="GENERIC_NAME" xml:space="preserve">
     <value>Multi-sim</value>
   </data>
+  <data name="STATUS_ERROR" xml:space="preserve">
+    <value>MultiSim found errors, see '{0}' for details.</value>
+    <comment>{0} = file name</comment>
+  </data>
+  <data name="STATUS_SUCCESS" xml:space="preserve">
+    <value>MultiSim completed successfully, see '{0}' for details.</value>
+    <comment>{0} = file name</comment>
+  </data>
 </root>
