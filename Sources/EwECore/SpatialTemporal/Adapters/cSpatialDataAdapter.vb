@@ -567,7 +567,7 @@ Namespace SpatialData
             If Not Me.AllowSaveIntermediateResults Then Return
 
             Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
-            Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & ".asc", False))
+            Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & "_" & iTime & ".asc", False))
 
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
 
