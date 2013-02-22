@@ -70,26 +70,41 @@ Public Class cEcospaceASCMapResultsWriter
                     strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension(), tsData.iTimeStep)
                     ' Create directory any time; user may have deleted it during a run
                     If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
-                        strm = New StreamWriter(strFile, False)
-                        If (strm IsNot Nothing) Then
-                            Me.SaveASCFile(strm, tsData, igrp, varname)
-                            strm.Flush()
-                            strm.Close()
-                            strm = Nothing
-                        End If
+                        'Handle file exceptions on a per file basis
+                        'this way only the offending file will be skipped
+                        'all other files will be written 
+                        Try
+                            strm = New StreamWriter(strFile, False)
+                            If (strm IsNot Nothing) Then
+                                Me.SaveASCFile(strm, tsData, igrp, varname)
+                                strm.Flush()
+                                strm.Close()
+                                strm = Nothing
+                            End If
+                        Catch ex As IOException
+                            'Failed to open the file
+                            cLog.Write(ex)
+                            System.Console.WriteLine("Ecospace failed to save file " & strFile)
+                        End Try
                     End If
                 Next
             Next
 
             ' Sum space effort
             strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapSumEffort, 0, Me.FileExtension(), tsData.iTimeStep)
-            strm = New StreamWriter(strFile, False)
-            If (strm IsNot Nothing) Then
-                Me.SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
-                strm.Flush()
-                strm.Close()
-                strm = Nothing
-            End If
+            Try
+                strm = New StreamWriter(strFile, False)
+                If (strm IsNot Nothing) Then
+                    Me.SaveASCFile(strm, tsData, 0, eVarNameFlags.EcospaceMapSumEffort)
+                    strm.Flush()
+                    strm.Close()
+                    strm = Nothing
+                End If
+            Catch ex As IOException
+                'Failed to open the file
+                cLog.Write(ex)
+                System.Console.WriteLine("Ecospace failed to save file " & strFile)
+            End Try
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)

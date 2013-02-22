@@ -8579,7 +8579,6 @@ Public Class cCore
                 Debug.Assert(False, Me.ToString & ".cEcospaceResultsWriter.EndWrite() Exception: " & ex.Message)
                 cLog.Write(ex, "cCore::onEcospaceRunCompleted SaveResults")
             End Try
-            Me.m_EcospaceResultsWriters.Clear()
 
             Me.m_publisher.AddMessage(New cMessage(My.Resources.CoreMessages.ECOSPACE_RUN_COMPLETED, _
                           eMessageType.EcospaceRunCompleted, eCoreComponentType.EcoSpace, eMessageImportance.Information))
@@ -8588,6 +8587,8 @@ Public Class cCore
             Me.m_publisher.sendAllMessages()
 
             If Me.m_pluginManager IsNot Nothing Then Me.m_pluginManager.EcospaceRunCompleted(Me.m_EcoSpaceData)
+
+            Me.m_EcospaceResultsWriters.Clear()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".onEcoSpaceRunCompleted() Exception: " & ex.Message)
@@ -8809,6 +8810,14 @@ Public Class cCore
         m_publisher.AddMessage(message)
 
     End Sub
+
+
+    Public ReadOnly Property EcospaceResultWriters As List(Of IEcospaceResultsWriter)
+        Get
+            Return Me.m_EcospaceResultsWriters
+        End Get
+    End Property
+
 
 #Region " Ecospace interface objects "
 
@@ -12336,7 +12345,7 @@ Public Class cCore
         If Me.m_batchLockType = eBatchLockType.NotSet Then updateState = TriState.UseDefault Else updateState = TriState.False
         ' Send only notifications when NO lock active
         Me.m_StateMonitor.UpdateDataState(DataSource, updateState)
-         '   DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
+        '   DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
 
         ' Send all messages
         Me.m_publisher.AddMessage(msg)

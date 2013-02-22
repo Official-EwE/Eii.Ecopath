@@ -183,7 +183,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Overridable Function GetGroupFileName(ByVal varname As eVarNameFlags, _
                                                     ByVal iGrp As Integer, _
                                                     ByVal strExt As String, _
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String _
+                                                    Implements EwEUtils.Core.IEcospaceResultsWriter.GetGroupFileName
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim grpName As String = Me.m_core.m_EcoPathData.GroupName(iGrp)
@@ -217,7 +218,8 @@ Public MustInherit Class cEcospaceBaseResultsWriter
     Protected Overridable Function GetFleetFileName(ByVal varname As eVarNameFlags, _
                                                     ByVal iFlt As Integer, _
                                                     ByVal strExt As String, _
-                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String
+                                                    Optional ByVal iModelTimeStep As Integer = cCore.NULL_VALUE) As String _
+                                                    Implements EwEUtils.Core.IEcospaceResultsWriter.GetFleetFileName
 
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim fltName As String = Me.m_core.m_EcoPathData.FleetName(iFlt)
@@ -277,6 +279,13 @@ Public MustInherit Class cEcospaceBaseResultsWriter
                                               ByVal varname As eVarNameFlags) As Double
         Return value
     End Function
+
+
+    Public ReadOnly Property OutputPath As String Implements EwEUtils.Core.IEcospaceResultsWriter.OutputPath
+        Get
+            Return Me.m_OutputPath
+        End Get
+    End Property
 
 #End Region ' Internals
 

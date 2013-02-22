@@ -74,13 +74,23 @@ Public Class cEcospaceCSVMapResultsWriter
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
                     strFN = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
                     If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN), True) Then
-                        strm = New StreamWriter(strFN, True)
-                        If (strm IsNot Nothing) Then
-                            Me.SaveCSV(strm, tsData, igrp, varname)
-                            strm.Flush()
-                            strm.Close()
-                            strm = Nothing
-                        End If
+                        'Handle file exceptions on a per file basis
+                        'this way only the offending file will be skipped
+                        'all other files will be written 
+                        Try
+                            strm = New StreamWriter(strFN, True)
+                            If (strm IsNot Nothing) Then
+                                Me.SaveCSV(strm, tsData, igrp, varname)
+                                strm.Flush()
+                                strm.Close()
+                                strm = Nothing
+                            End If
+                        Catch ex As IOException
+                            'Failed to open the file
+                            cLog.Write(ex)
+                            System.Console.WriteLine("Ecospace failed to save file " & strFN)
+                        End Try
+
                     End If
                 Next
             Next
@@ -150,8 +160,6 @@ Public Class cEcospaceCSVMapResultsWriter
         Debug.Assert(map IsNot Nothing)
 
         strm.WriteLine("Step," & timestep.iTimeStep.ToString)
-        'TimeNow is the loop counter in Ecospace and is not updated until the end of the loop
-        'For the Year of this time step we need to add delta T
         strm.WriteLine("Year," & timestep.TimeStepinYears.ToString)
         For ir As Integer = 1 To Me.EcospaceData.InRow
             For ic As Integer = 1 To Me.EcospaceData.InCol
