@@ -516,7 +516,7 @@ Friend Class cEngine
                 msg = New cMessage(String.Format(My.Resources.STATUS_SUCCESS, strLogFileName), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             Else
-                msg = New cMessage(String.Format(My.Resources.STATUS_ERROR, strLogFileName), _
+                msg = New cMessage(String.Format(My.Resources.STATUS_FAILED, strLogFileName), _
                                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
             End If
             msg.Hyperlink = Me.m_strOutFolder

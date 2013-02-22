@@ -111,11 +111,11 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MultiSim found errors, see &apos;{0}&apos; for details..
+        '''  Looks up a localized string similar to Multi-sim did not complete successfully, see &apos;{0}&apos; for details.
         '''</summary>
-        Friend ReadOnly Property STATUS_ERROR() As String
+        Friend ReadOnly Property STATUS_FAILED() As String
             Get
-                Return ResourceManager.GetString("STATUS_ERROR", resourceCulture)
+                Return ResourceManager.GetString("STATUS_FAILED", resourceCulture)
             End Get
         End Property
         
@@ -165,7 +165,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to MultiSim completed successfully, see &apos;{0}&apos; for details..
+        '''  Looks up a localized string similar to Multi-sim completeded successfully, see &apos;{0}&apos; for details.
         '''</summary>
         Friend ReadOnly Property STATUS_SUCCESS() As String
             Get
