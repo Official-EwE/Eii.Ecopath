@@ -346,6 +346,16 @@ Namespace Controls
 
         ' == Hover menu ==
 
+        ''' <summary>Enumerated type defining supported hoover menu commands.</summary>
+        Protected Enum eHoverCommands As Integer
+            Zoomin
+            Zoomout
+            ZoomReset
+            ShowLegend
+            ShowLabels
+            ExportToCSV
+        End Enum
+
         ''' <summary>States whether a floating hover menu should be displayed on the graph.</summary>
         Private m_bShowHoverMenu As Boolean = True
         ''' <summary>The hover menu to display on top of graph areas.</summary>
@@ -412,7 +422,14 @@ Namespace Controls
 
             Me.m_hovermenu = New ucHoverMenu(Me.m_uic)
             Me.m_hovermenu.Attach(Me.m_zgc)
-
+            Me.m_hovermenu.AddItem(My.Resources.ZoomInHS, My.Resources.GENERIC_ZOOM_IN, eHoverCommands.Zoomin)
+            Me.m_hovermenu.AddItem(My.Resources.ZoomOutHS, My.Resources.GENERIC_ZOOM_OUT, eHoverCommands.Zoomout)
+            Me.m_hovermenu.AddItem(My.Resources.ZoomHS, My.Resources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
+            Me.m_hovermenu.AddSeparator()
+            Me.m_hovermenu.AddItem(My.Resources.LegendHS, My.Resources.GENERIC_SHOW_LEGEND, eHoverCommands.ShowLegend)
+            Me.m_hovermenu.AddItem(My.Resources.tag, My.Resources.GENERIC_SHOW_LABELS, eHoverCommands.ShowLabels)
+            Me.m_hovermenu.AddSeparator()
+            Me.m_hovermenu.AddItem(My.Resources.ExportXMLHS, My.Resources.GENERIC_SAVE_TO_CSV, eHoverCommands.ExportToCSV)
             AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.ChangeNumPanels()
@@ -420,7 +437,7 @@ Namespace Controls
             AddHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             AddHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             AddHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
-            AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
+            'AddHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             AddHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             AddHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -451,7 +468,7 @@ Namespace Controls
             RemoveHandler Me.m_zgc.MouseDownEvent, AddressOf OnMouseDownEvent
             RemoveHandler Me.m_zgc.MouseMoveEvent, AddressOf OnMouseMoveEvent
             RemoveHandler Me.m_zgc.MouseUpEvent, AddressOf OnMouseUpEvent
-            RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
+            'RemoveHandler Me.m_zgc.ContextMenuBuilder, AddressOf OnBuildContextMenu
             RemoveHandler Me.m_zgc.PointValueEvent, AddressOf OnPointValueEvent
 
             RemoveHandler Me.StyleGuide.StyleGuideChanged, AddressOf OnStyleGuideChanged
@@ -2515,54 +2532,54 @@ Namespace Controls
 
 #Region " Context Menu "
 
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Handler to extend the context menu for the wrapped ZedGraph.
-        ''' </summary>
-        ''' <param name="control"></param>
-        ''' <param name="menuStrip"></param>
-        ''' <param name="mousePt"></param>
-        ''' <param name="objState"></param>
-        ''' -----------------------------------------------------------------------
-        Protected Sub OnBuildContextMenu(ByVal control As ZedGraphControl, _
-                                         ByVal menuStrip As ContextMenuStrip, _
-                                         ByVal mousePt As Point, _
-                                         ByVal objState As ZedGraphControl.ContextMenuObjectState)
+        ' ''' -----------------------------------------------------------------------
+        ' ''' <summary>
+        ' ''' Handler to extend the context menu for the wrapped ZedGraph.
+        ' ''' </summary>
+        ' ''' <param name="control"></param>
+        ' ''' <param name="menuStrip"></param>
+        ' ''' <param name="mousePt"></param>
+        ' ''' <param name="objState"></param>
+        ' ''' -----------------------------------------------------------------------
+        'Protected Sub OnBuildContextMenu(ByVal control As ZedGraphControl, _
+        '                                 ByVal menuStrip As ContextMenuStrip, _
+        '                                 ByVal mousePt As Point, _
+        '                                 ByVal objState As ZedGraphControl.ContextMenuObjectState)
 
-            Dim item As ToolStripMenuItem = Nothing
+        '    Dim item As ToolStripMenuItem = Nothing
 
-            ' Remove 'Set_to_default' item
-            ' (After http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu)
-            For Each tsmi As ToolStripMenuItem In menuStrip.Items
-                If String.Compare(CStr(tsmi.Tag), "set_default", True) = 0 Then
-                    menuStrip.Items.Remove(tsmi)
-                    Exit For
-                End If
-            Next
+        '    ' Remove 'Set_to_default' item
+        '    ' (After http://zedgraph.org/wiki/index.php?title=Edit_the_Context_Menu)
+        '    For Each tsmi As ToolStripMenuItem In menuStrip.Items
+        '        If String.Compare(CStr(tsmi.Tag), "set_default", True) = 0 Then
+        '            menuStrip.Items.Remove(tsmi)
+        '            Exit For
+        '        End If
+        '    Next
 
-            item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_TO_CSV, My.Resources.ExportXMLHS, AddressOf OnExtractToCSV)
-            item.ShortcutKeys = Keys.Control Or Keys.X
-            item.ShowShortcutKeys = True
-            menuStrip.Items.Add(item)
+        '    item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_TO_CSV, My.Resources.ExportXMLHS, AddressOf OnExtractToCSV)
+        '    item.ShortcutKeys = Keys.Control Or Keys.X
+        '    item.ShowShortcutKeys = True
+        '    menuStrip.Items.Add(item)
 
-            item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_DATA_TO_CLIPBOARD, My.Resources.CopyHS, AddressOf OnExtractToClipboard)
-            item.ShortcutKeys = Keys.Control Or Keys.C
-            item.ShowShortcutKeys = True
-            menuStrip.Items.Add(item)
+        '    item = New ToolStripMenuItem(My.Resources.MENU_EXTRACT_DATA_TO_CLIPBOARD, My.Resources.CopyHS, AddressOf OnExtractToClipboard)
+        '    item.ShortcutKeys = Keys.Control Or Keys.C
+        '    item.ShowShortcutKeys = True
+        '    menuStrip.Items.Add(item)
 
-            item = New ToolStripMenuItem(My.Resources.MENU_SHOW_LEGEND, My.Resources.LegendHS, AddressOf OnShowHideLegend)
-            item.ShortcutKeys = Keys.Control Or Keys.L
-            item.ShowShortcutKeys = True
-            item.Checked = Me.IsLegendVisible
-            menuStrip.Items.Add(item)
+        '    item = New ToolStripMenuItem(My.Resources.MENU_SHOW_LEGEND, My.Resources.LegendHS, AddressOf OnShowHideLegend)
+        '    item.ShortcutKeys = Keys.Control Or Keys.L
+        '    item.ShowShortcutKeys = True
+        '    item.Checked = Me.IsLegendVisible
+        '    menuStrip.Items.Add(item)
 
-            item = New ToolStripMenuItem(My.Resources.MENU_SHOW_AXISLABELS, Nothing, AddressOf OnShowHideAxisLabels)
-            item.ShortcutKeys = Keys.Control Or Keys.A
-            item.ShowShortcutKeys = True
-            item.Checked = Me.IsAxisLabelsVisible
-            menuStrip.Items.Add(item)
+        '    item = New ToolStripMenuItem(My.Resources.MENU_SHOW_AXISLABELS, Nothing, AddressOf OnShowHideAxisLabels)
+        '    item.ShortcutKeys = Keys.Control Or Keys.A
+        '    item.ShowShortcutKeys = True
+        '    item.Checked = Me.IsAxisLabelsVisible
+        '    menuStrip.Items.Add(item)
 
-        End Sub
+        'End Sub
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
@@ -2622,7 +2639,7 @@ Namespace Controls
 
         ''' <summary>Cross-threading delegate.</summary>
         ''' <param name="cmd"></param>
-        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucHoverMenu.eCommandTypes)
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As Object)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -2630,11 +2647,13 @@ Namespace Controls
         ''' </summary>
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnHoverMenuCommand(ByVal cmd As ucHoverMenu.eCommandTypes)
+        Private Sub OnHoverMenuCommand(ByVal cmd As Object)
 
             Dim gp As GraphPane = Nothing
             Dim zs As ZoomState = Nothing
             Dim sValueAvg As Single = 0.0
+
+            If (Not TypeOf cmd Is eHoverCommands) Then Return
 
             If Me.m_zgc.InvokeRequired Then
                 Me.m_zgc.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
@@ -2648,22 +2667,22 @@ Namespace Controls
                 sValueAvg = Me.GetValueAvg(iPane)
 
                 ' Manually zoom in, place zoom in zoom stack. Zoom out means recalling zoom positions
-                Select Case cmd
-                    Case ucHoverMenu.eCommandTypes.ZoomIn
+                Select Case DirectCast(cmd, eHoverCommands)
+                    Case eHoverCommands.Zoomin
                         zs = New ZoomState(gp, ZoomState.StateType.Zoom)
                         gp.ZoomStack.Add(zs)
                         gp.YAxis.Scale.Max -= (gp.YAxis.Scale.Max - sValueAvg) / 4
                         gp.YAxis.Scale.Min += (sValueAvg - gp.YAxis.Scale.Min) / 4
                         Me.m_zgc.AxisChange()
 
-                    Case ucHoverMenu.eCommandTypes.ZoomOut
+                    Case eHoverCommands.Zoomout
                         zs = gp.ZoomStack.Pop(gp)
                         If (zs IsNot Nothing) Then
                             zs.ApplyState(gp)
                             Me.m_zgc.AxisChange()
                         End If
 
-                    Case ucHoverMenu.eCommandTypes.ZoomReset
+                    Case eHoverCommands.ZoomReset
                         While gp.ZoomStack.Count > 0
                             zs = gp.ZoomStack.Pop(gp)
                             If (zs IsNot Nothing) Then
@@ -2672,16 +2691,16 @@ Namespace Controls
                             End If
                         End While
 
-                    Case ucHoverMenu.eCommandTypes.Export
+                    Case eHoverCommands.ExportToCSV
                         Me.ExtractDataToCSV()
                         Exit For
 
-                    Case ucHoverMenu.eCommandTypes.ShowLegends
+                    Case eHoverCommands.ShowLegend
                         Me.IsLegendVisible = Not Me.IsLegendVisible
                         Me.m_zgc.AxisChange()
                         Exit For
 
-                    Case ucHoverMenu.eCommandTypes.ShowAxisLabels
+                    Case eHoverCommands.ShowLabels
                         Me.IsAxisLabelsVisible = Not IsAxisLabelsVisible
                         Me.m_zgc.AxisChange()
                         Exit For
@@ -2693,7 +2712,7 @@ Namespace Controls
 
         End Sub
 
-        Private Sub UpdateHoverMenuItems()
+        Protected Overridable Sub UpdateHoverMenuItems()
 
             If (Me.m_hovermenu IsNot Nothing) Then
 
@@ -2703,10 +2722,10 @@ Namespace Controls
                     bCanZoomOut = bCanZoomOut Or (gp.ZoomStack.Count > 0)
                 Next
 
-                Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomIn) = True
-                Me.m_hovermenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomOut) = bCanZoomOut
-                Me.m_hovermenu.IsChecked(ucHoverMenu.eCommandTypes.ShowLegends) = Me.IsLegendVisible
-                Me.m_hovermenu.IsChecked(ucHoverMenu.eCommandTypes.ShowAxisLabels) = Me.IsAxisLabelsVisible
+                Me.m_hovermenu.IsEnabled(eHoverCommands.Zoomin) = True
+                Me.m_hovermenu.IsEnabled(eHoverCommands.Zoomout) = bCanZoomOut
+                Me.m_hovermenu.IsChecked(eHoverCommands.ShowLegend) = Me.IsLegendVisible
+                Me.m_hovermenu.IsChecked(eHoverCommands.ShowLabels) = Me.IsAxisLabelsVisible
 
             End If
 

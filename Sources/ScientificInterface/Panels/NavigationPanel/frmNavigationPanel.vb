@@ -212,7 +212,7 @@ Public Class frmNavigationPanel
             .Add("ndHabitatPrefs", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridHabitatPreference), "Assign habitats.htm")
             .Add("ndEcospaceFishery", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.gridEcospaceFishery), "Ecospace Fishery.htm")
             .Add("ndEcospaceScenario", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.dlgEcospaceScenario)) ' ToDo: connect to help
-            .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.RunEcospace), "Run Ecospace.htm")
+            .Add("ndRunEcospace", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmRunEcospace), "Run Ecospace.htm")
             .Add("ndAdvection", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.Advection.frmAdvection), "")
             .Add("ndMPAOptimizations", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmMPAOptimizations), "EcoSeed.htm")
             .Add("ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmSpatialTimeSeries), "")

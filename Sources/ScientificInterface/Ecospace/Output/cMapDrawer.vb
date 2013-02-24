@@ -52,30 +52,14 @@ Public Class cMapDrawer
 
     Public SignalState As New ManualResetEvent(True)
 
-    Private m_map(,,) As Single
     Private m_core As cCore = Nothing
-    Private m_stanzaDS As cStanzaDatastructures
 
     Private m_lGroups As New List(Of Integer)
     Private m_lLocations As New List(Of Integer)
-    Private m_iInCol As Integer
-    Private m_iInRow As Integer
-    Private m_iMonth As Integer
-    Private m_lColors As List(Of Color)
-    Private m_bShowMPA As Boolean = False
-
-    Private m_graphics As Graphics
-    Private m_font As System.Drawing.Font
-    Private m_bShowLabel As Boolean = True
-    Private m_bInvertLabelColor As Boolean = False
     Private m_labelposHorz As StringAlignment = StringAlignment.Near
     Private m_labelposVert As StringAlignment = StringAlignment.Near
 
     Private m_threadID As Integer
-    Public m_bAllowedToRun As Boolean
-
-    Private m_lptOrigin As List(Of PointF)
-    Private m_lrc As List(Of Rectangle)
 
 #End Region ' Private vars
 
@@ -84,7 +68,8 @@ Public Class cMapDrawer
     Public Sub New(ByVal iThreadID As Integer, ByVal core As cCore)
         Me.m_threadID = iThreadID
         Me.m_core = core
-        Me.m_bAllowedToRun = True
+        Me.AllowedToRun = True
+        Me.ShowLand = True
     End Sub
 
 #End Region ' Constructor
@@ -92,94 +77,25 @@ Public Class cMapDrawer
 #Region " Public properties "
 
     Public Property AllowedToRun() As Boolean
-        Get
-            Return Me.m_bAllowedToRun
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bAllowedToRun = value
-        End Set
-    End Property
 
     Public Property ShowMPA() As Boolean
-        Get
-            Return Me.m_bShowMPA
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bShowMPA = value
-        End Set
-    End Property
-
+    Public Property ShowLand() As Boolean
+       
     Public Property Map() As Single(,,)
-        Get
-            Return Me.m_map
-        End Get
-        Set(ByVal value As Single(,,))
-            Me.m_map = value
-        End Set
-    End Property
 
     Public Property StanzaDS() As cStanzaDatastructures
-        Get
-            Return Me.m_stanzaDS
-        End Get
-        Set(ByVal value As cStanzaDatastructures)
-            Me.m_stanzaDS = value
-        End Set
-    End Property
 
     Public Property InRow() As Integer
-        Get
-            Return Me.m_iInRow
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iInRow = value
-        End Set
-    End Property
-
+    
     Public Property InCol() As Integer
-        Get
-            Return Me.m_iInCol
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iInCol = value
-        End Set
-    End Property
 
     Public Property Month() As Integer
-        Get
-            Return Me.m_iMonth
-        End Get
-        Set(ByVal value As Integer)
-            Me.m_iMonth = value
-        End Set
-    End Property
 
     Public Property Colors() As List(Of Color)
-        Get
-            Return Me.m_lColors
-        End Get
-        Set(ByVal lColors As List(Of Color))
-            Me.m_lColors = lColors
-        End Set
-    End Property
 
     Public Property OriginList() As List(Of PointF)
-        Get
-            Return Me.m_lptOrigin
-        End Get
-        Set(ByVal value As List(Of PointF))
-            Me.m_lptOrigin = value
-        End Set
-    End Property
 
     Public Property RectList() As List(Of Rectangle)
-        Get
-            Return Me.m_lrc
-        End Get
-        Set(ByVal value As List(Of Rectangle))
-            Me.m_lrc = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -187,13 +103,6 @@ Public Class cMapDrawer
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Font() As Font
-        Get
-            Return Me.m_font
-        End Get
-        Set(ByVal value As Font)
-            Me.m_font = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -201,13 +110,6 @@ Public Class cMapDrawer
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property Graphics() As Graphics
-        Get
-            Return Me.m_graphics
-        End Get
-        Set(ByVal value As Graphics)
-            Me.m_graphics = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -239,13 +141,6 @@ Public Class cMapDrawer
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property ShowLabels() As Boolean
-        Get
-            Return Me.m_bShowLabel
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bShowLabel = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -253,13 +148,6 @@ Public Class cMapDrawer
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property InvertLabelColors() As Boolean
-        Get
-            Return Me.m_bInvertLabelColor
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bInvertLabelColor = value
-        End Set
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -278,7 +166,7 @@ Public Class cMapDrawer
 #Region " Public access "
 
     Public Sub Draw(ByVal obParam As Object)
-        m_bAllowedToRun = False
+        Me.AllowedToRun = False
         Dim args As cMapDrawerArgs = DirectCast(obParam, cMapDrawerArgs)
         Try
             Dim i As Integer
@@ -288,13 +176,13 @@ Public Class cMapDrawer
                 iGroup = Me.m_lGroups(i)
                 iLocation = Me.m_lLocations(i)
                 Try
-                    DrawMap(iGroup, m_lrc(iLocation), args)
+                    DrawMap(iGroup, Me.RectList(iLocation), args)
                 Catch ex As Exception
 
                 End Try
             Next
 
-            m_bAllowedToRun = True
+            Me.AllowedToRun = True
             SignalState.Set()
 
         Catch ex As Exception
@@ -310,66 +198,68 @@ Public Class cMapDrawer
     ''' <param name="rcPos"></param>
     ''' <remarks></remarks>
     Public Sub DrawMap(ByVal iGroup As Integer, ByVal rcPos As Rectangle, ByVal Args As cMapDrawerArgs)
-        If m_map Is Nothing Then Return
+        If Me.Map Is Nothing Then Return
         Dim FScaler As Single
         Dim maptype As cMapDrawer.eMapType = Args.MapType
         Dim RelScaler() As Single = Args.RelMapScaler
 
         If MapType = eMapType.FishingMortRate Then
-            FScaler = m_lColors.Count / Args.FishingMortLegendMax
+            FScaler = Me.Colors.Count / Args.FishingMortLegendMax
         End If
 
-        For i As Integer = 1 To m_iInRow
-            For j As Integer = 1 To m_iInCol
+        For i As Integer = 1 To Me.InRow
+            For j As Integer = 1 To Me.InCol
                 Try
                     Dim sMapValue As Single = 1.0E-20
                     Dim icc As Single
-                    Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
-                                                               CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
-                                                               CSng(rcPos.Width() / m_iInCol), _
-                                                               CSng(rcPos.Height() / m_iInRow))
+                    Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
+                                                               CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
+                                                               CSng(rcPos.Width() / Me.InCol), _
+                                                               CSng(rcPos.Height() / Me.InRow))
                     Dim rcTemp As Rectangle = Nothing
                     Dim brCell As Brush = Nothing
 
                     'If it is water
                     If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
                         ' Water Cell
-                        sMapValue = m_map(i, j, iGroup) / RelScaler(iGroup)
+                        sMapValue = Me.Map(i, j, iGroup) / RelScaler(iGroup)
 
                         ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
                         ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
                         '              ColorScaling is MaxColorsInGrad / 2
 
-                        Select Case MapType
+                        Select Case maptype
                             Case eMapType.FishingMortRate
                                 'Only Fishing mort map has it's own color binning 
                                 icc = sMapValue * FScaler
                             Case Else
                                 If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
-                                    icc = m_lColors.Count
+                                    icc = Me.Colors.Count
                                 ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
                                     icc = 1
                                 Else
-                                    icc = m_lColors.Count * sMapValue / (sMapValue + 1)
+                                    icc = Me.Colors.Count * sMapValue / (sMapValue + 1)
                                 End If
                         End Select
 
                         'Boundary check
-                        icc = Math.Max(Math.Min(m_lColors.Count - 1, icc), 1)
-                        brCell = New SolidBrush(m_lColors(CInt(icc)))
+                        icc = Math.Max(Math.Min(Me.Colors.Count - 1, icc), 1)
+                        brCell = New SolidBrush(Me.Colors(CInt(icc)))
 
-                    Else
+                    ElseIf Me.ShowLand Then
                         ' #Land
                         brCell = New SolidBrush(Color.Gray)
+                    Else
+                        brCell = New SolidBrush(Color.Transparent)
                     End If
 
-                    m_graphics.FillRectangle(brCell, rcfCell)
+                    Me.Graphics.FillRectangle(brCell, rcfCell)
                     brCell.Dispose()
 
                     rcTemp = New Rectangle(CInt(rcfCell.X), CInt(rcfCell.Y), CInt(rcfCell.Width), CInt(rcfCell.Height))
 
                     ' Draw MPA
-                    If Me.m_bShowMPA Then
+                    If Me.ShowMPA Then
                         Dim iMPA As Integer = CInt(m_core.EcospaceBasemap.LayerMPA.Cell(i, j))
                         ' Is MPA cell?
                         If iMPA > 0 Then
@@ -378,7 +268,7 @@ Public Class cMapDrawer
                             Else
                                 brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
                             End If
-                            m_graphics.FillRectangle(brCell, rcfCell)
+                            Me.Graphics.FillRectangle(brCell, rcfCell)
                             brCell.Dispose()
                         End If
                     End If
@@ -391,7 +281,7 @@ Public Class cMapDrawer
             Next
         Next
 
-        If (Me.m_stanzaDS IsNot Nothing) Then
+        If (Me.StanzaDS IsNot Nothing) Then
 
             Dim isp As Integer = -1
 
@@ -416,11 +306,11 @@ Public Class cMapDrawer
 
                                 Dim sy As Single = StanzaDS.iPacket(isp, iaa, ipkt)
                                 Dim sx As Single = StanzaDS.jPacket(isp, iaa, ipkt)
-                                Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / m_iInCol), _
-                                                          CSng(rcPos.Top + (sy - 1) * rcPos.Height() / m_iInRow))
+                                Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / Me.InCol), _
+                                                          CSng(rcPos.Top + (sy - 1) * rcPos.Height() / Me.InRow))
                                 Dim rcF As New RectangleF(ptfCell.X, ptfCell.Y, 1, 1)
 
-                                m_graphics.DrawEllipse(Pens.Black, rcF)
+                                Me.Graphics.DrawEllipse(Pens.Black, rcF)
 
                             Next ipkt
 
@@ -436,9 +326,9 @@ Public Class cMapDrawer
         End If
 
         'Draw the black frame of base map
-        m_graphics.DrawRectangle(Pens.Black, rcPos)
+        Me.Graphics.DrawRectangle(Pens.Black, rcPos)
 
-        If Me.m_bShowLabel Then
+        If Me.ShowLabels Then
             'Display the group name
             Dim grpName As String = m_core.EcospaceGroups(iGroup).Name
             Dim br As Brush = Brushes.Black
@@ -447,9 +337,9 @@ Public Class cMapDrawer
             fmt.Alignment = Me.m_labelposHorz
             fmt.LineAlignment = Me.m_labelposVert
 
-            If Me.m_bInvertLabelColor Then br = Brushes.White
+            If Me.InvertLabelColors Then br = Brushes.White
 
-            Me.m_graphics.DrawString(grpName, m_font, br, rcPos, fmt)
+            Me.Graphics.DrawString(grpName, Me.Font, br, rcPos, fmt)
         End If
 
     End Sub

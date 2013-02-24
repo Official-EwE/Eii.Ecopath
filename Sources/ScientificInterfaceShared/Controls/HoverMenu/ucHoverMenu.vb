@@ -82,29 +82,9 @@ Namespace Controls
         ''' <summary>
         ''' Event for notifying the world that the user executed a command.
         ''' </summary>
-        ''' <param name="cmd"></param>
+        ''' <param name="data">The tag data that an item was created with.</param>
         ''' -------------------------------------------------------------------
-        Public Event OnUserCommand(ByVal cmd As eCommandTypes)
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Enumerated type stating possible menu hover commands
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Enum eCommandTypes As Byte
-            ''' <summary>User wants to zoom in.</summary>
-            ZoomIn = &H1
-            ''' <summary>User wants to zoom out.</summary>
-            ZoomOut = &H2
-            ''' <summary>User wants to reset zoom.</summary>
-            ZoomReset = &H4
-            ''' <summary>User wants to export a graph to CSV.</summary>
-            Export = &H8
-            ''' <summary>User wants to show legends.</summary>
-            ShowLegends = &H10
-            ''' <summary>User wants to show axis labels.</summary>
-            ShowAxisLabels = &H20
-        End Enum
+        Public Event OnUserCommand(ByVal data As Object)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -112,10 +92,8 @@ Namespace Controls
         ''' </summary>
         ''' <param name="target">The windows control to attach the hover menu
         ''' to.</param>
-        ''' <param name="style">A bitwise OR combination of <see cref="eCommandTypes">commands</see>
-        ''' that the hover menu should support.</param>
-        ''' -------------------------------------------------------------------
-        Public Sub Attach(ByVal target As Control, Optional ByVal style As eCommandTypes = CType(&HFF, eCommandTypes))
+         ''' -------------------------------------------------------------------
+        Public Sub Attach(ByVal target As Control)
 
             Me.Detach()
 
@@ -125,21 +103,6 @@ Namespace Controls
             Me.m_ctrlParent.Controls.Add(Me)
             Me.BringToFront()
             Me.ShowHover(False)
-
-            ' Set initial visibility state of tool strip items
-            For Each cmd As eCommandTypes In [Enum].GetValues(GetType(eCommandTypes))
-                Me.GetToolStripItem(cmd).Visible = ((style And cmd) = cmd)
-            Next
-
-            ' Fit entire control to the preferred size of the toolstrip.
-            ' JS 25may12: preferred size not calculated correctly when separators are in place
-            Dim szToolstrip As New Size(Me.m_ts.PreferredSize.Width, Me.m_ts.PreferredSize.Height)
-            For Each item As ToolStripItem In Me.m_ts.Items
-                If TypeOf item Is ToolStripSeparator Then
-                    szToolstrip.Width += item.Width
-                End If
-            Next
-            Me.Size = szToolstrip
 
             ' Set up mouse movement message filter
             Me.m_filter = New cMouseHoverFilter(Me)
@@ -163,6 +126,21 @@ Namespace Controls
             Me.m_ctrlParent.Controls.Remove(Me)
             Me.m_ctrlTarget = Nothing
 
+            Me.m_ts.Items.Clear()
+
+        End Sub
+
+        Public Sub AddItem(img As Image, strTooltip As String, data As Object)
+            Dim item As New ToolStripButton(strTooltip, img, AddressOf OnItemClicked)
+            item.Tag = data
+            item.DisplayStyle = ToolStripItemDisplayStyle.Image
+            item.ToolTipText = strTooltip
+            Me.m_ts.Items.Add(item)
+        End Sub
+
+        Public Sub AddSeparator()
+            Dim item As New ToolStripSeparator()
+            Me.m_ts.Items.Add(item)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -179,12 +157,11 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the enabled stated of a hover menu <see cref="eCommandTypes">command</see>.
+        ''' Get/set the enabled stated of a hover menu command.
         ''' </summary>
-        ''' <param name="cmd">The <see cref="eCommandTypes">command</see> to
-        ''' access the enabled state for.</param>
+        ''' <param name="cmd">The command to access the enabled state for.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsEnabled(ByVal cmd As eCommandTypes) As Boolean
+        Public Property IsEnabled(ByVal cmd As Object) As Boolean
             Get
                 Return Me.GetToolStripItem(cmd).Enabled
             End Get
@@ -195,22 +172,21 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the checked stated of a hover menu <see cref="eCommandTypes">command</see>,
+        ''' Get/set the checked stated of a hover menu String,
         ''' if applicable. This only works on button items.
         ''' </summary>
-        ''' <param name="cmd">The <see cref="eCommandTypes">command</see> to
-        ''' access the enabled state for.</param>
+        ''' <param name="data">The tag data to access the enabled state for.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsChecked(ByVal cmd As eCommandTypes) As Boolean
+        Public Property IsChecked(ByVal data As Object) As Boolean
             Get
-                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(data)
                 If (TypeOf tsi Is ToolStripButton) Then
                     Return DirectCast(tsi, ToolStripButton).Checked
                 End If
                 Return False
             End Get
             Set(ByVal value As Boolean)
-                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(data)
                 If (TypeOf tsi Is ToolStripButton) Then
                     DirectCast(tsi, ToolStripButton).Checked = value
                 End If
@@ -223,81 +199,34 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' 'Zoom in' button press handler.
+        ''' Button callback handler.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnZoomIn(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsbnZoomIn.Click
+        Private Sub OnItemClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) 
             Try
-                Me.InvokeCallback(eCommandTypes.ZoomIn)
+                Me.InvokeCallback(DirectCast(sender, ToolStripItem).Tag)
             Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::OnZoomIn(" & Me.m_ctrlTarget.ToString & ")")
+                cLog.Write(ex, "ucHoverMenu::OnItemClicked(" & Me.m_ctrlTarget.ToString & ")")
             End Try
         End Sub
 
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 'Zoom out' button press handler.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnZoomOut(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsbnZoomOut.Click
-            Try
-                Me.InvokeCallback(eCommandTypes.ZoomOut)
-            Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::OnZoomOut(" & Me.m_ctrlTarget.ToString & ")")
-            End Try
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 'Zoom reset' button press handler.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnZoomReset(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_tsbnZoomReset.Click
-            Try
-                Me.InvokeCallback(eCommandTypes.ZoomReset)
-            Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::OnZoomReset(" & Me.m_ctrlTarget.ToString & ")")
-            End Try
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' 'Export' button press handler.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Private Sub OnExport(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnExport.Click
-            Try
-                Me.InvokeCallback(eCommandTypes.Export)
-            Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::OnExport(" & Me.m_ctrlTarget.ToString & ")")
-            End Try
-        End Sub
-
-        Private Sub OnShowLegends(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnShowLegends.Click
-            Try
-                Me.InvokeCallback(eCommandTypes.ShowLegends)
-            Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::OnShowLegends(" & Me.m_ctrlTarget.ToString & ")")
-            End Try
-        End Sub
-
-        Private Sub OnShowAxisLabels(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnShowAxisLabels.Click
-            Try
-                Me.InvokeCallback(eCommandTypes.ShowAxisLabels)
-            Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::OnShowAxisLabels(" & Me.m_ctrlTarget.ToString & ")")
-            End Try
-        End Sub
 
 #End Region ' Event handling
 
 #Region " Internals "
+
+        Protected Overrides Sub OnVisibleChanged(e As System.EventArgs)
+            ' Fit entire control to the preferred size of the toolstrip.
+            ' JS 25may12: preferred size not calculated correctly when separators are in place
+            Dim szToolstrip As New Size(Me.m_ts.PreferredSize.Width, Me.m_ts.PreferredSize.Height)
+            For Each item As ToolStripItem In Me.m_ts.Items
+                If TypeOf item Is ToolStripSeparator Then
+                    szToolstrip.Width += item.Width
+                End If
+            Next
+            Me.Size = szToolstrip
+            MyBase.OnVisibleChanged(e)
+        End Sub
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -372,20 +301,15 @@ Namespace Controls
             Return Me.m_ctrlTarget.ClientRectangle.Contains(pt)
         End Function
 
-        Private Sub InvokeCallback(ByVal cmd As eCommandTypes)
-            RaiseEvent OnUserCommand(cmd)
+        Private Sub InvokeCallback(ByVal data As Object)
+            RaiseEvent OnUserCommand(data)
         End Sub
 
-        Private ReadOnly Property GetToolStripItem(ByVal cmd As eCommandTypes) As ToolStripItem
+        Private ReadOnly Property GetToolStripItem(ByVal data As Object) As ToolStripItem
             Get
-                Select Case cmd
-                    Case eCommandTypes.ZoomIn : Return Me.m_tsbnZoomIn
-                    Case eCommandTypes.ZoomOut : Return Me.m_tsbnZoomOut
-                    Case eCommandTypes.ZoomReset : Return Me.m_tsbnZoomReset
-                    Case eCommandTypes.Export : Return Me.m_tsbnExport
-                    Case eCommandTypes.ShowLegends : Return m_tsbnShowLegends
-                    Case eCommandTypes.ShowAxisLabels : Return m_tsbnShowAxisLabels
-                End Select
+                For Each item As ToolStripItem In Me.m_ts.Items
+                    If Object.Equals(data, item.Tag) Then Return item
+                Next
                 Debug.Assert(False)
                 Return Nothing
             End Get

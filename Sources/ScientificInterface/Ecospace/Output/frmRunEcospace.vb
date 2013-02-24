@@ -32,6 +32,7 @@ Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports EwECore.Auxiliary
 Imports System.IO
+Imports EwEUtils.Utilities
 
 #End Region
 
@@ -40,7 +41,7 @@ Namespace Ecospace
     ''' <summary>
     ''' Form, implementing the Ecospace Run interface.
     ''' </summary>
-    Public Class RunEcospace
+    Public Class frmRunEcospace
 
         ''' <summary>number of legend bins is arbitrary</summary>
         Private Const cColourBins As Integer = 200
@@ -433,30 +434,85 @@ Namespace Ecospace
                         Debug.Assert(False)
                 End Select
 
-                bmp = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
-                g = Graphics.FromImage(bmp)
-                br = New SolidBrush(Color.White)
-                g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
-
                 Try
+                    bmp = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
+                    g = Graphics.FromImage(bmp)
+                    br = New SolidBrush(Color.White)
+                    g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
+
                     Me.PlotMap(g)
                     bmp.Save(cmdFS.FileName, imgFormat)
+                    bmp.Dispose()
+
+                    Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
 
 #If 0 Then
-                    ' Hack legend saving
-                    Dim strExt As String = IO.Path.GetExtension(cmdFS.FileName)
-                    Dim strFilenameLegend As String = Path.Combine(Path.GetDirectoryName(cmdFS.FileName), Path.GetFileNameWithoutExtension(cmdFS.FileName) & "_legend" & strExt)
-                    Dim sdummy(Me.Core.EcospaceBasemap.InRow, Me.Core.EcospaceBasemap.InCol) As Single
-                    sdummy(1, 1) = -1
-                    sdummy(1, 2) = 1
-                    Dim lgd As New cLegend(Me.UIContext, "Relative biomass (log10)")
-                    Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
-                    Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, "Data")
-                    Dim l As New cRasterLayer(Me.UIContext, data, r, Nothing)
-                    lgd.AddLayer(l)
+                    If (True) Then
 
-                    lgd.SaveAsBitmap(strFilenameLegend, imgFormat)
+                        ' Hack legend saving
+                        Dim strExt As String = IO.Path.GetExtension(cmdFS.FileName)
+                        Dim strFile As String = Path.Combine(Path.GetDirectoryName(cmdFS.FileName), Path.GetFileNameWithoutExtension(cmdFS.FileName))
+                        Dim strFilenameLegend As String = strFile & "_legend" & strExt
+                        Dim sdummy(bm.InRow, bm.InCol) As Single : sdummy(1, 1) = -1 : sdummy(1, 2) = 1
+                        Dim lgd As New cLegend(Me.UIContext, "Relative biomass (log10)")
+                        Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
+                        Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, "Data")
+                        Dim l As New cRasterLayer(Me.UIContext, data, r, Nothing)
+                        lgd.AddLayer(l)
+                        lgd.SaveAsBitmap(strFilenameLegend, imgFormat)
+
+                        ' Another hack: save a geo-referenced image for each map
+
+                        Dim rc As New Rectangle(0, 0, bm.InCol * 100, bm.InRow * 100)
+                        bmp = New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
+                        bmp.SetResolution(150, 150)
+
+                        Dim lColors As List(Of Color) = Me.StyleGuide.GetEwE5ColorRamp(cColourBins)
+                        Dim mapArgs As New cMapDrawerArgs(cMapDrawer.eMapType.RelBiomass, Me.m_BaseBiomass, Me.m_FishingMortMax)
+                        Dim drawer As New cMapDrawer(1, Me.Core)
+                        drawer.Graphics = Graphics.FromImage(bmp)
+                        drawer.Colors = lColors
+                        drawer.ShowLabels = False
+                        drawer.ShowMPA = False
+                        drawer.ShowLand = False
+                        drawer.Map = Me.m_dataTimeStep.BiomassMap
+                        drawer.InCol = Me.m_iInCol
+                        drawer.InRow = Me.m_iInRow
+
+                        For i As Integer = 1 To Me.Core.nGroups
+                            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                            Dim strFileSub As String = strFile & "_" & cFileUtils.ToValidFileName(grp.Name, False) & strExt
+                            If Me.StyleGuide.GroupVisible(i) Then
+                                g = Graphics.FromImage(bmp)
+                                br = New SolidBrush(Color.White)
+                                g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
+                                drawer.DrawMap(i, rc, mapArgs)
+
+                                ' Write bitmap
+                                bmp.Save(strFileSub, imgFormat)
+                                ' Write world file
+                                Using sw As New StreamWriter(cFileUtils.ToWorldFileName(strFileSub))
+                                    ' Horz. pixel size, in decimal degrees
+                                    sw.WriteLine(cStringUtils.FormatNumber(bm.CellSize / 100))
+                                    ' Rotation around x axis
+                                    sw.WriteLine(0)
+                                    ' Rotation around y axis
+                                    sw.WriteLine(0)
+                                    ' Vert. pixel size, in decimal degrees
+                                    sw.WriteLine(cStringUtils.FormatNumber(-bm.CellSize / 100))
+                                    ' Longitude centroid of TL pixel, in dec degrees
+                                    sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.X + bm.CellSize / 2))
+                                    ' Lattitude centroid of TL pixel, in dec degrees
+                                    sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.Y - bm.CellSize / 2))
+                                    sw.Flush()
+                                    sw.Close()
+                                End Using
+                            End If
+                        Next
+                    End If
+
 #End If
+
                     ' ToDo: globalize this
                     msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Map image", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
                     msg.Hyperlink = IO.Path.GetDirectoryName(cmdFS.FileName)
@@ -488,7 +544,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="g"></param>
         ''' -------------------------------------------------------------------
-        Private Sub PlotBiomassMapThreaded(ByRef g As Graphics)
+        Private Sub PlotBiomassMapThreaded(ByVal g As Graphics)
 
             ' Sanity check
             If Me.m_dataTimeStep Is Nothing Then Return
@@ -683,7 +739,7 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub PlotFishingEffortMap(ByRef g As Graphics)
+        Private Sub PlotFishingEffortMap(ByVal g As Graphics)
 
             Dim iNumVizFleets As Integer = 0
             Dim lVizFleets As New List(Of Integer)
@@ -728,7 +784,7 @@ Namespace Ecospace
         End Sub
 
         Private Sub DrawFishingBaseMap(ByVal mapFishing(,,) As Single, _
-                                       iFleet As Integer, ByVal rcPos As Rectangle, ByRef g As Graphics)
+                                       iFleet As Integer, ByVal rcPos As Rectangle, ByVal g As Graphics)
 
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
@@ -1308,7 +1364,7 @@ Namespace Ecospace
 
 #End Region ' Internal implementation
 
- 
+
     End Class
 
 End Namespace

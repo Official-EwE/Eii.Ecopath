@@ -624,10 +624,10 @@
     <Compile Include="Ecospace\Output\EcospaceResultsGridGear.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Output\RunEcospace.Designer.vb">
-      <DependentUpon>RunEcospace.vb</DependentUpon>
+    <Compile Include="Ecospace\Output\frmRunEcospace.Designer.vb">
+      <DependentUpon>frmRunEcospace.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Output\RunEcospace.vb">
+    <Compile Include="Ecospace\Output\frmRunEcospace.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecotracer\dlgEcotracerScenario.vb">
@@ -923,9 +923,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>EcospaceResults.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Output\RunEcospace.resx">
+    <EmbeddedResource Include="Ecospace\Output\frmRunEcospace.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>RunEcospace.vb</DependentUpon>
+      <DependentUpon>frmRunEcospace.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.resx">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>

@@ -1514,6 +1514,33 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Save data to CSV....
+        '''</summary>
+        Public ReadOnly Property GENERIC_SAVE_TO_CSV() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_SAVE_TO_CSV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show labels.
+        '''</summary>
+        Public ReadOnly Property GENERIC_SHOW_LABELS() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_SHOW_LABELS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Show legend.
+        '''</summary>
+        Public ReadOnly Property GENERIC_SHOW_LEGEND() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_SHOW_LEGEND", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Applying changes....
         '''</summary>
         Public ReadOnly Property GENERIC_STATUS_APPLYCHANGES() As String
@@ -1744,6 +1771,33 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VAUE_RUN_X() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VAUE_RUN_X", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Zoom in.
+        '''</summary>
+        Public ReadOnly Property GENERIC_ZOOM_IN() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ZOOM_IN", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Zoom out.
+        '''</summary>
+        Public ReadOnly Property GENERIC_ZOOM_OUT() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ZOOM_OUT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Reset zoom.
+        '''</summary>
+        Public ReadOnly Property GENERIC_ZOOM_RESET() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_ZOOM_RESET", resourceCulture)
             End Get
         End Property
         
@@ -5798,42 +5852,6 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("map", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Extract data to C&amp;lipboard....
-        '''</summary>
-        Public ReadOnly Property MENU_EXTRACT_DATA_TO_CLIPBOARD() As String
-            Get
-                Return ResourceManager.GetString("MENU_EXTRACT_DATA_TO_CLIPBOARD", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Extract data to &amp;CSV....
-        '''</summary>
-        Public ReadOnly Property MENU_EXTRACT_TO_CSV() As String
-            Get
-                Return ResourceManager.GetString("MENU_EXTRACT_TO_CSV", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Show &amp;axis labels.
-        '''</summary>
-        Public ReadOnly Property MENU_SHOW_AXISLABELS() As String
-            Get
-                Return ResourceManager.GetString("MENU_SHOW_AXISLABELS", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Show &amp;legend.
-        '''</summary>
-        Public ReadOnly Property MENU_SHOW_LEGEND() As String
-            Get
-                Return ResourceManager.GetString("MENU_SHOW_LEGEND", resourceCulture)
             End Get
         End Property
         

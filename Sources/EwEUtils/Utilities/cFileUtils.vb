@@ -432,6 +432,20 @@ Namespace Utilities
 
         End Function
 
+        Public Shared Function ToWorldFileName(strFileName As String) As String
+
+            Dim strExt As String = Path.GetExtension(strFileName)
+
+            If Not String.IsNullOrWhiteSpace(strExt) And strExt.Length > 2 Then
+                strExt = strExt.Substring(0, 2) & strExt(strExt.Length - 1) & "w"
+            Else
+                strExt = ".wld"
+            End If
+
+            Return Path.ChangeExtension(strFileName, strExt)
+
+        End Function
+
     End Class
 
 End Namespace

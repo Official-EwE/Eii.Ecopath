@@ -48,7 +48,7 @@ Namespace Ecospace
         Private m_nGroups As Integer = 0
         Private m_pane As GraphPane = Nothing
 
-        Private m_showGroupMode As RunEcospace.eShowGroupType = RunEcospace.eShowGroupType.ShowAll
+        Private m_showGroupMode As frmRunEcospace.eShowGroupType = frmRunEcospace.eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = cCore.NULL_VALUE
 
         Public Overrides Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, ByVal zgc As ZedGraph.ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
@@ -122,11 +122,11 @@ Namespace Ecospace
         ''' the calling process will have to invoke <see cref="UpdateCurveVisibility">UpdateCurveVisibility</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property GroupShowMode() As RunEcospace.eShowGroupType
+        Public Property GroupShowMode() As frmRunEcospace.eShowGroupType
             Get
                 Return Me.m_showGroupMode
             End Get
-            Set(ByVal value As RunEcospace.eShowGroupType)
+            Set(ByVal value As frmRunEcospace.eShowGroupType)
                 Me.m_showGroupMode = value
             End Set
         End Property
@@ -151,11 +151,11 @@ Namespace Ecospace
             Dim info As cCurveInfo = Me.CurveInfo(ci)
 
             Select Case Me.GroupShowMode
-                Case RunEcospace.eShowGroupType.ShowAll
+                Case frmRunEcospace.eShowGroupType.ShowAll
                     Return True
-                Case RunEcospace.eShowGroupType.ShowNonHidden
+                Case frmRunEcospace.eShowGroupType.ShowNonHidden
                     Return MyBase.IsCurveVisible(ci)
-                Case RunEcospace.eShowGroupType.ShowSingle
+                Case frmRunEcospace.eShowGroupType.ShowSingle
                     Return (info.Index = Me.m_iGroupToShow)
             End Select
 

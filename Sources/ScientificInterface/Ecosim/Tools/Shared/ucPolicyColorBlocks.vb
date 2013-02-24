@@ -69,6 +69,14 @@ Namespace Ecosim
 
         Private m_ptLast As Point = Nothing
 
+        ' -- Hoover menu --
+
+        Protected Enum eHooverCommands As Integer
+            ZoomIn
+            ZoomOut
+            ZoomReset
+        End Enum
+
         ''' <summary>States whether a floating hover menu should be displayed on the blocks.</summary>
         Private m_bShowHoverMenu As Boolean = True
         ''' <summary>The hover menu to display on top of blocks.</summary>
@@ -151,9 +159,10 @@ Namespace Ecosim
             AddHandler Me.m_PropEcosimNYears.PropertyChanged, AddressOf OnPropChanged
 
             Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
-            Me.m_hoverMenu.Attach(Me.m_plScroll, ucHoverMenu.eCommandTypes.ZoomIn Or _
-                                                 ucHoverMenu.eCommandTypes.ZoomOut Or _
-                                                 ucHoverMenu.eCommandTypes.ZoomReset)
+            Me.m_hoverMenu.Attach(Me.m_plScroll)
+            Me.m_hoverMenu.AddItem(SharedResources.ZoomInHS, SharedResources.GENERIC_ZOOM_IN, eHooverCommands.ZoomIn)
+            Me.m_hoverMenu.AddItem(SharedResources.ZoomOutHS, SharedResources.GENERIC_ZOOM_OUT, eHooverCommands.ZoomOut)
+            Me.m_hoverMenu.AddItem(SharedResources.ZoomHS, SharedResources.GENERIC_ZOOM_RESET, eHooverCommands.ZoomReset)
             AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_bInit = True
@@ -383,7 +392,7 @@ Namespace Ecosim
 
         ''' <summary>Cross-threading delegate.</summary>
         ''' <param name="cmd"></param>
-        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As ucHoverMenu.eCommandTypes)
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As Object)
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -391,7 +400,9 @@ Namespace Ecosim
         ''' </summary>
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
-        Private Sub OnHoverMenuCommand(ByVal cmd As ucHoverMenu.eCommandTypes)
+        Private Sub OnHoverMenuCommand(ByVal cmd As Object)
+
+            If (Not TypeOf cmd Is eHooverCommands) Then Return
 
             If Me.InvokeRequired Then
                 Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
@@ -399,18 +410,15 @@ Namespace Ecosim
             End If
 
             ' Ajdust zoom level
-            Select Case cmd
-                Case ucHoverMenu.eCommandTypes.ZoomIn
-                    Me.m_iZoomLevel += 1
-                Case ucHoverMenu.eCommandTypes.ZoomOut
-                    Me.m_iZoomLevel -= 1
-                Case ucHoverMenu.eCommandTypes.ZoomReset
-                    Me.m_iZoomLevel = CInt(cNUM_ZOOMLEVELS / 2)
+            Select Case DirectCast(cmd, eHooverCommands)
+                Case eHooverCommands.ZoomIn : Me.m_iZoomLevel += 1
+                Case eHooverCommands.ZoomOut : Me.m_iZoomLevel -= 1
+                Case eHooverCommands.ZoomReset : Me.m_iZoomLevel = CInt(cNUM_ZOOMLEVELS / 2)
             End Select
             Me.m_iZoomLevel = Math.Max(0, Math.Min(cNUM_ZOOMLEVELS, Me.m_iZoomLevel))
 
-            Me.m_hoverMenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomIn) = (Me.m_iZoomLevel < cNUM_ZOOMLEVELS)
-            Me.m_hoverMenu.IsEnabled(ucHoverMenu.eCommandTypes.ZoomOut) = (Me.m_iZoomLevel > 0)
+            Me.m_hoverMenu.IsEnabled(eHooverCommands.ZoomIn) = (Me.m_iZoomLevel < cNUM_ZOOMLEVELS)
+            Me.m_hoverMenu.IsEnabled(eHooverCommands.ZoomOut) = (Me.m_iZoomLevel > 0)
 
             ' Update
             Me.ResizeBlocks()

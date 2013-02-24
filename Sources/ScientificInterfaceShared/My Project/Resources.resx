@@ -121,9 +121,6 @@
     <value>Absolute biomass (reference)</value>
     <comment>Time series type</comment>
   </data>
-  <data name="MENU_SHOW_LEGEND" xml:space="preserve">
-    <value>Show &amp;legend</value>
-  </data>
   <data name="TS_TYPE_BIOMASSREL" xml:space="preserve">
     <value>Relative biomass  (reference)</value>
     <comment>Time series type</comment>
@@ -310,9 +307,6 @@
   </data>
   <data name="SHAPE_TYPE_TO_SEASONAL_MSG" xml:space="preserve">
     <value>Changing a shape from 'Long term' to 'Seasonal' will cause your long-term data to be overwritten by a seasonal pattern. This action cannot be undone. Are you sure you want to do this?</value>
-  </data>
-  <data name="MENU_EXTRACT_TO_CSV" xml:space="preserve">
-    <value>Extract data to &amp;CSV...</value>
   </data>
   <data name="UNIT_CURRENCY_PHOSPOROUS" xml:space="preserve">
     <value>mg P/m²</value>
@@ -1875,9 +1869,6 @@
   <data name="ORGANISM_REPTILES" xml:space="preserve">
     <value>Reptiles</value>
   </data>
-  <data name="MENU_EXTRACT_DATA_TO_CLIPBOARD" xml:space="preserve">
-    <value>Extract data to C&amp;lipboard...</value>
-  </data>
   <data name="CopyHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CopyHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -2483,9 +2474,6 @@
   <data name="GENERIC_LABEL_UNITPERUNIT" xml:space="preserve">
     <value>({0}/{1})</value>
   </data>
-  <data name="MENU_SHOW_AXISLABELS" xml:space="preserve">
-    <value>Show &amp;axis labels</value>
-  </data>
   <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OK.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -2751,5 +2739,23 @@
   </data>
   <data name="LABEL_VALUE_AT" xml:space="preserve">
     <value>{0} ({1})</value>
+  </data>
+  <data name="GENERIC_SAVE_TO_CSV" xml:space="preserve">
+    <value>Save data to CSV...</value>
+  </data>
+  <data name="GENERIC_SHOW_LABELS" xml:space="preserve">
+    <value>Show labels</value>
+  </data>
+  <data name="GENERIC_SHOW_LEGEND" xml:space="preserve">
+    <value>Show legend</value>
+  </data>
+  <data name="GENERIC_ZOOM_IN" xml:space="preserve">
+    <value>Zoom in</value>
+  </data>
+  <data name="GENERIC_ZOOM_OUT" xml:space="preserve">
+    <value>Zoom out</value>
+  </data>
+  <data name="GENERIC_ZOOM_RESET" xml:space="preserve">
+    <value>Reset zoom</value>
   </data>
 </root>
