@@ -1271,7 +1271,7 @@ Namespace Ecospace
             Me.m_cmbRunType.SelectedIndex = iIndex
             Me.m_cmbRunType.Enabled = (Me.IsRunning = False)
 
-            Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_plottype <> ePlotTypes.Effort)
+            Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_plottype <> ePlotTypes.Effort) And (Me.Core.StateMonitor.HasEcospaceRan)
 
             Me.m_bInUpdate = False
 
@@ -1453,16 +1453,26 @@ Namespace Ecospace
 
             Try
 
-                For i As Integer = 1 To Me.Core.nGroups
+                For iGroup As Integer = 1 To Me.Core.nGroups
 
-                    Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                    Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     Dim strFileSub As String = strFile & "_" & cFileUtils.ToValidFileName(grp.Name, False) & strExt
+                    Dim bShowGroup As Boolean = False
 
-                    If Me.StyleGuide.GroupVisible(i) Then
+                    Select Case Me.ShowGroupMode
+                        Case eShowGroupType.ShowAll
+                            bShowGroup = True
+                        Case eShowGroupType.ShowSingle
+                            bShowGroup = (iGroup = Me.GroupToShow)
+                        Case eShowGroupType.ShowNonHidden
+                            bShowGroup = Me.StyleGuide.GroupVisible(iGroup)
+                    End Select
+
+                    If bShowGroup Then
                         g = Graphics.FromImage(bmp)
                         g.FillRectangle(Brushes.White, 0, 0, bmp.Width, bmp.Height)
 
-                        drawer.DrawMap(i, rc, mapArgs)
+                        drawer.DrawMap(iGroup, rc, mapArgs)
                         g.Dispose()
                         bmp.Save(strFileSub, imgFormat)
 
