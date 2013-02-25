@@ -1382,7 +1382,7 @@ Namespace Ecospace
             Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, strDataName)
             Dim l As New cRasterLayer(Me.UIContext, data, r, Nothing)
             lgd.AddLayer(l)
-            lgd.SaveAsBitmap(strFilenameLegend, imgFormat)
+            lgd.Save(strFilenameLegend, imgFormat)
 
         End Sub
 

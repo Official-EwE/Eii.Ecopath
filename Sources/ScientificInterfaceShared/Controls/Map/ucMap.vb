@@ -110,7 +110,7 @@ Namespace Controls.Map
                 Dim strExt As String = Path.GetExtension(strFileName)
 
                 strFilenameLegend = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName) & "_legend" & strExt)
-                lgd.SaveAsBitmap(strFilenameLegend, format)
+                lgd.Save(strFilenameLegend, format)
 
                 ' ToDo: globalize this
                 Dim msg As New cMessage(String.Format("Map image has been saved to {0}, legend to {1}", strFileName, strFilenameLegend), _

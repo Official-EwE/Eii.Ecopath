@@ -15,7 +15,6 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 #Region " Imports "
 
 Option Explicit On
@@ -29,6 +28,12 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Simple map legend renderer, that renderes a series of <see cref="cLayer">
+    ''' map layers</see> as a single column of entries to a file.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public Class cLegend
 
 #Region " Private vars "
@@ -39,27 +44,23 @@ Namespace Controls.Map
             Gradient
         End Enum
 
-        'Private m_map As ucMap = Nothing
         Private m_uic As cUIContext = Nothing
         Private m_lLayers As New List(Of cLayer)
         Private m_strTitle As String = ""
-
-        Private m_bShowTitle As Boolean = True
-        Private m_iTitleVSpacing As Integer = 8
-
-        Private m_iLayerBoxWidth As Integer = 20
-        Private m_iLayerBoxHeight As Integer = 12
-        Private m_iLayerBoxHSpacing As Integer = 5
-        Private m_iLayerBoxVSpacing As Integer = 4
 
 #End Region ' Private vars
 
 #Region " Constructors "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Constructor, create a legend from a map.
+        ''' </summary>
+        ''' <param name="map">The map to create the legend from.</param>
+        ''' -------------------------------------------------------------------
         Private Sub New(ByVal map As ucMap)
 
-            Me.m_strTitle = map.Title
-            Me.m_uic = map.UIContext
+            Me.New(map.UIContext, map.Title)
 
             Dim al As cLayer() = map.Layers
             Dim l As cLayer = Nothing
@@ -95,6 +96,13 @@ Namespace Controls.Map
 
 #Region " Shared interfaces "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generate a legend the content currently loaded in a <see cref="ucMap">map</see>.
+        ''' </summary>
+        ''' <param name="map">The map to load layers from.</param>
+        ''' <returns>An instantiated legend.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function FromMap(ByVal map As ucMap) As cLegend
             Debug.Assert(map IsNot Nothing)
             Return New cLegend(map)
@@ -104,85 +112,187 @@ Namespace Controls.Map
 
 #Region " Public interfaces "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the width of the box representing a layer value.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property LayerBoxWidth As Integer = 20
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the height of the box representing a layer value.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property LayerBoxHeight As Integer = 14
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the horizontal space between a layer box and its label.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property LayerBoxHSpacing As Integer = 5
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the vertical space between two layer boxes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property LayerBoxVSpacing As Integer = 4
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the legend should render the title.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowTitle As Boolean = True
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the vertical space between the title and the layer boxes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property TitleVSpacing As Integer = 8
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a layer to the legend. Layers will be rendered in the order that 
+        ''' they are added.
+        ''' </summary>
+        ''' <param name="l">The <see cref="cLayer"/> to add.</param>
+        ''' -------------------------------------------------------------------
         Public Sub AddLayer(l As cLayer)
             Me.m_lLayers.Add(l)
         End Sub
 
-        Public Function SaveAsBitmap(ByVal strFileName As String, ByVal format As ImageFormat) As Boolean
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the size of the legend, as measured onto a given graphics.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Size(g As Graphics) As Size
+            Get
+
+                Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
+                Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+                Dim iWidth As Integer = 0
+                Dim iHeight As Integer = 0
+                Dim szfItem As SizeF = Nothing
+
+                Try
+
+                    If Me.ShowTitle Then
+                        szfItem = Me.RenderTitleSize(g, ftTitle)
+                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                        iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
+                    End If
+
+                    For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
+                        szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
+                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                        If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
+                        iHeight += CInt(Math.Ceiling(szfItem.Height))
+                    Next iLayer
+
+                Catch ex As Exception
+
+                End Try
+
+                iHeight += 1
+                iWidth += 1
+
+                ftTitle.Dispose()
+                ftLayer.Dispose()
+
+                Return New Size(iWidth, iHeight)
+
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save the legend as an image to file.
+        ''' </summary>
+        ''' <param name="strFileName">The name of the file to save to.</param>
+        ''' <param name="format">The <see cref="ImageFormat"/> to use when saving.</param>
+        ''' <returns></returns>
+        ''' <remarks>The calling logic is responsible for making sure that the
+        ''' <paramref name="strFileName">given filename</paramref> matches the
+        ''' provided <paramref name="format">image format</paramref>.</remarks>
+        ''' -------------------------------------------------------------------
+        Public Function Save(ByVal strFileName As String, ByVal format As ImageFormat) As Boolean
 
             If Me.m_uic Is Nothing Then Return False
 
-            Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
-            Dim ftGroup As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
-            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-
-            ' Measure size of legend
-            Dim iWidth As Integer = 0
-            Dim iHeight As Integer = 0
-            Dim szfItem As SizeF = Nothing
-
+            Dim szLegend As Size = Nothing
+            Dim br As Brush = Nothing
             Dim bSuccess As Boolean = True
 
+            ' This should be a good default size...
             Using bmpTmp As New Bitmap(1000, 300, Imaging.PixelFormat.Format32bppArgb)
                 Using g As Graphics = Graphics.FromImage(bmpTmp)
-
-                    If Me.m_bShowTitle Then
-                        szfItem = Me.RenderTitleSize(g, ftTitle)
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.m_iTitleVSpacing
-                    End If
-
-                    For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                        szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        If iLayer > 0 Then iHeight += Me.m_iLayerBoxVSpacing
-                        iHeight += CInt(Math.Ceiling(szfItem.Height))
-                    Next iLayer
-
+                    szLegend = Me.Size(g)
                 End Using ' g
             End Using ' bmp
 
-            iHeight += 1
-            iWidth += 1
-
-            Using bmp As New Bitmap(iWidth, iHeight, Imaging.PixelFormat.Format32bppArgb)
+            Using bmp As New Bitmap(szLegend.Width, szLegend.Height, Imaging.PixelFormat.Format32bppArgb)
                 Using g As Graphics = Graphics.FromImage(bmp)
-
-                    If format Is ImageFormat.Png Then
-                        g.FillRectangle(Brushes.Transparent, 0, 0, iWidth, iHeight)
-                    Else
-                        g.FillRectangle(Brushes.White, 0, 0, iWidth, iHeight)
-                    End If
-
-                    iWidth = 0 : iHeight = 0
-
-                    If Me.m_bShowTitle Then
-                        szfItem = Me.RenderTitleSize(g, ftTitle)
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        Me.RenderTitle(g, ftTitle, New Point(0, iHeight))
-                        iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.m_iTitleVSpacing
-                    End If
-
-                    For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                        szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
-                        If iLayer > 0 Then iHeight += Me.m_iLayerBoxVSpacing
-                        Me.RenderLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(0, iHeight))
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        iHeight += CInt(Math.Ceiling(szfItem.Height))
-                    Next iLayer
-
+                    If (format Is ImageFormat.Png) Then br = Brushes.Transparent Else br = Brushes.White
+                    Me.Render(g, New Rectangle(0, 0, szLegend.Width, szLegend.Height), br)
                 End Using ' g
-
                 Try
                     bmp.Save(strFileName, format)
                 Catch ex As Exception
                     bSuccess = False
                 End Try
-
             End Using ' bmp
 
+            Return bSuccess
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Render the legend.
+        ''' </summary>
+        ''' <param name="g">The <see cref="Graphics"/> to render onto.</param>
+        ''' <param name="rc">The rectangle to clip to.</param>
+        ''' <returns>Always true.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Render(g As Graphics, rc As Rectangle, brBackground As Brush) As Boolean
+
+            Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
+            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim iWidth As Integer = 0
+            Dim iHeight As Integer = 0
+            Dim szfItem As SizeF = Nothing
+            Dim bSuccess As Boolean = True
+
+            Try
+
+                g.SetClip(rc)
+                g.FillRectangle(brBackground, rc)
+
+                If Me.ShowTitle Then
+                    szfItem = Me.RenderTitleSize(g, ftTitle)
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    Me.RenderTitle(g, ftTitle, New Point(rc.X, rc.Y + iHeight))
+                    iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
+                End If
+
+                For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
+                    szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
+                    If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
+                    Me.RenderLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(rc.X, rc.Y + iHeight))
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    iHeight += CInt(Math.Ceiling(szfItem.Height))
+                Next iLayer
+
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+
             ftTitle.Dispose()
-            ftGroup.Dispose()
             ftLayer.Dispose()
 
             Return bSuccess
@@ -213,8 +323,8 @@ Namespace Controls.Map
                 Case eLayerRenderStyle.Gradient
                     sLayerBox.Height *= 3
             End Select
-            sLayerBox.Width += (Me.m_iLayerBoxWidth + Me.m_iLayerBoxHSpacing)
-            sLayerBox.Height = Math.Max(Me.m_iLayerBoxHeight, sLayerBox.Height)
+            sLayerBox.Width += (Me.LayerBoxWidth + Me.LayerBoxHSpacing)
+            sLayerBox.Height = Math.Max(Me.LayerBoxHeight, sLayerBox.Height)
 
             Return sLayerBox
 
@@ -230,11 +340,11 @@ Namespace Controls.Map
                 Case eLayerRenderStyle.Element
                     l.Renderer.RenderPreview(g, rcPreview)
                     g.DrawRectangle(Pens.Black, rcPreview)
-                    g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
+                    g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
 
                 Case eLayerRenderStyle.Symbol
                     l.Renderer.RenderPreview(g, rcPreview)
-                    g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
+                    g.DrawString(l.Name, ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
 
                 Case eLayerRenderStyle.Gradient
                     l.Renderer.RenderPreview(g, rcPreview)
@@ -242,12 +352,12 @@ Namespace Controls.Map
                     If (TypeOf l Is cRasterLayer) Then
                         Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
                         g.DrawString(Me.m_uic.StyleGuide.FormatNumber(rl.Data.MaxValue), _
-                                     ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y)
+                                     ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
                         g.DrawString(Me.m_uic.StyleGuide.FormatNumber(rl.Data.MinValue), _
-                                     ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
+                                     ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
                     End If
                     g.DrawString(l.Name, _
-                                 ft, Brushes.Black, ptLocation.X + Me.m_iLayerBoxHSpacing + Me.m_iLayerBoxWidth, ptLocation.Y + (szfBox.Height / 3))
+                                 ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y + (szfBox.Height / 3))
             End Select
         End Sub
 
