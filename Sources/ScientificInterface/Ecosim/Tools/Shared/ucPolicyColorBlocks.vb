@@ -71,7 +71,7 @@ Namespace Ecosim
 
         ' -- Hoover menu --
 
-        Protected Enum eHooverCommands As Integer
+        Protected Enum eHoverCommands As Integer
             ZoomIn
             ZoomOut
             ZoomReset
@@ -160,9 +160,9 @@ Namespace Ecosim
 
             Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
             Me.m_hoverMenu.Attach(Me.m_plScroll)
-            Me.m_hoverMenu.AddItem(SharedResources.ZoomInHS, SharedResources.GENERIC_ZOOM_IN, eHooverCommands.ZoomIn)
-            Me.m_hoverMenu.AddItem(SharedResources.ZoomOutHS, SharedResources.GENERIC_ZOOM_OUT, eHooverCommands.ZoomOut)
-            Me.m_hoverMenu.AddItem(SharedResources.ZoomHS, SharedResources.GENERIC_ZOOM_RESET, eHooverCommands.ZoomReset)
+            Me.m_hoverMenu.AddItem(SharedResources.ZoomInHS, SharedResources.GENERIC_ZOOM_IN, eHoverCommands.ZoomIn)
+            Me.m_hoverMenu.AddItem(SharedResources.ZoomOutHS, SharedResources.GENERIC_ZOOM_OUT, eHoverCommands.ZoomOut)
+            Me.m_hoverMenu.AddItem(SharedResources.ZoomHS, SharedResources.GENERIC_ZOOM_RESET, eHoverCommands.ZoomReset)
             AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_bInit = True
@@ -402,7 +402,7 @@ Namespace Ecosim
         ''' -------------------------------------------------------------------
         Private Sub OnHoverMenuCommand(ByVal cmd As Object)
 
-            If (Not TypeOf cmd Is eHooverCommands) Then Return
+            If (Not TypeOf cmd Is eHoverCommands) Then Return
 
             If Me.InvokeRequired Then
                 Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
@@ -410,15 +410,15 @@ Namespace Ecosim
             End If
 
             ' Ajdust zoom level
-            Select Case DirectCast(cmd, eHooverCommands)
-                Case eHooverCommands.ZoomIn : Me.m_iZoomLevel += 1
-                Case eHooverCommands.ZoomOut : Me.m_iZoomLevel -= 1
-                Case eHooverCommands.ZoomReset : Me.m_iZoomLevel = CInt(cNUM_ZOOMLEVELS / 2)
+            Select Case DirectCast(cmd, eHoverCommands)
+                Case eHoverCommands.ZoomIn : Me.m_iZoomLevel += 1
+                Case eHoverCommands.ZoomOut : Me.m_iZoomLevel -= 1
+                Case eHoverCommands.ZoomReset : Me.m_iZoomLevel = CInt(cNUM_ZOOMLEVELS / 2)
             End Select
             Me.m_iZoomLevel = Math.Max(0, Math.Min(cNUM_ZOOMLEVELS, Me.m_iZoomLevel))
 
-            Me.m_hoverMenu.IsEnabled(eHooverCommands.ZoomIn) = (Me.m_iZoomLevel < cNUM_ZOOMLEVELS)
-            Me.m_hoverMenu.IsEnabled(eHooverCommands.ZoomOut) = (Me.m_iZoomLevel > 0)
+            Me.m_hoverMenu.IsEnabled(eHoverCommands.ZoomIn) = (Me.m_iZoomLevel < cNUM_ZOOMLEVELS)
+            Me.m_hoverMenu.IsEnabled(eHoverCommands.ZoomOut) = (Me.m_iZoomLevel > 0)
 
             ' Update
             Me.ResizeBlocks()

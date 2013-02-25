@@ -29,7 +29,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 Namespace Ecospace
 
-    Public Class cFormEcospaceResults
+    Public Class frmEcospaceResults
 
 #Region " Private vars "
 

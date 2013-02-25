@@ -163,10 +163,13 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         Public Property IsEnabled(ByVal cmd As Object) As Boolean
             Get
-                Return Me.GetToolStripItem(cmd).Enabled
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                If (tsi IsNot Nothing) Then Return tsi.Enabled
+                Return False
             End Get
             Set(ByVal value As Boolean)
-                Me.GetToolStripItem(cmd).Enabled = value
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                If (tsi IsNot Nothing) Then tsi.Enabled = value
             End Set
         End Property
 
@@ -180,15 +183,19 @@ Namespace Controls
         Public Property IsChecked(ByVal data As Object) As Boolean
             Get
                 Dim tsi As ToolStripItem = Me.GetToolStripItem(data)
-                If (TypeOf tsi Is ToolStripButton) Then
-                    Return DirectCast(tsi, ToolStripButton).Checked
+                If (tsi IsNot Nothing) Then
+                    If (TypeOf tsi Is ToolStripButton) Then
+                        Return DirectCast(tsi, ToolStripButton).Checked
+                    End If
                 End If
                 Return False
             End Get
             Set(ByVal value As Boolean)
                 Dim tsi As ToolStripItem = Me.GetToolStripItem(data)
-                If (TypeOf tsi Is ToolStripButton) Then
-                    DirectCast(tsi, ToolStripButton).Checked = value
+                If (tsi IsNot Nothing) Then
+                    If (TypeOf tsi Is ToolStripButton) Then
+                        DirectCast(tsi, ToolStripButton).Checked = value
+                    End If
                 End If
             End Set
         End Property

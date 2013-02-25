@@ -218,7 +218,7 @@ Public Class frmNavigationPanel
             .Add("ndEcospaceExtData", eCoreExecutionState.EcospaceLoaded, GetType(Ecospace.frmSpatialTimeSeries), "")
 
             ' Ecospace output
-            .Add("ndEcospaceResults", eCoreExecutionState.EcospaceCompleted, GetType(Ecospace.cFormEcospaceResults), "") ' ToDo: connect to help
+            .Add("ndEcospaceResults", eCoreExecutionState.EcospaceCompleted, GetType(Ecospace.frmEcospaceResults), "") ' ToDo: connect to help
 
             ' ToDo_JS: Link to yet-to-be-written help text
             .Add("ndEcoTracer_Pram", eCoreExecutionState.EcotracerLoaded, GetType(Ecotracer.frmEcotracerParameters), "") ' ToDo: connect to help

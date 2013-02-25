@@ -173,7 +173,7 @@ Public Class cEcospaceLayerSingle
         Me.m_sMinValue = Single.MaxValue
         For iRow As Integer = 1 To iRows
             For iCol As Integer = 1 To iCols
-                If layerDepth.IsWaterCell(iRow, iCol) Then
+                If layerDepth.IsWaterCell(iRow, iCol) Or (Me.VarName = eVarNameFlags.NotSet) Then
                     s = CSng(Me.Cell(iRow, iCol))
                     If (s <> cCore.NULL_VALUE) Then
                         Me.m_sMaxValue = Math.Max(s, Me.m_sMaxValue)

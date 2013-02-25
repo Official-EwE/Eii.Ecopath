@@ -142,6 +142,9 @@ Namespace Controls.Map
                 End Using ' g
             End Using ' bmp
 
+            iHeight += 1
+            iWidth += 1
+
             Using bmp As New Bitmap(iWidth, iHeight, Imaging.PixelFormat.Format32bppArgb)
                 Using g As Graphics = Graphics.FromImage(bmp)
 
@@ -200,7 +203,10 @@ Namespace Controls.Map
 
         Private Function RenderLayerSize(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLayer) As SizeF
 
-            Dim sLayerBox As SizeF = g.MeasureString(l.Name, ft)
+            Dim strText As String = l.Name
+            If String.IsNullOrWhiteSpace(strText) Then strText = "X"
+
+            Dim sLayerBox As SizeF = g.MeasureString(strText, ft)
             Select Case Me.GetRenderStyle(l)
                 Case eLayerRenderStyle.Element, eLayerRenderStyle.Symbol
                     ' NOP
@@ -209,6 +215,7 @@ Namespace Controls.Map
             End Select
             sLayerBox.Width += (Me.m_iLayerBoxWidth + Me.m_iLayerBoxHSpacing)
             sLayerBox.Height = Math.Max(Me.m_iLayerBoxHeight, sLayerBox.Height)
+
             Return sLayerBox
 
         End Function

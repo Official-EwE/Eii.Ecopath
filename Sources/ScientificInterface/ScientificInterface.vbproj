@@ -167,6 +167,10 @@
     <Compile Include="AppLauncher.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Output\Map rendering\cMapDrawerArgs.vb" />
+    <Compile Include="Ecospace\Output\Map rendering\cMapDrawerFleet.vb" />
+    <Compile Include="Ecospace\Output\Map rendering\cMapDrawerGroup.vb" />
+    <Compile Include="Ecospace\Output\Map rendering\cRunEcospacePlotTypeFormatter.vb" />
     <Compile Include="Other\cStyleGuideUpdater.vb" />
     <Compile Include="Controls\cEwEStatusBar.designer.vb">
       <DependentUpon>cEwEStatusBar.vb</DependentUpon>
@@ -608,17 +612,17 @@
     <Compile Include="Ecospace\Input\gridEcospaceFishery.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Output\cMapDrawer.vb" />
+    <Compile Include="Ecospace\Output\Map rendering\cMapDrawerBase.vb" />
     <Compile Include="Ecospace\Output\EcospaceResultsGridRegion.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\EcospaceResultsGridGroup.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ecospace\Output\EcospaceResults.Designer.vb">
-      <DependentUpon>EcospaceResults.vb</DependentUpon>
+    <Compile Include="Ecospace\Output\frmEcospaceResults.Designer.vb">
+      <DependentUpon>frmEcospaceResults.vb</DependentUpon>
     </Compile>
-    <Compile Include="Ecospace\Output\EcospaceResults.vb">
+    <Compile Include="Ecospace\Output\frmEcospaceResults.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Ecospace\Output\EcospaceResultsGridGear.vb">
@@ -919,9 +923,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>dlgDefineMPAs.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ecospace\Output\EcospaceResults.resx">
+    <EmbeddedResource Include="Ecospace\Output\frmEcospaceResults.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>EcospaceResults.vb</DependentUpon>
+      <DependentUpon>frmEcospaceResults.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Ecospace\Output\frmRunEcospace.resx">
       <SubType>Designer</SubType>

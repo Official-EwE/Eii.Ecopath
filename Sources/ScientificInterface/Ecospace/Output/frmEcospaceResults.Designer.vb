@@ -20,7 +20,7 @@ Imports ScientificInterfaceShared.Forms
 
 Namespace Ecospace
 
-    Partial Class cFormEcospaceResults
+    Partial Class frmEcospaceResults
         Inherits frmEwE
 
         'Form overrides dispose to clean up the component list.
@@ -40,7 +40,7 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(cFormEcospaceResults))
+            Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEcospaceResults))
             Me.m_plResultsGrid = New System.Windows.Forms.Panel()
             Me.m_nudSumLength = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
             Me.m_tbSumEndTime = New System.Windows.Forms.TextBox()

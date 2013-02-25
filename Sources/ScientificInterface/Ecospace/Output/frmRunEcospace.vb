@@ -33,6 +33,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports EwECore.Auxiliary
 Imports System.IO
 Imports EwEUtils.Utilities
+Imports System.Drawing.Imaging
 
 #End Region
 
@@ -54,6 +55,15 @@ Namespace Ecospace
             ShowSingle
         End Enum
 
+        Public Enum ePlotTypes As Integer
+            RelB
+            FOverB
+            F
+            Contaminant
+            CoverB
+            Effort
+        End Enum
+
 #Region " Variables "
 
         ''' <summary>The previous number of timesteps UI has drawn.</summary>
@@ -72,6 +82,7 @@ Namespace Ecospace
         ''' <summary>Effort over Biomass.</summary>
         Private m_FoverB(,,) As Single
 
+        ' -- bits to remember, ugh --
 
         Private m_BaseCatch() As Single
         Private m_BaseBiomass() As Single
@@ -92,7 +103,7 @@ Namespace Ecospace
         ''' <remarks>???</remarks>
         Private m_iInRow As Integer, m_iInCol As Integer
 
-        Private m_drawers As List(Of cMapDrawer)
+        Private m_drawers As List(Of cMapDrawerBase)
         Private m_nMapsPerThread As Integer
 
         Private m_bmpBiomassMap As Bitmap
@@ -100,6 +111,8 @@ Namespace Ecospace
         'jb added
         Private m_spaceStats As cEcospaceStats
 
+        ' -- plot settings --
+        Private m_plottype As ePlotTypes = ePlotTypes.RelB
         Private m_bOverlay As Boolean = False
         Private m_bShowMPA As Boolean = True
         Private m_bShowIBM As Boolean = True
@@ -107,11 +120,10 @@ Namespace Ecospace
         Private m_bInvertLabelColor As Boolean = False
         Private m_labelposHorz As StringAlignment = StringAlignment.Near
         Private m_labelposVert As StringAlignment = StringAlignment.Near
-
         Private m_bpConTracing As cBooleanProperty = Nothing
-
         Private m_showGroupMode As eShowGroupType = eShowGroupType.ShowAll
         Private m_iGroupToShow As Integer = 1
+
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
         ''' <summary>Exposing m_sMaxEffort to the interface would allow the user to set the Effort legend sensitivity.</summary>
@@ -121,6 +133,14 @@ Namespace Ecospace
         ' Properties to monitor for setting run mode states
         Private WithEvents m_bpUseIBM As cBooleanProperty = Nothing
         Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
+
+        ' -- Hoover menu --
+        Private m_hoverMenu As ucHoverMenu = Nothing
+
+        Protected Enum eHoverCommands As Integer
+            SaveImage
+            SaveImageGeoRef
+        End Enum
 
 #End Region ' Variables
 
@@ -200,14 +220,14 @@ Namespace Ecospace
 
         Private Sub InitDrawingThreads()
 
-            Dim drawer As cMapDrawer
+            Dim drawer As cMapDrawerBase
             Dim nThreads As Integer = Environment.ProcessorCount
             Dim sg As cStyleGuide = Me.StyleGuide
             Dim lColors As List(Of Color) = sg.GetEwE5ColorRamp(cColourBins)
 
             Me.m_nMapsPerThread = (Me.Core.nGroups + nThreads - 1) \ nThreads
             If Me.m_drawers Is Nothing Then
-                Me.m_drawers = New List(Of cMapDrawer)
+                Me.m_drawers = New List(Of cMapDrawerBase)
             Else
                 Me.m_drawers.Clear()
             End If
@@ -215,7 +235,7 @@ Namespace Ecospace
             Me.InitOutputBitmaps()
 
             For i As Integer = 1 To nThreads
-                drawer = New cMapDrawer(i, Me.Core)
+                drawer = New cMapDrawerGroup(Me.Core)
                 drawer.Graphics = Graphics.FromImage(Me.m_bmpBiomassMap)
                 drawer.Colors = lColors
 
@@ -225,7 +245,7 @@ Namespace Ecospace
 
         Private Sub InitOutputBitmaps()
             Me.m_bmpBiomassMap = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height)
-            For Each drawer As cMapDrawer In Me.m_drawers
+            For Each drawer As cMapDrawerBase In Me.m_drawers
                 drawer.Graphics = Graphics.FromImage(m_bmpBiomassMap)
             Next
         End Sub
@@ -252,6 +272,7 @@ Namespace Ecospace
 
             If Me.UIContext Is Nothing Then Return
 
+            Me.m_bInUpdate = True
             Dim pm As cPropertyManager = Me.PropertyManager
             Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
 
@@ -279,8 +300,6 @@ Namespace Ecospace
             End If
             Me.m_cmbLabelPos.SelectedIndex = 0
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
-
             Me.ShowGroupMode = eShowGroupType.ShowAll
             Me.IsRunning = Me.Core.StateMonitor.IsEcospaceRunning
 
@@ -307,9 +326,20 @@ Namespace Ecospace
             ' Start tracking core state monitor for Ecospace run states
             AddHandler Me.Core.StateMonitor.CoreExecutionStateEvent, AddressOf OnCoreStateChanged
 
+            ' Connect hover menu
+            Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
+            Me.m_hoverMenu.Attach(Me.m_pbMap)
+            Me.m_hoverMenu.AddItem(SharedResources.ExportXMLHS, "Save image", eHoverCommands.SaveImage)
+            Me.m_hoverMenu.AddItem(SharedResources.ExportXMLHS, "Save a geo-referenced image for every displayed group or fleet", eHoverCommands.SaveImageGeoRef)
+            AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+
+            Me.m_bInUpdate = False
+
             Me.ClearResults()
             Me.UpdateStyleColors()
             Me.UpdateControls()
+
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSim, eCoreComponentType.EcoSpace}
 
         End Sub
 
@@ -325,6 +355,9 @@ Namespace Ecospace
                     RemoveHandler Me.m_cmdDisplayGroups.OnPostInvoke, AddressOf OnDisplayGroupsInvoked
                     Me.m_cmdDisplayGroups = Nothing
                 End If
+
+                RemoveHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
+                Me.m_hoverMenu.Detach()
 
                 Me.Core.StopEcospace()
                 Me.m_drawers.Clear()
@@ -359,15 +392,13 @@ Namespace Ecospace
 
         Private Sub OnMapMouseDouble(ByVal sender As Object, ByVal e As EventArgs) _
             Handles m_pbMap.DoubleClick
-            ' ToDo: use toolbar (perhaps floating toolbar?)
-            Me.SaveMapImage()
+            Me.OnHoverMenuCommand(eHoverCommands.SaveImage)
         End Sub
 
         Private Sub OnMapMouseClick(ByVal sender As Object, ByVal e As MouseEventArgs) _
             Handles m_pbMap.MouseClick
-            ' ToDo: use toolbar (perhaps floating toolbar?) Right-click should be reserved for a context menu
             If e.Button = Windows.Forms.MouseButtons.Right Then
-                Me.SaveMapImage()
+                Me.OnHoverMenuCommand(eHoverCommands.SaveImage)
             End If
         End Sub
 
@@ -403,159 +434,28 @@ Namespace Ecospace
             Me.m_zgh.RescaleAndRedraw()
         End Sub
 
-        Private Sub SaveMapImage()
-
-            Dim cmdh As cCommandHandler = Me.CommandHandler
-            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-            Dim bmp As Bitmap = Nothing
-            Dim g As Graphics = Nothing
-            Dim br As SolidBrush = Nothing
-
-            cmdFS.Invoke("EcospaceResultsMap", SharedResources.FILEFILTER_IMAGE)
-
-            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
-
-                'Set the image format
-                Dim imgFormat As Drawing.Imaging.ImageFormat = Drawing.Imaging.ImageFormat.Bmp
-                Dim msg As cMessage = Nothing
-
-                Select Case cmdFS.FilterIndex
-                    Case 0
-                        imgFormat = Drawing.Imaging.ImageFormat.Bmp
-                    Case 1
-                        imgFormat = Drawing.Imaging.ImageFormat.Jpeg
-                    Case 2
-                        imgFormat = Drawing.Imaging.ImageFormat.Gif
-                    Case 3
-                        imgFormat = Drawing.Imaging.ImageFormat.Png
-                    Case 4
-                        imgFormat = Drawing.Imaging.ImageFormat.Tiff
-                    Case Else
-                        Debug.Assert(False)
-                End Select
-
-                Try
-                    bmp = New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
-                    g = Graphics.FromImage(bmp)
-                    br = New SolidBrush(Color.White)
-                    g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
-
-                    Me.PlotMap(g)
-                    bmp.Save(cmdFS.FileName, imgFormat)
-                    bmp.Dispose()
-
-                    Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
-
-#If 0 Then
-                    If (True) Then
-
-                        ' Hack legend saving
-                        Dim strExt As String = IO.Path.GetExtension(cmdFS.FileName)
-                        Dim strFile As String = Path.Combine(Path.GetDirectoryName(cmdFS.FileName), Path.GetFileNameWithoutExtension(cmdFS.FileName))
-                        Dim strFilenameLegend As String = strFile & "_legend" & strExt
-                        Dim sdummy(bm.InRow, bm.InCol) As Single : sdummy(1, 1) = -1 : sdummy(1, 2) = 1
-                        Dim lgd As New cLegend(Me.UIContext, "Relative biomass (log10)")
-                        Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
-                        Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, "Data")
-                        Dim l As New cRasterLayer(Me.UIContext, data, r, Nothing)
-                        lgd.AddLayer(l)
-                        lgd.SaveAsBitmap(strFilenameLegend, imgFormat)
-
-                        ' Another hack: save a geo-referenced image for each map
-
-                        Dim rc As New Rectangle(0, 0, bm.InCol * 100, bm.InRow * 100)
-                        bmp = New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
-                        bmp.SetResolution(150, 150)
-
-                        Dim lColors As List(Of Color) = Me.StyleGuide.GetEwE5ColorRamp(cColourBins)
-                        Dim mapArgs As New cMapDrawerArgs(cMapDrawer.eMapType.RelBiomass, Me.m_BaseBiomass, Me.m_FishingMortMax)
-                        Dim drawer As New cMapDrawer(1, Me.Core)
-                        drawer.Graphics = Graphics.FromImage(bmp)
-                        drawer.Colors = lColors
-                        drawer.ShowLabels = False
-                        drawer.ShowMPA = False
-                        drawer.ShowLand = False
-                        drawer.Map = Me.m_dataTimeStep.BiomassMap
-                        drawer.InCol = Me.m_iInCol
-                        drawer.InRow = Me.m_iInRow
-
-                        For i As Integer = 1 To Me.Core.nGroups
-                            Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
-                            Dim strFileSub As String = strFile & "_" & cFileUtils.ToValidFileName(grp.Name, False) & strExt
-                            If Me.StyleGuide.GroupVisible(i) Then
-                                g = Graphics.FromImage(bmp)
-                                br = New SolidBrush(Color.White)
-                                g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
-                                drawer.DrawMap(i, rc, mapArgs)
-
-                                ' Write bitmap
-                                bmp.Save(strFileSub, imgFormat)
-                                ' Write world file
-                                Using sw As New StreamWriter(cFileUtils.ToWorldFileName(strFileSub))
-                                    ' Horz. pixel size, in decimal degrees
-                                    sw.WriteLine(cStringUtils.FormatNumber(bm.CellSize / 100))
-                                    ' Rotation around x axis
-                                    sw.WriteLine(0)
-                                    ' Rotation around y axis
-                                    sw.WriteLine(0)
-                                    ' Vert. pixel size, in decimal degrees
-                                    sw.WriteLine(cStringUtils.FormatNumber(-bm.CellSize / 100))
-                                    ' Longitude centroid of TL pixel, in dec degrees
-                                    sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.X + bm.CellSize / 2))
-                                    ' Lattitude centroid of TL pixel, in dec degrees
-                                    sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.Y - bm.CellSize / 2))
-                                    sw.Flush()
-                                    sw.Close()
-                                End Using
-                            End If
-                        Next
-                    End If
-
-#End If
-
-                    ' ToDo: globalize this
-                    msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Map image", cmdFS.FileName), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
-                    msg.Hyperlink = IO.Path.GetDirectoryName(cmdFS.FileName)
-                Catch ex As Exception
-                    ' ToDo: globalize this
-                    msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, "Map image", cmdFS.FileName, ex.Message), eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
-                Finally
-                    g.Dispose()
-                    g = Nothing
-                    br.Dispose()
-                    br = Nothing
-                End Try
-
-                If (msg IsNot Nothing) Then
-                    Me.Core.Messages.SendMessage(msg)
-                End If
-
-            End If
-
-        End Sub
-
 #End Region ' Biomass graph
 
 #Region " Map plot "
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Plot the biomass map via multiple threads.
+        ''' Plot group-related data via multiple threads.
         ''' </summary>
         ''' <param name="g"></param>
         ''' -------------------------------------------------------------------
-        Private Sub PlotBiomassMapThreaded(ByVal g As Graphics)
+        Private Sub PlotGroupMap(ByVal g As Graphics)
 
             ' Sanity check
-            If Me.m_dataTimeStep Is Nothing Then Return
+            If (Me.m_dataTimeStep Is Nothing) Then Return
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
             Dim sTSpy As Single = parms.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
-            Dim drawer As cMapDrawer = Nothing
+            Dim drawer As cMapDrawerBase = Nothing
             Dim iNumVisGroups As Integer = 0
-            Dim lVisGroups As New List(Of Integer)
+            Dim lVisItems As New List(Of cCoreGroupBase)
             Dim bShowGroup As Boolean = False
 
             For iGroup As Integer = 1 To Me.Core.nGroups
@@ -570,7 +470,7 @@ Namespace Ecospace
                 End Select
 
                 If bShowGroup Then
-                    lVisGroups.Add(iGroup)
+                    lVisItems.Add(Me.Core.EcoPathGroupInputs(iGroup))
                     iNumVisGroups += 1
                 End If
             Next
@@ -621,7 +521,7 @@ Namespace Ecospace
                     Next
                 Next
 
-                Dim maptype As cMapDrawer.eMapType
+                Dim maptype As cMapDrawerBase.eMapType
                 Dim RelScaler() As Single = Nothing
                 Dim ifirst As Integer = 0
                 Dim ilast As Integer = 0
@@ -640,36 +540,42 @@ Namespace Ecospace
 
                         drawer.StanzaDS = Nothing
 
-                        If Me.m_rbDisplayRelBiomass.Checked Then
-                            drawer.Map = Me.m_dataTimeStep.BiomassMap
-                            maptype = cMapDrawer.eMapType.RelBiomass
-                            RelScaler = Me.m_BaseBiomass
+                        Select Case Me.m_plottype
 
-                            If parms.UseIBM And Me.m_bShowIBM Then
-                                drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
-                            End If
+                            Case ePlotTypes.RelB
+                                drawer.Map = Me.m_dataTimeStep.BiomassMap
+                                maptype = cMapDrawerBase.eMapType.RelBiomass
+                                RelScaler = Me.m_BaseBiomass
 
-                        ElseIf Me.m_rbDisplayFOverB.Checked Then
-                            drawer.Map = Me.m_FoverB
-                            maptype = cMapDrawer.eMapType.FishingMortRate
-                            RelScaler = Me.m_FishingMortScaler
+                                If parms.UseIBM And Me.m_bShowIBM Then
+                                    drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
+                                End If
 
-                        ElseIf Me.m_rbDisplayF.Checked Then
-                            drawer.Map = Me.m_dataTimeStep.CatchMap
-                            maptype = cMapDrawer.eMapType.RelCatch
-                            RelScaler = Me.m_BaseCatch
+                            Case ePlotTypes.FOverB
+                                drawer.Map = Me.m_FoverB
+                                maptype = cMapDrawerBase.eMapType.FishingMortRate
+                                RelScaler = Me.m_FishingMortScaler
 
-                        ElseIf Me.m_rbDisplayContaminantC.Checked Then
-                            drawer.Map = Me.m_dataTimeStep.ContaminantMap
-                            maptype = cMapDrawer.eMapType.RelContam
-                            RelScaler = Me.m_BaseC
+                            Case ePlotTypes.F
+                                drawer.Map = Me.m_dataTimeStep.CatchMap
+                                maptype = cMapDrawerBase.eMapType.RelCatch
+                                RelScaler = Me.m_BaseCatch
 
-                        ElseIf Me.m_rbDisplayCoverB.Checked Then
-                            drawer.Map = Me.m_ConcOverB
-                            maptype = cMapDrawer.eMapType.ContamRate
-                            RelScaler = Me.m_BaseC
+                            Case ePlotTypes.Contaminant
+                                drawer.Map = Me.m_dataTimeStep.ContaminantMap
+                                maptype = cMapDrawerBase.eMapType.RelContam
+                                RelScaler = Me.m_BaseC
 
-                        End If
+                            Case ePlotTypes.CoverB
+                                drawer.Map = Me.m_ConcOverB
+                                maptype = cMapDrawerBase.eMapType.ContamRate
+                                RelScaler = Me.m_BaseC
+
+                            Case ePlotTypes.Effort
+                                ' This type of map cannot be drawn threaded because cMapDrawers are hard-wired
+                                ' to render groups. Ugh.
+
+                        End Select
 
                         Dim mapArgs As New cMapDrawerArgs(maptype, RelScaler, Me.m_FishingMortMax)
 
@@ -679,9 +585,9 @@ Namespace Ecospace
 
                         ilast = Math.Min(ifirst + Me.m_nMapsPerThread - 1, iNumVisGroups - 1)
 
-                        drawer.ClearGroups()
+                        drawer.ClearItems()
                         For i As Integer = ifirst To ilast
-                            drawer.AddGroup(lVisGroups(i), i)
+                            drawer.AddItem(lVisItems(i), i)
                         Next
                         drawer.ShowMPA = Me.m_bShowMPA
 
@@ -707,30 +613,29 @@ Namespace Ecospace
 
         Private Sub PlotMap(ByVal g As Graphics)
             Try
-                If m_rbDisplayFishingEffort.Checked Then
-                    PlotFishingEffortMap(g)
+                If (Me.m_plottype = ePlotTypes.Effort) Then
+                    PlotFleetMap(g)
                 Else
-                    PlotBiomassMapThreaded(g)
+                    PlotGroupMap(g)
                 End If
             Catch ex As Exception
                 ' Whoah!
             End Try
         End Sub
 
-
-        Private Sub setFleetsForSelGroups()
+        Private Sub SetFleetsForSelGroups()
 
             'Turn all the fleets off
             For iflt As Integer = 1 To Me.Core.nFleets
                 Me.StyleGuide.FleetVisible(iflt) = False
             Next
 
-            'now just the ones for the seleted group
+            'Now enable just the ones for the seleted group
             For igrp As Integer = 1 To Me.Core.nGroups
                 If Me.StyleGuide.GroupVisible(igrp) Then
                     For iflt As Integer = 1 To Me.Core.nFleets
                         Dim flt As cFleetInput = Me.Core.FleetInputs(iflt)
-                        If flt.Landings(igrp) + flt.Discards(igrp) > 0 Then
+                        If (flt.Landings(igrp) + flt.Discards(igrp) > 0) Then
                             Me.StyleGuide.FleetVisible(iflt) = True
                         End If
                     Next
@@ -739,10 +644,12 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub PlotFishingEffortMap(ByVal g As Graphics)
+        Private Sub PlotFleetMap(ByVal g As Graphics)
 
             Dim iNumVizFleets As Integer = 0
             Dim lVizFleets As New List(Of Integer)
+
+            Debug.Assert(Me.m_plottype = ePlotTypes.Effort, "Only allowed for effort maps due to limitations in cMapDrawer. Ugh!")
 
             If m_iTimeStepCur > 0 Then
 
@@ -855,8 +762,7 @@ Namespace Ecospace
 
                 If Me.m_bInvertLabelColor Then br = Brushes.White
 
-                g.DrawString(fltName, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend), _
-                             br, rcPos, fmt)
+                g.DrawString(fltName, Me.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend), br, rcPos, fmt)
             End If
 
         End Sub
@@ -934,23 +840,24 @@ Namespace Ecospace
                     m_rbDisplayContaminantC.CheckedChanged, _
                     m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged
 
-            If Me.m_rbDisplayFishingEffort.Checked Then
-                Me.setFleetsForSelGroups()
+            If Me.m_rbDisplayRelBiomass.Checked Then
+                Me.m_plottype = ePlotTypes.RelB
+            ElseIf Me.m_rbDisplayFishingEffort.Checked Then
+                Me.m_plottype = ePlotTypes.Effort
+                Me.SetFleetsForSelGroups()
+            ElseIf Me.m_rbDisplayCoverB.Checked Then
+                Me.m_plottype = ePlotTypes.CoverB
+            ElseIf Me.m_rbDisplayContaminantC.Checked Then
+                Me.m_plottype = ePlotTypes.Contaminant
+            ElseIf Me.m_rbDisplayF.Checked Then
+                Me.m_plottype = ePlotTypes.F
+            ElseIf Me.m_rbDisplayFOverB.Checked Then
+                Me.m_plottype = ePlotTypes.FOverB
             End If
 
+            Me.UpdateControls()
             Me.RefreshPlot()
             Me.RefreshMap()
-
-        End Sub
-
-
-        Private Sub OnSelFleetsCheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-
-            If Me.m_rbDisplayFishingEffort.Checked Then
-                Me.setFleetsForSelGroups()
-                Me.RefreshPlot()
-                Me.RefreshMap()
-            End If
 
         End Sub
 
@@ -1054,7 +961,7 @@ Namespace Ecospace
             Me.UpdateControls()
         End Sub
 
-#Region "Crap for new FishingMort Legend max value"
+#Region " FishingMort legend scaling "
 
         'Added for the EcoOcean model to scale Catch/Bio legend
         'if there is some way to scale legends then this will go
@@ -1070,12 +977,8 @@ Namespace Ecospace
         End Sub
 
         Private Function ValidateFMax(ByVal newFMax As Single) As Boolean
-            If newFMax > 0 And newFMax < 10 Then
-                Return True
-            End If
-            Return False
+            Return (newFMax > 0 And newFMax < 10)
         End Function
-
 
         Private Sub OntxFMaxValidated(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_txFMax.Validated
             Try
@@ -1100,7 +1003,38 @@ Namespace Ecospace
             Return
         End Sub
 
-#End Region
+#End Region ' FishingMort legend scaling
+
+#Region " Hover menu "
+
+        ''' <summary>Cross-threading delegate.</summary>
+        ''' <param name="cmd"></param>
+        Private Delegate Sub OnHoverMenuCommandCallbackDelegate(ByVal cmd As Object)
+
+        Private Sub OnHoverMenuCommand(cmd As Object)
+
+            If (Not TypeOf cmd Is eHoverCommands) Then Return
+
+            If Me.InvokeRequired Then
+                Me.Invoke(New OnHoverMenuCommandCallbackDelegate(AddressOf OnHoverMenuCommand), New Object() {cmd})
+                Return
+            End If
+
+            Dim fmt As ImageFormat = ImageFormat.Png
+            Dim strFile As String = Me.GetMapFileName(fmt)
+
+            If String.IsNullOrWhiteSpace(strFile) Then Return
+
+            Select Case DirectCast(cmd, eHoverCommands)
+                Case eHoverCommands.SaveImage
+                    Me.SaveMapImage(strFile, fmt)
+                Case eHoverCommands.SaveImageGeoRef
+                    Me.SaveMapGeoRefImages(strFile, fmt)
+            End Select
+
+        End Sub
+
+#End Region ' Hover menu 
 
 #End Region ' Events
 
@@ -1337,6 +1271,8 @@ Namespace Ecospace
             Me.m_cmbRunType.SelectedIndex = iIndex
             Me.m_cmbRunType.Enabled = (Me.IsRunning = False)
 
+            Me.m_hoverMenu.IsEnabled(eHoverCommands.SaveImageGeoRef) = (Me.m_plottype <> ePlotTypes.Effort)
+
             Me.m_bInUpdate = False
 
         End Sub
@@ -1364,6 +1300,214 @@ Namespace Ecospace
 
 #End Region ' Internal implementation
 
+#Region " Image saving "
+
+        Private Function GetMapFileName(ByRef imgFormat As ImageFormat) As String
+
+            Dim cmdh As cCommandHandler = Me.CommandHandler
+            Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim scenario As cEwEScenario = Me.Core.EcospaceScenarios(Me.Core.ActiveEcospaceScenarioIndex)
+
+            If (cmdFS Is Nothing) Then Return ""
+
+            ' ToDo: include type of plot in name
+
+            cmdFS.Invoke(cFileUtils.ToValidFileName(scenario.Name & " results", False), SharedResources.FILEFILTER_IMAGE)
+
+            If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+
+                Select Case cmdFS.FilterIndex
+                    Case 0 : imgFormat = ImageFormat.Bmp
+                    Case 1 : imgFormat = ImageFormat.Jpeg
+                    Case 2 : imgFormat = ImageFormat.Gif
+                    Case 3 : imgFormat = ImageFormat.Png
+                    Case 4 : imgFormat = ImageFormat.Tiff
+                End Select
+                Return cmdFS.FileName
+            End If
+            Return ""
+
+        End Function
+
+        Private Sub SaveMapImage(strFileName As String, imgFormat As ImageFormat)
+
+            ' ToDo: globalize this
+
+            Dim bmp As New Bitmap(Me.m_pbMap.Width, Me.m_pbMap.Height, Imaging.PixelFormat.Format32bppArgb)
+            Dim g As Graphics = Graphics.FromImage(bmp)
+            Dim br As New SolidBrush(Me.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND))
+            Dim fmt As New cRunEcospacePlotTypeFormatter()
+            Dim msg As cMessage = Nothing
+
+            bmp.SetResolution(150, 150)
+
+            Try
+
+                g.FillRectangle(br, 0, 0, bmp.Width, bmp.Height)
+                Me.PlotMap(g)
+                bmp.Save(strFileName, imgFormat)
+                bmp.Dispose()
+
+                Me.SaveMapLegendImage(strFileName, imgFormat, fmt.GetDescriptor(Me.m_plottype), "")
+
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Map image", strFileName), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = IO.Path.GetDirectoryName(strFileName)
+            Catch ex As Exception
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, "Map image", strFileName, ex.Message), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+            End Try
+
+            g.Dispose() : g = Nothing
+            br.Dispose() : br = Nothing
+
+            If (msg IsNot Nothing) Then
+                Me.Core.Messages.SendMessage(msg)
+            End If
+
+        End Sub
+
+        Private Sub SaveMapLegendImage(strFileName As String, imgFormat As ImageFormat, _
+                                       strValueName As String, strDataName As String)
+
+            Dim strExt As String = IO.Path.GetExtension(strFileName)
+            Dim strFile As String = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName))
+            Dim strFilenameLegend As String = strFile & "_legend" & strExt
+
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim sdummy(bm.InRow, bm.InCol) As Single : sdummy(1, 1) = -10 : sdummy(1, 2) = 10
+
+            Dim lgd As New cLegend(Me.UIContext, strValueName)
+            Dim r As cLayerRenderer = New cLayerRendererValue(New cVisualStyle())
+            Dim data As New cEcospaceLayerSingle(Me.Core, sdummy, strDataName)
+            Dim l As New cRasterLayer(Me.UIContext, data, r, Nothing)
+            lgd.AddLayer(l)
+            lgd.SaveAsBitmap(strFilenameLegend, imgFormat)
+
+        End Sub
+
+        Private Sub SaveMapGeoRefImages(strFileName As String, imgFormat As ImageFormat)
+
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim rc As New Rectangle(0, 0, bm.InCol * 100, bm.InRow * 100)
+            Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
+            bmp.SetResolution(150, 150)
+
+            Dim maptype As cMapDrawerBase.eMapType
+            Dim scaler As Single() = Nothing
+            Dim lColors As List(Of Color) = Me.StyleGuide.GetEwE5ColorRamp(cColourBins)
+            Dim drawer As New cMapDrawerGroup(Me.Core)
+            drawer.Graphics = Graphics.FromImage(bmp)
+            drawer.Colors = lColors
+            drawer.ShowLabels = False
+            drawer.ShowMPA = False
+            drawer.ShowLand = False
+            drawer.ShowBorder = False
+            drawer.InCol = Me.m_iInCol
+            drawer.InRow = Me.m_iInRow
+
+            Dim fmt As New cRunEcospacePlotTypeFormatter()
+            Select Case Me.m_plottype
+
+                Case ePlotTypes.RelB
+                    drawer.Map = Me.m_dataTimeStep.BiomassMap
+                    maptype = cMapDrawerBase.eMapType.RelBiomass
+                    scaler = Me.m_BaseBiomass
+
+                    'If parms.UseIBM And Me.m_bShowIBM Then
+                    '    drawer.StanzaDS = Me.m_dataTimeStep.StanzaDS
+                    'End If
+
+                Case ePlotTypes.FOverB
+                    drawer.Map = Me.m_FoverB
+                    maptype = cMapDrawerBase.eMapType.FishingMortRate
+                    scaler = Me.m_FishingMortScaler
+
+                Case ePlotTypes.F
+                    drawer.Map = Me.m_dataTimeStep.CatchMap
+                    maptype = cMapDrawerBase.eMapType.RelCatch
+                    scaler = Me.m_BaseCatch
+
+                Case ePlotTypes.Contaminant
+                    drawer.Map = Me.m_dataTimeStep.ContaminantMap
+                    maptype = cMapDrawerBase.eMapType.RelContam
+                    scaler = Me.m_BaseC
+
+                Case ePlotTypes.CoverB
+                    drawer.Map = Me.m_ConcOverB
+                    maptype = cMapDrawerBase.eMapType.ContamRate
+                    scaler = Me.m_BaseC
+
+                Case ePlotTypes.Effort
+                    ' This type of map cannot be drawn threaded because cMapDrawers are hard-wired
+                    ' to render groups. Ugh.
+                    Return
+
+            End Select
+
+            Dim mapArgs As New cMapDrawerArgs(maptype, scaler, Me.m_FishingMortMax)
+            Dim strExt As String = IO.Path.GetExtension(strFileName)
+            Dim strFile As String = Path.Combine(Path.GetDirectoryName(strFileName), Path.GetFileNameWithoutExtension(strFileName))
+            Dim msg As cMessage = Nothing
+            Dim g As Graphics = Nothing
+
+            Try
+
+                For i As Integer = 1 To Me.Core.nGroups
+
+                    Dim grp As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(i)
+                    Dim strFileSub As String = strFile & "_" & cFileUtils.ToValidFileName(grp.Name, False) & strExt
+
+                    If Me.StyleGuide.GroupVisible(i) Then
+                        g = Graphics.FromImage(bmp)
+                        g.FillRectangle(Brushes.White, 0, 0, bmp.Width, bmp.Height)
+
+                        drawer.DrawMap(i, rc, mapArgs)
+                        g.Dispose()
+                        bmp.Save(strFileSub, imgFormat)
+
+                        ' Add world file
+                        Using sw As New StreamWriter(cFileUtils.ToWorldFileName(strFileSub))
+                            ' Horz. pixel size, in decimal degrees
+                            sw.WriteLine(cStringUtils.FormatNumber(bm.CellSize / 100))
+                            ' Rotation around x axis
+                            sw.WriteLine(0)
+                            ' Rotation around y axis
+                            sw.WriteLine(0)
+                            ' Vert. pixel size, in decimal degrees
+                            sw.WriteLine(cStringUtils.FormatNumber(-bm.CellSize / 100))
+                            ' Longitude centroid of TL pixel, in dec degrees
+                            sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.X + bm.CellSize / 2))
+                            ' Lattitude centroid of TL pixel, in dec degrees
+                            sw.WriteLine(cStringUtils.FormatNumber(bm.PosTopLeft.Y - bm.CellSize / 2))
+                            sw.Flush()
+                            sw.Close()
+                        End Using
+
+                        ' Add legend file
+                        Me.SaveMapLegendImage(strFileSub, imgFormat, _
+                                              String.Format(SharedResources.GENERIC_LABEL_DOUBLE, fmt.GetDescriptor(Me.m_plottype), grp.Name), "")
+
+                    End If
+                Next
+
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Map image(s)", strFileName), _
+                       eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = IO.Path.GetDirectoryName(strFileName)
+            Catch ex As Exception
+                msg = New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_FAILURE, "Map image(s)", strFileName, ex.Message), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+            End Try
+
+            g.Dispose() : g = Nothing
+
+            If (msg IsNot Nothing) Then
+                Me.Core.Messages.SendMessage(msg)
+            End If
+
+        End Sub
+
+#End Region
 
     End Class
 
