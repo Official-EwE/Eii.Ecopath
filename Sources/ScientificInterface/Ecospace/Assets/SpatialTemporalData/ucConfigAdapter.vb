@@ -441,8 +441,12 @@ Namespace Ecospace.Controls
 
             If (ds Is Nothing) Or (cv Is Nothing) Then Return
 
+            strFile = Path.Combine(Me.m_uic.Core.OutputPath(), cFileUtils.ToValidFileName(ds.DisplayName & "_stats.csv", False))
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
+                Return
+            End If
+
             Try
-                strFile = Path.Combine(Me.m_uic.Core.OutputPath(), cFileUtils.ToValidFileName(ds.DisplayName & "_stats.csv", False))
                 sw = New StreamWriter(strFile)
             Catch ex As Exception
                 Return
