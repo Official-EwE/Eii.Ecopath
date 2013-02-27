@@ -130,14 +130,66 @@ Namespace Controls
 
         End Sub
 
-        Public Sub AddItem(img As Image, strTooltip As String, data As Object)
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add an item to the hover menu.
+        ''' </summary>
+        ''' <param name="img">The image to display.</param>
+        ''' <param name="strTooltip">Tool tip text to display.</param>
+        ''' <param name="tag">Custom tag to add to the button. This data will be 
+        ''' broadcasted in the <see cref="OnItemClicked">click event</see> to
+        ''' identify the item that was clicked.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub AddItem(img As Image, strTooltip As String, tag As Object)
             Dim item As New ToolStripButton(strTooltip, img, AddressOf OnItemClicked)
-            item.Tag = data
+            item.Tag = tag
             item.DisplayStyle = ToolStripItemDisplayStyle.Image
             item.ToolTipText = strTooltip
             Me.m_ts.Items.Add(item)
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add an item to the hover menu.
+        ''' </summary>
+        ''' <param name="strText">The text to display on the menu.</param>
+        ''' <param name="img">The image to display.</param>
+        ''' <param name="strTooltip">Tool tip text to display.</param>
+        ''' <param name="tag">Custom tag to add to the button. This data will be 
+        ''' broadcasted in the <see cref="OnItemClicked">click event</see> to
+        ''' identify the item that was clicked.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub AddItem(strText As String, img As Image, strTooltip As String, tag As Object)
+            Dim item As New ToolStripButton(strText, img, AddressOf OnItemClicked)
+            item.Tag = tag
+            item.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText
+            item.TextImageRelation = TextImageRelation.ImageAboveText
+            item.ToolTipText = strTooltip
+            Me.m_ts.Items.Add(item)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add an item to the hover menu.
+        ''' </summary>
+        ''' <param name="strTooltip">Tool tip text to display.</param>
+        ''' <param name="tag">Custom tag to add to the button. This data will be 
+        ''' broadcasted in the <see cref="OnItemClicked">click event</see> to
+        ''' identify the item that was clicked.</param>
+        ''' -------------------------------------------------------------------
+        Public Sub AddItem(strText As String, strTooltip As String, tag As Object)
+            Dim item As New ToolStripButton(strText, Nothing, AddressOf OnItemClicked)
+            item.Tag = tag
+            item.DisplayStyle = ToolStripItemDisplayStyle.Text
+            item.ToolTipText = strTooltip
+            Me.m_ts.Items.Add(item)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a separator to the hover menu.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub AddSeparator()
             Dim item As New ToolStripSeparator()
             Me.m_ts.Items.Add(item)
@@ -159,16 +211,16 @@ Namespace Controls
         ''' <summary>
         ''' Get/set the enabled stated of a hover menu command.
         ''' </summary>
-        ''' <param name="cmd">The command to access the enabled state for.</param>
+        ''' <param name="tag">The tag to access the enabled state for.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsEnabled(ByVal cmd As Object) As Boolean
+        Public Property IsEnabled(ByVal tag As Object) As Boolean
             Get
-                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then Return tsi.Enabled
                 Return False
             End Get
             Set(ByVal value As Boolean)
-                Dim tsi As ToolStripItem = Me.GetToolStripItem(cmd)
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then tsi.Enabled = value
             End Set
         End Property
@@ -178,11 +230,11 @@ Namespace Controls
         ''' Get/set the checked stated of a hover menu String,
         ''' if applicable. This only works on button items.
         ''' </summary>
-        ''' <param name="data">The tag data to access the enabled state for.</param>
+        ''' <param name="tag">The tag to access the enabled state for.</param>
         ''' -------------------------------------------------------------------
-        Public Property IsChecked(ByVal data As Object) As Boolean
+        Public Property IsChecked(ByVal tag As Object) As Boolean
             Get
-                Dim tsi As ToolStripItem = Me.GetToolStripItem(data)
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then
                     If (TypeOf tsi Is ToolStripButton) Then
                         Return DirectCast(tsi, ToolStripButton).Checked
@@ -191,7 +243,7 @@ Namespace Controls
                 Return False
             End Get
             Set(ByVal value As Boolean)
-                Dim tsi As ToolStripItem = Me.GetToolStripItem(data)
+                Dim tsi As ToolStripItem = Me.GetToolStripItem(tag)
                 If (tsi IsNot Nothing) Then
                     If (TypeOf tsi Is ToolStripButton) Then
                         DirectCast(tsi, ToolStripButton).Checked = value
@@ -213,7 +265,6 @@ Namespace Controls
             Try
                 Me.InvokeCallback(DirectCast(sender, ToolStripItem).Tag)
             Catch ex As Exception
-                cLog.Write(ex, "ucHoverMenu::OnItemClicked(" & Me.m_ctrlTarget.ToString & ")")
             End Try
         End Sub
 
@@ -308,8 +359,12 @@ Namespace Controls
             Return Me.m_ctrlTarget.ClientRectangle.Contains(pt)
         End Function
 
-        Private Sub InvokeCallback(ByVal data As Object)
-            RaiseEvent OnUserCommand(data)
+        Private Sub InvokeCallback(ByVal tag As Object)
+            Try
+                RaiseEvent OnUserCommand(tag)
+            Catch ex As Exception
+                cLog.Write(ex, "ucHoverMenu::InvokeCallback(" & Me.m_ctrlTarget.ToString & ")")
+            End Try
         End Sub
 
         Private ReadOnly Property GetToolStripItem(ByVal data As Object) As ToolStripItem
