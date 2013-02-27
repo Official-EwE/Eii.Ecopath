@@ -32,7 +32,6 @@ Public Class cFlowDiagramData
     Private m_nLivingGroups As Integer
     Private m_nGroups As Integer
 
-    Private m_sDiet(,) As Single
     Private m_sTTLX() As Single
     Private m_sValueMin As Single
     Private m_sValueMax As Single
@@ -60,7 +59,9 @@ Public Class cFlowDiagramData
         Me.m_nGroups = Me.m_lUnits.Count
 
         ' Pred -> prey
-        ReDim Me.m_sDiet(Me.m_nGroups, Me.m_nGroups)
+        ReDim Me.m_sTTLX(Me.m_nGroups)
+
+        Me.Calculate()
 
     End Sub
 
@@ -102,8 +103,11 @@ Public Class cFlowDiagramData
     Public ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single _
         Implements IFlowDiagramData.LinkValue
         Get
+            Throw New NotImplementedException("Resolve this!")
             If Not Me.m_bValid Then Me.Calculate()
-            Return Me.m_sDiet(iPred, iPrey)
+            Dim uPred As cUnit = Me.GetUnit(iPred)
+            Dim uPrey As cUnit = Me.GetUnit(iPrey)
+            'Return Me.m_results.VillysArrayOfLinks(uPred.Sequence, uPrey.Sequence)
         End Get
     End Property
 
@@ -141,7 +145,8 @@ Public Class cFlowDiagramData
         Implements IFlowDiagramData.Rank
         Get
             Dim u As cUnit = Me.GetUnit(iGroup)
-            Return CSng(u.UnitType)
+            Dim iSeq As Integer = u.Sequence
+            Return Me.m_sTTLX(iSeq)
         End Get
     End Property
 
@@ -203,17 +208,17 @@ Public Class cFlowDiagramData
     Private Sub Calculate()
 
         Dim fn As New cEcoFunctions()
- 
-        ReDim Me.m_sTTLX(Me.m_nGroups)
-        ' Me.m_sDiet = Me.m_results.VillysBigArray
-        fn.EstimateTrophicLevels(Me.m_sDiet, Me.m_sTTLX)
+        Dim diets As Single(,)
+
+        ' diets = Me.m_results.VillysBigArray
+        fn.EstimateTrophicLevels(diets, Me.m_sTTLX)
 
         Me.m_sLinkValueMax = Single.MinValue
         Me.m_sLinkValueMin = Single.MaxValue
         For i As Integer = 0 To Me.m_nGroups - 1
             For j As Integer = 0 To Me.m_nGroups - 1
-                Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, Me.m_sDiet(i, j))
-                Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, Me.m_sDiet(i, j))
+                Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, diets(i, j))
+                Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, diets(i, j))
             Next
         Next
 
