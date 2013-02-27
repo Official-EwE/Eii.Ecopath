@@ -16,31 +16,16 @@
 ' ===============================================================================
 '
 Imports ScientificInterfaceShared.Controls
+Imports EwECore
 
-' ===============================================================================
-' This file is part of Ecopath with Ecosim (EwE)
-'
-' EwE is free software: you can redistribute it and/or modify it under the terms
-' of the GNU General Public License version 2 as published by the Free Software 
-' Foundation.
-'
-' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
-' PURPOSE. See the GNU General Public License for more details.
-'
-' You should have received a copy of the GNU General Public License along with EwE.
-' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
-'
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
-' ===============================================================================
-'
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
 
 #Region " Private vars "
 
-    Private m_data As cData = Nothing
     Private m_uic As cUIContext = Nothing
+    Private m_data As cData = Nothing
+    Private m_results As cResults = Nothing
 
     ' Units, to be accessed by iGroup. Nyuk nyuk nyuk
     Private m_lUnits As New List(Of cUnit)
@@ -48,6 +33,7 @@ Public Class cFlowDiagramData
     Private m_nGroups As Integer
 
     Private m_sDiet(,) As Single
+    Private m_sTTLX() As Single
     Private m_sValueMin As Single
     Private m_sValueMax As Single
 
@@ -58,10 +44,11 @@ Public Class cFlowDiagramData
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal uic As cUIContext, ByVal data As cData)
+    Public Sub New(ByVal uic As cUIContext, ByVal data As cData, ByVal results As cResults)
 
         Me.m_uic = uic
         Me.m_data = data
+        Me.m_results = results
 
         Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer))
         Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Distribution))
@@ -115,7 +102,8 @@ Public Class cFlowDiagramData
     Public ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single _
         Implements IFlowDiagramData.LinkValue
         Get
-            ' Get sum of all values in one link
+            If Not Me.m_bValid Then Me.Calculate()
+            Return Me.m_sDiet(iPred, iPrey)
         End Get
     End Property
 
@@ -165,7 +153,9 @@ Public Class cFlowDiagramData
     Public ReadOnly Property Value(iGroup As Integer) As Single _
         Implements IFlowDiagramData.Value
         Get
-
+            Dim lUnits As New List(Of cUnit)
+            lUnits.Add(Me.GetUnit(iGroup))
+            Return (Me.m_results.GetTotal(cResults.eVariableType.Cost, lUnits.ToArray))
         End Get
     End Property
 
@@ -212,8 +202,20 @@ Public Class cFlowDiagramData
 
     Private Sub Calculate()
 
-        ' Cache min, max values
-        ' Calc diet matrix
+        Dim fn As New cEcoFunctions()
+ 
+        ReDim Me.m_sTTLX(Me.m_nGroups)
+        ' Me.m_sDiet = Me.m_results.VillysBigArray
+        fn.EstimateTrophicLevels(Me.m_sDiet, Me.m_sTTLX)
+
+        Me.m_sLinkValueMax = Single.MinValue
+        Me.m_sLinkValueMin = Single.MaxValue
+        For i As Integer = 0 To Me.m_nGroups - 1
+            For j As Integer = 0 To Me.m_nGroups - 1
+                Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, Me.m_sDiet(i, j))
+                Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, Me.m_sDiet(i, j))
+            Next
+        Next
 
         Me.m_bValid = True
 
