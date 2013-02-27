@@ -223,6 +223,8 @@ Public Class cResults
     ''' <summary>Run type that results were computed for.</summary>
     Private m_runType As cModel.eRunTypes = cModel.eRunTypes.Ecopath
 
+    Public FlowsByWeightBetweenUnits(,) As Double
+
 #End Region ' Private vars
 
 #Region " Public enums "
@@ -364,6 +366,8 @@ Public Class cResults
         Me.m_iMaxTimeStep = 0
         Me.m_iMaxItem = 0
         Me.m_runType = runType
+
+        ReDim Me.FlowsByWeightBetweenUnits(nNumUnits, nNumUnits)
 
         ReDim Me.m_asItemValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
         ReDim Me.m_asItemBiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))

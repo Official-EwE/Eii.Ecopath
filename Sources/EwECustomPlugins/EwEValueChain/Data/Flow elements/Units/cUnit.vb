@@ -61,6 +61,8 @@ Public MustInherit Class cUnit
     Private m_bCanCompute As Boolean = False
     Private m_bRunStarted As Boolean = False
 
+    
+
     ''' <summary>Units that receive outputs from this unit.</summary>
     Protected m_llinkOutput As New List(Of cLink)
     ''' <summary>Units that provide inputs for this unit.</summary>
@@ -236,6 +238,8 @@ Public MustInherit Class cUnit
 
                 sTotalOutputBiomass += sOutputBiomass
                 sTotalOutputValue += sOutputValue
+
+                results.FlowsByWeightBetweenUnits(link.Target.m_iSequence, link.Source.m_iSequence) += sOutputBiomass
 
                 link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iUnit)
 

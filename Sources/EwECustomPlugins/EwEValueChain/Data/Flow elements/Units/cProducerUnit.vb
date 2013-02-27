@@ -239,6 +239,8 @@ Public Class cProducerUnit
 
         'MyBase.Process(results, input, iTimeStep, iUnit)
 
+        
+
     End Sub
 
     Protected Overrides Function Calculate(ByVal results As cResults, _

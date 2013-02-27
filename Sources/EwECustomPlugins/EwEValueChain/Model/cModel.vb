@@ -45,6 +45,9 @@ Public Class cModel
         Equilibrium
     End Enum
 
+    Public FlowsByWeightBetweenUnits(,) As Double
+
+
 #Region " Private vars "
 
     ''' <summary>Preserved effort during equilibrium search.</summary>
@@ -296,7 +299,30 @@ Public Class cModel
 
     End Function
 
+    Public Function MakeDietComposition(ByVal data As cData, _
+                     ByVal result As cResults, _
+                     ByVal iTimeStep As Integer, _
+                     Optional ByVal ecosimResults As cEcoSimResults = Nothing, _
+                     Optional ByVal ecosimDS As cEcosimDatastructures = Nothing) As Double(,)
 
+        Dim iNumUnits As Integer = data.GetUnits(cUnitFactory.eUnitType.All).Length
+        Dim DietComposition(iNumUnits, iNumUnits) As Double
+
+        For iTarget As Integer = 1 To iNumUnits
+            Dim total As Double = 0
+            For iSource As Integer = 1 To iNumUnits
+                total += result.FlowsByWeightBetweenUnits(iTarget, iSource)
+            Next
+            If total > 0 Then
+                For iSource As Integer = 1 To iNumUnits
+                    DietComposition(iTarget, iSource) = result.FlowsByWeightBetweenUnits(iTarget, iSource) / total
+                Next
+            End If
+        Next
+
+        Return DietComposition
+
+    End Function
     ''' <summary>
     ''' Run a time step for the entire chain, unfiltered.
     ''' </summary>
@@ -473,7 +499,7 @@ Public Class cModel
         Return True
 
     End Function
-   
+
 #Region " Helpers "
 
     Private Function GetLandings(ByVal core As cCore, _
