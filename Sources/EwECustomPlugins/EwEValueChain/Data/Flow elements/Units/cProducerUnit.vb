@@ -226,16 +226,18 @@ Public Class cProducerUnit
 
 #Region " Calculations "
 
+    <Obsolete("cProducerUnit.Process override should not be called anymore")> _
     Public Overrides Sub Process(ByVal results As cResults, _
                                  ByVal input As cInput, _
                                  ByVal iTimeStep As Integer, _
                                  ByVal iUnit As Integer)
 
-        ' Store landings and landings price only for producers
-        results.Store(Me, cResults.eVariableType.Landings, input.Tons, iTimeStep)
-        results.Store(Me, cResults.eVariableType.LandingsPrice, input.Value, iTimeStep)
+        Throw New NotImplementedException("cProducerUnit.Process override should not be called anymore")
+        '' Store landings and landings price only for producers
+        'results.Store(Me, cResults.eVariableType.Landings, input.Tons, iTimeStep)
+        'results.Store(Me, cResults.eVariableType.LandingsPrice, input.Value, iTimeStep)
 
-        MyBase.Process(results, input, iTimeStep, iUnit)
+        'MyBase.Process(results, input, iTimeStep, iUnit)
 
     End Sub
 
