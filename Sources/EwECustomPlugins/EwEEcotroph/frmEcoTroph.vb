@@ -1,5 +1,4 @@
-﻿
-' ===============================================================================
+﻿' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -13,25 +12,18 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
 
-
-Imports System.Windows.Forms
-Imports EcoTroph.newET
+Option Strict Off
 Imports System.IO
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
+Imports System.Windows.Forms
 Imports System.Xml
-Imports System.Web.Services
-Imports EcoTroph.ServiceReference1
-Imports EcoTroph.Eco_services
 Imports System.Xml.Serialization
-Imports System.Net
-Imports EwEPlugin
+Imports EcoTroph.Eco_services
+Imports EcoTroph.newET
+Imports EwEUtils.Utilities
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
 
