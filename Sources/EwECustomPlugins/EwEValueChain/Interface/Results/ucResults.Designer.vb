@@ -50,14 +50,14 @@ Partial Class ucResults
         Me.m_tsbEcopath = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEcosim = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbEquilibrium = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnSave = New System.Windows.Forms.ToolStripButton()
         Me.m_btnRunEcosim = New System.Windows.Forms.Button()
         Me.m_scResults = New System.Windows.Forms.SplitContainer()
         Me.m_plFlow = New EwEValueChainPlugin.plFlow()
         Me.m_btnRunEquilibrium = New System.Windows.Forms.Button()
         Me.m_lblAgg = New System.Windows.Forms.Label()
         Me.m_cmbAgg = New System.Windows.Forms.ComboBox()
-        Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.m_tsbnSave = New System.Windows.Forms.ToolStripButton()
         Me.m_tsResults.SuspendLayout()
         CType(Me.m_scResults, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scResults.Panel1.SuspendLayout()
@@ -188,6 +188,19 @@ Partial Class ucResults
         Me.m_tsbEquilibrium.Text = "Equilibrium"
         Me.m_tsbEquilibrium.ToolTipText = "Show equilibrium results graph"
         '
+        'ToolStripSeparator1
+        '
+        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        '
+        'm_tsbnSave
+        '
+        Me.m_tsbnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.m_tsbnSave.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.m_tsbnSave.Name = "m_tsbnSave"
+        Me.m_tsbnSave.Size = New System.Drawing.Size(23, 22)
+        Me.m_tsbnSave.Text = "&Save results"
+        '
         'm_btnRunEcosim
         '
         Me.m_btnRunEcosim.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -261,19 +274,6 @@ Partial Class ucResults
         Me.m_cmbAgg.Name = "m_cmbAgg"
         Me.m_cmbAgg.Size = New System.Drawing.Size(121, 21)
         Me.m_cmbAgg.TabIndex = 5
-        '
-        'ToolStripSeparator1
-        '
-        Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(6, 25)
-        '
-        'm_tsbnSave
-        '
-        Me.m_tsbnSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.m_tsbnSave.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.m_tsbnSave.Name = "m_tsbnSave"
-        Me.m_tsbnSave.Size = New System.Drawing.Size(23, 22)
-        Me.m_tsbnSave.Text = "&Save results"
         '
         'ucResults
         '

@@ -311,6 +311,14 @@ Public Class cResults
 
     End Enum
 
+    Public Enum eGraphDataType As Integer
+        CostRevenue = 0
+        Cost
+        Revenue
+        Jobs
+        Dependents
+    End Enum
+
 #End Region ' Public enums
 
 #Region " Construction "
@@ -322,6 +330,52 @@ Public Class cResults
 #End Region ' Construction
 
 #Region " Public access "
+
+    Public Shared Function GetVariables(graph As eGraphDataType) As eVariableType()
+
+        Dim vars() As eVariableType = Nothing
+
+        Select Case graph
+
+            Case eGraphDataType.CostRevenue
+                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal, _
+                                                      cResults.eVariableType.Cost, _
+                                                      cResults.eVariableType.Profit}
+
+            Case eGraphDataType.Cost
+                vars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture, _
+                                                      cResults.eVariableType.CostInput, _
+                                                      cResults.eVariableType.CostManagementRoyaltyCertification, _
+                                                      cResults.eVariableType.CostManagementRoyaltyCertificationObservers, _
+                                                      cResults.eVariableType.CostRawmaterial}
+
+            Case eGraphDataType.Revenue
+                vars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets, _
+                                                      cResults.eVariableType.RevenueSubsidies, _
+                                                      cResults.eVariableType.RevenueProductsMain, _
+                                                      cResults.eVariableType.RevenueProductsOther, _
+                                                      cResults.eVariableType.RevenueAgriculture}
+
+            Case eGraphDataType.Jobs
+                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal, _
+                                                      cResults.eVariableType.NumberOfJobsMaleTotal, _
+                                                      cResults.eVariableType.NumberOfJobsFemaleTotal}
+            Case eGraphDataType.Dependents
+                vars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal, _
+                                                      cResults.eVariableType.NumberOfWorkerDependents, _
+                                                      cResults.eVariableType.NumberOfWorkerFemales, _
+                                                      cResults.eVariableType.NumberOfWorkerMales, _
+                                                      cResults.eVariableType.NumberOfOwnerMales, _
+                                                      cResults.eVariableType.NumberOfOwnerFemales, _
+                                                      cResults.eVariableType.NumberOfOwnerDependents}
+
+            Case Else
+                Debug.Assert(False)
+
+        End Select
+        Return vars
+
+    End Function
 
     Public Shared Function GetVariableContributionType(var As eVariableType) As eContributionType
 

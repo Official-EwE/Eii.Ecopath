@@ -56,7 +56,7 @@ Public Class ucFlowDiagram
     Private m_result As cResults = Nothing
     ''' <summary>UI context to operate on.</summary>
     Private m_uic As cUIContext = Nothing
-    Private m_data As IFlowDiagramData = Nothing
+    Private m_data As cFlowDiagramData = Nothing
 
     Private m_doodler As cFlowDiagramRenderer = Nothing
     Private m_tree As cFlowDiagramTree = Nothing
@@ -71,13 +71,25 @@ Public Class ucFlowDiagram
         Me.InitializeComponent()
 
         Me.m_uic = uic
-        Me.m_data = New cFlowDiagramData(uic, model, data, result)
         Me.m_model = model
         Me.m_result = result
 
+        Me.m_data = New cFlowDiagramData(uic, model, data, result)
         Me.m_tree = New cFlowDiagramTree(Me.m_data)
         Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
 
+        Me.SetStyle(ControlStyles.ResizeRedraw Or ControlStyles.AllPaintingInWmPaint, True)
+
+    End Sub
+
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        Me.m_tscbmValue.Items.Clear()
+        For Each gd As cResults.eGraphDataType In [Enum].GetValues(GetType(cResults.eGraphDataType))
+            Me.m_tscbmValue.Items.Add(gd)
+        Next
+        Me.m_tscbmValue.SelectedIndex = 0
     End Sub
 
     Public Property UIContext() As cUIContext _
@@ -104,13 +116,13 @@ Public Class ucFlowDiagram
 
     Protected Overridable Sub OnStyleGuideChanged(ByVal ct As cStyleGuide.eChangeType)
         ' Yo!
-        Me.m_pbFD.Invalidate()
+        Me.m_pbFlowDiagram.Invalidate()
     End Sub
 
     Private Sub OnPaintPictureBox(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
-        Handles m_pbFD.Paint
+        Handles m_pbFlowDiagram.Paint
 
-        Dim rc As Rectangle = Me.m_pbFD.ClientRectangle
+        Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
         Me.m_doodler.DrawFlowDiagram(e.Graphics, rc)
 
     End Sub
@@ -121,5 +133,43 @@ Public Class ucFlowDiagram
     Protected Overrides Sub OnPaintBackground(ByVal pevent As PaintEventArgs)
         ' NOP
     End Sub
+
+    Private Sub OnShowDifferentValue(sender As Object, e As System.EventArgs) _
+        Handles m_tscbmValue.SelectedIndexChanged
+        Try
+            Me.m_data.DisplayValue = DirectCast(Me.m_tscbmValue.SelectedItem, cResults.eGraphDataType)
+            Me.m_pbFlowDiagram.Invalidate()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+#Region " Mouse Events "
+
+    Private Sub FDPictBox_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Handles m_pbFlowDiagram.MouseDown
+
+        Using g As Graphics = Me.CreateGraphics()
+            Me.m_doodler.BeginDrag(Me.m_pbFlowDiagram.ClientRectangle, e.Location, g)
+        End Using
+
+    End Sub
+
+    Private Sub FDPictBox_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Handles m_pbFlowDiagram.MouseUp
+        Me.m_doodler.EndDrag(Me.m_data, e.Location)
+    End Sub
+
+    Private Sub FDPictBox_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+        Handles m_pbFlowDiagram.MouseMove
+
+        Using g As Graphics = Me.CreateGraphics()
+            Me.m_doodler.ProcessMouseMove(g, Me.m_pbFlowDiagram.ClientRectangle, e.Location)
+            Me.m_pbFlowDiagram.Invalidate()
+        End Using
+
+    End Sub
+
+#End Region ' Mouse Events
 
 End Class

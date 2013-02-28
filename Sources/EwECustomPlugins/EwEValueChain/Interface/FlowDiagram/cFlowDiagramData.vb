@@ -42,6 +42,7 @@ Public Class cFlowDiagramData
     Private m_sLinkValueMax As Single
 
     Private m_bValid As Boolean = False
+    Private m_displayvalue As cResults.eGraphDataType = cResults.eGraphDataType.Cost
 
 #End Region ' Private vars
 
@@ -59,6 +60,7 @@ Public Class cFlowDiagramData
 
         ReDim Me.m_sTTLX(Me.m_nGroups)
         ReDim Me.m_units(Me.m_nGroups)
+        ReDim Me.m_diets(Me.m_nGroups, Me.m_nGroups)
 
         For Each unit In units
             If unit.UnitType <> cUnitFactory.eUnitType.Producer Then
@@ -72,6 +74,24 @@ Public Class cFlowDiagramData
     End Sub
 
 #Region " Properties "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the <see cref="cResults.eGraphDataType">graph data type</see> 
+    ''' to display.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Property DisplayValue As cResults.eGraphDataType
+        Get
+            Return Me.m_displayvalue
+        End Get
+        Set(value As cResults.eGraphDataType)
+            If (value <> Me.m_displayvalue) Then
+                Me.m_displayvalue = value
+                Me.m_bValid = False
+            End If
+        End Set
+    End Property
 
     Public ReadOnly Property GroupColor(iGroup As Integer) As System.Drawing.Color _
         Implements IFlowDiagramData.GroupColor
@@ -101,7 +121,7 @@ Public Class cFlowDiagramData
     Public ReadOnly Property IsGroupVisible(iGroup As Integer) As Boolean _
         Implements IFlowDiagramData.IsGroupVisible
         Get
-            ' ToDo: use fow filters here
+            ' ToDo: use filters here
             Return True
         End Get
     End Property
@@ -163,9 +183,7 @@ Public Class cFlowDiagramData
     Public ReadOnly Property Value(iGroup As Integer) As Single _
         Implements IFlowDiagramData.Value
         Get
-            Dim lUnits As New List(Of cUnit)
-            lUnits.Add(Me.GetUnit(iGroup))
-            Return (Me.m_results.GetTotal(cResults.eVariableType.Cost, lUnits.ToArray))
+            Return Me.GetUnitValue(Me.GetUnit(iGroup))
         End Get
     End Property
 
@@ -213,34 +231,90 @@ Public Class cFlowDiagramData
 
     Private Sub Calculate()
 
-        Dim fn As New cEcoFunctions()
-        Dim PP(Me.NumGroups) As Single
+        Dim fn As cEcoFunctions = Me.m_data.Core.EcoFunction
         Dim unit As cUnit = Nothing
 
-        For iGroup As Integer = 1 To Me.m_nGroups
-            unit = Me.GetUnit(iGroup)
-            If (unit.UnitType = cUnitFactory.eUnitType.Producer) Then
-                PP(iGroup) = 1.0!
-            Else
-                PP(iGroup) = 0.0!
-            End If
-        Next
-
-        Me.m_diets = Me.m_model.MakeDietComposition(Me.m_data, Me.m_results, 1)
-        fn.EstimateTrophicLevels(Me.m_nGroups, Me.m_nLivingGroups, PP, Me.m_diets, Me.m_sTTLX)
+        ' Trophic level calculations require a temporary PP array
+        Dim PP(Me.m_nGroups) As Single
 
         Me.m_sLinkValueMax = Single.MinValue
         Me.m_sLinkValueMin = Single.MaxValue
-        For i As Integer = 0 To Me.m_nGroups - 1
-            For j As Integer = 0 To Me.m_nGroups - 1
-                Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, Me.m_diets(i, j))
-                Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, Me.m_diets(i, j))
+
+        Me.m_sValueMax = Single.MinValue
+        Me.m_sValueMin = Single.MaxValue
+
+        ' -------------------------------------
+        ' Compute diets, PP, and value extremes
+        ' -------------------------------------
+
+        For iTarget As Integer = 1 To Me.m_nGroups
+
+            Dim total As Double = 0.0#
+            Dim val As Single = 0.0!
+
+            For iSource As Integer = 1 To Me.m_nGroups
+                total += Me.m_results.FlowsByWeight(iTarget, iSource)
             Next
+
+            If total > 0 Then
+                For iSource As Integer = 1 To Me.m_nGroups
+                    ' Convert to single for EwE compatibility. Is ok when normalized, huge precision is not needed then
+                    val = CSng(Me.m_results.FlowsByWeight(iTarget, iSource) / total)
+                    Me.m_diets(iTarget, iSource) = val
+
+                    Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, val)
+                    Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, val)
+
+                Next
+            Else
+                For iSource As Integer = 1 To Me.m_nGroups
+                    Me.m_diets(iTarget, iSource) = 0.0!
+                Next
+            End If
+
+            unit = Me.GetUnit(iTarget)
+            If (unit.UnitType = cUnitFactory.eUnitType.Producer) Then
+                PP(iTarget) = 1.0!
+            Else
+                PP(iTarget) = 0.0!
+            End If
+
+            ' Compute value extremes
+            val = Me.GetUnitValue(unit)
+            Me.m_sValueMax = Math.Max(Me.m_sValueMax, val)
+            Me.m_sValueMin = Math.Min(Me.m_sValueMin, val)
+
         Next
 
+        ' Calculate trophic levels
+        fn.EstimateTrophicLevels(Me.m_nGroups, Me.m_nLivingGroups, PP, Me.m_diets, Me.m_sTTLX)
+
+        ' Done
         Me.m_bValid = True
 
     End Sub
+
+    ''' <summary>
+    ''' Get the value for a unit for the current <see cref="m_displayvalue"/>.
+    ''' </summary>
+    ''' <param name="unit"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function GetUnitValue(unit As cUnit) As Single
+
+        Dim sTotal As Single = 0.0
+        Dim lUnits As New List(Of cUnit)
+        lUnits.Add(unit)
+
+        Dim vars() As cResults.eVariableType = cResults.GetVariables(Me.m_displayvalue)
+        If (vars IsNot Nothing) Then
+            For Each v As cResults.eVariableType In vars
+                sTotal += Me.m_results.GetTotal(cResults.eVariableType.Cost, lUnits.ToArray)
+            Next
+        End If
+        Return sTotal
+
+    End Function
 
 #End Region ' Internals
 

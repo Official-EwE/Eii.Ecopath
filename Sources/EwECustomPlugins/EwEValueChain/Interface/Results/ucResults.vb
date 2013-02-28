@@ -139,14 +139,6 @@ Public Class ucResults
         GraphEquilibrium
     End Enum
 
-    Enum eGraphDataType As Integer
-        CostRevenue = 0
-        Cost
-        Revenue
-        Jobs
-        Dependents
-    End Enum
-
     ''' <summary>Value chain data that provides, units, links etc.</summary>
     Private m_data As cData = Nothing
     ''' <summary>Instance of the Ecost model to poke and prod.</summary>
@@ -159,7 +151,7 @@ Public Class ucResults
     ''' <summary>Viewmode dictates what type of result screen the user sees.</summary>
     Private m_viewMode As eViewModeType = eViewModeType.Graph
     ''' <summary>Graphmode dictates what data is viewed in result graphs.</summary>
-    Private m_graphmode As eGraphDataType = eGraphDataType.CostRevenue
+    Private m_graphmode As cResults.eGraphDataType = cResults.eGraphDataType.CostRevenue
     ''' <summary>Current view to update when triggers arrive.</summary>
     Private m_view As IResultView = Nothing
     ''' <summary>Update feedback prevention flaggibit.</summary>
@@ -252,7 +244,7 @@ Public Class ucResults
         Dim iSel As Integer = 0
 
         Me.m_tscmbGraphData.Items.Clear()
-        For Each gd As eGraphDataType In [Enum].GetValues(GetType(eGraphDataType))
+        For Each gd As cResults.eGraphDataType In [Enum].GetValues(GetType(cResults.eGraphDataType))
             Me.m_tscmbGraphData.Items.Add(gd)
         Next
         Me.m_tscmbGraphData.SelectedIndex = 0
@@ -360,7 +352,7 @@ Public Class ucResults
 
     Private Sub OnGraphDataSelectionChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tscmbGraphData.SelectedIndexChanged
-        Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, eGraphDataType))
+        Me.SetGraphData(DirectCast(Me.m_tscmbGraphData.SelectedItem, cResults.eGraphDataType))
         Me.UpdateResults()
     End Sub
 
@@ -688,7 +680,7 @@ Public Class ucResults
 
     End Sub
 
-    Private Sub SetGraphData(ByVal graphmode As eGraphDataType)
+    Private Sub SetGraphData(ByVal graphmode As cResults.eGraphDataType)
 
         Me.m_graphmode = graphmode
         Me.UpdateControls()
@@ -704,14 +696,14 @@ Public Class ucResults
 
         Select Case graphmode
 
-            Case eGraphDataType.CostRevenue
+            Case cResults.eGraphDataType.CostRevenue
                 strGraphTitle = My.Resources.HEADER_REV_COST
                 strYAxisLabel = My.Resources.HEADER_REV_COST_UNIT
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTotal, _
                                                       cResults.eVariableType.Cost, _
                                                       cResults.eVariableType.Profit}
 
-            Case eGraphDataType.Cost
+            Case cResults.eGraphDataType.Cost
                 strGraphTitle = My.Resources.HEADER_COST
                 strYAxisLabel = My.Resources.HEADER_COST_UNIT
                 avars = New cResults.eVariableType() {cResults.eVariableType.CostAgriculture, _
@@ -720,7 +712,7 @@ Public Class ucResults
                                                       cResults.eVariableType.CostManagementRoyaltyCertificationObservers, _
                                                       cResults.eVariableType.CostRawmaterial}
 
-            Case eGraphDataType.Revenue
+            Case cResults.eGraphDataType.Revenue
                 strGraphTitle = My.Resources.HEADER_REVENUE
                 strYAxisLabel = My.Resources.HEADER_REVENUE_UNIT
                 avars = New cResults.eVariableType() {cResults.eVariableType.RevenueTickets, _
@@ -729,13 +721,13 @@ Public Class ucResults
                                                       cResults.eVariableType.RevenueProductsOther, _
                                                       cResults.eVariableType.RevenueAgriculture}
 
-            Case eGraphDataType.Jobs
+            Case cResults.eGraphDataType.Jobs
                 strGraphTitle = My.Resources.HEADER_JOBS
                 strYAxisLabel = My.Resources.HEADER_JOBS
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfJobsTotal, _
                                                       cResults.eVariableType.NumberOfJobsMaleTotal, _
                                                       cResults.eVariableType.NumberOfJobsFemaleTotal}
-            Case eGraphDataType.Dependents
+            Case cResults.eGraphDataType.Dependents
                 strGraphTitle = My.Resources.HEADER_DEPENDENTS
                 strYAxisLabel = My.Resources.HEADER_DEPENDENTS
                 avars = New cResults.eVariableType() {cResults.eVariableType.NumberOfDependentsTotal, _
