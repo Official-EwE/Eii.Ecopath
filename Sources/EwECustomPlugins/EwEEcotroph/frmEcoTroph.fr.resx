@@ -117,67 +117,126 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ERROR_INPUT_FILE" xml:space="preserve">
-    <value>Cannot read file from disk. Original error:</value>
+  <data name="Load_from_ecopath.Text" xml:space="preserve">
+    <value>Load the data from Ecopath</value>
   </data>
-  <data name="ERROR_LOAD" xml:space="preserve">
-    <value>Cannot read file from disk. Original error: {0}</value>
+  <data name="Button1.Text" xml:space="preserve">
+    <value>Load the data from file</value>
   </data>
-  <data name="ERROR_NO_MODEL_LOADED" xml:space="preserve">
-    <value>There is no model loaded, we can't find EcoTroph input data</value>
+  <data name="Save_ETdata.Text" xml:space="preserve">
+    <value>Save the input data</value>
   </data>
-  <data name="ERROR_NO_RESULTS" xml:space="preserve">
-    <value>The procedure did not yield any results</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 13</value>
   </data>
-  <data name="EXCEED_TIME_R" xml:space="preserve">
-    <value>Exceed time for R</value>
+  <data name="Label3.Text" xml:space="preserve">
+    <value>Nom du modèle et description</value>
   </data>
-  <data name="FILEFILTER_XML" xml:space="preserve">
-    <value>xml files (*.xml)|*.xml</value>
+  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 13</value>
   </data>
-  <data name="FILEFILTER_XML_ALL" xml:space="preserve">
-    <value>xml files (*.xml)|*.xml|All files (*.*)|*.*</value>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Commentaires :</value>
   </data>
-  <data name="NOT_ENOUGH_FLEET" xml:space="preserve">
-    <value>Not enough fleet to use these parameters</value>
+  <data name="smooth_graph.Location" type="System.Drawing.Point, System.Drawing">
+    <value>753, 16</value>
   </data>
-  <data name="NO_DB_SERVICES" xml:space="preserve">
-    <value>The web service to access the model database seems to be down.</value>
+  <data name="smooth_graph.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 17</value>
   </data>
-  <data name="NO_MODEL_DATA" xml:space="preserve">
-    <value>There's no model loaded, we can't find EcoTroph input data'</value>
+  <data name="smooth_graph.Text" xml:space="preserve">
+    <value>View the graphs</value>
   </data>
-  <data name="NO_OUTPUT_R" xml:space="preserve">
-    <value>The procedure has produce no results</value>
+  <data name="getgraphs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>751, 16</value>
   </data>
-  <data name="NO_R" xml:space="preserve">
-    <value>R is not present</value>
+  <data name="getgraphs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 17</value>
   </data>
-  <data name="NO_SELECTED_FLEET" xml:space="preserve">
-    <value>No selection for fleet of interest ! The process will run with the Same.mE Parameter</value>
+  <data name="getgraphs.Text" xml:space="preserve">
+    <value>View the graphs</value>
   </data>
-  <data name="PB_DOWNLOAD" xml:space="preserve">
-    <value>Cannot Download file. Original error: </value>
+  <data name="panel_result.Size" type="System.Drawing.Size, System.Drawing">
+    <value>845, 552</value>
   </data>
-  <data name="PB_R" xml:space="preserve">
-    <value>Problem in R use</value>
+  <data name="TabPage4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 526</value>
   </data>
-  <data name="PLUGIN_AUTHOR" xml:space="preserve">
-    <value>Agrocampus Ouest - Fisheries and Aquatic Sciences Center</value>
+  <data name="grille_ET_main.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 520</value>
   </data>
-  <data name="PLUGIN_CONTROLTEXT" xml:space="preserve">
-    <value>EcoTroph</value>
+  <data name="TabPage5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 526</value>
   </data>
-  <data name="PLUGIN_DESCRIPTION" xml:space="preserve">
-    <value>EcoTroph (ET) is a modelling approach articulated around the idea that an ecosystem can be represented by its biomass distribution across trophic levels. Such an approach, wherein species as such disappear, may be regarded as the ultimate stage in the use of the trophic level metric for ecosystem modelling. By concentrating on biomass flow as a quasi-physical process, it allows aspects of ecosystem functioning to be explored which are complementary to EwE. It provides users with simple tools to quantify the impacts of fishing at an ecosystem scale and a new way of looking at ecosystems. It thus appears a useful complement to Ecopath.</value>
+  <data name="grille_biomass.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 520</value>
   </data>
-  <data name="PROMPT_SAVE_ET" xml:space="preserve">
-    <value>Save an EcoTroph input data file</value>
+  <data name="TabPage6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 526</value>
   </data>
-  <data name="SAVE_ECOTROPH" xml:space="preserve">
-    <value>Save an EcoTroph input data file</value>
+  <data name="grille_biomass_acc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 520</value>
   </data>
-  <data name="TOO_SELECTED_FLEET" xml:space="preserve">
-    <value>You can't select all the fleets !!!, unselect at least one</value>
+  <data name="TabPage7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 526</value>
+  </data>
+  <data name="grille_flow_p.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 520</value>
+  </data>
+  <data name="TabPage8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 526</value>
+  </data>
+  <data name="grille_flow_p_acc.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 520</value>
+  </data>
+  <data name="Y.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 526</value>
+  </data>
+  <data name="grille_y.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 520</value>
+  </data>
+  <data name="getgraph_diag.Location" type="System.Drawing.Point, System.Drawing">
+    <value>751, 16</value>
+  </data>
+  <data name="getgraph_diag.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 17</value>
+  </data>
+  <data name="getgraph_diag.Text" xml:space="preserve">
+    <value>View the graphs</value>
+  </data>
+  <data name="tabgrille_flow_mf.Size" type="System.Drawing.Size, System.Drawing">
+    <value>845, 460</value>
+  </data>
+  <data name="TabPage10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 434</value>
+  </data>
+  <data name="grille_ET_main_diagnose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 428</value>
+  </data>
+  <data name="TabPage11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>837, 434</value>
+  </data>
+  <data name="grille_biom_mf.Size" type="System.Drawing.Size, System.Drawing">
+    <value>831, 428</value>
+  </data>
+  <data name="result_pdf.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 43</value>
+  </data>
+  <data name="result_pdf.Size" type="System.Drawing.Size, System.Drawing">
+    <value>841, 552</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="result_pdf.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="result_pdf_et_diag.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 135</value>
+  </data>
+  <data name="result_pdf_et_diag.Size" type="System.Drawing.Size, System.Drawing">
+    <value>845, 460</value>
+  </data>
+  <data name="result_pdf_et_diag.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
 </root>

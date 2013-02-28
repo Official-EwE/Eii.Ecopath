@@ -12,26 +12,25 @@
 ' You should have received a copy of the GNU General Public License along with EwE.
 ' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
 '
-' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
-Imports EwEPlugin
-Imports EwECore
-Imports EwEUtils
+Option Strict On
 Imports System.Windows.Forms
-Imports EwEUtils.Commands
+Imports EwECore
+Imports EwEPlugin
 
-
-
-
-
-Public Class newET
+''' <summary>
+''' Plug-in point for the Ecotroph plug-in.
+''' </summary>
+Public Class cEcotrophPlugin
     Implements EwEPlugin.IGUIPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
-    
+
+#Region " Internals "
+
     Structure ETinputtot
         Dim groupname() As String
         Dim TL() As Single
@@ -40,114 +39,154 @@ Public Class newET
         Dim accessibility() As Single
         Dim OI() As Single
         Dim catches()() As Single
-        Dim numfleet As Single
+        Dim numfleet As Integer
         Dim fleetname() As String
         Dim ModelName As String
         Dim Modeldescription As String
         Dim comments As String
     End Structure
+
     Public Shared ETinputdata As ETinputtot
     Public Shared ETinputdatafromEP As ETinputtot
     ' Public Shared ETinputdataFLEET As ETinputFLEET
     ' Public Shared ETinputdataFLEETfromEP As ETinputFLEET
-    Public Shared etCore As cCore
+    Public Shared etCore As cCore = Nothing
 
-    Private frmET As autre
+    Private frmET As frmEcotroph = Nothing
 
-    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+#End Region ' Internals
 
+#Region " Construction / destruction "
+
+    Public Sub New()
+        ' NOP
     End Sub
 
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
+
+#End Region ' Construction / destruction
+
+#Region " Plugin points implementation "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.ICorePlugin.CoreInitialized"/>
+    ''' -----------------------------------------------------------------------
+    Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
+        ' NOP
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Author"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Author As String Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Jerome Guitton, Didier Gascuel"
+            Return My.Resources.PLUGIN_AUTHOR
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Contact"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Contact As String Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "jerome.guitton@agrocampus-ouest.fr"
+            Return "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php"
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Description As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "EcoTroph (ET) is a modelling approach articulated around the idea that an ecosystem can be represented by its biomass distribution across trophic levels. Such an approach, wherein species as such disappear, may be regarded as the ultimate stage in the use of the trophic level metric for ecosystem modelling. By concentrating on biomass flow as a quasi-physical process, it allows aspects of ecosystem functioning to be explored which are complementary to EwE. It provides users with simple tools to quantify the impacts of fishing at an ecosystem scale and a new way of looking at ecosystems. It thus appears a useful complement to Ecopath."
+            Return My.Resources.PLUGIN_DESCRIPTION
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Initialize"/>
+    ''' -----------------------------------------------------------------------
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        etcore = core
+        etCore = DirectCast(core, cCore)
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IPlugin.Author"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ET  sample plug-in"
+            Return "ndEcotroph"
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.ControlImage"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.ControlText"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "EcoTroph"
+            Return My.Resources.PLUGIN_CONTROLTEXT
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.ControlTooltipText"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlTooltipText As String Implements EwEPlugin.IGUIPlugin.ControlTooltipText
         Get
-            Return "EcoTroph"
+            Return Me.ControlText
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.EnabledState"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-
+            Return EwEUtils.Core.eCoreExecutionState.Idle
         End Get
     End Property
 
-
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IGUIPlugin.OnControlClick"/>
+    ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         ' Test if form still exists
         If Not Me.HasInterface(DirectCast(Me.frmET, System.Windows.Forms.Form)) Then
-            frmET = New autre
+            frmET = New frmEcotroph
         End If
 
         ' Pass form reference back to calling app
         frmPlugin = frmET
     End Sub
 
-
-    Private Function HasInterface(ByVal theForm As System.Windows.Forms.Form) As Boolean
-        If theForm Is Nothing Then Return False
-        If theForm.IsDisposed Then Return False
-        Return True
-    End Function
-
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IMenuItemPlugin.MenuItemLocation"/>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property MenuItemLocation As String Implements EwEPlugin.IMenuItemPlugin.MenuItemLocation
         Get
             Return "MenuTools"
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted"/>
+    ''' -----------------------------------------------------------------------
     Public Sub EcopathRunCompleted(ByRef EcopathDataStructures As Object) Implements EwEPlugin.IEcopathRunCompletedPlugin.EcopathRunCompleted
-        Dim epdata As EwECore.cEcopathDataStructures
+
+        Dim epdata As EwECore.cEcopathDataStructures = DirectCast(EcopathDataStructures, cEcopathDataStructures)
         Dim compteur As Integer
-        epdata = DirectCast(EcopathDataStructures, cEcopathDataStructures)
-
-
-
-
         Dim default_accessibility As Single = 1
-
-
-
-
 
         ReDim ETinputdatafromEP.B(epdata.B.Length - 1)
         ReDim ETinputdatafromEP.groupname(epdata.B.Length - 1)
@@ -157,8 +196,6 @@ Public Class newET
         ReDim ETinputdatafromEP.OI(epdata.B.Length - 1)
         ReDim ETinputdatafromEP.fleetname(epdata.NumFleet)
 
-
-
         ReDim ETinputdata.B(epdata.B.Length - 1)
         ReDim ETinputdata.groupname(epdata.B.Length - 1)
         ReDim ETinputdata.PROD(epdata.B.Length - 1)
@@ -167,13 +204,11 @@ Public Class newET
         ReDim ETinputdata.OI(epdata.B.Length - 1)
         ReDim ETinputdata.fleetname(epdata.NumFleet)
 
-
-
         System.Array.Copy(epdata.B, ETinputdatafromEP.B, epdata.B.Length)
         System.Array.Copy(epdata.GroupName, ETinputdatafromEP.groupname, epdata.GroupName.Length)
         System.Array.Copy(epdata.PB, ETinputdatafromEP.PROD, epdata.PB.Length)
         ' Rajout du search and replace pour les production, pour mettre à 0 les valeurs ecopath à -9999
-        For compteur = 0 To UBound(ETinputdatafromEP.PROD)
+        For compteur = 0 To epdata.B.Length - 1
             If ETinputdatafromEP.PROD(compteur) = -9999 Then ETinputdatafromEP.PROD(compteur) = 0
         Next
 
@@ -188,7 +223,6 @@ Public Class newET
         ETinputdata.ModelName = epdata.ModelName
         ETinputdata.Modeldescription = epdata.ModelDescription
 
-
         For ifleet As Integer = 0 To epdata.NumFleet - 1
             ETinputdata.fleetname(ifleet) = epdata.FleetName(ifleet + 1)
             ETinputdatafromEP.catches(ifleet) = New Single(epdata.GroupName.Length) {}
@@ -199,21 +233,22 @@ Public Class newET
             Next
         Next
 
-
-
-
     End Sub
 
-    Public Sub New()
+#End Region ' Plugin points implementation
 
-    End Sub
+#Region " Internals "
 
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
+    Private Function HasInterface(ByVal theForm As System.Windows.Forms.Form) As Boolean
+        If theForm Is Nothing Then Return False
+        If theForm.IsDisposed Then Return False
+        Return True
+    End Function
 
     Private Function match(ByVal epdata As cEcopathDataStructures, ByVal p2 As String) As Array
         Throw New NotImplementedException
     End Function
+
+#End Region ' Internals
 
 End Class
