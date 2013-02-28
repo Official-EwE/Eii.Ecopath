@@ -143,8 +143,8 @@ Public Class cEcoFunctions
     ''' This method is totally independent of cCore; all required information
     ''' is passed in.
     ''' </remarks>
-    Public Function EstimateTrophicLevels(ByVal iNumGroups As Integer, ByVal _
-                                          iNumLiving As Integer, _
+    Public Function EstimateTrophicLevels(ByVal iNumGroups As Integer, _
+                                          ByVal iNumLiving As Integer, _
                                           ByVal PP() As Single, _
                                           ByVal Diet(,) As Single, _
                                           ByVal TLreturn() As Single) As Boolean
