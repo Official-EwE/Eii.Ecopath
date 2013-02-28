@@ -45,19 +45,23 @@ Namespace Controls.Map
             Gradient
         End Enum
 
-        'Private m_map As ucMap = Nothing
         Private m_uic As cUIContext = Nothing
-        Private m_lLayers As New List(Of cLayer)
         Private m_strTitle As String = ""
+        Private m_lLayers As New List(Of cLayer)
 
 #End Region ' Private vars
 
 #Region " Constructors "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a legend for all the current layers in a map.
+        ''' </summary>
+        ''' <param name="map">The map to populate the legend from.</param>
+        ''' -------------------------------------------------------------------
         Private Sub New(ByVal map As ucMap)
 
-            Me.m_strTitle = map.Title
-            Me.m_uic = map.UIContext
+            Me.New(map.UIContext, map.Title)
 
             Dim al As cLayer() = map.Layers
             Dim l As cLayer = Nothing
@@ -93,6 +97,13 @@ Namespace Controls.Map
 
 #Region " Shared interfaces "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Construct a new legend for a map.
+        ''' </summary>
+        ''' <param name="map">The map to populate the legend from.</param>
+        ''' <returns>A <see cref="cLegend">legend</see>.</returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function FromMap(ByVal map As ucMap) As cLegend
             Debug.Assert(map IsNot Nothing)
             Return New cLegend(map)
@@ -102,15 +113,55 @@ Namespace Controls.Map
 
 #Region " Public interfaces "
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the legend should show its title.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property ShowTitle As Boolean = True
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the vertical spacing between the legend title and the first 
+        ''' layer box.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property TitleVSpacing As Integer = 8
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the width of a layer box.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property LayerBoxWidth As Integer = 20
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the height of a layer box.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property LayerBoxHeight As Integer = 12
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the horizontal spacing between a layer box and its label.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property LayerBoxHSpacing As Integer = 5
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the vertical spacing between two layer boxes.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property LayerBoxVSpacing As Integer = 4
 
-
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a layer to the legend.
+        ''' </summary>
+        ''' <param name="l"></param>
+        ''' -------------------------------------------------------------------
         Public Sub AddLayer(l As cLayer)
             Me.m_lLayers.Add(l)
         End Sub

@@ -49,6 +49,7 @@ Public Class frmMain
         TableLinks
         TableLandingsLinks
         Run
+        FlowDiagram
     End Enum
 
     Private m_plugin As cPluginPoint = Nothing
@@ -133,6 +134,8 @@ Public Class frmMain
                 Me.ShowForm(view, My.Resources.NAVTREE_INPUT_TABLE_LANDINGLINKS)
             Case eValueChainPageTypes.Run
                 Me.ShowForm(New ucResults(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results), My.Resources.NAVTREE_OUTPUT_RUN)
+            Case eValueChainPageTypes.FlowDiagram
+                Me.ShowForm(New ucFlowDiagram(Me.m_plugin.Context, Me.m_plugin.Data, Me.m_plugin.Model, Me.m_plugin.Results), My.Resources.NAVTREE_OUTPUT_FLOWDIAGRAM)
             Case Else
                 Debug.Assert(False)
         End Select

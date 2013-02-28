@@ -947,7 +947,7 @@ Public Class cSearchDatastructures
 
         'System.Console.WriteLine(ecovalue.ToString)
 
-        KemptonQ = KemptonQ + Me.m_EcoFunctions.KemptonsQ(Biomass, 0.25)
+        KemptonQ = KemptonQ + Me.m_EcoFunctions.KemptonsQ(Me.m_ecopathData.NumLiving, Me.m_ecopathData.TTLX, Biomass, 0.25)
 
         EcoDistTime = CSng(Math.Sqrt(EcoDistTime))
         Ecodistance = Ecodistance + DF * EcoDistTime

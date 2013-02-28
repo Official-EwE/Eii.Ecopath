@@ -124,7 +124,14 @@
     <Compile Include="Database\cDatabase.vb" />
     <Compile Include="Data\cData.vb" />
     <Compile Include="Interface\FlowDiagram\cFlowDiagramData.vb" />
+    <Compile Include="Interface\FlowDiagram\ucFlowDiagram.Designer.vb">
+      <DependentUpon>ucFlowDiagram.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\FlowDiagram\ucFlowDiagram.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Output\cResultWriter.vb" />
+    <Compile Include="Plugin\Output\cNTCPluginFlowDiagram.vb" />
     <Compile Include="Utils\cAggregationModeTypeFormatter.vb" />
     <Compile Include="Utils\cUnitImageFactory.vb" />
     <Compile Include="Management\cLandingsLinkManager.vb" />
@@ -278,6 +285,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Interface\Controls\ucGridView.resx">
       <DependentUpon>ucGridView.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\FlowDiagram\ucFlowDiagram.resx">
+      <DependentUpon>ucFlowDiagram.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interface\Flow\ucSelector2.resx">
       <DependentUpon>ucSelector2.vb</DependentUpon>

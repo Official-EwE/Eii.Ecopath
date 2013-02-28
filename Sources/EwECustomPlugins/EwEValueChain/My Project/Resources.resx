@@ -2244,4 +2244,7 @@ QmCCCw==</value>
     <value>Saved '{0}'</value>
     <comment>{0}=detail that saved</comment>
   </data>
+  <data name="NAVTREE_OUTPUT_FLOWDIAGRAM" xml:space="preserve">
+    <value>Flow diagram</value>
+  </data>
 </root>

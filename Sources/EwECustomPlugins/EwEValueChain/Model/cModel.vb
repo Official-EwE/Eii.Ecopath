@@ -45,9 +45,6 @@ Public Class cModel
         Equilibrium
     End Enum
 
-    Public FlowsByWeightBetweenUnits(,) As Double
-
-
 #Region " Private vars "
 
     ''' <summary>Preserved effort during equilibrium search.</summary>
@@ -299,23 +296,35 @@ Public Class cModel
 
     End Function
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Normalizes a Value Chain link diet matrix.
+    ''' </summary>
+    ''' <param name="data"></param>
+    ''' <param name="result"></param>
+    ''' <param name="iTimeStep">Not used</param>
+    ''' <param name="ecosimResults">Not used</param>
+    ''' <param name="ecosimDS">Not used</param>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
     Public Function MakeDietComposition(ByVal data As cData, _
-                     ByVal result As cResults, _
-                     ByVal iTimeStep As Integer, _
-                     Optional ByVal ecosimResults As cEcoSimResults = Nothing, _
-                     Optional ByVal ecosimDS As cEcosimDatastructures = Nothing) As Double(,)
+                                        ByVal result As cResults, _
+                                        ByVal iTimeStep As Integer, _
+                                        Optional ByVal ecosimResults As cEcoSimResults = Nothing, _
+                                        Optional ByVal ecosimDS As cEcosimDatastructures = Nothing) As Single(,)
 
         Dim iNumUnits As Integer = data.GetUnits(cUnitFactory.eUnitType.All).Length
-        Dim DietComposition(iNumUnits, iNumUnits) As Double
+        Dim DietComposition(iNumUnits, iNumUnits) As Single
 
         For iTarget As Integer = 1 To iNumUnits
             Dim total As Double = 0
             For iSource As Integer = 1 To iNumUnits
-                total += result.FlowsByWeightBetweenUnits(iTarget, iSource)
+                total += result.FlowsByWeight(iTarget, iSource)
             Next
             If total > 0 Then
                 For iSource As Integer = 1 To iNumUnits
-                    DietComposition(iTarget, iSource) = result.FlowsByWeightBetweenUnits(iTarget, iSource) / total
+                    ' Convert to single for EwE compatibility. Is ok when normalized, huge precision is not needed then
+                    DietComposition(iTarget, iSource) = CSng(result.FlowsByWeight(iTarget, iSource) / total)
                 Next
             End If
         Next
@@ -323,6 +332,7 @@ Public Class cModel
         Return DietComposition
 
     End Function
+
     ''' <summary>
     ''' Run a time step for the entire chain, unfiltered.
     ''' </summary>

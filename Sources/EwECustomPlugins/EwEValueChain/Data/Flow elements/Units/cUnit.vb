@@ -239,7 +239,8 @@ Public MustInherit Class cUnit
                 sTotalOutputBiomass += sOutputBiomass
                 sTotalOutputValue += sOutputValue
 
-                results.FlowsByWeightBetweenUnits(link.Target.m_iSequence, link.Source.m_iSequence) += sOutputBiomass
+                ' Record flow by weight
+                results.FlowsByWeight(link.Source.Sequence, link.Target.Sequence) += sOutputBiomass
 
                 link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iUnit)
 

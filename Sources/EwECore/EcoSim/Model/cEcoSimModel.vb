@@ -4772,9 +4772,11 @@ Namespace Ecosim
                 ' Calculate kemptons Q
                 If TimeStep = 0 Then
                     'Baseline value
-                    Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
+                    Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_EPData.TTLX, m_Data.StartBiomass, 0.25)
                 Else
-                    Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
+                    ' JS 28Feb13: I may found a bug here. EcoFunctions would base KemptonsQ calculations implicitly on 
+                    '             Ecopath TTLX, rather than on the varying sim TL.
+                    Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_Data.TLSim, BB, 0.25)
                 End If
 
                 If m_Data.CatchSim(0) > 0 Then
@@ -4830,7 +4832,7 @@ Namespace Ecosim
                     End If
                 Next
 
-                m_Ecofunctions.EstimateTrophicLevels(Diet, m_Data.TLSim)
+                m_Ecofunctions.EstimateTrophicLevels(m_EPData.NumGroups, m_EPData.NumLiving, m_EPData.PP, Diet, m_Data.TLSim)
 
                 ReDim SumBio(m_EPData.NumLiving)
                 ReDim SumR(m_EPData.NumLiving)

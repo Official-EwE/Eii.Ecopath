@@ -26,13 +26,15 @@ Public Class cFlowDiagramData
     Private m_uic As cUIContext = Nothing
     Private m_data As cData = Nothing
     Private m_results As cResults = Nothing
+    Private m_model As cModel = Nothing
 
-    ' Units, to be accessed by iGroup. Nyuk nyuk nyuk
-    Private m_lUnits As New List(Of cUnit)
+    ' Units, to be accessed by iGroup
+    Private m_units() As cUnit
     Private m_nLivingGroups As Integer
     Private m_nGroups As Integer
 
     Private m_sTTLX() As Single
+    Private m_diets(,) As Single
     Private m_sValueMin As Single
     Private m_sValueMax As Single
 
@@ -43,23 +45,27 @@ Public Class cFlowDiagramData
 
 #End Region ' Private vars
 
-    Public Sub New(ByVal uic As cUIContext, ByVal data As cData, ByVal results As cResults)
+    Public Sub New(ByVal uic As cUIContext, ByVal model As cModel, _
+                   ByVal data As cData, ByVal results As cResults)
 
         Me.m_uic = uic
+        Me.m_model = model
         Me.m_data = data
         Me.m_results = results
 
-        Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer))
-        Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Distribution))
-        Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Processing))
-        Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Wholesaler))
-        Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Retailer))
-        Me.m_nLivingGroups = Me.m_lUnits.Count
-        Me.m_lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Consumer))
-        Me.m_nGroups = Me.m_lUnits.Count
+        Dim units() As cUnit = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
+        Me.m_nGroups = units.Length
+        Me.m_nLivingGroups = 0
 
-        ' Pred -> prey
         ReDim Me.m_sTTLX(Me.m_nGroups)
+        ReDim Me.m_units(Me.m_nGroups)
+
+        For Each unit In units
+            If unit.UnitType <> cUnitFactory.eUnitType.Producer Then
+                Me.m_nLivingGroups += 1
+            End If
+            Me.m_units(unit.Sequence) = unit
+        Next
 
         Me.Calculate()
 
@@ -103,11 +109,10 @@ Public Class cFlowDiagramData
     Public ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single _
         Implements IFlowDiagramData.LinkValue
         Get
-            Throw New NotImplementedException("Resolve this!")
             If Not Me.m_bValid Then Me.Calculate()
             Dim uPred As cUnit = Me.GetUnit(iPred)
             Dim uPrey As cUnit = Me.GetUnit(iPrey)
-            'Return Me.m_results.VillysArrayOfLinks(uPred.Sequence, uPrey.Sequence)
+            Return Me.m_diets(uPred.Sequence, uPrey.Sequence)
         End Get
     End Property
 
@@ -130,7 +135,7 @@ Public Class cFlowDiagramData
     Public ReadOnly Property NumGroups As Integer _
         Implements IFlowDiagramData.NumGroups
         Get
-            Return Me.m_lUnits.Count
+            Return Me.m_nGroups
         End Get
     End Property
 
@@ -202,23 +207,34 @@ Public Class cFlowDiagramData
 #Region " Internals "
 
     Private Function GetUnit(iGroup As Integer) As cUnit
-        Return Me.m_lUnits(iGroup)
+        Debug.Assert(iGroup > 0 And iGroup <= Me.m_nGroups)
+        Return Me.m_units(iGroup - 1)
     End Function
 
     Private Sub Calculate()
 
         Dim fn As New cEcoFunctions()
-        Dim diets As Single(,)
+        Dim PP(Me.NumGroups) As Single
+        Dim unit As cUnit = Nothing
 
-        ' diets = Me.m_results.VillysBigArray
-        fn.EstimateTrophicLevels(diets, Me.m_sTTLX)
+        For iGroup As Integer = 1 To Me.m_nGroups
+            unit = Me.GetUnit(iGroup)
+            If (unit.UnitType = cUnitFactory.eUnitType.Producer) Then
+                PP(iGroup) = 1.0!
+            Else
+                PP(iGroup) = 0.0!
+            End If
+        Next
+
+        Me.m_diets = Me.m_model.MakeDietComposition(Me.m_data, Me.m_results, 1)
+        fn.EstimateTrophicLevels(Me.m_nGroups, Me.m_nLivingGroups, PP, Me.m_diets, Me.m_sTTLX)
 
         Me.m_sLinkValueMax = Single.MinValue
         Me.m_sLinkValueMin = Single.MaxValue
         For i As Integer = 0 To Me.m_nGroups - 1
             For j As Integer = 0 To Me.m_nGroups - 1
-                Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, diets(i, j))
-                Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, diets(i, j))
+                Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, Me.m_diets(i, j))
+                Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, Me.m_diets(i, j))
             Next
         Next
 

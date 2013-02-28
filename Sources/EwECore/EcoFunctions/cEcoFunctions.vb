@@ -19,34 +19,38 @@
 Imports EwEUtils.Core
 
 ''' <summary>
-''' Class to provide access to functions needed both internally to the core and externally by plugins or other things...(what that would be I don't know)
+''' Class to provide access to functions needed both internally to the core and 
+''' externally by plugins or other things.
 ''' </summary>
-''' <remarks></remarks>
 Public Class cEcoFunctions
 
     Private m_core As cCore
-
     Private m_matrix As cMatrixCalc
 
-    Friend Sub Init(ByVal theCore As cCore)
-        m_core = theCore
-        m_matrix = New cMatrixCalc
+    Public Sub New()
+        Me.m_matrix = New cMatrixCalc()
     End Sub
 
+    ''' <summary>
+    ''' Initialize the instance to the current core.
+    ''' </summary>
+    ''' <param name="theCore">The core to initialize to.</param>
+    Friend Sub Init(ByVal theCore As cCore)
+        m_core = theCore
+    End Sub
 
     ''' <summary>
     ''' Matrix calculation object used by various routines in the core and plugins
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property MatrixCalc() As cMatrixCalc
         Get
             Return m_matrix
         End Get
     End Property
 
-    Public Function KemptonsQ(ByVal Bio() As Single, ByVal Quan As Single) As Single
+    Public Function KemptonsQ(iNumLiving As Integer, ttlx As Single(), _
+                              ByVal Bio() As Single, ByVal Quan As Single) As Single
+
         'VC programmed this function 23 October 2002 from Tony Pitcher's description
         Dim BLower As Single
         Dim BUpper As Single
@@ -62,17 +66,17 @@ Public Class cEcoFunctions
 
         Try
 
-            Debug.Assert(m_core IsNot Nothing, Me.ToString & " not initialized properly!")
-            Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
+            'Debug.Assert(m_core IsNot Nothing, Me.ToString & " not initialized properly!")
+            'Dim epdata As cEcopathDataStructures = m_core.m_EcoPathData
 
             'We now know the current biomasses for each group = bb(i) the biomass for each group at the end of the simulation
             'Find the min and max biomass, only look at theliving groups
             KemptonsQ = 0
-            ReDim Rank(epdata.NumLiving)
-            ReDim Used(epdata.NumLiving)
+            ReDim Rank(iNumLiving)
+            ReDim Used(iNumLiving)
             NumGr = 0
-            For i = 1 To epdata.NumLiving
-                If epdata.TTLX(i) < 3 Then
+            For i = 1 To iNumLiving
+                If ttlx(i) < 3 Then
                     Used(i) = True 'don't include low trophic level species in diversity index
                 Else
                     NumGr = NumGr + 1
@@ -83,15 +87,15 @@ Public Class cEcoFunctions
             'VC Nov 2008
             If NumGr < 10 Then
                 NumGr = 0
-                ReDim Used(epdata.NumLiving)
-                For i = 1 To epdata.NumLiving
+                ReDim Used(iNumLiving)
+                For i = 1 To iNumLiving
                     NumGr += 1
                 Next
             End If
             For i = 1 To NumGr
                 minB = 1000000
                 Smallest = 0
-                For j = 1 To epdata.NumLiving
+                For j = 1 To iNumLiving
                     If Used(j) = False And Bio(j) < minB Then
                         minB = Bio(j)
                         Smallest = j
@@ -118,12 +122,15 @@ Public Class cEcoFunctions
         Catch ex As Exception
             cLog.Write(ex)
             Debug.Assert(False, Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message)
-            Dim msg As New cMessage("Error in FunctionKemptonsQ() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
-            m_core.Messages.SendMessage(msg)
-            'swallow all errors!!!!
-            '     Throw New ApplicationException(Me.ToString & ".FunctionKemptonsQ() Error: " & ex.Message, ex)
+
+            If (Me.m_core IsNot Nothing) Then
+                Dim msg As New cMessage("Error in FunctionKemptonsQ() " & ex.Message, eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Critical, EwEUtils.Core.eDataTypes.NotSet)
+                Me.m_core.Messages.SendMessage(msg)
+            End If
+            Return False
         End Try
 
+        Return True
 
     End Function
 
@@ -132,27 +139,34 @@ Public Class cEcoFunctions
     ''' </summary>
     ''' <param name="Diet"></param>
     ''' <param name="TLreturn"></param>
-    Public Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
+    ''' <remarks>
+    ''' This method is totally independent of cCore; all required information
+    ''' is passed in.
+    ''' </remarks>
+    Public Function EstimateTrophicLevels(ByVal iNumGroups As Integer, ByVal _
+                                          iNumLiving As Integer, _
+                                          ByVal PP() As Single, _
+                                          ByVal Diet(,) As Single, _
+                                          ByVal TLreturn() As Single) As Boolean
 
-        Dim m_epdata As cEcopathDataStructures = m_core.m_EcoPathData
-        Dim SumDC(m_epdata.NumGroups) As Single
-        Dim LHS(m_epdata.NumGroups, m_epdata.NumGroups) As Single
-        Dim TL(m_epdata.NumGroups) As Single
+        Dim SumDC(iNumGroups) As Single
+        Dim LHS(iNumGroups, iNumGroups) As Single
+        Dim TL(iNumGroups) As Single
         Dim i As Integer, j As Integer
         Dim ErrCode As Integer
 
         Try
-            For i = 1 To m_epdata.NumGroups
+            For i = 1 To iNumGroups
                 'TTLX(i) = 1
                 TL(i) = 1
-                For j = 1 To m_epdata.NumGroups
+                For j = 1 To iNumGroups
                     LHS(i, j) = 0
                 Next j
             Next i
 
-            For i = 1 To m_epdata.NumGroups
+            For i = 1 To iNumGroups
                 SumDC(i) = 0
-                For j = 1 To m_epdata.NumGroups
+                For j = 1 To iNumGroups
                     SumDC(i) += Diet(i, j)
                 Next j
             Next i
@@ -161,11 +175,11 @@ Public Class cEcoFunctions
             'The DC is made to sum to one, this means that it is assumed
             'that import to strict consumers has the same trophic level as
             'other prey for the group
-            For i = 1 To m_epdata.NumGroups
-                For j = 1 To m_epdata.NumGroups
-                    If m_epdata.PP(i) = 1 Then            'Strict Primary producer, so no diet composition (even if it may have in carbon model)
+            For i = 1 To iNumGroups
+                For j = 1 To iNumGroups
+                    If PP(i) = 1 Then            'Strict Primary producer, so no diet composition (even if it may have in carbon model)
                         LHS(i, j) = 0
-                    ElseIf m_epdata.PP(i) > 0 Then            'partly a primary producer
+                    ElseIf PP(i) > 0 Then            'partly a primary producer
                         LHS(i, j) = -Diet(i, j)
                         'ElseIf SumDC(i) > 0 And SumDC(i) < 1 Then 'Consumer with import
                     ElseIf SumDC(i) > 0 And Math.Abs(SumDC(i) - 1) > 0.0001 Then 'Consumer with import
@@ -173,33 +187,35 @@ Public Class cEcoFunctions
                     Else                          'Consumer
                         LHS(i, j) = -Diet(i, j)
                     End If
-                    If m_epdata.PP(i) > 0 And m_epdata.PP(i) < 1 Then
+                    If PP(i) > 0 And PP(i) < 1 Then
                         'Mixed producer / consumer: TTLX should reflect both roles
-                        LHS(i, j) = -Diet(i, j) * (1 - m_epdata.PP(i))
+                        LHS(i, j) = -Diet(i, j) * (1 - PP(i))
                     End If
                 Next j
                 LHS(i, i) = 1 - Diet(i, i)
             Next i
 
-            For i = m_epdata.NumLiving + 1 To m_epdata.NumGroups          'multidet version for
-                For j = 1 To m_epdata.NumGroups
+            For i = iNumLiving + 1 To iNumGroups          'multidet version for
+                For j = 1 To iNumGroups
                     LHS(i, j) = 0
                 Next j
                 LHS(i, i) = 1
             Next i
 
-            ErrCode = m_core.EcoFunction.MatrixCalc.MatSEqnS(LHS, TL)   'Inverses matrix to find
+            ErrCode = Me.m_matrix.MatSEqnS(LHS, TL)   'Inverses matrix to find
             If ErrCode = 0 Then 'no error
-                For i = 1 To m_epdata.NumGroups : TLreturn(i) = TL(i) : Next
+                For i = 1 To iNumGroups : TLreturn(i) = TL(i) : Next
             End If
 
         Catch ex As Exception
-            cLog.Write(ex)
+            cLog.Write(ex, "cEcoFunctions::EstimateTrophicLevels")
             Debug.Assert(False, Me.ToString & ".EstimateTrophicLevels() Error: " & ex.Message)
-            Throw New ApplicationException(Me.ToString & ".EstimateTrophicLevels() Error: " & ex.Message, ex)
+            Return False
         End Try
 
-    End Sub
+        Return True
+
+    End Function
 
 End Class
 

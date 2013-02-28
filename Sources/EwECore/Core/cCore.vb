@@ -13899,11 +13899,8 @@ Public Class cCore
     End Sub
 
     ''' <summary>
-    ''' Public access to stand alone functions wrapped in cEcoFunctions
+    ''' Get the single <see cref="cEcoFunctions"/> instance.
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public ReadOnly Property EcoFunction() As cEcoFunctions
         Get
             Return Me.m_Functions

@@ -291,7 +291,7 @@ Namespace Ecopath
                         CalcTotalPrimProd()
                         CheckIfEstimatesAreZero()
                         EstimEEAgain()
-                        EstimateTrophicLevels(m_Data.DC, m_Data.TTLX)
+                        EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
                         DetritusCalculations()
                         Omniv(m_Data.DC, m_Data.TTLX, m_Data.BQB, m_Data.NumGroups)
                         CalcNichePiankaPred()
@@ -1656,7 +1656,7 @@ LoopCalc:
             Dim i As Integer
             Dim Level As Integer
 
-            EstimateTrophicLevels(m_Data.DC, m_Data.TTLX)
+            EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
 
             'AbortRun = False
             'DoWhat = "PPR"
@@ -2779,9 +2779,10 @@ ONE:
         End Sub
 
 
-        Private Sub EstimateTrophicLevels(ByVal Diet(,) As Single, ByVal TLreturn() As Single)
+        Private Sub EstimateTrophicLevels(ByVal iNumGroups As Integer, ByVal iNumLiving As Integer, _
+                                          ByVal PP() As Single, ByVal Diet(,) As Single, ByVal TLreturn() As Single)
 
-            Me.m_Ecofunctions.EstimateTrophicLevels(Diet, TLreturn)
+            Me.m_Ecofunctions.EstimateTrophicLevels(iNumGroups, iNumLiving, PP, Diet, TLreturn)
 
         End Sub
 
@@ -2798,7 +2799,7 @@ ONE:
             'It was just copied from EWE5 this could be dangerous
 
             If DoneAlready = False Then
-                EstimateTrophicLevels(m_Data.DC, m_Data.TTLX)
+                EstimateTrophicLevels(m_Data.NumGroups, m_Data.NumLiving, m_Data.PP, m_Data.DC, m_Data.TTLX)
                 'Now check if any group gets more than 15% of its consumption from a group that has >= m_data.ttlx as itself:
                 For i = 1 To m_Data.NumLiving  'Consumers only
                     dcsum = 0
