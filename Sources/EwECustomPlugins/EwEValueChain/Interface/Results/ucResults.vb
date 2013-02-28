@@ -147,7 +147,7 @@ Public Class ucResults
         Dependents
     End Enum
 
-    ''' <summary>Ecoat data that provides, unit, links and other dynamic bits and pieces.</summary>
+    ''' <summary>Value chain data that provides, units, links etc.</summary>
     Private m_data As cData = Nothing
     ''' <summary>Instance of the Ecost model to poke and prod.</summary>
     Private m_model As cModel = Nothing
