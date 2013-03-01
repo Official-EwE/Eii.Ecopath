@@ -16,11 +16,11 @@
 ' ===============================================================================
 '
 
-Imports WeifenLuo.WinFormsUI.Docking
+Imports ScientificInterfaceShared.Forms
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class autre
-    Inherits DockContent
+    Inherits frmEwE
 
     'Form remplace la méthode Dispose pour nettoyer la liste des composants.
     <System.Diagnostics.DebuggerNonUserCode()> _
