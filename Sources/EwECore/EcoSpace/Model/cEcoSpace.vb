@@ -1792,10 +1792,12 @@ Public Class cEcoSpace
             'Now reset capacity
             SetHabCap()
 
+            Me.m_Data.PopulateFleetCells()
+
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
             Me.m_Data.PPScale = ScaleRelativePrimaryProductivityToEcopathLevel()
-            ScaleSailingToUnity()
+            Me.ScaleSailingCost()
 
             'calculate exponential weights for time step updating
             m_Ecosim.Derivt(0, m_SimData.StartBiomass, der)
@@ -1824,6 +1826,8 @@ Public Class cEcoSpace
                 'ToDo_jb IsFishRateSet in EwE5 see when this gets reset to false
                 m_Data.IsFishRateSet = True
             End If
+
+
 
             If m_Data.PredictEffort Then SetEffortParameters(True)
 
@@ -2667,22 +2671,38 @@ Public Class cEcoSpace
     End Function
 
     ''' <summary>
+    ''' Scaling Sailing cost 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub ScaleSailingCost()
+
+        If Me.m_Data.bDistEffortByCell Then
+            Me.ScaleSailingByCells()
+        Else
+            Me.ScaleSailingToUnity()
+        End If
+
+    End Sub
+
+    ''' <summary>
     ''' This function is used to scale the sailing cost so that _
     ''' it is the same in Ecospace and Ecopath
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub ScaleSailingToUnity()
+    Private Sub ScaleSailingToUnity()
         Dim Factor As Single
         Dim i As Integer
         Dim j As Integer
         Dim Count As Long
         Dim GearNo As Integer
 
+        Debug.Assert(Me.m_Data.bDistEffortByCell = False, Me.ToString + ".ScaleSailingToUnity() Called with incorrect bDistEffortByCell.")
+
         ReDim m_Data.SailScale(m_Data.nFleets)
         m_Data.SailScale(0) = 1
 
         For GearNo = 1 To m_Data.nFleets
-            'jb 3-May-1011 Clear Count and Factor for each fleet
+            'jb 3-May-2011 Clear Count and Factor for each fleet
             'This was not happening and SailScale() 
             'would contain the average off all fleets with a lower fleet index
             Count = 0
@@ -2706,6 +2726,40 @@ Public Class cEcoSpace
 
     End Sub
 
+    Private Sub ScaleSailingByCells()
+        Dim sumCost As Single
+        Dim Count As Long
+        Dim iFlt As Integer
+
+        Debug.Assert(Me.m_Data.bDistEffortByCell, Me.ToString + ".ScaleSailingByCells() Called with incorrect bDistEffortByCell.")
+
+        ReDim m_Data.SailScale(m_Data.nFleets)
+        m_Data.SailScale(0) = 1
+
+        For iFlt = 1 To Me.m_Data.nFleets
+            ' For GearNo = 1 To m_Data.nFleets
+            'jb 3-May-2011 Clear Count and Factor for each fleet
+            'This was not happening and SailScale() 
+            'would contain the average off all fleets with a lower fleet index
+            Count = 0
+            sumCost = 0
+
+            For Each cell As cRowCol In Me.m_Data.FleetSailCells(iFlt)
+                sumCost += m_Data.Sail(iFlt, cell.Row, cell.Col)
+                Count = Count + 1
+            Next cell
+
+            If Count > 0 And sumCost > 0 Then
+                m_Data.SailScale(iFlt) = sumCost / Count
+            Else
+                m_Data.SailScale(iFlt) = 1
+            End If
+
+
+        Next iFlt
+
+    End Sub
+
 
     Private Sub SetEffortParameters(ByVal ResetTotEffort As Boolean)
         'this predicts total effort by gear type over model cells
@@ -2724,28 +2778,28 @@ Public Class cEcoSpace
                     'causing ecospace to reduce effort whenever MPA cells added (should just
                     'redistribute ecopath total, not reduce it at same time).
 
-                    'sum of habitat type in a cell fished by this gear
-                    PFished = 0
-                    'Is this Fleet habitat restricted
-                    If m_Data.GearHab(ig, 0) = False Then
-                        'Yes habitat restricted so sum the proportion of habitat types in this cell
-                        For ihab As Integer = 1 To Me.m_Data.NoHabitats
-                            If m_Data.GearHab(ig, ihab) Then
-                                PFished += Me.m_Data.PHabType(i, j, ihab)
-                            End If
-                        Next
-                    Else
-                        'No this Fleet has no area/habitat restrictions
-                        'So it fishes all cells 100%
-                        PFished = 1
-                    End If
-
-                    'Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
-
                     If m_Data.Depth(i, j) > 0 Then
+                        'sum of habitat type in a cell fished by this gear
+                        PFished = 0
+
+                        'Is this Fleet habitat restricted
+                        If m_Data.GearHab(ig, 0) = False Then
+                            'Yes habitat restricted so sum the proportion of habitat types in this cell
+                            For ihab As Integer = 1 To Me.m_Data.NoHabitats
+                                If m_Data.GearHab(ig, ihab) Then
+                                    PFished += Me.m_Data.PHabType(i, j, ihab)
+                                End If
+                            Next
+                        Else
+                            'No this Fleet has no area/habitat restrictions
+                            'So it fishes all cells 100%
+                            PFished = 1
+                        End If
+
+                        'Debug.Assert(PFished <= 1.0, "Proportion of habitat in a cell not set correctly. It should sum to one for all habitat types.")
 
                         'set the Proportion of area fished by this fleet for all the habitats in the cell
-                        Me.m_Data.PAreaFished(i, j, ig) = 1 * PFished
+                        Me.m_Data.PAreaFished(i, j, ig) = PFished
                         'constrain percentage of area fished to 1.0
                         If Me.m_Data.PAreaFished(i, j, ig) > 1.0 Then Me.m_Data.PAreaFished(i, j, ig) = 1
 
@@ -3549,6 +3603,118 @@ exitline:
     End Sub
 
 
+    Sub PredictEffortDistribution_bycell_Threaded(ByVal obParam As Object)
+        Dim i As Integer, j As Integer, TotAttract As Single
+        Dim Valt As Single, isp As Integer
+        Dim EffortCost As Single
+        Dim SailCost As Single
+        Dim TotE As Single
+        Dim Attract(,) As Single
+        Dim arguments As cThreadedCallArgs
+
+        Dim stpwtch As Stopwatch
+
+        Try
+
+            arguments = DirectCast(obParam, cThreadedCallArgs)
+            'Make sure the number of fleets is in bounds
+            'This could happen because of rounding error in the number of fleets per thread
+            If arguments.iFirst <= Me.m_Data.nFleets Then
+
+                'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+
+                'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+                'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
+                stpwtch = Stopwatch.StartNew
+
+                ReDim Attract(m_Data.InRow, m_Data.InCol)
+
+                For iFlt As Integer = arguments.iFirst To arguments.iLast
+                    'check the bounds
+                    If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
+                    'System.Console.WriteLine("  Fleet " & iFlt.ToString)
+                    TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
+
+                    'jb Attract() gets cleared out for each fleet
+                    Array.Clear(Attract, 0, Attract.Length)
+                    TotAttract = 0.0000000001
+
+                    'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
+                    If m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail) = 0 Then
+                        EffortCost = 0
+                        SailCost = 1
+                    Else
+                        EffortCost = m_EPdata.cost(iFlt, eCostIndex.CUPE) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+                        SailCost = m_EPdata.cost(iFlt, eCostIndex.Sail) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+                    End If
+
+                    For Each rowcol As cRowCol In Me.m_Data.FleetSailCells(iFlt)
+
+                        i = rowcol.Row
+                        j = rowcol.Col
+                        'Moved to InitSpatialEquilibrium
+                        If Me.m_Data.IsFished(iFlt, i, j) Then
+                            'Water and (Not closed by MPA) and (Fished by this gear)
+                            'mpamonth(Month, MPAType) is false if closed, True if open.
+                            Valt = 0
+                            For isp = 1 To m_Data.NGroups
+                                Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
+                            Next
+
+                            'jb Move to InitSpatialEquilibrium()
+                            ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
+
+                            'VC Sail() above: to avoid dividing with zero
+                            Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                            Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
+                            TotAttract = TotAttract + Valt * Me.m_Data.PAreaFished(i, j, iFlt)
+                        End If
+                    Next
+
+                    For Each rowcol As cRowCol In Me.m_Data.FleetSailCells(iFlt)
+
+                        i = rowcol.Row
+                        j = rowcol.Col
+                        'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
+                        If Me.m_Data.IsFished(iFlt, i, j) Then
+
+                            'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
+                            m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract
+
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                            'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
+                            'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
+                            '        For isp = 1 To m_Data.NGroups
+                            '            'Fishing Mort
+                            '            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(iFlt, i, j) * m_SimData.relQ(iFlt, isp) / Me.m_Data.PAreaFished(i, j, iFlt)
+                            '        Next isp
+                            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                        End If
+                    Next rowcol
+
+                Next iFlt
+
+            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
+                'First Fleet Index > Number of Fleets
+                'We still need to Decrement the Interlock counter
+                System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
+            arguments.WaitHandle.Set()
+        End If
+
+        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+
+    End Sub
+
+
+
     ''' <summary>
     ''' Run the PredictEffortDistribution on multiple threads
     ''' </summary>
@@ -3590,8 +3756,8 @@ exitline:
 
             'Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth)
             'Dim worker As Thread = New Thread(Sub() Me.PredictEffortDistributionThreaded(arg))
-            'worker.Start()
-            ThreadPool.QueueUserWorkItem(New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
+            'worker.Start()            
+            ThreadPool.QueueUserWorkItem(Me.getPredictEffortFunction(Me.m_Data.bDistEffortByCell), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
             iFirstFleet += nFltsPerThread
         Next ithrd
 
@@ -3613,8 +3779,8 @@ exitline:
         'stpwF = Stopwatch.StartNew
 
         'Figure out the number of threads
-        Dim nMortThrds As Integer = Me.m_Data.nSpaceSolverThreads
-        If nMortThrds > m_Data.iTotalWaterCells Then nThrds = m_Data.iTotalWaterCells
+        Dim nMortThrds As Integer = Me.m_Data.nEffortDistThreads
+        If nMortThrds > m_Data.iTotalWaterCells Then nMortThrds = m_Data.iTotalWaterCells
         cEcoSpace.m_ThreadIncrementCount = nMortThrds
 
         waitOb = New AutoResetEvent(False)
@@ -3668,6 +3834,14 @@ exitline:
         'GC.Collect()
 
     End Sub
+
+    Private Function getPredictEffortFunction(ByVal bByCell As Boolean) As WaitCallback
+        If bByCell Then
+            Return New WaitCallback(AddressOf Me.PredictEffortDistribution_bycell_Threaded)
+        Else
+            Return New WaitCallback(AddressOf Me.PredictEffortDistributionThreaded)
+        End If
+    End Function
 
 
     Private Function computeThreadLoad(TotalWork As Integer, WorkCompleted As Integer, TotalThreads As Integer, CurrentThread As Integer) As Integer

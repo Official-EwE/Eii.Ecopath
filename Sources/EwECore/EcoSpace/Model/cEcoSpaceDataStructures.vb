@@ -21,6 +21,16 @@ Imports System.Math
 Imports EwECore.SpatialData
 Imports EwEUtils.Core
 
+
+Public Class cRowCol
+    Public Row As Integer
+    Public Col As Integer
+    Public Sub New(ByVal theRow As Integer, ByVal theCol As Integer)
+        Me.Row = theRow
+        Me.Col = theCol
+    End Sub
+End Class
+
 Public Class cEcospaceDataStructures
 
 #Region "Public Fields"
@@ -54,8 +64,6 @@ Public Class cEcospaceDataStructures
     'jb Ecoseed may get move to an object
     'for now this will let the code function
     Public EcoseedOn As Boolean
-
-    'Public chkMPA As Boolean
 
     ''' <summary>Current Model time step.</summary>
     ''' <remarks>This is the time in years, not the array index</remarks>
@@ -303,6 +311,10 @@ Public Class cEcospaceDataStructures
 
     Public FitRespType As Integer
 
+    ''' <summary>
+    ''' Sailing Effort Multiplier
+    ''' </summary>
+    ''' <remarks></remarks>
     Public SEmult() As Single
 
     ''' <summary>
@@ -550,6 +562,25 @@ Public Class cEcospaceDataStructures
     ''' </remarks>
     Public BRatio() As Single
 
+
+    ''' <summary>
+    ''' List of map cells that have a value in the Sail(,,)array less than FleetSailThreshold
+    ''' </summary>
+    ''' <remarks>Populate in <see cref="PopulateFleetCells"></see></remarks>
+    Public FleetSailCells() As List(Of cRowCol)
+
+    ''' <summary>
+    ''' Boolean flag to controll how effort is distributed. 
+    ''' </summary>
+    ''' <remarks>True Effort is just distributed over subset of cell. False effort is distributed over all water cells.</remarks>
+    Public bDistEffortByCell As Boolean
+
+    ''' <summary>
+    ''' Threshold value for map cell inclusion in FleetSailCells(fleet).cRowCol
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public FleetSailThreshold As Single
+
 #End Region
 
 #Region "Private Data"
@@ -619,7 +650,7 @@ Public Class cEcospaceDataStructures
 
 #Region "Public Methods"
 
-    
+
     Public Sub Clear()
         Me.m_ngroups = 0
         Me.nFleets = 0
@@ -694,6 +725,8 @@ Public Class cEcospaceDataStructures
             HabArea = Nothing
 
             PHabType = Nothing
+
+            FleetSailCells = Nothing
 
             'DepthOrig = Nothing
             'HabTypeorig = Nothing 'for use with habitat change
@@ -817,6 +850,9 @@ Public Class cEcospaceDataStructures
             'Next
 
             ReDimFleets()
+
+            Me.bDistEffortByCell = False
+            FleetSailThreshold = 30000
 
             Return True
         Catch ex As Exception
@@ -989,8 +1025,6 @@ Public Class cEcospaceDataStructures
 
         If InRow = 0 Then InRow = 20 'number of map cell rows
         If InCol = 0 Then InCol = 20 'number of map cell columns
-        'If InRow = 0 Then InRow = 5 'number of map cell rows
-        'If InCol = 0 Then InCol = 5 'number of map cell columns
         If CellLength = 0 Then CellLength = 5 'map cell size, in degrees
 
     End Sub
@@ -1062,6 +1096,11 @@ Public Class cEcospaceDataStructures
             ReDim Me.EffPower(nFleets)
             Me.setFleetDefaults()
 
+            ReDim FleetSailCells(nFleets)
+            For iflt As Integer = 1 To nFleets
+                FleetSailCells(iflt) = New List(Of cRowCol)
+            Next
+
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimFleets() Error: " & ex.Message)
             Throw New System.Exception(Me.ToString & ".ReDimFleets() Error: " & ex.Message)
@@ -1076,6 +1115,30 @@ Public Class cEcospaceDataStructures
             EffPower(i) = 1
             SEmult(i) = 1
         Next 'initially set all gears to fish everywhere
+
+    End Sub
+
+    ''' <summary>
+    ''' Populate <see cref="cEcospaceDataStructures.FleetSailCells"></see> with a list of map cells in <see cref="cEcospaceDataStructures.Sail"></see> that are less than <see cref="cEcospaceDataStructures.FleetSailThreshold"></see>
+    ''' </summary>
+    ''' <remarks> FleetSailCells is used by <see cref="cEcoSpace.PredictEffortDistribution_bycell_Threaded"></see> to calculate effort distribution only on cells in the list</remarks>
+    Public Sub PopulateFleetCells()
+
+        If Not Me.bDistEffortByCell Then Return
+
+        For iflt As Integer = 1 To Me.nFleets
+            Me.FleetSailCells(iflt).Clear()
+
+            For ir As Integer = 1 To Me.InRow
+                For ic As Integer = 1 To Me.InCol
+                    If Depth(ir, ic) > 0 Then
+                        If Me.Sail(iflt, ir, ic) < Me.FleetSailThreshold Then
+                            Me.FleetSailCells(iflt).Add(New cRowCol(ir, ic))
+                        End If
+                    End If
+                Next
+            Next
+        Next
 
     End Sub
 
@@ -1251,7 +1314,7 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelCin, InRow + 1, InCol + 1)
 
             Me.allocate(relPP0, InRow + 1, InCol + 1)
-           
+
             ' 
 
             'jb not used in 6

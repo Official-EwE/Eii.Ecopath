@@ -21,6 +21,7 @@
 
 Imports EwEUtils.Core
 
+
 ''' <summary>
 ''' This class wraps the underlying EcoSim data structures
 ''' </summary>
@@ -544,6 +545,7 @@ Public Class cEcosimDatastructures
     ''' </summary>
     ''' <remarks>Used to sum effort into a single output map</remarks>
     Public EffortConversionFactor() As Single
+
 
     Public Sub RedimVars()
 
