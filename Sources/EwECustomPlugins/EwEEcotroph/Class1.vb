@@ -126,7 +126,7 @@ Public Class newET
 
     Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-
+            Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 

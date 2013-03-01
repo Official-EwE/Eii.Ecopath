@@ -553,10 +553,9 @@ Public Class autre
 
 
         'on charge les différents paramètres du create.smooth
-        Dim param_pas As String
+        Dim param_pas As String = ""
 
         If (type_smooth1.Checked) Then param_pas = get_params(1, smooth_param_1.Text)
-
         If (type_smooth2.Checked) Then param_pas = get_params(2, smooth_param.Text, decalage.Text)
         If (type_smooth3.Checked) Then param_pas = get_params(3)
 
