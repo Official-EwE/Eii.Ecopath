@@ -1,4 +1,4 @@
-﻿' ===============================================================================
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -48,5 +48,5 @@ Imports System.Runtime.InteropServices
 ' en utilisant '*', comme indiqué ci-dessous :
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.2.0.0")> 
+<Assembly: AssemblyVersion("6.3.8934.0")> 
 <Assembly: AssemblyFileVersion("1.2.0.0")> 
