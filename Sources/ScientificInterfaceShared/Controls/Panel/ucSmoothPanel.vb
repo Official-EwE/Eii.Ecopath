@@ -25,7 +25,8 @@ Namespace Controls
             MyBase.New()
             Me.SetStyle(ControlStyles.AllPaintingInWmPaint Or _
                         ControlStyles.OptimizedDoubleBuffer Or _
-                        ControlStyles.UserPaint, True)
+                        ControlStyles.UserPaint Or _
+                        ControlStyles.ResizeRedraw, True)
         End Sub
 
     End Class
