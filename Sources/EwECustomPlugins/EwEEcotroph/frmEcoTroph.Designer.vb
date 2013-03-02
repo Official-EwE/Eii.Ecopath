@@ -130,12 +130,12 @@ Partial Class autre
         Me.beta = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.TopD = New System.Windows.Forms.MaskedTextBox()
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.RectangleShape4 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape7 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape3 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.ShapeContainer1 = New ShapeContainer()
+        Me.RectangleShape4 = New RectangleShape()
+        Me.RectangleShape7 = New RectangleShape()
+        Me.RectangleShape3 = New RectangleShape()
+        Me.RectangleShape2 = New RectangleShape()
+        Me.RectangleShape1 = New RectangleShape()
         Me.result_pdf_et_diag = New System.Windows.Forms.WebBrowser()
         Me.panel_result_diag = New System.Windows.Forms.TabControl()
         Me.ET_Main_diagnose = New System.Windows.Forms.TabPage()
@@ -1102,7 +1102,7 @@ Partial Class autre
         Me.ShapeContainer1.Location = New System.Drawing.Point(3, 16)
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape4, Me.RectangleShape7, Me.RectangleShape3, Me.RectangleShape2, Me.RectangleShape1})
+        Me.ShapeContainer1.Shapes.AddRange(New Shape() {Me.RectangleShape4, Me.RectangleShape7, Me.RectangleShape3, Me.RectangleShape2, Me.RectangleShape1})
         Me.ShapeContainer1.Size = New System.Drawing.Size(829, 136)
         Me.ShapeContainer1.TabIndex = 12
         Me.ShapeContainer1.TabStop = False
@@ -1526,21 +1526,21 @@ Partial Class autre
     Friend WithEvents beta As System.Windows.Forms.MaskedTextBox
     Friend WithEvents Reset_smooth As System.Windows.Forms.Button
     Friend WithEvents b_input_check As System.Windows.Forms.CheckBox
-    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
-    Friend WithEvents RectangleShape1 As Microsoft.VisualBasic.PowerPacks.RectangleShape
+    Friend WithEvents ShapeContainer1 As ShapeContainer
+    Friend WithEvents RectangleShape1 As RectangleShape
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents Ponto As System.Windows.Forms.MaskedTextBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents Kfeed As System.Windows.Forms.MaskedTextBox
     Friend WithEvents Forag As System.Windows.Forms.CheckBox
     Friend WithEvents same_mf As System.Windows.Forms.CheckBox
-    Friend WithEvents RectangleShape2 As Microsoft.VisualBasic.PowerPacks.RectangleShape
+    Friend WithEvents RectangleShape2 As RectangleShape
     Friend WithEvents GroupBox5 As System.Windows.Forms.GroupBox
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents getgraph_diag As System.Windows.Forms.CheckBox
     Friend WithEvents reset_param_diag As System.Windows.Forms.Button
     Friend WithEvents Button4 As System.Windows.Forms.Button
-    Friend WithEvents RectangleShape3 As Microsoft.VisualBasic.PowerPacks.RectangleShape
+    Friend WithEvents RectangleShape3 As RectangleShape
     Friend WithEvents result_pdf_et_diag As System.Windows.Forms.WebBrowser
     Friend WithEvents ET_Main_diagnose_B_acc As System.Windows.Forms.TabPage
     Friend WithEvents ET_Main_diagnose_FL_P As System.Windows.Forms.TabPage
@@ -1559,7 +1559,7 @@ Partial Class autre
     Friend WithEvents ET_Main_diagnose_Y As System.Windows.Forms.TabPage
     Friend WithEvents ET_M_D_Y As System.Windows.Forms.DataGridView
     Friend WithEvents List_fleet1 As System.Windows.Forms.ListBox
-    Friend WithEvents RectangleShape7 As Microsoft.VisualBasic.PowerPacks.RectangleShape
+    Friend WithEvents RectangleShape7 As RectangleShape
     Friend WithEvents Button7 As System.Windows.Forms.Button
     Friend WithEvents models_list As System.Windows.Forms.ListBox
     Friend WithEvents site_eco As System.Windows.Forms.WebBrowser
@@ -1572,7 +1572,7 @@ Partial Class autre
     Friend WithEvents PictureBox3 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox4 As System.Windows.Forms.PictureBox
     Friend WithEvents PictureBox5 As System.Windows.Forms.PictureBox
-    Friend WithEvents RectangleShape4 As Microsoft.VisualBasic.PowerPacks.RectangleShape
+    Friend WithEvents RectangleShape4 As RectangleShape
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents ET_EMSY As System.Windows.Forms.TabPage
     Friend WithEvents ET_M_EMSY As System.Windows.Forms.DataGridView
