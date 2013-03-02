@@ -18,8 +18,8 @@
 
 Imports ScientificInterfaceShared.Forms
 Imports Microsoft.VisualBasic.PowerPacks
+Imports WeifenLuo.WinFormsUI.Docking
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class autre
     Inherits frmEwE
 
@@ -67,6 +67,8 @@ Partial Class autre
         Me.Label2 = New System.Windows.Forms.Label()
         Me.commentaires = New System.Windows.Forms.TextBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.ecotroph_version = New System.Windows.Forms.TextBox()
         Me.smooth_pdf = New System.Windows.Forms.WebBrowser()
         Me.smooth_graph = New System.Windows.Forms.CheckBox()
         Me.datasmooth = New System.Windows.Forms.DataGridView()
@@ -130,12 +132,12 @@ Partial Class autre
         Me.beta = New System.Windows.Forms.MaskedTextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.TopD = New System.Windows.Forms.MaskedTextBox()
-        Me.ShapeContainer1 = New ShapeContainer()
-        Me.RectangleShape4 = New RectangleShape()
-        Me.RectangleShape7 = New RectangleShape()
-        Me.RectangleShape3 = New RectangleShape()
-        Me.RectangleShape2 = New RectangleShape()
-        Me.RectangleShape1 = New RectangleShape()
+        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.RectangleShape4 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.RectangleShape7 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.RectangleShape3 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.RectangleShape2 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
+        Me.RectangleShape1 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.result_pdf_et_diag = New System.Windows.Forms.WebBrowser()
         Me.panel_result_diag = New System.Windows.Forms.TabControl()
         Me.ET_Main_diagnose = New System.Windows.Forms.TabPage()
@@ -160,8 +162,6 @@ Partial Class autre
         Me.ET_M_D_Y = New System.Windows.Forms.DataGridView()
         Me.ET_EMSY = New System.Windows.Forms.TabPage()
         Me.ET_M_EMSY = New System.Windows.Forms.DataGridView()
-        Me.ecotroph_version = New System.Windows.Forms.TextBox()
-        Me.Label12 = New System.Windows.Forms.Label()
         CType(Me.ETgridinput, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.inputdata.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -427,6 +427,22 @@ Partial Class autre
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Smooth parameters"
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(435, 171)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(202, 13)
+        Me.Label12.TabIndex = 10
+        Me.Label12.Text = "Version of R EcoTroph Package installed"
+        '
+        'ecotroph_version
+        '
+        Me.ecotroph_version.Location = New System.Drawing.Point(643, 168)
+        Me.ecotroph_version.Name = "ecotroph_version"
+        Me.ecotroph_version.Size = New System.Drawing.Size(66, 20)
+        Me.ecotroph_version.TabIndex = 9
         '
         'smooth_pdf
         '
@@ -1010,7 +1026,7 @@ Partial Class autre
         'Forag
         '
         Me.Forag.AutoSize = True
-        Me.Forag.Location = New System.Drawing.Point(138, 88)
+        Me.Forag.Location = New System.Drawing.Point(144, 88)
         Me.Forag.Name = "Forag"
         Me.Forag.Size = New System.Drawing.Size(98, 17)
         Me.Forag.TabIndex = 15
@@ -1102,7 +1118,7 @@ Partial Class autre
         Me.ShapeContainer1.Location = New System.Drawing.Point(3, 16)
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Shape() {Me.RectangleShape4, Me.RectangleShape7, Me.RectangleShape3, Me.RectangleShape2, Me.RectangleShape1})
+        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape4, Me.RectangleShape7, Me.RectangleShape3, Me.RectangleShape2, Me.RectangleShape1})
         Me.ShapeContainer1.Size = New System.Drawing.Size(829, 136)
         Me.ShapeContainer1.TabIndex = 12
         Me.ShapeContainer1.TabStop = False
@@ -1124,9 +1140,9 @@ Partial Class autre
         'RectangleShape3
         '
         Me.RectangleShape3.CornerRadius = 5
-        Me.RectangleShape3.Location = New System.Drawing.Point(310, 35)
+        Me.RectangleShape3.Location = New System.Drawing.Point(310, 34)
         Me.RectangleShape3.Name = "RectangleShape3"
-        Me.RectangleShape3.Size = New System.Drawing.Size(209, 91)
+        Me.RectangleShape3.Size = New System.Drawing.Size(209, 92)
         '
         'RectangleShape2
         '
@@ -1370,22 +1386,6 @@ Partial Class autre
         Me.ET_M_EMSY.Name = "ET_M_EMSY"
         Me.ET_M_EMSY.Size = New System.Drawing.Size(775, 388)
         Me.ET_M_EMSY.TabIndex = 2
-        '
-        'ecotroph_version
-        '
-        Me.ecotroph_version.Location = New System.Drawing.Point(643, 168)
-        Me.ecotroph_version.Name = "ecotroph_version"
-        Me.ecotroph_version.Size = New System.Drawing.Size(66, 20)
-        Me.ecotroph_version.TabIndex = 9
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(435, 171)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(202, 13)
-        Me.Label12.TabIndex = 10
-        Me.Label12.Text = "Version of R EcoTroph Package installed"
         '
         'autre
         '
