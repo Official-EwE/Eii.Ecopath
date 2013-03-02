@@ -134,7 +134,7 @@ Public Class newET
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         ' Test if form still exists
-        If Not Me.HasInterface(DirectCast(Me.frmET, System.Windows.Forms.Form)) Then
+        If Not Me.HasInterface(Me.frmET) Then
             frmET = New autre
         End If
 
