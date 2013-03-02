@@ -47,7 +47,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' </remarks>
 ''' ===========================================================================
 Public Class plFlow
-    Inherits Panel
+    Inherits ucSmoothPanel
 
 #Region " Private variables "
 
@@ -138,10 +138,8 @@ Public Class plFlow
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Sub New()
+        MyBase.New()
         Me.AutoScroll = True
-        Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-        Me.SetStyle(ControlStyles.UserPaint, True)
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)

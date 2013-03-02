@@ -17,6 +17,8 @@
 '
 Imports ScientificInterfaceShared.Controls
 Imports EwECore
+Imports System.Text
+Imports System.IO
 
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
@@ -54,20 +56,21 @@ Public Class cFlowDiagramData
         Me.m_data = data
         Me.m_results = results
 
-        Dim units() As cUnit = Me.m_data.GetUnits(cUnitFactory.eUnitType.All)
-        Me.m_nGroups = units.Length
-        Me.m_nLivingGroups = 0
+        Dim lUnits As New List(Of cUnit)
+        lUnits.Add(Nothing)
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Consumer))
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Wholesaler))
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Retailer))
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Processing))
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Distribution))
+        Me.m_nLivingGroups = lUnits.Count - 1
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer))
+        Me.m_nGroups = lUnits.Count - 1
 
         ReDim Me.m_sTTLX(Me.m_nGroups)
-        ReDim Me.m_units(Me.m_nGroups)
         ReDim Me.m_diets(Me.m_nGroups, Me.m_nGroups)
 
-        For Each unit In units
-            If unit.UnitType <> cUnitFactory.eUnitType.Producer Then
-                Me.m_nLivingGroups += 1
-            End If
-            Me.m_units(unit.Sequence) = unit
-        Next
+        Me.m_units = lUnits.ToArray
 
         Me.Calculate()
 
@@ -88,6 +91,7 @@ Public Class cFlowDiagramData
         Set(value As cResults.eGraphDataType)
             If (value <> Me.m_displayvalue) Then
                 Me.m_displayvalue = value
+                Me.Title = Me.m_displayvalue.ToString
                 Me.m_bValid = False
             End If
         End Set
@@ -130,9 +134,7 @@ Public Class cFlowDiagramData
         Implements IFlowDiagramData.LinkValue
         Get
             If Not Me.m_bValid Then Me.Calculate()
-            Dim uPred As cUnit = Me.GetUnit(iPred)
-            Dim uPrey As cUnit = Me.GetUnit(iPrey)
-            Return Me.m_diets(uPred.Sequence, uPrey.Sequence)
+            Return Me.m_diets(iPred, iPrey)
         End Get
     End Property
 
@@ -169,9 +171,8 @@ Public Class cFlowDiagramData
     Public ReadOnly Property Rank(iGroup As Integer) As Single _
         Implements IFlowDiagramData.Rank
         Get
-            Dim u As cUnit = Me.GetUnit(iGroup)
-            Dim iSeq As Integer = u.Sequence
-            Return Me.m_sTTLX(iSeq)
+            If Not Me.m_bValid Then Me.Calculate()
+            Return Me.m_sTTLX(iGroup)
         End Get
     End Property
 
@@ -183,6 +184,7 @@ Public Class cFlowDiagramData
     Public ReadOnly Property Value(iGroup As Integer) As Single _
         Implements IFlowDiagramData.Value
         Get
+            If Not Me.m_bValid Then Me.Calculate()
             Return Me.GetUnitValue(Me.GetUnit(iGroup))
         End Get
     End Property
@@ -220,19 +222,21 @@ Public Class cFlowDiagramData
         End Set
     End Property
 
+    Public Property Title As String _
+        Implements ScientificInterfaceShared.Controls.IFlowDiagramData.Title
+
 #End Region ' Properties
 
 #Region " Internals "
 
     Private Function GetUnit(iGroup As Integer) As cUnit
         Debug.Assert(iGroup > 0 And iGroup <= Me.m_nGroups)
-        Return Me.m_units(iGroup - 1)
+        Return Me.m_units(iGroup)
     End Function
 
     Private Sub Calculate()
 
         Dim fn As cEcoFunctions = Me.m_data.Core.EcoFunction
-        Dim unit As cUnit = Nothing
 
         ' Trophic level calculations require a temporary PP array
         Dim PP(Me.m_nGroups) As Single
@@ -247,40 +251,45 @@ Public Class cFlowDiagramData
         ' Compute diets, PP, and value extremes
         ' -------------------------------------
 
-        For iTarget As Integer = 1 To Me.m_nGroups
+        ' A few notes:
+        ' - Unit sequence numbers are zero-based. Diet logic expects one-based indexes
+        ' - Diets are dimensioned (pred x prey). In the value chain, this is translated to (target x source)
+
+        For iPred As Integer = 1 To Me.m_nGroups
 
             Dim total As Double = 0.0#
             Dim val As Single = 0.0!
+            Dim unitPred As cUnit = Me.m_units(iPred)
 
-            For iSource As Integer = 1 To Me.m_nGroups
-                total += Me.m_results.FlowsByWeight(iTarget, iSource)
+            For iPrey As Integer = 1 To Me.m_nGroups
+                Dim unitPrey As cUnit = Me.m_units(iPrey)
+                total += Me.m_results.FlowsByWeight(unitPrey.Sequence, unitPred.Sequence)
             Next
 
             If total > 0 Then
-                For iSource As Integer = 1 To Me.m_nGroups
+                For iPrey As Integer = 1 To Me.m_nGroups
+                    Dim unitPrey As cUnit = Me.m_units(iPrey)
                     ' Convert to single for EwE compatibility. Is ok when normalized, huge precision is not needed then
-                    val = CSng(Me.m_results.FlowsByWeight(iTarget, iSource) / total)
-                    Me.m_diets(iTarget, iSource) = val
-
+                    val = CSng(Me.m_results.FlowsByWeight(unitPrey.Sequence, unitPred.Sequence) / total)
+                    Me.m_diets(iPred, iPrey) = val
+                    ' Track max value
                     Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, val)
                     Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, val)
-
                 Next
             Else
-                For iSource As Integer = 1 To Me.m_nGroups
-                    Me.m_diets(iTarget, iSource) = 0.0!
+                For iPrey As Integer = 1 To Me.m_nGroups
+                    Me.m_diets(iPred, iPrey) = 0.0!
                 Next
             End If
 
-            unit = Me.GetUnit(iTarget)
-            If (unit.UnitType = cUnitFactory.eUnitType.Producer) Then
-                PP(iTarget) = 1.0!
+            If (unitPred.UnitType = cUnitFactory.eUnitType.Producer) Then
+                PP(iPred) = 1.0!
             Else
-                PP(iTarget) = 0.0!
+                PP(iPred) = 0.0!
             End If
 
             ' Compute value extremes
-            val = Me.GetUnitValue(unit)
+            val = Me.GetUnitValue(unitPred)
             Me.m_sValueMax = Math.Max(Me.m_sValueMax, val)
             Me.m_sValueMin = Math.Min(Me.m_sValueMin, val)
 
@@ -299,7 +308,6 @@ Public Class cFlowDiagramData
     ''' </summary>
     ''' <param name="unit"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Private Function GetUnitValue(unit As cUnit) As Single
 
         Dim sTotal As Single = 0.0

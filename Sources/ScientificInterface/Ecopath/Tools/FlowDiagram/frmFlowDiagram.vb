@@ -213,7 +213,7 @@ Namespace Ecopath.Controls.FlowDiagram
 #Region " Tree events (wouldn't that be nice?)"
 
         Private Sub OnTreeChanged(ByVal sender As cFlowDiagramTree)
-            Me.m_pbFlowDiagram.Invalidate()
+            Me.m_pbFlowDiagram.Invalidate(True)
         End Sub
 
 #End Region ' Tree events

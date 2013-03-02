@@ -23,6 +23,7 @@ Imports System.ComponentModel
 Imports System.Drawing.Color
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Style
+Imports System.Text
 
 #End Region ' Imports
 
@@ -92,36 +93,26 @@ Namespace Controls
             ''' <param name="ptf"></param>
             ''' <param name="font"></param>
             ''' <param name="clrFont"></param>
-            ''' <param name="strGroupName"></param>
-            ''' <param name="strBiomass"></param>
+            ''' <param name="strText">Formatted label text to draw.</param>
             '''--------------------------------------------------------------------
             Public Sub DrawLabel(ByVal g As Graphics, _
                                  ByVal ptf As PointF, _
                                  ByVal font As Font, _
                                  ByVal clrFont As Color, _
-                                 ByVal strGroupName As String, _
-                                 Optional ByVal strBiomass As String = "")
-
-                ' ToDo: center labels in a box
+                                 ByVal strText As String)
 
                 Using br As New SolidBrush(clrFont)
-
-                    ' Draw group name
-                    g.DrawString(strGroupName, font, br, ptf.X, ptf.Y)
-
-                    ' Draw the biomass string
-                    If (Not String.IsNullOrWhiteSpace(strBiomass)) Then
-                        g.DrawString(strBiomass, font, br, ptf.X, ptf.Y + CInt(font.Size * 1.5))
-                    End If
-
+                    g.DrawString(strText, font, br, ptf, cFlowDiagramTree.g_fmt)
                 End Using
 
             End Sub
 
-            Public Function CalcLabelSize(ByVal g As Graphics, _
+            Friend Function CalcLabelSize(ByVal g As Graphics, _
                                           ByVal font As Font, _
-                                          ByVal strGroupName As String) As SizeF
-                Return g.MeasureString(strGroupName, font)
+                                          ByVal strText As String, _
+                                          ByVal fmt As StringFormat, _
+                                          ByVal iMaxWidth As Integer) As SizeF
+                Return g.MeasureString(strText, font, iMaxWidth, fmt)
             End Function
 
         End Class
@@ -140,7 +131,7 @@ Namespace Controls
 
 #Region " Rendering "
 
-            Public Sub DrawConnection(ByRef g As Graphics, _
+            Public Sub DrawConnection(ByVal g As Graphics, _
                                       ByVal ptFrom As PointF, _
                                       ByVal ptTo As PointF, _
                                       ByVal clrLine As Color, _
@@ -168,7 +159,7 @@ Namespace Controls
 
             End Sub
 
-            Private Sub DrawArc(ByRef g As Graphics, ByVal pn As Pen, ByVal location1 As PointF, ByVal location2 As PointF)
+            Private Sub DrawArc(ByVal g As Graphics, ByVal pn As Pen, ByVal location1 As PointF, ByVal location2 As PointF)
 
                 Dim sAngleSweep As Single = 90.0!
                 Dim sAngleStart As Single = 0.0!
@@ -217,20 +208,24 @@ Namespace Controls
         Private m_bAutoNodeSize As Boolean = True
         Private m_iNodeSize As Integer = 10
         Private m_bIsDrawLabel As Boolean = True
-        Private m_bIsNodeDrawBiomass As Boolean = False
+        Private m_bIsNodeDrawValue As Boolean = False
         Private m_clrLine As Color = Color.Gray
         Private m_bAutoLineWidth As Boolean = False
+        Private m_bShowTitle As Boolean = False
         Private m_iLineWidth As Integer = 1
         Private m_nodetype As cFlowDiagramNode.eNodeTypes = cFlowDiagramNode.eNodeTypes.Circle
         Private m_connectiontype As cFlowDiagramConnector.eConnectionType = cFlowDiagramConnector.eConnectionType.Arch
         Private m_colorusagetype As eColorUsageTypes = eColorUsageTypes.None
 
+        Private Shared g_fmt As New StringFormat()
+        Private Shared g_wrapwidth As Integer = 150
+
 #End Region ' Privates
 
         Public Enum eColorUsageTypes As Integer
             None
-            Groups
-            Biomass
+            EwE
+            Value
             Flow
         End Enum
 
@@ -260,6 +255,7 @@ Namespace Controls
             ' Elminate near-white colours
             Me.m_colorramp.ColorOffsetStart = 0.2!
 
+            cFlowDiagramTree.g_fmt.Alignment = StringAlignment.Center
             Me.InitNodePositions()
 
         End Sub
@@ -286,36 +282,47 @@ Namespace Controls
             End Using
 
             Select Case Me.m_colorusagetype
-                Case eColorUsageTypes.Biomass
-                    Me.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), My.Resources.HEADER_BIOMASS)
+                Case eColorUsageTypes.Value
+                    Me.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), My.Resources.HEADER_VALUE)
                 Case eColorUsageTypes.Flow
-                    Me.DrawLegend(g, Me.m_data.LinkValueMax, New Point(5, 5), My.Resources.HEADER_DIET)
+                    Me.DrawLegend(g, Me.m_data.LinkValueMax, New Point(5, 5), "Flow")
             End Select
 
         End Sub
 
-        Friend Sub DrawNode(ByRef g As Graphics, _
+        Friend Sub DrawTitle(ByVal g As Graphics, _
+                             ByVal rc As Rectangle)
+
+            Dim strTitle As String = Me.m_data.Title
+
+            If (Not Me.m_bShowTitle) Or (String.IsNullOrWhiteSpace(strTitle)) Then Return
+
+            Using brText As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                Using font As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
+                    Dim szf As SizeF = g.MeasureString(strTitle, font)
+                    g.DrawString(strTitle, font, brText, rc.X + (rc.Width - szf.Width) / 2, rc.Y + font.Height * 3)
+                End Using
+            End Using
+
+        End Sub
+
+        Friend Sub DrawNode(ByVal g As Graphics, _
                             ByVal rc As Rectangle, _
                             ByVal iGroup As Integer, _
                             ByVal bVisible As Boolean)
 
-            Dim strGroupName As String = Me.m_data.GroupName(iGroup)
-            Dim sBiomass As Single = Me.m_data.Value(iGroup)
-            Dim sBiomassMax As Single = Me.m_data.ValueMax
-            Dim strBiomassLabel As String = ""
+            Dim strLabel As String = Me.FormatLabelText(iGroup)
+            Dim sValue As Single = Me.m_data.Value(iGroup)
+            Dim sValueMax As Single = Me.m_data.ValueMax
             Dim clrPen As Color = Color.Black
             Dim clrFill As Color = Color.LightGray
 
-            If Me.m_bIsNodeDrawBiomass And sBiomass > 0.0! Then
-                strBiomassLabel = Me.m_data.ValueLabel(sBiomass)
-            End If
-
             If bVisible Then
                 Select Case m_colorusagetype
-                    Case eColorUsageTypes.Groups
+                    Case eColorUsageTypes.EwE
                         clrFill = Me.m_data.GroupColor(iGroup)
-                    Case eColorUsageTypes.Biomass
-                        clrFill = Me.m_colorramp.GetColor(sBiomass, sBiomassMax)
+                    Case eColorUsageTypes.Value
+                        clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
                     Case Else
                         clrFill = Me.m_clrNode
                 End Select
@@ -327,7 +334,7 @@ Namespace Controls
             Me.m_node.DrawNode(g, _
                                Me.NodeLocation(iGroup, rc), _
                                Me.NodeType, _
-                               Me.CalcNodeSize(sBiomass, sBiomassMax), _
+                               Me.CalcNodeSize(sValue, sValueMax), _
                                clrPen, clrFill)
 
             If bVisible Then
@@ -341,13 +348,12 @@ Namespace Controls
                                     Me.LabelLocation(iGroup, rc), _
                                     Me.RenderFont, _
                                     clrPen, _
-                                    strGroupName, _
-                                    strBiomassLabel)
+                                    Me.FormatLabelText(iGroup))
             End If
 
         End Sub
 
-        Friend Sub DrawConnection(ByRef g As Graphics, _
+        Friend Sub DrawConnection(ByVal g As Graphics, _
                                   ByVal rc As Rectangle, _
                                   ByVal iPred As Integer, _
                                   ByVal iPrey As Integer, _
@@ -392,7 +398,7 @@ Namespace Controls
                                         Me.LineConnectionType)
         End Sub
 
-        Friend Sub DrawLegend(ByRef g As Graphics, _
+        Friend Sub DrawLegend(ByVal g As Graphics, _
                               ByVal sValMax As Single, ByVal ptTopLeft As Point, _
                               ByVal strTitle As String, _
                               Optional ByVal iXSize As Integer = 75, _
@@ -407,18 +413,27 @@ Namespace Controls
             Dim brush As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
             Dim brLegend As Brush = Nothing
 
+            ' Determine scale
+            Dim iLog As Integer = 0
+            If (sValMax > 0) Then iLog = CInt(Math.Log10(sValMax))
+            Dim dFact As Double = Math.Pow(10, iLog)
+
+            If (iLog <> 0) Then
+                strTitle = String.Format(My.Resources.GENERIC_LABEL_DETAILED, strTitle, "10^" & iLog.ToString())
+            End If
+
             g.DrawRectangle(pen, New Rectangle(ptTopLeft, New Size(iXSize, iYSize)))
             g.DrawString(strTitle, font, brush, New Point(CInt(iXSize * 0.2 + ptTopLeft.X), CInt(iYSize * 0.05 + ptTopLeft.Y)))
 
-            For i As Single = 1 To iNumIntervals
+            For i As Integer = 1 To iNumIntervals
 
                 sValInc += sValMax / iNumIntervals
 
-                brLegend = New SolidBrush(Me.m_colorramp.GetColor(sValInc, sValMax))
+                brLegend = New SolidBrush(Me.m_colorramp.GetColor(sValInc / dFact, sValMax / dFact))
                 g.FillRectangle(brLegend, New Rectangle(ptIconTL, New Size(CInt(iXSize * 0.2), iIconHeight)))
                 brLegend.Dispose()
 
-                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(Me.GetNiceNumber(sValInc))), _
+                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(sValInc / dFact)), _
                              font, brush, _
                              New Point(CInt(ptIconTL.X + iXSize * 0.3), ptIconTL.Y))
                 ptIconTL.Y += iIconHeight
@@ -429,12 +444,6 @@ Namespace Controls
             brush.Dispose()
 
         End Sub
-
-        Private Function GetNiceNumber(ByVal sNum As Single) As Single
-            If sNum > 100000 Then sNum = 0
-            'Return CSng(Math.Round(val, 3))
-            Return sNum
-        End Function
 
 #End Region ' Drawing
 
@@ -484,11 +493,26 @@ Namespace Controls
 #Region " Configuration "
 
         ' ToDo_JS: somehow globalize these properties 
+        <Browsable(True), _
+    Category("Misc."), _
+    DisplayName("Show title"), _
+    Description("Draw the title on the flow diagram"), _
+    DefaultValue(eColorUsageTypes.None)> _
+        Public Property ShowTitle() As Boolean
+            Get
+                Return Me.m_bShowTitle
+            End Get
+            Set(ByVal value As Boolean)
+                Me.m_bShowTitle = value
+                RaiseEvent OnChanged(Me)
+            End Set
+        End Property
+
 
         <Browsable(True), _
             Category("Misc."), _
             DisplayName("Auto-colour"), _
-            Description("Define which aspect of the flow diagram to auto-colour: nodes by biomass, nodes by group colour, or lines by diet"), _
+            Description("Define which aspect of the flow diagram to auto-colour: nodes by value, nodes by EwE default colour, or lines by diet"), _
             DefaultValue(eColorUsageTypes.None)> _
         Public Property AutoColorUsage() As eColorUsageTypes
             Get
@@ -517,7 +541,7 @@ Namespace Controls
         <Browsable(True), _
             Category("Node"), _
             DisplayName("Auto-size nodes"), _
-            Description("Scale nodes to biomass."), _
+            Description("Set true to scale nodes to value."), _
             DefaultValue(True)> _
         Public Property AutoNodeSize() As Boolean
             Get
@@ -640,14 +664,14 @@ Namespace Controls
 
         <Browsable(True), _
             Category("Node"), _
-            DisplayName("Show biomass in label"), _
-            Description("Show biomass of groups in the node labels.")> _
-        Public Property NodeDrawBiomass() As Boolean
+            DisplayName("Show value in label"), _
+            Description("Show value of groups in the node labels.")> _
+        Public Property NodeDrawValue() As Boolean
             Get
-                Return Me.m_bIsNodeDrawBiomass
+                Return Me.m_bIsNodeDrawValue
             End Get
             Set(ByVal value As Boolean)
-                Me.m_bIsNodeDrawBiomass = value
+                Me.m_bIsNodeDrawValue = value
                 RaiseEvent OnChanged(Me)
             End Set
         End Property
@@ -696,10 +720,10 @@ Namespace Controls
         End Property
 
         Public Function IsNodeAtPoint(ByVal rc As Rectangle, ByVal ptfTest As PointF, _
-                                      ByVal i As Integer, ByVal sBiomass As Single) As Boolean
+                                      ByVal i As Integer, ByVal sValue As Single) As Boolean
 
             Dim ptfNodeLocation As PointF = Me.NodeLocation(i, rc)
-            Dim sNodeSize As Single = CSng(Me.CalcNodeSize(sBiomass, Me.m_data.ValueMax))
+            Dim sNodeSize As Single = CSng(Me.CalcNodeSize(sValue, Me.m_data.ValueMax))
             Dim rcf As New RectangleF(ptfNodeLocation.X - sNodeSize / 2, _
                                       ptfNodeLocation.Y - sNodeSize / 2, _
                                       sNodeSize, _
@@ -712,13 +736,13 @@ Namespace Controls
         Public Function IsLabelAtPoint(ByVal rc As Rectangle, _
                                        ByVal ptfTest As PointF, _
                                        ByVal i As Integer, _
-                                       ByVal strGroupName As String, _
+                                       ByVal strLabel As String, _
                                        ByVal g As Graphics, _
                                        ByVal font As Font) As Boolean
 
             Dim ptfLabelLocation As PointF = Me.LabelLocation(i, rc)
-            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, font, strGroupName)
-            Dim rcf As New RectangleF(ptfLabelLocation, szfLabel)
+            Dim szfLabel As SizeF = Me.m_node.CalcLabelSize(g, font, strLabel, cFlowDiagramTree.g_fmt, cFlowDiagramTree.g_wrapwidth)
+            Dim rcf As New RectangleF(ptfLabelLocation.X - szfLabel.Width / 2, ptfLabelLocation.Y, szfLabel.Width, szfLabel.Height)
 
             Return rcf.Contains(ptfTest)
 
@@ -750,6 +774,20 @@ Namespace Controls
             Dim uic As cUIContext = Me.m_data.UIContext
             Debug.Assert(uic IsNot Nothing)
             Return uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
+        End Function
+
+        Public Function FormatLabelText(iGroup As Integer) As String
+
+            Dim sb As New StringBuilder()
+            Dim sValue As Single = Me.m_data.Value(iGroup)
+            Dim strName As String = Me.m_data.GroupName(iGroup)
+
+            sb.AppendLine(strName)
+            If Me.m_bIsNodeDrawValue And (sValue <> 0.0!) Then
+                sb.AppendLine(Me.m_data.ValueLabel(sValue))
+            End If
+            Return sb.ToString
+
         End Function
 
 #End Region ' EwE styling

@@ -24,6 +24,7 @@ Imports System.Math
 Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 Imports EwECore
+Imports System.Text
 
 #End Region ' Imports
 
@@ -108,8 +109,8 @@ Namespace Controls
 
             Dim hl As cFlowDiagramTree.eHighlightType = cFlowDiagramTree.eHighlightType.None
 
-            ' Draw the objects
             Me.m_tree.DrawBackground(g, rc)
+            Me.m_tree.DrawTitle(g, rc)
 
             ' Draw the connections
             For iPred As Integer = 1 To Me.m_data.NumLivingGroups()
@@ -166,10 +167,10 @@ Namespace Controls
                     End If
 
                 Case eDragMode.Label
-                    Me.m_tree.MoveLabel(rc, pt, Me.HighlightNode)
+                    Me.m_tree.MoveLabel(rc, New PointF(pt.X - Me.m_ptDragOffset.X, pt.Y - Me.m_ptDragOffset.Y), Me.HighlightNode)
 
                 Case eDragMode.Node
-                    Me.m_tree.MoveNode(rc, pt, Me.HighlightNode)
+                    Me.m_tree.MoveNode(rc, New PointF(pt.X - Me.m_ptDragOffset.X, pt.Y - Me.m_ptDragOffset.Y), Me.HighlightNode)
 
             End Select
 
@@ -246,19 +247,23 @@ Namespace Controls
             Dim uic As cUIContext = Me.m_data.UIContext
             Dim iLabel As Integer = 0
             Dim iNode As Integer = 0
+            Dim ptItem As PointF
 
             Me.HighlightNode = 0
-            Me.m_ptDragOffset = pt
 
             iLabel = Me.GetLabelAtPoint(rc, pt, g, Me.m_tree.RenderFont)
             If iLabel > 0 Then
                 Me.HighlightNode = iLabel
                 Me.m_dragMode = eDragMode.Label
+                ptItem = Me.m_tree.LabelLocation(iLabel, rc)
+                Me.m_ptDragOffset = New PointF(pt.X - ptItem.X, pt.Y - ptItem.Y)
             Else
                 iNode = Me.GetNodeAtPoint(rc, pt)
                 If iNode > 0 Then
                     Me.HighlightNode = iNode
                     Me.m_dragMode = eDragMode.Node
+                    ptItem = Me.m_tree.NodeLocation(iNode, rc)
+                    Me.m_ptDragOffset = New PointF(pt.X - ptItem.X, pt.Y - ptItem.Y)
                 End If
             End If
 
@@ -318,7 +323,7 @@ Namespace Controls
             Dim iLabelAtPoint As Integer = 0
 
             While (iGroup <= Me.m_data.NumGroups) And (iLabelAtPoint = 0)
-                If Me.m_tree.IsLabelAtPoint(rc, pt, iGroup, Me.m_data.GroupName(iGroup), g, font) Then
+                If Me.m_tree.IsLabelAtPoint(rc, pt, iGroup, Me.m_tree.FormatLabelText(iGroup), g, font) Then
                     iLabelAtPoint = iGroup
                 End If
                 iGroup += 1

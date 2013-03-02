@@ -211,6 +211,12 @@ Namespace Ecopath.Controls.FlowDiagram
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IFlowDiagramData.Title"/>
+        ''' -------------------------------------------------------------------
+        Public Property Title As String _
+            Implements ScientificInterfaceShared.Controls.IFlowDiagramData.Title
+
 #End Region ' Properties
 
 #Region " Internals "

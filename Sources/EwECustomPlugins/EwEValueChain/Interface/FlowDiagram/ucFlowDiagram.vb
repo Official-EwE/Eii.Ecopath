@@ -18,11 +18,10 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.Drawing
 Imports System.Windows.Forms
-Imports EwEUtils.Database.cEwEDatabase
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports System.Drawing
 
 #End Region ' Imports
 
@@ -30,17 +29,7 @@ Public Class ucFlowDiagram
     Inherits UserControl
     Implements IUIElement
 
-
 #Region " Private bits "
-
-    Private Shared g_iLastItem As Integer = 0
-    Private Shared g_iLastUnit As Integer = 0
-
-    Private Enum eViewModeType As Integer
-        Grid = 0
-        Graph
-        GraphEquilibrium
-    End Enum
 
     Enum eGraphDataType As Integer
         CostRevenue = 0
@@ -78,8 +67,6 @@ Public Class ucFlowDiagram
         Me.m_tree = New cFlowDiagramTree(Me.m_data)
         Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
 
-        Me.SetStyle(ControlStyles.ResizeRedraw Or ControlStyles.AllPaintingInWmPaint, True)
-
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -90,6 +77,9 @@ Public Class ucFlowDiagram
             Me.m_tscbmValue.Items.Add(gd)
         Next
         Me.m_tscbmValue.SelectedIndex = 0
+
+        Me.m_pgFD.SelectedObject = Me.m_tree
+
     End Sub
 
     Public Property UIContext() As cUIContext _
@@ -122,8 +112,12 @@ Public Class ucFlowDiagram
     Private Sub OnPaintPictureBox(sender As Object, e As System.Windows.Forms.PaintEventArgs) _
         Handles m_pbFlowDiagram.Paint
 
-        Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
-        Me.m_doodler.DrawFlowDiagram(e.Graphics, rc)
+        Try
+            Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
+            Me.m_doodler.DrawFlowDiagram(e.Graphics, rc)
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
@@ -144,30 +138,31 @@ Public Class ucFlowDiagram
         End Try
     End Sub
 
+    Private Sub OnToggleShowOptions(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnOptions.Click
+        Me.m_scFD.Panel2Collapsed = Not Me.m_tsbnOptions.Checked
+    End Sub
+
 #Region " Mouse Events "
 
-    Private Sub FDPictBox_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+    Private Sub OnFDMouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
         Handles m_pbFlowDiagram.MouseDown
-
         Using g As Graphics = Me.CreateGraphics()
             Me.m_doodler.BeginDrag(Me.m_pbFlowDiagram.ClientRectangle, e.Location, g)
         End Using
-
     End Sub
 
-    Private Sub FDPictBox_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+    Private Sub OnFDMouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
         Handles m_pbFlowDiagram.MouseUp
         Me.m_doodler.EndDrag(Me.m_data, e.Location)
     End Sub
 
-    Private Sub FDPictBox_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
+    Private Sub OnFDMouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) _
         Handles m_pbFlowDiagram.MouseMove
-
         Using g As Graphics = Me.CreateGraphics()
             Me.m_doodler.ProcessMouseMove(g, Me.m_pbFlowDiagram.ClientRectangle, e.Location)
             Me.m_pbFlowDiagram.Invalidate()
         End Using
-
     End Sub
 
 #End Region ' Mouse Events

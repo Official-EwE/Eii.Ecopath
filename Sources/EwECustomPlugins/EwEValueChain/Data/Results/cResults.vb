@@ -331,6 +331,15 @@ Public Class cResults
 
 #Region " Public access "
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Return the collection of <see cref="eVariableType">variables</see> to
+    ''' populate a given <see cref="eGraphDataType">graph</see>.
+    ''' </summary>
+    ''' <param name="graph">The graph type to obtain variables for.</param>
+    ''' <returns>The collection of <see cref="eVariableType">variables</see> to
+    ''' populate a given <see cref="eGraphDataType">graph</see>.</returns>
+    ''' -----------------------------------------------------------------------
     Public Shared Function GetVariables(graph As eGraphDataType) As eVariableType()
 
         Dim vars() As eVariableType = Nothing
@@ -565,7 +574,14 @@ Public Class cResults
         Return Me.m_runType
     End Function
 
-
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get/set the amount of a flow between a source and target unit. Dumensioned
+    ''' as (source x target).
+    ''' </summary>
+    ''' <param name="iSource"></param>
+    ''' <param name="iTarget"></param>
+    ''' -----------------------------------------------------------------------
     Public Property FlowsByWeight(iSource As Integer, iTarget As Integer) As Double
         Get
             Return Me.m_FlowsByWeightBetweenUnits(iSource, iTarget)

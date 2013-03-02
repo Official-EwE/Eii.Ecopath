@@ -144,6 +144,13 @@ Namespace Controls
         ''' -------------------------------------------------------------------
         ReadOnly Property LinkValueMin() As Single
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the title of the flow diagram.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property Title As String
+
     End Interface
 
 End Namespace
