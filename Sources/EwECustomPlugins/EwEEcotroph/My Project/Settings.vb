@@ -18,6 +18,7 @@
 
 Imports System.IO
 Imports System.Reflection
+Imports System.Configuration
 Imports EwEUtils
 
 Namespace My

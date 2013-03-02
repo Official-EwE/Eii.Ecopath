@@ -17,6 +17,7 @@
 '
 
 Imports ScientificInterfaceShared.Forms
+Imports Microsoft.VisualBasic.PowerPacks
 
 <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class autre

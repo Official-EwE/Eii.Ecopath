@@ -29,7 +29,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Ecotroph plug-in for EwE")> 
 <Assembly: AssemblyCompany("Agrocampus Ouest - Fisheries and Aquatic Sciences Center ")> 
 <Assembly: AssemblyProduct("EwEEcotroph")> 
-<Assembly: AssemblyCopyright("Copyright ©  2011")> 
+<Assembly: AssemblyCopyright("Copyright ©  2013")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
