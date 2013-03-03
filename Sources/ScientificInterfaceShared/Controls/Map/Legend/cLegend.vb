@@ -40,6 +40,9 @@ Namespace Controls.Map
 
 #Region " Private classes "
 
+        ''' <summary>
+        ''' An entry in the legend.
+        ''' </summary>
         Private MustInherit Class cLegendEntry
             MustOverride ReadOnly Property Name As String
             MustOverride ReadOnly Property Renderer As cLayerRenderer
@@ -47,6 +50,9 @@ Namespace Controls.Map
             MustOverride ReadOnly Property Min As Single
         End Class
 
+        ''' <summary>
+        ''' A static legend entry - one that does not vary.
+        ''' </summary>
         Private Class cStaticEntry
             Inherits cLegendEntry
 
@@ -88,6 +94,11 @@ Namespace Controls.Map
             End Property
         End Class
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' A legend entry wrapping a <see cref="cLayer">map layer</see>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Class cLayerEntry
             Inherits cLegendEntry
 
@@ -328,45 +339,24 @@ Namespace Controls.Map
 
             If (Me.m_uic Is Nothing) Then Return False
 
-            Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
-            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-
-            ' Measure size of legend
-            Dim iWidth As Integer = 0
-            Dim iHeight As Integer = 0
-            Dim szfItem As SizeF = Nothing
-
+            Dim szLegend As Size = Nothing
             Dim bSuccess As Boolean = True
 
-            Using bmpTmp As New Bitmap(1000, 300, Imaging.PixelFormat.Format32bppArgb)
-                Using g As Graphics = Graphics.FromImage(bmpTmp)
-
-                    If Me.ShowTitle Then
-                        szfItem = Me.RenderTitleSize(g, ftTitle)
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
-                    End If
-
-                    For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                        szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
-                        iHeight += CInt(Math.Ceiling(szfItem.Height))
-                    Next iLayer
-
+            Using bmp As New Bitmap(1000, 300, Imaging.PixelFormat.Format32bppArgb)
+                bmp.SetResolution(Me.m_uic.StyleGuide.PreferredDPI, Me.m_uic.StyleGuide.PreferredDPI)
+                Using g As Graphics = Graphics.FromImage(bmp)
+                    szLegend = Me.Size(g)
                 End Using ' g
             End Using ' bmp
 
-            iHeight += 1
-            iWidth += 1
-
-            Using bmp As New Bitmap(iWidth, iHeight, Imaging.PixelFormat.Format32bppArgb)
+            Using bmp As New Bitmap(szLegend.Width, szLegend.Height, Imaging.PixelFormat.Format32bppArgb)
+                bmp.SetResolution(Me.m_uic.StyleGuide.PreferredDPI, Me.m_uic.StyleGuide.PreferredDPI)
                 Using g As Graphics = Graphics.FromImage(bmp)
 
                     If format Is ImageFormat.Png Then
-                        g.FillRectangle(Brushes.Transparent, 0, 0, iWidth, iHeight)
+                        g.FillRectangle(Brushes.Transparent, 0, 0, szLegend.Width, szLegend.Height)
                     Else
-                        g.FillRectangle(Brushes.White, 0, 0, iWidth, iHeight)
+                        g.FillRectangle(Brushes.White, 0, 0, szLegend.Width, szLegend.Height)
                     End If
                     bSuccess = Me.Draw(g, New Point(0, 0))
                 End Using ' g
@@ -379,10 +369,53 @@ Namespace Controls.Map
 
             End Using ' bmp
 
+            Return bSuccess
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Calculate the size of the legend, when rendered with the current
+        ''' <see cref="cStyleGuide.Font">styleguide font settings</see> and
+        ''' content. 
+        ''' </summary>
+        ''' <param name="g">The graphics to calculate for.</param>
+        ''' <returns>A size.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Size(g As Graphics) As Size
+
+            Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
+            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+
+            ' Measure size of legend
+            Dim iWidth As Integer = 0
+            Dim iHeight As Integer = 0
+            Dim szfItem As SizeF = Nothing
+
+            Try
+                If Me.ShowTitle Then
+                    szfItem = Me.RenderTitleSize(g, ftTitle)
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
+                End If
+
+                For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
+                    szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
+                    iHeight += CInt(Math.Ceiling(szfItem.Height))
+                Next iLayer
+            Catch ex As Exception
+
+            End Try
+
+            iHeight += 1
+            iWidth += 1
+
             ftTitle.Dispose()
             ftLayer.Dispose()
 
-            Return bSuccess
+            Return New Size(iWidth, iHeight)
 
         End Function
 

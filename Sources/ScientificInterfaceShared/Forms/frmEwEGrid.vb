@@ -208,6 +208,7 @@ Namespace Forms
 
             Dim rc As New Rectangle(0, 0, Grid.Width, Grid.Height)
             Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
+            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
             Me.Grid.DrawToBitmap(bmp, rc)
             Return bmp
 

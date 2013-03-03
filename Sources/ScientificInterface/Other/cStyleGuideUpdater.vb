@@ -208,6 +208,8 @@ Friend Class cStyleGuideUpdater
             .MapReferenceLayerTL = New PointF(My.Settings.MapLayerRefLonMin, My.Settings.MapLayerRefLatMax)
             .MapReferenceLayerBR = New PointF(My.Settings.MapLayerRefLonMax, My.Settings.MapLayerRefLatMin)
 
+            .PreferredDPI = My.Settings.OutputDPI
+
         End With
 
         Me.StringToFontSetting(My.Settings.FontTitle, cStyleGuide.eApplicationFontType.Title)
@@ -253,6 +255,8 @@ Friend Class cStyleGuideUpdater
             My.Settings.MapLayerRefLonMax = .MapReferenceLayerBR.X
             My.Settings.MapLayerRefLatMin = .MapReferenceLayerBR.Y
             My.Settings.MapLayerRefLatMax = .MapReferenceLayerTL.Y
+
+            My.Settings.OutputDPI = .PreferredDPI
 
         End With
 

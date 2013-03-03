@@ -465,6 +465,7 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         Protected Overridable Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
             Dim bmp As New Bitmap(Me.ClientRectangle.Width, Me.ClientRectangle.Height, Imaging.PixelFormat.Format32bppArgb)
+            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
             Me.DrawToBitmap(bmp, Me.ClientRectangle)
             Return bmp
         End Function

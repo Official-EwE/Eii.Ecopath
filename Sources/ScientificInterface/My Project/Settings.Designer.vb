@@ -756,6 +756,18 @@ Partial Friend NotInheritable Class Settings
             Me("AutosaveResults") = value
         End Set
     End Property
+    
+    <Global.System.Configuration.UserScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("220")>  _
+    Public Property OutputDPI() As Integer
+        Get
+            Return CType(Me("OutputDPI"),Integer)
+        End Get
+        Set
+            Me("OutputDPI") = value
+        End Set
+    End Property
 End Class
 
 Namespace My

@@ -542,6 +542,7 @@ Namespace Controls
 
             Dim rcClient As Rectangle = Me.ClientRectangle()
             Dim bmp As New Bitmap(rcClient.Width, rcClient.Height, Imaging.PixelFormat.Format32bppArgb)
+            bmp.SetResolution(Me.m_uic.StyleGuide.PreferredDPI, Me.m_uic.StyleGuide.PreferredDPI)
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim fs As IO.FileStream = Nothing
             Dim bSucces As Boolean = True

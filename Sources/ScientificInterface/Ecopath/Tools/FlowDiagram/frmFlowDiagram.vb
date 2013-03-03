@@ -150,11 +150,14 @@ Namespace Ecopath.Controls.FlowDiagram
         End Sub
 
         Protected Overrides Function GetPrintContent(ByVal rcPrint As Rectangle) As Image
+
             Dim img As New Bitmap(rcPrint.Width, rcPrint.Height, PixelFormat.Format32bppArgb)
+            img.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
             Dim g As Graphics = Graphics.FromImage(img)
             Me.m_doodler.DrawFlowDiagram(g, rcPrint)
             g.Dispose()
             Return img
+
         End Function
 
 #End Region ' Overrides
@@ -311,6 +314,7 @@ Namespace Ecopath.Controls.FlowDiagram
                         fmt = Imaging.ImageFormat.Bmp
                 End Select
 
+                bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
                 Using g As Graphics = Graphics.FromImage(bmp)
                     Me.m_doodler.DrawFlowDiagram(g, rc)
                 End Using

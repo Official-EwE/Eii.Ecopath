@@ -1339,7 +1339,7 @@ Namespace Ecospace
             Dim fmt As New cRunEcospacePlotTypeFormatter()
             Dim msg As cMessage = Nothing
 
-            bmp.SetResolution(150, 150)
+            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
 
             Try
 
@@ -1391,7 +1391,7 @@ Namespace Ecospace
             Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
             Dim rc As New Rectangle(0, 0, bm.InCol * 100, bm.InRow * 100)
             Dim bmp As New Bitmap(rc.Width, rc.Height, Imaging.PixelFormat.Format32bppArgb)
-            bmp.SetResolution(150, 150)
+            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
 
             Dim maptype As cMapDrawerBase.eMapType
             Dim scaler As Single() = Nothing

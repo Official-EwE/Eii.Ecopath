@@ -1992,6 +1992,24 @@ Namespace Style
 #End Region ' Internal implementation
 #End Region ' Visual styles
 
+#Region " Image export settings "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Preferred image output format.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property PreferredImageFormat As Imaging.ImageFormat
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Preferred image density (Dots Per Inch).
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property PreferredDPI As Integer = 220
+
+#End Region ' Image export settings
+
 #End Region ' Public access
 
 #Region " Internal implementation "

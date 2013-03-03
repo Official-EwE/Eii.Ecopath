@@ -176,5 +176,8 @@
     <Setting Name="AutosaveResults" Type="System.Xml.XmlDocument" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="OutputDPI" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">220</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

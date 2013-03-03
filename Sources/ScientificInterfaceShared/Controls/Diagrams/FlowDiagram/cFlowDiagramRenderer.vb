@@ -178,7 +178,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Save the diagram to a file.
+        ''' Save the diagram layout to a file.
         ''' </summary>
         ''' <param name="inifile">The <see cref="cXMLINIfile">file</see> to save to.</param>
         ''' <param name="rc">The rectangle to scale the diagram to.</param>
@@ -206,7 +206,7 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Load the diagram from a file.
+        ''' Load the diagram layout from a file.
         ''' </summary>
         ''' <param name="inifile">The <see cref="cXMLINIfile">file</see> to load from.</param>
         ''' <param name="rc">The rectangle to scale the diagram to.</param>
