@@ -24,6 +24,7 @@ Option Strict On
 Imports System.Drawing.Imaging
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
+Imports EwECore
 
 #End Region ' Imports
 
@@ -37,6 +38,99 @@ Namespace Controls.Map
     ''' -----------------------------------------------------------------------
     Public Class cLegend
 
+#Region " Private classes "
+
+        Private MustInherit Class cLegendEntry
+            MustOverride ReadOnly Property Name As String
+            MustOverride ReadOnly Property Renderer As cLayerRenderer
+            MustOverride ReadOnly Property Max As Single
+            MustOverride ReadOnly Property Min As Single
+        End Class
+
+        Private Class cStaticEntry
+            Inherits cLegendEntry
+
+            Private m_sMin As Single
+            Private m_sMax As Single
+            Private m_strName As String
+
+            Public Sub New(strName As String, sMin As Single, sMax As Single)
+                Me.m_strName = strName
+                Me.m_sMin = sMin
+                Me.m_sMax = sMax
+            End Sub
+
+            Public Overrides ReadOnly Property Renderer As Layers.cLayerRenderer
+                Get
+                    Dim rv As New cLayerRendererValue(New EwECore.Auxiliary.cVisualStyle())
+                    rv.ScaleMin = Me.m_sMin
+                    rv.ScaleMax = Me.m_sMax
+                    Return rv
+                End Get
+            End Property
+
+            Public Overrides ReadOnly Property Name As String
+                Get
+                    Return Me.m_strName
+                End Get
+            End Property
+
+            Public Overrides ReadOnly Property Max As Single
+                Get
+                    Return Me.m_sMax
+                End Get
+            End Property
+
+            Public Overrides ReadOnly Property Min As Single
+                Get
+                    Return Me.m_sMin
+                End Get
+            End Property
+        End Class
+
+        Private Class cLayerEntry
+            Inherits cLegendEntry
+
+            Private m_layer As cLayer
+
+            Public Sub New(layer As cLayer)
+                Me.m_layer = layer
+            End Sub
+
+            Public Overrides ReadOnly Property Renderer As Layers.cLayerRenderer
+                Get
+                    Return Me.m_layer.Renderer
+                End Get
+            End Property
+
+            Public Overrides ReadOnly Property Name As String
+                Get
+                    Return Me.m_layer.Name
+                End Get
+            End Property
+
+            Public Overrides ReadOnly Property Max As Single
+                Get
+                    If (TypeOf Me.m_layer Is cRasterLayer) Then
+                        Return DirectCast(Me.m_layer, cRasterLayer).Data.MaxValue
+                    End If
+                    Return cCore.NULL_VALUE
+                End Get
+            End Property
+
+            Public Overrides ReadOnly Property Min As Single
+                Get
+                    If (TypeOf Me.m_layer Is cRasterLayer) Then
+                        Return DirectCast(Me.m_layer, cRasterLayer).Data.MinValue
+                    End If
+                    Return cCore.NULL_VALUE
+                End Get
+            End Property
+
+        End Class
+
+#End Region ' Private helper classes
+
 #Region " Private vars "
 
         Private Enum eLayerRenderStyle As Integer
@@ -47,7 +141,7 @@ Namespace Controls.Map
 
         Private m_uic As cUIContext = Nothing
         Private m_strTitle As String = ""
-        Private m_lLayers As New List(Of cLayer)
+        Private m_lLayers As New List(Of cLegendEntry)
 
 #End Region ' Private vars
 
@@ -73,7 +167,7 @@ Namespace Controls.Map
                     r = l.Renderer
                     If (r IsNot Nothing) Then
                         If r.IsVisible Then
-                            Me.m_lLayers.Add(l)
+                            Me.m_lLayers.Add(New cLayerEntry(l))
                         End If
                     End If
                 End If
@@ -163,12 +257,76 @@ Namespace Controls.Map
         ''' <param name="l"></param>
         ''' -------------------------------------------------------------------
         Public Sub AddLayer(l As cLayer)
-            Me.m_lLayers.Add(l)
+            Me.m_lLayers.Add(New cLayerEntry(l))
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Add a static value range to the legend, that will be displayed as a gradient.
+        ''' </summary>
+        ''' <param name="strName"></param>
+        ''' <param name="sMin"></param>
+        ''' <param name="sMax"></param>
+        ''' -------------------------------------------------------------------
+        Public Sub AddGradient(strName As String, sMin As Single, sMax As Single)
+            Me.m_lLayers.Add(New cStaticEntry(strName, sMin, sMax))
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Draw the legend on a graphics device.
+        ''' </summary>
+        ''' <param name="g"></param>
+        ''' <param name="ptOrigin">Top-left location to draw the legend.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Function Draw(g As Graphics, ptOrigin As Point) As Boolean
+
+            Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
+            Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
+            Dim szfItem As SizeF = Nothing
+            Dim iWidth As Integer
+            Dim iHeight As Integer
+            Dim bSuccess As Boolean = True
+
+            Try
+
+                If Me.ShowTitle Then
+                    szfItem = Me.RenderTitleSize(g, ftTitle)
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    Me.RenderTitle(g, ftTitle, New Point(ptOrigin.X, ptOrigin.Y + iHeight))
+                    iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
+                End If
+
+                For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
+                    szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
+                    If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
+                    Me.RenderLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(ptOrigin.X, ptOrigin.Y + iHeight))
+                    iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
+                    iHeight += CInt(Math.Ceiling(szfItem.Height))
+                Next iLayer
+
+            Catch ex As Exception
+                bSuccess = False
+            End Try
+
+            ftTitle.Dispose()
+            ftLayer.Dispose()
+
+            Return bSuccess
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Save the legend image to a file.
+        ''' </summary>
+        ''' <param name="strFileName"></param>
+        ''' <param name="format"></param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
         Public Function Save(ByVal strFileName As String, ByVal format As ImageFormat) As Boolean
 
-            If Me.m_uic Is Nothing Then Return False
+            If (Me.m_uic Is Nothing) Then Return False
 
             Dim ftTitle As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
             Dim ftLayer As Font = Me.m_uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
@@ -210,24 +368,7 @@ Namespace Controls.Map
                     Else
                         g.FillRectangle(Brushes.White, 0, 0, iWidth, iHeight)
                     End If
-
-                    iWidth = 0 : iHeight = 0
-
-                    If Me.ShowTitle Then
-                        szfItem = Me.RenderTitleSize(g, ftTitle)
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        Me.RenderTitle(g, ftTitle, New Point(0, iHeight))
-                        iHeight += CInt(Math.Ceiling(szfItem.Height)) + Me.TitleVSpacing
-                    End If
-
-                    For iLayer As Integer = 0 To Me.m_lLayers.Count - 1
-                        szfItem = Me.RenderLayerSize(g, ftLayer, Me.m_lLayers(iLayer))
-                        If iLayer > 0 Then iHeight += Me.LayerBoxVSpacing
-                        Me.RenderLayer(g, ftLayer, Me.m_lLayers(iLayer), New Point(0, iHeight))
-                        iWidth = Math.Max(iWidth, CInt(Math.Ceiling(szfItem.Width)))
-                        iHeight += CInt(Math.Ceiling(szfItem.Height))
-                    Next iLayer
-
+                    bSuccess = Me.Draw(g, New Point(0, 0))
                 End Using ' g
 
                 Try
@@ -257,7 +398,7 @@ Namespace Controls.Map
             g.DrawString(Me.m_strTitle, ft, Brushes.Black, ptLocation)
         End Sub
 
-        Private Function RenderLayerSize(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLayer) As SizeF
+        Private Function RenderLayerSize(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry) As SizeF
 
             Dim strText As String = l.Name
             If String.IsNullOrWhiteSpace(strText) Then strText = "X"
@@ -276,7 +417,7 @@ Namespace Controls.Map
 
         End Function
 
-        Private Sub RenderLayer(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLayer, ByVal ptLocation As Point)
+        Private Sub RenderLayer(ByVal g As Graphics, ByVal ft As Font, ByVal l As cLegendEntry, ByVal ptLocation As Point)
 
             Dim szfBox As SizeF = Me.RenderLayerSize(g, ft, l)
             Dim rcPreview As Rectangle = New Rectangle(ptLocation.X, ptLocation.Y, 20, CInt(szfBox.Height))
@@ -295,19 +436,16 @@ Namespace Controls.Map
                 Case eLayerRenderStyle.Gradient
                     l.Renderer.RenderPreview(g, rcPreview)
                     g.DrawRectangle(Pens.Black, rcPreview)
-                    If (TypeOf l Is cRasterLayer) Then
-                        Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(rl.Data.MaxValue), _
-                                     ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
-                        g.DrawString(Me.m_uic.StyleGuide.FormatNumber(rl.Data.MinValue), _
-                                     ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
-                    End If
+                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Max), _
+                                 ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y)
+                    g.DrawString(Me.m_uic.StyleGuide.FormatNumber(l.Min), _
+                                 ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y + (szfBox.Height * 2 / 3))
                     g.DrawString(l.Name, _
                                  ft, Brushes.Black, ptLocation.X + Me.LayerBoxHSpacing + Me.LayerBoxWidth, ptLocation.Y + (szfBox.Height / 3))
             End Select
         End Sub
 
-        Private Function GetRenderStyle(ByVal l As cLayer) As eLayerRenderStyle
+        Private Function GetRenderStyle(ByVal l As cLegendEntry) As eLayerRenderStyle
             If (TypeOf (l.Renderer) Is cLayerRendererValue) Then
                 Return eLayerRenderStyle.Gradient
             ElseIf (TypeOf (l.Renderer) Is cLayerRendererSymbol) Then

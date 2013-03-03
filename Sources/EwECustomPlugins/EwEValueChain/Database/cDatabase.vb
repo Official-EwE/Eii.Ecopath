@@ -147,9 +147,11 @@ Public Class cDatabase
                     Try
                         For iGroup As Integer = 1 To data.Core.nGroups
                             Dim ll As cLinkLandings = data.CreateLandingsLink(DirectCast(l.Source, cProducerUnit), l.Target, data.Core.EcoPathGroupInputs(iGroup), bError)
-                            ll.BiomassRatio = l.BiomassRatio
-                            ll.ValueRatio = l.ValueRatio
-                            ll.ValuePerTon = l.ValuePerTon
+                            If (ll IsNot Nothing) Then
+                                ll.BiomassRatio = l.BiomassRatio
+                                ll.ValueRatio = l.ValueRatio
+                                ll.ValuePerTon = l.ValuePerTon
+                            End If
                         Next
                     Catch ex As Exception
 

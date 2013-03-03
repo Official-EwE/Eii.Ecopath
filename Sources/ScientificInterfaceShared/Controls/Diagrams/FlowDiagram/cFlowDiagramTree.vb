@@ -20,10 +20,10 @@
 
 Option Strict On
 Imports System.ComponentModel
-Imports System.Drawing.Color
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Style
 Imports System.Text
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls.Map
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -400,48 +400,11 @@ Namespace Controls
 
         Friend Sub DrawLegend(ByVal g As Graphics, _
                               ByVal sValMax As Single, ByVal ptTopLeft As Point, _
-                              ByVal strTitle As String, _
-                              Optional ByVal iXSize As Integer = 75, _
-                              Optional ByVal iYSize As Integer = 80)
+                              ByVal strTitle As String)
 
-            Dim iNumIntervals As Integer = 5
-            Dim sValInc As Single = 0
-            Dim iIconHeight As Integer = CInt((iYSize * 0.7) / iNumIntervals)
-            Dim ptIconTL As Point = New Point(CInt(iXSize * 0.1 + ptTopLeft.X), CInt(iYSize * 0.3 + ptTopLeft.Y))
-            Dim font As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.Legend)
-            Dim pen As New Pen(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-            Dim brush As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-            Dim brLegend As Brush = Nothing
-
-            ' Determine scale
-            Dim iLog As Integer = 0
-            If (sValMax > 0) Then iLog = CInt(Math.Log10(sValMax))
-            Dim dFact As Double = Math.Pow(10, iLog)
-
-            If (iLog <> 0) Then
-                strTitle = String.Format(My.Resources.GENERIC_LABEL_DETAILED, strTitle, "10^" & iLog.ToString())
-            End If
-
-            g.DrawRectangle(pen, New Rectangle(ptTopLeft, New Size(iXSize, iYSize)))
-            g.DrawString(strTitle, font, brush, New Point(CInt(iXSize * 0.2 + ptTopLeft.X), CInt(iYSize * 0.05 + ptTopLeft.Y)))
-
-            For i As Integer = 1 To iNumIntervals
-
-                sValInc += sValMax / iNumIntervals
-
-                brLegend = New SolidBrush(Me.m_colorramp.GetColor(sValInc / dFact, sValMax / dFact))
-                g.FillRectangle(brLegend, New Rectangle(ptIconTL, New Size(CInt(iXSize * 0.2), iIconHeight)))
-                brLegend.Dispose()
-
-                g.DrawString(String.Format(My.Resources.HEADER_LESSTHAN, Me.m_data.UIContext.StyleGuide.FormatNumber(sValInc / dFact)), _
-                             font, brush, _
-                             New Point(CInt(ptIconTL.X + iXSize * 0.3), ptIconTL.Y))
-                ptIconTL.Y += iIconHeight
-            Next i
-
-            font.Dispose()
-            pen.Dispose()
-            brush.Dispose()
+            Dim lgd As New cLegend(Me.m_data.UIContext, strTitle)
+            lgd.AddGradient("", 0, sValMax)
+            lgd.Draw(g, ptTopLeft)
 
         End Sub
 
