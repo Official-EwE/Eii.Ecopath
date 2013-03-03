@@ -17,8 +17,8 @@ Partial Class ucFlowDiagram
         Me.m_tscbmValue = New System.Windows.Forms.ToolStripComboBox()
         Me.m_tsbnOptions = New System.Windows.Forms.ToolStripButton()
         Me.m_scFD = New System.Windows.Forms.SplitContainer()
+        Me.m_pbFlowDiagram = New ScientificInterfaceShared.Controls.ucSmoothPanel()
         Me.m_pgFD = New System.Windows.Forms.PropertyGrid()
-        Me.m_pbFlowDiagram = New ucSmoothPanel()
         Me.m_tsMain.SuspendLayout()
         CType(Me.m_scFD, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scFD.Panel1.SuspendLayout()
@@ -62,7 +62,6 @@ Partial Class ucFlowDiagram
         '
         Me.m_scFD.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.m_scFD.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_scFD.IsSplitterFixed = True
         Me.m_scFD.Location = New System.Drawing.Point(0, 25)
         Me.m_scFD.Name = "m_scFD"
         '
@@ -73,25 +72,27 @@ Partial Class ucFlowDiagram
         'm_scFD.Panel2
         '
         Me.m_scFD.Panel2.Controls.Add(Me.m_pgFD)
+        Me.m_scFD.Panel2Collapsed = True
         Me.m_scFD.Size = New System.Drawing.Size(559, 336)
         Me.m_scFD.SplitterDistance = 414
+        Me.m_scFD.SplitterWidth = 2
         Me.m_scFD.TabIndex = 2
-        '
-        'm_pgFD
-        '
-        Me.m_pgFD.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.m_pgFD.Location = New System.Drawing.Point(0, 0)
-        Me.m_pgFD.Name = "m_pgFD"
-        Me.m_pgFD.Size = New System.Drawing.Size(137, 332)
-        Me.m_pgFD.TabIndex = 0
         '
         'm_pbFlowDiagram
         '
         Me.m_pbFlowDiagram.Dock = System.Windows.Forms.DockStyle.Fill
         Me.m_pbFlowDiagram.Location = New System.Drawing.Point(0, 0)
         Me.m_pbFlowDiagram.Name = "m_pbFlowDiagram"
-        Me.m_pbFlowDiagram.Size = New System.Drawing.Size(410, 332)
+        Me.m_pbFlowDiagram.Size = New System.Drawing.Size(555, 332)
         Me.m_pbFlowDiagram.TabIndex = 0
+        '
+        'm_pgFD
+        '
+        Me.m_pgFD.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.m_pgFD.Location = New System.Drawing.Point(0, 0)
+        Me.m_pgFD.Name = "m_pgFD"
+        Me.m_pgFD.Size = New System.Drawing.Size(139, 332)
+        Me.m_pgFD.TabIndex = 0
         '
         'ucFlowDiagram
         '

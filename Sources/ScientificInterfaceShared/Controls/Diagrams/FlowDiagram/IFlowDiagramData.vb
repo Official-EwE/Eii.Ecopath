@@ -30,6 +30,13 @@ Namespace Controls
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get/set the title of the flow diagram.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property Title As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Refresh the data for the flow diagram. This can be used to trigger
         ''' recalculations and recalibrations.
         ''' </summary>
@@ -114,7 +121,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="iGroup">The index of the group to get the rank for.</param>
         ''' -------------------------------------------------------------------
-        ReadOnly Property Rank(ByVal iGroup As Integer) As Single
+        ReadOnly Property TrophicLevel(ByVal iGroup As Integer) As Single
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -143,13 +150,6 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         ReadOnly Property LinkValueMin() As Single
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the title of the flow diagram.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Property Title As String
 
     End Interface
 

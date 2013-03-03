@@ -99,6 +99,7 @@ Public Class cFlowDiagramData
         End Set
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.GroupColor"/>
     Public ReadOnly Property GroupColor(iGroup As Integer) As System.Drawing.Color _
         Implements IFlowDiagramData.GroupColor
         Get
@@ -113,6 +114,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.GroupName"/>
     Public ReadOnly Property GroupName(iGroup As Integer) As String _
         Implements IFlowDiagramData.GroupName
         Get
@@ -124,6 +126,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.IsGroupVisible"/>
     Public ReadOnly Property IsGroupVisible(iGroup As Integer) As Boolean _
         Implements IFlowDiagramData.IsGroupVisible
         Get
@@ -132,6 +135,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.LinkValue"/>
     Public ReadOnly Property LinkValue(iPred As Integer, iPrey As Integer) As Single _
         Implements IFlowDiagramData.LinkValue
         Get
@@ -140,6 +144,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.LinkValueMax"/>
     Public ReadOnly Property LinkValueMax As Single _
         Implements IFlowDiagramData.LinkValueMax
         Get
@@ -148,6 +153,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.LinkValueMin"/>
     Public ReadOnly Property LinkValueMin As Single _
         Implements IFlowDiagramData.LinkValueMin
         Get
@@ -156,6 +162,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.NumGroups"/>
     Public ReadOnly Property NumGroups As Integer _
         Implements IFlowDiagramData.NumGroups
         Get
@@ -163,6 +170,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.NumLivingGroups"/>
     Public ReadOnly Property NumLivingGroups As Integer _
         Implements IFlowDiagramData.NumLivingGroups
         Get
@@ -170,19 +178,22 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
-    Public ReadOnly Property Rank(iGroup As Integer) As Single _
-        Implements IFlowDiagramData.Rank
+    ''' <inheritdocs cref="IFlowDiagramData.TrophicLevel"/>
+    Public ReadOnly Property TrophicLevel(iGroup As Integer) As Single _
+        Implements IFlowDiagramData.TrophicLevel
         Get
             If Not Me.m_bValid Then Me.Calculate()
             Return Me.m_sTTLX(iGroup)
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.Refresh"/>
     Public Sub Refresh() _
         Implements IFlowDiagramData.Refresh
         Me.m_bValid = False
     End Sub
 
+    ''' <inheritdocs cref="IFlowDiagramData.Value"/>
     Public ReadOnly Property Value(iGroup As Integer) As Single _
         Implements IFlowDiagramData.Value
         Get
@@ -191,6 +202,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.ValueLabel"/>
     Public ReadOnly Property ValueLabel(sValue As Single) As String _
         Implements IFlowDiagramData.ValueLabel
         Get
@@ -198,6 +210,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.ValueMax"/>
     Public ReadOnly Property ValueMax As Single _
         Implements IFlowDiagramData.ValueMax
         Get
@@ -206,6 +219,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.ValueMin"/>
     Public ReadOnly Property ValueMin As Single _
         Implements IFlowDiagramData.ValueMin
         Get
@@ -214,6 +228,7 @@ Public Class cFlowDiagramData
         End Get
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.UIContext"/>
     Public Property UIContext As cUIContext _
         Implements IUIElement.UIContext
         Get
@@ -224,6 +239,7 @@ Public Class cFlowDiagramData
         End Set
     End Property
 
+    ''' <inheritdocs cref="IFlowDiagramData.Title"/>
     Public Property Title As String _
         Implements ScientificInterfaceShared.Controls.IFlowDiagramData.Title
 

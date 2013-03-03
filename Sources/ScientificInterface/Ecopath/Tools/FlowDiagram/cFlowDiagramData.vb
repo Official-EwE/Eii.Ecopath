@@ -161,7 +161,7 @@ Namespace Ecopath.Controls.FlowDiagram
         ''' <inheritdocs cref="IFlowDiagramData.Rank"/>
         ''' -------------------------------------------------------------------
         Public ReadOnly Property TrophicLevel(ByVal iIndex As Integer) As Single _
-                Implements IFlowDiagramData.Rank
+                Implements IFlowDiagramData.TrophicLevel
             Get
                 Return Me.m_uic.Core.EcoPathGroupOutputs(iIndex).TTLX
             End Get

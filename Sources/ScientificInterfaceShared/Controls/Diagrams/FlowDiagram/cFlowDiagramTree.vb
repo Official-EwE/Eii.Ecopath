@@ -316,6 +316,7 @@ Namespace Controls
             Dim sValueMax As Single = Me.m_data.ValueMax
             Dim clrPen As Color = Color.Black
             Dim clrFill As Color = Color.LightGray
+            Dim iSize As Integer = Me.CalcNodeSize(sValue, sValueMax)
 
             If bVisible Then
                 Select Case m_colorusagetype
@@ -331,11 +332,11 @@ Namespace Controls
                 clrFill = Color.White
             End If
 
-            Me.m_node.DrawNode(g, _
-                               Me.NodeLocation(iGroup, rc), _
-                               Me.NodeType, _
-                               Me.CalcNodeSize(sValue, sValueMax), _
-                               clrPen, clrFill)
+            'If (iGroup = 14) Then
+            '    Console.WriteLine("Node 14: val {0}, valmax {1}, nodesize {2}", sValue, sValueMax, iSize)
+            'End If
+
+            Me.m_node.DrawNode(g, Me.NodeLocation(iGroup, rc), Me.NodeType, iSize, clrPen, clrFill)
 
             If bVisible Then
                 clrPen = Me.TextColor
@@ -344,11 +345,7 @@ Namespace Controls
             End If
 
             If (Me.m_bIsDrawLabel) Then
-                Me.m_node.DrawLabel(g, _
-                                    Me.LabelLocation(iGroup, rc), _
-                                    Me.RenderFont, _
-                                    clrPen, _
-                                    Me.FormatLabelText(iGroup))
+                Me.m_node.DrawLabel(g, Me.LabelLocation(iGroup, rc), Me.RenderFont, clrPen, Me.FormatLabelText(iGroup))
             End If
 
         End Sub
@@ -430,7 +427,7 @@ Namespace Controls
             ' Calc how the groups are distributed over trophic levels [1, iNumTL+]
             For iGroup As Integer = 1 To Me.m_data.NumGroups
                 iTL = iNumTL
-                While (Me.m_data.Rank(iGroup) < iTL) And (iTL > 1)
+                While (Me.m_data.TrophicLevel(iGroup) < iTL) And (iTL > 1)
                     iTL -= 1
                 End While
                 aiGroupCount(iTL) += 1
@@ -440,7 +437,7 @@ Namespace Controls
             For iGroup As Integer = 1 To Me.m_data.NumGroups
 
                 iTL = iNumTL
-                While (Me.m_data.Rank(iGroup) < iTL) And (iTL > 1)
+                While (Me.m_data.TrophicLevel(iGroup) < iTL) And (iTL > 1)
                     iTL -= 1
                 End While
                 Me.m_sAngle(iGroup) = 360.0! * (aiGroup(iTL) + 0.5!) / aiGroupCount(iTL)
@@ -661,7 +658,7 @@ Namespace Controls
             Get
                 Dim pt As PointF
                 pt.X = CSng(Me.m_sAngle(i) / 360 * (rc.Width - 40)) + 20
-                pt.Y = (Me.m_iNumTrophicLevels - Me.m_data.Rank(i)) * CInt(rc.Height / Me.m_iNumTrophicLevels)
+                pt.Y = (Me.m_iNumTrophicLevels - Me.m_data.TrophicLevel(i)) * CInt(rc.Height / Me.m_iNumTrophicLevels)
                 Return pt
             End Get
             Set(ByVal value As PointF)
