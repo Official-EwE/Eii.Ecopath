@@ -141,7 +141,6 @@
     <Compile Include="System\cXMLINIFile.vb" />
     <Compile Include="Database\cEwEDatabase.vb" />
     <Compile Include="Spatial\ISpatialRaster.vb" />
-    <Compile Include="Drawing\DIBitmap32.vb" />
     <Compile Include="Drawing\HSV.vb" />
     <Compile Include="Spatial\ISpatialDataConverter.vb" />
     <Compile Include="Spatial\ISpatialDataSet.vb" />
