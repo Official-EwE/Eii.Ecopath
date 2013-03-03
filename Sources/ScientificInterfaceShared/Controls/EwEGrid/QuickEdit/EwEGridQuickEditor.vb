@@ -127,13 +127,13 @@ Namespace Controls.EwEGrid
             ' Create import button (input grids only)
             If Not Me.m_bIsOutputGrid Then
                 Me.m_btnImport = New ToolStripButton(My.Resources.ImportXMLHS)
-                Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_GRID_LOADFROMCSV
+                Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
                 AddHandler Me.m_btnImport.Click, AddressOf OnBtnImportClick
             End If
 
             ' Create export button
             Me.m_btnExport = New ToolStripButton(My.Resources.ExportXMLHS)
-            Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_GRID_SAVETOCSV
+            Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_SAVETOCSV
             AddHandler Me.m_btnExport.Click, AddressOf OnBtnExportClick
 
             ' Add items to the toolstrip

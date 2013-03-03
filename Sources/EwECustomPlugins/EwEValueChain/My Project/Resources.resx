@@ -2247,4 +2247,19 @@ QmCCCw==</value>
   <data name="NAVTREE_OUTPUT_FLOWDIAGRAM" xml:space="preserve">
     <value>Flow diagram</value>
   </data>
+  <data name="GRAPHDATA_TYPE_COST" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_COSTREVENUE" xml:space="preserve">
+    <value>Cost and Revenue</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_DEPENDENTS" xml:space="preserve">
+    <value>Dependents</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_JOBS" xml:space="preserve">
+    <value>Jobs</value>
+  </data>
+  <data name="GRAPHDATA_TYPE_REVENUE" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
 </root>

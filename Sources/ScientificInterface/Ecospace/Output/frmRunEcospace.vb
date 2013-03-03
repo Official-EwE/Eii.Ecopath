@@ -329,8 +329,8 @@ Namespace Ecospace
             ' Connect hover menu
             Me.m_hoverMenu = New ucHoverMenu(Me.UIContext)
             Me.m_hoverMenu.Attach(Me.m_pbMap)
-            Me.m_hoverMenu.AddItem(SharedResources.ExportXMLHS, "Save image", eHoverCommands.SaveImage)
-            Me.m_hoverMenu.AddItem(SharedResources.ExportXMLHS, "Save a geo-referenced image for every displayed group or fleet", eHoverCommands.SaveImageGeoRef)
+            Me.m_hoverMenu.AddItem(SharedResources.InsertPictureHS, SharedResources.TOOLTIP_SAVETOIMAGE, eHoverCommands.SaveImage)
+            Me.m_hoverMenu.AddItem(SharedResources.map, SharedResources.TOOLTIP_SAVETOMAP, eHoverCommands.SaveImageGeoRef)
             AddHandler Me.m_hoverMenu.OnUserCommand, AddressOf OnHoverMenuCommand
 
             Me.m_bInUpdate = False

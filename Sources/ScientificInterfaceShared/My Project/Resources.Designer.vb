@@ -986,6 +986,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property ExportPictureHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ExportPictureHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Public ReadOnly Property ExportXMLHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ExportXMLHS", resourceCulture)
@@ -6624,20 +6631,38 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Load grid content from a CSV file.
+        '''  Looks up a localized string similar to Load from CSV file.
         '''</summary>
-        Public ReadOnly Property TOOLTIP_GRID_LOADFROMCSV() As String
+        Public ReadOnly Property TOOLTIP_LOADFROMCSV() As String
             Get
-                Return ResourceManager.GetString("TOOLTIP_GRID_LOADFROMCSV", resourceCulture)
+                Return ResourceManager.GetString("TOOLTIP_LOADFROMCSV", resourceCulture)
             End Get
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Save grid content to a CSV file.
+        '''  Looks up a localized string similar to Save to a CSV file.
         '''</summary>
-        Public ReadOnly Property TOOLTIP_GRID_SAVETOCSV() As String
+        Public ReadOnly Property TOOLTIP_SAVETOCSV() As String
             Get
-                Return ResourceManager.GetString("TOOLTIP_GRID_SAVETOCSV", resourceCulture)
+                Return ResourceManager.GetString("TOOLTIP_SAVETOCSV", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Save to image.
+        '''</summary>
+        Public ReadOnly Property TOOLTIP_SAVETOIMAGE() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_SAVETOIMAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Save to geo-referenced map(s).
+        '''</summary>
+        Public ReadOnly Property TOOLTIP_SAVETOMAP() As String
+            Get
+                Return ResourceManager.GetString("TOOLTIP_SAVETOMAP", resourceCulture)
             End Get
         End Property
         

@@ -19,6 +19,7 @@ Imports ScientificInterfaceShared.Controls
 Imports EwECore
 Imports System.Text
 Imports System.IO
+Imports ScientificInterfaceShared.Style
 
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
@@ -91,7 +92,8 @@ Public Class cFlowDiagramData
         Set(value As cResults.eGraphDataType)
             If (value <> Me.m_displayvalue) Then
                 Me.m_displayvalue = value
-                Me.Title = Me.m_displayvalue.ToString
+                Dim fmt As New cGraphDataTypeFormatter()
+                Me.Title = fmt.GetDescriptor(Me.m_displayvalue, eDescriptorTypes.Name)
                 Me.m_bValid = False
             End If
         End Set

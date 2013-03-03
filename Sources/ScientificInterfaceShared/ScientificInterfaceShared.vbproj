@@ -951,6 +951,7 @@
     <None Include="Resources\Importance.png" />
     <None Include="Resources\MPA.png" />
     <None Include="Resources\Raster.png" />
+    <Content Include="Resources\ExportPictureHS.png" />
     <Content Include="Resources\Refresh.png" />
     <None Include="Resources\Regions.png" />
     <None Include="Resources\Seed.PNG" />

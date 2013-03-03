@@ -385,11 +385,11 @@
   <data name="TOOLTIP_GRID_APPLYVALUE" xml:space="preserve">
     <value>Set this value to all selected cells</value>
   </data>
-  <data name="TOOLTIP_GRID_LOADFROMCSV" xml:space="preserve">
-    <value>Load grid content from a CSV file</value>
+  <data name="TOOLTIP_LOADFROMCSV" xml:space="preserve">
+    <value>Load from CSV file</value>
   </data>
-  <data name="TOOLTIP_GRID_SAVETOCSV" xml:space="preserve">
-    <value>Save grid content to a CSV file</value>
+  <data name="TOOLTIP_SAVETOCSV" xml:space="preserve">
+    <value>Save to a CSV file</value>
   </data>
   <data name="FILEFILTER_ASCFILE" xml:space="preserve">
     <value>ESRI Asc files|*.asc</value>
@@ -2757,5 +2757,14 @@
   </data>
   <data name="GENERIC_ZOOM_RESET" xml:space="preserve">
     <value>Reset zoom</value>
+  </data>
+  <data name="ExportPictureHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\exportpicturehs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TOOLTIP_SAVETOIMAGE" xml:space="preserve">
+    <value>Save to image</value>
+  </data>
+  <data name="TOOLTIP_SAVETOMAP" xml:space="preserve">
+    <value>Save to geo-referenced map(s)</value>
   </data>
 </root>

@@ -231,6 +231,51 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Cost.
+        '''</summary>
+        Friend ReadOnly Property GRAPHDATA_TYPE_COST() As String
+            Get
+                Return ResourceManager.GetString("GRAPHDATA_TYPE_COST", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Cost and Revenue.
+        '''</summary>
+        Friend ReadOnly Property GRAPHDATA_TYPE_COSTREVENUE() As String
+            Get
+                Return ResourceManager.GetString("GRAPHDATA_TYPE_COSTREVENUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Dependents.
+        '''</summary>
+        Friend ReadOnly Property GRAPHDATA_TYPE_DEPENDENTS() As String
+            Get
+                Return ResourceManager.GetString("GRAPHDATA_TYPE_DEPENDENTS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Jobs.
+        '''</summary>
+        Friend ReadOnly Property GRAPHDATA_TYPE_JOBS() As String
+            Get
+                Return ResourceManager.GetString("GRAPHDATA_TYPE_JOBS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Revenue.
+        '''</summary>
+        Friend ReadOnly Property GRAPHDATA_TYPE_REVENUE() As String
+            Get
+                Return ResourceManager.GetString("GRAPHDATA_TYPE_REVENUE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Categories.
         '''</summary>
         Friend ReadOnly Property HEADER_CATEGORIES() As String

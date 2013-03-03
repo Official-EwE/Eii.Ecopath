@@ -31,14 +31,6 @@ Public Class ucFlowDiagram
 
 #Region " Private bits "
 
-    Enum eGraphDataType As Integer
-        CostRevenue = 0
-        Cost
-        Revenue
-        Jobs
-        Dependents
-    End Enum
-
     ''' <summary>Instance of the Ecost model to poke and prod.</summary>
     Private m_model As cModel = Nothing
     ''' <summary>Instance of model results to reflect.</summary>
@@ -49,6 +41,28 @@ Public Class ucFlowDiagram
 
     Private m_doodler As cFlowDiagramRenderer = Nothing
     Private m_tree As cFlowDiagramTree = Nothing
+
+    'Private m_hovermenu As ucHoverMenu = Nothing
+
+    'Private Enum eFDCommands As Integer
+    '    ExportPicture
+    'End Enum
+
+    Private Class cGraphDataItem
+        Private m_gdt As cResults.eGraphDataType
+        Public Sub New(gdt As cResults.eGraphDataType)
+            Me.m_gdt = gdt
+        End Sub
+        Public ReadOnly Property GraphDataType As cResults.eGraphDataType
+            Get
+                Return Me.m_gdt
+            End Get
+        End Property
+        Public Overrides Function ToString() As String
+            Dim fmt As New cGraphDataTypeFormatter()
+            Return fmt.GetDescriptor(Me.m_gdt)
+        End Function
+    End Class
 
 #End Region ' Private bits
 
@@ -67,6 +81,21 @@ Public Class ucFlowDiagram
         Me.m_tree = New cFlowDiagramTree(Me.m_data)
         Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
 
+        'Me.m_hovermenu = New ucHoverMenu(uic)
+    End Sub
+
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing And (Me.components IsNot Nothing) Then
+                'RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverCommand
+                'Me.m_hovermenu.Dispose()
+                'Me.m_hovermenu = Nothing
+                Me.components.Dispose()
+                Me.components = Nothing
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
     End Sub
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
@@ -74,12 +103,17 @@ Public Class ucFlowDiagram
 
         Me.m_tscbmValue.Items.Clear()
         For Each gd As cResults.eGraphDataType In [Enum].GetValues(GetType(cResults.eGraphDataType))
-            Me.m_tscbmValue.Items.Add(gd)
+            Me.m_tscbmValue.Items.Add(New cGraphDataItem(gd))
         Next
         Me.m_tscbmValue.SelectedIndex = 0
+        Me.m_tsbnOptions.Checked = Not Me.m_scFD.Panel2Collapsed
+
+        'Me.m_hovermenu.AddItem(ScientificInterfaceShared.My.Resources.ExportPictureHS, ScientificInterfaceShared.My.Resources.GENERIC_SHOW_LEGEND, eFDCommands.ExportPicture)
+        'Me.m_hovermenu.Attach(Me.m_pbFlowDiagram)
+
+        'AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverCommand
 
         Me.m_pgFD.SelectedObject = Me.m_tree
-
     End Sub
 
     Public Property UIContext() As cUIContext _
@@ -128,10 +162,11 @@ Public Class ucFlowDiagram
         ' NOP
     End Sub
 
+
     Private Sub OnShowDifferentValue(sender As Object, e As System.EventArgs) _
         Handles m_tscbmValue.SelectedIndexChanged
         Try
-            Me.m_data.DisplayValue = DirectCast(Me.m_tscbmValue.SelectedItem, cResults.eGraphDataType)
+            Me.m_data.DisplayValue = DirectCast(Me.m_tscbmValue.SelectedItem, cGraphDataItem).GraphDataType
             Me.m_pbFlowDiagram.Invalidate()
         Catch ex As Exception
 
@@ -142,6 +177,13 @@ Public Class ucFlowDiagram
         Handles m_tsbnOptions.Click
         Me.m_scFD.Panel2Collapsed = Not Me.m_tsbnOptions.Checked
     End Sub
+
+    'Private Sub OnHoverCommand(data As Object)
+    '    Select Case DirectCast(data, eFDCommands)
+    '        Case eFDCommands.ExportPicture
+    '            ' Bla
+    '    End Select
+    'End Sub
 
 #Region " Mouse Events "
 
