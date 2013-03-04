@@ -319,22 +319,23 @@ Namespace Controls
             Dim iSize As Integer = Me.CalcNodeSize(sValue, sValueMax)
 
             If bVisible Then
-                Select Case m_colorusagetype
-                    Case eColorUsageTypes.EwE
-                        clrFill = Me.m_data.GroupColor(iGroup)
-                    Case eColorUsageTypes.Value
-                        clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
-                    Case Else
-                        clrFill = Me.m_clrNode
-                End Select
+                If (sValue = 0) Then
+                    clrPen = Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
+                    clrFill = Color.White
+                Else
+                    Select Case m_colorusagetype
+                        Case eColorUsageTypes.EwE
+                            clrFill = Me.m_data.GroupColor(iGroup)
+                        Case eColorUsageTypes.Value
+                            clrFill = Me.m_colorramp.GetColor(sValue, sValueMax)
+                        Case Else
+                            clrFill = Me.m_clrNode
+                    End Select
+                End If
             Else
                 clrPen = Color.LightGray
                 clrFill = Color.White
             End If
-
-            'If (iGroup = 14) Then
-            '    Console.WriteLine("Node 14: val {0}, valmax {1}, nodesize {2}", sValue, sValueMax, iSize)
-            'End If
 
             Me.m_node.DrawNode(g, Me.NodeLocation(iGroup, rc), Me.NodeType, iSize, clrPen, clrFill)
 
