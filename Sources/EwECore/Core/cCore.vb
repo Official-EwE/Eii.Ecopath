@@ -9640,6 +9640,12 @@ Public Class cCore
             '             value is used during Ecospace calculations, it makes sense to expose it from Ecospace.
             m_EcospaceModelParams.PacketsMultiplier = Me.m_Stanza.NPacketsMultiplier
 
+
+            m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcoSpaceData.bUseEffortDistThreshold
+            m_EcospaceModelParams.EffortDistThreshold = Me.m_EcoSpaceData.EffortDistThreshold
+
+
+
             m_EcospaceModelParams.ResetStatusFlags()
             m_EcospaceModelParams.AllowValidation = True
 
@@ -9692,6 +9698,9 @@ Public Class cCore
         Me.m_Stanza.NPacketsMultiplier = m_EcospaceModelParams.PacketsMultiplier
 
         Me.m_tracerData.EcoSpaceConSimOn = m_EcospaceModelParams.ContaminantTracing
+
+        Me.m_EcoSpaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
+        Me.m_EcoSpaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
 
         Return True
 

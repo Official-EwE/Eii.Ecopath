@@ -573,13 +573,13 @@ Public Class cEcospaceDataStructures
     ''' Boolean flag to controll how effort is distributed. 
     ''' </summary>
     ''' <remarks>True Effort is just distributed over subset of cell. False effort is distributed over all water cells.</remarks>
-    Public bDistEffortByCell As Boolean
+    Public bUseEffortDistThreshold As Boolean
 
     ''' <summary>
     ''' Threshold value for map cell inclusion in FleetSailCells(fleet).cRowCol
     ''' </summary>
     ''' <remarks></remarks>
-    Public FleetSailThreshold As Single
+    Public EffortDistThreshold As Single
 
 #End Region
 
@@ -832,8 +832,8 @@ Public Class cEcospaceDataStructures
 
             ReDimFleets()
 
-            Me.bDistEffortByCell = False
-            FleetSailThreshold = 10000
+            Me.bUseEffortDistThreshold = False
+            EffortDistThreshold = 10000
 
             Return True
         Catch ex As Exception
@@ -1100,12 +1100,12 @@ Public Class cEcospaceDataStructures
     End Sub
 
     ''' <summary>
-    ''' Populate <see cref="cEcospaceDataStructures.FleetSailCells"></see> with a list of map cells in <see cref="cEcospaceDataStructures.Sail"></see> that are less than <see cref="cEcospaceDataStructures.FleetSailThreshold"></see>
+    ''' Populate <see cref="cEcospaceDataStructures.FleetSailCells"></see> with a list of map cells in <see cref="cEcospaceDataStructures.Sail"></see> that are less than <see cref="cEcospaceDataStructures.EffortDistThreshold"></see>
     ''' </summary>
     ''' <remarks> FleetSailCells is used by <see cref="cEcoSpace.PredictEffortDistribution_bycell_Threaded"></see> to calculate effort distribution only on cells in the list</remarks>
     Public Sub PopulateFleetCells()
 
-        If Not Me.bDistEffortByCell Then Return
+        If Not Me.bUseEffortDistThreshold Then Return
 
         System.Console.WriteLine("Calculation map cells per fleet.")
         System.Console.WriteLine("Number of water cells " + Me.nWaterCells.ToString)
@@ -1115,7 +1115,7 @@ Public Class cEcospaceDataStructures
             For ir As Integer = 1 To Me.InRow
                 For ic As Integer = 1 To Me.InCol
                     If Depth(ir, ic) > 0 Then
-                        If Me.Sail(iflt, ir, ic) < Me.FleetSailThreshold Then
+                        If Me.Sail(iflt, ir, ic) < Me.EffortDistThreshold Then
                             Me.FleetSailCells(iflt).Add(New cRowCol(ir, ic))
                         End If 'Me.Sail(iflt, ir, ic) < Me.FleetSailThreshold 
                     End If 'Depth(ir, ic) > 0

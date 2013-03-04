@@ -201,6 +201,22 @@ Public Class cEcospaceModelParameters
                                 meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+
+            ' Save Annual
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.bUseEffortDistThreshold, eStatusFlags.Null, eValueTypes.Bool, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
+            meta = New cVariableMetaData(0, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(1, eVarNameFlags.EffortDistThreshold, eStatusFlags.Null, eValueTypes.Sng, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            val.Stored = False
+            val.AffectsRunState = False
+            m_values.Add(val.varName, val)
+
+
+
             'set status flags to default values
             ResetStatusFlags()
 
@@ -659,6 +675,30 @@ Public Class cEcospaceModelParameters
 
         Set(ByVal value As Boolean)
             SetVariable(eVarNameFlags.EcospaceUseCoreOutputDir, value)
+        End Set
+
+    End Property
+
+    Public Property UseEffortDistThreshold() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.bUseEffortDistThreshold))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.bUseEffortDistThreshold, value)
+        End Set
+
+    End Property
+
+    Public Property EffortDistThreshold() As Single
+
+        Get
+            Return CSng(GetVariable(eVarNameFlags.EffortDistThreshold))
+        End Get
+
+        Set(ByVal value As Single)
+            SetVariable(eVarNameFlags.EffortDistThreshold, value)
         End Set
 
     End Property

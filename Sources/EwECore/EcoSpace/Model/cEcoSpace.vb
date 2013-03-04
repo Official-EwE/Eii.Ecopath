@@ -2677,7 +2677,7 @@ Public Class cEcoSpace
     ''' <remarks></remarks>
     Public Sub ScaleSailingCost()
 
-        If Me.m_Data.bDistEffortByCell Then
+        If Me.m_Data.bUseEffortDistThreshold Then
             Me.ScaleSailingByCells()
         Else
             Me.ScaleSailingToUnity()
@@ -2697,7 +2697,7 @@ Public Class cEcoSpace
         Dim Count As Long
         Dim GearNo As Integer
 
-        Debug.Assert(Me.m_Data.bDistEffortByCell = False, Me.ToString + ".ScaleSailingToUnity() Called with incorrect bDistEffortByCell.")
+        Debug.Assert(Me.m_Data.bUseEffortDistThreshold = False, Me.ToString + ".ScaleSailingToUnity() Called with incorrect bDistEffortByCell.")
 
         ReDim m_Data.SailScale(m_Data.nFleets)
         m_Data.SailScale(0) = 1
@@ -2732,7 +2732,7 @@ Public Class cEcoSpace
         Dim Count As Long
         Dim iFlt As Integer
 
-        Debug.Assert(Me.m_Data.bDistEffortByCell, Me.ToString + ".ScaleSailingByCells() Called with incorrect bDistEffortByCell.")
+        Debug.Assert(Me.m_Data.bUseEffortDistThreshold, Me.ToString + ".ScaleSailingByCells() Called with incorrect bDistEffortByCell.")
 
         ReDim m_Data.SailScale(m_Data.nFleets)
         m_Data.SailScale(0) = 1
@@ -3758,7 +3758,7 @@ exitline:
             'Dim arg As Object = New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth)
             'Dim worker As Thread = New Thread(Sub() Me.PredictEffortDistributionThreaded(arg))
             'worker.Start()            
-            ThreadPool.QueueUserWorkItem(Me.getPredictEffortFunction(Me.m_Data.bDistEffortByCell), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
+            ThreadPool.QueueUserWorkItem(Me.getPredictEffortFunction(Me.m_Data.bUseEffortDistThreshold), New cThreadedCallArgs(waitOb, iFirstFleet, iLastFleet, iMonth, iCumMonth))
             iFirstFleet += nFltsPerThread
         Next ithrd
 

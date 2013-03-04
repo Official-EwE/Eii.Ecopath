@@ -684,6 +684,10 @@ Namespace Core
         ''' <summary>Save Ecospace out annually only.</summary>
         EcospaceUseAnnualOutput
 
+        bUseEffortDistThreshold
+
+        EffortDistThreshold
+
         EcospaceIBMMovePacketOnStanza
 
         ''''''''''''''''''''''''''''
