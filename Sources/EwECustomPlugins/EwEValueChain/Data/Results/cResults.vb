@@ -584,10 +584,13 @@ Public Class cResults
     ''' -----------------------------------------------------------------------
     Public Property FlowsByWeight(iSource As Integer, iTarget As Integer) As Double
         Get
+            If (Me.m_FlowsByWeightBetweenUnits Is Nothing) Then Return 0
             Return Me.m_FlowsByWeightBetweenUnits(iSource, iTarget)
         End Get
         Set(value As Double)
-            Me.m_FlowsByWeightBetweenUnits(iSource, iTarget) += value
+            If (Me.m_FlowsByWeightBetweenUnits IsNot Nothing) Then
+                Me.m_FlowsByWeightBetweenUnits(iSource, iTarget) += value
+            End If
         End Set
     End Property
 
