@@ -150,6 +150,16 @@ Public Class cSpaceSolver
     Private Ftime() As Single
     Private Fish1() As Single
     Private FishTime() As Single
+
+    ''' <summary>
+    ''' Fishing Effort multiplier by Fleet,time = 0
+    ''' </summary>
+    ''' <remarks>
+    ''' This array has the same signature as cEcosimDataStructures.FishRateGear(fleet,time)
+    ''' but never uses the time index.
+    ''' This is so EcoSpace can share the same functions as Ecosim but never have to worry about the different time step indexes.
+    ''' Ecospace populates the zero time index with the effort multiplier for the current timestep at the start of each timestep.
+    '''  </remarks>
     Private FishRateGear(,) As Single
     Private pred() As Single
     Private Eatenof() As Single
@@ -759,7 +769,7 @@ Public Class cSpaceSolver
             Next
 
             'Make the detritus calculations here:
-            m_Ecosim.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, Eatenof, ToDetritus, GroupDetritus)
+            Me.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
 
@@ -1047,64 +1057,59 @@ Public Class cSpaceSolver
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     'FOR DEGUGGING ONLY HAS NOT BEEN TESTED
     'SimDetritus from Ecosim moved here to see if calling Ecosim is slowing down the threading
-    'Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByVal EatenOf() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
-    '    ' Dim Surplus As Single
-    '    Dim i As Integer, j As Integer, K As Integer
-    '    Dim ToDet As Single, DetFlowN As Single
-    '    DetFlowN = 0
+    Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
+        ' Dim Surplus As Single
+        Dim i As Integer, j As Integer, K As Integer
+        Dim ToDet As Single, DetFlowN As Single
+        DetFlowN = 0
 
-    '    'DetritusByGroup() needs to be cleared because the values are summed into it
-    '    Array.Clear(DetritusByGroup, 0, Me.m_Data.NGroups)
+        'DetritusByGroup() needs to be cleared because the values are summed into it
+        Array.Clear(DetritusByGroup, 0, Me.m_Data.NGroups)
 
-    '    For i = 1 To m_PathData.NumLiving
-    '        For j = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-    '            'First take egestion
-    '            ToDet = m_PathData.GS(i) * Eatenby(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
-    '            'Add dying organisms
-    '            ToDet = ToDet + m_SimData.mo(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+        For i = 1 To m_PathData.NumLiving
+            For j = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+                'First take egestion
+                ToDet = m_PathData.GS(i) * Eatenby(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+                'Add dying organisms
+                ToDet = ToDet + m_SimData.mo(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
 
-    '            If m_PathData.NumFleet > 0 Then     'Only if there is fishery
-    '                For K = 1 To m_PathData.NumFleet
-    '                    If m_SimData.FirstTime = True Then
-    '                        DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * m_PathData.PropDiscard(K, i) * Biomass(i) * m_SimData.FishMGear(K, i)
-    '                    Else
-    '                        'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
-    '                        'discard mort is included in Propdiscardtime() by initialization and MSE 
-    '                        DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_SimData.FishMGear(K, i) * Me.m_SimData.Propdiscardtime(K, i)
-    '                        'DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * m_PathData.PropDiscard(K, i) * Biomass(i) * m_simdata.FishRateGear(K, 0) * m_simdata.FishMGear(K, i) + Me.m_Quota.RegDiscard(K, i)
-    '                    End If
-    '                    ToDet = ToDet + DetFlowN
+                'If m_PathData.NumFleet > 0 Then     'Only if there is fishery
+                For K = 1 To m_PathData.NumFleet
+                    'jb 07-Jan-2010 Changed to use Propdiscardtime(fleets,groups) (% discarded for this time step) initialized to ecopath PropDiscard() or set in MSE.RegulateEffort() 
+                    'discard mort is included in Propdiscardtime() by initialization and MSE 
+                    DetFlowN = m_PathData.DiscardFate(K, j - m_PathData.NumLiving) * Biomass(i) * FishRateGear(K, 0) * m_SimData.FishMGear(K, i) * Me.m_SimData.Propdiscardtime(K, i)
+                    ToDet = ToDet + DetFlowN
 
-    '                    If m_TracerData.EcoSimConSimOn = True Then
-    '                        m_ConTracer.ConKdet(i, j, K) = DetFlowN / Biomass(i)
-    '                    End If
+                    If m_TracerData.EcoSimConSimOn = True Then
+                        m_ConTracer.ConKdet(i, j, K) = DetFlowN / Biomass(i)
+                    End If
 
-    '                Next K
-    '            End If 'If m_PathData.NumFleet > 0 Then    
+                Next K
+                'End If 'If m_PathData.NumFleet > 0 Then    
 
-    '            ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + ToDet
+                ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + ToDet
 
-    '            DetritusByGroup(i) += ToDet
+                DetritusByGroup(i) += ToDet
 
-    '        Next j
-    '    Next i
+            Next j
+        Next i
 
-    '    'Next add flow from other detritus groups
-    '    For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-    '        For j = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-    '            If i <> j Then ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + m_PathData.DetPassedProp(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
-    '        Next
-    '    Next
+        'Next add flow from other detritus groups
+        For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+            For j = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+                If i <> j Then ToDetritus(j - m_PathData.NumLiving) = ToDetritus(j - m_PathData.NumLiving) + m_PathData.DetPassedProp(i) * Biomass(i) * m_PathData.DF(i, j - m_PathData.NumLiving)
+            Next
+        Next
 
-    '    If m_SimData.FirstTime = True Then
-    '        For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
-    '            m_SimData.DetritusOut(i) = (ToDetritus(i - m_PathData.NumLiving) - m_PathData.BA(i) + m_PathData.Immig(i) - EatenOf(i)) / Biomass(i) - m_SimData.Emig(i)
-    '            'DetritusOut(i) = (ToDetritus(i - mEPData.NumLiving) - BA(i) + DetPassedOn(i) + EX(i) + Immig(i) - Eatenof(i)) / Biomass(i) - Emig(i)
-    '        Next i
-    '    End If
-    '    m_SimData.FirstTime = False
+        'If m_SimData.FirstTime = True Then
+        '    For i = m_PathData.NumLiving + 1 To Me.m_Data.NGroups
+        '        m_SimData.DetritusOut(i) = (ToDetritus(i - m_PathData.NumLiving) - m_PathData.BA(i) + m_PathData.Immig(i) - EatenOf(i)) / Biomass(i) - m_SimData.Emig(i)
+        '        'DetritusOut(i) = (ToDetritus(i - mEPData.NumLiving) - BA(i) + DetPassedOn(i) + EX(i) + Immig(i) - Eatenof(i)) / Biomass(i) - Emig(i)
+        '    Next i
+        'End If
+        m_SimData.FirstTime = False
 
-    'End Sub
+    End Sub
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 

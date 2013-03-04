@@ -1792,11 +1792,12 @@ Public Class cEcoSpace
             'Now reset capacity
             SetHabCap()
 
-            Me.m_Data.PopulateFleetCells()
-
             'first set density map for all pools to no movement equilibrium
             SetBiomassesEcospace()
             Me.m_Data.PPScale = ScaleRelativePrimaryProductivityToEcopathLevel()
+
+            'PopulateFleetCells must come before ScaleSailingCost 
+            Me.m_Data.PopulateFleetCells()
             Me.ScaleSailingCost()
 
             'calculate exponential weights for time step updating

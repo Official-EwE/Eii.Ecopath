@@ -830,29 +830,10 @@ Public Class cEcospaceDataStructures
                 PrefHab(i, 0) = 1.0! ' True
             Next 'set preferred habitat to 1 (pelagic) by default
 
-            'jb removed for better memory management
-            'For i = 1 To InRow
-            '    For j As Integer = 1 To InCol      'Default Values for new maps
-            '        Depth(i, j) = 1
-            '        DepthA(i, j) = Depth(i, j)
-            '        RelPP(i, j) = 1
-            '        RelCin(i, j) = 1
-            '        For K As Integer = 1 To nFleets
-            '            Sail(K, i, j) = 1
-            '        Next
-
-            '        'Proportion of habitat in a cell 
-            '        'All Habitats(zero index) = 1
-            '        'There is no preference for any one habitat
-            '        PHabType(i, j, 0) = 1.0F
-
-            '    Next
-            'Next
-
             ReDimFleets()
 
             Me.bDistEffortByCell = False
-            FleetSailThreshold = 30000
+            FleetSailThreshold = 10000
 
             Return True
         Catch ex As Exception
@@ -1126,6 +1107,8 @@ Public Class cEcospaceDataStructures
 
         If Not Me.bDistEffortByCell Then Return
 
+        System.Console.WriteLine("Calculation map cells per fleet.")
+        System.Console.WriteLine("Number of water cells " + Me.nWaterCells.ToString)
         For iflt As Integer = 1 To Me.nFleets
             Me.FleetSailCells(iflt).Clear()
 
@@ -1134,11 +1117,12 @@ Public Class cEcospaceDataStructures
                     If Depth(ir, ic) > 0 Then
                         If Me.Sail(iflt, ir, ic) < Me.FleetSailThreshold Then
                             Me.FleetSailCells(iflt).Add(New cRowCol(ir, ic))
-                        End If
-                    End If
-                Next
-            Next
-        Next
+                        End If 'Me.Sail(iflt, ir, ic) < Me.FleetSailThreshold 
+                    End If 'Depth(ir, ic) > 0
+                Next ic
+            Next ir
+            System.Console.WriteLine("  Fleet, " + iflt.ToString + ", n cells, " + FleetSailCells(iflt).Count.ToString)
+        Next iflt
 
     End Sub
 
