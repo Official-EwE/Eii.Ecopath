@@ -66,10 +66,6 @@ Public Class frmMain
 
         Me.m_plugin = plugin
 
-        Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
-        Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
-        Me.SetStyle(ControlStyles.UserPaint, True)
-
         Me.Text = My.Resources.GENERIC_CAPTION
         Me.TabText = My.Resources.GENERIC_CAPTION
 
