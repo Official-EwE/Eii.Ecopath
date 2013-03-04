@@ -335,7 +335,7 @@ Public Class cFlowDiagramData
         Dim vars() As cResults.eVariableType = cResults.GetVariables(Me.m_displayvalue)
         If (vars IsNot Nothing) Then
             For Each v As cResults.eVariableType In vars
-                sTotal += Me.m_results.GetTotal(cResults.eVariableType.Cost, lUnits.ToArray)
+                sTotal += Me.m_results.GetTotal(v, lUnits.ToArray)
             Next
         End If
         Return sTotal
