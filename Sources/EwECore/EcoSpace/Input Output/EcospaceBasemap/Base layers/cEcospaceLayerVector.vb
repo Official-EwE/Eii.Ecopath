@@ -163,18 +163,28 @@ Public MustInherit Class cEcospaceLayerVector
     Protected Overridable Sub RecalcStats()
 
         Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
+        Dim depth As cEcospaceLayerDepth = bm.LayerDepth
         Dim iRows As Integer = bm.InRow
         Dim iCols As Integer = bm.InCol
 
         Me.m_sMaxValue = 0
+        Me.m_iNumValueCells = 0
 
         For iRow As Integer = 1 To iRows
             For iCol As Integer = 1 To iCols
-                Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, _
-                                          Math.Max(Math.Abs(Me.XVelocity(iRow, iCol)), _
-                                                   Math.Abs(Me.YVelocity(iRow, iCol))))
+                If depth.IsWaterCell(iRow, iCol) Then
+                    Dim dx As Single = Me.XVelocity(iRow, iCol)
+                    Dim dy As Single = Me.YVelocity(iRow, iCol)
+                    Me.m_sMaxValue = Math.Max(Me.m_sMaxValue, _
+                                              Math.Max(Math.Abs(dx), _
+                                                       Math.Abs(dy)))
+                    If (dx <> 0 And dy <> 0) Then
+                        Me.m_iNumValueCells += 1
+                    End If
+                End If
             Next iCol
         Next iRow
+
         Me.m_bInvalidateStats = False
 
     End Sub
