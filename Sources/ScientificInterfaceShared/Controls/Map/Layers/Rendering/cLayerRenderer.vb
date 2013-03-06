@@ -165,12 +165,25 @@ Namespace Controls.Map.Layers
             Return (Me.VisualStyle IsNot Nothing)
         End Function
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Render a cell in error.
+        ''' </summary>
+        ''' <param name="g">Graphics device to render onto.</param>
+        ''' <param name="rc">Area to render to.</param>
+        ''' -----------------------------------------------------------------------
         Protected Sub RenderError(ByVal g As Graphics, ByVal rc As Rectangle)
             g.FillRectangle(Brushes.White, rc)
             g.DrawLine(Pens.Red, rc.Left, rc.Top, rc.Right, rc.Bottom)
             g.DrawLine(Pens.Red, rc.Left, rc.Bottom, rc.Right, rc.Top)
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a shallow copy.
+        ''' </summary>
+        ''' <returns>A shallow copy.</returns>
+        ''' -----------------------------------------------------------------------
         Public Overridable Function Clone() As cRasterLayerRenderer
             Dim minime As cRasterLayerRenderer = Nothing
             Dim vs As cVisualStyle = Me.VisualStyle.Clone()

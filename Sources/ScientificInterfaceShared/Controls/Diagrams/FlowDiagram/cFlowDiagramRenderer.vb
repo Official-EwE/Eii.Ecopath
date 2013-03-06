@@ -130,7 +130,7 @@ Namespace Controls
             ' Draw the nodes
             For j As Integer = 1 To Me.m_data.NumGroups()
                 ' Draw each node
-                Me.m_tree.DrawNode(g, rc, j, Me.m_data.IsGroupVisible(j))
+                Me.m_tree.DrawNode(g, rc, j, Me.m_data.IsGroupVisible(j), Me.HighlightNode = j)
             Next j
 
         End Sub

@@ -24,6 +24,7 @@ Imports System.Text
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Map
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -211,11 +212,12 @@ Namespace Controls
         Private m_bIsNodeDrawValue As Boolean = False
         Private m_clrLine As Color = Color.Gray
         Private m_bAutoLineWidth As Boolean = False
-        Private m_bShowTitle As Boolean = False
+        Private m_bShowTitle As Boolean = True
         Private m_iLineWidth As Integer = 1
         Private m_nodetype As cFlowDiagramNode.eNodeTypes = cFlowDiagramNode.eNodeTypes.Circle
         Private m_connectiontype As cFlowDiagramConnector.eConnectionType = cFlowDiagramConnector.eConnectionType.Arch
         Private m_colorusagetype As eColorUsageTypes = eColorUsageTypes.None
+        Private m_tsShowLegend As TriState = TriState.UseDefault
 
         Private Shared g_fmt As New StringFormat()
         Private Shared g_wrapwidth As Integer = 150
@@ -267,6 +269,7 @@ Namespace Controls
         Friend Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle)
 
             Dim iUnitHeight As Integer = CInt(rc.Height / Me.m_iNumTrophicLevels)
+            Dim tsShowLegend As TriState = Me.ShowLegend
 
             Using brBack As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND))
                 g.FillRectangle(brBack, rc)
@@ -281,12 +284,16 @@ Namespace Controls
                 End Using
             End Using
 
-            Select Case Me.m_colorusagetype
-                Case eColorUsageTypes.Value
-                    Me.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), My.Resources.HEADER_VALUE)
-                Case eColorUsageTypes.Flow
-                    Me.DrawLegend(g, Me.m_data.LinkValueMax, New Point(5, 5), "Flow")
-            End Select
+            If (tsShowLegend = TriState.UseDefault) Then
+                Select Case Me.m_colorusagetype
+                    Case eColorUsageTypes.Value, eColorUsageTypes.Flow
+                        tsShowLegend = TriState.True
+                End Select
+            End If
+
+            If (tsShowLegend = TriState.True) Then
+                Me.DrawLegend(g, Me.m_data.ValueMax, New Point(5, 5), Me.m_data.Title)
+            End If
 
         End Sub
 
@@ -309,7 +316,8 @@ Namespace Controls
         Friend Sub DrawNode(ByVal g As Graphics, _
                             ByVal rc As Rectangle, _
                             ByVal iGroup As Integer, _
-                            ByVal bVisible As Boolean)
+                            ByVal bVisible As Boolean,
+                            ByVal bHighlight As Boolean)
 
             Dim strLabel As String = Me.FormatLabelText(iGroup)
             Dim sValue As Single = Me.m_data.Value(iGroup)
@@ -455,10 +463,10 @@ Namespace Controls
 
         ' ToDo_JS: somehow globalize these properties 
         <Browsable(True), _
-    Category("Misc."), _
-    DisplayName("Show title"), _
-    Description("Draw the title on the flow diagram"), _
-    DefaultValue(eColorUsageTypes.None)> _
+            Category("Appearance"), _
+            DisplayName("Show title"), _
+            Description("Draw the title on the flow diagram"), _
+            DefaultValue(True)> _
         Public Property ShowTitle() As Boolean
             Get
                 Return Me.m_bShowTitle
@@ -469,9 +477,26 @@ Namespace Controls
             End Set
         End Property
 
+        <Browsable(True), _
+            Category("Appearance"), _
+            DisplayName("Number of trophic levels"), _
+            Description("The number of trophic levels to display."), _
+            DefaultValue(7)> _
+        Public Property NumberOfTrophicLevels() As Integer
+            Get
+                Return Me.m_iNumTrophicLevels - 1
+            End Get
+            Set(ByVal value As Integer)
+                If (value <> (Me.m_iNumTrophicLevels + 1)) Then
+                    Me.m_iNumTrophicLevels = value + 1
+                    RaiseEvent OnChanged(Me)
+                    Me.InitNodePositions()
+                End If
+            End Set
+        End Property
 
         <Browsable(True), _
-            Category("Misc."), _
+            Category("Appearance"), _
             DisplayName("Auto-colour"), _
             Description("Define which aspect of the flow diagram to auto-colour: nodes by value, nodes by EwE default colour, or lines by diet"), _
             DefaultValue(eColorUsageTypes.None)> _
@@ -486,9 +511,25 @@ Namespace Controls
         End Property
 
         <Browsable(True), _
+            Category("Appearance"), _
+            DisplayName("Show legend"), _
+            Description("True to always show the legend, false to always hide the legend, or UseDefault to use application wide settings."), _
+            DefaultValue(TriState.UseDefault)> _
+        Public Property ShowLegend As TriState
+            Get
+                Return Me.m_tsShowLegend
+            End Get
+            Set(ByVal value As TriState)
+                Me.m_tsShowLegend = value
+                RaiseEvent OnChanged(Me)
+            End Set
+        End Property
+
+        <Browsable(True), _
              Category("Node"), _
              DisplayName("Custom node color"), _
-             Description("Custom color to use for nodes if nodes are not auto-colored.")> _
+             Description("Custom color to use for nodes if nodes are not auto-colored."), _
+             DefaultValue(&HFFD3D3D3)> _
         Public Property CustomNodeColor() As Color
             Get
                 Return Me.m_clrNode
@@ -591,7 +632,8 @@ Namespace Controls
         <Browsable(True), _
             Category("Line"), _
             DisplayName("Line type"), _
-            Description("Line type to use for rendering flows.")> _
+            Description("Line type to use for rendering flows."), _
+            DefaultValue(cFlowDiagramConnector.eConnectionType.Arch)> _
         Public Property LineConnectionType() As cFlowDiagramConnector.eConnectionType
             Get
                 Return Me.m_connectiontype
@@ -605,28 +647,10 @@ Namespace Controls
         End Property
 
         <Browsable(True), _
-            Category("Misc."), _
-            DisplayName("Number of trophic levels"), _
-            Description("The number of trophic levels to display.")> _
-        Public Property NumberOfTrophicLevels() As Integer
-            Get
-                Return m_iNumTrophicLevels - 1
-            End Get
-            Set(ByVal value As Integer)
-
-                If (value <> (Me.m_iNumTrophicLevels + 1)) Then
-                    Me.m_iNumTrophicLevels = value + 1
-                    RaiseEvent OnChanged(Me)
-                    Me.InitNodePositions()
-                End If
-
-            End Set
-        End Property
-
-        <Browsable(True), _
             Category("Node"), _
             DisplayName("Show value in label"), _
-            Description("Show value of groups in the node labels.")> _
+            Description("Show value of groups in the node labels."), _
+            DefaultValue(False)> _
         Public Property NodeDrawValue() As Boolean
             Get
                 Return Me.m_bIsNodeDrawValue
