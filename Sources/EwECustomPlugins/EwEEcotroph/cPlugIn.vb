@@ -102,7 +102,7 @@ Public Class newET
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
         Get
-            Return "ET  sample plug-in"
+            Return "ET plug-in"
         End Get
     End Property
 
@@ -126,7 +126,7 @@ Public Class newET
 
     Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
+            'Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
         End Get
     End Property
 
