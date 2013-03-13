@@ -65,7 +65,7 @@ Namespace Ecospace
             Dim source As cCoreInputOutputBase = Nothing
 
             'Define grid dimensions
-            Me.Redim(Me.Core.nGroups + 2, Me.Core.nHabitats + 4)
+            Me.Redim(Me.Core.nGroups + 2, Me.Core.nHabitats + 2)
 
             'Set header cells # (0,0)
             Me(0, 0) = New EwEColumnHeaderCell(My.Resources.ECOSPACE_HEADER_GROUP_HABITAT)
@@ -90,13 +90,6 @@ Namespace Ecospace
                 Me(0, j + 2) = New EwEColumnHeaderCell(source.Name)
             Next
 
-            'Column header cell - Ecospace area
-            Me(0, Me.Core.nHabitats + 2) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOSPACE_AREA)
-
-            'Column header cell - Ecopath area
-            Me(0, Me.Core.nHabitats + 3) = New EwEColumnHeaderCell(SharedResources.HEADER_ECOPATH_AREA)
-            Me(0, Me.Core.nHabitats + 3).VisualModel.TextAlignment = ContentAlignment.MiddleLeft
-
             Me.FixedColumns = 2
             Me.FixedColumnWidths = False
 
@@ -111,11 +104,6 @@ Namespace Ecospace
             Dim groupEcopath As cEcoPathGroupInput = Nothing
             Dim hab As cEcospaceHabitat = Nothing
             Dim cell As EwECellBase = Nothing
-
-            ' Raster of formulas for check box cells
-            Dim exFormulas(Me.Core.nGroups, Me.Core.nHabitats) As cExpression
-            Dim exFormula As cExpression = Nothing
-            Dim propFormula As cFormulaProperty = Nothing
 
             For iGroup As Integer = 1 To Me.Core.nGroups
 
@@ -133,33 +121,7 @@ Namespace Ecospace
                     cell.SuppressZero = True
                     Me(iGroup, iHabitat + 2) = cell
 
-                    ' Store formula that calculates the habitat area for this particular (group, habitat)
-                    exFormulas(iGroup, iHabitat) = HabAreaFormula(iGroup, iHabitat)
                 Next
-
-                ' Ecospace Area Sum cell
-                ' 1. Build formula that sums the total habitat area for this group
-                exFormula = SumHabAreaFormula(iGroup, exFormulas)
-                ' 2. Wrap formula in a property
-                propFormula = Me.Formula(exFormula)
-                ' 3. Apply formula to cell.
-                Me(iGroup, Me.Core.nHabitats + 2) = New PropertyCell(propFormula)
-
-                ' Ecopath area
-                cell = New PropertyCell(Me.PropertyManager, groupEcopath, eVarNameFlags.Area)
-                cell.Style = cStyleGuide.eStyleFlags.NotEditable
-                Me(iGroup, Me.Core.nHabitats + 3) = cell
-
-            Next
-
-            ' Ecospace Area Sum cells - column habitat summaries
-            For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
-                ' 1. Build formula that averages the total habitat of preferred areas for this habitat
-                exFormula = AvgHabAreaFormula(iHabitat, exFormulas)
-                ' 2. Wrap formula in a property
-                propFormula = Me.Formula(exFormula)
-                ' 3. Apply formula to cell.
-                Me(Me.Core.nGroups + 1, iHabitat + 2) = New PropertyCell(propFormula)
             Next
 
         End Sub
@@ -171,93 +133,6 @@ Namespace Ecospace
         End Property
 
 #End Region ' Grid Overriden methods
-
-#Region " Smart bits "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' <para>Helper method; returns a live formula that returns the Habitat area proportion
-        ''' for a given group and habitat, taking into account whether the group prefers 
-        ''' that habitat.</para>
-        ''' <para>In pseude code, this formula reads:</para>
-        ''' <code>
-        ''' if (
-        ''' </code>
-        ''' </summary>
-        ''' <param name="iGroup">The group index to get the formula for.</param>
-        ''' <param name="iHabitat">The habitat index to get the formula for.</param>
-        ''' <returns>A cExpression containing the formula.</returns>
-        ''' -------------------------------------------------------------------
-        Private Function HabAreaFormula(ByVal iGroup As Integer, ByVal iHabitat As Integer) As cExpression
-
-            Dim pm As cPropertyManager = Me.PropertyManager
-            Dim group As cEcospaceGroup = Nothing
-            Dim habitat As cEcospaceHabitat = Nothing
-            Dim bopNoHab As cBooleanOperand = Nothing
-            Dim copHabArea As cConditionalOperation = Nothing
-
-            group = Me.Core.EcospaceGroups(iGroup)
-            habitat = Me.Core.EcospaceHabitats(iHabitat)
-
-            ' 1. Construct PrefHab T/F test [group.PrefHab(iHabitat) = 0]
-            bopNoHab = New cBooleanOperand( _
-                cOperatorManager.getOperator(eOperators.EqualTo), _
-                pm.GetProperty(group, eVarNameFlags.PreferredHabitat, habitat), _
-                0)
-
-            ' 2. Calculate area based on outcome of PrefHab T/F test [IIF(bopNoHab, 0, habitat.HabAreaProportion())]
-            copHabArea = New cConditionalOperation( _
-                bopNoHab, _
-                0, pm.GetProperty(habitat, eVarNameFlags.HabAreaProportion))
-
-            ' 3. Return formula
-            Return copHabArea
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method; returns a formula that sums the preferred habitat area
-        ''' for a given group.
-        ''' </summary>
-        ''' <param name="iGroup">The group index to get the formula for.</param>
-        ''' <param name="exFormulas">Matrix (group, habitat) with 
-        ''' <see cref="HabAreaFormula">habitat area formulas</see>.</param>
-        ''' <returns>A cExpression containing the formula.</returns>
-        ''' -------------------------------------------------------------------
-        Private Function SumHabAreaFormula(ByVal iGroup As Integer, ByRef exFormulas(,) As cExpression) As cExpression
-
-            Dim exSum(Me.Core.nHabitats - 1) As cExpression
-            For iHabitat As Integer = 0 To Me.Core.nHabitats - 1
-                exSum(iHabitat) = exFormulas(iGroup, iHabitat)
-            Next iHabitat
-            ' Return the sum of all preferred habitats
-            Return New cMultiOperation(cMultiOperation.eOperatorType.Sum, exSum)
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Helper method; returns a formula that averages the preferred habitat
-        ''' area for a given habitat.
-        ''' </summary>
-        ''' <param name="iHabitat">The habitat index to get the formula for.</param>
-        ''' <param name="exFormulas">Matrix (group, habitat) with 
-        ''' <see cref="HabAreaFormula">habitat area formulas</see>.</param>
-        ''' <returns>A cExpression containing the formula.</returns>
-        ''' -------------------------------------------------------------------
-        Private Function AvgHabAreaFormula(ByVal iHabitat As Integer, ByRef exFormulas(,) As cExpression) As cExpression
-
-            Dim exSum(Me.Core.nGroups - 1) As cExpression
-            For iGroup As Integer = 1 To Me.Core.nGroups
-                exSum(iGroup - 1) = exFormulas(iGroup, iHabitat)
-            Next iGroup
-            ' Return the average of all preferred habitats.
-            Return New cMultiOperation(cMultiOperation.eOperatorType.AvgNonZero, exSum)
-
-        End Function
-
-#End Region ' Smart bits
 
     End Class
 
