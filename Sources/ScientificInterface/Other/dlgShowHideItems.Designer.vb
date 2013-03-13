@@ -44,8 +44,6 @@ Namespace Ecosim
             Me.m_clbGroups = New System.Windows.Forms.CheckedListBox()
             Me.m_btnAllGroups = New System.Windows.Forms.Button()
             Me.m_btnNoneGroups = New System.Windows.Forms.Button()
-            Me.m_tcDisplayBits = New System.Windows.Forms.TabControl()
-            Me.m_tpGroups = New System.Windows.Forms.TabPage()
             Me.m_hdrFilterGroup = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnLiving = New System.Windows.Forms.Button()
             Me.m_btnNonLiving = New System.Windows.Forms.Button()
@@ -55,14 +53,18 @@ Namespace Ecosim
             Me.m_btnProducers = New System.Windows.Forms.Button()
             Me.m_btnNonFished = New System.Windows.Forms.Button()
             Me.m_btnFished = New System.Windows.Forms.Button()
-            Me.m_tpFleets = New System.Windows.Forms.TabPage()
             Me.m_clbFleets = New System.Windows.Forms.CheckedListBox()
             Me.m_btnAllFleets = New System.Windows.Forms.Button()
             Me.m_btnNoneFleets = New System.Windows.Forms.Button()
             Me.m_cbSyncGroupsAndFleets = New System.Windows.Forms.CheckBox()
-            Me.m_tcDisplayBits.SuspendLayout()
-            Me.m_tpGroups.SuspendLayout()
-            Me.m_tpFleets.SuspendLayout()
+            Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plGroups = New System.Windows.Forms.Panel()
+            Me.m_hdrGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_plFleets = New System.Windows.Forms.Panel()
+            Me.m_hdrFleets = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpContent.SuspendLayout()
+            Me.m_plGroups.SuspendLayout()
+            Me.m_plFleets.SuspendLayout()
             Me.SuspendLayout()
             '
             'OK_Button
@@ -92,32 +94,6 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me.m_btnNoneGroups, "m_btnNoneGroups")
             Me.m_btnNoneGroups.Name = "m_btnNoneGroups"
-            '
-            'm_tcDisplayBits
-            '
-            resources.ApplyResources(Me.m_tcDisplayBits, "m_tcDisplayBits")
-            Me.m_tcDisplayBits.Controls.Add(Me.m_tpGroups)
-            Me.m_tcDisplayBits.Controls.Add(Me.m_tpFleets)
-            Me.m_tcDisplayBits.Name = "m_tcDisplayBits"
-            Me.m_tcDisplayBits.SelectedIndex = 0
-            '
-            'm_tpGroups
-            '
-            Me.m_tpGroups.BackColor = System.Drawing.SystemColors.Control
-            Me.m_tpGroups.Controls.Add(Me.m_hdrFilterGroup)
-            Me.m_tpGroups.Controls.Add(Me.m_clbGroups)
-            Me.m_tpGroups.Controls.Add(Me.m_btnLiving)
-            Me.m_tpGroups.Controls.Add(Me.m_btnNonLiving)
-            Me.m_tpGroups.Controls.Add(Me.m_btnStanza)
-            Me.m_tpGroups.Controls.Add(Me.m_btnConsumers)
-            Me.m_tpGroups.Controls.Add(Me.m_btnNonStanza)
-            Me.m_tpGroups.Controls.Add(Me.m_btnProducers)
-            Me.m_tpGroups.Controls.Add(Me.m_btnNonFished)
-            Me.m_tpGroups.Controls.Add(Me.m_btnFished)
-            Me.m_tpGroups.Controls.Add(Me.m_btnAllGroups)
-            Me.m_tpGroups.Controls.Add(Me.m_btnNoneGroups)
-            resources.ApplyResources(Me.m_tpGroups, "m_tpGroups")
-            Me.m_tpGroups.Name = "m_tpGroups"
             '
             'm_hdrFilterGroup
             '
@@ -167,15 +143,6 @@ Namespace Ecosim
             resources.ApplyResources(Me.m_btnFished, "m_btnFished")
             Me.m_btnFished.Name = "m_btnFished"
             '
-            'm_tpFleets
-            '
-            Me.m_tpFleets.BackColor = System.Drawing.SystemColors.Control
-            Me.m_tpFleets.Controls.Add(Me.m_clbFleets)
-            Me.m_tpFleets.Controls.Add(Me.m_btnAllFleets)
-            Me.m_tpFleets.Controls.Add(Me.m_btnNoneFleets)
-            resources.ApplyResources(Me.m_tpFleets, "m_tpFleets")
-            Me.m_tpFleets.Name = "m_tpFleets"
-            '
             'm_clbFleets
             '
             resources.ApplyResources(Me.m_clbFleets, "m_clbFleets")
@@ -199,6 +166,56 @@ Namespace Ecosim
             Me.m_cbSyncGroupsAndFleets.Name = "m_cbSyncGroupsAndFleets"
             Me.m_cbSyncGroupsAndFleets.UseVisualStyleBackColor = True
             '
+            'm_tlpContent
+            '
+            resources.ApplyResources(Me.m_tlpContent, "m_tlpContent")
+            Me.m_tlpContent.Controls.Add(Me.m_plGroups, 0, 0)
+            Me.m_tlpContent.Controls.Add(Me.m_plFleets, 2, 0)
+            Me.m_tlpContent.Name = "m_tlpContent"
+            '
+            'm_plGroups
+            '
+            Me.m_plGroups.Controls.Add(Me.m_hdrFilterGroup)
+            Me.m_plGroups.Controls.Add(Me.m_hdrGroups)
+            Me.m_plGroups.Controls.Add(Me.m_btnLiving)
+            Me.m_plGroups.Controls.Add(Me.m_clbGroups)
+            Me.m_plGroups.Controls.Add(Me.m_btnNonLiving)
+            Me.m_plGroups.Controls.Add(Me.m_btnAllGroups)
+            Me.m_plGroups.Controls.Add(Me.m_btnStanza)
+            Me.m_plGroups.Controls.Add(Me.m_btnNoneGroups)
+            Me.m_plGroups.Controls.Add(Me.m_btnConsumers)
+            Me.m_plGroups.Controls.Add(Me.m_btnFished)
+            Me.m_plGroups.Controls.Add(Me.m_btnNonStanza)
+            Me.m_plGroups.Controls.Add(Me.m_btnNonFished)
+            Me.m_plGroups.Controls.Add(Me.m_btnProducers)
+            resources.ApplyResources(Me.m_plGroups, "m_plGroups")
+            Me.m_plGroups.Name = "m_plGroups"
+            '
+            'm_hdrGroups
+            '
+            resources.ApplyResources(Me.m_hdrGroups, "m_hdrGroups")
+            Me.m_hdrGroups.CanCollapseParent = False
+            Me.m_hdrGroups.CollapsedParentHeight = 0
+            Me.m_hdrGroups.IsCollapsed = False
+            Me.m_hdrGroups.Name = "m_hdrGroups"
+            '
+            'm_plFleets
+            '
+            Me.m_plFleets.Controls.Add(Me.m_btnAllFleets)
+            Me.m_plFleets.Controls.Add(Me.m_btnNoneFleets)
+            Me.m_plFleets.Controls.Add(Me.m_clbFleets)
+            Me.m_plFleets.Controls.Add(Me.m_hdrFleets)
+            resources.ApplyResources(Me.m_plFleets, "m_plFleets")
+            Me.m_plFleets.Name = "m_plFleets"
+            '
+            'm_hdrFleets
+            '
+            resources.ApplyResources(Me.m_hdrFleets, "m_hdrFleets")
+            Me.m_hdrFleets.CanCollapseParent = False
+            Me.m_hdrFleets.CollapsedParentHeight = 0
+            Me.m_hdrFleets.IsCollapsed = False
+            Me.m_hdrFleets.Name = "m_hdrFleets"
+            '
             'dlgShowHideItems
             '
             Me.AcceptButton = Me.OK_Button
@@ -206,9 +223,9 @@ Namespace Ecosim
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.CancelButton = Me.Cancel_Button
             Me.ControlBox = False
+            Me.Controls.Add(Me.m_tlpContent)
             Me.Controls.Add(Me.m_cbSyncGroupsAndFleets)
             Me.Controls.Add(Me.OK_Button)
-            Me.Controls.Add(Me.m_tcDisplayBits)
             Me.Controls.Add(Me.Cancel_Button)
             Me.DoubleBuffered = True
             Me.MaximizeBox = False
@@ -217,22 +234,19 @@ Namespace Ecosim
             Me.ShowIcon = False
             Me.ShowInTaskbar = False
             Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show
-            Me.m_tcDisplayBits.ResumeLayout(False)
-            Me.m_tpGroups.ResumeLayout(False)
-            Me.m_tpFleets.ResumeLayout(False)
+            Me.m_tlpContent.ResumeLayout(False)
+            Me.m_plGroups.ResumeLayout(False)
+            Me.m_plFleets.ResumeLayout(False)
             Me.ResumeLayout(False)
             Me.PerformLayout()
 
         End Sub
-        Private WithEvents m_tcDisplayBits As System.Windows.Forms.TabControl
         Private WithEvents m_btnAllGroups As System.Windows.Forms.Button
         Private WithEvents m_btnNoneGroups As System.Windows.Forms.Button
         Private WithEvents m_clbGroups As System.Windows.Forms.CheckedListBox
         Private WithEvents m_clbFleets As System.Windows.Forms.CheckedListBox
         Private WithEvents m_btnAllFleets As System.Windows.Forms.Button
         Private WithEvents m_btnNoneFleets As System.Windows.Forms.Button
-        Private WithEvents m_tpGroups As System.Windows.Forms.TabPage
-        Private WithEvents m_tpFleets As System.Windows.Forms.TabPage
         Private WithEvents m_hdrFilterGroup As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnNonLiving As System.Windows.Forms.Button
         Private WithEvents m_btnConsumers As System.Windows.Forms.Button
@@ -245,6 +259,11 @@ Namespace Ecosim
         Private WithEvents m_btnStanza As System.Windows.Forms.Button
         Private WithEvents m_btnNonStanza As System.Windows.Forms.Button
         Private WithEvents m_btnNonFished As System.Windows.Forms.Button
+        Private WithEvents m_plGroups As System.Windows.Forms.Panel
+        Private WithEvents m_hdrGroups As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_plFleets As System.Windows.Forms.Panel
+        Private WithEvents m_hdrFleets As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Private WithEvents m_tlpContent As System.Windows.Forms.TableLayoutPanel
     End Class
 
 End Namespace

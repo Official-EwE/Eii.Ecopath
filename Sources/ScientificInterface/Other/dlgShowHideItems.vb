@@ -100,9 +100,6 @@ Namespace Ecosim
             Me.m_il = New ImageList()
             Me.m_il.Images.Add(SharedResources.fish)
             Me.m_il.Images.Add(SharedResources.fishing_gear)
-            Me.m_tcDisplayBits.ImageList = Me.m_il
-            Me.m_tpGroups.ImageIndex = 0
-            Me.m_tpFleets.ImageIndex = 1
 
         End Sub
 
@@ -370,19 +367,18 @@ Namespace Ecosim
 
         End Sub
 
-        Private Sub OnSyncItemsChecked(sender As System.Object, e As System.EventArgs) _
-            Handles m_cbSyncGroupsAndFleets.CheckedChanged
+        'Private Sub OnSyncItemsChecked(sender As System.Object, e As System.EventArgs) _
+        '    Handles m_cbSyncGroupsAndFleets.CheckedChanged
 
-            If Me.m_cbSyncGroupsAndFleets.Checked Then
-                If Object.ReferenceEquals(Me.m_tcDisplayBits.SelectedTab, Me.m_tpGroups) Then
-                    Me.SyncFleets()
-                Else
-                    Me.SyncGroups()
-                End If
-            End If
+        '    If Me.m_cbSyncGroupsAndFleets.Checked Then
+        '        If Object.ReferenceEquals(Me.m_tcDisplayBits.SelectedTab, Me.m_tpGroups) Then
+        '            Me.SyncFleets()
+        '        Else
+        '            Me.SyncGroups()
+        '        End If
+        '    End If
 
-        End Sub
-
+        'End Sub
 
 #End Region ' Events
 
