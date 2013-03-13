@@ -120,15 +120,13 @@ Namespace Ecospace.Controls
 
             If (Me.UIContext Is Nothing) Then Return
 
-            ' Only evaluate cache on load
-            Me.EvaluateCache()
             ' Populate all
             Me.FillTemplateDatasetBox()
             Me.FillExistingDatasetBox(Nothing)
             Me.FillExistingConverterBox()
 
-            ' Done
-            Me.UpdateControls()
+            ' Update cache state (will also update controls)
+            Me.EvaluateCache()
 
         End Sub
 
@@ -291,7 +289,6 @@ Namespace Ecospace.Controls
 
             ' Reflect new state
             Me.EvaluateCache()
-            Me.UpdateControls()
 
         End Sub
 
@@ -350,6 +347,10 @@ Namespace Ecospace.Controls
                     Else
                         ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Relative
                     End If
+                    ' Invalidate the cached data for this dataset
+                    cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
+                    ' Reflect new state
+                    Me.EvaluateCache()
                 End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -357,26 +358,24 @@ Namespace Ecospace.Controls
 
         End Sub
 
+        Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
+            Handles m_tbxScale.TextChanged
+            Try
+                ' Invalidate the cached data for this dataset
+                cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
+                ' Reflect new state
+                Me.EvaluateCache()
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
+        End Sub
+
         Private Sub m_tbxScale_LostFocus(sender As Object, e As System.EventArgs) Handles m_tbxScale.LostFocus
             If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
                 Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
                 Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
             End If
-
         End Sub
-
-        'Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
-        '    Handles m_tbxScale.TextChanged
-        '    Try
-        '        Debug.Assert(False, "Warning removed m_tbxScale.TextChanged handler for debugging.")
-        '        'If (TypeOf Me.m_adt Is cSpatialScalarDataAdapter) Then
-        '        '    Dim ssda As cSpatialScalarDataAdapter = DirectCast(Me.m_adt, cSpatialScalarDataAdapter)
-        '        '    Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
-        '        'End If
-        '    Catch ex As Exception
-        '        Debug.Assert(False, ex.Message)
-        '    End Try
-        'End Sub
 
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
             Handles m_btnCalculate.Click
@@ -489,6 +488,9 @@ Namespace Ecospace.Controls
             Catch ex As Exception
 
             End Try
+
+            ' Update
+            Me.UpdateControls()
 
         End Sub
 
@@ -734,6 +736,7 @@ Namespace Ecospace.Controls
 
         Private Sub EvaluateCache()
             Me.m_bHasCachedData = (cSpatialDataCache.DefaultDataCache.GetSize > 0)
+            Me.UpdateControls()
         End Sub
 
 #Region " Scalar data adapter "
