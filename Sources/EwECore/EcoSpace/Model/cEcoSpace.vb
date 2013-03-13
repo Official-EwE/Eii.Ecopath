@@ -583,35 +583,14 @@ Public Class cEcoSpace
             'redim all 
             If redimForRun() Then
 
-                ' Preserve base RelPP, either loaded or sketched
-                Me.m_Data.setBaseRelPP()
-
-                If (Me.m_SpatialData IsNot Nothing) Then
-                    For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
-                        If (src IsNot Nothing) Then
-                            Try
-                                src.InitRun()
-                            Catch ex As Exception
-                                cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
-                            End Try
-                        End If
-                    Next
-                End If
+                'Init the Spatial Temporal data
+                Me.InitSpatialTemporalRun()
 
                 Me.initSpatialEquilibrium()
                 Me.FindSpatialEquilibrium()
 
-                If (Me.m_SpatialData IsNot Nothing) Then
-                    For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
-                        If (src IsNot Nothing) Then
-                            Try
-                                src.EndRun()
-                            Catch ex As Exception
-                                cLog.Write(ex, "cEcospace::Run.CleanAdapters " & src.Name & "(" & src.Index & ")")
-                            End Try
-                        End If
-                    Next
-                End If
+                'Cleanup the Spatial Temporal data
+                Me.EndSpatialTemporalRun()
 
             Else
                 bsuccess = False
@@ -2145,6 +2124,40 @@ Public Class cEcoSpace
         End Try
 
     End Function
+
+    Private Sub InitSpatialTemporalRun()
+        ' Preserve base RelPP, either loaded or sketched
+        Me.m_Data.setBaseRelPP()
+
+        If (Me.m_SpatialData IsNot Nothing) Then
+            For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
+                If (src IsNot Nothing) Then
+                    Try
+                        src.InitRun()
+                    Catch ex As Exception
+                        cLog.Write(ex, "cEcospace::Run.InitAdapters " & src.Name & "(" & src.Index & ")")
+                    End Try
+                End If
+            Next
+        End If
+
+    End Sub
+
+    Private Sub EndSpatialTemporalRun()
+
+        If (Me.m_SpatialData IsNot Nothing) Then
+            For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
+                If (src IsNot Nothing) Then
+                    Try
+                        src.EndRun()
+                    Catch ex As Exception
+                        cLog.Write(ex, "cEcospace::Run.CleanAdapters " & src.Name & "(" & src.Index & ")")
+                    End Try
+                End If
+            Next
+        End If
+
+    End Sub
 
 
     ''' <summary>
