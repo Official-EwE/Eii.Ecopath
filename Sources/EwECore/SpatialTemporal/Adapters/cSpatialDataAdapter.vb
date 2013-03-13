@@ -453,20 +453,11 @@ Namespace SpatialData
 
             ' Early bail out
             If (Not Me.RestoreLayerContent) Then Return
-            If (bm.ValueDescriptor(Me.m_varName)) Is Nothing Then Return
 
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
             Dim strFileName As String = ""
             Dim sw As StreamWriter = Nothing
-            Dim valtype As ValueWrapper.eValueTypes = bm.ValueDescriptor(Me.VarName).varType
-
-            Select Case valtype
-                Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.Sng, ValueWrapper.eValueTypes.Bool
-                    ' ok
-                Case Else
-                    Return ' Value type not supported
-            End Select
 
             ' For all layers
             For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
@@ -479,12 +470,9 @@ Namespace SpatialData
                         For iRow As Integer = 1 To iNumRow
                             For iCol As Integer = 1 To iNumCol
                                 If (iCol > 1) Then sw.Write(",")
-                                Select Case valtype
-                                    Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.Sng
-                                        sw.Write(cStringUtils.FormatNumber(layer.Cell(iRow, iCol)))
-                                    Case ValueWrapper.eValueTypes.Bool
-                                        If CBool(layer.Cell(iRow, iCol)) Then sw.Write("1"c) Else sw.Write("0"c)
-                                End Select
+
+                                sw.Write(layer.Cell(iRow, iCol).ToString())
+                               
                             Next iCol
                             sw.WriteLine()
                         Next iRow
@@ -520,14 +508,11 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub RestoreLayerData(bm As cEcospaceBasemap)
 
-            If (bm.ValueDescriptor(Me.m_varName)) Is Nothing Then Return
-
             Dim iNumRow As Integer = bm.InRow
             Dim iNumCol As Integer = bm.InCol
             Dim tData As Type = Nothing
             Dim sr As StreamReader = Nothing
             Dim strFileName As String = ""
-            Dim valtype As ValueWrapper.eValueTypes = bm.ValueDescriptor(Me.VarName).varType
 
             For Each layer As cEcospaceLayer In bm.Layers(Me.m_varName)
 
@@ -542,12 +527,13 @@ Namespace SpatialData
                             Dim strLine As String = sr.ReadLine
                             Dim astrFields As String() = strLine.Split(","c)
                             For iCol As Integer = 1 To iNumCol
-                                Select Case valtype
-                                    Case ValueWrapper.eValueTypes.Int, ValueWrapper.eValueTypes.Sng
-                                        layer.Cell(iRow, iCol) = cStringUtils.ConvertToNumber(astrFields(iCol - 1), tData)
-                                    Case ValueWrapper.eValueTypes.Bool
-                                        layer.Cell(iRow, iCol) = (astrFields(iCol - 1) = "1")
-                                End Select
+
+                                If tData Is GetType(Single) Or tData Is GetType(Integer) Then
+                                    layer.Cell(iRow, iCol) = cStringUtils.ConvertToNumber(astrFields(iCol - 1), tData)
+                                ElseIf tData Is GetType(Boolean) Then
+                                    layer.Cell(iRow, iCol) = Boolean.Parse(astrFields(iCol - 1))
+                                End If
+
                             Next iCol
                         Next iRow
                         sr.Close()
