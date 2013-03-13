@@ -26,11 +26,6 @@ Imports EwEUtils.Utilities
 
 Namespace SpatialData
 
-
-
-
-
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Data Adapter specific to Capacity layers .
@@ -39,7 +34,7 @@ Namespace SpatialData
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class cCapacityDataAdapter
-        Inherits cSpatialScalarDataAdapterBase
+        Inherits cSpatialDataAdapter
 
 #Region " Private vars "
 
@@ -61,24 +56,12 @@ Namespace SpatialData
         ''' <inheritdocs cref="cSpatialScalarDataAdapter.Initialize"/>.
         ''' -------------------------------------------------------------------
         Friend Overrides Sub Initialize()
-
             MyBase.Initialize()
             Me.m_spaceData = Me.m_core.m_EcoSpaceData
 
         End Sub
 
-        ' ''' -------------------------------------------------------------------
-        ' ''' <inheritdocs cref="cSpatialDataAdapter.InitRun"/>
-        ' ''' <remarks>
-        ' ''' Overridden to clear the PP scale factor.
-        ' ''' </remarks>
-        ' ''' -------------------------------------------------------------------
-        'Public Overrides Sub InitRun()
-        '    MyBase.InitRun()
-
-
-        'End Sub
-
+     
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialScalarDataAdapter.Adapt"/>
         ''' <remarks>
