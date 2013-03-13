@@ -48,6 +48,10 @@ Namespace SpatialData
         ''' <summary>Core counter that this adapter operates onto.</summary>
         Protected m_coreCounter As eCoreCounterTypes = eCoreCounterTypes.NotSet
 
+        Protected m_intSubDir As String
+
+        Protected m_intFileName As String
+
         ''' <summary>Flag, indicating whether the content of input layers needs
         ''' to be preserved: layer data is then preserved on first overwrite,
         ''' and restored when a run finished. Preserved layer data is maintained
@@ -274,6 +278,8 @@ Namespace SpatialData
                                     ' Done, clean up
                                     dataExternal.Dispose()
                                     dataExternal = Nothing
+
+
 
                                     ' Notify core - use AddedOrRemoved flag to not dirty the DB; just broadcast the layer change
                                     ' Me.m_core.onChanged(layer, eMessageType.DataAddedOrRemoved)
@@ -566,8 +572,11 @@ Namespace SpatialData
 
             If Not Me.AllowSaveIntermediateResults Then Return
 
-            Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
-            Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & "_" & iTime & ".asc", False))
+            ' Dim strPath As String = Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
+            ' Dim strFile As String = Path.Combine(strPath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & "_" & iTime & ".asc", False))
+
+            Dim strPath As String = Me.getIntermediateOutputDir()
+            Dim strFile As String = Me.getIntermediateFile(strPath, iTime)
 
             If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return
 
@@ -576,6 +585,53 @@ Namespace SpatialData
         End Sub
 
 #End Region ' Debugging
+
+
+#Region "Intermediate output files"
+
+        Public Property IntermediateSubDirectory As String
+
+            Get
+                Return Me.m_intSubDir
+            End Get
+            Set(value As String)
+                Me.m_intSubDir = value
+            End Set
+        End Property
+
+        Public Property IntermediateFileName As String
+            Get
+                Return Me.m_intFileName
+            End Get
+            Set(value As String)
+                Me.m_intFileName = value
+            End Set
+        End Property
+
+        Protected Function getIntermediateOutputDir() As String
+
+            If Not String.IsNullOrWhiteSpace(Me.m_intSubDir) Then
+                Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), Me.m_intSubDir)
+            End If
+
+            Return Path.Combine(Me.m_core.DefaultOutputPath(eAutosaveTypes.EcospaceMaps), "_debug_")
+
+        End Function
+
+
+        Protected Function getIntermediateFile(ByVal thePath As String, iTime As Integer) As String
+
+            If Not String.IsNullOrWhiteSpace(Me.m_intFileName) Then
+                Return Path.Combine(thePath, cFileUtils.ToValidFileName(Me.m_intFileName + "_" + Me.m_core.EcospaceTimestepToAbsoluteTime(iTime).ToShortDateString + ".asc", False))
+            End If
+
+            Return Path.Combine(thePath, cFileUtils.ToValidFileName("in_" & Me.m_varName.ToString & "_" & Me.Index & "_" & iTime & ".asc", False))
+
+        End Function
+
+
+#End Region
+
 
     End Class
 

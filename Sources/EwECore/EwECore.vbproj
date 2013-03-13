@@ -270,6 +270,7 @@
     <Compile Include="Shapes\TimeSeries\Readers\cTimeSeriesCSVReader.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeriesTextReader.vb" />
     <Compile Include="Shapes\TimeSeries\cTimeSeries.vb" />
+    <Compile Include="SpatialTemporal\Adapters\cCapacityDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cRelPPDataAdapter.vb" />
     <Compile Include="SpatialTemporal\Adapters\cSpatialDataAdapter.vb" />
     <Compile Include="SpatialTemporal\cSpatialDataCache.vb" />

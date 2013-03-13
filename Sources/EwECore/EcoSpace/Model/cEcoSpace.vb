@@ -922,11 +922,13 @@ Public Class cEcoSpace
 
                 Me.m_PauseSignal.WaitOne()
 
-                'set time step counters
+                'Ecospace has been stopped
+                If Me.m_StopRun Then Exit For
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Set time step counters
                 'itt is the cumulative time counter
                 itt += 1
-                'its is the cumulative monthly counter used for data array by month i.e. zscale()
-                its = Math.Truncate(m_Data.TimeNow * 12) + 1
                 If itt > nEcospaceTimeSteps Then
                     'We have exceeded the number of time step bump out of the time loop.
                     'This quarantees we don't come up one time step short due to rounding issues with m_Data.TimeStep
@@ -934,6 +936,8 @@ Public Class cEcoSpace
                     Exit For
                 End If
 
+                'its is the cumulative monthly counter used for data array by month i.e. zscale()
+                its = Math.Truncate(m_Data.TimeNow * 12) + 1
                 'make sure its (time loop indexes) do not get larger than the data they reference
                 If its > m_SimData.ForcePoints Then its = m_SimData.ForcePoints 'HACK  bump back the index
                 If its > m_SimData.NTimes Then its = m_SimData.NTimes
@@ -946,22 +950,22 @@ Public Class cEcoSpace
                 If m_Data.MonthNow = 1 Then
                     bAccumulateData = True 'new year collect the model fitting data after the six month
                 End If
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+                'Set the isFished(fleet,row,col) array
                 Me.EvaluateFishing()
+
+                'Read any Spatial Temporal data into memory for this timestep
+                Me.SetSpatialTempData(itt)
+
+                'do external processing at the start of the time step i.e. Call Plugins or sub models
+                Me.BeginTimeStep(Fgear, its, m_Data.MonthNow, m_Data.YearNow, Btime, RelFopt, m_Data.TimeNow)
 
                 'set the Capacity maps if any of the inputs have changed
                 Me.SetHabCap()
 
                 'Tell Ecoseed that we are at the start of a timestep
                 Me.EcoseedBeginTimeStep(m_Data.MonthNow, m_Data.YearNow, Btime)
-
-                'Ecospace has been stopped
-                If Me.m_StopRun Then
-                    Exit For
-                End If
-
-                'do any external processing at the start of the time step
-                BeginTimeStep(Fgear, its, m_Data.MonthNow, m_Data.YearNow, Btime, RelFopt, m_Data.TimeNow)
 
                 If m_search.bInSearch Then
                     For i = 1 To m_EPdata.NumFleet
@@ -1230,20 +1234,6 @@ Public Class cEcoSpace
             Array.Clear(Me.m_Data.CatchMap, 0, Me.m_Data.CatchMap.Length)
             Array.Clear(Me.m_Data.Landings, 0, Me.m_Data.Landings.Length)
 
-            ' Apply Ecospace datasources
-            ' * This will need to become much more sophisticated
-            If (Me.m_SpatialData IsNot Nothing) Then
-                For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
-                    If (src IsNot Nothing) Then
-                        Try
-                            src.Populate(itt)
-                        Catch ex As Exception
-                            cLog.Write(ex, "cEcospace::BeginTimeStep.Populate " & src.Name & "(" & src.Index & ")")
-                        End Try
-                    End If
-                Next
-            End If
-
             If m_pluginManager IsNot Nothing Then m_pluginManager.EcospaceBeginTimeStep(m_Data, itt)
 
             If imonth = 1 Then
@@ -1268,6 +1258,30 @@ Public Class cEcoSpace
             Throw New ApplicationException("EcoSpace.BeginTimeStep() error: " & ex.Message, ex)
         End Try
 
+    End Sub
+
+    Private Sub SetSpatialTempData(ByVal iTimeStepCounter As Integer)
+        Try
+
+            ' Apply Ecospace datasources
+            ' * This will need to become much more sophisticated
+            If (Me.m_SpatialData IsNot Nothing) Then
+                For Each src As cSpatialDataAdapter In Me.m_SpatialData.DataAdapters
+                    If (src IsNot Nothing) Then
+                        Try
+                            src.Populate(iTimeStepCounter)
+                        Catch ex As Exception
+                            cLog.Write(ex, "cEcospace.SetSpatialTempData " & src.Name & "(" & src.Index & ")")
+                        End Try
+                    End If
+                Next
+            End If
+
+        Catch ex As Exception
+            '  Debug.Assert(False, ex.StackTrace)
+            cLog.Write(ex, "cEcospace.SetSpatialTempData()")
+            Me.Messages.AddMessage(New cMessage("Ecospace Failed to read external data.", eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Critical))
+        End Try
     End Sub
 
     Private Sub EcoseedBeginTimeStep(ByVal imonth As Integer, ByRef iYear As Integer, ByRef BiomassCellAvg() As Single)
@@ -4237,21 +4251,7 @@ exitline:
                                 'CNomig(i, j, ip) = C(i, j, ip)
                                 'BcwNomig(i + 1, j, ip) = Bcw(i + 1, j, ip)
                             Next
-                            'If npairs > 0 Then
-                            '    For ip = 1 To npairs : iad = iadult(ip) : iju = ijuv(ip)
-                            '        Bcw(i + 1, j, nvar + ip) = Bcw(i + 1, j, iad)
-                            '        C(i, j, nvar + ip) = C(i, j, iad)
-                            '        Bcw(i + 1, j, nvar + npairs + ip) = Bcw(i + 1, j, iju)
-                            '        C(i, j, nvar + npairs + ip) = C(i, j, iju)
-                            '        BcwNomig(i + 1, j, nvar + ip) = Bcw(i + 1, j, iad)
-                            '        CNomig(i, j, nvar + ip) = C(i, j, iad)
-                            '        BcwNomig(i + 1, j, nvar + npairs + ip) = Bcw(i + 1, j, iju)
-                            '        CNomig(i, j, nvar + npairs + ip) = C(i, j, iju)
-                            '    Next
-                            'End If
 
-                            'EwE5
-                            ' nvar2 = nvar + 2 * npairs
                             nvar2 = m_Data.NGroups
                             ir = 0
                             For isp = 1 To m_Stanza.Nsplit
@@ -4368,23 +4368,11 @@ exitline:
                                 d(i, j, ip) = 0
                             End If
 
-                            'jb split pool code removed
-                            'If IsIad > 0 Then
-                            '    e(i, j + 1, nvar + IsIad) = e(i, j + 1, ip)
-                            '    d(i, j, nvar + IsIad) = d(i, j, ip)
-                            'End If
-                            'If IsIju > 0 Then
-                            '    e(i, j + 1, nvar + npairs + IsIju) = e(i, j + 1, ip)
-                            '    d(i, j, nvar + npairs + IsIju) = d(i, j, ip)
-                            'End If
-
                             nvar2 = m_Data.NGroups
                             If ieco > 0 Then
                                 ir = IecoCode(ip)
                                 e(i, j + 1, nvar2 + ir) = e(i, j + 1, ip)
                                 d(i, j, nvar2 + ir) = d(i, j, ip)
-                                'Enomig(i, j + 1, nvar2 + ir) = E(i, j + 1, ieco)
-                                'dNomig(i, j, nvar2 + ir) = d(i, j, ieco)
                             End If
                         End If ' If m_Data.Depth(i, j + 1) > 0 Then check depth on right face of this cell
 
