@@ -507,7 +507,7 @@ Public Class cEcospaceDataStructures
 
     Public Width() As Single
 
-    Public SaveAnnual As Boolean = False
+    Public SaveAnnual As Boolean = True
 
     ''' <summary>
     ''' Use the Ecospace Output directory defined by the core. If True this path will include Model-name/Ecopath_6. Scenario-name/
