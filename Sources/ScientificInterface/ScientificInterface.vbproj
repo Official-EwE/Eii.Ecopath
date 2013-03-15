@@ -1880,14 +1880,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EcoBio\EcoBio.vbproj">
-      <Project>{8AD5CD91-87C8-4886-B9F0-17FAD64D6277}</Project>
-      <Name>EcoBio</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\NereusModel\trunk\Plugins\NereusFleetEffortDist\NereusFleetEffortDist.vbproj">
-      <Project>{B570B168-0076-48D9-88BD-69A77552BA33}</Project>
-      <Name>NereusFleetEffortDist</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
