@@ -18,10 +18,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System
+Imports System.IO
 Imports System.Collections.Generic
 Imports System.Diagnostics
-Imports System.IO
+Imports System
 
 #End Region ' 
 
@@ -42,12 +42,12 @@ Namespace Interop
 
 #Region " Internals "
 
+         ''' <summary>Output produced by R</summary>
+        Private m_ROutput As New List(Of String)
         ''' <summary>Errors produced by R</summary>
         Private m_RErrors As New List(Of String)
-        ''' <summary>Output produced by R</summary>
-        Private m_ROutput As New List(Of String)
         ''' <summary>Full path to R</summary>
-        Private m_RPath As String = ""
+        Private m_strPathToR As String = ""
 
 #End Region ' Internals
 
@@ -63,7 +63,7 @@ Namespace Interop
             Debug.Assert(File.Exists(strPathToR), "Cannot find R at '" & strPathToR & "'")
 
             ' Store path
-            Me.m_RPath = strPathToR
+            Me.m_strPathToR = strPathToR
 
         End Sub
 
@@ -71,31 +71,29 @@ Namespace Interop
         ''' <summary>
         ''' Execute an R script.
         ''' </summary>
-        ''' <param name="ScriptFile">The R script file to execute.</param>
+        ''' <param name="strScriptFile">The R script file to execute.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Execute(ScriptFile As String) As Boolean
+        Public Function Execute(strScriptFile As String) As Boolean
 
             Dim RScriptReader As StreamReader = Nothing
 
             Try
                 ' Try to open the file
-                RScriptReader = New StreamReader(ScriptFile)
+                RScriptReader = New StreamReader(strScriptFile)
             Catch ex As Exception
                 ' Kaboom
                 Return False
             End Try
 
             Dim RScriptLines As New List(Of String)
-            Dim Line As String = RScriptReader.ReadLine()
-
-            While Line IsNot Nothing
-                RScriptLines.Add(Line)
-                Line = RScriptReader.ReadLine()
+            While (RScriptReader.Peek > 0)
+                RScriptLines.Add(RScriptReader.ReadLine())
             End While
 
             ' Do not forget to clean up
             RScriptReader.Close()
+            ' Done
             Return Me.Execute(RScriptLines.ToArray)
 
         End Function
@@ -131,7 +129,7 @@ Namespace Interop
             RProcess.StartInfo.RedirectStandardError = True
 
             ' The process needs to know where find its R program
-            RProcess.StartInfo.FileName = Me.m_RPath
+            RProcess.StartInfo.FileName = Me.m_strPathToR
             ' R needs some options too, which are described in https://projects.uabgrid.uab.edu/r-group/wiki/CommandLineProcessing
             RProcess.StartInfo.Arguments = "--slave"
 
