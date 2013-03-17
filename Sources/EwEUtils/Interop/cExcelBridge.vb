@@ -15,6 +15,12 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-Public Class cExcelHelper
+Namespace Interop
 
-End Class
+    Public Class cExcelBridge
+
+        ' No implementation yet. Concept to be borrowed from the CEFAS result extractor plug-in.
+
+    End Class
+
+End Namespace

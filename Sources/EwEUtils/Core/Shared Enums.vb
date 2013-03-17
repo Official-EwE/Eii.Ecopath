@@ -561,6 +561,7 @@ Namespace Core
         EcospaceMapBiomass
         EcospaceMapCatch
         EcospaceMapSumEffort
+        EcospaceMapEffort
 
         'Ecospace Group output
         EcospaceGroupBiomassStart
