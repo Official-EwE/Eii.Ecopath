@@ -214,7 +214,7 @@
     <value>m_hdrIn</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8778.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8985.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrIn.Parent" xml:space="preserve">
     <value>m_csMain.Panel1</value>
@@ -535,7 +535,7 @@
     <value>m_hrdOut</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8778.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8985.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hrdOut.Parent" xml:space="preserve">
     <value>m_csMain.Panel2</value>
@@ -790,13 +790,13 @@
     <value>NoControl</value>
   </data>
   <data name="m_pbLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-8, 383</value>
+    <value>0, 383</value>
   </data>
   <data name="m_pbLogo.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_pbLogo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>613, 67</value>
+    <value>605, 67</value>
   </data>
   <data name="m_pbLogo.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -829,6 +829,6 @@
     <value>frmMain</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8778.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.8985.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

@@ -432,6 +432,13 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Generate a ESRI world file name to accompany a given file name.
+        ''' </summary>
+        ''' <param name="strFileName"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
         Public Shared Function ToWorldFileName(strFileName As String) As String
 
             Dim strExt As String = Path.GetExtension(strFileName)
@@ -443,6 +450,44 @@ Namespace Utilities
             End If
 
             Return Path.ChangeExtension(strFileName, strExt)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a DOS path to a UNIX path.
+        ''' </summary>
+        ''' <param name="strUnixPath"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function UnixToDos(strUnixPath As String) As String
+
+            If String.IsNullOrWhiteSpace(strUnixPath) Then Return String.Empty
+            Dim chunks As String() = strUnixPath.Split(New Char() {"/"c}, StringSplitOptions.RemoveEmptyEntries)
+            If (chunks.Length > 0) Then
+                If chunks(0).Length = 1 Then 'Single character root, assume drive letter.
+                    Return String.Join("\", chunks).Insert(1, ":")
+                Else
+                    Return "\\" & String.Join("\", chunks)
+                End If
+            Else
+                Return IO.Path.DirectorySeparatorChar
+            End If
+
+        End Function
+
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Convert a DOS path to a UNIX path.
+        ''' </summary>
+        ''' <param name="strDosPath"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function DosToUnix(strDosPath As String) As String
+
+            If String.IsNullOrWhiteSpace(strDosPath) Then Return String.Empty
+            Return strDosPath.Replace("\\", "/").Replace("\", "/")
 
         End Function
 

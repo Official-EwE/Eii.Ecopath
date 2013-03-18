@@ -48,6 +48,8 @@ Namespace Interop
         Private m_RErrors As New List(Of String)
         ''' <summary>Full path to R</summary>
         Private m_strPathToR As String = ""
+        ''' <summary>Disctionary of fields to replace in the script</summary>
+        Private m_dtFields As New Dictionary(Of String, String)
 
 #End Region ' Internals
 
@@ -78,14 +80,23 @@ Namespace Interop
 
             Dim RScriptReader As StreamReader = Nothing
 
+            ' Clean up results from previous R runs
+            Me.m_RErrors.Clear()
+            Me.m_ROutput.Clear()
+
             Try
                 ' Try to open the file
                 RScriptReader = New StreamReader(strScriptFile)
             Catch ex As Exception
                 ' Kaboom
+                Me.m_RErrors.Add(ex.Message)
+                If (ex.InnerException IsNot Nothing) Then
+                    Me.m_RErrors.Add(ex.InnerException.Message)
+                End If
                 Return False
             End Try
 
+            ' Read script lines
             Dim RScriptLines As New List(Of String)
             While (RScriptReader.Peek > 0)
                 RScriptLines.Add(RScriptReader.ReadLine())
@@ -93,7 +104,8 @@ Namespace Interop
 
             ' Do not forget to clean up
             RScriptReader.Close()
-            ' Done
+
+            ' Execute R on script lines
             Return Me.Execute(RScriptLines.ToArray)
 
         End Function
@@ -107,10 +119,8 @@ Namespace Interop
         ''' -------------------------------------------------------------------
         Public Function Execute(RScriptLines As String()) As Boolean
 
-            Dim RProcess As New Process()
-            Dim RInputWriter As StreamWriter
-            Dim Line As String
-            Dim Success As Boolean
+            Dim Rwrapper As New Process()
+            Dim bSuccess As Boolean
 
             ' Clean up results from previous R runs
             Me.m_RErrors.Clear()
@@ -120,27 +130,33 @@ Namespace Interop
             ' Configure how RProcess will run
             ' ----------
 
-            ' We want to execute the process as close to this application as possible
-            RProcess.StartInfo.UseShellExecute = False
+            ' Execute R in the current memory space
+            Rwrapper.StartInfo.UseShellExecute = False
 
-            ' We want to connect to the process input, output and error streams
-            RProcess.StartInfo.RedirectStandardInput = True
-            RProcess.StartInfo.RedirectStandardOutput = True
-            RProcess.StartInfo.RedirectStandardError = True
+            ' Connect to the R input, output and error streams
+            Rwrapper.StartInfo.RedirectStandardInput = True
+            Rwrapper.StartInfo.RedirectStandardOutput = True
+            Rwrapper.StartInfo.RedirectStandardError = True
 
-            ' The process needs to know where find its R program
-            RProcess.StartInfo.FileName = Me.m_strPathToR
-            ' R needs some options too, which are described in https://projects.uabgrid.uab.edu/r-group/wiki/CommandLineProcessing
-            RProcess.StartInfo.Arguments = "--slave"
+            ' Point out the R executable
+            Rwrapper.StartInfo.FileName = Me.m_strPathToR
+            ' Set R command line options (see https://projects.uabgrid.uab.edu/r-group/wiki/CommandLineProcessing)
+            Rwrapper.StartInfo.Arguments = "--slave"
 
-            ' We want to hide the R interface
-            RProcess.StartInfo.CreateNoWindow = True
+            ' Suppress R user interface
+            Rwrapper.StartInfo.CreateNoWindow = True
 
+            ' The process is ready to run
             Try
-                ' Ok, the process is ready to run. Let's try this
-                RProcess.Start()
+                ' Launch R
+                Rwrapper.Start()
             Catch ex As Exception
-                ' Oh shoot. Abandon ship, women and debuggers first.
+                ' Shoot! Something went wrong. Pass error information out
+                Me.m_RErrors.Add(ex.Message)
+                If (ex.InnerException IsNot Nothing) Then
+                    Me.m_RErrors.Add(ex.InnerException.Message)
+                End If
+                ' Abandon ship, women and debuggers first.
                 Return False
             End Try
 
@@ -148,39 +164,64 @@ Namespace Interop
             ' The R program has been successfully launched. Now, start feeding it with lines of script
             ' ----------
 
-            ' First, create a connection to the input stream, through which we'll feed the lines of script
-            RInputWriter = RProcess.StandardInput
-            ' For all lines of text:
+            ' Connect to the R input stream
             For i As Integer = 0 To RScriptLines.Length - 1
-                ' Pass the line to R
-                RInputWriter.WriteLine(RScriptLines(i))
+                ' Write each individual script line to R
+                Dim strLine As String = RScriptLines(i)
+                For Each strKey As String In Me.m_dtFields.Keys
+                    strLine = strLine.Replace(strKey, Me.m_dtFields(strKey))
+                Next
+                Rwrapper.StandardInput.WriteLine()
             Next
-            ' Done writing, close the input stream
-            RInputWriter.Close()
 
-            ' Wait for R to finish. Wait for a certain number of milliseconds (here hardcoded to 5 minutes)
-            Success = RProcess.WaitForExit(5 * 60 * 1000)
-
-            ' Read whatever error text is available
-            Line = RProcess.StandardError.ReadLine
-            While (Line IsNot Nothing)
-                Me.m_RErrors.Add(Line)
-                Line = RProcess.StandardError.ReadLine
-            End While
+            ' Wait for R to finish. Wait for a certain number of milliseconds (here hard-coded to max. 5 minutes)
+            bSuccess = Rwrapper.WaitForExit(5 * 60 * 1000)
 
             ' Read whatever output text is available
-            Line = RProcess.StandardOutput.ReadLine
-            While (Line IsNot Nothing)
-                Me.m_ROutput.Add(Line)
-                Line = RProcess.StandardOutput.ReadLine
+            While (Rwrapper.StandardOutput.Peek > 0)
+                Me.m_ROutput.Add(Rwrapper.StandardOutput.ReadLine)
+            End While
+
+            ' Read whatever error text is available
+            While (Rwrapper.StandardError.Peek > 0)
+                Me.m_RErrors.Add(Rwrapper.StandardError.ReadLine)
             End While
 
             ' Clean up
-            RProcess.Dispose()
+            Rwrapper.Close()
+            Rwrapper.Dispose()
 
-            Return Success
+            Return bSuccess
 
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set a field to replace in the script
+        ''' </summary>
+        ''' <param name="strFieldName"></param>
+        ''' -------------------------------------------------------------------
+        Public Property Field(strFieldName As String) As String
+            Get
+                If (Me.m_dtFields.ContainsKey(strFieldName)) Then
+                    Return Me.m_dtFields(strFieldName)
+                End If
+                Return String.Empty
+            End Get
+            Set(value As String)
+
+                If (String.IsNullOrWhiteSpace(strFieldName)) Then Return
+
+                If String.IsNullOrWhiteSpace(value) Then
+                    If (Me.m_dtFields.ContainsKey(strFieldName)) Then
+                        Me.m_dtFields.Remove(strFieldName)
+                    End If
+                Else
+                    Me.m_dtFields(strFieldName) = value
+                End If
+
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
