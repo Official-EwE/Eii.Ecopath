@@ -12334,14 +12334,11 @@ Public Class cCore
 
                 ' Update core run state:
                 ' Block selected variables from affecting the core run state
-                bBlock = (value.AffectsRunState = False)
+                bBlock = (value.AffectsRunState = False) Or (Me.m_StateMonitor.IsBusy)
 
                 If (Not bBlock) Then
-                    ' Update state monitor execution state
-
                     If Me.m_batchLockType = eBatchLockType.NotSet Then updateState = TriState.UseDefault Else updateState = TriState.False
                     Me.m_StateMonitor.UpdateExecutionState(msAffected, updateState)
-                    '  DirectCast(IIF(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
                 End If
 
             End If
@@ -12354,7 +12351,6 @@ Public Class cCore
         If Me.m_batchLockType = eBatchLockType.NotSet Then updateState = TriState.UseDefault Else updateState = TriState.False
         ' Send only notifications when NO lock active
         Me.m_StateMonitor.UpdateDataState(DataSource, updateState)
-        '   DirectCast(IIf(Me.m_batchLockType = eBatchLockType.NotSet, TriState.UseDefault, TriState.False), TriState))
 
         ' Send all messages
         Me.m_publisher.AddMessage(msg)
