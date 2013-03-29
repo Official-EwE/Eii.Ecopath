@@ -120,8 +120,8 @@ Public Class cResultWriter
         Me.NetworkManager.UseEcosimNetwork = False
 
         If (bSucces) Then
-            bSucces = Me.WriteData(Me.GetResultFileName(strPath, True, True), Me.GetIndicesWithoutPPRData(True)) Or _
-                      Me.WriteData(Me.GetResultFileName(strPath, True, False), Me.GetIndicesWithoutPPRData(False))
+            bSucces = Me.WriteData(Me.GetResultFileName(strPath, True, True), Me.GetIndicesWithPPRData(True)) Or _
+                      Me.WriteData(Me.GetResultFileName(strPath, True, False), Me.GetIndicesWithPPRData(False))
         End If
         Return bSucces
 
