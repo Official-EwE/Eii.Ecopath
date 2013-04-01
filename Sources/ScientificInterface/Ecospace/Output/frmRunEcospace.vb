@@ -450,9 +450,9 @@ Namespace Ecospace
             If (Me.m_dataTimeStep Is Nothing) Then Return
 
             Dim parms As cEcospaceModelParameters = Me.Core.EcospaceModelParameters
-            Dim sTSpy As Single = parms.NumberOfTimeStepsPerYear
-            Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
-            Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
+            Dim dtTime As Date = Me.Core.EcospaceTimestepToAbsoluteTime(Me.m_iTimeStepCur)
+            Dim iYear As Integer = dtTime.Year
+            Dim iMonth As Integer = dtTime.Month
             Dim drawer As cMapDrawerBase = Nothing
             Dim iNumVisGroups As Integer = 0
             Dim lVisItems As New List(Of cCoreGroupBase)
