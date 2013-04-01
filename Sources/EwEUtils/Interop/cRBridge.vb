@@ -180,6 +180,8 @@ Namespace Interop
             ' Read whatever output text is available
             While (Rwrapper.StandardOutput.Peek > 0)
                 Me.m_ROutput.Add(Rwrapper.StandardOutput.ReadLine)
+                ' Script contained errors
+                bSuccess = False
             End While
 
             ' Read whatever error text is available
