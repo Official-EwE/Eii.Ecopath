@@ -87,6 +87,8 @@ Public Class cEcospaceMPA
     ''' <summary>
     ''' Get/set if an MPA is OPEN for fishing for a given month.
     ''' </summary>
+    ''' <param name="iMonth">The one-based month index to access the 
+    ''' MPA open state for.</param>
     Public Property MPAMonth(ByVal iMonth As Integer) As Boolean
         Get
             Return CBool(GetVariable(eVarNameFlags.MPAMonth, iMonth))

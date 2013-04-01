@@ -332,7 +332,7 @@ Public Class cEcospaceDataStructures
     ''' <summary>Number of MPAs</summary>
     Public MPAno As Integer
     Public MPAname() As String
-    ''' <summary>MPA closed state (Month, nMPA), true when open for fishing.</summary>
+    ''' <summary>MPA open/closed state (Month, nMPA), true when open for fishing.</summary>
     Public MPAmonth(,) As Boolean
     Public MPAfishery(,) As Boolean
 
