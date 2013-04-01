@@ -2418,6 +2418,19 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------------
     ''' <summary>
+    ''' Check whether the EwE data needs saving.
+    ''' </summary>
+    ''' <returns>True if the EwE data needs saving.</returns>
+    ''' -------------------------------------------------------------------------
+    Public Function HasChanges() As Boolean
+
+        If (Me.DataSource Is Nothing) Then Return False
+        Return Me.DataSource.IsModified
+
+    End Function
+
+    ''' -------------------------------------------------------------------------
+    ''' <summary>
     ''' Get the default output location for a given <see cref="eAutosaveTypes">autosaving component</see>.
     ''' </summary>
     ''' <param name="type">The <see cref="eAutosaveTypes">autosaving component</see> to get return
