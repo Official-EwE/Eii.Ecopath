@@ -442,8 +442,10 @@ Public Class cPluginManager
     ''' plug-ins that should NOT be enabled. These assemblies will still have to 
     ''' be known by the manager in case the user wants to enable the assemblies 
     ''' in the future.</param>
+    ''' <param name="strPluginPath"></param>
     ''' -----------------------------------------------------------------------
-    Public Sub LoadPlugins(Optional ByVal alDisabledPlugins As ArrayList = Nothing)
+    Public Sub LoadPlugins(Optional ByVal alDisabledPlugins As ArrayList = Nothing, _
+                           Optional ByVal strPluginPath As String = "")
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
@@ -452,9 +454,13 @@ Public Class cPluginManager
         ' Sanity checks - load only once
         If (Me.m_bLoaded) Then Return
 
-        'Get the location of the plugin manager assembly
-        Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
-        Dim strPluginPath As String = Path.GetDirectoryName(pluginAssembly.Location)
+        If (String.IsNullOrWhiteSpace(strPluginPath)) Then
+            'Get the location of the plugin manager assembly as the default plug-in path
+            Dim pluginAssembly As Assembly = System.Reflection.Assembly.GetAssembly(GetType(cPluginManager))
+            strPluginPath = Path.GetDirectoryName(pluginAssembly.Location)
+        End If
+
+        If Not Directory.Exists(strPluginPath) Then Return
 
         Try
 
