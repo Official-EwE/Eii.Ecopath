@@ -1111,6 +1111,7 @@ Public Class AppLauncher
 
         Try
             Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins)
+            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins, ".\Plugins")
         Catch ex As Exception
             ' Ouch!
         End Try
