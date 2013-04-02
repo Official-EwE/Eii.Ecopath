@@ -215,6 +215,11 @@ Public Class cEcospaceModelParameters
             val.AffectsRunState = False
             m_values.Add(val.varName, val)
 
+            ' 'bGridUseLocalOnly
+            meta = New cVariableMetaData()
+            val = New cValue(1, eVarNameFlags.EcospaceUseLocalMemory, eStatusFlags.Null, eValueTypes.Bool, _
+                                meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
 
 
             'set status flags to default values
@@ -699,6 +704,18 @@ Public Class cEcospaceModelParameters
 
         Set(ByVal value As Single)
             SetVariable(eVarNameFlags.EffortDistThreshold, value)
+        End Set
+
+    End Property
+
+    Public Property UseLocalMemory() As Boolean
+
+        Get
+            Return CBool(GetVariable(eVarNameFlags.EcospaceUseLocalMemory))
+        End Get
+
+        Set(ByVal value As Boolean)
+            SetVariable(eVarNameFlags.EcospaceUseLocalMemory, value)
         End Set
 
     End Property

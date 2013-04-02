@@ -8297,6 +8297,9 @@ Public Class cCore
 
     Friend m_mapInteractionManager As cMapResponseInteractionManager
 
+    Private m_stpwSpaceTimer As Stopwatch
+    Private m_spaceSaveTime As Double
+
 #End Region ' Variables
 
     Public ReadOnly Property SpatialDataConnectionManager As SpatialData.cSpatialDataConnectionManager
@@ -8543,6 +8546,9 @@ Public Class cCore
                         'make sure Ecospace is not paused
                         Me.m_Ecospace.isPaused = False
 
+                        Me.m_stpwSpaceTimer = Stopwatch.StartNew
+                        Me.m_spaceSaveTime = 0
+
                         If RunOnThread Then
                             'Run Ecospace
                             breturn = Me.m_Ecospace.RunThreaded()
@@ -8578,7 +8584,14 @@ Public Class cCore
     Private Sub onEcoSpaceRunCompleted(ByVal Succeeded As Boolean)
 
         Try
+            Try
+                Me.m_stpwSpaceTimer.Stop()
+                Dim totRT As Double = Me.m_stpwSpaceTimer.Elapsed.TotalSeconds
+                System.Console.WriteLine("Ecospace Runtime(sec) = " + totRT.ToString + ", Save time = " + Me.m_spaceSaveTime.ToString + ", % " + (Me.m_spaceSaveTime / totRT * 100).ToString)
+            Catch ex As Exception
 
+            End Try
+           
             If Succeeded Then
                 LoadEcospaceResults()
                 loadEcoTracerResults()
@@ -8767,6 +8780,8 @@ Public Class cCore
 
 
     Private Sub SaveEcospaceResults(ByVal SpaceResults As cEcospaceTimestep)
+
+        Dim st As Double = Me.m_stpwSpaceTimer.Elapsed.TotalSeconds
         Try
             For Each writer As IEcospaceResultsWriter In Me.m_EcospaceResultsWriters
                 Try
@@ -8776,6 +8791,8 @@ Public Class cCore
                     cLog.Write(ex, eVerboseLevel.Detailed, "cCore::SaveEcospaceResults #" & SpaceResults.iTimeStep)
                 End Try
             Next
+            Me.m_spaceSaveTime += Me.m_stpwSpaceTimer.Elapsed.TotalSeconds - st
+
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -9657,6 +9674,8 @@ Public Class cCore
             m_EcospaceModelParams.UseEffortDistThreshold = Me.m_EcoSpaceData.bUseEffortDistThreshold
             m_EcospaceModelParams.EffortDistThreshold = Me.m_EcoSpaceData.EffortDistThreshold
 
+            m_EcospaceModelParams.UseLocalMemory = Me.m_EcoSpaceData.bUseLocalMemory
+
 
 
             m_EcospaceModelParams.ResetStatusFlags()
@@ -9714,6 +9733,8 @@ Public Class cCore
 
         Me.m_EcoSpaceData.bUseEffortDistThreshold = m_EcospaceModelParams.UseEffortDistThreshold
         Me.m_EcoSpaceData.EffortDistThreshold = m_EcospaceModelParams.EffortDistThreshold
+
+        Me.m_EcoSpaceData.bUseLocalMemory = m_EcospaceModelParams.UseLocalMemory
 
         Return True
 

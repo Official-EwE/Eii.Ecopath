@@ -25,6 +25,8 @@ Imports EwEUtils.Core
 
 Public Class cSpaceSolver
 
+#Region "Variables"
+
     ''' <summary>
     ''' Wait handle 
     ''' </summary>
@@ -91,6 +93,8 @@ Public Class cSpaceSolver
     Public TimeStep2 As Single
     Public MinChange As Single
 
+    Public syncCopyLock As Object
+
     'locals
     'Private ebb() As Single
     Private BB() As Single
@@ -141,9 +145,21 @@ Public Class cSpaceSolver
     ''' <remarks></remarks>
     Public Landings(,) As Single
 
-    'the ip groups to solve
+    ''' <summary>
+    ''' First map cell in a linear list of cells to compute.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public iFrstCell As Integer
+
+    ''' <summary>
+    ''' Last map cell in a linear list of cells to compute.
+    ''' </summary>
+    ''' <remarks></remarks>
     Public iLstCell As Integer
+
+    Public CatchCPUTime As Double
+
+    Public bUseLocalMemory As Boolean
 
     'variables from m_ESData, used locally
     Private Hden() As Single
@@ -160,7 +176,7 @@ Public Class cSpaceSolver
     ''' This is so EcoSpace can share the same functions as Ecosim but never have to worry about the different time step indexes.
     ''' Ecospace populates the zero time index with the effort multiplier for the current timestep at the start of each timestep.
     '''  </remarks>
-    Private FishRateGear(,) As Single
+    Private EffortSpace(,) As Single
     Private pred() As Single
     Private Eatenof() As Single
     Private Eatenby() As Single
@@ -180,68 +196,259 @@ Public Class cSpaceSolver
     Private GroupDetritus() As Single
 
     Private m_stpWatch As Stopwatch
+    Private m_stpInit As Stopwatch
 
     Private BBRatio() As Single
 
+    Private inLinks As Integer
+    Private ilink() As Integer
+    Private jlink() As Integer
+    Private ArenaLink() As Integer
+
+    Private Bio(,) As Single
+    Private AMlin(,) As Single
+    Private Flin(,) As Single
+
+    Private SimGE() As Single
+    Private FtimeMax() As Single
+    Private Cbase() As Single
+    Private RelVulBad() As Single
+
+    Private A(,) As Single
+    Private SwitchPower() As Single
+    Private BaseTimeSwitch() As Single
+
+
+#End Region
+
+#Region "Construction Initialization"
+
     Public Sub Init()
+
         'local spatial variables
-        ReDim loss(m_Data.NGroups)
-        ReDim pbb(m_Data.NGroups)
-        ReDim EatEff(m_Data.nvartot)
-        ReDim VulPred(m_Data.nvartot)
-        ReDim Flowin(m_Data.nvartot)
-        ReDim FlowoutRate(m_Data.nvartot)
-        'ReDim ebb(m_Data.nvartot)
-        ReDim BB(m_Data.nvartot)
-
-        'local versions of ecosim variables
-        ReDim Hden(m_Data.NGroups)
-        ReDim Ftime(m_Data.NGroups)
-        ReDim Fish1(m_Data.NGroups)
-        ReDim FishTime(m_Data.NGroups)
-        ReDim pred(m_Data.NGroups)
-        ReDim Eatenof(m_Data.NGroups)
-        ReDim Eatenby(m_Data.NGroups)
-        ReDim MedVal(m_SimData.BioMedData.MediationShapes)
-
-        'FishRateGear(nFleets,nTime) used to pass Effort in the current cell at the current timestep to both SimDeritusMT and SetMedFunctions()
-        'Effort from the current cell time step is stored in the zero index i.e. FishRateGear(fleet,0) = EffortSpace(fleet,row,col)
-        'this allows cSpaceSolver.FishRateGear(fleet,time) to remain compatible with cEcosimDataStructures.FishRateGear(fleet,time)
-        'and both Sim and Space can use the same methods... 
-        ReDim FishRateGear(m_Data.nFleets, 0)
-
-        'thread copy of global sums
-        ReDim BtimeLocal(m_Data.NGroups)
-        ReDim TotLossThread(m_Data.NGroups)
-        ReDim TotEatenByThread(m_Data.NGroups)
-        ReDim TotBiomThread(m_Data.NGroups)
-        ReDim TotPredThread(m_Data.NGroups)
-        ReDim TotIFDweightThread(m_Data.NGroups)
-        ReDim GroupDetritus(m_Data.NGroups)
-
-        ReDim BBRatio(m_Data.NGroups)
-
-        ReDim ResultsByGroup(cEcospaceDataStructures.N_RESULTS_GROUPS, m_Data.NGroups)
-        ReDim ResultsByFleet(cEcospaceDataStructures.N_RESULTS_FLEETS, m_Data.nFleets)
-        ReDim ResultsByFleetGroup(cEcospaceDataStructures.N_RESULTS_FLEETGROUPS, m_Data.nFleets, m_Data.NGroups)
-        ReDim Landings(m_Data.NGroups, m_Data.nFleets)
-        ReDim ResultsCatchRegionGearGroup(m_Data.nRegions, m_Data.nFleets, m_Data.NGroups)
-
-        'local copies are initialized from the ecosim data
-        Array.Copy(m_SimData.Hden, Hden, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.Ftime, Ftime, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.Fish1, Fish1, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.FishTime, FishTime, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.pred, pred, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.Eatenof, Eatenof, m_Data.NGroups + 1)
-        Array.Copy(m_SimData.Eatenby, Eatenby, m_Data.NGroups + 1)
+        Me.AllocateLocalData()
+        Me.initLocalDataForRun()
 
         m_ConTracer.Init(m_TracerData, m_PathData, m_SimData, m_Stanza)
         m_ConTracer.CInitialize()
 
         Me.m_stpWatch = New Stopwatch
+        Me.m_stpInit = New Stopwatch
+    End Sub
+
+    ''' <summary>
+    ''' Update the core data arrays from the local arrays populated during the time step.
+    ''' </summary>
+    ''' <remarks>Only updates the data if <see cref="bUseLocalMemory"> bUseLocalMemory = True</see> </remarks>
+    Private Sub UpdateCoreData()
+
+        If Me.bUseLocalMemory Then
+            'Only copy data from local to core if we are using local data
+            m_stpInit.Restart()
+
+            Try
+                Me.copyLocalToCore(Bio, Me.m_Data.Bcell)
+                Me.copyLocalToCore(AMlin, AMm)
+                Me.copyLocalToCore(Flin, F)
+            Catch ex As Exception
+                System.Console.WriteLine(Me.ToString + ".UpdateCoreData() Exception: " + ex.Message)
+                cLog.Write(ex)
+            End Try
+
+            m_stpInit.Stop()
+            Console.WriteLine("Solver ID = " + Me.ThreadID.ToString + " copy CPU time (sec), " + Me.m_stpInit.Elapsed.TotalSeconds.ToString)
+
+        End If 'If Me.bUseLocalMemory Then
 
     End Sub
+
+
+    Private Sub initLocalDataForRun()
+
+        Dim ngrps As Integer = Me.m_Data.NGroups
+
+        If Me.bUseLocalMemory Then
+            Me.copyCoreToLocal(Me.m_Data.Bcell, Bio)
+            Me.copyCoreToLocal(Me.AMm, AMlin)
+            Me.copyCoreToLocal(Me.F, Flin)
+        End If
+
+        'FtimeCell(i, j, iGrp)
+        'm_Data.Blast(i, j, iGrp)
+        'HdenCell(i, j, iGrp) = Hden(iGrp)
+
+        SyncLock syncCopyLock
+
+            'For igrp As Integer = 0 To ngrps
+            '    SimGE(igrp) = m_SimData.SimGE(igrp)
+            '    FtimeMax(igrp) = m_SimData.FtimeMax(igrp)
+            '    Cbase(igrp) = m_SimData.Cbase(igrp)
+
+            '    Fish1(igrp) = m_SimData.Fish1(igrp)
+            '    Hden(igrp) = m_SimData.Hden(igrp)
+            '    Ftime(igrp) = m_SimData.Ftime(igrp)
+            '    FishTime(igrp) = m_SimData.FishTime(igrp)
+            '    'Array.Copy(m_SimData.Ftime, Ftime, ngrps + 1)
+            '    'Array.Copy(m_SimData.Fish1, Fish1, ngrps + 1)
+            '    'Array.Copy(m_SimData.FishTime, FishTime, ngrps + 1)
+
+            '    pred(igrp) = m_SimData.pred(igrp)
+            '    Eatenof(igrp) = m_SimData.Eatenof(igrp)
+            '    Eatenby(igrp) = m_SimData.Eatenby(igrp)
+
+            '    RelVulBad(igrp) = m_Data.RelVulBad(igrp)
+            'Next
+
+            'For ilnk As Integer = 1 To Me.inLinks
+            '    ilink(ilnk) = m_SimData.ilink(ilnk)
+            '    jlink(ilnk) = m_SimData.jlink(ilnk)
+            '    ArenaLink(ilnk) = m_SimData.ArenaLink(ilnk)
+            'Next
+
+            Array.Copy(m_SimData.SimGE, SimGE, ngrps + 1)
+            Array.Copy(m_SimData.FtimeMax, FtimeMax, ngrps + 1)
+            Array.Copy(m_SimData.Cbase, Cbase, ngrps + 1)
+
+            Array.Copy(m_Data.RelVulBad, RelVulBad, ngrps + 1)
+
+            Array.Copy(m_SimData.Fish1, Fish1, ngrps + 1)
+
+            Array.Copy(m_SimData.ilink, ilink, Me.inLinks + 1)
+            Array.Copy(m_SimData.jlink, jlink, Me.inLinks + 1)
+            Array.Copy(m_SimData.ArenaLink, ArenaLink, Me.inLinks + 1)
+
+            Array.Copy(m_SimData.Hden, Hden, ngrps + 1)
+            Array.Copy(m_SimData.Ftime, Ftime, ngrps + 1)
+            Array.Copy(m_SimData.Fish1, Fish1, ngrps + 1)
+            Array.Copy(m_SimData.FishTime, FishTime, ngrps + 1)
+            Array.Copy(m_SimData.pred, pred, ngrps + 1)
+            Array.Copy(m_SimData.Eatenof, Eatenof, ngrps + 1)
+            Array.Copy(m_SimData.Eatenby, Eatenby, ngrps + 1)
+
+            Array.Copy(Me.m_Ecosim.A, A, Me.m_Ecosim.A.Length)
+            Array.Copy(Me.m_SimData.SwitchPower, SwitchPower, ngrps + 1)
+            Array.Copy(Me.m_SimData.BaseTimeSwitch, BaseTimeSwitch, Me.inLinks + 1)
+
+        End SyncLock
+
+    End Sub
+
+    Private Sub AllocateLocalData()
+
+        Dim nGroups As Integer = Me.m_Data.NGroups
+        Dim nvartot As Integer = Me.m_Data.nvartot
+        Dim nFleets As Integer = Me.m_Data.nFleets
+
+        If m_TracerData.EcoSpaceConSimOn Then
+            ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
+        End If
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'local spatial variables
+
+        EatEff = New Single(nvartot) {}
+        VulPred = New Single(nvartot) {}
+        Flowin = New Single(nvartot) {}
+        FlowoutRate = New Single(nvartot) {}
+        BB = New Single(nvartot) {}
+
+        loss = New Single(nGroups) {}
+        pbb = New Single(nGroups) {}
+
+        'local versions of ecosim variables
+        Hden = New Single(nGroups) {}
+        Ftime = New Single(nGroups) {}
+        FishTime = New Single(nGroups) {}
+        pred = New Single(nGroups) {}
+        Eatenof = New Single(nGroups) {}
+        Eatenby = New Single(nGroups) {}
+        MedVal = New Single(nGroups) {}
+
+
+        SimGE = New Single(nGroups) {}
+        FtimeMax = New Single(nGroups) {}
+        Cbase = New Single(nGroups) {}
+        RelVulBad = New Single(nGroups) {}
+        Fish1 = New Single(nGroups) {}
+
+        'FishRateGear(nFleets,nTime) used to pass Effort in the current cell at the current timestep to both SimDeritusMT and SetMedFunctions()
+        'Effort from the current cell time step is stored in the zero index i.e. FishRateGear(fleet,0) = EffortSpace(fleet,row,col)
+        'this allows cSpaceSolver.FishRateGear(fleet,time) to remain compatible with cEcosimDataStructures.FishRateGear(fleet,time)
+        'and both Sim and Space can use the same methods... 
+        ' ReDim EffortSpace(nFleets, 0)
+        EffortSpace = New Single(nFleets, 0) {}
+
+        'thread copy of global sums
+        BtimeLocal = New Single(nGroups) {}
+        TotLossThread = New Single(nGroups) {}
+        TotEatenByThread = New Single(nGroups) {}
+        TotBiomThread = New Single(nGroups) {}
+        TotPredThread = New Single(nGroups) {}
+        TotIFDweightThread = New Single(nGroups) {}
+        GroupDetritus = New Single(nGroups) {}
+
+        BBRatio = New Single(nGroups) {}
+
+        ResultsByGroup = New Single(cEcospaceDataStructures.N_RESULTS_GROUPS, nGroups) {}
+        ResultsByFleet = New Single(cEcospaceDataStructures.N_RESULTS_FLEETS, nFleets) {}
+        ResultsByFleetGroup = New Single(cEcospaceDataStructures.N_RESULTS_FLEETGROUPS, nFleets, nGroups) {}
+        Landings = New Single(nGroups, nFleets) {}
+        ResultsCatchRegionGearGroup = New Single(m_Data.nRegions, nFleets, nGroups) {}
+
+        'Really... for Hungabee... so inLinks is allocated on the current cpu
+        'I'm not sure about this
+        Me.inLinks = New Integer
+        Me.inLinks = m_SimData.inlinks
+        ilink = New Integer(inLinks) {}
+        jlink = New Integer(inLinks) {}
+        ArenaLink = New Integer(inLinks) {}
+
+        SwitchPower = New Single(nGroups) {}
+        A = New Single(nGroups, nGroups) {}
+        BaseTimeSwitch = New Single(inLinks) {}
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxx
+    End Sub
+
+    Private Sub InitForTimestep()
+
+        Try
+
+            If Me.bUseLocalMemory Then
+
+                m_stpInit = Stopwatch.StartNew
+
+                Me.AllocateLocalData()
+                Me.initLocalDataForRun()
+
+                m_stpInit.Stop()
+                ' Console.WriteLine("Copy first = " + etfirst.ToString + " Total runtime(sec) " + stpCopy.Elapsed.TotalSeconds.ToString)
+
+            Else
+
+                'Clear out the results
+                Array.Clear(Me.Landings, 0, Me.Landings.Length)
+                Array.Clear(Me.ResultsByGroup, 0, Me.ResultsByGroup.Length)
+                Array.Clear(Me.ResultsByFleet, 0, Me.ResultsByFleet.Length)
+                Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
+                Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
+
+                Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
+                Array.Clear(Me.TotLossThread, 0, m_Data.NGroups)
+                Array.Clear(Me.TotEatenByThread, 0, m_Data.NGroups)
+                Array.Clear(Me.TotBiomThread, 0, m_Data.NGroups)
+                Array.Clear(Me.TotPredThread, 0, m_Data.NGroups)
+                Array.Clear(Me.TotIFDweightThread, 0, m_Data.NGroups)
+
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+            cLog.Write(ex)
+        End Try
+
+    End Sub
+
 
     Public Sub Clear()
 
@@ -287,41 +494,15 @@ Public Class cSpaceSolver
     End Sub
 
 
-    Private Sub InitForTimestep()
 
-        Try
-
-            If m_TracerData.EcoSpaceConSimOn Then
-                ReDim Derivcon(m_PathData.NumGroups), Cintotal(m_PathData.NumGroups), Closs(m_PathData.NumGroups)
-            End If
-
-            'Clear out the results
-            Array.Clear(Me.Landings, 0, Me.Landings.Length)
-            Array.Clear(Me.ResultsByGroup, 0, Me.ResultsByGroup.Length)
-            Array.Clear(Me.ResultsByFleet, 0, Me.ResultsByFleet.Length)
-            Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
-            Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
-
-            Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
-            Array.Clear(Me.TotLossThread, 0, m_Data.NGroups)
-            Array.Clear(Me.TotEatenByThread, 0, m_Data.NGroups)
-            Array.Clear(Me.TotBiomThread, 0, m_Data.NGroups)
-            Array.Clear(Me.TotPredThread, 0, m_Data.NGroups)
-            Array.Clear(Me.TotIFDweightThread, 0, m_Data.NGroups)
-
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-            cLog.Write(ex)
-        End Try
-
-    End Sub
+#End Region
 
 #Region "Public 'Solve'"
 
     ''' <summary>
-    ''' This is the method that the ThreadPool calls. 
-    ''' It must have the object argument to match the Delegate signature required by ThreadPool.QueueUserWorkItem()
+    ''' Compute the trophic for all groups on a list of map cells defined by <see cref="iFrstCell"> First </see> and  <see cref="iLstCell"> Last </see> cell in the list. 
     ''' </summary>
+    ''' <param name="obParam"> Object parameter needed for ThreadPool.QueueUserWorkItem(...) it is ignored here.</param>
     ''' <remarks></remarks>
     Public Sub Solve(ByVal obParam As Object)
         'For our purposes here we are ignoring the obParam argument 
@@ -335,26 +516,30 @@ Public Class cSpaceSolver
 
         Me.m_stpWatch.Reset()
         Me.m_stpWatch.Start()
+        Me.CatchCPUTime = 0
 
         Try
             Dim iCell As Integer
+            Dim iLinearCells As Integer
 
-            'do the processing here
             For iCell = iFrstCell To iLstCell
+                'iCell linear index to cell in spatial map, converts to row col via iWaterCellIndex(iCell) and jWaterCellIndex(iCell)
+                'iLinearCells linear index to spatial data stored locally 0 to iLstCell-iFrstCell+1 (number of cells to compute)
+                If Me.bUseLocalMemory Then
+                    SolveCell_LocalMemory(iCell, iLinearCells)
+                Else
+                    Me.SolveCell_SharedMemory(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
+                End If
+                iLinearCells += 1
 
-                Debug.Assert(Me.m_Data.Depth(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell)) > 0, "Opps Ecospace iWaterCellIndex() and jWaterCellIndex() contain land cells.")
-                'iCell is the linear index of the two dimensional spatial array
-                'iWaterCellIndex(iCell) and jWaterCellIndex(iCell) were populted with the indexes(irow,jcol) of water cells only during initialization
-                'Dim st As Double = Me.m_stpWatch.Elapsed.TotalMilliseconds
-                SolveCell(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
-
-                'Me.lstCellCompTimes.Add(Me.m_stpWatch.Elapsed.TotalMilliseconds - st)
             Next iCell
 
         Catch ex As Exception
             cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
             Debug.Assert(False, ex.Message)
         End Try
+
+        Me.UpdateCoreData()
 
         'set signal state to 'signaled' 
         'the processing has finished SignalState.WaitOne() will return immediately
@@ -369,23 +554,52 @@ Public Class cSpaceSolver
     End Sub
 
 
-#End Region
 
-    Private Function SolveCell(ByVal i As Integer, ByVal j As Integer) As Boolean
+
+#Region "SolveCell Local and Shared memory"
+
+    ''' <summary>
+    ''' Calculate trophic interaction for a single map cell directly on the Core Ecospace data. 
+    ''' </summary>
+    ''' <param name="i">Row index of the cell in the Core Maps arrays.</param>
+    ''' <param name="j">Column index of the cell in the Core Maps arrays.</param>
+    ''' <returns>True if successful. False otherwise.</returns>
+    ''' <remarks>
+    ''' There are two version of SolveCell see <see cref="SolveCell_LocalMemory">SolveCell_LocalMemory</see> for the other version.
+    ''' </remarks>
+    Private Function SolveCell_SharedMemory(ByVal i As Integer, ByVal j As Integer) As Boolean
         Dim iGrp As Integer
         Dim PopWt As Single
 
         Try
-            ' Debug.Assert(Me.m_Data.Depth(i, j) > 0)
-            ' System.Console.WriteLine("Thread ID, " & Me.ThreadID & ", " & i.ToString & ", " & j.ToString)
             'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
             TimeStep2 = m_Data.TimeStep * 0.66667F
 
+            'Init Contaminant tracing data
             If m_TracerData.EcoSpaceConSimOn Then
-                m_ConTracer.ConcTr(0) = m_Data.Ccell(i, j, 0)
-                'jb ConTotal() is not used anywhere
-                'For ip = 0 To m_Data.NGroups : ConTotal(ip) = ConTotal(ip) + m_Data.Ccell(i, j, ip):Next
+                For iGrp = 0 To m_Data.NGroups
+                    m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
+                Next
             End If
+
+            'Init Fishing Effort data outside the main group loop
+            If m_Data.PredictEffort Then
+                '****Following lines set fishrategear for Simdetritus
+                For ig = 1 To m_Data.nFleets
+                    'Copy effort from the cell into the zero time element of a local array with the same structure as EcoSim.FishRateGear(fleet,time)
+                    EffortSpace(ig, 0) = m_Data.EffortSpace(ig, i, j)
+                    'effortspace should be 1.0 for cell with "average" effort by gear type ig
+                Next
+            Else
+                For ig = 1 To m_Data.nFleets
+                    'Copy effort from the cell into the zero time element of a local array with the same structure as EcoSim.FishRateGear(fleet,time)
+                    m_Data.EffortSpace(ig, i, j) = 1.0
+                    'fishrategear for Simdetritus
+                    EffortSpace(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
+                Next
+            End If 'If m_Data.PredictEffort > 0 Then
+
+
 
             For iGrp = 1 To m_Data.NGroups
                 'abmpa: at this point (after having been in solvegrid) the BCell holds
@@ -393,8 +607,6 @@ Public Class cSpaceSolver
 
                 If m_Data.Depth(i, j) = 0 Then m_Data.Bcell(i, j, iGrp) = 0
                 BB(iGrp) = m_Data.Bcell(i, j, iGrp)
-
-                If m_TracerData.EcoSpaceConSimOn Then m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
 
                 'sum biomass over all the cells
                 'this is now done individually for each thread, then summed outside the threads
@@ -413,38 +625,49 @@ Public Class cSpaceSolver
 
                 Hden(iGrp) = HdenCell(i, j, iGrp)
 
-                'Set FishTime() (F, fishing mortality) for this timestep cell
-                If m_Data.Depth(i, j) > 0 Then
-                    If m_Data.PredictEffort Then
-                        'F set by cEcospace.PredictEffortDistributionThreaded()
-                        FishTime(iGrp) = m_Data.Ftot(iGrp, i, j)
-                        '****Following lines set fishrategear for Simdetritus
-                        For ig = 1 To m_Data.nFleets
-                            FishRateGear(ig, 0) = m_Data.EffortSpace(ig, i, j)
-                            'effortspace should be 1.0 for cell with "average" effort by gear type ig
-                        Next
-                    Else
-                        'Not Predicting Effort
-                        'F = Ecopath base F
-                        FishTime(iGrp) = Fish1(iGrp)
-
-                        For ig = 1 To m_Data.nFleets
-                            'Effort used to calculate Catch and Value in cEcospace.accumCatchData
-                            m_Data.EffortSpace(ig, i, j) = 1.0
-                            'fishrategear for Simdetritus
-                            FishRateGear(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
-                        Next
-                    End If 'If m_Data.PredictEffort > 0 Then
-
+                'Set FishTime() (F, fishing mortality) for this timestep/cell
+                If m_Data.PredictEffort Then
+                    'F set by cEcospace.PredictEffortDistributionThreaded()
+                    FishTime(iGrp) = m_Data.Ftot(iGrp, i, j)
                 Else
-                    'depth<=0
-                    FishTime(iGrp) = 0
-                    '****Following line sets fishrategear for Simdetritus
-                    For ig = 1 To m_Data.nFleets
-                        FishRateGear(ig, 0) = 0
-                    Next
+                    'Not Predicting Effort
+                    'F = Ecopath base F
+                    FishTime(iGrp) = Fish1(iGrp)
 
-                End If 'If m_Data.Depth(i, j) > 0 Then
+                End If 'If m_Data.PredictEffort > 0 Then
+
+                ''Set FishTime() (F, fishing mortality) for this timestep cell
+                'If m_Data.Depth(i, j) > 0 Then
+                '    If m_Data.PredictEffort Then
+                '        'F set by cEcospace.PredictEffortDistributionThreaded()
+                '        FishTime(iGrp) = m_Data.Ftot(iGrp, i, j)
+                '        '****Following lines set fishrategear for Simdetritus
+                '        For ig = 1 To m_Data.nFleets
+                '            EffortSpace(ig, 0) = m_Data.EffortSpace(ig, i, j)
+                '            'effortspace should be 1.0 for cell with "average" effort by gear type ig
+                '        Next
+                '    Else
+                '        'Not Predicting Effort
+                '        'F = Ecopath base F
+                '        FishTime(iGrp) = Fish1(iGrp)
+
+                '        For ig = 1 To m_Data.nFleets
+                '            'Effort used to calculate Catch and Value in cEcospace.accumCatchData
+                '            m_Data.EffortSpace(ig, i, j) = 1.0
+                '            'fishrategear for Simdetritus
+                '            EffortSpace(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
+                '        Next
+                '    End If 'If m_Data.PredictEffort > 0 Then
+
+                'Else
+                '    'depth<=0
+                '    FishTime(iGrp) = 0
+                '    '****Following line sets fishrategear for Simdetritus
+                '    For ig = 1 To m_Data.nFleets
+                '        EffortSpace(ig, 0) = 0
+                '    Next
+
+                'End If 'If m_Data.Depth(i, j) > 0 Then
 
                 EatEff(iGrp) = 1
                 VulPred(iGrp) = 1
@@ -597,6 +820,262 @@ Public Class cSpaceSolver
                 Next
             Next
 
+            Return True
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, ex.StackTrace)
+            Throw New ApplicationException(Me.ToString & ".SolveCell() Error: " & ex.Message)
+        End Try
+
+    End Function
+
+#End Region
+
+
+
+
+    ''' <summary>
+    ''' Calculate trophic interaction for a single map cell
+    ''' </summary>
+    ''' <param name="iCell">Linear index of the two dimensional spatial array 1 to nWaterCells(number of water cells in the base map). Converts cell index to map row and col via <see cref="cEcospaceDataStructures.iWaterCellIndex"> iWaterCellIndex(iCell)</see>.</param>
+    ''' <param name="iLoc">Index to the local spatial data stored in a linear array by cell. Local data initialized in <see cref="initLocalDataForRun">initLocalDataForRun()</see>.  </param>
+    ''' <returns>True if successful. False otherwise.</returns>
+    ''' <remarks></remarks>
+    Private Function SolveCell_LocalMemory(iCell As Integer, iLoc As Integer) As Boolean
+        Dim iGrp As Integer
+        Dim PopWt As Single
+        Dim i As Integer, j As Integer
+
+        'convert the iCell index to Row and Col in the map
+        i = Me.m_Data.iWaterCellIndex(iCell)
+        j = Me.m_Data.jWaterCellIndex(iCell)
+
+        Try
+
+            Debug.Assert(Me.m_Data.Depth(i, j) > 0, Me.ToString + ".SolveCell() should not be run on cells with a zero depth.")
+
+            'this changes the timestep for higher order numerical sceme.  the timestep isn't actually different, it's a multiplier
+            TimeStep2 = m_Data.TimeStep * 0.66667F
+
+            'Init Contaminant tracing data
+            If m_TracerData.EcoSpaceConSimOn Then
+                For iGrp = 0 To m_Data.NGroups
+                    m_ConTracer.ConcTr(iGrp) = m_Data.Ccell(i, j, iGrp)
+                Next
+            End If
+
+            'Init Fishing Effort data outside the main group loop
+            If m_Data.PredictEffort Then
+                '****Following lines set fishrategear for Simdetritus
+                For ig = 1 To m_Data.nFleets
+                    'Copy effort from the cell into the zero time element of a local array with the same structure as EcoSim.FishRateGear(fleet,time)
+                    EffortSpace(ig, 0) = m_Data.EffortSpace(ig, i, j)
+                    'effortspace should be 1.0 for cell with "average" effort by gear type ig
+                Next
+            Else
+                For ig = 1 To m_Data.nFleets
+                    'Copy effort from the cell into the zero time element of a local array with the same structure as EcoSim.FishRateGear(fleet,time)
+                    m_Data.EffortSpace(ig, i, j) = 1.0
+                    'fishrategear for Simdetritus
+                    EffortSpace(ig, 0) = 1 ' 1 x FishMGear(ig, ip)
+                Next
+            End If 'If m_Data.PredictEffort > 0 Then
+
+
+            'Init group data 
+            For iGrp = 1 To m_Data.NGroups
+                'abmpa: at this point (after having been in solvegrid) the BCell holds
+                'the long term equilibrium biomass or at least an approx to)
+
+                If m_Data.Depth(i, j) = 0 Then Me.Bio(iGrp, iLoc) = 0
+                'Me.Bio(iGrp, iLin) = 0
+                BB(iGrp) = Me.Bio(iGrp, iLoc)
+
+                'sum biomass over all the cells
+                'this is now done individually for each thread, then summed outside the threads
+                'Btime(ip) = Btime(ip) + BB(ip)
+                BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
+
+                If (m_SimData.NoIntegrate(iGrp) = iGrp Or m_SimData.NoIntegrate(iGrp) < 0) And SimGE(iGrp) > 0 Then
+                    If (Cper(i, j, iGrp) > 0 And m_SimData.FtimeAdjust(iGrp) > 0) Then
+                        FtimeCell(i, j, iGrp) = FtimeCell(i, j, iGrp) * (0.7F + 0.3F * Cbase(iGrp) / Cper(i, j, iGrp))
+                    End If
+                    '  FtimeCell(i, j, ip) = Cbase(ip) / Cper(i, j, ip)
+                    If FtimeCell(i, j, iGrp) > FtimeMax(iGrp) Then FtimeCell(i, j, iGrp) = FtimeMax(iGrp)
+                    If FtimeCell(i, j, iGrp) < 0.1 Then FtimeCell(i, j, iGrp) = 0.1
+                    Ftime(iGrp) = FtimeCell(i, j, iGrp)
+                End If
+
+                Hden(iGrp) = HdenCell(i, j, iGrp)
+
+                'Set FishTime() (F, fishing mortality) for this timestep/cell
+                If m_Data.PredictEffort Then
+                    'F set by cEcospace.PredictEffortDistributionThreaded()
+                    FishTime(iGrp) = m_Data.Ftot(iGrp, i, j)
+                Else
+                    'Not Predicting Effort
+                    'F = Ecopath base F
+                    FishTime(iGrp) = Fish1(iGrp)
+
+                End If 'If m_Data.PredictEffort > 0 Then
+
+                EatEff(iGrp) = 1
+                VulPred(iGrp) = 1
+
+                EatEff(iGrp) = m_Data.HabCap(i, j, iGrp)
+                If EatEff(iGrp) < 0.1 Then
+                    VulPred(iGrp) = m_Data.RelVulBad(iGrp)
+                End If
+
+            Next iGrp
+
+            Me.accumCatchData(itt, iYear, BB, FishTime, i, j)
+
+            For isc = 1 To m_Data.Nvarsplit
+                ieco = Ecode(isc)
+                'ebb(nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
+
+                If m_Data.NewMultiStanza Or m_Data.UseIBM Then
+                    pred(ieco) = m_Data.PredCell(i, j, ieco)
+                Else
+                    'pred(ieco) = m_Data.Bcell(i, j, nvar2 + isc) * PconSplit(isc) ' Nadult(i, j, ip)
+                    pred(ieco) = Me.Bio(nvar2 + isc, iLoc) * PconSplit(isc) ' Nadult(i, j, ip)
+                End If
+            Next isc
+
+            RelPPupwell = 1 + m_Data.PPupWell * m_Data.UpVel(i, j) / m_Data.CellLength
+
+            If RelPPupwell < 1 Then RelPPupwell = 1
+
+            Dim scaledPP As Double = m_Data.RelPP(i, j) / PPScale
+
+            'jb compute Flowin() and FlowoutRate() for all groups for this row/col
+            derivtRed(BB, Flowin, FlowoutRate, EatEff, VulPred, scaledPP, i, j)
+
+            If m_TracerData.EcoSpaceConSimOn Then
+                m_ConTracer.loss = loss 'set loss to ecospace loss for this cell
+                m_ConTracer.ConDeriv(BB, Derivcon, Cintotal, Closs, m_Data.RelCin(i, j), True)
+            End If
+
+            'jb now populate the spatial matrixes with the data computed by derivtRed() for this cell across all groups
+            For iGrp = 1 To m_Data.NGroups
+                HdenCell(i, j, iGrp) = Hden(iGrp)
+                If pred(iGrp) > 1.0E-30 Then
+                    RelFitness(i, j, iGrp) = (SimGE(iGrp) * Eatenby(iGrp) - loss(iGrp)) / pred(iGrp) + FishTime(iGrp)
+                Else
+                    RelFitness(i, j, iGrp) = -2.0F * m_PathData.PB(iGrp)
+                End If
+            Next
+
+            For iGrp = 1 To m_Data.NGroups
+
+                If Me.m_PathData.isEcospaceModelCoupled Then Me.m_Data.GroupDetritus(i, j, iGrp) = GroupDetritus(iGrp)
+
+                'F(i, j, iGrp) = Flowin(iGrp)
+                ' AMm(i, j, iGrp) = -FlowoutRate(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
+
+                Flin(iGrp, iLoc) = Flowin(iGrp)
+                AMlin(iGrp, iLoc) = -FlowoutRate(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
+                If AMlin(iGrp, iLoc) >= 0 Then AMlin(iGrp, iLoc) = -1.0E+30
+
+                If m_Data.SpaceTime Then
+                    AMlin(iGrp, iLoc) = AMlin(iGrp, iLoc) - 1 / TimeStep2
+                    'this is for new 2nd order BDF numerical sceme (replacing backwards euler)
+                    ' F(i, j, iGrp) = F(i, j, iGrp) + (1.3333F * m_Data.Bcell(i, j, iGrp) - 0.3333F * m_Data.Blast(i, j, iGrp)) / TimeStep2
+                    Flin(iGrp, iLoc) = Flin(iGrp, iLoc) + (1.3333F * Bio(iGrp, iLoc) - 0.3333F * m_Data.Blast(i, j, iGrp)) / TimeStep2
+                    'm_Data.Blast(i, j, iGrp) = m_Data.Bcell(i, j, iGrp)
+                    m_Data.Blast(i, j, iGrp) = Me.Bio(iGrp, iLoc)
+                End If
+
+                If m_SimData.SimGE(iGrp) > 0 Then
+                    ' Cper(i, j, iGrp) = Eatenby(iGrp) / (m_Data.Bcell(i, j, iGrp) + 1.0E-20F)
+                    Cper(i, j, iGrp) = Eatenby(iGrp) / (Bio(iGrp, iLoc) + 1.0E-20F)
+                End If
+                If Cper(i, j, iGrp) < 0.001 * m_SimData.Cbase(iGrp) Then
+                    Cper(i, j, iGrp) = 0.001F * m_SimData.Cbase(iGrp)
+                End If
+
+            Next iGrp
+
+            If m_TracerData.EcoSpaceConSimOn Then
+                For iGrp = 0 To m_Data.NGroups
+                    m_Data.Ftr(i, j, iGrp) = Cintotal(iGrp)
+                    m_Data.AMmTr(i, j, iGrp) = -Closs(iGrp) - Bcw(i + 1, j, iGrp) - C(i - 1, j, iGrp) - d(i, j, iGrp) - e(i, j, iGrp)
+                    If m_Data.AMmTr(i, j, iGrp) >= 0 Then m_Data.AMmTr(i, j, iGrp) = -1.0E+30
+                    '   If m_Data.SpaceTime And FastIntegrate(ip) = False Then
+                    m_Data.Ftr(i, j, iGrp) = m_Data.Ftr(i, j, iGrp) + m_Data.Ccell(i, j, iGrp) / TimeStep2
+                    m_Data.AMmTr(i, j, iGrp) = m_Data.AMmTr(i, j, iGrp) - 1 / TimeStep2
+                    '  End If
+                Next
+            End If
+
+            isc = 0
+            For isp = 1 To m_Stanza.Nsplit
+                ieco = m_Stanza.EcopathCode(isp, m_Stanza.Nstanza(isp))
+
+                RelR = m_Data.Bcell(i, j, ieco) * RelRepStanza(isp) ' * m_Data.HabCap(i, j, ieco) * m_Data.nWaterCells / m_Data.TotHabCap(ieco) ' Added HabCap correction for recruitment rate
+                For ist = 1 To m_Stanza.Nstanza(isp)
+                    isc = isc + 1
+                    ieco = m_Stanza.EcopathCode(isp, ist)
+                    If m_Data.NewMultiStanza Then
+                        'accumulate information needed to predict mean stanza loss, feeding, IFD weights from derivtred outputs
+                        'these arrays are used in the new SpaceSplitUpdate subroutine for predicting mortality
+                        'rate and growth rate averages over space by age in that update routine
+                        'IFDweight is used to predict proportion of biomass of ieco stanza that will be on cell i,j
+                        'If (m_Data.PrefHab(ieco, m_Data.HabType(i, j)) = True Or m_Data.PrefHab(ieco, 0) = True) And m_Data.Depth(i, j) > 0 Then
+                        If m_Data.Depth(i, j) > 0 And m_Data.HabCap(i, j, ieco) > 0.1 Then
+                            PopWt = m_Data.Bcell(i, j, nvar2 + isc)
+                            TotLossThread(ieco) = TotLossThread(ieco) + loss(ieco) * PopWt
+                            TotEatenByThread(ieco) = TotEatenByThread(ieco) + Eatenby(ieco) * PopWt
+                            TotBiomThread(ieco) = TotBiomThread(ieco) + m_Data.Bcell(i, j, ieco) * PopWt
+                            TotPredThread(ieco) = TotPredThread(ieco) + pred(ieco) * PopWt
+                            'm_Data.IFDweight(i, j, ieco) = ((Eatenby(ieco) / pred(ieco)) / (loss(ieco) / m_Data.Bcell(i, j, ieco))) ^ m_Data.IFDPower
+                            m_Data.IFDweight(i, j, ieco) = PopWt 'm_Data.Bcell(i, j, nvar2 + isc)
+                            TotIFDweightThread(ieco) = TotIFDweightThread(ieco) + m_Data.IFDweight(i, j, ieco)
+                        End If
+                    ElseIf m_Data.UseIBM Then
+                        m_Stanza.Zcell(i, j, ieco) = loss(ieco) / (m_Data.Bcell(i, j, ieco) + 1.0E-30F)
+                        If m_Data.Bcell(i, j, ieco) = 0 Then
+                            m_Stanza.Zcell(i, j, ieco) = 0
+                        End If
+                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.PredCell(i, j, ieco) + 1.0E-30F)
+                        If m_Data.PredCell(i, j, ieco) = 0 Then
+                            Cper(i, j, ieco) = m_SimData.Cbase(ieco)
+                        End If
+                    End If
+                    SurvRat = CSng(Math.Exp(-FlowoutRate(ieco) * Tstanza(isc)))
+                    RelRS = RelR * SurvRat 'Math.Exp(-FlowoutRate(ieco) * Tstanza(isc))
+                    If ist = 1 Then '< m_Stanza.Nstanza(isp) Then
+                        Rflow = RelR - RelRS
+                    Else
+                        Rflow = RtoNext
+                    End If
+                    RtoNext = m_Data.Bcell(i, j, nvar2 + isc) * FlowoutRate(ieco) / (1 / (SurvRat + 1.0E-20F) - 1)
+                    RelR = RelRS
+                    If m_Data.NewMultiStanza Then
+                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.PredCell(i, j, ieco) + 1.0E-30F)
+                        If ist > 1 Then Rflow = m_Data.Bcell(i, j, m_Stanza.EcopathCode(isp, ist - 1))
+                    ElseIf m_Data.UseIBM = False And m_Data.NewMultiStanza = False Then
+                        Cper(i, j, ieco) = Eatenby(ieco) / (m_Data.Bcell(i, j, nvar2 + isc) * PconSplit(isc) + 1.0E-30F)
+                    End If
+
+                    F(i, j, nvar2 + isc) = Rflow
+                    AMm(i, j, nvar2 + isc) = -FlowoutRate(ieco) - Bcw(i + 1, j, ieco) - C(i - 1, j, ieco) - d(i, j, ieco) - e(i, j, ieco)
+                    If AMm(i, j, nvar2 + isc) >= 0 Then AMm(i, j, nvar2 + isc) = -1.0E+30
+
+                    'm_Data.deriv2(i, j, nvar2 + isc) = m_Data.deriv(i, j, nvar2 + isc)
+                    'm_Data.deriv(i, j, nvar2 + isc) = AMm(i, j, nvar2 + isc) * m_Data.Bcell(i, j, nvar2 + isc) + F(i, j, nvar2 + isc) + Bcw(i, j, nvar2 + isc) * m_Data.Bcell(i - 1, j, nvar2 + isc) + C(i, j, nvar2 + isc) * m_Data.Bcell(i + 1, j, nvar2 + isc) + d(i, j - 1, nvar2 + isc) * m_Data.Bcell(i, j - 1, nvar2 + isc) + e(i, j + 1, nvar2 + isc) * m_Data.Bcell(i, j + 1, nvar2 + isc)
+
+                    If m_Data.SpaceTime Then
+                        F(i, j, nvar2 + isc) = F(i, j, nvar2 + isc) + (1.3333F * m_Data.Bcell(i, j, nvar2 + isc) - 0.3333F * m_Data.Blast(i, j, nvar2 + isc)) / TimeStep2
+                        'F(i, j, nvar2 + isc) = F(i, j, nvar2 + isc) + m_Data.Bcell(i, j, nvar2 + isc) / m_Data.TimeStep
+                        AMm(i, j, nvar2 + isc) = AMm(i, j, nvar2 + isc) - 1 / TimeStep2
+                        m_Data.Blast(i, j, nvar2 + isc) = m_Data.Bcell(i, j, nvar2 + isc)
+                    End If
+                Next
+            Next
+
             '                    'For MPA Seed routine:
             '                    'At equilibrium 0 = dB = G - ZB, hence Bo = G/Z, where Bo is in    m_data.bcell() and Z=-AMm()
             '                    'For the no fishing situation: Bclose ~ Bo Z / (Z-F) or
@@ -614,6 +1093,14 @@ Public Class cSpaceSolver
 
     End Function
 
+#Region "Solve Cell"
+
+#End Region
+
+#End Region
+
+#Region "Private Methods"
+
     Private Sub derivtRed(ByVal Biomass() As Single, ByRef Flowin() As Single, ByRef FlowoutRate() As Single, ByRef EatEff() As Single, ByRef VulPred() As Single, ByVal RelProdScaler As Double, ByVal iRow As Integer, ByVal iCol As Integer)
         'reduced derivatives for MPA equilibration procedure
         Dim i As Integer, j As Integer, ii As Integer
@@ -625,16 +1112,17 @@ Public Class cSpaceSolver
         'Imported Detritus forcing function multiplier
         Dim DtImpMult As Single
 
-        Dim aeff() As Single, Veff() As Single
-        ReDim aeff(m_SimData.inlinks), Veff(m_SimData.inlinks)
+        Dim aeff() As Single = New Single(inLinks) {}
+        Dim Veff() As Single = New Single(inLinks) {}
+        'ReDim aeff(inLinks), Veff(inLinks)
 
-        Dim Hdent() As Single
-        ReDim Hdent(m_Data.NGroups)
+        Dim Hdent() As Single = New Single(m_Data.NGroups) {}
+        ' ReDim Hdent(m_Data.NGroups)
 
         'EwE5 ToDetritus() is declared at a global level
         'in EcoSpace this is the only place it is used so its scope is local to EcoSpace
-        Dim ToDetritus() As Single
-        ReDim ToDetritus(m_Data.NGroups)
+        Dim ToDetritus() As Single = New Single(m_Data.NGroups) {}
+        'ReDim ToDetritus(m_Data.NGroups)
 
         Try
 
@@ -660,22 +1148,26 @@ Public Class cSpaceSolver
             '*************
             'Consumpt is NOT threadsafe
             '***********
-            If m_SimData.IndicesOn Then
-                ReDim m_SimData.Consumpt(m_Data.NGroups, m_Data.NGroups)
-            End If
+            'If m_SimData.IndicesOn Then
+            '    ReDim m_SimData.Consumpt(m_Data.NGroups, m_Data.NGroups)
+            'End If
 
-            For j = m_Data.nLiving + 1 To m_Data.NGroups
-                ToDetritus(j - m_Data.nLiving) = 0
-            Next j
+            'ToDetritus() was just created so no need to clear it out
+            'For j = m_Data.nLiving + 1 To m_Data.NGroups
+            '    ToDetritus(j - m_Data.nLiving) = 0
+            'Next j
 
             SetRelaSwitch(Biomass)
 
             'get first estimate of denominators of predation rate disc equations
-            Dim ia As Integer, Vbiom() As Single, Vdenom() As Single
+            Dim ia As Integer
+            Dim Vbiom() As Single = New Single(m_SimData.Narena) {}
+            Dim Vdenom() As Single = New Single(m_SimData.Narena) {}
+            'ReDim Vbiom(m_SimData.Narena), Vdenom(m_SimData.Narena)
+
             'this requires first estimates of vulnerable biomasses Vbiom by foraging arena
-            ReDim Vbiom(m_SimData.Narena), Vdenom(m_SimData.Narena)
-            For ii = 1 To m_SimData.inlinks
-                i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
+            For ii = 1 To inLinks
+                i = ilink(ii) : j = jlink(ii) : ia = ArenaLink(ii)
 
                 'aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * EatEff(j) * VulPred(i)
                 aeff(ii) = m_Data.Aspace(ii) * Ftime(j) * RelaSwitch(ii) * VulPred(i)
@@ -699,9 +1191,9 @@ Public Class cSpaceSolver
             Next
 
             'then update hden estimates based on new vulnerable biomass estimates
-            For ii = 1 To m_SimData.inlinks
-                j = m_SimData.jlink(ii)
-                ia = m_SimData.ArenaLink(ii)
+            For ii = 1 To inLinks
+                j = jlink(ii)
+                ia = ArenaLink(ii)
                 Hdent(j) = Hdent(j) + aeff(ii) * Vbiom(ia)
             Next
 
@@ -712,8 +1204,8 @@ Public Class cSpaceSolver
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'then update vulnerable biomass estimates using new Hden estimates (THIS MAY NOT BE NECESSARY?)
             ReDim Vbiom(m_SimData.Narena), Vdenom(m_SimData.Narena)
-            For ii = 1 To m_SimData.inlinks
-                i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
+            For ii = 1 To inLinks
+                i = ilink(ii) : j = jlink(ii) : ia = ArenaLink(ii)
                 Vdenom(ia) = Vdenom(ia) + aeff(ii) * pred(j) / Hden(j) / EatEff(j)
             Next
             For ia = 1 To m_SimData.Narena
@@ -731,8 +1223,8 @@ Public Class cSpaceSolver
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
             'then predict consumption flows and cumulative consumptions using the new Vbiom estimates
-            For ii = 1 To m_SimData.inlinks
-                i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii) : ia = m_SimData.ArenaLink(ii)
+            For ii = 1 To inLinks
+                i = ilink(ii) : j = jlink(ii) : ia = ArenaLink(ii)
                 If m_SimData.TrophicOff Then Bprey = m_SimData.StartBiomass(i) Else Bprey = Biomass(i)
 
                 Select Case m_SimData.FlowType(i, j) 'prey always first
@@ -757,7 +1249,7 @@ Public Class cSpaceSolver
                 '******** 
                 'THIS NEEDS TO CHANGE FOR THREADED STUFF
                 '**********
-                If m_SimData.IndicesOn Then m_SimData.Consumpt(i, j) = m_SimData.Consumpt(i, j) + eat
+                'If m_SimData.IndicesOn Then m_SimData.Consumpt(i, j) = m_SimData.Consumpt(i, j) + eat
 
                 'jb 
                 If m_TracerData.EcoSpaceConSimOn = True Then
@@ -769,7 +1261,7 @@ Public Class cSpaceSolver
             Next
 
             'Make the detritus calculations here:
-            Me.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, ToDetritus, GroupDetritus)
+            Me.SimDetritusMT(Biomass, EffortSpace, Eatenby, ToDetritus, GroupDetritus)
 
             For i = 1 To m_Data.NGroups
 
@@ -789,7 +1281,7 @@ Public Class cSpaceSolver
                     If m_SimData.UseVarPQ And m_PathData.vbK(i) > 0 Then
                         SimGEt = m_SimData.AssimEff(i) * loss(i) / Biomass(i) / (loss(i) / Biomass(i) + 3 * m_PathData.vbK(i))
                     Else
-                        SimGEt = m_SimData.SimGE(i)
+                        SimGEt = SimGE(i) 'm_SimData.SimGE(i)
                     End If
 
                     Flowin(i) = m_PathData.Immig(i) + SimGEt * Eatenby(i) + pbb(i) * Biomass(i)
@@ -839,25 +1331,20 @@ Public Class cSpaceSolver
     ''' <remarks>Sets RelaSwitch() using local B() and  Ecosim.A(), Ecosim.SwitchPower(), Ecosim.BaseTimeSwitch()  </remarks>
     Sub SetRelaSwitch(ByVal B() As Single)     'Switching
         Dim i As Integer, j As Integer, ii As Integer
-        Dim PredDen() As Double
-        ReDim PredDen(m_Data.NGroups)
 
-        If RelaSwitch Is Nothing Then
-            ReDim RelaSwitch(m_SimData.inlinks)
-        Else
-            Array.Clear(RelaSwitch, 0, m_SimData.inlinks + 1)
-        End If
+        Dim PredDen() As Double = New Double(m_Data.NGroups) {}
+        RelaSwitch = New Single(inLinks) {}
 
-        For ii = 1 To m_SimData.inlinks
-            i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii)
-            PredDen(j) = PredDen(j) + m_Ecosim.A(i, j) * B(i) ^ m_SimData.SwitchPower(j)
+        For ii = 1 To inLinks
+            i = ilink(ii) : j = jlink(ii)
+            PredDen(j) = PredDen(j) + A(i, j) * B(i) ^ SwitchPower(j)
         Next
-        For ii = 1 To m_SimData.inlinks
-            i = m_SimData.ilink(ii) : j = m_SimData.jlink(ii)
+        For ii = 1 To inLinks
+            i = ilink(ii) : j = jlink(ii)
             If m_SimData.SwitchPower(j) = 0.0# Then
                 RelaSwitch(ii) = 1
             Else
-                RelaSwitch(ii) = CSng(m_Ecosim.A(i, j) * B(i) ^ m_SimData.SwitchPower(j) / (PredDen(j) + 1.0E-20) / m_SimData.BaseTimeSwitch(ii))
+                RelaSwitch(ii) = CSng(A(i, j) * B(i) ^ SwitchPower(j) / (PredDen(j) + 1.0E-20) / m_SimData.BaseTimeSwitch(ii))
             End If
         Next
 
@@ -904,7 +1391,7 @@ Public Class cSpaceSolver
             Next
 
             'Calculate MedVal() from the B/BRatio
-            Me.m_SimData.BioMedData.SetMedFunctions(BBRatio, Me.FishRateGear, 0, Me.MedVal)
+            Me.m_SimData.BioMedData.SetMedFunctions(BBRatio, Me.EffortSpace, 0, Me.MedVal)
         End If
 
     End Sub
@@ -983,15 +1470,17 @@ Public Class cSpaceSolver
     ''' <remarks></remarks>
     Public Sub accumCatchData(ByVal iCumTime As Integer, ByVal iYear As Integer, ByVal Biomass() As Single, ByVal FMortByGroup() As Single, ByVal iRow As Integer, ByVal iCol As Integer)
         Dim cellCatch As Single, iFlt As Integer, iGrp As Integer
+        Dim st As Double = Me.m_stpWatch.Elapsed.TotalSeconds
 
         Try
-
+            'FishRateGear(iFlt, 0) contains the effort for this cell at this timestep
             For iFlt = 1 To m_Data.nFleets
+
                 'Effort
-                Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt) += m_Data.EffortSpace(iFlt, iRow, iCol)
+                Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt) += Me.EffortSpace(iFlt, 0)
                 'SailingEffort: at this point SailingEffort is  sum of [fishing effort] * [effort of fishing each cell (Sail(iFlt, iRow, iCol))] /  SailScale(ifleet)
                 'Effort of fishing all the cells
-                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt) += (m_Data.EffortSpace(iFlt, iRow, iCol) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
+                Me.ResultsByFleet(eSpaceResultsFleets.SailingEffort, iFlt) += (Me.EffortSpace(iFlt, 0) * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
 
                 'sum values into All Fleets 0 index 
                 Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, 0) += Me.ResultsByFleet(eSpaceResultsFleets.FishingEffort, iFlt)
@@ -1010,28 +1499,30 @@ Public Class cSpaceSolver
                     m_Data.CatchMap(iRow, iCol, iGrp) += bCatch
                     'Next value of catch, depends on what gear was used:
                     For iFlt = 1 To Me.m_PathData.NumFleet
-                        If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
-                            'First get catch
-                            cellCatch = Biomass(iGrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, iGrp) * m_Data.Width(iRow)
+                        If Me.m_Data.IsFished(iFlt, iRow, iCol) Then
+                            If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
+                                'First get catch
+                                cellCatch = Biomass(iGrp) * Me.EffortSpace(iFlt, 0) * m_SimData.relQ(iFlt, iGrp) * m_Data.Width(iRow)
 
-                            'Sum the total catch by gear
-                            Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
-                            'sum all fleets
-                            Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0) += cellCatch
+                                'Sum the total catch by gear
+                                Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
+                                'sum all fleets
+                                Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, 0) += cellCatch
 
-                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, iGrp) += cellCatch
-                            'sum all fleets into the zero fleet index
-                            Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, iGrp) += cellCatch
+                                Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, iFlt, iGrp) += cellCatch
+                                'sum all fleets into the zero fleet index
+                                Me.ResultsByFleetGroup(eSpaceResultsFleetsGroups.CatchBio, 0, iGrp) += cellCatch
 
-                            'Next line is for adding up catch by region etc
-                            If m_Data.nRegions >= 1 Then
-                                Dim iRgn As Integer = m_Data.Region(iRow, iCol)
-                                If (iRgn > m_Data.nRegions) Then iRgn = 0
-                                Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
-                            End If
+                                'Next line is for adding up catch by region etc
+                                If m_Data.nRegions >= 1 Then
+                                    Dim iRgn As Integer = m_Data.Region(iRow, iCol)
+                                    If (iRgn > m_Data.nRegions) Then iRgn = 0
+                                    Me.ResultsCatchRegionGearGroup(iRgn, iFlt, iGrp) += cellCatch
+                                End If
 
-                            Me.Landings(iGrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, iGrp)
-                        End If
+                                Me.Landings(iGrp, iFlt) += cellCatch * Me.m_PathData.PropLanded(iFlt, iGrp)
+                            End If 'Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp)
+                        End If 'Me.m_Data.IsFished(iFlt, iRow, iCol)
                     Next iFlt
                 End If 'If m_EPdata.fCatch(igrp) > 0 Then
             Next iGrp
@@ -1039,6 +1530,7 @@ Public Class cSpaceSolver
         Catch ex As Exception
             cLog.Write(ex)
         End Try
+        Me.CatchCPUTime += Me.m_stpWatch.Elapsed.TotalSeconds - st
 
     End Sub
 
@@ -1062,6 +1554,7 @@ Public Class cSpaceSolver
         Dim i As Integer, j As Integer, K As Integer
         Dim ToDet As Single, DetFlowN As Single
         DetFlowN = 0
+
 
         'DetritusByGroup() needs to be cleared because the values are summed into it
         Array.Clear(DetritusByGroup, 0, Me.m_Data.NGroups)
@@ -1112,5 +1605,40 @@ Public Class cSpaceSolver
     End Sub
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+
+    Private Sub copyCoreToLocal(SourceMap(,,) As Single, ByRef DestinationLinear(,) As Single)
+        Dim i As Integer
+        Dim n As Integer = iLstCell - iFrstCell + 1
+        Dim ngrps As Integer = Me.m_Data.NGroups
+
+        DestinationLinear = New Single(ngrps, n) {}
+        '  ReDim DestinationLinear(ngrps, n)
+
+        For iCell As Integer = iFrstCell To iLstCell
+            For igrp As Integer = 1 To ngrps
+                DestinationLinear(igrp, i) = SourceMap(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell), igrp)
+            Next
+            i += 1
+        Next iCell
+
+    End Sub
+
+
+    Private Sub copyLocalToCore(SourceLinear(,) As Single, ByRef DestinationMap(,,) As Single)
+        Dim i As Integer
+        Dim n As Integer = iLstCell - iFrstCell + 1
+        Dim ngrps As Integer = Me.m_Data.NGroups
+
+        For iCell As Integer = iFrstCell To iLstCell
+            For igrp As Integer = 1 To ngrps
+                DestinationMap(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell), igrp) = SourceLinear(igrp, i)
+            Next
+            i += 1
+        Next iCell
+
+
+    End Sub
+
+#End Region
 
 End Class

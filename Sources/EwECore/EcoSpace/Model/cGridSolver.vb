@@ -87,6 +87,31 @@ Public Class cGridSolver
 
     Private m_rand As Random
 
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    'Local copies of the core arrays used by SolveGridLocalMemoryOnly()
+    'this is for Hungabee and are only used if bUseLocalMemory = True
+    Public bUseLocalMemory As Boolean
+
+    Private Xloc(,) As Single
+    Private AlocLoc(,) As Single
+    Private FlocLoc(,) As Single
+    Private bloc(,) As Single
+    Private cloc(,) As Single
+    Private dloc(,) As Single
+    Private eloc(,) As Single
+
+    Private DepthLoc(,) As Integer
+
+    Private iStartRowLoc() As Integer
+    Private iEndRowLoc() As Integer
+    Private jStartColLoc() As Integer
+    Private jEndColLoc() As Integer
+    Private jordLoc() As Integer
+    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    Private m_stpwCopy As Stopwatch
+
+
 #End Region
 
 #Region "Constructor and Initialization"
@@ -178,11 +203,14 @@ Public Class cGridSolver
         Dim i As Integer
         Me.CPUTime = 0
         Dim stpw As Stopwatch = Stopwatch.StartNew
+        m_stpwCopy = New Stopwatch
         Try
 
             'set signal state to 'non-signaled' SignalState.WaitOne() will block
             WaitHandle.Reset()
             alternateRowCol = True
+
+            Me.CopyStartEndRowCol()
 
             'do the processing here
             'System.Console.WriteLine("Solve() " & iFrstGrp.ToString & "," & iLastGrp.ToString)
@@ -193,7 +221,15 @@ Public Class cGridSolver
                     If useExact And isMigratory(iGrp) Then
                         solveExact(iGrp)
                     Else
-                        SolveGrid(iGrp)
+                        If bUseLocalMemory Then
+                            'Copies core memory to local arrays for running on Hungabee
+                            'otherwise the same as SolveGrid_SharedMemory
+                            SolveGrid_LocalMemory(iGrp)
+                        Else
+                            'Uses core map arrays directly
+                            SolveGrid_SharedMemory(iGrp)
+                        End If
+
                         If Not alternateRowCol Then
                             SolveGridRow(iGrp)
                         End If
@@ -205,13 +241,16 @@ Public Class cGridSolver
         Catch ex As Exception
             cLog.Write(ex) 'this is dangerous clog.Write is not thread safe
             Debug.Assert(False, ex.Message)
-
         End Try
 
         'set signal state to 'signaled' 
         'the processing has finished SignalState.WaitOne() will return immediately
         If Interlocked.Decrement(cGridSolver.ThreadIncrementer) = 0 Then
             WaitHandle.Set()
+        End If
+
+        If Me.bUseLocalMemory Then
+            System.Console.WriteLine("Grid copy CPU time (sec), " + Me.m_stpwCopy.Elapsed.TotalSeconds.ToString)
         End If
 
         Me.CPUTime = CSng(stpw.Elapsed.TotalSeconds)
@@ -266,7 +305,15 @@ Public Class cGridSolver
 
 #Region "Grid solving computational code"
 
-    Private Sub SolveGrid(ByVal ip As Integer)
+    ''' <summary>
+    ''' Solve the grid diffusion matrix on directly on core memory.
+    ''' </summary>
+    ''' <param name="ip">Index of group</param>
+    ''' <remarks>
+    ''' Run if <see cref="bUseLocalMemory"></see> = False. 
+    ''' This will run faster on small to medium sized models.
+    ''' </remarks>
+    Private Sub SolveGrid_SharedMemory(ByVal ip As Integer)
         'this routine solves for equilibrium field of concentrations x over a grid
         ' x(i,j) is equilibrium concentration of x in grid cell i,j
         'am(i,j) is total loss rate of x from cell i,j...NB:am(i,j)<0 !!!!!!
@@ -386,7 +433,6 @@ iterate:
 
                         If X(i, j, ip) > 0.0000000001 And Math.Abs((X(i, j, ip) - Xold(i, j)) / (Xold(i, j) + 1.0E-20)) > Tol * timeStep Then
                             ic = ic + 1
-
                         End If
                         totDiff = totDiff + Math.Abs(X(i, j, ip) - Xold(i, j))
                         totdiff2 = totdiff2 + X(i, j, ip) - Xold(i, j)
@@ -436,8 +482,8 @@ iterate:
 
                             If X(i, j, ip) > 0.0000000001 And Math.Abs((X(i, j, ip) - Xold(i, j)) / (Xold(i, j) + 1.0E-20)) > Tol * timeStep Then
                                 ic = ic + 1
-
                             End If
+
                             totDiff = totDiff + Math.Abs(X(i, j, ip) - Xold(i, j))
                             totdiff2 = totdiff2 + X(i, j, ip) - Xold(i, j)
 
@@ -471,6 +517,337 @@ exitline:
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
+    End Sub
+
+
+
+
+    Private Sub CopyToLocal(ByVal ip As Integer)
+
+        Debug.Assert(Me.bUseLocalMemory, Me.ToString + ".CopyToLocal() Called when local memory is not being used.")
+
+        m_stpwCopy.Start()
+
+        Xloc = New Single(M + 1, NomCols + 1) {}
+        AlocLoc = New Single(M + 1, NomCols + 1) {}
+        FlocLoc = New Single(M + 1, NomCols + 1) {}
+        bloc = New Single(M + 1, NomCols + 1) {}
+        cloc = New Single(M + 1, NomCols + 1) {}
+        dloc = New Single(M + 1, NomCols + 1) {}
+        eloc = New Single(M + 1, NomCols + 1) {}
+
+        'ReDim Xloc(M + 1, NomCols + 1)
+        'ReDim AlocLoc(M + 1, NomCols + 1)
+        'ReDim FlocLoc(M + 1, NomCols + 1)
+        'ReDim bloc(M + 1, NomCols + 1)
+        'ReDim cloc(M + 1, NomCols + 1)
+        'ReDim dloc(M + 1, NomCols + 1)
+        'ReDim eloc(M + 1, NomCols + 1)
+
+
+        For i As Integer = 0 To M + 1
+            For j As Integer = 0 To NomCols + 1
+                Xloc(i, j) = X(i, j, ip)
+                AlocLoc(i, j) = Aloc(i, j, ip)
+                FlocLoc(i, j) = Floc(i, j, ip)
+                cloc(i, j) = C(i, j, ip)
+                dloc(i, j) = d(i, j, ip)
+                eloc(i, j) = e(i, j, ip)
+                bloc(i, j) = Bcw(i, j, ip)
+            Next
+        Next
+
+        m_stpwCopy.Stop()
+
+    End Sub
+
+
+    Private Sub CopyStartEndRowCol()
+
+        If Me.bUseLocalMemory Then
+            m_stpwCopy.Start()
+
+            iStartRowLoc = New Integer(NomCols) {}
+            iEndRowLoc = New Integer(NomCols) {}
+            jordLoc = New Integer(NomCols) {}
+            jStartColLoc = New Integer(M) {}
+            jEndColLoc = New Integer(M) {}
+
+            DepthLoc = New Integer(M + 1, NomCols + 1) {}
+
+            'ReDim iStartRowLoc(NomCols)
+            'ReDim iEndRowLoc(NomCols)
+            'ReDim jordLoc(NomCols)
+            'ReDim jStartColLoc(M)
+            'ReDim jEndColLoc(M)
+
+            'ReDim DepthLoc(M + 1, NomCols + 1)
+
+            'Dim j As Integer
+            'Dim i As Integer
+            'For i = 1 To M
+            '    jStartColLoc(i) = jStartCol(i)
+            '    jEndColLoc(i) = jEndCol(i)
+            'Next
+
+            'For j = 1 To NomCols
+            '    Me.iStartRowLoc(j) = iStartRow(j)
+            '    iEndRowLoc(j) = iEndRow(j)
+            '    jordLoc(j) = jord(j)
+            'Next
+
+            'For i = 0 To M + 1
+            '    For j = 0 To NomCols + 1
+            '        DepthLoc(i, i) = Depth(i, j)
+            '    Next
+            'Next
+            'ReDim DepthLoc(M + 1, NomCols + 1)
+            Array.Copy(Me.Depth, Me.DepthLoc, Me.Depth.Length)
+
+            Array.Copy(Me.iStartRow, Me.iStartRowLoc, NomCols + 1)
+            Array.Copy(Me.iEndRow, Me.iEndRowLoc, NomCols + 1)
+            Array.Copy(Me.jord, Me.jordLoc, NomCols + 1)
+
+            Array.Copy(Me.jStartCol, Me.jStartColLoc, M + 1)
+            Array.Copy(Me.jEndCol, Me.jEndColLoc, M + 1)
+
+            m_stpwCopy.Stop()
+        End If
+
+
+    End Sub
+
+
+    Private Sub UpdateCoreData(ip As Integer)
+        m_stpwCopy.Start()
+        For i As Integer = 0 To M + 1
+            For j As Integer = 0 To NomCols + 1
+                X(i, j, ip) = Xloc(i, j)
+                '  Aloc(i, j, ip) = Alocloc(i, j)
+                '  Floc(i, j, ip) = Flocloc(i, j)
+            Next
+        Next
+        m_stpwCopy.Stop()
+    End Sub
+
+    ''' <summary>
+    ''' Solve the grid diffusion matrix on local arrays copied from the core data
+    ''' </summary>
+    ''' <param name="ip">Index of group</param>
+    ''' <remarks>
+    ''' Run if <see cref="bUseLocalMemory"></see> = true. Use for big models run on a NUMA (non uniform memory access) computer. 
+    ''' This can run faster on a normal multicore computer if the model is big enough i.e. One Degree World model.
+    ''' </remarks>
+    Private Sub SolveGrid_LocalMemory(ByVal ip As Integer)
+        'this routine solves for equilibrium field of concentrations x over a grid
+        ' Xloc(i,j) is equilibrium concentration of x in grid cell i,j
+        'am(i,j) is total loss rate of x from cell i,j...NB:am(i,j)<0 !!!!!!
+        'b(i,j) is loss rate from element i-1 to i in column j of grid
+        'c(i,j) is loss rate from element i+1 to i in column j of grid
+        'd(i,j) is loss rate from element j to element j+1 in row i of grid
+        'e(i,j) is loss rate from element j to element j-1 in row i of grid
+        'f(i,j) is forcing input to element i,j from sources outside the grid
+        'm is number of rows (i) in grid
+        'NomCols is number of columns (j) in grid
+        'tol is tolerance limit for change in iterative solution
+        'jord(k) is which column j to do as k=1, k=2,...,k=n (iteration order)
+        'w is SOR overrelaxation parameter-found 1.25 to be good for typical problems
+        Dim iter As Integer, j As Integer, i As Integer, jj As Integer, ic As Integer
+
+        Dim alfa(,) As Single
+        Dim gam(,) As Single
+        Dim rhs(,) As Single
+        Dim G() As Single
+        Dim Xold(,) As Single
+        ReDim alfa(M + 1, NomCols + 1)
+        ReDim gam(M + 1, NomCols + 1)
+        ReDim rhs(M + 1, NomCols + 1)
+        ReDim G(M + 1)
+        ReDim Xold(M + 1, NomCols + 1)
+        Dim alfa2(,) As Single
+        Dim gam2(,) As Single
+        Dim G2() As Single
+        ReDim G2(NomCols + 1)
+        ReDim alfa2(M + 1, NomCols + 1)
+        ReDim gam2(M + 1, NomCols + 1)
+
+        Dim totDiff As Single
+        Dim totOld As Single
+        Dim totdiff2 As Single
+
+        Dim Wold As Single = W
+
+        'System.Console.WriteLine("SolveGrid() " & ip.ToString)
+        Try
+
+            Me.CopyToLocal(ip)
+
+            'first compute LU decomposition elements for each column j
+            'If StopRun = 1 Then Exit Sub
+            For i = 0 To M + 1
+                For j = 0 To NomCols + 1
+                    Xold(i, j) = Xloc(i, j)
+                Next
+            Next
+            For j = 1 To NomCols
+                'Xold(1, j) = Xloc(1, j, ip)
+                If AlocLoc(iStartRowLoc(j), j) = 0 Then AlocLoc(iStartRowLoc(j), j) = -1.0 'E+30
+                alfa(iStartRowLoc(j), j) = AlocLoc(iStartRowLoc(j), j)
+                gam(iStartRowLoc(j), j) = cloc(iStartRowLoc(j), j) / alfa(iStartRowLoc(j), j)
+                'For i = 1 To M
+                'Xold(i, j) = Xloc(i, j, ip)
+                'Next
+                For i = iStartRowLoc(j) + 1 To iEndRowLoc(j)
+                    If AlocLoc(i, j) = 0 Then AlocLoc(i, j) = -1.0 'E+30
+                    alfa(i, j) = AlocLoc(i, j) - bloc(i, j) * gam(i - 1, j)
+                    gam(i, j) = cloc(i, j) / alfa(i, j)
+                Next
+            Next
+            If alternateRowCol Then
+                For i = 1 To M
+                    'Xold(i, 1) = Xloc(i, 1, ip)
+                    If jStartColLoc(i) <= jEndColLoc(i) Then 'if the row is not all land
+                        If AlocLoc(i, jStartColLoc(i)) = 0 Then AlocLoc(i, jStartColLoc(i)) = -1.0 'E+30
+                        alfa2(i, jStartColLoc(i)) = AlocLoc(i, jStartColLoc(i))
+                        gam2(i, jStartColLoc(i)) = e(i, jStartColLoc(i) + 1, ip) / alfa2(i, jStartColLoc(i))
+                    End If
+                    For j = jStartColLoc(i) + 1 To jEndColLoc(i)
+                        'Xold(i, j) = Xloc(i, j, ip)
+                        If AlocLoc(i, j) = 0 Then AlocLoc(i, j) = -1.0 'E+30
+                        alfa2(i, j) = AlocLoc(i, j) - dloc(i, j - 1) * gam2(i, j - 1)
+                        gam2(i, j) = eloc(i, j + 1) / alfa2(i, j)
+                    Next
+                Next
+            End If
+            'now begin block Gauss-Seidel/SOR iteration over columns of grid
+            'at each iteration, solve explicitly for values in each column given
+            'current estimates of "forcing" input from other columns based on their
+            'current estimates
+            iter = 0
+iterate:
+            For jj = 1 To NomCols
+
+                j = jordLoc(jj)
+                For i = iStartRowLoc(j) To iEndRowLoc(j)
+                    rhs(i, j) = -FlocLoc(i, j) - dloc(i, j - 1) * Xloc(i, j - 1) - eloc(i, j + 1) * Xloc(i, j + 1)
+                Next
+                rhs(iStartRowLoc(j), j) = rhs(iStartRowLoc(j), j) - bloc(iStartRowLoc(j), j) * Xloc(iStartRowLoc(j) - 1, j)
+                rhs(iEndRowLoc(j), j) = rhs(iEndRowLoc(j), j) - cloc(iEndRowLoc(j), j) * Xloc(iEndRowLoc(j) + 1, j)
+                'now solve for Xloc(i,j) over i using these forcing inputs to one dimensional
+                'tridiagonal solver
+                G(iStartRowLoc(j)) = rhs(iStartRowLoc(j), j) / alfa(iStartRowLoc(j), j)
+                'IF iflag > 0 THEN FOR i = 1 TO m: PRINT Xloc(i, j), xold(i, j): NEXT: STOP
+                For i = iStartRowLoc(j) + 1 To iEndRowLoc(j)
+                    G(i) = (rhs(i, j) - bloc(i, j) * G(i - 1)) / alfa(i, j)
+                Next
+
+                Xloc(iEndRowLoc(j), j) = G(iEndRowLoc(j))
+                For i = iEndRowLoc(j) - 1 To iStartRowLoc(j) Step -1
+                    Xloc(i, j) = G(i) - gam(i, j) * Xloc(i + 1, j)
+                Next
+
+                For i = iStartRowLoc(j) To iEndRowLoc(j)
+                    Xloc(i, j) = (1 - W) * Xold(i, j) + W * Xloc(i, j)
+                Next
+            Next
+
+            ic = 0
+            totDiff = 0
+            totdiff2 = 0
+            totOld = 0
+            For j = 1 To NomCols
+                For i = iStartRowLoc(j) To iEndRowLoc(j)
+                    If DepthLoc(i, j) > 0 Then
+
+                        If Xloc(i, j) > 0.0000000001 And Math.Abs((Xloc(i, j) - Xold(i, j)) / (Xold(i, j) + 1.0E-20)) > Tol * timeStep Then
+                            ic = ic + 1
+                        End If
+                        totDiff = totDiff + Math.Abs(Xloc(i, j) - Xold(i, j))
+                        totdiff2 = totdiff2 + Xloc(i, j) - Xold(i, j)
+
+                        Xold(i, j) = Xloc(i, j)
+                        If Math.Abs(Xold(i, j)) < 1.0E-20 Then
+                            Xold(i, j) = 0
+                        End If
+                        totOld = totOld + Xold(i, j)
+                    End If
+                Next
+            Next
+
+            If alternateRowCol Then
+                For i = 1 To M
+                    ' If StopRun = 1 Then Exit Sub
+                    'j = jord(jj)
+                    For j = jStartColLoc(i) To jEndColLoc(i)
+                        rhs(i, j) = -FlocLoc(i, j) - bloc(i, j) * Xloc(i - 1, j) - cloc(i, j) * Xloc(i + 1, j)
+                    Next
+                    rhs(i, jStartColLoc(i)) = rhs(i, jStartColLoc(i)) - dloc(i, jStartColLoc(i) - 1) * Xloc(i, jStartColLoc(i) - 1)
+                    rhs(i, jEndColLoc(i)) = rhs(i, jEndColLoc(i)) - eloc(i, jEndColLoc(i) + 1) * Xloc(i, jEndColLoc(i) + 1)
+                    'now solve for Xloc(i,j) over i using these forcing inputs to one dimensional
+                    'tridiagonal solver
+                    G2(jStartColLoc(i)) = rhs(i, jStartColLoc(i)) / alfa2(i, jStartColLoc(i))
+                    For j = jStartColLoc(i) To jEndColLoc(i)
+                        G2(j) = (rhs(i, j) - dloc(i, j - 1) * G2(j - 1)) / alfa2(i, j)
+                    Next
+
+                    Xloc(i, jEndColLoc(i)) = G2(jEndColLoc(i))
+                    For j = jEndColLoc(i) - 1 To jStartColLoc(i) Step -1
+                        Xloc(i, j) = G2(j) - gam2(i, j) * Xloc(i, j + 1)
+                    Next
+
+                    For j = jStartColLoc(i) To jEndColLoc(i)
+                        Xloc(i, j) = (1 - W) * Xold(i, j) + W * Xloc(i, j)
+                    Next
+                Next
+
+                totDiff = 0
+                totdiff2 = 0
+                totOld = 0
+                ic = 0
+                For i = 1 To M
+                    For j = jStartColLoc(i) To jEndColLoc(i)
+                        If DepthLoc(i, j) > 0 Then
+
+                            If Xloc(i, j) > 0.0000000001 And Math.Abs((Xloc(i, j) - Xold(i, j)) / (Xold(i, j) + 1.0E-20)) > Tol * timeStep Then
+                                ic = ic + 1
+                            End If
+
+                            totDiff = totDiff + Math.Abs(Xloc(i, j) - Xold(i, j))
+                            totdiff2 = totdiff2 + Xloc(i, j) - Xold(i, j)
+
+                            Xold(i, j) = Xloc(i, j)
+                            If Math.Abs(Xold(i, j)) < 1.0E-20 Then
+                                Xold(i, j) = 0 ': Stop
+                            End If
+                            totOld = totOld + Xold(i, j)
+                        End If
+                    Next j
+                Next i
+
+                'If Math.Abs(totdiff2 / totDiff) > 0.95 Then
+                '    W = 1.9
+                'Else
+                '    W = Wold
+                'End If
+
+            End If
+
+            iter = iter + 1
+            If ic > 0 And iter < maxIter Then GoTo iterate
+exitline:
+
+            Erase alfa, gam, rhs, G, Xold
+            iterThread = iterThread + iter
+            If alternateRowCol Then
+                iter = iter * 2
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        Me.UpdateCoreData(ip)
+
     End Sub
 
     Private Sub SolveGridRow(ByVal ip As Integer)

@@ -564,22 +564,24 @@ Public Class cEcospaceDataStructures
 
 
     ''' <summary>
-    ''' List of map cells that have a value in the Sail(,,)array less than FleetSailThreshold
+    ''' List of map cells that have a value in the Sail(,,)array less than EffortDistThreshold
     ''' </summary>
     ''' <remarks>Populate in <see cref="PopulateFleetCells"></see></remarks>
     Public FleetSailCells() As List(Of cRowCol)
 
     ''' <summary>
-    ''' Boolean flag to controll how effort is distributed. 
+    ''' Boolean flag is fishing effort restricted to cells with a Sail() of less than EffortDistThreshold
     ''' </summary>
-    ''' <remarks>True Effort is just distributed over subset of cell. False effort is distributed over all water cells.</remarks>
+    ''' <remarks>True if fishing effort is restricted. False effort is distributed over all water cells.</remarks>
     Public bUseEffortDistThreshold As Boolean
 
     ''' <summary>
-    ''' Threshold value for map cell inclusion in FleetSailCells(fleet).cRowCol
+    ''' Threshold value in the Sail(fleet,row,col) [sailing cost map] for a cells inclusion in effort distribution. 
     ''' </summary>
     ''' <remarks></remarks>
     Public EffortDistThreshold As Single
+
+    Public bUseLocalMemory As Boolean
 
 #End Region
 
@@ -1102,16 +1104,15 @@ Public Class cEcospaceDataStructures
     ''' <summary>
     ''' Populate <see cref="cEcospaceDataStructures.FleetSailCells"></see> with a list of map cells in <see cref="cEcospaceDataStructures.Sail"></see> that are less than <see cref="cEcospaceDataStructures.EffortDistThreshold"></see>
     ''' </summary>
-    ''' <remarks> FleetSailCells is used by <see cref="cEcoSpace.PredictEffortDistribution_bycell_Threaded"></see> to calculate effort distribution only on cells in the list</remarks>
+    ''' <remarks> FleetSailCells is used by <see cref="cEcoSpace.PredictEffortDistributionThreadedLoadShared"></see> to calculate effort distribution only on cells in the list</remarks>
     Public Sub PopulateFleetCells()
 
         If Not Me.bUseEffortDistThreshold Then Return
 
-        System.Console.WriteLine("Calculation map cells per fleet.")
+        System.Console.WriteLine("Calculating map cells per fleet.")
         System.Console.WriteLine("Number of water cells " + Me.nWaterCells.ToString)
         For iflt As Integer = 1 To Me.nFleets
             Me.FleetSailCells(iflt).Clear()
-
             For ir As Integer = 1 To Me.InRow
                 For ic As Integer = 1 To Me.InCol
                     If Depth(ir, ic) > 0 Then
@@ -1121,7 +1122,9 @@ Public Class cEcospaceDataStructures
                     End If 'Depth(ir, ic) > 0
                 Next ic
             Next ir
-            System.Console.WriteLine("  Fleet, " + iflt.ToString + ", n cells, " + FleetSailCells(iflt).Count.ToString)
+
+            System.Console.WriteLine("  Fleet " + iflt.ToString + " n cells, " + FleetSailCells(iflt).Count.ToString)
+
         Next iflt
 
     End Sub

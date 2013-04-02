@@ -689,6 +689,8 @@ Namespace Core
 
         EffortDistThreshold
 
+        EcospaceUseLocalMemory
+
         EcospaceIBMMovePacketOnStanza
 
         ''''''''''''''''''''''''''''
