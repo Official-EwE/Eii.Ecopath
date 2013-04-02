@@ -59,8 +59,9 @@ Namespace SystemUtilities
 
             ' Add extension to file name if missing
             If String.IsNullOrWhiteSpace(Path.GetExtension(strFileName)) Then
-                strFileName = Path.Combine(strFileName, ".xml")
+                strFileName = Path.ChangeExtension(strFileName, ".xml")
             End If
+
             ' Store file name prior to opening
             Me.m_strFileName = strFileName
 

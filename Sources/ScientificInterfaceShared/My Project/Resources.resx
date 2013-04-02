@@ -512,7 +512,7 @@
     <value>..\Resources\ZoomHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="FILEFILTER_FLOWDIAGRAM" xml:space="preserve">
-    <value>FlowDiagram files|*.ewefd,*.fd|All files (*.*)|*.*</value>
+    <value>Flow diagram layout files|*.fdlayout</value>
   </data>
   <data name="FILEFILTER_LOAD_RASTER" xml:space="preserve">
     <value>Comma-separated text files|*.csv|ESRI ascii file|*.asc|ESRI shape file|*.shp|Spatial raster files|*.asc;*.csv;*.shp</value>
@@ -2766,5 +2766,49 @@
   </data>
   <data name="TOOLTIP_SAVETOMAP" xml:space="preserve">
     <value>Save to geo-referenced map(s)</value>
+  </data>
+  <data name="STYLEFLAGS_CHECKED" xml:space="preserve">
+    <value>Needs attention</value>
+  </data>
+  <data name="STYLEFLAGS_COMPUTED" xml:space="preserve">
+    <value>Computed</value>
+  </data>
+  <data name="STYLEFLAGS_CORESTATUSFLAGSMASK" xml:space="preserve">
+    <value />
+    <comment>Do not translate</comment>
+  </data>
+  <data name="STYLEFLAGS_ERRORENCOUNTERED" xml:space="preserve">
+    <value>Unknown error</value>
+  </data>
+  <data name="STYLEFLAGS_FAILEDVALIDATION" xml:space="preserve">
+    <value>Invalid input</value>
+  </data>
+  <data name="STYLEFLAGS_HIGHLIGHT" xml:space="preserve">
+    <value>Highlighted</value>
+  </data>
+  <data name="STYLEFLAGS_INVALIDMODELRESULT" xml:space="preserve">
+    <value>Model error</value>
+  </data>
+  <data name="STYLEFLAGS_NAMES" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="STYLEFLAGS_NOTEDITABLE" xml:space="preserve">
+    <value>Read-only</value>
+  </data>
+  <data name="STYLEFLAGS_NULL" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="STYLEFLAGS_OK" xml:space="preserve">
+    <value />
+    <comment>Do not translate OK</comment>
+  </data>
+  <data name="STYLEFLAGS_REMARKS" xml:space="preserve">
+    <value>Has attached remarks</value>
+  </data>
+  <data name="STYLEFLAGS_SUM" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="STYLEFLAGS_TAXONNAME" xml:space="preserve">
+    <value>Taxon name</value>
   </data>
 </root>

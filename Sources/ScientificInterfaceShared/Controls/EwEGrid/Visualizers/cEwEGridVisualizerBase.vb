@@ -172,7 +172,7 @@ Namespace Controls.EwEGrid
             ' Render Image and Text
             Dim ftCell As Font = Me.GetCellFont()
             Using ft As New Font(ftCell, _
-                                 ftCell.Style Or DirectCast(IIf((style And cStyleGuide.eStyleFlags.TaxonItalics) > 0, FontStyle.Italic, ftCell.Style), FontStyle))
+                                 ftCell.Style Or DirectCast(IIf((style And cStyleGuide.eStyleFlags.Taxon) > 0, FontStyle.Italic, ftCell.Style), FontStyle))
                 Utility.PaintImageAndText(e.Graphics, rcClient, _
                     Me.Image, Me.ImageAlignment, Me.ImageStretch, _
                     cell.GetDisplayText(pos), _

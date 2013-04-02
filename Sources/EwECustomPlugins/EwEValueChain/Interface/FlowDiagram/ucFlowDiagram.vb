@@ -19,9 +19,18 @@
 
 Option Strict On
 Imports System.Drawing
+Imports System.Drawing.Imaging
+Imports System.IO
 Imports System.Windows.Forms
+Imports EwECore
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -208,5 +217,128 @@ Public Class ucFlowDiagram
     End Sub
 
 #End Region ' Mouse Events
+
+#Region " Commands "
+
+    Private Sub OnLoadLayout(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnLoadLayout.Click
+
+        If (Me.m_uic Is Nothing) Then Return
+
+        Dim ifData As cXMLINIfile = Nothing
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdFO As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+
+        cmdFO.Invoke(SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
+
+        If (cmdFO.Result = DialogResult.OK) Then
+            Try
+                ifData = New cXMLINIfile(cmdFO.FileName)
+                m_doodler.LoadFromFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+            Catch ex As Exception
+                Dim msg As New cMessage(String.Format(SharedResources.FILE_LOAD_ERROR_DETAIL, cmdFO.FileName, ex.Message), _
+                                        eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+            End Try
+        End If
+
+    End Sub
+
+    Private Sub OnSaveLayout(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnSaveLayout.Click
+
+        If (Me.m_uic Is Nothing) Then Return
+
+        Dim ifData As cXMLINIfile = Nothing
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        Dim strModelName As String = Me.m_uic.Core.EwEModel.Name
+
+        cmdFS.Invoke(cFileUtils.ToValidFileName(strModelName, False), SharedResources.FILEFILTER_FLOWDIAGRAM, 1)
+
+        If cmdFS.Result = Windows.Forms.DialogResult.OK Then
+            Try
+                ifData = New cXMLINIfile(cmdFS.FileName)
+                m_doodler.SaveToFile(ifData, Me.m_pbFlowDiagram.ClientRectangle)
+            Catch ex As Exception
+                Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                                        eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+            End Try
+        End If
+
+    End Sub
+
+    Private Sub OnSaveToImage(sender As System.Object, e As System.EventArgs) _
+        Handles m_tsbnSaveImage.Click
+
+        If (Me.m_uic Is Nothing) Then Return
+
+        Dim fmt As Imaging.ImageFormat = Imaging.ImageFormat.Bmp
+        Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+        Dim cmdFS As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        Dim fs As FileStream = Nothing
+        Dim hdc As IntPtr = Nothing ' :)
+        Dim mf As Metafile = Nothing
+        Dim bmp As Bitmap = New Bitmap(Me.m_pbFlowDiagram.Width, Me.m_pbFlowDiagram.Height, PixelFormat.Format32bppArgb)
+        Dim rc As Rectangle = Me.m_pbFlowDiagram.ClientRectangle
+        Dim strModelName As String = Me.m_uic.Core.EwEModel.Name
+
+        cmdFS.Invoke(cFileUtils.ToValidFileName(strModelName & "value chain flow diagram", False), SharedResources.FILEFILTER_IMAGE & "|" & SharedResources.FILEFILTER_IMAGE_EMF, 6)
+        If cmdFS.Result = DialogResult.OK Then
+            Select Case cmdFS.FilterIndex
+                Case 2
+                    fmt = Imaging.ImageFormat.Jpeg
+                Case 3
+                    fmt = Imaging.ImageFormat.Gif
+                Case 4
+                    fmt = Imaging.ImageFormat.Png
+                Case 5
+                    fmt = Imaging.ImageFormat.Tiff
+                Case 6
+                    fs = New FileStream(cmdFS.FileName, FileMode.Create)
+                    Using g As Graphics = Graphics.FromImage(bmp)
+                        hdc = g.GetHdc()
+                        mf = New Metafile(fs, hdc, EmfType.EmfOnly)
+                        g.ReleaseHdc(hdc)
+                    End Using
+                    Using g As Graphics = Graphics.FromImage(mf)
+                        Me.m_doodler.DrawFlowDiagram(g, rc)
+                    End Using
+                    fs.Close()
+                    mf.Dispose()
+                    bmp.Dispose()
+                    Return
+                Case Else
+                    fmt = Imaging.ImageFormat.Bmp
+            End Select
+
+            bmp.SetResolution(Me.StyleGuide.PreferredDPI, Me.StyleGuide.PreferredDPI)
+            Using g As Graphics = Graphics.FromImage(bmp)
+                Me.m_doodler.DrawFlowDiagram(g, rc)
+            End Using
+
+            Try
+                bmp.Save(cmdFS.FileName, fmt)
+
+                ' ToDo: globalize this
+                Dim msg As New cMessage(String.Format(SharedResources.GENERIC_FILESAVE_SUCCES, "Value Chain flow diagram image", cmdFS.FileName), _
+                                        eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(cmdFS.FileName)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+
+            Catch ex As Exception
+                cLog.Write(ex, "VC::ucFlowDiagram::OnSaveImage(" & cmdFS.FileName & ")")
+                Dim msg As New cMessage(String.Format(SharedResources.FILE_SAVE_ERROR_DETAIL, cmdFS.FileName, ex.Message), _
+                            eMessageType.DataImport, eCoreComponentType.External, eMessageImportance.Critical)
+                Me.m_uic.Core.Messages.SendMessage(msg)
+            End Try
+            bmp.Dispose()
+
+        End If
+
+    End Sub
+
+#End Region ' Commands
 
 End Class

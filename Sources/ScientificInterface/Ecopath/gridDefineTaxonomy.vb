@@ -699,9 +699,9 @@ Public Class gridDefineTaxonomy
         Me(iRow, eColumnTypes.Hierarchy).Tag = ti
         Me(iRow, eColumnTypes.Name) = New EwECell(ti.Common, GetType(String))
         Me(iRow, eColumnTypes.Name).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Species) = New EwECell(ti.Species, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
+        Me(iRow, eColumnTypes.Species) = New EwECell(ti.Species, GetType(String), cStyleGuide.eStyleFlags.Taxon)
         Me(iRow, eColumnTypes.Species).Behaviors.Add(Me.EwEEditHandler)
-        Me(iRow, eColumnTypes.Genus) = New EwECell(ti.Genus, GetType(String), cStyleGuide.eStyleFlags.TaxonItalics)
+        Me(iRow, eColumnTypes.Genus) = New EwECell(ti.Genus, GetType(String), cStyleGuide.eStyleFlags.Taxon)
         Me(iRow, eColumnTypes.Genus).Behaviors.Add(Me.EwEEditHandler)
         Me(iRow, eColumnTypes.Family) = New EwECell(ti.Family, GetType(String))
         Me(iRow, eColumnTypes.Family).Behaviors.Add(Me.EwEEditHandler)

@@ -101,7 +101,8 @@ Namespace Utilities
                 strText = strFile
             End If
 
-            Return strText
+            Return strText.Trim
+
         End Function
 
         ''' -------------------------------------------------------------------

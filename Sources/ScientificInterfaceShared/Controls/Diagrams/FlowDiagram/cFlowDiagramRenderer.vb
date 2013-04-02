@@ -194,6 +194,7 @@ Namespace Controls
                     inifile.SaveSetting("Locations", i.ToString + "xlabel", CStr(Me.m_tree.LabelLocation(i, rc).X))
                     inifile.SaveSetting("Locations", i.ToString + "ylabel", CStr(Me.m_tree.LabelLocation(i, rc).Y))
                 Next i
+                inifile.Flush()
 
             Catch ex As Exception
                 ' ToDo: send an error message

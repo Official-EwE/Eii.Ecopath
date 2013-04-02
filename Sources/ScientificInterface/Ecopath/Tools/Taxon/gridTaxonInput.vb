@@ -290,7 +290,7 @@ Namespace Ecopath.Input
             Me(iRow, eColumnTypes.Hierarchy) = New EwERowHeaderCell(CStr(taxon.Index))
 
             cell = New PropertyRowHeaderChildCell(propScName)
-            cell.Style = cStyleGuide.eStyleFlags.TaxonItalics
+            cell.Style = cStyleGuide.eStyleFlags.Taxon
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iRow, eColumnTypes.Name) = cell
             Me.RegisterLocalProperty(propScName)

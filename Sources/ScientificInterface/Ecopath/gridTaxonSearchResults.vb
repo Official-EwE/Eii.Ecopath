@@ -235,8 +235,8 @@ Public Class gridTaxonSearchResults
         Select Case col
             Case eColumnTypes.Index : value = iRow
             Case eColumnTypes.Common : value = result.Common
-            Case eColumnTypes.Species : value = result.Species : style = style Or cStyleGuide.eStyleFlags.TaxonItalics
-            Case eColumnTypes.Genus : value = result.Genus : style = style Or cStyleGuide.eStyleFlags.TaxonItalics
+            Case eColumnTypes.Species : value = result.Species : style = style Or cStyleGuide.eStyleFlags.Taxon
+            Case eColumnTypes.Genus : value = result.Genus : style = style Or cStyleGuide.eStyleFlags.Taxon
             Case eColumnTypes.Family : value = result.Family
             Case eColumnTypes.Order : value = result.Order
             Case eColumnTypes.Class : value = result.Class

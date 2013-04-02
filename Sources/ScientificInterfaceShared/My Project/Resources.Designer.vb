@@ -1148,7 +1148,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to FlowDiagram files|*.ewefd,*.fd|All files (*.*)|*.*.
+        '''  Looks up a localized string similar to Flow diagram layout files|*.fdlayout.
         '''</summary>
         Public ReadOnly Property FILEFILTER_FLOWDIAGRAM() As String
             Get
@@ -6558,6 +6558,132 @@ Namespace My.Resources
         Public ReadOnly Property STATUS_UPDATING() As String
             Get
                 Return ResourceManager.GetString("STATUS_UPDATING", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Needs attention.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_CHECKED() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_CHECKED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Computed.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_COMPUTED() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_COMPUTED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_CORESTATUSFLAGSMASK() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_CORESTATUSFLAGSMASK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Unknown error.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_ERRORENCOUNTERED() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_ERRORENCOUNTERED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Invalid input.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_FAILEDVALIDATION() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_FAILEDVALIDATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Highlighted.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_HIGHLIGHT() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_HIGHLIGHT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Model error.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_INVALIDMODELRESULT() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_INVALIDMODELRESULT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Name.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_NAMES() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_NAMES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Read-only.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_NOTEDITABLE() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_NOTEDITABLE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Empty.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_NULL() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_NULL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to .
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_OK() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_OK", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Has attached remarks.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_REMARKS() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_REMARKS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Summary.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_SUM() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_SUM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Taxon name.
+        '''</summary>
+        Public ReadOnly Property STYLEFLAGS_TAXONNAME() As String
+            Get
+                Return ResourceManager.GetString("STYLEFLAGS_TAXONNAME", resourceCulture)
             End Get
         End Property
         

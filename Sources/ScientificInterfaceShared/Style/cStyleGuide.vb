@@ -277,8 +277,8 @@ Namespace Style
             ''' <summary>Flag indicating that a value is a Name.</summary>
             Names = 524288 ' 2^19
 
-            ''' <summary>Flag indicating that a value is an italic taxon code.</summary>
-            TaxonItalics = 1048576 ' 2^20
+            ''' <summary>Flag indicating that a value is an taxon code.</summary>
+            Taxon = 1048576 ' 2^20
 
         End Enum
 
