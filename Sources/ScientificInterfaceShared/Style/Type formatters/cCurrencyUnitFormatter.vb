@@ -77,7 +77,7 @@ Namespace Style
                 Return Me.m_strCustom
             End If
 
-            Return String.Empty()
+            Return String.Empty
         End Function
 
     End Class
