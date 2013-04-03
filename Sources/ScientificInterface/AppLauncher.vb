@@ -1110,8 +1110,10 @@ Public Class AppLauncher
         Dim bNeedReply As Boolean = False
 
         Try
-            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins)
-            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins, ".\Plugins")
+            ' Load plug-ins from EwE root folder
+            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins, [option]:=SearchOption.TopDirectoryOnly)
+            ' Load plug-ins from dedicated plug-ins subfolder, recursively
+            Me.m_pluginManager.LoadPlugins(My.Settings.DisabledPlugins, ".\plugins")
         Catch ex As Exception
             ' Ouch!
         End Try

@@ -442,10 +442,12 @@ Public Class cPluginManager
     ''' plug-ins that should NOT be enabled. These assemblies will still have to 
     ''' be known by the manager in case the user wants to enable the assemblies 
     ''' in the future.</param>
-    ''' <param name="strPluginPath"></param>
+    ''' <param name="strPluginPath">The directory to search for plug-ins.</param>
+    ''' <param name="option">See <see cref="SearchOption"/>.</param>
     ''' -----------------------------------------------------------------------
     Public Sub LoadPlugins(Optional ByVal alDisabledPlugins As ArrayList = Nothing, _
-                           Optional ByVal strPluginPath As String = "")
+                           Optional ByVal strPluginPath As String = "", _
+                           Optional ByVal [option] As SearchOption = SearchOption.AllDirectories)
 
         Dim di As DirectoryInfo = Nothing
         Dim afi() As FileInfo = Nothing
@@ -466,7 +468,7 @@ Public Class cPluginManager
 
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
-            afi = di.GetFiles("*.dll")
+            afi = di.GetFiles("*.dll", [option])
 
             For Each fi As FileInfo In afi
                 Try
