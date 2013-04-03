@@ -53,7 +53,9 @@ Namespace Style
         Public Function GetDescriptor(ByVal value As Object, _
                                       Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
                                   Implements ITypeFormatter.GetDescriptor
+
             Dim unit As eUnitCurrencyType = DirectCast(value, eUnitCurrencyType)
+
             Select Case unit
                 Case eUnitCurrencyType.Calorie
                     Return My.Resources.UNIT_CURRENCY_CALORIE
@@ -70,7 +72,12 @@ Namespace Style
                 Case eUnitCurrencyType.WetWeight
                     Return My.Resources.UNIT_CURRENCY_WETWEIGHT
             End Select
-            Return m_strCustom
+
+            If Not String.IsNullOrWhiteSpace(Me.m_strCustom) Then
+                Return Me.m_strCustom
+            End If
+
+            Return String.Empty()
         End Function
 
     End Class
