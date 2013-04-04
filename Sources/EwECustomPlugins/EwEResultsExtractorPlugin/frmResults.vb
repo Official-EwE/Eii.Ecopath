@@ -1199,7 +1199,7 @@ Public Class frmResults
             CurrentFleet = FleetPreySelection.GetSelected(FleetIndex)
 
             'Get Index of fleet in EwE
-            For i = 0 To Core.nFleets - 1
+            For i = 0 To Core.nFleets
                 If Core.EcosimFleetOutput(i).Name = CurrentFleet.ParentName Then
                     EwEIndexFleet = i
                     Exit For
