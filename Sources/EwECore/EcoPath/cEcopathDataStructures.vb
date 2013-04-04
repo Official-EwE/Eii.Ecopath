@@ -745,10 +745,10 @@ Public Class cEcopathDataStructures
     ''' Was Public Sub ParamEstimate2() in original code
     ''' </remarks>
     Private Sub Compute_M2_Resp_and_Stats()
-
-        Dim Prod As Single = 0
-        Dim M2Sum As Single = 0
-        Dim strMsg As String = ""
+        Dim Prod As Single
+        Dim Consump As Single, UnAssimConsump As Single
+        Dim M2Sum As Single
+        Dim strMsg As String
         Dim i As Integer, j As Integer
         Dim b_resp_below_zero As Boolean = False
 
@@ -769,26 +769,47 @@ Public Class cEcopathDataStructures
             If i <= NumLiving Then
                 If QB(i) > 0 Then
 
-                    Consum = Consum + B(i) * QB(i)
-                    Prod = EE(i) * B(i) * PB(i) + FlowToDet(i)
+                    Prod = B(i) * PB(i)
+                    Consump = B(i) * QB(i)
+                    UnAssimConsump = GS(i) * Consump
 
-                    ' FlowToDet(i) is the total flow to Detritus
+                    'sum consumption across all the groups for Ecopath Stats
+                    Consum += Consump
+
+                    Resp(i) = Consump - Prod - UnAssimConsump
+                    'Respiration = zero if the units are nutrients
                     If Me.areUnitCurrencyNutrients() Then
-                        Resp(i) = 0 'Nutrient       B(i) * QB(i) - prod
-                    ElseIf PP(i) < 1 Then
-                        Resp(i) = B(i) * QB(i) - (1 - PP(i)) * Prod
-                    Else
-                        Resp(i) = B(i) * QB(i) - Prod
+                        Resp(i) = 0.0F 'Nutrient    
                     End If
+
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'jb 4-Apr-2013 Change to account for Unassimilated consumption
+                    'Consum = Consum + B(i) * QB(i)
+                    'Prod = EE(i) * B(i) * PB(i) + FlowToDet(i)
+
+                    '' FlowToDet(i) is the total flow to Detritus
+                    'If Me.areUnitCurrencyNutrients() Then
+                    '    Resp(i) = 0 'Nutrient       B(i) * QB(i) - prod
+                    'ElseIf PP(i) < 1 Then
+                    '    Resp(i) = B(i) * QB(i) - (1 - PP(i)) * Prod
+                    'Else
+                    '    Resp(i) = B(i) * QB(i) - Prod
+                    'End If
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
                 Else
+                    'Primary producers
                     'vc resp of pp OK  RESP(i) = 0
+                    Resp(i) = 0.0F
                 End If
             Else
+                'Detritus
                 'vc resp of detritus OK RESP(i) = 0
+                Resp(i) = 0.0F
             End If
 
-            RTZ = RTZ + Resp(i)
-
+            'Sum of respiration across all the groups
+            RTZ += Resp(i)
             If Resp(i) < 0 Then b_resp_below_zero = True 'pt = 2
 
         Next i
