@@ -816,7 +816,7 @@ Public Class cMPARandomSearch
 
             Dim data(,,) As Single = Me.m_SpaceData.ImportanceLayerMap
             Dim weight As Double
-            Dim LayerSum(Me.m_SpaceData.nImportanceLayers - 1) As Double
+            Dim LayerSum(Me.m_SpaceData.nImportanceLayers) As Double
 
             'VC2008Nov11, scaling each of the importance layers to have average 1
             For iL As Integer = 1 To Me.m_SpaceData.nImportanceLayers
