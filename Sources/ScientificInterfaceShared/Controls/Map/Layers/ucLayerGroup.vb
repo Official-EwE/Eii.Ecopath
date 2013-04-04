@@ -23,6 +23,7 @@ Option Strict On
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -46,14 +47,17 @@ Namespace Controls.Map
         ''' <summary>States whether the mouse is hovering over the control.</summary>
         Private m_bHovering As Boolean = False
 
+        Private m_strCommand As String = ""
+
         ' Images cache for faster rendering
         Protected Shared g_imgEye0 As Image = SharedResources.Eye_open
         Protected Shared g_imgEye1 As Image = SharedResources.Eye_intermediate
         Protected Shared g_imgEye2 As Image = SharedResources.Eye_closed
+        Protected Shared g_imgEdit As Image = SharedResources.Editable
 
 #Region " Constructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal strText As String)
+        Public Sub New(ByVal uic As cUIContext, ByVal strText As String, ByVal strCommand As String)
             Me.InitializeComponent()
 
             'Enable double buffering
@@ -64,6 +68,7 @@ Namespace Controls.Map
 
             Me.m_uic = uic
             Me.Text = strText
+            Me.m_strCommand = strCommand
 
             Me.UpdateControls()
         End Sub
@@ -248,10 +253,11 @@ Namespace Controls.Map
             Dim rcCollapse As Rectangle = Nothing
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
+            Dim rcEdit As Rectangle = Nothing
             Dim img As Image = Nothing
             Dim fmt As New StringFormat()
 
-            Me.GetRectangles(rcControl, rcCollapse, rcVisible, rcLabel)
+            Me.GetRectangles(rcControl, rcCollapse, rcVisible, rcLabel, rcEdit)
 
             ' Paint background
             e.Graphics.FillRectangle(SystemBrushes.Control, rcControl)
@@ -276,6 +282,10 @@ Namespace Controls.Map
                     img = g_imgEye1
             End Select
             e.Graphics.DrawImage(img, rcVisible)
+
+            If Not String.IsNullOrWhiteSpace(Me.m_strCommand) Then
+                e.Graphics.DrawImage(g_imgEdit, rcEdit)
+            End If
 
             ' Draw label
             fmt.LineAlignment = StringAlignment.Center
@@ -311,6 +321,9 @@ Namespace Controls.Map
 
                 Case eAreaTypes.Visible
                     Me.ShowAllLayers(Not Me.m_bAllLayersShown)
+
+                Case eAreaTypes.Edit
+                    Me.InvokeEditCommand()
 
             End Select
 
@@ -367,16 +380,18 @@ Namespace Controls.Map
             Visible
             ''' <summary>Label area of this control.</summary>
             Label
+            ''' <summary>Edit area of this control.</summary>
+            Edit
         End Enum
 
-        Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcCollapse As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle)
+        Private Sub GetRectangles(ByVal rcControl As Rectangle, ByRef rcCollapse As Rectangle, ByRef rcVisible As Rectangle, ByRef rcLabel As Rectangle, ByRef rcEdit As Rectangle)
 
             Dim iAvgPad As Integer = 3
 
             If (Me.m_uic.StyleGuide.IsRightToLeft) Then
-                ' [ [prev][label    ][vis][edt] ]
+                ' [ [edit][label    ][vis][Collapse] ]
                 rcCollapse.X = rcControl.Width - iAvgPad - 16
-                rcCollapse.Y = 2
+                rcCollapse.Y = CInt((rcControl.Height - 16) / 2)
                 rcCollapse.Width = 16
                 rcCollapse.Height = 16
 
@@ -385,14 +400,19 @@ Namespace Controls.Map
                 rcVisible.Width = 16
                 rcVisible.Height = 16
 
-                rcLabel.X = iAvgPad
+                rcEdit.X = 2
+                rcEdit.Y = CInt((rcControl.Height - 16) / 2)
+                rcEdit.Width = 16
+                rcEdit.Height = 16
+
+                rcLabel.X = rcEdit.X + rcEdit.Width + iAvgPad
                 rcLabel.Y = 0
                 rcLabel.Width = rcVisible.X - rcLabel.X - iAvgPad
-                rcLabel.Height = 20
+                rcLabel.Height = rcControl.Height
             Else
-                ' [ [edt][vis][label    ][prev] ]
+                ' [ [Collapse][vis][label    ][edit] ]
                 rcCollapse.X = iAvgPad
-                rcCollapse.Y = 2
+                rcCollapse.Y = CInt((rcControl.Height - 16) / 2)
                 rcCollapse.Width = 16
                 rcCollapse.Height = 16
 
@@ -401,26 +421,35 @@ Namespace Controls.Map
                 rcVisible.Width = 16
                 rcVisible.Height = 16
 
+                rcEdit.X = rcControl.Width - 2 - 16
+                rcEdit.Y = CInt((rcControl.Height - 16) / 2)
+                rcEdit.Width = 16
+                rcEdit.Height = 16
+
                 rcLabel.X = rcVisible.X + rcVisible.Width + iAvgPad
                 rcLabel.Y = 0
-                rcLabel.Width = rcControl.Width - iAvgPad - rcLabel.X
-                rcLabel.Height = 20
+                rcLabel.Width = rcEdit.X - rcLabel.X - iAvgPad
+                rcLabel.Height = rcControl.Height
             End If
 
         End Sub
 
         Private Function GetArea(ByVal pt As Point) As eAreaTypes
+
             Dim rcControl As Rectangle = New Rectangle(0, 0, Me.Width, Me.m_fpItems.Location.Y)
             Dim rcCollapse As Rectangle = Nothing
             Dim rcVisible As Rectangle = Nothing
             Dim rcLabel As Rectangle = Nothing
+            Dim rcEdit As Rectangle = Nothing
 
-            Me.GetRectangles(rcControl, rcCollapse, rcVisible, rcLabel)
+            Me.GetRectangles(rcControl, rcCollapse, rcVisible, rcLabel, rcEdit)
 
             If rcCollapse.Contains(pt) Then Return eAreaTypes.Collapse
             If rcVisible.Contains(pt) Then Return eAreaTypes.Visible
+            If rcEdit.Contains(pt) And Not String.IsNullOrWhiteSpace(Me.m_strCommand) Then Return eAreaTypes.Edit
             If rcLabel.Contains(pt) Then Return eAreaTypes.Label
             If rcControl.Contains(pt) Then Return eAreaTypes.Background
+
             Return eAreaTypes.None
 
         End Function
@@ -492,6 +521,20 @@ Namespace Controls.Map
             Return TriState.UseDefault
 
         End Function
+
+        Private Sub InvokeEditCommand()
+
+            If (Me.m_uic Is Nothing) Then Return
+
+            Dim cmd As cCommand = Me.m_uic.CommandHandler.GetCommand(Me.m_strCommand)
+            If (cmd Is Nothing) Then Return
+
+            Try
+                cmd.Invoke()
+            Catch ex As Exception
+
+            End Try
+        End Sub
 
 #End Region ' Internal implementation
 

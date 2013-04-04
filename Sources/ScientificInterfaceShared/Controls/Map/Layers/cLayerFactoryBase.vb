@@ -20,8 +20,9 @@
 
 Option Strict On
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwECore.Auxiliary
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Style
 
@@ -385,6 +386,37 @@ Namespace Controls.Map
 
             End Select
             Return strGroup
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the name of a <see cref="EwEUtils.Commands.cCommand"/> that can
+        ''' be triggered to modify the items within a layer group.
+        ''' </summary>
+        ''' <param name="varName">The <see cref="eVarNameFlags"/> to obtain the 
+        ''' edit command for.</param>
+        ''' <returns>A command name, or an empty string if not applicable.</returns>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function GetLayerGroupEditCommand(ByVal varName As eVarNameFlags) As String
+
+            Dim strCommand As String = ""
+            Select Case varName
+
+                Case eVarNameFlags.LayerHabitat
+                    strCommand = cEditHabitatsCommand.cCOMMAND_NAME
+
+                Case eVarNameFlags.LayerMPA
+                    strCommand = cEditMPAsCommand.cCOMMAND_NAME
+
+                Case eVarNameFlags.LayerImportance
+                    strCommand = cEditImportanceLayersCommand.cCOMMAND_NAME
+
+                Case eVarNameFlags.LayerDriver
+                    strCommand = cEditDriverLayersCommand.cCOMMAND_NAME
+
+            End Select
+            Return strCommand
 
         End Function
 

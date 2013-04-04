@@ -49,8 +49,6 @@ Namespace Ecospace.Basemap
             Me.m_tlpControls = New System.Windows.Forms.TableLayoutPanel()
             Me.m_tsEditBasemapThingies = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.tsbEditBasemap = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbDefineHabitats = New System.Windows.Forms.ToolStripButton()
-            Me.m_tsbDefineMPA = New System.Windows.Forms.ToolStripButton()
             Me.m_ucLayers = New ScientificInterfaceShared.Controls.Map.ucLayersControl()
             Me.m_plEditor = New System.Windows.Forms.Panel()
             CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -104,27 +102,14 @@ Namespace Ecospace.Basemap
             '
             resources.ApplyResources(Me.m_tsEditBasemapThingies, "m_tsEditBasemapThingies")
             Me.m_tsEditBasemapThingies.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-            Me.m_tsEditBasemapThingies.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEditBasemap, Me.m_tsbDefineHabitats, Me.m_tsbDefineMPA})
+            Me.m_tsEditBasemapThingies.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbEditBasemap})
             Me.m_tsEditBasemapThingies.Name = "m_tsEditBasemapThingies"
             Me.m_tsEditBasemapThingies.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
             '
             'tsbEditBasemap
             '
-            Me.tsbEditBasemap.Image = SharedResources.basemap
             resources.ApplyResources(Me.tsbEditBasemap, "tsbEditBasemap")
             Me.tsbEditBasemap.Name = "tsbEditBasemap"
-            '
-            'm_tsbDefineHabitats
-            '
-            Me.m_tsbDefineHabitats.Image = SharedResources.Habitat
-            resources.ApplyResources(Me.m_tsbDefineHabitats, "m_tsbDefineHabitats")
-            Me.m_tsbDefineHabitats.Name = "m_tsbDefineHabitats"
-            '
-            'm_tsbDefineMPA
-            '
-            Me.m_tsbDefineMPA.Image = SharedResources.Resources.MPA
-            resources.ApplyResources(Me.m_tsbDefineMPA, "m_tsbDefineMPA")
-            Me.m_tsbDefineMPA.Name = "m_tsbDefineMPA"
             '
             'm_ucLayers
             '
@@ -165,8 +150,6 @@ Namespace Ecospace.Basemap
         Private WithEvents m_tlpControls As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_tsEditBasemapThingies As cEwEToolstrip
         Private WithEvents tsbEditBasemap As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbDefineHabitats As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_tsbDefineMPA As System.Windows.Forms.ToolStripButton
         Private WithEvents m_plEditor As System.Windows.Forms.Panel
         Private WithEvents m_zoomContainer As ucMapZoom
         Private WithEvents m_zoomToolbar As ucMapZoomToolbar

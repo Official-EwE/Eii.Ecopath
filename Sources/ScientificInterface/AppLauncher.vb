@@ -483,19 +483,19 @@ Public Class AppLauncher
         Me.m_cmdEditBasemap = New cCommand(cmdh, "EditBasemap")
         Me.m_cmdEditBasemap.AddControl(Me.m_tsmiEcospaceEditMap)
 
-        Me.m_cmdEditHabitats = New cCommand(cmdh, "EditHabitats")
+        Me.m_cmdEditHabitats = New cEditHabitatsCommand(cmdh)
         Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceDefineHabitats)
 
         'Me.m_cmdEditRegions = New cCommand(cmdh, "EditRegions")
         'Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceDefineRegions)
 
-        Me.m_cmdEditMPAs = New cCommand(cmdh, "EditMPAs")
+        Me.m_cmdEditMPAs = New cEditMPAsCommand(cmdh)
         Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceDefineMPAs)
 
-        Me.m_cmdDefineImportanceMaps = New cCommand(cmdh, "EditImportanceMaps")
+        Me.m_cmdDefineImportanceMaps = New cEditImportanceLayersCommand(cmdh)
         Me.m_cmdDefineImportanceMaps.AddControl(Me.m_tsmiEcospaceDefineImportanceMaps)
 
-        Me.m_cmdDefineInputLayers = New cCommand(cmdh, "EditInputMaps")
+        Me.m_cmdDefineInputLayers = New cEditDriverLayersCommand(cmdh)
         Me.m_cmdDefineInputLayers.AddControl(Me.m_tsmiEcospaceInputMaps)
 
         Me.m_cmdEcospaceDataConnections = New cEcospaceExternalDataCommand(cmdh)

@@ -119,6 +119,10 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\cEditHabitatsCommand.vb" />
+    <Compile Include="Commands\cEditMPAsCommand.vb" />
+    <Compile Include="Commands\cEditImportanceLayersCommand.vb" />
+    <Compile Include="Commands\cEditDriverLayersCommand.vb" />
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramRenderer.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramTree.vb" />

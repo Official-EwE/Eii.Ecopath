@@ -145,7 +145,7 @@
     <value>m_zoomToolbar</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoomToolbar, ScientificInterfaceShared, Version=6.3.9034.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomToolbar.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -172,7 +172,7 @@
     <value>m_zoomContainer</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucMapZoom, ScientificInterfaceShared, Version=6.3.9034.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_zoomContainer.Parent" xml:space="preserve">
     <value>SplitContainer1.Panel1</value>
@@ -198,59 +198,41 @@
   <metadata name="m_tsEditBasemapThingies.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>0, 0</value>
   </metadata>
-  <data name="m_tsEditBasemapThingies.AutoSize" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="m_tsEditBasemapThingies.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="tsbEditBasemap.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIWSURBVDhPrdHtT9JhFIBh/zY3PzRTpzkVTARrNjFLq9Wy
+        Wu8oLDSdms6UlTKmxksLmczGRJAgUSoNRaUXkyk4jAI1xXZn5Jf6sdWqs90fz/U828n4LxOLRfmbDtZ/
+        AJoXMoZmqnEs1eNfVjO+pKPJP0+FN0GBc4fskWSqLNMemYNfhUD381Is4dNMbFzG8+YaG0ktjpgbVQTE
+        7m3qfKSSOyHTkAZocxZjXKliJHIGi/8s4WQ7q9tGzB8DVHujXJgl1alJyHq8KwSax/JpnyihZ1KKfq4G
+        W+A8M0EV9kAfrQsLyDyxVPljCQ5ZtojH4z8DKmseDwMSHr2vROOV4Yhe4t22muhuP/pXeu5E9lJdnIec
+        0YQQUJpy0cyK6V+U0ukqZThchyd2ndWdNjyBDgY2lrnxAa4GodAeFwJqXQH3p0Vo5sS0jBVhCFUzun6O
+        mcRtvAEFvk9PaV7bRBECqXNdCLR0l6AcyKPxSQ53x4/Qai+myyVB663CFbyCd06F0adB5ZtC7ggJgc6W
+        MvqtMno8YhrMh+lbKGdo+QTmtVoGp0+y8qV1/0pW6v2fOW5L84M/AayrRmpnk0htm0KgS1mO3ijngU3C
+        LUM2vX4R2iXZ/qtyet3HeBm/ifrtayqegcia5oxdDRI6lBKaOoto1OWgMGXTYMmlyVbIvfGjaNyV1Nin
+        yBveoswSFQK/6/vCrx2s/8tkZHwDvL11siTmtrAAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="tsbEditBasemap.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="tsbEditBasemap.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="tsbEditBasemap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 37</value>
+    <value>111, 22</value>
   </data>
   <data name="tsbEditBasemap.Text" xml:space="preserve">
-    <value>M&amp;ap</value>
-  </data>
-  <data name="tsbEditBasemap.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="m_tsbDefineHabitats.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbDefineHabitats.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 37</value>
-  </data>
-  <data name="m_tsbDefineHabitats.Text" xml:space="preserve">
-    <value>&amp;Habitat</value>
-  </data>
-  <data name="m_tsbDefineHabitats.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="m_tsbDefineHabitats.ToolTipText" xml:space="preserve">
-    <value>Define habitats</value>
-  </data>
-  <data name="m_tsbDefineMPA.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbDefineMPA.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 37</value>
-  </data>
-  <data name="m_tsbDefineMPA.Text" xml:space="preserve">
-    <value>&amp;MPA</value>
-  </data>
-  <data name="m_tsbDefineMPA.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
-    <value>ImageAboveText</value>
-  </data>
-  <data name="m_tsbDefineMPA.ToolTipText" xml:space="preserve">
-    <value>Define Marine Protected Areas</value>
+    <value>Edit m&amp;ap details</value>
   </data>
   <data name="m_tsEditBasemapThingies.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="m_tsEditBasemapThingies.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 40</value>
+    <value>184, 25</value>
   </data>
   <data name="m_tsEditBasemapThingies.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -262,7 +244,7 @@
     <value>m_tsEditBasemapThingies</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9034.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_tsEditBasemapThingies.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -277,13 +259,13 @@
     <value>Fill</value>
   </data>
   <data name="m_ucLayers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 40</value>
+    <value>0, 25</value>
   </data>
   <data name="m_ucLayers.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="m_ucLayers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 525</value>
+    <value>184, 540</value>
   </data>
   <data name="m_ucLayers.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -292,7 +274,7 @@
     <value>m_ucLayers</value>
   </data>
   <data name="&gt;&gt;m_ucLayers.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.Map.ucLayersControl, ScientificInterfaceShared, Version=6.3.9034.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_ucLayers.Parent" xml:space="preserve">
     <value>m_tlpControls</value>
@@ -414,22 +396,10 @@
   <data name="&gt;&gt;tsbEditBasemap.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_tsbDefineHabitats.Name" xml:space="preserve">
-    <value>m_tsbDefineHabitats</value>
-  </data>
-  <data name="&gt;&gt;m_tsbDefineHabitats.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_tsbDefineMPA.Name" xml:space="preserve">
-    <value>m_tsbDefineMPA</value>
-  </data>
-  <data name="&gt;&gt;m_tsbDefineMPA.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>frmEcospaceMap</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.7759.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9034.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

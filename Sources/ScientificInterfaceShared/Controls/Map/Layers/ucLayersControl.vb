@@ -66,13 +66,13 @@ Namespace Controls.Map
         ''' <param name="layerPosition">Layer to position this layer before, if any</param>
         ''' <remarks>A layer can only be added once.</remarks>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal layer As cLayer, ByVal strGroup As String, Optional ByVal layerPosition As cLayer = Nothing)
+        Public Sub AddLayer(ByVal layer As cLayer, ByVal strGroup As String, ByVal strCommand As String, Optional ByVal layerPosition As cLayer = Nothing)
 
             Dim ucg As ucLayerGroup = Me.FindGroup(strGroup)
 
             If (ucg Is Nothing) Then
                 ' Add group
-                Me.AddGroup(strGroup)
+                Me.AddGroup(strGroup, strCommand)
                 ucg = Me.FindGroup(strGroup)
             End If
 
@@ -110,6 +110,7 @@ Namespace Controls.Map
         ''' <param name="strGroup">Name of the group to add.</param>
         ''' -------------------------------------------------------------------
         Public Sub AddGroup(ByVal strGroup As String, _
+                            ByVal strCommand As String, _
                             Optional ByVal bVisible As Boolean = True, _
                             Optional ByVal bClearGroup As Boolean = True)
             Dim ucg As ucLayerGroup = Nothing
@@ -127,7 +128,7 @@ Namespace Controls.Map
                 End If
             Else
                 ' #No: create new group layer control
-                ucg = New ucLayerGroup(Me.m_uic, strGroup)
+                ucg = New ucLayerGroup(Me.m_uic, strGroup, strCommand)
                 Me.m_fpItems.Controls.Add(ucg)
                 Me.m_dtGroups(strGroup) = ucg
             End If

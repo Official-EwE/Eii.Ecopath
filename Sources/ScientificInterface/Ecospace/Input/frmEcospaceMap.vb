@@ -49,8 +49,6 @@ Namespace Ecospace.Basemap
         Private m_ucBasemap As ucMap = Nothing
 
         Private m_cmdEditBasemap As cCommand = Nothing
-        Private m_cmdEditHabitats As cCommand = Nothing
-        Private m_cmdEditMPAs As cCommand = Nothing
 
 #End Region ' Private vars
 
@@ -105,20 +103,6 @@ Namespace Ecospace.Basemap
                 AddHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
             End If
 
-            Me.m_cmdEditHabitats = cmdh.GetCommand("EditHabitats")
-            If (Not Object.ReferenceEquals(Me.m_cmdEditHabitats, Nothing)) Then
-                Me.m_cmdEditHabitats.AddControl(Me.m_tsbDefineHabitats)
-                AddHandler Me.m_cmdEditHabitats.OnPreInvoke, AddressOf OnPreIvokeEditcommand
-                AddHandler Me.m_cmdEditHabitats.OnPostInvoke, AddressOf OnPostIvokeEditcommand
-            End If
-
-            Me.m_cmdEditMPAs = cmdh.GetCommand("EditMPAs")
-            If (Not Object.ReferenceEquals(Me.m_cmdEditMPAs, Nothing)) Then
-                Me.m_cmdEditMPAs.AddControl(Me.m_tsbDefineMPA)
-                AddHandler Me.m_cmdEditMPAs.OnPreInvoke, AddressOf OnPreIvokeEditcommand
-                AddHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
-            End If
-
             ' Initialize layers from core data
             Me.LoadCoreValuesToBasemap()
 
@@ -151,20 +135,6 @@ Namespace Ecospace.Basemap
                 RemoveHandler Me.m_cmdEditBasemap.OnPreInvoke, AddressOf OnPreIvokeEditcommand
                 RemoveHandler Me.m_cmdEditBasemap.OnPostInvoke, AddressOf OnPostIvokeEditcommand
                 Me.m_cmdEditBasemap = Nothing
-            End If
-
-            If (Not Object.ReferenceEquals(Me.m_cmdEditHabitats, Nothing)) Then
-                Me.m_cmdEditHabitats.RemoveControl(Me.m_tsbDefineHabitats)
-                RemoveHandler Me.m_cmdEditHabitats.OnPreInvoke, AddressOf OnPreIvokeEditcommand
-                RemoveHandler Me.m_cmdEditHabitats.OnPostInvoke, AddressOf OnPostIvokeEditcommand
-                Me.m_cmdEditHabitats = Nothing
-            End If
-
-            If (Not Object.ReferenceEquals(Me.m_cmdEditMPAs, Nothing)) Then
-                Me.m_cmdEditMPAs.RemoveControl(Me.m_tsbDefineMPA)
-                RemoveHandler Me.m_cmdEditMPAs.OnPreInvoke, AddressOf OnPreIvokeEditcommand
-                RemoveHandler Me.m_cmdEditMPAs.OnPostInvoke, AddressOf OnPostIvokeEditcommand
-                Me.m_cmdEditMPAs = Nothing
             End If
 
         End Sub
@@ -218,7 +188,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerSail, False)
             Dim l As New cStyleguideImageLayer(Me.UIContext)
             l.Name = ScientificInterfaceShared.My.Resources.HEADER_REFERENCE
-            Me.AddLayer(l, l.Name)
+            Me.AddLayer(l, l.Name, "")
             l.Renderer.IsVisible = False
             Me.AddData(eVarNameFlags.LayerMigration)
             Me.AddData(eVarNameFlags.LayerRelPP, False)
@@ -249,12 +219,13 @@ Namespace Ecospace.Basemap
             Dim factory As New cLayerFactoryInternal()
             Dim alayers As cLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim strGroup As String = factory.GetLayerGroup(varName)
+            Dim strCommand As String = factory.GetLayerGroupEditCommand(varName)
 
             ' Define group
-            Me.m_ucLayers.AddGroup(strGroup, True, bClearGroup)
+            Me.m_ucLayers.AddGroup(strGroup, strCommand, True, bClearGroup)
 
             For iLayer As Integer = 0 To alayers.Length - 1
-                Me.AddLayer(alayers(iLayer), strGroup)
+                Me.AddLayer(alayers(iLayer), strGroup, strCommand)
             Next
 
         End Sub
@@ -276,10 +247,10 @@ Namespace Ecospace.Basemap
         ''' Add a single layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As cLayer, ByVal strGroup As String)
+        Private Sub AddLayer(ByVal l As cLayer, ByVal strGroup As String, strCommand As String)
             Me.m_layers.Add(l)
             Me.m_ucBasemap.AddLayer(l)
-            Me.m_ucLayers.AddLayer(l, strGroup)
+            Me.m_ucLayers.AddLayer(l, strGroup, strCommand)
 
             AddHandler l.LayerChanged, AddressOf OnLayerChanged
         End Sub

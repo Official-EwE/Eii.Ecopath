@@ -217,6 +217,8 @@ Namespace Ecospace
             Me.InitProgressGraph()
             Me.InitOutputGraph()
 
+            Me.ReloadMPAChoices()
+
             ' Kick off
             Me.Reload()
             Me.OnSearchTypeChanged(Me.m_propSearchType, cProperty.eChangeFlags.All)
@@ -750,6 +752,7 @@ Namespace Ecospace
         End Function
 
         Private Function SelectedMPA() As Integer
+            If (Me.m_fpMPA Is Nothing) Then Return 0
             Return CInt(Me.m_fpMPA.Value())
         End Function
 
@@ -1019,17 +1022,18 @@ Namespace Ecospace
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
+            Dim strCommand As String = factory.GetLayerGroupEditCommand(varName)
             Dim alayers As cRasterLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim l As cLayer = Nothing
 
             ' Add group, and collapse and hide habitat layers
-            Me.m_ucLayers.AddGroup(strGroup, varName <> eVarNameFlags.LayerHabitat)
+            Me.m_ucLayers.AddGroup(strGroup, strCommand, varName <> eVarNameFlags.LayerHabitat)
 
             ' Add individual layers
             For iLayer As Integer = 0 To alayers.Length - 1
                 l = alayers(iLayer)
                 ' Add the layer to the control(s)
-                Me.AddLayer(l, strGroup)
+                Me.AddLayer(l, strGroup, strCommand)
             Next
 
             Return alayers
@@ -1075,7 +1079,7 @@ Namespace Ecospace
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup, Me.m_layerSeed)
+                            Me.AddLayer(l, strGroup, "", Me.m_layerSeed)
                         Next
                         lRunStateLayers.AddRange(alayers)
 
@@ -1084,7 +1088,7 @@ Namespace Ecospace
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup, Me.m_layerSeed)
+                            Me.AddLayer(l, strGroup, "", Me.m_layerSeed)
                         Next
 
                         lRunStateLayers.AddRange(alayers)
@@ -1099,7 +1103,7 @@ Namespace Ecospace
                         For iLayer As Integer = 0 To alayers.Length - 1
                             l = alayers(iLayer)
                             l.Editor.IsReadOnly = True
-                            Me.AddLayer(l, strGroup)
+                            Me.AddLayer(l, strGroup, "")
                         Next
                         lRunStateLayers.AddRange(alayers)
 
@@ -1342,10 +1346,10 @@ Namespace Ecospace
         ''' <param name="strGroup">Group to add the layer to.</param>
         ''' <param name="layerPosition">Layer to position this layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As cLayer, ByVal strGroup As String, Optional ByVal layerPosition As cLayer = Nothing)
+        Private Sub AddLayer(ByVal l As cLayer, ByVal strGroup As String, strCommand As String, Optional ByVal layerPosition As cLayer = Nothing)
             Me.m_lLayers.Add(l)
             Me.m_ucZoom.Map.AddLayer(l, layerPosition)
-            Me.m_ucLayers.AddLayer(l, strGroup, layerPosition)
+            Me.m_ucLayers.AddLayer(l, strGroup, strCommand, layerPosition)
             AddHandler l.LayerChanged, AddressOf OnLayerChanged
         End Sub
 
