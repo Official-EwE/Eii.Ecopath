@@ -9024,11 +9024,10 @@ Namespace DataSources
             Dim drow As DataRow = Nothing
             Dim bNewRow As Boolean = False
             Dim bSucces As Boolean = True
-            Dim objKeys() As Object = {Nothing, Nothing}
+            Dim objKey As Object = Nothing
 
             ' Get ID of scenario to save to
             iScenarioIDdest = idm.GetID(eDataTypes.EcoSpaceScenario, iScenarioIDSrc)
-            objKeys(0) = iScenarioIDdest
 
             lID = CInt(Me.m_db.GetValue("SELECT MAX(LayerID) FROM EcospaceScenarioWeightLayer", 0)) + 1
 
@@ -9039,8 +9038,8 @@ Namespace DataSources
                 For iLayer As Integer = 1 To ecospaceDS.nImportanceLayers
 
                     ' Try to find existing row
-                    objKeys(1) = idm.GetID(eDataTypes.EcospaceLayerImportance, ecospaceDS.ImportanceLayerDBID(iLayer))
-                    drow = dt.Rows.Find(objKeys)
+                    objKey = idm.GetID(eDataTypes.EcospaceLayerImportance, ecospaceDS.ImportanceLayerDBID(iLayer))
+                    drow = dt.Rows.Find(objKey)
 
                     bNewRow = (iScenarioIDSrc <> iScenarioIDdest) Or (drow Is Nothing)
 
