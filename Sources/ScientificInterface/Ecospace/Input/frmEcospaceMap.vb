@@ -228,6 +228,7 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
             Me.AddData(eVarNameFlags.LayerHabitatCapacity, False)
             Me.AddData(eVarNameFlags.LayerDriver)
+            Me.AddData(eVarNameFlags.LayerImportance)
             Me.AddData(eVarNameFlags.LayerHabitat)
 
             Me.m_ucLayers.UnlockUpdates()
