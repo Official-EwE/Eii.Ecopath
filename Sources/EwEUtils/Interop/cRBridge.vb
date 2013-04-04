@@ -40,9 +40,11 @@ Namespace Interop
     ''' -----------------------------------------------------------------------
     Public Class cRBridge
 
-#Region " Internals "
+#Region " Private vars "
 
-         ''' <summary>Output produced by R</summary>
+        ''' <summary>Input sent to R</summary>
+        Private m_RInput As New List(Of String)
+        ''' <summary>Output produced by R</summary>
         Private m_ROutput As New List(Of String)
         ''' <summary>Errors produced by R</summary>
         Private m_RErrors As New List(Of String)
@@ -51,7 +53,7 @@ Namespace Interop
         ''' <summary>Disctionary of fields to replace in the script</summary>
         Private m_dtFields As New Dictionary(Of String, String)
 
-#End Region ' Internals
+#End Region ' Private vars
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -80,9 +82,7 @@ Namespace Interop
 
             Dim RScriptReader As StreamReader = Nothing
 
-            ' Clean up results from previous R runs
-            Me.m_RErrors.Clear()
-            Me.m_ROutput.Clear()
+            Me.Clear()
 
             Try
                 ' Try to open the file
@@ -112,6 +112,17 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Clean up left-overs from previous R runs.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub Clear()
+            Me.m_RInput.Clear()
+            Me.m_RErrors.Clear()
+            Me.m_ROutput.Clear()
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Execute an R script.
         ''' </summary>
         ''' <param name="RScriptLines">The script to execute.</param>
@@ -122,9 +133,7 @@ Namespace Interop
             Dim Rwrapper As New Process()
             Dim bSuccess As Boolean
 
-            ' Clean up results from previous R runs
-            Me.m_RErrors.Clear()
-            Me.m_ROutput.Clear()
+            Me.Clear()
 
             ' ----------
             ' Configure how RProcess will run
@@ -144,7 +153,7 @@ Namespace Interop
             Rwrapper.StartInfo.Arguments = "--slave"
 
             ' Suppress R user interface
-            Rwrapper.StartInfo.CreateNoWindow = True
+            Rwrapper.StartInfo.CreateNoWindow = Not Me.ShowRInterface
 
             ' The process is ready to run
             Try
@@ -171,7 +180,8 @@ Namespace Interop
                 For Each strKey As String In Me.m_dtFields.Keys
                     strLine = strLine.Replace(strKey, Me.m_dtFields(strKey))
                 Next
-                Rwrapper.StandardInput.WriteLine()
+                Me.m_RInput.Add(strLine)
+                Rwrapper.StandardInput.WriteLine(strLine)
             Next
 
             ' Wait for R to finish. Wait for a certain number of milliseconds (here hard-coded to max. 5 minutes)
@@ -227,12 +237,20 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the error lines produced by the last R run.
+        ''' Get/set whether the R interface should be shown while a script is
+        ''' executed.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Errors As String()
+        Public Property ShowRInterface As Boolean = False
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the input lines sent to during the last R run.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Input As String()
             Get
-                Return Me.m_RErrors.ToArray
+                Return Me.m_RInput.ToArray
             End Get
         End Property
 
@@ -244,6 +262,17 @@ Namespace Interop
         Public ReadOnly Property Output As String()
             Get
                 Return Me.m_ROutput.ToArray
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the error lines produced by the last R run.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property Errors As String()
+            Get
+                Return Me.m_RErrors.ToArray
             End Get
         End Property
 
