@@ -294,10 +294,10 @@ Public Class cFlowDiagramData
                     Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, val)
                     Me.m_sLinkValueMax = Math.Max(Me.m_sLinkValueMax, val)
                 Next
-            Else
-                For iPrey As Integer = 1 To Me.m_nGroups
-                    Me.m_diets(iPred, iPrey) = 0.0!
-                Next
+                'Else
+                '    For iPrey As Integer = 1 To Me.m_nGroups
+                '        Me.m_diets(iPred, iPrey) = 0.0!
+                '    Next
             End If
 
             If (unitPred.UnitType = cUnitFactory.eUnitType.Producer) Then
