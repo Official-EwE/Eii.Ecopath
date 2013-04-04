@@ -3168,10 +3168,28 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Load the Ecopath model from a given file.
+    ''' </summary>
+    ''' <param name="strFile">The model file to load.</param>
+    ''' <returns>True if the model was loaded successfully. False otherwise</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function LoadModel(strFile As String) As Boolean
+
+        Dim ds As IEwEDataSource = cDataSourceFactory.Create(strFile)
+        If (ds Is Nothing) Then Return False
+
+        If ds.Open(strFile, Me) <> eDatasourceAccessType.Opened Then Return False
+        Return Me.LoadModel(ds)
+
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Load the Ecopath model from a given Datasource.
     ''' </summary>
     ''' <param name="ds">A <see cref="IEwEDataSource">IEwEDataSource</see>-derived
-    ''' object that provides access to the </param>
+    ''' object that provides access to the model. Note that the datasource must
+    ''' already be <see cref="IEwEDataSource.Open">opened</see>.</param>
     ''' <returns>True if the model was loaded successfully. False otherwise</returns>
     ''' <remarks>The given data source will be remembered here for subsequent 
     ''' <see cref="SaveModel">SaveModel</see> and SaveEcosimScenario calls.</remarks>
@@ -3185,10 +3203,8 @@ Public Class cCore
         Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
         Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
 
-        If Not Me.m_bCoreIsInit Then
-            Console.WriteLine("Do not forget to call InitCore!")
-            Me.InitCore()
-        End If
+        ' Just in case
+        If Not Me.m_bCoreIsInit Then Me.InitCore()
 
         ' Only perform a total close if not reopening for the same datasource
         If Not Me.CloseModel(Not Object.ReferenceEquals(ds, Me.DataSource)) Then Return False
