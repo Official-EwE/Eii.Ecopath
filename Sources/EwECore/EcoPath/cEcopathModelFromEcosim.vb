@@ -59,6 +59,8 @@ Public Class cEcopathModelFromEcosim
     Public Enum eBiomassAccumulationCalculationTypes
         ''' <summary>BA is calculated from an average over X number of years.</summary>
         FromEcosimYearsAverage
+
+        FromEcosimYearsWeightedAverage
         ''' <summary>BA is taken as the change in group biomass over the Ecosim run.</summary>
         FromEcosimStart
         ''' <summary>BA kept at Ecopath base value.</summary>
@@ -82,7 +84,8 @@ Public Class cEcopathModelFromEcosim
                               ByVal strModelName As String, _
                               ByVal iTime As Integer, _
                               ByVal BACalculation As eBiomassAccumulationCalculationTypes, _
-                              ByVal iNumYearsAverage As Integer) As eDatasourceAccessType
+                              ByVal iNumYearsAverage As Integer, _
+                              ByVal WeightPower As Single) As eDatasourceAccessType
 
         Dim returnVal As eDatasourceAccessType = eDatasourceAccessType.Created
         Try
@@ -106,7 +109,7 @@ Public Class cEcopathModelFromEcosim
             If ds.Open(strFileName, coreDest) = eDatasourceAccessType.Opened Then
                 If coreDest.LoadModel(ds) Then
                     If Me.CreateItems(coreDest) Then
-                        Me.PopulateItems(coreDest, iTime, BACalculation, iNumYearsAverage)
+                        Me.PopulateItems(coreDest, iTime, BACalculation, iNumYearsAverage, WeightPower)
                     End If
                 End If
             End If
@@ -209,7 +212,8 @@ Public Class cEcopathModelFromEcosim
     Private Function PopulateItems(ByVal coreNew As cCore, _
                                    ByVal iTime As Integer, _
                                    ByVal BACalculation As eBiomassAccumulationCalculationTypes, _
-                                   ByVal iNumYearsAverage As Integer) As Boolean
+                                   ByVal iNumYearsAverage As Integer, _
+                                   ByVal WeightPower As Single) As Boolean
 
         Debug.Assert(iTime >= 12, Me.ToString & ".PopulateItems(...) iTime must be at less one year.")
 
@@ -225,13 +229,17 @@ Public Class cEcopathModelFromEcosim
         Dim simSrc As cEcosimDatastructures = Me.m_core.m_EcoSimData
 
         Dim bSuccess As Boolean = True
-        Dim bLast As Single
+        Dim BatT As Single
 
-        'Time index for the previous year
-        Dim iPreviousTime As Integer = iTime - 12
+        'number of Ecosim time steps per year
+        Dim nTYear As Integer = cCore.N_MONTHS * simSrc.StepsPerMonth
+        'number of time steps to average BA over
+        Dim nBAtimesteps As Integer = iNumYearsAverage * nTYear
+        'Time index for the start year of the BA averaging
+        Dim iPreviousTime As Integer = iTime - nBAtimesteps
         If iPreviousTime < 1 Then iPreviousTime = 1
 
-        Dim nYears As Integer = iTime \ (cCore.N_MONTHS * simSrc.StepsPerMonth)
+        Dim nYears As Integer = iTime \ nTYear
 
         ' Dirty destination core
         coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
@@ -283,8 +291,27 @@ Public Class cEcopathModelFromEcosim
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
             Select Case BACalculation
                 Case eBiomassAccumulationCalculationTypes.FromEcosimYearsAverage
-                    bLast = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
-                    pathDest.BA(iGroup) = (simBB(iGroup) - bLast) * simSrc.StepsPerMonth * cCore.N_MONTHS
+                    BatT = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
+                    pathDest.BA(iGroup) = (simBB(iGroup) - BatT) / iNumYearsAverage
+
+                Case eBiomassAccumulationCalculationTypes.FromEcosimYearsWeightedAverage
+                    Dim b1 As Single, b2 As Single, w As Single, bsum As Single, wsum As Single
+                    'Inverse distance weighted average
+                    For i As Integer = 0 To nBAtimesteps - 1
+                        'inverse distance weight
+                        w = CSng(1 / (i + 1) ^ WeightPower)
+                        'BA
+                        b1 = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime + i)
+                        b2 = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime + i + 1)
+                        'sum of weighted BA
+                        bsum += (b2 - b1) * w
+                        'sum of weight
+                        wsum += w
+                    Next
+                    If wsum = 0.0 Then wsum = 1
+                    'convert weighted monthly average to annual 
+                    pathDest.BA(iGroup) = CSng(bsum / wsum * nTYear)
+
                 Case eBiomassAccumulationCalculationTypes.FromEcosimStart
                     'BA is the Annual Accumulation of B 
                     'So get the annual average accumulation (B(t)-B(0))/ number of years
