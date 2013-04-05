@@ -78,10 +78,15 @@ Public Class cEcospaceLayerImportance
 
     Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
         Get
-            Return DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol)
+            If Me.ValidateCellPosition(iRow, iCol) Then
+                Return DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol)
+            End If
+            Return cCore.NULL_VALUE
         End Get
         Set(ByVal value As Object)
-            DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol) = CSng(value)
+            If Me.ValidateCellPosition(iRow, iCol) Then
+                DirectCast(Me.Data, Single(,,))(Me.Index, iRow, iCol) = CSng(value)
+            End If
         End Set
     End Property
 
