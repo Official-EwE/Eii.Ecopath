@@ -167,6 +167,12 @@
     <Compile Include="AppLauncher.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
+      <DependentUpon>dlgDefineRegions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Ecospace\Input\dlgDefineRegions.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Ecospace\Output\Map rendering\cMapDrawerArgs.vb" />
     <Compile Include="Ecospace\Output\Map rendering\cMapDrawerFleet.vb" />
     <Compile Include="Ecospace\Output\Map rendering\cMapDrawerGroup.vb" />
@@ -905,6 +911,9 @@
     <EmbeddedResource Include="Ecosim\Output\frmEcosimResults.resx">
       <SubType>Designer</SubType>
       <DependentUpon>frmEcosimResults.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ecospace\Input\dlgDefineRegions.resx">
+      <DependentUpon>dlgDefineRegions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>

@@ -40,19 +40,20 @@ Namespace Ecospace
 
 #End Region ' Private variables
 
-#Region "Constructors"
+#Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
             Me.m_uic = uic
             Me.InitializeComponent()
         End Sub
 
-#End Region
+#End Region ' Constructors
 
 #Region " Event handlers "
 
         Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
             MyBase.OnLoad(e)
+            Me.CenterToScreen()
             Me.m_grid.UIContext = Me.m_uic
             Me.UpdateControls()
         End Sub

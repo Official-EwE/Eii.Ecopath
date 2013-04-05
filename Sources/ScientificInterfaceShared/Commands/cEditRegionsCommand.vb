@@ -19,30 +19,30 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwECore
+Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls.Map.Layers
+Imports ScientificInterfaceShared.Definitions
 
-#End Region ' Imports 
+#End Region ' Imports
 
-Namespace Controls.Map.Layers
+Namespace Commands
 
-    ''' -----------------------------------------------------------------------
+    ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Layer editor base class that supports manual modification of Ecospace 
-    ''' layers.
+    ''' Command to invoke the 'Edit Regions' interface
     ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Class cLayerEditorRegion
-        Inherits cLayerEditor
+    ''' ---------------------------------------------------------------------------
+    Public Class cEditRegionsCommand
+        Inherits cCommand
 
-#Region " Construction "
+        ''' <summary>Static name for this command.</summary>
+        Public Shared cCOMMAND_NAME As String = "EditRegions"
 
-        Public Sub New()
-            MyBase.New(GetType(ucLayerEditorRegion))
-            Me.CellValue = 1
+        Public Sub New(ByVal cmdh As cCommandHandler)
+            MyBase.new(cmdh, cEditRegionsCommand.cCOMMAND_NAME, My.Resources.COMMAND_DEFINEREGIONS)
         End Sub
-
-#End Region ' Construction
 
     End Class
 
-End Namespace ' Controls.Map.Layers
+End Namespace ' Commands

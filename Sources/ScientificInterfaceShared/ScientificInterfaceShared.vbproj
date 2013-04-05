@@ -123,6 +123,7 @@
     <Compile Include="Commands\cEditMPAsCommand.vb" />
     <Compile Include="Commands\cEditImportanceLayersCommand.vb" />
     <Compile Include="Commands\cEditDriverLayersCommand.vb" />
+    <Compile Include="Commands\cEditRegionsCommand.vb" />
     <Compile Include="Controls\Checkbox\cCheckboxHierarchy.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramRenderer.vb" />
     <Compile Include="Controls\Diagrams\FlowDiagram\cFlowDiagramTree.vb" />

@@ -313,7 +313,7 @@ Namespace Controls.Map
                         If (vs Is Nothing) Then vs = New cVisualStyle(ad)
                         renderer = New cLayerRendererValue(vs)
                         renderer.ScaleMin = 0
-                        editor = New cLayerEditorTwoState()
+                        editor = New cLayerEditorRange()
                         layer = New cRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name)
 
                         lLayers.Add(layer)
@@ -408,6 +408,9 @@ Namespace Controls.Map
 
                 Case eVarNameFlags.LayerMPA
                     strCommand = cEditMPAsCommand.cCOMMAND_NAME
+
+                Case eVarNameFlags.LayerRegion
+                    strCommand = cEditRegionsCommand.cCOMMAND_NAME
 
                 Case eVarNameFlags.LayerImportance
                     strCommand = cEditImportanceLayersCommand.cCOMMAND_NAME

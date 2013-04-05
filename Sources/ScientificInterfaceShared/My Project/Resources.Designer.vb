@@ -488,6 +488,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Define the number of regions, or create regions for all MPAs or Habitats.
+        '''</summary>
+        Public ReadOnly Property COMMAND_DEFINEREGIONS() As String
+            Get
+                Return ResourceManager.GetString("COMMAND_DEFINEREGIONS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Select groups and fleets to display.
         '''</summary>
         Public ReadOnly Property COMMAND_DISPLAYGROUPS() As String

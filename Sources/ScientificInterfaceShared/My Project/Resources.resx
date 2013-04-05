@@ -2823,4 +2823,7 @@
     <value>Select groups and fleets to display</value>
     <comment>Description for 'display groups' command</comment>
   </data>
+  <data name="COMMAND_DEFINEREGIONS" xml:space="preserve">
+    <value>Define the number of regions, or create regions for all MPAs or Habitats</value>
+  </data>
 </root>

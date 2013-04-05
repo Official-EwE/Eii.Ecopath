@@ -144,7 +144,7 @@ Namespace Controls
                 Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
                 If cmd IsNot Nothing Then
-                    cmd.Description = "Select directory"
+                    cmd.Prompt = "Select directory"
                     cmd.Directory = Path.GetDirectoryName(".\")
                     cmd.Invoke()
                     If cmd.Result = DialogResult.OK Then

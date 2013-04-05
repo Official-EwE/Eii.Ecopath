@@ -1,0 +1,189 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+
+#Region " Imports "
+
+Option Explicit On
+Option Strict On
+
+Imports EwECore
+
+#End Region
+
+Namespace Ecospace
+
+    Public Class dlgDefineRegions
+        Implements IUIElement
+
+        Private m_uic As cUIContext = Nothing
+
+        Public Sub New(uic As cUIContext)
+            Me.m_uic = uic
+            Me.InitializeComponent()
+        End Sub
+
+        Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
+            Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
+            Get
+                Return Me.m_uic
+            End Get
+            Set(value As ScientificInterfaceShared.Controls.cUIContext)
+                Me.m_uic = value
+            End Set
+        End Property
+
+        Protected Overrides Sub OnLoad(e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            Dim iNumRegions As Integer = Me.UIContext.Core.nRegions
+            Me.m_nudNoRegions.Value = iNumRegions
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim iNumH2O As Integer = bm.InRow * bm.InCol
+            Dim iMinCluster As Integer = 1
+            Dim iMaxCluster As Integer = Math.Max(bm.InRow, bm.InCol)
+
+            ' Try to set to no more than 500 cells
+            Dim bFound As Boolean = (iNumH2O < 500)
+            While Not bFound
+                iMinCluster += 1
+                bFound = ((iNumH2O / (iMinCluster * iMinCluster)) < 500)
+            End While
+
+            Me.m_nudClusterSize.Value = iMinCluster
+            Me.m_nudClusterSize.Minimum = iMinCluster
+            Me.m_nudClusterSize.Maximum = iMaxCluster
+
+            Me.m_rbFromHabitats.Enabled = (Me.UIContext.Core.nHabitats > 0)
+            Me.m_rbFromMPAs.Enabled = (Me.UIContext.Core.nMPAs > 0)
+
+            Me.UpdateControls()
+            Me.CenterToScreen()
+
+        End Sub
+
+        Private Sub UpdateControls()
+
+            Dim bHasSel As Boolean = (Me.m_rbCustomMax.Checked Or Me.m_rbFromMPAs.Checked Or Me.m_rbFromHabitats.Checked)
+            Me.m_btnOK.Enabled = bHasSel
+
+        End Sub
+
+        Private Sub ChangeNumRegions()
+
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim regions As cEcospaceLayerRegion = bm.LayerRegion
+            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+
+            If (Me.m_nudNoRegions.Value < regions.MaxValue) Then
+                ' ToDo: globalize this
+                Dim fmsg As New cFeedbackMessage("There are cells that will no longer be assigned to regions if you continue.", _
+                                                 EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, _
+                                                 cFeedbackMessage.eReplyStyle.OK_CANCEL, EwEUtils.Core.eDataTypes.NotSet, cFeedbackMessage.eReply.CANCEL)
+                fmsg.Suppressable = True
+                Me.m_uic.Core.Messages.SendMessage(fmsg)
+                If (fmsg.Reply <> cFeedbackMessage.eReply.OK) Then Return
+            End If
+
+            parms.nRegions = Me.UIContext.Core.nMPAs
+
+        End Sub
+
+        Private Sub CreateMPARegions()
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim mpa As cEcospaceLayerMPA = bm.LayerMPA
+            Dim regions As cEcospaceLayerRegion = bm.LayerRegion
+            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+
+            parms.nRegions = Me.UIContext.Core.nMPAs
+
+            For iRow As Integer = 1 To bm.InRow
+                For iCol As Integer = 1 To bm.InCol
+                    regions.Cell(iRow, iCol) = mpa.Cell(iRow, iCol)
+                Next iCol
+            Next iRow
+
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create regions from Habitats.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Private Sub CreateHabitatRegions()
+
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
+            Dim mpa As cEcospaceLayerMPA = bm.LayerMPA
+            Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+            Dim regions As cEcospaceLayerRegion = bm.LayerRegion
+            Dim sValMax As Single = 0
+            Dim iHabMax As Integer = 0
+
+            parms.nRegions = Me.UIContext.Core.nHabitats
+
+            For iRow As Integer = 1 To bm.InRow
+                For iCol As Integer = 1 To bm.InCol
+                    sValMax = 0
+                    iHabMax = 0
+                    For iHab As Integer = 1 To parms.nRegions
+                        Dim sVal As Single = CSng(bm.LayerHabitat(iHab).Cell(iRow, iCol))
+                        If sVal > sValMax Then
+                            sValMax = sVal : iHabMax = iHab
+                        End If
+                    Next
+                    regions.Cell(iRow, iCol) = iHabMax
+                Next iCol
+            Next iRow
+
+        End Sub
+
+        Private Sub OnCreateOptionChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_rbCustomMax.CheckedChanged, m_rbFromMPAs.CheckedChanged, m_rbFromHabitats.CheckedChanged
+
+            Me.UpdateControls()
+
+        End Sub
+
+        Private Sub OnOK(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnOK.Click
+
+            If Me.m_rbCustomMax.Checked Then
+                Me.ChangeNumRegions()
+            ElseIf Me.m_rbFromMPAs.Checked Then
+                Me.CreateMPARegions()
+            Else
+                Me.CreateHabitatRegions()
+            End If
+            Me.Close()
+
+        End Sub
+
+        Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
+            Handles m_btnCancel.Click
+
+            Me.Close()
+
+        End Sub
+
+    End Class
+
+End Namespace

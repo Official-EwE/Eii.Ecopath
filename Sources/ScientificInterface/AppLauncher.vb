@@ -486,11 +486,11 @@ Public Class AppLauncher
         Me.m_cmdEditHabitats = New cEditHabitatsCommand(cmdh)
         Me.m_cmdEditHabitats.AddControl(Me.m_tsmiEcospaceDefineHabitats)
 
-        'Me.m_cmdEditRegions = New cCommand(cmdh, "EditRegions")
-        'Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceDefineRegions)
-
         Me.m_cmdEditMPAs = New cEditMPAsCommand(cmdh)
         Me.m_cmdEditMPAs.AddControl(Me.m_tsmiEcospaceDefineMPAs)
+
+        Me.m_cmdEditRegions = New cEditRegionsCommand(cmdh)
+        Me.m_cmdEditRegions.AddControl(Me.m_tsmiEcospaceDefineRegions)
 
         Me.m_cmdDefineImportanceMaps = New cEditImportanceLayersCommand(cmdh)
         Me.m_cmdDefineImportanceMaps.AddControl(Me.m_tsmiEcospaceDefineImportanceMaps)
@@ -2418,7 +2418,7 @@ Public Class AppLauncher
         Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
         Dim strPath As String = doc.Directory
 
-        dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Description, strPath)
+        dlgLoad = cEwEFileDialogHelper.FolderBrowserDialog(doc.Prompt, strPath)
 
         doc.Result = dlgLoad.ShowDialog()
 
@@ -3591,21 +3591,21 @@ Public Class AppLauncher
         cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
     End Sub
 
-    ' ''' <summary>
-    ' ''' Command handler; handles access to the Ecospace edit regions dialog.
-    ' ''' </summary>
-    'Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
-    '    cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
-    'End Sub
+    ''' <summary>
+    ''' Command handler; handles access to the Ecospace edit regions dialog.
+    ''' </summary>
+    Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
+        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+    End Sub
 
-    ' ''' <summary>
-    ' ''' Command handler; invokes the Ecospace edit habitats dialog.
-    ' ''' </summary>
-    'Private Sub OnEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
-    '    Dim dlg As New dlgEditRegions(Me.UIContext)
-    '    Me.Help.HelpTopic(dlg) = "Edit regions.htm"
-    '    dlg.ShowDialog(Me)
-    'End Sub
+    ''' <summary>
+    ''' Command handler; invokes the Ecospace edit regions dialog.
+    ''' </summary>
+    Private Sub OnEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnInvoke
+        Dim dlg As New dlgDefineRegions(Me.UIContext)
+        Me.Help.HelpTopic(dlg) = "Edit regions.htm"
+        dlg.ShowDialog(Me)
+    End Sub
 
     ''' <summary>
     ''' Command handler; invokes the Ecospace edit MPAs dialog.

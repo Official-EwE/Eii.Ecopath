@@ -37,7 +37,7 @@ Namespace Commands
 #Region " Privates "
 
         ''' <summary>Dialog prompt</summary>
-        Private m_strDescription As String = ""
+        Private m_strPrompt As String = ""
         ''' <summary>Name of the file to open.</summary>
         Private m_strDirectory As String = ""
         ''' <summary>The dialog result.</summary>
@@ -78,7 +78,7 @@ Namespace Commands
         ''' <param name="strDescription">The description to show in the dialog.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strDescription As String)
-            Me.m_strDescription = strDescription
+            Me.m_strPrompt = strDescription
             Me.Invoke()
         End Sub
 
@@ -90,7 +90,7 @@ Namespace Commands
         ''' <param name="strDescription">The description to show in the dialog.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strDirectory As String, ByVal strDescription As String)
-            Me.m_strDescription = strDescription
+            Me.m_strPrompt = strDescription
             Me.m_strDirectory = strDirectory
             Me.Invoke()
         End Sub
@@ -100,12 +100,12 @@ Namespace Commands
         ''' Get/set the prompt to display in the dialog.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Description() As String
+        Public Property Prompt() As String
             Get
-                Return Me.m_strDescription
+                Return Me.m_strPrompt
             End Get
             Set(ByVal strDescription As String)
-                Me.m_strDescription = strDescription
+                Me.m_strPrompt = strDescription
             End Set
         End Property
 
