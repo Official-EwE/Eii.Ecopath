@@ -651,6 +651,7 @@
     <Compile Include="Style\ColorRamps\cSAUPColorRamp.vb" />
     <Compile Include="Style\cStyleGuide.vb" />
     <Compile Include="Definitions\Shared UIEnums.vb" />
+    <Compile Include="Style\Type formatters\cBACalcTypeFormatter.vb" />
     <Compile Include="Style\Type formatters\cCoreInterfaceFormatter.vb" />
     <Compile Include="Style\Type formatters\cCurrencyUnitFormatter.vb" />
     <Compile Include="Style\Type formatters\cEcologyTypeFormatter.vb" />

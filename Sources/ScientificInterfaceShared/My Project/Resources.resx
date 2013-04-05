@@ -2826,4 +2826,19 @@
   <data name="COMMAND_DEFINEREGIONS" xml:space="preserve">
     <value>Define the number of regions, or create regions for all MPAs or Habitats</value>
   </data>
+  <data name="BA_CALC_FROMECOPATH" xml:space="preserve">
+    <value>Ecopath biomass accumulation value</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMSTART" xml:space="preserve">
+    <value>Ecosim biomass minus Ecopath biomass</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSAVERAGE" xml:space="preserve">
+    <value>Average Ecosim biomass change over a number of years</value>
+  </data>
+  <data name="BA_CALC_FROMECOSIMYEARSWEIGHTEDAVERAGE" xml:space="preserve">
+    <value>Distance weighted average Ecosim biomass over years</value>
+  </data>
+  <data name="BA_CALC_SETTOZERO" xml:space="preserve">
+    <value>No biomass accumulation</value>
+  </data>
 </root>

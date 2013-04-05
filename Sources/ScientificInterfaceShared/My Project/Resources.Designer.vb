@@ -214,6 +214,51 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Ecopath biomass accumulation value.
+        '''</summary>
+        Public ReadOnly Property BA_CALC_FROMECOPATH() As String
+            Get
+                Return ResourceManager.GetString("BA_CALC_FROMECOPATH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Ecosim biomass minus Ecopath biomass.
+        '''</summary>
+        Public ReadOnly Property BA_CALC_FROMECOSIMSTART() As String
+            Get
+                Return ResourceManager.GetString("BA_CALC_FROMECOSIMSTART", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Average Ecosim biomass change over a number of years.
+        '''</summary>
+        Public ReadOnly Property BA_CALC_FROMECOSIMYEARSAVERAGE() As String
+            Get
+                Return ResourceManager.GetString("BA_CALC_FROMECOSIMYEARSAVERAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Distance weighted average Ecosim biomass over years.
+        '''</summary>
+        Public ReadOnly Property BA_CALC_FROMECOSIMYEARSWEIGHTEDAVERAGE() As String
+            Get
+                Return ResourceManager.GetString("BA_CALC_FROMECOSIMYEARSWEIGHTEDAVERAGE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No biomass accumulation.
+        '''</summary>
+        Public ReadOnly Property BA_CALC_SETTOZERO() As String
+            Get
+                Return ResourceManager.GetString("BA_CALC_SETTOZERO", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property Back() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Back", resourceCulture)

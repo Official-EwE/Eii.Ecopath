@@ -56,7 +56,7 @@ Public Class cEcopathModelFromEcosim
     ''' Enumerated type indicating how BA should be calculated.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Enum eBiomassAccumulationCalculationTypes
+    Public Enum eBACalcTypes
         ''' <summary>BA is calculated from an average over X number of years.</summary>
         FromEcosimYearsAverage
 
@@ -83,7 +83,7 @@ Public Class cEcopathModelFromEcosim
     Public Function SaveModel(ByVal strFileName As String, _
                               ByVal strModelName As String, _
                               ByVal iTime As Integer, _
-                              ByVal BACalculation As eBiomassAccumulationCalculationTypes, _
+                              ByVal BACalculation As eBACalcTypes, _
                               ByVal iNumYearsAverage As Integer, _
                               ByVal WeightPower As Single) As eDatasourceAccessType
 
@@ -211,7 +211,7 @@ Public Class cEcopathModelFromEcosim
     ''' -----------------------------------------------------------------------
     Private Function PopulateItems(ByVal coreNew As cCore, _
                                    ByVal iTime As Integer, _
-                                   ByVal BACalculation As eBiomassAccumulationCalculationTypes, _
+                                   ByVal BACalculation As eBACalcTypes, _
                                    ByVal iNumYearsAverage As Integer, _
                                    ByVal WeightPower As Single) As Boolean
 
@@ -290,11 +290,11 @@ Public Class cEcopathModelFromEcosim
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
             Select Case BACalculation
-                Case eBiomassAccumulationCalculationTypes.FromEcosimYearsAverage
+                Case eBACalcTypes.FromEcosimYearsAverage
                     BatT = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iPreviousTime)
                     pathDest.BA(iGroup) = (simBB(iGroup) - BatT) / iNumYearsAverage
 
-                Case eBiomassAccumulationCalculationTypes.FromEcosimYearsWeightedAverage
+                Case eBACalcTypes.FromEcosimYearsWeightedAverage
                     Dim b1 As Single, b2 As Single, w As Single, bsum As Single, wsum As Single
                     'Inverse distance weighted average
                     For i As Integer = 0 To nBAtimesteps - 1
@@ -312,15 +312,15 @@ Public Class cEcopathModelFromEcosim
                     'convert weighted monthly average to annual 
                     pathDest.BA(iGroup) = CSng(bsum / wsum * nTYear)
 
-                Case eBiomassAccumulationCalculationTypes.FromEcosimStart
+                Case eBACalcTypes.FromEcosimStart
                     'BA is the Annual Accumulation of B 
                     'So get the annual average accumulation (B(t)-B(0))/ number of years
                     'Attributes the annual average change in Biomass to BiomassAccumulation
                     pathDest.BA(iGroup) = (simBB(iGroup) - pathSrc.B(iGroup)) / nYears
-                Case eBiomassAccumulationCalculationTypes.FromEcopath
+                Case eBACalcTypes.FromEcopath
                     'Explicitly copy the data from the Ecopath source so you can tell it worked
                     pathDest.BA(iGroup) = pathSrc.BA(iGroup)
-                Case eBiomassAccumulationCalculationTypes.SetToZero
+                Case eBACalcTypes.SetToZero
                     pathDest.BA(iGroup) = 0
             End Select
 
