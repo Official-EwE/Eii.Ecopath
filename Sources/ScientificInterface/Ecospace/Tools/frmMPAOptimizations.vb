@@ -396,7 +396,7 @@ Namespace Ecospace
         ''' <summary>
         ''' Event handler, responds to the user exploring the progress graph.
         ''' </summary>
-         Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
+        Private Sub OnResultCursorPos(ByVal zgh As cZedGraphHelper, ByVal iPane As Integer, ByVal sPos As Single)
             Try
                 Me.ShowIteration(CInt(Math.Round(Me.m_zghResults.CursorPos)))
             Catch ex As Exception

@@ -2811,4 +2811,16 @@
   <data name="STYLEFLAGS_TAXONNAME" xml:space="preserve">
     <value>Taxon name</value>
   </data>
+  <data name="COMMAND_DEFINEGROUPS" xml:space="preserve">
+    <value>Define functional groups</value>
+    <comment>Description for 'edit groups' command</comment>
+  </data>
+  <data name="COMMAND_DEFINEMPAS" xml:space="preserve">
+    <value>Define Marine Protected Areas</value>
+    <comment>Description for the 'edit MPAs' command</comment>
+  </data>
+  <data name="COMMAND_DISPLAYGROUPS" xml:space="preserve">
+    <value>Select groups and fleets to display</value>
+    <comment>Description for 'display groups' command</comment>
+  </data>
 </root>

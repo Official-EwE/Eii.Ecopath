@@ -469,6 +469,33 @@ Namespace My.Resources
             End Get
         End Property
         
+        '''<summary>
+        '''  Looks up a localized string similar to Define functional groups.
+        '''</summary>
+        Public ReadOnly Property COMMAND_DEFINEGROUPS() As String
+            Get
+                Return ResourceManager.GetString("COMMAND_DEFINEGROUPS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Define Marine Protected Areas.
+        '''</summary>
+        Public ReadOnly Property COMMAND_DEFINEMPAS() As String
+            Get
+                Return ResourceManager.GetString("COMMAND_DEFINEMPAS", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Select groups and fleets to display.
+        '''</summary>
+        Public ReadOnly Property COMMAND_DISPLAYGROUPS() As String
+            Get
+                Return ResourceManager.GetString("COMMAND_DISPLAYGROUPS", resourceCulture)
+            End Get
+        End Property
+        
         Public ReadOnly Property CommentHS() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CommentHS", resourceCulture)

@@ -72,7 +72,7 @@ Namespace Commands
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal cmdh As cCommandHandler)
-            MyBase.New(cmdh, cDisplayGroupsCommand.cCOMMAND_NAME)
+            MyBase.New(cmdh, cDisplayGroupsCommand.cCOMMAND_NAME, My.Resources.COMMAND_DISPLAYGROUPS)
         End Sub
 
         ''' -------------------------------------------------------------------

@@ -40,7 +40,7 @@ Namespace Commands
         Public Shared cCOMMAND_NAME As String = "EditMPAs"
 
         Public Sub New(ByVal cmdh As cCommandHandler)
-            MyBase.new(cmdh, cEditMPAsCommand.cCOMMAND_NAME)
+            MyBase.new(cmdh, cEditMPAsCommand.cCOMMAND_NAME, My.Resources.COMMAND_DEFINEMPAS)
         End Sub
 
     End Class
