@@ -44,6 +44,8 @@ Namespace Commands
         Private m_cmdh As cCommandHandler = Nothing
         ''' <summary>Name of the command.</summary>
         Private m_strName As String = ""
+        ''' <summary>Description of the command.</summary>
+        Private m_strDescription As String = ""
         ''' <summary>Update lock flag to prevent involuntary loops.</summary>
         Private m_bLockUpdates As Boolean = False
         ''' <summary>Helper flag, stating whether a command is being invoked.</summary>
@@ -52,8 +54,6 @@ Namespace Commands
         Private m_bEnabled As Boolean = True
         ''' <summary>Command checked state.</summary>
         Private m_bChecked As Boolean = False
-        ''' <summary>Optional Tag attached to the command.</summary>
-        Private m_objTag As Object = Nothing
         ''' <summary>Entirely disable a command.</summary>
         Private m_bAvailable As Boolean = True
 
@@ -67,12 +67,20 @@ Namespace Commands
         ''' </summary>
         ''' <param name="strName">The name to assign to the command.</param>
         ''' <param name="cmdh">The <see cref="cCommandHandler"/> to associate this command with.</param>
+        ''' 
         ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal cmdh As cCommandHandler, ByVal strName As String)
+        Public Sub New(ByVal cmdh As cCommandHandler, _
+                       ByVal strName As String, _
+                       Optional ByVal strDescription As String = "")
 
+            ' Store ref to the handler
             Me.m_cmdh = cmdh
+
             ' Store name
             Me.m_strName = strName
+            ' Store description
+            Me.m_strDescription = strDescription
+
             ' Create storage for associated controls
             Me.m_dictControls = New Dictionary(Of Object, cControlHandler)
 
@@ -313,17 +321,22 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Optional command description, which can be used for tool tips in user
+        ''' interface elements, etc.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable ReadOnly Property Description As String
+            Get
+                Return Me.m_strDescription
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Get/set the command tag.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Property Tag() As Object
-            Get
-                Return Me.m_objTag
-            End Get
-            Set(ByVal objTag As Object)
-                Me.m_objTag = objTag
-            End Set
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
