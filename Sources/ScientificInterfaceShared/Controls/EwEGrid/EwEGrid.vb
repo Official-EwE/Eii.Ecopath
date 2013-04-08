@@ -338,15 +338,11 @@ Namespace Controls.EwEGrid
         ''' <summary>Column click behaviour model.</summary>
         Private m_ceColSelect As New BehaviorModels.CustomEvents
 
-        ''' <summary>Flag stating if this grid should track and distribute property selections.</summary>
-        Private m_bTrackPropertySelection As Boolean = True
         ''' <summary>List of selected properties in the grid, if any.</summary>
         Private m_lpropertySelected As New List(Of cProperty)
 
         ''' <summary>Flag stating to use fixed col widths and heights.</summary>
         Private m_bFixedColumnWidths As Boolean = True
-        ''' <summary>Flag stating if this grid allows row, column and all content selections.</summary>
-        Private m_bAllowBlockSelect As Boolean = True
 
         ''' <summary>Generic edit behaviour.</summary>
         Private m_bm As cEwEGridBacklinkModel = Nothing
@@ -840,13 +836,6 @@ Namespace Controls.EwEGrid
          Description("States whether the grid maintains a list of selected cProperty instances."), _
          DefaultValue(True)> _
         Public Property TrackPropertySelection() As Boolean
-            Get
-                Return Me.m_bTrackPropertySelection
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bTrackPropertySelection = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1055,19 +1044,12 @@ Namespace Controls.EwEGrid
         <Browsable(True), _
          Description("States whether the grid allows row, column and entire content selections.")> _
         Public Property AllowBlockSelect() As Boolean
-            Get
-                Return Me.m_bAllowBlockSelect
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bAllowBlockSelect = value
-            End Set
-        End Property
 
         ' ToDo_JS 05aug07: fix [SHIFT]+key nav selection logic to select a range, not just select a cell
 
         Protected Overridable Sub OnSelectEntireGrid(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
 
-            If Not Me.m_bAllowBlockSelect Then Return
+            If Not Me.AllowBlockSelect Then Return
 
             ' JS 05aug07: no need to process keys here; shift and ctrl modifiers behave just fine
             ' JS 05aug07: on second thought: it doesn't. [SHIFT]+[CTRL] click should ADD to a selection, not replace it
@@ -1077,7 +1059,7 @@ Namespace Controls.EwEGrid
 
         Protected Overridable Sub OnSelectRow(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
 
-            If Not Me.m_bAllowBlockSelect Then Return
+            If Not Me.AllowBlockSelect Then Return
 
             ' JS 05aug 07: select range of rows if shift pressed
             Dim iFirstRow As Integer = e.Position.Row
@@ -1094,7 +1076,7 @@ Namespace Controls.EwEGrid
 
         Protected Overridable Sub OnSelectColumn(ByVal sender As Object, ByVal e As SourceGrid2.PositionEventArgs)
 
-            If Not Me.m_bAllowBlockSelect Then Return
+            If Not Me.AllowBlockSelect Then Return
 
             ' JS 05aug07: select range of columns if shift pressed
             Dim iFirstCol As Integer = e.Position.Column
@@ -1373,7 +1355,7 @@ Namespace Controls.EwEGrid
                 Dim sc As cPropertySelectionCommand = Nothing
                 Dim c As SourceGrid2.Cells.ICell = Nothing
 
-                If Me.m_bTrackPropertySelection Then
+                If Me.TrackPropertySelection Then
 
                     ' Clean up
                     If (e.EventType = SelectionChangeEventType.Add) Then
