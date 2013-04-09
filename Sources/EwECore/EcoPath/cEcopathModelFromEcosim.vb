@@ -34,10 +34,11 @@ Public Class cEcopathModelFromEcosim
 
 #Region " Private variables "
 
-    ''' <summary>
-    ''' The core that holds the source model
-    ''' </summary>
+    ''' <summary>The core that holds the source model.</summary>
     Private m_core As cCore = Nothing
+
+    ''' <summary>Progress of a run.</summary>
+    Private m_msgStatus As cMessage = Nothing
 
 #End Region ' Private variables
 
@@ -69,6 +70,26 @@ Public Class cEcopathModelFromEcosim
         SetToZero
     End Enum
 
+    Public Function InitRun(strOutputPath As String) As Boolean
+
+        Me.m_msgStatus = New cMessage("Generated Ecopath models from Ecosim run", eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
+        Me.m_msgStatus.Hyperlink = strOutputPath
+        Return True
+
+    End Function
+
+    Public Function EndRun() As Boolean
+
+        If (Me.m_msgStatus IsNot Nothing) Then
+            If (Me.m_msgStatus.Variables.Count > 0) Then
+                Me.m_core.Messages.SendMessage(Me.m_msgStatus)
+            End If
+            Me.m_msgStatus = Nothing
+        End If
+        Return True
+
+    End Function
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Create a model from the current Ecosim time step.
@@ -76,7 +97,7 @@ Public Class cEcopathModelFromEcosim
     ''' <param name="strFileName">Full path to the model file to create.</param>
     ''' <param name="strModelName">Name of the model to create.</param>
     ''' <param name="iTime">The Ecosim time step to populate data from.</param>
-    ''' <param name="BACalculation"><see cref="eBiomassAccumulationCalculationTypes">Flag</see> 
+    ''' <param name="BACalculation"><see cref="eBACalcTypes">Flag</see> 
     ''' stating how BA should be calculated.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
@@ -88,6 +109,7 @@ Public Class cEcopathModelFromEcosim
                               ByVal WeightPower As Single) As eDatasourceAccessType
 
         Dim returnVal As eDatasourceAccessType = eDatasourceAccessType.Created
+
         Try
 
             Dim coreDest As New cCore()
@@ -123,10 +145,15 @@ Public Class cEcopathModelFromEcosim
         Catch ex As Exception
             returnVal = eDatasourceAccessType.Failed_Unknown
             cLog.Write(ex)
-            Me.m_core.Messages.AddMessage(New cMessage("Error while saving Ecopath Model from Ecosim.", eMessageType.ErrorEncountered, eCoreComponentType.DataSource, eMessageImportance.Warning))
+            Me.LogSuccess(String.Format("Error generating model '{0}': {1}", strModelName, ex.Message), False)
         End Try
 
-        Me.m_core.Messages.sendAllMessages()
+        If (returnVal = eDatasourceAccessType.Created) Then
+            Me.LogSuccess(String.Format("Model successfully saved to '{0}'", strModelName), True)
+        Else
+            Me.LogSuccess(String.Format("Falied to save mode to '{0}'", strModelName), False)
+        End If
+
         Return returnVal
 
     End Function
@@ -205,7 +232,7 @@ Public Class cEcopathModelFromEcosim
     ''' </summary>
     ''' <param name="coreNew">The core that holds the new model.</param>
     ''' <param name="iTime">The Ecosim time step to populate data from.</param>
-    ''' <param name="BACalculation"><see cref="eBiomassAccumulationCalculationTypes">Flag</see> 
+    ''' <param name="BACalculation"><see cref="eBACalcTypes">Flag</see> 
     ''' stating how BA should be calculated.</param>
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
@@ -376,6 +403,28 @@ Public Class cEcopathModelFromEcosim
         Return True
 
     End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Append a result notification to the current status message
+    ''' </summary>
+    ''' <param name="strMessage"></param>
+    ''' <param name="bSuccess"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub LogSuccess(strMessage As String, bSuccess As Boolean)
+
+        Dim vs As cVariableStatus = Nothing
+
+        If (Me.m_msgStatus IsNot Nothing) Then
+            If bSuccess Then
+                vs = New cVariableStatus(eStatusFlags.OK, strMessage, eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
+            Else
+                vs = New cVariableStatus(eStatusFlags.ErrorEncountered, strMessage, eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
+            End If
+            Me.m_msgStatus.AddVariable(vs)
+        End If
+
+    End Sub
 
 #End Region ' Internals
 
