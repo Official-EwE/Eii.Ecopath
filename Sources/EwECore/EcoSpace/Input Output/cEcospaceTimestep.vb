@@ -116,7 +116,7 @@ Public Class cEcospaceTimestep
         Public Overrides Property Cell(ByVal iRow As Integer, ByVal iCol As Integer) As Object
             Get
                 Dim data As Single(,,) = DirectCast(Me.Data, Single(,,))
-                Return data(iRow, iCol, Me.m_iFleet)
+                Return data(Me.m_iFleet, iRow, iCol)
             End Get
             Set(ByVal value As Object)
                 ' NOP
@@ -496,8 +496,15 @@ Public Class cEcospaceTimestep
                 For igroup As Integer = 1 To Me.m_core.nGroups
                     lLayers.Add(New cTimestepLayerGroup(Me.m_core, Me, varName, igroup))
                 Next
+
             Case eVarNameFlags.EcospaceMapSumEffort
                 lLayers.Add(New cTimestepLayer(Me.m_core, Me, varName))
+
+            Case eVarNameFlags.EcospaceMapEffort
+                lLayers.Add(Nothing) ' Add 0-item emptyness
+                For iFleet As Integer = 1 To Me.m_core.nFleets
+                    lLayers.Add(New cTimestepLayerFleet(Me.m_core, Me, varName, iFleet))
+                Next
         End Select
         Return lLayers.ToArray
 
@@ -511,6 +518,8 @@ Public Class cEcospaceTimestep
                 Return Me.BiomassMap
             Case eVarNameFlags.EcospaceMapCatch
                 Return Me.CatchMap
+            Case eVarNameFlags.EcospaceMapEffort
+                Return Me.FishingEffortMap
             Case eVarNameFlags.EcospaceMapSumEffort
                 Return Me.m_sumEffortMap
         End Select

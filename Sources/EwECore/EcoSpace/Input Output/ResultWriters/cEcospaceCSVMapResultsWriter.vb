@@ -64,21 +64,22 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' -----------------------------------------------------------------------
     Public Overrides Sub WriteResults(ByVal SpaceTimeStepResults As Object)
 
+        Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
+        Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
+        Dim strm As StreamWriter = Nothing
+        Dim strFile As String = ""
+
         Try
-            Dim vars() As eVarNameFlags = New eVarNameFlags() {eVarNameFlags.EcospaceMapBiomass, eVarNameFlags.EcospaceMapCatch}
-            Dim tsData As cEcospaceTimestep = DirectCast(SpaceTimeStepResults, cEcospaceTimestep)
-            Dim strm As StreamWriter = Nothing
-            Dim strFN As String = ""
 
             For Each varname As eVarNameFlags In vars
                 For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-                    strFN = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
-                    If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFN), True) Then
+                    strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension())
+                    If cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True) Then
                         'Handle file exceptions on a per file basis
                         'this way only the offending file will be skipped
                         'all other files will be written 
                         Try
-                            strm = New StreamWriter(strFN, True)
+                            strm = New StreamWriter(strFile, True)
                             If (strm IsNot Nothing) Then
                                 Me.SaveCSV(strm, tsData, igrp, varname)
                                 strm.Flush()
@@ -88,7 +89,7 @@ Public Class cEcospaceCSVMapResultsWriter
                         Catch ex As IOException
                             'Failed to open the file
                             cLog.Write(ex)
-                            System.Console.WriteLine("Ecospace failed to save file " & strFN)
+                            System.Console.WriteLine("Ecospace failed to save file " & strFile)
                         End Try
 
                     End If
@@ -98,6 +99,24 @@ Public Class cEcospaceCSVMapResultsWriter
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)
         End Try
+
+        ' Space effort
+        For iFlt As Integer = 1 To Me.m_core.m_EcoPathData.NumFleet
+            strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapEffort, iFlt, Me.FileExtension(), tsData.iTimeStep)
+            Try
+                strm = New StreamWriter(strFile, False)
+                If (strm IsNot Nothing) Then
+                    Me.SaveCSV(strm, tsData, iFlt, eVarNameFlags.EcospaceMapEffort)
+                    strm.Flush()
+                    strm.Close()
+                    strm = Nothing
+                End If
+            Catch ex As IOException
+                'Failed to open the file
+                cLog.Write(ex)
+                System.Console.WriteLine("Ecospace failed to save file " & strFile)
+            End Try
+        Next
 
     End Sub
 

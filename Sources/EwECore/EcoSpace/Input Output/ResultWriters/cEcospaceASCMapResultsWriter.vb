@@ -66,8 +66,8 @@ Public Class cEcospaceASCMapResultsWriter
             Dim strFile As String = ""
 
             For Each varname As eVarNameFlags In vars
-                For igrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
-                    strFile = Me.GetGroupFileName(varname, igrp, Me.FileExtension(), tsData.iTimeStep)
+                For iGrp As Integer = 1 To Me.m_core.m_EcoPathData.NumLiving
+                    strFile = Me.GetGroupFileName(varname, iGrp, Me.FileExtension(), tsData.iTimeStep)
                     ' Create directory any time; user may have deleted it during a run
                     If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
                         'Handle file exceptions on a per file basis
@@ -76,7 +76,7 @@ Public Class cEcospaceASCMapResultsWriter
                         Try
                             strm = New StreamWriter(strFile, False)
                             If (strm IsNot Nothing) Then
-                                Me.SaveASCFile(strm, tsData, igrp, varname)
+                                Me.SaveASCFile(strm, tsData, iGrp, varname)
                                 strm.Flush()
                                 strm.Close()
                                 strm = Nothing
@@ -105,6 +105,24 @@ Public Class cEcospaceASCMapResultsWriter
                 cLog.Write(ex)
                 System.Console.WriteLine("Ecospace failed to save file " & strFile)
             End Try
+
+            ' Space effort
+            For iFlt As Integer = 1 To Me.m_core.m_EcoPathData.NumFleet
+                strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapEffort, iFlt, Me.FileExtension(), tsData.iTimeStep)
+                Try
+                    strm = New StreamWriter(strFile, False)
+                    If (strm IsNot Nothing) Then
+                        Me.SaveASCFile(strm, tsData, iFlt, eVarNameFlags.EcospaceMapEffort)
+                        strm.Flush()
+                        strm.Close()
+                        strm = Nothing
+                    End If
+                Catch ex As IOException
+                    'Failed to open the file
+                    cLog.Write(ex)
+                    System.Console.WriteLine("Ecospace failed to save file " & strFile)
+                End Try
+            Next
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".WriteResults Exception: " & ex.Message)
