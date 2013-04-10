@@ -96,7 +96,8 @@ Namespace Utilities
             If bProtectPath Then
                 strText = Path.Combine(strPath, strFile)
                 ' Replace all accidental 'double dots'
-                strText = cStringUtils.ReplaceAll(strText, "..", ".")
+                'removed ".." replacement so ToValidFileName can resolve relative paths
+                'strText = cStringUtils.ReplaceAll(strText, "..", ".")
             Else
                 strText = strFile
             End If
