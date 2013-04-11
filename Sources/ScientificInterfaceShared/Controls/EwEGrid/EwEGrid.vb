@@ -835,7 +835,7 @@ Namespace Controls.EwEGrid
         <Browsable(True), _
          Description("States whether the grid maintains a list of selected cProperty instances."), _
          DefaultValue(True)> _
-        Public Property TrackPropertySelection() As Boolean
+        Public Property TrackPropertySelection() As Boolean = True
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -1043,7 +1043,7 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         <Browsable(True), _
          Description("States whether the grid allows row, column and entire content selections.")> _
-        Public Property AllowBlockSelect() As Boolean
+        Public Property AllowBlockSelect() As Boolean = True
 
         ' ToDo_JS 05aug07: fix [SHIFT]+key nav selection logic to select a range, not just select a cell
 
