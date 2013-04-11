@@ -60,7 +60,7 @@ Namespace Ecosim
         Protected Overrides Function GetAvailableScenarios() As List(Of cEwEScenario)
             Dim lscenarios As New List(Of cEwEScenario)
 
-            For iScenario As Integer = 1 To Me.UIContext.Core.EcosimScenarioCount
+            For iScenario As Integer = 1 To Me.UIContext.Core.nEcosimScenarios
                 lscenarios.Add(Me.UIContext.Core.EcosimScenarios(iScenario))
             Next
             Return lscenarios

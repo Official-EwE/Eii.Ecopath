@@ -59,7 +59,7 @@ Namespace Ecospace
         Protected Overrides Function GetAvailableScenarios() As List(Of cEwEScenario)
             Dim lscenarios As New List(Of cEwEScenario)
 
-            For iScenario As Integer = 1 To Me.UIContext.Core.EcospaceScenarioCount
+            For iScenario As Integer = 1 To Me.UIContext.Core.nEcospaceScenarios
                 lscenarios.Add(Me.UIContext.Core.EcospaceScenarios(iScenario))
             Next
             Return lscenarios

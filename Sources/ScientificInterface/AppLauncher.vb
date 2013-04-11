@@ -1321,7 +1321,7 @@ Public Class AppLauncher
             ' VERIFY_JS: Should scenarios be sorted in the most recent load order, or is that going to be highly confusing?
 
             ' List available Ecosim scenarios.
-            For i As Integer = 1 To Me.Core.EcosimScenarioCount
+            For i As Integer = 1 To Me.Core.nEcosimScenarios
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcosimScenarios(i).Name
                 tsmi.Tag = Me.Core.EcosimScenarios(i)
@@ -1350,7 +1350,7 @@ Public Class AppLauncher
             Next i
 
             ' List available Ecospace scenarios
-            For i As Integer = 1 To Me.Core.EcospaceScenarioCount
+            For i As Integer = 1 To Me.Core.nEcospaceScenarios
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcospaceScenarios(i).Name
                 tsmi.Tag = Me.Core.EcospaceScenarios(i)
@@ -1360,7 +1360,7 @@ Public Class AppLauncher
             Next
 
             ' List available Ecotracer scenarios
-            For i As Integer = 1 To Me.Core.EcotracerScenarioCount
+            For i As Integer = 1 To Me.Core.nEcotracerScenarios
                 tsmi = New ToolStripMenuItem()
                 tsmi.Text = Me.Core.EcotracerScenarios(i).Name
                 tsmi.Tag = Me.Core.EcotracerScenarios(i)
@@ -2079,7 +2079,7 @@ Public Class AppLauncher
             ' #No: Are we reloading and an active scenario is present
         ElseIf (bTryReuse = True) And (Me.Core.ActiveEcosimScenarioIndex >= 0) Then
             Return True
-        ElseIf Me.Core.EcosimScenarioCount = 1 Then
+        ElseIf Me.Core.nEcosimScenarios = 1 Then
             ' Automatically load the only available scenario
             es = Me.Core.EcosimScenarios(1)
         End If
@@ -2192,7 +2192,7 @@ Public Class AppLauncher
             ' #No: Are we reloading and an active scenario is present?
         ElseIf (bTryReuse = True) And (Me.Core.ActiveEcospaceScenarioIndex >= 0) Then
             Return True
-        ElseIf (Me.Core.EcospaceScenarioCount = 1) Then
+        ElseIf (Me.Core.nEcospaceScenarios = 1) Then
             ' Automatically load the only available scenario
             es = Me.Core.EcospaceScenarios(1)
         End If
@@ -2297,7 +2297,7 @@ Public Class AppLauncher
             ' #No: Are we reloading and an active scenario is present?
         ElseIf (bTryReuse = True) And (Me.Core.ActiveEcotracerScenarioIndex >= 0) Then
             Return True
-        ElseIf (Me.Core.EcotracerScenarioCount = 1) Then
+        ElseIf (Me.Core.nEcotracerScenarios = 1) Then
             ' Automatically load the only available scenario
             es = Me.Core.EcotracerScenarios(1)
         End If
@@ -3292,7 +3292,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateDeleteEcosimScenario(ByVal cmd As cCommand) _
            Handles m_cmdDeleteEcosimScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.EcosimScenarioCount > 0
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.nEcosimScenarios > 0
     End Sub
 
     ''' <summary>
@@ -3492,7 +3492,7 @@ Public Class AppLauncher
             If Not String.IsNullOrEmpty(dlg.ScenarioName) Then
                 ' #Cool. Now check if this will overwrite a scenario with the same name (case insensitive)
                 scenarioTarget = Nothing
-                For iScenario As Integer = 1 To Me.Core.EcospaceScenarioCount
+                For iScenario As Integer = 1 To Me.Core.nEcospaceScenarios
                     If (String.Compare(Me.Core.EcospaceScenarios(iScenario).Name, dlg.ScenarioName, True) = 0) Then
                         scenarioTarget = Me.Core.EcospaceScenarios(iScenario)
                     End If
@@ -3556,7 +3556,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateDeleteEcospaceScenario(ByVal cmd As cCommand) _
            Handles m_cmdDeleteEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.EcospaceScenarioCount > 0
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.nEcospaceScenarios > 0
     End Sub
 
     ''' <summary>
@@ -3846,7 +3846,7 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateDeleteEcotracerScenario(ByVal cmd As cCommand) _
         Handles m_cmdDeleteEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.EcotracerScenarioCount > 0
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.nEcotracerScenarios > 0
     End Sub
 
     Private Sub OnEnableEcotracer(ByVal cmd As cCommand) _

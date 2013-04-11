@@ -59,7 +59,7 @@ Namespace Ecotracer
         Protected Overrides Function GetAvailableScenarios() As List(Of cEwEScenario)
             Dim lscenarios As New List(Of cEwEScenario)
 
-            For iScenario As Integer = 1 To Me.UIContext.Core.EcotracerScenarioCount
+            For iScenario As Integer = 1 To Me.UIContext.Core.nEcotracerScenarios
                 lscenarios.Add(Me.UIContext.Core.EcotracerScenarios(iScenario))
             Next
             Return lscenarios
