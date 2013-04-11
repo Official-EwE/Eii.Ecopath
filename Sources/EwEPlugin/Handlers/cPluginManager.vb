@@ -1085,6 +1085,24 @@ Public Class cPluginManager
 
     End Function
 
+    Public Function EcosimModifyEffort(ByRef bEffortModified As Boolean, ByVal Effort() As Single, ByVal BB() As Single, ByVal iTimeIndex As Integer, iYearIndex As Integer, ByVal EcosimDataStructures As Object) As Boolean
+
+        Try
+            Dim bsuccess As Boolean
+            Dim args() As Object = New Object() {bEffortModified, Effort, BB, iTimeIndex, iYearIndex, EcosimDataStructures}
+            bsuccess = Me.TryInvokeMethod(GetType(IEcosimModifyEffort), "EcosimModifyEffort", args)
+            'Update bEffortModified with the values from the plugin 
+            bEffortModified = DirectCast(args(0), Boolean)
+            Return bsuccess
+           
+        Catch ex As Exception
+            Me.RaisePluginException(Nothing, Nothing, "EcosimModifyEffort", ex)
+        End Try
+
+        Return False
+
+    End Function
+
     Public Function EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, _
                                         ByVal EcosimDataStructures As Object, _
                                         ByVal iTimeStep As Integer) As Boolean
