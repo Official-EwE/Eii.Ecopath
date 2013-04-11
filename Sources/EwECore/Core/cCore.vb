@@ -5604,7 +5604,7 @@ Public Class cCore
 
             ' Determine lifestage index of youngest life stage that is being fished
             ' ..For all life stages
-            For iLifestage As Integer = 1 To sg.NStanzas
+            For iLifestage As Integer = 1 To sg.nLifeStages
                 ' ..For all fleets
                 For iFleet As Integer = 1 To Me.nFleets
                     ' Is this life stage being caught?
@@ -6030,7 +6030,7 @@ Public Class cCore
         For iStanza As Integer = 0 To Me.nStanzas - 1
             stanza = Me.StanzaGroups(iStanza)
             bIsFished = False
-            For iIndex As Integer = 1 To stanza.NStanzas
+            For iIndex As Integer = 1 To stanza.nLifeStages
                 Dim iGroup As Integer = stanza.iGroups(iIndex)
                 group = Me.EcoPathGroupInputs(iGroup)
                 If group.IsFished Then
@@ -11006,7 +11006,7 @@ Public Class cCore
 
         Try
             Dim iStanza As Integer = stanza.Index
-            Dim nStanzas As Integer = stanza.NStanzas
+            Dim nStanzas As Integer = stanza.nLifeStages
 
             If (nStanzas <= 0) Then
                 ' Fail calculations without making any changes
@@ -11144,8 +11144,8 @@ Public Class cCore
         m_Stanza.FixedFecundity(iStanza) = stanza.FixedFecundity
         m_Stanza.EggAtSpawn(iStanza) = stanza.EggAtSpawn
 
-        m_Stanza.Nstanza(iStanza) = stanza.NStanzas
-        For iLifeStage As Integer = 1 To stanza.NStanzas
+        m_Stanza.Nstanza(iStanza) = stanza.nLifeStages
+        For iLifeStage As Integer = 1 To stanza.nLifeStages
             m_Stanza.EcopathCode(iStanza, iLifeStage) = stanza.iGroups(iLifeStage)
             m_Stanza.Age1(iStanza, iLifeStage) = stanza.StartAge(iLifeStage)
 

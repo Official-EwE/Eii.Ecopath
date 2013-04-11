@@ -2190,37 +2190,44 @@ Public Class cPluginManager
 
         ' Invoke method on each plugin
         For Each ipc As cPluginContext In collPlugins
+
+            Dim bHandled As Boolean = False
+            Dim objReturn As Object = Nothing
+
             Try
                 ' Try to invoke the member method
-                Dim bHandled As Boolean = CBool(typePlugin.InvokeMember(strMethod, BindingFlags.InvokeMethod, _
-                                                                    Type.DefaultBinder, ipc.Plugin, aArgs))
-
-                Select Case invocation
-                    Case eInvocationType.All
-                        ' All implementing plug-ins need to succeed
-                        bSucces = bSucces And bHandled
-                    Case eInvocationType.Any
-                        ' Any of the implementing plug-ins need to succeed
-                        bSucces = bSucces Or bHandled
-                    Case eInvocationType.Exclusive
-                        ' Exclusive plug-in succeeded: run away!
-                        If bSucces Then Return True
-                End Select
+                objReturn = typePlugin.InvokeMember(strMethod, BindingFlags.InvokeMethod, Type.DefaultBinder, ipc.Plugin, aArgs)
+                If (TypeOf objReturn Is Boolean) Then
+                    bHandled = CBool(objReturn)
+                End If
 
             Catch ex As MissingMethodException
 
                 ' Thrown whenever method[name + parameters] was not found.
                 ' This could indicate a plug-in assembly incompatibility?
                 Me.RaisePluginException(ipc.Assembly, ipc.Plugin, strMethod, ex)
-                bSucces = False
+                bHandled = False
 
             Catch ex As Exception
 
                 ' Error thrown within plug-in
                 Me.RaisePluginException(ipc.Assembly, ipc.Plugin, strMethod, ex)
-                bSucces = False
+                bHandled = False
 
             End Try
+
+            Select Case invocation
+                Case eInvocationType.All
+                    ' All implementing plug-ins need to succeed
+                    bSucces = bSucces And bHandled
+                Case eInvocationType.Any
+                    ' Any of the implementing plug-ins need to succeed
+                    bSucces = bSucces Or bHandled
+                Case eInvocationType.Exclusive
+                    ' Exclusive plug-in succeeded: run away!
+                    If bSucces Then Return True
+            End Select
+
         Next ipc
 
         Return bSucces

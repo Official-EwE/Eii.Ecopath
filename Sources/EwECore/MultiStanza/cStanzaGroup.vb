@@ -63,7 +63,7 @@ Public Class cStanzaGroup
 
         ' EwE5 variables mirrored here:
         ' ReDim Bio(Stanza)             ' Biomass values for groups within a stanza cfg
-        ' ReDim Bat(Stanza) As Single   ' Output variable BaB * Bio(iStanza)
+        ' ReDim Bat(Stanza) As Single   ' Output variable BaB * Bio(iLifeStage)
         ' ReDim Z(Stanza)               ' Mortality
         ' ReDim cb(Stanza)
         ' ReDim FirstAge(Stanza)
@@ -150,19 +150,19 @@ Public Class cStanzaGroup
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaBiomassAtAge, eStatusFlags.Null, eCoreCounterTypes.nMaxStanzaAge, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
-        'iGroup dimensioned by nStanza(iStanza)
+        'iGroup dimensioned by nStanza(iLifeStage)
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaGroup, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
-        'Bio by nStanza(iStanza)
+        'Bio by nStanza(iLifeStage)
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaBiomass, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
-        'CB by nStanza(iStanza)
+        'CB by nStanza(iLifeStage)
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaCB, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
-        'Z Mort by nStanza(iStanza)
+        'Z Mort by nStanza(iLifeStage)
         val = New cValueArrayIndexed(eValueTypes.SingleArray, eVarNameFlags.StanzaMortaility, eStatusFlags.Null, eCoreCounterTypes.nStanzasForStanzaGroup, AddressOf m_core.GetCoreCounter, Me.Index, eDataTypes.Stanza)
         m_values.Add(val.varName, val)
 
@@ -259,7 +259,7 @@ Public Class cStanzaGroup
             Dim grp As cEcoPathGroupInput = Nothing
 
             'first Z mortality
-            For ist As Integer = 1 To Me.NStanzas
+            For ist As Integer = 1 To Me.nLifeStages
                 If Me.Mortality(ist) < 0 Then
                     If (msg Is Nothing) Then Return False
 
@@ -425,12 +425,12 @@ Public Class cStanzaGroup
 
     '### ARRAY VARIABLES ###
 
-    Public Property StartAge(ByVal iStanzaGroup As Integer) As Integer
+    Public Property StartAge(ByVal iLifeStage As Integer) As Integer
         Get
-            Return CInt(Me.GetVariable(eVarNameFlags.StartAge, iStanzaGroup))
+            Return CInt(Me.GetVariable(eVarNameFlags.StartAge, iLifeStage))
         End Get
         Set(ByVal iValue As Integer)
-            Me.SetVariable(eVarNameFlags.StartAge, iValue, iStanzaGroup)
+            Me.SetVariable(eVarNameFlags.StartAge, iValue, iLifeStage)
         End Set
     End Property
 
@@ -453,13 +453,23 @@ Public Class cStanzaGroup
 #Region "Variable by Stanza iGroup & NStanza"
 
     ''' <summary>
+    ''' Get the number of life stages in this Multi Stanza grouping. 
+    ''' </summary>
+    Public ReadOnly Property nLifeStages As Integer
+        Get
+
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Get/set the number of groups in this Multi Stanza grouping. 
     ''' </summary>
+    <Obsolete("Use nLifeStages instead; NStanzas is too confusing")> _
     Public Property NStanzas() As Integer
         Get
             Return m_CoreCounter(eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index)
         End Get
-        Set(ByVal value As Integer)
+        Private Set(ByVal value As Integer)
             'I don't see how this can work from here
             'if the number of stanzas has changed all the data will need to be reloaded 
             Debug.Assert(False, Me.ToString & ".NStanzas() What are you trying to do here!!!!!")
@@ -470,7 +480,7 @@ Public Class cStanzaGroup
     ''' Get/set the <see cref="cCoreInputOutputBase.Index">Index</see> of a group 
     ''' in this multi-stanza grouping. Groups are stored in a one-based array.
     ''' </summary>
-    ''' <param name="iStanza">The one-based index of a group within this Stanza group
+    ''' <param name="iLifeStage">The one-based index of a group within this Stanza group
     ''' to obtain the group index for.</param>
     ''' <returns>Index of a group that belongs to this multi-stanza grouping.</returns>
     ''' <remarks>
@@ -484,62 +494,58 @@ Public Class cStanzaGroup
     ''' stanzaGrp = core.StanzaGroups(0)
     ''' 
     ''' ' Iterate over the groups in this stanza grouping using NStanzas and iGroup(i)
-    ''' For iStanza As Integer = 1 To stanzaGrp.NStanzas
-    '''    input = core.EcoPathGroupInputs(stanzaGrp.iGroup(iStanza))
-    ''' Next iStanza
+    ''' For iLifeStage As Integer = 1 To stanzaGrp.NStanzas
+    '''    input = core.EcoPathGroupInputs(stanzaGrp.iGroup(iLifeStage))
+    ''' Next iLifeStage
     ''' </code>
     ''' </remarks>
-    Public Property iGroups(ByVal iStanza As Integer) As Integer
+    Public Property iGroups(ByVal iLifeStage As Integer) As Integer
 
         Get
-            Return CInt(GetVariable(eVarNameFlags.StanzaGroup, iStanza))
+            Return CInt(GetVariable(eVarNameFlags.StanzaGroup, iLifeStage))
         End Get
 
         Set(ByVal value As Integer)
-            SetVariable(eVarNameFlags.StanzaGroup, value, iStanza)
+            SetVariable(eVarNameFlags.StanzaGroup, value, iLifeStage)
         End Set
 
     End Property
 
-
-    Public Property Biomass(ByVal iStanza As Integer) As Single
+    Public Property Biomass(ByVal iLifeStage As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.StanzaBiomass, iStanza))
+            Return CSng(GetVariable(eVarNameFlags.StanzaBiomass, iLifeStage))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.StanzaBiomass, value, iStanza)
+            SetVariable(eVarNameFlags.StanzaBiomass, value, iLifeStage)
         End Set
 
     End Property
 
-
-    Public Property Mortality(ByVal iStanza As Integer) As Single
+    Public Property Mortality(ByVal iLifeStage As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.StanzaMortaility, iStanza))
+            Return CSng(GetVariable(eVarNameFlags.StanzaMortaility, iLifeStage))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.StanzaMortaility, value, iStanza)
+            SetVariable(eVarNameFlags.StanzaMortaility, value, iLifeStage)
         End Set
 
     End Property
 
-    Public Property CB(ByVal iStanza As Integer) As Single
+    Public Property CB(ByVal iLifeStage As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.StanzaCB, iStanza))
+            Return CSng(GetVariable(eVarNameFlags.StanzaCB, iLifeStage))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.StanzaCB, value, iStanza)
+            SetVariable(eVarNameFlags.StanzaCB, value, iLifeStage)
         End Set
 
     End Property
-
-
 
 #End Region
 
