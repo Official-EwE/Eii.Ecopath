@@ -367,7 +367,7 @@ Public Class gridDefineGroups
             If sg Is Nothing Then Return True
 
             ' Find pos of this group in the original stanza group
-            For i As Integer = 0 To sg.NStanzas - 1
+            For i As Integer = 0 To sg.nLifeStages - 1
                 If sg.iGroups(i) = (Me.GroupIndex - 1) Then
                     iStanza = i
                 End If
@@ -620,7 +620,7 @@ Public Class gridDefineGroups
             ' Name modified? Flag as changed.
             If Me.m_sg.Name <> Me.m_strName Then Return True
             ' Different number of groups? Flag as changed.
-            If Me.m_sg.NStanzas <> Me.NumGroups Then Return True
+            If Me.m_sg.nLifeStages <> Me.NumGroups Then Return True
 
             ' No changes detected yet? Try to find if group assignment and
             ' group order has changed.
@@ -759,7 +759,7 @@ Public Class gridDefineGroups
         For iStanza As Integer = 0 To Core.nStanzas - 1
             stanza = Core.StanzaGroups(iStanza)
             ' Is complete stanza config?
-            If stanza.NStanzas > 0 Then
+            If stanza.nLifeStages > 0 Then
                 ' #Yes: add full stanza set-up
                 si = New cStanzaInfo(stanza, Core.EcoPathGroupInputs(stanza.iGroups(1)).VBK)
             Else
@@ -769,7 +769,7 @@ Public Class gridDefineGroups
             Me.m_lsiStanza.Add(si)
 
             ' Stanza group list is a one-based array
-            For iGroup As Integer = 1 To stanza.NStanzas
+            For iGroup As Integer = 1 To stanza.nLifeStages
                 ' ..while local groupinfo admin is a zero-based array. Whoohoo.
                 Dim isg As Integer = stanza.iGroups(iGroup)
                 gi = DirectCast(Me.m_lgiGroups(isg - iFIRSTGROUPROW), cGroupInfo)
@@ -2004,7 +2004,7 @@ Public Class gridDefineGroups
                     If si.IsChanged(Me.Core) Then
                         Dim sg As cStanzaGroup = si.StanzaGroup
                         ' Remove all current groups
-                        For iLifestage As Integer = 1 To si.StanzaGroup.NStanzas
+                        For iLifestage As Integer = 1 To si.StanzaGroup.nLifeStages
                             group = Me.Core.EcoPathGroupInputs(sg.iGroups(iLifestage))
                             If Not Me.Core.RemoveStanzaLifestage(sg.Index, group.DBID) Then
                                 bSuccess = False

@@ -104,7 +104,7 @@ Namespace Ecosim
             For stanzaGroupIndex As Integer = 0 To core.nStanzas - 1
                 sg = core.StanzaGroups(stanzaGroupIndex)
 
-                For iStanza As Integer = 1 To sg.NStanzas
+                For iStanza As Integer = 1 To sg.nLifeStages
                     source = core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     iStanzaGroup(source.Index) = stanzaGroupIndex
                 Next

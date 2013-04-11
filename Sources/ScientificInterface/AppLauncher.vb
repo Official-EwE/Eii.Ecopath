@@ -3093,7 +3093,7 @@ Public Class AppLauncher
         ' Test if all stanza groups have at least one life stage
         Dim bAllStanzaComplete As Boolean = True
         For i As Integer = 0 To Me.Core.nStanzas - 1
-            bAllStanzaComplete = bAllStanzaComplete And (Me.Core.StanzaGroups(i).NStanzas > 0)
+            bAllStanzaComplete = bAllStanzaComplete And (Me.Core.StanzaGroups(i).nLifeStages > 0)
         Next
 
         If bAllStanzaComplete = False Then

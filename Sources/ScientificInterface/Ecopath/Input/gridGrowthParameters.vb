@@ -78,8 +78,8 @@ Namespace Ecopath.Input
             For stanzaGroupIndex As Integer = 0 To core.nStanzas - 1
                 sg = core.StanzaGroups(stanzaGroupIndex)
 
-                For iStanza As Integer = 1 To sg.NStanzas
-                    group = core.EcoPathGroupInputs(sg.iGroups(iStanza))
+                For iStanza As Integer = 1 To sg.nLifeStages
+                    group = Core.EcoPathGroupInputs(sg.iGroups(iStanza))
                     intStanzaGroupIndex(group.Index) = stanzaGroupIndex
                 Next
             Next

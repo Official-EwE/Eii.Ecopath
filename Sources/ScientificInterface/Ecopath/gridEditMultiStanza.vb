@@ -109,9 +109,9 @@ Public Class gridEditMultiStanza
 
         If (Me.m_stanzagroup Is Nothing) Then Return
 
-        For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
+        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
 
-            source = core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(iStanza))
+            source = Core.EcoPathGroupInputs(Me.m_stanzagroup.iGroups(iStanza))
             iRow = Me.AddRow
 
             'Index
@@ -167,7 +167,7 @@ Public Class gridEditMultiStanza
 
         Dim iLeadingB As Integer = Me.m_stanzagroup.LeadingB
         Dim iLeadingCB As Integer = Me.m_stanzagroup.LeadingCB
-        For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
+        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
             If CBool(Me(iStanza, eColumnTypes.LeadingB).Value) Then
                 iLeadingB = iStanza
             End If
@@ -178,7 +178,7 @@ Public Class gridEditMultiStanza
         Me.m_stanzagroup.LeadingB = iLeadingB
         Me.m_stanzagroup.LeadingCB = iLeadingCB
 
-        For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
+        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
 
             'Start age
             Me.m_stanzagroup.SetVariable(eVarNameFlags.StartAge, CInt(Me(iStanza, eColumnTypes.StartAge).Value), iStanza)
@@ -213,7 +213,7 @@ Public Class gridEditMultiStanza
         Dim bLeading As Boolean = False
         Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
 
-        For iStanza As Integer = 1 To Me.m_stanzagroup.NStanzas
+        For iStanza As Integer = 1 To Me.m_stanzagroup.nLifeStages
             bLeading = (iRow = iStanza)
             If bLeading Then style = cStyleGuide.eStyleFlags.OK Else style = cStyleGuide.eStyleFlags.NotEditable
             Me(iStanza, col).Value = (iRow = iStanza)
@@ -238,7 +238,7 @@ Public Class gridEditMultiStanza
                 If iStanza > 0 Then
                     bOK = bOK And (iAge > CInt(Me(p.Row - 1, eColumnTypes.StartAge).Value))
                 End If
-                If iStanza < Me.m_stanzagroup.NStanzas - 1 Then
+                If iStanza < Me.m_stanzagroup.nLifeStages - 1 Then
                     bOK = bOK And (iAge < CInt(Me(p.Row + 1, eColumnTypes.StartAge).Value))
                 End If
         End Select

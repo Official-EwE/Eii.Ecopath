@@ -236,7 +236,7 @@ Namespace Ecopath
             pane.AddCurve(SharedResources.HEADER_POPULATIONBIOMASS, pplB, Color.Black, SymbolType.None)
 
             ' Generate vertical separator curves
-            For i As Integer = 2 To sg.NStanzas
+            For i As Integer = 2 To sg.nLifeStages
 
                 ' First vertical separator?
                 If (i = 2) Then
@@ -247,7 +247,7 @@ Namespace Ecopath
                     strLabel = ""
                 End If
 
-                pplSep= New PointPairList
+                pplSep = New PointPairList
                 pplSep.Add(sg.StartAge(i) - 1, 0)
                 pplSep.Add(sg.StartAge(i) - 1, 1)
                 pane.AddCurve(strLabel, pplSep, Color.Green, SymbolType.None)

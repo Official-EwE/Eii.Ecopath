@@ -398,10 +398,10 @@ Namespace Ecosim
                     m_tvGroups.Nodes(0).Nodes.Add(node)
 
                     ' Add subnodes for life stages
-                    iGroupLast = stanza.iGroups(stanza.NStanzas)
+                    iGroupLast = stanza.iGroups(stanza.nLifeStages)
                     groupEnd = Me.Core.EcoPathGroupInputs(iGroupLast)
 
-                    For j As Integer = 1 To stanza.NStanzas - 1
+                    For j As Integer = 1 To stanza.nLifeStages - 1
 
                         iGroup = stanza.iGroups(j)
                         groupStart = Me.Core.EcoPathGroupInputs(iGroup)
@@ -437,7 +437,7 @@ Namespace Ecosim
 
             For i As Integer = 1 To results.nStanza
                 stanza = Me.Core.StanzaGroups(i - 1)
-                For j As Integer = 1 To stanza.NStanzas - 1
+                For j As Integer = 1 To stanza.nLifeStages - 1
                     group = Me.Core.EcoPathGroupInputs(stanza.iGroups(j))
                     If results.hasSRData(i, j) Then
                         tmpSR = New cSRData(results.BStock(i, j), results.BRecruitment(i, j))
