@@ -330,8 +330,6 @@ Public Class cEcoSimGroupInput
     ''' </summary>
     ''' <param name="iGroup"></param>
     ''' <value></value>
-
-
     Public Property VulMult(ByVal iGroup As Integer) As Single
 
         Get
