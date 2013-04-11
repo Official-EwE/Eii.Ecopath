@@ -1859,9 +1859,6 @@ Namespace Ecosim
                         m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.YieldRel, igrp, iTime) = BB(igrp) * m_Data.FishTime(igrp) / startCatch
                     End If
 
-                    'ToDo_jb Compute fish count for real not pretend like this
-                    m_Results.FishCount(igrp) = BB(igrp) * 100 '
-
                     'save results over time for output
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, iTime) = BB(igrp)
                     m_Data.ResultsOverTime(cEcosimDatastructures.eEcosimResults.BiomassRel, igrp, iTime) = BB(igrp) / Me.m_Data.StartBiomass(igrp)
