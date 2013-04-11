@@ -328,16 +328,16 @@ Public Class cEcoSimGroupInput
     ''' <summary>
     ''' Vulnerability multiplier vulnerability of this group to predation
     ''' </summary>
-    ''' <param name="iGroup"></param>
+    ''' <param name="iPredGroup">Group index of the predator group</param>
     ''' <value></value>
-    Public Property VulMult(ByVal iGroup As Integer) As Single
+    Public Property VulMult(ByVal iPredGroup As Integer) As Single
 
         Get
-            Return CSng(GetVariable(eVarNameFlags.VulMult, iGroup))
+            Return CSng(GetVariable(eVarNameFlags.VulMult, iPredGroup))
         End Get
 
         Set(ByVal value As Single)
-            SetVariable(eVarNameFlags.VulMult, value, iGroup)
+            SetVariable(eVarNameFlags.VulMult, value, iPredGroup)
         End Set
 
     End Property
