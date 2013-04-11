@@ -6155,10 +6155,26 @@ Public Class cCore
     ''' Returns the number of <see cref="cEcoSimScenario">Ecosim scenarios</see> in the currently loaded model
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcosimScenarioCount() As Integer
+    Public ReadOnly Property nEcosimScenarios() As Integer
         Get
             Try
                 Return Me.m_EcoPathData.NumEcosimScenarios
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <inheritdocs cref="nEcosimScenarios"/>
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    <Obsolete("Please use nEcosimScenarios instead")> _
+    Public ReadOnly Property EcosimScenarioCount() As Integer
+        Get
+            Try
+                Return Me.nEcosimScenarios
             Catch ex As Exception
                 Return 0
             End Try
@@ -8872,11 +8888,25 @@ Public Class cCore
     ''' Gets the number of available Ecospace scenarios for the loaded model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcospaceScenarioCount() As Integer
+    Public ReadOnly Property nEcospaceScenarios() As Integer
         Get
             Try
                 ' Return the official ecopath administration figure
                 Return Me.m_EcoPathData.NumEcospaceScenarios
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="nEcospaceScenarios"/>
+    ''' -----------------------------------------------------------------------
+    <Obsolete("Use nEcospaceScenarios instead")> _
+    Public ReadOnly Property EcospaceScenarioCount() As Integer
+        Get
+            Try
+                Return Me.nEcospaceScenarios
             Catch ex As Exception
                 Return 0
             End Try
@@ -11314,11 +11344,25 @@ Public Class cCore
     ''' model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property EcotracerScenarioCount() As Integer
+    Public ReadOnly Property nEcotracerScenarios() As Integer
         Get
             Try
                 ' Return Ecopath administration number here instead of counting UI items
                 Return Me.m_EcoPathData.NumEcotracerScenarios
+            Catch ex As Exception
+                Return 0
+            End Try
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="nEcotracerScenarios"/>
+    ''' -----------------------------------------------------------------------
+    <Obsolete("Use nEcotracerScenarios instead")> _
+    Public ReadOnly Property EcotracerScenarioCount() As Integer
+        Get
+            Try
+                Return Me.nEcotracerScenarios
             Catch ex As Exception
                 Return 0
             End Try

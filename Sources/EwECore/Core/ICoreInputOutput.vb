@@ -17,9 +17,9 @@
 '
 
 Option Strict On
+Imports System.ComponentModel
 Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
-Imports EwECore.Auxiliary
 
 #Region " Definition of interfaces "
 
@@ -638,6 +638,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' <returns>A <see cref="cVariableMetaData">metadata</see> instance, or
     ''' Null if a variable does not have associated metadata.</returns>
     ''' -----------------------------------------------------------------------
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Function GetVariableMetadata(ByVal varName As eVarNameFlags) As cVariableMetaData
 
         If Me.m_values.ContainsKey(varName) Then
@@ -661,6 +662,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' the EwECore, and should be turned ON to respond to changes made by 
     ''' user interfaces or by remote calculations.
     ''' </remarks>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Friend Overridable Property AllowValidation() As Boolean
         Get
             Return m_bValidate
@@ -753,6 +755,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Get the outcome of the most recently performed variable validation 
     ''' attempt on a cCoreInutOutputBase instance.
     ''' </summary>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property ValidationStatus() As cVariableStatus _
         Implements ICoreInputOutput.ValidationStatus
         Get
@@ -766,6 +769,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' </summary>
     ''' <param name="varName"><see cref="eVarNameFlags">Variable name</see>
     ''' to retrieve the value descriptor for.</param>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property ValueDescriptor(ByVal varName As eVarNameFlags) As cValue
         Get
             If Me.m_values.ContainsKey(varName) Then Return Me.m_values(varName)
