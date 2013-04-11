@@ -303,7 +303,7 @@ Public Class cEcosimGroupOutput
     End Property
 
     ''' <summary>
-    ''' Get the otal catch on this group at a given time step.
+    ''' Get the total catch on this group at a given time step.
     ''' </summary>
     ''' <param name="iTime">Time index</param>
     ''' <remarks>Sum of catch across all fleets for this group</remarks>
@@ -432,6 +432,10 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+
+    ''' <summary>
+    '''  Predation / total loss rate  [Eatenof(i) / (loss(i) / B(i))]
+    ''' </summary>
     Public ReadOnly Property MortVPred(ByVal iTime As Integer) As Single
 
         Get
@@ -440,6 +444,9 @@ Public Class cEcosimGroupOutput
 
     End Property
 
+    ''' <summary>
+    ''' Catch / total loss rate [B(i) * F(i) / (loss(i) / b(i))
+    ''' </summary>
     Public ReadOnly Property MortVFishing(ByVal iTime As Integer) As Single
 
         Get
