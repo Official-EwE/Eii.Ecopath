@@ -22,35 +22,65 @@
 ''' </summary>
 ''' <remarks></remarks>
 Public Class cEcoSimResults
+
+    ''' <summary>
+    ''' Number of groups
+    ''' </summary>
     Public nGroups As Integer
+    ''' <summary>
+    ''' Number of fleets
+    ''' </summary>
     Public nFleets As Integer
+
+    ''' <summary>
+    ''' Timestep counter at the currrent model timestep
+    ''' </summary>
     Public CurrentT As Long
+
+    ''' <summary>
+    ''' Relative biomass by group
+    ''' </summary>
     Public Biomass() As Single
+
     Public TLCatch As Single
     Public FIB As Single
+
+    ''' <summary>
+    ''' Fishing effort used for the current timestep by fleet
+    ''' </summary>
     Public Effort() As Single
 
-    ''' <summary> Computed number of Fish by group </summary>
-    Public FishCount() As Single
-
+    ''' <summary>
+    ''' Catch by group relative to Ecopath base
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Yield() As Single
+
     ''' <summary>Catch {group x fleet}</summary>
     Public BCatch(,) As Single ' by group, by fleet
 
     ''' <summary>Landings discards not included {group x fleet}</summary>
     Public Landings(,) As Single
 
+    ''' <summary>
+    ''' Number of multi stanza groups. Used by BStock(nStanza,nMaxLifeStages) and BRecruitment(nStanza,nMaxLifeStages)
+    ''' </summary>
     Public nStanza As Integer
+
+    ''' <summary>
+    ''' Maximum number of life stages across all the multi stanza groups
+    ''' </summary>
+    ''' <remarks></remarks>
     Public nMaxLifeStages As Integer
 
     ''' <summary>
-    ''' relative biomass of stock
+    ''' Relative biomass of stock, BStock(nStanza,nMaxLifeStages)
     ''' </summary>
     ''' <remarks>X axis in EwE5 sr plot</remarks>
     Public BStock(,) As Single
 
     ''' <summary>
-    ''' relative biomass of recruits
+    ''' Relative biomass of recruits, BRecruitment(nStanza,nMaxLifeStages)
     ''' </summary>
     ''' <remarks>Y axis in EwE5 sr plot</remarks>
     Public BRecruitment(,) As Single
@@ -59,15 +89,15 @@ Public Class cEcoSimResults
     Private m_hasData As Boolean
 
     ''' <summary>
-    ''' Is there stock recruitment data for Adult juvenile pair
+    ''' Is there stock recruitment data for Multi stanza , Life stage pair
     ''' </summary>
     ''' <remarks></remarks>
-    Public Property hasSRData(ByVal iAdult As Integer, ByVal iJuv As Integer) As Boolean
+    Public Property hasSRData(ByVal iMulitStanzaGroup As Integer, ByVal iLifeStage As Integer) As Boolean
         Get
-            Return m_hasSRData(iAdult, iJuv)
+            Return m_hasSRData(iMulitStanzaGroup, iLifeStage)
         End Get
         Set(ByVal value As Boolean)
-            m_hasSRData(iAdult, iJuv) = value
+            m_hasSRData(iMulitStanzaGroup, iLifeStage) = value
         End Set
     End Property
 
@@ -99,7 +129,6 @@ Public Class cEcoSimResults
         ReDim m_hasSRData(nStanza, nMaxLifeStages)
         ReDim BStock(nStanza, nMaxLifeStages)
         ReDim BRecruitment(nStanza, nMaxLifeStages)
-        ReDim FishCount(nGroups)
         ReDim Effort(nFleets)
 
     End Sub
@@ -109,7 +138,6 @@ Public Class cEcoSimResults
 
         Array.Clear(Me.Biomass, 0, nGroups)
         Array.Clear(Me.Yield, 0, nGroups)
-        Array.Clear(Me.FishCount, 0, nGroups)
 
         Array.Clear(Me.BCatch, 0, BCatch.Length)
 
