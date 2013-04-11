@@ -842,6 +842,7 @@ Namespace Ecosim
 
                     If ipct = 6 Then AccumulateDataInfo(CInt(Math.Truncate(itime / 12)), BB, m_Data.loss)
 
+                    setEffortFromPlugin(QYear, itime, iyr)
                     'Set FishTime() (fishing mort at timestep)
                     Me.setFishTime(itime, iyr)
 
@@ -1236,6 +1237,34 @@ Namespace Ecosim
 
         End Sub
 
+        Private Sub setEffortFromPlugin(ByVal QYear() As Single, ByVal iTime As Integer, ByVal iYear As Integer)
+            Dim bModified As Boolean
+            Dim effort(Me.m_Data.nGear) As Single
+            Try
+
+                For iflt As Integer = 1 To Me.m_Data.nGear
+                    effort(iflt) = Me.m_Data.FishRateGear(iflt, iTime)
+                Next
+
+                If (m_pluginManager IsNot Nothing) Then m_pluginManager.EcosimModifyEffort(bModified, effort, BB, iTime, iYear, Me.m_Data)
+
+                If bModified Then
+                    'Ok the plugin modified Effort for this time step
+                    'so set Effort in the core data 
+                    For iflt As Integer = 1 To Me.m_Data.nGear
+                        Me.m_Data.FishRateGear(iflt, iTime) = effort(iflt)
+                    Next
+
+                    'And update F from Effort
+                    Me.SetFtimeFromGear(BB, iTime, QYear, Me.m_Data.PredictSimEffort)
+
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex)
+            End Try
+
+        End Sub
 
 
         Private Sub CheckIfSmall(ByVal Start As Integer, ByVal last As Integer, ByRef ArrayX() As Single)
