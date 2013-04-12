@@ -114,8 +114,6 @@ Public Class cResults
 
                 ' Dependents total
                 Dim sDependentsTotal As Single = 0.0!
-
-                Dim sAvgSalaries As Single = 0.0!
                 Dim sGDP As Single = 0.0!
 
                 sRevenueProductsOther = Me.m_results(eVariableType.RevenueProductsOther, unit.Sequence) + _
@@ -196,13 +194,6 @@ Public Class cResults
                        Me.m_results(eVariableType.RevenueSubsidies, unit.Sequence)
 
                 Me.m_results(eVariableType.GDPContribution, unit.Sequence) = sGDP
-
-                sAvgSalaries = 0
-                If (Me.m_results(eVariableType.NumberOfJobsTotal, unit.Sequence) > 0) Then
-                    sAvgSalaries = Me.m_results(eVariableType.CostSalariesShares, unit.Sequence) / Me.m_results(eVariableType.NumberOfJobsTotal, unit.Sequence)
-                End If
-
-                Me.m_results(eVariableType.AverageSaleries, unit.Sequence) = sAvgSalaries
 
             Next iUnit
 
@@ -326,7 +317,6 @@ Public Class cResults
         LandingsPrice
 
         GDPContribution
-        AverageSaleries
 
     End Enum
 
@@ -841,4 +831,7 @@ Public Class cResults
 
 #End Region ' Contribution by item
 
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 End Class

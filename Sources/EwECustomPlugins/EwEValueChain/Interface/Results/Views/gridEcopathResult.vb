@@ -286,7 +286,6 @@ Public Class gridEcopathResult
             Me.UpdateDataCell(Me(eRowTypes.Profit, 2 + i), results, cResults.eVariableType.Profit, alUnits(i).ToArray(), iFleet, iYear)
             Me.UpdateDataCell(Me(eRowTypes.TotalUtility, 2 + i), results, cResults.eVariableType.TotalUtility, alUnits(i).ToArray(), iFleet, iYear)
 
-            Me.UpdateDataCell(Me(eRowTypes.AverageSaleries, 2 + i), results, cResults.eVariableType.AverageSaleries, alUnits(i).ToArray(), iFleet, iYear)
             Me.UpdateDataCell(Me(eRowTypes.GDPContribution, 2 + i), results, cResults.eVariableType.GDPContribution, alUnits(i).ToArray(), iFleet, iYear)
 
             Me.UpdateDataCell(Me(eRowTypes.NumberOfJobsFemaleTotal, 2 + i), results, cResults.eVariableType.NumberOfJobsFemaleTotal, alUnits(i).ToArray(), iFleet, iYear)
@@ -296,6 +295,13 @@ Public Class gridEcopathResult
             Me.UpdateDataCell(Me(eRowTypes.NumberOfWorkerDependents, 2 + i), results, cResults.eVariableType.NumberOfWorkerDependents, alUnits(i).ToArray(), iFleet, iYear)
             Me.UpdateDataCell(Me(eRowTypes.NumberOfOwnerDependents, 2 + i), results, cResults.eVariableType.NumberOfOwnerDependents, alUnits(i).ToArray(), iFleet, iYear)
             Me.UpdateDataCell(Me(eRowTypes.NumberOfDependentsTotal, 2 + i), results, cResults.eVariableType.NumberOfDependentsTotal, alUnits(i).ToArray(), iFleet, iYear)
+
+            ' Calc avg. salaries on the fly
+            Dim sNumJobs As Single = CSng(Me(eRowTypes.NumberOfJobsTotal, 2 + i).Value)
+            Dim sSalaries As Single = CSng(Me(eRowTypes.CostSalariesShares, 2 + i).Value)
+            Dim sAvgSal As Single = 0
+            If sNumJobs > 0 Then sAvgSal = sSalaries / sNumJobs
+            Me.UpdateDataCell(Me(eRowTypes.AverageSaleries, 2 + i), sAvgSal)
 
         Next i
 
@@ -395,7 +401,7 @@ Public Class gridEcopathResult
 
     Private Sub UpdateDataCell(ByVal cell As Cells.ICell, ByVal sValue As Single)
         Try
-            cell.Value = sValue
+            cell.Value = Math.Round(sValue)
         Catch ex As Exception
             ' Hmm
         End Try
