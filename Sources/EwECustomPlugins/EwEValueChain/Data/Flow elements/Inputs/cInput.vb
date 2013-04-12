@@ -41,8 +41,7 @@ Public Class cInput
     ''' <param name="sTons">Weight of the product, in tons</param>
     ''' <param name="sValue">Total value of the product.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub New(ByVal src As cUnit, _
-                   ByVal sTons As Single, ByVal sValue As Single)
+    Public Sub New(ByVal src As cUnit, ByVal sTons As Single, ByVal sValue As Single)
         Me.m_src = src
         Me.m_sTons = sTons
         Me.m_sValue = sValue
@@ -61,8 +60,7 @@ Public Class cInput
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the total value of this input. This value should correspond to
-    ''' <see cref="Tons">Tons</see> x <see cref="CustomValuePerTon">ValuePerTon</see>
+    ''' Get the total value of this input.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Value() As Single
@@ -71,6 +69,11 @@ Public Class cInput
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' The <see cref="cUnit">source</see> of this unit.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property Source As cUnit
         Get
             Return Me.m_src
