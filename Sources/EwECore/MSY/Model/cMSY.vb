@@ -197,9 +197,7 @@ Namespace MSY
         ''' -------------------------------------------------------------------
         Public Function RunMSY() As Boolean
 
-            If Me.m_msyData.bStopRun Then
-                Return False
-            End If
+            Me.m_msyData.bStopRun = False
 
             ' Do this once at the start of it all
             Me.InitTrackers()
@@ -231,6 +229,8 @@ Namespace MSY
             Dim strAssessment As String = Me.m_msyData.AssessmentType.ToString
             Dim iNumSteps As Integer = 0
             Dim bRan As Boolean = False
+
+            Me.m_msyData.bStopRun = False
 
             ' Do this once at the start of it all
             Me.InitTrackers()
@@ -621,8 +621,8 @@ Namespace MSY
                 Dim igrp As Integer = Me.m_msyData.iSelGroupFleet
 
                 For Each result As cMSYFResult In Me.m_msyData.lstResults
-                    System.Console.WriteLine(igrp.ToString & ", " & result.curF.ToString & ",  " & result.TotalValue.ToString & _
-                                             "," & result.B(igrp).ToString & ", " & result.[Catch](igrp).ToString)
+                    System.Console.WriteLine(igrp.ToString + ", " + result.curF.ToString + ",  " + result.TotalValue.ToString + _
+                                             "," + result.B(igrp).ToString + ", " + result.[Catch](igrp).ToString)
                 Next
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #End If

@@ -349,11 +349,12 @@ Namespace MSY
 
                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 'Dump out the comparison
-                Dim delim As String = ", " 'cStringUtils.vbTab 
                 Dim ssError As Single
                 System.Console.WriteLine("---------------MSY Ecosim unit test output---------------------")
-                System.Console.WriteLine("Selected Group = " & Me.m_Core.m_EcoPathData.GroupName(Me.m_msyData.iSelGroupFleet))
-                System.Console.WriteLine("Test F = " & FishMortForTest.ToString)
+                System.Console.WriteLine("Selected Group, " + Me.m_Core.m_EcoPathData.GroupName(Me.m_msyData.iSelGroupFleet))
+                System.Console.WriteLine("Test F, " + FishMortForTest.ToString)
+
+                System.Console.WriteLine("Group Name,F ,MSY/Ecosim , MSY Biomass, Ecosim Biomass")
 
                 For igrp As Integer = 1 To Me.m_msyData.nGroups
                     Dim msyB As Single = Me.m_MSY.bb(igrp)
@@ -361,11 +362,11 @@ Namespace MSY
                     ssError += CSng((msyB - simB) ^ 2.0)
                     Dim msyError As Single = msyB / simB
                     Dim F As Single = Me.m_Core.m_EcoSimData.FishTime(igrp)
-                    System.Console.WriteLine("Group " & Me.m_Core.m_EcoPathData.GroupName(igrp) & delim & "F = " & F.ToString & delim & _
-                                             "MSY / Ecosim = " & msyError.ToString & delim & "MSY = " & msyB.ToString & delim & "Ecosim = " & simB.ToString)
+                    System.Console.WriteLine(Me.m_Core.m_EcoPathData.GroupName(igrp) + ", " + F.ToString + _
+                                             ", " + msyError.ToString + ", " + msyB.ToString + ", " + simB.ToString)
                 Next
 
-                System.Console.WriteLine("Last timestep Sum of Square error = " & ssError.ToString)
+                System.Console.WriteLine("Last timestep Sum of Square error, " + ssError.ToString)
                 System.Console.WriteLine("---------------Done MSY Ecosim unit test---------------------")
 
                 'Remove the time series we created above
