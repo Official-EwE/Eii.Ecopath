@@ -46,6 +46,33 @@ Public Class gridEcopathResult
         Total
     End Enum
 
+    Private Enum eRowTypes As Integer
+        Header = 0
+        Production
+        ProductionLive
+        RevenueProductsMain
+        RevenueProductsOther
+        RevenueTickets
+        RevenueSubsidies
+        RevenueTotal
+        CostSalariesShares
+        CostRawmaterial
+        CostInput
+        CostTaxes
+        CostManagementRoyaltyCertificationObservers
+        Cost
+        Profit
+        TotalUtility
+        AverageSaleries
+        GDPContribution
+        NumberOfJobsFemaleTotal
+        NumberOfJobsMaleTotal
+        NumberOfJobsTotal
+        NumberOfWorkerDependents
+        NumberOfOwnerDependents
+        NumberOfDependentsTotal
+    End Enum
+
     Public Sub New(ByVal uic As cUIContext)
         MyBase.New()
         Me.UIContext = uic
@@ -71,110 +98,119 @@ Public Class gridEcopathResult
         Me.Dock = DockStyle.Fill
         Me.FixedColumnWidths = False
 
-        Me.Redim(22, 8)
+        Me.Redim([Enum].GetValues(GetType(eRowTypes)).Length, 8)
 
         ' Column headers
-        Me(0, 0) = New EwEColumnHeaderCell("")
-        Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
-        Me(0, 2) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PRODUCER)
-        Me(0, 3) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PROCESSING)
-        Me(0, 4) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_DISTRIBUTION)
-        Me(0, 5) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_WHOLESALER)
-        Me(0, 6) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_RETAILER)
-        Me(0, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
+        Me(eRowTypes.Header, 0) = New EwEColumnHeaderCell("")
+        Me(eRowTypes.Header, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_UNITS)
+        Me(eRowTypes.Header, 2) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PRODUCER)
+        Me(eRowTypes.Header, 3) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_PROCESSING)
+        Me(eRowTypes.Header, 4) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_DISTRIBUTION)
+        Me(eRowTypes.Header, 5) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_WHOLESALER)
+        Me(eRowTypes.Header, 6) = New EwEColumnHeaderCell(My.Resources.UNIT_TYPE_RETAILER)
+        Me(eRowTypes.Header, 7) = New EwEColumnHeaderCell(SharedResources.HEADER_TOTAL)
 
         ' Row headers
-        Me(1, 0) = CreateRowHeaderCell("Production")
-        Me(1, 1) = CreateUnitCell("t")
+        Me(eRowTypes.Production, 0) = CreateRowHeaderCell("Production")
+        Me(eRowTypes.Production, 1) = CreateUnitCell("t")
 
-        Me(2, 0) = CreateRowHeaderCell("Production, live weight")
-        Me(2, 1) = CreateUnitCell("t")
+        Me(eRowTypes.ProductionLive, 0) = CreateRowHeaderCell("Production, live weight")
+        Me(eRowTypes.ProductionLive, 1) = CreateUnitCell("t")
 
-        Me(3, 0) = CreateRowHeaderCell("Production value")
-        Me(3, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.RevenueProductsMain, 0) = CreateRowHeaderCell("Production value")
+        Me(eRowTypes.RevenueProductsMain, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(4, 0) = CreateRowHeaderCell("Other production value")
-        Me(4, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.RevenueProductsOther, 0) = CreateRowHeaderCell("Other production value")
+        Me(eRowTypes.RevenueProductsOther, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(5, 0) = CreateRowHeaderCell("Ticket revenue")
-        Me(5, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.RevenueTickets, 0) = CreateRowHeaderCell("Ticket revenue")
+        Me(eRowTypes.RevenueTickets, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(6, 0) = CreateRowHeaderCell("Subsidies")
-        Me(6, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.RevenueSubsidies, 0) = CreateRowHeaderCell("Subsidies")
+        Me(eRowTypes.RevenueSubsidies, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(7, 0) = CreateRowHeaderCell("= Revenue", cStyleGuide.eStyleFlags.Sum)
-        Me(7, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.RevenueTotal, 0) = CreateRowHeaderCell("= Revenue", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.RevenueTotal, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(8, 0) = CreateRowHeaderCell("Salaries/shares")
-        Me(8, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.CostSalariesShares, 0) = CreateRowHeaderCell("Salaries/shares")
+        Me(eRowTypes.CostSalariesShares, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(9, 0) = CreateRowHeaderCell("Input (fish)")
-        Me(9, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.CostRawmaterial, 0) = CreateRowHeaderCell("Input (fish)")
+        Me(eRowTypes.CostRawmaterial, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(10, 0) = CreateRowHeaderCell("Input other")
-        Me(10, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.CostInput, 0) = CreateRowHeaderCell("Input other")
+        Me(eRowTypes.CostInput, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(11, 0) = CreateRowHeaderCell("Taxes")
-        Me(11, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.CostTaxes, 0) = CreateRowHeaderCell("Taxes")
+        Me(eRowTypes.CostTaxes, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(12, 0) = CreateRowHeaderCell("Management, royalty, certification, observers")
-        Me(12, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
+        Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 0) = CreateRowHeaderCell("Management, royalty, certification, observers")
+        Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary)
 
-        Me(13, 0) = CreateRowHeaderCell("= Cost", cStyleGuide.eStyleFlags.Sum)
-        Me(13, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Cost, 0) = CreateRowHeaderCell("= Cost", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Cost, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(14, 0) = CreateRowHeaderCell("= Profit", cStyleGuide.eStyleFlags.Sum)
-        Me(14, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Profit, 0) = CreateRowHeaderCell("= Profit", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.Profit, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(15, 0) = CreateRowHeaderCell("= Total utility", cStyleGuide.eStyleFlags.Sum)   'throughput
-        Me(15, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.TotalUtility, 0) = CreateRowHeaderCell("= Total utility", cStyleGuide.eStyleFlags.Sum)   'throughput
+        Me(eRowTypes.TotalUtility, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(16, 0) = CreateRowHeaderCell("Jobs, female")
-        Me(16, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+        Me(eRowTypes.AverageSaleries, 0) = CreateRowHeaderCell("Average saleries", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.AverageSaleries, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(17, 0) = CreateRowHeaderCell("Jobs, male")
-        Me(17, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+        Me(eRowTypes.GDPContribution, 0) = CreateRowHeaderCell("GDP contribution", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.GDPContribution, 1) = CreateUnitCell(cStyleGuide.eUnitType.Monetary, cStyleGuide.eStyleFlags.Sum)
 
-        Me(18, 0) = CreateRowHeaderCell("= Jobs, total", cStyleGuide.eStyleFlags.Sum)
-        Me(18, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfJobsFemaleTotal, 0) = CreateRowHeaderCell("Jobs, female")
+        Me(eRowTypes.NumberOfJobsFemaleTotal, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
 
-        Me(19, 0) = CreateRowHeaderCell("Worker dependents")
-        Me(19, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+        Me(eRowTypes.NumberOfJobsMaleTotal, 0) = CreateRowHeaderCell("Jobs, male")
+        Me(eRowTypes.NumberOfJobsMaleTotal, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
 
-        Me(20, 0) = CreateRowHeaderCell("Owner dependents")
-        Me(20, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+        Me(eRowTypes.NumberOfJobsTotal, 0) = CreateRowHeaderCell("= Jobs, total", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfJobsTotal, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
 
-        Me(21, 0) = CreateRowHeaderCell("= Dependents, total", cStyleGuide.eStyleFlags.Sum)
-        Me(21, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfWorkerDependents, 0) = CreateRowHeaderCell("Worker dependents")
+        Me(eRowTypes.NumberOfWorkerDependents, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+
+        Me(eRowTypes.NumberOfOwnerDependents, 0) = CreateRowHeaderCell("Owner dependents")
+        Me(eRowTypes.NumberOfOwnerDependents, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal)
+
+        Me(eRowTypes.NumberOfDependentsTotal, 0) = CreateRowHeaderCell("= Dependents, total", cStyleGuide.eStyleFlags.Sum)
+        Me(eRowTypes.NumberOfDependentsTotal, 1) = CreateUnitCell(cStyleGuide.eUnitType.Nominal, cStyleGuide.eStyleFlags.Sum)
 
         ' Create data cells for unit cells
         For i As Integer = 0 To 4
 
-            Me(1, 2 + i) = Me.CreateDataCell()
-            Me(2, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.Production, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.ProductionLive, 2 + i) = Me.CreateDataCell()
 
-            Me(3, 2 + i) = Me.CreateDataCell()
-            Me(4, 2 + i) = Me.CreateDataCell()
-            Me(5, 2 + i) = Me.CreateDataCell()
-            Me(6, 2 + i) = Me.CreateDataCell()
-            Me(7, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+            Me(eRowTypes.RevenueProductsMain, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.RevenueProductsOther, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.RevenueTickets, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.RevenueSubsidies, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.RevenueTotal, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
 
-            Me(8, 2 + i) = Me.CreateDataCell()
-            Me(9, 2 + i) = Me.CreateDataCell()
-            Me(10, 2 + i) = Me.CreateDataCell()
-            Me(11, 2 + i) = Me.CreateDataCell()
-            Me(12, 2 + i) = Me.CreateDataCell()
-            Me(13, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
-            Me(14, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
-            Me(15, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+            Me(eRowTypes.CostSalariesShares, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.CostRawmaterial, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.CostInput, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.CostTaxes, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.Cost, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+            Me(eRowTypes.Profit, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+            Me(eRowTypes.TotalUtility, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
 
-            Me(16, 2 + i) = Me.CreateDataCell()
-            Me(17, 2 + i) = Me.CreateDataCell()
-            Me(18, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+            Me(eRowTypes.AverageSaleries, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+            Me(eRowTypes.GDPContribution, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
 
-            Me(19, 2 + i) = Me.CreateDataCell()
-            Me(20, 2 + i) = Me.CreateDataCell()
-            Me(21, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+            Me(eRowTypes.NumberOfJobsFemaleTotal, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.NumberOfJobsMaleTotal, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.NumberOfJobsTotal, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
+
+            Me(eRowTypes.NumberOfWorkerDependents, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.NumberOfOwnerDependents, 2 + i) = Me.CreateDataCell()
+            Me(eRowTypes.NumberOfDependentsTotal, 2 + i) = Me.CreateDataCell(cStyleGuide.eStyleFlags.Sum)
 
         Next i
 
@@ -206,6 +242,9 @@ Public Class gridEcopathResult
         Dim alUnits(5) As List(Of cUnit)
         Dim cell As SourceGrid2.Cells.Real.Cell = Nothing
 
+        Dim bTotal As Boolean = False
+        Dim sTotal As Single = 0.0!
+
         For i As Integer = 0 To 4
             alUnits(i) = New List(Of cUnit)
         Next
@@ -229,45 +268,57 @@ Public Class gridEcopathResult
         ' Populate data cells
         For i As Integer = 0 To 4
 
-            Me.UpdateDataCell(Me(1, 2 + i), results, cResults.eVariableType.Production, alUnits(i).ToArray, iFleet, iYear)
-            Me.UpdateDataCell(Me(2, 2 + i), results, cResults.eVariableType.ProductionLive, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.Production, 2 + i), results, cResults.eVariableType.Production, alUnits(i).ToArray, iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.ProductionLive, 2 + i), results, cResults.eVariableType.ProductionLive, alUnits(i).ToArray(), iFleet, iYear)
 
-            Me.UpdateDataCell(Me(3, 2 + i), results, cResults.eVariableType.RevenueProductsMain, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(4, 2 + i), results, cResults.eVariableType.RevenueProductsOther, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(5, 2 + i), results, cResults.eVariableType.RevenueTickets, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(6, 2 + i), results, cResults.eVariableType.RevenueSubsidies, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(7, 2 + i), results, cResults.eVariableType.RevenueTotal, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.RevenueProductsMain, 2 + i), results, cResults.eVariableType.RevenueProductsMain, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.RevenueProductsOther, 2 + i), results, cResults.eVariableType.RevenueProductsOther, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.RevenueTickets, 2 + i), results, cResults.eVariableType.RevenueTickets, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.RevenueSubsidies, 2 + i), results, cResults.eVariableType.RevenueSubsidies, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.RevenueTotal, 2 + i), results, cResults.eVariableType.RevenueTotal, alUnits(i).ToArray(), iFleet, iYear)
 
-            Me.UpdateDataCell(Me(8, 2 + i), results, cResults.eVariableType.CostSalariesShares, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(9, 2 + i), results, cResults.eVariableType.CostRawmaterial, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(10, 2 + i), results, cResults.eVariableType.CostInput, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(11, 2 + i), results, cResults.eVariableType.CostTaxes, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(12, 2 + i), results, cResults.eVariableType.CostManagementRoyaltyCertificationObservers, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(13, 2 + i), results, cResults.eVariableType.Cost, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(14, 2 + i), results, cResults.eVariableType.Profit, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(15, 2 + i), results, cResults.eVariableType.TotalUtility, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.CostSalariesShares, 2 + i), results, cResults.eVariableType.CostSalariesShares, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.CostRawmaterial, 2 + i), results, cResults.eVariableType.CostRawmaterial, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.CostInput, 2 + i), results, cResults.eVariableType.CostInput, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.CostTaxes, 2 + i), results, cResults.eVariableType.CostTaxes, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.CostManagementRoyaltyCertificationObservers, 2 + i), results, cResults.eVariableType.CostManagementRoyaltyCertificationObservers, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.Cost, 2 + i), results, cResults.eVariableType.Cost, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.Profit, 2 + i), results, cResults.eVariableType.Profit, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.TotalUtility, 2 + i), results, cResults.eVariableType.TotalUtility, alUnits(i).ToArray(), iFleet, iYear)
 
-            Me.UpdateDataCell(Me(16, 2 + i), results, cResults.eVariableType.NumberOfJobsFemaleTotal, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(17, 2 + i), results, cResults.eVariableType.NumberOfJobsMaleTotal, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(18, 2 + i), results, cResults.eVariableType.NumberOfJobsTotal, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.AverageSaleries, 2 + i), results, cResults.eVariableType.AverageSaleries, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.GDPContribution, 2 + i), results, cResults.eVariableType.GDPContribution, alUnits(i).ToArray(), iFleet, iYear)
 
-            Me.UpdateDataCell(Me(19, 2 + i), results, cResults.eVariableType.NumberOfWorkerDependents, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(20, 2 + i), results, cResults.eVariableType.NumberOfOwnerDependents, alUnits(i).ToArray(), iFleet, iYear)
-            Me.UpdateDataCell(Me(21, 2 + i), results, cResults.eVariableType.NumberOfDependentsTotal, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.NumberOfJobsFemaleTotal, 2 + i), results, cResults.eVariableType.NumberOfJobsFemaleTotal, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.NumberOfJobsMaleTotal, 2 + i), results, cResults.eVariableType.NumberOfJobsMaleTotal, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.NumberOfJobsTotal, 2 + i), results, cResults.eVariableType.NumberOfJobsTotal, alUnits(i).ToArray(), iFleet, iYear)
+
+            Me.UpdateDataCell(Me(eRowTypes.NumberOfWorkerDependents, 2 + i), results, cResults.eVariableType.NumberOfWorkerDependents, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.NumberOfOwnerDependents, 2 + i), results, cResults.eVariableType.NumberOfOwnerDependents, alUnits(i).ToArray(), iFleet, iYear)
+            Me.UpdateDataCell(Me(eRowTypes.NumberOfDependentsTotal, 2 + i), results, cResults.eVariableType.NumberOfDependentsTotal, alUnits(i).ToArray(), iFleet, iYear)
 
         Next i
 
         ' Create total cells
-        For iRow As Integer = 3 To Me.RowsCount - 1
-            Dim sTotal As Single = 0.0!
-            For iCol As Integer = eColumnTypes.Producer To eColumnTypes.Retailer
-                Try
-                    sTotal += CSng(Val(Me(iRow, iCol).Value))
-                Catch ex As Exception
-                    Debug.Assert(False, ex.Message)
-                End Try
-            Next
-            Me.UpdateDataCell(Me(iRow, eColumnTypes.Total), sTotal)
+        For Each row As eRowTypes In [Enum].GetValues(GetType(eRowTypes))
+            Select Case row
+                Case eRowTypes.Header, eRowTypes.Production, eRowTypes.AverageSaleries
+                    bTotal = False
+                Case Else
+                    bTotal = True
+            End Select
+
+            If (bTotal) Then
+                sTotal = 0.0!
+                For iCol As Integer = eColumnTypes.Producer To eColumnTypes.Retailer
+                    Try
+                        sTotal += CSng(Val(Me(row, iCol).Value))
+                    Catch ex As Exception
+                        Debug.Assert(False, ex.Message)
+                    End Try
+                Next
+                Me.UpdateDataCell(Me(row, eColumnTypes.Total), sTotal)
+            End If
         Next
 
         Me.FixedColumnWidths = False

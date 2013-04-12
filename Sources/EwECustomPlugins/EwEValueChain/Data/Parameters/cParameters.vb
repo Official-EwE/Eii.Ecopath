@@ -21,6 +21,7 @@
 Option Strict On
 Imports System.ComponentModel
 Imports System.Reflection
+Imports System.Drawing
 
 #End Region ' Imports
 
@@ -39,11 +40,7 @@ Public Class cParameters
     Private m_bRunWithEcosim As Boolean = False
     Private m_bRunSearches As Boolean = False
     Private m_bResultsByFleet As Boolean = False
-    Private m_sEffortMin As Single = 0.0!
-    Private m_sEffortMax As Single = 4.0!
-    Private m_sEffortInc As Single = 0.25!
     Private m_liFleets As New List(Of Integer)
-    Private m_sZoomFactor As Single = 1.0!
     Private m_bDeletePrompt As Boolean = True
     Private m_aggmode As eAggregationModeType = eAggregationModeType.FullModel
 
@@ -65,32 +62,9 @@ Public Class cParameters
         End Get
     End Property
 
-    Public Property EquilibriumEffortMin() As Single
-        Get
-            Return Me.m_sEffortMin
-        End Get
-        Set(ByVal value As Single)
-            Me.m_sEffortMin = value
-        End Set
-    End Property
-
-    Public Property EquilibriumEffortMax() As Single
-        Get
-            Return Me.m_sEffortMax
-        End Get
-        Set(ByVal value As Single)
-            Me.m_sEffortMax = value
-        End Set
-    End Property
-
-    Public Property EquilibriumEffortIncrement() As Single
-        Get
-            Return Me.m_sEffortInc
-        End Get
-        Set(ByVal value As Single)
-            Me.m_sEffortInc = value
-        End Set
-    End Property
+    Public Property EquilibriumEffortMin() As Single = 0.0
+    Public Property EquilibriumEffortMax() As Single = 4.0!
+    Public Property EquilibriumEffortIncrement() As Single = 0.25!
 
     Public Property RunWithEcopath() As Boolean
         Get
@@ -128,14 +102,7 @@ Public Class cParameters
         End Set
     End Property
 
-    Public Property ZoomFactor As Single
-        Get
-            Return Me.m_sZoomFactor
-        End Get
-        Set(value As Single)
-            Me.m_sZoomFactor = value
-        End Set
-    End Property
+    Public Property ZoomFactor As Single = 1.0!
 
     Public Property AggregationMode As eAggregationModeType
         Get

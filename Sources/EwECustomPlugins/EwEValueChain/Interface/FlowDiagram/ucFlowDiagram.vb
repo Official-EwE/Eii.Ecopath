@@ -26,11 +26,11 @@ Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -90,15 +90,11 @@ Public Class ucFlowDiagram
         Me.m_tree = New cFlowDiagramTree(Me.m_data)
         Me.m_doodler = New cFlowDiagramRenderer(Me.m_data, Me.m_tree)
 
-        'Me.m_hovermenu = New ucHoverMenu(uic)
     End Sub
 
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing And (Me.components IsNot Nothing) Then
-                'RemoveHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverCommand
-                'Me.m_hovermenu.Dispose()
-                'Me.m_hovermenu = Nothing
                 Me.components.Dispose()
                 Me.components = Nothing
             End If
@@ -117,12 +113,8 @@ Public Class ucFlowDiagram
         Me.m_tscbmValue.SelectedIndex = 0
         Me.m_tsbnOptions.Checked = Not Me.m_scFD.Panel2Collapsed
 
-        'Me.m_hovermenu.AddItem(ScientificInterfaceShared.My.Resources.ExportPictureHS, ScientificInterfaceShared.My.Resources.GENERIC_SHOW_LEGEND, eFDCommands.ExportPicture)
-        'Me.m_hovermenu.Attach(Me.m_pbFlowDiagram)
-
-        'AddHandler Me.m_hovermenu.OnUserCommand, AddressOf OnHoverCommand
-
         Me.m_pgFD.SelectedObject = Me.m_tree
+
     End Sub
 
     Public Property UIContext() As cUIContext _
@@ -171,7 +163,6 @@ Public Class ucFlowDiagram
         ' NOP
     End Sub
 
-
     Private Sub OnShowDifferentValue(sender As Object, e As System.EventArgs) _
         Handles m_tscbmValue.SelectedIndexChanged
         Try
@@ -186,13 +177,6 @@ Public Class ucFlowDiagram
         Handles m_tsbnOptions.Click
         Me.m_scFD.Panel2Collapsed = Not Me.m_tsbnOptions.Checked
     End Sub
-
-    'Private Sub OnHoverCommand(data As Object)
-    '    Select Case DirectCast(data, eFDCommands)
-    '        Case eFDCommands.ExportPicture
-    '            ' Bla
-    '    End Select
-    'End Sub
 
 #Region " Mouse Events "
 

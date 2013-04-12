@@ -261,7 +261,7 @@ Public Class cFlowDiagramData
         Me.m_sValueMax = Single.MinValue
         Me.m_sValueMin = Single.MaxValue
 
-#If 0 Then
+#If 1 Then
 
         ' Dump diet matrix
         Dim strModelFile As String = Me.UIContext.Core.DataSource.ToString
@@ -334,7 +334,7 @@ Public Class cFlowDiagramData
 
         Next
 
-#If 0 Then
+#If 1 Then
 
         ' Dump diet matrix
         strDCFile = Path.Combine(Path.GetDirectoryName(strModelFile), Path.GetFileNameWithoutExtension(strModelFile)) & "_VC_flowDC.csv"

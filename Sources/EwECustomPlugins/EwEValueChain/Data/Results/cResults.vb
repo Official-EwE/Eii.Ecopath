@@ -115,8 +115,8 @@ Public Class cResults
                 ' Dependents total
                 Dim sDependentsTotal As Single = 0.0!
 
-                'Dim isBroker As Boolean = False
-                'If DirectCast(unit, cEconomicUnit).Broker = True Then isBroker = True
+                Dim sAvgSalaries As Single = 0.0!
+                Dim sGDP As Single = 0.0!
 
                 sRevenueProductsOther = Me.m_results(eVariableType.RevenueProductsOther, unit.Sequence) + _
                         Me.m_results(eVariableType.RevenueAgriculture, unit.Sequence)
@@ -128,7 +128,7 @@ Public Class cResults
 
                 'If isBroker = False Then  'this is not a broker, so the revenus from selling the product is theirs, and it counts in the utility
                 sRevenue += Me.m_results(eVariableType.RevenueProductsMain, unit.Sequence)
-                'End If
+
                 ' Cost
                 sCostSalariesShares = Me.m_results(eVariableType.CostWorker, unit.Sequence) + _
                         Me.m_results(eVariableType.CostOwner, unit.Sequence)
@@ -144,9 +144,7 @@ Public Class cResults
                         Me.m_results(eVariableType.CostTaxes, unit.Sequence) + _
                         sCostManagementRoyaltyCertificationObserver
 
-                'If isBroker = False Then 'it is not a broker, so they pay for the fish: (and it is added to the utility)
                 sCost += Me.m_results(eVariableType.CostRawmaterial, unit.Sequence)
-                'End If
 
                 ' Profit
                 Dim grossProfit As Single = sRevenue - sCost
@@ -190,6 +188,21 @@ Public Class cResults
                 Me.m_results(eVariableType.NumberOfJobsTotal, unit.Sequence) = sTotalJobs
 
                 Me.m_results(eVariableType.NumberOfDependentsTotal, unit.Sequence) = sDependentsTotal
+
+                sGDP = Me.m_results(eVariableType.CostSalariesShares, unit.Sequence) + _
+                       Me.m_results(eVariableType.CostTaxes, unit.Sequence) + _
+                       Me.m_results(eVariableType.CostManagementRoyaltyCertificationObservers, unit.Sequence) +
+                       Me.m_results(eVariableType.Profit, unit.Sequence) -
+                       Me.m_results(eVariableType.RevenueSubsidies, unit.Sequence)
+
+                Me.m_results(eVariableType.GDPContribution, unit.Sequence) = sGDP
+
+                sAvgSalaries = 0
+                If (Me.m_results(eVariableType.NumberOfJobsTotal, unit.Sequence) > 0) Then
+                    sAvgSalaries = Me.m_results(eVariableType.CostSalariesShares, unit.Sequence) / Me.m_results(eVariableType.NumberOfJobsTotal, unit.Sequence)
+                End If
+
+                Me.m_results(eVariableType.AverageSaleries, unit.Sequence) = sAvgSalaries
 
             Next iUnit
 
@@ -311,6 +324,9 @@ Public Class cResults
 
         Landings
         LandingsPrice
+
+        GDPContribution
+        AverageSaleries
 
     End Enum
 
