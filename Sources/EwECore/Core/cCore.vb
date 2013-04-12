@@ -4842,6 +4842,9 @@ Public Class cCore
 
             Me.ResetEcopathGroupOutputs()
 
+            'Tell the plugins that Ecopath is about to run
+            If Me.PluginManager IsNot Nothing Then Me.PluginManager.EcopathRunInitialized(m_EcoPathData, m_TaxonData, m_Stanza)
+
             'call EcoPath to estimate the missing parameters
             If (m_EcoPath.Run()) Then
 
@@ -8623,7 +8626,7 @@ Public Class cCore
             Catch ex As Exception
 
             End Try
-           
+
             If Succeeded Then
                 LoadEcospaceResults()
                 loadEcoTracerResults()
