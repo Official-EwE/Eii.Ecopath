@@ -147,9 +147,10 @@ Public Class cTimeSeriesDataset
     ''' will give the actual number of time series attached to this dataset.</para>
     ''' </remarks>
     ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NumTimeSeries() As Integer
+    Public ReadOnly Property nTimeSeries() As Integer
         Get
-            If Me.Count = 0 Then Return Me.m_iNumTimeSeries
+            ' Return the cached number of time series if no series have been loaded yet
+            If (Me.Count = 0) Then Return Me.m_iNumTimeSeries
             Return Me.Count
         End Get
     End Property
@@ -343,5 +344,20 @@ Public Class cTimeSeriesDataset
     End Sub
 
 #End Region ' List interfaces
+
+#Region " Obsolete "
+
+    ''' -----------------------------------------------------------------------
+    ''' <inheritdocs cref="nTimeSeries"/>
+    ''' -----------------------------------------------------------------------
+    <Obsolete("Use nTimeSeries instead")> _
+    Public ReadOnly Property NumTimeSeries() As Integer
+        Get
+            If Me.Count = 0 Then Return Me.m_iNumTimeSeries
+            Return Me.Count
+        End Get
+    End Property
+
+#End Region ' Obsolete
 
 End Class

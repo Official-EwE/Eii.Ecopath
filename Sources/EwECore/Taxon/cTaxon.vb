@@ -223,7 +223,7 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the index of the Ecopath group that a taxonomy definition contributes to.
     ''' </summary>
-    Public Property Group() As Integer
+    Public Property iGroup() As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.TaxonGroup))
         End Get
@@ -235,7 +235,7 @@ Public Class cTaxon
     ''' <summary>
     ''' Get/set the index of the Stanza configuration that a taxonomy definition contributes to.
     ''' </summary>
-    Public Property Stanza() As Integer
+    Public Property iStanza() As Integer
         Get
             Return CInt(Me.GetVariable(eVarNameFlags.TaxonStanza))
         End Get
@@ -725,6 +725,36 @@ Public Class cTaxon
             SetVariable(eVarNameFlags.LastUpdated, value)
         End Set
     End Property
+
+#Region " Obsolete "
+
+    ''' <summary>
+    ''' Get/set the index of the Ecopath group that a taxonomy definition contributes to.
+    ''' </summary>
+    <Obsolete("Use iGroup instead")> _
+    Public Property Group() As Integer
+        Get
+            Return Me.iGroup
+        End Get
+        Set(ByVal value As Integer)
+            Me.iGroup = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Get/set the index of the Stanza configuration that a taxonomy definition contributes to.
+    ''' </summary>
+    <Obsolete("Use iStanza instead")> _
+    Public Property Stanza() As Integer
+        Get
+            Return Me.iStanza
+        End Get
+        Set(ByVal value As Integer)
+            Me.iStanza = value
+        End Set
+    End Property
+
+#End Region ' Obsolete
 
 #End Region
 

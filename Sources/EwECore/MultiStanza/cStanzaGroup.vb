@@ -457,23 +457,8 @@ Public Class cStanzaGroup
     ''' </summary>
     Public ReadOnly Property nLifeStages As Integer
         Get
-
-        End Get
-    End Property
-
-    ''' <summary>
-    ''' Get/set the number of groups in this Multi Stanza grouping. 
-    ''' </summary>
-    <Obsolete("Use nLifeStages instead; NStanzas is too confusing")> _
-    Public Property NStanzas() As Integer
-        Get
             Return m_CoreCounter(eCoreCounterTypes.nStanzasForStanzaGroup, Me.Index)
         End Get
-        Private Set(ByVal value As Integer)
-            'I don't see how this can work from here
-            'if the number of stanzas has changed all the data will need to be reloaded 
-            Debug.Assert(False, Me.ToString & ".NStanzas() What are you trying to do here!!!!!")
-        End Set
     End Property
 
     ''' <summary>
@@ -646,5 +631,24 @@ Public Class cStanzaGroup
         Return True
 
     End Function
+
+#Region " Obsolete "
+
+    ''' <summary>
+    ''' Get/set the number of groups in this Multi Stanza grouping. 
+    ''' </summary>
+    <Obsolete("Use nLifeStages instead; NStanzas is too confusing")> _
+    Public Property NStanzas() As Integer
+        Get
+            Return Me.nLifeStages
+        End Get
+        Private Set(ByVal value As Integer)
+            'I don't see how this can work from here
+            'if the number of stanzas has changed all the data will need to be reloaded 
+            Debug.Assert(False, Me.ToString & ".NStanzas() What are you trying to do here!!!!!")
+        End Set
+    End Property
+
+#End Region ' Obsolete
 
 End Class
