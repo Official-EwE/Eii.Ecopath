@@ -151,7 +151,6 @@
     <Compile Include="Plugin templates\Ecosim\IEcosimInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimModifyTimeseriesPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimRunCompletedPlugin.vb" />
-    <Compile Include="Plugin templates\Ecosim\IEcosimFunctionalResponsePlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimRunInitializedPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimRecruitmentPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimBeginTimestepPlugin.vb" />
