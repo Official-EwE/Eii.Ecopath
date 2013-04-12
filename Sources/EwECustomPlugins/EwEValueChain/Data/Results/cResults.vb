@@ -223,7 +223,10 @@ Public Class cResults
     ''' <summary>Run type that results were computed for.</summary>
     Private m_runType As cModel.eRunTypes = cModel.eRunTypes.Ecopath
 
-    Public m_FlowsByWeightBetweenUnits(,) As Double
+    ''' <summary>
+    ''' The biomass flows from one unit to another (source x target)
+    ''' </summary>
+    Public m_BiomassFlows(,) As Double
 
 #End Region ' Private vars
 
@@ -430,13 +433,13 @@ Public Class cResults
         Me.m_iMaxItem = 0
         Me.m_runType = runType
 
-        Me.m_FlowsByWeightBetweenUnits = Nothing
+        Me.m_BiomassFlows = Nothing
         Me.m_asItemValueContribution = Nothing
         Me.m_asItemBiomassContribution = Nothing
 
         GC.Collect()
 
-        ReDim Me.m_FlowsByWeightBetweenUnits(nNumUnits, nNumUnits)
+        ReDim Me.m_BiomassFlows(nNumUnits, nNumUnits)
         ReDim Me.m_asItemValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
         ReDim Me.m_asItemBiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
 
@@ -579,17 +582,17 @@ Public Class cResults
     ''' Get/set the amount of a flow between a source and target unit. Dumensioned
     ''' as (source x target).
     ''' </summary>
-    ''' <param name="iSource"></param>
-    ''' <param name="iTarget"></param>
+    ''' <param name="iSource"><see cref="cUnit.Sequence"/> of source unit (donor).</param>
+    ''' <param name="iTarget"><see cref="cUnit.Sequence"/> of target unit (recipient).</param>
     ''' -----------------------------------------------------------------------
-    Public Property FlowsByWeight(iSource As Integer, iTarget As Integer) As Double
+    Public Property FlowsBiomass(iSource As Integer, iTarget As Integer) As Double
         Get
-            If (Me.m_FlowsByWeightBetweenUnits Is Nothing) Then Return 0
-            Return Me.m_FlowsByWeightBetweenUnits(iSource, iTarget)
+            If (Me.m_BiomassFlows Is Nothing) Then Return 0
+            Return Me.m_BiomassFlows(iSource, iTarget)
         End Get
         Set(value As Double)
-            If (Me.m_FlowsByWeightBetweenUnits IsNot Nothing) Then
-                Me.m_FlowsByWeightBetweenUnits(iSource, iTarget) += value
+            If (Me.m_BiomassFlows IsNot Nothing) Then
+                Me.m_BiomassFlows(iSource, iTarget) += value
             End If
         End Set
     End Property

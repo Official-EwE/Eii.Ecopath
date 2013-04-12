@@ -217,7 +217,13 @@ Public MustInherit Class cUnit
         ' At least expected inputs received?
         If (Me.m_lReceivedInputs.Count >= Me.LinkInCount()) Then
 
-            ' #Yes: Process combined inputs
+            ' #Yes: Process input
+            For Each input In Me.m_lReceivedInputs
+                ' Record biomass flow of this input
+                results.FlowsBiomass(input.Source.Sequence, Me.Sequence) += input.Tons
+            Next
+
+            ' Process combined inputs
             input = Me.SumInputs(Me.m_lReceivedInputs)
 
             ' Store the amount that each fleet contributes to the total
@@ -239,10 +245,7 @@ Public MustInherit Class cUnit
                 sTotalOutputBiomass += sOutputBiomass
                 sTotalOutputValue += sOutputValue
 
-                ' Record flow by weight as a diet
-                results.FlowsByWeight(Me.Sequence, link.Target.Sequence) += sOutputBiomass
-
-                link.Target.Process(results, New cInput(sOutputBiomass, sOutputValue), iTimeStep, iUnit)
+                link.Target.Process(results, New cInput(Me, sOutputBiomass, sOutputValue), iTimeStep, iUnit)
 
             Next
 
@@ -271,7 +274,7 @@ Public MustInherit Class cUnit
                 End If
             End If
         Next
-        Return New cInput(sTonsTotal, sValueTotal)
+        Return New cInput(Nothing, sTonsTotal, sValueTotal)
     End Function
 
     ''' <summary>

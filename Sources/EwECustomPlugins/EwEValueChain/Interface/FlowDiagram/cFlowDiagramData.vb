@@ -1,4 +1,5 @@
-﻿' ===============================================================================
+﻿Imports EwECore
+' ===============================================================================
 ' This file is part of Ecopath with Ecosim (EwE)
 '
 ' EwE is free software: you can redistribute it and/or modify it under the terms
@@ -16,10 +17,9 @@
 ' ===============================================================================
 '
 Imports ScientificInterfaceShared.Controls
-Imports EwECore
-Imports System.Text
-Imports System.IO
 Imports ScientificInterfaceShared.Style
+Imports System.IO
+Imports EwEUtils.Utilities
 
 Public Class cFlowDiagramData
     Implements IFlowDiagramData
@@ -37,6 +37,7 @@ Public Class cFlowDiagramData
     Private m_nGroups As Integer
 
     Private m_sTTLX() As Single
+    ''' <summary>DC pred x pred</summary>
     Private m_diets(,) As Single
     Private m_sValueMin As Single
     Private m_sValueMax As Single
@@ -59,14 +60,9 @@ Public Class cFlowDiagramData
 
         Dim lUnits As New List(Of cUnit)
         lUnits.Add(Nothing)
-        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Consumer))
-        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Wholesaler))
-        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Retailer))
-        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Processing))
-        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Distribution))
-        Me.m_nLivingGroups = lUnits.Count - 1
-        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.Producer))
+        lUnits.AddRange(Me.m_data.GetUnits(cUnitFactory.eUnitType.All))
         Me.m_nGroups = lUnits.Count - 1
+        Me.m_nLivingGroups = lUnits.Count - 1
 
         ReDim Me.m_sTTLX(Me.m_nGroups)
         ReDim Me.m_diets(Me.m_nGroups, Me.m_nGroups)
@@ -265,6 +261,30 @@ Public Class cFlowDiagramData
         Me.m_sValueMax = Single.MinValue
         Me.m_sValueMin = Single.MaxValue
 
+#If 0 Then
+
+        ' Dump diet matrix
+        Dim strModelFile As String = Me.UIContext.Core.DataSource.ToString
+        Dim strDCFile As String = Path.Combine(Path.GetDirectoryName(strModelFile), Path.GetFileNameWithoutExtension(strModelFile)) & "_VC_flowOrg.csv"
+        Dim sw As New StreamWriter(strDCFile)
+
+        For iPred As Integer = 1 To m_nGroups
+            Dim unitPred As cUnit = Me.m_units(iPred)
+            sw.Write("," & cStringUtils.ToCSVField(unitPred.Name))
+        Next
+        sw.WriteLine()
+        For iPrey As Integer = 1 To m_nGroups
+            Dim unitPrey As cUnit = Me.m_units(iPrey)
+            sw.Write(cStringUtils.ToCSVField(unitPrey.Name))
+            For iPred As Integer = 1 To m_nGroups
+                Dim unitPred As cUnit = Me.m_units(iPred)
+                sw.Write("," & cStringUtils.FormatNumber(Me.m_results.FlowsBiomass(unitPrey.Sequence, unitPred.Sequence)))
+            Next
+            sw.WriteLine()
+        Next
+        sw.Close()
+
+#End If
         ' -------------------------------------
         ' Compute diets, PP, and value extremes
         ' -------------------------------------
@@ -281,14 +301,15 @@ Public Class cFlowDiagramData
 
             For iPrey As Integer = 1 To Me.m_nGroups
                 Dim unitPrey As cUnit = Me.m_units(iPrey)
-                total += Me.m_results.FlowsByWeight(unitPrey.Sequence, unitPred.Sequence)
+                ' Results are ordered as (prey x pred)
+                total += Me.m_results.FlowsBiomass(unitPrey.Sequence, unitPred.Sequence)
             Next
 
             If total > 0 Then
                 For iPrey As Integer = 1 To Me.m_nGroups
                     Dim unitPrey As cUnit = Me.m_units(iPrey)
                     ' Convert to single for EwE compatibility. Is ok when normalized, huge precision is not needed then
-                    val = CSng(Me.m_results.FlowsByWeight(unitPrey.Sequence, unitPred.Sequence) / total)
+                    val = CSng(Me.m_results.FlowsBiomass(unitPrey.Sequence, unitPred.Sequence) / total)
                     Me.m_diets(iPred, iPrey) = val
                     ' Track max value
                     Me.m_sLinkValueMin = Math.Min(Me.m_sLinkValueMin, val)
@@ -312,6 +333,30 @@ Public Class cFlowDiagramData
             Me.m_sValueMin = Math.Min(Me.m_sValueMin, val)
 
         Next
+
+#If 0 Then
+
+        ' Dump diet matrix
+        strDCFile = Path.Combine(Path.GetDirectoryName(strModelFile), Path.GetFileNameWithoutExtension(strModelFile)) & "_VC_flowDC.csv"
+        sw = New StreamWriter(strDCFile)
+
+        For iPred As Integer = 1 To m_nGroups
+            Dim unitPred As cUnit = Me.m_units(iPred)
+            sw.Write("," & cStringUtils.ToCSVField(unitPred.Name))
+        Next
+        sw.WriteLine()
+        For iPrey As Integer = 1 To m_nGroups
+            Dim unitPrey As cUnit = Me.m_units(iPrey)
+            sw.Write(cStringUtils.ToCSVField(unitPrey.Name))
+            For iPred As Integer = 1 To m_nGroups
+                Dim unitPred As cUnit = Me.m_units(iPred)
+                sw.Write("," & cStringUtils.FormatNumber(Me.m_diets(iPred, iPrey)))
+            Next
+            sw.WriteLine()
+        Next
+        sw.Close()
+
+#End If
 
         ' Calculate trophic levels
         fn.EstimateTrophicLevels(Me.m_nGroups, Me.m_nLivingGroups, PP, Me.m_diets, Me.m_sTTLX)

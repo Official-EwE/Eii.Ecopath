@@ -760,14 +760,11 @@ Public Class cProducerUnit
                 'VC: I changed the process line to pass sPrice/sBiomass as the third parameter (instead of sPrice). 
                 'it is supposed to be the price per unit biomass
                 'it was multiplying an extra time with the total catches (sBiomass) as it was.
-                link.Target.Process(results, New cInput(sBiomass, sValue, sValue / sBiomass), iTimeStep, iItem)
+                link.Target.Process(results, New cInput(Me, sBiomass, sValue, sValue / sBiomass), iTimeStep, iItem)
             Else
                 ' Process link to make the chain work, even though no data travels over this link!
-                link.Target.Process(results, New cInput(sBiomass, sValue), iTimeStep, iItem)
+                link.Target.Process(results, New cInput(Me, sBiomass, sValue), iTimeStep, iItem)
             End If
-
-            ' Record flow by weight as a diet
-            results.FlowsByWeight(Me.Sequence, link.Target.Sequence) += sBiomass
 
             sTotalOutputBiomass += sBiomass
             sTotalOutputValue += sValue '* sBiomass
