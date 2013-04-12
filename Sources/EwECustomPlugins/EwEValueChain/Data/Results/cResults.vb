@@ -227,9 +227,7 @@ Public Class cResults
     ''' <summary>Run type that results were computed for.</summary>
     Private m_runType As cModel.eRunTypes = cModel.eRunTypes.Ecopath
 
-    ''' <summary>
-    ''' The biomass flows from one unit to another (source x target)
-    ''' </summary>
+    ''' <summary>The biomass flows from one unit to another (source x target)</summary>
     Public m_BiomassFlows(,) As Double
 
 #End Region ' Private vars
@@ -445,9 +443,10 @@ Public Class cResults
 
         GC.Collect()
 
-        ReDim Me.m_BiomassFlows(nNumUnits, nNumUnits)
         ReDim Me.m_asItemValueContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
         ReDim Me.m_asItemBiomassContribution(nItems, nNumUnits, Math.Max(1, core.nEcosimTimeSteps))
+
+        ReDim Me.m_BiomassFlows(nNumUnits, nNumUnits)
 
     End Sub
 
@@ -585,7 +584,7 @@ Public Class cResults
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get/set the amount of a flow between a source and target unit. Dumensioned
+    ''' Get/set the amount of a flow between a source and target unit. Dimensioned
     ''' as (source x target).
     ''' </summary>
     ''' <param name="iSource"><see cref="cUnit.Sequence"/> of source unit (donor).</param>
@@ -598,7 +597,7 @@ Public Class cResults
         End Get
         Set(value As Double)
             If (Me.m_BiomassFlows IsNot Nothing) Then
-                Me.m_BiomassFlows(iSource, iTarget) += value
+                Me.m_BiomassFlows(iSource, iTarget) = value
             End If
         End Set
     End Property

@@ -6606,6 +6606,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Public ReadOnly Property SnapshotHS() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SnapshotHS", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         '''<summary>
         '''  Looks up a localized string similar to Applying values, please wait....
         '''</summary>

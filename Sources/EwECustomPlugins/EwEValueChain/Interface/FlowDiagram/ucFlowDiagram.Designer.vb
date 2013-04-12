@@ -46,7 +46,6 @@ Partial Class ucFlowDiagram
         Me.m_tsbnSaveImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnSaveImage, "m_tsbnSaveImage")
         Me.m_tsbnSaveImage.Name = "m_tsbnSaveImage"
-        Me.m_tsbnSaveImage.Image = SharedResources.saveHS
         '
         'm_sep1
         '
@@ -62,7 +61,6 @@ Partial Class ucFlowDiagram
         '
         Me.m_tsbnSaveLayout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnSaveLayout, "m_tsbnSaveLayout")
-        Me.m_tsbnSaveLayout.Image = SharedResources.saveHS
         Me.m_tsbnSaveLayout.Name = "m_tsbnSaveLayout"
         '
         'm_tsbnLoadLayout
@@ -70,7 +68,6 @@ Partial Class ucFlowDiagram
         Me.m_tsbnLoadLayout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnLoadLayout, "m_tsbnLoadLayout")
         Me.m_tsbnLoadLayout.Name = "m_tsbnLoadLayout"
-        Me.m_tsbnLoadLayout.Image = SharedResources.openHS
         '
         'm_sep2
         '

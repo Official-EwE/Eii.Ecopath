@@ -32,7 +32,6 @@ Public Class cInput
 
     Private m_sTons As Single = 0.0!
     Private m_sValue As Single = 1.0!
-    Private m_sCustomValuePerTon As Single = 1.0!
     Private m_src As cUnit = Nothing
 
     ''' -----------------------------------------------------------------------
@@ -43,12 +42,10 @@ Public Class cInput
     ''' <param name="sValue">Total value of the product.</param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByVal src As cUnit, _
-                   ByVal sTons As Single, ByVal sValue As Single, _
-                   Optional ByVal sCustomValuePerTon As Single = 1.0!)
+                   ByVal sTons As Single, ByVal sValue As Single)
         Me.m_src = src
         Me.m_sTons = sTons
         Me.m_sValue = sValue
-        Me.m_sCustomValuePerTon = sCustomValuePerTon
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -71,17 +68,6 @@ Public Class cInput
     Public ReadOnly Property Value() As Single
         Get
             Return Me.m_sValue
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get custom value per ton for this input.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property CustomValuePerTon() As Single
-        Get
-            Return Me.m_sCustomValuePerTon
         End Get
     End Property
 

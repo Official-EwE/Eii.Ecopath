@@ -61,8 +61,6 @@ Public MustInherit Class cUnit
     Private m_bCanCompute As Boolean = False
     Private m_bRunStarted As Boolean = False
 
-    
-
     ''' <summary>Units that receive outputs from this unit.</summary>
     Protected m_llinkOutput As New List(Of cLink)
     ''' <summary>Units that provide inputs for this unit.</summary>
@@ -262,14 +260,11 @@ Public MustInherit Class cUnit
         For Each input As cInput In lInputs
             If input.Tons > 0 Then
 
-                results.FlowsBiomass(input.Source.Sequence, Me.Sequence) += input.Tons
                 sTonsTotal += input.Tons
+                sValueTotal += input.Value
 
-                If (input.CustomValuePerTon <> 1) Then
-                    sValueTotal += (input.Tons * input.CustomValuePerTon)
-                Else
-                    sValueTotal += input.Value
-                End If
+                results.FlowsBiomass(input.Source.Sequence, Me.Sequence) += input.Tons
+
             End If
         Next
         Return New cInput(Nothing, sTonsTotal, sValueTotal)
