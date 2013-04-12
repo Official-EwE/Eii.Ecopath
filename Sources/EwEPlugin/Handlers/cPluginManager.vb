@@ -977,6 +977,21 @@ Public Class cPluginManager
 
     End Function
 
+    Public Function EcopathRunInitialized(ByVal EcoPathDataStructures As Object, _
+                                       ByVal TaxonDataStructures As Object, _
+                                       ByVal StanzaDataStructures As Object) As Boolean
+
+        ' Invoke IEcopathRunCompletedPlugin.EcopathRunStarted(EcoPathDataStructures)
+        Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcopathRunInitializedPlugin), _
+                                                    "EcopathRunInitialized", _
+                                                     New Object() {EcoPathDataStructures, TaxonDataStructures, StanzaDataStructures})
+
+
+        Return bSucces
+
+    End Function
+
+
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the <see cref="IEcopathRunInvalidatedPlugin.EcopathRunInvalidated"/> 
