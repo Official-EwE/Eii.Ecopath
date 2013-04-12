@@ -217,14 +217,8 @@ Public MustInherit Class cUnit
         ' At least expected inputs received?
         If (Me.m_lReceivedInputs.Count >= Me.LinkInCount()) Then
 
-            ' #Yes: Process input
-            For Each input In Me.m_lReceivedInputs
-                ' Record biomass flow of this input
-                results.FlowsBiomass(input.Source.Sequence, Me.Sequence) += input.Tons
-            Next
-
-            ' Process combined inputs
-            input = Me.SumInputs(Me.m_lReceivedInputs)
+            ' #Yes: Process combined inputs
+            input = Me.ProcessAndSumInputs(Me.m_lReceivedInputs, results)
 
             ' Store the amount that each fleet contributes to the total
             results.StoreContribution(iUnit, Me, iTimeStep, input.Value, input.Tons)
@@ -260,11 +254,15 @@ Public MustInherit Class cUnit
 
     End Sub
 
-    Protected Overridable Function SumInputs(ByVal lInputs As List(Of cInput)) As cInput
+    Protected Function ProcessAndSumInputs(ByVal lInputs As List(Of cInput), results As cResults) As cInput
+
         Dim sTonsTotal As Single = 0.0
         Dim sValueTotal As Single = 0.0
+
         For Each input As cInput In lInputs
             If input.Tons > 0 Then
+
+                results.FlowsBiomass(input.Source.Sequence, Me.Sequence) += input.Tons
                 sTonsTotal += input.Tons
 
                 If (input.CustomValuePerTon <> 1) Then
@@ -275,6 +273,7 @@ Public MustInherit Class cUnit
             End If
         Next
         Return New cInput(Nothing, sTonsTotal, sValueTotal)
+
     End Function
 
     ''' <summary>
