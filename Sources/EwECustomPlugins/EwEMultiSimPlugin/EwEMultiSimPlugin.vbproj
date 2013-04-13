@@ -120,7 +120,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cPluginPoint.vb" />
+    <Compile Include="cMultiSimPlugin.vb" />
     <Compile Include="cEngine.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">

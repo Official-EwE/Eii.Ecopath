@@ -198,6 +198,7 @@ Namespace Controls
 #Region " Privates "
 
         Private m_data As IFlowDiagramData = Nothing
+
         Private m_colorramp As New cEwEColorRamp()
         Private m_iNumTrophicLevels As Integer = 6
         Private m_sAngle() As Single            '' To store where the angle is relative to 0
@@ -234,6 +235,7 @@ Namespace Controls
         Public Enum eHighlightType As Integer
             None
             Hidden
+            Selected
             LinkIn
             LinkOut
         End Enum
@@ -264,19 +266,29 @@ Namespace Controls
 
 #End Region ' Constructor
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
+        Private ReadOnly Property UIContext() As cUIContext
+            Get
+                Return Me.m_data.UIContext
+            End Get
+        End Property
+
 #Region " Drawing "
 
         Friend Sub DrawBackground(ByVal g As Graphics, ByVal rc As Rectangle)
 
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim iUnitHeight As Integer = CInt(rc.Height / Me.m_iNumTrophicLevels)
             Dim tsShowLegend As TriState = Me.ShowLegend
 
-            Using brBack As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND))
+            Using brBack As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.IMAGE_BACKGROUND))
                 g.FillRectangle(brBack, rc)
             End Using
 
-            Using brText As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-                Using font As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
+            Using brText As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                Using font As Font = sg.Font(cStyleGuide.eApplicationFontType.Scale)
                     For i As Integer = 1 To m_iNumTrophicLevels - 1
                         g.DrawString((m_iNumTrophicLevels - i).ToString, font, brText, 20, i * iUnitHeight)
                         g.DrawLine(Pens.LightGray, 20, i * iUnitHeight, rc.Width - 20, i * iUnitHeight)
@@ -300,12 +312,13 @@ Namespace Controls
         Friend Sub DrawTitle(ByVal g As Graphics, _
                              ByVal rc As Rectangle)
 
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim strTitle As String = Me.m_data.Title
 
             If (Not Me.m_bShowTitle) Or (String.IsNullOrWhiteSpace(strTitle)) Then Return
 
-            Using brText As New SolidBrush(Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
-                Using font As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.Title)
+            Using brText As New SolidBrush(sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT))
+                Using font As Font = sg.Font(cStyleGuide.eApplicationFontType.Title)
                     Dim szf As SizeF = g.MeasureString(strTitle, font)
                     g.DrawString(strTitle, font, brText, rc.X + (rc.Width - szf.Width) / 2, rc.Y + font.Height * 3)
                 End Using
@@ -316,21 +329,26 @@ Namespace Controls
         Friend Sub DrawNode(ByVal g As Graphics, _
                             ByVal rc As Rectangle, _
                             ByVal iGroup As Integer, _
-                            ByVal bVisible As Boolean,
-                            ByVal bHighlight As Boolean)
+                            ByVal highlight As eHighlightType)
 
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
             Dim strLabel As String = Me.FormatLabelText(iGroup)
             Dim sValue As Single = Me.m_data.Value(iGroup)
             Dim sValueMax As Single = Me.m_data.ValueMax
-            Dim clrPen As Color = Color.Black
+            Dim clrPen As Color = sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+            Dim clrLabel As Color = clrPen
+
             Dim clrFill As Color = Color.LightGray
             Dim iSize As Integer = Me.CalcNodeSize(sValue, sValueMax)
 
-            If bVisible Then
-                If (sValue = 0) Then
-                    clrPen = Me.m_data.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.INVALIDMODELRESULT_TEXT)
+            Select Case highlight
+
+                Case eHighlightType.Hidden
+                    clrPen = Color.LightGray
                     clrFill = Color.White
-                Else
+                    clrLabel = cColorUtils.GetVariant(Me.TextColor, 0.5!)
+
+                Case eHighlightType.None
                     Select Case m_colorusagetype
                         Case eColorUsageTypes.EwE
                             clrFill = Me.m_data.GroupColor(iGroup)
@@ -339,19 +357,27 @@ Namespace Controls
                         Case Else
                             clrFill = Me.m_clrNode
                     End Select
-                End If
-            Else
-                clrPen = Color.LightGray
+
+                Case eHighlightType.Selected
+                    clrFill = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+
+                Case eHighlightType.LinkIn
+                    clrPen = Me.InLinkColor
+                    clrLabel = clrPen
+
+                Case eHighlightType.LinkOut
+                    clrPen = Me.OutLinkColor
+                    clrLabel = clrPen
+
+            End Select
+
+            If (sValue = 0) Then
+                clrPen = sg.ApplicationColor(cStyleGuide.eApplicationColorType.GENERICERROR_TEXT)
                 clrFill = Color.White
+            Else
             End If
 
             Me.m_node.DrawNode(g, Me.NodeLocation(iGroup, rc), Me.NodeType, iSize, clrPen, clrFill)
-
-            If bVisible Then
-                clrPen = Me.TextColor
-            Else
-                clrPen = cColorUtils.GetVariant(Me.TextColor, 0.5!)
-            End If
 
             If (Me.m_bIsDrawLabel) Then
                 Me.m_node.DrawLabel(g, Me.LabelLocation(iGroup, rc), Me.RenderFont, clrPen, Me.FormatLabelText(iGroup))
@@ -408,7 +434,7 @@ Namespace Controls
                               ByVal sValMax As Single, ByVal ptTopLeft As Point, _
                               ByVal strTitle As String)
 
-            Dim lgd As New cLegend(Me.m_data.UIContext, strTitle)
+            Dim lgd As New cLegend(Me.UIContext, strTitle)
             lgd.AddGradient("", 0, sValMax)
             lgd.Draw(g, ptTopLeft)
 
@@ -738,27 +764,28 @@ Namespace Controls
 #Region " EwE styling "
 
         Public Function RenderFont() As Font
-            Dim uic As cUIContext = Me.m_data.UIContext
-            Debug.Assert(uic IsNot Nothing)
-            Return uic.StyleGuide.Font(cStyleGuide.eApplicationFontType.Scale)
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Return sg.Font(cStyleGuide.eApplicationFontType.Scale)
         End Function
 
         Public Function TextColor() As Color
-            Dim uic As cUIContext = Me.m_data.UIContext
-            Debug.Assert(uic IsNot Nothing)
-            Return uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.DEFAULT_TEXT)
         End Function
 
         Public Function InLinkColor() As Color
-            Dim uic As cUIContext = Me.m_data.UIContext
-            Debug.Assert(uic IsNot Nothing)
-            Return uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREY)
         End Function
 
         Public Function OutLinkColor() As Color
-            Dim uic As cUIContext = Me.m_data.UIContext
-            Debug.Assert(uic IsNot Nothing)
-            Return uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.PREDATOR)
+        End Function
+
+        Public Function HighlightColor() As Color
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Return sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
         End Function
 
         Public Function FormatLabelText(iGroup As Integer) As String

@@ -268,7 +268,7 @@
     <Compile Include="Plugin\cNavTreeControlPlugin.vb" />
     <Compile Include="Plugin\cPluginData.vb" />
     <Compile Include="Plugin\Input\cNTCPluginDefaults.vb" />
-    <Compile Include="Plugin\cPluginPoint.vb" />
+    <Compile Include="Plugin\cValueChainPlugin.vb" />
     <Compile Include="Plugin\Input\cNTCPluginFlow.vb" />
     <Compile Include="Plugin\Input\cNTCPluginParameters.vb" />
     <Compile Include="Plugin\Input\cNTCPluginTabRetailer.vb" />

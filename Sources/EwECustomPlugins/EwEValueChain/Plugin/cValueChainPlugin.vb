@@ -31,7 +31,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
-Public Class cPluginPoint
+Public Class cValueChainPlugin
     Inherits cNavTreeControlPlugin
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IEcopathPlugin
@@ -68,7 +68,7 @@ Public Class cPluginPoint
 
 #Region " Singleton "
 
-    Private Shared _inst_ As cPluginPoint = Nothing
+    Private Shared _inst_ As cValueChainPlugin = Nothing
 
     Public Sub New()
         If _inst_ Is Nothing Then
@@ -84,15 +84,15 @@ Public Class cPluginPoint
 
         'Interface item has been clicked
         'Show the Ecotroph interface
-        If cPluginPoint._inst_.m_bInitOK Then
+        If cValueChainPlugin._inst_.m_bInitOK Then
 
             ' Does form still exist?
-            If Not cPluginPoint._inst_.HasInterface() Then
+            If Not cValueChainPlugin._inst_.HasInterface() Then
                 ' #No: create it
-                frm = New frmMain(cPluginPoint._inst_)
-                cPluginPoint._inst_.m_form = frm
+                frm = New frmMain(cValueChainPlugin._inst_)
+                cValueChainPlugin._inst_.m_form = frm
             Else
-                frm = cPluginPoint._inst_.m_form
+                frm = cValueChainPlugin._inst_.m_form
             End If
             frm.ShowForm(page)
         Else
@@ -295,6 +295,11 @@ Public Class cPluginPoint
     Public Function SaveModel(ByVal dataSource As Object) As Boolean _
         Implements EwEPlugin.IEcopathPlugin.SaveModel
         Return Me.m_data.Save()
+    End Function
+
+    Private Function CloseModel() As Boolean _
+        Implements IEcopathPlugin.CloseModel
+        ' NOP
     End Function
 
 #End Region ' Database integration

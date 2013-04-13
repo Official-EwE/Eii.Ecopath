@@ -52,7 +52,7 @@ Public Class frmMain
         FlowDiagram
     End Enum
 
-    Private m_plugin As cPluginPoint = Nothing
+    Private m_plugin As cValueChainPlugin = Nothing
     Private m_pageCurrent As eValueChainPageTypes = eValueChainPageTypes.NotSet
     Private m_bInUpdate As Boolean = False
 
@@ -60,7 +60,7 @@ Public Class frmMain
 
 #Region " Constructor "
 
-    Public Sub New(ByVal plugin As cPluginPoint)
+    Public Sub New(ByVal plugin As cValueChainPlugin)
 
         Me.InitializeComponent()
 

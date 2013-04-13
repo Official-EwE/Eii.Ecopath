@@ -884,7 +884,7 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the Closed plug-in point on any available and responsive 
-    ''' <see cref="IEcopathClosedPlugin">Ecopath closed plug-in</see>.
+    ''' <see cref="IEcopathPlugin">Ecopath plug-in</see>.
     ''' </summary>
     ''' <remarks>Due to avoid circular references, this project is unable to reference
     ''' the assembly EwECore. As such, links in this help text cannot be resolved.
@@ -894,10 +894,21 @@ Public Class cPluginManager
     Public Function CloseModel() As Boolean
 
         ' Invokes IEcopathClosedPlugin.CloseModel()
-        Return Me.TryInvokeMethod(GetType(IEcopathClosedPlugin), "CloseModel")
+        Return Me.TryInvokeMethod(GetType(IEcopathPlugin), "CloseModel")
 
     End Function
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, close a plug-in data link.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Sub OpenDatabase(strFileName As String)
+
+        ' Invokes IDatabasePlugin.Open()
+        Me.TryInvokeMethod(GetType(IDatabasePlugin), "Open", New Object() {strFileName})
+
+    End Sub
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
@@ -919,7 +930,7 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     Public Sub CloseDatabase()
 
-        ' Invokes IDatabasePlugin.CloseDatabase()
+        ' Invokes IDatabasePlugin.Close()
         Me.TryInvokeMethod(GetType(IDatabasePlugin), "Close")
 
     End Sub
@@ -1048,12 +1059,12 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the CloseEcosimScenario plug-in point on any available and responsive 
-    ''' <see cref="IEcosimLifespanPlugin"/>.
+    ''' <see cref="IEcosimPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Sub EcosimCloseScenario()
 
-        Me.TryInvokeMethod(GetType(IEcosimLifespanPlugin), "CloseEcosimScenario")
+        Me.TryInvokeMethod(GetType(IEcosimPlugin), "CloseEcosimScenario")
 
     End Sub
 
@@ -1288,12 +1299,12 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the CloseEcospaceScenario plug-in point on any available and responsive 
-    ''' <see cref="IEcospaceLifespanPlugin"/>.
+    ''' <see cref="IEcospacePlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Sub EcospaceCloseScenario()
 
-        Me.TryInvokeMethod(GetType(IEcospaceLifespanPlugin), "CloseEcospaceScenario")
+        Me.TryInvokeMethod(GetType(IEcospacePlugin), "CloseEcospaceScenario")
 
     End Sub
 
@@ -1426,12 +1437,12 @@ Public Class cPluginManager
     ''' ---------------------------------------------------------------------------
     ''' <summary>
     ''' Bridge, invokes the CloseEcotracerScenario plug-in point on any available and responsive 
-    ''' <see cref="IEcotracerLifespanPlugin"/>.
+    ''' <see cref="IEcotracerPlugin"/>.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Sub EcotracerCloseScenario()
 
-        Me.TryInvokeMethod(GetType(IEcotracerLifespanPlugin), "CloseEcotracerScenario")
+        Me.TryInvokeMethod(GetType(IEcotracerPlugin), "CloseEcotracerScenario")
 
     End Sub
 

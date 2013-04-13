@@ -15,7 +15,6 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
-
 Option Strict On
 
 ''' ---------------------------------------------------------------------------
@@ -30,7 +29,8 @@ Public Interface IEcopathPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Execution interface for an Ecopath load model plugin point.
+    ''' Plug-in point that is called when an Ecopath model has been loaded, 
+    ''' exposing the data source that the Ecopath model was loaded from.
     ''' </summary>
     ''' <param name="dataSource">A reference to the EwE data source from which
     ''' data is being loaded.</param>
@@ -42,7 +42,8 @@ Public Interface IEcopathPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Execution interface for an Ecopath save model plugin point.
+    ''' Plug-in point that is called when an Ecopath model has been saved, 
+    ''' exposing the data source that the Ecopath model was loaded from.
     ''' </summary>
     ''' <param name="dataSource">A reference to the EwE data source to which
     ''' data is being saved.</param>
@@ -50,5 +51,13 @@ Public Interface IEcopathPlugin
     ''' plug-ins can respond to this event.</remarks>
     ''' -----------------------------------------------------------------------
     Function SaveModel(ByVal dataSource As Object) As Boolean
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point that is called when an Ecopath model has been closed.
+    ''' </summary>
+    ''' <returns>True if closed succesful.</returns>
+    ''' -----------------------------------------------------------------------
+    Function CloseModel() As Boolean
 
 End Interface

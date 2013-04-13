@@ -72,7 +72,7 @@ Public MustInherit Class cNavTreeControlPlugin
     ''' -----------------------------------------------------------------------
     Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) _
         Implements EwEPlugin.IGUIPlugin.OnControlClick
-        frmPlugin = cPluginPoint.SwitchForm(Me.FormPage)
+        frmPlugin = cValueChainPlugin.SwitchForm(Me.FormPage)
     End Sub
 
     ''' -----------------------------------------------------------------------

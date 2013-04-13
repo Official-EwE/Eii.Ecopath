@@ -3237,6 +3237,10 @@ Public Class cCore
             dsEcopath = DirectCast(DataSource, IEcopathDataSource)
             If dsEcopath.LoadModel() Then
 
+                If (Me.PluginManager IsNot Nothing) Then
+                    Me.PluginManager.OpenDatabase(ds.ToString)
+                End If
+
                 'build model
                 bsuccess = InitEwEModel()
 

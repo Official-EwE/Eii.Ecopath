@@ -129,8 +129,16 @@ Namespace Controls
 
             ' Draw the nodes
             For j As Integer = 1 To Me.m_data.NumGroups()
+
+                ' Determine node highlight state
+                hl = cFlowDiagramTree.eHighlightType.None
+                If Not Me.m_data.IsGroupVisible(j) Then hl = cFlowDiagramTree.eHighlightType.Hidden
+                If (Me.HighlightNode = j) Then hl = cFlowDiagramTree.eHighlightType.Selected
+
+                ' ToDo: check if node is a prey or pred of the selected node
+
                 ' Draw each node
-                Me.m_tree.DrawNode(g, rc, j, Me.m_data.IsGroupVisible(j), Me.HighlightNode = j)
+                Me.m_tree.DrawNode(g, rc, j, hl)
             Next j
 
         End Sub
@@ -146,7 +154,6 @@ Namespace Controls
         Public Sub ProcessMouseMove(ByVal g As Graphics, ByVal rc As Rectangle, ByVal pt As PointF)
 
             Dim iNode As Integer = 0
-            Dim ft As Font = Me.m_data.UIContext.StyleGuide.Font(cStyleGuide.eApplicationFontType.SubTitle)
 
             ' Dragging?
             Select Case Me.m_dragMode
@@ -156,7 +163,10 @@ Namespace Controls
                     ' Not dragging: determine which node to highlight
                     Me.HighlightNode = 0
 
-                    iNode = Me.GetLabelAtPoint(rc, pt, g, ft)
+                    Using ft As Font = Me.m_tree.RenderFont
+                        iNode = Me.GetLabelAtPoint(rc, pt, g, ft)
+                    End Using
+
                     If iNode > 0 Then
                         Me.HighlightNode = iNode
                     Else
@@ -245,18 +255,19 @@ Namespace Controls
             If Me.IsDragging Then Return
 
             ' Find the node under the cursor
-            Dim uic As cUIContext = Me.m_data.UIContext
-            Dim iLabel As Integer = 0
             Dim iNode As Integer = 0
             Dim ptItem As PointF
 
             Me.HighlightNode = 0
 
-            iLabel = Me.GetLabelAtPoint(rc, pt, g, Me.m_tree.RenderFont)
-            If iLabel > 0 Then
-                Me.HighlightNode = iLabel
+            Using ft As Font = Me.m_tree.RenderFont
+                iNode = Me.GetLabelAtPoint(rc, pt, g, ft)
+            End Using
+
+            If iNode > 0 Then
+                Me.HighlightNode = iNode
                 Me.m_dragMode = eDragMode.Label
-                ptItem = Me.m_tree.LabelLocation(iLabel, rc)
+                ptItem = Me.m_tree.LabelLocation(iNode, rc)
                 Me.m_ptDragOffset = New PointF(pt.X - ptItem.X, pt.Y - ptItem.Y)
             Else
                 iNode = Me.GetNodeAtPoint(rc, pt)

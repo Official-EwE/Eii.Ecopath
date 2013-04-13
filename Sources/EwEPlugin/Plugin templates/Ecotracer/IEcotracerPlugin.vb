@@ -29,7 +29,8 @@ Public Interface IEcotracerPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Datasource load ecotracer scenario plugin point.
+    ''' Plug-in point that is called when Ecotracer has loaded a scenario, exposing
+    ''' the datasource that the scenario was loaded from.
     ''' </summary>
     ''' <param name="dataSource">A reference to the EwE data source from which
     ''' data is being loaded.</param>
@@ -40,7 +41,8 @@ Public Interface IEcotracerPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Datasource save ecotracer scenario plugin point.
+    ''' Plug-in point that is called when Ecotracer has saved a scenario, exposing
+    ''' the datasource that the scenario was loaded from.
     ''' </summary>
     ''' <param name="dataSource">A reference to the EwE data source to which
     ''' data is being saved.</param>
@@ -48,5 +50,12 @@ Public Interface IEcotracerPlugin
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
     Sub SaveEcotracerScenario(ByVal dataSource As Object)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point that is called when an Ecotracer scenario has been closed.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Sub CloseEcospaceScenario()
 
 End Interface

@@ -28,7 +28,8 @@ Public Interface IEcospacePlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Datasource load ecospace scenario plugin point.
+    ''' Plug-in point that is called when Ecospace has loaded a scenario, exposing
+    ''' the datasource that the scenario was loaded from.
     ''' </summary>
     ''' <param name="dataSource">A reference to the EwE data source from which
     ''' data is being loaded.</param>
@@ -39,7 +40,8 @@ Public Interface IEcospacePlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Datasource save ecospace scenario plugin point.
+    ''' Plug-in point that is called when Ecospace has saved a scenario, exposing
+    ''' the datasource that the scenario was loaded from.
     ''' </summary>
     ''' <param name="dataSource">A reference to the EwE data source to which
     ''' data is being saved.</param>
@@ -47,5 +49,12 @@ Public Interface IEcospacePlugin
     ''' of this plugin point will be called.</remarks>
     ''' -----------------------------------------------------------------------
     Sub SaveEcospaceScenario(ByVal dataSource As Object)
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Plug-in point that is called when an Ecospace scenario has been closed.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Sub CloseEcospaceScenario()
 
 End Interface

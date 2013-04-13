@@ -35,7 +35,7 @@ Imports EwEUtils.SystemUtilities
 ''' Did you know that this plug-in was briefly called 'Multi-Runs'? Tee hee hee.
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
-Public Class cPluginPoint
+Public Class cMultiSimPlugin
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
