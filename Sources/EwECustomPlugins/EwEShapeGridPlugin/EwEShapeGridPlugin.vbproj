@@ -195,15 +195,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Plugin points\cPluginPointPredHabCap.vb" />
-    <Compile Include="Plugin points\cPluginPointBase.vb" />
-    <Compile Include="Plugin points\cPluginPointEggProduction.vb" />
-    <Compile Include="Plugin points\cPluginPointFishingEffort.vb" />
-    <Compile Include="Plugin points\cPluginPointFishingMortality.vb" />
-    <Compile Include="Plugin points\cPluginPointForcing.vb" />
-    <Compile Include="Plugin points\cPluginPointLandingsMediation.vb" />
-    <Compile Include="Plugin points\cPluginPointPredPreyMediation.vb" />
-    <Compile Include="Plugin points\cPluginPointTimeSeries.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmShapes.resx">
@@ -266,6 +257,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugin points\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
