@@ -4195,11 +4195,11 @@ Public Class cCore
                 taxon.Index = iTaxon
                 taxon.DBID = Me.m_TaxonData.TaxonDBID(iTaxon)
                 If Me.m_TaxonData.IsTaxonStanza(iTaxon) Then
-                    taxon.Stanza = Me.m_TaxonData.TaxonTarget(iTaxon)
-                    taxon.Group = NULL_VALUE
+                    taxon.iStanza = Me.m_TaxonData.TaxonTarget(iTaxon)
+                    taxon.iGroup = NULL_VALUE
                 Else
-                    taxon.Stanza = NULL_VALUE
-                    taxon.Group = Me.m_TaxonData.TaxonTarget(iTaxon)
+                    taxon.iStanza = NULL_VALUE
+                    taxon.iGroup = Me.m_TaxonData.TaxonTarget(iTaxon)
                 End If
                 taxon.Proportion = Me.m_TaxonData.TaxonProp(iTaxon)
                 taxon.Name = Me.m_TaxonData.TaxonName(iTaxon)
@@ -4257,11 +4257,11 @@ Public Class cCore
 
         Dim taxon As cTaxon = Me.Taxon(iTaxon)
 
-        If taxon.Group > 0 Then
-            Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.Group
+        If taxon.iGroup > 0 Then
+            Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.iGroup
             Me.m_TaxonData.IsTaxonStanza(iTaxon) = False
         Else
-            Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.Stanza
+            Me.m_TaxonData.TaxonTarget(iTaxon) = taxon.iStanza
             Me.m_TaxonData.IsTaxonStanza(iTaxon) = True
         End If
         Me.m_TaxonData.TaxonProp(iTaxon) = taxon.Proportion
@@ -5709,7 +5709,7 @@ Public Class cCore
         Dim bIsNotFish As Boolean = False
         Dim bIshigherOrganism As Boolean = False
         Dim bIsFished As Boolean = True
-        Dim bIsStanza As Boolean = (t.Stanza > 0)
+        Dim bIsStanza As Boolean = (t.iStanza >= 0)
         Dim bClearVI As Boolean = False
 
         ' Cheung Vulnerability index is only available for fish (per FishBase)
@@ -5719,9 +5719,9 @@ Public Class cCore
         t.AllowValidation = False
 
         If bIsStanza Then
-            bIsFished = Me.StanzaGroups(t.Stanza - 1).IsFished
+            bIsFished = Me.StanzaGroups(t.iStanza - 1).IsFished
         Else
-            bIsFished = Me.EcoPathGroupInputs(t.Group).IsFished
+            bIsFished = Me.EcoPathGroupInputs(t.iGroup).IsFished
         End If
 
         If bIshigherOrganism Then

@@ -141,8 +141,8 @@ Public Class gridDefineTaxonomy
             MyBase.New(taxon.Source)
             Me.m_iDBIDTaxon = CInt(taxon.GetVariable(eVarNameFlags.DBID))
             Me.m_iTaxon = taxon.Index
-            Me.m_iGroup = taxon.Group
-            Me.m_iStanza = taxon.Stanza
+            Me.m_iGroup = taxon.iGroup
+            Me.m_iStanza = taxon.iStanza
             Me.m_sProportion = taxon.Proportion
             Me.CodeSAUP = taxon.CodeSAUP
             Me.CodeFB = taxon.CodeFishBase
@@ -262,7 +262,8 @@ Public Class gridDefineTaxonomy
                 Debug.Assert(CInt(taxon.GetVariable(eVarNameFlags.DBID)) = Me.m_iDBIDTaxon)
 
                 If (taxon.Proportion <> Me.m_sProportion) Then Return True
-                If (taxon.Group <> Me.m_iGroup) Then Return True
+                If (taxon.iGroup <> Me.m_iGroup) Then Return True
+                If (taxon.iStanza <> Me.m_iStanza) Then Return True
                 If (taxon.CodeSAUP <> Me.CodeSAUP) Then Return True
                 If (taxon.CodeFishBase <> Me.CodeFB) Then Return True
                 If (taxon.CodeSeaLifeBase <> Me.CodeSLB) Then Return True
@@ -394,7 +395,8 @@ Public Class gridDefineTaxonomy
             If Me.IsChanged(taxon) Then
                 With taxon
                     .Name = Me.Common
-                    .Group = Me.m_iGroup
+                    .iGroup = Me.m_iGroup
+                    .iStanza = Me.m_iStanza
                     .Proportion = Me.m_sProportion
                     .CodeSAUP = Me.CodeSAUP
                     .CodeFishBase = Me.CodeFB

@@ -843,6 +843,47 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
+    ''' Bridge, close a plug-in data link.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Sub OpenDatabase(strFileName As String)
+
+        ' Invokes IDatabasePlugin.Open()
+        Me.TryInvokeMethod(GetType(IDatabasePlugin), "Open", New Object() {strFileName})
+
+    End Sub
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, polls all plug-ins for unsaved data modifications.
+    ''' </summary>
+    ''' <param name="pa">cPluginAssembly to check, if any.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Function IsDatabaseModified(Optional ByVal pa As cPluginAssembly = Nothing) As Boolean
+
+        ' Invokes IDatabasePlugin.IsModified()
+        Return Me.TryInvokeMethod(GetType(IDatabasePlugin), "IsModified", Nothing, eInvocationType.Any)
+
+    End Function
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, close a plug-in data link.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Sub CloseDatabase()
+
+        ' Invokes IDatabasePlugin.Close()
+        Me.TryInvokeMethod(GetType(IDatabasePlugin), "Close")
+
+    End Sub
+
+#End Region ' Core
+
+#Region " Ecopath "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
     ''' Bridge, invokes the Load plug-in point on any available and responsive 
     ''' <see cref="IEcopathPlugin">Ecopath plug-in</see>.
     ''' </summary>
@@ -900,47 +941,6 @@ Public Class cPluginManager
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' Bridge, close a plug-in data link.
-    ''' </summary>
-    ''' ---------------------------------------------------------------------------
-    Public Sub OpenDatabase(strFileName As String)
-
-        ' Invokes IDatabasePlugin.Open()
-        Me.TryInvokeMethod(GetType(IDatabasePlugin), "Open", New Object() {strFileName})
-
-    End Sub
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Bridge, polls all plug-ins for unsaved data modifications.
-    ''' </summary>
-    ''' <param name="pa">cPluginAssembly to check, if any.</param>
-    ''' ---------------------------------------------------------------------------
-    Public Function IsDatabaseModified(Optional ByVal pa As cPluginAssembly = Nothing) As Boolean
-
-        ' Invokes IDatabasePlugin.IsModified()
-        Return Me.TryInvokeMethod(GetType(IDatabasePlugin), "IsModified", Nothing, eInvocationType.Any)
-
-    End Function
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
-    ''' Bridge, close a plug-in data link.
-    ''' </summary>
-    ''' ---------------------------------------------------------------------------
-    Public Sub CloseDatabase()
-
-        ' Invokes IDatabasePlugin.Close()
-        Me.TryInvokeMethod(GetType(IDatabasePlugin), "Close")
-
-    End Sub
-
-#End Region ' Core
-
-#Region " Ecopath "
-
-    ''' ---------------------------------------------------------------------------
-    ''' <summary>
     ''' Bridge, invokes the MassBalance plug-in point on any available and responsive 
     ''' <see cref="IEcopathPlugin">Ecopath plug-in</see>.
     ''' </summary>
@@ -992,7 +992,7 @@ Public Class cPluginManager
                                        ByVal TaxonDataStructures As Object, _
                                        ByVal StanzaDataStructures As Object) As Boolean
 
-        ' Invoke IEcopathRunCompletedPlugin.EcopathRunStarted(EcoPathDataStructures)
+        ' Invoke IEcopathRunInitializedPlugin.EcopathRunInitialized(EcoPathDataStructures, TaxonDataStructures, StanzaDataStructures)
         Dim bSucces As Boolean = Me.TryInvokeMethod(GetType(IEcopathRunInitializedPlugin), _
                                                     "EcopathRunInitialized", _
                                                      New Object() {EcoPathDataStructures, TaxonDataStructures, StanzaDataStructures})
@@ -1001,7 +1001,6 @@ Public Class cPluginManager
         Return bSucces
 
     End Function
-
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>

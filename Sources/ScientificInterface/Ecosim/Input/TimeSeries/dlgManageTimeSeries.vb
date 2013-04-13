@@ -450,7 +450,7 @@ Public Class dlgManageTimeSeries
             Else
                 strLoaded = ""
             End If
-            item = New ListViewItem(New String() {ds.Name, strLoaded, ds.NumTimeSeries.ToString})
+            item = New ListViewItem(New String() {ds.Name, strLoaded, ds.nTimeSeries.ToString})
             item.Tag = ds
             item.Selected = (String.Compare(ds.Name, Me.DatasetName, False) = 0)
             aitems(iDS - 1) = item
@@ -786,7 +786,7 @@ Public Class dlgManageTimeSeries
             Else
                 strLoaded = ""
             End If
-            item = New ListViewItem(New String() {ds.Name, strLoaded, ds.NumTimeSeries.ToString})
+            item = New ListViewItem(New String() {ds.Name, strLoaded, ds.nTimeSeries.ToString})
             item.Tag = ds
             item.Selected = (String.Compare(ds.Name, Me.DatasetName, False) = 0)
             aitems(iDS - 1) = item

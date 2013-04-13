@@ -204,7 +204,7 @@ Namespace Ecopath.Input
 
                         For iTaxon As Integer = 1 To Me.Core.nTaxon
                             taxon = Me.Core.Taxon(iTaxon)
-                            If taxon.Stanza = stanza.Index Then
+                            If taxon.iStanza = stanza.Index Then
                                 iRow += 1
                                 Me.AddTaxonRow(taxon, iRow, hgcParent)
                             End If
@@ -224,7 +224,7 @@ Namespace Ecopath.Input
 
                     For iTaxon As Integer = 1 To Me.Core.nTaxon
                         taxon = Me.Core.Taxon(iTaxon)
-                        If taxon.Group = group.Index Then
+                        If taxon.iGroup = group.Index Then
                             iRow += 1
                             Me.AddTaxonRow(taxon, iRow, hgcParent)
                         End If
