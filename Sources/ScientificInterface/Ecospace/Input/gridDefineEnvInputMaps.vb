@@ -295,7 +295,7 @@ Namespace Ecospace
             ' Populate local administration from a snapshot of the live data
 
             ' Make snapshot of Layer configuration
-            For iLayer As Integer = 1 To Me.Core.nEnvironmentalLayers
+            For iLayer As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
                 Layer = Me.Core.EcospaceBasemap.LayerDriver(iLayer)
                 li = New cLayerInfo(Layer)
                 Me.m_alLayers.Add(li)
@@ -777,7 +777,7 @@ Namespace Ecospace
                 cApplicationStatusNotifier.EndProgress(Me.Core)
 
                 ' Test whether new Layers were loaded correctly 
-                Debug.Assert(Me.m_alLayers.Count = Me.Core.nEnvironmentalLayers, ">> Internal panic: Dialog and core out of sync on Layers")
+                Debug.Assert(Me.m_alLayers.Count = Me.Core.nEnvironmentalDriverLayers, ">> Internal panic: Dialog and core out of sync on Layers")
             End If
 
             ' Update core objects
@@ -791,7 +791,7 @@ Namespace Ecospace
                         ' Find core layer with same BDID (cannot use cached cEcospaceBasemap instances since the core has reloaded)
                         Dim bFound As Boolean = False
                         ' For every core layer instance (and yes, this array is one-based)
-                        For iLayTest As Integer = 1 To Me.Core.nEnvironmentalLayers
+                        For iLayTest As Integer = 1 To Me.Core.nEnvironmentalDriverLayers
                             ' Get core layer instance
                             Dim layTest As cEcospaceLayerDriver = Me.Core.EcospaceBasemap.LayerDriver(iLayTest)
                             ' Has matching ID?

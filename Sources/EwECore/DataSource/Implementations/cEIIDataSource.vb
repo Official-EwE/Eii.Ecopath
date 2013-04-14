@@ -1079,7 +1079,7 @@ Public Class cEIIDataSource
         ecospaceDS.nFleets = ecopathDS.NumFleet
         ecospaceDS.nLiving = ecopathDS.NumLiving
         ecospaceDS.nImportanceLayers = 0 'CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID), 0))
-        ecospaceDS.nEnvironmentalLayers = 0 'CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
+        ecospaceDS.nEnvironmentalDriverLayers = 0 'CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
 
         ' Next is a dangerous solution that may need to be revamped. It is assumed that
         ' SetDefaults properly redimensions the ecospaceDS group variables, which

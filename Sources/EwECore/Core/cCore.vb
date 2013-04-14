@@ -253,8 +253,8 @@ Public Class cCore
                     Return Me.nTimeSeriesDatasets
                 Case eCoreCounterTypes.nImportanceLayers
                     Return Me.nImportanceLayers
-                Case eCoreCounterTypes.nEnvironmentalLayers
-                    Return Me.nEnvironmentalLayers
+                Case eCoreCounterTypes.nEnvironmentalDriverLayers
+                    Return Me.nEnvironmentalDriverLayers
                     ' Case eCoreCounterTypes.nTrophicLevels
                     '     Return m_NetworkManager.nTrophicLevels
                 Case eCoreCounterTypes.nRows
@@ -433,14 +433,22 @@ Public Class cCore
     End Property
 
     ''' <summary>
-    ''' Number of Ecospace external driver layers.
+    ''' Number of Ecospace <see cref="cEcospaceLayerDriver">environmental driver layers</see>.
     ''' </summary>
     ''' <remarks>
-    ''' See <see cref="eCoreCounterTypes.nEnvironmentalLayers"/>.
+    ''' See <see cref="eCoreCounterTypes.nEnvironmentalDriverLayers"/>.
     ''' </remarks>
+    Public ReadOnly Property nEnvironmentalDriverLayers() As Integer
+        Get
+            Return Me.m_EcoSpaceData.nEnvironmentalDriverLayers
+        End Get
+    End Property
+
+    ''' <inheritdocs cref="nEnvironmentalDriverLayers"/>
+    <Obsolete("Use nEnvironmentalDriverLayers instead")> _
     Public ReadOnly Property nEnvironmentalLayers() As Integer
         Get
-            Return Me.m_EcoSpaceData.nEnvironmentalLayers
+            Return Me.nEnvironmentalDriverLayers
         End Get
     End Property
 
@@ -9908,7 +9916,7 @@ Public Class cCore
 
         Dim dest As cEcospaceLayerDriver = Nothing
 
-        For i As Integer = 1 To Me.m_EcoSpaceData.nEnvironmentalLayers
+        For i As Integer = 1 To Me.m_EcoSpaceData.nEnvironmentalDriverLayers
 
             dest = Me.m_EcospaceBasemap.LayerDriver(i)
             dest.AllowValidation = False

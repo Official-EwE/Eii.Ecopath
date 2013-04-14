@@ -244,7 +244,7 @@ Public Class cEcospaceBasemap
 
             ' Environmental
             llayers.Clear()
-            For i As Integer = 1 To ecospaceDS.nEnvironmentalLayers
+            For i As Integer = 1 To ecospaceDS.nEnvironmentalDriverLayers
                 llayers.Add(New cEcospaceLayerDriver(Me.m_core, ecospaceDS.EnvironmentalLayerDBID(i), Me, i))
             Next
             Me.m_dictLayers(eVarNameFlags.LayerDriver) = llayers.ToArray()

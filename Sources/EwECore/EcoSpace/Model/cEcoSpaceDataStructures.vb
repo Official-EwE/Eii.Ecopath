@@ -247,7 +247,7 @@ Public Class cEcospaceDataStructures
     Public ImportanceLayerMap(,,) As Single
 
     ''' <summary>Number of environmental layers</summary>
-    Public nEnvironmentalLayers As Integer
+    Public nEnvironmentalDriverLayers As Integer
     ''' <summary>Environmental layer database IDS</summary>
     Public EnvironmentalLayerDBID() As Integer
     ''' <summary>Environmental layer names</summary>
@@ -1052,16 +1052,16 @@ Public Class cEcospaceDataStructures
             '        ReDim PrefHab(nGroups, NoHabitats)
 
             ' Allocate room for Depth map
-            ReDim Me.CapMapFunctions(Me.nEnvironmentalLayers + 1, Me.NGroups)
+            ReDim Me.CapMapFunctions(Me.nEnvironmentalDriverLayers + 1, Me.NGroups)
 
             ReDim Me.ImportanceLayerDBID(nImportanceLayers)
             ReDim Me.ImportanceLayerName(nImportanceLayers)
             ReDim Me.ImportanceLayerDescription(nImportanceLayers)
             ReDim Me.ImportanceLayerWeight(nImportanceLayers)
 
-            ReDim Me.EnvironmentalLayerDBID(nEnvironmentalLayers)
-            ReDim Me.EnvironmentalLayerName(nEnvironmentalLayers)
-            ReDim Me.EnvironmentalLayerDescription(nEnvironmentalLayers)
+            ReDim Me.EnvironmentalLayerDBID(nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerName(nEnvironmentalDriverLayers)
+            ReDim Me.EnvironmentalLayerDescription(nEnvironmentalDriverLayers)
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".ReDimMapVars() Error: " & ex.Message)
@@ -1328,7 +1328,7 @@ Public Class cEcospaceDataStructures
 
             'Boolean maps
             ReDim ImportanceLayerMap(Me.nImportanceLayers, InRow + 1, InCol + 1)
-            ReDim EnvironmentalLayerMap(Me.nEnvironmentalLayers, InRow + 1, InCol + 1)
+            ReDim EnvironmentalLayerMap(Me.nEnvironmentalDriverLayers, InRow + 1, InCol + 1)
 
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)

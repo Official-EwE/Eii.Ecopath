@@ -109,7 +109,7 @@ Public Class cMapResponseInteractionManager
 
             'populate the list of IEnviroInputMap objects that the user will interact with 
             'to change region related parameters from the interface
-            For iMap As Integer = 1 To Me.m_SpaceData.nEnvironmentalLayers
+            For iMap As Integer = 1 To Me.m_SpaceData.nEnvironmentalDriverLayers
                 Try
 
                     layer = Me.m_core.EcospaceBasemap.LayerDriver(iMap)

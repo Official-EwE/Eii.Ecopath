@@ -7164,7 +7164,7 @@ Namespace DataSources
             ecospaceDS.nFleets = ecopathDS.NumFleet
             ecospaceDS.nLiving = ecopathDS.NumLiving
             ecospaceDS.nImportanceLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioWeightLayer WHERE ScenarioID={0}", iScenarioID), 0))
-            ecospaceDS.nEnvironmentalLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
+            ecospaceDS.nEnvironmentalDriverLayers = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcospaceScenarioDriverLayer WHERE ScenarioID={0}", iScenarioID), 0))
 
             ' Next is a dangerous solution that may need to be revamped. It is assumed that
             ' SetDefaults properly redimensions the ecospaceDS group variables, which
@@ -9275,7 +9275,7 @@ Namespace DataSources
                 writer = Me.m_db.GetWriter("EcospaceScenarioDriverLayer")
                 dt = writer.GetDataTable()
 
-                For iLayer As Integer = 1 To ecospaceDS.nEnvironmentalLayers
+                For iLayer As Integer = 1 To ecospaceDS.nEnvironmentalDriverLayers
 
                     ' Try to find existing row
                     objKeys(1) = idm.GetID(eDataTypes.EcospaceLayerDriver, ecospaceDS.EnvironmentalLayerDBID(iLayer))
@@ -9334,7 +9334,7 @@ Namespace DataSources
             writer = Me.m_db.GetWriter("EcospaceScenarioCapacitDrivers")
 
             Try
-                For iMap As Integer = 0 To ecospaceDS.nEnvironmentalLayers
+                For iMap As Integer = 0 To ecospaceDS.nEnvironmentalDriverLayers
                     For iGroup As Integer = 1 To ecopathDS.NumGroups
                         If (ecospaceDS.CapMapFunctions(iMap, iGroup) > 0) Then
                             drow = writer.NewRow()

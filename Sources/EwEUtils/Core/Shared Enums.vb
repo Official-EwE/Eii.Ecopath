@@ -2148,8 +2148,8 @@ Namespace Core
         nTimeSeriesDatasets
         ''' <summary>Number of importance layers.</summary>
         nImportanceLayers
-        ''' <summary>Number of driver layers.</summary>
-        nEnvironmentalLayers
+        ''' <summary>Number of environmental driver layers.</summary>
+        nEnvironmentalDriverLayers
         ''' <summary>Number of years the game simulation can run for.</summary>
         nGameSimYears
         ''' <summary>Number of timesteps the game simulation can run for.</summary>
@@ -2210,8 +2210,6 @@ Namespace Core
         ''' </summary>
         ''' <remarks></remarks>
         nMSEBATCHTAC
-
-        nSpatialReaders
 
     End Enum
 

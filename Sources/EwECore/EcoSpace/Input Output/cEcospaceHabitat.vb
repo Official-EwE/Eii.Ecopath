@@ -57,7 +57,7 @@ Public Class cEcospaceHabitat
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Get the number of cells in a Habitat.
+    ''' Get the number of cells in a habitat.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property NumCells() As Integer 

@@ -1943,7 +1943,7 @@ Public Class cEIIXMLDataSource
         ecospaceDS.nFleets = ecopathDS.NumFleet
         ecospaceDS.nLiving = ecopathDS.NumLiving
         ecospaceDS.nImportanceLayers = dtImp.DefaultView.ToTable.Rows.Count()
-        ecospaceDS.nEnvironmentalLayers = dtDrv.DefaultView.ToTable.Rows.Count()
+        ecospaceDS.nEnvironmentalDriverLayers = dtDrv.DefaultView.ToTable.Rows.Count()
 
         ' Next is a dangerous solution that may need to be revamped. It is assumed that
         ' SetDefaults properly redimensions the ecospaceDS group variables, which

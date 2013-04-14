@@ -185,6 +185,10 @@ Public Class cEcospaceGroup
         End Set
     End Property
 
+    ''' <summary>
+    ''' Get/set the fraction that a group can use a habitat.
+    ''' </summary>
+    ''' <param name="iHabitat">One-based haitat index.</param>
     Public Property PreferredHabitat(ByVal iHabitat As Integer) As Single
         Get
             Return CSng(GetVariable(eVarNameFlags.PreferredHabitat, iHabitat))
