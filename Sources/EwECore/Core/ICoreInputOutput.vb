@@ -30,17 +30,22 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Public Interface ICoreInterface
 
-    ''' <summary>Globally unique ID identifying a core data entity.</summary>
-    Function GetID() As String
-    ''' <summary>Unique ID per type of core data used to distinguish a core data entity in a storage medium. DBID is short for Database ID</summary>
-    Property DBID() As Integer
     ''' <summary>A human readable name identifying a core data entity.</summary>
     Property Name() As String
     ''' <summary>The ordinal number in the core storage structures for a core data entity.</summary>
     Property Index() As Integer
+
+    ''' <summary>Globally unique ID identifying a core data entity.</summary>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    Function GetID() As String
+    ''' <summary>Unique ID per type of core data used to distinguish a core data entity in a storage medium. DBID is short for Database ID</summary>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
+    Property DBID() As Integer
     ''' <summary><see cref="eDataTypes">Data type</see> identifying the class of a core data entity.</summary>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     ReadOnly Property DataType() As eDataTypes
     ''' <summary><see cref="eCoreComponentType">Message source</see> identifying the section of core data entity where this logic originates from.</summary>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     ReadOnly Property CoreComponent() As eCoreComponentType
 
 End Interface ' ICoreInterface
@@ -95,6 +100,7 @@ Public Interface ICoreInputOutput
     ''' <returns>A <see cref="cVariableStatus">cVariableStatus</see> containing 
     ''' the result of the most recent attempt to <see cref="SetVariable">Set</see> 
     ''' a variable.</returns>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     ReadOnly Property ValidationStatus() As cVariableStatus
 
     ''' <summary>
@@ -105,6 +111,7 @@ Public Interface ICoreInputOutput
     ''' <summary>
     ''' Gets whether the instance is disposed.
     ''' </summary>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     ReadOnly Property Disposed As Boolean
 
 End Interface ' ICoreInputOutput
@@ -124,11 +131,10 @@ Public Interface ICoreGroup
     ReadOnly Property isMultiStanza() As Boolean
 
     ''' <summary>
-    ''' Get/set the <see cref="ICoreInterface.DBID">Database ID</see> of the
-    ''' <see cref="cStanzaGroup">Stanza configuration</see> that this group
-    ''' belongs to.
+    ''' Get/set the zero-based index of the <see cref="cStanzaGroup">Stanza configuration</see> 
+    ''' that this group belongs to.
     ''' </summary>
-    Property StanzaID() As Integer
+    Property iStanza() As Integer
 
     ''' <summary>
     ''' The ratio that this group contributes to Primary Production.
@@ -306,6 +312,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Returns the unique ID for this object as a text string.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Function getID() As String _
         Implements ICoreInterface.GetID
         Return cValueID.getDataTypeID(Me.m_dataType, Me.DBID)
@@ -317,6 +324,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' the type of core data that this class implements.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property DataType() As eDataTypes _
         Implements ICoreInterface.DataType
         Get
@@ -331,6 +339,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' level of impact that objects have on the EwE computing model.
     ''' </summary>
     ''' -----------------------------------------------------------------------
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property CoreComponent() As eCoreComponentType _
         Implements ICoreInterface.CoreComponent
         Get
@@ -742,6 +751,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' Applicaton layers built on top of the core will probably never need direct 
     ''' access to this property. To abstract its storage methods it seems best to
     ''' restrict access to this property to the Core assembly only.</remarks>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return DirectCast(GetVariable(eVarNameFlags.DBID), Integer)
@@ -860,7 +870,7 @@ Public Class cCoreGroupBase
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Property iStanza() As Integer _
-        Implements ICoreGroup.StanzaID
+        Implements ICoreGroup.iStanza
         Get
             Return m_iStanza
         End Get

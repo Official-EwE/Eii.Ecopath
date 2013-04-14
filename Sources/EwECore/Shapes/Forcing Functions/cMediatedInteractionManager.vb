@@ -210,7 +210,7 @@ Public Class cMediatedInteractionManager
         '             save this method from having to iterate over its internal 
         '             datastructures.
         For Each interaction As cMediatedInteraction In Me.m_interactionsPredPrey.Values
-            For iShape As Integer = 1 To interaction.NAppliedShapes
+            For iShape As Integer = 1 To interaction.nAppliedShapes
                 interaction.getShape(iShape, ffApplied, eft)
                 If Object.ReferenceEquals(ffApplied, ffTest) Then Return True
             Next

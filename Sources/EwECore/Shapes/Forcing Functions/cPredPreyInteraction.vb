@@ -18,6 +18,7 @@
 
 Option Explicit On
 Imports EwEUtils.Core
+Imports System.ComponentModel
 
 ''' <summary>
 ''' Class to wrap the shape and function type modifiers for a pred/prey interaction
@@ -178,12 +179,16 @@ Public Class cPredPreyInteraction
 
 #Region "ICoreInterface implementation"
 
+    ''' <inheritdocs cref="ICoreInterface.DataType"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides ReadOnly Property DataType() As eDataTypes
         Get
             Return eDataTypes.PredPreyInteraction
         End Get
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.GetID"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides Function GetID() As String
         Return cValueID.getDataTypeID(Me.DataType, CInt(m_pred * 1000 + m_prey))
     End Function

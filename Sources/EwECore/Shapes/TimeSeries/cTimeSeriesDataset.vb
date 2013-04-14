@@ -183,6 +183,18 @@ Public Class cTimeSeriesDataset
         End Set
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get a time series from the dataset.
+    ''' </summary>
+    ''' <param name="iSeries">One-based index of the time series to retrieve.</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property TimeSeries(iSeries As Integer) As cTimeSeries
+        Get
+            Return Me.m_core.EcosimTimeSeries(iSeries)
+        End Get
+    End Property
+
 #End Region ' Variable via dot(.) operator
 
 #Region " Status Flags via dot(.) operator"

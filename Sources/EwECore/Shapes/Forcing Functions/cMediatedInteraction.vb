@@ -18,6 +18,7 @@
 
 Option Explicit On
 Imports EwEUtils.Core
+Imports System.ComponentModel
 
 ''' <summary>
 ''' Class to wrap the shape and function type modifiers for a meditated interaction
@@ -84,7 +85,7 @@ Public MustInherit Class cMediatedInteraction
     ''' </summary>
     ''' <remarks>The first shape that is Nothing marks the end of the series. 
     ''' No shapes after that will be used.</remarks>
-    Public ReadOnly Property NAppliedShapes() As Integer
+    Public ReadOnly Property nAppliedShapes() As Integer
 
         Get
             Dim n As Integer
@@ -254,16 +255,24 @@ Public MustInherit Class cMediatedInteraction
 
 #Region "ICoreInterface implementation"
 
+    ''' <inheritdocs cref="ICoreInterface.DataType"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public MustOverride ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
 
+    ''' <inheritdocs cref="ICoreInterface.GetID"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public MustOverride Function GetID() As String Implements ICoreInterface.GetID
 
+    ''' <inheritdocs cref="ICoreInterface.CoreComponent"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
             Return eCoreComponentType.EcoSim
         End Get
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.DBID"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return m_dbid
@@ -273,6 +282,7 @@ Public MustInherit Class cMediatedInteraction
         End Set
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.Index"/>
     Public Property Index() As Integer Implements ICoreInterface.Index
         Get
             Return cCore.NULL_VALUE
@@ -282,6 +292,7 @@ Public MustInherit Class cMediatedInteraction
         End Set
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.Name"/>
     Public Property Name() As String Implements ICoreInterface.Name
         Get
             Return "Predator/Prey interaction"

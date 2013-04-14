@@ -18,6 +18,7 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports System.ComponentModel
 
 #Region "Public Enumerators"
 
@@ -350,18 +351,24 @@ Public MustInherit Class cBaseShapeManager
 
 #Region " ICoreInterface Implementation "
 
+    ''' <inheritdocs cref="ICoreInterface.DataType"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property DataType() As eDataTypes Implements ICoreInterface.DataType
         Get
             Return m_DataType
         End Get
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.CoreComponent"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public ReadOnly Property CoreComponent() As eCoreComponentType Implements ICoreInterface.CoreComponent
         Get
             Return eCoreComponentType.ShapesManager
         End Get
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.DBID"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Property DBID() As Integer Implements ICoreInterface.DBID
         Get
             Return cCore.NULL_VALUE
@@ -371,11 +378,14 @@ Public MustInherit Class cBaseShapeManager
         End Set
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.GetID"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Function GetID() As String Implements ICoreInterface.GetID
         Dim id As Integer = CType(m_DataType, Integer)
         Return cValueID.getDataTypeID(m_DataType, id)
     End Function
 
+    ''' <inheritdocs cref="ICoreInterface.Index"/>
     Public Property Index() As Integer Implements ICoreInterface.Index
         Get
             Return cCore.NULL_VALUE
@@ -385,6 +395,7 @@ Public MustInherit Class cBaseShapeManager
         End Set
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.Name"/>
     Public Property Name() As String Implements ICoreInterface.Name
         Get
             Return Me.ToString

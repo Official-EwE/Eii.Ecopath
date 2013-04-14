@@ -17,6 +17,7 @@
 '
 
 Option Explicit On
+Imports System.ComponentModel
 Imports EwEUtils.Core
 
 ''' <summary>
@@ -139,12 +140,16 @@ Public Class cLandingsInteraction
 
 #Region "ICoreInterface implementation"
 
+    ''' <inheritdocs cref="ICoreInterface.DataType"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides ReadOnly Property DataType() As eDataTypes
         Get
             Return eDataTypes.LandingInteraction
         End Get
     End Property
 
+    ''' <inheritdocs cref="ICoreInterface.GetID"/>
+    <EditorBrowsable(EditorBrowsableState.Advanced)> _
     Public Overrides Function GetID() As String
         Return cValueID.getDataTypeID(Me.DataType, CInt(m_iFleet * 1000 + m_iGroup))
     End Function

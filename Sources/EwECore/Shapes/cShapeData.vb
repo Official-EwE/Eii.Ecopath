@@ -344,6 +344,7 @@ Public MustInherit Class cShapeData
 
 #Region " ICoreInterface implementation "
 
+
     Public Property DBID() As Integer _
         Implements ICoreInterface.DBID
         Get
