@@ -98,6 +98,11 @@ Public Interface IEnviroInputMap
     ''' Set the cMapResponseInteractionManager that this map uses
     ''' </summary>
     ''' <param name="theManager"></param>
-    Sub setManager(ByVal theManager As cMapResponseInteractionManager)
+    Sub SetManager(ByVal theManager As cMapResponseInteractionManager)
+
+    ''' <summary>
+    ''' Get the <see cref="cEcospaceLayer">layer</see> that drives this map.
+    ''' </summary>
+    ReadOnly Property Layer As cEcospaceLayer
 
 End Interface

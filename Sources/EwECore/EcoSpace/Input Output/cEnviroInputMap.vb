@@ -65,6 +65,7 @@ Public Class cEnviroInputMap
         Me.m_iLayerIndex = iLayerIndex
 
     End Sub
+
     ''' <inheritdocs cref="IEnviroInputMap.Init"/>
     Friend Function Init(ByVal EnviroMediationData As cMediationDataStructures, ByVal SpaceData As cEcospaceDataStructures) As Boolean _
         Implements IEnviroInputMap.Init
@@ -97,7 +98,7 @@ Public Class cEnviroInputMap
 
     ''' <inheritdocs cref="IEnviroInputMap.setManager"/>
     Friend Sub setManager(ByVal theManager As cMapResponseInteractionManager) _
-        Implements IEnviroInputMap.setManager
+        Implements IEnviroInputMap.SetManager
         Me.m_manager = theManager
     End Sub
 
@@ -198,7 +199,8 @@ Public Class cEnviroInputMap
     ''' <summary>
     ''' The basemap layer that provides the data that this map operates onto.
     ''' </summary>
-    Public ReadOnly Property Layer As cEcospaceLayer
+    Public ReadOnly Property Layer As cEcospaceLayer _
+        Implements IEnviroInputMap.Layer
         Get
             Return Me.m_source
         End Get
@@ -245,7 +247,7 @@ Public Class cEnviroInputMap
     ''' <summary>
     ''' Sets or gets the response(mediation) function index to use from the current cMediationDataStructures load during the Init(...)
     ''' </summary>
-    ''' <param name="GrpIndex">Group index for the response function.</param>
+    ''' <param name="GrpIndex">One-based group index for the response function.</param>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>The Index of the ResponseFunction must exist in the underlying mediation data.</remarks>

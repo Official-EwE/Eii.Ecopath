@@ -9008,7 +9008,7 @@ Public Class cCore
     ''' <summary>
     ''' Get a <see cref="cEcospaceHabitat">Ecospace habitat</see> for a given index.
     ''' </summary>
-    ''' <param name="iHabitat">The index to obtain the Ecospace habitat for.</param>
+    ''' <param name="iHabitat">The zero-based index to obtain the Ecospace habitat for.</param>
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EcospaceHabitats(ByVal iHabitat As Integer) As cEcospaceHabitat
         Get
