@@ -51,6 +51,8 @@ Module EcosimInputsMainModule
 
                     VaryVulnerabilities()
 
+                    VaryFishingEffort()
+
                     'Run Ecosim and tell it to call onEcosimTimestep() with results at each Ecosim timestep
                     If core.RunEcoSim(AddressOf onEcosimTimestep) Then
                         DumpEcosimResults(core)
@@ -94,6 +96,60 @@ Module EcosimInputsMainModule
                 End If
             Next
         Next
+
+    End Sub
+
+
+    Private Sub VaryFishingEffort()
+        Dim FleetInput As cFleetInput
+        Dim EffortManager As cFishingEffortManger = core.FishingEffortShapeManager
+
+        'Ecosim stores Fishing Effort and Fishing Mortality input data in cShapeData objects 
+        'Each type of cShapeData has its own implementation
+        'Fishing effort = cFishingRateShape
+        'Fishing mortality = cFishingMortShape
+
+        'Fishing effort shapes are stored in the FishingEffortShapeManager list
+        For Each EffortShape As cFishingRateShape In core.FishingEffortShapeManager
+
+            If EffortShape.Index > core.nFleets Then
+                'FishingEffortShapeManager stores the "All Fleets" fleet in the last index cCore.nFleets + 1
+                'It is used by the core to update all the fleets to the same effort  
+                'This fleet does not have an FleetInput object so don't try to get it from the core
+                Exit For
+            End If
+
+            'Get the Fleet Input data for this Fleet
+            'cShape objects keeps their array index to core data in the .Index property
+            FleetInput = core.FleetInputs(EffortShape.Index)
+
+            Debug.Assert(EffortShape.Name = FleetInput.Name)
+            System.Console.WriteLine("Setting fishing effort * 2 for Fleet " + EffortShape.Name)
+
+            'Lock all core updates of this data  
+            EffortShape.LockUpdates()
+
+            'Loop over all the Ecosim timesteps
+            For it As Integer = 1 To core.nEcosimTimeSteps
+                'Effort is stored by cumulative month
+                EffortShape.ShapeData(it) = EffortShape.ShapeData(it) * 2
+            Next it
+            'Unlock the core updates for this fleet
+            'this will update all the core data related to effort i.e. fishing mortality
+            EffortShape.UnlockUpdates()
+
+            'Dump out the update fishing mortality
+            'Fishing Mortality shapes are stored in the cCore.FishMortShapeManager
+            For Each FishingMort As cFishingMortShape In core.FishMortShapeManager
+                'The core array index is stored in the cShapeData.Index property
+                If FleetInput.Landings(FishingMort.Index) > 0 Then
+                    'Fishing mortality shapes stored their data by time the same way as the EffortShapes
+                    'FishingMort.ShapeData(TimeIndex)
+                    System.Console.WriteLine(" F for group " + FishingMort.Name + " changed")
+                End If
+            Next FishingMort
+
+        Next EffortShape
 
     End Sub
 
