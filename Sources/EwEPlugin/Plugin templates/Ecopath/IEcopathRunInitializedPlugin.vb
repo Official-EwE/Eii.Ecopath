@@ -18,14 +18,14 @@
 
 Option Strict On
 ''' <summary>
-''' Plugin point call at the start of an Ecopath run.
-''' After all the data has been loaded from the database but before Ecopath has started to compute the missing parameters. 
+''' Plugin point called at the start of an Ecopath run.
+''' After all the data has been loaded but before Ecopath has started to compute the missing parameters. 
 ''' </summary>
 ''' <remarks></remarks>
 Public Interface IEcopathRunInitializedPlugin
     ''' <summary>
-    ''' Plugin point call at the start of an Ecopath run.
-    ''' After all the data has been loaded from the database but before Ecopath has started to compute the missing parameters. 
+    ''' Plugin point called at the start of an Ecopath run.
+    ''' After all the data has been loaded but before Ecopath has started to compute the missing parameters. 
     ''' </summary>
     ''' <param name="EcopathDataAsObject">cEcopathDataStructures as an object.</param>
     ''' <param name="TaxonDataAsObject">cTanonDataStructures as an object.</param>
