@@ -1,0 +1,35 @@
+﻿Imports System
+Imports System.Reflection
+Imports System.Runtime.InteropServices
+
+' General Information about an assembly is controlled through the following 
+' set of attributes. Change these attribute values to modify the information
+' associated with an assembly.
+
+' Review the values of the assembly attributes
+
+<Assembly: AssemblyTitle("EcopathDetails")> 
+<Assembly: AssemblyDescription("Sample application to presents details of an EwE model")> 
+<Assembly: AssemblyCompany("UBC Fisheries Centre")> 
+<Assembly: AssemblyProduct("EcopathDetails")> 
+<Assembly: AssemblyCopyright("Copyright © UBC Fisheries Centre 2013")> 
+<Assembly: AssemblyTrademark("")> 
+
+<Assembly: ComVisible(False)>
+
+'The following GUID is for the ID of the typelib if this project is exposed to COM
+<Assembly: Guid("47DFA209-7F7C-4C0E-B553-EF55BEAB8C46")> 
+
+' Version information for an assembly consists of the following four values:
+'
+'      Major Version
+'      Minor Version 
+'      Build Number
+'      Revision
+'
+' You can specify all the values or you can default the Build and Revision Numbers 
+' by using the '*' as shown below:
+' <Assembly: AssemblyVersion("1.0.*")> 
+
+<Assembly: AssemblyVersion("1.0.0.0")> 
+<Assembly: AssemblyFileVersion("1.0.0.0")> 
