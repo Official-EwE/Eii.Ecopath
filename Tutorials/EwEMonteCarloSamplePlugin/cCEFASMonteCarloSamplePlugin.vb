@@ -24,7 +24,6 @@ Public Class cCEFASMonteCarloSamplePlugin
     Implements ICorePlugin
     Implements IEcosimInitializedPlugin
     Implements IEcosimBeginTimestepPlugin
-    Implements IEcopathPlugin
     Implements IMenuItemPlugin
 
     Private _core As cCore
@@ -418,16 +417,6 @@ Public Class cCEFASMonteCarloSamplePlugin
         End If
     End Sub
 
-    Public Function LoadModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.LoadModel
-
-    End Function
-
-    Public Function SaveModel(dataSource As Object) As Boolean Implements EwEPlugin.IEcopathPlugin.SaveModel
-
-    End Function
-
-
-
 #End Region
 
 #Region "Core Plugin Stuff that needs to be here"
@@ -460,7 +449,6 @@ Public Class cCEFASMonteCarloSamplePlugin
         End Get
     End Property
 
-
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
             Return "CEFAS Monte Carlo Sample"
@@ -485,17 +473,13 @@ Public Class cCEFASMonteCarloSamplePlugin
         End Get
     End Property
 
-
-
     Public ReadOnly Property ControlImage As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
             Return Nothing
         End Get
     End Property
 
-
-
 #End Region
 
-    
+
 End Class
