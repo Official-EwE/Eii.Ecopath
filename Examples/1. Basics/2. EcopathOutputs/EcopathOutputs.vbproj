@@ -7,7 +7,7 @@
     </ProductVersion>
     <SchemaVersion>
     </SchemaVersion>
-    <ProjectGuid>{9F093EFF-3D45-4876-9E01-8A1694F7631A}</ProjectGuid>
+    <ProjectGuid>{E2DB8CE5-128C-43D5-AD5B-BC5A9C692F8D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <StartupObject>EcopathOutputs.EcopathOutputs</StartupObject>
     <RootNamespace>EcopathOutputs</RootNamespace>

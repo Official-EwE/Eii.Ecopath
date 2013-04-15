@@ -43,7 +43,7 @@ Public Class PluginPoint
 
     Private m_bInitOK As Boolean = False
     Private m_core As EwECore.cCore = Nothing
-    Private m_PluginInterface As frmEwEPlugin = Nothing
+    Private m_form As frmEwEPlugin = Nothing
 
 #End Region ' Private variables
 
@@ -123,7 +123,8 @@ Public Class PluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlImage() As System.Drawing.Image Implements EwEPlugin.IGUIPlugin.ControlImage
         Get
-            Return My.Resources.MenuItem1
+            ' Use an image from the pool of shared resources
+            Return ScientificInterfaceShared.My.Resources.fish
         End Get
     End Property
 
@@ -157,7 +158,7 @@ Public Class PluginPoint
     ''' this plug-in is clicked by the user.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef f As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
+    Public Sub OnControlClick(ByVal sender As Object, ByVal e As System.EventArgs, ByRef form As Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
 
         Dim bHasInterface As Boolean = False
 
@@ -165,22 +166,24 @@ Public Class PluginPoint
         If m_bInitOK Then
 
             ' Test if form still exists. This is a two-step test: the interface needs to be defined, and has not been closed previously.
-            If Me.m_PluginInterface IsNot Nothing Then
-                If Not Me.m_PluginInterface.IsDisposed Then
+            If Me.m_form IsNot Nothing Then
+                If Not Me.m_form.IsDisposed Then
                     bHasInterface = True
                 End If
             End If
 
             ' Create the interface if needed
             If Not bHasInterface Then
-                Me.m_PluginInterface = New frmEwEPlugin(m_core)
+                Me.m_form = New frmEwEPlugin()
+                ' This is really not necessary but it looks nice :)
+                Me.m_form.Icon = Icon.FromHandle(ScientificInterfaceShared.My.Resources.fish.GetHicon)
             End If
 
             ' Activate the interface
-            Me.m_PluginInterface.Show()
+            Me.m_form.Show()
 
-            ' Pass interface reference back to calling app
-            f = Me.m_PluginInterface
+            ' Pass a reference to the new interface back to whomever invoked us
+            form = Me.m_form
 
             ' Just to show what can be done: test where this function was invoked from
             If TypeOf sender Is System.Windows.Forms.TreeNode Then
@@ -213,8 +216,8 @@ Public Class PluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property EnabledState() As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            ' As an example, this plug-in is only accessible when Ecosim has loaded.
-            Return EwEUtils.Core.eCoreExecutionState.EcosimLoaded
+            ' This plug-in is available at any time during EwE execution
+            Return EwEUtils.Core.eCoreExecutionState.Idle
         End Get
     End Property
 

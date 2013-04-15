@@ -7,7 +7,7 @@
     </ProductVersion>
     <SchemaVersion>
     </SchemaVersion>
-    <ProjectGuid>{9F093EFF-3D45-4876-9E01-8A1694F7631A}</ProjectGuid>
+    <ProjectGuid>{F003BF85-F2C4-45AC-85EF-98439E397AB6}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <StartupObject>EcosimDetails.EcosimDetailsMainModule</StartupObject>
     <RootNamespace>EcosimDetails</RootNamespace>
