@@ -57,13 +57,13 @@ Namespace Ecospace
             ' Define grid dimensions
             Me.Redim(Core.nGroups + 1, mapManager.nMaps + 2)
 
-            For imap As Integer = 1 To mapManager.nMaps
+            For iMap As Integer = 1 To mapManager.nMaps
 
-                map = mapManager.Map(imap)
-                Me(0, 1 + imap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
-                Me(0, 1 + imap).Behaviors.Add(Me.m_bmRowCol)
+                map = mapManager.Map(iMap)
+                Me(0, 1 + iMap) = New PropertyColumnHeaderCell(Me.PropertyManager, DirectCast(map, cEnviroInputMap).Layer, eVarNameFlags.Name)
+                Me(0, 1 + iMap).Behaviors.Add(Me.m_bmRowCol)
 
-            Next imap
+            Next iMap
 
             Me(0, 0) = New EwEColumnHeaderCell("")
             Me(0, 1) = New EwEColumnHeaderCell(SharedResources.HEADER_GROUPNAME)
