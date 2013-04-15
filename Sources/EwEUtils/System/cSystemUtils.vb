@@ -79,6 +79,45 @@ Namespace SystemUtilities
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Checks if a given host name or IP address is local. First, it gets all 
+        ''' IP addresses of the given host, then it gets all IP addresses of the 
+        ''' local computer and finally it compares both lists. If any host IP equals 
+        ''' to any of local IPs, the host is a local IP. It also checks whether the 
+        ''' host is a loopback address (localhost / 127.0.0.1).
+        ''' </summary>
+        ''' <param name="strHost">Host name or IP address to check.</param>
+        ''' <returns>True if the host denotes a local IP</returns>
+        ''' <remarks>
+        ''' Converted from http://www.csharp-examples.net/local-ip/
+        ''' </remarks>
+        ''' -----------------------------------------------------------------------
+        Public Shared Function IsLocalIP(strHost As String) As Boolean
+            Try
+                ' get host IP addresses
+                Dim hostIPs As IPAddress() = Dns.GetHostAddresses(strHost)
+                ' get local IP addresses
+                Dim localIPs As IPAddress() = Dns.GetHostAddresses(Dns.GetHostName())
+
+                ' test if any host IP equals to any local IP or to localhost
+                For Each hostIP As IPAddress In hostIPs
+                    ' is localhost
+                    If IPAddress.IsLoopback(hostIP) Then
+                        Return True
+                    End If
+                    ' is local address
+                    For Each localIP As IPAddress In localIPs
+                        If hostIP.Equals(localIP) Then
+                            Return True
+                        End If
+                    Next
+                Next
+            Catch
+            End Try
+            Return False
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Function that execute external applications for all plug-ins
         ''' </summary>
         ''' <param name="strAppName">Name of the executable to execute (including extension)</param>
