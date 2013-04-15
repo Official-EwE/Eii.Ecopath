@@ -22,7 +22,6 @@ Public Class cPlugin
     Implements IEcosimEndTimestepPlugin
     Implements IEcospaceEndTimestepPlugin
 
-
     Public Sub Initialize(ByVal core As Object) _
         Implements EwEPlugin.IPlugin.Initialize
 
@@ -42,21 +41,21 @@ Public Class cPlugin
     Public ReadOnly Property Author() As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Carl Christensen"
+            Return "your name"
         End Get
     End Property
 
     Public ReadOnly Property Contact() As String _
         Implements EwEPlugin.IPlugin.Contact
         Get
-            Return "Nobody, please"
+            Return "your email"
         End Get
     End Property
 
     Public ReadOnly Property Description() As String _
         Implements EwEPlugin.IPlugin.Description
         Get
-            Return Me.Name
+            Return "a description"
         End Get
     End Property
 
@@ -78,4 +77,5 @@ Public Class cPlugin
         End If
 
     End Sub
+
 End Class
