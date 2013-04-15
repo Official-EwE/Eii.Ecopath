@@ -29,7 +29,7 @@ Imports EwEUtils.Utilities
 #End Region
 
 ''' <summary>
-''' Base code that can be used as a template to create a new Plugin.
+''' Base code that can be used as a template to create a new plug-in.
 ''' </summary>
 ''' <remarks>
 ''' <para>This plugin responds to:</para>
@@ -42,16 +42,15 @@ Imports EwEUtils.Utilities
 ''' <item><description>initialization of Ecosim,</description>></item>
 ''' <item><description>initialization of Ecospace.</description>></item>
 ''' </list>
-''' <para>This project needs to be integrated within the EwE6 scientific interface. To
-''' achieve this, add this project to the EwE6 solution, and reference this project from
-''' within the ScientificInterface. This ensures that your plug-in is built with EwE6
-''' and is loaded by the EwE6 plug-in manager when you run EwE6.</para>
+''' <para>In order to run and test this plugin it must be integrated within the EwE6 scientific interface. 
+''' To achieve this, add this project to the EwE6 solution, and reference this project from within the 
+''' ScientificInterface. This ensures that your plug-in will be built with EwE6, and will be loaded by the 
+''' EwE6 plug-in manager when you run EwE6.</para>
 ''' </remarks>
 ''' 
 Public Class cBasePluginPoint
     Implements EwEPlugin.IPlugin
     Implements EwEPlugin.ICorePlugin
-    Implements EwEPlugin.IEcopathClosedPlugin
     Implements EwEPlugin.IEcopathPlugin
     Implements EwEPlugin.IEcopathRunInitializedPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
@@ -152,7 +151,7 @@ Public Class cBasePluginPoint
     ''' An Ecopath model has been closed.
     ''' </summary>
     ''' <returns>True if the plug-in point executed successfully.</returns>
-    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathClosedPlugin.CloseModel
+    Public Function CloseModel() As Boolean Implements EwEPlugin.IEcopathPlugin.CloseModel
         System.Console.WriteLine(Me.ToString + ".CloseModel()")
 
         Try
