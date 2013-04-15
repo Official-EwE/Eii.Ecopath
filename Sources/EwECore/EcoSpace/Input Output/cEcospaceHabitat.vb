@@ -55,32 +55,6 @@ Public Class cEcospaceHabitat
 
 #End Region
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the number of cells in a habitat.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property NumCells() As Integer 
-        Get
-            Dim bm As cEcospaceBasemap = Me.m_core.EcospaceBasemap
-            Dim layerHab As cEcospaceLayerHabitat = bm.LayerHabitat(Me.Index)
-            Dim layerDepth As cEcospaceLayerDepth = bm.LayerDepth
-            Dim iIndex As Integer = Me.Index
-            Dim iNumCells As Integer = 0
-
-            For iRow As Integer = 1 To bm.InRow
-                For iCol As Integer = 1 To bm.InCol
-                    If (layerDepth.IsWaterCell(iRow, iCol)) And _
-                       (CSng(layerHab.Cell(iRow, iCol)) > 0) Then
-                        iNumCells += 1
-                    End If
-                Next
-            Next
-            Return iNumCells
-
-        End Get
-    End Property
-
 #Region "Properties by dot (.) operator "
 
     Public Property HabAreaProportion() As Single
