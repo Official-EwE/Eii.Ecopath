@@ -134,19 +134,34 @@ Public MustInherit Class cBaseShapeManager
 
     End Function
 
-    Public Overridable ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
+    Default Public Overridable ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
         Get
             Try
                 Return m_shapes.Item(ItemIndex)
             Catch ex As Exception
-                cLog.Write(Me.ToString & ".Add() Error: " & ex.Message)
+                cLog.Write(Me.ToString & ".Item() Error: " & ex.Message)
                 Return Nothing
             End Try
 
         End Get
-        'Friend Set(ByVal value As cForcingFunction)
-        '    m_shapes.Item(ItemIndex) = value
-        'End Set
+
+    End Property
+
+    ''' <summary>
+    ''' Use a Core one based index to retrieve an item
+    ''' </summary>
+    ''' <param name="CoreOneBasedIndex">One based index to the item</param>
+    Public Overridable ReadOnly Property CoreItem(ByVal CoreOneBasedIndex As Integer) As cForcingFunction
+        Get
+            Try
+                'convert core one based index to zero base for list
+                Return m_shapes.Item(CoreOneBasedIndex - 1)
+            Catch ex As Exception
+                cLog.Write(Me.ToString & ".CoreIndex() Error: " & ex.Message)
+                Return Nothing
+            End Try
+
+        End Get
     End Property
 
     ''' <summary>
@@ -434,34 +449,35 @@ Public Class cForcingFunctionManager
 
     End Sub
 
-    ''' <summary>
-    ''' Retrieve a <see cref="cForcingFunction">shape</see> at a given index.
-    ''' </summary>
-    ''' <param name="ItemIndex">The zero-based index of the shape.</param>
-    ''' <returns>A shape, or nothing if an error occurred.</returns>
-    Default Public Overrides ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
+    'jb 15-Apr-2012 Removed Item(index) because it is the same as the base class Item(index)
+    ' ''' <summary>
+    ' ''' Retrieve a <see cref="cForcingFunction">shape</see> at a given index.
+    ' ''' </summary>
+    ' ''' <param name="ItemIndex">The zero-based index of the shape.</param>
+    ' ''' <returns>A shape, or nothing if an error occurred.</returns>
+    'Default Public Overrides ReadOnly Property Item(ByVal ItemIndex As Integer) As cForcingFunction
 
-        Get
-            Try
+    '    Get
+    '        Try
 
-                'Debug.Assert((ItemIndex < m_shapes.Count) And (ItemIndex > -1), Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
+    '            'Debug.Assert((ItemIndex < m_shapes.Count) And (ItemIndex > -1), Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
 
-                If ItemIndex < m_shapes.Count And ItemIndex > -1 Then
-                    Return m_shapes.Item(ItemIndex)
-                Else
-                    cLog.Write(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
-                    System.Console.WriteLine(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
-                    Return Nothing
-                End If
-            Catch ex As Exception
-                cLog.Write(Me.ToString & ".Item(" & ItemIndex & ") Error: " & ex.Message)
-                Debug.Assert(False, Me.ToString & ".Item(" & ItemIndex & ") Error: " & ex.Message)
-                Return Nothing
-            End Try
+    '            If ItemIndex < m_shapes.Count And ItemIndex > -1 Then
+    '                Return m_shapes.Item(ItemIndex)
+    '            Else
+    '                cLog.Write(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
+    '                System.Console.WriteLine(Me.ToString & ".Item(" & ItemIndex & ") out of bounds.")
+    '                Return Nothing
+    '            End If
+    '        Catch ex As Exception
+    '            cLog.Write(Me.ToString & ".Item(" & ItemIndex & ") Error: " & ex.Message)
+    '            Debug.Assert(False, Me.ToString & ".Item(" & ItemIndex & ") Error: " & ex.Message)
+    '            Return Nothing
+    '        End Try
 
-        End Get
+    '    End Get
 
-    End Property
+    'End Property
 
     ''' <summary>
     ''' Number of points in the underlying Shape data
