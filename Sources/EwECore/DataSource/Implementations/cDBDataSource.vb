@@ -9229,7 +9229,7 @@ Namespace DataSources
 
                 While reader.Read()
                     Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
-                    Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacitMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ShapeID")))
+                    Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ShapeID")))
                     Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(reader("VarDBID")))
                     Dim varName As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
 
@@ -9323,7 +9323,7 @@ Namespace DataSources
             Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
             Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
             Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
-            Dim medDS As cMediationDataStructures = Me.m_core.CapacitMapInteractionManager.MediationData
+            Dim medDS As cMediationDataStructures = Me.m_core.CapacityMapInteractionManager.MediationData
             Dim iScenarioID As Integer = idm.GetID(eDataTypes.EcoSpaceScenario, ecopathDS.EcospaceScenarioDBID(ecopathDS.ActiveEcospaceScenario))
             Dim writer As cEwEDatabase.cEwEDbWriter = Nothing
             Dim drow As DataRow = Nothing

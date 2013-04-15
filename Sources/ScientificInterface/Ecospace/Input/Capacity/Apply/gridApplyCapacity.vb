@@ -50,7 +50,7 @@ Namespace Ecospace
             If (Me.UIContext Is Nothing) Then Return
 
             Dim group As cCoreGroupBase = Nothing
-            Dim mapManager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
+            Dim mapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
             Dim map As IEnviroInputMap = Nothing
             Dim fmt As New cCoreInterfaceFormatter()
 
@@ -84,7 +84,7 @@ Namespace Ecospace
         Protected Overrides Sub FillData()
 
             Try
-                Dim Manager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
+                Dim Manager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
                 Dim ShapeManager As cCapMapResponseManager = Me.Core.CapacityShapeManager
                 Dim ff As cForcingFunction
                 Dim label As String
@@ -137,7 +137,7 @@ Namespace Ecospace
                 Dim iGrp As Integer = e.Position.Row
                 Dim iMap As Integer = e.Position.Column - 1
 
-                Me.showSelectionDialog(dlgSelectResponse.eSelectionType.MapGroup, iGrp, iMap)
+                Me.ShowSelectionDialog(dlgSelectResponse.eSelectionType.MapGroup, iGrp, iMap)
 
             Catch ex As Exception
                 ' Whoah
@@ -145,9 +145,9 @@ Namespace Ecospace
 
         End Sub
 
-        Private Sub showSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iMap As Integer)
+        Private Sub ShowSelectionDialog(ByVal SelectionType As dlgSelectResponse.eSelectionType, ByVal iGrp As Integer, ByVal iMap As Integer)
             Try
-                Dim MapManager As cMapResponseInteractionManager = Core.CapacitMapInteractionManager
+                Dim MapManager As cMapResponseInteractionManager = Core.CapacityMapInteractionManager
                 Dim ShapeManager As cBaseShapeManager = Core.CapacityShapeManager
 
                 Dim dlg As New dlgSelectResponse(Me.UIContext, ShapeManager, MapManager, iMap, iGrp, SelectionType)
@@ -175,7 +175,7 @@ Namespace Ecospace
                     selectionType = dlgSelectResponse.eSelectionType.Group
                 End If
 
-                Me.showSelectionDialog(selectionType, igrp, iMap)
+                Me.ShowSelectionDialog(selectionType, igrp, iMap)
 
             Catch ex As Exception
 

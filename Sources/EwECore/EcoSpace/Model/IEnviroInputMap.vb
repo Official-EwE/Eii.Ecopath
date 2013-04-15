@@ -27,10 +27,10 @@ Public Interface IEnviroInputMap
     ''' <summary>
     ''' Return the value of the map as a function of the applied Response Function
     ''' </summary>
-    ''' <param name="igrp">Index of the Group that this Response is for</param>
+    ''' <param name="iGroup">Index of the Group that this Response is for</param>
     ''' <param name="iRow">Row of the map</param>
     ''' <param name="iCol">Column of the map</param>
-    Function ResponseFunction(ByVal igrp As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Single
+    Function ResponseFunction(ByVal iGroup As Integer, ByVal iRow As Integer, ByVal iCol As Integer) As Single
 
     ''' <summary>
     ''' Initialize the map with the cMediationDataStructures containing all the available response functions and cEcospaceDataStructures
@@ -42,22 +42,22 @@ Public Interface IEnviroInputMap
     ''' <summary>
     ''' Get or Set the index of the Response function applied to a Group
     ''' </summary>
-    ''' <param name="GroupIndex">Index of the Group that the response function is applied to</param>
+    ''' <param name="iGroup">One-based index of the Group that the response function is applied to</param>
     ''' <param name="bUpdateMaps">Optional flag to suppress (possibly expensive) map updates</param>
     ''' <value></value>
     ''' <returns>Index of a response function.</returns>
     ''' <remarks>
     ''' <code>
     ''' dim ResponseIndex as integer
-    ''' dim GroupIndex as integer
-    ''' GroupIndex = 1
-    ''' 'Set the Response function index for GroupIndex
-    '''  IEnviroInputMap.ResponseIndexForGroup(GroupIndex) = 2
-    ''' 'Get the Response functon index for GroupIndex
-    ''' ResponseIndex = IEnviroInputMap.ResponseIndexForGroup(GroupIndex) 
+    ''' dim iGroup as integer
+    ''' iGroup = 1
+    ''' 'Set the Response function index for iGroup
+    '''  IEnviroInputMap.ResponseIndexForGroup(iGroup) = 2
+    ''' 'Get the Response functon index for iGroup
+    ''' ResponseIndex = IEnviroInputMap.ResponseIndexForGroup(iGroup) 
     ''' </code>
     ''' </remarks>
-    Property ResponseIndexForGroup(ByVal GroupIndex As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer
+    Property ResponseIndexForGroup(ByVal iGroup As Integer, Optional ByVal bUpdateMaps As Boolean = True) As Integer
 
     ''' <summary>
     ''' Max value of the map

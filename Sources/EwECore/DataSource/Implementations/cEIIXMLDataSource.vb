@@ -2452,7 +2452,7 @@ Public Class cEIIXMLDataSource
         For Each drow As DataRow In dt.DefaultView.ToTable.Rows()
             Try
                 Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(drow("GroupID")))
-                Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacitMapInteractionManager.MediationData.MediationDBIDs, CInt(drow("ShapeID")))
+                Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(drow("ShapeID")))
                 Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(drow("VarDBID")))
                 Dim varName As eVarNameFlags = cin.GetVarName(CStr(drow("VarName")))
 

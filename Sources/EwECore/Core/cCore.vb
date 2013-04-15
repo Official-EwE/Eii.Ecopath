@@ -278,7 +278,7 @@ Public Class cCore
                 Case eCoreCounterTypes.nPedigreeVariables
                     Return Me.nPedigreeVariables
                 Case eCoreCounterTypes.nCapacityMaps
-                    Return Me.CapacitMapInteractionManager.nMaps
+                    Return Me.CapacityMapInteractionManager.nMaps
 
                 Case eCoreCounterTypes.nMSEBATCHFixedF
                     Return Me.MSEBatchManager.BatchData.nFixedF
@@ -613,7 +613,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nCapacityMaps() As Integer
         Get
-            Return Me.CapacitMapInteractionManager.nMaps
+            Return Me.CapacityMapInteractionManager.nMaps
         End Get
     End Property
 
@@ -7348,7 +7348,7 @@ Public Class cCore
     End Property
 
 
-    Public ReadOnly Property CapacitMapInteractionManager() As cMapResponseInteractionManager
+    Public ReadOnly Property CapacityMapInteractionManager() As cMapResponseInteractionManager
         Get
             Return Me.m_mapInteractionManager
         End Get
@@ -9377,7 +9377,7 @@ Public Class cCore
 
             SpatialDataConnectionManager.Load()
 
-            bSuccess = bSuccess And Me.CapacitMapInteractionManager.Load()
+            bSuccess = bSuccess And Me.CapacityMapInteractionManager.Load()
 
             'For debugging add the RelCin Layer to the Capacity maps
             'you have to turn On the Contaminant tracer to edit the RelCin map
