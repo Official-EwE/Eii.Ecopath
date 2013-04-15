@@ -72,14 +72,14 @@ Namespace Controls.Map.Layers
 
             ' Set control max value
             If Convert.ToSingle(Decimal.MaxValue) < Me.Editor.CellValueMax Then
-                Me.m_nudValue.Maximum = Decimal.MaxValue
+                Me.m_nudValue.Maximum = 100000
             Else
                 Me.m_nudValue.Maximum = Convert.ToDecimal(Me.Editor.CellValueMax)
             End If
 
             ' Set control min value
             If Convert.ToSingle(Decimal.MinValue) > Me.Editor.CellValueMin Then
-                Me.m_nudValue.Minimum = Decimal.MaxValue
+                Me.m_nudValue.Minimum = 0
             Else
                 Me.m_nudValue.Minimum = Convert.ToDecimal(Me.Editor.CellValueMin)
             End If
