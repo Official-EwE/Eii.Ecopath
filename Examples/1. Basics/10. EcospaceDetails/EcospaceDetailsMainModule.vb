@@ -220,8 +220,8 @@ Module EcospaceDetailsMainModule
                         Dim iShape As Integer = mapTest.ResponseIndexForGroup(iGroup)
                         If (iShape > 0) Then
 
-                            ' This is all very confusing
-                            Dim shape As cEnviroResponseFunction = shapemanager(iShape - 1)
+                            ' Get the shape object from the manager based on the core index
+                            Dim shape As cEnviroResponseFunction = shapemanager.CoreItem(iShape)
                             Dim group As cEcoPathGroupInput = core.EcoPathGroupInputs(iGroup)
 
                             writer.WriteLine("      " & group.Name & " mediated via response function " & shape.Name)
