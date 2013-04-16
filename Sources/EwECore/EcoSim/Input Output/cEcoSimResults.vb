@@ -114,12 +114,12 @@ Public Class cEcoSimResults
         End Set
     End Property
 
-    Public Sub New(ByRef numGroups As Integer, ByVal numStanzas As Integer, ByVal maxLifeStages As Integer, ByVal nFleets As Integer)
+    Public Sub New(ByVal nGroups As Integer, ByVal nStanzas As Integer, ByVal nMaxLifeStages As Integer, ByVal nFleets As Integer)
 
-        nGroups = numGroups
-        nStanza = numStanzas
-        nFleets = nFleets
-        nMaxLifeStages = maxLifeStages
+        Me.nGroups = nGroups
+        Me.nStanza = nStanzas
+        Me.nFleets = nFleets
+        Me.nMaxLifeStages = nMaxLifeStages
 
         ReDim Biomass(nGroups)
         ReDim Yield(nGroups)
@@ -148,5 +148,26 @@ Public Class cEcoSimResults
         Array.Clear(Me.Effort, 0, nFleets)
 
     End Sub
+
+    ''' <summary>
+    ''' Return a deep copy of the current results.
+    ''' </summary>
+    ''' <returns></returns>
+    Public Function Clone() As cEcoSimResults
+
+        Dim copy As New cEcoSimResults(Me.nGroups, Me.nStanza, Me.nMaxLifeStages, Me.nFleets)
+
+        Array.Copy(Me.Biomass, copy.Biomass, Me.Biomass.Length)
+        Array.Copy(Me.Yield, copy.Yield, Me.Yield.Length)
+        Array.Copy(Me.BCatch, copy.BCatch, Me.BCatch.Length)
+        Array.Copy(Me.Landings, copy.Landings, Me.Landings.Length)
+        Array.Copy(Me.m_hasSRData, copy.m_hasSRData, Me.m_hasSRData.Length)
+        Array.Copy(Me.BStock, copy.BStock, Me.BStock.Length)
+        Array.Copy(Me.BRecruitment, copy.BRecruitment, Me.BRecruitment.Length)
+        Array.Copy(Me.Effort, copy.Effort, Me.Effort.Length)
+
+        Return copy
+
+    End Function
 
 End Class

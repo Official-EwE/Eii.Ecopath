@@ -1889,6 +1889,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\OceanVizPlugin\OceanVizPlugin.vbproj">
+      <Project>{499C33D5-CD2C-4A13-9AA5-528CB38A08AD}</Project>
+      <Name>OceanVizPlugin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
