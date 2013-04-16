@@ -18,12 +18,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.IO
+Imports System
 Imports System.Collections.Generic
 Imports System.Diagnostics
-Imports System
+Imports System.IO
+Imports EwEUtils.Utilities
 
-#End Region ' 
+#End Region ' Imports
 
 Namespace Interop
 
@@ -78,7 +79,7 @@ Namespace Interop
         ''' <param name="strScriptFile">The R script file to execute.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Execute(strScriptFile As String) As Boolean
+        Public Function ExecuteFile(strScriptFile As String) As Boolean
 
             Dim RScriptReader As StreamReader = Nothing
 
@@ -123,12 +124,24 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Execute an R script.
+        ''' Execute an R script provided as a block of text
+        ''' </summary>
+        ''' <param name="Script">The script to execute.</param>
+        ''' <returns>True if successful.</returns>
+        ''' -------------------------------------------------------------------
+        Public Function Execute(Script As String) As Boolean
+            Return Me.Execute(Script.Split(New String() {cStringUtils.vbCrLf, cStringUtils.vbCr, cStringUtils.vbLf}, _
+                                           StringSplitOptions.RemoveEmptyEntries))
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Execute an R script provided as a string collection.
         ''' </summary>
         ''' <param name="RScriptLines">The script to execute.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
-        Public Function Execute(RScriptLines As String()) As Boolean
+        Public Function Execute(RScriptLines As ICollection(Of String)) As Boolean
 
             Dim Rwrapper As New Process()
             Dim bSuccess As Boolean
@@ -173,10 +186,9 @@ Namespace Interop
             ' The R program has been successfully launched. Now, start feeding it with lines of script
             ' ----------
 
-            ' Connect to the R input stream
-            For i As Integer = 0 To RScriptLines.Length - 1
+            ' Process input lines
+            For Each strLine As String In RScriptLines
                 ' Write each individual script line to R
-                Dim strLine As String = RScriptLines(i)
                 For Each strKey As String In Me.m_dtFields.Keys
                     strLine = strLine.Replace(strKey, Me.m_dtFields(strKey))
                 Next
@@ -184,19 +196,19 @@ Namespace Interop
                 Rwrapper.StandardInput.WriteLine(strLine)
             Next
 
-            ' Wait for R to finish. Wait for a certain number of milliseconds (here hard-coded to max. 5 minutes)
-            bSuccess = Rwrapper.WaitForExit(5 * 60 * 1000)
+            ' Wait for R to finish. Wait for a certain number of milliseconds (here hard-coded to max. 30 seconds)
+            bSuccess = Rwrapper.WaitForExit(30 * 1000)
 
             ' Read whatever output text is available
             While (Rwrapper.StandardOutput.Peek > 0)
                 Me.m_ROutput.Add(Rwrapper.StandardOutput.ReadLine)
-                ' Script contained errors
-                bSuccess = False
-            End While
+             End While
 
             ' Read whatever error text is available
             While (Rwrapper.StandardError.Peek > 0)
                 Me.m_RErrors.Add(Rwrapper.StandardError.ReadLine)
+                ' Script contained errors
+                bSuccess = False
             End While
 
             ' Clean up
@@ -273,6 +285,18 @@ Namespace Interop
         Public ReadOnly Property Errors As String()
             Get
                 Return Me.m_RErrors.ToArray
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get whether the last R script ran successfully, i.e. when the script
+        ''' ran without producing errors.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property LastRunSuccess As Boolean
+            Get
+                Return (Me.m_RErrors.Count = 0)
             End Get
         End Property
 
