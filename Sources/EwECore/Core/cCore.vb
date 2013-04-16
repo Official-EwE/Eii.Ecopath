@@ -8634,7 +8634,7 @@ Public Class cCore
             Try
                 Me.m_stpwSpaceTimer.Stop()
                 Dim totRT As Double = Me.m_stpwSpaceTimer.Elapsed.TotalSeconds
-                System.Console.WriteLine("Ecospace Runtime(sec) = " + totRT.ToString + ", Save time = " + Me.m_spaceSaveTime.ToString + ", % " + (Me.m_spaceSaveTime / totRT * 100).ToString)
+                ' System.Console.WriteLine("Ecospace Runtime(sec) = " + totRT.ToString + ", Save time = " + Me.m_spaceSaveTime.ToString + ", % " + (Me.m_spaceSaveTime / totRT * 100).ToString)
             Catch ex As Exception
 
             End Try

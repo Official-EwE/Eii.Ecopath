@@ -110,7 +110,7 @@ Module EcospaceInputs
 
     Private Sub onCoreExecutionStateEvent(statemonitor As EwECore.cCoreStateMonitor) Handles statemonitor.CoreExecutionStateEvent
 
-        System.Console.WriteLine("State change " + statemonitor.CoreExecutionState.ToString)
+        System.Console.WriteLine("  State change " + statemonitor.CoreExecutionState.ToString)
 
     End Sub
 
