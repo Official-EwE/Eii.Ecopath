@@ -176,6 +176,14 @@ Public Class cEcospaceTimestep
 
 #Region "Public Properties"
 
+
+    ''' <summary>
+    ''' Cumulative timestep counter for the current results. 
+    ''' </summary>
+    ''' <remarks>
+    ''' This is the number of timesteps computed. It is not necessarily the number of months completed. 
+    ''' See <see cref="TimeStepinYears">TimeStepinYears</see> for the length of the run.
+    ''' </remarks>
     Public Property iTimeStep() As Integer
         Get
             Return m_iTime
@@ -185,6 +193,9 @@ Public Class cEcospaceTimestep
         End Set
     End Property
 
+    ''' <summary>
+    ''' Lenght of the run in Years
+    ''' </summary>
     Public Property TimeStepinYears() As Single
         Get
             Return m_ts
@@ -245,6 +256,11 @@ Public Class cEcospaceTimestep
         End Get
     End Property
 
+
+    ''' <summary>
+    ''' Average Biomass by group
+    ''' </summary>
+    ''' <param name="iGroup">Group index</param>
     Public Property Biomass(ByVal iGroup As Single) As Single
 
         Get
@@ -266,6 +282,9 @@ Public Class cEcospaceTimestep
 
     End Property
 
+    ''' <summary>
+    ''' Max concentration of contaminant at the current time step by group
+    ''' </summary>
     Public Property ConcMax(ByVal iGroup As Single) As Single
 
         Get
@@ -287,6 +306,11 @@ Public Class cEcospaceTimestep
 
     End Property
 
+
+    ''' <summary>
+    ''' Average Biomass relative to the base by group (Bt/B0)
+    ''' </summary>
+    ''' <param name="iGroup">Group index</param>
     Public Property RelativeBiomass(ByVal iGroup As Single) As Single
 
         Get
@@ -308,19 +332,30 @@ Public Class cEcospaceTimestep
 
     End Property
 
+
+    ''' <summary>
+    ''' Number of rows in the map
+    ''' </summary>
     Public ReadOnly Property inRows() As Integer
         Get
             Return Me.m_spaceData.InRow
         End Get
     End Property
 
+
+    ''' <summary>
+    ''' Number of columns in the map
+    ''' </summary>
     Public ReadOnly Property inCols() As Integer
         Get
             Return Me.m_spaceData.InCol
         End Get
     End Property
 
-
+    ''' <summary>
+    ''' Average Biomass by group, region
+    ''' </summary>
+    ''' <param name="iGroup">Group index</param>
     Public Property BiomassByRegion(ByVal iGroup As Integer, ByVal iRegion As Integer) As Single
 
         Get
