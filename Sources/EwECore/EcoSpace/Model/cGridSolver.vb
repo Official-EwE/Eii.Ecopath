@@ -250,7 +250,7 @@ Public Class cGridSolver
         End If
 
         If Me.bUseLocalMemory Then
-            System.Console.WriteLine("Grid copy CPU time (sec), " + Me.m_stpwCopy.Elapsed.TotalSeconds.ToString)
+            '  System.Console.WriteLine("Grid copy CPU time (sec), " + Me.m_stpwCopy.Elapsed.TotalSeconds.ToString)
         End If
 
         Me.CPUTime = CSng(stpw.Elapsed.TotalSeconds)

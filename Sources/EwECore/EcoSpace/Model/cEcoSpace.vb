@@ -1478,7 +1478,7 @@ Public Class cEcoSpace
             End If
 
             stpTotRun.Stop()
-            System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            'System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1576,7 +1576,7 @@ Public Class cEcoSpace
             'Gather data from across all threads
             For Each solver In m_spaceSolvers
 
-                Console.WriteLine("SpaceSolver.Solve() ID " & solver.ThreadID.ToString & " CPU time(sec), " & solver.RunTimeSeconds.ToString)
+                'Console.WriteLine("SpaceSolver.Solve() ID " & solver.ThreadID.ToString & " CPU time(sec), " & solver.RunTimeSeconds.ToString)
                 cpuTime += solver.RunTimeSeconds
                 cpuTimeCatch += solver.CatchCPUTimeSec
 
@@ -1621,10 +1621,10 @@ Public Class cEcoSpace
             Next solver
 
             stpTotRun.Stop()
-            System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
-            System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
-            System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
-            System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
+            'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
+            'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
+            'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
 
             'Me.dumpCellComputeTimes()
 
@@ -3807,7 +3807,7 @@ exitline:
         waitOb = Nothing
 
         stpwTotRunTime.Stop()
-        System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        'System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
 
         'GC.Collect()
 
@@ -3921,7 +3921,7 @@ exitline:
         waitOb = Nothing
 
         stpwTotRunTime.Stop()
-        System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        ' System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
 
         'GC.Collect()
 
