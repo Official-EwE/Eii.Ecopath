@@ -115,9 +115,11 @@ Module EcospaceInputs
         Dim dEffort As Single
         Dim EffortShape As cFishingRateShape
 
+        'EcoSpace uses the Ecosim Fishing Effort shape for its Effort over time input
+        'If PredictEffort = True Effort is then distributed spatially at each timestep base on Biomass, Cost and Area Fished 
+
         dEffort = 2 / core.nEcospaceTimeSteps
         For iflt As Integer = 1 To core.nFleets
-            'EcoSpace uses the Ecosim Fishing Effort shape for its Effort over time input
             EffortShape = core.FishingEffortShapeManager(iflt)
             EffortShape.LockUpdates()
             'Just set Effort to increase over time
