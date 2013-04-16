@@ -19,10 +19,6 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 
-'Imports EwEUtils.Core
-'Imports EwEUtils.Utilities
-'Imports System.Drawing
-
 Module EcospaceInputs
 
 #Region "Private Variables"
@@ -58,6 +54,8 @@ Module EcospaceInputs
 
                         'Set some Model Parameters. i.e. Run length...
                         setEcoSpaceModelParameters()
+
+                        setFishingEffort()
 
 
                         'Run Ecopace on this thread(synchronously)
@@ -108,12 +106,55 @@ Module EcospaceInputs
 
     End Sub
 
+    Private Sub setFishingEffort()
+        Dim dEffort As Single
+        Dim EffortShape As cFishingRateShape
+
+        dEffort = 2 / core.nEcospaceTimeSteps
+        For iflt As Integer = 1 To core.nFleets
+            'EcoSpace uses the Ecosim Fishing Effort shape for its Effort over time input
+            EffortShape = core.FishingEffortShapeManager(iflt)
+            EffortShape.LockUpdates()
+            'Just set Effort to increase over time
+            For it As Integer = 1 To core.nEcospaceTimeSteps
+                EffortShape.ShapeData(it) = it * dEffort
+            Next
+            EffortShape.UnlockUpdates()
+        Next
+    End Sub
+
 #End Region
 
 #Region "Ecospace Events"
 
     Private Sub onEcoSpaceTimeStep(ByRef EcospaceResults As cEcospaceTimestep)
         System.Console.WriteLine("Ecospace Timestep " + EcospaceResults.iTimeStep.ToString)
+        Dim sumSpaceB As Single
+        Dim nSpaceB As Integer
+        Dim sumPathB As Single
+
+
+        For igrp As Integer = 1 To core.nGroups
+
+            For irow As Integer = 1 To core.EcospaceBasemap.InRow
+                For icol As Integer = 1 To core.EcospaceBasemap.InRow
+                    'Is this a water cell
+                    If core.EcospaceBasemap.LayerDepth.Cell(irow, icol) > 0 Then
+                        'Sum Ecopace Biomass across all the water cells
+                        nSpaceB += 1
+                        sumSpaceB += EcospaceResults.BiomassMap(irow, icol, igrp)
+                    End If
+
+                Next icol
+            Next irow
+            'Sum of Ecopath Biomass
+            sumPathB += core.EcoPathGroupOutputs(igrp).Biomass
+
+        Next igrp
+
+        Dim deltaB As Single
+        deltaB = (sumSpaceB / nSpaceB) / (sumPathB / core.nGroups)
+        System.Console.WriteLine("  Change in average b " + deltaB.ToString)
 
     End Sub
 
@@ -121,7 +162,6 @@ Module EcospaceInputs
 
         If statemonitor.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcospaceCompleted Then
             'Ecospace has completed a run 
-
             System.Console.WriteLine("Ecospace run completed")
 
         End If
