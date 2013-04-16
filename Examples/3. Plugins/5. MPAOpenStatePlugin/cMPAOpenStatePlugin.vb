@@ -21,7 +21,8 @@ Imports EwECore
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' A sample plug-in that adds time dynamics to opening and closing an MPA
+''' A sample plug-in that adds time dynamics to opening and closing an MPA.
+''' The MPA will open up at the halfway point during an Ecospace run.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
 Public Class cMPAOpenStatePlugin
@@ -31,8 +32,8 @@ Public Class cMPAOpenStatePlugin
 
     ''' <summary>Reference to the core</summary>
     Private m_core As cCore = Nothing
-    ''' <summary>Preserved MPA state</summary>
-    Private m_MPAMonths(12) As Boolean
+    ''' <summary>Preserved MPA closed state</summary>
+    Private m_MPAClosed(12) As Boolean
     ''' <summary>Preserve whether EwE had pending changes.</summary>
     Private m_EwEIsChanged As Boolean = False
 
@@ -70,7 +71,7 @@ Public Class cMPAOpenStatePlugin
 
         ' Preserve original MPA month layout prior to an Ecospace run
         For i As Integer = 1 To 12
-            Me.m_MPAMonths(i) = MPA.MPAMonth(i)
+            Me.m_MPAClosed(i) = MPA.IsClosed(i)
         Next
 
         ' Preserve whether EwE is in need of saving data changes
@@ -94,12 +95,20 @@ Public Class cMPAOpenStatePlugin
         If (Me.m_core.nMPAs = 0) Then Return
 
         Dim MPA As cEcospaceMPA = Me.m_core.EcospaceMPAs(1)
+        Dim IsHalfWay As Boolean = iTime > Me.m_core.nEcospaceTimeSteps / 2
 
-        ' In this hypothetical example, our first MPA opened up in 1979; there were no fishing restrictions before 1979
-        ' Thus, before 1979 fishing is allowed, and in 1979 or later fishing is only allowed when the MPA is open to fishing
+        ' In this hypothetical example, our first MPA opens up halfway the Ecospace run. Before that date
+        ' there are no fishing restrictions for this MPA
+        Dim AbsoluteDateForTimeStep As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
+        MPA.IsClosed(AbsoluteDateForTimeStep.Month) = (IsHalfWay) And (Me.m_MPAClosed(AbsoluteDateForTimeStep.Month) = True)
 
-        Dim TimeStepDate As Date = Me.m_core.EcospaceTimestepToAbsoluteTime(iTime)
-        MPA.MPAMonth(TimeStepDate.Month) = (TimeStepDate.Year < 1979) Or (Me.m_MPAMonths(TimeStepDate.Month) = True)
+        ' Extra feature: notify the world of the MPA change
+        If (iTime = CInt(Me.m_core.nEcospaceTimeSteps / 2)) Then
+            ' This message will appear in the EwE6 status panel
+            Dim msg As New cMessage("MPA " & MPA.Name & " activated at time step " & iTime & ", " & AbsoluteDateForTimeStep.ToShortDateString, _
+                                    eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+            Me.m_core.Messages.SendMessage(msg)
+        End If
 
     End Sub
 
@@ -118,9 +127,9 @@ Public Class cMPAOpenStatePlugin
 
         Dim MPA = Me.m_core.EcospaceMPAs(1)
 
-        ' Restore original MPA month layout after an Ecospace run
+        ' Restore original MPA closed layout after an Ecospace run
         For i As Integer = 1 To 12
-            MPA.MPAMonth(i) = Me.m_MPAMonths(i)
+            MPA.IsClosed(i) = Me.m_MPAClosed(i)
         Next
 
         ' Discard any changes that were caused by changing MPA data
