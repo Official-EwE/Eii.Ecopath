@@ -1543,7 +1543,7 @@ Public Class cEcoSpace
                     iLstCell = m_Data.iTotalWaterCells 'iTotalCells Then iLstCell = iTotalCells
                 End If
 
-                solver.syncCopyLock = Me.CopySyncLock
+                ' solver.syncCopyLock = Me.CopySyncLock
                 solver.FirstLastCells(iFrstCell, iLstCell)
                 'same wait object for all the threads
                 'Once the thread counter has been Decrement to Zero
@@ -1578,7 +1578,7 @@ Public Class cEcoSpace
 
                 Console.WriteLine("SpaceSolver.Solve() ID " & solver.ThreadID.ToString & " CPU time(sec), " & solver.RunTimeSeconds.ToString)
                 cpuTime += solver.RunTimeSeconds
-                cpuTimeCatch += solver.CatchCPUTime
+                cpuTimeCatch += solver.CatchCPUTimeSec
 
                 For igrp As Integer = 1 To m_Data.NGroups
                     m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, itt) += solver.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp)
@@ -1621,7 +1621,7 @@ Public Class cEcoSpace
             Next solver
 
             stpTotRun.Stop()
-            '  System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
+            System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
             System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
             System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
             System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
@@ -1685,7 +1685,7 @@ Public Class cEcoSpace
         System.Console.WriteLine("Cell compute times")
         For Each solver As cSpaceSolver In Me.m_spaceSolvers
 
-            System.Console.Write("Cells " & solver.iFrstCell.ToString & " - " & solver.iLstCell.ToString & ", Run time(sec) " & solver.RunTimeSeconds.ToString)
+            '  System.Console.Write("Cells " & solver.iFrstCell.ToString & " - " & solver.iLstCell.ToString & ", Run time(sec) " & solver.SolveCPUTimeSec.ToString)
             For Each t As Double In solver.lstCellCompTimes
                 System.Console.Write("," & t.ToString)
             Next
@@ -3429,6 +3429,7 @@ exitline:
                         ' Ok
                         bFished = (Me.m_Data.MPA(i, j) = 0 Or Me.m_Data.MPAfishery(ig, Me.m_Data.MPA(i, j)) Or Me.m_Data.MPAmonth(Me.m_Data.MonthNow, Me.m_Data.MPA(i, j)))
                         If bFished Then
+                            'Include the fishing effort threshold 
                             If Me.m_Data.bUseEffortDistThreshold And Me.m_Data.Sail(ig, i, j) >= Me.m_Data.EffortDistThreshold Then
                                 bFished = False
                             End If
@@ -3520,7 +3521,7 @@ exitline:
                                 For isp = 1 To m_Data.NGroups
                                     Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
                                 Next
-
+                                'Debug.Assert(Not Single.IsNaN(Valt))
                                 'jb Move to InitSpatialEquilibrium()
                                 ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
 
@@ -3607,6 +3608,7 @@ exitline:
 
             ReDim Attract(m_Data.InRow, m_Data.InCol)
 
+
             Do While cEcoSpace.getNextFleet(iFlt)
                 'System.Console.WriteLine("Effort Distribution Fleet " + iFlt.ToString)
 
@@ -3644,6 +3646,7 @@ exitline:
                         For isp = 1 To m_Data.NGroups
                             Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp)
                         Next
+                        'Debug.Assert(Not Single.IsNaN(Valt))
 
                         Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
                         Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iRow, iCol, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
@@ -3662,6 +3665,7 @@ exitline:
 
                         'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
                         m_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(iRow, iCol) / TotAttract
+                        ' Debug.Assert(Not Single.IsNaN(m_Data.EffortSpace(iFlt, iRow, iCol)))
 
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
@@ -5256,7 +5260,7 @@ exitline:
             For i As Integer = 1 To m_Data.nGridSolverThreads
                 If nGroupsInThread(i) > 0 Then
                     solver = New cGridSolver(i)
-                    solver.bUseLocalMemory = Me.m_Data.bUseLocalMemory
+                    solver.bUseLocalMemory = True 'Me.m_Data.bUseLocalMemory
 
                     solver.Init(AMm, F, m_Data.Bcell, m_Data.InRow, m_Data.InCol, m_Data.Tol, m_Data.jord, m_Data.W, Bcw, C, d, e, m_Data.Depth, _
                                 m_Data.ByPassIntegrate, m_Data.iStartRow, m_Data.iEndRow, m_Data.TimeStep, m_Data.maxIter, m_Data.jStartCol, m_Data.jEndCol, _
@@ -5304,8 +5308,8 @@ exitline:
                 solver.m_Stanza = m_Stanza
                 solver.m_Ecosim = m_Ecosim
 
-                solver.syncCopyLock = Me.CopySyncLock
-                solver.bUseLocalMemory = Me.m_Data.bUseLocalMemory
+                ' solver.syncCopyLock = Me.CopySyncLock
+                'solver.bUseLocalMemory = Me.m_Data.bUseLocalMemory
 
                 'copy tracer data into each thread
                 'this way each thread gets its own copy of the data that has been initialized by the database
