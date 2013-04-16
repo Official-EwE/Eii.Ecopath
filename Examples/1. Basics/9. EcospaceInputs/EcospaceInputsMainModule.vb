@@ -55,13 +55,13 @@ Module EcospaceInputs
                         'Set some Model Parameters. i.e. Run length...
                         setEcoSpaceModelParameters()
 
+                        'Set fishing effort
                         setFishingEffort()
-
 
                         'Run Ecopace on this thread(synchronously)
                         'core.RunEcoSpace() will block until the run has completed.
                         'If runAsync = True core.RunEcoSpace() will return before the run has completed(asynchronously)
-                        'and onCoreExecutionStateEvent(cCoreStateMonitor) will be fire when the run has completed.
+                        'and onCoreExecutionStateEvent(cCoreStateMonitor) will be called when the run has completed.
                         Dim runAsync As Boolean = False
                         core.RunEcoSpace(AddressOf onEcoSpaceTimeStep, runAsync)
 
@@ -91,7 +91,9 @@ Module EcospaceInputs
 #Region "Set Ecospace Inputs"
 
     Private Sub setEcoSpaceModelParameters()
+
         core.EcospaceModelParameters.NumberOfTimeStepsPerYear = 12
+        'Number of years to run
         core.EcospaceModelParameters.TotalTime = 10
 
         'Have Ecospace distribute the Fishing Effort as a function of, Catch Value, Area Fished and the Fishing Cost Map
@@ -102,6 +104,9 @@ Module EcospaceInputs
         core.EcospaceModelParameters.UseNewMultiStanza = True
         'Alternativly use the IBM Model for Multistanza species distributions
         'core.EcospaceModelParameters.UseIBM = True
+
+        'Initialize biomass to habitats/capacity
+        core.EcospaceModelParameters.AdjustSpace = True
 
 
     End Sub
@@ -133,7 +138,6 @@ Module EcospaceInputs
         Dim nSpaceB As Integer
         Dim sumPathB As Single
 
-
         For igrp As Integer = 1 To core.nGroups
 
             For irow As Integer = 1 To core.EcospaceBasemap.InRow
@@ -164,7 +168,38 @@ Module EcospaceInputs
             'Ecospace has completed a run 
             System.Console.WriteLine("Ecospace run completed")
 
-        End If
+            Dim SpaceGroup As cEcospaceGroupOutput
+            'Ecospace does not stores results over time and space
+            'It just stores spatially averaged values for a few varaibles
+            For igrp As Integer = 1 To core.nGroups
+                SpaceGroup = core.EcospaceGroupOutput(igrp)
+                For it As Integer = 1 To core.nEcospaceTimeSteps
+                    System.Console.Write(SpaceGroup.Biomass(it).ToString + ",")
+                    'other outputs
+                    'System.Console.Write(SpaceGroup.RelativeBiomass(it).ToString + ",")
+
+                    'Outputs by Group/fleet
+                    'For ift As Integer = 1 To core.nFleets
+                    '    SpaceGroup.CatchBiomass(iflt, it)
+                    '    SpaceGroup.Value(iflt, it)
+                    'Next ift
+                Next it
+
+                System.Console.WriteLine()
+            Next igrp
+
+            Dim SpaceFleet As cEcospaceFleetOutput
+            For ift As Integer = 1 To core.nFleets
+                SpaceFleet = core.EcospaceFleetOutput(ift)
+                For it As Integer = 1 To core.nEcospaceTimeSteps
+                    System.Console.Write(SpaceFleet.CatchBiomass(it).ToString + ",")
+                    'other outputs
+                    'SpaceFleet.Value(it)
+                Next it
+                System.Console.WriteLine()
+            Next ift
+
+        End If 'EwEUtils.Core.eCoreExecutionState.EcospaceCompleted 
 
     End Sub
 
