@@ -27,9 +27,12 @@ Module EcospaceInputs
 
     Private core As cCore
 
+    Private WithEvents statemonitor As cCoreStateMonitor
+
     Sub Main()
 
         core = New cCore
+        statemonitor = core.StateMonitor
 
         'Get a file name from the user
         Dim modelfilename As String = ShowOpenFileDialogue()
@@ -49,7 +52,7 @@ Module EcospaceInputs
                         core.EcospaceModelParameters.NumberOfTimeStepsPerYear = 12
                         core.EcospaceModelParameters.TotalTime = 2
 
-                        core.RunEcoSpace(AddressOf onEcoSpaceTimeStep, True)
+                        core.RunEcoSpace(AddressOf onEcoSpaceTimeStep, False)
 
 
 
@@ -75,6 +78,7 @@ Module EcospaceInputs
 
 
     Private Sub onEcoSpaceTimeStep(ByRef EcospaceResults As cEcospaceTimestep)
+        System.Console.WriteLine("Ecospace Timestep " + EcospaceResults.iTimeStep.ToString)
 
     End Sub
 
@@ -102,6 +106,13 @@ Module EcospaceInputs
         Return String.Empty
 
     End Function
+
+
+    Private Sub onCoreExecutionStateEvent(statemonitor As EwECore.cCoreStateMonitor) Handles statemonitor.CoreExecutionStateEvent
+
+        System.Console.WriteLine("State change " + statemonitor.CoreExecutionState.ToString)
+
+    End Sub
 
 
 End Module
