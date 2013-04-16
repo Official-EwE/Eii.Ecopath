@@ -115,4 +115,26 @@ Public Class cEcospaceMPA
 
 #End Region ' Status by dot (.) operator
 
+#Region " Quick accessors "
+
+    Public Property IsOpen(ByVal iMonth As Integer) As Boolean
+        Get
+            Return Me.MPAMonth(iMonth) = True
+        End Get
+        Set(value As Boolean)
+            Me.MPAMonth(iMonth) = (value = True)
+        End Set
+    End Property
+
+    Public Property IsClosed(ByVal iMonth As Integer) As Boolean
+        Get
+            Return Me.MPAMonth(iMonth) = False
+        End Get
+        Set(value As Boolean)
+            Me.MPAMonth(iMonth) = (value = False)
+        End Set
+    End Property
+
+#End Region ' Quick accessors
+
 End Class
