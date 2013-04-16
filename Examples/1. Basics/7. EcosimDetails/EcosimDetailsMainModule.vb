@@ -52,6 +52,7 @@ Module EcosimDetailsMainModule
                         End If
                     End If
 
+                    WriteScenarioDetails(core, writer)
                     WriteForcingFunctions(core, writer)
                     WriteEggProdFunctions(core, writer)
                     WriteMediationFunctions(core, writer)
@@ -74,6 +75,30 @@ Module EcosimDetailsMainModule
 
         Console.WriteLine("Press a key to exit")
         Console.ReadKey()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write out Ecospace map details.
+    ''' </summary>
+    ''' <param name="core">The core to obtain details from.</param>
+    ''' <param name="writer">The text file writer to write to.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub WriteScenarioDetails(core As cCore, writer As StreamWriter)
+
+        Dim scenario As cEwEScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
+
+        writer.WriteLine("Sceanario  : " & scenario.Name)
+        writer.WriteLine("Author     : " & scenario.Author)
+        writer.WriteLine("Description: " & scenario.Description)
+        writer.WriteLine("Last saved : " & scenario.Description)
+        writer.WriteLine()
+        writer.WriteLine("Start year : " & core.EcosimFirstYear)
+        writer.WriteLine("# years    : " & core.nEcosimYears)
+        writer.WriteLine()
+
+        writer.WriteLine()
 
     End Sub
 

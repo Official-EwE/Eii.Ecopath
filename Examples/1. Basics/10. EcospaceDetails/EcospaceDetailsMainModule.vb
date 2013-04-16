@@ -48,7 +48,7 @@ Module EcospaceDetailsMainModule
 
                         Console.WriteLine("Loaded first Ecospace scenario")
 
-                        WriteMapDetails(core, writer)
+                        WriteScenarioDetails(core, writer)
                         WriteHabitats(core, writer)
                         WriteMPAs(core, writer)
                         WriteImportanceLayers(core, writer)
@@ -84,7 +84,14 @@ Module EcospaceDetailsMainModule
     ''' <param name="core">The core to obtain details from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteMapDetails(core As cCore, writer As StreamWriter)
+    Private Sub WriteScenarioDetails(core As cCore, writer As StreamWriter)
+
+        Dim scenario As cEwEScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
+
+        writer.WriteLine("Sceanario  : " & scenario.Name)
+        writer.WriteLine("Author     : " & scenario.Author)
+        writer.WriteLine("Description: " & scenario.Description)
+        writer.WriteLine("Last saved : " & scenario.Description)
 
         Dim map As cEcospaceBasemap = core.EcospaceBasemap
         writer.WriteLine("# rows     : " & map.InRow)
