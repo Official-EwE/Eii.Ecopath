@@ -1,12 +1,27 @@
-﻿
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
 Imports System.IO
-
-Imports EwECore
-Imports EwEUtils.Core
-Imports EwEUtils.Utilities
-
 Imports System.Windows.Forms
+Imports EwECore
 
+'Imports EwEUtils.Core
+'Imports EwEUtils.Utilities
+'Imports System.Drawing
 
 Module EcospaceInputs
 
@@ -14,7 +29,7 @@ Module EcospaceInputs
 
     Sub Main()
 
-        core = New cCore()
+        core = New cCore
 
         'Get a file name from the user
         Dim modelfilename As String = ShowOpenFileDialogue()
@@ -30,6 +45,12 @@ Module EcospaceInputs
 
                         'Change some stuff
                         'Run the beatch...
+
+                        core.EcospaceModelParameters.NumberOfTimeStepsPerYear = 12
+                        core.EcospaceModelParameters.TotalTime = 2
+
+                        core.RunEcoSpace(AddressOf onEcoSpaceTimeStep, True)
+
 
 
                     Else
@@ -49,6 +70,11 @@ Module EcospaceInputs
 
         Console.WriteLine("Press a key to exit")
         Console.ReadKey()
+
+    End Sub
+
+
+    Private Sub onEcoSpaceTimeStep(ByRef EcospaceResults As cEcospaceTimestep)
 
     End Sub
 
