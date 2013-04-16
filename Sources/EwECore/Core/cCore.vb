@@ -8505,9 +8505,22 @@ Public Class cCore
     ''' <summary>
     ''' Run the Ecospace model with the currently loaded Ecosim and Ecospace scenario
     ''' </summary>
-    ''' <param name="EcospaceTimeStepHandler">Optional handler to call with timestep data. 
-    '''  If no handler is supplied then the user will not be called at each time step. </param>
-    ''' <returns>True if successful.</returns>
+    ''' <param name="EcospaceTimeStepHandler">
+    ''' Optional handler to call with timestep data. 
+    '''  If no handler is supplied then the user will not be called at each time step. 
+    ''' </param>
+    ''' <param name="RunOnThread">
+    ''' Optional parameter to run Ecospace on the same thread as the calling process.
+    ''' By default Ecospace is run on a separate thread. If RunOnThread = False Ecospace will run on the same thread as the calling process.
+    ''' </param>
+    ''' <remarks>
+    ''' If RunOnThread = True (default behaviour) then RunEcoSpace(...) is run asynchronously, will return immediately after starting Ecospace on a separate thread.
+    ''' Once the Ecospace run completes the <see cref="StateMonitor">cCore.StateMonitor()</see> will fire a CoreExecutionStateEvent(.
+    ''' </remarks>
+    ''' <returns>
+    ''' If RunOnThread = True then True if a new thread was started. False otherwise. 
+    ''' If RunOnThread = False then True when the run has completed. False otherwise.
+    '''  </returns>
     ''' -----------------------------------------------------------------------
     Public Function RunEcoSpace(Optional ByRef EcospaceTimeStepHandler As EcoSpaceInterfaceDelegate = Nothing, Optional ByVal RunOnThread As Boolean = True) As Boolean
         Dim breturn As Boolean

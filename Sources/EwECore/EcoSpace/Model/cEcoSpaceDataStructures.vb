@@ -52,8 +52,10 @@ Public Class cEcospaceDataStructures
     'number of years to run the simulation for
     Public TotalTime As Single
 
-    'flags
-    'jb PredictEffort was an integer in EwE5 
+    ''' <summary>
+    ''' Predict fishing effort via the Gravity attraction model
+    ''' </summary>
+    ''' <remarks>If = True Predict fishing effort based on Fishing Cost Map, Catch Value and Area Fished. If PredictEffort = False then use the Ecopath Effort.</remarks>
     Public PredictEffort As Boolean
     Public AdjustSpace As Boolean
     Public SpaceTime As Boolean
