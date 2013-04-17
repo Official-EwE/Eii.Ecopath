@@ -189,8 +189,11 @@ Namespace Interop
             ' Process input lines
             For Each strLine As String In RScriptLines
                 ' Write each individual script line to R
-                For Each strKey As String In Me.m_dtFields.Keys
-                    strLine = strLine.Replace(strKey, Me.m_dtFields(strKey))
+                For Each strField As String In Me.m_dtFields.Keys
+                    ' Just to be sure!
+                    If Not String.IsNullOrWhiteSpace(strField) Then
+                        strLine = strLine.Replace(strField, Me.m_dtFields(strField))
+                    End If
                 Next
                 Me.m_RInput.Add(strLine)
                 Rwrapper.StandardInput.WriteLine(strLine)
