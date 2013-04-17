@@ -2160,7 +2160,7 @@
     <value>Map values</value>
   </data>
   <data name="RESPONSE_GRAPH_YLABEL" xml:space="preserve">
-    <value>% of Area</value>
+    <value>Response</value>
   </data>
   <data name="DEFAULT_NEWMAP_NUM" xml:space="preserve">
     <value>Capacity map {0}</value>
