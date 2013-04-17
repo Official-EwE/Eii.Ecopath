@@ -178,7 +178,6 @@
     <Compile Include="Handlers\cPluginException.vb" />
     <Compile Include="Handlers\cPluginManager.vb" />
     <Compile Include="Plugin templates\GUI\IUIContextPlugin.vb" />
-    <Compile Include="Plugin templates\ICustomPlugin.vb" />
     <Compile Include="Plugin templates\Ecopath\IEcopathPlugin.vb" />
     <Compile Include="Plugin templates\Ecosim\IEcosimPlugin.vb" />
     <Compile Include="Plugin templates\GUI\IGUIPlugin.vb" />
