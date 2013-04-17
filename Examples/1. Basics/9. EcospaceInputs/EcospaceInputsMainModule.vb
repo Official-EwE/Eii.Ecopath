@@ -183,21 +183,30 @@ Module EcospaceInputs
         'Next the Response Function
         'this is how a group responses to an enviromental input i.e. Salinity
         Dim Manager As cCapMapResponseManager = core.CapacityShapeManager
-        Dim ResponseShape As cEnviroResponseFunction
+        Dim ResponseFunction As cEnviroResponseFunction
 
         'Create a new response and give it some values
-        ResponseShape = Manager.CreateNewShape("ResponseShape", Nothing)
-        Dim delta As Single = 1 / ResponseShape.XMax * 2
-        ResponseShape.LockUpdates()
-        For ipoint As Integer = 1 To ResponseShape.XMax
-            ResponseShape.ShapeData(ipoint) = ipoint * delta
+        ResponseFunction = Manager.CreateNewShape("ResponseShape", Nothing)
+        Dim delta As Single = 1 / ResponseFunction.XMax * 2
+        ResponseFunction.LockUpdates()
+
+        For ipoint As Integer = 1 To ResponseFunction.XMax
+            'this is the response multiplier that is returned for a value on the x axis
+            ResponseFunction.ShapeData(ipoint) = ipoint * delta
         Next
-        ResponseShape.UnlockUpdates()
+
+        'One last step
+        'We need to tell the response function what range of data it cover on the x axis, the range of values from the input layer
+        'In this case we will use the entire range from the input layer, but this can be anything.
+        ResponseFunction.XAxisMax = Layer.MaxValue
+        ResponseFunction.XAxisMin = Layer.MinValue
+
+        ResponseFunction.UnlockUpdates()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Last
-        'Now we have a enviromental map, the layer we added
+        'Now we have an enviromental map, the layer we added
         'and a response function.
         'We need to join these together to tell EwE how a group responds to an enviromental driver (map)
 
@@ -208,12 +217,14 @@ Module EcospaceInputs
         Dim Map As cEnviroInputMap
         For imap As Integer = 1 To core.CapacityMapInteractionManager.nMaps
             Map = core.CapacityMapInteractionManager.Map(imap)
+            'Is this the layer/map we added
             If Map.Layer.DBID = DatabaseID Then
+
                 'Ok this is the layer we added
                 'Now we have to tell the map which group(s) use which response functions
                 For igrp As Integer = 1 To core.nGroups
                     'for this example we will add this response function to all the groups
-                    Map.ResponseIndexForGroup(igrp) = ResponseShape.Index
+                    Map.ResponseIndexForGroup(igrp) = ResponseFunction.Index
                 Next
 
                 Exit For
@@ -222,9 +233,11 @@ Module EcospaceInputs
         Next
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
+        'When Ecospace is run it will set the capacity layer(s) for all the groups 
+        'using the Example-Layer and Response function we added
 
     End Sub
+
 
 #End Region
 
