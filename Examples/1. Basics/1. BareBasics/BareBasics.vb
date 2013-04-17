@@ -25,7 +25,8 @@ Module BareBasics
     Sub Main()
 
         ' Create a new core
-        Dim core As New cCore()
+        Dim core As cCore
+        core = New cCore()
 
         ' Can we load a model into the core?
         If core.LoadModel("Tampa_Bay.EwEmdb") Then
