@@ -58,6 +58,8 @@ Module EcospaceInputs
                         'Set fishing effort
                         setFishingEffort()
 
+                        setHabitatForagingResponse()
+
                         'Run Ecopace on this thread(synchronously)
                         'core.RunEcoSpace() will block until the run has completed.
                         'If runAsync = True core.RunEcoSpace() will return before the run has completed(asynchronously)
@@ -115,8 +117,8 @@ Module EcospaceInputs
         Dim dEffort As Single
         Dim EffortShape As cFishingRateShape
 
-        'EcoSpace uses the Ecosim Fishing Effort shape for its Effort over time input
-        'If PredictEffort = True Effort is then distributed spatially at each timestep base on Biomass, Cost and Area Fished 
+        'EcoSpace uses the Ecosim Fishing Effort shape for its effort over time input
+        'If PredictEffort = True fishing effort is then distributed spatially at each timestep base on Catch Value, Cost and Area Fished 
 
         dEffort = 2 / core.nEcospaceTimeSteps
         For iflt As Integer = 1 To core.nFleets
@@ -127,7 +129,101 @@ Module EcospaceInputs
                 EffortShape.ShapeData(it) = it * dEffort
             Next
             EffortShape.UnlockUpdates()
+        Next iflt
+    End Sub
+
+    Private Sub setHabitatForagingResponse()
+        Dim DatabaseID As Integer
+        Dim Layer As cEcospaceLayerDriver
+
+        'Habitat base foraging response is used to set the capacity map for each group.
+        'During initialization the biomass in the cells is distributed by the capacity map
+        'this give the initial distribution of biomass.
+        'During a timestep the capacity map effects the dispersal rates and foraging rate for a group in a cell.
+
+        'The habitat base foraging response to enviromental drivers has three components
+        'Two inputs and one Manager
+        '1. The input map layer cCore.EcospaceBasemap.LayerDriver
+        '       This is the enviromental driving map i.e. Salinity, Temperature...
+
+        '2. The foraging response function a cEnviroResponseFunction = cCore.CapacityShapeManager.Item(index) this is a groups foraging and capacity response to an enviromental driver layer
+
+        '3. The manager core.CapacityMapInteractionManager is used to apply a foraging response function to a group for an input driver layer
+        '       It does this via a list of cEnviroInputMap objects which joins the LayerDriver to a response function for a group
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'First add a Enviromental Driver layer
+        'Creates a new layer in the core and gives us the DatabaseID for the layer
+        core.AddEcospaceDriverLayer("Example-Layer", "Layer added for example", DatabaseID)
+
+        'Get the layer we just created from the core based on the DatabaseID that was set in AddEcospaceDriverLayer(,,DatabaseID)
+        For iLayer As Integer = 1 To core.nEnvironmentalDriverLayers
+            If DatabaseID = core.EcospaceBasemap.LayerDriver(iLayer).DBID Then
+                Layer = core.EcospaceBasemap.LayerDriver(iLayer)
+                Exit For
+            End If
         Next
+
+        If Layer Is Nothing Then
+            'oppss failed to find the layer we just added
+            System.Console.WriteLine("Failed to find the Environmental Driver layer.")
+            Exit Sub
+        End If
+
+        'Set some values in the environmental layer
+        For irow As Integer = 1 To core.EcospaceBasemap.InRow
+            For icol As Integer = 1 To core.EcospaceBasemap.InCol
+                Layer.Cell(irow, icol) = irow * icol
+            Next icol
+        Next irow
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'Next the Response Function
+        'this is how a group responses to an enviromental input i.e. Salinity
+        Dim Manager As cCapMapResponseManager = core.CapacityShapeManager
+        Dim ResponseShape As cEnviroResponseFunction
+
+        'Create a new response and give it some values
+        ResponseShape = Manager.CreateNewShape("ResponseShape", Nothing)
+        Dim delta As Single = 1 / ResponseShape.XMax * 2
+        ResponseShape.LockUpdates()
+        For ipoint As Integer = 1 To ResponseShape.XMax
+            ResponseShape.ShapeData(ipoint) = ipoint * delta
+        Next
+        ResponseShape.UnlockUpdates()
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'Last
+        'Now we have a enviromental map, the layer we added
+        'and a response function.
+        'We need to join these together to tell EwE how a group responds to an enviromental driver (map)
+
+        'CapacityMapInteractionManager contains a list of all the driver layers in the model
+        'including the one we just added
+
+        'loop over all the layers/maps in the manager and find the one we just added
+        Dim Map As cEnviroInputMap
+        For imap As Integer = 1 To core.CapacityMapInteractionManager.nMaps
+            Map = core.CapacityMapInteractionManager.Map(imap)
+            If Map.Layer.DBID = DatabaseID Then
+                'Ok this is the layer we added
+                'Now we have to tell the map which group(s) use which response functions
+                For igrp As Integer = 1 To core.nGroups
+                    'for this example we will add this response function to all the groups
+                    Map.ResponseIndexForGroup(igrp) = ResponseShape.Index
+                Next
+
+                Exit For
+
+            End If
+        Next
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
     End Sub
 
 #End Region
