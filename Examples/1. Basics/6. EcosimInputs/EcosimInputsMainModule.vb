@@ -19,7 +19,7 @@ Imports EwECore
 Imports System.Windows.Forms
 
 ''' <summary>
-''' This program demonstrates how to tweak Ecosim Vulnerabilities.
+''' This program demonstrates how to tweak Ecosim Vulnerabilities and Fishing Effort inputs.
 ''' </summary>
 Module EcosimInputsMainModule
 
