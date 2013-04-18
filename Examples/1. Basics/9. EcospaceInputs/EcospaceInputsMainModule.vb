@@ -110,6 +110,7 @@ Module EcospaceInputs
         'Initialize biomass to habitats/capacity
         core.EcospaceModelParameters.AdjustSpace = True
 
+        core.EcospaceModelParameters.CapacityCalculationType = EwEUtils.Core.eEcospaceCapacityCalType.CapacityAndHabitat
 
     End Sub
 
@@ -187,10 +188,10 @@ Module EcospaceInputs
 
         'Create a new response and give it some values
         ResponseFunction = Manager.CreateNewShape("ResponseShape", Nothing)
-        Dim delta As Single = 1 / ResponseFunction.XMax * 2
+        Dim delta As Single = 1 / ResponseFunction.nPoints * 2
         ResponseFunction.LockUpdates()
 
-        For ipoint As Integer = 1 To ResponseFunction.XMax
+        For ipoint As Integer = 1 To ResponseFunction.nPoints
             'this is the response multiplier that is returned for a value on the x axis
             ResponseFunction.ShapeData(ipoint) = ipoint * delta
         Next
@@ -198,8 +199,8 @@ Module EcospaceInputs
         'One last step
         'We need to tell the response function what range of data it cover on the x axis, the range of values from the input layer
         'In this case we will use the entire range from the input layer, but this can be anything.
-        ResponseFunction.XAxisMax = Layer.MaxValue
-        ResponseFunction.XAxisMin = Layer.MinValue
+        ResponseFunction.MaxInputValue = Layer.MaxValue
+        ResponseFunction.MinInputValue = Layer.MinValue
 
         ResponseFunction.UnlockUpdates()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -299,16 +300,16 @@ Module EcospaceInputs
                 System.Console.WriteLine()
             Next igrp
 
-            Dim SpaceFleet As cEcospaceFleetOutput
-            For ift As Integer = 1 To core.nFleets
-                SpaceFleet = core.EcospaceFleetOutput(ift)
-                For it As Integer = 1 To core.nEcospaceTimeSteps
-                    System.Console.Write(SpaceFleet.CatchBiomass(it).ToString + ",")
-                    'other outputs
-                    'SpaceFleet.Value(it)
-                Next it
-                System.Console.WriteLine()
-            Next ift
+            'Dim SpaceFleet As cEcospaceFleetOutput
+            'For ift As Integer = 1 To core.nFleets
+            '    SpaceFleet = core.EcospaceFleetOutput(ift)
+            '    For it As Integer = 1 To core.nEcospaceTimeSteps
+            '        System.Console.Write(SpaceFleet.CatchBiomass(it).ToString + ",")
+            '        'other outputs
+            '        'SpaceFleet.Value(it)
+            '    Next it
+            '    System.Console.WriteLine()
+            'Next ift
 
         End If 'EwEUtils.Core.eCoreExecutionState.EcospaceCompleted 
 
