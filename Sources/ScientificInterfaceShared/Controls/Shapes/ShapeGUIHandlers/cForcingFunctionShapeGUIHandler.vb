@@ -138,7 +138,7 @@ Namespace Controls
                 shape = ashapes(iShape)
                 If shape IsNot Nothing Then
                     shape.LockUpdates()
-                    For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
+                    For i As Integer = 0 To shape.nPoints ' - 1'jb why the minus one
                         shape.ShapeData(i) = sDefaultValue
                     Next i
 
@@ -168,7 +168,7 @@ Namespace Controls
             If Not Me.m_bShowAll Then Return Me.Core.nEcosimTimeSteps
             Dim xMax As Integer = 0
             For Each sh As cShapeData In Me.m_lShapes
-                xMax = Math.Max(sh.XMax, xMax)
+                xMax = Math.Max(sh.nPoints, xMax)
             Next
             Return xMax
         End Function
@@ -554,7 +554,7 @@ Namespace Controls
 
             Dim sScale As Single = sNewMaxValue / sCurrMax
             shape.LockUpdates()
-            For i As Integer = 0 To shape.XMax
+            For i As Integer = 0 To shape.nPoints
                 shape.ShapeData(i) *= sScale
             Next
             shape.UnlockUpdates(True)
@@ -670,7 +670,7 @@ Namespace Controls
                 For Each shape As cShapeData In ashapes
                     ' Repeat values across shape
                     shape.LockUpdates()
-                    For iTime As Integer = 0 To shape.XMax
+                    For iTime As Integer = 0 To shape.nPoints
                         shape.ShapeData(iTime) = lsEntered(iTime Mod lsEntered.Count)
                     Next
                     shape.UnlockUpdates()

@@ -178,7 +178,7 @@ Public Class frmShapeValue
             If Me.m_shape.IsSeasonal Then
                 Me.NumPoints = cCore.N_MONTHS
             Else
-                Me.NumPoints = Me.m_shape.XMax
+                Me.NumPoints = Me.m_shape.nPoints
             End If
         End If
 
@@ -244,7 +244,7 @@ Public Class frmShapeValue
 
     Private Sub cmbViewAs_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_cmbViewAs.SelectedIndexChanged
-        Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.XMax))
+        Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.nPoints))
         If Not Me.m_bInUpdate Then
             Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
         End If
@@ -326,7 +326,7 @@ Public Class frmShapeValue
 
         Me.IsSeasonal = Me.m_shape.IsSeasonal
 
-        Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.XMax))
+        Me.NumPoints = CInt(IIf(Me.IsSeasonal, cCore.N_MONTHS, Me.m_shape.nPoints))
         Me.m_grid.SetValues(Me.m_shape, Me.NumPoints, Me.m_displayMode)
 
     End Sub

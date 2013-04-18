@@ -390,7 +390,7 @@ Namespace Ecosim
                 ' Remember newly selected shape
                 Me.m_shapeSelected = shape
 
-                If shape IsNot Nothing Then iMax = CInt(shape.XMax / cCore.N_MONTHS)
+                If shape IsNot Nothing Then iMax = CInt(shape.nPoints / cCore.N_MONTHS)
 
                 Me.m_nudLastYear.Maximum = iMax
                 Me.m_nudFirstYear.Value = 0

@@ -282,7 +282,7 @@ Namespace Controls
          Description("State the max X value for the graph.")> _
         Public Overridable Property XAxisMaxValue() As Integer
             Get
-                If (Me.m_iXMax <= 0) And (Me.Shape IsNot Nothing) Then Return Me.Shape.XMax
+                If (Me.m_iXMax <= 0) And (Me.Shape IsNot Nothing) Then Return Me.Shape.nPoints
                 Return Me.m_iXMax
             End Get
             Set(ByVal iValue As Integer)
@@ -812,10 +812,10 @@ Namespace Controls
 
             If Not Me.m_shape.IsSeasonal Then Return
 
-            Dim asValues(Me.Shape.XMax - 1) As Single
+            Dim asValues(Me.Shape.nPoints - 1) As Single
             Dim j As Integer = 0
 
-            For i As Integer = 1 To Me.Shape.XMax - 1
+            For i As Integer = 1 To Me.Shape.nPoints - 1
                 asValues(i) = Me.Shape.ShapeData(j + 1)
                 j += 1
                 If j = cCore.N_MONTHS Then j = 0

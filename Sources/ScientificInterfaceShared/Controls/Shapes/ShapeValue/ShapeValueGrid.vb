@@ -98,7 +98,7 @@ Public Class ShapeValueGrid
 
         Dim iNumValues As Integer = Me.m_iNumValues
         If (shape Is Nothing) Then shape = Me.m_shape
-        If (shape.IsSeasonal) Then iNumValues = Me.m_shape.XMax
+        If (shape.IsSeasonal) Then iNumValues = Me.m_shape.nPoints
         shape.ShapeData = Me.Values(iNumValues)
 
     End Sub
@@ -200,7 +200,7 @@ Public Class ShapeValueGrid
             ' Determine value for given time point
             sValue = 0.0!
             If (Me.m_shape IsNot Nothing) Then
-                If iValue <= Me.m_shape.XMax Then
+                If iValue <= Me.m_shape.nPoints Then
                     sValue = Me.m_shape.ShapeData(iValue)
                 End If
             End If

@@ -295,18 +295,18 @@ Public Class dlgDefineMapResponseAssignments
                 Xmax = Me.m_map.Max '+ map.BinWidth
             End If
 
-            Dim dx As Single = Xrange / Me.m_shape.XMax
+            Dim dx As Single = Xrange / Me.m_shape.nPoints
             Dim YScale As Single = 1 '/ Me.m_shape.YMax
             Dim lstPts As New PointPairList
 
             'First point from shape at the zero X axis
             lstPts.Add(0, Me.m_shape.ShapeData(1) * YScale)
-            For ipt As Integer = 1 To Me.m_shape.XMax
+            For ipt As Integer = 1 To Me.m_shape.nPoints
                 lstPts.Add(Xmin + dx * (ipt - 1), Me.m_shape.ShapeData(ipt) * YScale)
             Next
 
             'add the last point out at the end of the graph
-            lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.XMax) * YScale)
+            lstPts.Add(Xmax, Me.m_shape.ShapeData(Me.m_shape.nPoints) * YScale)
 
             Dim il As LineItem = Me.m_zgh.CreateLineItem(String.Format(My.Resources.HEADER_RESPONSE_TARGET, fmt.GetDescriptor(Me.m_shape)), _
                                                          lstPts, cZedGraphMediationHelper.eEnvResponseLineType.Response)

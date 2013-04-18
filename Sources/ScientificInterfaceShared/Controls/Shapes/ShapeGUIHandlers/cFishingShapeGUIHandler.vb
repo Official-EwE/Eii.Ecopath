@@ -146,7 +146,7 @@ Namespace Controls
                 shape = ashapes(iShape)
                 If shape IsNot Nothing Then
                     shape.LockUpdates()
-                    For i As Integer = 0 To shape.XMax ' - 1'jb why the minus one
+                    For i As Integer = 0 To shape.nPoints ' - 1'jb why the minus one
                         shape.ShapeData(i) = sDefaultValue
                     Next i
                     shape.UnlockUpdates(True)
@@ -195,7 +195,7 @@ Namespace Controls
                 sBaseValue = man.EcopathBaseValue(shape.Index)
 
                 shape.LockUpdates()
-                For iTime As Integer = 0 To shape.XMax
+                For iTime As Integer = 0 To shape.nPoints
                     shape.ShapeData(iTime) = sBaseValue
                 Next
                 shape.UnlockUpdates()

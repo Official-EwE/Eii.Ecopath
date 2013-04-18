@@ -558,10 +558,10 @@ Namespace Ecosim
                     Dim shape As cShapeData = Me.m_sketchPad.Shape
 
                     ' Translate individual values
-                    Dim asValues(shape.XMax) As Single
+                    Dim asValues(shape.nPoints) As Single
                     Dim sValue As Single = 0.0!
 
-                    For i As Integer = 0 To shape.XMax
+                    For i As Integer = 0 To shape.nPoints
                         If (i < (astrEntered.Length - 1)) Then
                             Try
                                 sValue = CSng(cSystemUtils.Val(astrEntered(i)))

@@ -339,7 +339,7 @@ Namespace Controls
 
             ' Determine whether to show enabled tick
             Dim bShowWarning As Boolean = False
-            Dim xMax As Integer = shape.XMax
+            Dim xMax As Integer = shape.nPoints
 
             If TypeOf shape Is cTimeSeries Then
                 Dim ts As cTimeSeries = DirectCast(shape, cTimeSeries)

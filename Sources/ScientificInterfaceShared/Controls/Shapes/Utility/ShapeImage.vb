@@ -123,7 +123,7 @@ Namespace Controls
             ' Provide defaults
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
             If (sYMark = cCore.NULL_VALUE) Then sYMark = IIf(TypeOf (shape) Is cMediationFunction, 0.5!, 1.0!)
-            If (iXMax <= 0) Then iXMax = shape.XMax
+            If (iXMax <= 0) Then iXMax = shape.nPoints
 
             cShapeImage.DrawShapeDirect(uic, _
                     shape.ShapeData, iXMax, shape.IsSeasonal, _

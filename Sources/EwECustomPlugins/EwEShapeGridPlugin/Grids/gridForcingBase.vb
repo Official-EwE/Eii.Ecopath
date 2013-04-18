@@ -117,12 +117,12 @@ Public MustInherit Class gridForcingBase
             cell.Behaviors.Add(Me.EwEEditHandler)
             Me(eRowType.Name, i + 1) = cell
 
-            For j As Integer = 0 To Math.Min(iNumPoints, ats(i).XMax) - 1
+            For j As Integer = 0 To Math.Min(iNumPoints, ats(i).nPoints) - 1
                 cell = New EwECell(ats(i).ShapeData(j + 1), GetType(Single))
                 cell.Behaviors.Add(Me.EwEEditHandler)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next
-            For j As Integer = ats(i).XMax To iNumPoints - 1
+            For j As Integer = ats(i).nPoints To iNumPoints - 1
                 cell = New EwECell(0, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
                 Me(eRowType.FirstTime + j, i + 1) = cell
             Next

@@ -42,7 +42,7 @@ Public MustInherit Class cShapeData
 
     Private m_strName As String
     Private m_xdata() As Single
-    Private m_Xmax As Integer
+    Private m_nPoints As Integer
     Private m_bSeasonal As Boolean = False
     Protected m_timeresolution As eShapeTimeResolutionType = eShapeTimeResolutionType.Month
 
@@ -105,17 +105,17 @@ Public MustInherit Class cShapeData
     Protected Sub Init(ByVal NumberOfPoints As Integer)
 
         Debug.Assert(NumberOfPoints >= 0, "You can not initialize cForcingData with less than zero points.")
-        m_Xmax = NumberOfPoints
+        m_nPoints = NumberOfPoints
 
-        ReDim m_xdata(m_Xmax)
+        ReDim m_xdata(m_nPoints)
         Me.SetValue(1.0!)
         Me.setDefaultEditBlocks()
     End Sub
 
     Protected Sub Init(ByVal ArrayOfData() As Single)
 
-        Me.m_Xmax = ArrayOfData.GetUpperBound(0)
-        Debug.Assert(m_Xmax > 0, "You can not initialize cForcingData with zero points.")
+        Me.m_nPoints = ArrayOfData.GetUpperBound(0)
+        Debug.Assert(m_nPoints > 0, "You can not initialize cForcingData with zero points.")
 
         Me.m_xdata = ArrayOfData
         Me.setDefaultEditBlocks()
@@ -131,7 +131,7 @@ Public MustInherit Class cShapeData
     Public MustOverride Function Update() As Boolean
 
     Public Sub SetValue(ByVal sValue As Single)
-        For i As Integer = 0 To Me.m_Xmax
+        For i As Integer = 0 To Me.m_nPoints
             Me.m_xdata(i) = sValue
         Next
         'm_Ymax = sValue
@@ -140,7 +140,7 @@ Public MustInherit Class cShapeData
 
     Private Sub setDefaultEditBlocks()
         Me.m_x1 = 1
-        Me.m_x2 = m_Xmax
+        Me.m_x2 = m_nPoints
     End Sub
 
 #End Region ' Private methods
@@ -198,9 +198,19 @@ Public MustInherit Class cShapeData
     ''' <see cref="ResizeData">ResizeData</see> or build a new object
     ''' of the desired size.
     ''' </remarks>
+    Public ReadOnly Property nPoints() As Integer
+        Get
+            Return m_nPoints
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Obsolete please use cShapeData.nPoints instead. 
+    ''' </summary>
+    <Obsolete("Property replaced by cShapeData.nPoints.")> _
     Public ReadOnly Property XMax() As Integer
         Get
-            Return m_Xmax
+            Return Me.nPoints
         End Get
     End Property
 
@@ -210,7 +220,7 @@ Public MustInherit Class cShapeData
     Public ReadOnly Property YMax() As Single
         Get
             Dim sYMax As Single = 0.0
-            For i As Integer = 1 To Me.m_Xmax
+            For i As Integer = 1 To Me.m_nPoints
                 sYMax = Math.Max(sYMax, Me.m_xdata(i))
             Next
             Return sYMax
@@ -251,13 +261,13 @@ Public MustInherit Class cShapeData
     Public ReadOnly Property Mean() As Single
         Get
 
-            If Me.m_Xmax = 0 Then Return 0
+            If Me.m_nPoints = 0 Then Return 0
 
             Dim sum As Single
-            For i As Integer = 1 To Me.m_Xmax
+            For i As Integer = 1 To Me.m_nPoints
                 sum += Me.m_xdata(i)
             Next
-            Return sum / Me.m_Xmax
+            Return sum / Me.m_nPoints
         End Get
     End Property
 
@@ -274,7 +284,7 @@ Public MustInherit Class cShapeData
         Set(ByVal value As Integer)
             'constrain the value
             If value < 1 Then value = 1
-            If value > Me.m_Xmax Then value = Me.m_Xmax
+            If value > Me.m_nPoints Then value = Me.m_nPoints
             Me.m_x1 = value
         End Set
     End Property
@@ -292,7 +302,7 @@ Public MustInherit Class cShapeData
         Set(ByVal value As Integer)
             'constrain the value
             If value < 1 Then value = 1
-            If value > Me.m_Xmax Then value = Me.m_Xmax
+            If value > Me.m_nPoints Then value = Me.m_nPoints
             Me.m_x2 = value
         End Set
     End Property
@@ -318,17 +328,17 @@ Public MustInherit Class cShapeData
             Debug.Assert(newNumberOfPoints >= 0, Me.ToString & ".ResizeData() Must be greater then zero points.")
 
             'Does the data need resizing
-            If newNumberOfPoints = m_Xmax Then
+            If newNumberOfPoints = m_nPoints Then
                 'No
                 Return False
             End If
 
             ReDim Preserve m_xdata(newNumberOfPoints)
-            For i As Integer = m_Xmax + 1 To newNumberOfPoints
+            For i As Integer = m_nPoints + 1 To newNumberOfPoints
                 m_xdata(i) = 1 'give all the new points the value of one this means they will have no effect on the model
             Next i
 
-            Me.m_Xmax = newNumberOfPoints
+            Me.m_nPoints = newNumberOfPoints
             Me.setDefaultEditBlocks()
 
             Return True

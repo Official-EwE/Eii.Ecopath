@@ -354,13 +354,13 @@ Namespace Controls
                 If Xmax = 0 Then Xmax = 1
                 Dim Xrange As Single = Xmax - Xmin
 
-                Dim dx As Single = Xrange / resShape.XMax
+                Dim dx As Single = Xrange / resShape.nPoints
                 If dx = 0 Then dx = 1
                 Dim lstPts As New PointPairList
 
                 'First point from shape at the zero X axis
                 lstPts.Add(0, resShape.ShapeData(1) * YScale)
-                For ipt As Integer = 1 To resShape.XMax
+                For ipt As Integer = 1 To resShape.nPoints
                     lstPts.Add(Xmin + dx * (ipt - 1), resShape.ShapeData(ipt) * YScale)
                 Next
 

@@ -288,7 +288,7 @@ Public Class cForcingFunction
             Me.ResizeData(m_data.ForcePoints)
 
             'populate the raw shape data
-            For ipt As Integer = 1 To Me.XMax
+            For ipt As Integer = 1 To Me.nPoints
                 m_data.zscale(ipt, m_iEcoSimIndex) = Me.ShapeData(ipt)
             Next ipt
             m_data.ForcingTitles(m_iEcoSimIndex) = Me.Name
@@ -641,7 +641,7 @@ Public MustInherit Class cMediationBaseFunction
         Me.ResizeData(m_medData.NMedPoints)
 
         'populate the raw shape data
-        For ipt As Integer = 1 To Me.XMax
+        For ipt As Integer = 1 To Me.nPoints
             m_medData.Medpoints(ipt, m_iEcoSimIndex) = Me.ShapeData(ipt)
         Next ipt
 

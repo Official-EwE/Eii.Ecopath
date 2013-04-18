@@ -6531,7 +6531,7 @@ Namespace DataSources
                 ' JS 04april09: Time Series are most likely ANNUAL, FFs are MONTHLY
                 If ts.IsMonthly Then iRepetitions = 1 Else iRepetitions = cCore.N_MONTHS
 
-                For iYear As Integer = 0 To ts.XMax - 1
+                For iYear As Integer = 0 To ts.nPoints - 1
                     For iMonth As Integer = 1 To iRepetitions
                         If sbZScale.Length > 0 Then sbZScale.Append(" ")
                         sbZScale.Append(cStringUtils.FormatSingle(ts.ShapeData(iYear)))
@@ -6587,7 +6587,7 @@ Namespace DataSources
             drow("DatasetID") = tsds.iDatasetDBID(iDataset)
 
             ' Concoct time series memo
-            For iYear As Integer = 0 To ts.XMax - 1
+            For iYear As Integer = 0 To ts.nPoints - 1
                 If (iYear > 0) Then sbValues.Append(" ")
                 sbValues.Append(cStringUtils.FormatSingle(ts.ShapeData(iYear)))
             Next

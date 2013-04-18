@@ -1660,7 +1660,7 @@ Public Class cCore
                 'Me.m_TSData.Datq(ts.Index) = ts.DataSS 
 
                 ' Update core DatVal
-                For iYear As Integer = 1 To ts.XMax
+                For iYear As Integer = 1 To ts.nPoints
                     Me.m_TSData.sValues(iYear, ts.Index) = ts.DatVal(iYear)
                 Next iYear
 
@@ -1701,7 +1701,7 @@ Public Class cCore
                 'Me.m_TSData.Datq(ts.Index) = ts.DataSS 
 
                 ' Update core DatVal
-                For iYear As Integer = 1 To ts.XMax
+                For iYear As Integer = 1 To ts.nPoints
                     Me.m_TSData.sValues(iYear, ts.Index) = ts.DatVal(iYear)
                 Next iYear
 
