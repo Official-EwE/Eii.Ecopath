@@ -1434,7 +1434,12 @@ Public Class cEnviroResponseFunction
 
 #Region " Map interfaces "
 
-    Public Property XAxisMin() As Single
+    ''' <summary>
+    ''' Minimum value of the input map that the response will be computed for. 
+    ''' All values less than this will return the first value of the response function. 
+    ''' </summary>
+    ''' <remarks>Left margin of the X Axis considered to be inbounds of the response function.</remarks>
+    Public Property MinInputValue() As Single
         Get
             Return m_medData.XAxisMin(Me.Index)
         End Get
@@ -1446,7 +1451,12 @@ Public Class cEnviroResponseFunction
 
     End Property
 
-    Public Property XAxisMax() As Single
+    ''' <summary>
+    ''' Maximum value of the input map that the response will be computed for. 
+    ''' All values greater than this will return the last value of the response function. 
+    ''' </summary>
+    ''' <remarks>Right margin of the X Axis considered to be inbounds of the response function.</remarks>
+    Public Property MaxInputValue() As Single
         Get
             Return m_medData.XAxisMax(Me.Index)
         End Get
@@ -1458,11 +1468,41 @@ Public Class cEnviroResponseFunction
 
     End Property
 
-    Public ReadOnly Property XAxisMean() As Single
+    Public ReadOnly Property MeanInputValue() As Single
         Get
             Return (m_medData.XAxisMin(Me.Index) + m_medData.XAxisMax(Me.Index)) * 0.5F
         End Get
     End Property
+
+    <Obsolete("Please use MinInputValue() instead")>
+    Public Property XAxisMin() As Single
+        Get
+            Return Me.MinInputValue
+        End Get
+        Set(ByVal value As Single)
+            Me.MinInputValue = value
+        End Set
+
+    End Property
+
+    <Obsolete("Please use MaxInputValue() instead")>
+    Public Property XAxisMax() As Single
+        Get
+            Return Me.MaxInputValue
+        End Get
+        Set(ByVal value As Single)
+            Me.MaxInputValue = value
+        End Set
+
+    End Property
+
+    <Obsolete("Please use MeanInputValue() instead")>
+     Public ReadOnly Property XAxisMean() As Single
+        Get
+            Return Me.MeanInputValue ' (m_medData.XAxisMin(Me.Index) + m_medData.XAxisMax(Me.Index)) * 0.5F
+        End Get
+    End Property
+
 
 #End Region ' Map interfaces
 

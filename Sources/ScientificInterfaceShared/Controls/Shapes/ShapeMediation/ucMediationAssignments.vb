@@ -347,8 +347,8 @@ Namespace Controls
                 Dim resShape As cEnviroResponseFunction = DirectCast(Me.m_medfn, cEnviroResponseFunction)
 
                 'X Axis is defined by the shape itself
-                Dim Xmax As Single = resShape.XAxisMax
-                Dim Xmin As Single = resShape.XAxisMin
+                Dim Xmax As Single = resShape.MaxInputValue
+                Dim Xmin As Single = resShape.MinInputValue
                 'Scale the Y axis to one
                 Dim YScale As Single = 1 ' / resShape.YMax
                 If Xmax = 0 Then Xmax = 1

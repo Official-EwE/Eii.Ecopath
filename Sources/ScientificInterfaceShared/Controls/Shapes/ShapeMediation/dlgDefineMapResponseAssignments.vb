@@ -76,8 +76,8 @@ Public Class dlgDefineMapResponseAssignments
             'remember the original response function min and max
             Me.m_fpXMax = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMax, GetType(Single))
             Me.m_fpXMin = New cEwEFormatProvider(Me.m_uic, Me.m_tbxXMin, GetType(Single))
-            Me.m_fpXMin.Value = Me.m_shape.XAxisMin
-            Me.m_fpXMax.Value = Me.m_shape.XAxisMax
+            Me.m_fpXMin.Value = Me.m_shape.MinInputValue
+            Me.m_fpXMax.Value = Me.m_shape.MaxInputValue
 
             If (CSng(Me.m_fpXMax.Value) = 0) Then
                 Me.m_fpXMax.Value = 1.0 'some kind of bogus default if nothing has been defined
@@ -217,8 +217,8 @@ Public Class dlgDefineMapResponseAssignments
         Handles m_btnOk.Click
 
         ' Apply changes
-        Me.m_shape.XAxisMin = CSng(Me.m_fpXMin.Value)
-        Me.m_shape.XAxisMax = CSng(Me.m_fpXMax.Value)
+        Me.m_shape.MinInputValue = CSng(Me.m_fpXMin.Value)
+        Me.m_shape.MaxInputValue = CSng(Me.m_fpXMax.Value)
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.Close()
