@@ -13812,7 +13812,7 @@ Public Class cCore
     End Sub
 
     Private Sub OnSearchChanged(ByVal searchmode As eSearchModes)
-        Me.m_StateMonitor.SetIsSearching(searchmode <> eSearchModes.NotInSearch)
+        Me.m_StateMonitor.SetIsSearching(searchmode)
     End Sub
 
 #Region "Fishing Policy Search"

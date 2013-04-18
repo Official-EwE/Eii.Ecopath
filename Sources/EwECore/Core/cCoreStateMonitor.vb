@@ -74,8 +74,8 @@ Public Class cCoreStateMonitor
     ''' <summary>Ecotracer execution state flag.</summary>
     Private m_iEcotracerState As eCoreExecutionState = eCoreExecutionState.Idle
 
-    ''' <summary>Flag stating that a search is active.</summary>
-    Private m_bIsSearching As Boolean = False
+    ''' <summary>Flag stating the current search mode.</summary>
+    Private m_searchmode As eSearchModes = eSearchModes.NotInSearch
     ''' <summary>Flag stating that a batch lock is active.</summary>
     Private m_bIsBatchLocked As Boolean = False
 
@@ -722,10 +722,10 @@ Public Class cCoreStateMonitor
     ''' <summary>
     ''' Set the searching state of the core state monitor.
     ''' </summary>
-    ''' <param name="bIsSearching">State flag to set</param>
+    ''' <param name="searchmode"><see cref="eSearchModes">Search mode state flag</see>.</param>
     ''' -----------------------------------------------------------------------
-    Friend Sub SetIsSearching(ByVal bIsSearching As Boolean)
-        Me.m_bIsSearching = bIsSearching
+    Friend Sub SetIsSearching(ByVal searchmode As eSearchModes)
+        Me.m_searchmode = searchmode
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -885,11 +885,22 @@ Public Class cCoreStateMonitor
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Returns whether the core is searching.
+    ''' Returns whether the core is searching. To find what search is running
+    ''' refer to <see cref="SearchMode"/>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Function IsSearching() As Boolean
-        Return Me.m_bIsSearching
+        Return (Me.m_searchmode <> eSearchModes.NotInSearch)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the current <see cref="eSearchModes"/>.
+    ''' </summary>
+    ''' <returns>The current <see cref="eSearchModes"/>.</returns>
+    ''' -----------------------------------------------------------------------
+    Public Function SearchMode() As eSearchModes
+        Return Me.m_searchmode
     End Function
 
     ''' -----------------------------------------------------------------------
