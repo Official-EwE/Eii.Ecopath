@@ -291,7 +291,7 @@ Public Class cEcospaceDataStructures
     Public Landings(,) As Single
 
     ''' <summary>Number of variables in ResultsXXX arrays </summary>
-    Public Const N_RESULTS_GROUPS As Integer = 2
+    Public Const N_RESULTS_GROUPS As Integer = 3
     Public Const N_RESULTS_FLEETS As Integer = 3
     Public Const N_RESULTS_FLEETGROUPS As Integer = 1
 

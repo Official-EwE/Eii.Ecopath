@@ -4831,6 +4831,8 @@ exitline:
         'Value of landings
         Dim ValLandings As Single
         For igrp = 1 To Me.m_EPdata.NumGroups
+
+
             For iflt = 0 To Me.m_EPdata.NumFleet
 
                 If Me.m_Data.Landings(igrp, iflt) > 0.0 Then
@@ -4844,6 +4846,8 @@ exitline:
 
                     m_Data.ResultsByFleet(eSpaceResultsFleets.Value, iflt, iCumTime) += ValLandings
                     m_Data.ResultsByFleet(eSpaceResultsFleets.Value, 0, iCumTime) += ValLandings
+
+                    m_Data.ResultsByGroup(eSpaceResultsGroups.Value, igrp, itt) += ValLandings
 
                     'Landings and Value for searches
                     If Me.m_search.bInSearch Then

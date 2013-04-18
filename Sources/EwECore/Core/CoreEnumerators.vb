@@ -477,6 +477,7 @@ Friend Enum eSpaceResultsGroups
     Biomass
     RelativeBiomass
     CatchBio
+    Value
 End Enum
 
 Friend Enum eSpaceResultsFleets
