@@ -173,13 +173,13 @@ Public Class cEcospaceFleetOutput
     End Property
     Public ReadOnly Property CatchBiomass(ByVal Time As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetCatch))
+            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetCatch, Time))
         End Get
     End Property
 
     Public ReadOnly Property Value(ByVal Time As Integer) As Single
         Get
-            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetValue))
+            Return CSng(GetVariable(eVarNameFlags.EcospaceFleetValue, Time))
         End Get
     End Property
 
