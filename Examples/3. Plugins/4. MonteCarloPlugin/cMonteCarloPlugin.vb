@@ -424,7 +424,7 @@ Public Class cMonteCarloPlugin
     Public ReadOnly Property Author() As String _
         Implements EwEPlugin.IPlugin.Author
         Get
-            Return "Mark Platts CEFAS"
+            Return "EwEDevTeam"
         End Get
     End Property
 
@@ -445,13 +445,13 @@ Public Class cMonteCarloPlugin
     Public ReadOnly Property Name() As String _
         Implements EwEPlugin.IPlugin.Name
         Get
-            Return "CEFAS MonteCarlo Sample Plugin"
+            Return "MonteCarlo Sample Plugin"
         End Get
     End Property
 
     Public ReadOnly Property ControlText As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "CEFAS Monte Carlo Sample"
+            Return "Monte Carlo Sample"
         End Get
     End Property
 
