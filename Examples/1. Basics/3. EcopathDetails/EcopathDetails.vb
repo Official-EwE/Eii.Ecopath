@@ -36,7 +36,7 @@ Module EcopathDetails
     ''' -----------------------------------------------------------------------
     Sub Main()
 
-        Dim modelFile As String = Path.GetFullPath(BrowseToModel())
+        Dim modelFile As String = BrowseToModel()
 
         ' Use EwE File utilities to generate a temporary text file
         ' The Ecopath model details will be written to this file
@@ -52,16 +52,16 @@ Module EcopathDetails
                 Dim writer As New StreamWriter(outputFile)
 
                 WriteAttributes(core, writer)
-                WriteGroupInformation(core, writer)
-                WriteMultiStanzaInformation(core, writer)
-                WriteDietInformation(core, writer)
-                WriteFleetInformation(core, writer)
-                WriteTaxonomyInformation(core, writer)
-                WritePedigreeInformation(core, writer)
-                WriteEcosimScenarioInformation(core, writer)
-                WriteEcosimTimeSeriesInformation(core, writer)
-                WriteEcospaceScenarioInformation(core, writer)
-                WriteEcotracerScenarioInformation(core, writer)
+                WriteGroups(core, writer)
+                WriteMultiStanza(core, writer)
+                WriteDiets(core, writer)
+                WriteFleets(core, writer)
+                WriteTaxonomy(core, writer)
+                WritePedigree(core, writer)
+                WriteEcosimScenarios(core, writer)
+                WriteEcosimTimeSeries(core, writer)
+                WriteEcospaceScenarios(core, writer)
+                WriteEcotracerScenarios(core, writer)
 
                 writer.Close()
                 core.CloseModel()
@@ -88,7 +88,7 @@ Module EcopathDetails
     ''' <summary>
     ''' Write basic attributes for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get model information from.</param>
+    ''' <param name="core">The core to get model  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
     Private Sub WriteAttributes(core As cCore, writer As StreamWriter)
@@ -114,12 +114,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write group information for a model to a text file.
+    ''' Write group  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteGroupInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteGroups(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# groups: " & core.nGroups)
         For iGroup As Integer = 1 To core.nGroups
@@ -144,12 +144,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write group information for a model to a text file.
+    ''' Write group  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteMultiStanzaInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteMultiStanza(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# stanza: " & core.nStanzas)
         For iStanza As Integer = 1 To core.nStanzas
@@ -181,12 +181,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write diet information for a model to a text file.
+    ''' Write diet  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteDietInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteDiets(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("Diet")
         For iPredator As Integer = 1 To core.nLivingGroups
@@ -215,12 +215,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write fleet information for a model to a text file.
+    ''' Write fleet  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteFleetInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteFleets(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# fleets: " & core.nFleets)
         For iFleet As Integer = 1 To core.nFleets
@@ -247,12 +247,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write taxonomy information for a model to a text file.
+    ''' Write taxonomy  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteTaxonomyInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteTaxonomy(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# taxa: " & core.nTaxon)
         For iTaxon As Integer = 1 To core.nTaxon
@@ -276,12 +276,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write pedigree information for a model to a text file.
+    ''' Write pedigree  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WritePedigreeInformation(core As cCore, writer As StreamWriter)
+    Private Sub WritePedigree(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# pedigree categories: " & core.nPedigreeVariables)
         For iVariable As Integer = 1 To core.nPedigreeVariables
@@ -303,12 +303,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write basic ecosim scenario information for a model to a text file.
+    ''' Write basic ecosim scenario  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteEcosimScenarioInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteEcosimScenarios(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# Ecosim scenarios: " & core.nEcosimScenarios)
         For iScenario As Integer = 1 To core.nEcosimScenarios
@@ -327,12 +327,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write basic ecosim time series information for a model to a text file.
+    ''' Write basic ecosim time series  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteEcosimTimeSeriesInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteEcosimTimeSeries(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# Ecosim time series datasets: " & core.nTimeSeriesDatasets)
         For iDataset As Integer = 1 To core.nTimeSeriesDatasets
@@ -352,12 +352,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write basic ecospace scenario information for a model to a text file.
+    ''' Write basic ecospace scenario  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteEcospaceScenarioInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteEcospaceScenarios(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# Ecospace scenarios: " & core.nEcospaceScenarios)
         For iScenario As Integer = 1 To core.nEcospaceScenarios
@@ -376,12 +376,12 @@ Module EcopathDetails
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write basic ecotracer scenario information for a model to a text file.
+    ''' Write basic ecotracer scenario  for a model to a text file.
     ''' </summary>
-    ''' <param name="core">The core to get information from.</param>
+    ''' <param name="core">The core to get  from.</param>
     ''' <param name="writer">The text file writer to write to.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteEcotracerScenarioInformation(core As cCore, writer As StreamWriter)
+    Private Sub WriteEcotracerScenarios(core As cCore, writer As StreamWriter)
 
         writer.WriteLine("# Ecotracer scenarios: " & core.nEcotracerScenarios)
         For iScenario As Integer = 1 To core.nEcotracerScenarios
