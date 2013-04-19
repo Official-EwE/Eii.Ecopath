@@ -300,7 +300,7 @@ Namespace Ecopath
 
                         m_Data.onPostEcopathRun()
 
-                        CheckIfEEsAreOK()
+                        CheckIfEEsAreOK(bSendMessage:=True)
 
                     Else
 
@@ -755,24 +755,28 @@ Namespace Ecopath
         '                               Get rid of DontDisplay flag (unused)
         '--------------------------------------------------------------------------
 
-        Private Sub CheckIfEEsAreOK()
+        Friend Function CheckIfEEsAreOK(bSendMessage As Boolean) As Boolean
             Dim i As Integer
             Dim EEMax As Single
             Dim msg As cMessage
+            Dim breturn As Boolean = True
 
             EEMax = 1
 
             For i = 1 To m_Data.NumGroups
                 'only test for EE > 1
                 If m_Data.EE(i) > EEMax Then
-                    If msg Is Nothing Then
-                        msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE_GENERIC, _
-                                            eMessageType.EE, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.EcoPathGroupOutput)
-                        msg.Suppressable = True
+                    breturn = False
+                    If bSendMessage Then
+                        If msg Is Nothing Then
+                            msg = New cMessage(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE_GENERIC, _
+                                                eMessageType.EE, eCoreComponentType.EcoPath, eMessageImportance.Warning, eDataTypes.EcoPathGroupOutput)
+                            msg.Suppressable = True
+                        End If
+                        msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult, _
+                                    String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(i)), _
+                                    eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                     End If
-                    msg.AddVariable(New cVariableStatus(eStatusFlags.InvalidModelResult, _
-                                String.Format(My.Resources.CoreMessages.ECOPATH_INVALIDMODEL_EE, Me.m_Data.GroupName(i), m_Data.EE(i)), _
-                                eVarNameFlags.EEOutput, eDataTypes.EcoPathGroupOutput, eCoreComponentType.EcoPath, i))
                 End If
             Next
 
@@ -780,7 +784,9 @@ Namespace Ecopath
                 NotifyCore(msg)
             End If
 
-        End Sub
+            Return breturn
+
+        End Function
 
 
 

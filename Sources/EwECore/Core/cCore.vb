@@ -4826,7 +4826,7 @@ Public Class cCore
     ''' <remarks>
     ''' InitEcoPath() must be called before this can be called
     ''' </remarks>
-    Public Function RunEcoPath() As Boolean
+    Public Function RunEcoPath(Optional ByRef isModelBalanced As Boolean = False) As Boolean
 
         Dim msg As cMessage
         Dim bSuccessEcopath As Boolean = False
@@ -4921,11 +4921,16 @@ Public Class cCore
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_SUCCESS, eMessageType.Any, eCoreComponentType.EcoPath, eMessageImportance.Information)
             m_publisher.AddMessage(msg)
 
+            isModelBalanced = Me.m_EcoPath.CheckIfEEsAreOK(bSendMessage:=False)
+
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathCompleted()
         Else
             msg = New cMessage(My.Resources.CoreMessages.ECOPATH_RUN_ERROR, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Warning)
             m_publisher.AddMessage(msg)
+
+            'Yo...the model can't be balanced if it didn't run
+            isModelBalanced = False
             ' Update core state monitor
             Me.m_StateMonitor.SetEcopathLoaded(True)
         End If
