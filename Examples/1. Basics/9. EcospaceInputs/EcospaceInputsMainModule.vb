@@ -59,6 +59,7 @@ Module EcospaceInputs
                         'Set fishing effort
                         setFishingEffort()
 
+                        'Setup a Habitat Foraging Response function
                         setHabitatForagingResponse()
 
                         'Run Ecopace on this thread(synchronously)
