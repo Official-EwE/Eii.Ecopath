@@ -57,6 +57,8 @@ Module EcosimDetailsMainModule
                     WriteEggProdFunctions(core, writer)
                     WriteMediationFunctions(core, writer)
                     WriteTimeSeries(core, writer)
+                    WriteFishingEffort(core, writer)
+                    WriteFishingMortality(core, writer)
 
                     writer.Close()
                     Process.Start("ecosim_details.txt")
@@ -285,6 +287,47 @@ Module EcosimDetailsMainModule
         writer.WriteLine()
 
     End Sub
+
+    Private Sub WriteFishingEffort(core As cCore, writer As StreamWriter)
+        'FishingEffortShapeManager contains a fleet for the "All Fleet" in the last position
+        writer.WriteLine("# fishing effort shapes: " + (core.nFleets + 1).ToString)
+
+        For Each EffortShape As cFishingRateShape In core.FishingEffortShapeManager
+            writer.Write("   " + EffortShape.Name)
+            'dump out one years worth of fishing effort points
+            For it As Integer = 1 To 12 ' EffortShape.nPoints
+                writer.Write(", " + EffortShape.ShapeData(it).ToString)
+            Next
+            writer.WriteLine()
+        Next EffortShape
+
+        writer.WriteLine()
+
+    End Sub
+
+    Private Sub WriteFishingMortality(core As cCore, writer As StreamWriter)
+        writer.WriteLine("# fishing mortality shapes: " + core.nGroups.ToString)
+
+        For Each MortalityShape As cFishingMortShape In core.FishMortShapeManager
+
+            writer.Write("   " + MortalityShape.Name)
+
+            If core.EcoPathGroupInputs(MortalityShape.Index).IsFished Then
+                'dump out one years worth of fishing mortality points
+                For it As Integer = 1 To 12 ' EffortShape.nPoints
+                    writer.Write(", " + MortalityShape.ShapeData(it).ToString)
+                Next
+                writer.WriteLine()
+            Else
+                writer.WriteLine(", No fishing mortality on this group.")
+            End If
+
+        Next MortalityShape
+
+        writer.WriteLine()
+
+    End Sub
+
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
