@@ -37,6 +37,7 @@ Module EcospaceInputs
         core = New cCore
 
         'Get the instance of the StateMonitor from the Core
+        'This will fire an the Event onCoreExecutionStateEvent(...) when EcoSpace has completed its run
         statemonitor = core.StateMonitor
 
         'Get a file name from the user
@@ -110,6 +111,7 @@ Module EcospaceInputs
         'Initialize biomass to habitats/capacity
         core.EcospaceModelParameters.AdjustSpace = True
 
+        'Populate the Capacity map base on both the Input Capacity maps and the Habitat maps
         core.EcospaceModelParameters.CapacityCalculationType = EwEUtils.Core.eEcospaceCapacityCalType.CapacityAndHabitat
 
     End Sub
@@ -137,17 +139,18 @@ Module EcospaceInputs
         Dim DatabaseID As Integer
         Dim Layer As cEcospaceLayerDriver
 
-        'Habitat base foraging response is used to set the capacity map for each group.
+        'Habitat base foraging response is used to update the capacity map for each group.
         'During initialization the biomass in the cells is distributed by the capacity map
         'this give the initial distribution of biomass.
         'During a timestep the capacity map effects the dispersal rates and foraging rate for a group in a cell.
 
-        'The habitat base foraging response to enviromental drivers has three components
+        'The habitat base foraging response to enviromental drivers has three main components
         'Two inputs and one Manager
-        '1. The input map layer cCore.EcospaceBasemap.LayerDriver
+        '1. Input map layer cCore.EcospaceBasemap.LayerDriver
         '       This is the enviromental driving map i.e. Salinity, Temperature...
 
-        '2. The foraging response function a cEnviroResponseFunction = cCore.CapacityShapeManager.Item(index) this is a groups foraging and capacity response to an enviromental driver layer
+        '2. Input foraging response function a cEnviroResponseFunction = cCore.CapacityShapeManager.Item(index) 
+        '       this is a groups foraging response to an enviromental driver layer
 
         '3. The manager core.CapacityMapInteractionManager is used to apply a foraging response function to a group for an input driver layer
         '       It does this via a list of cEnviroInputMap objects which joins the LayerDriver to a response function for a group
@@ -197,17 +200,18 @@ Module EcospaceInputs
         Next
 
         'One last step
-        'We need to tell the response function what range of data it cover on the x axis, the range of values from the input layer
+        'We need to tell the response function what range of data it covers on the x axis/map input values. 
+        'It is possible for the response function to just cover part of the input data.
         'In this case we will use the entire range from the input layer, but this can be anything.
-        ResponseFunction.MaxInputValue = Layer.MaxValue
-        ResponseFunction.MinInputValue = Layer.MinValue
+        ResponseFunction.ResponseRightLimit = Layer.MaxValue
+        ResponseFunction.ResponseLeftLimit = Layer.MinValue
 
         ResponseFunction.UnlockUpdates()
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         'Last
-        'Now we have an enviromental map, the layer we added
+        'Now we have an enviromental map, the layer we added above
         'and a response function.
         'We need to join these together to tell EwE how a group responds to an enviromental driver (map)
 
@@ -245,6 +249,8 @@ Module EcospaceInputs
 #Region "Ecospace Events"
 
     Private Sub onEcoSpaceTimeStep(ByRef EcospaceResults As cEcospaceTimestep)
+        'This method will be call at the end of each Ecospace Timestep
+        'EcospaceResults will contain results maps for the timestep
         System.Console.WriteLine("Ecospace Timestep " + EcospaceResults.iTimeStep.ToString)
         Dim sumSpaceB As Single
         Dim nSpaceB As Integer
@@ -290,26 +296,27 @@ Module EcospaceInputs
                     'other outputs
                     'System.Console.Write(SpaceGroup.RelativeBiomass(it).ToString + ",")
 
-                    'Outputs by Group/fleet
+                    ''Outputs by Group/fleet
                     'For ift As Integer = 1 To core.nFleets
-                    '    SpaceGroup.CatchBiomass(iflt, it)
-                    '    SpaceGroup.Value(iflt, it)
+                    '    System.Console.Write(SpaceGroup.CatchBiomass(ift, it).ToString + ",")
+                    '    System.Console.Write(SpaceGroup.Value(ift, it).ToString + ",")
                     'Next ift
+                    'System.Console.WriteLine()
                 Next it
 
                 System.Console.WriteLine()
-            Next igrp
+            Next (igrp)
 
-            'Dim SpaceFleet As cEcospaceFleetOutput
-            'For ift As Integer = 1 To core.nFleets
-            '    SpaceFleet = core.EcospaceFleetOutput(ift)
-            '    For it As Integer = 1 To core.nEcospaceTimeSteps
-            '        System.Console.Write(SpaceFleet.CatchBiomass(it).ToString + ",")
-            '        'other outputs
-            '        'SpaceFleet.Value(it)
-            '    Next it
-            '    System.Console.WriteLine()
-            'Next ift
+            Dim SpaceFleet As cEcospaceFleetOutput
+            For ift As Integer = 1 To core.nFleets
+                SpaceFleet = core.EcospaceFleetOutput(ift)
+                For it As Integer = 1 To core.nEcospaceTimeSteps
+                    System.Console.Write(SpaceFleet.CatchBiomass(it).ToString + ",")
+                    'other outputs
+                    'SpaceFleet.Value(it)
+                Next it
+                System.Console.WriteLine()
+            Next ift
 
         End If 'EwEUtils.Core.eCoreExecutionState.EcospaceCompleted 
 
