@@ -4,76 +4,83 @@ Imports System.Windows.Forms
 
 Module PerturbateEcopathMainModule
 
-    Private core As cCore
+    Private Core As cCore
     Private RandNumGenerator As Random
 
     Sub Main()
-
-        core = New cCore()
-        RandNumGenerator = New Random(Environment.TickCount)
-
+        'Number of Trials to run
         Dim nTrials As Integer = 10
-        Dim nPathSearches As Integer = 100
-        Dim iSearch As Integer
+        'Number of attemps at finding a balanced Ecopath model
+        Dim nBalanceAttempts As Integer = 100
+        'Current attempt at finding a balanced Ecopath model
+        Dim iAttempt As Integer
         Dim FoundBalancedModel As Boolean
-        Dim EcopathRan As Boolean
-        Dim isBalanced As Boolean
-        Dim EcopathGroup As cEcoPathGroupInput
-
-
+        'Original Ecopath B and PB
         Dim orgB() As Single
         Dim orgPB() As Single
+
+        'Init the objects needed Core and .NET Random
+        Core = New cCore() ' new instance of cCore
+        RandNumGenerator = New Random(Environment.TickCount) 'New instance of .NET random number generator
 
         'Get a file name from the user
         Dim filename As String = ShowOpenFileDialogue()
 
         'Try to load the model in the selected file
-        If core.LoadModel(filename) Then
+        If Core.LoadModel(filename) Then
 
-            orgB = New Single(core.nGroups) {}
-            orgPB = New Single(core.nGroups) {}
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Get baseline values
+            'Makes a copy of the original parameters used to restore the model during the trials 
+            setBaselineParameters(orgB, orgPB)
+            'You may want to run EcoPath/Ecosim and save the results
+            'So you have a baseline state to compare against
+            'For Example
+            'Core.LoadEcosimScenario(1)
+            'Core.Autosave(EwEUtils.Core.eAutosaveTypes.Ecosim) = True
+            'Core.RunEcoPath()
+            'Core.RunEcoSim()
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-            For igrp As Integer = 1 To core.nGroups
-                orgB(igrp) = core.EcoPathGroupInputs(igrp).BiomassAreaInput
-                orgPB(igrp) = core.EcoPathGroupInputs(igrp).PBInput
-            Next
-
+            'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            'Run the trials
             For itrial As Integer = 1 To nTrials
                 System.Console.WriteLine("Ecopath trial " + itrial.ToString)
 
                 FoundBalancedModel = False
-                iSearch = 0
-                Do Until FoundBalancedModel Or (iSearch > nPathSearches)
+                iAttempt = 0
 
-                    For igrp As Integer = 1 To core.nGroups
-                        EcopathGroup = core.EcoPathGroupInputs(igrp)
-                        EcopathGroup.BiomassAreaInput = RandomizeParameter(orgB(igrp), 0.3)
-                        EcopathGroup.PBInput = RandomizeParameter(orgPB(igrp), 0.3)
-                    Next
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Loop over Ecopath varying parameters and running 
+                'until it finds a balanced set of parameters or run out of attempts
+                Do Until FoundBalancedModel Or (iAttempt >= nBalanceAttempts)
+                    iAttempt += 1
+                    System.Console.WriteLine("  balance attempt " + iAttempt.ToString)
 
-                    'RunEcoPath(isModelBalanced) returns True if it found all the missing parameters
-                    'this does not mean the model balanced. 
-                    'Check the isModelBalanced Argument to see if the model balanced 
-                    EcopathRan = core.RunEcoPath(isBalanced)
-                    If EcopathRan And isBalanced Then
-                        'Yep found all the parameters and the model balanced
-                        'No EE > 1
-                        FoundBalancedModel = True
-                    End If
+                    'Vary some Ecopath input parameters relative to the baseline
+                    PerturbEcopathParameters(orgB, orgPB)
 
-                    iSearch += 1
-                    System.Console.WriteLine("  balanced parameter search " + iSearch.ToString)
+                    'Run Ecopath and see if the new parameters balanced
+                    FoundBalancedModel = isEcoPathBalanced()
 
                 Loop 'FoundBalancedModel Or (iSearch > nPathSearches)
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'Do something with the balanced Ecopath model
                 If FoundBalancedModel Then
                     'Ok we have found a set of balanced Ecopath parameters
-                    'Do something 
-                    '    DumpEcopathEcosimRun()
-                    'End If
+                    'Do something
+                    'You could run Ecosim and compare outputs to the baseline or some timeseries data
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    'Core.LoadEcosimScenario(1)
+                    'Core.Autosave(EwEUtils.Core.eAutosaveTypes.Ecosim) = True
+                    'Core.RunEcoSim()
+                    'CompareTrialToSomething()
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 Else
-                    System.Console.WriteLine("Failed to find a balanced Ecopath model after " + iSearch.ToString + " tries")
+                    System.Console.WriteLine("Failed to find a balanced Ecopath model after " + iAttempt.ToString + " attempts")
                 End If
 
             Next itrial
@@ -81,17 +88,65 @@ Module PerturbateEcopathMainModule
         End If 'core.LoadModel(filename)
 
         'Close up
-        core.CloseModel()
+        Core.CloseModel()
 
         Console.WriteLine("Press a key to exit")
         Console.ReadKey()
 
     End Sub
 
-    Private Function RandomizeParameter(ByVal Mean As Single, cv As Single) As Single
+    Private Function PerturbParameter(ByVal Mean As Single, cv As Single) As Single
         If Mean < 0 Then Return Mean
+        'You will have to do better than this
+        'Each parameter should have its own distribution to sample from
         Return Mean * (1 + cv * RandNumGenerator.NextDouble())
     End Function
+
+
+    Private Sub setBaselineParameters(ByRef orgB() As Single, ByRef orgPB() As Single)
+
+        orgB = New Single(Core.nGroups) {}
+        orgPB = New Single(Core.nGroups) {}
+        For igrp As Integer = 1 To Core.nGroups
+            orgB(igrp) = Core.EcoPathGroupInputs(igrp).BiomassAreaInput
+            orgPB(igrp) = Core.EcoPathGroupInputs(igrp).PBInput
+        Next
+
+    End Sub
+
+    Private Sub PerturbEcopathParameters(orgB() As Single, orgPB() As Single)
+
+
+        'Core.SetBatchLockStop(Type) stops the Core from updating variable in response to input changes
+        Core.SetBatchLock(cCore.eBatchLockType.Update)
+        For igrp As Integer = 1 To Core.nGroups
+            'In this case just B and PB
+            Core.EcoPathGroupInputs(igrp).BiomassAreaInput = PerturbParameter(orgB(igrp), 0.3)
+            Core.EcoPathGroupInputs(igrp).PBInput = PerturbParameter(orgPB(igrp), 0.3)
+        Next
+        'Core.ReleaseBatchLock() The Core will now update any variable that need to change in response to the edit
+        Core.ReleaseBatchLock(cCore.eBatchLockType.Update)
+
+    End Sub
+
+    Private Function isEcoPathBalanced() As Boolean
+        Dim EcopathRan As Boolean
+        Dim isBalanced As Boolean
+
+        'RunEcoPath(isModelBalanced) returns True if it found all the missing parameters
+        'this does not mean the model balanced. 
+        'Check the isModelBalanced Argument to see if the model balanced.
+        'Alternatively you could check the outputs and decide if this is acceptable
+        EcopathRan = Core.RunEcoPath(isBalanced)
+        If EcopathRan And isBalanced Then
+            'Yep found all the parameters and the model balanced. No EE > 1
+            Return True
+        End If
+
+        Return False
+
+    End Function
+
 
 
 
