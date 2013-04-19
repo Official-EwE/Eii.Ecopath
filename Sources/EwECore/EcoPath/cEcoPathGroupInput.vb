@@ -392,15 +392,6 @@ Public Class cEcoPathGroupInput
 
     End Property
 
-    'Public Property Biomass() As Single
-    '    Get
-    '        Return CSng(getVariable(eVarNameFlags.Biomass))
-    '    End Get
-    '    Set(ByVal value As Single)
-    '        setVariable(eVarNameFlags.Biomass, value)
-    '    End Set
-    'End Property
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Get/set the <see cref="cEcopathDataStructures.BH">Biomass per Area</see>
