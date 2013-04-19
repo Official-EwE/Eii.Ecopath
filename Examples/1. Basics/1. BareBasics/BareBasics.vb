@@ -32,11 +32,11 @@ Module BareBasics
         If core.LoadModel("Tampa_Bay.EwEmdb") Then
             Console.WriteLine("Model loaded")
 
-            ' Does Ecopath balance?
+            ' Able to run Ecopath?
             If core.RunEcoPath() Then
-                Console.WriteLine("Ecopath balanced")
+                Console.WriteLine("Ecopath ran successfully")
             Else
-                Console.WriteLine("Ecopath did not balance")
+                Console.WriteLine("Ecopath failed to run")
             End If
 
             ' Done

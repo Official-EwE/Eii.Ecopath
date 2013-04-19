@@ -25,16 +25,23 @@ Module EcopathOutputs
     Sub Main()
 
         Dim core As New cCore()
+        Dim bModelBalanced As Boolean = False
 
         ' Able to load model?
         If core.LoadModel("Tampa_Bay.EwEmdb") Then
             Console.WriteLine("Model loaded")
 
-            ' Does Ecopath balance?
-            If core.RunEcoPath() Then
-                Console.WriteLine("Ecopath balanced")
+            ' Able to run Ecopath?
+            If core.RunEcoPath(bModelBalanced) Then
+                Console.WriteLine("Ecopath ran successfully")
+
+                If bModelBalanced Then
+                    Console.WriteLine("Ecopath balanced")
+                Else
+                    Console.WriteLine("Ecopath did not balance")
+                End If
             Else
-                Console.WriteLine("Ecopath did not balance")
+                Console.WriteLine("Ecopath did not run successfully")
             End If
 
             ' Write values that have been computed by Ecopath

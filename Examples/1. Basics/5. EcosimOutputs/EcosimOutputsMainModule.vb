@@ -47,6 +47,7 @@ Module EcosimOutputsMainModule
                     core.EcoSimModelParameters.NumberYears = 10
 
                     'Run Ecosim and tell it to call onEcosimTimestep() with results at each Ecosim timestep
+                    'Note that Ecopath is not explicitly ran; Ecopath will run implicitly when needed
                     If core.RunEcoSim(AddressOf onEcosimTimestep) Then
                         DumpEcosimResults(core)
                     End If
