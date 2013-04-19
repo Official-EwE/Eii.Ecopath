@@ -42,7 +42,7 @@ Module EcopathOutputsToCSV
         Dim CSVfileAdvanced As String = Path.GetFullPath("Ecopath_out_advanced.csv")
         Dim core As New cCore()
 
-        Dim modelFile As String = Path.GetFullPath(BrowseToModel())
+        Dim modelFile As String = BrowseToModel()
 
         If core.LoadModel(modelFile) Then
             If core.RunEcoPath Then
