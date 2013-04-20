@@ -4836,7 +4836,7 @@ Public Class cCore
     ''' Run the EcoPath model.
     ''' </summary>
     ''' <param name="isModelBalanced">
-    ''' Flag, filled-in by the method, that states whether Ecopath balanced.
+    ''' Return flag that indicates whether the Ecopath model balanced.
     ''' </param>
     ''' <returns>
     ''' True if the EcoPath model ran successfully, or False if an error occurred.
@@ -4900,20 +4900,6 @@ Public Class cCore
                     Me.PluginManager.EcopathRunCompleted(m_EcoPathData, m_TaxonData, m_Stanza)
                 End If
                 bSuccessEcopath = True
-
-                'If Me.Autosave(eAutosaveTypes.Ecopath) Then
-                '    Dim strFN As String = Path.Combine(Me.DefaultOutputPath(eAutosaveTypes.Ecopath), "estimates.csv")
-                '    Dim writer As New cEcopathResultWriter(Me)
-                '    If writer.WriteCSV(strFN) Then
-                '        msg = CreateMessage(String.Format(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_SUCCESS, strFN), eCoreComponentType.External, eMessageType.DataExport)
-                '        msg.Importance = eMessageImportance.Information
-                '        msg.Hyperlink = Path.GetDirectoryName(strFN)
-                '    Else
-                '        msg = CreateMessage(String.Format(My.Resources.CoreMessages.ECOPATH_RESULTS_SAVED_FAILED, strFN), eCoreComponentType.External, eMessageType.DataExport)
-                '        msg.Importance = eMessageImportance.Warning
-                '    End If
-                '    Me.m_publisher.AddMessage(msg)
-                'End If
             Else
                 'Assuming here that if EcoPath returned false it has already sent a message that explains the problem 
                 'No need to send another message
