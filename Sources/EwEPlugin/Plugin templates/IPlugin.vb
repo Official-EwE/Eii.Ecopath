@@ -36,7 +36,7 @@ Public Interface IPlugin
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Uniquely identifies a plugin.
+    ''' Uniquely identifies a plugin. This field cannot be left empty!
     ''' </summary>
     ''' <remarks>
     ''' The name field will be used to determine the order of appearance of 
