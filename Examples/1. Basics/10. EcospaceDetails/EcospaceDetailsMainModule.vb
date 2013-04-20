@@ -44,7 +44,7 @@ Module EcospaceDetailsMainModule
 
             If core.nEcosimScenarios > 0 And core.nEcospaceScenarios > 0 Then
                 If core.LoadEcosimScenario(1) Then
-                    If core.LoadEcospaceScenario(3) Then
+                    If core.LoadEcospaceScenario(1) Then
 
                         Console.WriteLine("Loaded first Ecospace scenario")
 
@@ -61,10 +61,10 @@ Module EcospaceDetailsMainModule
                         Console.WriteLine("Failed to load first Ecospace scenario")
                     End If
                 Else
-                    Console.WriteLine("This model does not contain any Ecospace scenarios")
+                    Console.WriteLine("Failed to load first Ecosim scenario")
                 End If
             Else
-                Console.WriteLine("This model does not contain any Ecosim scenarios")
+                Console.WriteLine("This model is missing an Ecosim or Ecospace scenario")
             End If
 
             core.CloseModel()
