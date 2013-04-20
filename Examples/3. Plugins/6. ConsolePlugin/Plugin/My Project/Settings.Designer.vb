@@ -82,9 +82,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.ConnectToR.My.MySettings
+        Friend ReadOnly Property Settings() As Global.Plugin.My.MySettings
             Get
-                Return Global.ConnectToR.My.MySettings.Default
+                Return Global.Plugin.My.MySettings.Default
             End Get
         End Property
     End Module

@@ -7,11 +7,11 @@
     </ProductVersion>
     <SchemaVersion>
     </SchemaVersion>
-    <ProjectGuid>{021E324D-A1A4-4134-8400-CD854BB2996C}</ProjectGuid>
+    <ProjectGuid>{CAECE4D8-C656-4DBA-AF62-B7DB8A8612B3}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <StartupObject>ConnectToR.modConnectToR</StartupObject>
-    <RootNamespace>ConnectToR</RootNamespace>
-    <AssemblyName>ConnectToR</AssemblyName>
+    <StartupObject>ConsolePluginApp.ConsolePluginApp</StartupObject>
+    <RootNamespace>ConsolePluginApp</RootNamespace>
+    <AssemblyName>ConsolePluginApp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Console</MyType>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -25,7 +25,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>ConnectToR.xml</DocumentationFile>
+    <DocumentationFile>ConsolePluginApp.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -35,7 +35,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ConnectToR.xml</DocumentationFile>
+    <DocumentationFile>ConsolePluginApp.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -54,10 +54,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
@@ -67,11 +64,9 @@
     <Import Include="System.Collections.Generic" />
     <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
-    <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="modConnectToR.vb" />
+    <Compile Include="ConsolePluginApp.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -97,7 +92,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Ecopath6_internal\Sources_Int_Functionalities\License\EwE.licenseheader">
+    <None Include="..\..\..\..\..\Ecopath6_internal\Sources_Int_Functionalities\License\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
     <None Include="app.config" />
@@ -112,17 +107,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Sources\EwECore\EwECore.vbproj">
+    <ProjectReference Include="..\..\..\..\Sources\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
+    <ProjectReference Include="..\..\..\..\Sources\EwEPlugin\EwEPlugin.vbproj">
       <Project>{0B91F6E0-6127-4CF3-BF57-684092481454}</Project>
       <Name>EwEPlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
+    <ProjectReference Include="..\..\..\..\Sources\EwEUtils\EwEUtils.vbproj">
       <Project>{5C331318-C23E-4EEB-AD1E-2EDEF85E0205}</Project>
       <Name>EwEUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugin\Plugin.vbproj">
+      <Project>{394C0A8D-2DEE-4708-8BAC-9051E08E3961}</Project>
+      <Name>Plugin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
