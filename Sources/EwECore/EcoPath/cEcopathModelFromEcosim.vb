@@ -117,7 +117,6 @@ Public Class cEcopathModelFromEcosim
             Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
             Dim bSucces As Boolean = False
 
-            coreDest.InitCore()
             coreDest.PluginManager = Nothing
 
             If String.IsNullOrEmpty(Path.GetExtension(strFileName)) Then

@@ -39,9 +39,12 @@ Public Interface IEcopathMassBalancePlugin
     ''' <param name="iResult">The result of the mass balance calculation. For 
     ''' possible values refer to the eStatusFlags enumerated type in the EwE project.
     ''' </param>
-    ''' <returns>True if a MassBalance calculation has been performed succesfully.
+    ''' <returns>True if a mass-balance calculation has been performed successfully.</returns>
+    ''' <remarks>
     ''' This plug-in point is exclusive, meaning that only one IEcopathMassBalancePlugin 
-    ''' plug-in is allowed to successdully perform this calculation.</returns>
+    ''' plug-in is allowed to successfully perform this calculation. The first plug-in
+    ''' of this type that successfully executes blocks the execution of any other
+    ''' plug-in of this type.</remarks>
     ''' -----------------------------------------------------------------------
     Function EcopathMassBalance(ByVal EcoPathDataStructures As Object, ByVal eEstimateFor As Integer, ByRef iResult As Integer) As Boolean
 

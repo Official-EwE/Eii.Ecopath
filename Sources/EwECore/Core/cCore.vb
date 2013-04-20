@@ -655,6 +655,8 @@ Public Class cCore
 
         Me.SaveWithFileHeader = True
 
+        Me.InitCore()
+
     End Sub
 
     Private m_bDisposed As Boolean = False        ' To detect redundant calls
@@ -1211,7 +1213,7 @@ Public Class cCore
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks>This initializes all the object that the core need to run a basic model (EcoPath). This does not load the model that happens in LoadModel(DataSource)</remarks>
-    Public Function InitCore() As Boolean
+    Friend Function InitCore() As Boolean
 
         m_bCoreIsInit = False
         m_bEcoSimIsInit = False
@@ -3211,9 +3213,6 @@ Public Class cCore
         Debug.Assert(ds IsNot Nothing, Me.ToString & "LoadModel() Datasource can not be NULL.")
         Debug.Assert(TypeOf ds Is IEcopathDataSource, "Invalid data source type specified")
 
-        ' Just in case
-        If Not Me.m_bCoreIsInit Then Me.InitCore()
-
         ' Only perform a total close if not reopening for the same datasource
         If Not Me.CloseModel(Not Object.ReferenceEquals(ds, Me.DataSource)) Then Return False
 
@@ -4819,14 +4818,31 @@ Public Class cCore
 
     End Function
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Public function to run the EcoPath model
+    ''' Run the EcoPath model.
     ''' </summary>
-    ''' <returns>True if EcoPath model ran successfully. False if a problem was encountered</returns>
-    ''' <remarks>
-    ''' InitEcoPath() must be called before this can be called
-    ''' </remarks>
-    Public Function RunEcoPath(Optional ByRef isModelBalanced As Boolean = False) As Boolean
+    ''' <returns>
+    ''' True if the EcoPath model ran successfully, or False if an error occurred.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RunEcoPath() As Boolean
+        Dim bDummyFlag As Boolean
+        Return RunEcoPath(bDummyFlag)
+    End Function
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Run the EcoPath model.
+    ''' </summary>
+    ''' <param name="isModelBalanced">
+    ''' Flag, filled-in by the method, that states whether Ecopath balanced.
+    ''' </param>
+    ''' <returns>
+    ''' True if the EcoPath model ran successfully, or False if an error occurred.
+    ''' </returns>
+    ''' -----------------------------------------------------------------------
+    Public Function RunEcoPath(ByRef isModelBalanced As Boolean) As Boolean
 
         Dim msg As cMessage
         Dim bSuccessEcopath As Boolean = False
@@ -13610,6 +13626,11 @@ Public Class cCore
             If (Me.m_pluginManager IsNot Nothing) Then
                 ' Hand plugin manager a delegate to check core enabled state
                 Me.m_pluginManager.CoreExecutionStateDelegate = New cPluginManager.CanExecutePlugin(AddressOf Me.CanExecutePlugin)
+
+                If Not Object.ReferenceEquals(Me.m_pluginManager.Core, Me) Then
+                    Me.m_pluginManager.Core = Me
+                End If
+
             End If
         End Set
 

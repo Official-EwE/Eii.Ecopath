@@ -603,8 +603,6 @@ Public Class AppLauncher
         Dim fps As New cFormSettings()
         Dim help As New cHelp(Me, "UserGuide\EwE6_userguide.chm", "User Interface.htm", "EWE_UsersGuide")
 
-        core.InitCore()
-
         Me.UIContext = New cUIContext(core, sg, pm, cmdh, Me, fps, help, so)
 
         ' Config state monitor

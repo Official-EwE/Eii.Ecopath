@@ -208,6 +208,8 @@ Public Class cPluginManager
             Return m_core
         End Get
         Set(ByVal core As Object)
+            If Object.ReferenceEquals(core, Me.m_core) Then Return
+
             ' Remember core
             m_core = core
             ' Initialize active plugins
@@ -544,7 +546,8 @@ Public Class cPluginManager
                                 plugAssem.Plugin(ip.Name) = ip
                             Catch ex As cPluginException
 #If DEBUG Then
-                                Console.WriteLine("PluginManager: file '{0}' failed type check, {1}", strFileName, ex.Message)
+                                Console.WriteLine("PluginManager: assembly '{0}' contained a plug-in with invalid or duplicate name {1}. {2}", strFileName, ip.Name, ex.Message)
+                                Debug.Assert(False)
 #End If
                             End Try
 
@@ -560,7 +563,8 @@ Public Class cPluginManager
                                         ' Disable the plugin entirely
                                         plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
 #If DEBUG Then
-                                        Console.WriteLine("PluginManager: file '{0}' faild to initialize, {1}", strFileName, ex.Message)
+                                        Console.WriteLine("PluginManager: file '{0}' failed to initialize, {1}", strFileName, ex.Message)
+                                        Debug.Assert(False)
 #End If
                                     End Try
                                 End If
@@ -575,6 +579,7 @@ Public Class cPluginManager
                                             plugAssem.Compatibility = cPluginAssembly.ePluginCompatibilityTypes.IncompatibleUndetermined
 #If DEBUG Then
                                             Console.WriteLine("PluginManager: file '{0}' failed to accept UI context, {1}", strFileName, ex.Message)
+                                            Debug.Assert(False)
 #End If
                                         End Try
                                     End If
@@ -623,17 +628,19 @@ Public Class cPluginManager
             '             (which will very likely not be the case since the manager could not access 
             '             the Types contained within the assembly)
             If bHasPlugins Then
+
+#If VERBOSE = 1 Then
                 ' the ReflectionTypeLoadException is for diagnosing problems when the loader throwing an exception
                 System.Console.WriteLine(Me.ToString & ".LoadPluginAssembly()")
                 ' what the hell happend
                 For Each ex As Exception In exRefl.LoaderExceptions
                     System.Console.WriteLine(ex.Message)
                 Next
+#End If
                 Me.RaisePluginException(plugAssem, exRefl)
-
                 Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & exRefl.Message)
             Else
-#If DEBUG Then
+#If VERBOSE = 1 Then
                 Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, exRefl.Message)
 #End If
             End If
@@ -641,7 +648,7 @@ Public Class cPluginManager
         Catch exBadImg As BadImageFormatException
 
             ' Assessed a DLL that did not contain IPlugin. Be quiet about it
-#If DEBUG Then
+#If VERBOSE = 1 Then
             Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, exBadImg.Message)
 #End If
 
@@ -650,7 +657,7 @@ Public Class cPluginManager
             'catch any generic exceptions
             Me.RaisePluginException(plugAssem, ex)
 
-#If DEBUG Then
+#If VERBOSE = 1 Then
             Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, ex.Message)
 #End If
         End Try
