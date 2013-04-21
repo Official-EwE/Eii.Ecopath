@@ -237,7 +237,7 @@ Namespace Forms
         Private m_coreExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
         ''' <summary>Array of message sources that invalidate the information displayed in a form.</summary>
         Private m_aMessageSources As eCoreComponentType() = Nothing
-        ''' <summary>Flag stating whether this is an input grid.</summary>
+        ''' <summary>Flag stating whether this is an input form.</summary>
         Private m_bIsInputForm As Boolean = False
         ''' <summary>States whether the form is running. Only valid for forms 
         ''' that are flagged as <see cref="IsRunForm"/>.</summary>
@@ -327,7 +327,7 @@ Namespace Forms
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="cCore">core</see> that this grid connects to.
+        ''' Get the <see cref="cCore">core</see> that this form connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(False)> _
@@ -340,7 +340,7 @@ Namespace Forms
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the <see cref="cStyleGuide">style guide</see> that this grid 
+        ''' Get the <see cref="cStyleGuide">style guide</see> that this form 
         ''' connects to.
         ''' </summary>
         ''' -------------------------------------------------------------------
@@ -355,7 +355,7 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the <see cref="cPropertyManager">property manager</see> that 
-        ''' this grid can interact with.
+        ''' this form can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(False)> _
@@ -369,7 +369,7 @@ Namespace Forms
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the <see cref="cCommandHandler">command handler</see> that 
-        ''' this grid can interact with.
+        ''' this form can interact with.
         ''' </summary>
         ''' -------------------------------------------------------------------
         <Browsable(False)> _

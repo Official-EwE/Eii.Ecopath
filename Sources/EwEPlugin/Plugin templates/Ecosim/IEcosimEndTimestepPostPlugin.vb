@@ -16,17 +16,12 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: IEcosimEndTimestepPostPlugin.vb,v $
-' Revision 1.1  2009/03/10 18:21:39  jeroens
-' Initial version
-'
-'==============================================================================
-
+''' ===========================================================================
 ''' <summary>
-''' 
+''' Plugin points for the end of an Ecosim time step, after all <see cref="IEcosimEndTimestepPlugin"/>
+''' plug-ins have ran.
 ''' </summary>
+''' ===========================================================================
 Public Interface IEcosimEndTimestepPostPlugin
     Inherits IPlugin
 
