@@ -70,8 +70,13 @@ Module modConnectToR
 
     Private Sub RunEwEScript(connection As cRBridge)
 
+        Console.WriteLine("--- Started building EwE script ---")
+        Console.Write("Please select a model: ")
+
         Dim core As New cCore()
         Dim model As String = PickModel()
+
+        Console.WriteLine(model)
 
         If core.LoadModel(model) Then
             If core.RunEcoPath() Then
@@ -83,10 +88,10 @@ Module modConnectToR
                 For iGroup As Integer = 1 To core.nGroups
                     Dim group As cEcoPathGroupOutput = core.EcoPathGroupOutputs(iGroup)
                     If iGroup > 1 Then script.Append(",")
-                    script.Append(group)
+                    script.Append(group.Biomass)
                 Next
                 script.AppendLine(")")
-                script.Append("mean(biomass)")
+                script.AppendLine("mean(biomass)")
 
                 ' Run script. Does this succeed?
                 If connection.Execute(script.ToString) Then
