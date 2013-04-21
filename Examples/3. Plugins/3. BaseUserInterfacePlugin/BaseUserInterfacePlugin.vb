@@ -18,6 +18,7 @@
 
 Imports EwECore
 Imports EwEPlugin
+Imports ScientificInterfaceShared.Controls
 
 ''' <summary>
 ''' Base code that can be used as a template to create a new plugin that integrates
@@ -35,74 +36,37 @@ Imports EwEPlugin
 ''' EwE6 plug-in manager when you run EwE6.</para>
 ''' </remarks>
 ''' 
-Public Class PluginPoint
+Public Class BaseUserInterfacePlugin
+    Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.INavigationTreeItemPlugin
 
 #Region " Private variables "
 
-    Private m_bInitOK As Boolean = False
-    Private m_core As EwECore.cCore = Nothing
+    Private m_uic As cUIContext = Nothing
     Private m_form As frmEwEPlugin = Nothing
 
 #End Region ' Private variables
 
-#Region " Plug-in implementation "
+#Region " User Interface plug-in implementation "
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Initialize the plug-in. This is called only once when the EwE6 first 
-    ''' loads the plug-in.
+    ''' User Interfaces require a UIContext, which provides not only access to
+    ''' a running core, but also to a styleguide, command handler, and other
+    ''' aspects that binds user interface elements in the EwE 6 application. 
     ''' </summary>
+    ''' <param name="uic">The <see cref="cUIContext"/> to connect to.</param>
     ''' -----------------------------------------------------------------------
-    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
 
         Try
-            ' Store reference to the core. We may need this later
-            m_core = DirectCast(core, EwECore.cCore)
-            ' Plug-in has been initialized and is ready for use
-            m_bInitOK = True
+            Me.m_uic = DirectCast(uic, cUIContext)
         Catch ex As Exception
-            ' Plug-in has been initialized and is ready for use
-            m_bInitOK = False
+            Me.m_uic = Nothing
         End Try
 
     End Sub
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Provide the internal name of the plug-in to EwE6. This name will not be 
-    ''' shown to the user, but will be used to sort plug-in items in container 
-    ''' user interface structures such as the EwE6 main menu and navigation tree.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
-        Get
-            Return "any name"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Provide EwE6 with author information to display for the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
-        Get
-            Return "UBC Fisheries Centre"
-        End Get
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Provide EwE6 with contact information to display for the plug-in.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
-        Get
-            Return "mailto:ewedevteam@gmail.com"
-        End Get
-    End Property
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -112,7 +76,7 @@ Public Class PluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property ControlText() As String Implements EwEPlugin.IGUIPlugin.ControlText
         Get
-            Return "EwE user interface template plug-in"
+            Return "BaseUserInterfacePlugin"
         End Get
     End Property
 
@@ -148,7 +112,7 @@ Public Class PluginPoint
     ''' -----------------------------------------------------------------------
     Public ReadOnly Property Description() As String Implements EwEPlugin.IPlugin.Description
         Get
-            Return "An example of nesting plug-ins in EwE6 interface"
+            Return "An example of nesting a plug-in in the EwE6 interface"
         End Get
     End Property
 
@@ -163,7 +127,7 @@ Public Class PluginPoint
         Dim bHasInterface As Boolean = False
 
         ' Initialized ok?
-        If m_bInitOK Then
+        If m_uic IsNot Nothing Then
 
             ' Test if form still exists. This is a two-step test: the interface needs to be defined, and has not been closed previously.
             If Me.m_form IsNot Nothing Then
@@ -174,7 +138,12 @@ Public Class PluginPoint
 
             ' Create the interface if needed
             If Not bHasInterface Then
+
+                ' Create the EwE form-derived user interface for this plug-in
                 Me.m_form = New frmEwEPlugin()
+                ' Pass on the UI context to the form
+                Me.m_form.UIContext = m_uic
+
                 ' This is really not necessary but it looks nice :)
                 Me.m_form.Icon = Icon.FromHandle(ScientificInterfaceShared.My.Resources.fish.GetHicon)
             End If
@@ -233,6 +202,57 @@ Public Class PluginPoint
         End Get
     End Property
 
-#End Region ' Plug-in implementation
+#End Region ' User Interface plug-in implementation
+
+#Region " Generic plug-in point implementation bits "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Initialize the plug-in. This is called only once when the EwE6 first 
+    ''' loads the plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
+
+        ' Ignore this method; we really want the UI context
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Provide the internal name of the plug-in to EwE6. This name will not be 
+    ''' shown to the user, but will be used to sort plug-in items in container 
+    ''' user interface structures such as the EwE6 main menu and navigation tree.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Name() As String Implements EwEPlugin.IPlugin.Name
+        Get
+            Return "any name"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Provide EwE6 with author information to display for the plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Author() As String Implements EwEPlugin.IPlugin.Author
+        Get
+            Return "UBC Fisheries Centre"
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Provide EwE6 with contact information to display for the plug-in.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property Contact() As String Implements EwEPlugin.IPlugin.Contact
+        Get
+            Return "mailto:ewedevteam@gmail.com"
+        End Get
+    End Property
+
+#End Region ' Generic plug-in point implementation bits
 
 End Class

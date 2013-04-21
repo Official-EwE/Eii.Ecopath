@@ -23,24 +23,23 @@ Imports EwECore.Ecosim
 Public Class cMonteCarloPlugin
     Implements ICorePlugin
     Implements IEcosimInitializedPlugin
-    Implements IEcosimBeginTimestepPlugin
     Implements IMenuItemPlugin
 
-    Private _core As cCore
-    Private _ecosim As EwECore.Ecosim.cEcoSimModel
-    Private _simdata As cEcosimDatastructures
-    Private _ecopath As Ecopath.cEcoPathModel
+    Private m_core As cCore
+    Private m_ecosim As EwECore.Ecosim.cEcoSimModel
+    Private m_simdata As cEcosimDatastructures
+    Private m_ecopath As Ecopath.cEcoPathModel
 
-    Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
+    Private m_EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
 
 #Region "Sample MonteCarlo"
 
     ''' <summary>
     ''' PROOF OF CONCEPT ONLY Vary and normalize the Diet Matrix 
     ''' </summary>
-    ''' <remarks></remarks>
     Private Sub SampleDietMatrix()
-        'Mark this routine is coppied from cEcopathModel.checkDietsSumToOne()
+
+        'This routine is coppied from cEcopathModel.checkDietsSumToOne()
         'and is only a "proof of concept" 
         'you will need to check that it is actually doing what it claims to
         Dim iPred As Integer
@@ -48,7 +47,7 @@ Public Class cMonteCarloPlugin
 
         'The diet matrix is stored in cEcopathDataStructures.DC(pred,prey)
         'Get the cEcopathDataStructures object from the Ecopath Model object
-        Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
+        Dim ecopathData As cEcopathDataStructures = Me.m_ecopath.EcopathData
         Dim randNumGen As New Random
 
         For iPred = 1 To ecopathData.NumLiving
@@ -146,21 +145,7 @@ Public Class cMonteCarloPlugin
 
         Me.RestoreOriginalState()
 
-
     End Sub
-
-
-    Private Sub testMultipleEcosimRuns()
-        Dim n As Integer = 5
-
-        For irun As Integer = 1 To n
-            Me.RunEcosim()
-            'dumps out some Ecosim results
-            Me.getEcosimResults()
-        Next
-
-    End Sub
-
 
     Private Function InitMonteCarloParameters() As Boolean
         Try
@@ -215,20 +200,20 @@ Public Class cMonteCarloPlugin
         Try
 
             'make sure Ecosim computes the output data
-            Me._ecosim.EcosimData.bTimestepOutput = True
+            Me.m_ecosim.EcosimData.bTimestepOutput = True
 
             'No timestep call back
-            Me._ecosim.TimeStepDelegate = Nothing
+            Me.m_ecosim.TimeStepDelegate = Nothing
 
             'Run on the same thread 
             'this means Me._ecosim.Run() will block until Ecosim has finished running
-            Me._ecosim.EcosimData.bMultiThreaded = False
+            Me.m_ecosim.EcosimData.bMultiThreaded = False
 
             'Run Ecosim without Core support 
             'This means Core Input/ouput objects will not be populate 
             'So you can not use cCore.EcoSimGroupOutputs() to retrieve the results
-            Me._ecosim.Init(True)
-            Return Me._ecosim.Run()
+            Me.m_ecosim.Init(True)
+            Return Me.m_ecosim.Run()
 
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".RunEcosim() Exception: " & ex.Message)
@@ -238,22 +223,6 @@ Public Class cMonteCarloPlugin
 
     End Function
 
-    Public Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, EcosimDatastructures As Object, iTime As Integer) Implements EwEPlugin.IEcosimBeginTimestepPlugin.EcosimBeginTimeStep
-        'This was for testing the setting of F from Effort during an Ecosim Run
-        'Dim Q() As Single
-        'ReDim Q(Me._ecopath.EcopathData.NumGroups)
-        'For iflt As Integer = 1 To Me._ecopath.EcopathData.NumFleet
-        '    For igrp As Integer = 1 To Me._ecopath.EcopathData.NumGroups
-        '        If Me._ecosim.EcosimData.FishMGear(iflt, igrp) > 0 Then
-        '            Me._ecosim.EcosimData.FishRateGear(iflt, iTime) += Me._ecosim.EcosimData.FishRateGear(iflt, iTime - 1) + 0.5F
-        '        End If
-        '        Q(igrp) = 1
-        '    Next
-        'Next
-
-        'Me._ecosim.SetFtimeFromGear(BiomassAtTimestep, iTime, Q, True)
-
-    End Sub
 
     Private Function getEcosimResults() As Boolean
         Try
@@ -266,10 +235,10 @@ Public Class cMonteCarloPlugin
                 'sum biomass over all the Ecosim timesteps
                 For itime As Integer = 1 To Core.nEcosimTimeSteps
                     'see cEcosimModel.PopulateResults() for how ResultsOverTime(var,group,time) are stored
-                    sumb(igrp) += Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, itime)
+                    sumb(igrp) += Me.m_simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, itime)
                 Next itime
 
-                System.Console.WriteLine("Average Biomass for " & Me._ecopath.EcopathData.GroupName(igrp) & " = " & (sumb(igrp) / Core.nEcosimTimeSteps).ToString)
+                System.Console.WriteLine("Average Biomass for " & Me.m_ecopath.EcopathData.GroupName(igrp) & " = " & (sumb(igrp) / Core.nEcosimTimeSteps).ToString)
 
             Next igrp
 
@@ -278,7 +247,6 @@ Public Class cMonteCarloPlugin
         End Try
 
     End Function
-
 
     Private Sub dumpEcopathParameters(iteration As Integer)
         Dim nliving As Integer = Me.Core.nLivingGroups
@@ -306,11 +274,11 @@ Public Class cMonteCarloPlugin
             'Now store the variables that this app will change so they can be restored in RestoreOriginalState()
 
             'The makes sure Ecopath does not make a fuss, popping up message boxes, when it fails to balance a model
-            Me._ecopath.suppressMessages = True
+            Me.m_ecopath.suppressMessages = True
 
             'Make sure nothing is listening to Ecosim when we run it
-            Me._EcosimTimeStepDelegate = Me._ecosim.TimeStepDelegate
-            Me._EcosimTimeStepDelegate = Nothing
+            Me.m_EcosimTimeStepDelegate = Me.m_ecosim.TimeStepDelegate
+            Me.m_EcosimTimeStepDelegate = Nothing
 
             'Save any parameters that we are going to change 
             'This has not been implemented here but...
@@ -336,8 +304,8 @@ Public Class cMonteCarloPlugin
             Core.EcosimMonteCarlo.RestoreOriginalValues()
 
             'Set the State variables that we changed back to their original state
-            Me._ecopath.suppressMessages = False
-            Me._ecosim.TimeStepDelegate = Me._EcosimTimeStepDelegate
+            Me.m_ecopath.suppressMessages = False
+            Me.m_ecosim.TimeStepDelegate = Me.m_EcosimTimeStepDelegate
 
             'Not included here but we should also set any Monte Carlo Parameters back to their original state
             'For example
@@ -355,8 +323,8 @@ Public Class cMonteCarloPlugin
 
     Private ReadOnly Property Core As cCore
         Get
-            Debug.Assert(Me._core IsNot Nothing, "Core failed to initialize properly. Check  Sub Initialize(ByVal core As Object)")
-            Return Me._core
+            Debug.Assert(Me.m_core IsNot Nothing, "Core failed to initialize properly. Check  Sub Initialize(ByVal core As Object)")
+            Return Me.m_core
         End Get
     End Property
 
@@ -368,9 +336,9 @@ Public Class cMonteCarloPlugin
     Public Sub OnControlClick(sender As Object, e As System.EventArgs, ByRef frmPlugin As System.Windows.Forms.Form) Implements EwEPlugin.IGUIPlugin.OnControlClick
         Try
 
-            testMultipleEcosimRuns()
+            'testMultipleEcosimRuns()
+            TestMonteCarlo()
 
-            ' TestMonteCarlo()
         Catch ex As Exception
 
         End Try
@@ -387,7 +355,7 @@ Public Class cMonteCarloPlugin
         Try
             Debug.Assert(TypeOf core Is cCore, "Oh My IPlugin.Initialize() failed to pass in a valid core!")
             If TypeOf core Is cCore Then
-                _core = DirectCast(core, cCore)
+                m_core = DirectCast(core, cCore)
             End If
 
         Catch ex As Exception
@@ -400,12 +368,12 @@ Public Class cMonteCarloPlugin
 
         Debug.Assert(TypeOf objEcoSim Is EwECore.Ecosim.cEcoSimModel, "CoreInitialized() failed to pass in a valid EcosimModel!")
         If TypeOf objEcoSim Is EwECore.Ecosim.cEcoSimModel Then
-            _ecosim = DirectCast(objEcoSim, EwECore.Ecosim.cEcoSimModel)
+            m_ecosim = DirectCast(objEcoSim, EwECore.Ecosim.cEcoSimModel)
         End If
 
         Debug.Assert(TypeOf objEcoPath Is EwECore.Ecopath.cEcoPathModel, "CoreInitialized() failed to pass in a valid EcopathModel!")
         If TypeOf objEcoPath Is EwECore.Ecopath.cEcoPathModel Then
-            _ecopath = DirectCast(objEcoPath, EwECore.Ecopath.cEcoPathModel)
+            m_ecopath = DirectCast(objEcoPath, EwECore.Ecopath.cEcoPathModel)
         End If
 
     End Sub
@@ -413,7 +381,7 @@ Public Class cMonteCarloPlugin
     Public Sub EcosimInitialized(EcosimDatastructures As Object) Implements EwEPlugin.IEcosimInitializedPlugin.EcosimInitialized
         Debug.Assert(TypeOf EcosimDatastructures Is cEcosimDatastructures, "EcosimInitialized() failed to pass in valid Ecosim Data!")
         If TypeOf EcosimDatastructures Is cEcosimDatastructures Then
-            _simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
+            m_simdata = DirectCast(EcosimDatastructures, cEcosimDatastructures)
         End If
     End Sub
 

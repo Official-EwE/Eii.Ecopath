@@ -16,6 +16,8 @@
 ' ===============================================================================
 '
 
+Imports EwECore
+
 ''' <summary>
 ''' A very, very basic plug-in form.
 ''' </summary>
@@ -28,6 +30,24 @@ Public Class frmEwEPlugin
 
         ' Add any initialization after the InitializeComponent() call.
         Me.SetStyle(ControlStyles.OptimizedDoubleBuffer, True)
+
+    End Sub
+
+    ''' <summary>
+    ''' OnLoad is called when a form is about to go 'live'. It is the perfect place to
+    ''' perform last moment configurations before the form is made visible to the user.
+    ''' </summary>
+    Protected Overrides Sub OnLoad(e As System.EventArgs)
+        MyBase.OnLoad(e)
+
+        If (Me.Core IsNot Nothing) Then
+
+            ' Show name of model in the text box
+
+            Dim model As cEwEModel = Me.Core.EwEModel
+            Me.m_lblMessage.Text = "Hello " & model.Name & "!"
+
+        End If
 
     End Sub
 

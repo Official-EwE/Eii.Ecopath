@@ -1,0 +1,1 @@
+The ConsolePluginLauncher solution demonstrates how plug-in scan be loaded from within a console application.
