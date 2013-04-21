@@ -36,7 +36,7 @@ Namespace Interop
     ''' <remarks>
     ''' Note that the connection to R is established by rerouting the <see cref="Process.StandardInput"/>,
     ''' <see cref="Process.StandardOutput"/>, and <see cref="Process.StandardError"/> of the
-    ''' R process. This code does not use COM to remain CRL-compliant.
+    ''' R process. This code does not use COM to remain CRL-compliant. Neat, no?
     ''' </remarks>
     ''' -----------------------------------------------------------------------
     Public Class cRBridge
@@ -58,7 +58,7 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Create a new R connection
+        ''' Create a new R connection.
         ''' </summary>
         ''' <param name="strPathToR">The path to the R executable.</param>
         ''' -------------------------------------------------------------------
@@ -98,16 +98,12 @@ Namespace Interop
             End Try
 
             ' Read script lines
-            Dim RScriptLines As New List(Of String)
-            While (RScriptReader.Peek > 0)
-                RScriptLines.Add(RScriptReader.ReadLine())
-            End While
-
+            Dim strScript As String = RScriptReader.ReadToEnd
             ' Do not forget to clean up
             RScriptReader.Close()
 
-            ' Execute R on script lines
-            Return Me.Execute(RScriptLines.ToArray)
+            ' Execute R
+            Return Me.Execute(strScript)
 
         End Function
 
@@ -124,19 +120,18 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Execute an R script provided as a block of text
+        ''' Execute an R script provided as a block of text.
         ''' </summary>
         ''' <param name="Script">The script to execute.</param>
         ''' <returns>True if successful.</returns>
         ''' -------------------------------------------------------------------
         Public Function Execute(Script As String) As Boolean
-            Return Me.Execute(Script.Split(New String() {cStringUtils.vbCrLf, cStringUtils.vbCr, cStringUtils.vbLf}, _
-                                           StringSplitOptions.RemoveEmptyEntries))
+            Return Me.Execute(New String() {Script})
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Execute an R script provided as a string collection.
+        ''' Execute an R script provided as a collection of strings.
         ''' </summary>
         ''' <param name="RScriptLines">The script to execute.</param>
         ''' <returns>True if successful.</returns>
@@ -166,7 +161,7 @@ Namespace Interop
             Rwrapper.StartInfo.Arguments = "--slave"
 
             ' Suppress R user interface
-            Rwrapper.StartInfo.CreateNoWindow = Not Me.ShowRInterface
+            Rwrapper.StartInfo.CreateNoWindow = True
 
             ' The process is ready to run
             Try
@@ -198,14 +193,16 @@ Namespace Interop
                 Me.m_RInput.Add(strLine)
                 Rwrapper.StandardInput.WriteLine(strLine)
             Next
+            ' Tell R that this was it; script is at an end
+            Rwrapper.StandardInput.Close()
 
-            ' Wait for R to finish. Wait for a certain number of milliseconds (here hard-coded to max. 30 seconds)
-            bSuccess = Rwrapper.WaitForExit(30 * 1000)
+            ' Wait for R to finish with a configurable time limit.
+            bSuccess = Rwrapper.WaitForExit(Me.TimeOut)
 
             ' Read whatever output text is available
             While (Rwrapper.StandardOutput.Peek > 0)
                 Me.m_ROutput.Add(Rwrapper.StandardOutput.ReadLine)
-             End While
+            End While
 
             ' Read whatever error text is available
             While (Rwrapper.StandardError.Peek > 0)
@@ -252,11 +249,11 @@ Namespace Interop
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set whether the R interface should be shown while a script is
-        ''' executed.
+        ''' Time in millisecnonds to wait for an R script to terminate. 
         ''' </summary>
+        ''' <remarks>To wait indefinitely set value should be set to <see cref="Int32.MaxValue"/>.</remarks>
         ''' -------------------------------------------------------------------
-        Public Property ShowRInterface As Boolean = False
+        Public Property TimeOut As Int32 = Int32.MaxValue
 
         ''' -------------------------------------------------------------------
         ''' <summary>
