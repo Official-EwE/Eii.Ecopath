@@ -16,17 +16,21 @@
 ' ===============================================================================
 '
 
-'==============================================================================
-'
-' $Log: IEcosimBeginTimestepPlugin.vb,v $
-' Revision 1.2  2009/03/10 18:22:17  jeroens
-' Minimal housekeeping
-'
-'==============================================================================
-
+''' ===========================================================================
+''' <summary>
+''' Interface for a plug-in that is invoked when the Ecosim model is about to
+''' start computing a time step.
+''' </summary>
+''' ===========================================================================
 Public Interface IEcosimBeginTimestepPlugin
     Inherits IPlugin
 
+    ''' <summary>
+    ''' Ecosim is about to compute a time step.
+    ''' </summary>
+    ''' <param name="BiomassAtTimestep">The biomasses at the beginning at the time step.</param>
+    ''' <param name="EcosimDatastructures">The Ecosim data structures that you can poke around in.</param>
+    ''' <param name="iTime">The time step that will be executed.</param>
     Sub EcosimBeginTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As Object, ByVal iTime As Integer)
 
 End Interface
