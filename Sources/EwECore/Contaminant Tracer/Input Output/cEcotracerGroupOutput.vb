@@ -21,7 +21,7 @@ Imports EwECore.ValueWrapper
 Imports EwEUtils.Core
 
 Public Class cEcotracerGroupOutput
-    Inherits cCoreInputOutputBase
+    Inherits cCoreGroupBase
 
     Private m_TracerData As cContaminantTracerDataStructures
 
