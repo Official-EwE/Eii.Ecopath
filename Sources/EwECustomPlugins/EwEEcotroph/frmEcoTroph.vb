@@ -50,7 +50,9 @@ Public Class autre
         Dim result_tab() As String
         Dim res_box As MsgBoxResult
         'Dim repos As String = "http://mirror.ibcp.fr/pub/CRAN/bin/windows/contrib/2.14"
-        Dim repos As String = "http://cran.univ-lyon1.fr/bin/windows/contrib/2.14"
+        Dim repos_simple As String = "http://cran.univ-lyon1.fr/"
+
+        Dim repos As String = repos_simple & "bin/windows/contrib/2.14/"
         
 
 
@@ -99,8 +101,15 @@ Public Class autre
                 myProcess.StartInfo.FileName = CurDir() & "\unzip.exe "
                 myProcess.StartInfo.Arguments = "-o R_ET.zip"
                 myProcess.StartInfo.CreateNoWindow = True
+                Try
 
-                myProcess.Start()
+                    myProcess.Start()
+                Catch Ex As Exception
+                    MessageBox.Show(My.Resources.ERROR_UNZIP & Ex.Message)
+                Finally
+
+                End Try
+
                 myProcess.WaitForExit()
             End If
         Else
@@ -110,7 +119,7 @@ Public Class autre
             res_box = MsgBox("A new version of the EcoTroph R package is available, you should upgrade it. ", MsgBoxStyle.OkCancel)
             If (res_box = MsgBoxResult.Ok) Then
 
-                test(0) = " install.packages('EcoTroph',repos=c('" & repos & "'))"
+                test(0) = " install.packages('EcoTroph',repos=c('" & repos_simple & "'))"
                 test(1) = ""
                 test(2) = ""
                 test(3) = ""
@@ -1230,8 +1239,9 @@ Public Class autre
 
 
 
-
-        Dim myservice As New getResultPortTypeClient()
+        Try
+            Dim myservice As New getResultPortTypeClient()
+        
 
 
 
@@ -1281,7 +1291,12 @@ Public Class autre
 
         End If
         Cursor.Current = Cursors.Default
-       
+        Catch ex As Exception
+
+
+            MessageBox.Show(My.Resources.ERROR_NO_WS)
+        End Try
+
     End Sub
 
     Private Sub models_list_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles models_list.DoubleClick

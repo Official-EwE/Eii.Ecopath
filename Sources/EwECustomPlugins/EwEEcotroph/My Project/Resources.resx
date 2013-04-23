@@ -129,6 +129,12 @@
   <data name="ERROR_NO_RESULTS" xml:space="preserve">
     <value>The procedure did not yield any results</value>
   </data>
+  <data name="ERROR_NO_WS" xml:space="preserve">
+    <value>Web service is not available now </value>
+  </data>
+  <data name="ERROR_UNZIP" xml:space="preserve">
+    <value>Can't unzip downloaded files</value>
+  </data>
   <data name="EXCEED_TIME_R" xml:space="preserve">
     <value>Exceed time for R</value>
   </data>
