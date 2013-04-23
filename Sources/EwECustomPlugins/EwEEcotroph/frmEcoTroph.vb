@@ -66,8 +66,8 @@ Public Class autre
 
         result = execute_r(test)
         result_tab = Split(result(1), vbCr)
-        ecotroph_version.Text = result_tab(6)
-        If (result(0).Contains("R is not here")) Then
+
+        If (result(0).Contains("R is not")) Then
             res_box = MsgBox("You don't have R installed, you won't be able to run Ecotroph ! Download and install the minimum R for ecotroph directory ", MsgBoxStyle.OkCancel)
             If (res_box = MsgBoxResult.Ok) Then
 
@@ -103,6 +103,8 @@ Public Class autre
                 myProcess.Start()
                 myProcess.WaitForExit()
             End If
+        Else
+            ecotroph_version.Text = result_tab(6)
         End If
         If (result_tab(4).Contains("upgrade")) Then
             res_box = MsgBox("A new version of the EcoTroph R package is available, you should upgrade it. ", MsgBoxStyle.OkCancel)

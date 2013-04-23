@@ -294,7 +294,7 @@ Partial Class autre
         Me.inputdata.Location = New System.Drawing.Point(0, 0)
         Me.inputdata.Name = "inputdata"
         Me.inputdata.SelectedIndex = 0
-        Me.inputdata.Size = New System.Drawing.Size(1284, 844)
+        Me.inputdata.Size = New System.Drawing.Size(1284, 778)
         Me.inputdata.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight
         Me.inputdata.TabIndex = 5
         '
@@ -314,7 +314,7 @@ Partial Class autre
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1276, 818)
+        Me.TabPage1.Size = New System.Drawing.Size(1276, 752)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Input data"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -352,13 +352,12 @@ Partial Class autre
         'models_list
         '
         Me.models_list.BackColor = System.Drawing.SystemColors.ControlLightLight
-        Me.models_list.Font = New System.Drawing.Font("Microsoft New Tai Lue", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.models_list.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.models_list.ForeColor = System.Drawing.Color.Black
         Me.models_list.FormattingEnabled = True
-        Me.models_list.ItemHeight = 15
         Me.models_list.Location = New System.Drawing.Point(13, 11)
         Me.models_list.Name = "models_list"
-        Me.models_list.Size = New System.Drawing.Size(168, 484)
+        Me.models_list.Size = New System.Drawing.Size(168, 472)
         Me.models_list.TabIndex = 10
         '
         'Button7
@@ -1391,7 +1390,7 @@ Partial Class autre
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1284, 844)
+        Me.ClientSize = New System.Drawing.Size(1284, 778)
         Me.Controls.Add(Me.inputdata)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name = "autre"
