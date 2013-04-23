@@ -18,6 +18,7 @@
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwEUtils.Utilities
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
@@ -52,7 +53,7 @@ Module EcopathOutputsToCSV
                 If SaveToCSVSimple(core, CSVfileSimple) Then
                     Console.WriteLine("Simple CSV written to " & CSVfileSimple)
                 Else
-                    Console.WriteLine("Simple CSV could not be written to " & Path.GetFullPath(CSVfileSimple))
+                    Console.WriteLine("Simple CSV could not be written to " & CSVfileSimple)
                 End If
                 Console.WriteLine()
 
@@ -61,7 +62,7 @@ Module EcopathOutputsToCSV
                 If SaveToCSVAdvanced(core, CSVfileAdvanced) Then
                     Console.WriteLine("Advanced CSV written to " & CSVfileAdvanced)
                 Else
-                    Console.WriteLine("Advanced CSV could not be written to " & Path.GetFullPath(CSVfileAdvanced))
+                    Console.WriteLine("Advanced CSV could not be written to " & CSVfileAdvanced)
                 End If
                 Console.WriteLine()
 
@@ -148,11 +149,11 @@ Module EcopathOutputsToCSV
         For iGroup As Integer = 1 To core.nGroups
 
             Dim group As cEcoPathGroupOutput = core.EcoPathGroupOutputs(iGroup)
-            writer.WriteLine(EwEUtils.Utilities.cStringUtils.ToCSVField(group.Name) & "," & _
-                             EwEUtils.Utilities.cStringUtils.ToCSVField(group.Biomass) & "," & _
-                             EwEUtils.Utilities.cStringUtils.ToCSVField(group.PBOutput) & "," & _
-                             EwEUtils.Utilities.cStringUtils.ToCSVField(group.QBOutput) & "," & _
-                             EwEUtils.Utilities.cStringUtils.ToCSVField(group.EEOutput))
+            writer.WriteLine(cStringUtils.ToCSVField(group.Name) & "," & _
+                             cStringUtils.ToCSVField(group.Biomass) & "," & _
+                             cStringUtils.ToCSVField(group.PBOutput) & "," & _
+                             cStringUtils.ToCSVField(group.QBOutput) & "," & _
+                             cStringUtils.ToCSVField(group.EEOutput))
 
         Next
 
