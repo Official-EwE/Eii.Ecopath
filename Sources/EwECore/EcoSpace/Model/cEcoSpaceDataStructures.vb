@@ -585,6 +585,13 @@ Public Class cEcospaceDataStructures
 
     Public bUseLocalMemory As Boolean
 
+    ''' <summary>
+    ''' Total number of habitat area cells
+    ''' Any cell with a depth > 0 of any habitat type
+    ''' </summary>
+    ''' <remarks>computed in CalcHabitatArea()</remarks>
+    Public ThabArea As Single
+
 #End Region
 
 #Region "Private Data"

@@ -381,7 +381,7 @@ Public Class cIBMSolver
 
             'finally set abundance at youngest age to recruitment rate
             If m_Stanza.BaseEggsStanza(isp) > 0 Then TotRecruits = m_Stanza.RscaleSplit(isp) * m_ESData.tval(m_Stanza.EggProdShapeSplit(isp)) * m_Stanza.RzeroS(isp) * m_ESData.tval(m_Stanza.HatchCode(isp))
-            If m_Stanza.HatchCode(isp) = 0 Then TotRecruits = TotRecruits * (m_Stanza.EggsStanza(isp) / (m_Stanza.BaseEggsStanza(isp))) ^ m_Stanza.RecPowerSplit(isp)
+            If m_Stanza.HatchCode(isp) = 0 Then TotRecruits = TotRecruits * m_Data.ThabArea * (m_Stanza.EggsStanza(isp) / (m_Data.ThabArea * m_Stanza.BaseEggsStanza(isp))) ^ m_Stanza.RecPowerSplit(isp)
 
             'distribute the total recruits (totrecruits) over packets and suitable spatial cells for recruitment
             'and set initial body sizes for packets representing new recruits

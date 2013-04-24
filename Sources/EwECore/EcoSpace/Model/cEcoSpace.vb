@@ -268,12 +268,13 @@ Public Class cEcoSpace
 
     Private HabAreaUsed() As Single
 
-    ''' <summary>
-    ''' Total number of habitat area cells
-    ''' Any cell with a depth > 0 of any habitat type
-    ''' </summary>
-    ''' <remarks>computed in CalcHabitatArea()</remarks>
-    Public ThabArea As Single
+    'jb Moved to cEcospaceDataStructures to fix bug in cIMBSolver.GrowSurvivePackets()
+    ' ''' <summary>
+    ' ''' Total number of habitat area cells
+    ' ''' Any cell with a depth > 0 of any habitat type
+    ' ''' </summary>
+    ' ''' <remarks>computed in CalcHabitatArea()</remarks>
+    'Public ThabArea_ As Single
 
     Private totalIterThread() As Integer 'total number of solvegrid iterations for each thread
 
@@ -1076,8 +1077,8 @@ Public Class cEcoSpace
                             '***WARNING**** FOLLOWING CALCULATION WILL FAIL IF ADJUSTSPACEPARS HAS NOT BEEN CALLED
                             'SINCE CALCTOTAREA WILL NOT HAVE BEEN CALLED AND NEITHER THABAREA OR HABAREAUSED WILL HAVE BEEN
                             'SET
-                            Tbiom = ThabArea * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
-                            Tpred = ThabArea * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
+                            Tbiom = m_Data.ThabArea * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
+                            Tpred = m_Data.ThabArea * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
 
                             'Tbiom = Me.m_Data.TotHabCap(ieco) * Blocal(ieco)  'B has been updated in spacesplitupdate at this point
                             'Tpred = Me.m_Data.TotHabCap(ieco) * m_SimData.pred(ieco)  'pred has been updated by call to splitsetpred in spacesplitupdate
@@ -2424,7 +2425,7 @@ Public Class cEcoSpace
 
         ReDim m_Data.HabArea(m_Data.NoHabitats)
         ReDim m_Data.HabAreaProportion(m_Data.NoHabitats)
-        ThabArea = 0
+        m_Data.ThabArea = 0
 
         If m_Data.NoHabitats = 0 Then Return
 
@@ -2432,8 +2433,8 @@ Public Class cEcoSpace
             For j = 1 To m_Data.InCol
                 If m_Data.Depth(i, j) > 0 Then
 
-                    'ThabArea total usable area of the map
-                    ThabArea = ThabArea + 1
+                    'm_data.ThabArea total usable area of the map
+                    m_Data.ThabArea = m_Data.ThabArea + 1
                     For ihab As Integer = 1 To Me.m_Data.NoHabitats
                         Me.m_Data.HabArea(ihab) = m_Data.HabArea(ihab) + 1 * m_Data.PHabType(i, j, ihab)
                     Next ihab
@@ -2441,12 +2442,13 @@ Public Class cEcoSpace
             Next j
         Next i
 
-        If ThabArea = 0 Then Exit Sub
+        If m_Data.ThabArea = 0 Then Exit Sub
         For i = 1 To m_Data.NoHabitats
-            m_Data.HabAreaProportion(i) = m_Data.HabArea(i) / ThabArea
+            m_Data.HabAreaProportion(i) = m_Data.HabArea(i) / m_Data.ThabArea
         Next i
 
         m_Data.HabAreaProportion(0) = 1
+        '  m_Data.m_data.ThabArea = ThabArea
 
     End Sub
 
@@ -4076,7 +4078,7 @@ exitline:
 
             '*** finally reset total effort using number of water cells, Ecopath base catch, and WtCat summed catch/effort x attraction weight
             '***note ThabArea below is total number of cells with depth>0 (water cells)
-            TotEffort(ig) = ThabArea * CatGear / WtCat  '***
+            TotEffort(ig) = m_Data.ThabArea * CatGear / WtCat  '***
 
         Next ig
 
@@ -4558,8 +4560,8 @@ exitline:
         For i = 1 To m_Data.NGroups
 
             If Me.m_Data.TotHabCap(i) > 0 Then
-                Basebiomass(i) = ThabArea * m_SimData.StartBiomass(i) / Me.m_Data.TotHabCap(i) ' HabAreaUsed(i)
-                m_Data.BRatio(i) = ThabArea / Me.m_Data.TotHabCap(i) 'HabAreaUsed(i)
+                Basebiomass(i) = m_Data.ThabArea * m_SimData.StartBiomass(i) / Me.m_Data.TotHabCap(i) ' HabAreaUsed(i)
+                m_Data.BRatio(i) = m_Data.ThabArea / Me.m_Data.TotHabCap(i) 'HabAreaUsed(i)
                 If m_Data.AdjustSpace = False Then m_Data.BRatio(i) = 1
             Else
                 Basebiomass(i) = m_SimData.StartBiomass(i) 'don't really need this; set before routine called
@@ -4631,7 +4633,7 @@ exitline:
         Dim ir As Integer, ic As Integer, Pbar(m_Data.NGroups) As Single, Atemp(m_SimData.inlinks) As Single, Vtemp(m_SimData.Narena) As Single, MeanBP(m_SimData.inlinks) As Single
         Dim iter As Integer, Vden(m_SimData.Narena) As Single 'calculate mean Pred for vratio (Vtemp) estimation
         For i = 1 To m_Data.NGroups
-            Pbar(i) = m_SimData.pred(i) * ThabArea / m_Data.TotHabCap(i)
+            Pbar(i) = m_SimData.pred(i) * m_Data.ThabArea / m_Data.TotHabCap(i)
         Next
 
         'calculate mean BP product over cells for each link
@@ -4645,7 +4647,7 @@ exitline:
                     MeanBP(ii) = MeanBP(ii) + m_Data.HabCap(ir, ic, i) * m_Data.HabCap(ir, ic, j)
                 Next
             Next
-            MeanBP(ii) = (MeanBP(ii) * m_SimData.StartBiomass(i) * m_SimData.pred(j) / (m_Data.TotHabCap(i) * m_Data.TotHabCap(j))) * ThabArea
+            MeanBP(ii) = (MeanBP(ii) * m_SimData.StartBiomass(i) * m_SimData.pred(j) / (m_Data.TotHabCap(i) * m_Data.TotHabCap(j))) * m_Data.ThabArea
         Next ii
 
         Dim Anew As Single, TotCh As Single
@@ -5961,7 +5963,7 @@ exitline:
         Dim ia As Integer, isp As Integer, ist As Integer, iaa As Integer
         Dim ip As Integer, i As Integer, j As Integer, Nused As Integer, i1 As Integer
         Dim iList() As Integer, Jlist() As Integer, ieco As Integer, isc As Integer
-        ReDim iList(ThabArea), Jlist(ThabArea), m_Stanza.iNursery(m_Stanza.Nsplit, ThabArea), m_Stanza.jNursery(m_Stanza.Nsplit, ThabArea)
+        ReDim iList(m_Data.ThabArea), Jlist(m_Data.ThabArea), m_Stanza.iNursery(m_Stanza.Nsplit, m_Data.ThabArea), m_Stanza.jNursery(m_Stanza.Nsplit, m_Data.ThabArea)
         ReDim m_Stanza.IBMMovesPerMonth(m_Data.NGroups)
         ReDim m_Stanza.IBMdistmove(m_Stanza.Nsplit, m_Stanza.MaxAgeSplit)
         ReDim m_Data.PredCell(m_Data.InRow, m_Data.InCol, m_Data.NGroups)
@@ -6026,9 +6028,9 @@ exitline:
                     ia = ia + 1
                     m_Stanza.StanzaNo(isp, ia) = ist  'this table stores stanza number for fish of age ia, species isp
                     'following loop distributes total numbers at age over packets, sets initial weights
-                    'note must be called after thabarea (number of active cells) has been calculated
+                    'note must be called after m_data.ThabArea (number of active cells) has been calculated
                     For ip = 1 To m_Stanza.Npackets
-                        m_Stanza.Npacket(isp, ia, ip) = m_Stanza.NageS(isp, ia) / m_Stanza.Npackets * ThabArea
+                        m_Stanza.Npacket(isp, ia, ip) = m_Stanza.NageS(isp, ia) / m_Stanza.Npackets * m_Data.ThabArea
                         m_Stanza.Wpacket(isp, ia, ip) = m_Stanza.WageS(isp, ia) + 0.0000000001
                     Next
                     For ip = 1 To m_Stanza.Npackets
