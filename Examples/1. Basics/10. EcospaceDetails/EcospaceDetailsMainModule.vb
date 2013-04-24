@@ -49,6 +49,8 @@ Module EcospaceDetailsMainModule
                         Console.WriteLine("Loaded first Ecospace scenario")
 
                         WriteScenarioDetails(core, writer)
+                        WriteGroups(core, writer)
+                        WriteFleets(core, writer)
                         WriteHabitats(core, writer)
                         WriteMPAs(core, writer)
                         WriteImportanceLayers(core, writer)
@@ -105,6 +107,81 @@ Module EcospaceDetailsMainModule
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
+    ''' Write out basic Ecospace group details.
+    ''' </summary>
+    ''' <param name="core">The core to obtain details from.</param>
+    ''' <param name="writer">The text file writer to write to.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub WriteGroups(core As cCore, writer As StreamWriter)
+
+        writer.WriteLine("# groups: " & core.nGroups)
+
+        For iGroup As Integer = 0 To core.nGroups - 1
+
+            ' Note that Ecospace groups are not called 'EcospaceGroupInputs': when we started
+            ' coding EwE6 there was no Ecospace group output data, so we (naively) thought it
+            ' not necessary to create explicit 'input' groups. An inconsistent oversight...
+            Dim group As cEcospaceGroup = core.EcospaceGroups(iGroup)
+            writer.WriteLine("   " & iGroup & ": " & group.Name)
+
+            ' Display basic habitat usage info
+            ' Different behaviour: nHabitats includes the 'all' habitat at index 0. Not at the end like Ecosim fleets. Great.
+            For iHabitat As Integer = 0 To core.nHabitats - 1
+
+                Dim habitat As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
+                writer.WriteLine("   " & iHabitat & ": " & habitat.Name)
+                If group.PreferredHabitat(iHabitat) > 0 Then
+                    writer.WriteLine("      Uses habitat " & habitat.Name & " " & CInt(group.PreferredHabitat(iHabitat) * 100) & "%")
+                End If
+            Next iHabitat
+
+        Next iGroup
+        writer.WriteLine()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write out basic Ecospace fleet details.
+    ''' </summary>
+    ''' <param name="core">The core to obtain details from.</param>
+    ''' <param name="writer">The text file writer to write to.</param>
+    ''' -----------------------------------------------------------------------
+    Private Sub WriteFleets(core As cCore, writer As StreamWriter)
+
+        writer.WriteLine("# fleets: " & core.nFleets)
+
+        For iFleet As Integer = 0 To core.nFleets - 1
+
+            ' Note that Ecospace fleets are also not explicitly labelled as 'inputs', for the
+            ' same reason as te groups above.
+            Dim fleet As cEcospaceFleet = core.EcospaceFleets(iFleet)
+            writer.WriteLine("   " & iFleet & ": " & fleet.Name)
+
+            For iHabitat As Integer = 0 To core.nHabitats - 1
+
+                If (fleet.HabitatFishery(iHabitat) = True) Then ' Thanks Cam
+                    Dim habitat As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
+                    writer.WriteLine("      Fishes in habitat " & habitat.Name)
+                End If
+
+            Next iHabitat
+
+            For iMPA As Integer = 1 To core.nMPAs
+
+                If (fleet.MPAFishery(iMPA) = True) Then ' Thanks Cam
+                    Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
+                    writer.WriteLine("      Fishes in MPA " & mpa.Name)
+                End If
+            Next iMPA
+
+        Next iFleet
+        writer.WriteLine()
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
     ''' Write out the names of all Ecospace habitats, if any.
     ''' </summary>
     ''' <param name="core">The core to obtain details from.</param>
@@ -134,7 +211,6 @@ Module EcospaceDetailsMainModule
         writer.WriteLine()
 
     End Sub
-
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Write out the names of all Ecospace MPAs.

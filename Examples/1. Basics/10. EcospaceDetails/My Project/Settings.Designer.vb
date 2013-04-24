@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.EcosimDetails.My.MySettings
+        Friend ReadOnly Property Settings() As Global.EcospaecDetails.My.MySettings
             Get
-                Return Global.EcosimDetails.My.MySettings.Default
+                Return Global.EcospaecDetails.My.MySettings.Default
             End Get
         End Property
     End Module
