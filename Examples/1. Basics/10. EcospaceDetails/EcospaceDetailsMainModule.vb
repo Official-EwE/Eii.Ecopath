@@ -116,7 +116,7 @@ Module EcospaceDetailsMainModule
 
         writer.WriteLine("# groups: " & core.nGroups)
 
-        For iGroup As Integer = 0 To core.nGroups - 1
+        For iGroup As Integer = 1 To core.nGroups
 
             ' Note that Ecospace groups are not called 'EcospaceGroupInputs': when we started
             ' coding EwE6 there was no Ecospace group output data, so we (naively) thought it
@@ -128,11 +128,11 @@ Module EcospaceDetailsMainModule
             ' Different behaviour: nHabitats includes the 'all' habitat at index 0. Not at the end like Ecosim fleets. Great.
             For iHabitat As Integer = 0 To core.nHabitats - 1
 
-                Dim habitat As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
-                writer.WriteLine("   " & iHabitat & ": " & habitat.Name)
                 If group.PreferredHabitat(iHabitat) > 0 Then
+                    Dim habitat As cEcospaceHabitat = core.EcospaceHabitats(iHabitat)
                     writer.WriteLine("      Uses habitat " & habitat.Name & " " & CInt(group.PreferredHabitat(iHabitat) * 100) & "%")
                 End If
+
             Next iHabitat
 
         Next iGroup
@@ -151,7 +151,7 @@ Module EcospaceDetailsMainModule
 
         writer.WriteLine("# fleets: " & core.nFleets)
 
-        For iFleet As Integer = 0 To core.nFleets - 1
+        For iFleet As Integer = 1 To core.nFleets
 
             ' Note that Ecospace fleets are also not explicitly labelled as 'inputs', for the
             ' same reason as te groups above.
