@@ -6532,6 +6532,8 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     Public Function LoadEcosimScenario(ByVal iScenario As Integer) As Boolean
 
+        If (iScenario < 1) Then Return False
+        If (Me.nEcosimScenarios < iScenario) Then Return False
         If (Not Me.StateMonitor.HasEcopathLoaded) Then Return False
 
         Dim ds As IEcosimDatasource = Nothing
@@ -9307,6 +9309,8 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     Public Function LoadEcospaceScenario(ByVal iScenario As Integer) As Boolean
 
+        If (iScenario < 1) Then Return False
+        If (Me.nEcospaceScenarios < iScenario) Then Return False
         If (Not Me.StateMonitor.HasEcopathLoaded) Then Return False
 
         Dim ds As IEcospaceDatasource = Nothing
@@ -11501,6 +11505,9 @@ Public Class cCore
     ''' <returns>True if succesful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function LoadEcotracerScenario(ByVal iScenario As Integer) As Boolean
+
+        If (iScenario < 1) Then Return False
+        If (Me.nEcotracerScenarios < iScenario) Then Return False
 
         Dim ds As IEcotracerDatasource = Nothing
         Dim strScenarioName As String = Me.m_EcoPathData.EcotracerScenarioName(iScenario)
