@@ -90,7 +90,7 @@ Module EcospaceDetailsMainModule
 
         Dim scenario As cEwEScenario = core.EcospaceScenarios(core.ActiveEcospaceScenarioIndex)
 
-        writer.WriteLine("Sceanario  : " & scenario.Name)
+        writer.WriteLine("Scenario   : " & scenario.Name)
         writer.WriteLine("Author     : " & scenario.Author)
         writer.WriteLine("Description: " & scenario.Description)
 
