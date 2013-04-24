@@ -25,7 +25,7 @@ Imports EwEUtils.Core
 ''' </summary>
 Module EcosimDetailsMainModule
 
-    Private core As cCore
+    Dim core As cCore
 
     Sub Main()
 
@@ -94,8 +94,11 @@ Module EcosimDetailsMainModule
         writer.WriteLine("Scenario   : " & scenario.Name)
         writer.WriteLine("Author     : " & scenario.Author)
         writer.WriteLine("Description: " & scenario.Description)
-        writer.WriteLine("Last saved : " & scenario.Description)
+
+        Dim modelDate As Date = cDateUtils.JulianToDate(scenario.LastSaved)
+        writer.WriteLine("Last saved : " & modelDate.ToLongDateString)
         writer.WriteLine()
+
         writer.WriteLine("Start year : " & core.EcosimFirstYear)
         writer.WriteLine("# years    : " & core.nEcosimYears)
         writer.WriteLine()
