@@ -304,6 +304,7 @@
       <SubType>
       </SubType>
     </None>
+    <None Include="Class Diagrams\Ecospace.cd" />
     <None Include="Class Diagrams\Message Handlers.cd">
       <SubType>
       </SubType>
