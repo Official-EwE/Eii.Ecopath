@@ -228,7 +228,7 @@ Module EcospaceDetailsMainModule
 
             Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
 
-            writer.Write("   " & iMPA & ": " & mpa.Name & ", ")
+            writer.WriteLine("   " & iMPA & ": " & mpa.Name)
 
             For iMonth As Integer = 1 To cCore.N_MONTHS
                 writer.Write("      " & cDateUtils.GetMonthName(iMonth) & ": ")
