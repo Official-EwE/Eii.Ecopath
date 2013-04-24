@@ -34,8 +34,10 @@ Module EcospaceDetailsMainModule
 
         'Get a file name from the user
         Dim modelfilename As String = ShowOpenFileDialogue()
-        Dim outputfilename As String = Path.GetFullPath("ecospace_details.txt")
+        Dim outputfilename As String = "ecospace_details.txt"
         Dim writer As New StreamWriter(outputfilename)
+
+        Console.WriteLine("Your output file is going to: " & outputfilename)
 
         'Try to load the model in the selected file
         If core.LoadModel(modelfilename) Then
@@ -91,7 +93,9 @@ Module EcospaceDetailsMainModule
         writer.WriteLine("Sceanario  : " & scenario.Name)
         writer.WriteLine("Author     : " & scenario.Author)
         writer.WriteLine("Description: " & scenario.Description)
-        writer.WriteLine("Last saved : " & scenario.Description)
+
+        Dim modelDate As Date = cDateUtils.JulianToDate(scenario.LastSaved)
+        writer.WriteLine("Last saved : " & modelDate.ToLongDateString)
 
         Dim map As cEcospaceBasemap = core.EcospaceBasemap
         writer.WriteLine("# rows     : " & map.InRow)
@@ -223,26 +227,17 @@ Module EcospaceDetailsMainModule
         For iMPA As Integer = 1 To core.nMPAs
 
             Dim mpa As cEcospaceMPA = core.EcospaceMPAs(iMPA)
-            Dim isopen As Boolean = False
 
             writer.Write("   " & iMPA & ": " & mpa.Name & ", ")
 
             For iMonth As Integer = 1 To cCore.N_MONTHS
+                writer.Write("      " & cDateUtils.GetMonthName(iMonth) & ": ")
                 If mpa.MPAMonth(iMonth) Then
-                    If isopen Then
-                        writer.Write(", ")
-                    Else
-                        writer.Write("open ")
-                    End If
-                    writer.Write(cDateUtils.GetMonthName(iMonth, False))
-                    isopen = True
+                    writer.WriteLine("open")
+                Else
+                    writer.WriteLine("closed")
                 End If
             Next
-
-            If Not isopen Then
-                writer.Write("closed all year")
-            End If
-
             writer.WriteLine()
         Next
         writer.WriteLine()
