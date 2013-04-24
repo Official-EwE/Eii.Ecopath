@@ -18,9 +18,7 @@
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwEUtils.Core
 Imports EwEUtils.Utilities
-Imports System.Drawing
 
 ''' <summary>
 ''' An example application that extracts various Ecospace input data to a text file.
@@ -211,6 +209,7 @@ Module EcospaceDetailsMainModule
         writer.WriteLine()
 
     End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Write out the names of all Ecospace MPAs.
