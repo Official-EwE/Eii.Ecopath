@@ -91,7 +91,7 @@ Module EcosimDetailsMainModule
 
         Dim scenario As cEwEScenario = core.EcosimScenarios(core.ActiveEcosimScenarioIndex)
 
-        writer.WriteLine("Sceanario  : " & scenario.Name)
+        writer.WriteLine("Scenario   : " & scenario.Name)
         writer.WriteLine("Author     : " & scenario.Author)
         writer.WriteLine("Description: " & scenario.Description)
         writer.WriteLine("Last saved : " & scenario.Description)
