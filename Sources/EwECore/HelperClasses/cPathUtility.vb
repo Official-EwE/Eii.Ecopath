@@ -161,20 +161,27 @@ Public Class cPathUtility
                                                ByVal strModelVersion As String) As String
 
         Dim strResolved As String = ""
-        Select Case placeholder
-            Case ePathPlaceholderTypes.Date : strResolved = Date.Now.ToShortDateString
-            Case ePathPlaceholderTypes.Time : strResolved = Date.Now.ToShortTimeString
-            Case ePathPlaceholderTypes.ModelFile : strResolved = strModelFile
-            Case ePathPlaceholderTypes.ModelPath : strResolved = strModelPath
-            Case ePathPlaceholderTypes.ModelExt : strResolved = strModelExt
-            Case ePathPlaceholderTypes.ModelVersion : strResolved = strModelVersion
-            Case ePathPlaceholderTypes.MyDocuments : strResolved = My.Computer.FileSystem.SpecialDirectories.MyDocuments
-            Case ePathPlaceholderTypes.MyAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
-            Case ePathPlaceholderTypes.Desktop : strResolved = My.Computer.FileSystem.SpecialDirectories.Desktop
-            Case ePathPlaceholderTypes.SharedAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData
-            Case ePathPlaceholderTypes.TempFiles : strResolved = My.Computer.FileSystem.SpecialDirectories.Temp
-            Case Else : Debug.Assert(False)
-        End Select
+        Try
+
+            Select Case placeholder
+                Case ePathPlaceholderTypes.Date : strResolved = Date.Now.ToShortDateString
+                Case ePathPlaceholderTypes.Time : strResolved = Date.Now.ToShortTimeString
+                Case ePathPlaceholderTypes.ModelFile : strResolved = strModelFile
+                Case ePathPlaceholderTypes.ModelPath : strResolved = strModelPath
+                Case ePathPlaceholderTypes.ModelExt : strResolved = strModelExt
+                Case ePathPlaceholderTypes.ModelVersion : strResolved = strModelVersion
+                Case ePathPlaceholderTypes.MyDocuments : strResolved = My.Computer.FileSystem.SpecialDirectories.MyDocuments
+                Case ePathPlaceholderTypes.MyAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.CurrentUserApplicationData
+                Case ePathPlaceholderTypes.Desktop : strResolved = My.Computer.FileSystem.SpecialDirectories.Desktop
+                Case ePathPlaceholderTypes.SharedAppData : strResolved = My.Computer.FileSystem.SpecialDirectories.AllUsersApplicationData
+                Case ePathPlaceholderTypes.TempFiles : strResolved = My.Computer.FileSystem.SpecialDirectories.Temp
+                Case Else : Debug.Assert(False)
+            End Select
+        Catch ex As Exception
+            ' EwE prog course 24Apr13: Console apps have trouble with accessing 'SharedAppData'
+            ' Mentioning a specific directory here may cause exceptions to trigger. Go figure
+        End Try
+
         Return strResolved
 
     End Function
