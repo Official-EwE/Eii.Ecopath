@@ -23,16 +23,18 @@ Imports System.Text
 
 Module modConnectToR
 
+    ' Please change this path to point to R.exe on your local system!!!
     Dim PathToR As String = "C:\Program Files\R\R-2.15.0\bin\r.exe"
 
+    ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' This example demonstrates how to execute an R script through VB.NET
     ''' </summary>
     ''' <remarks>
-    ''' With great thanks to the Ecotroph team and Jerome Guitton for doing the hard bits.
+    ''' Many thanks to the Ecotroph team and Jerome Guitton for working out the hard bits.
     ''' </remarks>
+    ''' -----------------------------------------------------------------------
     Sub Main()
-
 
         ' Create a new R connection
         Dim connection As New cRBridge(PathToR)
@@ -46,32 +48,30 @@ Module modConnectToR
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Running simple script serves just to demonstrate that .NET code can talk to R at all!
+    ''' </summary>
+    ''' <param name="connection">The <see cref="cRBridge">EwE-R bridge</see> to use for running the script.</param>
+    ''' -----------------------------------------------------------------------
     Private Sub RunSimpleScript(connection As cRBridge)
 
-        ' Create an R script, line by line
-
-        ' Run script. Does this succeed?
-        If connection.Execute("getRversion()") Then
-            ' #Yes: write results to the console window
-            Console.WriteLine("--- RunSimpleScript output ---")
-            For i As Integer = 0 To connection.Output.Length - 1
-                Console.WriteLine(connection.Output(i))
-            Next
-        Else
-            ' #No: write erros to the console window
-            Console.WriteLine("--- RunSimpleScript errors ---")
-            For i As Integer = 0 To connection.Errors.Length - 1
-                Console.WriteLine(connection.Errors(i))
-            Next
-        End If
-        Console.WriteLine("---")
+        Console.WriteLine("Running simple script")
+        connection.Execute("getRversion()")
+        DumpROutputAndErrors(connection)
+        Console.WriteLine("")
 
     End Sub
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Running the EwE script demonstrates how EwE data could be fed to R.
+    ''' </summary>
+    ''' <param name="connection">The <see cref="cRBridge">EwE-R bridge</see> to use for running the script.</param>
+    ''' -----------------------------------------------------------------------
     Private Sub RunEwEScript(connection As cRBridge)
 
-        Console.WriteLine("--- Started building EwE script ---")
-        Console.Write("Please select a model: ")
+        Console.WriteLine("Running EwE script")
 
         Dim core As New cCore()
         Dim model As String = PickModel()
@@ -81,36 +81,47 @@ Module modConnectToR
         If core.LoadModel(model) Then
             If core.RunEcoPath() Then
 
-                ' Build R script
-                Dim script As New StringBuilder
+                ' Build R script. A stringbuilder is the most effective utility for 
+                ' dynamically constructing and extending texts
+                Dim script As New StringBuilder()
                 script.Append("biomass<-c(")
 
+                ' Build an R biomass array for all groups
                 For iGroup As Integer = 1 To core.nGroups
                     Dim group As cEcoPathGroupOutput = core.EcoPathGroupOutputs(iGroup)
                     If iGroup > 1 Then script.Append(",")
                     script.Append(group.Biomass)
                 Next
                 script.AppendLine(")")
+                ' Add an R script line to return the mean biomass
                 script.AppendLine("mean(biomass)")
 
-                ' Run script. Does this succeed?
-                If connection.Execute(script.ToString) Then
-                    ' #Yes: write results to the console window
-                    Console.WriteLine("--- RunEwEScript output ---")
-                    For i As Integer = 0 To connection.Output.Length - 1
-                        Console.WriteLine(connection.Output(i))
-                    Next
-                Else
-                    ' #No: write erros to the console window
-                    Console.WriteLine("--- RunEwEScript errors ---")
-                    For i As Integer = 0 To connection.Errors.Length - 1
-                        Console.WriteLine(connection.Errors(i))
-                    Next
-                End If
-                Console.WriteLine("---")
+                connection.Execute(script.ToString)
+                DumpROutputAndErrors(connection)
 
             End If
+        Else
+            Console.WriteLine("Model not loaded")
         End If
+
+    End Sub
+
+    Private Sub DumpROutputAndErrors(connection As cRBridge)
+
+        Console.WriteLine("Output:")
+        If connection.LastRunSuccess Then
+            ' #Yes: write results to the console window
+            For i As Integer = 0 To connection.Output.Length - 1
+                Console.WriteLine(connection.Output(i))
+            Next
+        Else
+            ' #No: write erros to the console window
+            Console.WriteLine("Errors:")
+            For i As Integer = 0 To connection.Errors.Length - 1
+                Console.WriteLine(connection.Errors(i))
+            Next
+        End If
+        Console.WriteLine("")
 
     End Sub
 
