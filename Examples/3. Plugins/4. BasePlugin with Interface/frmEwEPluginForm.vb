@@ -65,4 +65,9 @@ Public Class frmEwEPlugin
         Me.m_plugin.DoSomething(ValueFromTextBox)
 
     End Sub
+
+    Private Sub btnClickMe_Click(sender As System.Object, e As System.EventArgs) Handles btnClickMe.Click
+        Me.m_plugin.OpenModel("")
+    End Sub
+
 End Class

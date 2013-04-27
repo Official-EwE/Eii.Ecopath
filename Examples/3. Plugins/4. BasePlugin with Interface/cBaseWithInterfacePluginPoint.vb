@@ -90,6 +90,10 @@ Public Class cBaseWithInterfacePluginPoint
 
     End Sub
 
+    Public Sub OpenModel(ByVal filename As String)
+        Me.m_core.LoadModel(filename)
+    End Sub
+
 #End Region
 
 #Region "Ecopath, Ecosim and Ecospace events"
