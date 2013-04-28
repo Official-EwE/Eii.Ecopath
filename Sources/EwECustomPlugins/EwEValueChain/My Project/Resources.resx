@@ -2262,4 +2262,7 @@ QmCCCw==</value>
   <data name="GRAPHDATA_TYPE_REVENUE" xml:space="preserve">
     <value>Revenue</value>
   </data>
+  <data name="ERROR_LINK_NEEDFLEET" xml:space="preserve">
+    <value>Please connect this producer to an Ecopath fleet first</value>
+  </data>
 </root>

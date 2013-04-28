@@ -792,9 +792,6 @@ Public Class cData
 
     Public Function CreateLandingsLink(ByVal unitSource As cProducerUnit, ByVal unitTarget As cUnit, ByVal group As cEcoPathGroupInput, ByRef bError As Boolean) As cLinkLandings
 
-        ' Do not create link if there are no landings
-        If (unitSource.Fleet.Landings(group.Index) = 0) Then Return Nothing
-
         ' Sanity check
         If (unitSource Is Nothing) Or (unitTarget Is Nothing) Then
             Me.SendMessage(My.Resources.ERROR_LINK_NEEDUNITS)
@@ -823,6 +820,8 @@ Public Class cData
             bError = True
             Return Nothing
         End If
+
+        If (unitSource.Fleet.Landings(group.Index) = 0) Then Return Nothing
 
         Dim link As New cLinkLandings()
 
@@ -1213,7 +1212,7 @@ Public Class cData
         Next
     End Sub
 
-    Private Sub SendMessage(strMessage As String, _
+    Public Sub SendMessage(strMessage As String, _
                             Optional msgtype As eMessageType = eMessageType.Any, _
                             Optional corecomp As eCoreComponentType = eCoreComponentType.External, _
                             Optional importance As eMessageImportance = eMessageImportance.Warning)

@@ -1121,6 +1121,13 @@ Public Class plFlow
                     Dim unitSelected As cUnit = DirectCast(Me.Selection, plUnitControl).Unit
                     Dim bError As Boolean = False
                     If TypeOf unitSelected Is cProducerUnit Then
+                        ' Do not create link if there are no landings
+                        Dim prodSelected As cProducerUnit = DirectCast(unitSelected, cProducerUnit)
+                        If (prodSelected.Fleet Is Nothing) Then
+                            Me.m_data.SendMessage(My.Resources.ERROR_LINK_NEEDFLEET)
+                            Return
+                        End If
+
                         ' Create link for every group
                         For iGroup As Integer = 1 To Me.m_data.Core.nGroups
                             If Not bError Then
