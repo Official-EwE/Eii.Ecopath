@@ -8373,6 +8373,7 @@ Namespace DataSources
                     ecospaceDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
                     ecospaceDS.EcopathFleetDBID(iFleet) = CInt(reader("EcopathFleetID"))
                     ecospaceDS.EffPower(iFleet) = CSng(reader("EffPower"))
+                    'ecospaceDS.SEmult(iFleet) = CSng(reader("SEMult"))
 
                     ' Read port map for a given fleet and land cells only
                     strMap = CStr(Me.m_db.ReadSafe(reader, "PortMap", ""))
@@ -8517,6 +8518,7 @@ Namespace DataSources
 
                     ' Update fleet vars
                     drow("EffPower") = ecospaceDS.EffPower(iFleet)
+                    'drow("SEMult") = ecospaceDS.SEmult(iFleet)
                     drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.InRow, ecospaceDS.InCol)
                     drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth, True)
 
