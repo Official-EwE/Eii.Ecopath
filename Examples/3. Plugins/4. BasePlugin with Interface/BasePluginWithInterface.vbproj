@@ -7,7 +7,7 @@
     </ProductVersion>
     <SchemaVersion>
     </SchemaVersion>
-    <ProjectGuid>{635E6A64-6CC3-483B-89CA-6D3291C24AFB}</ProjectGuid>
+    <ProjectGuid>{57CFEE9E-24B2-4FC6-AB9C-32CA97DC9EC4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>BasePluginWithInterface</RootNamespace>
     <AssemblyName>BasePluginWithInterface</AssemblyName>
