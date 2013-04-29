@@ -72,6 +72,7 @@ Public Class cEcopathModelFromEcosim
 
     Public Function InitRun(strOutputPath As String) As Boolean
 
+        ' ToDo: globalize this
         Me.m_msgStatus = New cMessage("Generated Ecopath models from Ecosim run", eMessageType.DataExport, eCoreComponentType.EcoSim, eMessageImportance.Information)
         Me.m_msgStatus.Hyperlink = strOutputPath
         Return True
@@ -144,13 +145,13 @@ Public Class cEcopathModelFromEcosim
         Catch ex As Exception
             returnVal = eDatasourceAccessType.Failed_Unknown
             cLog.Write(ex)
-            Me.LogSuccess(String.Format("Error generating model '{0}': {1}", strModelName, ex.Message), False)
+            Me.LogSuccess(String.Format("Error generating model '{0}': {1}", strFileName, ex.Message), False)
         End Try
 
         If (returnVal = eDatasourceAccessType.Created) Then
-            Me.LogSuccess(String.Format("Model successfully saved to '{0}'", strModelName), True)
+            Me.LogSuccess(String.Format("Model successfully saved to '{0}'", strFileName), True)
         Else
-            Me.LogSuccess(String.Format("Failed to save mode to '{0}'", strModelName), False)
+            Me.LogSuccess(String.Format("Failed to save mode to '{0}'", strFileName), False)
         End If
 
         Return returnVal
@@ -241,7 +242,7 @@ Public Class cEcopathModelFromEcosim
                                    ByVal nNumYearsAverage As Integer, _
                                    ByVal WeightPower As Single) As Boolean
 
-        Debug.Assert(iTime >= 12, Me.ToString & ".PopulateItems(...) iTime must be at less one year.")
+        Debug.Assert(iTime >= cCore.N_MONTHS, Me.ToString & ".PopulateItems(...) iTime must fall after the first year.")
 
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim pathDest As cEcopathDataStructures = coreNew.m_EcoPathData

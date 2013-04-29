@@ -760,6 +760,42 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to *.ewemdb|Access 2003 (*.ewemdb)||Microsoft Access 2003 (*.ewemdb).
+        '''</summary>
+        Public ReadOnly Property DATASOURCE_ACCESS2003() As String
+            Get
+                Return ResourceManager.GetString("DATASOURCE_ACCESS2003", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to *.eweaccdb|Access 2007  (*.eweaccdb)||Microsoft Access 2007  (*.eweaccdb).
+        '''</summary>
+        Public ReadOnly Property DATASOURCE_ACCESS2007() As String
+            Get
+                Return ResourceManager.GetString("DATASOURCE_ACCESS2007", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to *.eii|Ecopath 5 EII (*.eii)||Ye good ole Ecopath 5 EII text format (*.eii).
+        '''</summary>
+        Public ReadOnly Property DATASOURCE_EII() As String
+            Get
+                Return ResourceManager.GetString("DATASOURCE_EII", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to *.eiixml|EII mark-up (*.eiixml)||XML formatted EII (*.eiixml).
+        '''</summary>
+        Public ReadOnly Property DATASOURCE_EIIXML() As String
+            Get
+                Return ResourceManager.GetString("DATASOURCE_EIIXML", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to New Ecosim scenario.
         '''</summary>
         Public ReadOnly Property DEFAULT_NEWECOSIMSCENARIO() As String
