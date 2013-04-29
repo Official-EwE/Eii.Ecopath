@@ -170,6 +170,9 @@ Public Class cSpaceSolver
     Private NutFree As Single
     Private MedVal() As Single
 
+
+    Private Consumpt(,) As Single
+
     'Contaminant tracing used locally
     Dim Derivcon() As Single, Cintotal() As Single, Closs() As Single, ConCtot As Single
 
@@ -204,6 +207,8 @@ Public Class cSpaceSolver
         ReDim Eatenof(m_Data.NGroups)
         ReDim Eatenby(m_Data.NGroups)
         ReDim MedVal(m_SimData.BioMedData.MediationShapes)
+
+        ReDim Consumpt(m_Data.NGroups, m_Data.NGroups)
 
         'FishRateGear(nFleets,nTime) used to pass Effort in the current cell at the current timestep to both SimDeritusMT and SetMedFunctions()
         'Effort from the current cell time step is stored in the zero index i.e. FishRateGear(fleet,0) = EffortSpace(fleet,row,col)
@@ -646,6 +651,7 @@ Public Class cSpaceSolver
 
             Array.Clear(Eatenof, 0, Eatenof.Length)
             Array.Clear(Eatenby, 0, Eatenof.Length)
+            Array.Clear(Consumpt, 0, Consumpt.Length)
 
             Dwe = 0.5
 
@@ -658,12 +664,14 @@ Public Class cSpaceSolver
             NutFree = CSng(m_SimData.NutTot * RelProdScaler - NutBiom)
             If NutFree < m_SimData.NutMin Then NutFree = m_SimData.NutMin
 
-            '*************
-            'Consumpt is NOT threadsafe
-            '***********
-            If m_SimData.IndicesOn Then
-                ReDim m_SimData.Consumpt(m_Data.NGroups, m_Data.NGroups)
-            End If
+            'jb 29-Apr-2013 removed EcosimData Consumpt
+            ''*************
+            ''Consumpt is NOT threadsafe
+            ''***********
+            'If m_SimData.IndicesOn Then
+            '    ReDim m_SimData.Consumpt(m_Data.NGroups, m_Data.NGroups)
+            'End If
+            '
 
             For j = m_Data.nLiving + 1 To m_Data.NGroups
                 ToDetritus(j - m_Data.nLiving) = 0
@@ -755,10 +763,15 @@ Public Class cSpaceSolver
                     m_Data.MPred(iRow, iCol, ii) = eat / (Bprey + 1.0E-20F)
                 End If
 
-                '******** 
-                'THIS NEEDS TO CHANGE FOR THREADED STUFF
-                '**********
-                If m_SimData.IndicesOn Then m_SimData.Consumpt(i, j) = m_SimData.Consumpt(i, j) + eat
+                If m_SimData.IndicesOn Then Consumpt(i, j) = Consumpt(i, j) + eat
+
+
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                'ToDo
+                'If m_Data.bCalcTrophicLevel Then
+                '    Me.CalcTrophicLevel(iRow, iCol)
+                'End If
+                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                 'jb 
                 If m_TracerData.EcoSpaceConSimOn = True Then
@@ -1054,6 +1067,15 @@ Public Class cSpaceSolver
         m_TracerData = New cContaminantTracerDataStructures
 
     End Sub
+
+
+
+    Private Sub CalcTrophicLevel(iRow As Integer, iCol As Integer)
+        'ToDo Implement this...
+        'Port Ecosim.EstimateTLs() to here...
+        'Populate TL(row,col,group)
+    End Sub
+
 
 
     'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
