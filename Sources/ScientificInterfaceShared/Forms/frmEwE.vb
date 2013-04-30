@@ -386,10 +386,8 @@ Namespace Forms
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
-        ''' Method that is called whenever core <see cref="eMessageType.DataAddedOrRemoved">Data Added Or Removed</see>
-        ''' messages arrive from any <see cref="m_aMessageSources">Message Source</see> that
-        ''' provide the data for a form instance. By implementing this method, inheriting forms
-        ''' can entirely or selectively repopulate to stay in sync with the EwE core.
+        ''' Method that is called whenever messages for a form arrive for any of the
+        ''' <see cref="CoreComponents"/> that the form is registered to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overridable Sub OnCoreMessage(ByVal msg As cMessage)
