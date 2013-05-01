@@ -46,7 +46,10 @@ Public Class cImpactData
                                     ByVal toolstrip As ToolStrip, _
                                     ByVal uic As cUIContext) As Boolean
         Dim bSucces As Boolean = MyBase.Attach(manager, datagrid, graph, plot, toolstrip, uic)
+        Me.Toolstrip.Visible = bSucces
         Me.Grid.Visible = bSucces
+        Me.ToolstripShowOptionCSV(True)
+
         Return bSucces
     End Function
 
