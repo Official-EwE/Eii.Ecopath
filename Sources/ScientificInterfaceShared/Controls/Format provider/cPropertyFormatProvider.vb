@@ -216,7 +216,7 @@ Namespace Controls
             ' Update control
             If (changeFlags And (cProperty.eChangeFlags.CoreStatus Or cProperty.eChangeFlags.Value)) > 0 Then
                 ' Get new content
-                Me.UpdateContent()
+                Me.UpdateContent(changeFlags)
             End If
 
             ' Update tooltip
