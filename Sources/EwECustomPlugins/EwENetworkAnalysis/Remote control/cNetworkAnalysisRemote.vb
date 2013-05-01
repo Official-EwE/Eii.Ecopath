@@ -83,8 +83,9 @@ Public Class cNetworkAnalysisRemote
                         'cmd.Status = "Failed"
                     End If
                 Catch ex As Exception
-
+                    ' Aargh
                 End Try
+
         End Select
 
     End Sub
@@ -93,12 +94,8 @@ Public Class cNetworkAnalysisRemote
 
         Dim writer As New cResultWriter(Me.m_manager)
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_uic.Core.OutputPath
+        Return writer.WriteCurrentResults(strPath)
 
-        If bWithPPR Then
-            Return writer.WriteIndicesWithPPR(strPath)
-        Else
-            Return writer.WriteIndicesWithoutPPR(strPath)
-        End If
     End Function
 
 End Class

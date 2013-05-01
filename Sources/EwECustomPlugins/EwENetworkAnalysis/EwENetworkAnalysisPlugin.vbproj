@@ -171,6 +171,7 @@
     <Compile Include="Interface\TrophicLevelDecomp\cRelativeFlows.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cTransferEfficiency.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\Pyramids\cPyramid.vb" />
+    <Compile Include="My Project\Settings.vb" />
     <Compile Include="NetworkAnalysis\cEcoNetwork.vb" />
     <Compile Include="NetworkAnalysis\cNetworkManager.vb" />
     <Compile Include="NetworkAnalysis\cResultWriter.vb" />
@@ -265,6 +266,7 @@
     <None Include="..\..\..\..\Ecopath6_internal\Sources_Int_Functionalities\License\EwE.licenseheader">
       <Link>EwE.licenseheader</Link>
     </None>
+    <None Include="app.config" />
     <None Include="keys.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
