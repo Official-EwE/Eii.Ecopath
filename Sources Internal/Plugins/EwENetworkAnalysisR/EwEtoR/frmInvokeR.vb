@@ -36,8 +36,6 @@ Imports ScientificInterfaceShared.Style
 ''' ---------------------------------------------------------------------------
 Public Class frmInvokeR
 
-#Region " Overrides "
-
 #Region " Private vars "
 
     Private m_uic As cUIContext = Nothing
@@ -56,6 +54,8 @@ Public Class frmInvokeR
         Me.m_dad = dad
 
     End Sub
+
+#Region " Overrides "
 
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
@@ -98,10 +98,8 @@ Public Class frmInvokeR
     Private Sub OnChooseR_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_btnChooseR.Click
 
-        ' ToDo: globalize this
-
         Dim cmd As cFileOpenCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-        cmd.Invoke(Me.m_tbxR.Text, "R program|R*.exe", 0, "Select R program location")
+        cmd.Invoke(Me.m_tbxR.Text, My.Resources.FILEFILTER_R_EXE, 0, My.Resources.PROMPT_SELECT_R_EXE)
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxR.Text = cmd.FileName
         End If
@@ -111,10 +109,9 @@ Public Class frmInvokeR
     Private Sub OnChooseScript_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_btnChooseScript.Click
 
-        ' ToDo: globalize this
-
         Dim cmd As cFileOpenCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
-        cmd.Invoke(Me.m_tbxScript.Text, "R NETWRK script|*.r", 0, "Select R script to execute")
+        cmd.Invoke(Me.m_tbxScript.Text, My.Resources.FILEFILTER_R_SCRIPT, 0, My.Resources.PROMPT_SELECT_R_SCRIPT
+                   )
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxScript.Text = cmd.FileName
         End If
@@ -124,10 +121,8 @@ Public Class frmInvokeR
     Private Sub OnChooseSCOR_Click(sender As System.Object, e As System.EventArgs) _
         Handles m_btnChooseSCOR.Click
 
-        ' ToDo: globalize this
-
         Dim cmd As cFileSaveCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
-        cmd.Invoke(Me.m_tbxSCOR.Text, "SCOR files|*.dat", 0, "Select path to store SCOR file")
+        cmd.Invoke(Me.m_tbxSCOR.Text, My.Resources.FILFILTER_SCOR, 0, My.Resources.PROMPT_SELECT_SCOR_FILE)
         If (cmd.Result = Windows.Forms.DialogResult.OK) Then
             Me.m_tbxSCOR.Text = cmd.FileName
         End If
@@ -208,12 +203,12 @@ Public Class frmInvokeR
 
         Dim writer As New cSCORWriter(Me.m_dad.m_epData)
         If writer.Write(Me.m_tbxSCOR.Text) Then
-            Dim msg As New cMessage(String.Format("SCOR file saved to '{0}'", Me.m_tbxSCOR.Text), _
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_SUCCESS, Me.m_tbxSCOR.Text), _
                                     eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Plugin, eMessageImportance.Information)
             msg.Hyperlink = Path.GetDirectoryName(Me.m_tbxSCOR.Text)
             Me.m_uic.Core.Messages.SendMessage(msg)
         Else
-            Dim msg As New cMessage(String.Format("SCOR file could not be saved to '{0}'", Me.m_tbxSCOR.Text), _
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_SCOR_SAVED_FAILED, Me.m_tbxSCOR.Text), _
                                     eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.Plugin, eMessageImportance.Warning)
             Me.m_uic.Core.Messages.SendMessage(msg)
             Return

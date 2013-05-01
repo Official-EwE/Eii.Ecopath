@@ -273,7 +273,7 @@ Partial Class frmInvokeR
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "frmInvokeR"
-        Me.Text = "Invoke R"
+        Me.Text = "Invoke R NETWRK"
         Me.m_tcDebug.ResumeLayout(False)
         Me.m_tpgScript.ResumeLayout(False)
         Me.m_tpgOutput.ResumeLayout(False)
