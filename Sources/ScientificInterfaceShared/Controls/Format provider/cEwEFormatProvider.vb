@@ -167,8 +167,9 @@ Namespace Controls
             ''' <summary>
             ''' Trigger to update the value and display style of the <see cref="Control">Control</see>.
             ''' </summary>
+            ''' <param name="cf">Aspect to update.</param>
             ''' -----------------------------------------------------------------------
-            Sub UpdateContent()
+            Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags)
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
@@ -289,8 +290,10 @@ Namespace Controls
             ''' <summary>
             ''' Update value and display style of the text box.
             ''' </summary>
+            ''' <param name="cf">Aspect of the text box to change.</param>
             ''' -----------------------------------------------------------------------
-            Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
+            Public Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags) _
+                Implements IControlWrapper.UpdateContent
 
                 Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
@@ -299,36 +302,44 @@ Namespace Controls
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
                 Dim strText As String = ""
 
-                ' Sanity checks
-                If objValue Is Nothing Then Return
+                If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
-                ' Get default value
-                strText = objValue.ToString()
+                    ' Sanity checks
+                    If objValue Is Nothing Then Return
 
-                ' Interpret as single?
-                If objValueType Is GetType(Single) Then
-                    ' #Yes: apply format
-                    strText = sg.FormatNumber(CSng(objValue), style)
+                    ' Get default value
+                    strText = objValue.ToString()
+
+                    ' Interpret as single?
+                    If objValueType Is GetType(Single) Then
+                        ' #Yes: apply format
+                        strText = sg.FormatNumber(CSng(objValue), style)
+                    End If
+
+                    ' Interpret as double?
+                    If objValueType Is GetType(Double) Then
+                        ' #Yes: apply format
+                        strText = sg.FormatNumber(CDbl(objValue), style)
+                    End If
+
+                    ' Update text box
+                    ' - Set text
+                    Me.m_tb.Text = strText
+
                 End If
 
-                ' Interpret as double?
-                If objValueType Is GetType(Double) Then
-                    ' #Yes: apply format
-                    strText = sg.FormatNumber(CDbl(objValue), style)
-                End If
+                If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
+                    ' - Set colours
+                    sg.GetStyleColors(style, Me.m_tb.ForeColor, Me.m_tb.BackColor)
 
-                ' Update text box
-                ' - Set text
-                Me.m_tb.Text = strText
-                ' - Set colours
-                sg.GetStyleColors(style, Me.m_tb.ForeColor, Me.m_tb.BackColor)
-                ' - Set read-only state
-                Me.m_tb.ReadOnly = (bEditable = False)
-                Me.m_tb.TabStop = (bEditable = True)
+                    ' - Set read-only state
+                    Me.m_tb.ReadOnly = (bEditable = False)
+                    Me.m_tb.TabStop = (bEditable = True)
 
-                ' Highlight border
-                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_tb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    ' Highlight border
+                    If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                        Me.m_tb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    End If
                 End If
 
             End Sub
@@ -505,28 +516,35 @@ Namespace Controls
             ''' Update value and display style of the numeric up down control.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
+            Public Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags) _
+                Implements IControlWrapper.UpdateContent
 
                 Dim objValue As Object = Me.m_provider.Value
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
-                ' Sanity checks
-                If objValue Is Nothing Then Return
+                If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
-                ' Update control
-                ' - Set value truncated to min and max ranges. Note that value_none is not
-                '   explicitly supported here!
-                Me.m_ud.Value = Math.Max(Me.m_ud.Minimum, Math.Min(Me.m_ud.Maximum, Convert.ToDecimal(objValue)))
-                ' - Set colours
-                Me.m_sg.GetStyleColors(style, Me.m_ud.ForeColor, Me.m_ud.BackColor)
-                ' - Set read-only state
-                Me.m_ud.ReadOnly = (bEditable = False)
-                Me.m_ud.TabStop = (bEditable = True)
+                    ' Sanity checks
+                    If objValue Is Nothing Then Return
 
-                ' Highlight border
-                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_ud.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    ' Update control
+                    ' - Set value truncated to min and max ranges. Note that value_none is not
+                    '   explicitly supported here!
+                    Me.m_ud.Value = Math.Max(Me.m_ud.Minimum, Math.Min(Me.m_ud.Maximum, Convert.ToDecimal(objValue)))
+                End If
+
+                If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
+                    ' - Set colours
+                    Me.m_sg.GetStyleColors(style, Me.m_ud.ForeColor, Me.m_ud.BackColor)
+                    ' - Set read-only state
+                    Me.m_ud.ReadOnly = (bEditable = False)
+                    Me.m_ud.TabStop = (bEditable = True)
+
+                    ' Highlight border
+                    If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                        Me.m_ud.BackColor = Me.m_sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    End If
                 End If
 
             End Sub
@@ -560,7 +578,7 @@ Namespace Controls
                 ' Update internal value
                 If Not Decimal.Equals(Me.m_provider.Value, Me.m_ud.Value) Then
                     Me.m_provider.Value = Me.m_ud.Value
-                    Me.UpdateContent()
+                    Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
                 End If
 
             End Sub
@@ -698,27 +716,37 @@ Namespace Controls
             ''' Update value and display style of the combo box.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
+            Public Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags) _
+                Implements IControlWrapper.UpdateContent
 
                 Dim objValue As Object = Me.m_provider.Value
                 Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
-                ' Sanity checks
-                If (objValue Is Nothing) Then Return
+                If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
-                ' Update control
-                ' - Set selection state
-                Try
-                    Me.SelectItem(objValue)
-                Catch ex As Exception
+                    ' Sanity checks
+                    If (objValue Is Nothing) Then Return
 
-                End Try
-                ' - Set colours
-                sg.GetStyleColors(style, Me.m_cmb.ForeColor, Me.m_cmb.BackColor)
-                ' - Set enabled state
-                Me.m_cmb.Enabled = bEditable
+                    ' Update control
+                    ' - Set selection state
+                    Try
+                        Me.SelectItem(objValue)
+                    Catch ex As Exception
+
+                    End Try
+
+                End If
+
+                If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
+
+                    ' - Set colours
+                    sg.GetStyleColors(style, Me.m_cmb.ForeColor, Me.m_cmb.BackColor)
+                    ' - Set enabled state
+                    Me.m_cmb.Enabled = bEditable
+
+                End If
 
             End Sub
 
@@ -780,7 +808,7 @@ Namespace Controls
                     End If
                     ' Done
                     Me.m_aItems = aItems
-                    Me.UpdateContent()
+                    Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
                 End Set
             End Property
 
@@ -920,7 +948,8 @@ Namespace Controls
             ''' Update value and display style of the check box.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
+            Public Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags) _
+                Implements IControlWrapper.UpdateContent
 
                 Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
@@ -928,24 +957,31 @@ Namespace Controls
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim bEditable As Boolean = ((style And cStyleGuide.eStyleFlags.NotEditable) = 0)
 
-                ' Sanity checks
-                If objValue Is Nothing Then Return
+                If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
+                    ' Sanity checks
+                    If objValue Is Nothing Then Return
 
-                ' Update control
-                ' - Set checked state
-                Me.m_cb.Checked = CBool(objValue)
-                ' - Set colours
-                ' *** Checkbox special: do not colour background on "OK" or "NotEditable" style
-                style = style And Not (cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable)
-                Me.m_cb.BackColor = SystemColors.Control
-                ' Fetch, boy
-                sg.GetStyleColors(style, Me.m_cb.ForeColor, Me.m_cb.BackColor)
-                ' - Set enabled state
-                Me.m_cb.Enabled = bEditable
+                    ' Update control
+                    ' - Set checked state
+                    Me.m_cb.Checked = CBool(objValue)
+                End If
 
-                ' Highlight border
-                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_cb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
+
+                    ' - Set colours
+                    ' *** Checkbox special: do not colour background on "OK" or "NotEditable" style
+                    style = style And Not (cStyleGuide.eStyleFlags.OK Or cStyleGuide.eStyleFlags.NotEditable)
+                    Me.m_cb.BackColor = SystemColors.Control
+                    ' Fetch, boy
+                    sg.GetStyleColors(style, Me.m_cb.ForeColor, Me.m_cb.BackColor)
+                    ' - Set enabled state
+                    Me.m_cb.Enabled = bEditable
+
+                    ' Highlight border
+                    If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                        Me.m_cb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    End If
+
                 End If
 
             End Sub
@@ -1063,10 +1099,11 @@ Namespace Controls
 
             ''' -----------------------------------------------------------------------
             ''' <summary>
-            ''' Update value and display style of the text box.
+            ''' Update value and display style of the label.
             ''' </summary>
             ''' -----------------------------------------------------------------------
-            Public Sub UpdateContent() Implements IControlWrapper.UpdateContent
+            Public Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags) _
+                Implements IControlWrapper.UpdateContent
 
                 Dim sg As cStyleGuide = Me.UIContext.StyleGuide
                 Dim objValue As Object = Me.m_provider.Value
@@ -1074,33 +1111,42 @@ Namespace Controls
                 Dim style As cStyleGuide.eStyleFlags = Me.m_provider.Style
                 Dim strText As String = ""
 
-                ' Sanity checks
-                If objValue Is Nothing Then Return
+                If (cf And Properties.cProperty.eChangeFlags.Value) > 0 Then
 
-                ' Get default value
-                strText = objValue.ToString()
+                    ' Sanity checks
+                    If objValue Is Nothing Then Return
 
-                ' Interpret as single?
-                If objValueType Is GetType(Single) Then
-                    ' #Yes: apply format
-                    strText = sg.FormatNumber(CSng(objValue), style)
+                    ' Get default value
+                    strText = objValue.ToString()
+
+                    ' Interpret as single?
+                    If objValueType Is GetType(Single) Then
+                        ' #Yes: apply format
+                        strText = sg.FormatNumber(CSng(objValue), style)
+                    End If
+
+                    ' Interpret as double?
+                    If objValueType Is GetType(Double) Then
+                        ' #Yes: apply format
+                        strText = sg.FormatNumber(CDbl(objValue), style)
+                    End If
+
+                    ' Update text box
+                    ' - Set text
+                    Me.m_lb.Text = strText
+
                 End If
 
-                ' Interpret as double?
-                If objValueType Is GetType(Double) Then
-                    ' #Yes: apply format
-                    strText = sg.FormatNumber(CDbl(objValue), style)
-                End If
+                If (cf And Properties.cProperty.eChangeFlags.CoreStatus) > 0 Then
 
-                ' Update text box
-                ' - Set text
-                Me.m_lb.Text = strText
-                ' - Set colours
-                sg.GetStyleColors(style And Not cStyleGuide.eStyleFlags.OK, Me.m_lb.ForeColor, Me.m_lb.BackColor)
+                    ' - Set colours
+                    sg.GetStyleColors(style And Not cStyleGuide.eStyleFlags.OK, Me.m_lb.ForeColor, Me.m_lb.BackColor)
 
-                ' Highlight border
-                If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
-                    Me.m_lb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    ' Highlight border
+                    If (style And cStyleGuide.eStyleFlags.Highlight) > 0 Then
+                        Me.m_lb.BackColor = sg.ApplicationColor(cStyleGuide.eApplicationColorType.HIGHLIGHT)
+                    End If
+
                 End If
 
             End Sub
@@ -1301,7 +1347,7 @@ Namespace Controls
                 Me.m_objValue = objValueConverted
 
                 ' Update
-                Me.UpdateContent()
+                Me.UpdateContent(Properties.cProperty.eChangeFlags.Value)
                 Me.RaiseChangeEvent()
 
             End Set
@@ -1321,7 +1367,7 @@ Namespace Controls
                 ' Store style
                 Me.m_style = s
                 ' Update
-                Me.UpdateContent()
+                Me.UpdateContent(Properties.cProperty.eChangeFlags.CoreStatus)
             End Set
         End Property
 
@@ -1373,7 +1419,7 @@ Namespace Controls
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Private Sub OnStyleGuideChanged(ByVal changeType As cStyleGuide.eChangeType)
-            Me.UpdateContent()
+            Me.UpdateContent(Properties.cProperty.eChangeFlags.All)
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -1397,9 +1443,9 @@ Namespace Controls
         ''' Update the attached control
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Protected Sub UpdateContent()
+        Protected Sub UpdateContent(cf As ScientificInterfaceShared.Properties.cProperty.eChangeFlags)
             If Me.m_ctrlWrapper IsNot Nothing Then
-                Me.m_ctrlWrapper.UpdateContent()
+                Me.m_ctrlWrapper.UpdateContent(cf)
             End If
         End Sub
 
