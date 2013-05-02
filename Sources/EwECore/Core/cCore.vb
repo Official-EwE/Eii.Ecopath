@@ -2706,9 +2706,9 @@ Public Class cCore
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Notify the core that core settings have changed.
+    ''' Send out a notification that core settings have changed.
     ''' </summary>
-    ''' <remarks></remarks>
+    ''' -----------------------------------------------------------------------
     Public Sub OnSettingsChanged()
         Try
             Me.Messages.SendMessage(New cMessage("Autosave settings have changed", eMessageType.GlobalSettingsChanged, eCoreComponentType.Core, eMessageImportance.Maintenance))
