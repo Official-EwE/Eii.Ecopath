@@ -166,6 +166,7 @@ Namespace Other
                     ' #Yes: Update plug-in auto-save state, bypassing the core.
                     '       The plug-in is responsible for remembering this setting.
                     Me.m_pi.AutoSave = (Me.m_cbOption.Checked = True)
+                    Me.m_uic.Core.OnSettingsChanged()
                 Else
                     ' #No: Only update the core setting when representing a auto-save setting
                     If (Me.m_autosavetype <> eAutosaveTypes.NotSet) Then
