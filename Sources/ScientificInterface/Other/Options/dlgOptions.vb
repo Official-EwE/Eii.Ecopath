@@ -134,10 +134,12 @@ Namespace Other
 
         Private Sub Apply()
 
+            Dim msgs As cMessagePublisher = Me.m_uic.Core.Messages
             Dim msg As cMessage = Nothing
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+            msgs.SetMessageLock()
             Try
                 For Each optionspage As IOptionsPage In Me.m_lPages
                     result = DirectCast(Math.Max(result, optionspage.Apply()), IOptionsPage.eApplyResultType)
@@ -146,6 +148,7 @@ Namespace Other
                 ' Whoah
                 cLog.Write(ex, "dlgOptions::Apply")
             End Try
+            msgs.RemoveMessageLock()
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
             Select Case result
