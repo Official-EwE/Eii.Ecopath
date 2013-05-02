@@ -211,6 +211,11 @@ Public Class cEcospaceDataStructures
 
     Public CatchMap(,,) As Single
 
+    ''' <summary>
+    ''' Trophic Level by Row, Col, Group
+    ''' </summary>
+    Public TL(,,) As Single
+
     'these are all part of velmaker
     'velmaker may become its own class
     Public Xvel(,) As Single, Yvel(,) As Single
@@ -591,6 +596,13 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <remarks>computed in CalcHabitatArea()</remarks>
     Public ThabArea As Single
+
+    ''' <summary>
+    ''' Calculate the TrophicLevel map in Ecospace. 
+    ''' True Ecospace will populate the TrophicLevel <see cref="cEcospaceDataStructures.TL">TrophicLevel</see> map in cEcospaceDataStructures.TL. 
+    ''' </summary>
+    ''' <remarks>This incurs significant overhead so it is Off(False) by default. At this time is can only be turned ON(True) via code.</remarks>
+    Public bCalTrophicLevel As Boolean
 
 #End Region
 
@@ -1310,6 +1322,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(RelCin, InRow + 1, InCol + 1)
 
             Me.allocate(relPP0, InRow + 1, InCol + 1)
+
+            Me.allocate(TL, InRow, InCol, NGroups)
 
             ' 
 

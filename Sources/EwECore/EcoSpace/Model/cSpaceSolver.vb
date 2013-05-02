@@ -65,6 +65,9 @@ Public Class cSpaceSolver
 
     Public Search As cSearchDatastructures
 
+    Public EcoFunctions As cEcoFunctions
+    Public TLlockOb As Object
+
     Public Bcw(,,) As Single
     Public C(,,) As Single
     Public d(,,) As Single
@@ -763,15 +766,7 @@ Public Class cSpaceSolver
                     m_Data.MPred(iRow, iCol, ii) = eat / (Bprey + 1.0E-20F)
                 End If
 
-                If m_SimData.IndicesOn Then Consumpt(i, j) = Consumpt(i, j) + eat
-
-
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                'ToDo
-                'If m_Data.bCalcTrophicLevel Then
-                '    Me.CalcTrophicLevel(iRow, iCol)
-                'End If
-                'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                If Me.m_Data.bCalTrophicLevel Then Consumpt(i, j) = Consumpt(i, j) + eat
 
                 'jb 
                 If m_TracerData.EcoSpaceConSimOn = True Then
@@ -780,7 +775,9 @@ Public Class cSpaceSolver
                     If Biomass(i) > 0 Then m_ConTracer.ConKtrophic(ii) = eat / Biomass(i) Else m_ConTracer.ConKtrophic(ii) = 0
                 End If
 
-            Next
+            Next ii
+
+            Me.CalcTrophicLevel(iRow, iCol, Consumpt, Eatenby)
 
             'Make the detritus calculations here:
             Me.SimDetritusMT(Biomass, Me.FishRateGear, Eatenby, ToDetritus, GroupDetritus)
@@ -1070,10 +1067,60 @@ Public Class cSpaceSolver
 
 
 
-    Private Sub CalcTrophicLevel(iRow As Integer, iCol As Integer)
+    Private Sub CalcTrophicLevel(iRow As Integer, iCol As Integer, Consumpt(,) As Single, EatenBy() As Single)
         'ToDo Implement this...
         'Port Ecosim.EstimateTLs() to here...
         'Populate TL(row,col,group)
+        Dim i As Integer
+        Dim j As Integer
+        Dim SumDiet As Single
+
+        If Not Me.m_Data.bCalTrophicLevel Then
+            'Nope turned Off
+            Return
+        End If
+
+        Debug.Assert(EcoFunctions IsNot Nothing, "Space cannot run CalcTrophicLevel() because EcoFunctions has not been initialized properly.")
+        Debug.Assert(m_Data.TL IsNot Nothing, "Space cannot run CalcTrophicLevel() because cEcospaceDataStructures.TL(row,col,group) has not been initialized properly.")
+        Debug.Assert(TLlockOb IsNot Nothing, "Space cannot run CalcTrophicLevel() because TLlockOb has not been initialized properly.")
+
+        Dim Diet(m_Data.NGroups, m_Data.NGroups) As Single
+        Dim TLs(m_Data.NGroups) As Single
+
+        Try
+
+            'Windows.Forms.Application.DoEvents()
+
+            For i = 1 To m_Data.nLiving  'consumer
+                If Eatenby(i) > 0 Then
+                    SumDiet = 0
+                    For j = 1 To m_Data.NGroups  'food
+                        Diet(i, j) = Consumpt(j, i) / Eatenby(i)
+                        SumDiet = SumDiet + Diet(i, j)
+                    Next
+                    If SumDiet > 0 Then
+                        For j = 1 To m_Data.NGroups  'food
+                            Diet(i, j) = Diet(i, j) / SumDiet
+                        Next
+                    End If
+                End If
+            Next
+
+            SyncLock TLlockOb
+                'EcoFunctions.EstimateTrophicLevels() is NOT thread safe so only one thread at a time
+                EcoFunctions.EstimateTrophicLevels(m_Data.NGroups, m_Data.nLiving, m_PathData.PP, Diet, TLs)
+
+            End SyncLock
+
+            For igrp As Integer = 1 To m_Data.NGroups
+                m_Data.TL(iRow, iCol, igrp) = TLs(igrp)
+            Next
+
+        Catch ex As Exception
+            cLog.Write(ex)
+            Debug.Assert(False, Me.ToString & ".CalcTrophicLevel() Error: " & ex.Message)
+        End Try
+
     End Sub
 
 

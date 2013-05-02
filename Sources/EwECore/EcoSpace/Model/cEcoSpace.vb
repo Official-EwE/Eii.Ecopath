@@ -78,6 +78,9 @@ Public Class cEcoSpace
 #Region "Solver threads"
 
     Public Delegate Sub SolverErrorDelegate(ByVal ThreadID As Integer, ByVal msg As String)
+    Public EcoFunctions As cEcoFunctions
+
+    Private m_TLlockOb As Object
     Private m_bsolverError As Boolean
     Private m_solverErrorMsg As String
     Private m_solverErrorID As Integer
@@ -312,6 +315,8 @@ Public Class cEcoSpace
 
         Me.m_PauseSignal = New System.Threading.ManualResetEvent(True)
         Me.m_rand = New Random
+
+        Me.m_TLlockOb = New Object
 
     End Sub
 
@@ -587,6 +592,7 @@ Public Class cEcoSpace
         Try
 
             cEcoSpace.nFleets = Me.m_Data.nFleets
+
 
             'redim all 
             If redimForRun() Then
@@ -1196,6 +1202,10 @@ Public Class cEcoSpace
             For i = 1 To m_Data.nGridSolverThreads
                 totalIter = totalIter + totalIterThread(i)
             Next
+
+            'Always turn OFF the TrophicLevel calculations
+            'so it does not create unnecessary overhead
+            Me.m_Data.bCalTrophicLevel = False
 
             stpwchTotRunTime.Stop()
             Dim totRunTime As Double = stpwchTotRunTime.Elapsed.TotalMinutes
@@ -5347,6 +5357,11 @@ exitline:
                 solver.PPScale = Me.m_Data.PPScale
                 solver.TimeStep2 = m_Data.TimeStep / 2
                 solver.MinChange = MinChange
+
+                'EcoFunction and Lock object used to calculate trophic level 
+                'in calTrophicLevel()
+                solver.EcoFunctions = Me.EcoFunctions
+                solver.TLlockOb = Me.m_TLlockOb
                 solver.Init()
 
                 'solver.EcospaceErrorHandler = AddressOf Me.SolverErrorHandler
