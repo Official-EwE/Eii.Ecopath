@@ -8410,6 +8410,7 @@ Public Class cCore
         m_Ecospace.EcoSimData = Me.m_EcoSimData
         m_Ecospace.ContaiminantTracerData = m_tracerData
         m_Ecospace.SpatialData = m_SpatialData
+        m_Ecospace.EcoFunctions = Me.EcoFunction
 
         'sub in core to call at each time step
         m_Ecospace.TimeStepDelegate = AddressOf onEcospaceTimeStep
