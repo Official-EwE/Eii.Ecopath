@@ -1,0 +1,507 @@
+﻿Imports ScientificInterfaceShared
+
+' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+
+Namespace SpatialData
+
+    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+    Partial Class ucMultiFileDatasetConfigPage
+        Inherits System.Windows.Forms.UserControl
+
+        'Required by the Windows Form Designer
+        Private components As System.ComponentModel.IContainer
+
+        'NOTE: The following procedure is required by the Windows Form Designer
+        'It can be modified using the Windows Form Designer.  
+        'Do not modify it using the code editor.
+        Private Sub InitializeComponent()
+            Me.m_lblPath = New System.Windows.Forms.Label()
+            Me.m_tbxPath = New System.Windows.Forms.TextBox()
+            Me.m_btnBrowse = New System.Windows.Forms.Button()
+            Me.m_dgvFiles = New System.Windows.Forms.DataGridView()
+            Me.m_colFileName = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_colTime = New EwESpatialAssetsPlugin.cCalendarColumn()
+            Me.m_lblExtension = New System.Windows.Forms.Label()
+            Me.m_btnSearch = New System.Windows.Forms.Button()
+            Me.m_lblName = New System.Windows.Forms.Label()
+            Me.m_tbxName = New System.Windows.Forms.TextBox()
+            Me.m_tbxDescription = New System.Windows.Forms.TextBox()
+            Me.m_lblDescription = New System.Windows.Forms.Label()
+            Me.CCalendarColumn1 = New EwESpatialAssetsPlugin.cCalendarColumn()
+            Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+            Me.m_hdrFiles = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_tlpConfig = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plTime = New System.Windows.Forms.Panel()
+            Me.m_cmbInterval = New System.Windows.Forms.ComboBox()
+            Me.m_lblIntervalWith = New System.Windows.Forms.Label()
+            Me.m_mtbIntervalStart = New System.Windows.Forms.MaskedTextBox()
+            Me.m_rbFromName = New System.Windows.Forms.RadioButton()
+            Me.m_rbFromDate = New System.Windows.Forms.RadioButton()
+            Me.m_rbInterval = New System.Windows.Forms.RadioButton()
+            Me.m_cbAnnual = New System.Windows.Forms.CheckBox()
+            Me.m_tbxDatePart = New System.Windows.Forms.TextBox()
+            Me.m_hdrTime = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_btnSetTime = New System.Windows.Forms.Button()
+            Me.m_plFiles = New System.Windows.Forms.Panel()
+            Me.m_tbxFileNamePattern = New System.Windows.Forms.TextBox()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_cmbExtensions = New System.Windows.Forms.ComboBox()
+            Me.m_plDescription = New System.Windows.Forms.Panel()
+            Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).BeginInit()
+            Me.m_tlpConfig.SuspendLayout()
+            Me.m_plTime.SuspendLayout()
+            Me.m_plFiles.SuspendLayout()
+            Me.m_plDescription.SuspendLayout()
+            Me.SuspendLayout()
+            '
+            'm_lblPath
+            '
+            Me.m_lblPath.AutoSize = True
+            Me.m_lblPath.Location = New System.Drawing.Point(3, 23)
+            Me.m_lblPath.Name = "m_lblPath"
+            Me.m_lblPath.Size = New System.Drawing.Size(39, 13)
+            Me.m_lblPath.TabIndex = 0
+            Me.m_lblPath.Text = "&Folder:"
+            '
+            'm_tbxPath
+            '
+            Me.m_tbxPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxPath.Location = New System.Drawing.Point(80, 20)
+            Me.m_tbxPath.Name = "m_tbxPath"
+            Me.m_tbxPath.Size = New System.Drawing.Size(286, 20)
+            Me.m_tbxPath.TabIndex = 1
+            '
+            'm_btnBrowse
+            '
+            Me.m_btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnBrowse.Location = New System.Drawing.Point(378, 18)
+            Me.m_btnBrowse.Name = "m_btnBrowse"
+            Me.m_btnBrowse.Size = New System.Drawing.Size(90, 23)
+            Me.m_btnBrowse.TabIndex = 2
+            Me.m_btnBrowse.Text = "&Browse..."
+            Me.m_btnBrowse.UseVisualStyleBackColor = True
+            '
+            'm_dgvFiles
+            '
+            Me.m_dgvFiles.AllowUserToAddRows = False
+            Me.m_dgvFiles.AllowUserToDeleteRows = False
+            Me.m_dgvFiles.AllowUserToResizeColumns = False
+            Me.m_dgvFiles.AllowUserToResizeRows = False
+            Me.m_dgvFiles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+            Me.m_dgvFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colFileName, Me.m_colTime})
+            Me.m_dgvFiles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
+            Me.m_dgvFiles.Location = New System.Drawing.Point(3, 98)
+            Me.m_dgvFiles.MultiSelect = False
+            Me.m_dgvFiles.Name = "m_dgvFiles"
+            Me.m_dgvFiles.RowHeadersVisible = False
+            Me.m_dgvFiles.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+            Me.m_dgvFiles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+            Me.m_dgvFiles.ShowCellErrors = False
+            Me.m_dgvFiles.ShowCellToolTips = False
+            Me.m_dgvFiles.ShowEditingIcon = False
+            Me.m_dgvFiles.ShowRowErrors = False
+            Me.m_dgvFiles.Size = New System.Drawing.Size(465, 160)
+            Me.m_dgvFiles.TabIndex = 9
+            '
+            'm_colFileName
+            '
+            Me.m_colFileName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+            Me.m_colFileName.HeaderText = "File"
+            Me.m_colFileName.Name = "m_colFileName"
+            Me.m_colFileName.ReadOnly = True
+            Me.m_colFileName.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+            Me.m_colFileName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+            '
+            'm_colTime
+            '
+            Me.m_colTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+            Me.m_colTime.HeaderText = "Time"
+            Me.m_colTime.MinimumWidth = 120
+            Me.m_colTime.Name = "m_colTime"
+            Me.m_colTime.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+            Me.m_colTime.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+            Me.m_colTime.Width = 120
+            '
+            'm_lblExtension
+            '
+            Me.m_lblExtension.AutoSize = True
+            Me.m_lblExtension.Location = New System.Drawing.Point(3, 76)
+            Me.m_lblExtension.Name = "m_lblExtension"
+            Me.m_lblExtension.Size = New System.Drawing.Size(60, 13)
+            Me.m_lblExtension.TabIndex = 6
+            Me.m_lblExtension.Text = "&Name filter:"
+            '
+            'm_btnSearch
+            '
+            Me.m_btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnSearch.Location = New System.Drawing.Point(378, 71)
+            Me.m_btnSearch.Name = "m_btnSearch"
+            Me.m_btnSearch.Size = New System.Drawing.Size(90, 23)
+            Me.m_btnSearch.TabIndex = 8
+            Me.m_btnSearch.Text = "S&earch files"
+            Me.m_btnSearch.UseVisualStyleBackColor = True
+            '
+            'm_lblName
+            '
+            Me.m_lblName.AutoSize = True
+            Me.m_lblName.Location = New System.Drawing.Point(3, 23)
+            Me.m_lblName.Name = "m_lblName"
+            Me.m_lblName.Size = New System.Drawing.Size(38, 13)
+            Me.m_lblName.TabIndex = 1
+            Me.m_lblName.Text = "&Name:"
+            '
+            'm_tbxName
+            '
+            Me.m_tbxName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxName.Location = New System.Drawing.Point(80, 20)
+            Me.m_tbxName.MaxLength = 100
+            Me.m_tbxName.Name = "m_tbxName"
+            Me.m_tbxName.Size = New System.Drawing.Size(388, 20)
+            Me.m_tbxName.TabIndex = 2
+            '
+            'm_tbxDescription
+            '
+            Me.m_tbxDescription.AcceptsReturn = True
+            Me.m_tbxDescription.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxDescription.Location = New System.Drawing.Point(80, 46)
+            Me.m_tbxDescription.Multiline = True
+            Me.m_tbxDescription.Name = "m_tbxDescription"
+            Me.m_tbxDescription.Size = New System.Drawing.Size(388, 73)
+            Me.m_tbxDescription.TabIndex = 4
+            '
+            'm_lblDescription
+            '
+            Me.m_lblDescription.AutoSize = True
+            Me.m_lblDescription.Location = New System.Drawing.Point(3, 49)
+            Me.m_lblDescription.Name = "m_lblDescription"
+            Me.m_lblDescription.Size = New System.Drawing.Size(63, 13)
+            Me.m_lblDescription.TabIndex = 3
+            Me.m_lblDescription.Text = "&Description:"
+            '
+            'CCalendarColumn1
+            '
+            Me.CCalendarColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+            Me.CCalendarColumn1.HeaderText = "File"
+            Me.CCalendarColumn1.Name = "CCalendarColumn1"
+            Me.CCalendarColumn1.ReadOnly = True
+            '
+            'DataGridViewTextBoxColumn1
+            '
+            Me.DataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+            Me.DataGridViewTextBoxColumn1.HeaderText = "Time"
+            Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+            '
+            'm_hdrFiles
+            '
+            Me.m_hdrFiles.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrFiles.CanCollapseParent = False
+            Me.m_hdrFiles.CollapsedParentHeight = 71
+            Me.m_hdrFiles.IsCollapsed = False
+            Me.m_hdrFiles.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrFiles.Name = "m_hdrFiles"
+            Me.m_hdrFiles.Size = New System.Drawing.Size(468, 18)
+            Me.m_hdrFiles.TabIndex = 0
+            Me.m_hdrFiles.Text = "Files"
+            Me.m_hdrFiles.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_tlpConfig
+            '
+            Me.m_tlpConfig.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tlpConfig.ColumnCount = 1
+            Me.m_tlpConfig.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpConfig.Controls.Add(Me.m_plTime, 0, 2)
+            Me.m_tlpConfig.Controls.Add(Me.m_plFiles, 0, 1)
+            Me.m_tlpConfig.Controls.Add(Me.m_plDescription, 0, 0)
+            Me.m_tlpConfig.Location = New System.Drawing.Point(0, 0)
+            Me.m_tlpConfig.Name = "m_tlpConfig"
+            Me.m_tlpConfig.RowCount = 3
+            Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+            Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle())
+            Me.m_tlpConfig.Size = New System.Drawing.Size(477, 527)
+            Me.m_tlpConfig.TabIndex = 0
+            '
+            'm_plTime
+            '
+            Me.m_plTime.Controls.Add(Me.m_cmbInterval)
+            Me.m_plTime.Controls.Add(Me.m_lblIntervalWith)
+            Me.m_plTime.Controls.Add(Me.m_mtbIntervalStart)
+            Me.m_plTime.Controls.Add(Me.m_rbFromName)
+            Me.m_plTime.Controls.Add(Me.m_rbFromDate)
+            Me.m_plTime.Controls.Add(Me.m_rbInterval)
+            Me.m_plTime.Controls.Add(Me.m_cbAnnual)
+            Me.m_plTime.Controls.Add(Me.m_tbxDatePart)
+            Me.m_plTime.Controls.Add(Me.m_hdrTime)
+            Me.m_plTime.Controls.Add(Me.m_btnSetTime)
+            Me.m_plTime.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plTime.Location = New System.Drawing.Point(3, 398)
+            Me.m_plTime.Name = "m_plTime"
+            Me.m_plTime.Size = New System.Drawing.Size(471, 126)
+            Me.m_plTime.TabIndex = 0
+            '
+            'm_cmbInterval
+            '
+            Me.m_cmbInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbInterval.FormattingEnabled = True
+            Me.m_cmbInterval.Items.AddRange(New Object() {"month", "3 months", "6 months", "year", "decade"})
+            Me.m_cmbInterval.Location = New System.Drawing.Point(275, 23)
+            Me.m_cmbInterval.Name = "m_cmbInterval"
+            Me.m_cmbInterval.Size = New System.Drawing.Size(87, 21)
+            Me.m_cmbInterval.TabIndex = 4
+            '
+            'm_lblIntervalWith
+            '
+            Me.m_lblIntervalWith.AutoSize = True
+            Me.m_lblIntervalWith.Location = New System.Drawing.Point(158, 26)
+            Me.m_lblIntervalWith.Name = "m_lblIntervalWith"
+            Me.m_lblIntervalWith.Size = New System.Drawing.Size(111, 13)
+            Me.m_lblIntervalWith.TabIndex = 3
+            Me.m_lblIntervalWith.Text = " spaced evenly every "
+            '
+            'm_mtbIntervalStart
+            '
+            Me.m_mtbIntervalStart.Location = New System.Drawing.Point(104, 23)
+            Me.m_mtbIntervalStart.Mask = "0000/00"
+            Me.m_mtbIntervalStart.Name = "m_mtbIntervalStart"
+            Me.m_mtbIntervalStart.Size = New System.Drawing.Size(52, 20)
+            Me.m_mtbIntervalStart.TabIndex = 2
+            Me.m_mtbIntervalStart.Text = "195001"
+            '
+            'm_rbFromName
+            '
+            Me.m_rbFromName.AutoSize = True
+            Me.m_rbFromName.Location = New System.Drawing.Point(30, 78)
+            Me.m_rbFromName.Name = "m_rbFromName"
+            Me.m_rbFromName.Size = New System.Drawing.Size(185, 17)
+            Me.m_rbFromName.TabIndex = 7
+            Me.m_rbFromName.TabStop = True
+            Me.m_rbFromName.Text = "From file &name (select which part):"
+            Me.m_rbFromName.UseVisualStyleBackColor = True
+            '
+            'm_rbFromDate
+            '
+            Me.m_rbFromDate.AutoSize = True
+            Me.m_rbFromDate.Location = New System.Drawing.Point(30, 51)
+            Me.m_rbFromDate.Name = "m_rbFromDate"
+            Me.m_rbFromDate.Size = New System.Drawing.Size(88, 17)
+            Me.m_rbFromDate.TabIndex = 6
+            Me.m_rbFromDate.TabStop = True
+            Me.m_rbFromDate.Text = "From file &date"
+            Me.m_rbFromDate.UseVisualStyleBackColor = True
+            '
+            'm_rbInterval
+            '
+            Me.m_rbInterval.AutoSize = True
+            Me.m_rbInterval.Checked = True
+            Me.m_rbInterval.Location = New System.Drawing.Point(30, 24)
+            Me.m_rbInterval.Name = "m_rbInterval"
+            Me.m_rbInterval.Size = New System.Drawing.Size(73, 17)
+            Me.m_rbInterval.TabIndex = 1
+            Me.m_rbInterval.TabStop = True
+            Me.m_rbInterval.Text = "S&tarting at"
+            Me.m_rbInterval.UseVisualStyleBackColor = True
+            '
+            'm_cbAnnual
+            '
+            Me.m_cbAnnual.AutoSize = True
+            Me.m_cbAnnual.Location = New System.Drawing.Point(6, 106)
+            Me.m_cbAnnual.Name = "m_cbAnnual"
+            Me.m_cbAnnual.Size = New System.Drawing.Size(129, 17)
+            Me.m_cbAnnual.TabIndex = 9
+            Me.m_cbAnnual.Text = "Data repeats &annually"
+            Me.m_cbAnnual.UseVisualStyleBackColor = True
+            '
+            'm_tbxDatePart
+            '
+            Me.m_tbxDatePart.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxDatePart.HideSelection = False
+            Me.m_tbxDatePart.Location = New System.Drawing.Point(211, 78)
+            Me.m_tbxDatePart.Name = "m_tbxDatePart"
+            Me.m_tbxDatePart.ReadOnly = True
+            Me.m_tbxDatePart.Size = New System.Drawing.Size(155, 20)
+            Me.m_tbxDatePart.TabIndex = 8
+            '
+            'm_hdrTime
+            '
+            Me.m_hdrTime.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrTime.CanCollapseParent = True
+            Me.m_hdrTime.CollapsedParentHeight = 50
+            Me.m_hdrTime.IsCollapsed = False
+            Me.m_hdrTime.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrTime.Name = "m_hdrTime"
+            Me.m_hdrTime.Size = New System.Drawing.Size(468, 18)
+            Me.m_hdrTime.TabIndex = 0
+            Me.m_hdrTime.Text = "Time utility"
+            Me.m_hdrTime.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_btnSetTime
+            '
+            Me.m_btnSetTime.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_btnSetTime.Location = New System.Drawing.Point(378, 21)
+            Me.m_btnSetTime.Name = "m_btnSetTime"
+            Me.m_btnSetTime.Size = New System.Drawing.Size(90, 23)
+            Me.m_btnSetTime.TabIndex = 10
+            Me.m_btnSetTime.Text = "Set file &times"
+            Me.m_btnSetTime.UseVisualStyleBackColor = True
+            '
+            'm_plFiles
+            '
+            Me.m_plFiles.Controls.Add(Me.m_tbxFileNamePattern)
+            Me.m_plFiles.Controls.Add(Me.Label1)
+            Me.m_plFiles.Controls.Add(Me.m_cmbExtensions)
+            Me.m_plFiles.Controls.Add(Me.m_dgvFiles)
+            Me.m_plFiles.Controls.Add(Me.m_hdrFiles)
+            Me.m_plFiles.Controls.Add(Me.m_tbxPath)
+            Me.m_plFiles.Controls.Add(Me.m_lblPath)
+            Me.m_plFiles.Controls.Add(Me.m_lblExtension)
+            Me.m_plFiles.Controls.Add(Me.m_btnBrowse)
+            Me.m_plFiles.Controls.Add(Me.m_btnSearch)
+            Me.m_plFiles.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plFiles.Location = New System.Drawing.Point(3, 131)
+            Me.m_plFiles.Name = "m_plFiles"
+            Me.m_plFiles.Size = New System.Drawing.Size(471, 261)
+            Me.m_plFiles.TabIndex = 1
+            '
+            'm_tbxFileNamePattern
+            '
+            Me.m_tbxFileNamePattern.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_tbxFileNamePattern.Location = New System.Drawing.Point(80, 73)
+            Me.m_tbxFileNamePattern.Name = "m_tbxFileNamePattern"
+            Me.m_tbxFileNamePattern.Size = New System.Drawing.Size(286, 20)
+            Me.m_tbxFileNamePattern.TabIndex = 7
+            Me.m_tbxFileNamePattern.Text = "*"
+            '
+            'Label1
+            '
+            Me.Label1.AutoSize = True
+            Me.Label1.Location = New System.Drawing.Point(3, 49)
+            Me.Label1.Name = "Label1"
+            Me.Label1.Size = New System.Drawing.Size(49, 13)
+            Me.Label1.TabIndex = 3
+            Me.Label1.Text = "&File type:"
+            '
+            'm_cmbExtensions
+            '
+            Me.m_cmbExtensions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_cmbExtensions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbExtensions.FormattingEnabled = True
+            Me.m_cmbExtensions.Location = New System.Drawing.Point(80, 46)
+            Me.m_cmbExtensions.Name = "m_cmbExtensions"
+            Me.m_cmbExtensions.Size = New System.Drawing.Size(286, 21)
+            Me.m_cmbExtensions.TabIndex = 4
+            '
+            'm_plDescription
+            '
+            Me.m_plDescription.Controls.Add(Me.m_hdrDescription)
+            Me.m_plDescription.Controls.Add(Me.m_tbxName)
+            Me.m_plDescription.Controls.Add(Me.m_lblDescription)
+            Me.m_plDescription.Controls.Add(Me.m_lblName)
+            Me.m_plDescription.Controls.Add(Me.m_tbxDescription)
+            Me.m_plDescription.Dock = System.Windows.Forms.DockStyle.Fill
+            Me.m_plDescription.Location = New System.Drawing.Point(3, 3)
+            Me.m_plDescription.Name = "m_plDescription"
+            Me.m_plDescription.Size = New System.Drawing.Size(471, 122)
+            Me.m_plDescription.TabIndex = 0
+            '
+            'm_hdrDescription
+            '
+            Me.m_hdrDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrDescription.CanCollapseParent = True
+            Me.m_hdrDescription.CollapsedParentHeight = 87
+            Me.m_hdrDescription.IsCollapsed = False
+            Me.m_hdrDescription.Location = New System.Drawing.Point(0, 0)
+            Me.m_hdrDescription.Name = "m_hdrDescription"
+            Me.m_hdrDescription.Size = New System.Drawing.Size(468, 18)
+            Me.m_hdrDescription.TabIndex = 0
+            Me.m_hdrDescription.Text = "Description"
+            Me.m_hdrDescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'ucMultiFileDatasetConfigPage
+            '
+            Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+            Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.BackColor = System.Drawing.SystemColors.Control
+            Me.Controls.Add(Me.m_tlpConfig)
+            Me.MinimumSize = New System.Drawing.Size(410, 400)
+            Me.Name = "ucMultiFileDatasetConfigPage"
+            Me.Size = New System.Drawing.Size(480, 530)
+            CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).EndInit()
+            Me.m_tlpConfig.ResumeLayout(False)
+            Me.m_plTime.ResumeLayout(False)
+            Me.m_plTime.PerformLayout()
+            Me.m_plFiles.ResumeLayout(False)
+            Me.m_plFiles.PerformLayout()
+            Me.m_plDescription.ResumeLayout(False)
+            Me.m_plDescription.PerformLayout()
+            Me.ResumeLayout(False)
+
+        End Sub
+        Private WithEvents m_lblPath As System.Windows.Forms.Label
+        Private WithEvents m_tbxPath As System.Windows.Forms.TextBox
+        Private WithEvents m_btnBrowse As System.Windows.Forms.Button
+        Private WithEvents m_dgvFiles As System.Windows.Forms.DataGridView
+        Private WithEvents m_btnSearch As System.Windows.Forms.Button
+        Private WithEvents m_lblExtension As System.Windows.Forms.Label
+        Private WithEvents m_lblName As System.Windows.Forms.Label
+        Private WithEvents m_tbxName As System.Windows.Forms.TextBox
+        Private WithEvents m_tbxDescription As System.Windows.Forms.TextBox
+        Private WithEvents m_lblDescription As System.Windows.Forms.Label
+        Private WithEvents CCalendarColumn1 As cCalendarColumn
+        Private WithEvents DataGridViewTextBoxColumn1 As System.Windows.Forms.DataGridViewTextBoxColumn
+        Private WithEvents m_colFileName As System.Windows.Forms.DataGridViewTextBoxColumn
+        Private WithEvents m_colTime As cCalendarColumn
+        Private WithEvents m_tlpConfig As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_plTime As System.Windows.Forms.Panel
+        Private WithEvents m_hdrTime As Controls.cEwEHeaderLabel
+        Private WithEvents m_plFiles As System.Windows.Forms.Panel
+        Private WithEvents m_plDescription As System.Windows.Forms.Panel
+        Private WithEvents m_hdrDescription As Controls.cEwEHeaderLabel
+        Private WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
+        Private WithEvents m_tbxDatePart As System.Windows.Forms.TextBox
+        Private WithEvents m_hdrFiles As Controls.cEwEHeaderLabel
+        Private WithEvents m_cmbInterval As System.Windows.Forms.ComboBox
+        Private WithEvents m_mtbIntervalStart As System.Windows.Forms.MaskedTextBox
+        Private WithEvents m_rbInterval As System.Windows.Forms.RadioButton
+        Private WithEvents m_btnSetTime As System.Windows.Forms.Button
+        Private WithEvents m_rbFromDate As System.Windows.Forms.RadioButton
+        Private WithEvents m_rbFromName As System.Windows.Forms.RadioButton
+        Private WithEvents m_cmbExtensions As System.Windows.Forms.ComboBox
+        Private WithEvents m_tbxFileNamePattern As System.Windows.Forms.TextBox
+        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblIntervalWith As System.Windows.Forms.Label
+
+    End Class
+
+End Namespace

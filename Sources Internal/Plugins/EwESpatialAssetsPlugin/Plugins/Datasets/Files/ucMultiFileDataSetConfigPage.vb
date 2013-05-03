@@ -1,0 +1,472 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
+Imports System.IO
+Imports System.Windows.Forms
+Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
+Imports System.Collections.Generic
+
+#End Region ' Imports
+
+Namespace SpatialData
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Configuration interface for <see cref="cMultiFileDataSetPlugin"/>s.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Friend Class ucMultiFileDatasetConfigPage
+
+#Region " Private classes "
+
+        Private Class cFileExtItem
+            Private m_strLabel As String
+            Private m_strExt As String
+            Public Sub New(strLabel As String, strExt As String)
+                Me.m_strLabel = strLabel : Me.m_strExt = strExt
+            End Sub
+            Public Overrides Function ToString() As String
+                Return Me.m_strLabel
+            End Function
+            Public ReadOnly Property Extensions As String()
+                Get
+                    Return Me.m_strExt.Split(";"c)
+                End Get
+            End Property
+        End Class
+
+        Private Class cFileEntry
+            Private m_strFileName As String
+            Private m_dtDate As Date
+
+            Public Sub New(strFileName As String, dt As Date)
+                Me.m_dtDate = dt
+                Me.m_strFileName = strFileName
+            End Sub
+
+            Public ReadOnly Property FileName As String
+                Get
+                    Return Me.m_strFileName
+                End Get
+            End Property
+
+            Public Property FileDate As DateTime
+                Get
+                    Return Me.m_dtDate
+                End Get
+                Set(value As DateTime)
+                    Me.m_dtDate = value
+                End Set
+            End Property
+        End Class
+
+#End Region ' Private classes
+
+#Region " Private vars "
+
+        Private Enum eIntervalType
+            Month = 0
+            ThreeMonths
+            HalfYear
+            Year
+            Decade
+        End Enum
+
+        Private m_dataset As cMultiFileDataSetPlugin = Nothing
+        Private m_lFiles As New List(Of cFileEntry)
+
+#End Region ' Private vars
+
+#Region " Overrides "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
+            MyBase.OnLoad(e)
+
+            If (Me.m_dataset Is Nothing) Then
+                Me.m_dataset = New cMultiFileDataSetPlugin()
+            End If
+
+            Dim aTimes As DateTime() = Me.m_dataset.TimeSteps
+            Dim dt As DateTime = Nothing
+            Dim iRow As Integer = 0
+            Dim strFile As String = ""
+
+            For i As Integer = 0 To aTimes.Length - 1
+                dt = aTimes(i)
+                If (i = 0) Then Me.m_mtbIntervalStart.Text = dt.ToString("yyyy") & dt.ToString("MM")
+                Me.m_lFiles.Add(New cFileEntry(Me.m_dataset.File(dt), dt))
+            Next
+            Me.UpdateGrid()
+
+            Me.m_mtbIntervalStart.ValidatingType = GetType(Date)
+            Me.m_tbxName.Text = Me.m_dataset.DisplayName
+            Me.m_tbxDescription.Text = Me.m_dataset.Description
+            Me.m_tbxPath.Text = Me.m_dataset.Source
+            Me.m_cbAnnual.Checked = Me.m_dataset.IsAnnual
+
+            Dim astrFilters As String() = Me.m_dataset.DialogReadFilter.Split("|"c)
+            For i As Integer = 0 To astrFilters.Length - 1 Step 2
+                Me.m_cmbExtensions.Items.Add(New cFileExtItem(astrFilters(i), astrFilters(i + 1)))
+            Next
+            Me.m_cmbExtensions.SelectedIndex = 0
+            Me.m_cmbInterval.SelectedIndex = 0
+
+            Me.m_hdrDescription.IsCollapsed = True
+            Me.m_hdrTime.IsCollapsed = True
+
+        End Sub
+
+        Protected Overrides Sub Dispose(bDispose As Boolean)
+            Try
+                Me.Apply()
+                If Disposing And (components IsNot Nothing) Then
+                    components.Dispose()
+                End If
+            Finally
+                MyBase.Dispose(Disposing)
+            End Try
+        End Sub
+
+#End Region ' Overrides
+
+#Region " Interface implementation "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Property Dataset As EwEUtils.SpatialData.ISpatialDataSet
+            Get
+                Return Me.m_dataset
+            End Get
+            Set(ByVal value As EwEUtils.SpatialData.ISpatialDataSet)
+                Debug.Assert(TypeOf value Is cMultiFileDataSetPlugin)
+                Me.m_dataset = DirectCast(value, cMultiFileDataSetPlugin)
+            End Set
+        End Property
+
+        Public Function Apply() As Boolean
+            Try
+                Me.DoApply()
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+
+        End Function
+
+#End Region ' Interface implementation
+
+#Region " Control events "
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnBrowse(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+                Handles m_btnBrowse.Click
+            Me.DoBrowse()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnPathChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+             Handles m_tbxFileNamePattern.TextChanged
+            Me.RefreshDataPartSample()
+            Me.UpdateControls()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnDescriptiveChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_tbxName.TextChanged, m_tbxDescription.TextChanged
+            Me.UpdateControls()
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnGridCellValueChanged(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) _
+            Handles m_dgvFiles.CellValueChanged
+
+            If (e.RowIndex < 0) Or (e.ColumnIndex <> 1) Then Return
+
+            Dim row As DataGridViewRow = Me.m_dgvFiles.Rows(e.RowIndex)
+            Dim dt As Date = CDate(row.Cells(1).Value)
+            Dim entry As cFileEntry = DirectCast(row.Tag, cFileEntry)
+
+            entry.FileDate = dt
+
+        End Sub
+
+        Private Sub OnGridSelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_dgvFiles.SelectionChanged
+
+            Dim row As DataGridViewRow = Nothing
+            If (Me.m_dgvFiles.SelectedRows.Count > 0) Then
+                row = Me.m_dgvFiles.SelectedRows(0)
+            End If
+
+            If (row IsNot Nothing) Then
+                Me.RefreshDataPartSample(CStr(row.Cells(0).Value))
+            End If
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub OnReload(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnSearch.Click
+            Try
+                Me.Reload()
+            Catch ex As Exception
+            End Try
+        End Sub
+
+        Private Sub OnSetTime(ByVal sender As Object, ByVal e As EventArgs) _
+            Handles m_btnSetTime.Click
+
+            For i As Integer = 0 To Me.m_lFiles.Count - 1
+                Dim fe As cFileEntry = Me.m_lFiles(i)
+                fe.FileDate = Me.ToFileDate(i, fe.FileName)
+            Next
+            Me.UpdateGrid()
+
+        End Sub
+
+        Private Function ToFileDate(iFile As Integer, strFile As String) As Date
+
+            Dim dtStart As Date = CType(Me.m_mtbIntervalStart.ValidateText, Date)
+            Dim interval As eIntervalType = DirectCast(Me.m_cmbInterval.SelectedIndex, eIntervalType)
+            Dim dt As Date
+
+            If Me.m_rbInterval.Checked Then
+                dt = Me.GetDateFromInterval(dtStart.Year, dtStart.Month, iFile, interval)
+            ElseIf Me.m_rbFromName.Checked Then
+                dt = Me.GetDateFromFileName(Path.Combine(Me.m_tbxPath.Text, strFile))
+            ElseIf Me.m_rbFromDate.Checked Then
+                dt = Me.GetDateFromFile(Path.Combine(Me.m_tbxPath.Text, strFile))
+            End If
+            Return dt
+
+        End Function
+
+#End Region ' Control events
+
+#Region " Internals "
+
+        Private Sub DoBrowse()
+            Dim fbd As New FolderBrowserDialog()
+
+            fbd.SelectedPath = Me.m_tbxPath.Text
+            fbd.Description = My.Resources.PROMPT_SELECTFOLDER
+            fbd.ShowNewFolderButton = False
+
+            If fbd.ShowDialog(Me) = DialogResult.OK Then
+                Me.m_tbxPath.Text = fbd.SelectedPath
+                Me.UpdateControls()
+            End If
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="strPath">Root directory to search.</param>
+        ''' <param name="strPattern">File search pattern.</param>
+        ''' <param name="astrExtensions">Array of extensions to filter by.</param>
+        ''' -----------------------------------------------------------------------
+        Private Function ReadFilesFromLocation(ByVal strPath As String, _
+                                               ByVal strPattern As String, _
+                                               ByVal astrExtensions() As String) As String()
+
+            ' Provide a pattern if missing
+            If (String.IsNullOrWhiteSpace(strPattern)) Then
+                strPattern = "*.*"
+            End If
+
+            Try
+                If (Directory.Exists(strPath)) Then
+                    Return cFileUtils.FilesByDialogFilter(Directory.GetFiles(strPath, strPattern, SearchOption.TopDirectoryOnly), astrExtensions)
+                End If
+            Catch ex As Exception
+                ' Invalid bits
+            End Try
+            Return New String() {}
+        End Function
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub UpdateControls()
+
+            Dim bHasPattern As Boolean = (Not String.IsNullOrEmpty(Me.m_tbxDatePart.SelectedText))
+            Dim strPath As String = Me.m_tbxPath.Text
+            Dim bHasFolder As Boolean = False
+
+            Try
+                If Not String.IsNullOrWhiteSpace(strPath) Then
+                    bHasFolder = Directory.Exists(Path.GetFullPath(strPath))
+                End If
+            Catch ex As Exception
+
+            End Try
+            Me.m_btnSearch.Enabled = bHasFolder
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub RefreshDataPartSample(Optional ByVal strFile As String = "")
+
+            Dim iSel As Integer = Me.m_tbxDatePart.SelectionStart
+            Dim iLen As Integer = Me.m_tbxDatePart.SelectionLength
+
+            If (String.IsNullOrWhiteSpace(strFile)) Then
+                If (Me.m_lFiles.Count > 0) Then
+                    strFile = Me.m_lFiles(0).FileName
+                End If
+            End If
+
+            If Not String.IsNullOrWhiteSpace(strFile) Then
+                Me.m_tbxDatePart.Text = Path.GetFileName(strFile)
+                Me.m_tbxDatePart.SelectionStart = iSel
+                Me.m_tbxDatePart.SelectionLength = iLen
+            Else
+                Me.m_tbxDatePart.Text = String.Empty
+            End If
+
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Private Sub Reload()
+
+            Dim astrFiles As String() = Me.ReadFilesFromLocation(Me.m_tbxPath.Text, _
+                                                                 Me.m_tbxFileNamePattern.Text, _
+                                                                 Me.SelectedExtensions())
+            Me.m_lFiles.Clear()
+            For i As Integer = 0 To astrFiles.Length - 1
+                Dim dt As DateTime = Me.ToFileDate(i, astrFiles(i))
+                Dim fe As New cFileEntry(astrFiles(i), dt)
+                Me.m_lFiles.Add(fe)
+            Next
+            Me.UpdateGrid()
+
+        End Sub
+
+        Private Sub UpdateGrid()
+
+            Me.Cursor = Cursors.WaitCursor
+            Me.m_dgvFiles.SuspendLayout()
+            Me.m_dgvFiles.Rows.Clear()
+
+            For i As Integer = 0 To Me.m_lFiles.Count - 1
+                Dim entry As cFileEntry = Me.m_lFiles(i)
+                Dim iRow As Integer = Me.m_dgvFiles.Rows.Add(Path.GetFileName(entry.FileName), entry.FileDate)
+                Me.m_dgvFiles.Rows(iRow).Tag = entry
+            Next
+
+            Me.m_dgvFiles.ResumeLayout()
+            Me.Cursor = Cursors.Default
+
+        End Sub
+
+        Private Sub DoApply()
+
+            Me.m_dataset.DisplayName = Me.m_tbxName.Text
+            Me.m_dataset.Description = Me.m_tbxDescription.Text
+            Me.m_dataset.Source = Me.m_tbxPath.Text
+            Me.m_dataset.IsAnnual = Me.m_cbAnnual.Checked
+
+            Me.m_dataset.Clear()
+            For Each entry As cFileEntry In Me.m_lFiles
+                Me.m_dataset.File(entry.FileDate) = entry.FileName
+            Next entry
+
+        End Sub
+
+        Private Function GetDateFromInterval(ByVal iYear As Integer, ByVal iMonth As Integer, ByVal iFile As Integer, ByVal interval As eIntervalType) As Date
+
+            Dim dt As New Date(iYear, iMonth, 1)
+            Select Case interval
+                Case eIntervalType.Month
+                    Return dt.AddMonths(iFile)
+                Case eIntervalType.ThreeMonths
+                    Return dt.AddMonths(iFile * 3)
+                Case eIntervalType.HalfYear
+                    Return dt.AddMonths(iFile * 6)
+                Case eIntervalType.Year
+                    Return dt.AddYears(iFile)
+                Case eIntervalType.Decade
+                    Return dt.AddYears(iFile * 10)
+            End Select
+            Return Date.MinValue
+
+        End Function
+
+        Private Function GetDateFromFile(ByVal strFile As String) As Date
+            Return File.GetCreationTime(strFile)
+        End Function
+
+        Private Function GetDateFromFileName(ByVal strFile As String) As Date
+            Dim dt As Date = Date.MinValue
+            DateTime.TryParse(strFile.Substring(Me.m_tbxDatePart.SelectionStart, Me.m_tbxDatePart.SelectionLength), dt)
+            Return dt
+        End Function
+
+        Private Function SelectedExtensions() As String()
+            If Me.m_cmbExtensions.SelectedIndex = -1 Then Return New String() {}
+            Dim item As cFileExtItem = DirectCast(Me.m_cmbExtensions.SelectedItem, cFileExtItem)
+            Return item.Extensions
+        End Function
+
+#End Region ' Internals
+
+    End Class
+
+End Namespace

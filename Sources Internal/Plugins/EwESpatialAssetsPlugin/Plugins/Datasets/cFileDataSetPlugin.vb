@@ -1,0 +1,608 @@
+﻿' ===============================================================================
+' This file is part of Ecopath with Ecosim (EwE)
+'
+' EwE is free software: you can redistribute it and/or modify it under the terms
+' of the GNU General Public License version 2 as published by the Free Software 
+' Foundation.
+'
+' EwE is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+' without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+' PURPOSE. See the GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License along with EwE.
+' If not, see <http://www.gnu.org/licenses/gpl-2.0.html>. 
+'
+' Copyright 1991-2012 UBC Fisheries Centre, Vancouver BC, Canada.
+' ===============================================================================
+'
+#Region " Imports "
+
+Option Strict On
+Imports System.Collections.Generic
+Imports System.Drawing
+Imports System.IO
+Imports System.Xml
+Imports DotSpatial.Data
+Imports EwECore
+Imports EwEPlugin
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
+Imports EwEUtils.Utilities
+Imports System.Windows.Forms
+Imports ScientificInterfaceShared.Controls
+Imports EwECore.SpatialData
+
+#End Region ' Imports
+
+' ToDo: figure out how to process an data that spans the 180 degree meridian
+
+Namespace SpatialData
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' <see cref="ISpatialDataSet"/> for accessing a folder of spatio-temporal files.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public MustInherit Class cFileDataSetPlugin
+        Implements ISpatialDataSetPlugin
+        Implements IConfigurablePlugin
+        Implements IDisposable
+
+#Region " Private vars "
+
+        Protected m_core As cCore = Nothing
+
+        ''' <summary>Global unique ID of the data set.</summary>
+        Protected m_GUID As Guid = Guid.Empty
+        ''' <summary>Source for the data set.</summary>
+        Protected m_strSource As String = ""
+        ''' <summary>Name of the data set.</summary>
+        Protected m_strName As String = ""
+        ''' <summary>Description of the data set.</summary>
+        Protected m_strDescription As String = ""
+
+        ''' <summary>Source data file (not loaded from cache).</summary>
+        Private m_dsSourceData As IDataSet = Nothing
+        ''' <summary>Date that the loaded data represents.</summary>
+        Protected m_dtTime As DateTime = Nothing
+        ''' <summary>Ecospace raster extent.</summary>
+        Protected m_extModelArea As Extent = Nothing
+        ''' <summary>Ecospace cell size.</summary>
+        Protected m_dModelCellSize As Double = 0
+
+        ''' <summary>States whether the dataset is allowed to deliver data.</summary>
+        Private m_bEnabled As Boolean = True
+        ''' <summary>Internal helper flag, determining if data can be read from the cache.</summary>
+        Private m_bReadFromCache As Boolean = True
+
+#End Region ' Private vars
+
+#Region " Construction / destruction "
+
+        Public Sub New()
+        End Sub
+
+        Public Sub Dispose() _
+            Implements IDisposable.Dispose
+            If Me.IsLocked Then Me.UnlockData()
+            GC.SuppressFinalize(Me)
+        End Sub
+
+#End Region ' Construction / destruction
+
+#Region " Information "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.GUID" />
+        ''' -------------------------------------------------------------------
+        Public Property DBID As Guid _
+            Implements ISpatialDataSet.GUID
+            Get
+                Return Me.m_GUID
+            End Get
+            Friend Set(ByVal value As Guid)
+                Me.m_GUID = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.DisplayName" />
+        ''' -------------------------------------------------------------------
+        Public MustOverride Property DisplayName As String _
+            Implements ISpatialDataSet.DisplayName
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.Description" />
+        ''' -------------------------------------------------------------------
+        Public Property Description As String _
+            Implements ISpatialDataSet.Description
+            Get
+                Return Me.m_strDescription
+            End Get
+            Set(ByVal value As String)
+                Me.m_strDescription = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.Source" />
+        ''' -------------------------------------------------------------------
+        Public Property Source As String _
+            Implements ISpatialDataSet.Source
+            Get
+                Return Me.m_strSource
+            End Get
+            Set(ByVal value As String)
+                Me.m_strSource = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.TimeSteps" />
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property TimeSteps As DateTime() _
+            Implements ISpatialDataSet.TimeSteps
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.TimeEnd"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property TimeEnd As DateTime _
+            Implements ISpatialDataSet.TimeEnd
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.TimeStart"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property TimeStart As DateTime _
+            Implements ISpatialDataSet.TimeStart
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.DialogReadFilter"/>"
+        ''' -------------------------------------------------------------------
+        Public MustOverride ReadOnly Property DialogReadFilter As String _
+             Implements ISpatialDataSet.DialogReadFilter
+
+        Public Overrides Function ToString() As String
+            Return Me.DisplayName()
+        End Function
+
+#End Region ' Information
+
+#Region " Configuration "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.Configuration"/>
+        ''' -------------------------------------------------------------------
+        Public Property Configuration(ByVal doc As XmlDocument) As XmlNode _
+            Implements ISpatialDataSet.Configuration
+            Get
+                Return Me.ToXML(doc)
+            End Get
+            Set(ByVal value As XmlNode)
+                Me.FromXML(doc, value)
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IConfigurablePlugin.GetConfigUI"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function GetConfigUI() As Windows.Forms.Control _
+            Implements IConfigurablePlugin.GetConfigUI
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IConfigurablePlugin.IsConfigured"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function IsConfigured() As Boolean _
+            Implements IConfigurablePlugin.IsConfigured, ISpatialDataSet.IsConfigured
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IExternalDataSource.EnableData"/>
+        ''' -------------------------------------------------------------------
+        Public Property EnableData(ByVal runtype As IRunType) As Boolean _
+            Implements IExternalDataSource.EnableData
+            Get
+                Return True
+            End Get
+            Set(ByVal value As Boolean)
+                ' NOP
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IExternalDataSource.IsDataAvailable"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function IsDataAvailable(ByVal runtype As IRunType) As Boolean _
+            Implements IExternalDataSource.IsDataAvailable
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Write content to XML.
+        ''' </summary>
+        ''' <param name="doc">The doc to generate nodes for.</param>
+        ''' <returns>
+        ''' An XML node that contains the content of the dataset.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function ToXML(ByVal doc As XmlDocument) As XmlNode
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Read content from XML.
+        ''' </summary>
+        ''' <param name="doc">The doc to read nodes from.</param>
+        ''' <param name="node">The configuration node that contains the content
+        ''' of the dataset. Happy, happy, happy.</param>
+        ''' <returns>
+        ''' True if successful.
+        ''' </returns>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function FromXML(ByVal doc As XmlDocument, ByVal node As XmlNode) As Boolean
+
+#End Region ' Configuration
+
+#Region " Data "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.GetRaster"/>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function GetRaster(ByVal converter As ISpatialDataConverter, _
+                                              ByVal strLayerName As String) As ISpatialRaster _
+            Implements ISpatialDataSet.GetRaster
+
+            Debug.Assert(converter IsNot Nothing)
+            If (Not Me.IsLocked) Then Return Nothing
+
+            ' Get cache file name
+            Dim strFileName As String = Me.CacheFileName(strLayerName)
+            ' Does file exist in cache AND allowed to use it?
+            If (System.IO.File.Exists(strFileName)) And (Me.m_bReadFromCache = True) Then
+                ' #Yes: grab file from cache
+                Dim ds As IDataSet = cDotSpatialUtils.OpenFile(strFileName)
+                ' Is loaded?
+                If (ds IsNot Nothing) Then
+                    ds.Close()
+                    ' Is a raster?
+                    If (TypeOf ds Is IRaster) Then
+                        ' Is really valid?
+                        Dim rs As IRaster = DirectCast(ds, IRaster)
+
+                        ' Sanity checks
+                        Debug.Assert(cNumberUtils.Approximates(Me.m_dModelCellSize, rs.CellWidth, Me.m_dModelCellSize * cDotSpatialUtils.EQUALS_FACTOR))
+                        Debug.Assert(cNumberUtils.Approximates(Me.m_dModelCellSize, rs.CellHeight, Me.m_dModelCellSize * cDotSpatialUtils.EQUALS_FACTOR))
+
+                        Dim rsOut As New cSpatialRaster(rs)
+                        Me.LogMessage(My.Resources.STATUS_LOADED_FROM_CACHE, eStatusFlags.OK)
+                        Return rsOut
+                    End If
+                End If
+            End If
+
+            ' Fallback: cache somehow did not work, reload data
+            ' Able to load source?
+            If Not Me.LoadSource() Then
+                ' #No: something is screwed up but can't do anything about it
+                Return Nothing
+            End If
+
+            Return converter.Convert(Me.m_dsSourceData, _
+                                     cDotSpatialUtils.TopLeft(Me.m_extModelArea), _
+                                     cDotSpatialUtils.BottomRight(Me.m_extModelArea), _
+                                     Me.m_dModelCellSize, _
+                                     strFileName)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.HasDataAtT"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function HasDataAtT(ByVal datetime As DateTime) As Boolean _
+            Implements ISpatialDataSet.HasDataAtT
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.GetExtentAtT"/>
+        ''' -------------------------------------------------------------------
+        Public MustOverride Function GetExtentAtT(ByVal datetime As DateTime, _
+                                                  ByRef ptfTL As PointF, _
+                                                  ByRef ptfBR As PointF) As Boolean _
+            Implements ISpatialDataSet.GetExtentAtT
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.FractionIndexed"/>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function FractionIndexed() As Single _
+            Implements ISpatialDataSet.FractionIndexed
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.IndexStatusAtT"/>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function IndexStatusAtT(dt As DateTime) As ISpatialDataSet.eIndexStatus _
+            Implements ISpatialDataSet.IndexStatusAtT
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.BuildIndex"/>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Sub BuildIndex(ByVal dateStart As DateTime, _
+                                              ByVal dateEnd As DateTime, _
+                                              Optional dgt As ISpatialDataSet.BuildIndexUpdateDelegate = Nothing) _
+            Implements ISpatialDataSet.BuildIndex
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.IsLocked"/>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function IsLocked() As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.IsLocked
+            Return (Me.m_extModelArea IsNot Nothing)
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.LockDataAtT"/>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function LockDataAtT(ByVal datetime As Date, _
+                                                ByVal dCellSize As Double, _
+                                                ByVal ptfTL As System.Drawing.PointF, _
+                                                ByVal ptfBR As System.Drawing.PointF) As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.LockDataAtT
+
+            ' Sanity checks
+            Debug.Assert(dCellSize > 0)
+            Debug.Assert(ptfTL.X < ptfBR.X)
+            Debug.Assert(ptfTL.Y > ptfBR.Y)
+
+            Me.m_extModelArea = New Extent(ptfTL.X, ptfBR.Y, ptfBR.X, ptfTL.Y)
+            Me.m_dModelCellSize = dCellSize
+
+            Me.m_dtTime = datetime
+
+            Return True
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.Unlock"/>
+        ''' -------------------------------------------------------------------
+        Public Overridable Function UnlockData() As Boolean _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.Unlock
+
+            If (Me.m_dsSourceData IsNot Nothing) Then
+                Try
+                    Me.m_dsSourceData.Close()
+                Catch ex As Exception
+                    ' Swallow this
+                    ' Debug.Assert(False)
+                End Try
+                Me.m_dsSourceData.Dispose()
+                Me.m_dsSourceData = Nothing
+            End If
+            Me.m_extModelArea = Nothing
+
+            Return True
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.GetAttributes"/>
+        ''' -------------------------------------------------------------------
+        Public Function GetAttributes() As String() _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.GetAttributes
+
+            Dim lstrAttributes As New List(Of String)
+            Dim fs As IFeatureSet = Nothing
+            Dim dt As DataTable = Nothing
+
+            Try
+
+                If (Me.LoadSource()) Then
+                    If (TypeOf Me.m_dsSourceData Is IFeatureSet) Then
+                        fs = DirectCast(Me.m_dsSourceData, IFeatureSet)
+                        dt = fs.DataTable
+                        For iCol As Integer = 0 To dt.Columns.Count - 1
+                            lstrAttributes.Add(dt.Columns(iCol).ColumnName)
+                        Next
+                    End If
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "cFileDataSet::GetAttributes")
+            End Try
+
+            Return lstrAttributes.ToArray()
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.GetAttributeValues"/>
+        ''' -------------------------------------------------------------------
+        Public Function GetAttributeValues() As DataTable _
+            Implements EwEUtils.SpatialData.ISpatialDataSet.GetAttributeValues
+
+            Dim fs As IFeatureSet = Nothing
+            Dim dt As DataTable = Nothing
+
+            Try
+
+                If (Me.LoadSource()) Then
+                    If (TypeOf Me.m_dsSourceData Is IFeatureSet) Then
+                        fs = DirectCast(Me.m_dsSourceData, IFeatureSet)
+                        If Not fs.AttributesPopulated Then
+                            fs.FillAttributes()
+                        End If
+                        dt = fs.DataTable
+                    End If
+                End If
+
+            Catch ex As Exception
+                cLog.Write(ex, "cFileDataSet::GetAttributeValues")
+            End Try
+
+            Return dt
+
+        End Function
+
+#End Region ' Data
+
+#Region " Cache "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.Cache"/>"
+        ''' -------------------------------------------------------------------
+        Protected Property Cache As ISpatialDataCache _
+            Implements ISpatialDataSet.Cache
+            Get
+                Return cSpatialDataCache.DefaultDataCache
+            End Get
+            Set(value As ISpatialDataCache)
+                ' NOP
+            End Set
+        End Property
+
+#End Region ' Cache
+
+#Region " Internals "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Load the actual source document for the current time step.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected Overridable Function LoadSource() As Boolean
+
+            Try
+
+                Dim strFileName As String = Me.SourceFileName()
+                If (Me.m_dsSourceData IsNot Nothing) Then
+                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_SKIPPED, strFileName), eStatusFlags.OK)
+                    Return True
+                End If
+
+                If (Not File.Exists(strFileName)) Then
+                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FILENOTFOUND, strFileName), eStatusFlags.ErrorEncountered)
+                    Me.StoreExtent(Nothing)
+                    Return False
+                End If
+
+                Me.m_dsSourceData = cDotSpatialUtils.OpenFile(strFileName)
+                If (m_dsSourceData IsNot Nothing) Then
+                    Me.StoreExtent(Me.m_dsSourceData.Extent)
+                    Me.LogMessage(String.Format(My.Resources.STATUS_LOADED, strFileName), eStatusFlags.OK)
+                    Return True
+                Else
+                    Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ""), eStatusFlags.ErrorEncountered)
+                    Return False
+                End If
+
+            Catch ex As Exception
+                Me.LogMessage(String.Format(My.Resources.STATUS_LOAD_FAILED, ex.Message), eStatusFlags.ErrorEncountered)
+                Me.m_dsSourceData = Nothing
+            End Try
+
+            Return False
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Internal helper to enable and disable cache access.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Protected Property ReadFromCache As Boolean
+            Get
+                Return Me.m_bReadFromCache
+            End Get
+            Set(value As Boolean)
+                Me.m_bReadFromCache = value
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Store the extent of a loaded dataset.
+        ''' </summary>
+        ''' <param name="ext"></param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function StoreExtent(ext As IExtent) As Boolean
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the complete path to the external data file for the current timestep.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function SourceFileName() As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Create a cached file name (including path) for a file, current extent, 
+        ''' time step, and cell size.
+        ''' </summary>
+        ''' <returns>A file name to store the raster in.</returns>
+        ''' <remarks>
+        ''' If a <see cref="Cache"/> is provided the file name should point at the
+        ''' relevant Cache path. If not, a temporary file is generated.
+        ''' </remarks>
+        ''' -------------------------------------------------------------------
+        Protected MustOverride Function CacheFileName(strLayerName As String) As String
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Log a GIS operation message.
+        ''' </summary>
+        ''' <param name="strMessage">The message to log.</param>
+        ''' -------------------------------------------------------------------
+        Protected Sub LogMessage(strMessage As String, status As eStatusFlags)
+
+            If (Me.m_core IsNot Nothing) Then
+                Me.m_core.SpatialOperationLog.LogOperation(strMessage, status)
+            End If
+
+        End Sub
+
+#End Region ' Internals
+
+#Region " Plug-in implementation "
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEPlugin.IPlugin.Author"/>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property Author As String _
+            Implements EwEPlugin.IPlugin.Author
+            Get
+                Return "Jeroen Steenbeek, UBC Fisheries Centre"
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEPlugin.IPlugin.Contact"/>
+        ''' -----------------------------------------------------------------------
+        Public ReadOnly Property Contact As String _
+            Implements EwEPlugin.IPlugin.Contact
+            Get
+                Return "mailto:ewedevteam@gmail.com"
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEPlugin.IPlugin.Initialize"/>
+        ''' -----------------------------------------------------------------------
+        Public Sub Initialize(ByVal core As Object) _
+            Implements EwEPlugin.IPlugin.Initialize
+            Me.m_core = DirectCast(core, cCore)
+        End Sub
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEPlugin.IPlugin.Name"/>
+        ''' -----------------------------------------------------------------------
+        Public MustOverride ReadOnly Property PluginName As String _
+            Implements EwEPlugin.IPlugin.Name
+
+        ''' -----------------------------------------------------------------------
+        ''' <inheritdocs cref="EwEPlugin.IPlugin.Description"/>
+        ''' -----------------------------------------------------------------------
+        Public MustOverride ReadOnly Property PluginDescription As String _
+            Implements EwEPlugin.IPlugin.Description
+
+#End Region ' Plug-in implementation
+
+    End Class
+
+End Namespace
