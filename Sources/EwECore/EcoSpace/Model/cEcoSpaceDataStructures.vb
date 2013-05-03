@@ -599,7 +599,7 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>
     ''' Calculate the TrophicLevel map in Ecospace. 
-    ''' True Ecospace will populate the TrophicLevel <see cref="cEcospaceDataStructures.TL">TrophicLevel</see> map in cEcospaceDataStructures.TL. 
+    ''' True Ecospace will populate the <see cref="cEcospaceDataStructures.TL">TrophicLevel</see> map in cEcospaceDataStructures.TL. 
     ''' </summary>
     ''' <remarks>This incurs significant overhead so it is Off(False) by default. At this time is can only be turned ON(True) via code.</remarks>
     Public bCalTrophicLevel As Boolean

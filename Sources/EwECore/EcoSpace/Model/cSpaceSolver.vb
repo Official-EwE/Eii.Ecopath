@@ -1066,11 +1066,15 @@ Public Class cSpaceSolver
     End Sub
 
 
-
+    ''' <summary>
+    ''' Calculate trophic level and populate the trophic level map in the Ecospace data structures <see cref="cEcospaceDataStructures.TL">TL</see> map array.
+    ''' </summary>
+    ''' <param name="iRow">Row index </param>
+    ''' <param name="iCol">Column index</param>
+    ''' <param name="Consumpt">Consumption by consumer,prey  </param>
+    ''' <param name="EatenBy">Total biomass consumed by a group </param>
+    ''' <remarks>Trophic level is only calculated if <see cref="cEcospaceDataStructures.bCalTrophicLevel">bCalTrophicLevel</see> = True</remarks>
     Private Sub CalcTrophicLevel(iRow As Integer, iCol As Integer, Consumpt(,) As Single, EatenBy() As Single)
-        'ToDo Implement this...
-        'Port Ecosim.EstimateTLs() to here...
-        'Populate TL(row,col,group)
         Dim i As Integer
         Dim j As Integer
         Dim SumDiet As Single
@@ -1089,32 +1093,31 @@ Public Class cSpaceSolver
 
         Try
 
-            'Windows.Forms.Application.DoEvents()
-
             For i = 1 To m_Data.nLiving  'consumer
-                If Eatenby(i) > 0 Then
+                If EatenBy(i) > 0 Then
                     SumDiet = 0
                     For j = 1 To m_Data.NGroups  'food
-                        Diet(i, j) = Consumpt(j, i) / Eatenby(i)
+                        Diet(i, j) = Consumpt(j, i) / EatenBy(i)
                         SumDiet = SumDiet + Diet(i, j)
-                    Next
+                    Next j
                     If SumDiet > 0 Then
                         For j = 1 To m_Data.NGroups  'food
                             Diet(i, j) = Diet(i, j) / SumDiet
-                        Next
+                        Next j
                     End If
                 End If
-            Next
+            Next i
 
             SyncLock TLlockOb
                 'EcoFunctions.EstimateTrophicLevels() is NOT thread safe so only one thread at a time
                 EcoFunctions.EstimateTrophicLevels(m_Data.NGroups, m_Data.nLiving, m_PathData.PP, Diet, TLs)
 
-            End SyncLock
+            End SyncLock 'TLlockOb
 
+            'populate the map for this row col
             For igrp As Integer = 1 To m_Data.NGroups
                 m_Data.TL(iRow, iCol, igrp) = TLs(igrp)
-            Next
+            Next igrp
 
         Catch ex As Exception
             cLog.Write(ex)
