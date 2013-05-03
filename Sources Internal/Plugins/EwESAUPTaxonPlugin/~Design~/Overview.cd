@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EwESAUPTaxonPlugin.cSAUPTaxonData" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAGNgAgAAgAJAIEQAAIABAECEQAGIAAAASAgAQABRAU=</HashCode>
+      <FileName>cSAUPTaxonData.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EwESAUPTaxonPlugin.cSAUPTaxonDataPluginPoint" Collapsed="true">
+    <Position X="6.75" Y="2.5" Width="2.25" />
+    <AssociationLine Name="m_term" Type="EwEUtils.Core.ITaxonData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.193" Y="0.05" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_results" Type="EwESAUPTaxonPlugin.cSAUPTaxonSearchResults" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.438" Y="3.009" />
+        <Point X="7.438" Y="3.384" />
+        <Point X="2.562" Y="3.384" />
+        <Point X="2.562" Y="3.009" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.07" Y="0.183" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>VMAgIAAAIDAgAQFAiAEABQQALAAAAAAAAACAIAAgAJA=</HashCode>
+      <FileName>cSAUPTaxonDataPluginPoint.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_term" />
+      <Field Name="m_results" />
+      <Field Name="m_broadcaster" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EwESAUPTaxonPlugin.cSAUPTaxonSearchResults" Collapsed="true">
+    <Position X="1.25" Y="2.5" Width="2" />
+    <AssociationLine Name="m_taxa" Type="EwEUtils.Core.ITaxonData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.193" Y="-0.096" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="m_term" Type="EwEUtils.Core.ITaxonData">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.183" Y="-0.075" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAkAAAAAAAAIABAAAAAAAQCAQAEAAAIACAAAAAAAAA=</HashCode>
+      <FileName>cSAUPTaxonSearchResults.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="m_taxa" />
+      <Field Name="m_term" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EwESAUPTaxonPlugin.frmConfig" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAqCgISSQBEAkQAACAAEQCAgAEhAAAIBAEAAAABAA=</HashCode>
+      <FileName>frmConfig.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="EwEUtils.Core.ITaxonData" Collapsed="true">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="EwEPlugin.Data.IDataBroadcaster" Collapsed="true">
+    <Position X="10.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
