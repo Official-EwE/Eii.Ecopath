@@ -115,16 +115,15 @@ Public Class cResultWriter
 
     Public Function WriteCurrentResults(ByVal strPath As String) As Boolean
 
-        ' ToDo: merge messages into one
+        If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return False
 
+        ' ToDo: merge save messages into one
         Dim bSuccess As Boolean = Me.WriteFile(Me.GetMTIFileName(strPath), GetMTIData())
 
-        If Me.m_manager.Core.StateMonitor.HasEcosimRan Then
-            If Me.m_manager.EcosimPPROn Then
-                bSuccess = bSuccess And Me.WriteIndicesWithPPR(strPath)
-            Else
-                bSuccess = bSuccess And Me.WriteIndicesWithoutPPR(strPath)
-            End If
+        If Me.m_manager.EcosimPPROn Then
+            bSuccess = bSuccess And Me.WriteIndicesWithPPR(strPath)
+        Else
+            bSuccess = bSuccess And Me.WriteIndicesWithoutPPR(strPath)
         End If
         Return bSuccess
 

@@ -35,6 +35,8 @@ Public Class cNetworkAnalysisRemote
     Private m_uic As cUIContext = Nothing
     Private m_manager As cNetworkManager = Nothing
 
+    Public Const CMD_SAVE_INDICES As String = "na_save_indices"
+
     Public Sub Attach(ByVal uic As cUIContext, _
                       ByVal manager As cNetworkManager)
 
@@ -77,9 +79,14 @@ Public Class cNetworkAnalysisRemote
         Dim cmdX As cExecuteCommand = DirectCast(cmd, cExecuteCommand)
 
         Select Case cmdX.Command.ToLower
-            Case "na_save_indices"
+            Case CMD_SAVE_INDICES.ToLower
                 Try
-                    If Not Me.SaveIndices(cmdX.Parameter("path"), Convert.ToBoolean(cmdX.Parameter("ppr"))) Then
+                    Dim strParmPPR As String = cmdX.Parameter("ppr")
+                    Dim bPPR As Boolean = False
+                    If Not String.IsNullOrWhiteSpace(strParmPPR) Then
+                        Boolean.TryParse(strParmPPR, bPPR)
+                    End If
+                    If Not Me.SaveIndices(cmdX.Parameter("path"), bPPR) Then
                         'cmd.Status = "Failed"
                     End If
                 Catch ex As Exception
