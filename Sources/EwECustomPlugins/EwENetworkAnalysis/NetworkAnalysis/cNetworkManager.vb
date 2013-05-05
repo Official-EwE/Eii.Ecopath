@@ -96,9 +96,6 @@ Public Class cNetworkManager
     ''' sending messages through the EwE core system.</summary>
     Private m_publisher As cMessagePublisher = Nothing
 
-    Private m_bRunWithEcopath As Boolean = False
-    Private m_bRunWithEcosim As Boolean = False
-
 #End Region ' Private data
 
 #Region " Construction and initialization "
@@ -137,7 +134,6 @@ Public Class cNetworkManager
         Me.m_core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf StopNetworkAnalysis))
     End Sub
 
-
 #Region " Main Network Analysis "
 
     ''' -----------------------------------------------------------------------
@@ -175,15 +171,15 @@ Public Class cNetworkManager
             bSucces = False
         End If
 
-        If (Me.MayRunSlow()) Then
-            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_NETWORK_COMPLEXDIET, _
-                                             eCoreComponentType.External, eMessageType.Any, _
-                                             eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
-            fmsg.Reply = cFeedbackMessage.eReply.NO
-            fmsg.Suppressable = True
-            Me.m_publisher.SendMessage(fmsg)
-            If fmsg.Reply <> cFeedbackMessage.eReply.YES Then Return False
-        End If
+        'If (Me.MayRunSlow()) Then
+        '    Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_NETWORK_COMPLEXDIET, _
+        '                                     eCoreComponentType.External, eMessageType.Any, _
+        '                                     eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+        '    fmsg.Reply = cFeedbackMessage.eReply.NO
+        '    fmsg.Suppressable = True
+        '    Me.m_publisher.SendMessage(fmsg)
+        '    If fmsg.Reply <> cFeedbackMessage.eReply.YES Then Return False
+        'End If
 
         If bSucces Then
             Try
@@ -624,20 +620,18 @@ Public Class cNetworkManager
 #Region " Settings "
 
     Public Property RunWithEcopath() As Boolean
-        Get
-            Return Me.m_bRunWithEcopath
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bRunWithEcopath = value
-        End Set
-    End Property
-
     Public Property RunWithEcosim() As Boolean
+
+    ''' <summary>
+    ''' Flag, stating whether paths and cycles should be found. This can
+    ''' be very time consuming, and may not be needed if PPR is not required.
+    ''' </summary>
+    Public Property FindPathsAndCycles() As Boolean
         Get
-            Return Me.m_bRunWithEcosim
+            Return Me.m_econetwork.AllowFindPathsAndCycles
         End Get
         Set(ByVal value As Boolean)
-            Me.m_bRunWithEcosim = value
+            Me.m_econetwork.AllowFindPathsAndCycles = value
         End Set
     End Property
 
@@ -2118,16 +2112,16 @@ Public Class cNetworkManager
 
     End Function
 
-    Private Function MayRunSlow() As Boolean
-        Dim nGroups As Integer = Me.Core.nGroups
-        Dim nDiets As Integer = 0
-        For i As Integer = 1 To nGroups
-            For j As Integer = 1 To nGroups
-                If EcopathData.DCInput(i, j) > 0 Then nDiets += 1
-            Next
-        Next
-        Return (nGroups > 30) And (nDiets > nGroups * 6)
-    End Function
+    'Private Function MayRunSlow() As Boolean
+    '    Dim nGroups As Integer = Me.Core.nGroups
+    '    Dim nDiets As Integer = 0
+    '    For i As Integer = 1 To nGroups
+    '        For j As Integer = 1 To nGroups
+    '            If EcopathData.DCInput(i, j) > 0 Then nDiets += 1
+    '        Next
+    '    Next
+    '    Return (nGroups > 30) And (nDiets > nGroups * 6)
+    'End Function
 
 #End Region ' Misc private methods
 

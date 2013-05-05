@@ -115,9 +115,16 @@ Public Class cResultWriter
 
     Public Function WriteCurrentResults(ByVal strPath As String) As Boolean
 
+        ' ToDo: merge save messages into one
+
         If Not cFileUtils.IsDirectoryAvailable(strPath, True) Then Return False
 
-        ' ToDo: merge save messages into one
+        If Not Me.m_manager.IsMainNetworkRun Then
+            If Not Me.m_manager.RunMainNetwork() Then
+                Return False
+            End If
+        End If
+
         Dim bSuccess As Boolean = Me.WriteFile(Me.GetMTIFileName(strPath), GetMTIData())
 
         If Me.m_manager.EcosimPPROn Then
