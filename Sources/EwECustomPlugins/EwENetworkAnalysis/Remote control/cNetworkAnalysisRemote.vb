@@ -36,6 +36,9 @@ Public Class cNetworkAnalysisRemote
     Private m_manager As cNetworkManager = Nothing
 
     Public Const CMD_SAVE_INDICES As String = "na_save_indices"
+    Public Const CMD_SAVE_INDICES_P1_PPR As String = "ppr"
+    Public Const CMD_SAVE_INDICES_P2_PATH As String = "path"
+    Public Const CMD_SAVE_INDICES_P3_FINDCYCLES As String = "findcycles"
 
     Public Sub Attach(ByVal uic As cUIContext, _
                       ByVal manager As cNetworkManager)
@@ -81,12 +84,16 @@ Public Class cNetworkAnalysisRemote
         Select Case cmdX.Command.ToLower
             Case CMD_SAVE_INDICES.ToLower
                 Try
-                    Dim strParmPPR As String = cmdX.Parameter("ppr")
+                    Dim strParmPPR As String = cmdX.Parameter(CMD_SAVE_INDICES_P1_PPR)
+                    Dim strPath As String = cmdX.Parameter(CMD_SAVE_INDICES_P2_PATH)
+                    Dim strFindCycles As String = cmdX.Parameter(CMD_SAVE_INDICES_P3_FINDCYCLES)
                     Dim bPPR As Boolean = False
-                    If Not String.IsNullOrWhiteSpace(strParmPPR) Then
-                        Boolean.TryParse(strParmPPR, bPPR)
-                    End If
-                    If Not Me.SaveIndices(cmdX.Parameter("path"), bPPR) Then
+                    Dim bFindCycles As Boolean = False
+
+                    If Not String.IsNullOrWhiteSpace(strParmPPR) Then Boolean.TryParse(strParmPPR, bPPR)
+                    If Not String.IsNullOrWhiteSpace(strFindCycles) Then Boolean.TryParse(strFindCycles, bFindCycles)
+
+                    If Not Me.SaveIndices(strPath, bPPR, bFindCycles) Then
                         'cmd.Status = "Failed"
                     End If
                 Catch ex As Exception
@@ -97,11 +104,24 @@ Public Class cNetworkAnalysisRemote
 
     End Sub
 
-    Private Function SaveIndices(ByVal strPath As String, ByVal bWithPPR As Boolean) As Boolean
+    Private Function SaveIndices(ByVal strPath As String, _
+                                 ByVal bWithPPR As Boolean, _
+                                 ByVal bFindCycles As Boolean) As Boolean
 
         Dim writer As New cResultWriter(Me.m_manager)
+        Dim bFindCyclesCurr As Boolean = Me.m_manager.FindPathsAndCycles
+        Dim bSuccess As Boolean = True
+
+        Me.m_manager.FindPathsAndCycles = bFindCycles
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_uic.Core.OutputPath
-        Return writer.WriteCurrentResults(strPath)
+
+        Try
+            bSuccess = writer.WriteCurrentResults(strPath)
+        Catch ex As Exception
+            bSuccess = False
+        End Try
+        Me.m_manager.FindPathsAndCycles = bFindCyclesCurr
+        Return bSuccess
 
     End Function
 
