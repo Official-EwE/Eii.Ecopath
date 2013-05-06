@@ -19,6 +19,7 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 ''' <summary>
 ''' An example application that extracts various Ecosim input data to a text file.
