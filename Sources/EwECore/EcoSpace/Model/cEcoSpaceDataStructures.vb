@@ -23,8 +23,8 @@ Imports EwEUtils.Core
 
 
 Public Class cRowCol
-    Public Row As Integer
-    Public Col As Integer
+    Public Property Row As Integer
+    Public Property Col As Integer
     Public Sub New(ByVal theRow As Integer, ByVal theCol As Integer)
         Me.Row = theRow
         Me.Col = theCol
