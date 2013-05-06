@@ -61,12 +61,10 @@ Public Class cNetworkManager
         NetworkNeedsToRun
         NetworkHasRun
         RequirePPHasRun
-
         ''' <summary>Ecoism has loaded a scenario. Ecosim network can initialize. </summary>
         EcosimIsLoaded
         ''' <summary>Ecosim network has been initialized. </summary>
         EcosimNetworkInitialized
-
     End Enum
 
     Private m_core As cCore = Nothing
@@ -89,8 +87,6 @@ Public Class cNetworkManager
     Private m_bIsMainNetworkRun As Boolean = False
     ''' <summary>Flag stating whether the Ecosin N/A network has ran.</summary>
     Private m_bIsEcosimNetworkRun As Boolean = False
-    ''' <summary>To comment</summary>
-    Private m_bIsRequiredPrimaryProdRun As Boolean = False
 
     ''' <summary><see cref="cMessagePublisher">Core message publisher</see> for
     ''' sending messages through the EwE core system.</summary>
@@ -248,7 +244,7 @@ Public Class cNetworkManager
 
         Dim bSuccess As Boolean = True
 
-        If (m_bIsRequiredPrimaryProdRun = True) Then
+        If (Me.IsRequiredPrimaryProdRun = True) Then
             Return bSuccess
         End If
 
@@ -283,7 +279,7 @@ Public Class cNetworkManager
                 m_runstate = eRunState.RequirePPHasRun
 
                 bSuccess = True
-                m_bIsRequiredPrimaryProdRun = True
+                Me.IsRequiredPrimaryProdRun = True
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -304,20 +300,7 @@ Public Class cNetworkManager
 
     End Function
 
-    'Bug 252 fix by joeh
-    'Change
-    'Public Function IsRequiredPrimaryProdRun() As Boolean
-    '    Return m_IsRequiredPrimaryProdRun
-    'End Function
     Public Property IsRequiredPrimaryProdRun() As Boolean
-        Get
-            Return m_bIsRequiredPrimaryProdRun
-        End Get
-        Set(ByVal value As Boolean)
-            m_bIsRequiredPrimaryProdRun = value
-        End Set
-    End Property
-    'End change
 
 #End Region ' Required PP
 
