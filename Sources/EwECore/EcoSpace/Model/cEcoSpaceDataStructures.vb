@@ -29,6 +29,9 @@ Public Class cRowCol
         Me.Row = theRow
         Me.Col = theCol
     End Sub
+    Public Overrides Function ToString() As String
+        Return "Row: " & Me.Row & ", col: " & Me.Col
+    End Function
 End Class
 
 Public Class cEcospaceDataStructures
