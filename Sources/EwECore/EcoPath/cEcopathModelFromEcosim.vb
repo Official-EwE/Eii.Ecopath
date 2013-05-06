@@ -270,7 +270,7 @@ Public Class cEcopathModelFromEcosim
         Dim nYears As Integer = iTime \ StepsPerYear
 
         'Set time step indexes for averaging BA
-        Me.setStartEndTimesteps(iTime, BACalculation, nNumYearsAverage, iStartIndex, nBAtimesteps)
+        Me.SetStartEndTimesteps(iTime, BACalculation, nNumYearsAverage, iStartIndex, nBAtimesteps)
 
         ' Dirty destination core
         coreNew.DataSource.SetChanged(eCoreComponentType.EcoPath)
@@ -321,6 +321,7 @@ Public Class cEcopathModelFromEcosim
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
             Select Case BACalculation
+
                 Case eBACalcTypes.FromEcosimYearsAverage
                     BiomassAtT = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iStartIndex)
                     pathDest.BA(iGroup) = (simBB(iGroup) - BiomassAtT) / nNumYearsAverage
@@ -348,11 +349,14 @@ Public Class cEcopathModelFromEcosim
                     'So get the annual average accumulation (B(t)-B(0))/ number of years
                     'Attributes the annual average change in Biomass to BiomassAccumulation
                     pathDest.BA(iGroup) = (simBB(iGroup) - pathSrc.B(iGroup)) / nYears
+
                 Case eBACalcTypes.FromEcopath
                     'Explicitly copy the data from the Ecopath source so you can tell it worked
                     pathDest.BA(iGroup) = pathSrc.BA(iGroup)
+
                 Case eBACalcTypes.SetToZero
                     pathDest.BA(iGroup) = 0
+
             End Select
 
             ' Emigrationi(i) = Emig(i) * Bi(i) '
@@ -430,8 +434,20 @@ Public Class cEcopathModelFromEcosim
 
     End Sub
 
-    Private Sub setStartEndTimesteps(ByVal iTime As Integer, ByVal BACalculation As eBACalcTypes, ByVal nYearsAverage As Integer, _
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Determine the start and end time steps for computing BA.
+    ''' </summary>
+    ''' <param name="iTime"></param>
+    ''' <param name="BACalculation"></param>
+    ''' <param name="nYearsAverage"></param>
+    ''' <param name="iStartIndex"></param>
+    ''' <param name="nBAtimesteps"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub SetStartEndTimesteps(ByVal iTime As Integer, ByVal BACalculation As eBACalcTypes, ByVal nYearsAverage As Integer, _
                                     ByRef iStartIndex As Integer, ByRef nBAtimesteps As Integer)
+
+        ' ToDo: globalize this method
 
         'number of Ecosim time steps per year
         Dim nStepsPerYear As Integer = cCore.N_MONTHS * Me.m_core.m_EcoSimData.StepsPerMonth
@@ -441,8 +457,18 @@ Public Class cEcopathModelFromEcosim
         'Time index for the start year of the BA averaging
         iStartIndex = iTime - nBAtimesteps + 1 'Time indexes are one based
 
+        ' JS 01May13: only send out messages if BACalculation requires the time step range
+        Select Case BACalculation
+            Case eBACalcTypes.FromEcopath, eBACalcTypes.FromEcosimStart, eBACalcTypes.SetToZero
+                Return
+            Case eBACalcTypes.FromEcosimYearsAverage, eBACalcTypes.FromEcosimYearsWeightedAverage
+                ' NOP
+            Case Else
+                Debug.Assert(False, "BA calculation type not explicitly considered")
+        End Select
+
         'Constrain the start and end years
-        If iStartIndex < 1 Then
+        If (iStartIndex < 1) Then
             Dim vs As cVariableStatus
             vs = New cVariableStatus(eStatusFlags.FailedValidation, "Start year of averaging changed to first year.", _
                                      eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
@@ -450,13 +476,12 @@ Public Class cEcopathModelFromEcosim
             iStartIndex = 1
         End If
 
-        If iStartIndex + nBAtimesteps - 1 > iTime Then
+        If ((iStartIndex + nBAtimesteps - 1) > iTime) Then
             Dim vs As cVariableStatus
             vs = New cVariableStatus(eStatusFlags.FailedValidation, "End year of averaging changed to last year.", eVarNameFlags.NotSet, eDataTypes.EwEModel, eCoreComponentType.EcoSim, -1)
             Me.m_msgStatus.AddVariable(vs)
             nBAtimesteps = iTime - iStartIndex + 1
         End If
-
 
     End Sub
 
