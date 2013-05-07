@@ -1,1 +1,4 @@
-2013-04-29: Save and load ecospaceDS.SEmult(iFleet). Requires Datasource changes, DB update
+Globalization
+
+Database
+2013-05-07: no pending changes
