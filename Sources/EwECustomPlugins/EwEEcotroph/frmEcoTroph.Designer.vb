@@ -422,7 +422,7 @@ Partial Class autre
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1276, 818)
+        Me.TabPage2.Size = New System.Drawing.Size(1276, 752)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Smooth parameters"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -643,7 +643,7 @@ Partial Class autre
         Me.TabPage3.Controls.Add(Me.panel_result)
         Me.TabPage3.Location = New System.Drawing.Point(4, 22)
         Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(1276, 818)
+        Me.TabPage3.Size = New System.Drawing.Size(1276, 752)
         Me.TabPage3.TabIndex = 2
         Me.TabPage3.Text = "ET transpose"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -828,14 +828,14 @@ Partial Class autre
         'diagnosis_page
         '
         Me.diagnosis_page.AutoScroll = True
+        Me.diagnosis_page.Controls.Add(Me.result_pdf_et_diag)
         Me.diagnosis_page.Controls.Add(Me.GroupBox5)
         Me.diagnosis_page.Controls.Add(Me.GroupBox3)
-        Me.diagnosis_page.Controls.Add(Me.result_pdf_et_diag)
         Me.diagnosis_page.Controls.Add(Me.panel_result_diag)
         Me.diagnosis_page.Location = New System.Drawing.Point(4, 22)
         Me.diagnosis_page.Name = "diagnosis_page"
         Me.diagnosis_page.Padding = New System.Windows.Forms.Padding(3)
-        Me.diagnosis_page.Size = New System.Drawing.Size(1276, 818)
+        Me.diagnosis_page.Size = New System.Drawing.Size(1276, 752)
         Me.diagnosis_page.TabIndex = 3
         Me.diagnosis_page.Text = "ET diagnosis"
         Me.diagnosis_page.UseVisualStyleBackColor = True
