@@ -1889,10 +1889,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ecopath6_Internal\Sources\EwECustomPlugins\ExtractTEPlugin\ExtractTEPlugin.vbproj">
-      <Project>{65E6AD81-8C11-4F38-AAD0-28A4A9749C05}</Project>
-      <Name>ExtractTEPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
