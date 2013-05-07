@@ -28,6 +28,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -7200,6 +7201,8 @@ Namespace DataSources
                 ecospaceDS.UseExact = (CInt(reader("UseExact")) <> 0)
                 ecospaceDS.Tol = CSng(Me.m_db.ReadSafe(reader, "Tolerance", 0.01!))
                 ecospaceDS.CapCalType = DirectCast(CInt(Me.m_db.ReadSafe(reader, "CapacityCalType", eEcospaceCapacityCalType.CapacityAndHabitat)), eEcospaceCapacityCalType)
+                ecospaceDS.bUseEffortDistThreshold = CInt(Me.m_db.ReadSafe(reader, "UseEffortDistrThreshold", 0)) = 1
+                ecospaceDS.EffortDistThreshold = CSng(Me.m_db.ReadSafe(reader, "EffortDistrThreshold", 10000))
 
                 stanzaDS.NPacketsMultiplier = CSng(reader("NumPacketsMultiplier"))
 
@@ -7392,10 +7395,10 @@ Namespace DataSources
                 If ecospaceDS.UseIBM Then drow("ModelType") = 1
                 If ecospaceDS.NewMultiStanza Then drow("ModelType") = 2
 
-                'JS 06Jul07: commented-out unused field 'BiomassInitType'
-                'drow("BiomassInitType") = 0
                 drow("AdjustSpace") = ecospaceDS.AdjustSpace
                 drow("UseExact") = ecospaceDS.UseExact
+                drow("UseEffortDistrThreshold") = cSystemUtils.IIF(ecospaceDS.bUseEffortDistThreshold, 1, 0)
+                drow("EffortDistrThreshold") = ecospaceDS.EffortDistThreshold
 
                 If Me.Version >= 6.01 Then
                     drow("Tolerance") = ecospaceDS.Tol
@@ -8373,7 +8376,7 @@ Namespace DataSources
                     ecospaceDS.FleetDBID(iFleet) = CInt(reader("FleetID"))
                     ecospaceDS.EcopathFleetDBID(iFleet) = CInt(reader("EcopathFleetID"))
                     ecospaceDS.EffPower(iFleet) = CSng(reader("EffPower"))
-                    'ecospaceDS.SEmult(iFleet) = CSng(reader("SEMult"))
+                    ecospaceDS.SEmult(iFleet) = CSng(Me.m_db.ReadSafe(reader, "SEMult", 1.0))
 
                     ' Read port map for a given fleet and land cells only
                     strMap = CStr(Me.m_db.ReadSafe(reader, "PortMap", ""))
@@ -8518,7 +8521,7 @@ Namespace DataSources
 
                     ' Update fleet vars
                     drow("EffPower") = ecospaceDS.EffPower(iFleet)
-                    'drow("SEMult") = ecospaceDS.SEmult(iFleet)
+                    drow("SEMult") = ecospaceDS.SEmult(iFleet)
                     drow("PortMap") = cStringUtils.ArrayToString(ecospaceDS.Port, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.InRow, ecospaceDS.InCol)
                     drow("SailCostMap") = cStringUtils.ArrayToString(ecospaceDS.Sail, iFleet, cStringUtils.eFilterIndexTypes.FirstIndex, ecospaceDS.InRow, ecospaceDS.InCol, ecospaceDS.Depth, True)
 

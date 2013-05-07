@@ -47,10 +47,7 @@ Namespace MSY
         Public iSelGroupFleet As Integer
         Public ValueBase As Single
 
-        ''' <summary>
-        ''' Groups that have there Biomass forced
-        ''' </summary>
-        ''' <remarks></remarks>
+        ''' <summary>Groups that have their Biomass forced.</summary>
         Public ForceGroupB() As Boolean
 
         Public AssessmentType As eMSYAssessmentTypes
