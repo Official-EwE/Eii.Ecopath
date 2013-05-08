@@ -302,6 +302,8 @@ Public Class cEcoSpace
     Private Shared FleetCounter As Integer
     Private Shared nFleets As Integer
 
+    Private bEffortAdjusted As Boolean
+
 #End Region
 
 #Region "Construction"
@@ -1003,7 +1005,7 @@ Public Class cEcoSpace
                 Next
 
                 If m_Data.PredictEffort Then
-                    If its = 3 Then Me.AdjustTotalEffort()
+                    If its >= 3 And Not bEffortAdjusted Then Me.AdjustTotalEffort()
                     stpwchEffort.Start()
                     If Me.m_Data.bUseEffortDistThreshold Then
                         'Run Effort Distribtion on cells with sailing cost < EffortDistThreshold
@@ -1722,9 +1724,8 @@ Public Class cEcoSpace
 
             ReDim totalIterThread(m_Data.nGridSolverThreads + 1)
 
-            'm_Data.Depth(10, 10) = 0
             m_bsolverError = False
-
+            bEffortAdjusted = False
             m_StopRun = False
             nvar2 = m_Data.NGroups
 
@@ -2859,14 +2860,22 @@ Public Class cEcoSpace
                         'set the Proportion of area fished by this fleet for all the habitats in the cell
                         Me.m_Data.PAreaFished(i, j, ig) = PFished
                         'constrain percentage of area fished to 1.0
-                        If Me.m_Data.PAreaFished(i, j, ig) > 1.0 Then Me.m_Data.PAreaFished(i, j, ig) = 1
+                        If Me.m_Data.PAreaFished(i, j, ig) > 1.0 Then Me.m_Data.PAreaFished(i, j, ig) = 1.0
 
-                        'sum the total effort
+                        'sum the weighted total effort
                         If ResetTotEffort Then
-                            TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
-                        End If
+                            If Not Me.m_Data.bUseEffortDistThreshold Then
+                                'Fishing is only restricted by the Habitat types
+                                TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
 
-                    End If
+                            Else ' Me.m_Data.bUseEffortDistThreshold  = True
+                                'Fishing is also restricted by sailing cost < effort distribution threshold
+                                If Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold Then
+                                    TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
+                                End If
+                            End If 'Me.m_Data.bUseEffortDistThreshold
+                        End If 'ResetTotEffort
+                    End If 'm_Data.Depth(i, j) > 0
 
                 Next j 'map cols
             Next i 'map rows
@@ -3631,6 +3640,7 @@ exitline:
                 'Effort summed over all the fished cells * some fudge factor
                 TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
 
+
                 'jb Attract() gets cleared out for each fleet
                 Array.Clear(Attract, 0, Attract.Length)
                 TotAttract = 0.0000000001
@@ -4073,8 +4083,8 @@ exitline:
                         Attract(i, j) = Valt
                         TotAttract = TotAttract + Valt
                     End If
-                Next
-            Next
+                Next j
+            Next i
 
             WtCat = 0.0000000001 '****
             For i = 1 To m_Data.InRow
@@ -4088,9 +4098,12 @@ exitline:
 
             '*** finally reset total effort using number of water cells, Ecopath base catch, and WtCat summed catch/effort x attraction weight
             '***note ThabArea below is total number of cells with depth>0 (water cells)
-            TotEffort(ig) = m_Data.ThabArea * CatGear / WtCat  '***
+            'TotEffort(ig) = m_Data.ThabArea * CatGear / WtCat  '***
+            TotEffort(ig) = TotEffort(ig) * CatGear / WtCat
 
         Next ig
+
+        Me.bEffortAdjusted = True
 
     End Sub
 
