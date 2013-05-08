@@ -117,7 +117,7 @@ Public Class cEcospaceDataStructures
     Public bHasCapacityChanged As Boolean
 
     ''' <summary>The proportion of map cell that is fished by a fleet.</summary>
-    ''' <remarks>Indexed Row,Col,Gear</remarks>
+    ''' <remarks>Sum of habitat areas fished by a fleet. Computed in cEcoSpace.SetEffortParameters() Indexed Row,Col,Gear</remarks>
     Public PAreaFished(,,) As Single
 
     ''' <summary>Does this Fishing fleet use this habitat type </summary>
@@ -314,9 +314,11 @@ Public Class cEcospaceDataStructures
     Public MigConcCol() As Single
 
     ''' <summary>
-    ''' Average Sailing Cost for all water cell 
+    ''' Average value in the <see cref="cEcospaceDataStructures.Sail">Sail(fleet,row,col)</see> map for all water cells.
     ''' </summary>
-    ''' <remarks>By fleet</remarks>
+    ''' <remarks>
+    ''' Used only to distribute total effort across the cells. Does not effect the total effort.
+    ''' If <see cref="cEcospaceDataStructures.bUseEffortDistThreshold">bUseEffortDistThreshold</see> = True this will only include cells below the fishing effort threshold</remarks>
     Public SailScale() As Single
 
     Public FitRespType As Integer
