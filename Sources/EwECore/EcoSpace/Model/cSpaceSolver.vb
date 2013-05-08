@@ -1126,11 +1126,6 @@ Public Class cSpaceSolver
 
     End Sub
 
-
-
-    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-    'FOR DEGUGGING ONLY HAS NOT BEEN TESTED
-    'SimDetritus from Ecosim moved here to see if calling Ecosim is slowing down the threading
     Public Sub SimDetritusMT(ByVal Biomass() As Single, ByVal FishRateGear(,) As Single, ByVal Eatenby() As Single, ByRef ToDetritus() As Single, ByRef DetritusByGroup() As Single)
         ' Dim Surplus As Single
         Dim i As Integer, j As Integer, K As Integer
