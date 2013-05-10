@@ -3550,9 +3550,9 @@ exitline:
                                 Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
                                 Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
                                 TotAttract = TotAttract + Valt * Me.m_Data.PAreaFished(i, j, iFlt)
-                            End If
-                        Next
-                    Next
+                            End If 'Me.m_Data.IsFished(iFlt, i, j)
+                        Next j
+                    Next i
 
                     For i = 1 To m_Data.InRow
                         For j = 1 To m_Data.InCol
@@ -4098,8 +4098,7 @@ exitline:
 
             '*** finally reset total effort using number of water cells, Ecopath base catch, and WtCat summed catch/effort x attraction weight
             '***note ThabArea below is total number of cells with depth>0 (water cells)
-            'TotEffort(ig) = m_Data.ThabArea * CatGear / WtCat  '***
-            TotEffort(ig) = TotEffort(ig) * CatGear / WtCat
+            TotEffort(ig) = m_Data.ThabArea * CatGear / WtCat  '***
 
         Next ig
 
