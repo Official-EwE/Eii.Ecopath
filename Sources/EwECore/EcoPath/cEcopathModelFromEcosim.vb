@@ -319,12 +319,14 @@ Public Class cEcopathModelFromEcosim
             pathDest.QBinput(iGroup) = simSrc.Eatenby(iGroup) / simBB(iGroup) ' simSrc.DCPct(iGroup, 2)
             ' EEi(i) = -99
             pathDest.EEinput(iGroup) = cCore.NULL_VALUE
+
             ' BAi(i) = (Bi(i) - DCPct(i, 0)) * StepsPerYear ' / TimeStep 'dcpct() stores the bb() from previous round
             Select Case BACalculation
 
                 Case eBACalcTypes.FromEcosimYearsAverage
                     BiomassAtT = simSrc.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, iGroup, iStartIndex)
                     pathDest.BA(iGroup) = (simBB(iGroup) - BiomassAtT) / nNumYearsAverage
+                    pathDest.BaBi(iGroup) = 0
 
                 Case eBACalcTypes.FromEcosimYearsWeightedAverage
                     Dim b1 As Single, b2 As Single, w As Single, bsum As Single, wsum As Single
@@ -343,19 +345,23 @@ Public Class cEcopathModelFromEcosim
                     If wsum = 0.0 Then wsum = 1
                     'Weighted monthly average converted to annual BA for Ecopath
                     pathDest.BA(iGroup) = CSng(bsum / wsum * StepsPerYear)
+                    pathDest.BaBi(iGroup) = 0
 
                 Case eBACalcTypes.FromEcosimStart
                     'BA is the Annual Accumulation of B 
                     'So get the annual average accumulation (B(t)-B(0))/ number of years
                     'Attributes the annual average change in Biomass to BiomassAccumulation
                     pathDest.BA(iGroup) = (simBB(iGroup) - pathSrc.B(iGroup)) / nYears
+                    pathDest.BaBi(iGroup) = 0
 
                 Case eBACalcTypes.FromEcopath
-                    'Explicitly copy the data from the Ecopath source so you can tell it worked
+                    'Explicitly copy BA and BA rate from the Ecopath source so you can tell it worked
                     pathDest.BA(iGroup) = pathSrc.BA(iGroup)
+                    pathDest.BaBi(iGroup) = pathSrc.BaBi(iGroup)
 
                 Case eBACalcTypes.SetToZero
                     pathDest.BA(iGroup) = 0
+                    pathDest.BaBi(iGroup) = 0
 
             End Select
 
