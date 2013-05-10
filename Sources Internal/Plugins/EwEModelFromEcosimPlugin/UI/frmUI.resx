@@ -412,7 +412,7 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_cmbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 50</value>
+    <value>80, 54</value>
   </data>
   <data name="m_cmbFormat.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 21</value>
