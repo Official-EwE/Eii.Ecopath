@@ -127,7 +127,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="m_cbEnable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 2</value>
+    <value>3, 5</value>
   </data>
   <data name="m_cbEnable.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 17</value>
@@ -166,7 +166,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEModelFromEcosim.gridUI, EwEModelFromEcosim, Version=6.3.6830.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
+    <value>EwEModelFromEcosim.gridUI, EwEModelFromEcosim, Version=6.3.6841.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -178,7 +178,7 @@
     <value>True</value>
   </data>
   <data name="m_lblPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-3, 28</value>
+    <value>0, 31</value>
   </data>
   <data name="m_lblPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 13</value>
@@ -205,10 +205,10 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="m_tbxOutputPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>77, 25</value>
+    <value>80, 28</value>
   </data>
   <data name="m_tbxOutputPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>391, 20</value>
+    <value>385, 20</value>
   </data>
   <data name="m_tbxOutputPath.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -229,7 +229,7 @@
     <value>Top, Right</value>
   </data>
   <data name="m_btnChoose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>474, 23</value>
+    <value>471, 26</value>
   </data>
   <data name="m_btnChoose.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -259,10 +259,10 @@
     <value>False</value>
   </data>
   <data name="m_cmbBACalcType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 2</value>
+    <value>153, 5</value>
   </data>
   <data name="m_cmbBACalcType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>399, 21</value>
+    <value>393, 21</value>
   </data>
   <data name="m_cmbBACalcType.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -286,7 +286,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblBACalcType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-3, 5</value>
+    <value>0, 8</value>
   </data>
   <data name="m_lblBACalcType.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 13</value>
@@ -316,7 +316,7 @@
     <value>NoControl</value>
   </data>
   <data name="m_lblNumYears.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-3, 31</value>
+    <value>0, 34</value>
   </data>
   <data name="m_lblNumYears.Size" type="System.Drawing.Size, System.Drawing">
     <value>137, 13</value>
@@ -385,7 +385,7 @@
     <value>True</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-3, 58</value>
+    <value>0, 61</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 13</value>
@@ -439,7 +439,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-3, 54</value>
+    <value>0, 57</value>
   </data>
   <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
@@ -468,6 +468,9 @@
   <data name="m_tabOutput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
+  <data name="m_tabOutput.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
   <data name="m_tabOutput.Size" type="System.Drawing.Size, System.Drawing">
     <value>549, 77</value>
   </data>
@@ -494,6 +497,9 @@
   </data>
   <data name="m_tabBA.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_tabBA.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
   </data>
   <data name="m_tabBA.Size" type="System.Drawing.Size, System.Drawing">
     <value>549, 77</value>
@@ -559,6 +565,6 @@
     <value>frmUI</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9235.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9288.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
