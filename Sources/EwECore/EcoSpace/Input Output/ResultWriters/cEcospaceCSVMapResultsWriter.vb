@@ -52,7 +52,9 @@ Public Class cEcospaceCSVMapResultsWriter
     Public Overrides Sub StartWrite()
         Try
             Me.CreateOutputDir()
-            Me.WriteFileHeaders(eVarNameFlags.EcospaceMapBiomass)
+            Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapBiomass)
+            Me.WriteGroupFileHeaders(eVarNameFlags.EcospaceMapCatch)
+            Me.WriteFleetFileHeaders(eVarNameFlags.EcospaceMapEffort)
         Catch ex As Exception
             Me.m_core.Messages.SendMessage(New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_SAVEMAP_FAILED, ex.Message), _
                                                         eMessageType.ErrorEncountered, eCoreComponentType.EcoSpace, eMessageImportance.Warning))
@@ -102,9 +104,9 @@ Public Class cEcospaceCSVMapResultsWriter
 
         ' Space effort
         For iFlt As Integer = 1 To Me.m_core.m_EcoPathData.NumFleet
-            strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapEffort, iFlt, Me.FileExtension(), tsData.iTimeStep)
+            strFile = Me.GetFleetFileName(eVarNameFlags.EcospaceMapEffort, iFlt, Me.FileExtension())
             Try
-                strm = New StreamWriter(strFile, False)
+                strm = New StreamWriter(strFile, True)
                 If (strm IsNot Nothing) Then
                     Me.SaveCSV(strm, tsData, iFlt, eVarNameFlags.EcospaceMapEffort)
                     strm.Flush()
@@ -144,14 +146,13 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' <param name="igrp">The group to write the header for.</param>
     ''' <param name="varname">The variable name to write the header for.</param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteHeader(ByRef strm As StreamWriter, ByVal igrp As Integer, ByVal varname As eVarNameFlags)
+    Private Sub WriteHeader(ByRef strm As StreamWriter, ByVal igrp As Integer, ByVal varname As eVarNameFlags, TypeLabel As String, Type As String)
 
         Try
             Me.WriteRunInfo(strm)
-            strm.WriteLine("Variable," & varname.ToString())
-            strm.WriteLine("Group name," & cStringUtils.ToCSVField(Me.EcopathData.GroupName(igrp)))
+            strm.WriteLine("Variable," + varname.ToString())
+            strm.WriteLine(TypeLabel + "," + Type)
             strm.WriteLine()
-
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
         End Try
@@ -230,7 +231,7 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' </summary>
     ''' <param name="varname"></param>
     ''' -----------------------------------------------------------------------
-    Private Sub WriteFileHeaders(ByVal varname As eVarNameFlags)
+    Private Sub WriteGroupFileHeaders(ByVal varname As eVarNameFlags)
 
         Dim strm As StreamWriter
         Dim strFN As String
@@ -241,7 +242,32 @@ Public Class cEcospaceCSVMapResultsWriter
             'this overwrites the data in the current directory
             strm = New StreamWriter(strFN)
             If Me.m_core.SaveWithFileHeader Then
-                Me.WriteHeader(strm, igrp, varname)
+                Me.WriteHeader(strm, igrp, varname, "Group name", cStringUtils.ToCSVField(Me.EcopathData.GroupName(igrp)))
+            End If
+            strm.Close()
+            strm = Nothing
+        Next
+
+    End Sub
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Write headers for the all groups for the given variable.
+    ''' </summary>
+    ''' <param name="varname"></param>
+    ''' -----------------------------------------------------------------------
+    Private Sub WriteFleetFileHeaders(ByVal varname As eVarNameFlags)
+
+        Dim strm As StreamWriter
+        Dim strFN As String
+
+        For iflt As Integer = 1 To Me.m_core.m_EcoPathData.NumFleet
+            strFN = Me.GetFleetFileName(varname, iflt, "csv")
+            'Create a new file when writting the header
+            'this overwrites the data in the current directory
+            strm = New StreamWriter(strFN)
+            If Me.m_core.SaveWithFileHeader Then
+                Me.WriteHeader(strm, iflt, varname, "Fleet name", cStringUtils.ToCSVField(Me.EcopathData.FleetName(iflt)))
             End If
             strm.Close()
             strm = Nothing
