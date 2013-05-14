@@ -324,7 +324,7 @@ Public Class cEcospaceDataStructures
     Public FitRespType As Integer
 
     ''' <summary>
-    ''' Sailing Effort Multiplier
+    ''' Sailing Effort Multiplier by Fleet
     ''' </summary>
     ''' <remarks></remarks>
     Public SEmult() As Single
