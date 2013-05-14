@@ -35,6 +35,8 @@ Namespace Ecospace
     ''' -----------------------------------------------------------------------
     Public Class EcospaceParameters
 
+        Public Const NOTSAVEDEXT As String = "-notsaved-"
+
 #Region " Private vars "
 
         ' Scenario generics
@@ -65,6 +67,8 @@ Namespace Ecospace
         Private WithEvents m_bpUseNewStanza As cBooleanProperty = Nothing
         Private WithEvents m_bpAdjustSpace As cBooleanProperty = Nothing
         Private WithEvents m_bpEffort As cBooleanProperty = Nothing
+
+
 
 #End Region ' Private vars
 
@@ -97,6 +101,7 @@ Namespace Ecospace
             Public ReadOnly Property Extensions As String
                 Get
                     Dim strExts As String = ""
+                    If Me.m_items.Count = 0 Then Return EcospaceParameters.NOTSAVEDEXT
                     For i As Integer = 0 To Me.m_items.Count - 1
                         If (i > 0) Then strExts = strExts & ";"
                         strExts = strExts & Me.m_items(i).FileExtension
@@ -408,8 +413,9 @@ Namespace Ecospace
                 strExt = DirectCast(Me.m_cmbAutosaveMapFormat.SelectedItem, cEcospaceResultWriterItem).Extensions
             End If
 
-            If String.IsNullOrWhiteSpace(strExt) Then
+            If String.IsNullOrWhiteSpace(strExt) Or String.Compare(strExt, NOTSAVEDEXT) = 0 Then
                 Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = False
+                Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = EcospaceParameters.NOTSAVEDEXT
             Else
                 Me.Core.Autosave(eAutosaveTypes.EcospaceMaps) = True
                 Me.Core.AutosaveFormat(eAutosaveTypes.EcospaceMaps) = strExt
