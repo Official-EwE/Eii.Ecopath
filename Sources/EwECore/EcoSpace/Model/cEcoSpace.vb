@@ -2447,7 +2447,7 @@ Public Class cEcoSpace
                     'm_data.ThabArea total usable area of the map
                     m_Data.ThabArea = m_Data.ThabArea + 1
                     For ihab As Integer = 1 To Me.m_Data.NoHabitats
-                        Me.m_Data.HabArea(ihab) = m_Data.HabArea(ihab) + 1 * m_Data.PHabType(i, j, ihab)
+                        Me.m_Data.HabArea(ihab) += m_Data.PHabType(i, j, ihab)
                     Next ihab
                 End If 'm_Data.Depth(i, j) > 0
             Next j
@@ -2872,13 +2872,19 @@ Public Class cEcoSpace
                                 'Fishing is also restricted by sailing cost < effort distribution threshold
                                 If Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold Then
                                     TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
-                                End If
+                                Else
+                                    'Sailing cost > effort distribution threshold
+                                    'So not fishing in this cell
+                                    Me.m_Data.PAreaFished(i, j, ig) = 0
+                                End If 'Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold
+
                             End If 'Me.m_Data.bUseEffortDistThreshold
                         End If 'ResetTotEffort
                     End If 'm_Data.Depth(i, j) > 0
 
                 Next j 'map cols
             Next i 'map rows
+
         Next ig ' fleets
 
     End Sub
@@ -4033,12 +4039,11 @@ exitline:
         Dim CatGear As Single, CatLoc(,) As Single, WtCat As Single
         Dim Attract(,) As Single
 
-        'Is Effort predicted
-        If Not Me.m_Data.PredictEffort Then
-            'No Effort is not being predicted 
-            'In this case Ecospace Effort = Ecosim Effort in all cells
-            Return
-        End If
+        'Use Ecopath effort
+        If Not Me.m_Data.PredictEffort Then Return
+        'Don't adjust total effort when using EffortDistThreshold
+        'EffortDistThreshold restricts the fishing to small number of cells
+        If Me.m_Data.bUseEffortDistThreshold Then Return
 
         ReDim Effort(m_Data.nFleets)
 
@@ -4063,7 +4068,6 @@ exitline:
 
             ReDim CatLoc(m_Data.InRow, m_Data.InCol) '****
 
-            '
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     If m_Data.Depth(i, j) > 0 And (m_Data.GearHab(ig, 0) Or (Me.m_Data.PAreaFished(i, j, ig) > 0)) Then
