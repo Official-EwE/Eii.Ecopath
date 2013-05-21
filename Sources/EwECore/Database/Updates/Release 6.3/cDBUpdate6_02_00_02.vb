@@ -108,7 +108,6 @@ Friend Class cDBUpdate6_02_00_02
     Private Function AddCapacityMapAssignmentTable(ByVal db As cEwEDatabase) As Boolean
         Dim bSuccess As Boolean = True
 
-        ' Read ecosim run length
         bSuccess = bSuccess And db.Execute("CREATE TABLE EcospaceScenarioCapacitDrivers (ScenarioID LONG, GroupID LONG, VarName TEXT(50), VarDBID LONG, ShapeID LONG)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD PRIMARY KEY (ScenarioID, GroupID, VarName, VarDBID)")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioCapacitDrivers ADD FOREIGN KEY (ScenarioID) REFERENCES EcospaceScenario(ScenarioID)")
@@ -123,7 +122,6 @@ Friend Class cDBUpdate6_02_00_02
     Private Function UpdateMediationTable(ByVal db As cEwEDatabase) As Boolean
         Dim bSuccess As Boolean = True
 
-        ' Read ecosim run length
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimShapeMediation ADD COLUMN XAxisMin SINGLE")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcosimShapeMediation ADD COLUMN XAxisMax SINGLE")
 

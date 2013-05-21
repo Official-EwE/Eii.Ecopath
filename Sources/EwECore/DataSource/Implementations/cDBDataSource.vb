@@ -8344,6 +8344,7 @@ Namespace DataSources
             Try
 
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroupHabitat WHERE GroupID={0}", iGroupID))
+                bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE GroupID={0}", iGroupID))
                 bSucces = bSucces And Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioGroup WHERE GroupID={0}", iGroupID))
 
             Catch ex As Exception
@@ -9229,11 +9230,11 @@ Namespace DataSources
             Dim reader As IDataReader = Nothing
             Dim bSucces As Boolean = True
 
-            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioCapacitDrivers WHERE (ScenarioID={0})", iScenarioID))
+            reader = Me.m_db.GetReader(String.Format("SELECT * FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
             Try
 
                 While reader.Read()
-                    Dim iGroup As Integer = Array.IndexOf(ecopathDS.GroupDBID, CInt(reader("GroupID")))
+                    Dim iGroup As Integer = Array.IndexOf(ecospaceDS.GroupDBID, CInt(reader("GroupID")))
                     Dim iShape As Integer = Array.IndexOf(Me.m_core.CapacityMapInteractionManager.MediationData.MediationDBIDs, CInt(reader("ShapeID")))
                     Dim iMap As Integer = Array.IndexOf(ecospaceDS.EnvironmentalLayerDBID, CInt(reader("VarDBID")))
                     Dim varName As eVarNameFlags = cin.GetVarName(CStr(reader("VarName")))
@@ -9335,8 +9336,8 @@ Namespace DataSources
             Dim bSucces As Boolean = True
             Dim layerType As eVarNameFlags
             ' Clear
-            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacitDrivers WHERE (ScenarioID={0})", iScenarioID))
-            writer = Me.m_db.GetWriter("EcospaceScenarioCapacitDrivers")
+            Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ScenarioID={0})", iScenarioID))
+            writer = Me.m_db.GetWriter("EcospaceScenarioCapacityDrivers")
 
             Try
                 For iMap As Integer = 0 To ecospaceDS.nEnvironmentalDriverLayers
@@ -9344,7 +9345,7 @@ Namespace DataSources
                         If (ecospaceDS.CapMapFunctions(iMap, iGroup) > 0) Then
                             drow = writer.NewRow()
                             drow("ScenarioID") = iScenarioID
-                            drow("GroupID") = ecopathDS.GroupDBID(iGroup)
+                            drow("GroupID") = ecospaceDS.GroupDBID(iGroup)
                             drow("ShapeID") = medDS.MediationDBIDs(ecospaceDS.CapMapFunctions(iMap, iGroup))
                             If iMap = 0 Then layerType = eVarNameFlags.LayerDepth Else layerType = eVarNameFlags.LayerDriver
                             drow("VarName") = cin.GetVarName(layerType)
