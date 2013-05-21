@@ -147,6 +147,7 @@
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_12_00_11.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_12_00_12.vb" />
     <Compile Include="Database\Updates\Release 6.3\cDBUpdate6_12_00_13.vb" />
+    <Compile Include="Database\Updates\Release 6.4\cDBUpdate6_40_00_02.vb" />
     <Compile Include="Database\Updates\Release 6.4\cDBUpdate6_40_00_01.vb" />
     <Compile Include="DataSource\Implementations\cEIIDataSource.vb" />
     <Compile Include="DataSource\Implementations\cEIIXMLDataSource.vb" />

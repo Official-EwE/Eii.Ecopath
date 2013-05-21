@@ -63,7 +63,6 @@ Friend Class cDBUpdate6_40_00_01
 
         Dim bSuccess As Boolean = True
 
-        ' EcospaceScenarioBasemap -> EcospaceScenarioMap
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenarioFleet ADD COLUMN SEMult SINGLE")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN UseEffortDistrThreshold SHORT")
         bSuccess = bSuccess And db.Execute("ALTER TABLE EcospaceScenario ADD COLUMN EffortDistrThreshold SINGLE")
