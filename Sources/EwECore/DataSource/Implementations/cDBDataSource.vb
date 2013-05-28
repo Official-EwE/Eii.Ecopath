@@ -6405,7 +6405,6 @@ Namespace DataSources
                 Me.m_db.Execute(String.Format("DELETE FROM EcoSimShapeCapacity WHERE (ShapeID={0})", iShapeID))
 
                 ' Delete capacity mediations, if any
-                Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityMapAssignments WHERE (ShapeID={0})", iShapeID))
                 Me.m_db.Execute(String.Format("DELETE FROM EcospaceScenarioCapacityDrivers WHERE (ShapeID={0})", iShapeID))
 
                 ' Destroy the given shape
