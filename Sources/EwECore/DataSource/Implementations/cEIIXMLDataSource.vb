@@ -2445,7 +2445,7 @@ Public Class cEIIXMLDataSource
         Dim cin As cCoreEnumNamesIndex = cCoreEnumNamesIndex.GetInstance()
         Dim ecopathDS As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim ecospaceDS As cEcospaceDataStructures = Me.m_core.m_EcoSpaceData
-        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioCapacitDrivers")
+        Dim dt As DataTable = Me.ReadTable("EcospaceScenarioCapacityDrivers")
         Dim bSucces As Boolean = True
 
         dt.DefaultView.RowFilter = CStr("ScenarioID=" & iScenarioID)
