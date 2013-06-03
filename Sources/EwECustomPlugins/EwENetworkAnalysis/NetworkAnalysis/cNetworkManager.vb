@@ -193,12 +193,17 @@ Public Class cNetworkManager
                 'This may not be necessary because m_EcoNetwork keeps a reference to the data. 
                 'However, this is more robust, incase the core has created a new m_EcoPathData object.
                 Me.m_econetwork.EcopathData = m_epdata
-                Me.m_econetwork.RunNetworkAnalysis()
-
-                Me.m_runstate = eRunState.NetworkHasRun
-
-                bSucces = True
-                Me.IsMainNetworkRun = True
+                If Me.m_econetwork.RunNetworkAnalysis() Then
+                    Me.m_runstate = eRunState.NetworkHasRun
+                    bSucces = True
+                    Me.IsMainNetworkRun = True
+                Else
+                    'Failed to run
+                    'May have timed out
+                    Me.m_runstate = eRunState.NetworkNeedsToRun
+                    bSucces = False
+                    Me.IsMainNetworkRun = False
+                End If
 
             Catch ex As Exception
                 cLog.Write(ex)
