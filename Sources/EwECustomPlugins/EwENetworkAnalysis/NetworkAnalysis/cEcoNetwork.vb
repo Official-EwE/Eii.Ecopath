@@ -125,6 +125,13 @@ Public Class cEcoNetwork
     Private Sel As Integer 'jb I don't think this is used anymore In EwE5 it is set from PrepareReqPPDetails()
     Private m_GroupsToShow() As Boolean
 
+    Private m_AbortTimer As System.Timers.Timer
+
+    ''' <summary> Abort Timer timed out. Used to post a message at the end of a run.</summary>
+    Private m_timedOut As Boolean
+
+    Public TimeOutMilSecs As Integer = 5000
+
 #Region "Private Ecosim Data"
 
     'biomass computed by Ecosim at the current time step
@@ -375,6 +382,52 @@ Public Class cEcoNetwork
 
 #Region " Network Analysis "
 
+    Private Sub startAbortTimer()
+        Try
+
+            'Create or start a new timer
+            If Me.m_AbortTimer Is Nothing Then
+                Me.m_AbortTimer = New System.Timers.Timer(Me.TimeOutMilSecs)
+                Me.m_AbortTimer.AutoReset = False
+                Me.m_AbortTimer.Start()
+            Else
+                Me.m_AbortTimer.Stop()
+                Me.m_AbortTimer.Start()
+            End If
+
+            Me.m_timedOut = False
+            AddHandler Me.m_AbortTimer.Elapsed, AddressOf Me.OnAbortTimerEvent
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub stopAbortTimer()
+        Try
+            Debug.Assert(Me.m_AbortTimer IsNot Nothing, Me.ToString + " abort timer has not been set!")
+
+            If Me.m_timedOut Then
+                Me.SendMessage(New cMessage("Sorry Network Analysis timed out after " + (TimeOutMilSecs / 60 / 1000).ToString + " minutes. Results will not be displayed.", _
+                                            eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning))
+            End If
+
+            Me.m_AbortTimer.Close()
+            RemoveHandler Me.m_AbortTimer.Elapsed, AddressOf Me.OnAbortTimerEvent
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
+    Private Sub OnAbortTimerEvent(source As Object, e As System.Timers.ElapsedEventArgs)
+        Me.bStopNetworkAnnalysis = True
+        Me.m_timedOut = True
+        Console.WriteLine("The abortTimer.Elapsed event was raised at {0}", e.SignalTime)
+    End Sub
+
     ''' <summary>
     ''' Run the Main Network Analysis routine
     ''' </summary>
@@ -418,6 +471,8 @@ Public Class cEcoNetwork
                 strErr = "Ulanow()"
                 Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
 
+                Me.startAbortTimer()
+
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_LINDEMAN, 0.3)
                 strErr = "Lindeman()"
                 Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
@@ -427,7 +482,9 @@ Public Class cEcoNetwork
                 bSucces = False
             End Try
 
-            If (bSucces) Then
+            'Did it through an error, stop or time out
+            If (bSucces And (Not Me.bStopNetworkAnnalysis)) Then
+                'Nope all good 
 
                 ' PROCEED TO THE MIXED TROPHIC IMPACT ROUTINE
                 CatchSum = 0
@@ -460,6 +517,8 @@ Public Class cEcoNetwork
 
             End If
 
+            Me.stopAbortTimer()
+
         Catch ex As Exception
 #If DEBUG Then
             ' Profiler bit
@@ -475,6 +534,11 @@ Public Class cEcoNetwork
 #End If
 
         cApplicationStatusNotifier.EndProgress(Me.m_core)
+
+        'return true if
+        'Didn't through an error 
+        'Wasn't stopped or timed out, if it timed out then bStopNetworkAnnalysis will be True, no need to check Me.m_bTimedOut
+        Return bSucces And (Not Me.bStopNetworkAnnalysis)
 
         'Count = 2
     End Function
