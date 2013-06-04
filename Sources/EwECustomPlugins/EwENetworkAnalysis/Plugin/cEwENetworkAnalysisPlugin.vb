@@ -100,6 +100,13 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Function
 
+
+    Public ReadOnly Property Manager As cNetworkManager
+        Get
+            Return cEwENetworkAnalysisPlugin._inst_.m_manager
+        End Get
+    End Property
+
 #End Region ' Singleton
 
 #Region " Generic "
