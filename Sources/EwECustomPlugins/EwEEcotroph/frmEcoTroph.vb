@@ -1240,57 +1240,43 @@ Public Class autre
 
 
         Try
-            Dim myservice As New getResultPortTypeClient()
-        
+            Dim myservice As New getResult()
+            Dim myresult As String
+            Dim myresult_xml As New XmlDocument()
+
+            Cursor.Current = Cursors.WaitCursor
+            panel_webservi.Visible = True
+            If models_list.Items.Count = 0 Then
 
 
+                Try
+                    myresult = myservice.list_models("", Nothing)
+                    myresult_xml.LoadXml(myresult)
+
+                    Dim nodelist As XmlNodeList = myresult_xml.DocumentElement.ChildNodes
+                Catch ex As Exception
 
 
-
-        Dim myresult As String
-        Dim myresult_xml As New XmlDocument()
-
-        Cursor.Current = Cursors.WaitCursor
-
-        Dim myrequest As New list_modelsRequest()
-
-        panel_webservi.Visible = True
-
-        If models_list.Items.Count = 0 Then
+                    MessageBox.Show(My.Resources.NO_DB_SERVICES)
+                End Try
 
 
-            Try
-                myresult = myservice.list_models("", Nothing)
-            
+                ReDim num_model(myresult_xml.GetElementsByTagName("element").Count)
+                Dim compteur As Integer = 0
+
+                For Each node As XmlNode In myresult_xml.GetElementsByTagName("element")
+
+                    If Not (IsNothing(node("model_name"))) Then
 
 
+                        models_list.Items.Add(node("model_name").InnerText)
+                        num_model(compteur) = node("model_number").InnerText
+                        compteur = compteur + 1
+                    End If
+                Next
 
-            myresult_xml.LoadXml(myresult)
-
-            Dim nodelist As XmlNodeList = myresult_xml.DocumentElement.ChildNodes
-            Catch ex As Exception
-
-
-                MessageBox.Show(My.Resources.NO_DB_SERVICES)
-            End Try
-
-
-            ReDim num_model(myresult_xml.GetElementsByTagName("element").Count)
-            Dim compteur As Integer = 0
-
-            For Each node As XmlNode In myresult_xml.GetElementsByTagName("element")
-
-                If Not (IsNothing(node("model_name"))) Then
-
-
-                    models_list.Items.Add(node("model_name").InnerText)
-                    num_model(compteur) = node("model_number").InnerText
-                    compteur = compteur + 1
-                End If
-            Next
-
-        End If
-        Cursor.Current = Cursors.Default
+            End If
+            Cursor.Current = Cursors.Default
         Catch ex As Exception
 
 
@@ -1319,7 +1305,7 @@ Public Class autre
 
 
         Try
-            Dim myservice As New Eco_services.getResultPortTypeClient()
+            Dim myservice As New getResult()
 
             ' Jerome refonte et utilisation webservice 13/12/2012
 
@@ -1425,14 +1411,9 @@ Public Class autre
 
     Private Sub models_list_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles models_list.SelectedIndexChanged
 
-
-
         Dim url_eco As String
-
         url_eco = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?ident=base_eco&pass=base_eco&provenance=ecopath&action=base&menu=0&model=" & num_model(models_list.SelectedIndex)
-
         site_eco.Navigate(New Uri(url_eco))
-
 
     End Sub
 
