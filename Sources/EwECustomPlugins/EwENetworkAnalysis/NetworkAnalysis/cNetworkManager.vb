@@ -623,6 +623,24 @@ Public Class cNetworkManager
         End Set
     End Property
 
+    Public Property bUseAbortTimer As Boolean
+        Get
+            Return Me.m_econetwork.bUseAbortTimer
+        End Get
+        Set(value As Boolean)
+            Me.m_econetwork.bUseAbortTimer = value
+        End Set
+    End Property
+
+    Public Property TimeOutMilSecs As Integer
+        Get
+            Return Me.m_econetwork.TimeOutMilSecs
+        End Get
+        Set(value As Integer)
+            Me.m_econetwork.TimeOutMilSecs = value
+        End Set
+    End Property
+
 #End Region ' Settings
 
 #Region " Inputs "

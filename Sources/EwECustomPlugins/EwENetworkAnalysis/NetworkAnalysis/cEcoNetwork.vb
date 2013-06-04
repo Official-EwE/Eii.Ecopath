@@ -131,6 +131,7 @@ Public Class cEcoNetwork
     Private m_timedOut As Boolean
 
     Public TimeOutMilSecs As Integer = 5000
+    Private m_bUseAbortTimer As Boolean
 
 #Region "Private Ecosim Data"
 
@@ -378,11 +379,24 @@ Public Class cEcoNetwork
         End Set
     End Property
 
+
+    Public Property bUseAbortTimer As Boolean
+        Get
+            Return Me.m_bUseAbortTimer
+        End Get
+        Set(value As Boolean)
+            Me.m_bUseAbortTimer = value
+        End Set
+    End Property
+
 #End Region ' Public Properties
 
 #Region " Network Analysis "
 
     Private Sub startAbortTimer()
+
+        If Not Me.m_bUseAbortTimer Then Exit Sub
+
         Try
 
             'Create or start a new timer
@@ -405,6 +419,9 @@ Public Class cEcoNetwork
     End Sub
 
     Private Sub stopAbortTimer()
+
+        If Not Me.m_bUseAbortTimer Then Exit Sub
+
         Try
             Debug.Assert(Me.m_AbortTimer IsNot Nothing, Me.ToString + " abort timer has not been set!")
 
@@ -423,6 +440,9 @@ Public Class cEcoNetwork
 
 
     Private Sub OnAbortTimerEvent(source As Object, e As System.Timers.ElapsedEventArgs)
+
+        If Not Me.m_bUseAbortTimer Then Exit Sub
+
         Me.bStopNetworkAnnalysis = True
         Me.m_timedOut = True
         Console.WriteLine("The abortTimer.Elapsed event was raised at {0}", e.SignalTime)
@@ -477,6 +497,9 @@ Public Class cEcoNetwork
                 strErr = "Lindeman()"
                 Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_NA, 0.4)
+
+                Me.stopAbortTimer()
+
             Catch ex As Exception
                 cLog.Write(ex)
                 bSucces = False
@@ -517,7 +540,7 @@ Public Class cEcoNetwork
 
             End If
 
-            Me.stopAbortTimer()
+
 
         Catch ex As Exception
 #If DEBUG Then
