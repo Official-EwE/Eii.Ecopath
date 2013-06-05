@@ -127,11 +127,21 @@ Public Class cEcoNetwork
 
     Private m_AbortTimer As System.Timers.Timer
 
-    ''' <summary> Abort Timer timed out. Used to post a message at the end of a run.</summary>
+    ''' <summary>Abort Timer timed out. Used to post a message at the end of a run.</summary>
     Private m_timedOut As Boolean
 
-    Public TimeOutMilSecs As Integer = 5000
-    Private m_bUseAbortTimer As Boolean
+    ''' <summary>
+    ''' Number of milliseconds to wait for the Network Analysis to complete before it times out.
+    ''' </summary>
+    ''' <remarks>This is only effective if <see cref="bUseAbortTimer">bUseAbortTimer</see></remarks> = True.
+    Public TimeOutMilSecs As Integer = 30000
+
+    ''' <summary>Use the Abort Timer to abort a run after <see cref="TimeOutMilSecs">time out in Milliseconds</see></summary>
+    ''' <remarks>
+    ''' False by default. The AbortTimer works in the Scientific interface but needs an interface to turn it on/off and set the TimeOutMilSecs. 
+    ''' At this time this can only be used from code.
+    ''' </remarks>
+    Private m_bUseAbortTimer As Boolean = False
 
 #Region "Private Ecosim Data"
 
