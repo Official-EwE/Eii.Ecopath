@@ -134,7 +134,7 @@ Public Class cEcoNetwork
     ''' Number of milliseconds to wait for the Network Analysis to complete before it times out.
     ''' </summary>
     ''' <remarks>This is only effective if <see cref="bUseAbortTimer">bUseAbortTimer</see></remarks> = True.
-    Public TimeOutMilSecs As Integer = 30000
+    Public TimeOutMilSecs As Integer = 60 * 30 * 1000
 
     ''' <summary>Use the Abort Timer to abort a run after <see cref="TimeOutMilSecs">time out in Milliseconds</see></summary>
     ''' <remarks>
