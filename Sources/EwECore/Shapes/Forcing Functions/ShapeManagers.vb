@@ -749,8 +749,6 @@ End Class
 ''' <summary>
 ''' Implemenation of the Base class for capacity shapes
 ''' </summary>
-''' <remarks>
-''' </remarks>
 Public Class cCapMapResponseManager
     Inherits cBaseShapeManager
 
@@ -776,8 +774,6 @@ Public Class cCapMapResponseManager
     ''' <summary>
     ''' Create a new Mediation shape
     ''' </summary>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Overrides Function CreateNewShape(ByVal strName As String, ByVal asData As Single(), _
             Optional ByVal sYZero As Single = 0, Optional ByVal sYBase As Single = 0, _
             Optional ByVal sYEnd As Single = 0, Optional ByVal sSteep As Single = 0, _
