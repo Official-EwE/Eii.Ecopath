@@ -323,7 +323,7 @@ Public Class cResultWriter
     Private Function GetIndicesWithPPRData(ByVal bAnnualAverage As Boolean) As String
 
         Dim cols As eColTypes() = DirectCast([Enum].GetValues(GetType(eColTypes)), eColTypes())
-        Dim iNumCols As Integer = cols.Length - 2 ' Exclude PPR columns
+        Dim iNumCols As Integer = cols.Length ' Include PPR columns
         Dim asValues(iNumCols) As Single
         Dim iMonth As Integer = 0
         Dim iYear As Integer = 0
