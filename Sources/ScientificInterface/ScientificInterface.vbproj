@@ -167,6 +167,7 @@
     <Compile Include="AppLauncher.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="cBrowserCommand.vb" />
     <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
       <DependentUpon>dlgDefineRegions.vb</DependentUpon>
     </Compile>

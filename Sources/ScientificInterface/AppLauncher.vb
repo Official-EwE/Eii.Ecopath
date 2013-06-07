@@ -117,6 +117,7 @@ Public Class AppLauncher
     Private WithEvents m_cmdFileSave As cFileSaveCommand = Nothing
     Private WithEvents m_cmdDirectoryOpen As cDirectoryOpenCommand = Nothing
     Private WithEvents m_cmdExecute As cExecuteCommand = Nothing
+    Private WithEvents m_cmdCreateNewModel As cCreateModelCommand = Nothing
     Private WithEvents m_cmdNewModel As cCommand = Nothing
     Private WithEvents m_cmdLoadModel As cCommand = Nothing
     Private WithEvents m_cmdOpenOutput As cCommand = Nothing
@@ -203,10 +204,6 @@ Public Class AppLauncher
 #Region " Singleton "
 
     Private Shared __inst__ As AppLauncher = Nothing
-
-    Public Shared Function GetInstance() As AppLauncher
-        Return AppLauncher.__inst__
-    End Function
 
 #End Region ' Singleton
 
@@ -350,6 +347,9 @@ Public Class AppLauncher
 
         ' Create and configure navigate command
         Me.m_cmdNavigate = New cNavigationCommand(cmdh)
+
+        ' Create new model command
+        Me.m_cmdCreateNewModel = New cCreateModelCommand(cmdh)
 
         ' Create and configure print command
         Me.m_cmdPrint = New cPrintCommand(cmdh)
@@ -628,7 +628,7 @@ Public Class AppLauncher
         Me.Core.Messages.AddMessageHandler(Me.m_mhTimeseries)
 
         ' Create message history
-        Me.m_MessageHistory = New cMessageHistory()
+        Me.m_MessageHistory = New cMessageHistory(Me)
         Me.m_MessageHistory.UIContext = Me.UIContext
 
         ' Create plugin manager for this GUI
@@ -647,7 +647,7 @@ Public Class AppLauncher
         Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager, Me.UIContext.CommandHandler)
 
         ' Initialize core controller
-        Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
+        Me.m_coreController = New cCoreController(Me, Me.Core.StateMonitor, Me.Core.StateManager)
 
         ' Initialize style guide updater
         Me.m_styleguideupdater = New cStyleGuideUpdater(Me.UIContext)
@@ -677,32 +677,6 @@ Public Class AppLauncher
     End Sub
 
 #End Region ' Initialization
-
-#Region " Properties "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Returns the file name of the current loaded model.
-    ''' </summary>
-    ''' <param name="bFullPath">Flag stating thether the full path needs to be 
-    ''' returned.</param>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
-        Get
-            Dim ds As IEwEDataSource = Me.Core.DataSource
-            If Object.ReferenceEquals(ds, Nothing) Then
-                Return ""
-            Else
-                If bFullPath Then
-                    Return ds.ToString()
-                Else
-                    Return Path.GetFileName(ds.ToString())
-                End If
-            End If
-        End Get
-    End Property
-
-#End Region ' Properties
 
 #Region " Messages "
 
@@ -1128,7 +1102,7 @@ Public Class AppLauncher
 
         Dim ds As IEwEDataSource = Me.Core.DataSource
         Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
-        Dim strFileName As String = Me.SelectedFileName()
+        Dim strFileName As String = Me.Core.FileName
         Dim strMessage As String = ""
         Dim bSucces As Boolean = True
 
@@ -1290,7 +1264,7 @@ Public Class AppLauncher
         Dim strCaption As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, an.Version.ToString)
         Dim model As cEwEModel = Me.Core.EwEModel
 
-        Me.m_tsModel.Path = Me.SelectedFileName
+        Me.m_tsModel.Path = Me.Core.FileName
         If Not Me.Core.StateMonitor.HasEcopathLoaded Then
             Me.Text = strCaption
         Else
@@ -1528,7 +1502,7 @@ Public Class AppLauncher
             item = New ToolStripMenuItem()
             item.Text = str(0)
             item.Tag = str(0)
-            item.Checked = (String.Compare(str(0), Me.SelectedFileName, True) = 0)
+            item.Checked = (String.Compare(str(0), Me.Core.FileName, True) = 0)
 
             'Add event handler to invoke the model
             AddHandler item.Click, AddressOf OnMRUItemClicked
@@ -1910,8 +1884,8 @@ Public Class AppLauncher
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Friend Function CreateEcopathModel(ByVal strFileName As String, _
-                                        ByVal strModelName As String, _
-                                        ByVal format As eDataSourceTypes) As cEwEDatabase
+                                       ByVal strModelName As String, _
+                                       ByVal format As eDataSourceTypes) As cEwEDatabase
 
         Dim db As cEwEDatabase = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
@@ -2010,7 +1984,7 @@ Public Class AppLauncher
     ''' ---------------------------------------------------------------------------
     Private Function CloseEcopathModel() As Boolean
 
-        If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
+        If Not String.IsNullOrEmpty(Me.Core.FileName) Then
 
             ' Not allowed to terminate core?
             If (Not Me.Core.CloseModel()) Then
@@ -2663,7 +2637,7 @@ Public Class AppLauncher
         Dim strFileFilter As String = ""
 
         ' JS 27Jul08: Only able to save in current file format (save as between formats not supported by the core)
-        Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
+        Select Case cDataSourceFactory.GetSupportedType(Me.Core.FileName)
             Case eDataSourceTypes.Access2003
                 ' Only allow saving as MDB
                 strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
@@ -2704,7 +2678,7 @@ Public Class AppLauncher
 
         Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
-        Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
+        Select Case cDataSourceFactory.GetSupportedType(Me.Core.FileName)
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                 ' NOP
             Case Else
@@ -2728,7 +2702,7 @@ Public Class AppLauncher
     ''' Update close model command state
     ''' </summary>
     Private Sub OnUpdateCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Not Me.Core.StateMonitor.IsBusy
     End Sub
 
     ''' <summary>
@@ -2746,7 +2720,7 @@ Public Class AppLauncher
         If (ds Is Nothing) Then
             cmd.Enabled = False
         Else
-            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.SelectedFileName)
+            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.Core.FileName)
         End If
     End Sub
 
@@ -2760,7 +2734,6 @@ Public Class AppLauncher
 
         End Try
     End Sub
-
 
     Private Sub OnPrintInvoke(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
 
@@ -3970,6 +3943,25 @@ Public Class AppLauncher
     End Sub
 
 #End Region ' Plug-in commands
+
+#Region " Flow commands "
+
+    ''' <summary>
+    ''' Create a model
+    ''' </summary>
+    Private Sub OnCreateNewModel(ByVal cmd As cCommand) Handles m_cmdCreateNewModel.OnInvoke
+        Dim cmdX As cCreateModelCommand = DirectCast(cmd, cCreateModelCommand)
+        cmdX.Database = Me.CreateEcopathModel(cmdX.FileName, cmdX.ModelName, cmdX.Format)
+    End Sub
+
+    ''' <summary>
+    ''' Update create model command state
+    ''' </summary>
+    Private Sub OnUpdateCreateNewModel(ByVal cmd As cCommand) Handles m_cmdCreateNewModel.OnUpdate
+        cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
+    End Sub
+
+#End Region
 
 #End Region ' Command handlers 
 

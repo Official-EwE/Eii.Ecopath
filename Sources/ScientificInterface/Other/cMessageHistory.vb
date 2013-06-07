@@ -51,6 +51,8 @@ Public Class cMessageHistory
     ''' <summary>Core message handlers.</summary>
     Private m_dtMessageHanders As New Dictionary(Of eCoreComponentType, cMessageHandler)
 
+    Private m_appl As AppLauncher = Nothing
+
 #End Region ' Privates
 
 #Region " Helper class "
@@ -332,7 +334,8 @@ Public Class cMessageHistory
 
 #Region " Construction / destruction "
 
-    Public Sub New()
+    Public Sub New(ByVal appl As AppLauncher)
+        Me.m_appl = appl
     End Sub
 
     Public Property UIContext() As ScientificInterfaceShared.Controls.cUIContext _
@@ -560,7 +563,7 @@ Public Class cMessageHistory
                 ' Assume to repeat the question
                 Dim bChecked As Boolean = False
                 ' Show dialog
-                dlr = cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
+                dlr = cCustomMessageBox.Show(strMessage, Me.m_appl.Text, _
                                              mbb, mbi, _
                                              bChecked, My.Resources.PROMPT_MESSAGE_HIDE)
                 ' Auto-reply requested?
@@ -573,7 +576,7 @@ Public Class cMessageHistory
             ' Invoke message box
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
             Try
-                dlr = MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
+                dlr = MessageBox.Show(strMessage, Me.m_appl.Text, mbb, mbi)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
@@ -644,7 +647,7 @@ Public Class cMessageHistory
                     ' Assume message will not be suppressed
                     Dim bSuppress As Boolean = False
                     ' Invoke the special message box
-                    cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
+                    cCustomMessageBox.Show(strMessage, Me.m_appl.Text, _
                                            mbb, mbi, _
                                            bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
                     If bSuppress Then
@@ -655,7 +658,7 @@ Public Class cMessageHistory
             Else
                 ' #No: show the message
                 ' The one and only static popup message box in EwE
-                MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+                MessageBox.Show(strMessage, Me.m_appl.Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
         End If
 
