@@ -244,6 +244,7 @@ Public Enum eMessageType
     GISOperation
     ''' <summary>EwE-wide settings have changed.</summary>
     GlobalSettingsChanged
+    SaveChanges
 
 End Enum
 
