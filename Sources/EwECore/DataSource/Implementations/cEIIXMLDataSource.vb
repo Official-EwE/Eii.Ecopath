@@ -3227,8 +3227,13 @@ Public Class cEIIXMLDataSource
         Return Path.GetExtension(Me.m_strFilename)
     End Function
 
-    Public Function FileName() As String Implements DataSources.IEwEDataSource.FileName
-        Return Path.GetFileName(Me.m_strFilename)
+    Public Function FileName(Optional bFullPath As Boolean = True) As String _
+         Implements IEwEDataSource.FileName
+        If bFullPath Then
+            Return System.IO.Path.GetFullPath(Me.m_strFilename)
+        Else
+            Return System.IO.Path.GetFileName(Me.m_strFilename)
+        End If
     End Function
 
     Public Function IsReadOnly() As Boolean Implements DataSources.IEwEDataSource.IsReadOnly

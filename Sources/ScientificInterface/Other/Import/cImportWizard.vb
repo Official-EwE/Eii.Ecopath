@@ -28,6 +28,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls.Wizard
+Imports ScientificInterfaceShared.Commands
 
 #End Region ' Imports
 
@@ -326,17 +327,23 @@ Namespace Import
         ''' -------------------------------------------------------------------
         Public Function Import(ByVal setting As cImportSettings) As Boolean
 
-            Dim appl As AppLauncher = AppLauncher.GetInstance()
             Dim db As cEwEDatabase = Nothing
             Dim strModel As String = Me.EwE6ModelName(setting, Me.OutputFormat)
             Dim strLogFile As String = ""
+            Dim cmd As cCreateModelCommand = Nothing
             Dim bSucces As Boolean = False
 
             ' Only import models selected for import
             If (Not setting.SelectedForImport) Then Return bSucces
 
             ' Request a database to import into
-            db = appl.CreateEcopathModel(strModel, setting.ModelInfo.ID, Me.OutputFormat)
+            Try
+                cmd = DirectCast(Me.m_uic.CommandHandler.GetCommand(cCreateModelCommand.COMMAND_NAME), cCreateModelCommand)
+                cmd.Invoke(strModel, setting.ModelInfo.ID, Me.OutputFormat)
+                db = cmd.Database
+            Catch ex As Exception
+                cLog.Write(ex, "cImportWizard::Import")
+            End Try
 
             ' Able to create target model?
             If (db IsNot Nothing) Then

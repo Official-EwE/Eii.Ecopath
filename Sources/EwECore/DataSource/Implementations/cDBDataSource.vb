@@ -238,9 +238,13 @@ Namespace DataSources
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="IEwEDataSource.FileName"/>
         ''' -------------------------------------------------------------------
-        Public Function FileName() As String _
+        Public Function FileName(Optional bFullPath As Boolean = True) As String _
             Implements IEwEDataSource.FileName
-            Return Me.m_db.FileName
+            If bFullPath Then
+                Return System.IO.Path.GetFullPath(Me.m_db.FileName)
+            Else
+                Return System.IO.Path.GetFileName(Me.m_db.FileName)
+            End If
         End Function
 
         ''' -------------------------------------------------------------------

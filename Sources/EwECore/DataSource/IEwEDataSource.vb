@@ -151,7 +151,7 @@ Namespace DataSources
         ''' Get the file name associated with a data source.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Function FileName() As String
+        Function FileName(Optional bFullPath As Boolean = True) As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>

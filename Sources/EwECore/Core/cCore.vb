@@ -2441,6 +2441,22 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------------
     ''' <summary>
+    ''' Get the name of the file currently used to provide the loaded model.
+    ''' </summary>
+    ''' <param name="bFullPath">Flag, stating whether the full path to the file
+    ''' should be returned (True), or only the file name part (False). Note that
+    ''' this flag may not apply to all types of datasources.</param>
+    ''' <returns>The name of the file currently used to provide the loaded model.</returns>
+    ''' -------------------------------------------------------------------------
+    Public ReadOnly Property FileName(Optional bFullPath As Boolean = True) As String
+        Get
+            If Me.DataSource Is Nothing Then Return ""
+            Return Me.DataSource.FileName(bFullPath)
+        End Get
+    End Property
+
+    ''' -------------------------------------------------------------------------
+    ''' <summary>
     ''' Get the default output location for a given <see cref="eAutosaveTypes">autosaving component</see>.
     ''' </summary>
     ''' <param name="type">The <see cref="eAutosaveTypes">autosaving component</see> to get return
@@ -2455,7 +2471,7 @@ Public Class cCore
             Dim strPath As String = ""
 
             If (Me.DataSource IsNot Nothing) Then
-                strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
+                strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName(False))
             End If
 
             If String.IsNullOrWhiteSpace(strBasePath) Then
@@ -3463,6 +3479,8 @@ Public Class cCore
             End If
         Next
 
+        ' Still busy? forget it
+        If Me.StateMonitor.IsBusy Then Return False
 
         If Not Me.SaveChanges() Then Return False
 #If PROFILE Then
