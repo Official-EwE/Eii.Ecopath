@@ -2291,7 +2291,7 @@ Public Class cCore
             ' Prepare feedback message
             strPrompt = My.Resources.CoreMessages.PROMPT_DISCARD_CHANGES
             fm = New cFeedbackMessage(strPrompt, _
-                                      eCoreComponentType.Core, eMessageType.Any, _
+                                      eCoreComponentType.Core, eMessageType.SaveChanges, _
                                       eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO)
 
             ' Auto-affirm
