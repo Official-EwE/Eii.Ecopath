@@ -23,6 +23,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 
@@ -35,6 +36,17 @@ Public Class gridHabitatCapacity
     Inherits gridMediation
 
     Private m_handler As New cCapacityShapeGUIHandler()
+
+    ''' <summary>Rows in the grid</summary>
+    Protected Shadows Enum eRowType As Integer
+        Header = 0
+        Thumbnail
+        Name
+        LimLeft
+        LimRight
+        LimMean
+        FirstTime
+    End Enum
 
     Public Sub New()
         MyBase.New()
@@ -52,4 +64,79 @@ Public Class gridHabitatCapacity
         End Get
     End Property
 
+    Protected Overrides Sub FillData()
+
+        If (Me.UIContext Is Nothing) Then Return
+        If (Me.Handler.UIContext Is Nothing) Then Return
+
+        Dim shapes As cShapeData() = Me.Shapes
+        Dim iNumShapes As Integer = shapes.Length
+        Dim iNumPoints As Integer = 0
+        Dim iNumHeaders As Integer = 0
+        Dim cell As SourceGrid2.Cells.ICell = Nothing
+
+        If Me.IsSeasonal Then
+            iNumPoints = cCore.N_MONTHS
+        Else
+            iNumPoints = Me.XAxisMax
+        End If
+        Me.Redim(iNumPoints + [Enum].GetValues(GetType(eRowType)).Length, iNumShapes + 1)
+
+        cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, SharedResources.STATUS_UPDATING)
+
+        ' Create row headers
+        Me(eRowType.Header, 0) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEX)
+        Me(eRowType.Thumbnail, 0) = New EwERowHeaderCell(SharedResources.HEADER_IMAGE)
+        Me(eRowType.Name, 0) = New EwERowHeaderCell(SharedResources.HEADER_NAME)
+
+        ' ToDo: globalize this
+        Me(eRowType.LimLeft, 0) = New EwERowHeaderCell("Left limit")
+        Me(eRowType.LimRight, 0) = New EwERowHeaderCell("Right limit")
+        Me(eRowType.LimMean, 0) = New EwERowHeaderCell("Limit mean")
+
+        ' Create row header cells
+        For i As Integer = 0 To iNumPoints - 1
+            cell = New EwERowHeaderCell(CStr(i))
+            Me(eRowType.FirstTime + i, 0) = cell
+        Next
+
+        ' Populate shape columns
+        For i As Integer = 0 To iNumShapes - 1
+
+            Dim env As cEnviroResponseFunction = DirectCast(shapes(i), cEnviroResponseFunction)
+
+            Me.Shape(i + 1) = env
+            Me(eRowType.Header, i + 1) = New EwEColumnHeaderCell(CStr(shapes(i).Index))
+
+            cell = New SourceGrid2.Cells.Real.Cell
+            cell.Value = env
+            cell.VisualModel = New cVisualModelThumbnail(Me.Handler)
+            Me(eRowType.Thumbnail, i + 1) = cell
+
+            cell = New EwECell(env.Name, GetType(String))
+            cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(eRowType.Name, i + 1) = cell
+
+            ' JS 10Jun13: added
+            cell = New EwECell(env.ResponseLeftLimit, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.LimLeft, i + 1) = cell
+            cell = New EwECell(env.ResponseRightLimit, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.LimRight, i + 1) = cell
+            cell = New EwECell(env.ResponseMean, GetType(Double), cStyleGuide.eStyleFlags.NotEditable)
+            Me(eRowType.LimMean, i + 1) = cell
+
+            For j As Integer = 0 To Math.Min(iNumPoints, env.nPoints) - 1
+                cell = New EwECell(env.ShapeData(j + 1), GetType(Single))
+                cell.Behaviors.Add(Me.EwEEditHandler)
+                Me(eRowType.FirstTime + j, i + 1) = cell
+            Next
+            For j As Integer = env.nPoints To iNumPoints - 1
+                cell = New EwECell(0, GetType(Integer), cStyleGuide.eStyleFlags.NotEditable Or cStyleGuide.eStyleFlags.Null)
+                Me(eRowType.FirstTime + j, i + 1) = cell
+            Next
+        Next
+
+        cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+
+    End Sub
 End Class
