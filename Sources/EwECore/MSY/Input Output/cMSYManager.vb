@@ -117,10 +117,10 @@ Namespace MSY
                         ' #Yep: Ask the user what to do
                         Dim fbMsg As cFeedbackMessage = New cFeedbackMessage(My.Resources.CoreMessages.MSY_WARNING_TIMESERIES, _
                                                                              eCoreComponentType.MSY, eMessageType.StateNotMet, eMessageImportance.Question, _
-                                                                             cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+                                                                             eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
                         fbMsg.Suppressable = True
                         Me.m_Core.Messages.SendMessage(fbMsg)
-                        bOkToRun = (fbMsg.Reply <> cFeedbackMessage.eReply.NO)
+                        bOkToRun = (fbMsg.Reply <> eMessageReply.NO)
                     End If 'bEnabledTS
 
                 End If 'Me.m_Core.ActiveTimeSeriesDatasetIndex > 0

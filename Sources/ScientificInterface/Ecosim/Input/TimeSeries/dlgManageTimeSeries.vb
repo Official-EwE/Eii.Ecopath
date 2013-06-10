@@ -705,19 +705,19 @@ Public Class dlgManageTimeSeries
                                                     eCoreComponentType.TimeSeries, _
                                                     eMessageType.DataImport, _
                                                     eMessageImportance.Warning, _
-                                                    cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, _
+                                                    eMessageReplyStyle.YES_NO_CANCEL, _
                                                     eDataTypes.NotSet, _
-                                                    cFeedbackMessage.eReply.YES)
+                                                    eMessageReply.YES)
                         fmsg.Suppressable = False
                         Me.m_uic.Core.Messages.SendMessage(fmsg)
 
                         Select Case fmsg.Reply
 
-                            Case cFeedbackMessage.eReply.YES
+                            Case eMessageReply.YES
                                 ts.IsMonthly = True
-                            Case cFeedbackMessage.eReply.NO
+                            Case eMessageReply.NO
                                 ts.IsMonthly = False
-                            Case cFeedbackMessage.eReply.CANCEL
+                            Case eMessageReply.CANCEL
                                 bSucces = False
                                 Exit For
 
@@ -808,9 +808,9 @@ Public Class dlgManageTimeSeries
         Dim bSucces As Boolean = True
 
         ' Ask for confirmation
-        Dim fmsg As New cFeedbackMessage(My.Resources.ECOSIM_PROMPT_DELETE_TSDATASETS, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+        Dim fmsg As New cFeedbackMessage(My.Resources.ECOSIM_PROMPT_DELETE_TSDATASETS, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         Me.m_uic.Core.Messages.SendMessage(fmsg)
-        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
+        If (fmsg.Reply <> eMessageReply.YES) Then Return False
 
         ' Save any changes
         If Not Me.m_uic.Core.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False

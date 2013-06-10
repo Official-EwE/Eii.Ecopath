@@ -19,15 +19,13 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
-Imports System.Windows.Forms
-Imports System.Reflection
 Imports EwECore
 Imports EwECore.Auxiliary
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Style
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

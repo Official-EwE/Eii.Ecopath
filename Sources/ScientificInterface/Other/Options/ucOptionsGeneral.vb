@@ -140,7 +140,7 @@ Namespace Other
                 Me.m_fpVerboseLevel.Value = My.Settings.GetDefaultValue("LogVerboseLevel")
                 Me.m_nudMRU.Value = CInt(My.Settings.GetDefaultValue("MdbRecentlyUsedCount"))
                 Me.m_tbxAuthor.Text = cSystemUtils.GetUserName()
-                Me.m_tbxContact.Text = ""
+                Me.m_tbxContact.Text = cSystemUtils.GetUserEmail()
             Catch ex As Exception
 
             End Try
@@ -183,10 +183,10 @@ Namespace Other
 
             If (fileList Is Nothing) Then Return
 
-            Dim fmsg As New cFeedbackMessage(My.Resources.GENERIC_PROMPT_CLEAR_MRU, EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(My.Resources.GENERIC_PROMPT_CLEAR_MRU, EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
 
-            If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
+            If (fmsg.Reply = eMessageReply.YES) Then
                 ' Clear confirmed
                 fileList.Clear()
                 ' This is a temporary solution to avoid returning null reference.

@@ -689,20 +689,20 @@ Namespace Ecospace
             If Me.m_alLayersRemoved.Count > 5 Then
 
                 strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETENUM_PROMPT, Me.m_alLayersRemoved.Count)
-                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                 Select Case fmsg.Reply
-                    Case cFeedbackMessage.eReply.CANCEL
+                    Case eMessageReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case cFeedbackMessage.eReply.YES
+                    Case eMessageReply.YES
                         ' Confirm all regions
                         For Each li In Me.m_alLayersRemoved
                             li.Confirmed = True
                         Next
                         bConfigurationChanged = True
-                    Case cFeedbackMessage.eReply.NO
+                    Case eMessageReply.NO
                         ' NOP
                     Case Else
                         ' Unexpected anwer: assert
@@ -716,17 +716,17 @@ Namespace Ecospace
                     If (Not li.IsNew()) Then
 
                         strPrompt = String.Format(My.Resources.ECOSPACE_EDITLAYER_CONFIRMDELETE_PROMPT, li.Name)
-                        Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                        Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                         Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                         Select Case fmsg.Reply
-                            Case cFeedbackMessage.eReply.CANCEL
+                            Case eMessageReply.CANCEL
                                 ' Abort Apply process
                                 Return False
-                            Case cFeedbackMessage.eReply.NO
+                            Case eMessageReply.NO
                                 ' Do not delete this Layer
                                 li.Confirmed = False
-                            Case cFeedbackMessage.eReply.YES
+                            Case eMessageReply.YES
                                 ' Delete this Layer
                                 li.Confirmed = True
                                 bConfigurationChanged = True

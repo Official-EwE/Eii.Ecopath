@@ -116,6 +116,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
@@ -126,9 +127,11 @@
     <Compile Include="Commands\cCommand.vb" />
     <Compile Include="Commands\cCommandHandler.vb" />
     <Compile Include="Commands\cControlHandler.vb" />
+    <Compile Include="Core\IFeedbackMessage.vb" />
     <Compile Include="Core\IEcospaceResultsWriter.vb" />
     <Compile Include="Core\IExternalDataSource.vb" />
     <Compile Include="Core\ILPSolver.vb" />
+    <Compile Include="Core\IMessage.vb" />
     <Compile Include="Core\ITaxonDetailData.vb" />
     <Compile Include="Core\IEconomicData.vb" />
     <Compile Include="Core\INetworkAnalysisData.vb" />

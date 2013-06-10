@@ -22,10 +22,11 @@ Option Strict On
 Imports System.IO
 Imports System.Reflection
 Imports System.Xml
+Imports EwEPlugin
+Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
-Imports EwEPlugin
 
 #End Region ' Imports
 

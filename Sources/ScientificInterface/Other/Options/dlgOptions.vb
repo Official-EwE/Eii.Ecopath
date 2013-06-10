@@ -122,6 +122,7 @@ Namespace Other
 
         Private Sub SetDefaults()
 
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
             Try
                 If Me.m_pageCurrent IsNot Nothing Then
                     Me.m_pageCurrent.SetDefaults()
@@ -129,6 +130,7 @@ Namespace Other
             Catch ex As Exception
                 cLog.Write(ex, "dlgOptions.SetDefaults(" & Me.m_pageCurrent.GetType().ToString & ")")
             End Try
+            cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
         End Sub
 

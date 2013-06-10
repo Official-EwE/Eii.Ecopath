@@ -595,10 +595,10 @@ Namespace Wizard
 
             ' Ask for confirmation
             Dim strMessage As String = String.Format(My.Resources.SCENARIO_CONFIRMDELETE_PROMPT, scenario.Name)
-            Dim fmsg As New cFeedbackMessage(strMessage, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(strMessage, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return
+            If (fmsg.Reply <> eMessageReply.YES) Then Return
 
             ' Remove successful?
             If Me.DeleteScenario(scenario) Then

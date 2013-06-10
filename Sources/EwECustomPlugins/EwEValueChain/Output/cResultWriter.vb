@@ -21,8 +21,9 @@
 Option Strict On
 Imports System.IO
 Imports System.Text
-Imports EwEUtils.Utilities
 Imports EwECore
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -130,7 +131,7 @@ Public Class cResultWriter
             If bNotifyUser Then
                 Me.m_msg = New cFeedbackMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
                                                 EwEUtils.Core.eCoreComponentType.External, eMessageType.DataExport, _
-                                                eMessageImportance.Information, cFeedbackMessage.eReplyStyle.OK)
+                                                eMessageImportance.Information, eMessageReplyStyle.OK)
             Else
                 Me.m_msg = New cMessage(String.Format(My.Resources.PROMPT_SAVERESULTS_SUCCESS, Path.GetDirectoryName(strFile)), _
                                         eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)

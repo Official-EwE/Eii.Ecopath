@@ -28,7 +28,7 @@ Partial Class frmNavigationPanel
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmNavigationPanel))
         Me.m_ilTreeIcons = New System.Windows.Forms.ImageList(Me.components)
-        Me.m_tvNavigation = New System.Windows.Forms.TreeView()
+        Me.m_tvNavigation = New ScientificInterfaceShared.Controls.cThemedTreeView()
         Me.SuspendLayout()
         '
         'm_ilTreeIcons
@@ -54,6 +54,7 @@ Partial Class frmNavigationPanel
         Me.m_tvNavigation.ImageList = Me.m_ilTreeIcons
         Me.m_tvNavigation.Name = "m_tvNavigation"
         Me.m_tvNavigation.Nodes.AddRange(New System.Windows.Forms.TreeNode() {CType(resources.GetObject("m_tvNavigation.Nodes"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes1"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes2"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes3"), System.Windows.Forms.TreeNode), CType(resources.GetObject("m_tvNavigation.Nodes4"), System.Windows.Forms.TreeNode)})
+        Me.m_tvNavigation.ShowLines = False
         '
         'frmNavigationPanel
         '
@@ -72,5 +73,5 @@ Partial Class frmNavigationPanel
     End Sub
 
     Private WithEvents m_ilTreeIcons As System.Windows.Forms.ImageList
-    Private WithEvents m_tvNavigation As System.Windows.Forms.TreeView
+    Private WithEvents m_tvNavigation As cThemedTreeView
 End Class

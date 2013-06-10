@@ -370,6 +370,7 @@ Public Class frmStatusPanel
             For Each itemChild As cMessageHistory.cHistoryItem In item.Children
                 Me.AddHistoryItem(itemChild, tnMessage)
             Next
+            ' ToDo: reflect whether message was suppressed somehow
         End If
 
     End Sub

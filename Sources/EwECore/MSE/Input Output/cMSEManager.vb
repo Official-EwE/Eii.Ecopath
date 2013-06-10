@@ -435,14 +435,14 @@ Namespace MSE
                 If bNoQuotaSet Then
                     'no control type has been set for any fleet(s)
                     'ask the user what to do
-                    Dim response As cFeedbackMessage.eReply
+                    Dim response As eMessageReply
                     Dim fbMess As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.MSE_VALIDATION_QUOTAS), _
                                                                        eCoreComponentType.MSE, eMessageType.DataValidation, _
-                                                                       eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO)
+                                                                       eMessageImportance.Warning, eMessageReplyStyle.YES_NO)
                     Me.m_core.Messages.SendMessage(fbMess)
                     response = fbMess.Reply
 
-                    If response = cFeedbackMessage.eReply.YES Then
+                    If response = eMessageReply.YES Then
                         Return False
                     End If
                 End If

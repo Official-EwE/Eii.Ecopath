@@ -21,6 +21,7 @@
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Controls.EwEGrid
@@ -220,7 +221,7 @@ Namespace Controls
 #Region " Internals "
 
         Private Function WeightCol() As Integer
-            Return IIf(Me.m_bLandings, 2, 1)
+            Return IIF(Me.m_bLandings, 2, 1)
         End Function
 
         ''' -------------------------------------------------------------------

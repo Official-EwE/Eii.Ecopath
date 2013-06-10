@@ -271,10 +271,10 @@ Namespace Ecospace.Advection
             If bBadFlow Then
                 Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_ADVECTION_INBALANCED, _
                                                  eCoreComponentType.EcoSpace, eMessageType.Any, _
-                                                 eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                                                 eMessageImportance.Warning, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
                 fmsg.Suppressable = True
                 Me.Core.Messages.SendMessage(fmsg)
-                If fmsg.Reply = cFeedbackMessage.eReply.YES Then
+                If fmsg.Reply = eMessageReply.YES Then
                     Me.Revert()
                 End If
             End If

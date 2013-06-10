@@ -2424,6 +2424,163 @@ Namespace Core
 
 #End Region ' CoreComponentType
 
+#Region " Message Type "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type, identifying types of messages being broadcasted by the Core.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eMessageType
+        ''' <summary>Message type has not been set.</summary>
+        NotSet = 0
+        ''' <summary>This message could be of any message type.</summary>
+        Any
+        ''' <summary>Diet Comp out of range.</summary>
+        DietComp
+        ''' <summary>Diet Comp correct to 15 percent prompt.</summary>
+        DietComp_CorrectTo15Perc
+        ''' <summary>EE out of range.</summary>
+        EE
+        ''' <summary>Parameters could not be computed because of missing data in input parameters.</summary>
+        TooManyMissingParameters
+        ''' <summary>No Catch for a Fishing Fleet.</summary>
+        NoCatchForFleet
+        ''' <summary>Error encountered during model run.</summary>
+        ErrorEncountered
+        ''' <summary>Data validation message.</summary>
+        DataValidation
+        ''' <summary>Data from the source has been modified.</summary>
+        DataModified
+        ''' <summary>Data has been added to, or removed from, the source.</summary>
+        DataAddedOrRemoved
+        ''' <summary>Data import related issue.</summary>
+        DataImport
+        ''' <summary>Data export related issue.</summary>
+        DataExport
+
+        '''' <summary>Time step in Ecospace</summary>
+        '''' <remarks>This was added for testing and is not used at this time</remarks>
+        'EcospaceTimeStep
+
+        ''' <summary>Ecospace has completed a model run </summary>
+        EcospaceRunCompleted
+
+        ''' <summary>Sent by any message source when the State Monitor's state not met to run a method </summary>
+        StateNotMet
+
+        Progress
+
+        EcosimRunCompleted
+
+        EcosimNYearsChanged
+        MassBalance_InsufficientData
+        RespirationExceeedsDetritus
+        InvalidModel_PB0_Generic
+        InvalidModel_QB0_Generic
+        InvalidModel_B_Detritus
+
+        ''' <summary>MSE has completed a model run of some sort </summary>
+        MSERunCompleted
+        Estimate_BA
+        Estimate_Net_Migration
+
+        ''' <summary>MSE Batch has updated the iteration values </summary>
+        ''' <remarks>
+        ''' This was added to deal with a bug in the interface that caused the grid to assert 
+        ''' when it refreshed in response to edits. This prevents that by only updating when the message is of this type.
+        ''' </remarks>
+        MSEBatch_IterationDataUpdated
+        ''' <summary>A GIS operation was performed.</summary>
+        GISOperation
+        ''' <summary>EwE-wide settings have changed.</summary>
+        GlobalSettingsChanged
+
+    End Enum
+
+#End Region ' Message type
+
+#Region " Message Importance "
+
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Flag indicating the relative importance/severity of a message.
+    ''' </summary>
+    ''' ---------------------------------------------------------------------------
+    Public Enum eMessageImportance
+        ''' <summary>Maintenance messages typically indicate a synchronization event
+        ''' in the EwE application.</summary>
+        Maintenance
+        ''' <summary>Information messages typically indicate an event that may be of
+        ''' interest to a human user of EwE.</summary>
+        Information
+        ''' <summary>Warning messages indicating that the system has run in a problem
+        ''' and could not complete an operation.</summary>
+        Warning
+        ''' <summary>Critical messages indicate the the system has run into an error
+        ''' that it could not recover from. This is the most severe type of message.</summary>
+        Critical
+        ''' <summary>Progress messages typically indicate incremental status
+        ''' information about a lengthy operation.</summary>
+        Progress
+        ''' <summary>Questions are used to poll the user for regular info.</summary>
+        Question
+    End Enum
+
+#End Region ' Message Importance
+
+#Region " Feedback message "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type that defines possible replies to a <see cref="IFeedbackMessage"/>.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eMessageReply As Byte
+        ''' <summary>This reply indicates that the situation pertaining to the message has to be aborted.</summary>
+        CANCEL = 0
+        ''' <summary><para>This reply indicates that the situation pertaining to the message is positively confirmed.</para>
+        ''' <para>A YES reply is identical to an <see cref="eMessageReply.OK"/> reply.</para></summary>
+        YES
+        ''' <summary><para>This reply indicates that the situation pertaining to the message is positively confirmed.</para>
+        ''' <para>An OK reply is identical to a <see cref="eMessageReply.YES"/> reply.</para></summary>
+        OK = YES
+        ''' <summary>This reply indicates that the situation pertaining to the message is negatively confirmed.</summary>
+        NO
+    End Enum
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Enumerated type that defines possible replie styles that a 
+    ''' <see cref="IFeedbackMessage"/> can handle.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public Enum eMessageReplyStyle As Byte
+        ''' <summary>
+        ''' The reply expected by a message with this reply style is either 
+        ''' <see cref="eMessageReply.OK"/> or <see cref="eMessageReply.CANCEL"/>.
+        ''' </summary>
+        OK_CANCEL
+        ''' <summary>
+        ''' The reply expected by a message with this reply style is either 
+        ''' <see cref="eMessageReply.YES"/> or <see cref="eMessageReply.NO"/>.
+        ''' </summary>
+        YES_NO
+        ''' <summary>
+        ''' The reply expected by a message with this reply style must be 
+        ''' <see cref="eMessageReply.YES"/>, <see cref="eMessageReply.NO"/> 
+        ''' or <see cref="eMessageReply.CANCEL"/>.
+        ''' </summary>
+        YES_NO_CANCEL
+        ''' <summary>
+        ''' The reply expected by a message with this reply style can only be 
+        ''' <see cref="eMessageReply.OK"/>.
+        ''' </summary>
+        OK
+    End Enum
+
+#End Region ' Feedback message
+
 #Region " Forcing application types "
 
     ''' -----------------------------------------------------------------------
@@ -2829,6 +2986,5 @@ Namespace Core
     End Enum
 
 #End Region
-
 
 End Namespace ' Core

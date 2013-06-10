@@ -411,24 +411,24 @@ Namespace Ecopath
                                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_BA_FOR_B_PB_EE, m_Data.GroupName(igrp))
                             End If
 
-                            Dim fbMsg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.Estimate_BA, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
+                            Dim fbMsg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.Estimate_BA, eMessageImportance.Information, eMessageReplyStyle.YES_NO, eDataTypes.EcoPathGroupInput)
                             fbMsg.Suppressable = True
                             NotifyCore(fbMsg)
 
-                            If fbMsg.Reply = cFeedbackMessage.eReply.YES Then
+                            If fbMsg.Reply = eMessageReply.YES Then
                                 EstimateWhat(igrp) = eEstimateTypes.BA
-                            ElseIf fbMsg.Reply = cFeedbackMessage.eReply.NO Then
+                            ElseIf fbMsg.Reply = eMessageReply.NO Then
 
                                 strMsg = String.Format(My.Resources.CoreMessages.ECOPATH_PROMPT_ESTIMATE_NETMIGRATION, m_Data.GroupName(igrp))
                                 fbMsg.Type = eMessageType.Estimate_Net_Migration
                                 fbMsg.Message = strMsg
                                 NotifyCore(fbMsg)
 
-                                If fbMsg.Reply = cFeedbackMessage.eReply.YES Then
+                                If fbMsg.Reply = eMessageReply.YES Then
                                     EstimateWhat(igrp) = eEstimateTypes.Migration
                                 End If
 
-                            End If 'If fbMsg.Reply = cFeedbackMessage.eReply.YES Then
+                            End If 'If fbMsg.Reply = eReply.YES Then
 
                         End If 'If EstimateWhat(igrp) = 0 Then
                     End If ' If m_Data.PP(igrp) = 1 Or m_Data.QB(igrp) >= 0 Then
@@ -2115,12 +2115,12 @@ nextJ:
             str = String.Format(My.Resources.CoreMessages.ECOPATH_PREDMORT_CANN, Me.m_Data.GroupName(j))
             fmsg = New cFeedbackMessage(str, _
                                        eCoreComponentType.EcoPath, eMessageType.Any, _
-                                       eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                                       eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO_CANCEL)
             fmsg.Suppressable = True
             Me.NotifyCore(fmsg)
 
             Select Case fmsg.Reply
-                Case cFeedbackMessage.eReply.YES
+                Case eMessageReply.YES
                     Me.m_Data.DietsModified = True
                     For j = 1 To Me.m_Data.NumLiving
                         If Me.m_Data.EE(j) > 0 Then
@@ -2163,7 +2163,7 @@ nextJ:
             Dim msgFeedback As cFeedbackMessage = Nothing
             Dim msgMaintenance As cMessage = Nothing
             Dim vs As cVariableStatus = Nothing
-            Dim reply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES
+            Dim reply As eMessageReply = eMessageReply.YES
             Dim bSumToOne As Boolean = True
 
             sTolerance = 0.001
@@ -2189,7 +2189,7 @@ nextJ:
                             msgFeedback = New cFeedbackMessage( _
                                     My.Resources.CoreMessages.DIETCOMP_PROMPT_SUMTOONE, _
                                     eCoreComponentType.EcoPath, eMessageType.DietComp, eMessageImportance.Warning, _
-                                    cFeedbackMessage.eReplyStyle.YES_NO)
+                                    eMessageReplyStyle.YES_NO)
                             msgMaintenance = New cMessage("Ecopath diets have changed", eMessageType.DataModified, eCoreComponentType.EcoPath, eMessageImportance.Maintenance)
                         End If
 
@@ -2216,7 +2216,7 @@ nextJ:
             End If
 
             ' Any diets that did not sum, and needing to fix?
-            If (bSumToOne = False) And (reply = cFeedbackMessage.eReply.YES) Then
+            If (bSumToOne = False) And (reply = eMessageReply.YES) Then
                 ' #Yes: make diets sum to one
                 For iPred = 1 To m_Data.NumLiving Step 1
                     If m_Data.PP(iPred) < 1 Then
@@ -2796,7 +2796,7 @@ ONE:
             Dim i As Integer
             Dim j As Integer
             Dim dcsum As Single
-            Dim RetVal As cFeedbackMessage.eReply = cFeedbackMessage.eReply.CANCEL
+            Dim RetVal As eMessageReply = eMessageReply.CANCEL
             Static done As Boolean
             Static DoneAlready As Boolean
 
@@ -2821,18 +2821,18 @@ ONE:
 
                             ' Prepare message
                             Dim strMsg As String = String.Format(My.Resources.CoreMessages.DIETCOMP_PROMPT_CORRECTTO15PERC, m_Data.GroupName(i), CInt(dcsum * 100))
-                            Dim msg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.DietComp_CorrectTo15Perc, eMessageImportance.Critical, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                            Dim msg As New cFeedbackMessage(strMsg, eCoreComponentType.EcoPath, eMessageType.DietComp_CorrectTo15Perc, eMessageImportance.Critical, eMessageReplyStyle.YES_NO_CANCEL)
                             msg.Suppressable = True
 
                             ' Send message
                             NotifyCore(msg)
                             RetVal = msg.Reply
-                            If RetVal = cFeedbackMessage.eReply.CANCEL Then done = True
+                            If RetVal = eMessageReply.CANCEL Then done = True
 
                         Else
-                            RetVal = cFeedbackMessage.eReply.NO
+                            RetVal = eMessageReply.NO
                         End If
-                        If RetVal = cFeedbackMessage.eReply.YES Then
+                        If RetVal = eMessageReply.YES Then
                             bDietsModified = True
                             DoneAlready = True
                             For j = 1 To m_Data.NumGroups

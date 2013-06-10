@@ -290,10 +290,10 @@ Public Class cMPAOptManager
             If Not Me.m_MPASearch.OKtoRun Then
                 Dim msg As New cFeedbackMessage(My.Resources.CoreMessages.MPAOPT_NODATA_RESUME, _
                                                 eCoreComponentType.MPAOptimization, eMessageType.Any, _
-                                                eMessageImportance.Warning, cFeedbackMessage.eReplyStyle.YES_NO, _
-                                                eDataTypes.MPAOptParameters, cFeedbackMessage.eReply.NO)
+                                                eMessageImportance.Warning, eMessageReplyStyle.YES_NO, _
+                                                eDataTypes.MPAOptParameters, eMessageReply.NO)
                 Me.m_core.Messages.SendMessage(msg)
-                If msg.Reply = cFeedbackMessage.eReply.NO Then Return False
+                If msg.Reply = eMessageReply.NO Then Return False
             End If
 
             Dim strBaseDir As String = Me.m_dataDir

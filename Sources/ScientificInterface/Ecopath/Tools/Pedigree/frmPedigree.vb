@@ -123,12 +123,12 @@ Namespace Ecopath.Tools
 
             If bLevelsMissing And (cmd IsNot Nothing) Then
                 Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DEFINE_PEDIGREE, _
-                                                 eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
-                fmsg.Reply = cFeedbackMessage.eReply.YES
+                                                 eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                fmsg.Reply = eMessageReply.YES
                 fmsg.Suppressable = True
                 Core.Messages.SendMessage(fmsg)
 
-                If fmsg.Reply = cFeedbackMessage.eReply.YES Then
+                If fmsg.Reply = eMessageReply.YES Then
                     Try
                         cmd.Invoke(varName)
                     Catch ex As Exception

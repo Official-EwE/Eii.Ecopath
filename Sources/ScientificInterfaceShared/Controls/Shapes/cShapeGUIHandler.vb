@@ -410,10 +410,10 @@ Namespace Controls
                                                eCoreComponentType.ShapesManager, _
                                                eMessageType.Any, _
                                                eMessageImportance.Information, _
-                                               cFeedbackMessage.eReplyStyle.YES_NO, _
-                                               eDataTypes.Forcing, cFeedbackMessage.eReply.YES)
+                                               eMessageReplyStyle.YES_NO, _
+                                               eDataTypes.Forcing, eMessageReply.YES)
                     Me.Core.Messages.SendMessage(fms, True)
-                    If fms.Reply = cFeedbackMessage.eReply.YES Then
+                    If fms.Reply = eMessageReply.YES Then
                         Me.SelectedShape.IsSeasonal = True
                     End If
                 End If

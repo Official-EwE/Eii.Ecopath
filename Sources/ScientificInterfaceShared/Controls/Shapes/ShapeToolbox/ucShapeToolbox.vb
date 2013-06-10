@@ -20,14 +20,12 @@
 
 Option Strict On
 
-Imports System.Text.RegularExpressions
-Imports System.Drawing.Drawing2D
+Imports System.ComponentModel
 Imports EwECore
 Imports EwEUtils.Commands
-Imports EwEUtils.Utilities
-Imports ScientificInterfaceShared.Style
-Imports System.ComponentModel
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Definitions
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 

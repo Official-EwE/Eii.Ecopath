@@ -29,41 +29,15 @@ Imports EwEUtils.Core
 ''' i.e. If cMessage.Type = eMessageType.EE  then cMessage.Variables will contain a list of cVariableStatus objects that represent variables that have an EE > 1.
 ''' </remarks>
 Public Class cMessage
+    Implements IMessage
 
 #Region " Private variables "
-
-    ''' <summary>A string describing the message.</summary>
-    Private m_strMessage As String = ""
-
-    ''' <summary>The <see cref="eMessageType">type</see> of the message, which 
-    ''' encodes the internal event that a message pertains to.</summary>
-    Private m_type As eMessageType = eMessageType.NotSet
-
-    ''' <summary>The <see cref="eCoreComponentType">source within EwE</see> 
-    ''' that the message originated from.</summary>
-    Private m_source As eCoreComponentType = eCoreComponentType.NotSet
-
-    ''' <summary>The <see cref="eMessageImportance">importance</see> of the 
-    ''' message.</summary>
-    Private m_importance As eMessageImportance = eMessageImportance.Maintenance
-
-    ''' <summary>The <see cref="eDataTypes">type of object</see> that this 
-    ''' message has affected. Use this flag with care; the EwE core will interpret
-    ''' this flag as change notifications of <see cref="ICoreInterface"/> instances
-    ''' that need further processing.</summary>
-    Private m_dataType As eDataTypes = eDataTypes.NotSet
 
     ''' <summary>List of <see cref="cVariableStatus">variables</see> attached
     ''' to the message. These variables are presumed affected by the event described 
     ''' in the message, and will be used to update core contents. User interfaces are
     ''' encouraged to use these variables to provide detailed event feedback.</summary>
     Private m_variables As New List(Of cVariableStatus)
-
-    ''' <summary>Flag stating whether this message may be suppressed by the user.</summary>
-    Private m_bSuppressable As Boolean = False
-
-    ''' <summary>Hyperlink that may accompany the message.</summary>
-    Private m_strHyperlink As String = ""
 
 #End Region ' Private variables
 
@@ -75,11 +49,11 @@ Public Class cMessage
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Sub New()
-        Me.m_strMessage = ""
-        Me.m_type = eMessageType.NotSet
-        Me.m_source = eCoreComponentType.NotSet
-        Me.m_importance = eMessageImportance.Maintenance
-        Me.m_dataType = eDataTypes.NotSet
+        Me.Message = ""
+        Me.Type = eMessageType.NotSet
+        Me.Source = eCoreComponentType.NotSet
+        Me.Importance = eMessageImportance.Maintenance
+        Me.DataType = eDataTypes.NotSet
     End Sub
 
     ''' -----------------------------------------------------------------------
@@ -116,17 +90,17 @@ Public Class cMessage
     ''' <remarks>This is used when the message object is being created to add variables to the message</remarks>
     Public Function AddVariable(ByVal Variable As cVariableStatus) As Boolean
 
-        If m_variables Is Nothing Then
-            m_variables = New List(Of cVariableStatus)
+        If Me.m_variables Is Nothing Then
+            Me.m_variables = New List(Of cVariableStatus)
         Else
             ' Check for duplicates
-            For Each vs As cVariableStatus In m_variables
+            For Each vs As cVariableStatus In Me.m_variables
                 If Variable.Equals(vs) Then Return True
             Next
         End If
-
-        m_variables.Add(Variable)
+        Me.m_variables.Add(Variable)
         Return True
+
     End Function
 
     ''' <summary>
@@ -172,91 +146,31 @@ Public Class cMessage
         End Get
     End Property
 
-    ''' <summary>
-    ''' Get/set the text of the message.
-    ''' </summary>
-    Public Property Message() As String
-        Get
-            Return Me.m_strMessage
-        End Get
-        Set(ByVal strMessage As String)
-            Me.m_strMessage = strMessage
-        End Set
-    End Property
+    ''' <inheritdocs cref="IMessage.Message"/>
+    Public Property Message() As String Implements IMessage.Message
 
-    ''' <summary>
-    ''' Get/set the <see cref="eMessageType">event type</see> of the message.
-    ''' </summary>
-    Public Property Type() As eMessageType
-        Get
-            Return Me.m_type
-        End Get
-        Set(ByVal value As eMessageType)
-            Me.m_type = value
-        End Set
-    End Property
+    ''' <inheritdocs cref="IMessage.Type"/>
+    Public Property Type() As eMessageType Implements IMessage.Type
 
-    ''' <summary>
-    ''' Get/set the <see cref="eCoreComponentType">source witin EwE</see> that
-    ''' the message originates from.
-    ''' </summary>
-    Public Property Source() As eCoreComponentType
-        Get
-            Return Me.m_source
-        End Get
-        Set(ByVal value As eCoreComponentType)
-            Me.m_source = value
-        End Set
-    End Property
+    ''' <inheritdocs cref="IMessage.Source"/>
+    Public Property Source() As eCoreComponentType Implements IMessage.Source
 
-    ''' <summary>
-    ''' Get/set the <see cref="eMessageImportance">importance</see> of the message.
-    ''' </summary>
-    Public Property Importance() As eMessageImportance
-        Get
-            Return Me.m_importance
-        End Get
-        Set(ByVal value As eMessageImportance)
-            Me.m_importance = value
-        End Set
-    End Property
+    ''' <inheritdocs cref="IMessage.Importance"/>
+    Public Property Importance() As eMessageImportance Implements IMessage.Importance
 
-    ''' <summary>
-    ''' Get/set the <see cref="eDataTypes">core objects</see> that the message
-    ''' describes.
-    ''' </summary>
-    Public Property DataType() As eDataTypes
-        Get
-            Return Me.m_dataType
-        End Get
-        Set(ByVal value As eDataTypes)
-            Me.m_dataType = value
-        End Set
-    End Property
+    ''' <inheritdocs cref="IMessage.DataType"/>
+    Public Property DataType() As eDataTypes Implements IMessage.DataType
 
-    ''' <summary>
-    ''' Get/set whether an interface may suppress repeated instances of a message.
-    ''' </summary>
-    Public Property Suppressable() As Boolean
-        Get
-            Return Me.m_bSuppressable
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_bSuppressable = value
-        End Set
-    End Property
+    ''' <inheritdocs cref="IMessage.Suppressable"/>
+    Public Property Suppressable() As Boolean Implements IMessage.Suppressable
 
+    ''' <inheritdocs cref="IMessage.Suppressable"/>
+    Public Property Suppressed() As Boolean Implements IMessage.Suppressed
+  
     ''' <summary>
     ''' Get/set the hyperlink for this message.
     ''' </summary>
     Public Property Hyperlink() As String
-        Get
-            Return Me.m_strHyperlink
-        End Get
-        Set(ByVal value As String)
-            Me.m_strHyperlink = value
-        End Set
-    End Property
 
     ''' <summary>
     ''' Helper method, compares this message to another object.
@@ -275,7 +189,7 @@ Public Class cMessage
 
             ' Compare main msg properties
             Dim bEquals As Boolean = (msg.DataType = Me.DataType) And (msg.Importance = Me.Importance) And _
-                   (msg.Source = Me.Source) And (msg.Type = Me.Type) And (msg.Message = Me.Message)
+                                     (msg.Source = Me.Source) And (msg.Type = Me.Type) And (msg.Message = Me.Message)
 
             ' Return comparison result
             Return bEquals
@@ -285,7 +199,7 @@ Public Class cMessage
     End Function
 
     Public Overrides Function ToString() As String
-        Return Me.GetType.ToString() & " " & Me.m_strMessage
+        Return Me.GetType.ToString() & " " & Me.Message
     End Function
 
 #End Region ' Public access

@@ -119,6 +119,7 @@
     <Compile Include="Handlers\cPluginGUIHandler.vb" />
     <Compile Include="Handlers\cPluginNavTreeHandler.vb" />
     <Compile Include="Plugin templates\Core\ICorePlugin.vb" />
+    <Compile Include="Plugin templates\Core\IMessageFilterPlugin.vb" />
     <Compile Include="Plugin templates\Data exchange\cEcopathRunType.vb" />
     <Compile Include="Plugin templates\Data exchange\cEcosimRunType.vb" />
     <Compile Include="Plugin templates\Data exchange\cEcospaceRunType.vb" />

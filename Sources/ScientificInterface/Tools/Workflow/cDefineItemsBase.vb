@@ -108,7 +108,7 @@ Public Class cDefineItemsBase
 
         Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, _
                                          eMessageType.DataValidation, eMessageImportance.Question, _
-                                         cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+                                         eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
         Dim bHasDuplicates As Boolean = False
         Dim bHasBlank As Boolean = False
         Dim lstrHandled As New List(Of String)
@@ -134,7 +134,7 @@ Public Class cDefineItemsBase
 
         If bHasDuplicates Then
             Me.m_core.Messages.SendMessage(fmsg)
-            Return fmsg.Reply = cFeedbackMessage.eReply.YES
+            Return fmsg.Reply = eMessageReply.YES
         End If
 
         Return True

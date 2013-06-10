@@ -960,9 +960,9 @@ Public Class plFlow
         If Me.m_data.Parameters.DeletePrompt Then
 
             Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETEUNIT, unit.Name), _
-                                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                                             eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
-            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
+            If (fmsg.Reply <> eMessageReply.YES) Then Return False
 
         End If
 
@@ -974,11 +974,11 @@ Public Class plFlow
 
         Dim fmt As New cUnitTypeFormatter()
         Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_CONVERT_UNIT, unit.Name, fmt.GetDescriptor(unit.UnitType), fmt.GetDescriptor(convertTo)), _
-                                         eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
-        fmsg.Reply = cFeedbackMessage.eReply.YES
+                                         eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+        fmsg.Reply = eMessageReply.YES
         fmsg.Suppressable = True
         Me.m_uic.Core.Messages.SendMessage(fmsg)
-        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
+        If (fmsg.Reply <> eMessageReply.YES) Then Return False
 
         Dim unitNew As cUnit = Me.CreateUnit(convertTo)
         Dim llinks As New List(Of cLink)
@@ -1087,9 +1087,9 @@ Public Class plFlow
 
         If Me.m_data.Parameters.DeletePrompt Then
 
-            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETELINK, link.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.PROMPT_DELETELINK, link.Name), EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.m_uic.Core.Messages.SendMessage(fmsg)
-            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
+            If (fmsg.Reply <> eMessageReply.YES) Then Return False
 
         End If
 

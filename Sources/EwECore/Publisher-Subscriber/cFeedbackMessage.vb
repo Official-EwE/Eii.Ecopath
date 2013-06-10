@@ -27,107 +27,14 @@ Imports EwEUtils.Core
 ''' ---------------------------------------------------------------------------
 Public Class cFeedbackMessage
     Inherits cMessage
-
-#Region " Public helper classes and enumerators "
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Helper class, implements a choice presented by a cFeedbackMessage.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Class cChoice
-        Private m_strText As String = ""
-        Private m_tag As Object = Nothing
-        Private m_bSelected As Boolean = False
-
-        ''' -----------------------------------------------------------------------
-        ''' <summary>
-        ''' Constructor, initializes a new instance of this class.
-        ''' </summary>
-        ''' <param name="strText">The text to display for this choice.</param>
-        ''' <param name="tag">An optional value to associate with this choice.</param>
-        ''' -----------------------------------------------------------------------
-        Public Sub New(ByVal strText As String, Optional ByVal tag As Object = Nothing)
-            Me.m_strText = strText
-            Me.m_tag = tag
-        End Sub
-
-        ''' <summary>
-        ''' Get the text for this choice.
-        ''' </summary>
-        Public ReadOnly Property Text() As String
-            Get
-                Return Me.m_strText
-            End Get
-        End Property
-
-        ''' <summary>
-        '''  Get the Tag for this choice.
-        ''' </summary>
-        Public ReadOnly Property Tag() As Object
-            Get
-                Return Me.m_tag
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Get or set the selection state of this choice.
-        ''' </summary>
-        Public Property Selected() As Boolean
-            Get
-                Return Me.m_bSelected
-            End Get
-            Set(ByVal bSelected As Boolean)
-                Me.m_bSelected = bSelected
-            End Set
-        End Property
-
-    End Class
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Enumerated type that defines possible replies to a cFeedbackMessage.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Enum eReply As Byte
-        ''' <summary>This reply indicates that the situation pertaining to the message has to be aborted.</summary>
-        CANCEL = 0
-        ''' <summary><para>This reply indicates that the situation pertaining to the message is positively confirmed.</para>
-        ''' <para>A YES reply is identical to an <see cref="eReply.OK">OK</see> reply.</para></summary>
-        YES
-        ''' <summary><para>This reply indicates that the situation pertaining to the message is positively confirmed.</para>
-        ''' <para>An OK reply is identical to a <see cref="eReply.YES">YES</see> reply.</para></summary>
-        OK = YES
-        ''' <summary>This reply indicates that the situation pertaining to the message is negatively confirmed.</summary>
-        NO
-    End Enum
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Enumerated type that defines possible replie styles that cFeedbackMessages can handle.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public Enum eReplyStyle As Byte
-        ''' <summary>The reply expected by a message with this <see cref="ReplyStyle">reply style</see> is either <see cref="eReply.OK">OK</see> or <see cref="eReply.CANCEL">CANCEL</see>.</summary>
-        OK_CANCEL
-        ''' <summary>The reply expected by a message with this <see cref="ReplyStyle">reply style</see> is either <see cref="eReply.YES">YES</see> or <see cref="eReply.NO">NO</see>.</summary>
-        YES_NO
-        ''' <summary>The reply expected by a message with this <see cref="ReplyStyle">reply style</see> must be <see cref="eReply.YES">YES</see>, <see cref="eReply.NO">NO</see> or <see cref="eReply.CANCEL">CANCEL</see>.</summary>
-        YES_NO_CANCEL
-        ''' <summary>The reply expected by a message with this <see cref="ReplyStyle">reply style</see> can only be <see cref="eReply.OK">OK</see>.</summary>
-        OK
-    End Enum
-
-#End Region ' Public helper classes and enumerators 
+    Implements IFeedbackMessage
 
 #Region " Private bits "
 
     ''' <summary>Reply to message.</summary>
-    Private m_reply As eReply = eReply.CANCEL
+    Private m_reply As EwEUtils.Core.eMessageReply = EwEUtils.Core.eMessageReply.CANCEL
     ''' <summary>Reply style requested for this message.</summary>
-    Private m_replyStyle As eReplyStyle = eReplyStyle.OK_CANCEL
-    ''' <summary>Available choices to offer for selection in the feedback message.</summary>
-    Private m_choices As New List(Of cChoice)
+    Private m_replyStyle As EwEUtils.Core.eMessageReplyStyle = EwEUtils.Core.eMessageReplyStyle.OK_CANCEL
 
 #End Region ' Private bits 
 
@@ -149,16 +56,18 @@ Public Class cFeedbackMessage
     ''' <param name="msgStr">Message text.</param>
     ''' <param name="msgSource"><see cref="eCoreComponentType">Source</see> of the message.</param>
     ''' <param name="msgImportance"><see cref="eMessageImportance">Importance</see> of the message.</param>
-    ''' <param name="replyStyle"><see cref="eReplyStyle">Reply style</see> of the message.</param>
+    ''' <param name="replyStyle"><see cref="eMessageReplyStyle">Reply style</see> of the message.</param>
     ''' <param name="msgDataType"><see cref="eDataTypes">Data type</see> associated with the message, if any.</param>
+    ''' <param name="msgType"></param>
+    ''' <param name="defaultReply"></param>
     ''' -----------------------------------------------------------------------
-    Sub New(ByVal msgStr As String, _
-            ByVal msgSource As eCoreComponentType, _
-            ByVal msgType As eMessageType, _
-            ByVal msgImportance As eMessageImportance, _
-            Optional ByVal replyStyle As eReplyStyle = eReplyStyle.OK_CANCEL, _
-            Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet, _
-            Optional ByVal defaultReply As eReply = eReply.CANCEL)
+    Public Sub New(ByVal msgStr As String, _
+                   ByVal msgSource As eCoreComponentType, _
+                   ByVal msgType As eMessageType, _
+                   ByVal msgImportance As eMessageImportance, _
+                   Optional ByVal replyStyle As eMessageReplyStyle = eMessageReplyStyle.OK_CANCEL, _
+                   Optional ByVal msgDataType As eDataTypes = eDataTypes.NotSet, _
+                   Optional ByVal defaultReply As eMessageReply = eMessageReply.CANCEL)
 
         MyBase.New(msgStr, msgType, msgSource, msgImportance, msgDataType)
 
@@ -172,42 +81,27 @@ Public Class cFeedbackMessage
 #Region " Property access "
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get or set the reply to this message.
-    ''' </summary>
+    ''' <inheritdocs cref="IFeedbackMessage.Reply"/>
     ''' -----------------------------------------------------------------------
-    Public Property Reply() As eReply
+    Public Property Reply() As EwEUtils.Core.eMessageReply Implements IFeedbackMessage.Reply
         Get
             Return Me.m_reply
         End Get
-        Set(ByVal value As eReply)
+        Set(ByVal value As EwEUtils.Core.eMessageReply)
             Me.m_reply = value
         End Set
     End Property
 
     ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get or set the reply style to this message.
-    ''' </summary>
+    ''' <inheritdocs cref="IFeedbackMessage.ReplyStyle"/>
     ''' -----------------------------------------------------------------------
-    Public Property ReplyStyle() As eReplyStyle
+    Public Property ReplyStyle() As EwEUtils.Core.eMessageReplyStyle Implements IFeedbackMessage.ReplyStyle
         Get
             Return m_replyStyle
         End Get
-        Set(ByVal value As eReplyStyle)
+        Set(ByVal value As EwEUtils.Core.eMessageReplyStyle)
             m_replyStyle = value
         End Set
-    End Property
-
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Get the list of <see cref="cChoice">choices</see> that this message offers.
-    ''' </summary>
-    ''' -----------------------------------------------------------------------
-    Public ReadOnly Property Choices() As List(Of cChoice)
-        Get
-            Return Me.m_choices
-        End Get
     End Property
 
 #End Region ' Property access 

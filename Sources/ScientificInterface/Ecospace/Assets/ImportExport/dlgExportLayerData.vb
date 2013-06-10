@@ -23,6 +23,7 @@ Option Strict On
 Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers

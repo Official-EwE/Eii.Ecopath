@@ -117,7 +117,6 @@ Public Class AppLauncher
     Private WithEvents m_cmdFileSave As cFileSaveCommand = Nothing
     Private WithEvents m_cmdDirectoryOpen As cDirectoryOpenCommand = Nothing
     Private WithEvents m_cmdExecute As cExecuteCommand = Nothing
-    Private WithEvents m_cmdCreateNewModel As cCreateModelCommand = Nothing
     Private WithEvents m_cmdNewModel As cCommand = Nothing
     Private WithEvents m_cmdLoadModel As cCommand = Nothing
     Private WithEvents m_cmdOpenOutput As cCommand = Nothing
@@ -204,6 +203,10 @@ Public Class AppLauncher
 #Region " Singleton "
 
     Private Shared __inst__ As AppLauncher = Nothing
+
+    Public Shared Function GetInstance() As AppLauncher
+        Return AppLauncher.__inst__
+    End Function
 
 #End Region ' Singleton
 
@@ -347,9 +350,6 @@ Public Class AppLauncher
 
         ' Create and configure navigate command
         Me.m_cmdNavigate = New cNavigationCommand(cmdh)
-
-        ' Create new model command
-        Me.m_cmdCreateNewModel = New cCreateModelCommand(cmdh)
 
         ' Create and configure print command
         Me.m_cmdPrint = New cPrintCommand(cmdh)
@@ -551,10 +551,6 @@ Public Class AppLauncher
         ' Listen to application Idle events to update command states
         AddHandler Application.Idle, AddressOf cmdh.OnIdle
 
-        ' Special cases: hide spatial data framework UI
-        ' For the current development version make the Spatial Assets interface always available
-        ' Me.m_cmdEcospaceDataConnections.IsAvailable = My.Settings.EnableSpatialFramework
-
     End Sub
 
     Private Sub InitPanels()
@@ -628,7 +624,7 @@ Public Class AppLauncher
         Me.Core.Messages.AddMessageHandler(Me.m_mhTimeseries)
 
         ' Create message history
-        Me.m_MessageHistory = New cMessageHistory(Me)
+        Me.m_MessageHistory = New cMessageHistory()
         Me.m_MessageHistory.UIContext = Me.UIContext
 
         ' Create plugin manager for this GUI
@@ -647,7 +643,7 @@ Public Class AppLauncher
         Me.m_pluginMenuHandler = New cPluginMenuHandler(Me.MainMenuStrip, Me.m_pluginManager, Me.UIContext.CommandHandler)
 
         ' Initialize core controller
-        Me.m_coreController = New cCoreController(Me, Me.Core.StateMonitor, Me.Core.StateManager)
+        Me.m_coreController = New cCoreController(Me.Core.StateMonitor, Me.Core.StateManager)
 
         ' Initialize style guide updater
         Me.m_styleguideupdater = New cStyleGuideUpdater(Me.UIContext)
@@ -677,6 +673,32 @@ Public Class AppLauncher
     End Sub
 
 #End Region ' Initialization
+
+#Region " Properties "
+
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns the file name of the current loaded model.
+    ''' </summary>
+    ''' <param name="bFullPath">Flag stating thether the full path needs to be 
+    ''' returned.</param>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property SelectedFileName(Optional ByVal bFullPath As Boolean = True) As String
+        Get
+            Dim ds As IEwEDataSource = Me.Core.DataSource
+            If Object.ReferenceEquals(ds, Nothing) Then
+                Return ""
+            Else
+                If bFullPath Then
+                    Return ds.ToString()
+                Else
+                    Return Path.GetFileName(ds.ToString())
+                End If
+            End If
+        End Get
+    End Property
+
+#End Region ' Properties
 
 #Region " Messages "
 
@@ -708,7 +730,7 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType, ByVal replies As cFeedbackMessage.eReplyStyle, ByVal defaultReply As cFeedbackMessage.eReply) As cFeedbackMessage.eReply
+    Private Delegate Function AskFeedbackDelegate(ByVal strMsg As String, ByVal importance As eMessageImportance, ByVal component As eCoreComponentType, ByVal replies As eMessageReplyStyle, ByVal defaultReply As eMessageReply) As eMessageReply
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
@@ -721,14 +743,14 @@ Public Class AppLauncher
     Public Function AskFeedback(ByVal strMsg As String, _
                              Optional ByVal importance As eMessageImportance = eMessageImportance.Warning, _
                              Optional ByVal component As eCoreComponentType = eCoreComponentType.Core, _
-                             Optional ByVal replystyle As cFeedbackMessage.eReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO_CANCEL, _
-                             Optional ByVal defaultreply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.YES, _
-                             Optional strHyperlink As String = "") As cFeedbackMessage.eReply
+                             Optional ByVal replystyle As eMessageReplyStyle = eMessageReplyStyle.YES_NO_CANCEL, _
+                             Optional ByVal defaultreply As eMessageReply = eMessageReply.YES, _
+                             Optional strHyperlink As String = "") As eMessageReply
 
         If Me.InvokeRequired() Then
             Dim dlgt As New AskFeedbackDelegate(AddressOf Me.AskFeedback)
             Dim aparms() As Object = New Object() {strMsg, importance, component, replystyle, defaultreply}
-            Return DirectCast(Me.Invoke(dlgt, aparms), cFeedbackMessage.eReply)
+            Return DirectCast(Me.Invoke(dlgt, aparms), eMessageReply)
         End If
 
         Dim fmsg As New cFeedbackMessage(strMsg, component, eMessageType.Any, importance, replystyle, eDataTypes.NotSet, defaultreply)
@@ -1078,7 +1100,7 @@ Public Class AppLauncher
     Private Sub LoadPlugins()
 
         Dim strMessage As String = ""
-        Dim reply As cFeedbackMessage.eReply = cFeedbackMessage.eReply.OK
+        Dim reply As eMessageReply = eMessageReply.OK
         Dim bNeedReply As Boolean = False
 
         Try
@@ -1102,11 +1124,11 @@ Public Class AppLauncher
 
         Dim ds As IEwEDataSource = Me.Core.DataSource
         Dim result As eDatasourceAccessType = eDatasourceAccessType.Success
-        Dim strFileName As String = Me.Core.FileName
+        Dim strFileName As String = Me.SelectedFileName()
         Dim strMessage As String = ""
         Dim bSucces As Boolean = True
 
-        If (Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT) <> cFeedbackMessage.eReply.YES) Then
+        If (Me.AskFeedback(My.Resources.PROMPT_MODEL_COMPACT) <> eMessageReply.YES) Then
             Return False
         End If
 
@@ -1207,8 +1229,8 @@ Public Class AppLauncher
                 If Me.AskFeedback(String.Format(My.Resources.PROMPT_ERROR_IMPORT_EWE6_TOO_NEW, My.Resources.ewe_home_url), _
                                   eMessageImportance.Question, _
                                   eCoreComponentType.DataSource, _
-                                  cFeedbackMessage.eReplyStyle.YES_NO, _
-                                  strHyperlink:=My.Resources.ewe_home_url) = cFeedbackMessage.eReply.NO Then
+                                  eMessageReplyStyle.YES_NO, _
+                                  strHyperlink:=My.Resources.ewe_home_url) = eMessageReply.NO Then
                     comp = cEwEDatabase.eCompatibilityTypes.Unknown
                 End If
 
@@ -1264,7 +1286,7 @@ Public Class AppLauncher
         Dim strCaption As String = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, My.Resources.GENERIC_CAPTION, an.Version.ToString)
         Dim model As cEwEModel = Me.Core.EwEModel
 
-        Me.m_tsModel.Path = Me.Core.FileName
+        Me.m_tsModel.Path = Me.SelectedFileName
         If Not Me.Core.StateMonitor.HasEcopathLoaded Then
             Me.Text = strCaption
         Else
@@ -1502,7 +1524,7 @@ Public Class AppLauncher
             item = New ToolStripMenuItem()
             item.Text = str(0)
             item.Tag = str(0)
-            item.Checked = (String.Compare(str(0), Me.Core.FileName, True) = 0)
+            item.Checked = (String.Compare(str(0), Me.SelectedFileName, True) = 0)
 
             'Add event handler to invoke the model
             AddHandler item.Click, AddressOf OnMRUItemClicked
@@ -1768,7 +1790,7 @@ Public Class AppLauncher
 
                 Case eLoadSourceType.MRU
                     If Me.AskFeedback(String.Format(My.Resources.PROMPT_MODELNOTFOUND_REMOVEMRU, strFileName), _
-                                      replystyle:=cFeedbackMessage.eReplyStyle.YES_NO) = cFeedbackMessage.eReply.YES Then
+                                      replystyle:=eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
                         Me.RemoveRecentFilesSetting(strFileName)
                     End If
 
@@ -1884,8 +1906,8 @@ Public Class AppLauncher
     ''' </remarks>
     ''' ---------------------------------------------------------------------------
     Friend Function CreateEcopathModel(ByVal strFileName As String, _
-                                       ByVal strModelName As String, _
-                                       ByVal format As eDataSourceTypes) As cEwEDatabase
+                                        ByVal strModelName As String, _
+                                        ByVal format As eDataSourceTypes) As cEwEDatabase
 
         Dim db As cEwEDatabase = Nothing
         Dim atResult As eDatasourceAccessType = eDatasourceAccessType.Failed_Unknown
@@ -1897,10 +1919,10 @@ Public Class AppLauncher
                 If File.Exists(strFileName) Then
                     Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.GENERIC_PROMPT_OVERWRITEFILE, strFileName), _
                                                      eCoreComponentType.DataSource, eMessageType.DataValidation, _
-                                                     eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
-                    fmsg.Reply = cFeedbackMessage.eReply.NO
+                                                     eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                    fmsg.Reply = eMessageReply.NO
                     Me.Core.Messages.SendMessage(fmsg)
-                    If fmsg.Reply = cFeedbackMessage.eReply.NO Then Return Nothing
+                    If fmsg.Reply = eMessageReply.NO Then Return Nothing
                 End If
                 db = New cEwEAccessDatabase()
                 atResult = db.Create(strFileName, strModelName, True, format, Me.Core.DefaultAuthor)
@@ -1984,7 +2006,7 @@ Public Class AppLauncher
     ''' ---------------------------------------------------------------------------
     Private Function CloseEcopathModel() As Boolean
 
-        If Not String.IsNullOrEmpty(Me.Core.FileName) Then
+        If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
 
             ' Not allowed to terminate core?
             If (Not Me.Core.CloseModel()) Then
@@ -2637,7 +2659,7 @@ Public Class AppLauncher
         Dim strFileFilter As String = ""
 
         ' JS 27Jul08: Only able to save in current file format (save as between formats not supported by the core)
-        Select Case cDataSourceFactory.GetSupportedType(Me.Core.FileName)
+        Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
             Case eDataSourceTypes.Access2003
                 ' Only allow saving as MDB
                 strFileFilter = SharedResources.FILEFILTER_SAVE_MDB
@@ -2678,7 +2700,7 @@ Public Class AppLauncher
 
         Dim bEnable As Boolean = Me.Core.StateMonitor.HasEcopathLoaded
 
-        Select Case cDataSourceFactory.GetSupportedType(Me.Core.FileName)
+        Select Case cDataSourceFactory.GetSupportedType(Me.SelectedFileName)
             Case eDataSourceTypes.Access2003, eDataSourceTypes.Access2007
                 ' NOP
             Case Else
@@ -2702,7 +2724,7 @@ Public Class AppLauncher
     ''' Update close model command state
     ''' </summary>
     Private Sub OnUpdateCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Not Me.Core.StateMonitor.IsBusy
+        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
     End Sub
 
     ''' <summary>
@@ -2720,7 +2742,7 @@ Public Class AppLauncher
         If (ds Is Nothing) Then
             cmd.Enabled = False
         Else
-            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.Core.FileName)
+            cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded) And ds.CanCompact(Me.SelectedFileName)
         End If
     End Sub
 
@@ -2734,6 +2756,7 @@ Public Class AppLauncher
 
         End Try
     End Sub
+
 
     Private Sub OnPrintInvoke(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
 
@@ -3070,7 +3093,7 @@ Public Class AppLauncher
         If bAllStanzaComplete = False Then
             If Me.AskFeedback(My.Resources.PROMPT_STANZA_MISSING_LIFESTAGES, _
                               eMessageImportance.Warning, eCoreComponentType.Core, _
-                              cFeedbackMessage.eReplyStyle.YES_NO) = cFeedbackMessage.eReply.YES Then
+                              eMessageReplyStyle.YES_NO) = eMessageReply.YES Then
                 Me.m_cmdEditGroups.Invoke()
             End If
             Return
@@ -3210,10 +3233,10 @@ Public Class AppLauncher
             ' Overwriting?
             If dlg.Scenario IsNot Nothing Then
                 ' #Yes: prompt for overwrite confirmation
-                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 Me.Core.Messages.SendMessage(fmsg)
 
-                If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
+                If (fmsg.Reply = eMessageReply.YES) Then
                     ' #Overwrite
                     cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSIM_SAVING, dlg.ScenarioName))
                     Try
@@ -3391,10 +3414,10 @@ Public Class AppLauncher
         Handles m_cmdEcosimTrimShapes.OnInvoke
         Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_TRIM_SHAPES, _
                                          eCoreComponentType.ShapesManager, eMessageType.Any, eMessageImportance.Question, _
-                                         cFeedbackMessage.eReplyStyle.YES_NO)
+                                         eMessageReplyStyle.YES_NO)
         Me.Core.Messages.SendMessage(fmsg)
 
-        If fmsg.Reply = cFeedbackMessage.eReply.YES Then
+        If fmsg.Reply = eMessageReply.YES Then
             Me.Core.TrimUnusedShapeData()
         End If
     End Sub
@@ -3472,10 +3495,10 @@ Public Class AppLauncher
                 ' About to overwrite?
                 If (Not Object.ReferenceEquals(scenarioTarget, Nothing)) Then
                     ' #Yes: prompt for overwrite confirmation
-                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                    Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                     Me.Core.Messages.SendMessage(fmsg)
 
-                    If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
+                    If (fmsg.Reply = eMessageReply.YES) Then
 
                         ' #Overwrite
                         cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOSPACE_SAVING, dlg.ScenarioName))
@@ -3769,10 +3792,10 @@ Public Class AppLauncher
             ' Overwriting?
             If (dlg.Scenario IsNot Nothing) Then
                 ' #Yes: prompt for overwrite confirmation
-                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.SCENARIO_CONFIRMOVERWRITE_PROMPT, dlg.ScenarioName), eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
                 Me.Core.Messages.SendMessage(fmsg)
 
-                If (fmsg.Reply = cFeedbackMessage.eReply.YES) Then
+                If (fmsg.Reply = eMessageReply.YES) Then
                     ' #Overwrite
                     cApplicationStatusNotifier.StartProgress(Me.Core, String.Format(My.Resources.STATUS_ECOTRACER_SAVING, dlg.ScenarioName))
                     Try
@@ -3943,25 +3966,6 @@ Public Class AppLauncher
     End Sub
 
 #End Region ' Plug-in commands
-
-#Region " Flow commands "
-
-    ''' <summary>
-    ''' Create a model
-    ''' </summary>
-    Private Sub OnCreateNewModel(ByVal cmd As cCommand) Handles m_cmdCreateNewModel.OnInvoke
-        Dim cmdX As cCreateModelCommand = DirectCast(cmd, cCreateModelCommand)
-        cmdX.Database = Me.CreateEcopathModel(cmdX.FileName, cmdX.ModelName, cmdX.Format)
-    End Sub
-
-    ''' <summary>
-    ''' Update create model command state
-    ''' </summary>
-    Private Sub OnUpdateCreateNewModel(ByVal cmd As cCommand) Handles m_cmdCreateNewModel.OnUpdate
-        cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
-    End Sub
-
-#End Region
 
 #End Region ' Command handlers 
 

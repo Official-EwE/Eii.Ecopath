@@ -639,7 +639,7 @@ Namespace Ecospace
 
         Private Function ValidateNames() As Boolean
 
-            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
             Dim bHasDuplicates As Boolean = False
             Dim bHasBlank As Boolean = False
             Dim lstrHandled As New List(Of String)
@@ -665,7 +665,7 @@ Namespace Ecospace
 
             If bHasDuplicates Then
                 Me.Core.Messages.SendMessage(fmsg)
-                Return fmsg.Reply = cFeedbackMessage.eReply.YES
+                Return fmsg.Reply = eMessageReply.YES
             End If
 
             Return True
@@ -723,20 +723,20 @@ Namespace Ecospace
             If (Me.m_alHabitatsRemoved.Count > 5) Then
 
                 strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETENUM_PROMPT, Me.m_alHabitatsRemoved.Count)
-                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                 Select Case fmsg.Reply
-                    Case cFeedbackMessage.eReply.CANCEL
+                    Case eMessageReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case cFeedbackMessage.eReply.YES
+                    Case eMessageReply.YES
                         ' Confirm all regions
                         For Each hi In Me.m_alHabitatsRemoved
                             hi.Confirmed = True
                         Next
                         bConfigurationChanged = True
-                    Case cFeedbackMessage.eReply.NO
+                    Case eMessageReply.NO
                         ' NOP
                     Case Else
                         ' Unexpected anwer: assert
@@ -750,17 +750,17 @@ Namespace Ecospace
                     If (Not hi.IsNew()) Then
 
                         strPrompt = String.Format(My.Resources.ECOSPACE_EDITHABITAT_CONFIRMDELETE_PROMPT, hi.Name)
-                        Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                        Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                         Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                         Select Case fmsg.Reply
-                            Case cFeedbackMessage.eReply.CANCEL
+                            Case eMessageReply.CANCEL
                                 ' Abort Apply process
                                 Return False
-                            Case cFeedbackMessage.eReply.NO
+                            Case eMessageReply.NO
                                 ' Do not delete this Habitat
                                 hi.Confirmed = False
-                            Case cFeedbackMessage.eReply.YES
+                            Case eMessageReply.YES
                                 ' Delete this Habitat
                                 hi.Confirmed = True
                                 bConfigurationChanged = True

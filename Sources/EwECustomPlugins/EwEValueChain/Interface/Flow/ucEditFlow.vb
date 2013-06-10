@@ -21,8 +21,9 @@
 Option Strict On
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports ScientificInterfaceShared.Controls
 Imports EwECore
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Controls
 
 #End Region ' Imports
 
@@ -217,9 +218,9 @@ Public Class ucEditFlow
     Private Sub OnArrangeLayout(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbArrange.Click
 
-        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_AUTOLAYOUT, EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_AUTOLAYOUT, EwEUtils.Core.eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         Me.m_uic.Core.Messages.SendMessage(fmsg)
-        If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return
+        If (fmsg.Reply <> eMessageReply.YES) Then Return
 
         Try
             Me.m_plFlow.ArrangeGLEE()

@@ -21,11 +21,10 @@
 Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
-Imports EwECore.DataSources
-Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
 Imports ZedGraph
-Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
