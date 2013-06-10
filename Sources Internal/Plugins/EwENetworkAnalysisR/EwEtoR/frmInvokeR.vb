@@ -21,6 +21,7 @@ Option Strict On
 Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
+Imports EwEUtils.Core
 Imports EwEUtils.Interop
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands

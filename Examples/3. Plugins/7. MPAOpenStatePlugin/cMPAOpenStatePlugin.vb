@@ -16,8 +16,9 @@
 ' ===============================================================================
 '
 Option Strict On
-Imports EwEPlugin
 Imports EwECore
+Imports EwEPlugin
+Imports EwEUtils.Core
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>

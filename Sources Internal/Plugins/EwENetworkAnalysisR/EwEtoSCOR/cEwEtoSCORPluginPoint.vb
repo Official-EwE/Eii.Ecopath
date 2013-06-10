@@ -23,6 +23,7 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
