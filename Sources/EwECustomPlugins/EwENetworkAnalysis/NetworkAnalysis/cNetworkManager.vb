@@ -170,11 +170,11 @@ Public Class cNetworkManager
         'If (Me.MayRunSlow()) Then
         '    Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_NETWORK_COMPLEXDIET, _
         '                                     eCoreComponentType.External, eMessageType.Any, _
-        '                                     eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
-        '    fmsg.Reply = cFeedbackMessage.eReply.NO
+        '                                     eMessageImportance.Question, eReplyStyle.YES_NO)
+        '    fmsg.Reply = eReply.NO
         '    fmsg.Suppressable = True
         '    Me.m_publisher.SendMessage(fmsg)
-        '    If fmsg.Reply <> cFeedbackMessage.eReply.YES Then Return False
+        '    If fmsg.Reply <> eReply.YES Then Return False
         'End If
 
         If bSucces Then
@@ -193,17 +193,12 @@ Public Class cNetworkManager
                 'This may not be necessary because m_EcoNetwork keeps a reference to the data. 
                 'However, this is more robust, incase the core has created a new m_EcoPathData object.
                 Me.m_econetwork.EcopathData = m_epdata
-                If Me.m_econetwork.RunNetworkAnalysis() Then
-                    Me.m_runstate = eRunState.NetworkHasRun
-                    bSucces = True
-                    Me.IsMainNetworkRun = True
-                Else
-                    'Failed to run
-                    'May have timed out
-                    Me.m_runstate = eRunState.NetworkNeedsToRun
-                    bSucces = False
-                    Me.IsMainNetworkRun = False
-                End If
+                Me.m_econetwork.RunNetworkAnalysis()
+
+                Me.m_runstate = eRunState.NetworkHasRun
+
+                bSucces = True
+                Me.IsMainNetworkRun = True
 
             Catch ex As Exception
                 cLog.Write(ex)
@@ -620,24 +615,6 @@ Public Class cNetworkManager
         End Get
         Set(ByVal value As Boolean)
             Me.m_econetwork.AllowFindPathsAndCycles = value
-        End Set
-    End Property
-
-    Public Property bUseAbortTimer As Boolean
-        Get
-            Return Me.m_econetwork.bUseAbortTimer
-        End Get
-        Set(value As Boolean)
-            Me.m_econetwork.bUseAbortTimer = value
-        End Set
-    End Property
-
-    Public Property TimeOutMilSecs As Integer
-        Get
-            Return Me.m_econetwork.TimeOutMilSecs
-        End Get
-        Set(value As Integer)
-            Me.m_econetwork.TimeOutMilSecs = value
         End Set
     End Property
 
@@ -2196,13 +2173,13 @@ Public Class cNetworkManager
         Dim fmsg As New cFeedbackMessage(strMsg, _
                                          eCoreComponentType.External, _
                                          eMessageType.Any, _
-                                         eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+                                         eMessageImportance.Question, eMessageReplyStyle.YES_NO)
         fmsg.Suppressable = True
-        fmsg.Reply = cFeedbackMessage.eReply.YES
+        fmsg.Reply = eMessageReply.YES
 
         Me.Core.Messages.SendMessage(fmsg)
 
-        Return (fmsg.Reply = cFeedbackMessage.eReply.YES)
+        Return (fmsg.Reply = eMessageReply.YES)
 
     End Function
 

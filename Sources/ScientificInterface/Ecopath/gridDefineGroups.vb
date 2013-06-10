@@ -1629,7 +1629,7 @@ Public Class gridDefineGroups
 
     Private Function ValidateNames() As Boolean
 
-        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
         Dim bHasDuplicates As Boolean = False
         Dim bHasBlank As Boolean = False
         Dim lstrHandled As New List(Of String)
@@ -1655,7 +1655,7 @@ Public Class gridDefineGroups
 
         If bHasDuplicates Then
             Me.Core.Messages.SendMessage(fmsg)
-            Return fmsg.Reply = cFeedbackMessage.eReply.YES
+            Return fmsg.Reply = eMessageReply.YES
         End If
 
         Return True
@@ -1786,9 +1786,9 @@ Public Class gridDefineGroups
         ' 2. All detritus groups must be at the end of the list
         If Not bAllDetritusAtEnd Then
             ' Ask user feedback whether detritus order may be corrected
-            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
+            Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_EDITGROUPSSTANZA_WILLMOVEDETRITUSTOEND, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
             Me.UIContext.Core.Messages.SendMessage(fmsg)
-            If (fmsg.Reply <> cFeedbackMessage.eReply.YES) Then Return False
+            If (fmsg.Reply <> eMessageReply.YES) Then Return False
             ' Fix it
             Me.FixDetritusOrder()
         End If
@@ -1857,17 +1857,17 @@ Public Class gridDefineGroups
             If (Not gi.IsNew()) Then
 
                 strPrompt = String.Format(My.Resources.ECOPATH_EDITGROUPSSTANZA_CONFIRMGROUPDELETE_PROMPT, gi.Name)
-                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                 Select Case fmsg.Reply
-                    Case cFeedbackMessage.eReply.CANCEL
+                    Case eMessageReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case cFeedbackMessage.eReply.NO
+                    Case eMessageReply.NO
                         ' Do not delete this group
                         gi.Confirmed = False
-                    Case cFeedbackMessage.eReply.YES
+                    Case eMessageReply.YES
                         ' Delete this group
                         gi.Confirmed = True
                         bConfigurationChanged = True

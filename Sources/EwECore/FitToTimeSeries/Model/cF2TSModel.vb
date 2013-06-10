@@ -915,9 +915,9 @@ Namespace FitToTimeSeries
                                                  eCoreComponentType.EcoSimFitToTimeSeries, _
                                                  eMessageType.Any, _
                                                  eMessageImportance.Information, _
-                                                 cFeedbackMessage.eReplyStyle.YES_NO)
+                                                 eMessageReplyStyle.YES_NO)
                     sendMessage(fbmsg)
-                    If fbmsg.Reply = cFeedbackMessage.eReply.NO Then GoTo 250
+                    If fbmsg.Reply = eMessageReply.NO Then GoTo 250
                     '  If MsgBox("MORE ITERATIONS (y/n)?", MsgBoxStyle.YesNo) = vbNo Then GoTo 250
                 End If
 
@@ -954,9 +954,9 @@ Namespace FitToTimeSeries
                                              eCoreComponentType.EcoSimFitToTimeSeries, _
                                              eMessageType.Any, _
                                              eMessageImportance.Information, _
-                                             cFeedbackMessage.eReplyStyle.YES_NO)
+                                             eMessageReplyStyle.YES_NO)
                 sendMessage(fbmsg)
-                If fbmsg.Reply = cFeedbackMessage.eReply.YES Then GoTo 220
+                If fbmsg.Reply = eMessageReply.YES Then GoTo 220
 
                 '   If MsgBox("ESTIMATES CONVERGED; MORE ITERATIONS?", MsgBoxStyle.YesNo) = vbYes Then GoTo 220
 

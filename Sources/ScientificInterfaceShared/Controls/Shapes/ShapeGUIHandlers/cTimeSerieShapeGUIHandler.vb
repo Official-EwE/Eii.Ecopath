@@ -571,11 +571,11 @@ Namespace Controls
                                        eCoreComponentType.ShapesManager, _
                                        eMessageType.Any, _
                                        eMessageImportance.Warning, _
-                                       cFeedbackMessage.eReplyStyle.YES_NO, _
+                                       eMessageReplyStyle.YES_NO, _
                                        eDataTypes.TimeSeriesDataset, _
-                                       cFeedbackMessage.eReply.OK)
+                                       eMessageReply.OK)
             Me.Core.Messages.SendMessage(fms, True)
-            If (fms.Reply = cFeedbackMessage.eReply.NO) Then Return
+            If (fms.Reply = eMessageReply.NO) Then Return
 
             ' Delete
             Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure)

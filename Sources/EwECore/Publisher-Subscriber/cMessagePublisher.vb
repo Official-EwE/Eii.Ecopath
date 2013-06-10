@@ -17,6 +17,7 @@
 '
 
 Option Strict On
+Imports EwEPlugin
 Imports EwEUtils.Core
 
 ''' <summary>
@@ -37,7 +38,7 @@ Public Class cMessagePublisher
     Private m_handlers As New List(Of cMessageHandler)
     Private m_msglist As New List(Of cMessage)
     Private m_iMessageLockCount As Integer = 0
-    Private m_bSendPending As Boolean = False
+    Private m_bSendPending As Boolean = False 
 
     ''' <summary>
     ''' Add a Message Handler to list of message handlers
@@ -164,7 +165,7 @@ Public Class cMessagePublisher
         Try
 
             ' Wrapped sanity checks
-            If Message Is Nothing Then
+            If (Message Is Nothing) Then
                 Debug.Assert(False, "Cannot send a Null message.")
             End If
             If (Message.Source = eCoreComponentType.NotSet) Then
@@ -174,7 +175,17 @@ Public Class cMessagePublisher
             ' JS 27sep07: log only messages of certain importance
             Select Case Message.Importance
                 Case eMessageImportance.Critical, eMessageImportance.Warning, eMessageImportance.Information
+
+                    ' JS 07jun13: allow message filtering
+                    If (Me.PluginManager IsNot Nothing) Then
+                        Dim bSuppress As Boolean = False
+                        Me.PluginManager.PreProcessMessage(Message, bSuppress)
+                        ' ToDo: how to best handle this? Die without a word?
+                        If bSuppress = True Then Return True
+                    End If
+
                     cLog.Write(Message)
+
                 Case eMessageImportance.Progress, eMessageImportance.Maintenance
                     ' Do not log these
             End Select
@@ -250,6 +261,11 @@ Public Class cMessagePublisher
 
     'End Sub
 
+    ''' <summary>
+    ''' Get/set the <see cref="cPluginManager"/> to use.
+    ''' </summary>
+    Public Property PluginManager As cPluginManager
+
 #Region " Locking "
 
     ''' <summary>
@@ -310,38 +326,19 @@ Public Class cMessagePublisher
 
 #End Region ' Private helper methods
 
+#Region " IDisposable "
 
-#Region " IDisposable Support "
-
-    Private disposedValue As Boolean = False        ' To detect redundant calls
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-        If Not Me.disposedValue Then
-            If disposing Then
-
-                For Each handler As cMessageHandler In Me.m_handlers
-                    handler.Dispose()
-                Next
-                m_handlers.Clear()
-
-                ' TODO: free other state (managed objects).
-            End If
-
-            ' TODO: free your own state (unmanaged objects).
-            ' TODO: set large fields to null.
-        End If
-        Me.disposedValue = True
-    End Sub
-
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
     Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
+
+        For Each handler As cMessageHandler In Me.m_handlers
+            handler.Dispose()
+        Next
+        Me.m_handlers.Clear()
         GC.SuppressFinalize(Me)
+
     End Sub
-#End Region
+
+#End Region ' IDisposable
 
 End Class
 

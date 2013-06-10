@@ -155,10 +155,10 @@ Public Class dlgEditBasemap
                 ' Prompt user
                 fmsg = New cFeedbackMessage(My.Resources.ECOSPACE_BASEMAP_SHRINK_PROMPT, _
                                             eCoreComponentType.External, eMessageType.Any, _
-                                            eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO)
-                fmsg.Reply = cFeedbackMessage.eReply.NO
+                                            eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+                fmsg.Reply = eMessageReply.NO
                 core.Messages.SendMessage(fmsg)
-                If (fmsg.Reply = cFeedbackMessage.eReply.NO) Then
+                If (fmsg.Reply = eMessageReply.NO) Then
                     Return
                 End If
             End If

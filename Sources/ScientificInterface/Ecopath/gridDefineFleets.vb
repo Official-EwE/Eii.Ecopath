@@ -812,7 +812,7 @@ Imports EwEUtils.Core
 
     Private Function ValidateNames() As Boolean
 
-        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.NO)
+        Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_DUPLICATE_NAMES, eCoreComponentType.External, eMessageType.DataValidation, eMessageImportance.Question, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.NO)
         Dim bHasDuplicates As Boolean = False
         Dim bHasBlank As Boolean = False
         Dim lstrHandled As New List(Of String)
@@ -838,7 +838,7 @@ Imports EwEUtils.Core
 
         If bHasDuplicates Then
             Me.Core.Messages.SendMessage(fmsg)
-            Return fmsg.Reply = cFeedbackMessage.eReply.YES
+            Return fmsg.Reply = eMessageReply.YES
         End If
 
         Return True
@@ -898,17 +898,17 @@ Imports EwEUtils.Core
 
                 strPrompt = String.Format(My.Resources.ECOPATH_EDITFLEET_CONFIRMDELETE_PROMPT, fi.Name)
 
-                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                Dim fmsg As New cFeedbackMessage(strPrompt, eCoreComponentType.EcoPath, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                 Me.UIContext.Core.Messages.SendMessage(fmsg)
 
                 Select Case fmsg.Reply
-                    Case cFeedbackMessage.eReply.CANCEL
+                    Case eMessageReply.CANCEL
                         ' Abort Apply process
                         Return False
-                    Case cFeedbackMessage.eReply.NO
+                    Case eMessageReply.NO
                         ' Do not delete this Fleet
                         fi.Confirmed = False
-                    Case cFeedbackMessage.eReply.YES
+                    Case eMessageReply.YES
                         ' Delete this Fleet
                         fi.Confirmed = True
                         bConfigurationChanged = True

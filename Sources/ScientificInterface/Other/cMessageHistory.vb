@@ -51,8 +51,6 @@ Public Class cMessageHistory
     ''' <summary>Core message handlers.</summary>
     Private m_dtMessageHanders As New Dictionary(Of eCoreComponentType, cMessageHandler)
 
-    Private m_appl As AppLauncher = Nothing
-
 #End Region ' Privates
 
 #Region " Helper class "
@@ -82,6 +80,8 @@ Public Class cMessageHistory
         Private m_source As eCoreComponentType = eCoreComponentType.NotSet
         ''' <summary>Date and time message was generated.</summary>
         Private m_time As DateTime = Nothing
+        ''' <summary>Note whether the message was automatically suppressed.</summary>
+        Private m_bSuppressed As Boolean = False
 
 #End Region ' Private vars 
 
@@ -106,6 +106,7 @@ Public Class cMessageHistory
 
             Me.New(msg.Message, msg.Importance, msg.Hyperlink)
             Me.m_source = msg.Source
+            Me.m_bSuppressed = msg.Suppressed
 
             For Each vs As cVariableStatus In msg.Variables
                 Me.m_lItems.Add(New cHistoryItem(pm, vs, msg.Importance, Me.m_source))
@@ -124,23 +125,23 @@ Public Class cMessageHistory
 
                 Select Case fmsg.ReplyStyle
 
-                    Case cFeedbackMessage.eReplyStyle.OK_CANCEL
+                    Case eMessageReplyStyle.OK_CANCEL
                         Select Case fmsg.Reply
-                            Case cFeedbackMessage.eReply.OK
+                            Case eMessageReply.OK
                                 strReply = My.Resources.GENERIC_REPLY_OK
-                            Case cFeedbackMessage.eReply.CANCEL
+                            Case eMessageReply.CANCEL
                                 strReply = My.Resources.GENERIC_REPLY_CANCEL
                         End Select
 
-                    Case cFeedbackMessage.eReplyStyle.YES_NO, _
-                         cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
+                    Case eMessageReplyStyle.YES_NO, _
+                         eMessageReplyStyle.YES_NO_CANCEL
 
                         Select Case fmsg.Reply
-                            Case cFeedbackMessage.eReply.YES
+                            Case eMessageReply.YES
                                 strReply = My.Resources.GENERIC_REPLY_YES
-                            Case cFeedbackMessage.eReply.NO
+                            Case eMessageReply.NO
                                 strReply = My.Resources.GENERIC_REPLY_NO
-                            Case cFeedbackMessage.eReply.CANCEL
+                            Case eMessageReply.CANCEL
                                 strReply = My.Resources.GENERIC_REPLY_CANCEL
                         End Select
 
@@ -334,8 +335,7 @@ Public Class cMessageHistory
 
 #Region " Construction / destruction "
 
-    Public Sub New(ByVal appl As AppLauncher)
-        Me.m_appl = appl
+    Public Sub New()
     End Sub
 
     Public Property UIContext() As ScientificInterfaceShared.Controls.cUIContext _
@@ -452,32 +452,34 @@ Public Class cMessageHistory
 
         If String.IsNullOrEmpty(msg.Message) Then Return
 
-        ' Requires feedback (overrules popup settings)
-        If (TypeOf msg Is cFeedbackMessage) Then
-            ' #Yes: handle it
+        ' Early bail-out for messages hidden from UI
+        Select Case msg.Importance
+            Case eMessageImportance.Critical, eMessageImportance.Warning, eMessageImportance.Information
+                ' Carry on
+            Case Else
+                Return
+        End Select
+
+        ' Is not a suppressed message?
+        If Not msg.Suppressed Then
             Try
-                Me.HandleFeedbackMessage(DirectCast(msg, cFeedbackMessage))
+                ' #Yes: Is a feedback message?
+                If (TypeOf msg Is cFeedbackMessage) Then
+                    ' #Yes: handle it
+                    Me.HandleFeedbackMessage(DirectCast(msg, cFeedbackMessage))
+                Else
+                    ' #No: handle pop-up feedback for criticals and warnings only
+                    Select Case msg.Importance
+                        Case eMessageImportance.Critical, eMessageImportance.Warning
+                            Me.ShowMessageBox(msg)
+                    End Select
+                End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
-        Else
-            Select Case msg.Importance
-                Case eMessageImportance.Critical, eMessageImportance.Warning
-                    Try
-                        Me.ShowMessageBox(msg)
-                    Catch ex As Exception
-                        Debug.Assert(False, ex.Message)
-                    End Try
-                Case eMessageImportance.Information
-                    ' NOP
-                Case eMessageImportance.Maintenance, _
-                     eMessageImportance.Progress
-                    Return
-                Case Else
-                    Return
-            End Select
         End If
 
+        ' Now enter messages in message log
         Try
             Dim item As New cHistoryItem(Me.m_uic.PropertyManager, msg)
             Me.m_lHistory.Add(item)
@@ -520,17 +522,19 @@ Public Class cMessageHistory
         Dim dlr As DialogResult = Windows.Forms.DialogResult.No
         Dim strMessage As String = ""
 
+        ' Early bail-out
         If (msg Is Nothing) Then Return
+        If (msg.Suppressed) Then Return
 
         ' Translate feedback style into .NET MessageBox style
         Select Case msg.ReplyStyle
-            Case cFeedbackMessage.eReplyStyle.OK_CANCEL
+            Case eMessageReplyStyle.OK_CANCEL
                 mbb = MessageBoxButtons.OKCancel
-            Case cFeedbackMessage.eReplyStyle.YES_NO
+            Case eMessageReplyStyle.YES_NO
                 mbb = MessageBoxButtons.YesNo
-            Case cFeedbackMessage.eReplyStyle.YES_NO_CANCEL
+            Case eMessageReplyStyle.YES_NO_CANCEL
                 mbb = MessageBoxButtons.YesNoCancel
-            Case cFeedbackMessage.eReplyStyle.OK
+            Case eMessageReplyStyle.OK
                 mbb = MessageBoxButtons.OK
         End Select
 
@@ -563,7 +567,7 @@ Public Class cMessageHistory
                 ' Assume to repeat the question
                 Dim bChecked As Boolean = False
                 ' Show dialog
-                dlr = cCustomMessageBox.Show(strMessage, Me.m_appl.Text, _
+                dlr = cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
                                              mbb, mbi, _
                                              bChecked, My.Resources.PROMPT_MESSAGE_HIDE)
                 ' Auto-reply requested?
@@ -576,7 +580,7 @@ Public Class cMessageHistory
             ' Invoke message box
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_WAITING)
             Try
-                dlr = MessageBox.Show(strMessage, Me.m_appl.Text, mbb, mbi)
+                dlr = MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi)
             Catch ex As Exception
                 cLog.Write(ex, "cMessageHistory::HandleFeedbackMessage")
             End Try
@@ -586,13 +590,13 @@ Public Class cMessageHistory
         ' Translate .NET MessageBox result into reply
         Select Case dlr
             Case DialogResult.Cancel
-                msg.Reply = cFeedbackMessage.eReply.CANCEL
+                msg.Reply = eMessageReply.CANCEL
             Case DialogResult.OK
-                msg.Reply = cFeedbackMessage.eReply.OK
+                msg.Reply = eMessageReply.OK
             Case DialogResult.Yes
-                msg.Reply = cFeedbackMessage.eReply.YES
+                msg.Reply = eMessageReply.YES
             Case DialogResult.No
-                msg.Reply = cFeedbackMessage.eReply.NO
+                msg.Reply = eMessageReply.NO
             Case Else
                 Debug.Assert(False, String.Format("Message box result {0} not supported", dlr))
         End Select
@@ -618,7 +622,7 @@ Public Class cMessageHistory
         Dim bError As Boolean = False
 
         ' Sanity check
-        If msg IsNot Nothing Then
+        If (msg IsNot Nothing) Then
 
             bError = ToMessageBoxText(msg, strMessage)
 
@@ -642,23 +646,23 @@ Public Class cMessageHistory
                 ' Sanity check
                 Debug.Assert(msg.Type <> eMessageType.NotSet, "Message not propery configured for suppression: messagetype not set")
 
-                If (Not Me.m_msh.Suppress(msg.Source, msg.Type)) Then
+                If (Not Me.m_msh.IsSuppressed(msg.Source, msg.Type)) Then
                     ' #No: Good, prepare to show message
                     ' Assume message will not be suppressed
                     Dim bSuppress As Boolean = False
                     ' Invoke the special message box
-                    cCustomMessageBox.Show(strMessage, Me.m_appl.Text, _
+                    cCustomMessageBox.Show(strMessage, AppLauncher.GetInstance().Text, _
                                            mbb, mbi, _
                                            bSuppress, My.Resources.PROMPT_MESSAGE_HIDE)
-                    If bSuppress Then
-                        '#Yes: suppress it during the rest of this session
-                        Me.m_msh.Suppress(msg.Source, msg.Type) = True
-                    End If
+                    ' Set suppressed state in administration
+                    Me.m_msh.IsSuppressed(msg.Source, msg.Type) = bSuppress
                 End If
+                ' Set message suppressed state
+                msg.Suppressed = Me.m_msh.IsSuppressed(msg.Source, msg.Type)
             Else
                 ' #No: show the message
                 ' The one and only static popup message box in EwE
-                MessageBox.Show(strMessage, Me.m_appl.Text, mbb, mbi, MessageBoxDefaultButton.Button1)
+                MessageBox.Show(strMessage, AppLauncher.GetInstance().Text, mbb, mbi, MessageBoxDefaultButton.Button1)
             End If
         End If
 

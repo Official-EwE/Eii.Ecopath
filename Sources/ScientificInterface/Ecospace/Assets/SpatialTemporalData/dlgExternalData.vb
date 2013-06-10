@@ -20,12 +20,12 @@
 
 Option Strict On
 
-Imports EwEUtils.SpatialData
-Imports EwECore.SpatialData
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwECore
+Imports EwECore.SpatialData
+Imports EwEUtils.Core
+Imports EwEUtils.SpatialData
 Imports ScientificInterface.Ecospace.Basemap.Layers
-Imports EwECore.Ecospace
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 

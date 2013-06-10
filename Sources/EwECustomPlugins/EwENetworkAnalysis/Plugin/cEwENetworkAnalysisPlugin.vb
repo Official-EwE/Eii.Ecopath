@@ -100,13 +100,6 @@ Public Class cEwENetworkAnalysisPlugin
 
     End Function
 
-
-    Public ReadOnly Property Manager As cNetworkManager
-        Get
-            Return cEwENetworkAnalysisPlugin._inst_.m_manager
-        End Get
-    End Property
-
 #End Region ' Singleton
 
 #Region " Generic "
@@ -230,14 +223,14 @@ Public Class cEwENetworkAnalysisPlugin
             Else
 
                 'some kind of a message
-                m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() argument EcopathDataStructure is not a cEcopathDataStructures object." _
-                                            , EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
+                m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() argument EcopathDataStructure is not a cEcopathDataStructures object.", _
+                                                                eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
 
             m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcopathRunCompleted() Error: " & ex.Message, _
-                            EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
 
         End Try
 
@@ -297,14 +290,14 @@ Public Class cEwENetworkAnalysisPlugin
             Else
 
                 'some kind of a message
-                m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object." _
-                                            , EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
+                m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() argument EcosimDatastructures is not a cEcosimDatastructures object.", _
+                                                                eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
             End If
         Catch ex As Exception
             Debug.Assert(False, ex.Message)
 
-            m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() Error: " & ex.Message _
-                            , EwECore.eMessageType.ErrorEncountered, eCoreComponentType.Core, EwECore.eMessageImportance.Warning))
+            m_core.Messages.AddMessage(New EwECore.cMessage("Plugin EwENetworkAnalysis.EcosimRunInitialized() Error: " & ex.Message, _
+                                                            eMessageType.ErrorEncountered, eCoreComponentType.Core, eMessageImportance.Warning))
 
         End Try
 

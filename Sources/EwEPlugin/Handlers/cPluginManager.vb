@@ -885,6 +885,21 @@ Public Class cPluginManager
 
     End Sub
 
+    ''' ---------------------------------------------------------------------------
+    ''' <summary>
+    ''' Bridge, filter a message.
+    ''' </summary>
+    ''' <param name="msg">The message to filter.</param>
+    ''' <param name="bCancelMessage">Flkag, stating whether the message should be
+    ''' cancelled.</param>
+    ''' ---------------------------------------------------------------------------
+    Public Sub PreProcessMessage(ByVal msg As IMessage, ByRef bCancelMessage As Boolean)
+
+        ' Invokes IMessage()
+        Me.TryInvokeMethod(GetType(IMessageFilterPlugin), "PreProcessMessage", New Object() {msg, bCancelMessage})
+
+    End Sub
+
 #End Region ' Core
 
 #Region " Ecopath "

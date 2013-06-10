@@ -152,6 +152,7 @@ Public Class cEwEStatusBar
     ''' -----------------------------------------------------------------------
     Public Sub UpdateModelPanes()
 
+        Dim appl As AppLauncher = AppLauncher.GetInstance()
         Dim core As cCore = Me.m_uic.Core
         Dim eweModel As cEwEModel = Me.m_uic.Core.EwEModel
         Dim simScenario As cEcoSimScenario = Nothing
@@ -170,7 +171,7 @@ Public Class cEwEStatusBar
             ' ----------------------
             strTooltip = String.Format(My.Resources.STATUSSTRIP_ECOPATH_TOOLTIP, _
                                        eweModel.Name, _
-                                       Me.m_uic.Core.FileName)
+                                       appl.SelectedFileName)
             Me.UpdateToolstripItem(Me.m_tsEcopathModel, eweModel.Name, strTooltip)
 
             ' -------

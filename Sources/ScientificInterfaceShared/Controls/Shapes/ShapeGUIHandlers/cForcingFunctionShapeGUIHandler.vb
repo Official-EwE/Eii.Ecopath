@@ -585,10 +585,10 @@ Namespace Controls
                                        eCoreComponentType.ShapesManager, _
                                        eMessageType.Any, _
                                        eMessageImportance.Warning, _
-                                       cFeedbackMessage.eReplyStyle.YES_NO, _
-                                       eDataTypes.Forcing, cFeedbackMessage.eReply.YES)
+                                       eMessageReplyStyle.YES_NO, _
+                                       eDataTypes.Forcing, eMessageReply.YES)
             Me.Core.Messages.SendMessage(fms, True)
-            If fms.Reply = cFeedbackMessage.eReply.NO Then Return
+            If fms.Reply = eMessageReply.NO Then Return
 
             Me.Core.SetBatchLock(cCore.eBatchLockType.Restructure)
             For Each shape As cShapeData In ashapes

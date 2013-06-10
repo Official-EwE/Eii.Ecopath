@@ -43,7 +43,7 @@ Namespace Controls.Wizard
 #Region " Private vars "
 
         ''' <summary>UI Context that a wizard operates on.</summary>
-        Protected m_uic As cUIContext
+        Private m_uic As cUIContext
 
         ''' <summary>List of wizard pages.</summary>
         Private m_lPages As New List(Of Type)

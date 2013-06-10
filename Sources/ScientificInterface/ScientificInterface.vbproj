@@ -167,7 +167,6 @@
     <Compile Include="AppLauncher.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="cBrowserCommand.vb" />
     <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
       <DependentUpon>dlgDefineRegions.vb</DependentUpon>
     </Compile>
@@ -1935,8 +1934,6 @@
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Other\Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
 </Project>

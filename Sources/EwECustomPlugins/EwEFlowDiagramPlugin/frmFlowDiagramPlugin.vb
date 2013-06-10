@@ -222,9 +222,9 @@ Public Class frmFlowDiagramPlugin
             If System.IO.File.Exists(strTempFile) Then
 
                 Dim fmsg As New cFeedbackMessage("Flow diagram file already exist, would you like to load it? " & vbCrLf & "Yes to load the file, No to make a new file", _
-                                                 eCoreComponentType.External, eMessageType.Any, eMessageImportance.Information, cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                                                 eCoreComponentType.External, eMessageType.Any, eMessageImportance.Information, eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
                 Me.m_plugin.Core.Messages.SendMessage(fmsg)
-                bCreateFile = (fmsg.Reply = cFeedbackMessage.eReply.NO)
+                bCreateFile = (fmsg.Reply = eMessageReply.NO)
             End If
 
             Me.LaunchFlowDiagram(strTempFile, bCreateFile)

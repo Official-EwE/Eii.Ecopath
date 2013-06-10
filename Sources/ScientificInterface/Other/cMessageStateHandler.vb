@@ -116,7 +116,7 @@ Public Class cMessageStateHandler
 
 #Region " Public bits "
 
-    Public Property Suppress(ByVal source As eCoreComponentType, ByVal mt As eMessageType) As Boolean
+    Public Property IsSuppressed(ByVal source As eCoreComponentType, ByVal mt As eMessageType) As Boolean
         Get
             Return Me.GetCache(source).Suppress(mt)
         End Get

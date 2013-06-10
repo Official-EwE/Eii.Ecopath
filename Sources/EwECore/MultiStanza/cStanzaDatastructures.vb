@@ -15,6 +15,7 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+Imports EwEUtils.Core
 
 Public Class cStanzaDatastructures
 

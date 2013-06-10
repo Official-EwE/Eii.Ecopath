@@ -22,6 +22,7 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region
 
@@ -93,10 +94,10 @@ Namespace Ecospace
                 ' ToDo: globalize this
                 Dim fmsg As New cFeedbackMessage("There are cells that will no longer be assigned to regions if you continue.", _
                                                  EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, _
-                                                 cFeedbackMessage.eReplyStyle.OK_CANCEL, EwEUtils.Core.eDataTypes.NotSet, cFeedbackMessage.eReply.CANCEL)
+                                                 eMessageReplyStyle.OK_CANCEL, EwEUtils.Core.eDataTypes.NotSet, eMessageReply.CANCEL)
                 fmsg.Suppressable = True
                 Me.m_uic.Core.Messages.SendMessage(fmsg)
-                If (fmsg.Reply <> cFeedbackMessage.eReply.OK) Then Return
+                If (fmsg.Reply <> eMessageReply.OK) Then Return
             End If
 
             parms.nRegions = Me.UIContext.Core.nMPAs

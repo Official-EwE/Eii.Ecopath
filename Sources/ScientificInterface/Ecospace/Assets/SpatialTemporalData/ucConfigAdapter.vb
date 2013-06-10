@@ -19,13 +19,13 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports EwECore
-Imports EwECore.Ecospace
 Imports EwECore.SpatialData
 Imports EwEPlugin
+Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
-Imports System.IO
 
 #End Region ' Imports
 
@@ -266,15 +266,15 @@ Namespace Ecospace.Controls
             Try
                 If (dSizeUnused > 0) Then
                     Dim fmsg As New cFeedbackMessage(String.Format(strPrompt, Me.m_uic.StyleGuide.FormatNumber(dSizeTot), Me.m_uic.StyleGuide.FormatNumber(dSizeUnused)), _
-                                                     EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                                                     EwEUtils.Core.eCoreComponentType.Core, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO_CANCEL)
                     Me.m_uic.Core.Messages.SendMessage(fmsg)
 
                     Select Case fmsg.Reply
-                        Case cFeedbackMessage.eReply.YES
+                        Case eMessageReply.YES
                             bSucces = cSpatialDataCache.DefaultDataCache.Clear(Me.m_manSets)
-                        Case cFeedbackMessage.eReply.NO
+                        Case eMessageReply.NO
                             bSucces = cSpatialDataCache.DefaultDataCache.Clear()
-                        Case cFeedbackMessage.eReply.CANCEL
+                        Case eMessageReply.CANCEL
                     End Select
                 Else
                     bSucces = cSpatialDataCache.DefaultDataCache.Clear()
@@ -284,7 +284,8 @@ Namespace Ecospace.Controls
             End Try
 
             Dim dSizeTot2 As Double = cache.GetSize() / 1024
-            Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
+            Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), _
+                                    eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
             Me.m_uic.Core.Messages.SendMessage(msg)
 
             ' Reflect new state

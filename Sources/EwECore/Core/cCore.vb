@@ -18,30 +18,24 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
-Imports EwECore.DataSources
-Imports EwECore.ValueWrapper
+Imports System.IO
+Imports System.Text
 Imports EwECore.Auxiliary
+Imports EwECore.Database
+Imports EwECore.DataSources
+Imports EwECore.Ecosim
+Imports EwECore.Ecospace.Advection
+Imports EwECore.ExternalData
+Imports EwECore.FishingPolicy
+Imports EwECore.MSE
+Imports EwECore.SearchObjectives
+Imports EwECore.SpatialData
+Imports EwECore.ValueWrapper
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Database
-Imports EwECore.FishingPolicy
-Imports EwECore.EcoSeed
-Imports EwECore.MSE
-Imports EwECore.SearchObjectives
-Imports EwECore.Database
-Imports System.IO
-Imports EwEUtils.Utilities
-Imports EwECore.ExternalData
-Imports EwEPlugin.Data
-Imports EwECore.Ecospace.Advection
-Imports EwEUtils.SpatialData
-Imports EwECore.SpatialData
-
 Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwEUtils.SystemUtilities
-Imports EwECore.Ecosim
-Imports System.Text
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -2291,11 +2285,11 @@ Public Class cCore
             ' Prepare feedback message
             strPrompt = My.Resources.CoreMessages.PROMPT_DISCARD_CHANGES
             fm = New cFeedbackMessage(strPrompt, _
-                                      eCoreComponentType.Core, eMessageType.SaveChanges, _
-                                      eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO)
+                                      eCoreComponentType.Core, eMessageType.Any, _
+                                      eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO)
 
             ' Auto-affirm
-            fm.Reply = cFeedbackMessage.eReply.YES
+            fm.Reply = eMessageReply.YES
 
             If (Not bQuiet) Then
                 ' Send and see what happens
@@ -2303,7 +2297,7 @@ Public Class cCore
             End If
 
             Select Case fm.Reply
-                Case cFeedbackMessage.eReply.YES
+                Case eMessageReply.YES
                     Me.DiscardChanges()
                     Return True
             End Select
@@ -2314,10 +2308,10 @@ Public Class cCore
             strPrompt = My.Resources.CoreMessages.PROMPT_SAVE_CHANGES
             fm = New cFeedbackMessage(strPrompt, _
                                       eCoreComponentType.Core, eMessageType.Any, _
-                                      eMessageImportance.Maintenance, cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                                      eMessageImportance.Maintenance, eMessageReplyStyle.YES_NO_CANCEL)
 
             ' Auto-affirm
-            fm.Reply = cFeedbackMessage.eReply.YES
+            fm.Reply = eMessageReply.YES
 
             If (Not bQuiet) Then
                 ' Send and see what happens
@@ -2331,11 +2325,11 @@ Public Class cCore
             ' Hmm...
             Select Case fm.Reply
 
-                Case cFeedbackMessage.eReply.CANCEL
+                Case eMessageReply.CANCEL
                     ' Do not save
                     Return False
 
-                Case cFeedbackMessage.eReply.YES
+                Case eMessageReply.YES
 
                     ' Plug-ins
                     If bSuccess And Me.m_StateMonitor.IsPluginModified Then
@@ -2390,7 +2384,7 @@ Public Class cCore
                         End If
                     End If
 
-                Case cFeedbackMessage.eReply.NO
+                Case eMessageReply.NO
                     ' Forget changes
                     Me.DiscardChanges()
 
@@ -2441,22 +2435,6 @@ Public Class cCore
 
     ''' -------------------------------------------------------------------------
     ''' <summary>
-    ''' Get the name of the file currently used to provide the loaded model.
-    ''' </summary>
-    ''' <param name="bFullPath">Flag, stating whether the full path to the file
-    ''' should be returned (True), or only the file name part (False). Note that
-    ''' this flag may not apply to all types of datasources.</param>
-    ''' <returns>The name of the file currently used to provide the loaded model.</returns>
-    ''' -------------------------------------------------------------------------
-    Public ReadOnly Property FileName(Optional bFullPath As Boolean = True) As String
-        Get
-            If Me.DataSource Is Nothing Then Return ""
-            Return Me.DataSource.FileName(bFullPath)
-        End Get
-    End Property
-
-    ''' -------------------------------------------------------------------------
-    ''' <summary>
     ''' Get the default output location for a given <see cref="eAutosaveTypes">autosaving component</see>.
     ''' </summary>
     ''' <param name="type">The <see cref="eAutosaveTypes">autosaving component</see> to get return
@@ -2471,7 +2449,7 @@ Public Class cCore
             Dim strPath As String = ""
 
             If (Me.DataSource IsNot Nothing) Then
-                strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName(False))
+                strModel = Path.GetFileNameWithoutExtension(Me.DataSource.FileName)
             End If
 
             If String.IsNullOrWhiteSpace(strBasePath) Then
@@ -2884,15 +2862,15 @@ Public Class cCore
                         Dim fmsg As New cFeedbackMessage(String.Format(My.Resources.CoreMessages.DATABASE_BACKUP_PROMPT, db.Name), _
                                                          eCoreComponentType.DataSource, eMessageType.Any, _
                                                          eMessageImportance.Information, _
-                                                         cFeedbackMessage.eReplyStyle.YES_NO_CANCEL)
+                                                         eMessageReplyStyle.YES_NO_CANCEL)
                         ' By default (if message is not handled) assume positive confirmation
-                        fmsg.Reply = cFeedbackMessage.eReply.OK
+                        fmsg.Reply = eMessageReply.OK
                         ' Send message
                         Me.m_publisher.SendMessage(fmsg)
                         ' Cancel if requested
-                        If (fmsg.Reply = cFeedbackMessage.eReply.CANCEL) Then Return False
+                        If (fmsg.Reply = eMessageReply.CANCEL) Then Return False
 
-                        If (fmsg.Reply = cFeedbackMessage.eReply.OK) Then
+                        If (fmsg.Reply = eMessageReply.OK) Then
 
                             ' Pick destiniation location
                             Try
@@ -3479,8 +3457,6 @@ Public Class cCore
             End If
         Next
 
-        ' Still busy? forget it
-        If Me.StateMonitor.IsBusy Then Return False
 
         If Not Me.SaveChanges() Then Return False
 #If PROFILE Then
@@ -8230,9 +8206,9 @@ Public Class cCore
                 fmsg = New cFeedbackMessage(String.Format(My.Resources.CoreMessages.VULNERABILITIES_PROMPT_RESET, sDefaultValue), _
                                             eCoreComponentType.EcoSim, eMessageType.Any, _
                                             eMessageImportance.Information, _
-                                            cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                                            eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
                 Me.m_publisher.SendMessage(fmsg)
-                If fmsg.Reply = cFeedbackMessage.eReply.NO Then
+                If fmsg.Reply = eMessageReply.NO Then
                     Me.EcosimFitToTimeSeries.UseDefaultV = False
                     Return False
                 Else
@@ -8750,7 +8726,7 @@ Public Class cCore
         If FailedGroups.Count > 0 Then
             Dim strMsg As String = My.Resources.CoreMessages.ECOSPACE_LOWHABITAT_CAP
             msg = New cFeedbackMessage(strMsg, eCoreComponentType.EcoSpace, eMessageType.ErrorEncountered, eMessageImportance.Warning, _
-                                                                cFeedbackMessage.eReplyStyle.YES_NO, , cFeedbackMessage.eReply.YES)
+                                                                eMessageReplyStyle.YES_NO, , eMessageReply.YES)
 
             For Each igrp In FailedGroups
                 ' Connect variable status to group preferred habitat
@@ -8763,7 +8739,7 @@ Public Class cCore
 
             Me.m_publisher.SendMessage(msg)
 
-            If msg.Reply = cFeedbackMessage.eReply.NO Then
+            If msg.Reply = eMessageReply.NO Then
                 Return False
             End If
 
@@ -8787,13 +8763,13 @@ Public Class cCore
         If (Math.Round(1 / Me.m_EcoSpaceData.TimeStep, 3) > cCore.N_MONTHS) Then
             Dim fmsg As New cFeedbackMessage(My.Resources.CoreMessages.ECOSPACE_SPATIALTEMPORAL_TOOMANYTIMESTEPS, _
                                              eCoreComponentType.External, eMessageType.Any, eMessageImportance.Warning)
-            fmsg.ReplyStyle = cFeedbackMessage.eReplyStyle.YES_NO
+            fmsg.ReplyStyle = eMessageReplyStyle.YES_NO
             fmsg.Suppressable = True
-            fmsg.Reply = cFeedbackMessage.eReply.YES
+            fmsg.Reply = eMessageReply.YES
 
             Me.m_publisher.SendMessage(fmsg)
 
-            If (fmsg.Reply = cFeedbackMessage.eReply.NO) Then
+            If (fmsg.Reply = eMessageReply.NO) Then
                 Return False
             End If
 
@@ -13630,10 +13606,11 @@ Public Class cCore
         Set(ByVal pm As cPluginManager)
             ' Remember plugin manager
             Me.m_pluginManager = pm
-            ' Hand plugin manager to ecopath
+            ' Hand plugin manager to components
             Me.m_EcoPath.PluginManager = pm
             Me.m_EcoSim.PluginManager = pm
             Me.m_Ecospace.PluginManager = pm
+            Me.m_publisher.PluginManager = pm
 
             If (Me.m_pluginManager IsNot Nothing) Then
                 ' Hand plugin manager a delegate to check core enabled state
@@ -13702,10 +13679,10 @@ Public Class cCore
                     String.Format(My.Resources.CoreMessages.PLUGIN_PROMPT_DISABLE, PluginException.Message, Environment.NewLine), _
                     eCoreComponentType.External, eMessageType.Any, _
                     eMessageImportance.Warning, _
-                    cFeedbackMessage.eReplyStyle.YES_NO, eDataTypes.NotSet, cFeedbackMessage.eReply.YES)
+                    eMessageReplyStyle.YES_NO, eDataTypes.NotSet, eMessageReply.YES)
 
             m_publisher.SendMessage(fmsg)
-            PluginException.Assembly.Enabled = (fmsg.Reply = cFeedbackMessage.eReply.NO)
+            PluginException.Assembly.Enabled = (fmsg.Reply = eMessageReply.NO)
         End If
 
     End Sub
