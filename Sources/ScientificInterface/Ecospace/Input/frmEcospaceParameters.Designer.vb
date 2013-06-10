@@ -92,6 +92,9 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
+            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plScenario = New System.Windows.Forms.Panel()
+            Me.m_plModel = New System.Windows.Forms.Panel()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -102,6 +105,9 @@ Namespace Ecospace
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
             Me.m_plBiomass.SuspendLayout()
+            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_plScenario.SuspendLayout()
+            Me.m_plModel.SuspendLayout()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -150,7 +156,7 @@ Namespace Ecospace
             'm_hdrInitialization
             '
             resources.ApplyResources(Me.m_hdrInitialization, "m_hdrInitialization")
-            Me.m_hdrInitialization.CanCollapseParent = False
+            Me.m_hdrInitialization.CanCollapseParent = True
             Me.m_hdrInitialization.CollapsedParentHeight = 0
             Me.m_hdrInitialization.IsCollapsed = False
             Me.m_hdrInitialization.Name = "m_hdrInitialization"
@@ -411,7 +417,7 @@ Namespace Ecospace
             'm_hdrScenario
             '
             resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
-            Me.m_hdrScenario.CanCollapseParent = False
+            Me.m_hdrScenario.CanCollapseParent = True
             Me.m_hdrScenario.CollapsedParentHeight = 0
             Me.m_hdrScenario.IsCollapsed = False
             Me.m_hdrScenario.Name = "m_hdrScenario"
@@ -424,23 +430,41 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_hdrInitialization)
             Me.m_plBiomass.Name = "m_plBiomass"
             '
+            'TableLayoutPanel1
+            '
+            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plScenario, 0, 0)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plBiomass, 0, 1)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plModel, 0, 2)
+            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            '
+            'm_plScenario
+            '
+            Me.m_plScenario.Controls.Add(Me.m_hdrScenario)
+            Me.m_plScenario.Controls.Add(Me.m_tbContact)
+            Me.m_plScenario.Controls.Add(Me.m_lbScenarioName)
+            Me.m_plScenario.Controls.Add(Me.m_tbAuthor)
+            Me.m_plScenario.Controls.Add(Me.m_lblDescription)
+            Me.m_plScenario.Controls.Add(Me.m_lbContact)
+            Me.m_plScenario.Controls.Add(Me.m_tbDescription)
+            Me.m_plScenario.Controls.Add(Me.m_tbName)
+            Me.m_plScenario.Controls.Add(Me.m_lbAuthor)
+            resources.ApplyResources(Me.m_plScenario, "m_plScenario")
+            Me.m_plScenario.Name = "m_plScenario"
+            '
+            'm_plModel
+            '
+            Me.m_plModel.Controls.Add(Me.m_hdrModel)
+            Me.m_plModel.Controls.Add(Me.m_gbRunTime)
+            Me.m_plModel.Controls.Add(Me.m_tlpModelTop)
+            resources.ApplyResources(Me.m_plModel, "m_plModel")
+            Me.m_plModel.Name = "m_plModel"
+            '
             'EcospaceParameters
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.m_plBiomass)
-            Me.Controls.Add(Me.m_tbContact)
-            Me.Controls.Add(Me.m_tbAuthor)
-            Me.Controls.Add(Me.m_hdrScenario)
-            Me.Controls.Add(Me.m_lbContact)
-            Me.Controls.Add(Me.m_gbRunTime)
-            Me.Controls.Add(Me.m_lbAuthor)
-            Me.Controls.Add(Me.m_tlpModelTop)
-            Me.Controls.Add(Me.m_tbName)
-            Me.Controls.Add(Me.m_hdrModel)
-            Me.Controls.Add(Me.m_tbDescription)
-            Me.Controls.Add(Me.m_lblDescription)
-            Me.Controls.Add(Me.m_lbScenarioName)
+            Me.Controls.Add(Me.TableLayoutPanel1)
             Me.Name = "EcospaceParameters"
             m_gbModel.ResumeLayout(False)
             m_gbModel.PerformLayout()
@@ -457,8 +481,11 @@ Namespace Ecospace
             Me.m_gbRunTime.PerformLayout()
             Me.m_plBiomass.ResumeLayout(False)
             Me.m_plBiomass.PerformLayout()
+            Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.m_plScenario.ResumeLayout(False)
+            Me.m_plScenario.PerformLayout()
+            Me.m_plModel.ResumeLayout(False)
             Me.ResumeLayout(False)
-            Me.PerformLayout()
 
         End Sub
         Private WithEvents m_plBiomass As System.Windows.Forms.Panel
@@ -508,6 +535,9 @@ Namespace Ecospace
         Private WithEvents m_cmbAutosaveMapFormat As System.Windows.Forms.ComboBox
         Private WithEvents m_cbAutosaveResultRegions As System.Windows.Forms.CheckBox
         Private WithEvents m_lblAutosaveResultMaps As System.Windows.Forms.Label
+        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+        Private WithEvents m_plScenario As System.Windows.Forms.Panel
+        Private WithEvents m_plModel As System.Windows.Forms.Panel
     End Class
 
 End Namespace
