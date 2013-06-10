@@ -127,12 +127,12 @@ Friend Class frmUI
         MyBase.OnCoreMessage(msg)
 
         If (msg.Source = EwEUtils.Core.eCoreComponentType.EcoSim) And _
-           (msg.Type = EwECore.eMessageType.EcosimNYearsChanged Or msg.Type = EwECore.eMessageType.DataAddedOrRemoved) Then
+           (msg.Type = eMessageType.EcosimNYearsChanged Or msg.Type = eMessageType.DataAddedOrRemoved) Then
             Me.UpdateEcosimRunTime()
         End If
 
         If (msg.Source = EwEUtils.Core.eCoreComponentType.TimeSeries) And _
-           (msg.Type = EwECore.eMessageType.DataAddedOrRemoved) Then
+           (msg.Type = eMessageType.DataAddedOrRemoved) Then
             Me.UpdateEcosimRunTime()
         End If
 
