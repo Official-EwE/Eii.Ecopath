@@ -38,7 +38,7 @@ Public MustInherit Class gridForcingBase
     Inherits gridShapeBase
 
     ''' <summary>Rows in the grid</summary>
-    Private Enum eRowType As Integer
+    Protected Enum eRowType As Integer
         Header = 0
         Thumbnail
         Name
