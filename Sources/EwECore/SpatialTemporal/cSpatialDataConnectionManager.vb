@@ -394,6 +394,8 @@ Namespace SpatialData
         Private Sub CreateAdapters()
 
             Me.Clear()
+
+            Me.AddAdapter(New cBiomassForcingAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacity, eCoreCounterTypes.nGroups))
             Me.AddAdapter(New cRelPPDataAdapter(Me.m_core, eVarNameFlags.LayerRelPP, eCoreCounterTypes.NotSet))
             Me.AddAdapter(New cSpatialScalarDataAdapter(Me.m_core, eVarNameFlags.LayerRelCin, eCoreCounterTypes.NotSet))
             Me.AddAdapter(New cCapacityDataAdapter(Me.m_core, eVarNameFlags.LayerHabitatCapacityInput, eCoreCounterTypes.nGroups))
