@@ -78,8 +78,9 @@ Namespace SpatialData
                                                   ByVal dataExternal As ISpatialRaster) As Boolean
             Dim breturnVal As Boolean
             Try
-
-                Dim molesm2_to_kgkm2 As Single = 12 '12 grams of carbon per mol
+                '12 grams of carbon per mol 
+                '9x for dry to wet weight
+                Dim molesm2_to_kgkm2 As Single = 12 * 9
                 Dim igrp As Integer = layer.Index
                 For ir As Integer = 1 To Me.m_spaceData.InRow
                     For ic As Integer = 1 To Me.m_spaceData.InCol
