@@ -19,12 +19,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.Core
 Imports System.Windows.Forms
+Imports EwECore
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls
-Imports EwEUtils.Utilities
-Imports EwECore
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
