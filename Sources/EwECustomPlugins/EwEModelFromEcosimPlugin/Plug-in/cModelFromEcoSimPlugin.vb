@@ -21,12 +21,11 @@
 Option Strict On
 Imports System.IO
 Imports EwECore
+Imports EwECore.DataSources
 Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Controls
-Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports EwECore.DataSources
 
 #End Region ' Imports
 
@@ -42,7 +41,6 @@ Public Class cPluginPoint
     Implements IEcosimRunInitializedPlugin
     Implements IEcosimEndTimestepPostPlugin
     Implements IEcosimRunCompletedPlugin
-    Implements IEcosimModifyTimeseriesPlugin
 
     ' ToDo: consider what month to generate the models for. Right now, the default is the first month of the year
 
@@ -127,7 +125,7 @@ Public Class cPluginPoint
                               ByRef frmPlugin As System.Windows.Forms.Form) _
                               Implements EwEPlugin.IGUIPlugin.OnControlClick
         If (Me.m_uic IsNot Nothing) Then
-            frmPlugin = Me.UI
+            frmPlugin = DirectCast(Me.UI, System.Windows.Forms.Form)
         End If
     End Sub
 
@@ -278,7 +276,4 @@ Public Class cPluginPoint
 
 #End Region ' Internals
 
-    Public Sub EcosimModifyTimeseries(TimeSeriesDataStructures As Object) Implements EwEPlugin.IEcosimModifyTimeseriesPlugin.EcosimModifyTimeseries
-
-    End Sub
 End Class
