@@ -19,7 +19,6 @@
 Imports ScientificInterfaceShared.Forms
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
 Partial Class frmUI
     Inherits frmEwE
 
