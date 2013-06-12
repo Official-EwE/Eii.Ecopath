@@ -24,6 +24,8 @@ Imports System.Xml.Serialization
 Imports EcoTroph.Eco_services
 Imports EcoTroph.newET
 Imports EwEUtils.Utilities
+Imports EwECore
+
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
 
@@ -53,7 +55,7 @@ Public Class autre
         Dim repos_simple As String = "http://cran.univ-lyon1.fr/"
 
         Dim repos As String = repos_simple & "bin/windows/contrib/2.14/"
-        
+
 
 
         'We have to test first if R is present in the Ewe directory
@@ -127,7 +129,7 @@ Public Class autre
                 result = execute_r(test)
             End If
         End If
-        
+
 
 
     End Sub
@@ -371,7 +373,6 @@ Public Class autre
         If IO.File.Exists(myProcess.StartInfo.FileName) Then
             Try
                 myProcess.Start()
-           
 
 
 
@@ -380,16 +381,17 @@ Public Class autre
 
 
 
-            Dim myStreamWriter As StreamWriter = myProcess.StandardInput
 
-            For icod As Integer = 0 To code.Count - 1
-                myStreamWriter.WriteLine(code(icod))
-                Debug.Print(code(icod))
-            Next
-            myStreamWriter.Close()
+                Dim myStreamWriter As StreamWriter = myProcess.StandardInput
+
+                For icod As Integer = 0 To code.Count - 1
+                    myStreamWriter.WriteLine(code(icod))
+                    Debug.Print(code(icod))
+                Next
+                myStreamWriter.Close()
 
 
-                
+
 
                 Dim depasse As Boolean = myProcess.WaitForExit(100000)
                 If depasse Then
@@ -498,7 +500,7 @@ Public Class autre
 
             If (grille.Rows.Count < nbl) Then grille.Rows.Add()
 
-            
+
 
             uneligne = donnees(igrp).Split(vbTab)
             If uneligne.Length > 1 Then
@@ -604,8 +606,8 @@ Public Class autre
             'MessageBox.Show("Problem in R script: " & ex.Message)
         End Try
 
-        
-       
+
+
 
         smooth_pdf.Navigate(fichierpdf)
 
@@ -717,7 +719,7 @@ Public Class autre
         commandes(20) = " "
         commandes(21) = " quit('yes')"
 
-        
+
         'on execute ce code R
 
         Try
@@ -779,7 +781,7 @@ Public Class autre
 
                 Next
 
-                
+
             Catch ex As Exception
                 MessageBox.Show("Problem in reading R script output: " & ex.Message)
             End Try
@@ -992,38 +994,38 @@ Public Class autre
 
         End If
 
-            'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas & " et " & param_pas2)
+        'MsgBox("Nous allons Lancer la fonction smooth avec les paramètres :" & param_pas & " et " & param_pas2)
 
 
-            'Le code R en lui même
+        'Le code R en lui même
 
 
-            fichier = Replace(fichier, "\", "\\")
+        fichier = Replace(fichier, "\", "\\")
 
         ReDim commandes(30)
         Dim liste_tables() As String = {"ET_Main_diagnose", "B", "B_acc", "P", "P_acc", "Kin", "Kin_acc", "Fish_mort", "Fish_mort_acc", "Y"}
 
-            commandes(0) = "library(EcoTroph)"
-            commandes(1) = "ecopath<-read.ecopath.model('" & Replace(fichier_data_transfert, "\", "\\") & "')"
+        commandes(0) = "library(EcoTroph)"
+        commandes(1) = "ecopath<-read.ecopath.model('" & Replace(fichier_data_transfert, "\", "\\") & "')"
         commandes(2) = "ETM<-create.ETmain(ecopath" & param_pas & ");A<-create.ETdiagnosis(ETM" & param_pas2 & param_iso & ")"
-            commandes(3) = "B<-convert.list2tab(A)"
+        commandes(3) = "B<-convert.list2tab(A)"
 
         commandes(4) = "write.table(B$" & liste_tables(0) & ", file ='" & fichier & "',col.names=FALSE,row.names=FALSE, sep = '\t',quote=FALSE);" & "cat('-----\n', file ='" & fichier & "',append=TRUE);"
-            For compteur_commandes As Integer = 1 To 9
+        For compteur_commandes As Integer = 1 To 9
             commandes(compteur_commandes + 4) = "write.table(B$" & liste_tables(compteur_commandes) & ", file ='" & fichier & "', col.names=FALSE,row.names=FALSE,sep = '\t',quote=FALSE,append=TRUE);" & "cat('-----\n', file ='" & fichier & "',append=TRUE);"
-            Next
-            commandes(14) = ""
-            commandes(15) = ""
-            commandes(16) = ""
+        Next
+        commandes(14) = ""
+        commandes(15) = ""
+        commandes(16) = ""
 
-            commandes(17) = "pdf(file='" & Replace(fichierpdf, "\", "\\") & "')"
+        commandes(17) = "pdf(file='" & Replace(fichierpdf, "\", "\\") & "')"
         'commandes(18) = "plot_ETdiagnosis(A)"
         commandes(18) = "plot(A)"
-            commandes(19) = ""
-            If Not same_mf.Checked Then
+        commandes(19) = ""
+        If Not same_mf.Checked Then
             'commandes(19) = "B<-plot_ETdiagnosis_isopleth(A)"
             commandes(19) = "B<-plot_ETdiagnosis_isopleth(A)"
-                commandes(20) = "for (pecheries in names(B)) {write.table(B[[pecheries]], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)}"
+            commandes(20) = "for (pecheries in names(B)) {write.table(B[[pecheries]], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)}"
         Else
             If All_group.Checked Then
                 commandes(21) = "A<-E_MSY_0.1(ETM" & param_EMSY & ")"
@@ -1068,16 +1070,16 @@ Public Class autre
             Dim matrices() As String = Split(totales, "-----")
             Try
 
-            charge_grid(matrices(0).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_ET_main_diagnose)
-            charge_grid(matrices(1).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_B)
-            charge_grid(matrices(2).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_B_acc)
-            charge_grid(matrices(3).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_FL_P)
-            charge_grid(matrices(4).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_FL_P_acc)
-            charge_grid(matrices(5).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Kin)
-            charge_grid(matrices(6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Kin_acc)
-            charge_grid(matrices(7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_F)
-            charge_grid(matrices(8).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_F_acc)
-            charge_grid(matrices(9).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Y)
+                charge_grid(matrices(0).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), grille_ET_main_diagnose)
+                charge_grid(matrices(1).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_B)
+                charge_grid(matrices(2).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_B_acc)
+                charge_grid(matrices(3).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_FL_P)
+                charge_grid(matrices(4).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_FL_P_acc)
+                charge_grid(matrices(5).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Kin)
+                charge_grid(matrices(6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Kin_acc)
+                charge_grid(matrices(7).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_F)
+                charge_grid(matrices(8).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_F_acc)
+                charge_grid(matrices(9).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_D_Y)
             Catch ex As Exception
                 MessageBox.Show("Problem in reading R script output: " & ex.Message)
             End Try
@@ -1173,11 +1175,11 @@ Public Class autre
 
     End Sub
 
-   
 
-    
 
-   
+
+
+
 
 
 
@@ -1233,7 +1235,7 @@ Public Class autre
 
     End Sub
 
-   
+
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
 
@@ -1278,8 +1280,7 @@ Public Class autre
             End If
             Cursor.Current = Cursors.Default
         Catch ex As Exception
-
-
+            cLog.Write(ex.Message, "Ecotroph::Button7-Click")
             MessageBox.Show(My.Resources.ERROR_NO_WS)
         End Try
 
@@ -1325,10 +1326,10 @@ Public Class autre
             'et ans le second cas ce qui est renvoyé n'ets pas apprécié. Il faut modifier le web service pour qu'il soit plsu conforme
             'ce qui ne doit pas être grand chose
 
-            
+
             'Dim Str As System.IO.Stream
             'Dim srRead As System.IO.StreamReader
-           
+
             'Try
             ' make a Web request
             'Dim req As System.Net.WebRequest = System.Net.WebRequest.Create(url_eco)
@@ -1395,8 +1396,7 @@ Public Class autre
             Button4.Enabled = True
 
         Catch Ex As Exception
-
-
+            cLog.Write(Ex.Message, "Ecotroph::models_list")
             MessageBox.Show(My.Resources.NO_MODEL_DATA & Ex.Message)
         Finally
             ' Check this again, since we need to make sure we didn't throw an exception on open.
@@ -1425,16 +1425,16 @@ Public Class autre
             list_group_diag.Enabled = True
             Dim compteur As Integer
 
-            
-                If (ETgridinput.RowCount > 1 And list_group_diag.Items.Count = 0) Then
+
+            If (ETgridinput.RowCount > 1 And list_group_diag.Items.Count = 0) Then
 
 
-                    For compteur = 1 To ETgridinput.RowCount - 2
-                        If (DirectCast(ETgridinput.Item(4, compteur).Value, Single) > 0) Then list_group_diag.Items.Add(ETgridinput.Item(0, compteur).Value)
+                For compteur = 1 To ETgridinput.RowCount - 2
+                    If (DirectCast(ETgridinput.Item(4, compteur).Value, Single) > 0) Then list_group_diag.Items.Add(ETgridinput.Item(0, compteur).Value)
 
-                    Next
-                End If
-            
+                Next
+            End If
+
 
         End If
     End Sub
@@ -1457,11 +1457,11 @@ Public Class autre
 
     End Sub
 
-  
 
-  
 
-   
+
+
+
 
     Private Sub PictureBox3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox3.Click
         System.Diagnostics.Process.Start(aide & "#smooth1")
@@ -1475,5 +1475,5 @@ Public Class autre
         System.Diagnostics.Process.Start(aide & "#diagnose")
     End Sub
 
-   
+
 End Class
