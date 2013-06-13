@@ -27,7 +27,8 @@ Imports EwEUtils.Core
 
 ''' ===========================================================================
 ''' <summary>
-''' 
+''' The heart of the Ecospace map interfaces. The basemap manages all foundation
+''' Ecospace map layers.
 ''' </summary>
 ''' ===========================================================================
 Public Class cEcospaceBasemap
@@ -191,6 +192,11 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerDriver, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' LayerExclusion
+            meta = New cVariableMetaData()
+            val = New cValue(0, eVarNameFlags.LayerExclusion, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' ----------------
             ' Init layers
             ' ----------------
@@ -242,12 +248,15 @@ Public Class cEcospaceBasemap
             Next
             Me.m_dictLayers(eVarNameFlags.LayerImportance) = llayers.ToArray()
 
-            ' Environmental
+            ' Driver
             llayers.Clear()
             For i As Integer = 1 To ecospaceDS.nEnvironmentalDriverLayers
                 llayers.Add(New cEcospaceLayerDriver(Me.m_core, ecospaceDS.EnvironmentalLayerDBID(i), Me, i))
             Next
             Me.m_dictLayers(eVarNameFlags.LayerDriver) = llayers.ToArray()
+
+            ' Exclusion
+            Me.m_dictLayers(eVarNameFlags.LayerExclusion) = New cEcospaceLayer() {New cEcospaceLayerExclusion(theCore, Me)}
 
             ' Migration
             llayers.Clear()
@@ -685,6 +694,17 @@ Public Class cEcospaceBasemap
     End Property
 
     ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the Ecospace exclusion layer.
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
+    Public ReadOnly Property LayerExclusion() As cEcospaceLayerExclusion
+        Get
+            Return DirectCast(Me.m_dictLayers(eVarNameFlags.LayerExclusion)(0), cEcospaceLayerExclusion)
+        End Get
+    End Property
+
+    ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="IEcospaceLayerManager.Layers"/>
     ''' -----------------------------------------------------------------------
     Public Function Layers(Optional ByVal varName As eVarNameFlags = eVarNameFlags.NotSet) As cEcospaceLayer() _
@@ -756,6 +776,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Port
             Case eVarNameFlags.LayerSail
                 Return Me.m_core.m_EcoSpaceData.Sail
+            Case eVarNameFlags.LayerExclusion
+                Return Me.m_core.m_EcoSpaceData.Excluded
             Case eVarNameFlags.LayerDistribution
                 'jb removed the distribution envelope
                 Return Nothing 'Me.m_core.m_EcoSpaceData.DistributionEnvelope

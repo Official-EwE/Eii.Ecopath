@@ -544,6 +544,8 @@ Namespace Core
         HabAreaProportion
         ''' <summary>Ecospace IBM packets layer.</summary>
         LayerIBMPackets
+        ''' <summary>Ecospace excluded cells layer.</summary>
+        LayerExclusion
         ''' <summary>Total Eff, Muiltiplier.</summary>
         ''' <remarks>Summary taken from EwE5 code, not overly helpful I'm afraid...</remarks>
         SEmult
@@ -2079,6 +2081,7 @@ Namespace Core
         MSYManager = 110
         MSYParameters = 111
 
+        EcospaceLayerExclusion = 112
 
         ''' <summary>
         ''' Data belongs to an external, unspecified source.

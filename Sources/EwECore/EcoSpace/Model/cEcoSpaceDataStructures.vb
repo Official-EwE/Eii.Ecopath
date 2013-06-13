@@ -213,6 +213,7 @@ Public Class cEcospaceDataStructures
     Public DepthY(,) As Single
 
     Public CatchMap(,,) As Single
+    Public Excluded(,) As Boolean
 
     ''' <summary>
     ''' Trophic Level by Row, Col, Group
@@ -1231,7 +1232,7 @@ Public Class cEcospaceDataStructures
 
 
     ''' <summary>
-    ''' Allocate memory for an array with 2 dimensions
+    ''' Allocate memory for an array of singles with 2 dimensions
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,) As Single, ByVal d1 As Integer, ByVal d2 As Integer)
@@ -1252,10 +1253,31 @@ Public Class cEcospaceDataStructures
     End Sub
 
     ''' <summary>
-    ''' Allocate memory for an array of integers with 2 dimensions
+    ''' Allocate memory for an array with 2 dimensions
     ''' </summary>
     ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
     Friend Sub allocate(ByRef array(,) As Integer, ByVal d1 As Integer, ByVal d2 As Integer)
+
+        If array IsNot Nothing Then
+            If array.Length = (d1 + 1) * (d2 + 1) Then
+                System.Array.Clear(array, 0, array.Length)
+                Return
+            End If
+        End If
+
+        'Erase array
+        'array = Nothing
+        'GC.Collect()
+
+        ReDim array(d1, d2)
+
+    End Sub
+
+    ''' <summary>
+    ''' Allocate memory for an array of boolean values with 2 dimensions
+    ''' </summary>
+    ''' <remarks>Do garbage collection on the discarded memory so memory in never allocated twice.</remarks>
+    Friend Sub allocate(ByRef array(,) As Boolean, ByVal d1 As Integer, ByVal d2 As Integer)
 
         If array IsNot Nothing Then
             If array.Length = (d1 + 1) * (d2 + 1) Then
@@ -1325,6 +1347,7 @@ Public Class cEcospaceDataStructures
             Me.allocate(MPA, InRow + 1, InCol + 1)
             Me.allocate(RelPP, InRow + 1, InCol + 1)
             Me.allocate(RelCin, InRow + 1, InCol + 1)
+            Me.allocate(Excluded, InRow + 1, InCol + 1)
 
             Me.allocate(relPP0, InRow + 1, InCol + 1)
 

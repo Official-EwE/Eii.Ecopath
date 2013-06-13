@@ -339,6 +339,20 @@ Namespace Controls.Map
 
                     Next iLayer
 
+                Case eVarNameFlags.LayerExclusion
+
+                    Dim src As cEcospaceLayerExclusion = core.EcospaceBasemap.LayerExclusion
+                    key = New cValueID(src.DataType, src.DBID, eVarNameFlags.Name)
+                    ad = core.AuxillaryData(key)
+
+                    vs = ad.VisualStyle
+                    If (vs Is Nothing) Then vs = New cVisualStyle(ad)
+                    renderer = New cLayerRendererExcluded(vs)
+                    editor = New cLayerEditorTwoState()
+                    layer = New cRasterLayer(uic, src, renderer, editor, src, eVarNameFlags.Name, CSng(True), CSng(False))
+
+                    lLayers.Add(layer)
+
                 Case Else
                     Debug.Assert(False, "No layers available for this varname")
 
@@ -353,7 +367,8 @@ Namespace Controls.Map
             Dim strGroup As String = ""
             Select Case varName
 
-                Case eVarNameFlags.LayerDepth
+                Case eVarNameFlags.LayerDepth, _
+                     eVarNameFlags.LayerExclusion
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_DEPTH
 
                 Case eVarNameFlags.LayerHabitat

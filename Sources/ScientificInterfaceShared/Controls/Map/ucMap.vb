@@ -457,10 +457,10 @@ Namespace Controls.Map
             Dim rl As cRasterLayer = DirectCast(Me.m_layerSelected, cRasterLayer)
 
             rl.Editor.Edit(ptCellFrom, ptCellTo, _
-                                           New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
-                                           Me.GetCellSize(InRow, InCol), _
-                                           e, _
-                                           ptUpdateMin, ptUpdateMax)
+                           New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
+                           Me.GetCellSize(InRow, InCol), _
+                           e, _
+                           ptUpdateMin, ptUpdateMax)
 
             ' Flag layer as changed
             rl.IsModified = True
@@ -510,7 +510,8 @@ Namespace Controls.Map
             Dim g As Graphics = Graphics.FromImage(bmp)
             Dim l As cLayer = Nothing
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
-            Dim ldDepth As cEcospaceLayerDepth = Me.Basemap.LayerDepth()
+            Dim layDepth As cEcospaceLayerDepth = Me.Basemap.LayerDepth()
+            Dim layExcl As cEcospaceLayerExclusion = Me.Basemap.LayerExclusion()
             Dim szCell As SizeF = Me.GetCellSize(InRow, InCol)
             Dim ptCell As Point = Nothing
             Dim rcScreen As Rectangle = Nothing
@@ -525,9 +526,10 @@ Namespace Controls.Map
             Dim iXTo As Integer = Math.Max(p1.X, p2.X)
             Dim iYFrom As Integer = Math.Min(p1.Y, p2.Y)
             Dim iYTo As Integer = Math.Max(p1.Y, p2.Y)
+
             ' Clear and invalidate the area
             rcScreen = New Rectangle(iXFrom, iYFrom, iXTo - iXFrom + CInt(szCell.Width), iYTo - iYFrom + CInt(szCell.Height))
-            g.FillRectangle(New SolidBrush(Me.BackColor), rcScreen)
+            g.FillRectangle(New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MAP_BACKGROUND)), rcScreen)
             Me.Invalidate(rcScreen)
 
             ' Draw surrounding cells as well to avoid anomalies
@@ -553,26 +555,29 @@ Namespace Controls.Map
                             For X As Integer = iXFrom To iXTo
                                 For Y As Integer = iYFrom To iYTo
 
-                                    ptCell = New Point(X, Y)
-                                    Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)
+                                    If Not CBool(layExcl.Cell(Y, X)) Or rl.Data.DataType = eDataTypes.EcospaceLayerExclusion Then
 
-                                    Select Case rl.Data.DataType
-                                        Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort
-                                            bDrawCell = True
-                                        Case Else
-                                            bDrawCell = ldDepth.IsWaterCell(Y, X)
-                                    End Select
+                                        ptCell = New Point(X, Y)
+                                        Dim rcCell As Rectangle = Me.GetCellRect(ptCell, InRow, InCol)
 
-                                    If bDrawCell Then
-                                        Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
-                                        If rl.IsValue(objValue) Then
-                                            ' Build style flags
-                                            style = cStyleGuide.eStyleFlags.OK
-                                            If l.IsSelected Then
-                                                style = (style Or cStyleGuide.eStyleFlags.Highlight)
+                                        Select Case rl.Data.DataType
+                                            Case eDataTypes.EcospaceLayerDepth, eDataTypes.EcospaceLayerPort, eDataTypes.EcospaceLayerExclusion
+                                                bDrawCell = True
+                                            Case Else
+                                                bDrawCell = layDepth.IsWaterCell(Y, X)
+                                        End Select
+
+                                        If bDrawCell Then
+                                            Dim objValue As Object = rl.Value(ptCell.Y, ptCell.X)
+                                            If rl.IsValue(objValue) Then
+                                                ' Build style flags
+                                                style = cStyleGuide.eStyleFlags.OK
+                                                If l.IsSelected Then
+                                                    style = (style Or cStyleGuide.eStyleFlags.Highlight)
+                                                End If
+                                                ' Render cell
+                                                DirectCast(l.Renderer, cRasterLayerRenderer).RenderCell(g, rcCell, rl.Data, objValue, style)
                                             End If
-                                            ' Render cell
-                                            DirectCast(l.Renderer, cRasterLayerRenderer).RenderCell(g, rcCell, rl.Data, objValue, style)
                                         End If
                                     End If
 

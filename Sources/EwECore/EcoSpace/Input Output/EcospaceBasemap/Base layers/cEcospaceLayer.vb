@@ -163,13 +163,17 @@ Public MustInherit Class cEcospaceLayer
         Dim md As cVariableMetaData = Me.MetadataCell
 
         If (md Is Nothing) Then Return True
+        If (md.MinOperator Is Nothing) Or (md.MaxOperator Is Nothing) Then Return True
+
         Try
             sValue = Convert.ToSingle(value)
         Catch ex As Exception
             Return False
         End Try
+
         Return md.MinOperator.Compare(sValue, md.Min) And _
                md.MaxOperator.Compare(sValue, md.Max)
+
     End Function
 
     Protected ReadOnly Property Data() As Object
