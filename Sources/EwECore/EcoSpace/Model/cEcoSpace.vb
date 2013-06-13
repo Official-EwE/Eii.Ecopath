@@ -1168,7 +1168,7 @@ Public Class cEcoSpace
                     m_search.calcBaseYearCost(m_Data.YearNow, m_Data.nWaterCells)
                 End If
 
-                GC.Collect()
+                'GC.Collect()
                 'post notification that a time step has been completed
                 marshallOnTimeStep(itt)
 
@@ -1491,7 +1491,7 @@ Public Class cEcoSpace
             End If
 
             stpTotRun.Stop()
-            'System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            System.Console.WriteLine("Grid wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
 
         Catch ex As Exception
             cLog.Write(ex)
@@ -1508,7 +1508,7 @@ Public Class cEcoSpace
         Dim cpuTime As Single
         Dim etRunTime As Double
 
-        GC.Collect()
+        'GC.Collect()
 
         Array.Clear(Btime, 0, Btime.Length)
         Array.Clear(TotLoss, 0, TotLoss.Length)
@@ -1635,7 +1635,7 @@ Public Class cEcoSpace
 
             stpTotRun.Stop()
             'System.Console.WriteLine("Solver compute time (sec), " & etRunTime.ToString)
-            'System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
+            System.Console.WriteLine("Solver total wall run time (sec), " & stpTotRun.Elapsed.TotalSeconds.ToString)
             'System.Console.WriteLine("Solver CPU time (sec), " & cpuTime.ToString)
             'System.Console.WriteLine("Solver Catch CPU time (sec), " & cpuTimeCatch.ToString)
 
@@ -2239,7 +2239,7 @@ Public Class cEcoSpace
         Try
 
             'redim new stanza stuff
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
+            'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
             'System.Console.WriteLine(GC.CollectionCount(2).ToString)
 
             Me.m_Data.allocate(m_Data.EffortSpace, m_Data.nFleets, m_Data.InRow, m_Data.InCol)
@@ -2299,7 +2299,7 @@ Public Class cEcoSpace
             ReDim Tstanza(m_Data.Nvarsplit)
             ReDim NstanzaBase(m_Data.Nvarsplit)
 
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
+            'GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced)
 
             nEcospaceTimeSteps = CInt(m_Data.TotalTime * (1.0 / m_Data.TimeStep))
             success = success And m_Data.redimTimeStepResults(nEcospaceTimeSteps)
@@ -3742,7 +3742,7 @@ exitline:
 
         Debug.Assert(Me.m_Data.bUseEffortDistThreshold = False, Me.ToString + ".runEffortDistributionNoLoadShare() Called with bUseEffortDistThreshold = True.")
 
-        GC.Collect()
+        'GC.Collect()
 
         Array.Clear(m_Data.Ftot, 0, m_Data.Ftot.Length)
         Array.Clear(m_Data.EffortSpace, 0, m_Data.EffortSpace.Length)
@@ -3835,7 +3835,7 @@ exitline:
         waitOb = Nothing
 
         stpwTotRunTime.Stop()
-        'System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        System.Console.WriteLine("EffortDistribution wall time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
 
         'GC.Collect()
 
@@ -3949,7 +3949,7 @@ exitline:
         waitOb = Nothing
 
         stpwTotRunTime.Stop()
-        ' System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
+        System.Console.WriteLine("EffortDistribution Total run time (sec), " & stpwTotRunTime.Elapsed.TotalSeconds.ToString)
 
         'GC.Collect()
 
@@ -4940,7 +4940,7 @@ exitline:
                 'biomass
                 m_Data.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTimeStep) = Btime(igrp)
                 'relative biomass
-                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp)
+                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / Me.m_EPdata.B(igrp) 'm_Data.BBase(igrp)
 
             Next igrp
 
@@ -5374,6 +5374,7 @@ exitline:
                 solver.TimeStep2 = m_Data.TimeStep / 2
                 solver.MinChange = MinChange
 
+                'solver.bUseLocalMemory = Me.m_Data.bUseLocalMemory
                 'EcoFunction and Lock object used to calculate trophic level 
                 'in calTrophicLevel()
                 solver.EcoFunctions = Me.EcoFunctions
