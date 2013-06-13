@@ -538,6 +538,8 @@ Namespace Core
         LayerSail
         ''' <summary>Ecospace distribution envelope.</summary>
         LayerDistribution
+
+        LayerBiomassForcing
         ''' <summary>Ecospace/MPA importance weight of the weight layer.</summary>
         ImportanceWeight
         ''' <summary>Proportion of total habitat area by Habitat type.</summary>
@@ -2081,11 +2083,13 @@ Namespace Core
         MSYManager = 110
         MSYParameters = 111
 
+        EcospaceLayerBiomassForcing = 107
+
         EcospaceLayerExclusion = 112
 
-        ''' <summary>
-        ''' Data belongs to an external, unspecified source.
-        ''' </summary>
+    ''' <summary>
+    ''' Data belongs to an external, unspecified source.
+    ''' </summary>
         External = 777
 
     End Enum

@@ -192,6 +192,11 @@ Public Class cEcospaceBasemap
             val = New cValue(0, eVarNameFlags.LayerDriver, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
             m_values.Add(val.varName, val)
 
+            ' BiomassForcing
+            meta = New cVariableMetaData(Single.MinValue, Single.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThan), cOperatorManager.getOperator(eOperators.LessThan))
+            val = New cValue(0, eVarNameFlags.LayerBiomassForcing, eStatusFlags.Null, eValueTypes.Sng, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
+            m_values.Add(val.varName, val)
+
             ' LayerExclusion
             meta = New cVariableMetaData()
             val = New cValue(0, eVarNameFlags.LayerExclusion, eStatusFlags.Null, eValueTypes.Bool, meta, m_core.m_validators.getValidator(eVarNameFlags.NotSet))
@@ -225,6 +230,14 @@ Public Class cEcospaceBasemap
                 llayers.Add(New cEcospaceLayerHabitatCapacity(theCore, Me, eDataTypes.EcospaceLayerHabitatCapacityInput, eVarNameFlags.LayerHabitatCapacity, i))
             Next
             Me.m_dictLayers(eVarNameFlags.LayerHabitatCapacity) = llayers.ToArray
+
+            ' Biomass Forcing
+            llayers.Clear()
+            For i As Integer = 1 To ecospaceDS.NGroups
+                llayers.Add(New cEcospaceLayerBiomassForcing(theCore, Me, i))
+            Next
+            Me.m_dictLayers(eVarNameFlags.LayerBiomassForcing) = llayers.ToArray
+
 
             ' MPA layer
             Me.m_dictLayers(eVarNameFlags.LayerMPA) = New cEcospaceLayer() {New cEcospaceLayerMPA(theCore, Me)}
@@ -737,6 +750,7 @@ Public Class cEcospaceBasemap
     ''' -----------------------------------------------------------------------
     Friend Function LayerData(ByVal varName As eVarNameFlags) As Object _
         Implements IEcospaceLayerManager.LayerData
+
         Select Case varName
             Case eVarNameFlags.LayerDepth
                 Return Me.m_core.m_EcoSpaceData.Depth
@@ -776,6 +790,8 @@ Public Class cEcospaceBasemap
                 Return Me.m_core.m_EcoSpaceData.Port
             Case eVarNameFlags.LayerSail
                 Return Me.m_core.m_EcoSpaceData.Sail
+            Case eVarNameFlags.LayerBiomassForcing
+                Return Me.m_core.m_EcoSpaceData.Bcell
             Case eVarNameFlags.LayerExclusion
                 Return Me.m_core.m_EcoSpaceData.Excluded
             Case eVarNameFlags.LayerDistribution
