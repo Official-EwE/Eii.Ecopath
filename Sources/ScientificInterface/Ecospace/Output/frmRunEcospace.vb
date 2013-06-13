@@ -49,7 +49,7 @@ Namespace Ecospace
 
         Private m_FishingMortMax As Single = 2.0
 
-        Public Enum eShowGroupType
+        Public Enum eShowItemType
             ShowAll = 0
             ShowNonHidden
             ShowSingle
@@ -121,8 +121,8 @@ Namespace Ecospace
         Private m_labelposHorz As StringAlignment = StringAlignment.Near
         Private m_labelposVert As StringAlignment = StringAlignment.Near
         Private m_bpConTracing As cBooleanProperty = Nothing
-        Private m_showGroupMode As eShowGroupType = eShowGroupType.ShowAll
-        Private m_iGroupToShow As Integer = 1
+        Private m_showitemMode As eShowItemType = eShowItemType.ShowAll
+        Private m_iItemToShow As Integer = 1
 
         Private m_zgh As cEcospaceZedGraphHelper = Nothing
 
@@ -174,20 +174,13 @@ Namespace Ecospace
 
         Private Sub InitUIParams()
 
-            Dim desc As New cCoreInterfaceFormatter()
-
             Me.m_iTimeStepCur = 0
             Me.m_iTimeStepPrev = 0
 
             'Plot speed 1-slowest 10-fastest
             Me.m_iPlotStepSize = 1
 
-            'Load group combo box
-            Me.m_cmbDisplayGroup.Items.Clear()
-            For i As Integer = 1 To Me.Core.nGroups
-                Me.m_cmbDisplayGroup.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroups(i), eDescriptorTypes.Name))
-            Next i
-            Me.m_cmbDisplayGroup.SelectedIndex = 0
+            RefreshSingleItemDropdown()
 
         End Sub
 
@@ -300,7 +293,7 @@ Namespace Ecospace
             End If
             Me.m_cmbLabelPos.SelectedIndex = 0
 
-            Me.ShowGroupMode = eShowGroupType.ShowAll
+            Me.ShowItemMode = eShowItemType.ShowAll
             Me.IsRunning = Me.Core.StateMonitor.IsEcospaceRunning
 
             Dim nGrps As Integer = Me.Core.nGroups
@@ -416,7 +409,7 @@ Namespace Ecospace
         ''' <param name="cmd"></param>
         ''' -------------------------------------------------------------------
         Private Sub OnDisplayGroupsInvoked(ByVal cmd As cCommand)
-            Me.m_showGroupMode = eShowGroupType.ShowNonHidden
+            Me.m_showitemMode = eShowItemType.ShowNonHidden
             Me.UpdateControls()
             Me.RefreshMap()
         End Sub
@@ -460,12 +453,12 @@ Namespace Ecospace
 
             For iGroup As Integer = 1 To Me.Core.nGroups
 
-                Select Case Me.ShowGroupMode
-                    Case eShowGroupType.ShowAll
+                Select Case Me.ShowItemMode
+                    Case eShowItemType.ShowAll
                         bShowGroup = True
-                    Case eShowGroupType.ShowSingle
-                        bShowGroup = (iGroup = Me.GroupToShow)
-                    Case eShowGroupType.ShowNonHidden
+                    Case eShowItemType.ShowSingle
+                        bShowGroup = (iGroup = Me.ItemToShow)
+                    Case eShowItemType.ShowNonHidden
                         bShowGroup = Me.StyleGuide.GroupVisible(iGroup)
                 End Select
 
@@ -478,16 +471,16 @@ Namespace Ecospace
             ' JS05Mar10: disabled console output to keep moving fast
             'Console.WriteLine("Step {0} = year {1}, month {2} at {3}", Me.m_iTimeStepCur, iYear, iMonth, Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
 
-            Select Case Me.ShowGroupMode
+            Select Case Me.ShowItemMode
 
-                Case eShowGroupType.ShowAll, _
-                     eShowGroupType.ShowNonHidden
+                Case eShowItemType.ShowAll, _
+                     eShowItemType.ShowNonHidden
 
                     ' Note that the user may have hidden all groups!
                     Me.m_iNumGroupPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVisGroups) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
                     Me.m_iNumGroupPlotsVert = CInt(Math.Ceiling(iNumVisGroups / Math.Max(1, Me.m_iNumGroupPlotsHorz)))
 
-                Case eShowGroupType.ShowSingle
+                Case eShowItemType.ShowSingle
                     Me.m_iNumGroupPlotsHorz = 1
                     Me.m_iNumGroupPlotsVert = 1
 
@@ -653,12 +646,18 @@ Namespace Ecospace
 
             If m_iTimeStepCur > 0 Then
 
-                For iFleet As Integer = 1 To Me.Core.nFleets
-                    If Me.StyleGuide.FleetVisible(iFleet) Then
-                        lVizFleets.Add(iFleet)
-                        iNumVizFleets += 1
-                    End If
-                Next
+                If Me.m_showitemMode = eShowItemType.ShowSingle Then
+                    lVizFleets.Add(Me.m_cmbDisplayItem.SelectedIndex() + 1)
+                Else
+                    For iFleet As Integer = 1 To Me.Core.nFleets
+                        If Me.StyleGuide.FleetVisible(iFleet) Then
+                            lVizFleets.Add(iFleet)
+                        End If
+                    Next
+                End If
+                iNumVizFleets = lVizFleets.Count
+
+                If iNumVizFleets = 0 Then Return
 
                 Me.m_iNumFleetPlotsHorz = CInt(Math.Ceiling(Math.Sqrt(iNumVizFleets) * Me.m_iInRow / Me.m_iInCol * Me.m_pbMap.Width / Me.m_pbMap.Height))
                 Me.m_iNumFleetPlotsVert = CInt(Math.Ceiling(iNumVizFleets / Me.m_iNumFleetPlotsHorz))
@@ -700,51 +699,55 @@ Namespace Ecospace
             Dim sTSpy As Single = Me.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear
             Dim iYear As Integer = CInt(Math.Floor(Me.m_iTimeStepCur / sTSpy))
             Dim iMonth As Integer = CInt(cCore.N_MONTHS / sTSpy * (Me.m_iTimeStepCur - (iYear * sTSpy)))
+            Dim excl As cEcospaceLayerExclusion = Me.Core.EcospaceBasemap.LayerExclusion
 
             For i As Integer = 1 To m_iInRow
                 For j As Integer = 1 To m_iInCol
-                    Dim icc As Single
 
-                    'Effort for a single fleet
-                    icc = mapFishing(iFleet, i, j) * cScaler
-                    'Convert to effort per unit of area
-                    'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
+                    If CBool(excl.Cell(i, j)) = False Then
 
-                    'Boundary check
-                    icc = Math.Max(Math.Min(cColourBins, icc), 0)
+                        Dim icc As Single
 
-                    Dim tmpBrush As SolidBrush = Nothing
-                    'If it is water
-                    If CInt(m_layerDepth.Cell(i, j)) > 0 Then
-                        ' #Water
-                        tmpBrush = New SolidBrush(lColors(CInt(icc)))
-                    Else
-                        ' #Land
-                        tmpBrush = New SolidBrush(Color.Gray)
-                    End If
+                        'Effort for a single fleet
+                        icc = mapFishing(iFleet, i, j) * cScaler
+                        'Convert to effort per unit of area
+                        'icc = baseMap(iFleet, i, j) * cScaler / cEcospaceDataStructures.Width(i)
 
-                    Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
-                                            CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
-                                            CSng(rcPos.Width() / m_iInCol), _
-                                            CSng(rcPos.Height() / m_iInRow))
-                    g.FillRectangle(tmpBrush, tmpRect)
-                    tmpBrush.Dispose()
+                        'Boundary check
+                        icc = Math.Max(Math.Min(cColourBins, icc), 0)
 
-                    ' Draw MPA
-                    If Me.m_bShowMPA Then
-                        Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA.Cell(i, j))
-                        ' Is MPA cell?
-                        If iMPA > 0 Then
-                            If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
-                                brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
-                            Else
-                                brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                        Dim tmpBrush As SolidBrush = Nothing
+                        'If it is water
+                        If CInt(m_layerDepth.Cell(i, j)) > 0 Then
+                            ' #Water
+                            tmpBrush = New SolidBrush(lColors(CInt(icc)))
+                        Else
+                            ' #Land
+                            tmpBrush = New SolidBrush(Color.Gray)
+                        End If
+
+                        Dim tmpRect As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / m_iInCol), _
+                                                CSng(rcPos.Top + (i - 1) * rcPos.Height() / m_iInRow), _
+                                                CSng(rcPos.Width() / m_iInCol), _
+                                                CSng(rcPos.Height() / m_iInRow))
+                        g.FillRectangle(tmpBrush, tmpRect)
+                        tmpBrush.Dispose()
+
+                        ' Draw MPA
+                        If Me.m_bShowMPA Then
+                            Dim iMPA As Integer = CInt(Me.Core.EcospaceBasemap.LayerMPA.Cell(i, j))
+                            ' Is MPA cell?
+                            If iMPA > 0 Then
+                                If Me.Core.EcospaceMPAs(iMPA).MPAMonth(iMonth) Then
+                                    brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.LightGray, Color.Transparent)
+                                Else
+                                    brCell = New Drawing2D.HatchBrush(Drawing2D.HatchStyle.DiagonalCross, Color.Black, Color.Transparent)
+                                End If
+                                g.FillRectangle(brCell, tmpRect)
+                                brCell.Dispose()
                             End If
-                            g.FillRectangle(brCell, tmpRect)
-                            brCell.Dispose()
                         End If
                     End If
-
                 Next
             Next
 
@@ -840,6 +843,9 @@ Namespace Ecospace
                     m_rbDisplayContaminantC.CheckedChanged, _
                     m_rbDisplayF.CheckedChanged, m_rbDisplayFOverB.CheckedChanged
 
+            ' To catch premature events
+            If (Me.UIContext Is Nothing) Then Return
+
             If Me.m_rbDisplayRelBiomass.Checked Then
                 Me.m_plottype = ePlotTypes.RelB
             ElseIf Me.m_rbDisplayFishingEffort.Checked Then
@@ -855,6 +861,7 @@ Namespace Ecospace
                 Me.m_plottype = ePlotTypes.FOverB
             End If
 
+            Me.RefreshSingleItemDropdown()
             Me.UpdateControls()
             Me.RefreshPlot()
             Me.RefreshMap()
@@ -867,21 +874,21 @@ Namespace Ecospace
         End Sub
 
         Private Sub m_cbDisplayGroup_GotFocus(ByVal sender As Object, ByVal e As EventArgs) _
-            Handles m_cmbDisplayGroup.GotFocus
-            Me.ShowGroupMode = eShowGroupType.ShowSingle
+            Handles m_cmbDisplayItem.GotFocus
+            Me.ShowItemMode = eShowItemType.ShowSingle
         End Sub
 
         Private Sub OnSelectGroupToShow(ByVal sender As Object, ByVal e As EventArgs) _
-            Handles m_cmbDisplayGroup.SelectedIndexChanged
-            Me.GroupToShow = (Me.m_cmbDisplayGroup.SelectedIndex + 1)
+            Handles m_cmbDisplayItem.SelectedIndexChanged
+            Me.ItemToShow = (Me.m_cmbDisplayItem.SelectedIndex + 1)
         End Sub
 
         Private Sub rbDisplayOption_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) _
                 Handles m_rbShowAll.CheckedChanged, m_rbShowNonHidden.CheckedChanged, m_rbShowSingle.CheckedChanged
 
-            If Me.m_rbShowAll.Checked Then Me.ShowGroupMode = eShowGroupType.ShowAll
-            If Me.m_rbShowNonHidden.Checked Then Me.ShowGroupMode = eShowGroupType.ShowNonHidden
-            If Me.m_rbShowSingle.Checked Then Me.ShowGroupMode = eShowGroupType.ShowSingle
+            If Me.m_rbShowAll.Checked Then Me.ShowItemMode = eShowItemType.ShowAll
+            If Me.m_rbShowNonHidden.Checked Then Me.ShowItemMode = eShowItemType.ShowNonHidden
+            If Me.m_rbShowSingle.Checked Then Me.ShowItemMode = eShowItemType.ShowSingle
             Me.UpdateControls()
 
             Me.RefreshPlot()
@@ -1188,13 +1195,13 @@ Namespace Ecospace
 
 #Region " Internal implementation "
 
-        Private Property ShowGroupMode() As eShowGroupType
+        Private Property ShowItemMode() As eShowItemType
             Get
-                Return Me.m_showGroupMode
+                Return Me.m_showitemMode
             End Get
-            Set(ByVal value As eShowGroupType)
-                If (value <> Me.m_showGroupMode) Then
-                    Me.m_showGroupMode = value
+            Set(ByVal value As eShowItemType)
+                If (value <> Me.m_showitemMode) Then
+                    Me.m_showitemMode = value
                     Me.UpdateControls()
                     Me.RefreshMap()
                     Me.RefreshPlot()
@@ -1202,17 +1209,17 @@ Namespace Ecospace
             End Set
         End Property
 
-        Private Property GroupToShow() As Integer
+        Private Property ItemToShow() As Integer
             Get
-                Return Me.m_iGroupToShow
+                Return Me.m_iItemToShow
             End Get
             Set(ByVal value As Integer)
-                If (value <> Me.m_iGroupToShow) Then
-                    Me.m_iGroupToShow = value
+                If (value <> Me.m_iItemToShow) Then
+                    Me.m_iItemToShow = value
                     Me.RefreshMap()
                     Me.RefreshPlot()
                 End If
-                Me.ShowGroupMode = eShowGroupType.ShowSingle
+                Me.ShowItemMode = eShowItemType.ShowSingle
             End Set
         End Property
 
@@ -1245,12 +1252,12 @@ Namespace Ecospace
             Me.m_rbDisplayContaminantC.Enabled = CBool(Me.m_bpConTracing.GetValue())
             Me.m_rbDisplayCoverB.Enabled = CBool(Me.m_bpConTracing.GetValue())
 
-            Select Case Me.ShowGroupMode
-                Case eShowGroupType.ShowAll
+            Select Case Me.ShowItemMode
+                Case eShowItemType.ShowAll
                     Me.m_rbShowAll.Checked = True
-                Case eShowGroupType.ShowNonHidden
+                Case eShowItemType.ShowNonHidden
                     Me.m_rbShowNonHidden.Checked = True
-                Case eShowGroupType.ShowSingle
+                Case eShowItemType.ShowSingle
                     Me.m_rbShowSingle.Checked = True
             End Select
 
@@ -1277,6 +1284,24 @@ Namespace Ecospace
 
         End Sub
 
+        Private Sub RefreshSingleItemDropdown()
+
+            Dim desc As New cCoreInterfaceFormatter()
+            Me.m_cmbDisplayItem.Items.Clear()
+
+            If (Me.m_plottype <> ePlotTypes.Effort) Then
+                For i As Integer = 1 To Me.Core.nGroups
+                    Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceGroups(i), eDescriptorTypes.Name))
+                Next i
+            Else
+                For i As Integer = 1 To Me.Core.nFleets
+                    Me.m_cmbDisplayItem.Items.Add(desc.GetDescriptor(Me.Core.EcospaceFleets(i), eDescriptorTypes.Name))
+                Next i
+            End If
+            Me.m_cmbDisplayItem.SelectedIndex = 0
+
+        End Sub
+
         Private Sub RefreshMap()
 
             If Me.Core Is Nothing Then Return
@@ -1289,8 +1314,8 @@ Namespace Ecospace
             If Me.Core Is Nothing Then Return
             If (Me.m_zgh IsNot Nothing) Then
 
-                Me.m_zgh.GroupShowMode = Me.ShowGroupMode
-                Me.m_zgh.GroupToShow = Me.GroupToShow
+                Me.m_zgh.ItemShowMode = Me.ShowItemMode
+                Me.m_zgh.ItemToShow = Me.ItemToShow
                 Me.m_zgh.UpdateCurveVisibility()
                 Me.m_zgh.Redraw()
 
@@ -1459,12 +1484,12 @@ Namespace Ecospace
                     Dim strFileSub As String = strFile & "_" & cFileUtils.ToValidFileName(grp.Name, False) & strExt
                     Dim bShowGroup As Boolean = False
 
-                    Select Case Me.ShowGroupMode
-                        Case eShowGroupType.ShowAll
+                    Select Case Me.ShowItemMode
+                        Case eShowItemType.ShowAll
                             bShowGroup = True
-                        Case eShowGroupType.ShowSingle
-                            bShowGroup = (iGroup = Me.GroupToShow)
-                        Case eShowGroupType.ShowNonHidden
+                        Case eShowItemType.ShowSingle
+                            bShowGroup = (iGroup = Me.ItemToShow)
+                        Case eShowItemType.ShowNonHidden
                             bShowGroup = Me.StyleGuide.GroupVisible(iGroup)
                     End Select
 

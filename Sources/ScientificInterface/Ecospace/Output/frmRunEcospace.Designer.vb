@@ -41,9 +41,10 @@ Namespace Ecospace
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmRunEcospace))
             Me.m_btnRun = New System.Windows.Forms.Button()
-            Me.m_cmbDisplayGroup = New System.Windows.Forms.ComboBox()
+            Me.m_cmbDisplayItem = New System.Windows.Forms.ComboBox()
             Me.m_rbShowSingle = New System.Windows.Forms.RadioButton()
             Me.m_rbShowNonHidden = New System.Windows.Forms.RadioButton()
             Me.m_rbShowAll = New System.Windows.Forms.RadioButton()
@@ -107,12 +108,12 @@ Namespace Ecospace
             Me.m_btnRun.Name = "m_btnRun"
             Me.m_btnRun.UseVisualStyleBackColor = True
             '
-            'm_cmbDisplayGroup
+            'm_cmbDisplayItem
             '
-            resources.ApplyResources(Me.m_cmbDisplayGroup, "m_cmbDisplayGroup")
-            Me.m_cmbDisplayGroup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-            Me.m_cmbDisplayGroup.FormattingEnabled = True
-            Me.m_cmbDisplayGroup.Name = "m_cmbDisplayGroup"
+            resources.ApplyResources(Me.m_cmbDisplayItem, "m_cmbDisplayItem")
+            Me.m_cmbDisplayItem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbDisplayItem.FormattingEnabled = True
+            Me.m_cmbDisplayItem.Name = "m_cmbDisplayItem"
             '
             'm_rbShowSingle
             '
@@ -317,7 +318,7 @@ Namespace Ecospace
             Me.m_plDisplayOptions.Controls.Add(Me.m_cbOverlay)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowNonHidden)
             Me.m_plDisplayOptions.Controls.Add(Me.m_rbShowSingle)
-            Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayGroup)
+            Me.m_plDisplayOptions.Controls.Add(Me.m_cmbDisplayItem)
             resources.ApplyResources(Me.m_plDisplayOptions, "m_plDisplayOptions")
             Me.m_plDisplayOptions.Name = "m_plDisplayOptions"
             '
@@ -427,12 +428,12 @@ Namespace Ecospace
             Me.m_zgPlotLarge.ScrollMinY = 0.0R
             Me.m_zgPlotLarge.ScrollMinY2 = 0.0R
             '
-            'RunEcospace
+            'frmRunEcospace
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.Controls.Add(Me.m_scMain)
-            Me.Name = "RunEcospace"
+            Me.Name = "frmRunEcospace"
             Me.TabText = "Run Ecospace"
             CType(Me.m_pbMap, System.ComponentModel.ISupportInitialize).EndInit()
             CType(Me.m_pbColors, System.ComponentModel.ISupportInitialize).EndInit()
@@ -456,7 +457,7 @@ Namespace Ecospace
 
         End Sub
         Private WithEvents m_btnRun As System.Windows.Forms.Button
-        Private WithEvents m_cmbDisplayGroup As System.Windows.Forms.ComboBox
+        Private WithEvents m_cmbDisplayItem As System.Windows.Forms.ComboBox
         Private WithEvents m_rbShowSingle As System.Windows.Forms.RadioButton
         Private WithEvents m_rbShowNonHidden As System.Windows.Forms.RadioButton
         Private WithEvents m_rbShowAll As System.Windows.Forms.RadioButton
