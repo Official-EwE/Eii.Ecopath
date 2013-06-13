@@ -7498,6 +7498,7 @@ Namespace DataSources
                 drow("RelPPMap") = cStringUtils.ArrayToString(asNewMap)
                 drow("RelCinMap") = cStringUtils.ArrayToString(asNewMap)
                 drow("RegionMap") = "" ' Region map empty for new scenario
+                drow("ExclusionMap") = "" ' Exclusion map empty for new scenario
                 drow("CapacityCalType") = eEcospaceCapacityCalType.Capacity
                 drow("PredictEffort") = True
                 writer.AddRow(drow)
@@ -7631,6 +7632,7 @@ Namespace DataSources
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "YVelMap", "")), ecospaceDS.Yvel, ecospaceDS.Depth)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "DepthAMap", "")), ecospaceDS.DepthA, ecospaceDS.Depth)
                     bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "RegionMap", "")), ecospaceDS.Region, ecospaceDS.Depth)
+                    bSucces = bSucces And cStringUtils.StringToArray(CStr(Me.m_db.ReadSafe(reader, "ExclusionMap", "")), ecospaceDS.Excluded)
 
                 End While
 
@@ -7681,6 +7683,7 @@ Namespace DataSources
                 drow("YVelMap") = cStringUtils.ArrayToString(ecospaceDS.Yvel, ecospaceDS.Depth)
                 drow("DepthAMap") = cStringUtils.ArrayToString(ecospaceDS.DepthA, ecospaceDS.Depth)
                 drow("RegionMap") = cStringUtils.ArrayToString(ecospaceDS.Region, ecospaceDS.Depth)
+                drow("ExclusionMap") = cStringUtils.ArrayToString(ecospaceDS.Excluded)
                 drow.EndEdit()
 
                 bSucces = bSucces And Me.m_db.ReleaseWriter(writer)

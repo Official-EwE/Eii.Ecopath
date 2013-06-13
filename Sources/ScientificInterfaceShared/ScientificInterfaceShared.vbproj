@@ -131,6 +131,7 @@
     <Compile Include="Controls\EwEGrid\IEwECell.vb" />
     <Compile Include="Controls\EwEGrid\IPropertyCell.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorSailCost.vb" />
+    <Compile Include="Controls\Map\Layers\Rendering\Raster\cLayerRendererExcluded.vb" />
     <Compile Include="Controls\SysConfig\cSysConfig.vb" />
     <Compile Include="Controls\Toolstrip\cEwEMenustrip.vb">
       <SubType>Component</SubType>

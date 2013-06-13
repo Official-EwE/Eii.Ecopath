@@ -45,6 +45,7 @@ Namespace Ecospace
             Dim FScaler As Single
             Dim maptype As cMapDrawerBase.eMapType = Args.MapType
             Dim RelScaler() As Single = Args.RelMapScaler
+            Dim excl As cEcospaceLayerExclusion = Me.m_core.EcospaceBasemap.LayerExclusion
 
             If maptype = eMapType.FishingMortRate Then
                 FScaler = Me.Colors.Count / Args.FishingMortLegendMax
@@ -52,56 +53,59 @@ Namespace Ecospace
 
             For i As Integer = 1 To Me.InRow
                 For j As Integer = 1 To Me.InCol
-                    Try
-                        Dim sMapValue As Single = 1.0E-20
-                        Dim icc As Single
-                        Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
-                                                                   CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
-                                                                   CSng(rcPos.Width() / Me.InCol), _
-                                                                   CSng(rcPos.Height() / Me.InRow))
-                        Dim brCell As Brush = Nothing
+                    If CBool(excl.Cell(i, j)) = False Then
 
-                        'If it is water
-                        If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
-                            ' Water Cell
-                            sMapValue = Me.Map(i, j, iItem) / RelScaler(iItem)
+                        Try
+                            Dim sMapValue As Single = 1.0E-20
+                            Dim icc As Single
+                            Dim rcfCell As RectangleF = New RectangleF(CSng(rcPos.Left + (j - 1) * rcPos.Width() / Me.InCol), _
+                                                                       CSng(rcPos.Top + (i - 1) * rcPos.Height() / Me.InRow), _
+                                                                       CSng(rcPos.Width() / Me.InCol), _
+                                                                       CSng(rcPos.Height() / Me.InRow))
+                            Dim brCell As Brush = Nothing
 
-                            ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
-                            ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
-                            '              ColorScaling is MaxColorsInGrad / 2
+                            'If it is water
+                            If CInt(m_core.EcospaceBasemap.LayerDepth.Cell(i, j)) > 0 Then
+                                ' Water Cell
+                                sMapValue = Me.Map(i, j, iItem) / RelScaler(iItem)
 
-                            Select Case maptype
-                                Case eMapType.FishingMortRate
-                                    'Only Fishing mort map has its own color binning 
-                                    icc = sMapValue * FScaler
-                                Case Else
-                                    If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
-                                        icc = Me.Colors.Count
-                                    ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
-                                        icc = 1
-                                    Else
-                                        icc = Me.Colors.Count * sMapValue / (sMapValue + 1)
-                                    End If
-                            End Select
+                                ' Old EwE5:    icc = m_ColorNum * 1 / (MapValue + 1)
+                                ' Latest EwE5: icc = MaxColorsInGrad * MapValue / (MaxColorsInGrad / ColorScaling - 1 + MapValue)
+                                '              ColorScaling is MaxColorsInGrad / 2
 
-                            'Boundary check
-                            icc = Math.Max(Math.Min(Me.Colors.Count - 1, icc), 1)
-                            brCell = New SolidBrush(Me.Colors(CInt(icc)))
+                                Select Case maptype
+                                    Case eMapType.FishingMortRate
+                                        'Only Fishing mort map has its own color binning 
+                                        icc = sMapValue * FScaler
+                                    Case Else
+                                        If (sMapValue > 10.0!) Or Single.IsPositiveInfinity(sMapValue) Then
+                                            icc = Me.Colors.Count
+                                        ElseIf (sMapValue < 0.1!) Or Single.IsNegativeInfinity(sMapValue) Or Single.IsNaN(sMapValue) Then
+                                            icc = 1
+                                        Else
+                                            icc = Me.Colors.Count * sMapValue / (sMapValue + 1)
+                                        End If
+                                End Select
 
-                        ElseIf Me.ShowLand Then
-                            ' #Land
-                            brCell = New SolidBrush(Color.Gray)
-                        Else
-                            brCell = New SolidBrush(Color.Transparent)
-                        End If
+                                'Boundary check
+                                icc = Math.Max(Math.Min(Me.Colors.Count - 1, icc), 1)
+                                brCell = New SolidBrush(Me.Colors(CInt(icc)))
 
-                        Me.Graphics.FillRectangle(brCell, rcfCell)
-                        brCell.Dispose()
+                            ElseIf Me.ShowLand Then
+                                ' #Land
+                                brCell = New SolidBrush(Color.Gray)
+                            Else
+                                brCell = New SolidBrush(Color.Transparent)
+                            End If
 
-                    Catch ex As Exception
-                        'Debug.Assert(False, ex.Message)
-                        Exit Sub
-                    End Try
+                            Me.Graphics.FillRectangle(brCell, rcfCell)
+                            brCell.Dispose()
+
+                        Catch ex As Exception
+                            'Debug.Assert(False, ex.Message)
+                            Exit Sub
+                        End Try
+                    End If
 
                 Next
             Next
@@ -131,11 +135,14 @@ Namespace Ecospace
 
                                     Dim sy As Single = StanzaDS.iPacket(isp, iaa, ipkt)
                                     Dim sx As Single = StanzaDS.jPacket(isp, iaa, ipkt)
-                                    Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / Me.InCol), _
-                                                              CSng(rcPos.Top + (sy - 1) * rcPos.Height() / Me.InRow))
-                                    Dim rcF As New RectangleF(ptfCell.X, ptfCell.Y, 1, 1)
 
-                                    Me.Graphics.DrawEllipse(Pens.Black, rcF)
+                                    If CBool(excl.Cell(CInt(Math.Floor(sy)), CInt(Math.Floor(sx)))) = False Then
+                                        Dim ptfCell As New PointF(CSng(rcPos.Left + (sx - 1) * rcPos.Width() / Me.InCol), _
+                                                                      CSng(rcPos.Top + (sy - 1) * rcPos.Height() / Me.InRow))
+                                        Dim rcF As New RectangleF(ptfCell.X, ptfCell.Y, 1, 1)
+
+                                        Me.Graphics.DrawEllipse(Pens.Black, rcF)
+                                    End If
 
                                 Next ipkt
 

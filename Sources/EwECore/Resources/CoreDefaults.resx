@@ -132,6 +132,9 @@
   <data name="CORE_DEFAULT_DEPTH" xml:space="preserve">
     <value>Depth</value>
   </data>
+  <data name="CORE_DEFAULT_EXCLUSION" xml:space="preserve">
+    <value>Excluded cells</value>
+  </data>
   <data name="CORE_DEFAULT_FISHMORTSHAPE" xml:space="preserve">
     <value>Fish Mortality Shape {0}</value>
     <comment>{0} sequential number</comment>
@@ -212,8 +215,5 @@
   </data>
   <data name="SOURCE_CLIPBOARD" xml:space="preserve">
     <value>From clipboard</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
 </root>
