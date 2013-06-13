@@ -48,8 +48,8 @@ Namespace Ecospace
         Private m_nGroups As Integer = 0
         Private m_pane As GraphPane = Nothing
 
-        Private m_showGroupMode As frmRunEcospace.eShowGroupType = frmRunEcospace.eShowGroupType.ShowAll
-        Private m_iGroupToShow As Integer = cCore.NULL_VALUE
+        Private m_showitemMode As frmRunEcospace.eShowItemType = frmRunEcospace.eShowItemType.ShowAll
+        Private m_iItemToShow As Integer = cCore.NULL_VALUE
 
         Public Overrides Sub Attach(ByVal uic As ScientificInterfaceShared.Controls.cUIContext, ByVal zgc As ZedGraph.ZedGraphControl, Optional ByVal iNumPanels As Integer = 1)
             MyBase.Attach(uic, zgc, iNumPanels)
@@ -118,16 +118,16 @@ Namespace Ecospace
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the group show mode. Note that this will not refresh the graph;
+        ''' Get/set the group or fleet show mode. Note that this will not refresh the graph;
         ''' the calling process will have to invoke <see cref="UpdateCurveVisibility">UpdateCurveVisibility</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property GroupShowMode() As frmRunEcospace.eShowGroupType
+        Public Property ItemShowMode() As frmRunEcospace.eShowItemType
             Get
-                Return Me.m_showGroupMode
+                Return Me.m_showitemMode
             End Get
-            Set(ByVal value As frmRunEcospace.eShowGroupType)
-                Me.m_showGroupMode = value
+            Set(ByVal value As frmRunEcospace.eShowItemType)
+                Me.m_showitemMode = value
             End Set
         End Property
 
@@ -137,12 +137,12 @@ Namespace Ecospace
         ''' the calling process will have to invoke <see cref="UpdateCurveVisibility">UpdateCurveVisibility</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property GroupToShow() As Integer
+        Public Property ItemToShow() As Integer
             Get
-                Return Me.m_iGroupToShow
+                Return Me.m_iItemToShow
             End Get
             Set(ByVal value As Integer)
-                Me.m_iGroupToShow = value
+                Me.m_iItemToShow = value
             End Set
         End Property
 
@@ -150,13 +150,13 @@ Namespace Ecospace
 
             Dim info As cCurveInfo = Me.CurveInfo(ci)
 
-            Select Case Me.GroupShowMode
-                Case frmRunEcospace.eShowGroupType.ShowAll
+            Select Case Me.ItemShowMode
+                Case frmRunEcospace.eShowItemType.ShowAll
                     Return True
-                Case frmRunEcospace.eShowGroupType.ShowNonHidden
+                Case frmRunEcospace.eShowItemType.ShowNonHidden
                     Return MyBase.IsCurveVisible(ci)
-                Case frmRunEcospace.eShowGroupType.ShowSingle
-                    Return (info.Index = Me.m_iGroupToShow)
+                Case frmRunEcospace.eShowItemType.ShowSingle
+                    Return (info.Index = Me.m_iItemToShow)
             End Select
 
             Return True
