@@ -28,7 +28,7 @@ Namespace SpatialData
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Data Adapter specific to Capacity layers .
+    ''' Data Adapter specific to Biomass forcing.
     ''' </summary>
     ''' <remarks>
     ''' </remarks>
@@ -41,6 +41,10 @@ Namespace SpatialData
 
         Private m_spaceData As cEcospaceDataStructures
 
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        'Warning this hardwires the scale value
+        'so changing the scale in the interface has no effect
+        'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         '12 grams of carbon per mol 
         '9x for conversion of C to wet weight
         Dim molesm2_to_kgkm2 As Single = 12 * 9
@@ -67,50 +71,6 @@ Namespace SpatialData
 
         End Sub
 
-
-        ' ''' -------------------------------------------------------------------
-        ' ''' <inheritdocs cref="cSpatialScalarDataAdapter.Adapt"/>
-        ' ''' <remarks>
-        ' ''' Called before data from an external source is copied into <see cref="cEcospaceDataStructures.RelPP"/>
-        ' ''' EcoSpace uses an internal scaler to scale PP data to Ecopath levels. <see cref="cEcospaceDataStructures.PPScale"/>
-        ' ''' This is the mean relative PP across all water cells computed from the currently loaded  <see cref="cEcospaceDataStructures.RelPP"/> array.
-        ' ''' <see cref="cSpatialScalarDataAdapter.SetCell"/> will scale external data to a the first timestep or a user defined value.
-        ' ''' </remarks>
-        ' ''' -------------------------------------------------------------------
-        'Protected Friend Overrides Function Adapt(ByVal bm As cEcospaceBasemap, _
-        '                                          ByVal layer As cEcospaceLayer, _
-        '                                          ByVal iTime As Integer, _
-        '                                          ByVal dt As Date, _
-        '                                          ByVal dataExternal As ISpatialRaster) As Boolean
-
-
-
-        '    'Return True
-        '    Return MyBase.Adapt(bm, layer, iTime, dt, dataExternal)
-
-        '    'Dim breturnVal As Boolean
-        '    'Try
-        '    '    '12 grams of carbon per mol 
-        '    '    '9x for conversion of C to wet weight
-        '    '    Dim molesm2_to_kgkm2 As Single = 12 * 9
-        '    '    Dim igrp As Integer = layer.Index
-        '    '    For ir As Integer = 1 To Me.m_spaceData.InRow
-        '    '        For ic As Integer = 1 To Me.m_spaceData.InCol
-        '    '            Me.m_spaceData.Bcell(ir, ic, igrp) = CSng(dataExternal.Cell(ir, ic)) * molesm2_to_kgkm2
-        '    '        Next ic
-        '    '    Next ir
-        '    '    breturnVal = True
-
-        '    'Catch ex As Exception
-        '    '    System.Console.WriteLine("Exception in cBiomassForcingAdapter.Adapt() " + ex.Message)
-        '    '    breturnVal = False
-        '    'End Try
-
-        '    'Return breturnVal
-
-        'End Function
-
-
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cSpatialDataAdapter.SetCell"/>.
         ''' <remarks>Overridden to scale values prior to being set in the 
@@ -120,6 +80,7 @@ Namespace SpatialData
                                              ByVal iRow As Integer, _
                                              ByVal iCol As Integer, _
                                              ByVal sValueAtT As Double) As Boolean
+
             'For now the conversion is fixed at mol to kg
             'If (Me.DataScaleType(layer.Index) = eScaleType.Relative) Then
             '    sValueAtT /= Me.DataScale(layer.Index)
