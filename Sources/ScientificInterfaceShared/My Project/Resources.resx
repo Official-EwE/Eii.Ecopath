@@ -2856,4 +2856,7 @@
   <data name="DATASOURCE_EIIXML" xml:space="preserve">
     <value>*.eiixml|EII mark-up (*.eiixml)||XML formatted EII (*.eiixml)</value>
   </data>
+  <data name="ECOSPACE_LAYERGROUP_BIOMASSFORCING" xml:space="preserve">
+    <value>Biomass forcing</value>
+  </data>
 </root>

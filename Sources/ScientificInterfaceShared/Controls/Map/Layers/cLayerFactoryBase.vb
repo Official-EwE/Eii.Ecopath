@@ -399,6 +399,9 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerDriver
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_ENVDRIVERS
 
+                Case eVarNameFlags.LayerBiomassForcing
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_BIOMASSFORCING
+
             End Select
             Return strGroup
 
