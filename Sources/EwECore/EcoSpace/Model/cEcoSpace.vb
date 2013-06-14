@@ -4940,7 +4940,7 @@ exitline:
                 'biomass
                 m_Data.ResultsByGroup(eSpaceResultsGroups.Biomass, igrp, iTimeStep) = Btime(igrp)
                 'relative biomass
-                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / Me.m_EPdata.B(igrp) 'm_Data.BBase(igrp)
+                m_Data.ResultsByGroup(eSpaceResultsGroups.RelativeBiomass, igrp, iTimeStep) = Btime(igrp) / m_Data.BBase(igrp) ' Me.m_EPdata.B(igrp) ' to use Ecopath base
 
             Next igrp
 
