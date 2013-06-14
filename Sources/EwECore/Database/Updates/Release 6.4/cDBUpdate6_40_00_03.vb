@@ -42,7 +42,7 @@ Friend Class cDBUpdate6_40_00_03
     ''' -----------------------------------------------------------------------
     Public Overrides ReadOnly Property UpdateVersion() As Single
         Get
-            Return 6.400002!
+            Return 6.400003!
         End Get
     End Property
 
