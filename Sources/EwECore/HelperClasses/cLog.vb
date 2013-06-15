@@ -170,11 +170,11 @@ Public Class cLog
     ''' <summary>
     ''' Write a <see cref="cMessage"/> to the log.
     ''' </summary>
-    ''' <param name="message">The <see cref="cMessage"/> to write.</param>
+    ''' <param name="message">The <see cref="IMessage"/> to write.</param>
     ''' <param name="level"><see cref="eVerboseLevel">Verbose level</see>.</param>
     ''' <param name="strMsg">Optional text to add.</param>
     ''' -----------------------------------------------------------------------
-    Public Shared Sub Write(ByVal message As cMessage, _
+    Public Shared Sub Write(ByVal message As IMessage, _
                             ByVal level As eVerboseLevel, _
                             Optional ByVal strMsg As String = "")
         If (level > cLog.m_verboselevel) Then Return
@@ -183,12 +183,12 @@ Public Class cLog
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Write a <see cref="cMessage"/> to the log at <see cref="eVerboseLevel.Standard"/> level.
+    ''' Write a <see cref="IMessage"/> to the log at <see cref="eVerboseLevel.Standard"/> level.
     ''' </summary>
     ''' <param name="message">The <see cref="cMessage"/> to write.</param>
     ''' <param name="strMsg">Optional text to add.</param>
     ''' -----------------------------------------------------------------------
-    Public Shared Sub Write(ByVal message As cMessage, Optional ByVal strMsg As String = "")
+    Public Shared Sub Write(ByVal message As IMessage, Optional ByVal strMsg As String = "")
 
         If Not AcquireWriterLock() Then Return
 
