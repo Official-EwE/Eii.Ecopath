@@ -602,6 +602,8 @@ Namespace Other
             Dim ci As cColorItem = Me.SelectedColor()
             Dim selClr As cKnownColorItem = DirectCast(Me.m_cmbItemForeground.SelectedItem, cKnownColorItem)
 
+            If ci Is Nothing Then Return
+
             If ci.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet Then
                 Me.UpdateForeColor(ci, selClr.Color)
             End If
@@ -617,6 +619,8 @@ Namespace Other
 
             Dim ci As cColorItem = Me.SelectedColor()
             Dim selClr As cKnownColorItem = DirectCast(Me.m_cmbItemBackground.SelectedItem, cKnownColorItem)
+
+            If (ci Is Nothing) Then Return
 
             If ci.BackColorType <> cStyleGuide.eApplicationColorType.NotSet Then
                 Me.UpdateBackColor(ci, selClr.Color)

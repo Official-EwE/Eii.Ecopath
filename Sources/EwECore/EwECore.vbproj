@@ -193,7 +193,6 @@
     <Compile Include="FitToTimeSeries\Input Output\cF2TSResults.vb" />
     <Compile Include="FitToTimeSeries\Model\cF2TSDataStructures.vb" />
     <Compile Include="FitToTimeSeries\Model\cF2TSModel.vb" />
-    <Compile Include="HelperClasses\cXMLLogWriter.vb" />
     <Compile Include="EcoSpace\Input Output\EcospaceBasemap\Base layers\cEcospaceLayer.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceFleet.vb" />
     <Compile Include="EcoSpace\Input Output\cEcospaceFleetOutput.vb" />
@@ -242,7 +241,6 @@
     <Compile Include="Shapes\cShapeData.vb" />
     <Compile Include="Shapes\Forcing Functions\ShapeManagers.vb" />
     <Compile Include="Shapes\Forcing Functions\Shapes.vb" />
-    <Compile Include="HelperClasses\cLog.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

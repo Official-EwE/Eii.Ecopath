@@ -893,8 +893,7 @@ Namespace Controls
                 If bRescale Then Me.RescaleAndRedraw(iPane) Else Me.Redraw()
 
             Catch ex As Exception
-                EwECore.cLog.Write(ex)
-                Throw New ApplicationException(Me.ToString & ".PlotLines() " & ex.Message, ex)
+                cLog.Write(ex)
             End Try
         End Sub
 

@@ -17,6 +17,7 @@
 '
 
 Option Strict On
+Imports EwEUtils.Core
 
 ''' <summary>
 ''' Class that holds and manages all time series-related data in the EwE core.
@@ -100,7 +101,7 @@ Public Class cTimeSeriesDataStructures
     Public DatPool() As Integer
     ''' <summary>Weight type for each applied time series.</summary>
     Public WtType() As Single
-     ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
+    ''' <summary>Annual values for each applied time series, indexed as (iYear, iSeries).</summary>
     Public DatVal(,) As Single
     ''' <summary>Start year for each applied time series.</summary>
     Public DatYear() As Integer

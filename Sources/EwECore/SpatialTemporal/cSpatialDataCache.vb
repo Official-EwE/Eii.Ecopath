@@ -21,6 +21,7 @@
 Option Strict On
 Imports System.Drawing
 Imports System.IO
+Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities

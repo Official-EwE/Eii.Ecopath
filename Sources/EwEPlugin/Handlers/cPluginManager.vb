@@ -363,6 +363,7 @@ Public Class cPluginManager
                     Try
                         RaiseEvent AssemblyUpdating(strPluginName, eAutoUpdateTypes.Checking, sProgress)
                     Catch ex As Exception
+                        cLog.Write(ex, eVerboseLevel.Standard, "cPluginManager.UpdatePlugIns::AssemblyUpdating")
                     End Try
 
                     ' Check for update type
@@ -412,7 +413,7 @@ Public Class cPluginManager
                     Try
                         RaiseEvent AssemblyUpdated(strPluginName, result)
                     Catch ex As Exception
-
+                        cLog.Write(ex, eVerboseLevel.Standard, "cPluginManager.UpdatePlugIns::AssemblyUpdated")
                     End Try
                 End If
             Next
@@ -422,6 +423,7 @@ Public Class cPluginManager
 
         Catch ex As Exception
             ' Kaboom
+            cLog.Write(ex, eVerboseLevel.Standard, "cPluginManager.UpdatePlugIns " & strPluginPath)
             Return eAutoUpdateResultTypes.Error_Generic
         End Try
 
@@ -464,10 +466,12 @@ Public Class cPluginManager
             strPluginPath = Path.GetDirectoryName(pluginAssembly.Location)
         End If
 
-        If Not Directory.Exists(strPluginPath) Then Return
+        If Not Directory.Exists(strPluginPath) Then
+            cLog.Write("Plugin directory does not exist: " & strPluginPath, eVerboseLevel.Detailed)
+            Return
+        End If
 
         Try
-
             di = New DirectoryInfo(strPluginPath)
             'jb added "*.dll" to only get files that could contain a Plugin. Assemblies in an exe could contain a plugin but we won't go there
             afi = di.GetFiles("*.dll", [option])
@@ -482,10 +486,12 @@ Public Class cPluginManager
                     Me.LoadPluginAssembly(fi.FullName, bLoadPlugin)
                 Catch ex As Exception
                     ' Ignore this
+                    cLog.Write(ex, eVerboseLevel.Detailed, "cPluginManager.LoadPlugins " & fi.FullName)
                 End Try
             Next
         Catch ex As Exception
             ' Kaboom
+            cLog.Write(ex, eVerboseLevel.Standard, "cPluginManager.LoadPlugins@" & strPluginPath)
         End Try
 
     End Sub
@@ -549,6 +555,7 @@ Public Class cPluginManager
                                 Console.WriteLine("PluginManager: assembly '{0}' contained a plug-in with invalid or duplicate name {1}. {2}", strFileName, ip.Name, ex.Message)
                                 Debug.Assert(False)
 #End If
+                                cLog.Write(ex, eVerboseLevel.Standard, "LoadPluginAssembly " & strFileName)
                             End Try
 
                             ' Is assembly compatible to run?
@@ -566,6 +573,7 @@ Public Class cPluginManager
                                         Console.WriteLine("PluginManager: file '{0}' failed to initialize, {1}", strFileName, ex.Message)
                                         Debug.Assert(False)
 #End If
+                                        cLog.Write(ex, eVerboseLevel.Standard, "Initialize plugin " & strFileName)
                                     End Try
                                 End If
 
@@ -581,6 +589,7 @@ Public Class cPluginManager
                                             Console.WriteLine("PluginManager: file '{0}' failed to accept UI context, {1}", strFileName, ex.Message)
                                             Debug.Assert(False)
 #End If
+                                            cLog.Write(ex, eVerboseLevel.Standard, "UIContext plugin " & strFileName)
                                         End Try
                                     End If
                                 End If
@@ -615,6 +624,8 @@ Public Class cPluginManager
                 ' Inform the world
                 RaiseEvent AssemblyAdded(plugAssem)
 
+            Else
+                cLog.Write("LoadPlugin " & strFileName & " is not recognized as a valid plug-in", eVerboseLevel.Detailed)
             End If
 
         Catch exRefl As System.Reflection.ReflectionTypeLoadException
@@ -624,42 +635,28 @@ Public Class cPluginManager
             ' current assembly file set. Since type detection has failed it cannot be determined
             ' whether the assembly is actually a plug-in or any other file.
 
+            cLog.Write(exRefl, eVerboseLevel.Detailed, "LoadPlugin " & strFileName)
+
             ' JS 29nov08: only assert when this is a confirmed plug-in assembly.
             '             (which will very likely not be the case since the manager could not access 
             '             the Types contained within the assembly)
             If bHasPlugins Then
-
-#If VERBOSE = 1 Then
-                ' the ReflectionTypeLoadException is for diagnosing problems when the loader throwing an exception
-                System.Console.WriteLine(Me.ToString & ".LoadPluginAssembly()")
-                ' what the hell happend
-                For Each ex As Exception In exRefl.LoaderExceptions
-                    System.Console.WriteLine(ex.Message)
-                Next
-#End If
                 Me.RaisePluginException(plugAssem, exRefl)
                 Debug.Assert(False, Me.ToString & ".LoadPluginAssembly() " & strFileName & ": " & exRefl.Message)
-            Else
-#If VERBOSE = 1 Then
-                Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, exRefl.Message)
-#End If
             End If
 
         Catch exBadImg As BadImageFormatException
 
             ' Assessed a DLL that did not contain IPlugin. Be quiet about it
-#If VERBOSE = 1 Then
-            Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, exBadImg.Message)
-#End If
+            cLog.Write(exBadImg, eVerboseLevel.Detailed, "LoadPlugin " & strFileName)
 
         Catch ex As Exception
 
-            'catch any generic exceptions
+            cLog.Write(ex, eVerboseLevel.Detailed, "LoadPlugin " & strFileName)
+
+            ' catch any generic exceptions
             Me.RaisePluginException(plugAssem, ex)
 
-#If VERBOSE = 1 Then
-            Console.WriteLine("PluginManager: file '{0}' threw {1}", strFileName, ex.Message)
-#End If
         End Try
 
         Return bHasPlugins
@@ -694,11 +691,13 @@ Public Class cPluginManager
                 Try
                     DirectCast(ipc.Plugin, IDisposedPlugin).Dispose()
                 Catch ex As Exception
+                    cLog.Write(ex, "cPluginManager.UnloadPluginAssembly " & ipc.Plugin.Name)
                     Me.RaisePluginException(ipc.Assembly, ipc.Plugin, "Dispose", ex)
                 End Try
             Next
 
         Catch ex As Exception
+            cLog.Write(ex, "cPluginManager.UnloadPluginAssembly")
             Return False
         End Try
 

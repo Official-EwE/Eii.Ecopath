@@ -20,9 +20,8 @@
 
 Option Strict On
 Imports EwECore
-Imports System.IO
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
-Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
 

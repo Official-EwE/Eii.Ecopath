@@ -18,6 +18,7 @@
 
 Imports System
 Imports System.Threading
+Imports EwEUtils.Core
 
 Public Class cIBMSolver
 
@@ -47,7 +48,7 @@ Public Class cIBMSolver
     Public m_Data As cEcospaceDataStructures
     Public m_ESData As cEcosimDatastructures
     Public m_Stanza As cStanzaDatastructures
-    Public m_Ecosim As EcoSim.cEcoSimModel
+    Public m_Ecosim As Ecosim.cEcoSimModel
 
     Public Bcw(,,) As Single
     Public C(,,) As Single

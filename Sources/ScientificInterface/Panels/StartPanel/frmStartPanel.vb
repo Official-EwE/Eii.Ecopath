@@ -20,11 +20,10 @@
 
 Option Strict On
 
-Imports System.IO
 Imports System.Reflection
-Imports EwECore
-Imports EwEUtils.Utilities
 Imports EwEPlugin
+Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 

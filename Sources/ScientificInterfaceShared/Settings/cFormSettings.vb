@@ -25,6 +25,7 @@ Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Forms
 Imports WeifenLuo.WinFormsUI
+Imports EwEUtils.Core
 
 #End Region ' Imports
 

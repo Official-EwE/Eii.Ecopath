@@ -22,12 +22,12 @@ Option Explicit On
 Option Strict On
 
 Imports EwECore
-Imports ZedGraph
-Imports System.Windows.Forms
+Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
+Imports ZedGraph
 
-#End Region
+#End Region ' Imports
 
 Public Class dlgDefineMapResponseAssignments
 
@@ -116,7 +116,6 @@ Public Class dlgDefineMapResponseAssignments
         Catch ex As Exception
             Debug.Assert(False, Me.ToString & ".OnLoad() Exception: " & ex.Message)
             cLog.Write(ex)
-            Throw New Exception(ex.Message)
         End Try
 
     End Sub
