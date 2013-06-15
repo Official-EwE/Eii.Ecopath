@@ -1280,7 +1280,7 @@ Public Class autre
             End If
             Cursor.Current = Cursors.Default
         Catch ex As Exception
-            cLog.Write(ex.Message, "Ecotroph::Button7-Click")
+            cLog.Write(ex, "Ecotroph::Button7-Click")
             MessageBox.Show(My.Resources.ERROR_NO_WS)
         End Try
 
@@ -1396,7 +1396,7 @@ Public Class autre
             Button4.Enabled = True
 
         Catch Ex As Exception
-            cLog.Write(Ex.Message, "Ecotroph::models_list")
+            cLog.Write(Ex, "Ecotroph::models_list")
             MessageBox.Show(My.Resources.NO_MODEL_DATA & Ex.Message)
         Finally
             ' Check this again, since we need to make sure we didn't throw an exception on open.
