@@ -19,6 +19,7 @@
 Option Strict On
 Imports System
 Imports System.Threading
+Imports EwEUtils.Core
 
 Public Class cGridSolver
 

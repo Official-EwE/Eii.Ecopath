@@ -21,10 +21,8 @@
 Option Strict On
 
 Imports System.Math
+Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities
-Imports ScientificInterfaceShared.Style
-Imports EwECore
-Imports System.Text
 
 #End Region ' Imports
 

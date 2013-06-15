@@ -21,6 +21,7 @@
 Option Strict On
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -92,7 +93,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="target">The windows control to attach the hover menu
         ''' to.</param>
-         ''' -------------------------------------------------------------------
+        ''' -------------------------------------------------------------------
         Public Sub Attach(ByVal target As Control)
 
             Me.Detach()
@@ -261,7 +262,7 @@ Namespace Controls
         ''' Button callback handler.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnItemClicked(ByVal sender As System.Object, ByVal e As System.EventArgs) 
+        Private Sub OnItemClicked(ByVal sender As System.Object, ByVal e As System.EventArgs)
             Try
                 Me.InvokeCallback(DirectCast(sender, ToolStripItem).Tag)
             Catch ex As Exception

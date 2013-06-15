@@ -24,6 +24,7 @@ Option Strict On
 Imports System.IO
 Imports WeifenLuo.WinFormsUI
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region
 

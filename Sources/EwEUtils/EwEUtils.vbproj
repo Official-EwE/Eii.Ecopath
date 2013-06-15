@@ -142,6 +142,7 @@
     <Compile Include="Database\IModelImporter.vb" />
     <Compile Include="Interop\cRBridge.vb" />
     <Compile Include="Interop\cExcelBridge.vb" />
+    <Compile Include="Logging\cXMLLogWriter.vb" />
     <Compile Include="System\cXMLINIFile.vb" />
     <Compile Include="Database\cEwEDatabase.vb" />
     <Compile Include="Spatial\ISpatialRaster.vb" />
@@ -175,6 +176,7 @@
     <Compile Include="Utilities\cFileUtils.vb" />
     <Compile Include="Utilities\cDrawingUtils.vb" />
     <Compile Include="Utilities\cFuzzySearch.vb" />
+    <Compile Include="Logging\cLog.vb" />
     <Compile Include="Utilities\cNumberUtils.vb" />
     <Compile Include="Utilities\cRegistryUtils.vb" />
     <Compile Include="Utilities\cResourceUtils.vb" />

@@ -16,12 +16,16 @@
 ' ===============================================================================
 '
 
+#Region " Imports "
+
 Option Strict On
-Imports EwECore
-Imports ScientificInterface.Other
-Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
+Imports EwECore
+Imports EwEUtils.Core
+Imports SharedResources = ScientificInterfaceShared.My.Resources
+
+#End Region ' Imports
 
 Namespace Ecosim
 

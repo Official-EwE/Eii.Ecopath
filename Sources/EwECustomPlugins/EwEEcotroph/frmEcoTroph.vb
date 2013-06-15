@@ -25,6 +25,7 @@ Imports EcoTroph.Eco_services
 Imports EcoTroph.newET
 Imports EwEUtils.Utilities
 Imports EwECore
+Imports EwEUtils.Core
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32

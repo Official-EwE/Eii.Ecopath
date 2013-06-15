@@ -16,8 +16,8 @@
 ' ===============================================================================
 '
 
-Imports EwEUtils
-Imports EwECore
+Option Strict On
+Imports EwEUtils.Core
 
 Public Class dlgConfig
     Implements IUIElement

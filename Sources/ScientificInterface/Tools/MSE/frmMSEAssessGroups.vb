@@ -107,7 +107,7 @@ Public Class frmMSEAssessGroups
                 Me.m_blocks.Refresh()
             End If
         Catch ex As Exception
-            EwECore.cLog.Write(ex)
+            cLog.Write(ex)
         End Try
 
     End Sub

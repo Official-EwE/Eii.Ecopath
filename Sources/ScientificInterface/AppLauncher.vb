@@ -218,6 +218,7 @@ Public Class AppLauncher
 
         Debug.Assert(AppLauncher.__inst__ Is Nothing, "Only one instance of AppLauncher allowed")
         AppLauncher.__inst__ = Me
+        cLog.VerboseLevel = DirectCast(My.Settings.LogVerboseLevel, eVerboseLevel)
 
     End Sub
 

@@ -23,11 +23,12 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Controls
 Imports ScientificInterfaceShared.Style
-Imports ZedGraph
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ZedGraph
 
 #End Region ' Imports
 
