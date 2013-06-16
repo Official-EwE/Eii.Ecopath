@@ -68,6 +68,7 @@ Partial Public Class AppLauncher
         Me.m_tsmiEcospaceEditMap = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineHabitats = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineMPAs = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiEcospaceDefineRegions = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceDefineImportanceMaps = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiEcospaceInputMaps = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tssEcospace4 = New System.Windows.Forms.ToolStripSeparator()
@@ -77,8 +78,11 @@ Partial Public Class AppLauncher
         Me.m_tsmiHelpIndex = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpSearch = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpReportIssue = New System.Windows.Forms.ToolStripMenuItem()
-        Me.m_tsmiForums = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpViewReports = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiViewLog = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpViewMainSite = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpViewForums = New System.Windows.Forms.ToolStripMenuItem()
+        Me.m_tsmiHelpViewFacebook = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuWindows = New System.Windows.Forms.ToolStripMenuItem()
         Me.m_tsmiWindowsClose = New System.Windows.Forms.ToolStripMenuItem()
@@ -143,7 +147,6 @@ Partial Public Class AppLauncher
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnAutosaveResults = New System.Windows.Forms.ToolStripButton()
         Me.m_ssMain = New ScientificInterface.cEwEStatusBar()
-        Me.m_tsmiEcospaceDefineRegions = New System.Windows.Forms.ToolStripMenuItem()
         m_tssHelp2 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile1 = New System.Windows.Forms.ToolStripSeparator()
         m_tssFile2 = New System.Windows.Forms.ToolStripSeparator()
@@ -287,6 +290,11 @@ Partial Public Class AppLauncher
         Me.m_tsmiEcospaceDefineMPAs.Name = "m_tsmiEcospaceDefineMPAs"
         resources.ApplyResources(Me.m_tsmiEcospaceDefineMPAs, "m_tsmiEcospaceDefineMPAs")
         '
+        'm_tsmiEcospaceDefineRegions
+        '
+        Me.m_tsmiEcospaceDefineRegions.Name = "m_tsmiEcospaceDefineRegions"
+        resources.ApplyResources(Me.m_tsmiEcospaceDefineRegions, "m_tsmiEcospaceDefineRegions")
+        '
         'm_tsmiEcospaceDefineImportanceMaps
         '
         Me.m_tsmiEcospaceDefineImportanceMaps.Name = "m_tsmiEcospaceDefineImportanceMaps"
@@ -334,7 +342,7 @@ Partial Public Class AppLauncher
         '
         'MenuHelp
         '
-        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpReportIssue, Me.m_tsmiForums, m_tssHelp2, Me.m_tsmiViewLog, m_tssHelp3, Me.m_tsmiHelpAbout})
+        Me.MenuHelp.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsmiHelpContents, Me.m_tsmiHelpIndex, Me.m_tsmiHelpSearch, m_tssHelp1, Me.m_tsmiHelpViewMainSite, Me.m_tsmiHelpViewForums, Me.m_tsmiHelpViewFacebook, m_tssHelp3, Me.m_tsmiHelpViewReports, Me.m_tsmiHelpReportIssue, Me.m_tsmiViewLog, m_tssHelp2, Me.m_tsmiHelpAbout})
         Me.MenuHelp.Name = "MenuHelp"
         resources.ApplyResources(Me.MenuHelp, "MenuHelp")
         '
@@ -353,15 +361,30 @@ Partial Public Class AppLauncher
         Me.m_tsmiHelpReportIssue.Name = "m_tsmiHelpReportIssue"
         resources.ApplyResources(Me.m_tsmiHelpReportIssue, "m_tsmiHelpReportIssue")
         '
-        'm_tsmiForums
+        'm_tsmiHelpViewReports
         '
-        Me.m_tsmiForums.Name = "m_tsmiForums"
-        resources.ApplyResources(Me.m_tsmiForums, "m_tsmiForums")
+        Me.m_tsmiHelpViewReports.Name = "m_tsmiHelpViewReports"
+        resources.ApplyResources(Me.m_tsmiHelpViewReports, "m_tsmiHelpViewReports")
         '
         'm_tsmiViewLog
         '
         Me.m_tsmiViewLog.Name = "m_tsmiViewLog"
         resources.ApplyResources(Me.m_tsmiViewLog, "m_tsmiViewLog")
+        '
+        'm_tsmiHelpViewMainSite
+        '
+        Me.m_tsmiHelpViewMainSite.Name = "m_tsmiHelpViewMainSite"
+        resources.ApplyResources(Me.m_tsmiHelpViewMainSite, "m_tsmiHelpViewMainSite")
+        '
+        'm_tsmiHelpViewForums
+        '
+        Me.m_tsmiHelpViewForums.Name = "m_tsmiHelpViewForums"
+        resources.ApplyResources(Me.m_tsmiHelpViewForums, "m_tsmiHelpViewForums")
+        '
+        'm_tsmiHelpViewFacebook
+        '
+        Me.m_tsmiHelpViewFacebook.Name = "m_tsmiHelpViewFacebook"
+        resources.ApplyResources(Me.m_tsmiHelpViewFacebook, "m_tsmiHelpViewFacebook")
         '
         'm_tsmiHelpAbout
         '
@@ -714,11 +737,6 @@ Partial Public Class AppLauncher
         Me.m_ssMain.Name = "m_ssMain"
         Me.m_ssMain.ShowItemToolTips = True
         '
-        'm_tsmiEcospaceDefineRegions
-        '
-        Me.m_tsmiEcospaceDefineRegions.Name = "m_tsmiEcospaceDefineRegions"
-        resources.ApplyResources(Me.m_tsmiEcospaceDefineRegions, "m_tsmiEcospaceDefineRegions")
-        '
         'AppLauncher
         '
         Me.AllowDrop = True
@@ -811,7 +829,7 @@ Partial Public Class AppLauncher
     Private WithEvents m_tsmiPresentation As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiViewMenu As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents m_tsmiForums As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpViewForums As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiPrint As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator4 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsmiEcospaceInputMaps As System.Windows.Forms.ToolStripMenuItem
@@ -825,6 +843,9 @@ Partial Public Class AppLauncher
     Private WithEvents m_tsbnBeta As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsmiViewLog As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents m_tsmiEcospaceDefineRegions As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpViewReports As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpViewFacebook As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents m_tsmiHelpViewMainSite As System.Windows.Forms.ToolStripMenuItem
 
 End Class
 

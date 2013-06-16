@@ -26,6 +26,9 @@ Imports EwEUtils.Core
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Forms
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports ScientificInterfaceShared.Commands
+Imports ScientificInterfaceShared
+Imports EwEUtils.Commands
 
 #End Region ' Imports
 
@@ -35,12 +38,6 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 ''' </summary>
 ''' ===========================================================================
 Public Class frmStartPanel
-
-#Region " Private vars "
-
-    Private Const cBASEURL As String = "http://www.ecopath.org/nonewe/eweexe/index.php"
-
-#End Region ' Private vars
 
 #Region " Constructor "
 
@@ -77,14 +74,13 @@ Public Class frmStartPanel
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
-            Return Me.EwEBaseURL()
+            Return ""
         End Get
         Set(ByVal strURL As String)
-            If String.IsNullOrEmpty(strURL) Then
-                strURL = Me.EwEBaseURL()
-            End If
             Try
-                Me.m_browser.Navigate(strURL)
+                If Not String.IsNullOrWhiteSpace(strURL) Then
+                    Me.m_browser.Navigate(strURL)
+                End If
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
@@ -97,6 +93,13 @@ Public Class frmStartPanel
 
     Protected Overrides Sub OnLoad(ByVal e As System.EventArgs)
         MyBase.OnLoad(e)
+
+        Me.m_tsbnStartPage.Image = SharedResources.HomeHS
+        Me.m_tsbnBack.Image = SharedResources.Back
+        Me.m_tsbnForward.Image = SharedResources.forward
+        Me.m_tsbnRefresh.Image = SharedResources.Refresh
+        Me.m_tsbnEcopathSite.Image = SharedResources.Ecopath_32x32
+        Me.m_tsbnBugTracker.Image = SharedResources.bug
 
         AddHandler Me.m_browser.CanGoBackChanged, AddressOf OnUpdateNav
         AddHandler Me.m_browser.CanGoForwardChanged, AddressOf OnUpdateNav
@@ -151,10 +154,10 @@ Public Class frmStartPanel
         End Try
     End Sub
 
-    Private Sub OnBrowserHome(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-        Handles m_tsbnHome.Click
+    Private Sub OnBrowserStart(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles m_tsbnStartPage.Click
         Try
-            Me.m_browser.Navigate(Me.EwEBaseURL)
+            Me.Browse(cWebLinks.eLinkType.Start)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -163,7 +166,7 @@ Public Class frmStartPanel
     Private Sub OnBrowserFacebook(sender As System.Object, e As System.EventArgs) _
         Handles m_tsbnFacebook.Click
         Try
-            Me.m_browser.Navigate("http://www.facebook.com/eweconsortium")
+            Me.Browse(cWebLinks.eLinkType.Facebook)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -181,7 +184,23 @@ Public Class frmStartPanel
     Private Sub OnViewRSS(ByVal sender As System.Object, ByVal e As System.EventArgs) _
         Handles m_tsbnRSS.Click
         Try
-            Me.m_browser.Navigate("http://www.ecopath.org/aggregator/categories/1")
+            Me.Browse(cWebLinks.eLinkType.HomeRSS)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+    Private Sub m_tsbnEcopathSite_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnEcopathSite.Click
+        Try
+            Me.Browse(cWebLinks.eLinkType.Home)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
+
+    Private Sub m_tsbnBugTracker_Click(sender As System.Object, e As System.EventArgs) Handles m_tsbnBugTracker.Click
+        Try
+            Me.Browse(cWebLinks.eLinkType.Trac)
         Catch ex As Exception
             cLog.Write(ex)
         End Try
@@ -210,33 +229,18 @@ Public Class frmStartPanel
 
     End Sub
 
-    ''' -----------------------------------------------------------------------
-    ''' <summary>
-    ''' Conjure the EwE base URL for invoking the EwE start page, including
-    ''' version check.
-    ''' </summary>
-    ''' <returns></returns>
-    ''' -----------------------------------------------------------------------
-    Private Function EwEBaseURL() As String
+    Protected Sub Browse(link As cWebLinks.eLinkType)
 
-        Dim aAssemblyNames As AssemblyName() = cAssemblyUtils.GetSummary()
-        Dim pm As cPluginManager = Me.Core.PluginManager
-        Dim ub As New UrlBuilder(cBASEURL)
+        If (Me.UIContext Is Nothing) Then Return
 
-        For Each an As AssemblyName In aAssemblyNames
-            If Not ub.QueryString.ContainsKey(an.Name) Then ub.QueryString(an.Name) = an.Version.ToString
-        Next an
+        Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
+        Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
 
-        If (Not Object.ReferenceEquals(pm, Nothing)) Then
-            aAssemblyNames = pm.PluginAssemblyNames
-            For Each an As AssemblyName In aAssemblyNames
-                If Not ub.QueryString.ContainsKey(an.Name) Then ub.QueryString(an.Name) = an.Version.ToString
-            Next an
-        End If
+        If (cmd Is Nothing) Then Return
 
-        Return ub.ToString()
+        cmd.Invoke(link)
 
-    End Function
+    End Sub
 
 #End Region ' Internals
 

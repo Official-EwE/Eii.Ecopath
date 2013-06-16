@@ -2906,16 +2906,17 @@ Public Class AppLauncher
 
         Dim panel As frmStartPanel = DirectCast(Me.Panel(cPANEL_START), frmStartPanel)
         Dim bcmd As cBrowserCommand = DirectCast(cmd, cBrowserCommand)
+        Dim strURL As String = bcmd.URL(New cWebLinks(Me.Core))
 
         ' Not a hyperlink?
-        If cStringUtils.BeginsWith(bcmd.URL, "http:", True) Then
-            If Not cmd.Checked Or Not String.IsNullOrEmpty(bcmd.URL) Then
+        If cStringUtils.BeginsWith(strURL, "http:", True) Then
+            If Not cmd.Checked Or Not String.IsNullOrEmpty(strURL) Then
                 If panel.IsDisposed() Then
                     panel = New frmStartPanel(Me.UIContext)
                     Me.m_dtPanels(cPANEL_START) = panel
                 End If
                 panel.Show(Me.m_DockPanel, DockState.Document)
-                panel.URL = bcmd.URL
+                panel.URL = strURL
             Else
                 If Not panel.IsDisposed Then
                     panel.Close()
@@ -2924,7 +2925,7 @@ Public Class AppLauncher
         Else
             Try
                 ' Launch folder via Explorer
-                Process.Start("explorer.exe", bcmd.URL)
+                Process.Start("explorer.exe", strURL)
             Catch ex As Exception
                 ' No need to panic
             End Try
@@ -3056,8 +3057,24 @@ Public Class AppLauncher
 
     End Sub
 
-    Private Sub OnVisitForums(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiForums.Click
-        Me.m_cmdBrowseURI.Invoke("http://www.ecopath.org/forum")
+    Private Sub OnVisitForums(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_tsmiHelpViewForums.Click
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Forums)
+    End Sub
+
+    Private Sub m_tsmiHelpViewMainSite_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpViewMainSite.Click
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Home)
+    End Sub
+
+    Private Sub m_tsmiHelpViewFacebook_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpViewFacebook.Click
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Facebook)
+    End Sub
+
+    Private Sub m_tsmiHelpViewReports_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiHelpViewReports.Click
+        Me.m_cmdBrowseURI.Invoke(cWebLinks.eLinkType.Trac)
+    End Sub
+
+    Private Sub m_tsmiViewLog_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiViewLog.Click
+        Me.m_cmdBrowseURI.Invoke(cLog.LogFile)
     End Sub
 
 #End Region ' Main Menu - Help
@@ -4238,9 +4255,5 @@ Public Class AppLauncher
     End Sub
 
 #End Region  ' Big and evil event handlers
-
-    Private Sub m_tsmiViewLog_Click(sender As System.Object, e As System.EventArgs) Handles m_tsmiViewLog.Click
-        Me.m_cmdBrowseURI.Invoke(cLog.LogFile)
-    End Sub
 
 End Class

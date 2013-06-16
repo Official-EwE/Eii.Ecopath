@@ -36,6 +36,8 @@ Namespace Commands
 
         ''' <summary>URL to show.</summary>
         Private m_strURL As String = ""
+        ''' <summary>URL alias to show.</summary>
+        Private m_type As cWebLinks.eLinkType = cWebLinks.eLinkType.NotSet
 
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
@@ -71,18 +73,30 @@ Namespace Commands
         ''' <param name="strURL">URL to navigate to.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(Optional ByVal strURL As String = "")
-
             Me.m_strURL = strURL
+            MyBase.Invoke()
+            Me.m_strURL = ""
+        End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Invokes the command to make the EwE6 GUI navigate to user interface
+        ''' element defined by this call.
+        ''' </summary>
+        ''' <param name="link">Symbolic <see cref="cWebLinks.eLinkType"/> to navigate to.</param>
+        ''' -----------------------------------------------------------------------
+        Public Overloads Sub Invoke(link As cWebLinks.eLinkType)
+            Me.m_type = link
             MyBase.Invoke()
         End Sub
 
         ''' <summary>
         ''' Get the <see cref="m_strURL">URL</see> to navigate to.
         ''' </summary>
-        Public ReadOnly Property URL() As String
+        Public ReadOnly Property URL(decoder As cWebLinks) As String
             Get
-                Return Me.m_strURL
+                If (Me.m_type = cWebLinks.eLinkType.NotSet) Then Return Me.m_strURL
+                Return decoder.GetURL(Me.m_type)
             End Get
         End Property
 
