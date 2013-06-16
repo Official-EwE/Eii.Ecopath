@@ -189,7 +189,7 @@ Namespace Core
         ''' <summary>
         ''' Write a <see cref="IMessage"/> to the log at <see cref="eVerboseLevel.Standard"/> level.
         ''' </summary>
-        ''' <param name="message">The <see cref="cMessage"/> to write.</param>
+        ''' <param name="message">The <see cref="IMessage"/> to write.</param>
         ''' <param name="strMsg">Optional text to add.</param>
         ''' -----------------------------------------------------------------------
         Public Shared Sub Write(ByVal message As IMessage, Optional ByVal strMsg As String = "")
@@ -308,8 +308,8 @@ Namespace Core
         End Function
 
         Private Shared Sub WriteSessionStarted()
-            Dim xmlStrm As cXMLLogWriter
 
+            Dim xmlStrm As cXMLLogWriter = Nothing
             Try
                 xmlStrm = cLog.getWriter()
                 If xmlStrm.Open() Then

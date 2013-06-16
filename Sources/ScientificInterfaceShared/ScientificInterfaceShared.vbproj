@@ -139,6 +139,7 @@
     <Compile Include="Controls\TreeView\cThemedTreeView.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Definitions\cWebLinks.vb" />
     <Compile Include="GeoCode\cGeoCodeLookup.vb" />
     <Compile Include="GeoCode\cGoogleMapsLookup.vb" />
     <Compile Include="Commands\cDirectoryOpenCommand.vb" />
@@ -963,6 +964,7 @@
     <None Include="Resources\Importance.png" />
     <None Include="Resources\MPA.png" />
     <None Include="Resources\Raster.png" />
+    <Content Include="Resources\bug.png" />
     <Content Include="Resources\SnapshotHS.png" />
     <Content Include="Resources\ExportPictureHS.png" />
     <Content Include="Resources\Refresh.png" />

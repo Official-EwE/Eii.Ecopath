@@ -168,12 +168,12 @@ Namespace Core
         ''' This erases the tag from the file. The tag is re-written when the file is closed. 
         ''' If no doc tag is found this will leave the file cursor at the end of the file for appending the new data.</remarks>
         Private Sub FindDocumentEnd()
+
             Dim ipos As Integer
             Dim curByte(1) As Byte
             Dim x As String = "/"
-            'Convert.ToByte("/")
             Dim byteToFind As Byte = System.Text.Encoding.ASCII.GetBytes(x.ToCharArray(), 0, 1)(0)
-            Dim tagbuff As String
+            Dim tagbuff As String = ""
 
             Try
                 'make sure the file contains some data

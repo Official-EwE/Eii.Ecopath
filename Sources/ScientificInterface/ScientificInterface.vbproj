@@ -381,8 +381,6 @@
     <Compile Include="Tools\MSE\gridFleetLPEffortBounds.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Tools\Workflow\cDefineItemsBase.vb" />
-    <Compile Include="Tools\Workflow\IDefineItems.vb" />
     <Compile Include="Ecospace\Input\dlgDefineImportanceMaps.Designer.vb">
       <DependentUpon>dlgDefineImportanceMaps.vb</DependentUpon>
     </Compile>

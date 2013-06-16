@@ -43,14 +43,16 @@ Partial Class frmStartPanel
         Me.m_tlp = New System.Windows.Forms.TableLayoutPanel()
         Me.m_browser = New System.Windows.Forms.WebBrowser()
         Me.m_ts1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
-        Me.m_tsbnHome = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnStartPage = New System.Windows.Forms.ToolStripButton()
+        Me.m_tsbnEcopathSite = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnFacebook = New System.Windows.Forms.ToolStripButton()
         Me.m_sep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnBack = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnForward = New System.Windows.Forms.ToolStripButton()
-        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.m_tsbnRefresh = New System.Windows.Forms.ToolStripButton()
         Me.m_tsbnRSS = New System.Windows.Forms.ToolStripButton()
+        Me.m_sep2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.m_tsbnBugTracker = New System.Windows.Forms.ToolStripButton()
         Me.m_tlp.SuspendLayout()
         Me.m_ts1.SuspendLayout()
         Me.SuspendLayout()
@@ -66,23 +68,28 @@ Partial Class frmStartPanel
         '
         Me.m_browser.AllowWebBrowserDrop = False
         resources.ApplyResources(Me.m_browser, "m_browser")
-        Me.m_browser.MinimumSize = New System.Drawing.Size(20, 20)
         Me.m_browser.Name = "m_browser"
         Me.m_browser.ScriptErrorsSuppressed = True
         '
         'm_ts1
         '
         Me.m_ts1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnHome, Me.m_tsbnFacebook, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_sep2, Me.m_tsbnRefresh, Me.m_tsbnRSS})
+        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnStartPage, Me.m_tsbnEcopathSite, Me.m_tsbnFacebook, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_tsbnRefresh, Me.m_tsbnRSS, Me.m_sep2, Me.m_tsbnBugTracker})
         resources.ApplyResources(Me.m_ts1, "m_ts1")
         Me.m_ts1.Name = "m_ts1"
         Me.m_ts1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
         '
-        'm_tsbnHome
+        'm_tsbnStartPage
         '
-        Me.m_tsbnHome.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        resources.ApplyResources(Me.m_tsbnHome, "m_tsbnHome")
-        Me.m_tsbnHome.Name = "m_tsbnHome"
+        Me.m_tsbnStartPage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnStartPage, "m_tsbnStartPage")
+        Me.m_tsbnStartPage.Name = "m_tsbnStartPage"
+        '
+        'm_tsbnEcopathSite
+        '
+        Me.m_tsbnEcopathSite.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        resources.ApplyResources(Me.m_tsbnEcopathSite, "m_tsbnEcopathSite")
+        Me.m_tsbnEcopathSite.Name = "m_tsbnEcopathSite"
         '
         'm_tsbnFacebook
         '
@@ -97,18 +104,15 @@ Partial Class frmStartPanel
         '
         'm_tsbnBack
         '
+        Me.m_tsbnBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnBack, "m_tsbnBack")
         Me.m_tsbnBack.Name = "m_tsbnBack"
         '
         'm_tsbnForward
         '
+        Me.m_tsbnForward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnForward, "m_tsbnForward")
         Me.m_tsbnForward.Name = "m_tsbnForward"
-        '
-        'm_sep2
-        '
-        Me.m_sep2.Name = "m_sep2"
-        resources.ApplyResources(Me.m_sep2, "m_sep2")
         '
         'm_tsbnRefresh
         '
@@ -121,6 +125,16 @@ Partial Class frmStartPanel
         Me.m_tsbnRSS.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnRSS, "m_tsbnRSS")
         Me.m_tsbnRSS.Name = "m_tsbnRSS"
+        '
+        'm_sep2
+        '
+        Me.m_sep2.Name = "m_sep2"
+        resources.ApplyResources(Me.m_sep2, "m_sep2")
+        '
+        'm_tsbnBugTracker
+        '
+        resources.ApplyResources(Me.m_tsbnBugTracker, "m_tsbnBugTracker")
+        Me.m_tsbnBugTracker.Name = "m_tsbnBugTracker"
         '
         'frmStartPanel
         '
@@ -143,11 +157,13 @@ Partial Class frmStartPanel
     Private WithEvents m_tlp As System.Windows.Forms.TableLayoutPanel
     Private WithEvents m_tsbnForward As System.Windows.Forms.ToolStripButton
     Private WithEvents m_tsbnRefresh As System.Windows.Forms.ToolStripButton
-    Private WithEvents m_tsbnHome As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnStartPage As System.Windows.Forms.ToolStripButton
     Private WithEvents m_sep1 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_sep2 As System.Windows.Forms.ToolStripSeparator
     Private WithEvents m_tsbnRSS As System.Windows.Forms.ToolStripButton
     Friend WithEvents m_tsbnFacebook As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnEcopathSite As System.Windows.Forms.ToolStripButton
+    Private WithEvents m_tsbnBugTracker As System.Windows.Forms.ToolStripButton
 
 
 End Class
