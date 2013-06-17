@@ -25,6 +25,7 @@ Imports DotSpatial.Topology
 Imports EwECore
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
