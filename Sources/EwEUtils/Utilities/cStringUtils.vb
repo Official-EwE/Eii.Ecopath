@@ -351,11 +351,14 @@ Namespace Utilities
 
                     Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
                     Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+                    Dim iValue As Integer = iNullValue
 
                     ni.NumberDecimalSeparator = strDecimalSeparator
                     ni.NumberGroupSeparator = strThousandsSeparator
 
-                    Return Convert.ToInt32(strNumber, ni)
+                    If Integer.TryParse(strNumber, NumberStyles.Any, ni, iValue) Then
+                        Return iValue
+                    End If
 
                 Catch ex As Exception
 
@@ -392,13 +395,17 @@ Namespace Utilities
                 Try
                     Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
                     Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+                    Dim sValue As Single = sNullValue
 
                     ni.NumberDecimalSeparator = strDecimalSeparator
                     ni.NumberGroupSeparator = strThousandsSeparator
 
-                    Return Convert.ToSingle(strNumber, ni)
-                Catch ex As Exception
+                    If Single.TryParse(strNumber, NumberStyles.Any, ni, sValue) Then
+                        Return sValue
+                    End If
 
+                Catch ex As Exception
+                    ' Whoah!
                 End Try
 
             End If
@@ -433,17 +440,19 @@ Namespace Utilities
 
                     Dim ci As CultureInfo = System.Globalization.CultureInfo.CurrentCulture
                     Dim ni As NumberFormatInfo = DirectCast(ci.NumberFormat.Clone(), NumberFormatInfo)
+                    Dim dValue As Double = dNullValue
 
                     ni.NumberDecimalSeparator = strDecimalSeparator
                     ni.NumberGroupSeparator = strThousandsSeparator
 
-                    Return Convert.ToDouble(strNumber, ni)
+                    If Double.TryParse(strNumber, NumberStyles.Any, ni, dValue) Then
+                        Return dValue
+                    End If
                 Catch ex As Exception
 
                 End Try
 
             End If
-
             Return dNullValue
 
         End Function

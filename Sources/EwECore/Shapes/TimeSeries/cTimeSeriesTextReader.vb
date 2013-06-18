@@ -310,6 +310,8 @@ Public MustInherit Class cTimeSeriesTextReader
         Dim bSucces As Boolean = True
         Dim iWeightFactors As Integer = 0
 
+        Me.Reset()
+
         ' Sanity checks
         If (reader Is Nothing) Then Return False
 
@@ -406,49 +408,57 @@ Public MustInherit Class cTimeSeriesTextReader
             While Not String.IsNullOrEmpty(strLine)
 
                 astrCols = Me.SplitLine(strLine)
+
                 Me.m_tsPreview.AddRow(strLine, astrCols)
 
                 Try
                     iYear = cStringUtils.ConvertToInteger(astrCols(0))
                 Catch ex As Exception
-                    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARLINEMISSING, iLineNumber)
-                    bSucces = False
+                    iYear = -9999
                 End Try
 
-                ' Fix Start year if not set
-                If (Me.m_iFirstYear = 0) Then Me.m_iFirstYear = iYear
+                If (iYear = -9999) Then
+                    Me.ReportError(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARLINEMISSING, iLineNumber)
+                    bSucces = False
+                Else
 
-                ' Check year increment
-                If iPrevYear <> 0 Then
-                    If iYear <> (iPrevYear + 1) Then
-                        Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARMISSING, iPrevYear + 1, iLineNumber))
+                    ' Fix Start year if not set
+                    If (Me.m_iFirstYear = 0) Then Me.m_iFirstYear = iYear
+
+                    ' Check year increment
+                    If iPrevYear <> 0 Then
+                        If iYear <> (iPrevYear + 1) Then
+                            Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARMISSING, iPrevYear + 1, iLineNumber))
+                            bSucces = False
+                        End If
+                        iPrevYear = iYear
+                    End If
+
+                    If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
+                        Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
                         bSucces = False
                     End If
-                    iPrevYear = iYear
-                End If
 
-                If Not Me.ValidateLine(m_tsPreview.ColumnCount, astrCols) Then
-                    Me.ReportError(String.Format(My.Resources.CoreMessages.TIMESERIES_ERROR_YEARVALUEMISSING, iYear), iLineNumber)
-                    bSucces = False
                 End If
 
                 ' Next
                 strLine = Me.ReadLine(reader, iLineNumber)
-            End While
 
-            ' Set number of years
-            Me.m_iNumYears = iYear - Me.m_iFirstYear + 1
+            End While
 
         Catch ex As Exception
             ' Report generic error
             Me.ReportError(ex.Message)
             ' Abort any attempt to make sense of this
-            Me.Reset()
-            ' Woops!
             bSucces = False
         End Try
 
         Me.ReleaseReader(reader)
+
+        If (bSucces) Then
+            ' Set number of years
+            Me.m_iNumYears = Math.Max(0, iYear - Me.m_iFirstYear + 1)
+        End If
 
         ' Bye!
         Return bSucces
@@ -929,13 +939,10 @@ Public MustInherit Class cTimeSeriesTextReader
     ''' Returns the number of years of time series data found by the reader.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property NumYears() As Integer
+    Public ReadOnly Property NumYears() As Integer
         Get
             Return Me.m_iNumYears
         End Get
-        Friend Set(ByVal iNumYears As Integer)
-            Me.m_iNumYears = iNumYears
-        End Set
     End Property
 
     Public MustOverride ReadOnly Property Dataset() As String
