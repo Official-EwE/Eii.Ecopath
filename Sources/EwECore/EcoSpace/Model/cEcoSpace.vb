@@ -6757,6 +6757,7 @@ exitline:
     ''' </summary>
     ''' <remarks></remarks>
     Private Function setHabCapFromCapInputMap() As Boolean
+
         Dim irow As Integer, icol As Integer, igrp As Integer, bReturn As Boolean
 
         'If the CapCalType = Habitat then ONLY habitat is used to calculate Capacity 
