@@ -339,17 +339,20 @@ Public Class cMonteCarloManager
     ''' <summary>
     ''' Apply the Monte Carlo results (best fitting parameters) to the Ecopath inputs (B,PB....)
     ''' </summary>
-    ''' <remarks></remarks>
     Public Sub ApplyBestFits()
 
         Try
 
             m_mc.ApplyBestFits()
-            Me.LoadGroups()
 
-            'tell the core that the monte carlo manager has changed the ecopath and ecosim data
-            'this loads modeling data into core input/output objects
+            '#Hack: Tell the core that Ecopath inputs have changed
+            '       cCore.OnChanged(me) does not support the granularity to invalidate Ecopath data in response to only this event
+            m_core.DataSource.SetChanged(eCoreComponentType.EcoPath)
+
+            'tell the core to reload groups from modified Ecopath inputs
             m_core.onChanged(Me, eMessageType.DataModified)
+ 
+            Me.LoadGroups()
 
             'run ecopath with the new parameters
             m_core.RunEcoPath()
