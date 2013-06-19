@@ -1537,30 +1537,32 @@ Namespace DataSources
             ' Get max no of stanza
             stanzaDS.MaxStanza = 0
 
-            If (stanzaDS.Nsplit > 0) Then
-                ' Get the highest number of groups in all split groups. Note that the sequence value field is not used here.
-                ' JS 50Nov2011: appended 'AS X' for SQL server and the likes. Works with MS Access.
-                stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
-            End If
-
-            ' Get the number of groups from ecopath
-            stanzaDS.nGroups = ecopathDS.NumGroups
-
-            If stanzaDS.MaxAgeSplit < cCore.MAX_AGE Then
-                'VILLY: NEED TO REPLACE THIS WITH DYNAMIC CALCULATION ALLOWING FOR CHANGES IN K DURING EXECUTION
-                stanzaDS.MaxAgeSplit = cCore.MAX_AGE
-            End If
-
-            stanzaDS.redimStanza()
-
             ' First read Stanza
             ' JS 05Nov11: SQL Server does not allow readers for StanzaLifeStage to be opened after the master table Stanza has been opened
             '             This is unfortunate and will require some serious refactoring throughout this class. Basically, child table readers
             '             will need to be opened before master tables, or readers will have to operate on joined select statements. Not fun.
-            rdStanza = Me.m_db.GetReader("SELECT * FROM Stanza")
+            rdStanza = Me.m_db.GetReader("SELECT * FROM Stanza ORDER BY StanzaID ASC")
 
-            If rdStanza IsNot Nothing Then
+            ' JS 18Jun13: Only allocate stanza data when reader successful
+            If (rdStanza IsNot Nothing) Then
+
+                If (stanzaDS.Nsplit > 0) Then
+                    ' Get the highest number of groups in all split groups. Note that the sequence value field is not used here.
+                    ' JS 50Nov2011: appended 'AS X' for SQL server and the likes. Works with MS Access.
+                    stanzaDS.MaxStanza = CInt(Me.m_db.GetValue("SELECT MAX(NumGroups) FROM (SELECT COUNT(*) AS NumGroups FROM StanzaLifeStage GROUP BY StanzaID) AS X", 0))
+                End If
+
+                ' Get the number of groups from ecopath
+                stanzaDS.nGroups = ecopathDS.NumGroups
+
+                If stanzaDS.MaxAgeSplit < cCore.MAX_AGE Then
+                    'VILLY: NEED TO REPLACE THIS WITH DYNAMIC CALCULATION ALLOWING FOR CHANGES IN K DURING EXECUTION
+                    stanzaDS.MaxAgeSplit = cCore.MAX_AGE
+                End If
+
+                stanzaDS.redimStanza()
                 iStanza = 0
+
                 While rdStanza.Read()
 
                     ' JS 11May2010: Stanza configs without stanza groups are now loaded.
@@ -1599,7 +1601,7 @@ Namespace DataSources
                         bSucces = False
                     End Try
 
-                    rdLifeStage = Me.m_db.GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", rdStanza("StanzaID")))
+                    rdLifeStage = Me.m_db.GetReader(String.Format("SELECT * FROM StanzaLifeStage WHERE (StanzaID={0}) ORDER BY AgeStart ASC", stanzaDS.StanzaDBID(iStanza)))
                     iLifeStage = 0
                     While rdLifeStage.Read()
 
