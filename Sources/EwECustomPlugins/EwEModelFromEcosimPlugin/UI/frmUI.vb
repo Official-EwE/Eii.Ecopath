@@ -247,7 +247,6 @@ Friend Class frmUI
         Me.m_data.OutputFormat = DirectCast(Me.m_cmbFormat.SelectedItem, eDataSourceTypes)
         Me.m_data.BACalcMode = DirectCast(Me.m_cmbBACalcType.SelectedIndex, cEcopathModelFromEcosim.eBACalcTypes)
         Me.m_data.BAAverageYears = CInt(Me.m_nudNumYears.Value)
-        Me.m_data.FirstLabelYear = Me.Core.EcosimFirstYear
 
         Dim w As Single
         If Single.TryParse(Me.m_tbxWeightPower.Text, w) Then
