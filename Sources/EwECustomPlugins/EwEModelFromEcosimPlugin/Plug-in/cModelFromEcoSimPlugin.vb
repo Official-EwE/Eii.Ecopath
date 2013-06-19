@@ -163,7 +163,6 @@ Public Class cPluginPoint
         Me.m_data.OutputPath = My.Settings.OutputPath
         Me.m_data.Enabled = My.Settings.GenerationEnabled
         Me.m_data.WPower = My.Settings.WPower
-        Me.m_data.FirstLabelYear = Me.m_core.EcosimFirstYear
         Me.m_data.BAAverageYears = My.Settings.BANumYears
 
     End Sub

@@ -62,7 +62,6 @@ Friend Class cData
     ''' <summary>Included to be able to make corrections to invalid parameters</summary>
     Private m_core As cCore = Nothing
     Private m_dtEntries As New Dictionary(Of Integer, cEcopathModelEntry)
-    Private m_iFirstYear As Integer = 0
     Private m_strOutputPath As String = ""
 
 #End Region ' Private vars
@@ -179,15 +178,12 @@ Friend Class cData
     ''' Get/set the base year to display.
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property FirstLabelYear() As Integer
+    Public ReadOnly Property FirstLabelYear() As Integer
         Get
             ' Do not show a 0, it looks a bit sad. The value matters little since
             ' it is intended for display purposes only
-            Return Math.Max(Me.m_iFirstYear, 1)
+            Return Math.Max(Me.m_core.EcosimFirstYear, 1)
         End Get
-        Set(value As Integer)
-            Me.m_iFirstYear = value
-        End Set
     End Property
 
     ''' -----------------------------------------------------------------------
