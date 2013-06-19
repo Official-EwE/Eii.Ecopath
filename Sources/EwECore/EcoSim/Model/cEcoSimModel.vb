@@ -3276,6 +3276,7 @@ Namespace Ecosim
                 Next
             Next
 
+
             ' JS 02Aug10: LogL is not used anymore
             'Dim LogL As Single
             'For j = 1 To m_RefData.NdatType
