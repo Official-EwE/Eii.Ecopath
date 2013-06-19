@@ -289,8 +289,8 @@ Public Class cEcopathModelFromEcosim
         coreNew.StateMonitor.UpdateDataState(coreNew.DataSource)
 
         ' Copy Ecopath data but do not redim - preserve original data such as DBIDs
-        Array.Copy(pathDest.GroupDBID, GroupDBIDs, coreNew.nGroups)
-        Array.Copy(pathDest.FleetDBID, FleetDBIDs, coreNew.nFleets)
+        Array.Copy(pathDest.GroupDBID, GroupDBIDs, pathDest.GroupDBID.Length)
+        Array.Copy(pathDest.FleetDBID, FleetDBIDs, pathDest.FleetDBID.Length)
         Array.Copy(stanzaDest.StanzaDBID, StanzaDBIDs, stanzaDest.StanzaDBID.Length)
 
         ' Copy bulk of data
@@ -298,8 +298,8 @@ Public Class cEcopathModelFromEcosim
         stanzaSrc.copyTo(stanzaDest)
 
         ' Restore DBIDs
-        Array.Copy(GroupDBIDs, pathDest.GroupDBID, coreNew.nGroups)
-        Array.Copy(FleetDBIDs, pathDest.FleetDBID, coreNew.nFleets)
+        Array.Copy(GroupDBIDs, pathDest.GroupDBID, pathDest.GroupDBID.Length)
+        Array.Copy(FleetDBIDs, pathDest.FleetDBID, pathDest.FleetDBID.Length)
         Array.Copy(StanzaDBIDs, stanzaDest.StanzaDBID, stanzaDest.StanzaDBID.Length)
 
         ' Clear data that is not going to be copied
