@@ -174,9 +174,17 @@ Public Class cEcopathModelFromEcosim
         Dim bSuccess As Boolean = True
         Dim pathSrc As cEcopathDataStructures = Me.m_core.m_EcoPathData
         Dim stanzaSrc As cStanzaDatastructures = Me.m_core.m_Stanza
+
         Dim aiGroupID(pathSrc.NumGroups) As Integer
+        Dim aiFleetID(pathSrc.NumFleet) As Integer
+        Dim aiStanzaID(stanzaSrc.Nsplit) As Integer
 
         If Not coreNew.SetBatchLock(cCore.eBatchLockType.Restructure) Then Return False
+
+        ' Items are created in the new model in exactly the same order as they occur
+        ' in the source model. That way a simple data structure copy is warranted
+        ' for transferring object details as long as database keys are left unique to
+        ' the new model.
 
         Try
             ' Delete default group(s) and fleet(s)
@@ -195,25 +203,27 @@ Public Class cEcopathModelFromEcosim
                 aiGroupID(iGroup) = iIDNew
             Next
 
-            For iFleet As Integer = 1 To Me.m_core.nFleets
+            For iFleet As Integer = 1 To pathSrc.NumFleet
                 Dim iNew As Integer = iFleet
                 Dim iIDNew As Integer = 0
                 bSuccess = bSuccess And coreNew.AddFleet(pathSrc.FleetName(iFleet), iNew, iIDNew)
+                aiFleetID(iFleet) = iIDNew
             Next
 
             For iStanza As Integer = 1 To Me.m_core.nStanzas
 
                 Dim NStanza As Integer = stanzaSrc.Nstanza(iStanza)
-                Dim aiGroupIDs(NStanza - 1) As Integer
-                Dim aiStartAges(NStanza - 1) As Integer
+                Dim aiLifeStageID(NStanza - 1) As Integer
+                Dim aiLifeStageAge(NStanza - 1) As Integer
                 Dim iIDNew As Integer = 0
 
                 For iLifeStage As Integer = 1 To NStanza
                     Dim iGroup As Integer = stanzaSrc.EcopathCode(iStanza, iLifeStage)
-                    aiGroupIDs(iLifeStage - 1) = aiGroupID(iGroup)
-                    aiStartAges(iLifeStage - 1) = stanzaSrc.Age1(iStanza, iLifeStage)
+                    aiLifeStageID(iLifeStage - 1) = aiGroupID(iGroup)
+                    aiLifeStageAge(iLifeStage - 1) = stanzaSrc.Age1(iStanza, iLifeStage)
                 Next
-                bSuccess = bSuccess And coreNew.AppendStanza(stanzaSrc.StanzaName(iStanza), aiGroupIDs, aiStartAges, iIDNew)
+                bSuccess = bSuccess And coreNew.AppendStanza(stanzaSrc.StanzaName(iStanza), aiLifeStageID, aiLifeStageAge, iIDNew)
+                aiStanzaID(iStanza) = iIDNew
             Next
 
         Catch ex As Exception
@@ -221,6 +231,8 @@ Public Class cEcopathModelFromEcosim
         End Try
 
         coreNew.ReleaseBatchLock(cCore.eBatchChangeLevelFlags.Ecopath, bSuccess)
+
+        ' Validate cores
 
         Return bSuccess
 
@@ -279,7 +291,7 @@ Public Class cEcopathModelFromEcosim
         ' Copy Ecopath data but do not redim - preserve original data such as DBIDs
         Array.Copy(pathDest.GroupDBID, GroupDBIDs, coreNew.nGroups)
         Array.Copy(pathDest.FleetDBID, FleetDBIDs, coreNew.nFleets)
-        Array.Copy(stanzaDest.StanzaDBID, StanzaDBIDs, coreNew.nStanzas)
+        Array.Copy(stanzaDest.StanzaDBID, StanzaDBIDs, stanzaDest.StanzaDBID.Length)
 
         ' Copy bulk of data
         pathSrc.copyTo(pathDest, False)
@@ -288,7 +300,7 @@ Public Class cEcopathModelFromEcosim
         ' Restore DBIDs
         Array.Copy(GroupDBIDs, pathDest.GroupDBID, coreNew.nGroups)
         Array.Copy(FleetDBIDs, pathDest.FleetDBID, coreNew.nFleets)
-        Array.Copy(StanzaDBIDs, stanzaDest.StanzaDBID, coreNew.nStanzas)
+        Array.Copy(StanzaDBIDs, stanzaDest.StanzaDBID, stanzaDest.StanzaDBID.Length)
 
         ' Clear data that is not going to be copied
         pathDest.NumEcosimScenarios = 0
