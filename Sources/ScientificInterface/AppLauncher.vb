@@ -2629,6 +2629,13 @@ Public Class AppLauncher
     End Sub
 
     ''' <summary>
+    ''' Update Load Ecopath model command state
+    ''' </summary>
+    Private Sub OnUpdateLoadModel(ByVal cmd As cCommand) Handles m_cmdLoadModel.OnUpdate
+        cmd.Enabled = Not Me.Core.StateMonitor.IsBusy
+    End Sub
+
+    ''' <summary>
     ''' Save the model
     ''' </summary>
     Private Sub OnSave(ByVal cmd As cCommand) Handles m_cmdSave.OnInvoke
@@ -2725,7 +2732,8 @@ Public Class AppLauncher
     ''' Update close model command state
     ''' </summary>
     Private Sub OnUpdateCloseModel(ByVal cmd As cCommand) Handles m_cmdCloseModel.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -2757,7 +2765,6 @@ Public Class AppLauncher
 
         End Try
     End Sub
-
 
     Private Sub OnPrintInvoke(ByVal cmd As cCommand) Handles m_cmdPrint.OnInvoke
 
@@ -3094,7 +3101,8 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the <see cref="m_cmdEditGroups">Edit Groups command</see>.
     ''' </summary>
     Private Sub OnUpdateEditGroups(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditGroups.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3128,7 +3136,8 @@ Public Class AppLauncher
     Private Sub OnUpdateMultiStanza(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdEditMultiStanza.OnUpdate
         ' MultiStanza can be edited when ecopath has loaded and the core has more than one stanza group
         cmd.Enabled = (Me.Core.StateMonitor.HasEcopathLoaded() = True) And _
-                      (Me.Core.nStanzas > 0)
+                      (Me.Core.nStanzas > 0) And _
+                      (Not Me.Core.StateMonitor.IsBusy)
     End Sub
 
     ''' <summary>
@@ -3150,7 +3159,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateEditFleets(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdEditFleets.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
     Private Sub OnEditPedigreeLevels(ByVal cmd As cCommand) _
@@ -3165,7 +3175,8 @@ Public Class AppLauncher
 
     Private Sub OnUpdateEditPedigreeLevels(ByVal cmd As cCommand) _
         Handles m_cmdEditPedigree.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
     Private Sub OnEditTaxa(ByVal cmd As cCommand) _
@@ -3176,7 +3187,8 @@ Public Class AppLauncher
 
     Private Sub OnUpdateEditTaxa(ByVal cmd As cCommand) _
         Handles m_cmdEditTaxa.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
     End Sub
 
     Private Sub OnDisplayShowHideItems(ByVal cmd As cCommand) _
@@ -3221,7 +3233,8 @@ Public Class AppLauncher
     ''' <see cref="m_cmdNewEcosimScenario">New Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateNewEcosimScenario(ByVal cmd As cCommand) Handles m_cmdNewEcosimScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3236,7 +3249,8 @@ Public Class AppLauncher
     ''' <see cref="m_cmdLoadEcosimScenario">Load Ecosim Scenario</see> command.
     ''' </summary>
     Private Sub OnUpdateLoadEcosimScenario(ByVal cmd As cCommand) Handles m_cmdLoadEcosimScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3304,7 +3318,10 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateDeleteEcosimScenario(ByVal cmd As cCommand) _
            Handles m_cmdDeleteEcosimScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.nEcosimScenarios > 0
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = (m.HasEcopathLoaded) And _
+                      (Me.Core.nEcosimScenarios > 0) And _
+                      (Not m.IsBusy)
     End Sub
 
     ''' <summary>
@@ -3319,7 +3336,8 @@ Public Class AppLauncher
     ''' Command update handler; enables and disables the <see cref="m_cmdImportTimeSeries">Import TimeSeries command</see>.
     ''' </summary>
     Private Sub m_cmdImportTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdImportTimeSeries.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcosimLoaded() And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3363,7 +3381,9 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub m_cmdWeightTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) Handles m_cmdWeightTimeSeries.OnUpdate
         ' JS 23sept08: dialog will switch to load mode if no ts present
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded() ' And Me.Core.HasTimeSeries()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcosimLoaded() And _
+                      Not m.IsBusy ' And Me.Core.HasTimeSeries()
     End Sub
 
     ''' <summary>
@@ -3392,7 +3412,8 @@ Public Class AppLauncher
     Private Sub m_cmdLoadTimeSeries_OnUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdLoadTimeSeries.OnUpdate
 
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded() And Not m.IsBusy
 
     End Sub
 
@@ -3425,11 +3446,13 @@ Public Class AppLauncher
 
     Private Sub OnEstimateVsUpdate(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdEstimateVs.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded()
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcosimLoaded() And Not m.IsBusy
     End Sub
 
     Private Sub OnTrimEcosimShapesInvoke(cmd As cCommand) _
         Handles m_cmdEcosimTrimShapes.OnInvoke
+
         Dim fmsg As New cFeedbackMessage(My.Resources.PROMPT_TRIM_SHAPES, _
                                          eCoreComponentType.ShapesManager, eMessageType.Any, eMessageImportance.Question, _
                                          eMessageReplyStyle.YES_NO)
@@ -3438,11 +3461,12 @@ Public Class AppLauncher
         If fmsg.Reply = eMessageReply.YES Then
             Me.Core.TrimUnusedShapeData()
         End If
+
     End Sub
 
     Private Sub OnTrimEcosimShapesUpdate(cmd As cCommand) _
         Handles m_cmdEcosimTrimShapes.OnUpdate
-        cmd.Enabled = Me.Core.HasUnusedShapeData
+        cmd.Enabled = Me.Core.HasUnusedShapeData And Not Me.Core.StateMonitor.IsBusy
     End Sub
 
 #End Region ' Ecosim commands
@@ -3475,7 +3499,8 @@ Public Class AppLauncher
 
     Private Sub OnUpdateNewEcospaceScenario(ByVal cmd As cCommand) _
         Handles m_cmdNewEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcosimLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcosimLoaded And Not m.IsBusy
     End Sub
 
     Private Sub OnLoadEcospaceScenario(ByVal cmd As cCommand) _
@@ -3485,7 +3510,8 @@ Public Class AppLauncher
 
     Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As cCommand) _
         Handles m_cmdLoadEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcosimLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3568,7 +3594,10 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateDeleteEcospaceScenario(ByVal cmd As cCommand) _
            Handles m_cmdDeleteEcospaceScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.nEcospaceScenarios > 0
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And _
+                      Not m.IsBusy And _
+                      Me.Core.nEcospaceScenarios > 0
     End Sub
 
     ''' <summary>
@@ -3584,7 +3613,8 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit basemap dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceBasemap(ByVal cmd As cCommand) Handles m_cmdEditBasemap.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3600,14 +3630,16 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit habitats dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceHabitats(ByVal cmd As cCommand) Handles m_cmdEditHabitats.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
     ''' Command handler; handles access to the Ecospace edit regions dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceRegions(ByVal cmd As cCommand) Handles m_cmdEditRegions.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3631,7 +3663,8 @@ Public Class AppLauncher
     ''' Command handler; handles access to the Ecospace edit MPAs dialog.
     ''' </summary>
     Private Sub OnUpdateEditEcospaceMPAs(ByVal cmd As cCommand) Handles m_cmdEditMPAs.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3646,14 +3679,16 @@ Public Class AppLauncher
     ''' Command handler; updates the Ecospace edit importance layers command.
     ''' </summary>
     Private Sub OnUpdateEcospaceImportanceLayers(ByVal cmd As cCommand) Handles m_cmdDefineImportanceMaps.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
     ''' Command handler; handles access to the Ecospace define input layers dialog.
     ''' </summary>
     Private Sub OnUpdateDefineInputLayers(ByVal cmd As cCommand) Handles m_cmdDefineInputLayers.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3669,7 +3704,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnUpdate
         ' Disable development-time functionality
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded And Not m.IsBusy
     End Sub
 
     Private Sub OnInvokeEcospaceDataConnections(ByVal cmd As cCommand) Handles m_cmdEcospaceDataConnections.OnInvoke
@@ -3692,7 +3728,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateImportLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdImportLayerData.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded() And Not Me.Core.StateMonitor.IsEcospaceRunning
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3713,7 +3750,10 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateExportLayerData(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdExportLayerData.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
+
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
+
     End Sub
 
     ''' <summary>
@@ -3738,7 +3778,10 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateEditLayer(ByVal cmd As EwEUtils.Commands.cCommand) _
         Handles m_cmdEditLayer.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcospaceLoaded()
+
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcospaceLoaded() And Not m.IsBusy
+
     End Sub
 
 #End Region ' Ecospace commands
@@ -3779,7 +3822,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateNewEcotracerScenario(ByVal cmd As cCommand) _
         Handles m_cmdNewEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>
@@ -3796,7 +3840,8 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateLoadEcotracerScenario(ByVal cmd As cCommand) _
         Handles m_cmdLoadEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
     Private Sub OnSaveEcotracerScenarioAs(ByVal cmd As cCommand) _
@@ -3858,7 +3903,10 @@ Public Class AppLauncher
     ''' </summary>
     Private Sub OnUpdateDeleteEcotracerScenario(ByVal cmd As cCommand) _
         Handles m_cmdDeleteEcotracerScenario.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded And Me.Core.nEcotracerScenarios > 0
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And _
+                      Not m.IsBusy And _
+                      Me.Core.nEcotracerScenarios > 0
     End Sub
 
     Private Sub OnEnableEcotracer(ByVal cmd As cCommand) _
@@ -3915,7 +3963,8 @@ Public Class AppLauncher
 
     Private Sub OnUpdateEnableEcotracer(ByVal cmd As cCommand) _
         Handles m_cmdEnableEcotracer.OnUpdate
-        cmd.Enabled = Me.Core.StateMonitor.HasEcopathLoaded
+        Dim m As cCoreStateMonitor = Me.Core.StateMonitor
+        cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
 #End Region ' Ecotracer commands
