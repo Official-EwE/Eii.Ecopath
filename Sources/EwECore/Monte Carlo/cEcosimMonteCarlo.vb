@@ -494,6 +494,40 @@ Friend Class cEcosimMonteCarlo
                     'If MCthread.ESdata.SS < SSBestFit Then
                     'Console.Write(m_esdata.SS.ToString & ", ")
 
+                    'Calculate penalty for being away from reasonable fishing mortality
+
+                    'Below is for global Nereus model, June 2013
+
+                    Dim includeFpenalty As Boolean = True
+                    Dim SFactor As Single = 1
+                    Dim Fpenalty As Single
+                    Dim FirstRun As Boolean = False
+
+                    If includeFpenalty Then
+                        If Fpenalty = 0 Then FirstRun = True
+                        Fpenalty = 0
+                        Dim sStr As String = ""
+                        For ii As Integer = 1 To Me.m_ecopath.EcopathData.NumGroups
+                            If Me.m_ecopath.EcopathData.fCatch(ii) > 0 Then
+                                Dim lasttimestep As Integer = m_ecosim.EcosimData.NTimes
+                                Dim NatMort As Single = m_ecopath.EcopathData.M0(ii) + m_ecopath.EcopathData.M2(ii)
+                                Dim SScont As Single = (Me.m_ecosim.EcosimData.FishRateNo(ii, lasttimestep) - SFactor * NatMort)
+                                Fpenalty += CSng(100 * SScont ^ 2)
+                                sStr += ii & " " & SScont & ","
+                            End If
+                        Next
+                        'Debug.Print(sStr)
+                        bRetainBiomass = True
+                    End If
+
+                    If FirstRun Then
+                        SSBestFit = SSBestFit + Fpenalty
+                        FirstRun = False
+                    End If
+
+                    m_esdata.SS += Fpenalty
+                    Debug.Print(m_esdata.SS & " = " & m_esdata.SS - Fpenalty & " + " & Fpenalty)
+
                     If m_esdata.SS < SSBestFit Then
                         RunsSinceLastWithLowerSS = 0
                         'SSBestFit = MCthread.ESdata.SS
