@@ -40,6 +40,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MCRun))
             Me.m_lblNumTrials = New System.Windows.Forms.Label()
             Me.m_btnRunTrials = New System.Windows.Forms.Button()
@@ -48,10 +49,13 @@ Namespace Ecosim
             Me.m_tbpSettings = New System.Windows.Forms.TabPage()
             Me.m_cbRetainEstimates = New System.Windows.Forms.CheckBox()
             Me.m_btDefaultTol = New System.Windows.Forms.Button()
+            Me.m_cbSRA = New System.Windows.Forms.CheckBox()
             Me.m_cbRetainCurPattern = New System.Windows.Forms.CheckBox()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblFMratio = New System.Windows.Forms.Label()
+            Me.m_lblEEtol = New System.Windows.Forms.Label()
             Me.m_cbShowBioTraj = New System.Windows.Forms.CheckBox()
-            Me.m_txTol = New System.Windows.Forms.TextBox()
+            Me.m_tbxFMratio = New System.Windows.Forms.TextBox()
+            Me.m_tbxEETol = New System.Windows.Forms.TextBox()
             Me.m_tbpB = New System.Windows.Forms.TabPage()
             Me.m_gridB = New ScientificInterface.Ecosim.gridMCRunInput()
             Me.m_tsB = New ScientificInterfaceShared.Controls.cEwEToolstrip()
@@ -72,6 +76,9 @@ Namespace Ecosim
             Me.m_tsBA = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tbpBPlot = New System.Windows.Forms.TabPage()
             Me.m_spPlot = New System.Windows.Forms.SplitContainer()
+            Me.m_tsPlot = New ScientificInterfaceShared.Controls.cEwEToolstrip()
+            Me.m_tsbnShowBestOnly = New System.Windows.Forms.ToolStripButton()
+            Me.m_tsbnShowGroups = New System.Windows.Forms.ToolStripButton()
             Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_lblGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -109,6 +116,7 @@ Namespace Ecosim
             Me.m_spPlot.Panel1.SuspendLayout()
             Me.m_spPlot.Panel2.SuspendLayout()
             Me.m_spPlot.SuspendLayout()
+            Me.m_tsPlot.SuspendLayout()
             Me.m_tbpBestTrial.SuspendLayout()
             CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpOutputs.SuspendLayout()
@@ -128,6 +136,7 @@ Namespace Ecosim
             'm_btnStop
             '
             resources.ApplyResources(Me.m_btnStop, "m_btnStop")
+            Me.m_btnStop.DialogResult = System.Windows.Forms.DialogResult.Cancel
             Me.m_btnStop.Name = "m_btnStop"
             Me.m_btnStop.UseVisualStyleBackColor = True
             '
@@ -149,10 +158,13 @@ Namespace Ecosim
             '
             Me.m_tbpSettings.Controls.Add(Me.m_cbRetainEstimates)
             Me.m_tbpSettings.Controls.Add(Me.m_btDefaultTol)
+            Me.m_tbpSettings.Controls.Add(Me.m_cbSRA)
             Me.m_tbpSettings.Controls.Add(Me.m_cbRetainCurPattern)
-            Me.m_tbpSettings.Controls.Add(Me.Label1)
+            Me.m_tbpSettings.Controls.Add(Me.m_lblFMratio)
+            Me.m_tbpSettings.Controls.Add(Me.m_lblEEtol)
             Me.m_tbpSettings.Controls.Add(Me.m_cbShowBioTraj)
-            Me.m_tbpSettings.Controls.Add(Me.m_txTol)
+            Me.m_tbpSettings.Controls.Add(Me.m_tbxFMratio)
+            Me.m_tbpSettings.Controls.Add(Me.m_tbxEETol)
             resources.ApplyResources(Me.m_tbpSettings, "m_tbpSettings")
             Me.m_tbpSettings.Name = "m_tbpSettings"
             Me.m_tbpSettings.UseVisualStyleBackColor = True
@@ -169,16 +181,27 @@ Namespace Ecosim
             Me.m_btDefaultTol.Name = "m_btDefaultTol"
             Me.m_btDefaultTol.UseVisualStyleBackColor = True
             '
+            'm_cbSRA
+            '
+            resources.ApplyResources(Me.m_cbSRA, "m_cbSRA")
+            Me.m_cbSRA.Name = "m_cbSRA"
+            Me.m_cbSRA.UseVisualStyleBackColor = True
+            '
             'm_cbRetainCurPattern
             '
             resources.ApplyResources(Me.m_cbRetainCurPattern, "m_cbRetainCurPattern")
             Me.m_cbRetainCurPattern.Name = "m_cbRetainCurPattern"
             Me.m_cbRetainCurPattern.UseVisualStyleBackColor = True
             '
-            'Label1
+            'm_lblFMratio
             '
-            resources.ApplyResources(Me.Label1, "Label1")
-            Me.Label1.Name = "Label1"
+            resources.ApplyResources(Me.m_lblFMratio, "m_lblFMratio")
+            Me.m_lblFMratio.Name = "m_lblFMratio"
+            '
+            'm_lblEEtol
+            '
+            resources.ApplyResources(Me.m_lblEEtol, "m_lblEEtol")
+            Me.m_lblEEtol.Name = "m_lblEEtol"
             '
             'm_cbShowBioTraj
             '
@@ -188,10 +211,15 @@ Namespace Ecosim
             Me.m_cbShowBioTraj.Name = "m_cbShowBioTraj"
             Me.m_cbShowBioTraj.UseVisualStyleBackColor = True
             '
-            'm_txTol
+            'm_tbxFMratio
             '
-            resources.ApplyResources(Me.m_txTol, "m_txTol")
-            Me.m_txTol.Name = "m_txTol"
+            resources.ApplyResources(Me.m_tbxFMratio, "m_tbxFMratio")
+            Me.m_tbxFMratio.Name = "m_tbxFMratio"
+            '
+            'm_tbxEETol
+            '
+            resources.ApplyResources(Me.m_tbxEETol, "m_tbxEETol")
+            Me.m_tbxEETol.Name = "m_tbxEETol"
             '
             'm_tbpB
             '
@@ -241,7 +269,6 @@ Namespace Ecosim
             '
             'm_tsbnLoadPedB
             '
-            Me.m_tsbnLoadPedB.Image = ScientificInterfaceShared.My.Resources.certificate
             resources.ApplyResources(Me.m_tsbnLoadPedB, "m_tsbnLoadPedB")
             Me.m_tsbnLoadPedB.Name = "m_tsbnLoadPedB"
             '
@@ -293,7 +320,6 @@ Namespace Ecosim
             '
             'm_tsbnLoadPedPB
             '
-            Me.m_tsbnLoadPedPB.Image = Global.ScientificInterfaceShared.My.Resources.certificate
             resources.ApplyResources(Me.m_tsbnLoadPedPB, "m_tsbnLoadPedPB")
             Me.m_tsbnLoadPedPB.Name = "m_tsbnLoadPedPB"
             '
@@ -345,7 +371,6 @@ Namespace Ecosim
             '
             'm_tsbnLoadPedQB
             '
-            Me.m_tsbnLoadPedQB.Image = ScientificInterfaceShared.My.Resources.certificate
             resources.ApplyResources(Me.m_tsbnLoadPedQB, "m_tsbnLoadPedQB")
             Me.m_tsbnLoadPedQB.Name = "m_tsbnLoadPedQB"
             '
@@ -449,11 +474,13 @@ Namespace Ecosim
             '
             'm_spPlot
             '
+            Me.m_spPlot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_spPlot, "m_spPlot")
             Me.m_spPlot.Name = "m_spPlot"
             '
             'm_spPlot.Panel1
             '
+            Me.m_spPlot.Panel1.Controls.Add(Me.m_tsPlot)
             Me.m_spPlot.Panel1.Controls.Add(Me.m_graph)
             '
             'm_spPlot.Panel2
@@ -461,9 +488,28 @@ Namespace Ecosim
             Me.m_spPlot.Panel2.Controls.Add(Me.m_lbGroups)
             Me.m_spPlot.Panel2.Controls.Add(Me.m_lblGroups)
             '
+            'm_tsPlot
+            '
+            Me.m_tsPlot.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+            Me.m_tsPlot.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnShowBestOnly, Me.m_tsbnShowGroups})
+            resources.ApplyResources(Me.m_tsPlot, "m_tsPlot")
+            Me.m_tsPlot.Name = "m_tsPlot"
+            Me.m_tsPlot.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+            '
+            'm_tsbnShowBestOnly
+            '
+            Me.m_tsbnShowBestOnly.CheckOnClick = True
+            resources.ApplyResources(Me.m_tsbnShowBestOnly, "m_tsbnShowBestOnly")
+            Me.m_tsbnShowBestOnly.Name = "m_tsbnShowBestOnly"
+            '
+            'm_tsbnShowGroups
+            '
+            Me.m_tsbnShowGroups.CheckOnClick = True
+            resources.ApplyResources(Me.m_tsbnShowGroups, "m_tsbnShowGroups")
+            Me.m_tsbnShowGroups.Name = "m_tsbnShowGroups"
+            '
             'm_graph
             '
-            Me.m_graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_graph, "m_graph")
             Me.m_graph.Name = "m_graph"
             Me.m_graph.ScrollGrace = 0.0R
@@ -479,9 +525,9 @@ Namespace Ecosim
             Me.m_lbGroups.AllGroupsItemColor = System.Drawing.Color.Transparent
             Me.m_lbGroups.AllGroupsItemText = "(All)"
             resources.ApplyResources(Me.m_lbGroups, "m_lbGroups")
+            Me.m_lbGroups.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.m_lbGroups.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed
             Me.m_lbGroups.FormattingEnabled = True
-            Me.m_lbGroups.GroupDisplayStyle = ScientificInterfaceShared.Controls.cGroupListBox.eGroupDisplayStyleTypes.DisplayAlways
             Me.m_lbGroups.GroupListTracking = ScientificInterfaceShared.Controls.cGroupListBox.eGroupTrackingType.LivingGroups
             Me.m_lbGroups.IsAllGroupsItemSelected = False
             Me.m_lbGroups.Name = "m_lbGroups"
@@ -643,6 +689,7 @@ Namespace Ecosim
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+            Me.CancelButton = Me.m_btnStop
             Me.Controls.Add(Me.m_cbSave)
             Me.Controls.Add(Me.m_tlpOutputs)
             Me.Controls.Add(Me.m_hdrOutputParam)
@@ -654,6 +701,7 @@ Namespace Ecosim
             Me.Controls.Add(Me.m_btnApply)
             Me.Controls.Add(Me.m_btnStop)
             Me.Controls.Add(Me.m_btnRunTrials)
+            Me.CoreExecutionState = EwEUtils.Core.eCoreExecutionState.EcosimLoaded
             Me.Name = "MCRun"
             Me.TabText = "Monte Carlo simulations"
             Me.m_tcMain.ResumeLayout(False)
@@ -677,9 +725,12 @@ Namespace Ecosim
             Me.m_tbpBA.PerformLayout()
             Me.m_tbpBPlot.ResumeLayout(False)
             Me.m_spPlot.Panel1.ResumeLayout(False)
+            Me.m_spPlot.Panel1.PerformLayout()
             Me.m_spPlot.Panel2.ResumeLayout(False)
             CType(Me.m_spPlot, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_spPlot.ResumeLayout(False)
+            Me.m_tsPlot.ResumeLayout(False)
+            Me.m_tsPlot.PerformLayout()
             Me.m_tbpBestTrial.ResumeLayout(False)
             CType(Me.m_nudNumTrials, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpOutputs.ResumeLayout(False)
@@ -720,8 +771,6 @@ Namespace Ecosim
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_lblGroups As cEwEHeaderLabel
         Private WithEvents m_tbpQB As System.Windows.Forms.TabPage
-        Friend WithEvents m_txTol As System.Windows.Forms.TextBox
-        Friend WithEvents Label1 As System.Windows.Forms.Label
         Private WithEvents m_btDefaultTol As System.Windows.Forms.Button
         Private WithEvents m_tbpSettings As System.Windows.Forms.TabPage
         Friend WithEvents m_cbSave As System.Windows.Forms.CheckBox
@@ -741,6 +790,14 @@ Namespace Ecosim
         Private WithEvents m_tsEE As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_gridBA As ScientificInterface.Ecosim.gridMCRunInput
         Private WithEvents m_tsBA As ScientificInterfaceShared.Controls.cEwEToolstrip
+        Private WithEvents m_cbSRA As System.Windows.Forms.CheckBox
+        Private WithEvents m_lblFMratio As System.Windows.Forms.Label
+        Private WithEvents m_lblEEtol As System.Windows.Forms.Label
+        Private WithEvents m_tbxEETol As System.Windows.Forms.TextBox
+        Private WithEvents m_tbxFMratio As System.Windows.Forms.TextBox
+        Private WithEvents m_tsPlot As ScientificInterfaceShared.Controls.cEwEToolstrip
+        Private WithEvents m_tsbnShowBestOnly As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_tsbnShowGroups As System.Windows.Forms.ToolStripButton
     End Class
 
 End Namespace

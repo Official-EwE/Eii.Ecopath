@@ -55,7 +55,11 @@ Namespace Ecosim
         Private m_fpSS As cEwEFormatProvider = Nothing
         Private m_fpSSBest As cEwEFormatProvider = Nothing
 
+        Private m_fpEETol As cEwEFormatProvider = Nothing
+        Private m_fpFMratio As cEwEFormatProvider = Nothing
+
         Private m_lpplIteration As New List(Of PointPairList)
+        Private m_lSS As New List(Of Single)
 
         ''' <summary>
         ''' Local counter for the number of trials run
@@ -73,6 +77,8 @@ Namespace Ecosim
         Private m_qeQB As New cQuickEditHandler()
         Private m_qeEE As New cQuickEditHandler()
         Private m_qeBA As New cQuickEditHandler()
+
+        Private m_bShowBetterSS As Boolean = False
 
 #End Region ' Private vars
 
@@ -98,6 +104,11 @@ Namespace Ecosim
             Me.m_tsQB.Visible = True
             Me.m_tsEE.Visible = True
             Me.m_tsBA.Visible = True
+
+            Me.m_spPlot.FixedPanel = FixedPanel.Panel2
+
+            Me.m_tsbnShowGroups.Image = SharedResources.fish
+            Me.m_tsbnShowBestOnly.Image = SharedResources.FilterHS
 
             If (Me.UIContext Is Nothing) Then Return
 
@@ -130,9 +141,12 @@ Namespace Ecosim
             Me.m_fpSSBest = New cEwEFormatProvider(Me.UIContext, Me.lblValueSSBest, GetType(Single))
             Me.m_fpSSBest.Value = 0.0!
 
-            Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
+            Me.m_fpEETol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxEETol, GetType(Single))
+            AddHandler Me.m_fpEETol.OnValueChanged, AddressOf OnEETolChanged
+
+            Me.m_mcmanager.ShowBiomassTrajectories = m_cbShowBioTraj.Checked
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
-            Me.m_mcmanager.bRetainFits = m_cbRetainEstimates.Checked
+            Me.m_mcmanager.RetainFits = m_cbRetainEstimates.Checked
 
             'Set the interface checkbox with the value from the core
             Me.m_cbSave.Checked = Me.m_mcmanager.IsSaveOutput
@@ -169,8 +183,9 @@ Namespace Ecosim
             Me.m_lbGroups.Attach(Me.UIContext)
             Me.m_lbGroups.SelectedIndex = 0
 
-            Me.m_txTol.Text = Me.m_mcmanager.EcopathEETolerance.ToString
             Me.m_tcMain.SelectedTab = Me.m_tbpB
+
+            Me.m_tsbnShowGroups.Checked = Not Me.m_spPlot.Panel2Collapsed
 
             Me.m_qeB.Attach(Me.m_gridB, Me.UIContext, Me.m_tsB, "MC_B")
             Me.m_qePB.Attach(Me.m_gridPB, Me.UIContext, Me.m_tsPB, "MC_PB")
@@ -186,77 +201,99 @@ Namespace Ecosim
 
             If (Me.UIContext Is Nothing) Then Return
 
-            If Me.m_mcmanager.IsRunning Then
-                Me.m_mcmanager.StopRun(0)
-            End If
+            Try
 
-            Me.m_qeB.Detach()
-            Me.m_qePB.Detach()
-            Me.m_qeQB.Detach()
-            Me.m_qeEE.Detach()
-            Me.m_qeBA.Detach()
+                If Me.m_mcmanager.IsRunning Then
+                    Me.m_mcmanager.StopRun(0)
+                End If
 
-            Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
-            Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
+                Me.m_qeB.Detach()
+                Me.m_qePB.Detach()
+                Me.m_qeQB.Detach()
+                Me.m_qeEE.Detach()
+                Me.m_qeBA.Detach()
 
-            Me.m_gridB.UIContext = Nothing
-            Me.m_gridBA.UIContext = Nothing
-            Me.m_gridEE.UIContext = Nothing
-            Me.m_gridPB.UIContext = Nothing
-            Me.m_gridQB.UIContext = Nothing
-            Me.m_gridBestFit.UIContext = Nothing
+                Me.CommandHandler.Remove(Me.m_cmdRunMonteCarlo)
+                Me.CommandHandler.Remove(Me.m_cmdStopMonteCarlo)
 
-            'jb the 'WeightTimeSeries' command was not loaded during OnLoad() 
-            ' Disconnect from ApplyTS command
-            'Dim cmd As cCommand = Me.CommandHandler.GetCommand("WeightTimeSeries")
-            'If cmd IsNot Nothing Then cmd.RemoveControl(Me.m_btnTS)
+                Me.m_gridB.UIContext = Nothing
+                Me.m_gridBA.UIContext = Nothing
+                Me.m_gridEE.UIContext = Nothing
+                Me.m_gridPB.UIContext = Nothing
+                Me.m_gridQB.UIContext = Nothing
+                Me.m_gridBestFit.UIContext = Nothing
 
-            Me.m_lbGroups.Detach()
+                Me.m_lbGroups.Detach()
 
-            ' Disconnect from property
-            RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
-            Me.m_propNYears = Nothing
+                ' Disconnect from property
+                RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
+                Me.m_propNYears = Nothing
 
-            Me.m_plothelper.Detach()
+                Me.m_plothelper.Detach()
 
-            Me.m_fpERun.Release()
-            Me.m_fpNumTrials.Release()
-            Me.m_fpSS.Release()
-            Me.m_fpSSBest.Release()
-            Me.m_fpSSorg.Release()
-            Me.m_fpTrial.Release()
+                Me.m_fpERun.Release()
+                Me.m_fpNumTrials.Release()
+                Me.m_fpSS.Release()
+                Me.m_fpSSBest.Release()
+                Me.m_fpSSorg.Release()
+                Me.m_fpTrial.Release()
+
+                Me.m_fpEETol.Release()
+                Me.m_fpFMratio.Release()
+
+            Catch ex As Exception
+                Debug.Assert(False)
+            End Try
 
             MyBase.OnFormClosed(e)
 
         End Sub
 
-        Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_btnStop.Click
-            Me.m_mcmanager.StopRun(0)
+        Private Sub btnStop_Click(ByVal sender As Object, ByVal e As System.EventArgs) _
+            Handles m_btnStop.Click
+            If Not Me.m_mcmanager Is Nothing Then
+                Try
+                    Me.m_mcmanager.StopRun(0)
+                Catch ex As Exception
+
+                End Try
+            End If
         End Sub
 
-        Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles m_btnApply.Click
-            Me.m_mcmanager.ApplyBestFits()
+        Private Sub btApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+            Handles m_btnApply.Click
+            If Not Me.m_mcmanager Is Nothing Then
+                Try
+                    Me.m_mcmanager.ApplyBestFits()
+                Catch ex As Exception
+
+                End Try
+            End If
         End Sub
 
         Private Sub cbShowBioTraj_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbShowBioTraj.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
-                Me.m_mcmanager.bShowPlot = m_cbShowBioTraj.Checked
+                Try
+                    Me.m_mcmanager.ShowBiomassTrajectories = m_cbShowBioTraj.Checked
+                Catch ex As Exception
+
+                End Try
             End If
         End Sub
 
-        Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
-            Handles m_cbRetainCurPattern.CheckedChanged
-            If Not Me.m_mcmanager Is Nothing Then
-                ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
-            End If
-        End Sub
+        'Private Sub cbRetainCurPattern_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        '    Handles m_cbRetainCurPattern.CheckedChanged, m_cbSRA.CheckedChanged
+        '    If Not Me.m_mcmanager Is Nothing Then
+        '        ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
+        '    End If
+        'End Sub
 
         Private Sub cbRetainEstimates_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_cbRetainEstimates.CheckedChanged
             If Not Me.m_mcmanager Is Nothing Then
                 Try
-                    Me.m_mcmanager.nTrials = CInt(Me.m_nudNumTrials.Value)
+                    Me.m_mcmanager.RetainFits = Me.m_cbRetainEstimates.Checked
                 Catch ex As Exception
                 End Try
             End If
@@ -284,31 +321,88 @@ Namespace Ecosim
 
         Private Sub OnLoadBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnLoadPedB.Click
-            Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.BiomassAreaInput)
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.BiomassAreaInput)
+                Catch ex As Exception
+                End Try
+            End If
         End Sub
 
         Private Sub OnLoadPBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnLoadPedPB.Click
-            Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.PBInput)
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.PBInput)
+                Catch ex As Exception
+                End Try
+            End If
         End Sub
 
         Private Sub OnLoadQBFromPedigree(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_tsbnLoadPedQB.Click
-            Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.QBInput)
-        End Sub
-
-        Private Sub OntxTolValidating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) _
-            Handles m_txTol.Validating
-            Dim tol As Single
-            If Single.TryParse(Me.m_txTol.Text, tol) Then
-                Me.m_mcmanager.EcopathEETolerance = tol
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.LoadFromPedigree(eVarNameFlags.QBInput)
+                Catch ex As Exception
+                End Try
             End If
         End Sub
 
-        Private Sub m_btDefaultTol_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Private Sub m_cbSRA_CheckedChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_cbSRA.CheckedChanged
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.IncludeFpenalty = Me.m_cbSRA.Checked
+                    Me.UpdateControls()
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnFMratioChanged(ByVal sender As Object, ByVal e As System.EventArgs)
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.FMRatioForSRA = CSng(Me.m_fpFMratio.Value)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnEETolChanged(ByVal sender As Object, ByVal e As system.EventArgs)
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.EcopathEETolerance = CSng(Me.m_fpEETol.Value)
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Private Sub OnDefaultTol(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btDefaultTol.Click
-            Me.m_mcmanager.setDefaultTol()
-            Me.m_txTol.Text = Me.m_mcmanager.EcopathEETolerance.ToString
+            If Me.m_mcmanager IsNot Nothing Then
+                Try
+                    Me.m_mcmanager.setDefaultTol()
+                    Me.m_fpEETol.Value = Me.m_mcmanager.EcopathEETolerance
+                Catch ex As Exception
+                End Try
+            End If
+        End Sub
+
+        Private Sub m_tsbnShowBestOnly_Click(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowBestOnly.Click
+            Try
+                Me.m_bShowBetterSS = Me.m_tsbnShowBestOnly.Checked
+                Me.ToggleLineViz()
+            Catch ex As Exception
+
+            End Try
+        End Sub
+
+        Private Sub OnShowGroupsCheckChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowGroups.CheckedChanged
+            If (Me.m_bInUpdate) Then Return
+            Me.UpdateControls()
         End Sub
 
 #End Region ' Events
@@ -358,13 +452,6 @@ Namespace Ecosim
             Me.m_nTrials = 0
 
             Try
-                Me.m_btnApply.Enabled = True
-                Me.m_cbRetainEstimates.Enabled = True
-                Me.m_cbShowBioTraj.Enabled = True
-                Me.m_nudNumTrials.Enabled = True
-                Me.m_btnTS.Enabled = True
-                Me.m_cbSave.Enabled = True
-
                 'populate the grid with new values (biomass....)
                 Me.m_gridBestFit.RefreshContent()
 
@@ -374,6 +461,7 @@ Namespace Ecosim
             Catch ex As Exception
                 Debug.Assert(False, ex.StackTrace)
             End Try
+            Me.UpdateControls()
 
         End Sub
 
@@ -415,14 +503,7 @@ Namespace Ecosim
         Private Sub m_cmdRunMonteCarlo_OnInvoke(ByVal cmd As EwEUtils.Commands.cCommand) _
             Handles m_cmdRunMonteCarlo.OnInvoke
 
-            Me.m_btnApply.Enabled = False
-            Me.m_cbRetainEstimates.Enabled = False
-            Me.m_cbShowBioTraj.Enabled = False
-            Me.m_nudNumTrials.Enabled = False
-            Me.m_btnTS.Enabled = False
-            Me.m_cbSave.Enabled = False
-
-            If Me.m_mcmanager.bShowPlot Then
+            If Me.m_mcmanager.ShowBiomassTrajectories Then
                 ' Select biomass plot page.
                 Me.m_tcMain.SelectedTab = Me.m_tbpBPlot
             End If
@@ -441,6 +522,8 @@ Namespace Ecosim
 
             Me.NewIteration()
             Me.m_mcmanager.Run()
+
+            Me.UpdateControls()
 
         End Sub
 
@@ -515,7 +598,7 @@ Namespace Ecosim
         Private Sub UpdateGraphHighlights()
 
             'Only Highlight if the graphs are drawing
-            If Me.m_mcmanager.bShowPlot Then
+            If Me.m_mcmanager.ShowBiomassTrajectories Then
 
                 ' Start setting highlights
                 Me.m_plothelper.ClearHighlights()
@@ -546,12 +629,13 @@ Namespace Ecosim
         Private Sub NewIteration()
 
             Dim lLines As New List(Of LineItem)
+            Dim line As LineItem = Nothing
 
             Me.m_nTrials += 1
             Me.m_plothelper.CreateRun(String.Format(SharedResources.GENERIC_VALUE_ITERATION, Me.m_nTrials))
             Me.m_lpplIteration.Clear()
 
-            If (Me.m_mcmanager.bShowPlot = True) Then
+            If (Me.m_mcmanager.ShowBiomassTrajectories = True) Then
 
                 For iGroup As Integer = 1 To Me.Core.nLivingGroups
                     Me.m_lpplIteration.Add(New PointPairList())
@@ -561,12 +645,50 @@ Namespace Ecosim
                     Dim group As cEcoPathGroupInput = Me.Core.EcoPathGroupInputs(iGroup)
                     Dim strGroupName As String = String.Format(SharedResources.GENERIC_LABEL_INDEXED, iGroup, group.Name)
                     Dim strTrialLabel As String = String.Format(My.Resources.GENERIC_LABEL_TRIAL, Me.m_nTrials, strGroupName)
-                    lLines.Add(Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strTrialLabel))
+                    line = Me.m_plothelper.CreateLine(group, Me.m_lpplIteration(iGroup - 1), strTrialLabel)
+                    Me.m_plothelper.Metadata(line, "SS") = Me.m_mcmanager.SS
+
+                    line.IsVisible = Not m_bShowBetterSS Or (Me.m_mcmanager.SS < Me.m_mcmanager.SSorg)
+                    lLines.Add(line)
                 Next iGroup
 
             End If
+
             Me.m_plothelper.YScaleMax = Me.m_sYMax
             Me.m_plothelper.PlotLines(lLines.ToArray, 1, True, False)
+
+        End Sub
+
+        Private Sub ToggleLineViz()
+
+            For Each ci As CurveItem In Me.m_plothelper.DataLines()
+                Dim sSS As Single = CSng(Me.m_plothelper.Metadata(ci, "SS"))
+                ci.IsVisible = Not m_bShowBetterSS Or (sSS < Me.m_mcmanager.SSorg)
+            Next
+            Me.m_plothelper.RescaleAndRedraw()
+
+        End Sub
+
+        Private m_bInUpdate As Boolean = False
+
+        Protected Overrides Sub UpdateControls()
+            MyBase.UpdateControls()
+
+            Dim bIsBusy As Boolean = Me.Core.StateMonitor.IsBusy
+
+            Me.m_bInUpdate = True
+
+            Me.m_spPlot.Panel2Collapsed = Not Me.m_tsbnShowGroups.Checked
+            Me.m_btnApply.Enabled = Not bIsBusy
+            Me.m_cbRetainEstimates.Enabled = Not bIsBusy
+            Me.m_cbShowBioTraj.Enabled = Not bIsBusy
+            Me.m_nudNumTrials.Enabled = Not bIsBusy
+            Me.m_btnTS.Enabled = Not bIsBusy
+            Me.m_cbSave.Enabled = Not bIsBusy
+
+            Me.m_tbxFMratio.Enabled = Me.m_mcmanager.IncludeFpenalty
+
+            Me.m_bInUpdate = False
 
         End Sub
 

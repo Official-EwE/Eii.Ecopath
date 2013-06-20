@@ -51,6 +51,16 @@ Namespace Ecospace
         Private m_fpNEffortThreads As cEwEFormatProvider = Nothing
         Private m_fpNumPackets As cEwEFormatProvider = Nothing
 
+        ' Spatial
+        Private m_fpN As cEwEFormatProvider = Nothing
+        Private m_fpW As cEwEFormatProvider = Nothing
+        Private m_fpS As cEwEFormatProvider = Nothing
+        Private m_fpE As cEwEFormatProvider = Nothing
+        Private m_fpInCol As cEwEFormatProvider = Nothing
+        Private m_fpInRow As cEwEFormatProvider = Nothing
+        Private m_fpCellLength As cEwEFormatProvider = Nothing
+        Private m_fpCellSize As cEwEFormatProvider = Nothing
+
         ' Model
         Private m_fpTotalTime As cEwEFormatProvider = Nothing
         Private m_fpNumTSpYear As cEwEFormatProvider = Nothing
@@ -118,16 +128,88 @@ Namespace Ecospace
         Public Sub New()
             Me.InitializeComponent()
         End Sub
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Event handler; called when the form is initially loaded.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Protected Overrides Sub OnLoad(e As System.EventArgs)
+
             MyBase.OnLoad(e)
 
-            Me.InitContent()
+            If (Me.UIContext Is Nothing) Then Return
+
+            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
+            Dim bm As cEcospaceBasemap = Me.Core.EcospaceBasemap
+            Dim propMan As cPropertyManager = Me.PropertyManager
+
+            ' Start listening to props
+            Me.m_bpUseIBM = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
+            Me.m_bpUseNewStanza = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
+            Me.m_bpAdjustSpace = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
+            Me.m_bpEffort = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
+
+            Me.m_bpConTracing = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
+
+            ' Configure writers
+            Dim wrAsc As New cEcospaceASCMapResultsWriter()
+            Dim wrCSV As New cEcospaceCSVMapResultsWriter()
+
+            Me.m_cmbAutosaveMapFormat.Items.Clear()
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem("Do not auto-save results"))
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrAsc))
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrCSV))
+            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(New IEcospaceResultsWriter() {wrAsc, wrCSV}))
+            If (Me.Core.PluginManager IsNot Nothing) Then
+                For Each ip As EwEPlugin.IEcospaceResultWriterPlugin In Me.Core.PluginManager.GetPlugins(GetType(EwEPlugin.IEcospaceResultWriterPlugin))
+                    Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(ip))
+                Next ip
+            End If
+
+            Me.UpdateControls()
+
+
+            Me.m_fpInCol = New cEwEFormatProvider(Me.UIContext, Me.m_nudColCount, GetType(Integer), bm.GetVariableMetadata(eVarNameFlags.InCol))
+            Me.m_fpInCol.Value = bm.InCol
+
+            Me.m_fpInRow = New cEwEFormatProvider(Me.UIContext, Me.m_nudRowCount, GetType(Integer), bm.GetVariableMetadata(eVarNameFlags.InRow))
+            Me.m_fpInRow.Value = bm.InRow
+
+            Me.m_fpN = New cEwEFormatProvider(Me.UIContext, Me.m_nudNorth, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.Latitude))
+            Me.m_fpN.Value = bm.Latitude
+
+            Me.m_fpW = New cEwEFormatProvider(Me.UIContext, Me.m_nudWest, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.Longitude))
+            Me.m_fpW.Value = bm.Longitude
+
+            Me.m_fpCellLength = New cEwEFormatProvider(Me.UIContext, Me.m_nudCellLength, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.CellLength))
+            Me.m_fpCellLength.Value = bm.CellLength
+
+            Me.m_fpCellSize = New cEwEFormatProvider(Me.UIContext, Me.m_nudCellSize, GetType(Single), bm.GetVariableMetadata(eVarNameFlags.CellSize))
+            Me.m_fpCellSize.Value = bm.CellSize
+
+
+
+            ' Hmm, connecting one control to three live properties - this could be dangerous
+            Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nGridSolverThreads)
+            Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
+            Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nEffortDistThreads)
+
+            Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
+
+            ' Model
+            Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
+            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
+            Me.m_fpTolerance = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
+            Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
+            Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
+            Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
+
+            Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, ecospaceModelParams, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
+            Me.UpdateScenarioFormatProviders()
+
             Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.EcoSpace, eCoreComponentType.Core}
+
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
@@ -162,56 +244,6 @@ Namespace Ecospace
             End Try
 
             MyBase.OnFormClosed(e)
-        End Sub
-
-        Private Sub InitContent()
-
-            Dim ecospaceModelParams As cEcospaceModelParameters = Me.Core.EcospaceModelParameters()
-            Dim propMan As cPropertyManager = Me.PropertyManager
-
-            ' Start listening to props
-            Me.m_bpUseIBM = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseIBM), cBooleanProperty)
-            Me.m_bpUseNewStanza = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.UseNewMultiStanza), cBooleanProperty)
-            Me.m_bpAdjustSpace = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.AdjustSpace), cBooleanProperty)
-            Me.m_bpEffort = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.PredictEffort), cBooleanProperty)
-
-            Me.m_bpConTracing = DirectCast(propMan.GetProperty(ecospaceModelParams, eVarNameFlags.ConSimOnEcoSpace), cBooleanProperty)
-
-            ' Configure writers
-            Dim wrAsc As New cEcospaceASCMapResultsWriter()
-            Dim wrCSV As New cEcospaceCSVMapResultsWriter()
-
-            Me.m_cmbAutosaveMapFormat.Items.Clear()
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem("Do not auto-save results"))
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrAsc))
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(wrCSV))
-            Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(New IEcospaceResultsWriter() {wrAsc, wrCSV}))
-            If (Me.Core.PluginManager IsNot Nothing) Then
-                For Each ip As EwEPlugin.IEcospaceResultWriterPlugin In Me.Core.PluginManager.GetPlugins(GetType(EwEPlugin.IEcospaceResultWriterPlugin))
-                    Me.m_cmbAutosaveMapFormat.Items.Add(New cEcospaceResultWriterItem(ip))
-                Next ip
-            End If
-
-            Me.UpdateControls()
-
-            ' Hmm, connecting one control to three live properties - this could be dangerous
-            Me.m_fpNGridThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nGridSolverThreads)
-            Me.m_fpNBiomassThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nSpaceThreads)
-            Me.m_fpNEffortThreads = New cPropertyFormatProvider(Me.UIContext, Me.m_nudNumThreads, ecospaceModelParams, eVarNameFlags.nEffortDistThreads)
-
-            Me.m_fpNumPackets = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumPackets, ecospaceModelParams, eVarNameFlags.PacketsMultiplier)
-
-            ' Model
-            Me.m_fpTotalTime = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTotalTime, ecospaceModelParams, eVarNameFlags.TotalTime)
-            Me.m_fpNumTSpYear = New cPropertyFormatProvider(Me.UIContext, Me.m_tbNumTimeStepsPerYear, ecospaceModelParams, eVarNameFlags.NumTimeStepsPerYear)
-            Me.m_fpTolerance = New cPropertyFormatProvider(Me.UIContext, Me.m_tbTolerance, ecospaceModelParams, eVarNameFlags.Tolerance)
-            Me.m_fpSOR = New cPropertyFormatProvider(Me.UIContext, Me.m_tbSOR, ecospaceModelParams, eVarNameFlags.SOR)
-            Me.m_fpMaxIterations = New cPropertyFormatProvider(Me.UIContext, Me.m_nudMaxIterations, ecospaceModelParams, eVarNameFlags.MaxIterations)
-            Me.m_fpUseExact = New cPropertyFormatProvider(Me.UIContext, Me.m_cbUseExact, ecospaceModelParams, eVarNameFlags.UseExact)
-
-            Me.m_fpMovePackets = New cPropertyFormatProvider(Me.UIContext, Me.m_cbMovePackets, ecospaceModelParams, eVarNameFlags.EcospaceIBMMovePacketOnStanza)
-            Me.UpdateScenarioFormatProviders()
-
         End Sub
 
 #End Region ' Form events
@@ -429,7 +461,7 @@ Namespace Ecospace
         Public Overrides Sub OnCoreMessage(ByVal msg As EwECore.cMessage)
             If ((msg.Source = eCoreComponentType.EcoSpace) And (msg.Type = eMessageType.DataAddedOrRemoved)) Then
                 ' Reload
-                Me.InitContent()
+                'Me.InitContent()
             End If
             If ((msg.Source = eCoreComponentType.Core) And (msg.Type = eMessageType.GlobalSettingsChanged)) Then
                 Me.UpdateControls()

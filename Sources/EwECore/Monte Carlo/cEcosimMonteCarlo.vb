@@ -65,9 +65,19 @@ Friend Class cEcosimMonteCarlo
     Public CVpar(,) As Single
     Public ParLimit(,,) As Single
 
-    Public Ntrials As Integer
-    Public StopTrial As Boolean
-    Public bRetainBiomass As Boolean
+    Public Property Ntrials As Integer
+    Public Property StopTrial As Boolean
+    Public Property RetainBiomass As Boolean
+
+    ''' <summary>
+    ''' Flag, states whether to include Stock Reduction Analysis (SRA) for groups with forced catches
+    ''' </summary>
+    Public Property IncludeFpenalty As Boolean
+
+    ''' <summary>
+    ''' F/M ratio for SRA 
+    ''' </summary>
+    Public Property FMratioForSRA As Single = 1
 
     ''' <summary>
     ''' Optional <see cref="EcoSimTimeStepDelegate">delegate</see> that will be called after a 
@@ -498,12 +508,10 @@ Friend Class cEcosimMonteCarlo
 
                     'Below is for global Nereus model, June 2013
 
-                    Dim includeFpenalty As Boolean = True
-                    Dim SFactor As Single = 1
                     Dim Fpenalty As Single
                     Dim FirstRun As Boolean = False
 
-                    If includeFpenalty Then
+                    If Me.IncludeFpenalty Then
                         If Fpenalty = 0 Then FirstRun = True
                         Fpenalty = 0
                         Dim sStr As String = ""
@@ -511,13 +519,12 @@ Friend Class cEcosimMonteCarlo
                             If Me.m_ecopath.EcopathData.fCatch(ii) > 0 Then
                                 Dim lasttimestep As Integer = m_ecosim.EcosimData.NTimes
                                 Dim NatMort As Single = m_ecopath.EcopathData.M0(ii) + m_ecopath.EcopathData.M2(ii)
-                                Dim SScont As Single = (Me.m_ecosim.EcosimData.FishRateNo(ii, lasttimestep) - SFactor * NatMort)
+                                Dim SScont As Single = (Me.m_ecosim.EcosimData.FishRateNo(ii, lasttimestep) - Me.FMratioForSRA * NatMort)
                                 Fpenalty += CSng(100 * SScont ^ 2)
                                 sStr += ii & " " & SScont & ","
                             End If
                         Next
                         'Debug.Print(sStr)
-                        bRetainBiomass = True
                     End If
 
                     If FirstRun Then
@@ -546,7 +553,7 @@ Friend Class cEcosimMonteCarlo
                             '  BestFit(eMCParams.Vulnerability, igrp) = m_esdata.VulnerabilityPredator(igrp)
                         Next
 
-                        If bRetainBiomass Then
+                        If RetainBiomass Then
                             Array.Copy(BestFit, Pmean, BestFit.Length)
                             'VC 2008 don't want it to stop just as it found a better fit so:
                             iTrial = Math.Min(iTrial, CInt(0.9 * Ntrials))
