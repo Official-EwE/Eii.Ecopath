@@ -78,9 +78,11 @@ Public Class frmStartPanel
         End Get
         Set(ByVal strURL As String)
             Try
-                If Not String.IsNullOrWhiteSpace(strURL) Then
-                    Me.m_browser.Navigate(strURL)
+                If String.IsNullOrWhiteSpace(strURL) Then
+                    Dim link As New cWebLinks(Me.UIContext.Core)
+                    strURL = link.GetURL(cWebLinks.eLinkType.Start)
                 End If
+                Me.m_browser.Navigate(strURL)
             Catch ex As Exception
                 cLog.Write(ex)
             End Try
