@@ -142,7 +142,12 @@ Namespace Ecosim
             Me.m_fpSSBest.Value = 0.0!
 
             Me.m_fpEETol = New cEwEFormatProvider(Me.UIContext, Me.m_tbxEETol, GetType(Single))
+            Me.m_fpEETol.Value = Me.m_mcmanager.EcopathEETolerance
             AddHandler Me.m_fpEETol.OnValueChanged, AddressOf OnEETolChanged
+
+            Me.m_fpFMratio = New cEwEFormatProvider(Me.UIContext, Me.m_tbxFMratio, GetType(Single))
+            Me.m_fpFMratio.Value = Me.m_mcmanager.FMRatioForSRA
+            AddHandler Me.m_fpFMratio.OnValueChanged, AddressOf OnFMratioChanged
 
             Me.m_mcmanager.ShowBiomassTrajectories = m_cbShowBioTraj.Checked
             ' me.m_mcManager.UseFishingPattern = cbRetainCurPattern.Checked
@@ -224,6 +229,9 @@ Namespace Ecosim
                 Me.m_gridBestFit.UIContext = Nothing
 
                 Me.m_lbGroups.Detach()
+
+                RemoveHandler Me.m_fpEETol.OnValueChanged, AddressOf OnEETolChanged
+                RemoveHandler Me.m_fpFMratio.OnValueChanged, AddressOf OnFMratioChanged
 
                 ' Disconnect from property
                 RemoveHandler Me.m_propNYears.PropertyChanged, AddressOf OnPropNumYearsChanged
@@ -389,8 +397,8 @@ Namespace Ecosim
             End If
         End Sub
 
-        Private Sub m_tsbnShowBestOnly_Click(sender As System.Object, e As System.EventArgs) _
-            Handles m_tsbnShowBestOnly.Click
+        Private Sub OnShowBetterRunsCheckChanged(sender As System.Object, e As System.EventArgs) _
+            Handles m_tsbnShowBestOnly.CheckedChanged
             Try
                 Me.m_bShowBetterSS = Me.m_tsbnShowBestOnly.Checked
                 Me.ToggleLineViz()
@@ -674,19 +682,26 @@ Namespace Ecosim
         Protected Overrides Sub UpdateControls()
             MyBase.UpdateControls()
 
+            If (Me.UIContext Is Nothing) Then Return
+
             Dim bIsBusy As Boolean = Me.Core.StateMonitor.IsBusy
 
             Me.m_bInUpdate = True
 
             Me.m_spPlot.Panel2Collapsed = Not Me.m_tsbnShowGroups.Checked
-            Me.m_btnApply.Enabled = Not bIsBusy
+            Me.m_btnApply.Enabled = Not bIsBusy And (Me.m_mcmanager.SSBestFit > Me.m_mcmanager.SSorg)
             Me.m_cbRetainEstimates.Enabled = Not bIsBusy
             Me.m_cbShowBioTraj.Enabled = Not bIsBusy
             Me.m_nudNumTrials.Enabled = Not bIsBusy
             Me.m_btnTS.Enabled = Not bIsBusy
             Me.m_cbSave.Enabled = Not bIsBusy
+            Me.m_cbSRA.Enabled = Not bIsBusy
 
-            Me.m_tbxFMratio.Enabled = Me.m_mcmanager.IncludeFpenalty
+            If Me.m_mcmanager.IncludeFpenalty Then
+                Me.m_fpFMratio.Style = cStyleGuide.eStyleFlags.OK
+            Else
+                Me.m_fpFMratio.Style = cStyleGuide.eStyleFlags.NotEditable
+            End If
 
             Me.m_bInUpdate = False
 

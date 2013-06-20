@@ -912,9 +912,6 @@
   <data name="m_cbSRA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="m_cbSRA.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="m_cbSRA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>

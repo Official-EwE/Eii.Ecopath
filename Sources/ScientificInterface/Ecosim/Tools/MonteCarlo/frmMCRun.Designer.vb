@@ -773,7 +773,7 @@ Namespace Ecosim
         Private WithEvents m_tbpQB As System.Windows.Forms.TabPage
         Private WithEvents m_btDefaultTol As System.Windows.Forms.Button
         Private WithEvents m_tbpSettings As System.Windows.Forms.TabPage
-        Friend WithEvents m_cbSave As System.Windows.Forms.CheckBox
+        Private WithEvents m_cbSave As System.Windows.Forms.CheckBox
         Private WithEvents m_cbRetainEstimates As System.Windows.Forms.CheckBox
         Private WithEvents m_cbRetainCurPattern As System.Windows.Forms.CheckBox
         Private WithEvents m_cbShowBioTraj As System.Windows.Forms.CheckBox
