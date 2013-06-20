@@ -105,8 +105,6 @@ Namespace Ecosim
             Me.m_tsEE.Visible = True
             Me.m_tsBA.Visible = True
 
-            Me.m_spPlot.FixedPanel = FixedPanel.Panel2
-
             Me.m_tsbnShowGroups.Image = SharedResources.fish
             Me.m_tsbnShowBestOnly.Image = SharedResources.FilterHS
 
