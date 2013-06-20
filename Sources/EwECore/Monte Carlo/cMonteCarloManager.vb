@@ -489,6 +489,7 @@ Public Class cMonteCarloManager
     ''' -----------------------------------------------------------------------
     Public Property UseFishingPattern() As Boolean
         Get
+            Throw New NotImplementedException("MonteCarlo UseFishingPattern Not implemented yet")
             Return False
         End Get
         Set(ByVal value As Boolean)
