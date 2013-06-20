@@ -60,7 +60,7 @@ Namespace Controls
             Private m_source As ICoreInterface = Nothing
             Private m_iGroup As Integer = cCore.NULL_VALUE
             Private m_iFleet As Integer = cCore.NULL_VALUE
-            Private m_tag As Object = Nothing
+            Private m_data As Dictionary(Of String, Object)
 
             ' == Fixed properties ==
 
@@ -95,7 +95,7 @@ Namespace Controls
                 Me.m_source = src
                 Me.m_uic = uic
                 Me.m_strLabel = strLabel
-                Me.m_tag = tag
+                Me.Data("") = tag
 
                 If (TypeOf src Is cCoreInputOutputBase) Then
                     If (TypeOf src Is cEcoPathGroupInput) Then
@@ -138,7 +138,7 @@ Namespace Controls
                 Me.m_strLabel = strLabel
                 Me.m_colour = colour
                 Me.m_lineType = lineType
-                Me.m_tag = tag
+                Me.Data("") = tag
 
             End Sub
 
@@ -275,10 +275,36 @@ Namespace Controls
             ''' ---------------------------------------------------------------
             Public Property Tag() As Object
                 Get
-                    Return Me.m_tag
+                    Return Me.Data("")
                 End Get
                 Set(ByVal value As Object)
-                    Me.m_tag = value
+                    Me.Data("") = value
+                End Set
+            End Property
+
+            ''' ---------------------------------------------------------------
+            ''' <summary>
+            ''' Get/set custom data items for this line.
+            ''' </summary>
+            ''' <param name="strKey">The name of the item to obtain.</param>
+            ''' ---------------------------------------------------------------
+            Public Property Data(strKey As String) As Object
+                Get
+                    If (Me.m_data Is Nothing) Then Return Nothing
+                    If String.IsNullOrWhiteSpace(strKey) Then strKey = "Default"
+                    If (Not Me.m_data.ContainsKey(strKey)) Then Return Nothing
+                    Return Me.m_data(strKey)
+                End Get
+                Set(value As Object)
+                    If String.IsNullOrWhiteSpace(strKey) Then strKey = "Default"
+                    If (value Is Nothing) Then
+                        If (Me.m_data Is Nothing) Then Return
+                        If (Not Me.m_data.ContainsKey(strKey)) Then Return
+                        Me.m_data.Remove(strKey)
+                    Else
+                        If (Me.m_data Is Nothing) Then Me.m_data = New Dictionary(Of String, Object)
+                        Me.m_data(strKey) = value
+                    End If
                 End Set
             End Property
 
@@ -901,10 +927,8 @@ Namespace Controls
         ''' <summary>
         ''' Redraw the wrapped ZedGraph.
         ''' </summary>
-        ''' <param name="iPane">The pane to redraw, or -1 to redraw all panes 
-        ''' in the graph.</param>
         ''' -------------------------------------------------------------------
-        Public Overridable Sub Redraw(Optional ByVal iPane As Integer = -1)
+        Public Overridable Sub Redraw()
             Me.m_zgc.Invalidate()
         End Sub
 
@@ -943,15 +967,13 @@ Namespace Controls
                 End With
             Next
 
-            ' Recalc axis
-            Me.m_zgc.AxisChange()
-
             ' Restore cursors
             For iPane = iMin To iMax
                 Me.ShowCursor(iPane) = abCursor(iPane)
             Next
 
-            Me.Redraw()
+            'Me.Redraw()
+            Me.m_zgc.BeginInvoke(New MethodInvoker(AddressOf Me.DoRescaleAndRedraw))
 
         End Sub
 
@@ -1283,6 +1305,34 @@ Namespace Controls
             If Not (TypeOf ci.Tag Is cCurveInfo) Then Return Nothing
             Return DirectCast(ci.Tag, cCurveInfo)
         End Function
+
+#Region " Line metadata "
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set optional metadata for lines created with <see cref="CreateLineItem"/>.
+        ''' </summary>
+        ''' <param name="ci">The line to access metadata for.</param>
+        ''' <param name="strKey">The name of the data to access metadata for. Can
+        ''' be left empty.</param>
+        ''' -------------------------------------------------------------------
+        Public Property Metadata(ByVal ci As CurveItem, Optional ByVal strKey As String = "") As Object
+            Get
+                Dim info As cCurveInfo = Me.CurveInfo(ci)
+                If (info IsNot Nothing) Then Return info.Data(strKey)
+                Return Nothing
+            End Get
+            Set(value As Object)
+                Dim info As cCurveInfo = Me.CurveInfo(ci)
+                If (info IsNot Nothing) Then
+                    info.Data(strKey) = value
+                Else
+                    Debug.Assert(False, "Metadata only allowed on curves created with CurveItem")
+                End If
+            End Set
+        End Property
+
+#End Region ' Line metadata
 
 #Region " Tooltip "
 
@@ -2731,6 +2781,14 @@ Namespace Controls
         End Sub
 
 #End Region ' Hover menu handling
+
+        ''' <summary>
+        ''' Async full-on refresh
+        ''' </summary>
+        Private Sub DoRescaleAndRedraw()
+            Me.m_zgc.AxisChange()
+            Me.m_zgc.Invalidate()
+        End Sub
 
 #End Region ' Internal bits
 

@@ -95,6 +95,27 @@ Namespace Ecospace
             Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plScenario = New System.Windows.Forms.Panel()
             Me.m_plModel = New System.Windows.Forms.Panel()
+            Me.m_plSpatial = New System.Windows.Forms.Panel()
+            Me.Label4 = New System.Windows.Forms.Label()
+            Me.m_pbLink = New System.Windows.Forms.PictureBox()
+            Me.Label6 = New System.Windows.Forms.Label()
+            Me.m_lblCellWidth = New System.Windows.Forms.Label()
+            Me.m_lblNumCols = New System.Windows.Forms.Label()
+            Me.m_lblCellSize = New System.Windows.Forms.Label()
+            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_nudEast = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudSouth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudRowCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudCellLength = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudColCount = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudCellSize = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudWest = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_nudNorth = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblNorth = New System.Windows.Forms.Label()
+            Me.m_lblWest = New System.Windows.Forms.Label()
+            Me.m_lblEast = New System.Windows.Forms.Label()
+            Me.m_lblSouth = New System.Windows.Forms.Label()
+            Me.m_hdrSpatial = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             m_gbModel = New System.Windows.Forms.GroupBox()
             m_gbModel.SuspendLayout()
             Me.m_tlpModelTop.SuspendLayout()
@@ -108,6 +129,16 @@ Namespace Ecospace
             Me.TableLayoutPanel1.SuspendLayout()
             Me.m_plScenario.SuspendLayout()
             Me.m_plModel.SuspendLayout()
+            Me.m_plSpatial.SuspendLayout()
+            CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).BeginInit()
+            CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
             'm_gbModel
@@ -418,7 +449,7 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_hdrScenario, "m_hdrScenario")
             Me.m_hdrScenario.CanCollapseParent = True
-            Me.m_hdrScenario.CollapsedParentHeight = 0
+            Me.m_hdrScenario.CollapsedParentHeight = 106
             Me.m_hdrScenario.IsCollapsed = False
             Me.m_hdrScenario.Name = "m_hdrScenario"
             '
@@ -434,8 +465,9 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
             Me.TableLayoutPanel1.Controls.Add(Me.m_plScenario, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plBiomass, 0, 1)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plModel, 0, 2)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plBiomass, 0, 2)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plModel, 0, 3)
+            Me.TableLayoutPanel1.Controls.Add(Me.m_plSpatial, 0, 1)
             Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
             '
             'm_plScenario
@@ -459,6 +491,146 @@ Namespace Ecospace
             Me.m_plModel.Controls.Add(Me.m_tlpModelTop)
             resources.ApplyResources(Me.m_plModel, "m_plModel")
             Me.m_plModel.Name = "m_plModel"
+            '
+            'm_plSpatial
+            '
+            Me.m_plSpatial.Controls.Add(Me.Label4)
+            Me.m_plSpatial.Controls.Add(Me.m_pbLink)
+            Me.m_plSpatial.Controls.Add(Me.Label6)
+            Me.m_plSpatial.Controls.Add(Me.m_lblCellWidth)
+            Me.m_plSpatial.Controls.Add(Me.m_lblNumCols)
+            Me.m_plSpatial.Controls.Add(Me.m_lblCellSize)
+            Me.m_plSpatial.Controls.Add(Me.Label1)
+            Me.m_plSpatial.Controls.Add(Me.m_nudEast)
+            Me.m_plSpatial.Controls.Add(Me.m_nudSouth)
+            Me.m_plSpatial.Controls.Add(Me.m_nudRowCount)
+            Me.m_plSpatial.Controls.Add(Me.m_nudCellLength)
+            Me.m_plSpatial.Controls.Add(Me.m_nudColCount)
+            Me.m_plSpatial.Controls.Add(Me.m_nudCellSize)
+            Me.m_plSpatial.Controls.Add(Me.m_nudWest)
+            Me.m_plSpatial.Controls.Add(Me.m_nudNorth)
+            Me.m_plSpatial.Controls.Add(Me.m_lblNorth)
+            Me.m_plSpatial.Controls.Add(Me.m_lblWest)
+            Me.m_plSpatial.Controls.Add(Me.m_lblEast)
+            Me.m_plSpatial.Controls.Add(Me.m_lblSouth)
+            Me.m_plSpatial.Controls.Add(Me.m_hdrSpatial)
+            resources.ApplyResources(Me.m_plSpatial, "m_plSpatial")
+            Me.m_plSpatial.Name = "m_plSpatial"
+            '
+            'Label4
+            '
+            resources.ApplyResources(Me.Label4, "Label4")
+            Me.Label4.ForeColor = System.Drawing.Color.Red
+            Me.Label4.Name = "Label4"
+            '
+            'm_pbLink
+            '
+            resources.ApplyResources(Me.m_pbLink, "m_pbLink")
+            Me.m_pbLink.Name = "m_pbLink"
+            Me.m_pbLink.TabStop = False
+            '
+            'Label6
+            '
+            resources.ApplyResources(Me.Label6, "Label6")
+            Me.Label6.Name = "Label6"
+            '
+            'm_lblCellWidth
+            '
+            resources.ApplyResources(Me.m_lblCellWidth, "m_lblCellWidth")
+            Me.m_lblCellWidth.Name = "m_lblCellWidth"
+            '
+            'm_lblNumCols
+            '
+            resources.ApplyResources(Me.m_lblNumCols, "m_lblNumCols")
+            Me.m_lblNumCols.Name = "m_lblNumCols"
+            '
+            'm_lblCellSize
+            '
+            resources.ApplyResources(Me.m_lblCellSize, "m_lblCellSize")
+            Me.m_lblCellSize.Name = "m_lblCellSize"
+            '
+            'Label1
+            '
+            resources.ApplyResources(Me.Label1, "Label1")
+            Me.Label1.Name = "Label1"
+            '
+            'm_nudEast
+            '
+            resources.ApplyResources(Me.m_nudEast, "m_nudEast")
+            Me.m_nudEast.Name = "m_nudEast"
+            '
+            'm_nudSouth
+            '
+            resources.ApplyResources(Me.m_nudSouth, "m_nudSouth")
+            Me.m_nudSouth.Name = "m_nudSouth"
+            '
+            'm_nudRowCount
+            '
+            resources.ApplyResources(Me.m_nudRowCount, "m_nudRowCount")
+            Me.m_nudRowCount.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+            Me.m_nudRowCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudRowCount.Name = "m_nudRowCount"
+            Me.m_nudRowCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
+            'm_nudCellLength
+            '
+            resources.ApplyResources(Me.m_nudCellLength, "m_nudCellLength")
+            Me.m_nudCellLength.Minimum = New Decimal(New Integer() {1, 0, 0, 589824})
+            Me.m_nudCellLength.Name = "m_nudCellLength"
+            Me.m_nudCellLength.Value = New Decimal(New Integer() {1, 0, 0, 589824})
+            '
+            'm_nudColCount
+            '
+            resources.ApplyResources(Me.m_nudColCount, "m_nudColCount")
+            Me.m_nudColCount.Maximum = New Decimal(New Integer() {999, 0, 0, 0})
+            Me.m_nudColCount.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+            Me.m_nudColCount.Name = "m_nudColCount"
+            Me.m_nudColCount.Value = New Decimal(New Integer() {1, 0, 0, 0})
+            '
+            'm_nudCellSize
+            '
+            resources.ApplyResources(Me.m_nudCellSize, "m_nudCellSize")
+            Me.m_nudCellSize.Minimum = New Decimal(New Integer() {1, 0, 0, 589824})
+            Me.m_nudCellSize.Name = "m_nudCellSize"
+            Me.m_nudCellSize.Value = New Decimal(New Integer() {1, 0, 0, 589824})
+            '
+            'm_nudWest
+            '
+            resources.ApplyResources(Me.m_nudWest, "m_nudWest")
+            Me.m_nudWest.Name = "m_nudWest"
+            '
+            'm_nudNorth
+            '
+            resources.ApplyResources(Me.m_nudNorth, "m_nudNorth")
+            Me.m_nudNorth.Name = "m_nudNorth"
+            '
+            'm_lblNorth
+            '
+            resources.ApplyResources(Me.m_lblNorth, "m_lblNorth")
+            Me.m_lblNorth.Name = "m_lblNorth"
+            '
+            'm_lblWest
+            '
+            resources.ApplyResources(Me.m_lblWest, "m_lblWest")
+            Me.m_lblWest.Name = "m_lblWest"
+            '
+            'm_lblEast
+            '
+            resources.ApplyResources(Me.m_lblEast, "m_lblEast")
+            Me.m_lblEast.Name = "m_lblEast"
+            '
+            'm_lblSouth
+            '
+            resources.ApplyResources(Me.m_lblSouth, "m_lblSouth")
+            Me.m_lblSouth.Name = "m_lblSouth"
+            '
+            'm_hdrSpatial
+            '
+            resources.ApplyResources(Me.m_hdrSpatial, "m_hdrSpatial")
+            Me.m_hdrSpatial.CanCollapseParent = True
+            Me.m_hdrSpatial.CollapsedParentHeight = 0
+            Me.m_hdrSpatial.IsCollapsed = False
+            Me.m_hdrSpatial.Name = "m_hdrSpatial"
             '
             'EcospaceParameters
             '
@@ -485,6 +657,17 @@ Namespace Ecospace
             Me.m_plScenario.ResumeLayout(False)
             Me.m_plScenario.PerformLayout()
             Me.m_plModel.ResumeLayout(False)
+            Me.m_plSpatial.ResumeLayout(False)
+            Me.m_plSpatial.PerformLayout()
+            CType(Me.m_pbLink, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudEast, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudSouth, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudRowCount, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudCellLength, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudColCount, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudCellSize, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudWest, System.ComponentModel.ISupportInitialize).EndInit()
+            CType(Me.m_nudNorth, System.ComponentModel.ISupportInitialize).EndInit()
             Me.ResumeLayout(False)
 
         End Sub
@@ -538,6 +721,27 @@ Namespace Ecospace
         Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_plScenario As System.Windows.Forms.Panel
         Private WithEvents m_plModel As System.Windows.Forms.Panel
+        Private WithEvents m_plSpatial As System.Windows.Forms.Panel
+        Friend WithEvents m_pbLink As System.Windows.Forms.PictureBox
+        Friend WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_nudEast As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudSouth As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudCellLength As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudCellSize As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudWest As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudNorth As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_lblNorth As System.Windows.Forms.Label
+        Private WithEvents m_lblWest As System.Windows.Forms.Label
+        Private WithEvents m_lblEast As System.Windows.Forms.Label
+        Private WithEvents m_lblSouth As System.Windows.Forms.Label
+        Private WithEvents m_hdrSpatial As ScientificInterfaceShared.Controls.cEwEHeaderLabel
+        Friend WithEvents Label4 As System.Windows.Forms.Label
+        Friend WithEvents Label6 As System.Windows.Forms.Label
+        Private WithEvents m_lblNumCols As System.Windows.Forms.Label
+        Private WithEvents m_nudRowCount As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudColCount As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_lblCellSize As System.Windows.Forms.Label
+        Private WithEvents m_lblCellWidth As System.Windows.Forms.Label
     End Class
 
 End Namespace
