@@ -79,7 +79,6 @@ Namespace Ecosim
             Me.m_tsPlot = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnShowBestOnly = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowGroups = New System.Windows.Forms.ToolStripButton()
-            Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_lbGroups = New ScientificInterfaceShared.Controls.cGroupListBox()
             Me.m_lblGroups = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tbpBestTrial = New System.Windows.Forms.TabPage()
@@ -101,6 +100,7 @@ Namespace Ecosim
             Me.m_hdrInputOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -476,12 +476,13 @@ Namespace Ecosim
             '
             Me.m_spPlot.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
             resources.ApplyResources(Me.m_spPlot, "m_spPlot")
+            Me.m_spPlot.FixedPanel = System.Windows.Forms.FixedPanel.Panel2
             Me.m_spPlot.Name = "m_spPlot"
             '
             'm_spPlot.Panel1
             '
-            Me.m_spPlot.Panel1.Controls.Add(Me.m_tsPlot)
             Me.m_spPlot.Panel1.Controls.Add(Me.m_graph)
+            Me.m_spPlot.Panel1.Controls.Add(Me.m_tsPlot)
             '
             'm_spPlot.Panel2
             '
@@ -507,18 +508,6 @@ Namespace Ecosim
             Me.m_tsbnShowGroups.CheckOnClick = True
             resources.ApplyResources(Me.m_tsbnShowGroups, "m_tsbnShowGroups")
             Me.m_tsbnShowGroups.Name = "m_tsbnShowGroups"
-            '
-            'm_graph
-            '
-            resources.ApplyResources(Me.m_graph, "m_graph")
-            Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
             '
             'm_lbGroups
             '
@@ -685,6 +674,18 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.lblValueSSOrg, 4, 0)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
             '
+            'm_graph
+            '
+            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
+            '
             'MCRun
             '
             resources.ApplyResources(Me, "$this")
@@ -767,7 +768,6 @@ Namespace Ecosim
         Private WithEvents m_tbpBP As System.Windows.Forms.TabPage
         Private WithEvents m_tbpB As System.Windows.Forms.TabPage
         Private WithEvents m_spPlot As System.Windows.Forms.SplitContainer
-        Private WithEvents m_graph As ZedGraphControl
         Private WithEvents m_lbGroups As ScientificInterfaceShared.Controls.cGroupListBox
         Private WithEvents m_lblGroups As cEwEHeaderLabel
         Private WithEvents m_tbpQB As System.Windows.Forms.TabPage
@@ -798,6 +798,7 @@ Namespace Ecosim
         Private WithEvents m_tsPlot As ScientificInterfaceShared.Controls.cEwEToolstrip
         Private WithEvents m_tsbnShowBestOnly As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnShowGroups As System.Windows.Forms.ToolStripButton
+        Private WithEvents m_graph As ZedGraph.ZedGraphControl
     End Class
 
 End Namespace

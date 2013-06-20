@@ -148,6 +148,7 @@ Friend Class cEcosimMonteCarlo
     Private m_ecosim As cEcoSimModel
     Private m_epdata As cEcopathDataStructures
     Private m_esdata As cEcosimDatastructures
+    Private m_tsdata As cTimeSeriesDataStructures
     Private m_stanza As cStanzaDatastructures 'needs to come in from the core
     Private m_tracerData As cContaminantTracerDataStructures
     Private m_pluginmanager As cPluginManager
@@ -188,6 +189,7 @@ Friend Class cEcosimMonteCarlo
         m_ecosim = m_core.m_EcoSim
         m_epdata = m_core.m_EcoPathData
         m_esdata = m_core.m_EcoSimData
+        m_tsdata = m_core.m_TSData
         'data from Ecosim
         m_stanza = m_ecosim.m_stanza
         m_tracerData = m_ecosim.TracerData
@@ -406,13 +408,21 @@ Friend Class cEcosimMonteCarlo
 
 
     Public Sub Run(ByVal ob As Object)
+
         Dim iter As Integer 'number of ecopath interation to find new pararameters for each trial
         Dim Itertot As Integer 'total number of ecopath interation across all the trials
+
         'Dim NtrialsPerThread As Integer
         'Dim nThreads As Integer
 
         'Dim MCthreadList As New List(Of cMonteCarloThread)
         'Dim MCthread As cMonteCarloThread
+        Dim bForcedCatches(Me.m_epdata.NumGroups) As Boolean
+        For its As Integer = 1 To m_tsdata.NumTimeSeries
+            If m_tsdata.TimeSeriesType(its) = eTimeSeriesType.CatchesForcing Then
+                bForcedCatches(m_tsdata.iPool(its)) = True
+            End If
+        Next
 
         System.Console.WriteLine("----------Starting Monte Carlo----------")
         Try
@@ -515,11 +525,12 @@ Friend Class cEcosimMonteCarlo
                         If Fpenalty = 0 Then FirstRun = True
                         Fpenalty = 0
                         Dim sStr As String = ""
-                        For ii As Integer = 1 To Me.m_ecopath.EcopathData.NumGroups
-                            If Me.m_ecopath.EcopathData.fCatch(ii) > 0 Then
-                                Dim lasttimestep As Integer = m_ecosim.EcosimData.NTimes
-                                Dim NatMort As Single = m_ecopath.EcopathData.M0(ii) + m_ecopath.EcopathData.M2(ii)
-                                Dim SScont As Single = (Me.m_ecosim.EcosimData.FishRateNo(ii, lasttimestep) - Me.FMratioForSRA * NatMort)
+                        For ii As Integer = 1 To Me.m_epdata.NumGroups
+                            'If Me.Me.m_epdata.fCatch(ii) > 0 Then
+                            If (bForcedCatches(ii)) Then
+                                Dim lasttimestep As Integer = m_esdata.NTimes
+                                Dim NatMort As Single = Me.m_epdata.M0(ii) + Me.m_epdata.M2(ii)
+                                Dim SScont As Single = (Me.m_esdata.FishRateNo(ii, lasttimestep) - Me.FMratioForSRA * NatMort)
                                 Fpenalty += CSng(100 * SScont ^ 2)
                                 sStr += ii & " " & SScont & ","
                             End If
@@ -533,7 +544,7 @@ Friend Class cEcosimMonteCarlo
                     End If
 
                     m_esdata.SS += Fpenalty
-                    Debug.Print(m_esdata.SS & " = " & m_esdata.SS - Fpenalty & " + " & Fpenalty)
+                    Debug.Print(Me.m_esdata.SS & " = " & Me.m_esdata.SS - Fpenalty & " + " & Fpenalty)
 
                     If m_esdata.SS < SSBestFit Then
                         RunsSinceLastWithLowerSS = 0
@@ -583,7 +594,7 @@ Friend Class cEcosimMonteCarlo
 
             Me.CompletedCallback()
 
-            m_ecopath.suppressMessages = False
+            Me.m_ecopath.suppressMessages = False
 
         Catch ex As Exception
             cLog.Write(ex)

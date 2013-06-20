@@ -529,7 +529,7 @@ Public Class cCore
     ''' </remarks>
     Public ReadOnly Property nTimeSeries() As Integer
         Get
-            Return m_TSData.nNumTimeSeries
+            Return m_TSData.NumTimeSeries
         End Get
     End Property
 
@@ -2025,7 +2025,7 @@ Public Class cCore
     ''' <returns>True if successful.</returns>
     ''' -----------------------------------------------------------------------
     Public Function HasTimeSeries() As Boolean
-        Return (Me.m_TSData.nNumTimeSeries > 0)
+        Return (Me.m_TSData.NumTimeSeries > 0)
     End Function
 
     ''' -----------------------------------------------------------------------

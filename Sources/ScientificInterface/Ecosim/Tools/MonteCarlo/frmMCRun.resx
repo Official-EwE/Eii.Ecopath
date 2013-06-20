@@ -612,9 +612,89 @@
   <data name="m_spPlot.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
+  <data name="m_graph.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="m_graph.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
+    <value>636, 335</value>
+  </data>
+  <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
+    <value>m_graph</value>
+  </data>
+  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
+    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
+  </data>
+  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
+    <value>m_spPlot.Panel1</value>
+  </data>
+  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="m_tsPlot.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>495, 17</value>
   </metadata>
+  <data name="m_tsbnShowBestOnly.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ8SURBVDhPdZPvS1NhFMf9A0IFUWYNRcOSUFH6SWQW/aIX
+        mhCZv9CRUu5FuRdpivgi6J1gyXAQDBdIoIIaYjSiXjgCmZOLImNsiGzIkAmCGBTcQZ/Oc+/VqPTA4bn3
+        ec73c865z7kZ/9pST3ZNqDd7Qq3W1qF7R5oK3Jk9S+RVDqHerJfK1fPOdKW8Z09YYX/bUk+WRw5VAPGh
+        HEi4SEc72HxbYHg63A7rTuNsP05pLLmRFZZbIPxIArsE0A3JJ7A9AKk+0pFGkp9rWPGdg5U2CDYbEEtu
+        AbRW+HZN1tsQrYd4I2y2kY7dZ2O2CrezAI/TjjZyEkItfwBa/7FcrV8Aq1JmUMSrtRBrEEAr6fUmtr7W
+        4O6ysxt+QSrQhLszT5K0oTRKa/S/6RGqKl+rY8tfzUinjeSX60SnKhntOs6e5uRn2MWYq4iIt0jimkm4
+        C83vYJS/6oDFWhFflQw2gt5LDLXbcD+2sbfYwo+QA5+rkNhYMfrHKpi7CAsPzTYMwHwdjJfy2pFHZPw8
+        v5YbWJ++ye7CPb4H6hnrLiDmK0KfK4FJqdZXCp/qTYAqIzFkh0ADqXfFjErW1OwV+aB32fPfwPfMzsbU
+        afQFyewvE8Apyf6AxLDdbCH4PNem9UkVAmC+jOR4MW8cuayMloj4BPHpUnStWlqUsv3lIDAFUBqlNW7C
+        aMMCELhA6kM53qf5JObOoEfugPLFywKoOAAY5e/bAUANSUwGSCaRZAfsDJrDtCEzIpPImlx1qPl/gOpF
+        bSiPDmYaAF2uNT6cb7i+ZgLU2X6c0f9hJocz25NVhAdUoPkzqeft9xVKOGOFHW2h3sxbKlCt1tahe6Zl
+        ZPwGVIMhYfzR0BMAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="m_tsbnShowBestOnly.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnShowBestOnly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 22</value>
+  </data>
+  <data name="m_tsbnShowBestOnly.Text" xml:space="preserve">
+    <value>Show only bettter fits</value>
+  </data>
+  <data name="m_tsbnShowBestOnly.ToolTipText" xml:space="preserve">
+    <value>Shows only improved runs (those with lower SS) on the biomass plot</value>
+  </data>
+  <data name="m_tsbnShowGroups.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
+        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
+        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
+        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
+        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
+        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
+        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
+        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
+        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
+        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="m_tsbnShowGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="m_tsbnShowGroups.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 22</value>
+  </data>
+  <data name="m_tsbnShowGroups.Text" xml:space="preserve">
+    <value>Show groups list</value>
+  </data>
   <data name="m_tsPlot.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -634,33 +714,6 @@
     <value>m_spPlot.Panel1</value>
   </data>
   <data name="&gt;&gt;m_tsPlot.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="m_graph.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="m_graph.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>636, 335</value>
-  </data>
-  <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Name" xml:space="preserve">
-    <value>m_graph</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Type" xml:space="preserve">
-    <value>ZedGraph.ZedGraphControl, ZedGraph, Version=5.1.4.30496, Culture=neutral, PublicKeyToken=02a83cbd123fcd60</value>
-  </data>
-  <data name="&gt;&gt;m_graph.Parent" xml:space="preserve">
-    <value>m_spPlot.Panel1</value>
-  </data>
-  <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="&gt;&gt;m_spPlot.Panel1.Name" xml:space="preserve">
@@ -1430,59 +1483,6 @@
   </data>
   <data name="&gt;&gt;m_tsBA.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="m_tsbnShowBestOnly.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJ8SURBVDhPdZPvS1NhFMf9A0IFUWYNRcOSUFH6SWQW/aIX
-        mhCZv9CRUu5FuRdpivgi6J1gyXAQDBdIoIIaYjSiXjgCmZOLImNsiGzIkAmCGBTcQZ/Oc+/VqPTA4bn3
-        ec73c865z7kZ/9pST3ZNqDd7Qq3W1qF7R5oK3Jk9S+RVDqHerJfK1fPOdKW8Z09YYX/bUk+WRw5VAPGh
-        HEi4SEc72HxbYHg63A7rTuNsP05pLLmRFZZbIPxIArsE0A3JJ7A9AKk+0pFGkp9rWPGdg5U2CDYbEEtu
-        AbRW+HZN1tsQrYd4I2y2kY7dZ2O2CrezAI/TjjZyEkItfwBa/7FcrV8Aq1JmUMSrtRBrEEAr6fUmtr7W
-        4O6ysxt+QSrQhLszT5K0oTRKa/S/6RGqKl+rY8tfzUinjeSX60SnKhntOs6e5uRn2MWYq4iIt0jimkm4
-        C83vYJS/6oDFWhFflQw2gt5LDLXbcD+2sbfYwo+QA5+rkNhYMfrHKpi7CAsPzTYMwHwdjJfy2pFHZPw8
-        v5YbWJ++ye7CPb4H6hnrLiDmK0KfK4FJqdZXCp/qTYAqIzFkh0ADqXfFjErW1OwV+aB32fPfwPfMzsbU
-        afQFyewvE8Apyf6AxLDdbCH4PNem9UkVAmC+jOR4MW8cuayMloj4BPHpUnStWlqUsv3lIDAFUBqlNW7C
-        aMMCELhA6kM53qf5JObOoEfugPLFywKoOAAY5e/bAUANSUwGSCaRZAfsDJrDtCEzIpPImlx1qPl/gOpF
-        bSiPDmYaAF2uNT6cb7i+ZgLU2X6c0f9hJocz25NVhAdUoPkzqeft9xVKOGOFHW2h3sxbKlCt1tahe6Zl
-        ZPwGVIMhYfzR0BMAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="m_tsbnShowBestOnly.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnShowBestOnly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 22</value>
-  </data>
-  <data name="m_tsbnShowBestOnly.Text" xml:space="preserve">
-    <value>Show only bettter fits</value>
-  </data>
-  <data name="m_tsbnShowBestOnly.ToolTipText" xml:space="preserve">
-    <value>Shows only improved runs (those with lower SS) on the biomass plot</value>
-  </data>
-  <data name="m_tsbnShowGroups.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="m_tsbnShowGroups.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="m_tsbnShowGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 22</value>
-  </data>
-  <data name="m_tsbnShowGroups.Text" xml:space="preserve">
-    <value>Show groups list</value>
   </data>
   <data name="m_gridBestFit.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
