@@ -454,7 +454,8 @@ Public Class cMessageHistory
 
         ' Early bail-out for messages hidden from UI
         Select Case msg.Importance
-            Case eMessageImportance.Critical, eMessageImportance.Warning, eMessageImportance.Information
+            ' JS 21Jun13: Whoah! Questions were excluded?!
+            Case eMessageImportance.Critical, eMessageImportance.Warning, eMessageImportance.Information, eMessageImportance.Question
                 ' Carry on
             Case Else
                 Return
