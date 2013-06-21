@@ -76,6 +76,7 @@ Namespace Ecosim
             Me.m_tsBA = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tbpBPlot = New System.Windows.Forms.TabPage()
             Me.m_spPlot = New System.Windows.Forms.SplitContainer()
+            Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_tsPlot = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnShowBestOnly = New System.Windows.Forms.ToolStripButton()
             Me.m_tsbnShowGroups = New System.Windows.Forms.ToolStripButton()
@@ -100,7 +101,6 @@ Namespace Ecosim
             Me.m_hdrInputOpt = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_hdrOutputParam = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_tlpOutputs = New System.Windows.Forms.TableLayoutPanel()
-            Me.m_graph = New ZedGraph.ZedGraphControl()
             Me.m_tcMain.SuspendLayout()
             Me.m_tbpSettings.SuspendLayout()
             Me.m_tbpB.SuspendLayout()
@@ -489,6 +489,18 @@ Namespace Ecosim
             Me.m_spPlot.Panel2.Controls.Add(Me.m_lbGroups)
             Me.m_spPlot.Panel2.Controls.Add(Me.m_lblGroups)
             '
+            'm_graph
+            '
+            resources.ApplyResources(Me.m_graph, "m_graph")
+            Me.m_graph.Name = "m_graph"
+            Me.m_graph.ScrollGrace = 0.0R
+            Me.m_graph.ScrollMaxX = 0.0R
+            Me.m_graph.ScrollMaxY = 0.0R
+            Me.m_graph.ScrollMaxY2 = 0.0R
+            Me.m_graph.ScrollMinX = 0.0R
+            Me.m_graph.ScrollMinY = 0.0R
+            Me.m_graph.ScrollMinY2 = 0.0R
+            '
             'm_tsPlot
             '
             Me.m_tsPlot.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
@@ -673,18 +685,6 @@ Namespace Ecosim
             Me.m_tlpOutputs.Controls.Add(Me.lblBestSS, 3, 2)
             Me.m_tlpOutputs.Controls.Add(Me.lblValueSSOrg, 4, 0)
             Me.m_tlpOutputs.Name = "m_tlpOutputs"
-            '
-            'm_graph
-            '
-            resources.ApplyResources(Me.m_graph, "m_graph")
-            Me.m_graph.Name = "m_graph"
-            Me.m_graph.ScrollGrace = 0.0R
-            Me.m_graph.ScrollMaxX = 0.0R
-            Me.m_graph.ScrollMaxY = 0.0R
-            Me.m_graph.ScrollMaxY2 = 0.0R
-            Me.m_graph.ScrollMinX = 0.0R
-            Me.m_graph.ScrollMinY = 0.0R
-            Me.m_graph.ScrollMinY2 = 0.0R
             '
             'MCRun
             '
