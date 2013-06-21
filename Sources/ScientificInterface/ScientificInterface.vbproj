@@ -1887,10 +1887,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Server\ServerPlugIn.vbproj">
-      <Project>{BD4B53EB-8A73-4262-8F73-F1E602F873A7}</Project>
-      <Name>ServerPlugIn</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore %28EwECore\EwECore%29</Name>
@@ -1902,10 +1898,6 @@
     <ProjectReference Include="..\EwECustomPlugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin.vbproj">
       <Project>{206B8C0C-BC5A-40C3-822B-F17B638704FD}</Project>
       <Name>EwEFlowDiagramPlugin %28EwE plugins\EwEFlowDiagramPlugin\EwEFlowDiagramPlugin%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EwECustomPlugins\EwEModelFromEcosimPlugin\EwEModelFromEcosimPlugin.vbproj">
-      <Project>{243CBCB0-4FD7-43B8-A6D1-27E26E866A99}</Project>
-      <Name>EwEModelFromEcosimPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\EwECustomPlugins\EwEMultiSimPlugin\EwEMultiSimPlugin.vbproj">
       <Project>{C73CF657-456C-4397-B6A1-5DC8FA68AD48}</Project>

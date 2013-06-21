@@ -6729,9 +6729,9 @@ Namespace DataSources
             If (iDataset > 0) Then
 
                 Try
-                    tsDS.NumTimeSeries = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.iDatasetDBID(iDataset))))
+                    tsDS.nTimeSeries = CInt(Me.m_db.GetValue(String.Format("SELECT COUNT(*) FROM EcosimTimeSeries WHERE (DatasetID={0})", tsDS.iDatasetDBID(iDataset))))
                 Catch ex As Exception
-                    tsDS.NumTimeSeries = 0
+                    tsDS.nTimeSeries = 0
                 End Try
 
             End If
@@ -6739,7 +6739,7 @@ Namespace DataSources
             tsDS.RedimTimeSeries()
             tsDS.RedimEnabledTimeSeries()
 
-            If tsDS.NumTimeSeries = 0 Then Return bSucces
+            If tsDS.nTimeSeries = 0 Then Return bSucces
 
             strSQL = String.Format("SELECT * FROM EcosimTimeSeries WHERE (DatasetID={0}) ORDER BY Sequence ASC", tsDS.iDatasetDBID(iDataset))
             reader = Me.m_db.GetReader(strSQL)
@@ -6845,7 +6845,7 @@ Namespace DataSources
                 writerFleets = Me.m_db.GetWriter("EcosimTimeSeriesFleet")
                 dtFleets = writerFleets.GetDataTable()
 
-                For iTS As Integer = 1 To tsDS.NumTimeSeries
+                For iTS As Integer = 1 To tsDS.nTimeSeries
 
                     drow = dt.Rows.Find(tsDS.iTimeSeriesDBID(iTS))
                     Debug.Assert(drow IsNot Nothing, String.Format("Cannot find time series {0}", tsDS.iTimeSeriesDBID(iTS)))
