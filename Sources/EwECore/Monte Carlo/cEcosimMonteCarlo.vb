@@ -418,7 +418,7 @@ Friend Class cEcosimMonteCarlo
         'Dim MCthreadList As New List(Of cMonteCarloThread)
         'Dim MCthread As cMonteCarloThread
         Dim bForcedCatches(Me.m_epdata.NumGroups) As Boolean
-        For its As Integer = 1 To m_tsdata.NumTimeSeries
+        For its As Integer = 1 To m_tsdata.nTimeSeries
             If m_tsdata.TimeSeriesType(its) = eTimeSeriesType.CatchesForcing Then
                 bForcedCatches(m_tsdata.iPool(its)) = True
             End If

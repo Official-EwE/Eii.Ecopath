@@ -53,7 +53,8 @@ Public Class cTimeSeriesDataStructures
     ' ------------------------------------------------
 
     ''' <summary>Number of time series in the model.</summary>
-    Public NumTimeSeries As Integer
+    Public nTimeSeries As Integer
+
     ''' <summary>Maximum number of years across all time series.</summary>
     Public nMaxYears As Integer
     ''' <summary>Database ID for each time series.</summary>
@@ -148,6 +149,16 @@ Public Class cTimeSeriesDataStructures
 
     End Sub
 
+    <Obsolete("Please use nTimeSeries instead")> _
+    Public Property nNumTimeSeries As Integer
+        Get
+            Return Me.nTimeSeries
+        End Get
+        Set(value As Integer)
+            Me.nTimeSeries = value
+        End Set
+    End Property
+
     Friend Sub RedimTimeSeriesDatasets()
 
         ReDim Me.iDatasetDBID(nDatasets)
@@ -163,7 +174,7 @@ Public Class cTimeSeriesDataStructures
 
     Friend Sub ClearTimeSeries()
 
-        Me.NumTimeSeries = 0
+        Me.nTimeSeries = 0
         Me.nMaxYears = 0
         Me.NdatYear = 0
         Me.NdatType = 0
@@ -182,28 +193,28 @@ Public Class cTimeSeriesDataStructures
 
     Friend Sub RedimTimeSeries()
 
-        Debug.Assert(NumTimeSeries >= 0, Me.ToString & ".RedimTimeSeries() nNumTimeSeries cannot be negative")
+        Debug.Assert(nTimeSeries >= 0, Me.ToString & ".RedimTimeSeries() nNumTimeSeries cannot be negative")
         Debug.Assert(nMaxYears >= 0, Me.ToString & ".RedimTimeSeries() NdatYear cannot be negative")
 
         ' Redim interface time series arrays
-        ReDim iTimeSeriesDBID(NumTimeSeries)
-        ReDim strName(NumTimeSeries)
-        ReDim bEnable(NumTimeSeries)
-        ReDim iPool(NumTimeSeries)
-        ReDim sWeight(NumTimeSeries)
-        ReDim sCV(NumTimeSeries)
-        ReDim TimeSeriesType(NumTimeSeries)
-        ReDim sValues(nMaxYears + 1, NumTimeSeries)
-        ReDim sDatSS(NumTimeSeries)
-        ReDim sSSPredErr(NumTimeSeries)
+        ReDim iTimeSeriesDBID(nTimeSeries)
+        ReDim strName(nTimeSeries)
+        ReDim bEnable(nTimeSeries)
+        ReDim iPool(nTimeSeries)
+        ReDim sWeight(nTimeSeries)
+        ReDim sCV(nTimeSeries)
+        ReDim TimeSeriesType(nTimeSeries)
+        ReDim sValues(nMaxYears + 1, nTimeSeries)
+        ReDim sDatSS(nTimeSeries)
+        ReDim sSSPredErr(nTimeSeries)
 
-        ReDim sDatQ(NumTimeSeries)
-        ReDim sEDatQ(NumTimeSeries)
+        ReDim sDatQ(nTimeSeries)
+        ReDim sEDatQ(nTimeSeries)
 
-        ReDim DatSS(NumTimeSeries)
-        ReDim DatQ(NumTimeSeries)
-        ReDim eDatQ(NumTimeSeries)
-        ReDim SSPredErr(NumTimeSeries)
+        ReDim DatSS(nTimeSeries)
+        ReDim DatQ(nTimeSeries)
+        ReDim eDatQ(nTimeSeries)
+        ReDim SSPredErr(nTimeSeries)
 
     End Sub
 
@@ -269,7 +280,7 @@ Public Class cTimeSeriesDataStructures
             iTS = 0
 
             ' Determine Applied index 
-            While iTS < Math.Min(iTSIndex, NumTimeSeries)
+            While iTS < Math.Min(iTSIndex, nTimeSeries)
                 ' Try next
                 iTS += 1
                 ' Is an applied TS?
@@ -304,20 +315,20 @@ Public Class cTimeSeriesDataStructures
         NdatYear = nMaxYears
 
         ' Determine no. of time series to enable
-        For iTS = 1 To NumTimeSeries
+        For iTS = 1 To nTimeSeries
             If Me.bEnable(iTS) Then NdatType += 1
         Next iTS
 
         RedimEnabledTimeSeries()
 
-        If NumTimeSeries > 0 Then
+        If nTimeSeries > 0 Then
 
             DatYear(1) = Me.nDatasetFirstYear(Me.ActiveDatasetIndex)
             For iYear = 2 To NdatYear
                 DatYear(iYear) = DatYear(iYear - 1) + 1
             Next
 
-            For iTS = 1 To NumTimeSeries
+            For iTS = 1 To nTimeSeries
                 If Me.bEnable(iTS) Then
                     iTSEnable += 1
                     Me.LoadEnabledTS(iTS, iTSEnable)
@@ -345,7 +356,7 @@ Public Class cTimeSeriesDataStructures
         Dim iTS As Integer = 0
         Dim iTSenabled As Integer = 0
 
-        For iTS = 1 To NumTimeSeries
+        For iTS = 1 To nTimeSeries
             If Me.bEnable(iTS) Then
                 iTSenabled += 1 'DatSS and DatQ are indexed from one
                 sDatSS(iTS) = DatSS(iTSenabled)
@@ -582,7 +593,7 @@ Public Class cEcospaceTimeSeriesDataStructures
     Friend Overloads Sub RedimTimeSeries()
         MyBase.RedimTimeSeries()
 
-        ReDim iSPRegion(NumTimeSeries)
+        ReDim iSPRegion(nTimeSeries)
 
     End Sub
 
@@ -614,19 +625,5 @@ Public Class cEcospaceTimeSeriesDataStructures
         DoDatValCalculations(EcospaceData)
 
     End Sub
-
-#Region " Backward compatibility "
-
-    <Obsolete("Please use NumTimeSeries instead")> _
-    Public Property nNumTimeSeries As Integer
-        Get
-            Return Me.NumTimeSeries
-        End Get
-        Set(value As Integer)
-            Me.NumTimeSeries = value
-        End Set
-    End Property
-
-#End Region ' Backward compatibility
 
 End Class

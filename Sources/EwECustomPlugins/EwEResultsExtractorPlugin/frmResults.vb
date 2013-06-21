@@ -2364,7 +2364,7 @@ Public Class frmResults
         ASS(0, 0) = "TotalSS"
         ASS(1, 0) = mDataStructure.SS
 
-        For idat = 1 To mTimeSeries.NumTimeSeries
+        For idat = 1 To mTimeSeries.nTimeSeries
             If mTimeSeries.bEnable(idat) Then
                 rowindex += 1
                 ASS(0, rowindex) = mTimeSeries.strName(idat)
