@@ -16,22 +16,29 @@
 ' ===============================================================================
 '
 
-Option Strict Off
+Option Strict On
 Imports System.Windows.Forms
 Imports EwECore
 Imports EwEPlugin
+Imports ScientificInterfaceShared.Controls
+Imports EwEUtils.Core
 
 
-
-
-
-Public Class newET
+Public Class cEcotrophPlugin
     Implements EwEPlugin.IGUIPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.ICorePlugin
     Implements EwEPlugin.IEcopathRunCompletedPlugin
     Implements EwEPlugin.IHelpPlugin
+    Implements EwEPlugin.IUIContextPlugin
 
+    Public Sub New()
+
+    End Sub
+
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 
     Public ReadOnly Property HelpTopic As String Implements EwEPlugin.IHelpPlugin.HelpTopic
         Get
@@ -44,10 +51,6 @@ Public Class newET
             Return Me.HelpTopic
         End Get
     End Property
-
-
-
-
 
     Structure ETinputtot
         Dim groupname() As String
@@ -63,6 +66,7 @@ Public Class newET
         Dim Modeldescription As String
         Dim comments As String
     End Structure
+
     Public Shared ETinputdata As ETinputtot
     Public Shared ETinputdatafromEP As ETinputtot
     ' Public Shared ETinputdataFLEET As ETinputFLEET
@@ -70,9 +74,9 @@ Public Class newET
     Public Shared etCore As cCore
     Public Shared pack_version As String
 
+    Private m_uic As cUIContext
 
-
-    Private frmET As autre
+    Private frmET As frmEcotroph
 
     Public Sub CoreInitialized(ByRef objEcoPath As Object, ByRef objEcoSim As Object, ByRef objEcoSpace As Object) Implements EwEPlugin.ICorePlugin.CoreInitialized
 
@@ -97,7 +101,11 @@ Public Class newET
     End Property
 
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
-        etCore = core
+        Try
+            etCore = DirectCast(core, cCore)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
     End Sub
 
     Public ReadOnly Property Name As String Implements EwEPlugin.IPlugin.Name
@@ -126,7 +134,7 @@ Public Class newET
 
     Public ReadOnly Property EnabledState As EwEUtils.Core.eCoreExecutionState Implements EwEPlugin.IGUIPlugin.EnabledState
         Get
-            'Return EwEUtils.Core.eCoreExecutionState.EcopathLoaded
+            Return EwEUtils.Core.eCoreExecutionState.Idle
         End Get
     End Property
 
@@ -135,7 +143,8 @@ Public Class newET
 
         ' Test if form still exists
         If Not Me.HasInterface(Me.frmET) Then
-            frmET = New autre
+            frmET = New frmEcotroph
+            frmET.UIContext = Me.m_uic
         End If
 
         ' Pass form reference back to calling app
@@ -224,21 +233,16 @@ Public Class newET
 
     End Sub
 
-    Public Sub New()
-
-    End Sub
-
-
-
-    Protected Overrides Sub Finalize()
-        MyBase.Finalize()
-    End Sub
-
     Private Function match(ByVal epdata As cEcopathDataStructures, ByVal p2 As String) As Array
         Throw New NotImplementedException
     End Function
 
+    Public Sub UIContext(uic As Object) Implements EwEPlugin.IUIContextPlugin.UIContext
+        Try
+            Me.m_uic = DirectCast(uic, cUIContext)
+        Catch ex As Exception
+            cLog.Write(ex)
+        End Try
+    End Sub
 
-
-   
 End Class

@@ -21,20 +21,27 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports System.Xml
 Imports System.Xml.Serialization
-Imports EcoTroph.Eco_services
-Imports EcoTroph.newET
-Imports EwEUtils.Utilities
+Imports EcoTroph.cEcotrophPlugin
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
+Imports ScientificInterfaceShared.Controls
 
 'not relevent to uncomppress R_ET.zip folder
 'Imports Shell32
 
+' ================================================================================
+' Ecotroph code audit 1, 21Jun2013, Jeroen Steenbeek
+'
+' Recommended changes:
+' - Replace all message boxes with cMessages or cFeedbackMessages to ensure events 
+'   integrate with the EwE UI and are logged in cLog
+' - All lengthy operations should provide status feedback via cApplicationStatusNotifier
+' - All try/catch blocks should write an entry to cLog
+' ================================================================================
 
+Public Class frmEcotroph
 
-
-
-Public Class autre
     Dim num_model() As Integer
     Dim aide As String = "http://sirs.agrocampus-ouest.fr/EcoTroph/index.php?action=examples&lang=uk"
     Private Sub autre_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -48,10 +55,11 @@ Public Class autre
 
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+        Dim fmsg As cFeedbackMessage = Nothing
         Dim test() As String
         Dim result() As String
         Dim result_tab() As String
-        Dim res_box As MsgBoxResult
         'Dim repos As String = "http://mirror.ibcp.fr/pub/CRAN/bin/windows/contrib/2.14"
         Dim repos_simple As String = "http://cran.univ-lyon1.fr/"
 
@@ -73,30 +81,43 @@ Public Class autre
         result_tab = Split(result(1), vbCr)
 
         If (result(0).Contains("R is not")) Then
-            res_box = MsgBox("You don't have R installed, you won't be able to run Ecotroph ! Download and install the minimum R for ecotroph directory ", MsgBoxStyle.OkCancel)
-            If (res_box = MsgBoxResult.Ok) Then
 
+            ' JS 21Jun13: Really needed to change this
+            fmsg = New cFeedbackMessage("You don't have R installed, you won't be able to run Ecotroph! Do you wish to download and install the minimum R for ecotroph directory now?", _
+                                        eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            fmsg.Reply = eMessageReply.YES
+            Me.UIContext.Core.Messages.SendMessage(fmsg)
+
+            If (fmsg.Reply = eMessageReply.OK) Then
+
+                cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Downloading local copy of R...", -1)
                 Try
 
                     My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/R_ET.zip", CurDir() & "\R_ET.zip", "", "", True, 500, True)
                 Catch ex As Exception
                     MessageBox.Show(My.Resources.PB_DOWNLOAD & ex.Message)
+                    cLog.Write(ex, "frmEcotroph.Load")
                 End Try
+                cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+
                 'If inzip .exe is not here, we have to download it from the EcoTroph website
                 Dim toto As String
 
-                toto = System.IO.Path.GetFileName(CurDir() & "\unzip.exe")
+                cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Installing local copy of R...", -1)
+                Try
+                    toto = System.IO.Path.GetFileName(CurDir() & "\unzip.exe")
 
+                    If Not (File.Exists(CurDir() & "\unzip.exe")) Then My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/unzip.exe", CurDir() & "\unzip.exe", "", "", True, 500, True)
+                    'This is a way to uncompress R_ET.zip to R folder but it crashs on XP when it's compile on Windows 7 and it 
+                    'use a thirs partu dll (interop.shell32.dll) 
+                    'Dim mydesktop As String = My.Computer.FileSystem.SpecialDirectories.Desktop
+                    'Dim myshell As New Shell32.Shell
+                    'Dim myzip As Shell32.Folder = myshell.NameSpace((CurDir() & "\R_ET.zip"))
+                    'Dim mydrop As Shell32.Folder = myshell.NameSpace((CurDir()))
+                    'mydrop.CopyHere(myzip.Items)
+                Catch ex As Exception
 
-
-                If Not (File.Exists(CurDir() & "\unzip.exe")) Then My.Computer.Network.DownloadFile("http://sirs.agrocampus-ouest.fr/EcoTroph/data/unzip.exe", CurDir() & "\unzip.exe", "", "", True, 500, True)
-                'This is a way to uncompress R_ET.zip to R folder but it crashs on XP when it's compile on Windows 7 and it 
-                'use a thirs partu dll (interop.shell32.dll) 
-                'Dim mydesktop As String = My.Computer.FileSystem.SpecialDirectories.Desktop
-                'Dim myshell As New Shell32.Shell
-                'Dim myzip As Shell32.Folder = myshell.NameSpace((CurDir() & "\R_ET.zip"))
-                'Dim mydrop As Shell32.Folder = myshell.NameSpace((CurDir()))
-                'mydrop.CopyHere(myzip.Items)
+                End Try
 
                 'so i prefer to store the unzip.exe file inside the EwEEcoTroph.zip and use it via the system.command
                 Dim myProcess As New Process()
@@ -105,53 +126,54 @@ Public Class autre
                 myProcess.StartInfo.Arguments = "-o R_ET.zip"
                 myProcess.StartInfo.CreateNoWindow = True
                 Try
-
                     myProcess.Start()
                 Catch Ex As Exception
+                    cLog.Write(Ex, "frmEcotroph::unzip")
                     MessageBox.Show(My.Resources.ERROR_UNZIP & Ex.Message)
                 Finally
 
                 End Try
-
                 myProcess.WaitForExit()
+                cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
+
             End If
         Else
             ecotroph_version.Text = result_tab(6)
         End If
         If (result_tab(4).Contains("upgrade")) Then
-            res_box = MsgBox("A new version of the EcoTroph R package is available, you should upgrade it. ", MsgBoxStyle.OkCancel)
-            If (res_box = MsgBoxResult.Ok) Then
+            ' JS 21Jun13: Really needed to change this
+            fmsg = New cFeedbackMessage("A new version of the EcoTroph R package is available. Do you wish to upgrade now?", _
+                                        eCoreComponentType.External, eMessageType.Any, eMessageImportance.Question, eMessageReplyStyle.YES_NO)
+            fmsg.Reply = eMessageReply.YES
+            Me.UIContext.Core.Messages.SendMessage(fmsg)
 
-                test(0) = " install.packages('EcoTroph',repos=c('" & repos_simple & "'))"
-                test(1) = ""
-                test(2) = ""
-                test(3) = ""
-                test(4) = ""
-                result = execute_r(test)
+            If (fmsg.Reply = eMessageReply.OK) Then
+
+                cApplicationStatusNotifier.StartProgress(Me.UIContext.Core, "Upgrading R package...", -1)
+                Try
+                    test(0) = " install.packages('EcoTroph',repos=c('" & repos_simple & "'))"
+                    test(1) = ""
+                    test(2) = ""
+                    test(3) = ""
+                    test(4) = ""
+                    result = execute_r(test)
+                Catch ex As Exception
+                    cLog.Write(ex, "frmEcotroph::upgrade R package")
+                End Try
+                cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
             End If
         End If
-
-
 
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Load_from_ecopath.Click
 
-
-
-
-
         'a retester ou alors tester si les données sont dispo
-        EcoTroph.newET.etCore.RunEcoPath()
+        EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
 
         If Not (IsNothing(ETinputdatafromEP.TL)) Then
 
-
             Dim DataGrid As DataGridView = Me.ETgridinput
-
-
-
-
 
             For igrp As Integer = 0 To ETinputdatafromEP.TL.Length - 2
                 If (DataGrid.RowCount < ETinputdatafromEP.TL.Length) Then
@@ -174,10 +196,6 @@ Public Class autre
 
                 Next
                 DataGrid.Columns(4).DefaultCellStyle.BackColor = Drawing.Color.BurlyWood
-
-
-
-
             Next
 
             ETinputdata.numfleet = ETinputdatafromEP.numfleet
@@ -187,12 +205,9 @@ Public Class autre
             Button2.Enabled = True
             Button3.Enabled = True
             Button4.Enabled = True
-
         Else
-
             MsgBox(My.Resources.NO_MODEL_DATA)
         End If
-
 
         ' frmET.ETgridinput.DataSource = ETinput
         ' frmET.ETgridinput.Show()
@@ -213,16 +228,11 @@ Public Class autre
         ' If the file name is not an empty string open it for saving.
         If saveFileDialog1.FileName <> "" Then
             ' Saves the Image via a FileStream created by the OpenFile method.
-
-
             Dim writer As New System.Xml.Serialization.XmlSerializer(GetType(ETinputtot))
-
             Dim file As New System.IO.StreamWriter(saveFileDialog1.FileName)
 
             writer.Serialize(file, ETinputdata)
             file.Close()
-
-
         End If
     End Sub
 
@@ -674,7 +684,7 @@ Public Class autre
 
 
         'Juste pour attendre que le composant web ne bloque pas le fichier qui doit être mis à jour
-        Dim param_pas As String
+        Dim param_pas As String = ""
         If (type_smooth1.Checked) Then param_pas = get_params(1, smooth_param_1.Text)
 
         If (type_smooth2.Checked) Then param_pas = get_params(2, smooth_param.Text, decalage.Text)
@@ -887,7 +897,7 @@ Public Class autre
 
     End Sub
 
-    Private Sub Label3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label3.Click
+    Private Sub Label3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Label3.Click, Label13.Click
 
     End Sub
 
@@ -925,7 +935,6 @@ Public Class autre
 
     Private Sub Button4_Click_2(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Dim commandes() As String
-        Dim compteur As Integer
         Dim fichierpdf As String = cFileUtils.MakeTempFile(".pdf")
         Dim fichier_data_transfert As String = cFileUtils.MakeTempFile(".xml")
         Dim fichier As String = cFileUtils.MakeTempFile(".txt")
@@ -941,7 +950,7 @@ Public Class autre
         Dim param_iso As String = ""
 
         'on charge les différents paramètres du create.smooth
-        Dim param_pas As String
+        Dim param_pas As String = ""
         If (type_smooth1.Checked) Then param_pas = get_params(1, smooth_param_1.Text)
 
         If (type_smooth2.Checked) Then param_pas = get_params(2, smooth_param.Text, decalage.Text)
@@ -1186,8 +1195,6 @@ Public Class autre
 
 
     Private Sub List_fleet1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles List_fleet1.SelectedIndexChanged
-
-        Dim index As Integer
 
         Dim compteur_fin As Integer = List_fleet1.SelectedItems.Count
         If compteur_fin = List_fleet1.Items.Count Then

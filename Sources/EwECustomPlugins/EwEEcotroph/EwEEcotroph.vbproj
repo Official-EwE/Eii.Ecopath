@@ -168,7 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cEcotrophWSDL.vb" />
-    <Compile Include="cPlugIn.vb" />
+    <Compile Include="cEcotrophPlugIn.vb" />
     <Compile Include="frmEcoTroph.Designer.vb">
       <DependentUpon>frmEcoTroph.vb</DependentUpon>
     </Compile>
@@ -236,9 +236,6 @@
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Includes\Microsoft.VisualBasic.PowerPacks.Vs.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
