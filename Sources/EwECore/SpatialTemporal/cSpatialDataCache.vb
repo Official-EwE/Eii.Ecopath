@@ -129,6 +129,10 @@ Namespace SpatialData
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
         Public Function Clear(ds As ISpatialDataSet) As Boolean
+
+            ' Sanity bail-out
+            If (ds Is Nothing) Then Return True
+
             Dim strCachePath As String = Me.GetCacheFolder(ds)
             Try
                 cFileUtils.DeleteDirectory(strCachePath)
@@ -137,6 +141,7 @@ Namespace SpatialData
                 Return False
             End Try
             Return True
+
         End Function
 
 #End Region ' Maintenance
@@ -168,11 +173,20 @@ Namespace SpatialData
                                     ptfTL As PointF, ptfBR As PointF, dCellSize As Double, time As DateTime, _
                                     strFilter As String, strExt As String) As String _
                                 Implements ISpatialDataCache.GetFileName
-            If Guid.Empty.Equals(ds.GUID) Then
-                Return cFileUtils.MakeTempFile(strExt)
-            Else
+
+            Dim bKnownFile As Boolean = False
+
+            ' Sanity bail-out
+            If (ds IsNot Nothing) Then
+                bKnownFile = Not Guid.Empty.Equals(ds.GUID)
+            End If
+
+            If bKnownFile Then
                 Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strFilter, strExt)
             End If
+
+            Return cFileUtils.MakeTempFile(strExt)
+
         End Function
 
 #End Region ' Cache access
