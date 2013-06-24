@@ -11,7 +11,12 @@ Public Class cMSE
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimBeginTimestepPlugin
 
-    Structure HCR_Group
+
+    ''' <summary>
+    ''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Structure HCR_Group
         Dim GroupName4Biomass As String
         Dim GroupNumber4Biomass As Integer
         Dim LowerLimit As Double
@@ -22,11 +27,12 @@ Public Class cMSE
         Dim CostFunctionType As String
     End Structure
 
-    Enum HCRType
+    Public Enum HCRType
         Target = 0
         Conservation = 1
     End Enum
-
+    
+    Public Strategies As New List(Of List(Of HCR_Group))
 
     Private MSEForm As frmMSE = Nothing
     Private mCore As cCore = Nothing
@@ -35,7 +41,6 @@ Public Class cMSE
     Private _simdata As cEcosimDatastructures
     Private _ecopath As Ecopath.cEcoPathModel
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
-    Private Strategies As New List(Of List(Of HCR_Group))
     Private CurrentStrategy As List(Of HCR_Group)
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer

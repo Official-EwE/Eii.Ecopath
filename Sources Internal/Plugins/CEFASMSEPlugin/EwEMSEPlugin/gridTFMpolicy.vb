@@ -27,118 +27,126 @@ Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
 
-
 #End Region ' Imports
 
-Namespace Ecosim
 
-    ''' ===========================================================================
-    ''' <summary>
-    ''' Grid to allow species quota interaction.
-    ''' </summary>
-    ''' ===========================================================================
-    <CLSCompliant(False)> _
-    Public Class gridTargetFishingMortalityPolicy
-        Inherits EwEGrid
+''' ===========================================================================
+''' <summary>
+''' Grid to allow species quota interaction.
+''' </summary>
+''' ===========================================================================
+<CLSCompliant(False)> _
+Public Class gridTargetFishingMortalityPolicy
+    Inherits EwEGrid
 
 #Region " Internal defs "
 
-        Private Enum eColumnTypes As Integer
-            Index = 0
-            Name
-            BLim
-            BBase
-            FOpt
-        End Enum
+    Private Enum eColumnTypes As Integer
+        Index = 0
+        Name
+        BLim
+        BBase
+        FOpt
+    End Enum
 
 #End Region ' Internal defs
 
+    ''' <summary>
+    ''' The cMSE Plugin that contains the data 
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private MSE As cMSE
+
 #Region " Constructor "
 
-        Public Sub New()
-            MyBase.new()
-        End Sub
+    Public Sub New()
+        MyBase.new()
+    End Sub
+
+    Public Sub Init(Plugin As cMSE)
+        MSE = Plugin
+    End Sub
 
 #End Region ' Constructor
 
 #Region " Public interfaces "
 
-        'Public Property Group() As cMSEGroupInput
-        '    Get
-        '        If Me.Selection.SelectedRows.Length = 1 Then
-        '            Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSEGroupInput)
-        '        End If
-        '        Return Nothing
-        '    End Get
-        '    Set(ByVal value As cMSEGroupInput)
-        '        Me.Selection.Clear()
-        '        If value IsNot Nothing Then
-        '            Me.Selection.Add(New Position(value.Index, 0))
-        '        End If
-        '        Me.RaiseSelectionChangeEvent()
-        '    End Set
-        'End Property
+    'Public Property Group() As cMSEGroupInput
+    '    Get
+    '        If Me.Selection.SelectedRows.Length = 1 Then
+    '            Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSEGroupInput)
+    '        End If
+    '        Return Nothing
+    '    End Get
+    '    Set(ByVal value As cMSEGroupInput)
+    '        Me.Selection.Clear()
+    '        If value IsNot Nothing Then
+    '            Me.Selection.Add(New Position(value.Index, 0))
+    '        End If
+    '        Me.RaiseSelectionChangeEvent()
+    '    End Set
+    'End Property
 
 #End Region ' Public interfaces
 
 #Region " Overrides "
 
-        Protected Overrides Sub InitStyle()
-            MyBase.InitStyle()
+    Protected Overrides Sub InitStyle()
+        MyBase.InitStyle()
 
-            Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
+        Dim iNumCols As Integer = [Enum].GetValues(GetType(eColumnTypes)).Length
 
-            Me.Redim(1, iNumCols)
+        Me.Redim(1, iNumCols)
 
-            Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-            Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell("Group Name")
-            Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Lower biomass limit")
-            Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Upper biomass limit")
-            Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F")
+        Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
+        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell("Group Name")
+        Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Lower biomass limit")
+        Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Upper biomass limit")
+        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F")
 
-            Me.FixedColumns = 2
-            Me.FixedColumnWidths = False
+        Me.FixedColumns = 2
+        Me.FixedColumnWidths = False
 
-        End Sub
+    End Sub
 
-        Protected Overrides Sub FillData()
+    Protected Overrides Sub FillData()
 
-            Dim group As cMSEGroupInput = Nothing
+        Dim group As cMSEGroupInput = Nothing
 
-            ' For each group
-            'For iGroup As Integer = 1 To Core.nLivingGroups
+        ' For each group
+        'For iGroup As Integer = 1 To Core.nLivingGroups
 
-            '    'Get the group info
-            '    group = Core.MSEManager.GroupInputs(iGroup)
+        '    'Get the group info
+        '    group = Core.MSEManager.GroupInputs(iGroup)
 
-            '    Me.AddRow()
+        '    Me.AddRow()
 
-            '    'Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-            '    'Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
+        '    'Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
+        '    'Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
 
-            '    'Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
-            '    'Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
-            '    'Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
+        '    'Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
+        '    'Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
+        '    'Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
 
-            '    Me.Rows(iGroup).Tag = group
+        '    Me.Rows(iGroup).Tag = group
 
-            'Next iGroup
+        'Next iGroup
 
-        End Sub
+    End Sub
 
-        Protected Overrides Sub FinishStyle()
-            MyBase.FinishStyle()
-            Me.Selection.SelectionMode = GridSelectionMode.Row
-        End Sub
+    Protected Overrides Sub FinishStyle()
+        MyBase.FinishStyle()
+        Me.Selection.SelectionMode = GridSelectionMode.Row
+    End Sub
 
-        Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
-            Get
-                Return eCoreComponentType.EcoSim
-            End Get
-        End Property
+    Public Overrides ReadOnly Property MessageSource() As eCoreComponentType
+        Get
+            Return eCoreComponentType.EcoSim
+        End Get
+    End Property
 
 #End Region ' Overrides
 
-    End Class
+End Class
 
-End Namespace ' Ecosim
+

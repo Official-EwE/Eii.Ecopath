@@ -41,6 +41,7 @@ Partial Class frmMSE
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
+        Me.btShowTFMForm = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
@@ -226,11 +227,21 @@ Partial Class frmMSE
         Me.Button2.Text = "Test"
         Me.Button2.UseVisualStyleBackColor = True
         '
+        'btShowTFMForm
+        '
+        Me.btShowTFMForm.Location = New System.Drawing.Point(646, 210)
+        Me.btShowTFMForm.Name = "btShowTFMForm"
+        Me.btShowTFMForm.Size = New System.Drawing.Size(205, 30)
+        Me.btShowTFMForm.TabIndex = 24
+        Me.btShowTFMForm.Text = "Show Target Fishing Mortalites..."
+        Me.btShowTFMForm.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(938, 508)
+        Me.Controls.Add(Me.btShowTFMForm)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label3)
@@ -270,4 +281,5 @@ Partial Class frmMSE
     Friend WithEvents txtOptimIterations As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents btShowTFMForm As System.Windows.Forms.Button
 End Class

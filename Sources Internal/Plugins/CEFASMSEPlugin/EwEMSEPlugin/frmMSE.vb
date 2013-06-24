@@ -1,7 +1,10 @@
-﻿Imports ScientificInterfaceShared.Controls
+﻿
 Imports EwECore
 Imports System.IO
 Imports LumenWorks.Framework.IO.Csv
+
+Imports ScientificInterfaceShared.Forms
+Imports ScientificInterfaceShared.Controls
 
 Public Class frmMSE
 
@@ -10,6 +13,8 @@ Public Class frmMSE
     Dim mCore As cCore
     Dim mMSE As cMSE
     Dim StrategiesExtracted As Boolean 'this is a flag used to determine whether the strategies have already been loads and if so not to load them again
+
+    Dim frmTargetF As frmTFMpolicy
 
     Public Sub New(ByRef core As cCore, ByVal MSE As cMSE)
 
@@ -212,5 +217,25 @@ Public Class frmMSE
 
     Private Sub Demo()
 
+    End Sub
+
+    Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) Handles btShowTFMForm.Click
+        Dim bhasForm As Boolean
+
+        'First make sure the Harvest Controls Rules have been loaded
+        'this is so the interface has some data
+        If StrategiesExtracted = False Then 'This is to prevent it loading the strategies more than once
+            mMSE.ExtractHCR()
+            StrategiesExtracted = True
+        End If
+
+        'Ok now the interface
+        If Me.frmTargetF IsNot Nothing Then
+            bHasForm = Not frmTargetF.IsDisposed
+        End If
+        If Not bHasForm Then
+            frmTargetF = New frmTFMpolicy()
+            frmTargetF.Init(Me.m_uic, Me.mMSE)
+        End If
     End Sub
 End Class
