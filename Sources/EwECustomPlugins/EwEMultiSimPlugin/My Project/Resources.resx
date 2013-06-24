@@ -164,4 +164,11 @@
     <value>Multi-sim completeded successfully, see '{0}' for details</value>
     <comment>{0} = file name</comment>
   </data>
+  <data name="ERROR_DUPLICATE_FUNCTION" xml:space="preserve">
+    <value>Function name '{0}', type {1} has a duplicate of type {2}</value>
+    <comment>{0} = function name, {1} {2}=type names</comment>
+  </data>
+  <data name="ERROR_DUPLICATE_FUNCTIONS" xml:space="preserve">
+    <value>Not all function names are unique! You should fix this before running the plug-in</value>
+  </data>
 </root>

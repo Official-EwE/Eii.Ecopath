@@ -109,6 +109,15 @@ Friend Class cEngine
 
 #Region " Public bits "
 
+    ''' <summary>
+    ''' Bit flags of forcing types to include
+    ''' </summary>
+    Public Enum eFunctionTypes As Byte
+        Forcing = 0
+        Effort = 1
+        Mortality = 2
+    End Enum
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Create the engine.
@@ -119,8 +128,6 @@ Friend Class cEngine
 
         Me.m_uic = uic
         Me.m_core = uic.Core
-
-        Me.m_lManagers.Add(Me.m_core.ForcingShapeManager)
 
     End Sub
 
@@ -161,11 +168,12 @@ Friend Class cEngine
     Public Sub ValidateFiles(ByVal dgtComplete As RunCompletedDelegate, _
                              ByVal dgtDisableFile As DisableFileDelegate, _
                              ByVal astrFiles As String(), _
-                             ByVal strOutFolder As String)
+                             ByVal strOutFolder As String, _
+                             ByVal types As eFunctionTypes)
 
         If Me.IsRunning Then Return
 
-        Me.BuildFFNameCache()
+        Me.BuildFFNameCache(True, types)
 
         Me.m_strOutFolder = strOutFolder
         Me.m_astrFiles = astrFiles
@@ -208,6 +216,7 @@ Friend Class cEngine
                    ByVal dgtComplete As RunCompletedDelegate, _
                    ByVal astrFiles As String(), _
                    ByVal strOutFolder As String, _
+                   ByVal types As eFunctionTypes, _
                    ByVal bReadMonthly As Boolean, _
                    ByVal options As cEcosimResultWriter.eResultTypes())
 
@@ -229,7 +238,7 @@ Friend Class cEngine
             Me.m_strOutFolder = strOutFolder
         End If
 
-        Me.BuildFFNameCache()
+        Me.BuildFFNameCache(False, types)
 
         Me.m_dgtProgress = dgtProgress
         Me.m_dgtComplete = dgtComplete
@@ -264,18 +273,70 @@ Friend Class cEngine
     ''' <summary>
     ''' Build the cache of forcing function names (lower-case).
     ''' </summary>
+    ''' <param name="bCheckDuplicates">Flag to check for duplicate function names.</param>
+    ''' <param name="types"><see cref="eFunctionTypes">Bitwise flag</see> of the 
+    ''' function types to include in the assessment.</param>
+    ''' <returns>True if no duplicates found.</returns>
     ''' -----------------------------------------------------------------------
-    Private Sub BuildFFNameCache()
+    Private Function BuildFFNameCache(ByVal bCheckDuplicates As Boolean, _
+                                      ByVal types As eFunctionTypes) As Boolean
+
+        Dim strKey As String = ""
+        Dim dupl As cFFCache = Nothing
+        Dim msgStatus As cMessage = Nothing
 
         Me.m_FFCache.Clear()
+        Me.m_lManagers.Clear()
 
+        ' Build manager list
+        Me.m_lManagers.Add(Me.m_core.ForcingShapeManager)
+        If ((types And eFunctionTypes.Effort) = eFunctionTypes.Effort) Then
+            Me.m_lManagers.Add(Me.m_core.FishingEffortShapeManager)
+        End If
+        If ((types And eFunctionTypes.Mortality) = eFunctionTypes.Mortality) Then
+            Me.m_lManagers.Add(Me.m_core.FishMortShapeManager)
+        End If
+
+        ' Explore all functions
         For Each man As cBaseShapeManager In Me.m_lManagers
             For Each ff As cForcingFunction In man
+
+                strKey = ff.Name.ToLower
+
+                If (bCheckDuplicates And Me.m_FFCache.ContainsKey(strKey)) Then
+
+                    dupl = Me.m_FFCache(strKey)
+
+                    ' Create status message if not there already
+                    If (msgStatus Is Nothing) Then
+                        msgStatus = New cMessage(My.Resources.ERROR_DUPLICATE_FUNCTIONS, _
+                                                 eMessageType.DataValidation, _
+                                                 eCoreComponentType.External, _
+                                                 eMessageImportance.Warning)
+                    End If
+
+                    ' Add warning
+                    msgStatus.AddVariable(New cVariableStatus(eStatusFlags.FailedValidation, _
+                                                              String.Format(My.Resources.ERROR_DUPLICATE_FUNCTION, ff.Name, dupl.FF.DataType, ff.DataType), _
+                                                              eVarNameFlags.NotSet, _
+                                                              eDataTypes.External, _
+                                                              eCoreComponentType.External, 0))
+                End If
+
+                ' Add function
                 Me.m_FFCache(ff.Name.ToLower) = New cFFCache(ff)
+
             Next
         Next
 
-    End Sub
+        If (msgStatus IsNot Nothing) Then
+            Me.m_core.Messages.SendMessage(msgStatus)
+            Return False
+        End If
+
+        Return True
+
+    End Function
 
 #Region " Running "
 
@@ -499,7 +560,6 @@ Friend Class cEngine
         End Try
 
         If (sw IsNot Nothing) Then
-            Me.BuildFFNameCache()
             Try
                 For Each strFileName As String In Me.m_astrFiles
                     bAllGood = bAllGood And Me.ValidateFile(strFileName, sw)
@@ -533,7 +593,6 @@ Friend Class cEngine
         '= agk =
         Me.ReleaseWait()
         If (Me.m_dgtComplete IsNot Nothing) Then Me.m_dgtComplete.Invoke()
-
 
     End Sub
 
