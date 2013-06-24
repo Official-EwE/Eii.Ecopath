@@ -42,6 +42,9 @@ Partial Class frmMain
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Me.m_csMain = New System.Windows.Forms.SplitContainer()
+        Me.m_cbMort = New System.Windows.Forms.CheckBox()
+        Me.m_cbEffort = New System.Windows.Forms.CheckBox()
+        Me.m_cbFF = New System.Windows.Forms.CheckBox()
         Me.m_lblFilesSrc = New System.Windows.Forms.Label()
         Me.m_clbFilesSrc = New System.Windows.Forms.CheckedListBox()
         Me.m_hdrIn = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -52,6 +55,7 @@ Partial Class frmMain
         Me.m_tbxSource = New System.Windows.Forms.TextBox()
         Me.m_rbMonthly = New System.Windows.Forms.RadioButton()
         Me.m_btnChooseSrc = New System.Windows.Forms.Button()
+        Me.m_lblApply = New System.Windows.Forms.Label()
         Me.m_lblReadAs = New System.Windows.Forms.Label()
         Me.m_cbCreateRunFolder = New System.Windows.Forms.CheckBox()
         Me.m_hrdOut = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
@@ -77,6 +81,9 @@ Partial Class frmMain
         '
         'm_csMain.Panel1
         '
+        Me.m_csMain.Panel1.Controls.Add(Me.m_cbMort)
+        Me.m_csMain.Panel1.Controls.Add(Me.m_cbEffort)
+        Me.m_csMain.Panel1.Controls.Add(Me.m_cbFF)
         Me.m_csMain.Panel1.Controls.Add(Me.m_lblFilesSrc)
         Me.m_csMain.Panel1.Controls.Add(Me.m_clbFilesSrc)
         Me.m_csMain.Panel1.Controls.Add(Me.m_hdrIn)
@@ -87,6 +94,7 @@ Partial Class frmMain
         Me.m_csMain.Panel1.Controls.Add(Me.m_tbxSource)
         Me.m_csMain.Panel1.Controls.Add(Me.m_rbMonthly)
         Me.m_csMain.Panel1.Controls.Add(Me.m_btnChooseSrc)
+        Me.m_csMain.Panel1.Controls.Add(Me.m_lblApply)
         Me.m_csMain.Panel1.Controls.Add(Me.m_lblReadAs)
         '
         'm_csMain.Panel2
@@ -100,6 +108,26 @@ Partial Class frmMain
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnAllVars)
         Me.m_csMain.Panel2.Controls.Add(Me.m_btnChooseOut)
         Me.m_csMain.Panel2.Controls.Add(Me.m_lblVars)
+        '
+        'm_cbMort
+        '
+        resources.ApplyResources(Me.m_cbMort, "m_cbMort")
+        Me.m_cbMort.Name = "m_cbMort"
+        Me.m_cbMort.UseVisualStyleBackColor = True
+        '
+        'm_cbEffort
+        '
+        resources.ApplyResources(Me.m_cbEffort, "m_cbEffort")
+        Me.m_cbEffort.Name = "m_cbEffort"
+        Me.m_cbEffort.UseVisualStyleBackColor = True
+        '
+        'm_cbFF
+        '
+        resources.ApplyResources(Me.m_cbFF, "m_cbFF")
+        Me.m_cbFF.Checked = True
+        Me.m_cbFF.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.m_cbFF.Name = "m_cbFF"
+        Me.m_cbFF.UseVisualStyleBackColor = True
         '
         'm_lblFilesSrc
         '
@@ -163,6 +191,11 @@ Partial Class frmMain
         resources.ApplyResources(Me.m_btnChooseSrc, "m_btnChooseSrc")
         Me.m_btnChooseSrc.Name = "m_btnChooseSrc"
         Me.m_btnChooseSrc.UseVisualStyleBackColor = True
+        '
+        'm_lblApply
+        '
+        resources.ApplyResources(Me.m_lblApply, "m_lblApply")
+        Me.m_lblApply.Name = "m_lblApply"
         '
         'm_lblReadAs
         '
@@ -275,4 +308,8 @@ Partial Class frmMain
     Private WithEvents m_btnRun As System.Windows.Forms.Button
     Private WithEvents m_cbCreateRunFolder As System.Windows.Forms.CheckBox
     Private WithEvents m_btnValidate As System.Windows.Forms.Button
+    Private WithEvents m_cbMort As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbEffort As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbFF As System.Windows.Forms.CheckBox
+    Private WithEvents m_lblApply As System.Windows.Forms.Label
 End Class

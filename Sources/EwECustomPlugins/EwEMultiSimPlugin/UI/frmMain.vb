@@ -60,6 +60,11 @@ Public Class frmMain
         Me.m_tbxSource.Text = My.Settings.PathIn
         Me.m_tbxDest.Text = My.Settings.PathOut
         Me.m_cbCreateRunFolder.Checked = My.Settings.CreateUniqueRunFolder
+
+        Me.m_cbFF.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Forcing) = cEngine.eFunctionTypes.Forcing
+        Me.m_cbEffort.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Effort) = cEngine.eFunctionTypes.Effort
+        Me.m_cbMort.Checked = (My.Settings.FFtypes And cEngine.eFunctionTypes.Mortality) = cEngine.eFunctionTypes.Mortality
+
         If My.Settings.ReadAsMonth Then
             Me.m_rbMonthly.Checked = True
         Else
@@ -186,9 +191,9 @@ Public Class frmMain
     Private Sub OnValidateFiles(sender As System.Object, e As System.EventArgs) _
         Handles m_btnValidate.Click
 
-        If Me.m_engine.IsRunning Then
-            Return
-        End If
+        ' Premature event work-around
+        If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_engine.IsRunning) Then Return
 
         Try
             Dim lFiles As New List(Of String)
@@ -196,10 +201,15 @@ Public Class frmMain
                 lFiles.Add(CStr(item))
             Next
 
+            Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
+            If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
+            If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
+
             Me.m_engine.ValidateFiles(New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
                                       New cEngine.DisableFileDelegate(AddressOf DisableFileCallback), _
                                       lFiles.ToArray(), _
-                                      Me.m_tbxDest.Text)
+                                      Me.m_tbxDest.Text, _
+                                      fft)
 
         Catch ex As Exception
             ' Whoah
@@ -211,9 +221,9 @@ Public Class frmMain
     Private Sub OnRun(sender As System.Object, e As System.EventArgs) _
         Handles m_btnRun.Click
 
-        If Me.m_engine.IsRunning Then
-            Return
-        End If
+        ' Premature event work-around
+        If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_engine.IsRunning) Then Return
 
         Me.StoreSettings()
         Me.UpdateControls()
@@ -229,13 +239,39 @@ Public Class frmMain
                 lOptions.Add(DirectCast(item, cEcosimResultWriter.eResultTypes))
             Next
 
+            Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
+            If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
+            If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
+
             Me.m_engine.Run(New cEngine.RunProgressDelegate(AddressOf RunProgressCallback), _
                             New cEngine.RunCompletedDelegate(AddressOf RunDoneCallback), _
-                            lFiles.ToArray(), Me.m_tbxDest.Text, Me.m_rbMonthly.Checked, lOptions.ToArray())
+                            lFiles.ToArray(), Me.m_tbxDest.Text, fft, _
+                            Me.m_rbMonthly.Checked, lOptions.ToArray())
 
         Catch ex As Exception
             ' Whoah
             cLog.Write(ex, "OnRun")
+        End Try
+
+    End Sub
+
+    Private Sub OnFFTypeChecked(sender As System.Object, e As System.EventArgs) _
+        Handles m_cbEffort.CheckedChanged, m_cbMort.CheckedChanged
+
+        ' Premature event work-around
+        If (Me.m_engine Is Nothing) Then Return
+        If (Me.m_engine.IsRunning) Then Return
+
+        Try
+
+            Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
+            If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
+            If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
+            My.Settings.FFtypes = fft
+
+        Catch ex As Exception
+            ' Whoah
+            cLog.Write(ex, "OnFFTypeChecked")
         End Try
 
     End Sub
@@ -339,10 +375,17 @@ Public Class frmMain
 #Region " Internals "
 
     Private Sub StoreSettings()
+
         My.Settings.PathIn = Me.m_tbxSource.Text
         My.Settings.PathOut = Me.m_tbxDest.Text
         My.Settings.ReadAsMonth = Me.m_rbMonthly.Checked
         My.Settings.CreateUniqueRunFolder = Me.m_cbCreateRunFolder.Checked
+
+        Dim fft As cEngine.eFunctionTypes = cEngine.eFunctionTypes.Forcing
+        If Me.m_cbEffort.Checked Then fft = fft Or cEngine.eFunctionTypes.Effort
+        If Me.m_cbMort.Checked Then fft = fft Or cEngine.eFunctionTypes.Mortality
+        My.Settings.FFtypes = fft
+
         My.Settings.Save()
     End Sub
 
