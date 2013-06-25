@@ -31,9 +31,13 @@ Imports ScientificInterfaceShared.Style
 
 Namespace Controls.Map.Layers
 
+    ''' -------------------------------------------------------------------
     ''' <summary>
-    ''' Layer that wraps a collection of <see cref="cEcospaceLayer"/>s for bundled display in the UI.
+    ''' Layer that wraps a collection of <see cref="cEcospaceLayer"/>s for 
+    ''' bundled display and processing in the UI. The indexing of the bundled
+    ''' data is based on <see cref="eCoreCounterTypes"/>.
     ''' </summary>
+    ''' -------------------------------------------------------------------
     Public Class cRasterLayerBundle
         Inherits cRasterLayer
 
@@ -70,25 +74,80 @@ Namespace Controls.Map.Layers
             For i As Integer = 0 To Me.m_layers.Length - 1
                 If Me.m_layers(i) IsNot Nothing Then Me.m_iLayer = i : Exit For
             Next
+
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set the index of the current active layer in the bundle.
+        ''' </summary>
+           ''' -------------------------------------------------------------------
         Public Property iLayer As Integer
             Get
-                Dim i As Integer = Me.m_iLayer
-                '' Fleets include the 0 'All' fleet
-                'If (Me.m_cc <> eCoreCounterTypes.nFleets) Then i += 1
-                Return i
+                Return Me.m_iLayer
             End Get
             Set(value As Integer)
-                '' Fleets include the 0 'All' fleet
-                'If (Me.m_cc <> eCoreCounterTypes.nFleets) Then value -= 1
-                Me.m_iLayer = Math.Max(0, value)
+                Me.m_iLayer = Math.Max(0, Math.Min(value, Me.m_uic.Core.GetCoreCounter(Me.m_cc)))
             End Set
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the <see cref="eCoreCounterTypes"/> that defines the indexing
+        ''' of the layers bundled in this class.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property CoreCounter As eCoreCounterTypes
+            Get
+                Return Me.m_cc
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the secundary data index for a raster bundle. The type of 
+        ''' object is derived from the bundle <see cref="CoreCounter"/>.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Overrides ReadOnly Property SourceSec As cCoreInputOutputBase
+            Get
+                If (Me.m_iLayer = 0) Then Return Nothing
+
+                Select Case Me.m_cc
+                    Case eCoreCounterTypes.nGroups
+                        Return Me.m_uic.Core.EcoPathGroupInputs(Me.m_iLayer)
+                    Case eCoreCounterTypes.nFleets
+                        Return Me.m_uic.Core.FleetInputs(Me.m_iLayer)
+                    Case Else
+                        Debug.Assert(False)
+                End Select
+                Return Nothing
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the Ecospace layer <see cref="iLayer">currently active</see> in
+        ''' the bundle.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Overrides ReadOnly Property Data As EwECore.cEcospaceLayer
             Get
-                Return Me.m_layers(Me.m_iLayer)
+                Return Me.Data(Me.m_iLayer)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get an Ecospace layer from the bundle.
+        ''' </summary>
+        ''' <param name="iLayer">The index of the layer to obtain. Note that this
+        ''' value cannot exceed the range stipulted by the underlying <see cref="CoreCounter"/>.</param>
+        ''' -------------------------------------------------------------------
+        Public Overloads ReadOnly Property Data(ByVal iLayer As Integer) As EwECore.cEcospaceLayer
+            Get
+                Debug.Assert(iLayer <= Me.m_uic.Core.GetCoreCounter(Me.m_cc))
+                Return Me.m_layers(iLayer)
             End Get
         End Property
 

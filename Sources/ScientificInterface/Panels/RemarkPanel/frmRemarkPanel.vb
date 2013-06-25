@@ -243,7 +243,7 @@ Public Class frmRemarkPanel
     Private Sub UpdateContents()
 
         Dim props() As cProperty = Me.m_mon.Selection
-        Dim strSelection As String = Me.m_mon.ToString
+        Dim strSelection As String = Me.m_mon.ToString(True)
         Dim strRemark As String = ""
         Dim strRemarkFinal As String = ""
         Dim vd As New cVarnameTypeFormatter()

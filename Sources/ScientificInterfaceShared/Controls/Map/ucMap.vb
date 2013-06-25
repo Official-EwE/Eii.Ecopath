@@ -320,6 +320,7 @@ Namespace Controls.Map
 
             If (Me.CanEdit And Me.Capture) Then
                 Me.ProcessMouseInput(e, InRow, InCol)
+
             ElseIf (l IsNot Nothing) Then
                 If (Me.m_layerSelected IsNot Nothing) Then
 
@@ -327,6 +328,8 @@ Namespace Controls.Map
                     Dim sLat As Single = bm.RowToLat(ptCell.Y)
                     Dim sLon As Single = bm.ColToLon(ptCell.X)
                     Dim strVal As String = ""
+                    Dim strFeedback As String = ""
+
                     If TypeOf l Is cRasterLayer Then
                         strVal = l.Renderer.GetDisplayText(DirectCast(l, cRasterLayer).Value(ptCell.Y, ptCell.X))
                     End If
@@ -335,14 +338,15 @@ Namespace Controls.Map
 
                     If sel IsNot Nothing Then
                         If Not String.IsNullOrWhiteSpace(strVal) Then
-                            sel.Invoke(sel.Selection, String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _
-                                                                        Me.UIContext.StyleGuide.FormatNumber(sLon), _
-                                                                        Me.UIContext.StyleGuide.FormatNumber(sLat), strVal))
+                            strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS_VALUE, _
+                                                        Me.UIContext.StyleGuide.FormatNumber(sLon), Me.UIContext.StyleGuide.FormatNumber(sLat), _
+                                                        ptCell.Y, ptCell.X, strVal)
                         Else
-                            sel.Invoke(sel.Selection, String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
-                                            Me.UIContext.StyleGuide.FormatNumber(sLon), _
-                                            Me.UIContext.StyleGuide.FormatNumber(sLat)))
+                            strFeedback = String.Format(My.Resources.GENERIC_VALUE_MAPPOS, _
+                                                        Me.UIContext.StyleGuide.FormatNumber(sLon), Me.UIContext.StyleGuide.FormatNumber(sLat), _
+                                                        ptCell.Y, ptCell.X)
                         End If
+                        sel.Invoke(sel.Selection, strFeedback)
                     End If
                 End If
             End If

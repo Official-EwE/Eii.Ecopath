@@ -63,7 +63,7 @@ Namespace Controls.Map.Layers
                     ' #Yes: update Group index in the underlying Ecospace layer
                     layerCore.iLayer = value
                     ' Force map update
-                    Me.Layer.Update(cLayer.eChangeFlags.Map, False)
+                    Me.Layer.Update(cLayer.eChangeFlags.Map Or cLayer.eChangeFlags.Selected, False)
                 End If
             End Set
         End Property

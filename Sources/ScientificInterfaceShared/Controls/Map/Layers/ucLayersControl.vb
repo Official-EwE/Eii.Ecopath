@@ -23,6 +23,7 @@ Option Strict On
 Imports EwEUtils.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Properties
+Imports EwECore
 
 #End Region ' Imports
 
@@ -235,7 +236,7 @@ Namespace Controls.Map
         ''' <summary>
         ''' Get all the group controls in this control.
         ''' </summary>
-          ''' -------------------------------------------------------------------
+        ''' -------------------------------------------------------------------
         Public ReadOnly Property Groups As ucLayerGroup()
             Get
                 Dim aug(Math.Max(0, Me.m_dtGroups.Count - 1)) As ucLayerGroup
@@ -354,7 +355,7 @@ Namespace Controls.Map
             If (Not Object.ReferenceEquals(layer, Nothing)) Then
                 If (TypeOf layer Is cRasterLayer) Then
                     Dim rsl As cRasterLayer = DirectCast(layer, cRasterLayer)
-                    prop = pm.GetProperty(rsl.Source, rsl.VarName)
+                    prop = pm.GetProperty(rsl.Source, rsl.VarName, rsl.SourceSec)
                 End If
             End If
 

@@ -351,6 +351,17 @@ Namespace Controls.Map.Layers
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Get the source of this layer.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
+        Public Overridable ReadOnly Property SourceSec() As cCoreInputOutputBase
+            Get
+                Return Nothing
+            End Get
+        End Property
+
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
         ''' Get the variable of the source this layer applies to.
         ''' </summary>
         ''' -----------------------------------------------------------------------
@@ -378,7 +389,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property ValueSet() As Single
             Get
-                Return Me.m_svalueSet
+                Return Me.m_sValueSet
             End Get
         End Property
 
@@ -389,7 +400,7 @@ Namespace Controls.Map.Layers
         ''' -----------------------------------------------------------------------
         Public ReadOnly Property ValueClear() As Single
             Get
-                Return Me.m_svalueClear
+                Return Me.m_sValueClear
             End Get
         End Property
 
