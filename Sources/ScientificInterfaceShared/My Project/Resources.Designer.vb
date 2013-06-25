@@ -1943,7 +1943,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to lon: {0}, lat: {1}.
+        '''  Looks up a localized string similar to row {2}, col {3}; lon {0}, lat {1}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_MAPPOS() As String
             Get
@@ -1952,7 +1952,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to lon: {0}, lat: {1}, value: {2}.
+        '''  Looks up a localized string similar to row {2}, col {3}; lon {0}, lat {1}; value: {4}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_MAPPOS_VALUE() As String
             Get
@@ -7858,6 +7858,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Ports.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERPORT() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERPORT", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to C(rel) map||Relative C map|Relative contaminants map.
         '''</summary>
         Public ReadOnly Property VARIABLE_LAYERRELCIN() As String
@@ -7872,6 +7881,15 @@ Namespace My.Resources
         Public ReadOnly Property VARIABLE_LAYERRELPP() As String
             Get
                 Return ResourceManager.GetString("VARIABLE_LAYERRELPP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Sailing cost.
+        '''</summary>
+        Public ReadOnly Property VARIABLE_LAYERSAIL() As String
+            Get
+                Return ResourceManager.GetString("VARIABLE_LAYERSAIL", resourceCulture)
             End Get
         End Property
         

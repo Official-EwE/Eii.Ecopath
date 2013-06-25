@@ -2009,6 +2009,8 @@ Public Class AppLauncher
 
         If Not String.IsNullOrEmpty(Me.SelectedFileName) Then
 
+            Me.m_cmdPropertySelection.Invoke()
+
             ' Not allowed to terminate core?
             If (Not Me.Core.CloseModel()) Then
                 ' #Not allowed: abort
@@ -3511,7 +3513,7 @@ Public Class AppLauncher
     Private Sub OnUpdateLoadEcospaceScenario(ByVal cmd As cCommand) _
         Handles m_cmdLoadEcospaceScenario.OnUpdate
         Dim m As cCoreStateMonitor = Me.Core.StateMonitor
-        cmd.Enabled = m.HasEcosimLoaded And Not m.IsBusy
+        cmd.Enabled = m.HasEcopathLoaded And Not m.IsBusy
     End Sub
 
     ''' <summary>

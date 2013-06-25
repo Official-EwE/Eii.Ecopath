@@ -316,7 +316,7 @@ Namespace Ecospace.Basemap
             Dim lstrFields As New List(Of String)
             Dim strField As String = ""
             Dim strFile As String = Me.m_tbTarget.Text
-            Dim layer As cRasterLayer = Nothing
+            Dim layerUI As cRasterLayer = Nothing
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
@@ -326,8 +326,8 @@ Namespace Ecospace.Basemap
             Try
 
                 ' Populate local data
-                For Each layer In dtMappings.Keys
-                    strField = dtMappings(layer).Trim
+                For Each layerUI In dtMappings.Keys
+                    strField = dtMappings(layerUI).Trim
                     If Not String.IsNullOrWhiteSpace(strField) Then
                         If (lstrFields.IndexOf(strField) = -1) Then
                             lstrFields.Add(strField)
@@ -342,12 +342,28 @@ Namespace Ecospace.Basemap
                 For iRow = 1 To bm.InRow
                     For iCol = 1 To bm.InCol
                         ' Populate data
-                        For Each layer In dtMappings.Keys
-                            strField = dtMappings(layer)
+                        For Each layerUI In dtMappings.Keys
+                            strField = dtMappings(layerUI)
                             If Not String.IsNullOrEmpty(strField.Trim) Then
-                                Me.m_data.Value(iRow, iCol, strField) = CSng(layer.Value(iRow, iCol))
+
+                                If (TypeOf layerUI Is cRasterLayerBundle) Then
+
+                                    ' Add data for all sub-layers in the bundle to individual fields
+                                    Dim rlb As cRasterLayerBundle = DirectCast(layerUI, cRasterLayerBundle)
+                                    Dim layerSpace As cEcospaceLayer = Nothing
+                                    For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
+                                        layerSpace = rlb.Data(i)
+                                        If layerSpace IsNot Nothing Then
+                                            Me.m_data.Value(iRow, iCol, strField & "_" & i) = CSng(layerUI.Value(iRow, iCol))
+                                        End If
+                                    Next
+
+                                Else
+                                    Me.m_data.Value(iRow, iCol, strField) = CSng(layerUI.Value(iRow, iCol))
+                                End If
+
                             End If
-                        Next layer
+                        Next layerUI
                     Next iCol
                 Next iRow
 

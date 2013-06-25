@@ -2636,10 +2636,10 @@
     <value>Z||Tot. mort. rate|Total mortality rate</value>
   </data>
   <data name="GENERIC_VALUE_MAPPOS" xml:space="preserve">
-    <value>lon: {0}, lat: {1}</value>
+    <value>row {2}, col {3}; lon {0}, lat {1}</value>
   </data>
   <data name="GENERIC_VALUE_MAPPOS_VALUE" xml:space="preserve">
-    <value>lon: {0}, lat: {1}, value: {2}</value>
+    <value>row {2}, col {3}; lon {0}, lat {1}; value: {4}</value>
   </data>
   <data name="ABOUT_32BIT" xml:space="preserve">
     <value>32 bit</value>
@@ -2864,5 +2864,11 @@
   </data>
   <data name="FilterHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\filterhs.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VARIABLE_LAYERPORT" xml:space="preserve">
+    <value>Ports</value>
+  </data>
+  <data name="VARIABLE_LAYERSAIL" xml:space="preserve">
+    <value>Sailing cost</value>
   </data>
 </root>

@@ -88,7 +88,7 @@ Public Class cSelectionMonitor
     ''' </summary>
     ''' <returns>A string representation of the <see cref="Selection">current selection</see>.</returns>
     ''' -----------------------------------------------------------------------
-    Public Overrides Function ToString() As String
+    Public Overloads Function ToString(Optional bMinimal As Boolean = True) As String
 
         Dim strSelection As String = My.Resources.SELECTION_NONE
 
@@ -141,7 +141,7 @@ Public Class cSelectionMonitor
                     End If
             End Select
 
-            If Not String.IsNullOrWhiteSpace(Me.m_cmdSelect.Status) Then
+            If (Not bMinimal) And (Not String.IsNullOrWhiteSpace(Me.m_cmdSelect.Status)) Then
                 strSelection = String.Format(SharedResources.GENERIC_LABEL_DOUBLE, strSelection, Me.m_cmdSelect.Status)
             End If
 
