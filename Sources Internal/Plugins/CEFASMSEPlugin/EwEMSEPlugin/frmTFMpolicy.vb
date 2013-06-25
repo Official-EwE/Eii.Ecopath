@@ -38,6 +38,8 @@ Imports ScientificInterfaceShared.Controls
 ''' =======================================================================
 Public Class frmTFMpolicy
 
+
+
 #Region " Internals "
 
     Private Enum eDragType As Integer
@@ -88,7 +90,7 @@ Public Class frmTFMpolicy
         Me.m_zgh.AllowEdit = True
 
         Me.m_grid.UIContext = Me.UIContext
-        
+
 
     End Sub
 
@@ -327,7 +329,7 @@ Public Class frmTFMpolicy
 #End Region ' Dragging
 
     Private Sub OnSelectedStrategyChanged(sender As Object, e As System.EventArgs) Handles cbStrategies.SelectedIndexChanged
-     
+
         If Me.cbStrategies.SelectedIndex >= 0 Then
             Me.changeSelectedStrategy(Me.cbStrategies.SelectedIndex)
         End If
@@ -337,6 +339,7 @@ Public Class frmTFMpolicy
     Private Sub changeSelectedStrategy(iSelectedIndex As Integer)
         m_SelectedStrategy = Me.m_MSEPlugin.Strategies(iSelectedIndex)
 
+        'figure out how to pass the selected group up from the grid
         'repopulate the grid
         'select a group
         'redraw the graph for the selected group
