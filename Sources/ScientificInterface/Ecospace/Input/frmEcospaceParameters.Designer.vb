@@ -92,7 +92,7 @@ Namespace Ecospace
             Me.m_lbScenarioName = New System.Windows.Forms.Label()
             Me.m_hdrScenario = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plBiomass = New System.Windows.Forms.Panel()
-            Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_tlpStuff = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plScenario = New System.Windows.Forms.Panel()
             Me.m_plModel = New System.Windows.Forms.Panel()
             Me.m_plSpatial = New System.Windows.Forms.Panel()
@@ -126,7 +126,7 @@ Namespace Ecospace
             CType(Me.m_nudMaxIterations, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_gbRunTime.SuspendLayout()
             Me.m_plBiomass.SuspendLayout()
-            Me.TableLayoutPanel1.SuspendLayout()
+            Me.m_tlpStuff.SuspendLayout()
             Me.m_plScenario.SuspendLayout()
             Me.m_plModel.SuspendLayout()
             Me.m_plSpatial.SuspendLayout()
@@ -461,14 +461,14 @@ Namespace Ecospace
             Me.m_plBiomass.Controls.Add(Me.m_hdrInitialization)
             Me.m_plBiomass.Name = "m_plBiomass"
             '
-            'TableLayoutPanel1
+            'm_tlpStuff
             '
-            resources.ApplyResources(Me.TableLayoutPanel1, "TableLayoutPanel1")
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plScenario, 0, 0)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plBiomass, 0, 2)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plModel, 0, 3)
-            Me.TableLayoutPanel1.Controls.Add(Me.m_plSpatial, 0, 1)
-            Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
+            resources.ApplyResources(Me.m_tlpStuff, "m_tlpStuff")
+            Me.m_tlpStuff.Controls.Add(Me.m_plScenario, 0, 0)
+            Me.m_tlpStuff.Controls.Add(Me.m_plBiomass, 0, 2)
+            Me.m_tlpStuff.Controls.Add(Me.m_plModel, 0, 3)
+            Me.m_tlpStuff.Controls.Add(Me.m_plSpatial, 0, 1)
+            Me.m_tlpStuff.Name = "m_tlpStuff"
             '
             'm_plScenario
             '
@@ -636,7 +636,7 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me, "$this")
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.Controls.Add(Me.TableLayoutPanel1)
+            Me.Controls.Add(Me.m_tlpStuff)
             Me.Name = "EcospaceParameters"
             m_gbModel.ResumeLayout(False)
             m_gbModel.PerformLayout()
@@ -653,7 +653,7 @@ Namespace Ecospace
             Me.m_gbRunTime.PerformLayout()
             Me.m_plBiomass.ResumeLayout(False)
             Me.m_plBiomass.PerformLayout()
-            Me.TableLayoutPanel1.ResumeLayout(False)
+            Me.m_tlpStuff.ResumeLayout(False)
             Me.m_plScenario.ResumeLayout(False)
             Me.m_plScenario.PerformLayout()
             Me.m_plModel.ResumeLayout(False)
@@ -718,7 +718,6 @@ Namespace Ecospace
         Private WithEvents m_cmbAutosaveMapFormat As System.Windows.Forms.ComboBox
         Private WithEvents m_cbAutosaveResultRegions As System.Windows.Forms.CheckBox
         Private WithEvents m_lblAutosaveResultMaps As System.Windows.Forms.Label
-        Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
         Private WithEvents m_plScenario As System.Windows.Forms.Panel
         Private WithEvents m_plModel As System.Windows.Forms.Panel
         Private WithEvents m_plSpatial As System.Windows.Forms.Panel
@@ -742,6 +741,7 @@ Namespace Ecospace
         Private WithEvents m_nudColCount As ScientificInterfaceShared.Controls.cEwENumericUpDown
         Private WithEvents m_lblCellSize As System.Windows.Forms.Label
         Private WithEvents m_lblCellWidth As System.Windows.Forms.Label
+        Private WithEvents m_tlpStuff As System.Windows.Forms.TableLayoutPanel
     End Class
 
 End Namespace
