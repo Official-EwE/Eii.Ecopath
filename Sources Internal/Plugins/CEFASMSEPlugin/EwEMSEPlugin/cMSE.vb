@@ -68,7 +68,7 @@ Public Class cMSE
 
         While Not EffortLimitsCSV.EndOfStream
             EffortLimitsCSV.ReadNextRecord()
-                ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = EffortLimitsCSV(2)
+            ChangeInEffortLimits(EffortLimitsCSV(0) - 1) = EffortLimitsCSV(2)
         End While
 
     End Sub
@@ -106,7 +106,7 @@ Public Class cMSE
     End Sub
 
     Private Function ExtractParamsCSV(ByRef param_name As String)
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtIterations.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
         Dim csv As New CsvReader(New StreamReader(DataPath & "\ParametersOut\" & param_name & "_out.csv"), True)
         Dim Params(nIterations - 1, csv.FieldCount - 1) As Double
         Dim iRecord As Integer = 0
@@ -126,7 +126,7 @@ Public Class cMSE
     End Function
 
     Private Function ExtractVulnerabilitiesCSV()
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtIterations.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, _ecopath.EcopathData.NumGroups - 1, _ecopath.EcopathData.NumGroups - 1) As Double
 
@@ -323,7 +323,7 @@ Public Class cMSE
         LoadNaturalMortalites()
 
         'load parameter values into ecopath and ecosim to be used
-        nTrials = Convert.ToInt32(MSEForm.txtIterations.Text)    '0 is the 1st dimension and 1' the second etc
+        nTrials = Convert.ToInt32(MSEForm.txtnTrials.Text)    '0 is the 1st dimension and 1' the second etc
         For iTrial = 1 To nTrials
 
             For igrp = 1 To mCore.nLivingGroups
@@ -471,21 +471,24 @@ BadDynamics:  ' This is so that if the dynamics of a parameterisation are bad th
 
     End Sub
 
-    Public Function DirichletSample(ByVal nDimensions As Integer)
-        Dim u1, u2, b, a, p, x As Single
+    Public Function DirichletSample(ByVal nDimensions As Integer, ByRef a() As Single, ByRef DietMultiplier As Double)
+        Dim u1, u2, b, p, x As Single
         Dim gamma(nDimensions - 1) As Single
         Dim dirichlet(nDimensions - 1) As Single
         Dim sumofgamma As Single
-        a = 1
+
+        For i = 0 To a.Length() - 1
+            a(i) = a(i) * DietMultiplier
+        Next
 
         For i As Integer = 0 To nDimensions - 1
 step1:
             u1 = Rnd()
-            b = (Math.E + a) / Math.E
+            b = (Math.E + a(i)) / Math.E
             p = b * u1
             If p >= 1 Then GoTo step3
 step2:
-            x = p ^ (1 / a)
+            x = p ^ (1 / a(i))
             u2 = Rnd()
             If u2 > Math.Exp(-x) Then
                 GoTo step1
@@ -494,9 +497,9 @@ step2:
                 GoTo stepend
             End If
 step3:
-            x = -Math.Log((b - p) / a)
+            x = -Math.Log((b - p) / a(i))
             u2 = Rnd()
-            If u2 > x ^ (a - 1) Then
+            If u2 > x ^ (a(i) - 1) Then
                 GoTo step1
             Else
                 gamma(i) = x
@@ -531,39 +534,22 @@ stepend:
 
     End Function
 
-    Private Sub SampleDietMatrix()
-        Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
-        Dim Lower(mCore.nLivingGroups - 1, mCore.nGroups) As Single
-        Dim Upper(mCore.nLivingGroups - 1, mCore.nGroups) As Single
+    Private Sub SampleDietMatrix(ByRef Interacts(,) As Integer, ByRef MeanProportions(,) As Single, ByRef DietPropMultipliers() As Double)
+
+        Dim MeanPropMod() As Single
         Dim SumInteractions(mCore.nLivingGroups - 1) As Single
         Dim TempDirichlet() As Single
-        Dim DirichletIndex As Integer
         Dim PreyIndex As Integer
-        Dim Path As String = DataPath & "\DistributionParameters"
-        Dim csv_diet As CsvReader
         Dim DirichStopWatch As New Stopwatch
         Dim NormaliseStopWatch As New Stopwatch
         Dim EcopathStopWatch As New Stopwatch
         Dim EcopathInternalStopWatch As New Stopwatch
         Dim ecopathData As cEcopathDataStructures = Me._ecopath.EcopathData
+        Dim iPointer As Integer = 0
 
         'Dim DirichletArray(mCore.nLivingGroups - 1, mCore.nLivingGroups - 1) As Single
 
         'Array.Clear(DirichletArray, 0, DirichletArray.GetLength(1))
-
-        'Read in the values from the DietComposition.csv into each array
-        csv_diet = New CsvReader(New StreamReader(Path & "/DietComposition.csv"), True)
-        For iPred As Integer = 1 To mCore.nLivingGroups
-            For iPrey As Integer = 0 To mCore.nGroups
-                csv_diet.ReadNextRecord()
-                'Note about indices for interacts, lower and upper
-                'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
-                'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
-                Interacts(csv_diet(2) - 1, csv_diet(3)) = csv_diet(4)
-                Lower(csv_diet(2) - 1, csv_diet(3)) = csv_diet(5)
-                Upper(csv_diet(2) - 1, csv_diet(3)) = csv_diet(6)
-            Next
-        Next
 
         'Generate a vector 'SumInteractions' that counts how many prey each predator has
         For iPred As Integer = 0 To mCore.nLivingGroups - 1
@@ -576,46 +562,26 @@ stepend:
             'mCore.EcoPathGroupInputs(iPred + 1).DietComp(0) = 0
             If (SumInteractions(iPred) = 0) Then    'No need to do any of this unless there is at least 1 prey for this parameter
                 'Set all values to zero - if running slow might want to consider how this could be skipped - possibly setting whole array to zero at start
-                ecopathData.DC(iPred + 1, 0) = 0
-                'mCore.EcoPathGroupInputs(iPred + 1).ImpDiet() = 0
-                For i = 1 To mCore.nGroups
-                    'DirichletArray(iPred, i) = 0
-                    'mCore.EcoPathGroupInputs(iPred + 1).DietComp(i) = 0
+                For i = 0 To mCore.nGroups
                     ecopathData.DC(iPred + 1, i) = 0
                 Next
             Else
                 ' DirichStopWatch.Start()
-SampleDirichlet:
-                'Samples a set of Dirichlet distributed parameters
-                TempDirichlet = DirichletSample(SumInteractions(iPred))
 
-                'Check to see if any of the parameters are outside the range specified and if they are send back to resample them
-                DirichletIndex = 0
-
-                For iPrey As Integer = 0 To mCore.nGroups
+                ReDim MeanPropMod(SumInteractions(iPred) - 1)
+                iPointer = 0
+                For iPrey = 0 To mCore.nGroups
                     If Interacts(iPred, iPrey) = 1 Then
-                        If iPred = 0 And iPrey = 33 Then
-                            Console.WriteLine("Now sampling for pred=baleen prey=sandeels")
-                        End If
-                        If TempDirichlet(DirichletIndex) < Lower(iPred, iPrey) Then GoTo SampleDirichlet
-                        If TempDirichlet(DirichletIndex) > Upper(iPred, iPrey) Then GoTo SampleDirichlet
-                        DirichletIndex += 1
+                        MeanPropMod(iPointer) = MeanProportions(iPred, iPrey)
+                        iPointer += 1
                     End If
                 Next
 
+
+                'Samples a set of Dirichlet distributed parameters
+                TempDirichlet = DirichletSample(SumInteractions(iPred), MeanPropMod, DietPropMultipliers(iPred))
+
                 ' DirichStopWatch.Stop()
-
-
-                ' NormaliseStopWatch.Start()
-                'Normalize TempDirichlet - we have to do this because there is a numerical error that makes them slight different to one
-                'and this stops Ecopath being able to use them
-                Dim sumTempDirichlet As Single = TempDirichlet.Sum
-                If sumTempDirichlet <> 1 Then
-                    For i = 0 To TempDirichlet.GetLength(0) - 1
-                        TempDirichlet(i) = TempDirichlet(i) / sumTempDirichlet
-                    Next
-                End If
-                'NormaliseStopWatch.Stop()
 
                 'Set all the diet values in ecopath to those sampled and checked to be within correct intervals
                 PreyIndex = 0
@@ -661,7 +627,6 @@ SampleDirichlet:
         'Console.WriteLine("Normalise Time = " & NormaliseStopWatch.ElapsedMilliseconds.ToString)
         'Console.WriteLine("Ecopath Time = " & EcopathStopWatch.ElapsedMilliseconds.ToString)
         'Console.WriteLine("Ecopath Internal Time = " & EcopathInternalStopWatch.ElapsedMilliseconds.ToString)
-        csv_diet.Dispose()
 
     End Sub
 
@@ -820,7 +785,7 @@ SampleDirichlet:
         Dim nLiving As Integer = mCore.nLivingGroups
         Dim nGroups As Integer = mCore.nGroups
         Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtIterations.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
         Dim b(nIterations, nGroups) As Single
         Dim ba(nIterations, nLiving) As Single
         Dim pb(nIterations, nLiving) As Single
@@ -949,6 +914,206 @@ SampleDirichlet:
 
     End Sub
 
+    Public Sub GenerateEcopathParamaters2()
+        Dim nLiving As Integer = mCore.nLivingGroups
+        Dim nGroups As Integer = mCore.nGroups
+        Dim MonteCarlo As cMonteCarloManager = mCore.EcosimMonteCarlo
+        Dim nTrials As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
+        Dim b(nTrials, nGroups) As Single
+        Dim ba(nTrials, nLiving) As Single
+        Dim pb(nTrials, nLiving) As Single
+        Dim qb(nTrials, nLiving) As Single
+        Dim ee(nTrials, nLiving) As Single
+        Dim TimeFindingBalanced As New Stopwatch
+        Dim csv_diet As CsvReader
+        Dim csv_multipliers As CsvReader
+        Dim MeanProportions(mCore.nLivingGroups - 1, mCore.nGroups) As Single
+        Dim DietPropMultipliers(mCore.nLivingGroups - 1) As Double
+        Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
+        Dim sPath As String = DataPath & "\DistributionParameters"
+        Dim SuccessfullyMassBalanced As Boolean = False
+
+        'I am just altering the tolerance so that it can run faster; this needs deleting later
+        MonteCarlo.EcopathEETolerance = Convert.ToSingle(MSEForm.txtTolerance.Text)
+
+        'cMonteCarloManager.selectNewEcopathParameters() will alter the Ecopath Input parameters
+        'We need to save the original state of Ecopath so it can be restored when we are done
+        Me.SaveOriginalState()
+
+        'Read in the values from the DietComposition.csv into each array
+        csv_diet = New CsvReader(New StreamReader(sPath & "/DietComposition.csv"), True)
+        For iPred As Integer = 1 To mCore.nLivingGroups
+            For iPrey As Integer = 0 To mCore.nGroups
+                csv_diet.ReadNextRecord()
+                'Note about indices for interacts, lower and upper
+                'The 1st index for predator runs from 0 and each element is equal to the same element+1 in mcore.ecopathgroupinputs
+                'The 2nd index for prey runs from zero, where zero is the imports and then every other index is identical to mcore.ecopathgroupinputs
+                Interacts(csv_diet(2) - 1, csv_diet(3)) = csv_diet(4)
+                MeanProportions(csv_diet(2) - 1, csv_diet(3)) = csv_diet(5)
+            Next
+        Next
+
+        'Read in the values from the DietCompositionMultipliers.csv
+        csv_multipliers = New CsvReader(New StreamReader(sPath & "/DietCompositionMultipliers.csv"), True)
+        Do While csv_multipliers.ReadNextRecord
+            DietPropMultipliers(csv_multipliers(0) - 1) = csv_multipliers(2)
+        Loop
+
+
+
+        Try
+
+            'Init some of the Monte Carlo parameters
+            If Me.InitMonteCarloParameters() Then
+                'Succeeded in intitializing Monte Carlo Parameters
+
+                For iTrial As Integer = 1 To nTrials
+                    Dim timestart As Date = Now
+                    'Set the Ecopath parameters using the Monte Carlo input parameters set above
+
+                    'For iMonteIterations As Integer = 1 To 1000000
+                    'SampleDietMatrix() this takes too long to run so if to be included, we need to consider alternatives
+                    'Console.WriteLine("Iteration: " & iMonteIterations)
+                    TimeFindingBalanced.Start()
+
+                    For iParameterSet = 1 To 100000000
+
+                        'Write code here that generates a whole set of diet parameters to be used in combination with new ecopath parameters
+                        'to be tested for the mass-balance criteria
+                        'SampleDietMatrix(Interacts, MeanProportions, DietPropMultipliers)
+
+                        If MonteCarlo.selectNewEcopathParameters(1) Then
+                            SuccessfullyMassBalanced = True
+                            'write some of the new Ecopath parameters to the console window
+                            'Again for debugging
+                            Me.dumpEcopathParameters(iTrial)
+                            Console.WriteLine("Mass balanced @ trial " & iTrial)
+
+                            For iGrp = 1 To nLiving
+                                b(iTrial, iGrp) = MonteCarlo.Groups(iGrp).B
+                                ba(iTrial, iGrp) = MonteCarlo.Groups(iGrp).BA
+                                pb(iTrial, iGrp) = MonteCarlo.Groups(iGrp).PB
+                                qb(iTrial, iGrp) = MonteCarlo.Groups(iGrp).QB
+                                ee(iTrial, iGrp) = MonteCarlo.Groups(iGrp).EE
+                            Next iGrp
+
+                            Exit For
+
+                            ''This runs Ecosim without core support
+                            'If Me.RunEcosim() Then
+                            '    'dumps out some Ecosim results
+                            '    Me.getEcosimResults()
+                            'End If 'RunEcosim
+                            'Exit For
+                            'Else
+                            '    System.Console.WriteLine("Failed to find balanced Ecopath model")
+                        End If ' MonteCarlo.selectNewEcopathParameters()
+
+                    Next
+
+                    'If MonteCarlo.selectNewEcopathParameters(10000) Then
+
+                    '    'write some of the new Ecopath parameters to the console window
+                    '    'Again for debugging
+                    '    Me.dumpEcopathParameters(iTrial)
+
+                    '    For iGrp = 1 To nLiving
+                    '        b(iTrial, iGrp) = MonteCarlo.Groups(iGrp).B
+                    '        ba(iTrial, iGrp) = MonteCarlo.Groups(iGrp).BA
+                    '        pb(iTrial, iGrp) = MonteCarlo.Groups(iGrp).PB
+                    '        qb(iTrial, iGrp) = MonteCarlo.Groups(iGrp).QB
+                    '        ee(iTrial, iGrp) = MonteCarlo.Groups(iGrp).EE
+                    '    Next iGrp
+
+                    '    ''This runs Ecosim without core support
+                    '    'If Me.RunEcosim() Then
+                    '    '    'dumps out some Ecosim results
+                    '    '    Me.getEcosimResults()
+                    '    'End If 'RunEcosim
+                    '    'Exit For
+
+                    '    'Else
+                    '    'System.Console.WriteLine("Failed to find balanced Ecopath model")
+                    'End If ' MonteCarlo.selectNewEcopathParameters()
+
+                    If SuccessfullyMassBalanced = True Then
+                        Console.WriteLine("Successful found a set of parameters inc. diet matrix that is mass balanced!")
+                    Else
+                        Console.WriteLine("Failed to find mass-balanced parameter set!")
+                    End If
+
+                    'Next
+
+                    Console.WriteLine("Number of seconds to run iteration: " & (TimeFindingBalanced.ElapsedMilliseconds / 1000).ToString)
+                    TimeFindingBalanced.Reset()
+
+                Next iTrial
+            Else
+                Exit Sub
+            End If 'Me.InitMonteCarloParameters()
+
+            'Save the results to a .csv
+
+            sPath = DataPath & "\ParametersOut"
+            Dim b_csvout As New StreamWriter(Path.Combine(sPath & "/b_out.csv"), False)
+            Dim ba_csvout As New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), False)
+            Dim pb_csvout As New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), False)
+            Dim qb_csvout As New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), False)
+            Dim ee_csvout As New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), False)
+
+            b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+            ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+            pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+            qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+            ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+
+            For igrp As Integer = 2 To nLiving
+                b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+            Next
+
+            b_csvout.WriteLine()
+            ba_csvout.WriteLine()
+            pb_csvout.WriteLine()
+            qb_csvout.WriteLine()
+            ee_csvout.WriteLine()
+
+            For iter As Integer = 1 To nTrials
+                b_csvout.Write(b(iter, 1))
+                ba_csvout.Write(ba(iter, 1))
+                pb_csvout.Write(pb(iter, 1))
+                qb_csvout.Write(qb(iter, 1))
+                ee_csvout.Write(ee(iter, 1))
+                For igrp As Integer = 2 To nLiving
+                    b_csvout.Write(", " & b(iter, igrp))
+                    ba_csvout.Write(", " & ba(iter, igrp))
+                    pb_csvout.Write(", " & pb(iter, igrp))
+                    qb_csvout.Write(", " & qb(iter, igrp))
+                    ee_csvout.Write(", " & ee(iter, igrp))
+                Next
+                b_csvout.WriteLine()
+                ba_csvout.WriteLine()
+                pb_csvout.WriteLine()
+                qb_csvout.WriteLine()
+                ee_csvout.WriteLine()
+            Next
+
+            b_csvout.Dispose()
+            ba_csvout.Dispose()
+            pb_csvout.Dispose()
+            qb_csvout.Dispose()
+            ee_csvout.Dispose()
+
+        Catch ex As Exception
+
+        End Try
+
+        Me.RestoreOriginalState()
+    End Sub
+
     Private Function getEcosimResults() As Boolean
         Try
             'Because we ran Ecosim directly from cEcosimModel.Run() instead of via the core cCore.RunEcosim()
@@ -1047,55 +1212,12 @@ SampleDirichlet:
 
             Next '========================================================================================================================================================
 
-
-
             'reset the connection to the csv files ready to be read from the beginning again
             csv_B.Dispose()
             csv_BA.Dispose()
             csv_EE.Dispose()
             csv_PB.Dispose()
             csv_QB.Dispose()
-
-            'csv_B = New CsvReader(New StreamReader(Path & "/B_Dist.csv"), True)
-            'csv_PB = New CsvReader(New StreamReader(Path & "/PB_Dist.csv"), True)
-            'csv_QB = New CsvReader(New StreamReader(Path & "/QB_Dist.csv"), True)
-            'csv_EE = New CsvReader(New StreamReader(Path & "/EE_Dist.csv"), True)
-            'csv_BA = New CsvReader(New StreamReader(Path & "/BA_Dist.csv"), True)
-
-
-
-            ''Now load the upper and lower limit values from csv into the montecarlo simulation ============================================================================
-            'For igrp = 1 To mCore.nLivingGroups
-
-            '    xgrp = 1
-            '    csv_B.ReadNextRecord()
-            '    csv_BA.ReadNextRecord()
-            '    csv_EE.ReadNextRecord()
-            '    csv_PB.ReadNextRecord()
-            '    csv_QB.ReadNextRecord()
-
-            '    'Make sure that .csv files are set up with group names in same order because xgrp is found only from the B file
-            '    'and then is assumed to be the same for all other files
-
-            '    While MonteCarlo.Groups(xgrp).Name <> csv_B(0)
-            '        xgrp += 1
-            '    End While
-
-            '    MCGroup = MonteCarlo.Groups(xgrp)
-
-            '    'Set a lower and upper limit after CV
-            '    MCGroup.BLower = csv_B(2)
-            '    MCGroup.BUpper = csv_B(3)
-            '    MCGroup.BALower = csv_BA(2)
-            '    MCGroup.BAUpper = csv_BA(3)
-            '    MCGroup.EELower = csv_EE(2)
-            '    MCGroup.EEUpper = csv_EE(3)
-            '    MCGroup.PBLower = csv_PB(2)
-            '    MCGroup.PBUpper = csv_PB(3)
-            '    MCGroup.QBLower = csv_QB(2)
-            '    MCGroup.QBUpper = csv_QB(3)
-
-            'Next '========================================================================================================================================================
 
             Return True
 
@@ -1309,7 +1431,7 @@ SampleDirichlet:
         Dim sPath As String = DataPath & "\DistributionParameters"
         Dim csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
         Dim ParameterArray(mCore.nLivingGroups * mCore.nLivingGroups, 5) As Single
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtIterations.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
         Dim SampledParameters(nIterations, mCore.nLivingGroups, mCore.nLivingGroups)
         Dim eDistributionType As DistributionType
 
@@ -1367,7 +1489,7 @@ SampleDirichlet:
         Dim sPath As String = DataPath & "\DistributionParameters"
         Dim csv = New CsvReader(New StreamReader(sPath & "\" & ParamName & ".csv"), True)
         Dim ParameterArray(mCore.nLivingGroups - nPrimaryProducer - 1, 3) As Single
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtIterations.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
         'Dim SampledParameters(nIterations, mCore.nLivingGroups - nPrimaryProducer)
         Dim eDistributionType As DistributionType
         Dim SampledParameters(nIterations - 1, mCore.nLivingGroups - nPrimaryProducer - 1) As Double
@@ -1444,7 +1566,7 @@ SampleDirichlet:
     Public Sub CreateVulnerabilities()
         'Generate csv with vulnerabilities
 
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtIterations.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
 
         For iIteration = 1 To nIterations
 
@@ -1517,7 +1639,6 @@ SampleDirichlet:
         Dim tempFConservation As Double
         'used so that we don't repeat same groups when cycling through HCRs
         Dim LastYearsEffort(_ecosim.EcopathData.NumFleet - 1) As Double
-        Dim ZeroEffortFleetsList As List(Of Integer)
         Dim variable_results() As Double
 
 

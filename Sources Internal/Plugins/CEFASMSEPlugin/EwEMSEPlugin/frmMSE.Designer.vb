@@ -22,7 +22,7 @@ Partial Class frmMSE
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.txtIterations = New System.Windows.Forms.TextBox()
+        Me.txtnTrials = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.btnLoadSampled = New System.Windows.Forms.Button()
         Me.txtNYearsProject = New System.Windows.Forms.TextBox()
@@ -46,14 +46,14 @@ Partial Class frmMSE
         Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
-        'txtIterations
+        'txtnTrials
         '
-        Me.txtIterations.Location = New System.Drawing.Point(549, 29)
-        Me.txtIterations.Name = "txtIterations"
-        Me.txtIterations.Size = New System.Drawing.Size(50, 20)
-        Me.txtIterations.TabIndex = 0
-        Me.txtIterations.Text = "5"
-        Me.txtIterations.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.txtnTrials.Location = New System.Drawing.Point(549, 29)
+        Me.txtnTrials.Name = "txtnTrials"
+        Me.txtnTrials.Size = New System.Drawing.Size(50, 20)
+        Me.txtnTrials.TabIndex = 0
+        Me.txtnTrials.Text = "5"
+        Me.txtnTrials.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label1
         '
@@ -248,7 +248,7 @@ Partial Class frmMSE
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.btnGamma)
         Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.txtIterations)
+        Me.Controls.Add(Me.txtnTrials)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Panel2)
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -262,7 +262,7 @@ Partial Class frmMSE
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents txtIterations As System.Windows.Forms.TextBox
+    Friend WithEvents txtnTrials As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents btnLoadSampled As System.Windows.Forms.Button
     Friend WithEvents txtNYearsProject As System.Windows.Forms.TextBox
