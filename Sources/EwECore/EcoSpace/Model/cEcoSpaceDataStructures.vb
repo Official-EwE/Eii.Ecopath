@@ -610,13 +610,31 @@ Public Class cEcospaceDataStructures
     ''' <remarks>This incurs significant overhead so it is Off(False) by default. At this time is can only be turned ON(True) via code.</remarks>
     Public bCalTrophicLevel As Boolean
 
+
+    ''' <summary>
+    ''' Number of fishing effort zones (LME's, EEZ...)
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public nEffZones As Integer
+
+    ''' <summary>
+    ''' Proportion of fishing effort for a fleet in an area(LME,Region....) by nFleets, nAreas
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public PropEffortFleetZone(,) As Single
+
+    ''' <summary>
+    ''' PropEffortFleetArea() index of the area a cell is in by Row Col
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public EffZones(,) As Integer
+
     ''' <summary>
     ''' 
     '''
     ''' </summary>
     ''' <remarks></remarks>
     Public RelEffort(,,) As Single
-    
 
 #End Region
 
@@ -1112,6 +1130,10 @@ Public Class cEcospaceDataStructures
             ReDim Me.EcopathFleetDBID(nFleets)
             ReDim Me.SEmult(nFleets)
             ReDim Me.EffPower(nFleets)
+
+            'Sets the number of Effort Areas to a default of one
+            Me.ReDimEffortZones(1)
+
             Me.setFleetDefaults()
 
             ReDim FleetSailCells(nFleets)
@@ -1126,13 +1148,56 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+    ''' <summary>
+    ''' Dimensions and sets the number of Effort Zones
+    ''' </summary>
+    ''' <param name="NumberOfZones">Number of Effort Zones</param>
+    ''' <remarks>Sets PropEffortFleetArea(nFleets,nAreas) to a default of one</remarks>
+    Public Sub ReDimEffortZones(NumberOfZones As Integer)
+        Debug.Assert(NumberOfZones > 0, "ReDimPropEffortArea(nAreas) NumberOfAreas must be greater than 0.")
+
+        Me.nEffZones = NumberOfZones
+        Me.PropEffortFleetZone = New Single(nFleets, nEffZones) {}
+
+        For iflt As Integer = 1 To nFleets
+            'Default proportion of effort in an area = 1
+            For iarea As Integer = 1 To nEffZones
+                PropEffortFleetZone(iflt, iarea) = 1
+            Next iarea
+        Next
+
+    End Sub
+
+
     Private Sub setFleetDefaults()
-        'calculate relative catchabilities by gear and species
+
         'jb just set to default of one
         For i As Integer = 1 To nFleets
             EffPower(i) = 1
             SEmult(i) = 1
-        Next 'initially set all gears to fish everywhere
+        Next
+
+    End Sub
+
+
+    Friend Sub DebugTestEffortZones()
+
+        'set the number of zones to 4
+        Me.ReDimEffortZones(4)
+
+        For iflt As Integer = 1 To Me.nFleets
+            For iz As Integer = 1 To Me.nEffZones
+                'Effort by zone
+                Me.PropEffortFleetZone(iflt, iz) = CSng(iz / nEffZones)
+            Next
+        Next
+        Dim iseq As Integer
+        For ir As Integer = 1 To InRow
+            For ic As Integer = 1 To InCol
+                iseq += 1
+                Me.EffZones(ir, ic) = 1 + CInt((nEffZones - 1) * (iseq / (InRow * InCol)))
+            Next
+        Next
 
     End Sub
 
@@ -1392,7 +1457,7 @@ Public Class cEcospaceDataStructures
             ReDim MPAfishery(nFleets, 1)
             ReDim MPAmonth(12, 1)
             ReDim IsFished(nFleets, Me.InRow, Me.InCol)
-
+            ReDim EffZones(InRow, InCol)
             ReDim Lat(InRow)
             ReDim Width(InRow)
 
@@ -1419,6 +1484,9 @@ Public Class cEcospaceDataStructures
 
                     'Use all habitats
                     PHabType(i, j, 0) = 1.0F
+
+                    'Default Areas=1
+                    Me.EffZones(i, j) = 1
 
                 Next j
             Next i
