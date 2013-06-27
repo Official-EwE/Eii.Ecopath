@@ -237,5 +237,7 @@ Public Class frmMSE
             frmTargetF = New frmTFMpolicy()
             frmTargetF.Init(Me.m_uic, Me.mMSE)
         End If
+
+        frmTargetF.Show()
     End Sub
 End Class

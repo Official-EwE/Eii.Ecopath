@@ -240,7 +240,7 @@ Partial Class frmMSE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(938, 508)
+        Me.ClientSize = New System.Drawing.Size(879, 477)
         Me.Controls.Add(Me.btShowTFMForm)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)

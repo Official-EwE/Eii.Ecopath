@@ -50,9 +50,9 @@ Public Class frmTFMpolicy
     End Enum
 
     ''' <summary><see cref="cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
-    Private m_zgh As cZedGraphHelper = Nothing
+    Private m_zgh As cZedGraphHelper
     ''' <summary>Group selected in the form.</summary>
-    Private m_group As cMSEGroupInput = Nothing
+    Private m_group As cMSE.HCR_Group
     ''' <summary>Graph drag mode.</summary>
     Private m_dragtype As eDragType = eDragType.None
 
@@ -61,6 +61,8 @@ Public Class frmTFMpolicy
     Private m_MSEPlugin As cMSE
 
     Private m_SelectedStrategy As List(Of cMSE.HCR_Group)
+
+    Private m_HCR As cMSE.HCR_Group
 
 #End Region ' Internals
 
@@ -89,7 +91,13 @@ Public Class frmTFMpolicy
         Me.m_zgh.AllowPan = False
         Me.m_zgh.AllowEdit = True
 
+        Me.m_grid.Init(Me.m_MSEPlugin)
         Me.m_grid.UIContext = Me.UIContext
+        'Me.m_grid.Init(Me.m_MSEPlugin)
+
+        populateStrategies()
+
+        Me.cbStrategies.SelectedIndex = 0
 
 
     End Sub
@@ -104,10 +112,9 @@ Public Class frmTFMpolicy
         MyBase.OnFormClosed(e)
     End Sub
 
-    Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) _
-        Handles m_grid.OnSelectionChanged
+    Private Sub HandleGridSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection) Handles m_grid.OnSelectionChanged
         ' Update group selection according to user actions in the grid
-        ' Me.Group = Me.m_grid.Group
+        Me.HCRGroup = Me.m_grid.HarvestControlRule
     End Sub
 
     'Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
@@ -139,6 +146,21 @@ Public Class frmTFMpolicy
 
         End Try
     End Sub
+
+
+    Private Property HCRGroup() As cMSE.HCR_Group
+        Get
+            Return m_HCR
+        End Get
+        Set(value As cMSE.HCR_Group)
+            Me.m_HCR = value
+            Redraw()
+        End Set
+    End Property
+
+
+
+
 
     ' ''' -------------------------------------------------------------------
     ' ''' <summary>
@@ -188,48 +210,43 @@ Public Class frmTFMpolicy
         Dim lpts As New PointPairList
         Dim line As LineItem = Nothing
         Dim lLines As New List(Of LineItem)
+        Try
 
-        If (Me.m_group IsNot Nothing) Then
-            ' Group has data?
-            If (Me.m_group.GetStatus(eVarNameFlags.MSEBBase) And eStatusFlags.Null) = 0 Then
-                ' #Yes: plot stick
-                Dim bsum As Single = Me.m_group.BLim + Me.m_group.BBase
-                If bsum > 0 Then
-                    ' Add points
-                    lpts.Add(0, 0)
-                    lpts.Add(Me.m_group.BLim, 0)
-                    lpts.Add(Me.m_group.BBase, Me.m_group.FOpt) ' Point order?
-                    lpts.Add(Me.m_group.BBase * 4, Me.m_group.FOpt) ' Max X value?
-                Else
-                    'Zero biomass values user has only entered F
-                    'draw a square line at zero up to F
-                    lpts.Add(-1, 0)
-                    lpts.Add(0, 0)
-                    lpts.Add(0, Me.m_group.FOpt) ' Point order?
-                    lpts.Add(4, Me.m_group.FOpt) ' Max X value?
-                End If
-
-                line = New LineItem(Me.m_group.Name, _
-                lpts, _
-                Me.StyleGuide.GroupColor(Me.Core, Me.m_group.Index), _
-                SymbolType.Circle)
-                line.Line.Width = 2.0
-
-                lLines.Add(line)
-
+            ' #Yes: plot stick
+            Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
+            If bsum > 0 Then
+                ' Add points
+                lpts.Add(0, 0)
+                lpts.Add(Me.m_HCR.LowerLimit, 0)
+                lpts.Add(Me.m_HCR.UpperLimit, Me.m_HCR.MaxF) ' Point order?
+                lpts.Add(Me.m_HCR.UpperLimit * 4, Me.m_HCR.MaxF) ' Max X value?
+            Else
+                'Zero biomass values user has only entered F
+                'draw a square line at zero up to F
+                lpts.Add(-1, 0)
+                lpts.Add(0, 0)
+                lpts.Add(0, Me.m_HCR.MaxF) ' Point order?
+                lpts.Add(4, Me.m_HCR.MaxF) ' Max X value?
             End If
 
-        End If
+            line = New LineItem(Me.m_HCR.GroupName4Biomass, lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupNumber4Biomass), SymbolType.Circle)
+            line.Line.Width = 2.0
 
-        If lLines.Count > 0 Then
-            ' Plot graph, but rescale ONLY when not dragging
-            Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
-            Me.m_graph.Cursor = Cursors.Default
-        Else
-            ' Clear graph
-            Me.m_zgh.PlotLines(Nothing)
-            Me.m_graph.Cursor = Cursors.No
-        End If
+            lLines.Add(line)
+
+            If lLines.Count > 0 Then
+                ' Plot graph, but rescale ONLY when not dragging
+                Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
+                Me.m_graph.Cursor = Cursors.Default
+            Else
+                ' Clear graph
+                Me.m_zgh.PlotLines(Nothing)
+                Me.m_graph.Cursor = Cursors.No
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
 
     End Sub
 
@@ -304,12 +321,12 @@ Public Class frmTFMpolicy
 
             Select Case Me.m_dragtype
                 Case eDragType.BLim
-                    Me.m_group.BLim = Math.Max(0, Math.Min(CSng(dX), Me.m_group.BBase))
+                    Me.m_group.LowerLimit = Math.Max(0, Math.Min(CSng(dX), Me.m_group.UpperLimit))
                 Case eDragType.BBaseFopt
-                    Me.m_group.BBase = Math.Max(Me.m_group.BLim, CSng(dX))
-                    Me.m_group.FOpt = Math.Max(0, CSng(dy))
+                    Me.m_group.UpperLimit = Math.Max(Me.m_group.LowerLimit, CSng(dX))
+                    Me.m_group.MaxF = Math.Max(0, CSng(dy))
                 Case eDragType.Fopt
-                    Me.m_group.FOpt = Math.Max(0, CSng(dy))
+                    Me.m_group.MaxF = Math.Max(0, CSng(dy))
             End Select
 
         End If
@@ -337,7 +354,9 @@ Public Class frmTFMpolicy
 
 
     Private Sub changeSelectedStrategy(iSelectedIndex As Integer)
+
         m_SelectedStrategy = Me.m_MSEPlugin.Strategies(iSelectedIndex)
+        Me.m_grid.SelectedStrategyIndex = iSelectedIndex
 
         'figure out how to pass the selected group up from the grid
         'repopulate the grid
@@ -346,6 +365,15 @@ Public Class frmTFMpolicy
 
     End Sub
 
+    Private Sub btAddHCR_Click(sender As Object, e As System.EventArgs) Handles btAddHCR.Click
+        MsgBox("Sorry not implemented yet.")
+    End Sub
+
+    Private Sub btAddStrategy_Click(sender As Object, e As System.EventArgs) Handles btAddStrategy.Click
+        MsgBox("Sorry not implemented yet.")
+    End Sub
+
+   
 End Class
 
 

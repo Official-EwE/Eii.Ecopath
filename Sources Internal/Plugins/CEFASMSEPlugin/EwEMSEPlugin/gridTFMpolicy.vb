@@ -55,8 +55,9 @@ Public Class gridTargetFishingMortalityPolicy
     ''' The cMSE Plugin that contains the data 
     ''' </summary>
     ''' <remarks></remarks>
-    Private MSE As cMSE
+    Private MSEPlugin As cMSE
 
+    Private mSelStrategyIndex As Integer
 #Region " Constructor "
 
     Public Sub New()
@@ -64,28 +65,30 @@ Public Class gridTargetFishingMortalityPolicy
     End Sub
 
     Public Sub Init(Plugin As cMSE)
-        MSE = Plugin
+        MSEPlugin = Plugin
     End Sub
 
 #End Region ' Constructor
 
 #Region " Public interfaces "
 
-    'Public Property Group() As cMSEGroupInput
-    '    Get
-    '        If Me.Selection.SelectedRows.Length = 1 Then
-    '            Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSEGroupInput)
-    '        End If
-    '        Return Nothing
-    '    End Get
-    '    Set(ByVal value As cMSEGroupInput)
-    '        Me.Selection.Clear()
-    '        If value IsNot Nothing Then
-    '            Me.Selection.Add(New Position(value.Index, 0))
-    '        End If
-    '        Me.RaiseSelectionChangeEvent()
-    '    End Set
-    'End Property
+
+
+    Public Property HarvestControlRule() As cMSE.HCR_Group
+        Get
+            If Me.Selection.SelectedRows.Length = 1 Then
+                Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSE.HCR_Group)
+            End If
+            Return Nothing
+        End Get
+        Set(ByVal value As cMSE.HCR_Group)
+            'Me.Selection.Clear()
+            'If value IsNot Nothing Then
+            '    Me.Selection.Add(New Position(value.Index, 0))
+            'End If
+            'Me.RaiseSelectionChangeEvent()
+        End Set
+    End Property
 
 #End Region ' Public interfaces
 
@@ -110,10 +113,31 @@ Public Class gridTargetFishingMortalityPolicy
     End Sub
 
     Protected Overrides Sub FillData()
+        Dim iHCR As Integer
 
-        Dim group As cMSEGroupInput = Nothing
+        If MSEPlugin Is Nothing Then Return
+        Dim strategy As List(Of cMSE.HCR_Group) = MSEPlugin.Strategies(Me.mSelStrategyIndex)
 
-        ' For each group
+        For Each hcr As cMSE.HCR_Group In strategy
+            iHCR += 1
+            Me.AddRow()
+            Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
+            Me(iHCR, eColumnTypes.Name) = New EwECell(hcr.GroupName4Biomass, GetType(String))
+            Me(iHCR, eColumnTypes.BLim) = New EwECell(hcr.LowerLimit, GetType(Single))
+            Me(iHCR, eColumnTypes.BBase) = New EwECell(hcr.UpperLimit, GetType(Single))
+            Me(iHCR, eColumnTypes.FOpt) = New EwECell(hcr.MaxF, GetType(Single))
+
+
+
+            'Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
+            'Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
+            'Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
+
+            Me.Rows(iHCR).Tag = hcr
+        Next
+
+
+
         'For iGroup As Integer = 1 To Core.nLivingGroups
 
         '    'Get the group info
@@ -143,6 +167,14 @@ Public Class gridTargetFishingMortalityPolicy
         Get
             Return eCoreComponentType.EcoSim
         End Get
+    End Property
+
+    Public WriteOnly Property SelectedStrategyIndex As Integer
+        Set(value As Integer)
+            Me.mSelStrategyIndex = value
+            Me.InitStyle()
+            Me.FillData()
+        End Set
     End Property
 
 #End Region ' Overrides

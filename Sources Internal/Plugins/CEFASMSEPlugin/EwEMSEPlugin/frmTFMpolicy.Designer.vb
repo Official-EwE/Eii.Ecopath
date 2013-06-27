@@ -46,6 +46,8 @@ Partial Class frmTFMpolicy
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTFMpolicy))
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
+        Me.btAddHCR = New System.Windows.Forms.Button()
+        Me.btAddStrategy = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.cbStrategies = New System.Windows.Forms.ComboBox()
         Me.m_graph = New ZedGraph.ZedGraphControl()
@@ -67,6 +69,8 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel1
         '
+        Me.m_scMain.Panel1.Controls.Add(Me.btAddHCR)
+        Me.m_scMain.Panel1.Controls.Add(Me.btAddStrategy)
         Me.m_scMain.Panel1.Controls.Add(Me.Label1)
         Me.m_scMain.Panel1.Controls.Add(Me.cbStrategies)
         Me.m_scMain.Panel1.Controls.Add(Me.m_graph)
@@ -75,6 +79,18 @@ Partial Class frmTFMpolicy
         '
         Me.m_scMain.Panel2.Controls.Add(Me.ToolStrip1)
         Me.m_scMain.Panel2.Controls.Add(Me.m_grid)
+        '
+        'btAddHCR
+        '
+        resources.ApplyResources(Me.btAddHCR, "btAddHCR")
+        Me.btAddHCR.Name = "btAddHCR"
+        Me.btAddHCR.UseVisualStyleBackColor = True
+        '
+        'btAddStrategy
+        '
+        resources.ApplyResources(Me.btAddStrategy, "btAddStrategy")
+        Me.btAddStrategy.Name = "btAddStrategy"
+        Me.btAddStrategy.UseVisualStyleBackColor = True
         '
         'Label1
         '
@@ -169,6 +185,8 @@ Partial Class frmTFMpolicy
     Friend WithEvents tsbDefaultTFM As System.Windows.Forms.ToolStripButton
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents cbStrategies As System.Windows.Forms.ComboBox
+    Friend WithEvents btAddHCR As System.Windows.Forms.Button
+    Friend WithEvents btAddStrategy As System.Windows.Forms.Button
 
 End Class
 
