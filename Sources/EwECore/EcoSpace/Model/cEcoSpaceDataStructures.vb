@@ -629,13 +629,7 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public EffZones(,) As Integer
 
-    ''' <summary>
-    ''' 
-    '''
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public RelEffort(,,) As Single
-
+  
 #End Region
 
 #Region "Private Data"
@@ -1153,7 +1147,7 @@ Public Class cEcospaceDataStructures
     ''' </summary>
     ''' <param name="NumberOfZones">Number of Effort Zones</param>
     ''' <remarks>Sets PropEffortFleetArea(nFleets,nAreas) to a default of one</remarks>
-    Public Sub ReDimEffortZones(NumberOfZones As Integer)
+    Public Sub ReDimEffortZones(ByVal NumberOfZones As Integer)
         Debug.Assert(NumberOfZones > 0, "ReDimPropEffortArea(nAreas) NumberOfAreas must be greater than 0.")
 
         Me.nEffZones = NumberOfZones
@@ -1461,7 +1455,6 @@ Public Class cEcospaceDataStructures
             ReDim Lat(InRow)
             ReDim Width(InRow)
 
-            ReDim RelEffort(nFleets, Me.InRow, Me.InCol)
 
             ''jb move this here to set a few defaults this will have to change
             For i = 1 To NGroups                            'CJW had nvar not n1
@@ -1479,7 +1472,6 @@ Public Class cEcospaceDataStructures
                     RelCin(i, j) = 1
                     For k = 1 To nFleets
                         Sail(k, i, j) = 1
-                        RelEffort(k, i, j) = 1
                     Next
 
                     'Use all habitats
