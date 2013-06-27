@@ -610,6 +610,14 @@ Public Class cEcospaceDataStructures
     ''' <remarks>This incurs significant overhead so it is Off(False) by default. At this time is can only be turned ON(True) via code.</remarks>
     Public bCalTrophicLevel As Boolean
 
+    ''' <summary>
+    ''' 
+    '''
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public RelEffort(,,) As Single
+    
+
 #End Region
 
 #Region "Private Data"
@@ -1388,6 +1396,8 @@ Public Class cEcospaceDataStructures
             ReDim Lat(InRow)
             ReDim Width(InRow)
 
+            ReDim RelEffort(nFleets, Me.InRow, Me.InCol)
+
             ''jb move this here to set a few defaults this will have to change
             For i = 1 To NGroups                            'CJW had nvar not n1
                 PrefHab(i, 0) = 1.0! ' True
@@ -1404,6 +1414,7 @@ Public Class cEcospaceDataStructures
                     RelCin(i, j) = 1
                     For k = 1 To nFleets
                         Sail(k, i, j) = 1
+                        RelEffort(k, i, j) = 1
                     Next
 
                     'Use all habitats
