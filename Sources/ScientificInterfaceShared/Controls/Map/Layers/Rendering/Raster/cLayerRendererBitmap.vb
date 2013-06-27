@@ -105,7 +105,7 @@ Namespace Controls.Map.Layers
         End Sub
 
         Public Overrides Function GetDisplayText(value As Object) As String
-            Return ""
+            Return Convert.ToString(value)
         End Function
 
     End Class
