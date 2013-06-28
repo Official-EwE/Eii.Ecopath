@@ -170,7 +170,7 @@ Public Class frmEcotroph
 
         'a retester ou alors tester si les données sont dispo
         EcoTroph.cEcotrophPlugin.etCore.RunEcoPath()
-
+        ETgridinput.BringToFront()
         If Not (IsNothing(ETinputdatafromEP.TL)) Then
 
             Dim DataGrid As DataGridView = Me.ETgridinput
@@ -244,6 +244,7 @@ Public Class frmEcotroph
         openFileDialog1.Filter = My.Resources.FILEFILTER_XML
         openFileDialog1.FilterIndex = 2
         openFileDialog1.RestoreDirectory = True
+        ETgridinput.BringToFront()
 
         If openFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
             Try
@@ -713,9 +714,9 @@ Public Class frmEcotroph
         commandes(6) = "write.table(A$biomass[as.numeric(rownames(A$biomass))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE)"
         commandes(7) = "cat('-----\n', file ='" & fichier & "',append=TRUE)"
         commandes(8) = "write.table(A$biomass_acc[as.numeric(rownames(A$biomass_acc))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(9) = "write.table(as.data.frame(lapply(A$Y,rowSums)),file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(10) = "write.table(A$P[as.numeric(rownames(A$P))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
-        commandes(11) = "write.table(A$P_acc[as.numeric(rownames(A$P_acc))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
+        commandes(9) = "write.table(A$prod[as.numeric(rownames(A$prod))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
+        commandes(10) = "write.table(A$prod_acc[as.numeric(rownames(A$prod_acc))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
+        commandes(11) = "write.table(as.data.frame(lapply(A$Y,rowSums)),file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
         commandes(12) = "AY<-Reduce('+',A$Y);write.table(AY[as.numeric(rownames(AY))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)"
         commandes(13) = "for (pecheries in names(A$Y)) {write.table(A$Y[[pecheries]][as.numeric(rownames(A$Y[[pecheries]]))<6,], file ='" & fichier & "', sep = '\t',append=TRUE,quote=FALSE);cat('-----\n', file ='" & fichier & "',append=TRUE)}"
 
@@ -828,6 +829,8 @@ Public Class frmEcotroph
 
     Private Sub getgraphs_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles getgraphs.CheckedChanged
         If getgraphs.Checked = True Then
+            result_pdf.BringToFront()
+
             result_pdf.Visible = True
         Else : result_pdf.Visible = False
         End If
@@ -851,7 +854,10 @@ Public Class frmEcotroph
     End Sub
 
     Private Sub CheckBox1_CheckedChanged_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles smooth_graph.CheckedChanged
+
+
         If smooth_graph.Checked = True Then
+            smooth_pdf.BringToFront()
             smooth_pdf.Visible = True
         Else : smooth_pdf.Visible = False
         End If
@@ -928,6 +934,8 @@ Public Class frmEcotroph
 
     Private Sub getgraph_diag_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles getgraph_diag.CheckedChanged
         If getgraph_diag.Checked = True Then
+            result_pdf_et_diag.BringToFront()
+
             result_pdf_et_diag.Visible = True
         Else : result_pdf_et_diag.Visible = False
         End If
@@ -938,7 +946,7 @@ Public Class frmEcotroph
         Dim fichierpdf As String = cFileUtils.MakeTempFile(".pdf")
         Dim fichier_data_transfert As String = cFileUtils.MakeTempFile(".xml")
         Dim fichier As String = cFileUtils.MakeTempFile(".txt")
-
+        Dim log_ech_diag As String
 
         Cursor.Current = Cursors.WaitCursor
 
@@ -955,6 +963,7 @@ Public Class frmEcotroph
 
         If (type_smooth2.Checked) Then param_pas = get_params(2, smooth_param.Text, decalage.Text)
         If (type_smooth3.Checked) Then param_pas = get_params(3)
+        If (log_scale_diagnose.Checked) Then log_ech_diag = ",scale=log" Else log_ech_diag = ""
         Dim param_pas2 As String = ", TopD = " & Replace(TopD.Text, ",", ".") & ", FormD = " & Replace(formd.Text, ",", ".")
 
         If (b_input_check.Checked) Then param_pas2 = param_pas2 & ",B.Input=TRUE, Beta = " & Replace(beta.Text, ",", ".")
@@ -1030,7 +1039,7 @@ Public Class frmEcotroph
 
         commandes(17) = "pdf(file='" & Replace(fichierpdf, "\", "\\") & "')"
         'commandes(18) = "plot_ETdiagnosis(A)"
-        commandes(18) = "plot(A)"
+        commandes(18) = "plot(A" & log_ech_diag & ")"
         commandes(19) = ""
         If Not same_mf.Checked Then
             'commandes(19) = "B<-plot_ETdiagnosis_isopleth(A)"
@@ -1141,7 +1150,7 @@ Public Class frmEcotroph
 
             End If
             If (same_mf.Checked And All_group.Checked) Then
-                charge_grid(matrices(9).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_EMSY)
+                charge_grid(matrices(10).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), ET_M_EMSY)
             Else
                 ET_M_EMSY.RowCount = 1
 
@@ -1256,6 +1265,9 @@ Public Class frmEcotroph
 
             Cursor.Current = Cursors.WaitCursor
             panel_webservi.Visible = True
+            panel_webservi.BringToFront()
+
+
             If models_list.Items.Count = 0 Then
 
 
