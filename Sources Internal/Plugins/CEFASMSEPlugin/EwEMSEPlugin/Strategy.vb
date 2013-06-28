@@ -6,10 +6,10 @@ Public Class Strategy
 
     Public Name As String
     Public FileName As String
-    Public HCRs As List(Of HCR_Group)
+    Public HCRules As List(Of HCR_Group)
 
     Public Sub New()
-        HCRs = New List(Of HCR_Group)
+        HCRules = New List(Of HCR_Group)
     End Sub
 
     Public Sub New(StrategyName As String)
@@ -22,14 +22,14 @@ Public Class Strategy
         Me.FileName = theFilename
     End Sub
 
-    Public Sub New(StrategyName As String, ListOfHCRs As List(Of HCR_Group))
+    Public Sub New(StrategyName As String, ListOfHCRules As List(Of HCR_Group))
         Me.New(StrategyName)
-        Me.HCRs = ListOfHCRs
+        Me.HCRules = ListOfHCRules
     End Sub
 
-    Public Sub New(StrategyName As String, FullPathFileName As String, ListOfHCRs As List(Of HCR_Group))
+    Public Sub New(StrategyName As String, FullPathFileName As String, ListOfHCRules As List(Of HCR_Group))
         Me.New(StrategyName, FullPathFileName)
-        Me.HCRs = ListOfHCRs
+        Me.HCRules = ListOfHCRules
     End Sub
 
 End Class

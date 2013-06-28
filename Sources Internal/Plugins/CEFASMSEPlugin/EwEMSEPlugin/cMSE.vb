@@ -103,7 +103,7 @@ Public Class cMSE
                 tempHCRGroup.GroupNumber4F = csv(5)
                 tempHCRGroup.MaxF = csv(6)
                 tempHCRGroup.CostFunctionType = csv(7)
-                Strategy.HCRs.Add(tempHCRGroup)
+                Strategy.HCRules.Add(tempHCRGroup)
             End While
             Strategies.Add(Strategy)
 
@@ -1675,7 +1675,7 @@ stepend:
                     FTargetandConservation(i - 1, HCRType.Conservation) = NoHCR_F
                 Next
 
-                For Each iHCRGroup In CurrentStrategy.HCRs
+                For Each iHCRGroup In CurrentStrategy.HCRules
                     If iHCRGroup.CostFunctionType = "Target" Then
                         If FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = NoHCR_F Then
                             FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupNumber4Biomass), 0, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
@@ -1713,7 +1713,7 @@ stepend:
                 'Checks to see whether each fleet effects a group that has an HCR - if yes it adds it to fleets2fit so that we know what fleets to
                 'change the effort for to try and achieve the target F's for each group
                 For iFleet As Integer = 1 To mCore.nFleets
-                    For Each iHCRGroup In CurrentStrategy.HCRs
+                    For Each iHCRGroup In CurrentStrategy.HCRules
                         If mCore.FleetInputs(iFleet).Landings(iHCRGroup.GroupNumber4F) + mCore.FleetInputs(iFleet).Discards(iHCRGroup.GroupNumber4F) > 0 Then
                             'If Not Fleets2Fit.Contains(iFleet) And Not ZeroEffortFleetsList.Contains(iFleet) Then
                             If Not Fleets2Fit.Contains(iFleet) Then

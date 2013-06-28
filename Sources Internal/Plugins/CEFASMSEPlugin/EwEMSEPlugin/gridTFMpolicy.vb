@@ -120,7 +120,7 @@ Public Class gridTargetFishingMortalityPolicy
         If MSEPlugin Is Nothing Then Return
         Dim strategy As Strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
 
-        For Each hcr As HCR_Group In strategy.HCRs
+        For Each hcr As HCR_Group In strategy.HCRules
             iHCR += 1
             Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
