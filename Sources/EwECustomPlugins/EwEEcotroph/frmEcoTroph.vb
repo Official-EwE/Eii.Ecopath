@@ -784,6 +784,7 @@ Public Class frmEcotroph
                         dtg.Width = 782
                         dtg.Top = 6
                         dtg.Left = 3
+                        dtg.Dock = DockStyle.Fill
                         panel_result.TabPages(compteur_fleet + 6).Controls.Add(dtg)
                         charge_grid(matrices(compteur_fleet + 6).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
                     Else
@@ -1125,6 +1126,7 @@ Public Class frmEcotroph
                         dtg.Width = 782
                         dtg.Top = 6
                         dtg.Left = 3
+                        dtg.Dock = DockStyle.Fill
                         panel_result_diag.TabPages(panel_result_diag.TabCount - 1).Controls.Add(dtg)
                         charge_grid(matrices(compteur_output + 10).Split(New Char() {vbNewLine}, StringSplitOptions.RemoveEmptyEntries), dtg)
                     Else
@@ -1496,4 +1498,7 @@ Public Class frmEcotroph
     End Sub
 
 
+    Private Sub result_pdf_DocumentCompleted(ByVal sender As System.Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles result_pdf.DocumentCompleted
+
+    End Sub
 End Class
