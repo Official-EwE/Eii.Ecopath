@@ -75,20 +75,20 @@ Public Class gridTargetFishingMortalityPolicy
 
 
 
-    Public Property HarvestControlRule() As cMSE.HCR_Group
+    Public ReadOnly Property HarvestControlRule() As HCR_Group
         Get
             If Me.Selection.SelectedRows.Length = 1 Then
-                Return DirectCast(Me.Selection.SelectedRows(0).Tag, cMSE.HCR_Group)
+                Return DirectCast(Me.Selection.SelectedRows(0).Tag, HCR_Group)
             End If
             Return Nothing
         End Get
-        Set(ByVal value As cMSE.HCR_Group)
-            'Me.Selection.Clear()
-            'If value IsNot Nothing Then
-            '    Me.Selection.Add(New Position(value.Index, 0))
-            'End If
-            'Me.RaiseSelectionChangeEvent()
-        End Set
+        'Set(ByVal value As HCR_Group)
+        '    'Me.Selection.Clear()
+        '    'If value IsNot Nothing Then
+        '    '    Me.Selection.Add(New Position(value.Index, 0))
+        '    'End If
+        '    'Me.RaiseSelectionChangeEvent()
+        'End Set
     End Property
 
 #End Region ' Public interfaces
@@ -120,19 +120,46 @@ Public Class gridTargetFishingMortalityPolicy
         If MSEPlugin Is Nothing Then Return
         Dim strategy As Strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
 
-        For Each hcr As cMSE.HCR_Group In strategy.HCRs
+        For Each hcr As HCR_Group In strategy.HCRs
             iHCR += 1
             Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
+            'New Cells.Real.Cell
             Me(iHCR, eColumnTypes.BioGroupName) = New EwECell(hcr.GroupName4Biomass, GetType(String))
+
             Me(iHCR, eColumnTypes.BLowerLim) = New EwECell(hcr.LowerLimit, GetType(Single))
+            Me(iHCR, eColumnTypes.BLowerLim).Behaviors.Add(Me.EwEEditHandler)
+
             Me(iHCR, eColumnTypes.BUpperLim) = New EwECell(hcr.UpperLimit, GetType(Single))
+            'Me(iHCR, eColumnTypes.BUpperLim).Behaviors.Add(Me.onEdited)
+
             Me(iHCR, eColumnTypes.FGroupName) = New EwECell(hcr.GroupName4F, GetType(String))
+            'Me(iHCR, eColumnTypes.FGroupName).Behaviors.Add(Me.onEdited)
+
             Me(iHCR, eColumnTypes.FOpt) = New EwECell(hcr.MaxF, GetType(Single))
+            'Me(iHCR, eColumnTypes.FOpt).Behaviors.Add(Me.onEdited)
 
             Me.Rows(iHCR).Tag = hcr
         Next
 
+    End Sub
+
+    Public Overloads Sub Update()
+        MyBase.Update()
+        Dim curHCR As HCR_Group = Me.HarvestControlRule
+        For Each row As RowInfo In Rows
+            If row.Tag IsNot Nothing Then
+
+                Dim hcr As HCR_Group = DirectCast(row.Tag, HCR_Group)
+                If hcr.GroupNumber4Biomass = curHCR.GroupNumber4Biomass Then
+                    DirectCast(row.GetCells(eColumnTypes.BLowerLim), EwECell).Value = hcr.LowerLimit
+                    DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = hcr.UpperLimit
+                    DirectCast(row.GetCells(eColumnTypes.FOpt), EwECell).Value = hcr.MaxF
+                End If
+
+            End If
+        Next
+        Me.Refresh()
     End Sub
 
     Protected Overrides Sub FinishStyle()
@@ -155,6 +182,9 @@ Public Class gridTargetFishingMortalityPolicy
     End Property
 
 #End Region ' Overrides
+
+
+
 
 End Class
 

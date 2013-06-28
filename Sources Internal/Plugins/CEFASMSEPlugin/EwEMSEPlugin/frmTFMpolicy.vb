@@ -26,6 +26,7 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -39,20 +40,24 @@ Imports ScientificInterfaceShared.Controls
 Public Class frmTFMpolicy
 
 
+    'ToDo 28-June-2013 Make grid editable
+    'ToDo 28-June-2013 Implement adding of HCR to current strategy
+    'This will require a way to select the Biomass and F groups
+    'ToDo 28-June-2013 Saving of Strategies
+
+
 
 #Region " Internals "
 
     Private Enum eDragType As Integer
         None = 0
-        BLim
-        BBaseFopt
-        Fopt
+        BLower
+        BUpperFMax
+        FMax
     End Enum
 
     ''' <summary><see cref="cZedGraphHelper">Helper</see> to manipulate the graph.</summary>
     Private m_zgh As cZedGraphHelper
-    ''' <summary>Group selected in the form.</summary>
-    Private m_group As cMSE.HCR_Group
     ''' <summary>Graph drag mode.</summary>
     Private m_dragtype As eDragType = eDragType.None
 
@@ -62,7 +67,7 @@ Public Class frmTFMpolicy
 
     Private m_SelectedStrategy As Strategy
 
-    Private m_HCR As cMSE.HCR_Group
+    Private m_HCR As HCR_Group
 
 #End Region ' Internals
 
@@ -93,12 +98,10 @@ Public Class frmTFMpolicy
 
         Me.m_grid.Init(Me.m_MSEPlugin)
         Me.m_grid.UIContext = Me.UIContext
-        'Me.m_grid.Init(Me.m_MSEPlugin)
 
         populateStrategies()
 
         Me.cbStrategies.SelectedIndex = 0
-
 
     End Sub
 
@@ -148,55 +151,18 @@ Public Class frmTFMpolicy
     End Sub
 
 
-    Private Property HCRGroup() As cMSE.HCR_Group
+    Private Property HCRGroup() As HCR_Group
         Get
             Return m_HCR
         End Get
-        Set(value As cMSE.HCR_Group)
+        Set(value As HCR_Group)
             Me.m_HCR = value
-            Redraw()
+            If Me.m_HCR IsNot Nothing Then
+                Redraw()
+            End If
         End Set
     End Property
 
-
-
-
-
-    ' ''' -------------------------------------------------------------------
-    ' ''' <summary>
-    ' ''' Get/set the group in the form
-    ' ''' </summary>
-    ' ''' -------------------------------------------------------------------
-    'Private Property Group() As cMSEGroupInput
-    '    Get
-    '        Return Me.m_group
-    '    End Get
-    '    Set(ByVal value As cMSEGroupInput)
-
-    '        'Dim pm As cPropertyManager = Me.PropertyManager
-
-    '        '' Unregister
-    '        'If (Me.m_group IsNot Nothing) Then
-    '        '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
-    '        '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
-    '        '    RemoveHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
-    '        'End If
-
-    '        '' Update
-    '        'Me.m_group = value
-
-    '        '' Register
-    '        'If (Me.m_group IsNot Nothing) Then
-    '        '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBLim).PropertyChanged, AddressOf HandlePropertyChanged
-    '        '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEBBase).PropertyChanged, AddressOf HandlePropertyChanged
-    '        '    AddHandler pm.GetProperty(Me.m_group, eVarNameFlags.MSEFmax).PropertyChanged, AddressOf HandlePropertyChanged
-    '        'End If
-
-    '        ' Ledlaw the glaph
-    '        Me.Redraw()
-
-    '    End Set
-    'End Property
 
     ''' -------------------------------------------------------------------
     ''' <summary>
@@ -309,6 +275,8 @@ Public Class frmTFMpolicy
     Private Function HandleGraphMouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
             Handles m_graph.MouseMoveEvent
 
+        If Me.m_HCR Is Nothing Then Return False
+
         Dim pane As GraphPane = sender.GraphPane
         Dim pt As PointF = New PointF(e.X, e.Y)
         Dim dX As Double = 0.0
@@ -320,15 +288,16 @@ Public Class frmTFMpolicy
             pane.ReverseTransform(pt, dX, dy)
 
             Select Case Me.m_dragtype
-                Case eDragType.BLim
-                    Me.m_group.LowerLimit = Math.Max(0, Math.Min(CSng(dX), Me.m_group.UpperLimit))
-                Case eDragType.BBaseFopt
-                    Me.m_group.UpperLimit = Math.Max(Me.m_group.LowerLimit, CSng(dX))
-                    Me.m_group.MaxF = Math.Max(0, CSng(dy))
-                Case eDragType.Fopt
-                    Me.m_group.MaxF = Math.Max(0, CSng(dy))
+                Case eDragType.BLower
+                    Me.m_HCR.LowerLimit = Math.Max(0, Math.Min(CSng(dX), Me.m_HCR.UpperLimit))
+                Case eDragType.BUpperFMax
+                    Me.m_HCR.UpperLimit = Math.Max(Me.m_HCR.LowerLimit, CSng(dX))
+                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
+                Case eDragType.FMax
+                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
             End Select
-
+            Me.Redraw()
+            Me.m_grid.Update()
         End If
         Return True
 
@@ -367,13 +336,22 @@ Public Class frmTFMpolicy
 
     Private Sub btAddHCR_Click(sender As Object, e As System.EventArgs) Handles btAddHCR.Click
         MsgBox("Sorry not implemented yet.")
+        'Create a new HCR_Group
+        Dim hcr As HCR_Group = New HCR_Group
+        'assign a Biomass and F group to it, not sure how  this should look
+        'Set default lower and upper biomass limits
+        'set default F (possible the current Ecopath F)
+        'Added it to the current strategy
+        'Update the grid it should appear
+
+
     End Sub
 
     Private Sub btAddStrategy_Click(sender As Object, e As System.EventArgs) Handles btAddStrategy.Click
         MsgBox("Sorry not implemented yet.")
     End Sub
 
-   
+
 End Class
 
 

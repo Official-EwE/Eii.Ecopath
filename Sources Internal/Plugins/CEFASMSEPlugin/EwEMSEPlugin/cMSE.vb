@@ -4,6 +4,28 @@ Imports System.IO
 Imports LumenWorks.Framework.IO.Csv
 Imports System.Diagnostics
 
+
+
+''' <summary>
+''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
+''' </summary>
+''' <remarks></remarks>
+Public Class HCR_Group
+    Public GroupName4Biomass As String
+    Public GroupNumber4Biomass As Integer
+    Public LowerLimit As Double
+    Public UpperLimit As Double
+    Public GroupName4F As String
+    Public GroupNumber4F As Integer
+    Public MaxF As Double
+    Public CostFunctionType As String
+End Class
+
+Public Enum HCRType
+    Target = 0
+    Conservation = 1
+End Enum
+
 Public Class cMSE
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.ICorePlugin
@@ -11,27 +33,6 @@ Public Class cMSE
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimBeginTimestepPlugin
 
-
-    ''' <summary>
-    ''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure HCR_Group
-        Dim GroupName4Biomass As String
-        Dim GroupNumber4Biomass As Integer
-        Dim LowerLimit As Double
-        Dim UpperLimit As Double
-        Dim GroupName4F As String
-        Dim GroupNumber4F As Integer
-        Dim MaxF As Double
-        Dim CostFunctionType As String
-    End Structure
-
-    Public Enum HCRType
-        Target = 0
-        Conservation = 1
-    End Enum
-    
     'Public Strategies As New List(Of List(Of HCR_Group))
     'Private CurrentStrategy As List(Of HCR_Group)
 
@@ -79,7 +80,7 @@ Public Class cMSE
     Public Sub ExtractHCR()
         Dim StrategiesFileNames As String()
         Dim csv As CsvReader
-        Dim tempHCRGroup As New HCR_Group
+        Dim tempHCRGroup As HCR_Group
         Dim Strategy As Strategy
 
         'Get an array of strings giving the path to each HCR
@@ -92,6 +93,8 @@ Public Class cMSE
             While Not csv.EndOfStream 'Read each line in the file
                 'Read all fields from csv and then add to the list that makes up the whole strategy
                 csv.ReadNextRecord()
+                'Each HCR Group needs to be a new object
+                tempHCRGroup = New HCR_Group
                 tempHCRGroup.GroupName4Biomass = csv(0)
                 tempHCRGroup.GroupNumber4Biomass = csv(1)
                 tempHCRGroup.LowerLimit = csv(2)
