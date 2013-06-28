@@ -60,7 +60,7 @@ Public Class frmTFMpolicy
     ''' <remarks>Provides access to data.</remarks>
     Private m_MSEPlugin As cMSE
 
-    Private m_SelectedStrategy As List(Of cMSE.HCR_Group)
+    Private m_SelectedStrategy As Strategy
 
     Private m_HCR As cMSE.HCR_Group
 
@@ -138,9 +138,9 @@ Public Class frmTFMpolicy
 
         Try
             Dim i As Integer
-            For Each strategy As List(Of cMSE.HCR_Group) In Me.m_MSEPlugin.Strategies
+            For Each strategy As Strategy In Me.m_MSEPlugin.Strategies
                 i += 1
-                Me.cbStrategies.Items.Add("Strategy " + i.ToString)
+                Me.cbStrategies.Items.Add(strategy.Name)
             Next
         Catch ex As Exception
 

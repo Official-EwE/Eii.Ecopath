@@ -43,9 +43,10 @@ Public Class gridTargetFishingMortalityPolicy
 
     Private Enum eColumnTypes As Integer
         Index = 0
-        Name
-        BLim
-        BBase
+        BioGroupName
+        BLowerLim
+        BUpperLim
+        FGroupName
         FOpt
     End Enum
 
@@ -102,10 +103,11 @@ Public Class gridTargetFishingMortalityPolicy
         Me.Redim(1, iNumCols)
 
         Me(0, eColumnTypes.Index) = New EwEColumnHeaderCell("")
-        Me(0, eColumnTypes.Name) = New EwEColumnHeaderCell("Group Name")
-        Me(0, eColumnTypes.BLim) = New EwEColumnHeaderCell("Lower biomass limit")
-        Me(0, eColumnTypes.BBase) = New EwEColumnHeaderCell("Upper biomass limit")
-        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("F")
+        Me(0, eColumnTypes.BioGroupName) = New EwEColumnHeaderCell("Biomass Group")
+        Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell("Lower biomass limit")
+        Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell("Upper biomass limit")
+        Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell("Fishing Mort. Group")
+        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("Fishing Mort.")
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -116,45 +118,20 @@ Public Class gridTargetFishingMortalityPolicy
         Dim iHCR As Integer
 
         If MSEPlugin Is Nothing Then Return
-        Dim strategy As List(Of cMSE.HCR_Group) = MSEPlugin.Strategies(Me.mSelStrategyIndex)
+        Dim strategy As Strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
 
-        For Each hcr As cMSE.HCR_Group In strategy
+        For Each hcr As cMSE.HCR_Group In strategy.HCRs
             iHCR += 1
             Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
-            Me(iHCR, eColumnTypes.Name) = New EwECell(hcr.GroupName4Biomass, GetType(String))
-            Me(iHCR, eColumnTypes.BLim) = New EwECell(hcr.LowerLimit, GetType(Single))
-            Me(iHCR, eColumnTypes.BBase) = New EwECell(hcr.UpperLimit, GetType(Single))
+            Me(iHCR, eColumnTypes.BioGroupName) = New EwECell(hcr.GroupName4Biomass, GetType(String))
+            Me(iHCR, eColumnTypes.BLowerLim) = New EwECell(hcr.LowerLimit, GetType(Single))
+            Me(iHCR, eColumnTypes.BUpperLim) = New EwECell(hcr.UpperLimit, GetType(Single))
+            Me(iHCR, eColumnTypes.FGroupName) = New EwECell(hcr.GroupName4F, GetType(String))
             Me(iHCR, eColumnTypes.FOpt) = New EwECell(hcr.MaxF, GetType(Single))
-
-
-
-            'Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
-            'Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
-            'Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
 
             Me.Rows(iHCR).Tag = hcr
         Next
-
-
-
-        'For iGroup As Integer = 1 To Core.nLivingGroups
-
-        '    'Get the group info
-        '    group = Core.MSEManager.GroupInputs(iGroup)
-
-        '    Me.AddRow()
-
-        '    'Me(iGroup, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iGroup))
-        '    'Me(iGroup, eColumnTypes.Name) = New PropertyRowHeaderCell(Me.PropertyManager, group, eVarNameFlags.Name)
-
-        '    'Me(iGroup, eColumnTypes.BBase) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBBase)
-        '    'Me(iGroup, eColumnTypes.BLim) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEBLim)
-        '    'Me(iGroup, eColumnTypes.FOpt) = New PropertyCell(Me.PropertyManager, group, eVarNameFlags.MSEFmax)
-
-        '    Me.Rows(iGroup).Tag = group
-
-        'Next iGroup
 
     End Sub
 

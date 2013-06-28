@@ -32,7 +32,11 @@ Public Class cMSE
         Conservation = 1
     End Enum
     
-    Public Strategies As New List(Of List(Of HCR_Group))
+    'Public Strategies As New List(Of List(Of HCR_Group))
+    'Private CurrentStrategy As List(Of HCR_Group)
+
+    Public Strategies As New List(Of Strategy)
+    Private CurrentStrategy As Strategy
 
     Private MSEForm As frmMSE = Nothing
     Private mCore As cCore = Nothing
@@ -41,7 +45,6 @@ Public Class cMSE
     Private _simdata As cEcosimDatastructures
     Private _ecopath As Ecopath.cEcoPathModel
     Private _EcosimTimeStepDelegate As EwECore.Ecosim.EcoSimTimeStepDelegate
-    Private CurrentStrategy As List(Of HCR_Group)
     Private StrategyIndex As Integer
     Private OriginalNTimesteps As Integer
     Private nPrimaryProducer As Integer
@@ -75,17 +78,17 @@ Public Class cMSE
 
     Public Sub ExtractHCR()
         Dim StrategiesFileNames As String()
-
         Dim csv As CsvReader
         Dim tempHCRGroup As New HCR_Group
-        Dim Strategy As List(Of HCR_Group)
+        Dim Strategy As Strategy
 
         'Get an array of strings giving the path to each HCR
         StrategiesFileNames = Directory.GetFiles(DataPath & "\Strategies")
 
-        For Each iHCRFile In StrategiesFileNames 'loop through reading each HCR file
-            csv = New CsvReader(New StreamReader(iHCRFile), True)
-            Strategy = New List(Of HCR_Group)
+        For Each HCRFileName In StrategiesFileNames 'loop through reading each HCR file
+            csv = New CsvReader(New StreamReader(HCRFileName), True)
+            'Create the new Strategy with the Filename as the strategy name
+            Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), HCRFileName)
             While Not csv.EndOfStream 'Read each line in the file
                 'Read all fields from csv and then add to the list that makes up the whole strategy
                 csv.ReadNextRecord()
@@ -97,7 +100,7 @@ Public Class cMSE
                 tempHCRGroup.GroupNumber4F = csv(5)
                 tempHCRGroup.MaxF = csv(6)
                 tempHCRGroup.CostFunctionType = csv(7)
-                Strategy.Add(tempHCRGroup)
+                Strategy.HCRs.Add(tempHCRGroup)
             End While
             Strategies.Add(Strategy)
 
@@ -1669,7 +1672,7 @@ stepend:
                     FTargetandConservation(i - 1, HCRType.Conservation) = NoHCR_F
                 Next
 
-                For Each iHCRGroup In CurrentStrategy
+                For Each iHCRGroup In CurrentStrategy.HCRs
                     If iHCRGroup.CostFunctionType = "Target" Then
                         If FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = NoHCR_F Then
                             FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupNumber4Biomass), 0, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
@@ -1707,7 +1710,7 @@ stepend:
                 'Checks to see whether each fleet effects a group that has an HCR - if yes it adds it to fleets2fit so that we know what fleets to
                 'change the effort for to try and achieve the target F's for each group
                 For iFleet As Integer = 1 To mCore.nFleets
-                    For Each iHCRGroup In CurrentStrategy
+                    For Each iHCRGroup In CurrentStrategy.HCRs
                         If mCore.FleetInputs(iFleet).Landings(iHCRGroup.GroupNumber4F) + mCore.FleetInputs(iFleet).Discards(iHCRGroup.GroupNumber4F) > 0 Then
                             'If Not Fleets2Fit.Contains(iFleet) And Not ZeroEffortFleetsList.Contains(iFleet) Then
                             If Not Fleets2Fit.Contains(iFleet) Then
