@@ -47,10 +47,15 @@ Public Class gridTargetFishingMortalityPolicy
         BLowerLim
         BUpperLim
         FGroupName
-        FOpt
+        MaxF
+        CostFunction
     End Enum
 
 #End Region ' Internal defs
+
+
+    Public Event onEdited()
+
 
     ''' <summary>
     ''' The cMSE Plugin that contains the data 
@@ -107,7 +112,8 @@ Public Class gridTargetFishingMortalityPolicy
         Me(0, eColumnTypes.BLowerLim) = New EwEColumnHeaderCell("Lower biomass limit")
         Me(0, eColumnTypes.BUpperLim) = New EwEColumnHeaderCell("Upper biomass limit")
         Me(0, eColumnTypes.FGroupName) = New EwEColumnHeaderCell("Fishing Mort. Group")
-        Me(0, eColumnTypes.FOpt) = New EwEColumnHeaderCell("Fishing Mort.")
+        Me(0, eColumnTypes.MaxF) = New EwEColumnHeaderCell("Fishing Mort.")
+        Me(0, eColumnTypes.CostFunction) = New EwEColumnHeaderCell("Cost Function Type")
 
         Me.FixedColumns = 2
         Me.FixedColumnWidths = False
@@ -118,26 +124,38 @@ Public Class gridTargetFishingMortalityPolicy
         Dim iHCR As Integer
 
         If MSEPlugin Is Nothing Then Return
+        Dim Cell As EwECell
         Dim strategy As Strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
 
         For Each hcr As HCR_Group In strategy.HCRules
             iHCR += 1
             Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
-            'New Cells.Real.Cell
-            Me(iHCR, eColumnTypes.BioGroupName) = New EwECell(hcr.GroupName4Biomass, GetType(String))
 
-            Me(iHCR, eColumnTypes.BLowerLim) = New EwECell(hcr.LowerLimit, GetType(Single))
-            Me(iHCR, eColumnTypes.BLowerLim).Behaviors.Add(Me.EwEEditHandler)
+            Cell = New EwECell(hcr.GroupName4Biomass, GetType(String))
+            Cell.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+            Me(iHCR, eColumnTypes.BioGroupName) = Cell
 
-            Me(iHCR, eColumnTypes.BUpperLim) = New EwECell(hcr.UpperLimit, GetType(Single))
-            'Me(iHCR, eColumnTypes.BUpperLim).Behaviors.Add(Me.onEdited)
+            Cell = New EwECell(hcr.LowerLimit, GetType(Single))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.BLowerLim) = Cell
 
-            Me(iHCR, eColumnTypes.FGroupName) = New EwECell(hcr.GroupName4F, GetType(String))
+            Cell = New EwECell(hcr.UpperLimit, GetType(Single))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.BUpperLim) = Cell
+
+            Cell = New EwECell(hcr.GroupName4F, GetType(String))
+            Cell.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
+            Me(iHCR, eColumnTypes.FGroupName) = Cell
             'Me(iHCR, eColumnTypes.FGroupName).Behaviors.Add(Me.onEdited)
 
-            Me(iHCR, eColumnTypes.FOpt) = New EwECell(hcr.MaxF, GetType(Single))
-            'Me(iHCR, eColumnTypes.FOpt).Behaviors.Add(Me.onEdited)
+            Cell = New EwECell(hcr.MaxF, GetType(Single))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.MaxF) = Cell
+
+            Cell = New EwECell(hcr.CostFunction, GetType(String))
+            Cell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.CostFunction) = Cell
 
             Me.Rows(iHCR).Tag = hcr
         Next
@@ -152,9 +170,14 @@ Public Class gridTargetFishingMortalityPolicy
 
                 Dim hcr As HCR_Group = DirectCast(row.Tag, HCR_Group)
                 If hcr.GroupNumber4Biomass = curHCR.GroupNumber4Biomass Then
+
+                    DirectCast(row.GetCells(eColumnTypes.BioGroupName), EwECell).Value = hcr.GroupName4Biomass
+                    DirectCast(row.GetCells(eColumnTypes.FGroupName), EwECell).Value = hcr.GroupName4F
+
                     DirectCast(row.GetCells(eColumnTypes.BLowerLim), EwECell).Value = hcr.LowerLimit
                     DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = hcr.UpperLimit
-                    DirectCast(row.GetCells(eColumnTypes.FOpt), EwECell).Value = hcr.MaxF
+                    DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
+                    DirectCast(row.GetCells(eColumnTypes.CostFunction), EwECell).Value = hcr.CostFunction
                 End If
 
             End If
@@ -182,6 +205,67 @@ Public Class gridTargetFishingMortalityPolicy
     End Property
 
 #End Region ' Overrides
+
+
+    Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
+
+        Try
+
+            If Rows(p.Row).Tag Is Nothing Then
+                'No HCR in this row
+                Return True
+            End If
+
+            Dim hcr As HCR_Group = DirectCast(Rows(p.Row).Tag, HCR_Group)
+
+            Select Case p.Column
+
+                Case eColumnTypes.BioGroupName
+                    Me.HarvestControlRule.GroupName4Biomass = CStr(cell.GetValue(p))
+
+                Case eColumnTypes.FGroupName
+                    Me.HarvestControlRule.GroupName4F = CStr(cell.GetValue(p))
+
+                Case eColumnTypes.BLowerLim
+                    'bounds checking lower limit can not be > upper limit
+                    Dim ll As Double = CDbl(cell.GetValue(p))
+                    If ll > Me.HarvestControlRule.UpperLimit Then
+                        ll = Me.HarvestControlRule.UpperLimit
+                        cell.SetValue(p, ll)
+                    End If
+
+                    Me.HarvestControlRule.LowerLimit = ll
+
+                Case eColumnTypes.BUpperLim
+                    'bounds checking upper limit can not be < lower limit
+                    Dim ul As Double = CDbl(cell.GetValue(p))
+                    If ul < Me.HarvestControlRule.LowerLimit Then
+                        ul = Me.HarvestControlRule.LowerLimit
+                        cell.SetValue(p, ul)
+                    End If
+
+                    Me.HarvestControlRule.UpperLimit = ul
+
+                Case eColumnTypes.MaxF
+                    Me.HarvestControlRule.MaxF = CDbl(cell.GetValue(p))
+
+                Case eColumnTypes.CostFunction
+                    Me.HarvestControlRule.CostFunction = CStr(cell.GetValue(p))
+
+            End Select
+
+            Try
+                RaiseEvent onEdited()
+            Catch ex As Exception
+                Debug.Assert(False, Me.ToString + " onEdited Event Exception: " + ex.Message)
+            End Try
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString + ".OnCellValueChanged() Exception: " + ex.Message)
+        End Try
+
+        Return True
+    End Function
 
 
 

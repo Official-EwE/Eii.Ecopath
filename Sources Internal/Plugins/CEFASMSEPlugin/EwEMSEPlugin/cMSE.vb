@@ -18,7 +18,7 @@ Public Class HCR_Group
     Public GroupName4F As String
     Public GroupNumber4F As Integer
     Public MaxF As Double
-    Public CostFunctionType As String
+    Public CostFunction As String
 End Class
 
 Public Enum HCRType
@@ -102,7 +102,7 @@ Public Class cMSE
                 tempHCRGroup.GroupName4F = csv(4)
                 tempHCRGroup.GroupNumber4F = csv(5)
                 tempHCRGroup.MaxF = csv(6)
-                tempHCRGroup.CostFunctionType = csv(7)
+                tempHCRGroup.CostFunction = csv(7)
                 Strategy.HCRules.Add(tempHCRGroup)
             End While
             Strategies.Add(Strategy)
@@ -1676,13 +1676,13 @@ stepend:
                 Next
 
                 For Each iHCRGroup In CurrentStrategy.HCRules
-                    If iHCRGroup.CostFunctionType = "Target" Then
+                    If iHCRGroup.CostFunction = "Target" Then
                         If FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = NoHCR_F Then
                             FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Target) = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupNumber4Biomass), 0, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
                         Else
                             MsgBox("There is more than one hcr that specifies the target F for group " & iHCRGroup.GroupNumber4F)
                         End If
-                    ElseIf iHCRGroup.CostFunctionType = "Conservation" Then
+                    ElseIf iHCRGroup.CostFunction = "Conservation" Then
                         tempFConservation = CalcFfromHCR(BiomassAtTimestep(iHCRGroup.GroupNumber4Biomass), iHCRGroup.LowerLimit, iHCRGroup.UpperLimit, iHCRGroup.MaxF)
                         If tempFConservation < FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Conservation) Or FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Conservation) = NoHCR_F Then
                             FTargetandConservation(iHCRGroup.GroupNumber4F - 1, HCRType.Conservation) = tempFConservation

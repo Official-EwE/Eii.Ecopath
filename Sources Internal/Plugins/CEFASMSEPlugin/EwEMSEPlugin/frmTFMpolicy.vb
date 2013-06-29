@@ -120,10 +120,14 @@ Public Class frmTFMpolicy
         Me.HCRGroup = Me.m_grid.HarvestControlRule
     End Sub
 
-    'Private Sub HandlePropertyChanged(ByVal prop As cProperty, ByVal cf As cProperty.eChangeFlags)
-    '    ' A relevant property has changed: redraw the graph
-    '    Me.Redraw()
-    'End Sub
+    Private Sub OnGridEdited() Handles m_grid.onEdited
+        Try
+            Me.Redraw()
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
 
     Private Sub tsbDefaultTFM_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbDefaultTFM.Click
         'Try
@@ -178,27 +182,32 @@ Public Class frmTFMpolicy
         Dim lLines As New List(Of LineItem)
         Try
 
-            ' #Yes: plot stick
-            Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
-            If bsum > 0 Then
-                ' Add points
-                lpts.Add(0, 0)
-                lpts.Add(Me.m_HCR.LowerLimit, 0)
-                lpts.Add(Me.m_HCR.UpperLimit, Me.m_HCR.MaxF) ' Point order?
-                lpts.Add(Me.m_HCR.UpperLimit * 4, Me.m_HCR.MaxF) ' Max X value?
-            Else
-                'Zero biomass values user has only entered F
-                'draw a square line at zero up to F
-                lpts.Add(-1, 0)
-                lpts.Add(0, 0)
-                lpts.Add(0, Me.m_HCR.MaxF) ' Point order?
-                lpts.Add(4, Me.m_HCR.MaxF) ' Max X value?
+            If Me.m_HCR IsNot Nothing Then
+
+
+
+                ' #Yes: plot stick
+                Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
+                If bsum > 0 Then
+                    ' Add points
+                    lpts.Add(0, 0)
+                    lpts.Add(Me.m_HCR.LowerLimit, 0)
+                    lpts.Add(Me.m_HCR.UpperLimit, Me.m_HCR.MaxF) ' Point order?
+                    lpts.Add(Me.m_HCR.UpperLimit * 4, Me.m_HCR.MaxF) ' Max X value?
+                Else
+                    'Zero biomass values user has only entered F
+                    'draw a square line at zero up to F
+                    lpts.Add(-1, 0)
+                    lpts.Add(0, 0)
+                    lpts.Add(0, Me.m_HCR.MaxF) ' Point order?
+                    lpts.Add(4, Me.m_HCR.MaxF) ' Max X value?
+                End If
+
+                line = New LineItem(Me.m_HCR.GroupName4Biomass, lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupNumber4Biomass), SymbolType.Circle)
+                line.Line.Width = 2.0
+
+                lLines.Add(line)
             End If
-
-            line = New LineItem(Me.m_HCR.GroupName4Biomass, lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupNumber4Biomass), SymbolType.Circle)
-            line.Line.Width = 2.0
-
-            lLines.Add(line)
 
             If lLines.Count > 0 Then
                 ' Plot graph, but rescale ONLY when not dragging
@@ -326,6 +335,7 @@ Public Class frmTFMpolicy
 
         m_SelectedStrategy = Me.m_MSEPlugin.Strategies(iSelectedIndex)
         Me.m_grid.SelectedStrategyIndex = iSelectedIndex
+        Me.Redraw()
 
         'figure out how to pass the selected group up from the grid
         'repopulate the grid
