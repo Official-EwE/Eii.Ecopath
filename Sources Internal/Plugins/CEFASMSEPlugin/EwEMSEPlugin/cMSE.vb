@@ -19,6 +19,17 @@ Public Class HCR_Group
     Public GroupNumber4F As Integer
     Public MaxF As Double
     Public CostFunction As String
+
+    Public ReadOnly Property toDisplayString
+        Get
+            Dim tmp As String
+            tmp = "Biomass Group " + GroupName4Biomass
+            tmp += ", Biomass Index " + GroupNumber4Biomass.ToString
+            tmp += ", Fishing Mort. Group " + GroupName4F
+            tmp += ", Fishing Mort. Index " + GroupNumber4F.ToString
+            Return tmp
+        End Get
+    End Property
 End Class
 
 Public Enum HCRType
@@ -2010,6 +2021,12 @@ stepend:
         Next
 
     End Sub
+
+    Friend ReadOnly Property Core As cCore
+        Get
+            Return Me.mCore
+        End Get
+    End Property
 
     'Private Sub CalculateFError(ByRef eps() As Double)
     '    Dim Fopt(mCore.nGroups - 1) As Double

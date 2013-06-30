@@ -131,18 +131,21 @@
   <data name="m_scMain.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
+  <data name="btAddHCR.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="btAddHCR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>353, 51</value>
+    <value>353, 50</value>
   </data>
   <data name="btAddHCR.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 32</value>
+    <value>177, 22</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btAddHCR.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="btAddHCR.Text" xml:space="preserve">
-    <value>Add Harvest Control Rule to current strategy</value>
+    <value>Add Harvest Control Rule</value>
   </data>
   <data name="&gt;&gt;btAddHCR.Name" xml:space="preserve">
     <value>btAddHCR</value>
@@ -156,11 +159,17 @@
   <data name="&gt;&gt;btAddHCR.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="btAddStrategy.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="btAddStrategy.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="btAddStrategy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>353, 14</value>
+    <value>353, 22</value>
   </data>
   <data name="btAddStrategy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 32</value>
+    <value>177, 22</value>
   </data>
   <data name="btAddStrategy.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -182,6 +191,9 @@
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="Label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 8</value>
@@ -232,10 +244,10 @@
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="m_graph.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 102</value>
+    <value>0, 93</value>
   </data>
   <data name="m_graph.Size" type="System.Drawing.Size, System.Drawing">
-    <value>841, 238</value>
+    <value>844, 247</value>
   </data>
   <data name="m_graph.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -307,7 +319,7 @@
     <value>ToolStrip1</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9403.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9417.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -387,6 +399,9 @@
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.Text" xml:space="preserve">
     <value>TFM policy</value>
   </data>
@@ -400,6 +415,6 @@
     <value>frmTFMpolicy</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9403.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9417.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

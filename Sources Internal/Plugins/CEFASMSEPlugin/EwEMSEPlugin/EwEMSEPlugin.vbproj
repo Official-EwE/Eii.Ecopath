@@ -122,6 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cMSE.vb" />
+    <Compile Include="dlgHarvestControlRule.Designer.vb">
+      <DependentUpon>dlgHarvestControlRule.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgHarvestControlRule.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMSE.Designer.vb">
       <DependentUpon>frmMSE.vb</DependentUpon>
     </Compile>
@@ -156,6 +162,9 @@
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="dlgHarvestControlRule.resx">
+      <DependentUpon>dlgHarvestControlRule.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMSE.resx">
       <DependentUpon>frmMSE.vb</DependentUpon>
     </EmbeddedResource>

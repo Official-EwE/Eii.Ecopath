@@ -345,9 +345,18 @@ Public Class frmTFMpolicy
     End Sub
 
     Private Sub btAddHCR_Click(sender As Object, e As System.EventArgs) Handles btAddHCR.Click
-        MsgBox("Sorry not implemented yet.")
+
         'Create a new HCR_Group
-        Dim hcr As HCR_Group = New HCR_Group
+        Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
+        HRCDialogue.Init(Me.m_MSEPlugin)
+        HRCDialogue.ShowDialog()
+
+        If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
+            'add the newly created harvest control rule to the current strategy
+            Me.m_SelectedStrategy.HCRules.Add(HRCDialogue.HarvestControlRule)
+            Me.m_grid.RefreshContent()
+        End If
+
         'assign a Biomass and F group to it, not sure how  this should look
         'Set default lower and upper biomass limits
         'set default F (possible the current Ecopath F)
