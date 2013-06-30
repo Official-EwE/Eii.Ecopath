@@ -26,8 +26,42 @@ Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports SourceGrid2
 Imports SourceGrid2.Cells
 Imports ScientificInterfaceShared.Controls.EwEGrid
+Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
+
+
+Public Class cTFMFormatter
+    Implements ITypeFormatter
+
+    Public Function GetDescriptor(ByVal value As Object, _
+                                  Optional ByVal descriptor As eDescriptorTypes = eDescriptorTypes.Name) As String _
+                                  Implements ITypeFormatter.GetDescriptor
+
+        Dim ct As eCostFunctionTypes = DirectCast(value, eCostFunctionTypes)
+
+        Select Case ct
+            Case eCostFunctionTypes.Target
+                Return "Target"
+            Case eCostFunctionTypes.Conservation
+                Return "Conservation"
+        End Select
+
+        Return ""
+    End Function
+
+    Public Function GetDescribedType() As System.Type _
+        Implements ITypeFormatter.GetDescribedType
+        Return GetType(eCostFunctionTypes)
+    End Function
+
+End Class
+
+
+Public Enum eCostFunctionTypes As Integer
+    Target
+    Conservation
+End Enum
 
 
 ''' ===========================================================================
@@ -127,37 +161,41 @@ Public Class gridTargetFishingMortalityPolicy
         Dim Cell As EwECell
         Dim strategy As Strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
 
-        For Each hcr As HCR_Group In strategy.HCRules
+        For Each Rule As HCR_Group In strategy.HCRules
             iHCR += 1
             Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
 
-            Cell = New EwECell(hcr.GroupName4Biomass, GetType(String))
+            Cell = New EwECell(Rule.GroupName4Biomass, GetType(String))
             Cell.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
             Me(iHCR, eColumnTypes.BioGroupName) = Cell
 
-            Cell = New EwECell(hcr.LowerLimit, GetType(Single))
+            Cell = New EwECell(Rule.LowerLimit, GetType(Single))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BLowerLim) = Cell
 
-            Cell = New EwECell(hcr.UpperLimit, GetType(Single))
+            Cell = New EwECell(Rule.UpperLimit, GetType(Single))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BUpperLim) = Cell
 
-            Cell = New EwECell(hcr.GroupName4F, GetType(String))
+            Cell = New EwECell(Rule.GroupName4F, GetType(String))
             Cell.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
             Me(iHCR, eColumnTypes.FGroupName) = Cell
             'Me(iHCR, eColumnTypes.FGroupName).Behaviors.Add(Me.onEdited)
 
-            Cell = New EwECell(hcr.MaxF, GetType(Single))
+            Cell = New EwECell(Rule.MaxF, GetType(Single))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MaxF) = Cell
 
-            Cell = New EwECell(hcr.CostFunction, GetType(String))
-            Cell.Behaviors.Add(Me.EwEEditHandler)
-            Me(iHCR, eColumnTypes.CostFunction) = Cell
+            Dim lstOptions As List(Of eCostFunctionTypes) = New List(Of eCostFunctionTypes)
+            lstOptions.Add(eCostFunctionTypes.Target)
+            lstOptions.Add(eCostFunctionTypes.Conservation)
+            Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cTFMFormatter, lstOptions)
+            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(Me.toCostFunctionEnum(Rule.CostFunction), cb)
+            cbCell.Behaviors.Add(Me.EwEEditHandler)
+            Me(iHCR, eColumnTypes.CostFunction) = cbCell
 
-            Me.Rows(iHCR).Tag = hcr
+            Me.Rows(iHCR).Tag = Rule
         Next
 
     End Sub
@@ -177,7 +215,9 @@ Public Class gridTargetFishingMortalityPolicy
                     DirectCast(row.GetCells(eColumnTypes.BLowerLim), EwECell).Value = hcr.LowerLimit
                     DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = hcr.UpperLimit
                     DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
-                    DirectCast(row.GetCells(eColumnTypes.CostFunction), EwECell).Value = hcr.CostFunction
+
+                    DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = Me.toCostFunctionEnum(hcr.CostFunction)
+
                 End If
 
             End If
@@ -250,7 +290,7 @@ Public Class gridTargetFishingMortalityPolicy
                     Me.HarvestControlRule.MaxF = CDbl(cell.GetValue(p))
 
                 Case eColumnTypes.CostFunction
-                    Me.HarvestControlRule.CostFunction = CStr(cell.GetValue(p))
+                    Me.HarvestControlRule.CostFunction = CStr(cell.GetDisplayText(p))
 
             End Select
 
@@ -267,7 +307,14 @@ Public Class gridTargetFishingMortalityPolicy
         Return True
     End Function
 
-
+    Private Function toCostFunctionEnum(CostFunctionString As String) As eCostFunctionTypes
+        If String.Compare(CostFunctionString, "Target") = 0 Then
+            Return eCostFunctionTypes.Target
+        ElseIf String.Compare(CostFunctionString, "Conservation") = 0 Then
+            Return eCostFunctionTypes.Conservation
+        End If
+        Return eCostFunctionTypes.Target
+    End Function
 
 
 End Class
