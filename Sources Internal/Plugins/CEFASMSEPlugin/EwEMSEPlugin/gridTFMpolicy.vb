@@ -302,6 +302,7 @@ Public Class gridTargetFishingMortalityPolicy
     End Function
 
     Private Function toCostFunctionEnum(CostFunctionString As String) As eCostFunctionTypes
+        'ToDo this should be handled by the HarvestRule
         If String.Compare(CostFunctionString, "Target") = 0 Then
             Return eCostFunctionTypes.Target
         ElseIf String.Compare(CostFunctionString, "Conservation") = 0 Then
