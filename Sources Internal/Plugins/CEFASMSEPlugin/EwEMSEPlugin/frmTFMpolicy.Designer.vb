@@ -54,6 +54,7 @@ Partial Class frmTFMpolicy
         Me.ToolStrip1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
+        Me.btnSaveStrategies = New System.Windows.Forms.Button()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -69,6 +70,7 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel1
         '
+        Me.m_scMain.Panel1.Controls.Add(Me.btnSaveStrategies)
         Me.m_scMain.Panel1.Controls.Add(Me.btAddHCR)
         Me.m_scMain.Panel1.Controls.Add(Me.btAddStrategy)
         Me.m_scMain.Panel1.Controls.Add(Me.Label1)
@@ -142,23 +144,29 @@ Partial Class frmTFMpolicy
         Me.m_grid.BackColor = System.Drawing.Color.White
         Me.m_grid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.m_grid.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
-            Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
-            Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+                    Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                    Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
         Me.m_grid.CustomSort = False
         Me.m_grid.FixedColumnWidths = False
         Me.m_grid.FocusStyle = SourceGrid2.FocusStyle.None
         Me.m_grid.GridToolTipActive = True
         Me.m_grid.Name = "m_grid"
         Me.m_grid.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
-            Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
-            Or SourceGrid2.GridSpecialKeys.Delete) _
-            Or SourceGrid2.GridSpecialKeys.Arrows) _
-            Or SourceGrid2.GridSpecialKeys.Tab) _
-            Or SourceGrid2.GridSpecialKeys.PageDownUp) _
-            Or SourceGrid2.GridSpecialKeys.Enter) _
-            Or SourceGrid2.GridSpecialKeys.Escape) _
-            Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+                    Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                    Or SourceGrid2.GridSpecialKeys.Delete) _
+                    Or SourceGrid2.GridSpecialKeys.Arrows) _
+                    Or SourceGrid2.GridSpecialKeys.Tab) _
+                    Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                    Or SourceGrid2.GridSpecialKeys.Enter) _
+                    Or SourceGrid2.GridSpecialKeys.Escape) _
+                    Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
+        '
+        'btnSaveStrategies
+        '
+        resources.ApplyResources(Me.btnSaveStrategies, "btnSaveStrategies")
+        Me.btnSaveStrategies.Name = "btnSaveStrategies"
+        Me.btnSaveStrategies.UseVisualStyleBackColor = True
         '
         'frmTFMpolicy
         '
@@ -187,6 +195,7 @@ Partial Class frmTFMpolicy
     Friend WithEvents cbStrategies As System.Windows.Forms.ComboBox
     Friend WithEvents btAddHCR As System.Windows.Forms.Button
     Friend WithEvents btAddStrategy As System.Windows.Forms.Button
+    Friend WithEvents btnSaveStrategies As System.Windows.Forms.Button
 
 End Class
 

@@ -240,4 +240,8 @@ Public Class frmMSE
 
         frmTargetF.Show()
     End Sub
+
+    Private Sub btnEcopathParams2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEcopathParams2.Click
+        mMSE.GenerateEcopathParamaters2()
+    End Sub
 End Class

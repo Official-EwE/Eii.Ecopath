@@ -42,6 +42,7 @@ Partial Class frmMSE
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.btShowTFMForm = New System.Windows.Forms.Button()
+        Me.btnEcopathParams2 = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
@@ -236,11 +237,21 @@ Partial Class frmMSE
         Me.btShowTFMForm.Text = "Show Target Fishing Mortalites..."
         Me.btShowTFMForm.UseVisualStyleBackColor = True
         '
+        'btnEcopathParams2
+        '
+        Me.btnEcopathParams2.Location = New System.Drawing.Point(666, 50)
+        Me.btnEcopathParams2.Name = "btnEcopathParams2"
+        Me.btnEcopathParams2.Size = New System.Drawing.Size(108, 52)
+        Me.btnEcopathParams2.TabIndex = 25
+        Me.btnEcopathParams2.Text = "Test Ecopath Params2"
+        Me.btnEcopathParams2.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(879, 477)
+        Me.Controls.Add(Me.btnEcopathParams2)
         Me.Controls.Add(Me.btShowTFMForm)
         Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Button1)
@@ -282,4 +293,5 @@ Partial Class frmMSE
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents btShowTFMForm As System.Windows.Forms.Button
+    Friend WithEvents btnEcopathParams2 As System.Windows.Forms.Button
 End Class

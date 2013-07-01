@@ -27,6 +27,7 @@ Imports System.Windows.Forms
 Imports ZedGraph
 Imports ScientificInterfaceShared.Controls
 Imports SourceGrid2
+Imports System.IO
 
 #End Region ' Imports
 
@@ -370,6 +371,22 @@ Public Class frmTFMpolicy
         MsgBox("Sorry not implemented yet.")
     End Sub
 
+
+    Private Sub btnSaveStrategies_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveStrategies.Click
+
+        Dim csvStrategyFile As StreamWriter
+
+        For Each iStrategy In Me.m_MSEPlugin.Strategies
+            csvStrategyFile = New StreamWriter(iStrategy.FileName, False)
+            csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
+            For Each iHCR In iStrategy.HCRules
+                csvStrategyFile.WriteLine(iHCR.GroupName4Biomass & "," & iHCR.GroupNumber4Biomass & "," & iHCR.LowerLimit & "," & _
+                                            iHCR.UpperLimit & "," & iHCR.GroupName4F & "," & iHCR.GroupNumber4F & "," & iHCR.MaxF & "," & iHCR.CostFunction)
+            Next
+            csvStrategyFile.Dispose()
+        Next
+
+    End Sub
 
 End Class
 
