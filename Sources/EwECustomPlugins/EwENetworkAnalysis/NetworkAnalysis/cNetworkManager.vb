@@ -306,6 +306,16 @@ Public Class cNetworkManager
 
 #Region " Pathways "
 
+    Public Property UseCyclesPathways As Boolean
+        Get
+            Return My.Settings.UseCyclesPathways
+        End Get
+        Set(value As Boolean)
+            My.Settings.UseCyclesPathways = value
+            My.Settings.Save()
+        End Set
+    End Property
+
     ''' <summary>
     ''' TL1-->Consumer
     ''' </summary>
@@ -314,6 +324,11 @@ Public Class cNetworkManager
     Public Function FindPathwaysToConsumer(ByVal iToGroup As Integer) As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
+
+        If (Not Me.UseCyclesPathways) Then
+            Me.m_pathwaystate = ePathways.NotRan
+            Return True
+        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.ToConsumer) And (Me.m_iPathwayToGroup = iToGroup) Then Return True
@@ -346,6 +361,11 @@ Public Class cNetworkManager
     Public Function FindPathwaysToConsumerViaPrey(ByVal iToGroup As Integer, ByVal iViaGroup As Integer) As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
+
+        If (Not Me.UseCyclesPathways) Then
+            Me.m_pathwaystate = ePathways.NotRan
+            Return True
+        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.ToConsumerViaPrey) And _
@@ -384,6 +404,11 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
+        If (Not Me.UseCyclesPathways) Then
+            Me.m_pathwaystate = ePathways.NotRan
+            Return True
+        End If
+
         ' Optimization
         If (Me.m_pathwaystate = ePathways.FromPrey) And _
            (Me.m_iPathwayFromGroup = iFromGroup) Then Return True
@@ -416,6 +441,11 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
+        If (Not Me.UseCyclesPathways) Then
+            Me.m_pathwaystate = ePathways.NotRan
+            Return True
+        End If
+
         ' Optimization
         If (Me.m_pathwaystate = ePathways.LinkedPathways) Then Return True
 
@@ -445,6 +475,11 @@ Public Class cNetworkManager
     Public Function FindPathwaysCyclesAll() As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
+
+        If (Not Me.UseCyclesPathways) Then
+            Me.m_pathwaystate = ePathways.NotRan
+            Return True
+        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.All) Then Return True

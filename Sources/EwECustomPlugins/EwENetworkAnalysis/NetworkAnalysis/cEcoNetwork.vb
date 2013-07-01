@@ -2501,9 +2501,6 @@ NextPivot:
 
     Private Sub FindPaths(ByRef NumOfPaths As Integer, ByRef B() As Single, ByRef PB() As Single, ByRef QB() As Single, ByRef EE() As Single, ByRef DC(,) As Single, ByRef fCatch() As Single)
 
-        'EwE5 definition
-        'Private Sub FindPaths(ByRef NumOfPaths As Long, ByRef TabNo As Integer, ByRef B() As Single, ByRef PB() As Single, ByRef QB() As Single, ByRef EE() As Single, ByRef DC(,) As Single, ByRef fCatch() As Single)
-
         '*** DIM LastComp(1 TO m_epdata.NumGroups + 1)
         Dim Answer As Object = Nothing
         Dim Pass As Long  'Integer Found 290598 thanks to Eni / VC
@@ -2519,21 +2516,6 @@ NextPivot:
                 RaiseToPP(pred) = 0
             Next
             If DoneAlready = False Then DoneAlready = True
-            '    Answer = MsgBox("Your model has many groups, this procedure may take a long time to complete. Do you want to continue?", vbInformation + vbYesNo, "Find pathways: tedious for large models")
-            '    If Answer = vbNo Then AbortRun = True: Exit Sub
-            'End If
-
-
-            'AbortRun = False
-            'If DoWhat <> "Ecosim PPR" Then
-            '    DoWhat = "PPR"
-            '    frmWait.Caption = "Identification of pathways in progress, (cancel if pathways not needed)"
-            '    frmWait.Frame1.Visible = False
-            '    frmWait.PBar.max = 1000 'm_epdata.NumLiving
-            '    frmWait.ZOrder()
-            '    frmWait.Show() '0
-            '    frmWait.Refresh()
-            'End If
 
             'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             'jb March-16-07 I'm still working on this stuff

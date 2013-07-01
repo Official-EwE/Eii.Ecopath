@@ -315,7 +315,7 @@ Public MustInherit Class cContentManager
         Me.Graph.Visible = False
         Me.Plot.Visible = False
         Me.Grid.Visible = False
-        Me.Toolstrip.Visible = False
+        Me.Toolstrip.Visible = True ' False
 
         ' Clear grid
         Me.Grid.Rows.Clear()
@@ -325,7 +325,7 @@ Public MustInherit Class cContentManager
         ' Hide toolstrip items
         For Each tsi As ToolStripItem In Me.Toolstrip.Items
             Select Case tsi.Name
-                Case "tsmiRun"
+                Case "tsmiRun", "tsbtnOptions"
                     tsi.Visible = True
                 Case Else
                     tsi.Visible = False
