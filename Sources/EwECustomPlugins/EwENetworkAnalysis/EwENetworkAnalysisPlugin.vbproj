@@ -95,6 +95,9 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LumenWorks.Framework.IO">
+      <HintPath>..\..\..\Sources Internal\Plugins\CEFASMSEPlugin\EwEMSEPlugin\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -172,6 +175,12 @@
     <Compile Include="Interface\TrophicLevelDecomp\cRelativeFlows.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\cTransferEfficiency.vb" />
     <Compile Include="Interface\TrophicLevelDecomp\Pyramids\cPyramid.vb" />
+    <Compile Include="Interface\ucOptions.Designer.vb">
+      <DependentUpon>ucOptions.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Interface\ucOptions.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="My Project\Settings.vb" />
     <Compile Include="NetworkAnalysis\cEcoNetwork.vb" />
     <Compile Include="NetworkAnalysis\cNetworkManager.vb" />
@@ -255,6 +264,9 @@
     <EmbeddedResource Include="Interface\MixedTrophicImpact\SummaryImpactData\ucPlotOfMTIOptions.resx">
       <DependentUpon>ucPlotOfMTIOptions.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interface\ucOptions.resx">
+      <DependentUpon>ucOptions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

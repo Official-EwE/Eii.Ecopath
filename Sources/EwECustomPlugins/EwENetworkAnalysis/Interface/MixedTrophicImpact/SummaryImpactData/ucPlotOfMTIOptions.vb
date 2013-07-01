@@ -47,16 +47,16 @@ Public Class ucPlotOfMTIOptions
         'm_hdrOptions
         '
         Me.m_hdrOptions.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_hdrOptions.CanCollapseParent = False
         Me.m_hdrOptions.CollapsedParentHeight = 0
         Me.m_hdrOptions.IsCollapsed = False
         Me.m_hdrOptions.Location = New System.Drawing.Point(0, 0)
         Me.m_hdrOptions.Margin = New System.Windows.Forms.Padding(0)
         Me.m_hdrOptions.Name = "m_hdrOptions"
-        Me.m_hdrOptions.Size = New System.Drawing.Size(125, 18)
+        Me.m_hdrOptions.Size = New System.Drawing.Size(129, 18)
         Me.m_hdrOptions.TabIndex = 0
-        Me.m_hdrOptions.Text = "Plot options"
+        Me.m_hdrOptions.Text = "MTI plot options"
         Me.m_hdrOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'm_rbCircles
@@ -117,7 +117,6 @@ Public Class ucPlotOfMTIOptions
         '
         'ucPlotOfMTIOptions
         '
-        Me.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Controls.Add(Me.m_cbSlantingLabels)
         Me.Controls.Add(Me.m_cbFitToScreen)
         Me.Controls.Add(Me.m_cbShowGrid)
@@ -125,7 +124,7 @@ Public Class ucPlotOfMTIOptions
         Me.Controls.Add(Me.m_rbCircles)
         Me.Controls.Add(Me.m_hdrOptions)
         Me.Name = "ucPlotOfMTIOptions"
-        Me.Size = New System.Drawing.Size(125, 158)
+        Me.Size = New System.Drawing.Size(129, 156)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

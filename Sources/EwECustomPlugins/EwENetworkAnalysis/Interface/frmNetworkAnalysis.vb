@@ -114,11 +114,13 @@ Public Class frmNetworkAnalysis
         Me.m_datagrid.Visible = False
         Me.m_datagrid.Dock = DockStyle.Fill
 
-        Me.m_toolstrip.Visible = False
+        'Me.m_toolstrip.Visible = False
         Me.m_toolstrip.Dock = DockStyle.Top
 
         Me.m_tlpInfo.Visible = True
         Me.m_tlpInfo.Dock = DockStyle.Fill
+
+        Me.ShowOptions(False)
 
         Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
         Me.m_cmdDisplayGroups = DirectCast(cmdh.GetCommand(cDisplayGroupsCommand.cCOMMAND_NAME), cDisplayGroupsCommand)
@@ -518,29 +520,28 @@ Public Class frmNetworkAnalysis
 
                 End Try
 
-                ' Need to populate group combos?
-                If Me.m_toolstrip.Visible Then
+                Me.m_toolstrip.Visible = True
 
-                    Me.tscmbSelection1.Items.Clear()
-                    Me.tscmbSelection2.Items.Clear()
-                    For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
-                        If (Me.m_contentmanager.GroupFilter1 = eGroupFilterTypes.Living) Or _
-                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
-                            Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
-                        End If
-                        If (Me.m_contentmanager.GroupFilter2 = eGroupFilterTypes.Living) Or _
-                           (iGroup < Me.m_networkmanager.nLivingGroups) Then
-                            Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
-                        End If
-                    Next
-                    Me.m_toolstrip.Refresh()
+                Me.tscmbSelection1.Items.Clear()
+                Me.tscmbSelection2.Items.Clear()
+                For iGroup As Integer = 1 To Me.m_networkmanager.nGroups
+                    If (Me.m_contentmanager.GroupFilter1 = eGroupFilterTypes.Living) Or _
+                       (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                        Me.tscmbSelection1.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                    End If
+                    If (Me.m_contentmanager.GroupFilter2 = eGroupFilterTypes.Living) Or _
+                       (iGroup < Me.m_networkmanager.nLivingGroups) Then
+                        Me.tscmbSelection2.Items.Add(String.Format(My.Resources.LBL_INDEXED, iGroup, Me.m_networkmanager.GroupName(iGroup)))
+                    End If
+                Next
+                Me.m_toolstrip.Refresh()
 
-                    Me.tscmbSelection1.SelectedIndex = 0
-                    Me.tscmbSelection2.SelectedIndex = 0
+                Me.tscmbSelection1.SelectedIndex = 0
+                Me.tscmbSelection2.SelectedIndex = 0
 
-                    Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
+                Me.m_contentmanager.UpdateData(Me.m_iSelectedGroup1, Me.m_iSelectedGroup2)
 
-                End If
+                'End If
 
                 Me.m_hdrPage.Text = Me.m_contentmanager.PageTitle
             End If
@@ -548,7 +549,7 @@ Public Class frmNetworkAnalysis
             ' Hide info panel
             Me.m_tlpInfo.Visible = False
         Else
-            ' Hide toolbar
+            ' Show toolbar
             Me.m_toolstrip.Visible = False
             ' Show credits
             Me.m_tlpInfo.Visible = True
@@ -572,17 +573,19 @@ Public Class frmNetworkAnalysis
 
         Dim ctrlOptions As Control = Nothing
 
-        Me.m_scMain.Panel2.Controls.Clear()
+        Me.m_tlpOptions.Controls.Clear()
 
-        If (bShow = True) And (Me.m_contentmanager IsNot Nothing) Then
-            ctrlOptions = Me.m_contentmanager.OptionsControl
-        End If
-
-        If (ctrlOptions IsNot Nothing) Then
+        If (bShow = True) Then
+            ctrlOptions = New ucOptions(Me.m_uic, Me.m_networkmanager)
+            Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 0)
+            If (Me.m_contentmanager IsNot Nothing) Then
+                ctrlOptions = Me.m_contentmanager.OptionsControl
+                If ctrlOptions IsNot Nothing Then
+                    Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
+                End If
+            End If
             Me.m_scMain.Panel2Collapsed = False
-            Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - ctrlOptions.Width
-            Me.m_scMain.Panel2.Controls.Add(ctrlOptions)
-            ctrlOptions.Dock = DockStyle.Fill
+            Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - m_tlpOptions.Width
             Me.tsbtnOptions.Checked = True
         Else
             Me.m_scMain.Panel2Collapsed = True
