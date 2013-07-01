@@ -51,5 +51,14 @@ Public Class cEcospaceLayerHabitat
         End Set
     End Property
 
+    Public Overrides Property Name As String
+        Get
+            If (Me.Index = 0) Then Return My.Resources.CoreDefaults.CORE_ALL_HABITAT
+            Return Me.m_core.EcospaceHabitats(Me.Index).Name
+        End Get
+        Set(value As String)
+            ' NOPE! Me.m_core.EcospaceHabitats(Me.Index).Name = value
+        End Set
+    End Property
 
 End Class

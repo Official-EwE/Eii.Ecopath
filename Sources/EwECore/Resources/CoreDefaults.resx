@@ -126,6 +126,10 @@
   <data name="CORE_DEFAULT_ADVECTION" xml:space="preserve">
     <value>Advection</value>
   </data>
+  <data name="CORE_DEFAULT_BIOMASSFORCING" xml:space="preserve">
+    <value>Biomass forcing {0}</value>
+    <comment>{0} group index</comment>
+  </data>
   <data name="CORE_DEFAULT_COMBINEDFLEETS" xml:space="preserve">
     <value>Combined fleets</value>
   </data>
@@ -177,7 +181,7 @@
     <value>Seed cells</value>
   </data>
   <data name="CORE_DEFAULT_PORT" xml:space="preserve">
-    <value>Port</value>
+    <value>Port {0}</value>
   </data>
   <data name="CORE_DEFAULT_REGION" xml:space="preserve">
     <value>Regions</value>
@@ -189,7 +193,7 @@
     <value>PP (relative)</value>
   </data>
   <data name="CORE_DEFAULT_SAILCOST" xml:space="preserve">
-    <value>Sailing cost</value>
+    <value>Sailing cost {0}</value>
   </data>
   <data name="CORE_DEFAULT_SCENARIO" xml:space="preserve">
     <value>New Scenario</value>

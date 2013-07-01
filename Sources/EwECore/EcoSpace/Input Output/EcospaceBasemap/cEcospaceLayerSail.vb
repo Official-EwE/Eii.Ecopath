@@ -30,7 +30,9 @@ Public Class cEcospaceLayerSail
     Inherits cEcospaceLayerSingle
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, eVarNameFlags.LayerSail, iIndex)
+        MyBase.New(theCore, manager, _
+                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_SAILCOST, iIndex), _
+                   eVarNameFlags.LayerSail, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerSail
     End Sub
 

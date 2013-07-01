@@ -704,7 +704,7 @@ Public MustInherit Class cCoreInputOutputBase
     ''' ID</see> for a given datatype. The database ID is exposed to the core 
     ''' via <see cref="DBID">DBID</see>, but is invisible outside the EwE core.
     ''' </remarks>
-    Public Property Name() As String Implements ICoreInterface.Name
+    Public Overridable Property Name() As String Implements ICoreInterface.Name
         Get
             Return DirectCast(GetVariable(eVarNameFlags.Name), String)
         End Get

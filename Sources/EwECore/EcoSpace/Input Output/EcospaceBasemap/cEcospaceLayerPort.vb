@@ -31,7 +31,9 @@ Public Class cEcospaceLayerPort
     Inherits cEcospaceLayerBoolean
 
     Public Sub New(ByVal theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, manager, My.Resources.CoreDefaults.CORE_DEFAULT_PORT, eVarNameFlags.LayerPort, iIndex)
+        MyBase.New(theCore, manager, _
+                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_PORT, iIndex), _
+                   eVarNameFlags.LayerPort, iIndex)
         Me.m_dataType = eDataTypes.EcospaceLayerPort
     End Sub
 
