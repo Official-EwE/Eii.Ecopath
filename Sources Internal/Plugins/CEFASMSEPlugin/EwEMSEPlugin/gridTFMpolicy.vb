@@ -81,9 +81,7 @@ Public Class gridTargetFishingMortalityPolicy
 
 #End Region ' Internal defs
 
-
     Public Event onEdited()
-
 
     ''' <summary>
     ''' The cMSE Plugin that contains the data 
@@ -92,6 +90,7 @@ Public Class gridTargetFishingMortalityPolicy
     Private MSEPlugin As cMSE
 
     Private mSelStrategyIndex As Integer
+
 #Region " Constructor "
 
     Public Sub New()
@@ -105,8 +104,6 @@ Public Class gridTargetFishingMortalityPolicy
 #End Region ' Constructor
 
 #Region " Public interfaces "
-
-
 
     Public ReadOnly Property HarvestControlRule() As HCR_Group
         Get
@@ -155,20 +152,24 @@ Public Class gridTargetFishingMortalityPolicy
         Dim Cell As EwECell
         Dim strategy As Strategy = MSEPlugin.Strategies(Me.mSelStrategyIndex)
 
+        Dim lstOptions As List(Of eCostFunctionTypes) = New List(Of eCostFunctionTypes)
+        lstOptions.AddRange(DirectCast([Enum].GetValues(GetType(eCostFunctionTypes)), IEnumerable(Of Global.EwEMSEPlugin.eCostFunctionTypes)))
+
+        Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cTFMFormatter(), lstOptions)
+
         For Each Rule As HCR_Group In strategy.HCRules
-            iHCR += 1
-            Me.AddRow()
+            iHCR = Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
 
             Cell = New EwECell(Rule.GroupName4Biomass, GetType(String))
             Cell.Style = ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags.NotEditable
             Me(iHCR, eColumnTypes.BioGroupName) = Cell
 
-            Cell = New EwECell(Rule.LowerLimit, GetType(Single))
+            Cell = New EwECell(Rule.LowerLimit, GetType(Double))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BLowerLim) = Cell
 
-            Cell = New EwECell(Rule.UpperLimit, GetType(Single))
+            Cell = New EwECell(Rule.UpperLimit, GetType(Double))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.BUpperLim) = Cell
 
@@ -177,14 +178,10 @@ Public Class gridTargetFishingMortalityPolicy
             Me(iHCR, eColumnTypes.FGroupName) = Cell
             'Me(iHCR, eColumnTypes.FGroupName).Behaviors.Add(Me.onEdited)
 
-            Cell = New EwECell(Rule.MaxF, GetType(Single))
+            Cell = New EwECell(Rule.MaxF, GetType(Double))
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MaxF) = Cell
 
-            Dim lstOptions As List(Of eCostFunctionTypes) = New List(Of eCostFunctionTypes)
-            lstOptions.Add(eCostFunctionTypes.Target)
-            lstOptions.Add(eCostFunctionTypes.Conservation)
-            Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cTFMFormatter, lstOptions)
             Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(Me.toCostFunctionEnum(Rule.CostFunction), cb)
             cbCell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.CostFunction) = cbCell
@@ -239,7 +236,6 @@ Public Class gridTargetFishingMortalityPolicy
     End Property
 
 #End Region ' Overrides
-
 
     Protected Overrides Function OnCellValueChanged(ByVal p As Position, ByVal cell As Cells.ICellVirtual) As Boolean
 
