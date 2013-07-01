@@ -23,14 +23,15 @@ Public Class HCR_Group
     Public ReadOnly Property toDisplayString
         Get
             Dim tmp As String
-            tmp = "Biomass Group " + GroupName4Biomass
-            tmp += ", Biomass Index " + GroupNumber4Biomass.ToString
-            tmp += ", Fishing Mort. Group " + GroupName4F
-            tmp += ", Fishing Mort. Index " + GroupNumber4F.ToString
+            tmp = "Biomass Group = " + GroupName4Biomass
+            tmp += " , Biomass Index = " + GroupNumber4Biomass.ToString
+            tmp += " , Fishing Mort. Group = " + GroupName4F
+            tmp += " , Fishing Mort. Index = " + GroupNumber4F.ToString
             Return tmp
         End Get
     End Property
 End Class
+
 
 Public Enum HCRType
     Target = 0
@@ -47,7 +48,8 @@ Public Class cMSE
     'Public Strategies As New List(Of List(Of HCR_Group))
     'Private CurrentStrategy As List(Of HCR_Group)
 
-    Public Strategies As New List(Of Strategy)
+    'Public Strategies As New List(Of Strategy)
+    Public Strategies As New Strategies
     Private CurrentStrategy As Strategy
 
     Private MSEForm As frmMSE = Nothing
@@ -93,9 +95,18 @@ Public Class cMSE
         Dim csv As CsvReader
         Dim tempHCRGroup As HCR_Group
         Dim Strategy As Strategy
+        Dim datadir As String = Path.Combine(DataPath & "\Strategies")
+
+        'Make sure this directory exists
+        If Not Directory.Exists(datadir) Then
+            MsgBox("Sorry this is not a valid data directory.", MsgBoxStyle.Critical)
+            Return
+        End If
+
+        Strategies.DataDirectory = datadir
 
         'Get an array of strings giving the path to each HCR
-        StrategiesFileNames = Directory.GetFiles(DataPath & "\Strategies")
+        StrategiesFileNames = Directory.GetFiles(datadir)
 
         For Each HCRFileName In StrategiesFileNames 'loop through reading each HCR file
             csv = New CsvReader(New StreamReader(HCRFileName), True)

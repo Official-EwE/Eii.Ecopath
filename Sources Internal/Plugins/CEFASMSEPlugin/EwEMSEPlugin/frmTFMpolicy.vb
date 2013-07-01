@@ -369,6 +369,7 @@ Public Class frmTFMpolicy
 
     Private Sub btAddStrategy_Click(sender As Object, e As System.EventArgs) Handles btAddStrategy.Click
         MsgBox("Sorry not implemented yet.")
+
     End Sub
 
 

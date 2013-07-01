@@ -1,7 +1,10 @@
 ﻿
 Imports System.IO
 
-
+''' <summary>
+''' Class to group a list of Harvest Control Rules into an object
+''' </summary>
+''' <remarks></remarks>
 Public Class Strategy
 
     Public Name As String
