@@ -30,6 +30,8 @@ Partial Class dlgHarvestControlRule
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.txRule = New System.Windows.Forms.TextBox()
+        Me.cbCostFunctions = New System.Windows.Forms.ComboBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -41,7 +43,7 @@ Partial Class dlgHarvestControlRule
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.OK_Button, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.Cancel_Button, 1, 0)
-        Me.TableLayoutPanel1.Location = New System.Drawing.Point(361, 238)
+        Me.TableLayoutPanel1.Location = New System.Drawing.Point(361, 307)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
         Me.TableLayoutPanel1.RowCount = 1
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
@@ -110,11 +112,28 @@ Partial Class dlgHarvestControlRule
         Me.txRule.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txRule.Location = New System.Drawing.Point(12, 118)
+        Me.txRule.Location = New System.Drawing.Point(12, 175)
         Me.txRule.Multiline = True
         Me.txRule.Name = "txRule"
-        Me.txRule.Size = New System.Drawing.Size(495, 114)
+        Me.txRule.Size = New System.Drawing.Size(495, 126)
         Me.txRule.TabIndex = 5
+        '
+        'cbCostFunctions
+        '
+        Me.cbCostFunctions.FormattingEnabled = True
+        Me.cbCostFunctions.Location = New System.Drawing.Point(12, 121)
+        Me.cbCostFunctions.Name = "cbCostFunctions"
+        Me.cbCostFunctions.Size = New System.Drawing.Size(261, 21)
+        Me.cbCostFunctions.TabIndex = 6
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(12, 105)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(72, 13)
+        Me.Label3.TabIndex = 7
+        Me.Label3.Text = "Cost Function"
         '
         'dlgHarvestControlRule
         '
@@ -122,7 +141,9 @@ Partial Class dlgHarvestControlRule
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.Cancel_Button
-        Me.ClientSize = New System.Drawing.Size(519, 279)
+        Me.ClientSize = New System.Drawing.Size(519, 348)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.cbCostFunctions)
         Me.Controls.Add(Me.txRule)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
@@ -149,5 +170,7 @@ Partial Class dlgHarvestControlRule
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents txRule As System.Windows.Forms.TextBox
+    Friend WithEvents cbCostFunctions As System.Windows.Forms.ComboBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
 
 End Class

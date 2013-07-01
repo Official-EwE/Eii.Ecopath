@@ -40,14 +40,8 @@ Public Class cTFMFormatter
 
         Dim ct As eCostFunctionTypes = DirectCast(value, eCostFunctionTypes)
 
-        Select Case ct
-            Case eCostFunctionTypes.Target
-                Return "Target"
-            Case eCostFunctionTypes.Conservation
-                Return "Conservation"
-        End Select
+        Return HCR_Group.toCostFunctionString(ct)
 
-        Return ""
     End Function
 
     Public Function GetDescribedType() As System.Type _

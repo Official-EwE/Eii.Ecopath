@@ -146,6 +146,7 @@ Public Class frmTFMpolicy
 
         Try
             Dim i As Integer
+            Me.cbStrategies.Items.Clear()
             For Each strategy As Strategy In Me.m_MSEPlugin.Strategies
                 i += 1
                 Me.cbStrategies.Items.Add(strategy.Name)
@@ -368,7 +369,21 @@ Public Class frmTFMpolicy
     End Sub
 
     Private Sub btAddStrategy_Click(sender As Object, e As System.EventArgs) Handles btAddStrategy.Click
-        MsgBox("Sorry not implemented yet.")
+
+        'Get a Strategy name from the user
+        Dim StratName As String
+        StratName = InputBox("Select a new for the new Strategy", "Add new Strategy.")
+
+        If String.IsNullOrEmpty(StratName) Then
+            Return
+        End If
+
+        Dim StartFilename As String = Path.Combine(Me.m_MSEPlugin.Strategies.DataDirectory, StratName + ".csv")
+        Dim strategy As Strategy = New Strategy(StratName, StartFilename)
+        Me.m_MSEPlugin.Strategies.Add(strategy)
+
+        Me.populateStrategies()
+        Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
 
     End Sub
 
@@ -386,6 +401,39 @@ Public Class frmTFMpolicy
             Next
             csvStrategyFile.Dispose()
         Next
+
+    End Sub
+
+    Private Sub btDeleteStrategy_Click(sender As System.Object, e As System.EventArgs) Handles btDeleteStrategy.Click
+        Dim selStrategy As Integer = cbStrategies.SelectedIndex
+
+        'ToDo this needs to delete the Strategy file as well as removing it from the list
+        'that should happen from the Strategies object itself
+        'Also there should be an isDirty flag
+        If selStrategy >= 0 Then
+            Me.m_MSEPlugin.Strategies.RemoveAt(selStrategy)
+
+            populateStrategies()
+            Me.cbStrategies.SelectedIndex = 0
+        End If
+
+    End Sub
+
+    Private Sub btDeleteHCR_Click(sender As System.Object, e As System.EventArgs) Handles btDeleteHCR.Click
+        Dim selHCRIndex As Integer = Me.m_grid.SelectedRow
+        Dim curStratIndex As Integer = Me.cbStrategies.SelectedIndex
+
+        If selHCRIndex > 0 Then
+            If Me.m_SelectedStrategy IsNot Nothing Then
+                'ToDo Like the Deleted Strategy this should be handled by the Strategy object
+                'that way there can be an isDirty flag
+                Me.m_SelectedStrategy.HCRules.RemoveAt(selHCRIndex - 1)
+                populateStrategies()
+                If curStratIndex > -1 And curStratIndex < Me.cbStrategies.Items.Count Then
+                    Me.cbStrategies.SelectedIndex = curStratIndex
+                End If
+            End If
+        End If
 
     End Sub
 

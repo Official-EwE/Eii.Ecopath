@@ -30,6 +30,19 @@ Public Class HCR_Group
             Return tmp
         End Get
     End Property
+
+    Public Shared Function toCostFunctionString(eCostFunctionTypes As eCostFunctionTypes) As String
+        Select Case eCostFunctionTypes
+
+            Case EwEMSEPlugin.eCostFunctionTypes.Target
+                Return "Target"
+            Case EwEMSEPlugin.eCostFunctionTypes.Conservation
+                Return "Conservation"
+        End Select
+        Return "Target"
+    End Function
+
+
 End Class
 
 

@@ -56,7 +56,9 @@ Public Class dlgHarvestControlRule
             End If
         Next
 
-
+        cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Target))
+        cbCostFunctions.Items.Add(HCR_Group.toCostFunctionString(eCostFunctionTypes.Conservation))
+        cbCostFunctions.SelectedIndex = 0
 
     End Sub
 
@@ -67,30 +69,46 @@ Public Class dlgHarvestControlRule
     End Property
 
     Private Sub cbBiomassGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbBiomassGroups.SelectedIndexChanged
-        Dim selItem As cbItem = DirectCast(cbBiomassGroups.SelectedItem, cbItem)
+        'Dim selItem As cbItem = DirectCast(cbBiomassGroups.SelectedItem, cbItem)
 
-        Me.m_HRC.GroupNumber4Biomass = selItem.Index
-        Me.m_HRC.GroupName4Biomass = selItem.toString
+        'Me.m_HRC.GroupNumber4Biomass = selItem.Index
+        'Me.m_HRC.GroupName4Biomass = selItem.toString
 
-        Me.m_HRC.LowerLimit = Me.Core.EcoPathGroupInputs(Me.m_HRC.GroupNumber4Biomass).BiomassAreaInput * 0.1
-        Me.m_HRC.UpperLimit = Me.Core.EcoPathGroupInputs(Me.m_HRC.GroupNumber4Biomass).BiomassAreaInput * 0.4
+        'Me.m_HRC.LowerLimit = Me.Core.EcoPathGroupInputs(Me.m_HRC.GroupNumber4Biomass).BiomassAreaInput * 0.1
+        'Me.m_HRC.UpperLimit = Me.Core.EcoPathGroupInputs(Me.m_HRC.GroupNumber4Biomass).BiomassAreaInput * 0.4
 
         updateHRC()
 
     End Sub
 
     Private Sub cbFMortGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbFMortGroups.SelectedIndexChanged
-        Dim selItem As cbItem = DirectCast(cbFMortGroups.SelectedItem, cbItem)
+        'Dim selItem As cbItem = DirectCast(cbFMortGroups.SelectedItem, cbItem)
 
-        Me.m_HRC.GroupNumber4F = selItem.Index
-        Me.m_HRC.GroupName4F = selItem.toString
+        'Me.m_HRC.GroupNumber4F = selItem.Index
+        'Me.m_HRC.GroupName4F = selItem.toString
 
-        Me.m_HRC.MaxF = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4F).MortCoFishRate
+        'Me.m_HRC.MaxF = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4F).MortCoFishRate
 
         updateHRC()
     End Sub
 
     Private Sub updateHRC()
+
+        'Group Biomass
+        Dim selItem As cbItem = DirectCast(cbBiomassGroups.SelectedItem, cbItem)
+        Me.m_HRC.GroupNumber4Biomass = selItem.Index
+        Me.m_HRC.GroupName4Biomass = selItem.toString
+        Me.m_HRC.LowerLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.1
+        Me.m_HRC.UpperLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.4
+
+        'Fishing Mort
+        selItem = DirectCast(cbFMortGroups.SelectedItem, cbItem)
+        Me.m_HRC.GroupNumber4F = selItem.Index
+        Me.m_HRC.GroupName4F = selItem.toString
+        Me.m_HRC.MaxF = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4F).MortCoFishRate
+
+        Me.m_HRC.CostFunction = Me.cbCostFunctions.SelectedItem
+
         Me.txRule.Text = Me.m_HRC.toDisplayString
     End Sub
 
@@ -101,4 +119,8 @@ Public Class dlgHarvestControlRule
         End Get
     End Property
    
+    Private Sub cbCostFunctions_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbCostFunctions.SelectedIndexChanged
+        Me.updateHRC()
+        ' m_HRC.CostFunction = Me.cbCostFunctions.SelectedItem
+    End Sub
 End Class
