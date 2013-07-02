@@ -47,12 +47,6 @@ Public Class frmMSE
     End Sub
 
     Private Sub btnEcopathParams_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEcopathParams.Click
-        ''Test to see if ecosim can be run multiple times very easily
-        'For i As Integer = 1 To 3
-        '    mCore.RunEcoSim()
-        '    MsgBox("Ecosim has been run " & i & " time(s)")
-        'Next i
-
         mMSE.GenerateEcopathParamaters()
     End Sub
 
@@ -140,85 +134,6 @@ Public Class frmMSE
     End Sub
 
 
-    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        Dim lpsolve As New cLPSolver.lpsolve55
-        Dim lp As Integer
-        Dim pv(5) As Double
-
-        '* Create a new LP model */
-        lp = cLPSolver.lpsolve55.make_lp(3, 2)
-        If lp = Nothing Then
-            Console.WriteLine("Unable to create new LP model\n")
-        End If
-        cLPSolver.lpsolve55.solve(lp)
-
-        cLPSolver.lpsolve55.get_primal_solution(lp, pv)
-
-        cLPSolver.lpsolve55.Init()
-
-        lp = cLPSolver.lpsolve55.make_lp(0, 2)
-        cLPSolver.lpsolve55.set_outputfile(lp, CurDir() & "\result_lin_prog_MSE.txt")
-
-        cLPSolver.lpsolve55.set_timeout(lp, 0)
-
-        cLPSolver.lpsolve55.print_str(lp, "Now we add the first constraint" & vbLf)
-        cLPSolver.lpsolve55.add_constraint(lp, New Double() {0, 3 / 5, 1}, cLPSolver.lpsolve55.lpsolve_constr_types.EQ, 4)
-        cLPSolver.lpsolve55.print_lp(lp)
-
-        cLPSolver.lpsolve55.add_constraint(lp, New Double() {0, 1, 0}, cLPSolver.lpsolve55.lpsolve_constr_types.LE, 5)
-
-        cLPSolver.lpsolve55.set_obj_fn(lp, New Double() {0, 0, 1})
-        cLPSolver.lpsolve55.print_lp(lp)
-
-        cLPSolver.lpsolve55.print_str(lp, "Now solve the problem with cLPSolver.lpsolve55.print_str(lp), solve(lp)" & vbLf)
-        cLPSolver.lpsolve55.set_minim(lp)
-
-        cLPSolver.lpsolve55.print_str(lp, cLPSolver.lpsolve55.solve(lp) & ": " & cLPSolver.lpsolve55.get_objective(lp) & vbLf)
-
-        cLPSolver.lpsolve55.print_str(lp, "The value is 0, this means we found an optimal solution" & vbLf)
-        cLPSolver.lpsolve55.print_str(lp, "We can display this solution with cLPSolver.lpsolve55.print_objective(lp) and lpsolve55.print_solution(lp)" & vbLf)
-        cLPSolver.lpsolve55.print_objective(lp)
-        cLPSolver.lpsolve55.print_solution(lp, 1)
-        cLPSolver.lpsolve55.print_constraints(lp, 1)
-
-
-        'cLPSolver.lpsolve55.print_str(lp, "Now we add the first constraint" & vbLf)
-        'cLPSolver.lpsolve55.print_str(lp, "cLPSolver.lpsolve55.add_constraint(lp, New Double() {0, 120, 210}, lpsolve55.lpsolve_constr_types.LE, 15000)" & vbLf)
-        'cLPSolver.lpsolve55.add_constraint(lp, New Double() {0, 120, 210}, cLPSolver.lpsolve55.lpsolve_constr_types.LE, 15000)
-        'cLPSolver.lpsolve55.print_lp(lp)
-
-        'cLPSolver.lpsolve55.print_str(lp, "...and the 2nd constraint..." & vbLf)
-        'cLPSolver.lpsolve55.print_str(lp, "cLPSolver.lpsolve55.add_constraint(lp, New Double() {0, 110, 30}, lpsolve55.lpsolve_constr_types.LE, 4000)" & vbLf)
-        'cLPSolver.lpsolve55.add_constraint(lp, New Double() {0, 110, 30}, cLPSolver.lpsolve55.lpsolve_constr_types.LE, 4000)
-        'cLPSolver.lpsolve55.print_lp(lp)
-
-        'cLPSolver.lpsolve55.print_str(lp, "...and the final constraint." & vbLf)
-        'cLPSolver.lpsolve55.print_str(lp, "lpsolve55.add_constraint(lp, New Double() {0, 1, 1}, cLPSolver.lpsolve55.lpsolve_constr_types.LE, 75)" & vbLf)
-        'cLPSolver.lpsolve55.add_constraint(lp, New Double() {0, 1, 1}, cLPSolver.lpsolve55.lpsolve_constr_types.LE, 75)
-        'cLPSolver.lpsolve55.print_lp(lp)
-
-        'cLPSolver.lpsolve55.print_str(lp, "Set the objective function" & vbLf)
-        'cLPSolver.lpsolve55.print_str(lp, "cLPSolver.lpsolve55.set_obj_fn(lp, New Double() {0, 2, 3, -2, 3})" & vbLf)
-        'cLPSolver.lpsolve55.set_obj_fn(lp, New Double() {0, 143, 60})
-        'cLPSolver.lpsolve55.print_lp(lp)
-
-        'cLPSolver.lpsolve55.print_str(lp, "Now solve the problem with cLPSolver.lpsolve55.print_str(lp), solve(lp)" & vbLf)
-        'cLPSolver.lpsolve55.set_maxim(lp)
-        'cLPSolver.lpsolve55.print_str(lp, cLPSolver.lpsolve55.solve(lp) & ": " & cLPSolver.lpsolve55.get_objective(lp) & vbLf)
-
-        'cLPSolver.lpsolve55.print_str(lp, "The value is 0, this means we found an optimal solution" & vbLf)
-        'cLPSolver.lpsolve55.print_str(lp, "We can display this solution with cLPSolver.lpsolve55.print_objective(lp) and lpsolve55.print_solution(lp)" & vbLf)
-        'cLPSolver.lpsolve55.print_objective(lp)
-        'cLPSolver.lpsolve55.print_solution(lp, 1)
-        'cLPSolver.lpsolve55.print_constraints(lp, 1)
-
-        Demo()
-    End Sub
-
-    Private Sub Demo()
-
-    End Sub
-
     Private Sub btShowTFMForm_Click(sender As System.Object, e As System.EventArgs) Handles btShowTFMForm.Click
         Dim bhasForm As Boolean
 
@@ -243,5 +158,10 @@ Public Class frmMSE
 
     Private Sub btnEcopathParams2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEcopathParams2.Click
         mMSE.GenerateEcopathParamaters2()
+    End Sub
+
+
+    Private Sub frmMSE_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
     End Sub
 End Class
