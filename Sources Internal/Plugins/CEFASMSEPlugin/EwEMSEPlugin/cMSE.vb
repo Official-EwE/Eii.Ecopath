@@ -894,25 +894,42 @@ stepend:
             'Save the results to a .csv
 
             Dim sPath As String = DataPath & "\ParametersOut"
-            Dim b_csvout As New StreamWriter(Path.Combine(sPath & "/b_out.csv"), False)
-            Dim ba_csvout As New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), False)
-            Dim pb_csvout As New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), False)
-            Dim qb_csvout As New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), False)
-            Dim ee_csvout As New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), False)
+            Dim b_csvout As New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
+            Dim ba_csvout As New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
+            Dim pb_csvout As New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
+            Dim qb_csvout As New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
+            Dim ee_csvout As New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
 
-            b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-            ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-            pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-            qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-            ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
-
-            For igrp As Integer = 2 To nLiving
-                b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-                ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
-            Next
+            If Not File.Exists(Path.Combine(sPath & "/b_out.csv")) Then
+                b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                For igrp As Integer = 2 To nLiving
+                    b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                Next
+            End If
+            If Not File.Exists(Path.Combine(sPath & "/ba_out.csv")) Then
+                ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                For igrp As Integer = 2 To nLiving
+                    ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                Next
+            End If
+            If Not File.Exists(Path.Combine(sPath & "/pb_out.csv")) Then
+                pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                For igrp As Integer = 2 To nLiving
+                    pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                Next
+            End If
+            If Not File.Exists(Path.Combine(sPath & "/qb_out.csv")) Then
+                qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                For igrp As Integer = 2 To nLiving
+                    qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                Next
+            End If
+            If Not File.Exists(Path.Combine(sPath & "/ee_out.csv")) Then
+                ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
+                For igrp As Integer = 2 To nLiving
+                    ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
+                Next
+            End If
 
             b_csvout.WriteLine()
             ba_csvout.WriteLine()
