@@ -182,7 +182,7 @@ Public Class gridTargetFishingMortalityPolicy
             Cell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.MaxF) = Cell
 
-            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(Me.toCostFunctionEnum(Rule.CostFunction), cb)
+            Dim cbCell As ICell = New SourceGrid2.Cells.Real.Cell(HCR_Group.toCostFunctionEnum(Rule.CostFunction), cb)
             cbCell.Behaviors.Add(Me.EwEEditHandler)
             Me(iHCR, eColumnTypes.CostFunction) = cbCell
 
@@ -207,7 +207,7 @@ Public Class gridTargetFishingMortalityPolicy
                     DirectCast(row.GetCells(eColumnTypes.BUpperLim), EwECell).Value = hcr.UpperLimit
                     DirectCast(row.GetCells(eColumnTypes.MaxF), EwECell).Value = hcr.MaxF
 
-                    DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = Me.toCostFunctionEnum(hcr.CostFunction)
+                    DirectCast(row.GetCells(eColumnTypes.CostFunction), ICell).Value = HCR_Group.toCostFunctionEnum(hcr.CostFunction)
 
                 End If
 
@@ -296,17 +296,6 @@ Public Class gridTargetFishingMortalityPolicy
 
         Return True
     End Function
-
-    Private Function toCostFunctionEnum(CostFunctionString As String) As eCostFunctionTypes
-        'ToDo this should be handled by the HarvestRule
-        If String.Compare(CostFunctionString, "Target") = 0 Then
-            Return eCostFunctionTypes.Target
-        ElseIf String.Compare(CostFunctionString, "Conservation") = 0 Then
-            Return eCostFunctionTypes.Conservation
-        End If
-        Return eCostFunctionTypes.Target
-    End Function
-
 
 End Class
 

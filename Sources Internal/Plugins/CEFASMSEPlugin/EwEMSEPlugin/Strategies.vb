@@ -1,4 +1,6 @@
 ﻿
+Imports System.IO
+
 ''' <summary>
 ''' Class to wrap a list of Strategies into an object
 ''' </summary>
@@ -18,5 +20,21 @@ Public Class Strategies
             Me.m_dataDir = value
         End Set
     End Property
+
+
+    Public Shadows Sub RemoveAt(ByVal ZeroBasedIndex As Integer)
+        Try
+            Dim strategy As Strategy = Me.Item(ZeroBasedIndex)
+            MyBase.RemoveAt(ZeroBasedIndex)
+
+            If File.Exists(strategy.FileName) Then
+                File.Delete(strategy.FileName)
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, Me.ToString + ".RemoveAt() Exception: " + ex.Message)
+        End Try
+    End Sub
+
 
 End Class

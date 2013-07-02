@@ -5,52 +5,6 @@ Imports LumenWorks.Framework.IO.Csv
 Imports System.Diagnostics
 
 
-
-''' <summary>
-''' Harvest Control Rules and Strategies all need to be public so they can be accessed in the frmTFMpolicy interface.
-''' </summary>
-''' <remarks></remarks>
-Public Class HCR_Group
-    Public GroupName4Biomass As String
-    Public GroupNumber4Biomass As Integer
-    Public LowerLimit As Double
-    Public UpperLimit As Double
-    Public GroupName4F As String
-    Public GroupNumber4F As Integer
-    Public MaxF As Double
-    Public CostFunction As String
-
-    Public ReadOnly Property toDisplayString
-        Get
-            Dim tmp As String
-            tmp = "Biomass Group = " + GroupName4Biomass
-            tmp += " , Biomass Index = " + GroupNumber4Biomass.ToString
-            tmp += " , Fishing Mort. Group = " + GroupName4F
-            tmp += " , Fishing Mort. Index = " + GroupNumber4F.ToString
-            Return tmp
-        End Get
-    End Property
-
-    Public Shared Function toCostFunctionString(eCostFunctionTypes As eCostFunctionTypes) As String
-        Select Case eCostFunctionTypes
-
-            Case EwEMSEPlugin.eCostFunctionTypes.Target
-                Return "Target"
-            Case EwEMSEPlugin.eCostFunctionTypes.Conservation
-                Return "Conservation"
-        End Select
-        Return "Target"
-    End Function
-
-
-End Class
-
-
-Public Enum HCRType
-    Target = 0
-    Conservation = 1
-End Enum
-
 Public Class cMSE
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.ICorePlugin
@@ -129,7 +83,7 @@ Public Class cMSE
                 'Read all fields from csv and then add to the list that makes up the whole strategy
                 csv.ReadNextRecord()
                 'Each HCR Group needs to be a new object
-                tempHCRGroup = New HCR_Group
+                tempHCRGroup = New HCR_Group(Me.m_uic.Core)
                 tempHCRGroup.GroupName4Biomass = csv(0)
                 tempHCRGroup.GroupNumber4Biomass = csv(1)
                 tempHCRGroup.LowerLimit = csv(2)
@@ -141,6 +95,7 @@ Public Class cMSE
                 Strategy.HCRules.Add(tempHCRGroup)
             End While
             Strategies.Add(Strategy)
+            csv.Dispose()
 
         Next
 

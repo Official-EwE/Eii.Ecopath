@@ -62,7 +62,7 @@ Public Class dlgHarvestControlRule
 
     Private Sub dlgHarvestControlRule_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
 
-        m_HRC = New HCR_Group
+        m_HRC = New HCR_Group(m_Plugin.Core)
 
         For igrp As Integer = 1 To Me.Core.nGroups
             If Core.EcoPathGroupInputs(igrp).IsFished Then
@@ -82,12 +82,20 @@ Public Class dlgHarvestControlRule
         cbCostFunctions.SelectedIndex = 0
 
     End Sub
+
 #End Region
     
 #Region "Control event handlers"
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
+        Dim validationstring As String
+
+        If Not Me.HarvestControlRule.isValid(validationstring) Then
+            MsgBox("Invalid Harvest Control Rule." + Environment.NewLine + validationstring + Environment.NewLine + "The rule will not be used.", MsgBoxStyle.Critical, "Sorry please complete the Harvest Control Rule.")
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        End If
+
         Me.Close()
     End Sub
 
@@ -115,18 +123,24 @@ Public Class dlgHarvestControlRule
 
         'Group Biomass
         Dim selItem As cbItem = DirectCast(cbBiomassGroups.SelectedItem, cbItem)
-        Me.m_HRC.GroupNumber4Biomass = selItem.Index
-        Me.m_HRC.GroupName4Biomass = selItem.toString
-        Me.m_HRC.LowerLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.1
-        Me.m_HRC.UpperLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.4
+        If selItem IsNot Nothing Then
+            Me.m_HRC.GroupNumber4Biomass = selItem.Index
+            Me.m_HRC.GroupName4Biomass = selItem.toString
+            Me.m_HRC.LowerLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.1
+            Me.m_HRC.UpperLimit = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4Biomass).Biomass * 0.4
+        End If
 
         'Fishing Mort
         selItem = DirectCast(cbFMortGroups.SelectedItem, cbItem)
-        Me.m_HRC.GroupNumber4F = selItem.Index
-        Me.m_HRC.GroupName4F = selItem.toString
-        Me.m_HRC.MaxF = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4F).MortCoFishRate
+        If selItem IsNot Nothing Then
+            Me.m_HRC.GroupNumber4F = selItem.Index
+            Me.m_HRC.GroupName4F = selItem.toString
+            Me.m_HRC.MaxF = Me.Core.EcoPathGroupOutputs(Me.m_HRC.GroupNumber4F).MortCoFishRate
+        End If
 
-        Me.m_HRC.CostFunction = Me.cbCostFunctions.SelectedItem
+        If Me.cbCostFunctions.SelectedItem IsNot Nothing Then
+            Me.m_HRC.CostFunction = Me.cbCostFunctions.SelectedItem
+        End If
 
         Me.txRule.Text = Me.m_HRC.toDisplayString
 

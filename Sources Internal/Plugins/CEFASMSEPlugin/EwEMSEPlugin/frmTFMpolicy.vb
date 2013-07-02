@@ -40,14 +40,6 @@ Imports System.IO
 ''' =======================================================================
 Public Class frmTFMpolicy
 
-
-    'ToDo 28-June-2013 Make grid editable
-    'ToDo 28-June-2013 Implement adding of HCR to current strategy
-    'This will require a way to select the Biomass and F groups
-    'ToDo 28-June-2013 Saving of Strategies
-
-
-
 #Region " Internals "
 
     Private Enum eDragType As Integer
@@ -330,6 +322,7 @@ Public Class frmTFMpolicy
         If Me.cbStrategies.SelectedIndex >= 0 Then
             Me.changeSelectedStrategy(Me.cbStrategies.SelectedIndex)
         End If
+
     End Sub
 
 
@@ -352,6 +345,7 @@ Public Class frmTFMpolicy
         Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
         HRCDialogue.Init(Me.m_MSEPlugin)
         HRCDialogue.ShowDialog()
+
 
         If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
             'add the newly created harvest control rule to the current strategy
