@@ -23,6 +23,7 @@ Imports System.IO
 Imports EwECore
 Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
@@ -137,7 +138,7 @@ Namespace Controls.EwEGrid
             AddHandler Me.m_btnExport.Click, AddressOf OnBtnExportClick
 
             ' Add items to the toolstrip
-            If (Me.m_uic.StyleGuide.IsRightToLeft) Then
+            If (cSystemUtils.IsRightToLeft) Then
                 If (Me.m_btnImport IsNot Nothing) Then
                     Me.m_btnImport.Alignment = ToolStripItemAlignment.Left
                     Me.m_ts.Items.Add(Me.m_btnImport)
@@ -387,7 +388,7 @@ Namespace Controls.EwEGrid
                         Catch ex As Exception
                         End Try
                     ElseIf TypeOf objValue Is Boolean Then
-                        Me.m_ttbValue.Text = IIf(CBool(objValue) = True, "1", "0")
+                        Me.m_ttbValue.Text = IIF(CBool(objValue) = True, "1", "0")
                     End If
                 End If
             End If

@@ -21,12 +21,11 @@
 Option Explicit On
 Option Strict On
 
-Imports System.Globalization
 
 Imports EwECore
 Imports EwEPlugin
-Imports EwEUtils.Commands
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterface.Ecopath.Controls
 Imports ScientificInterface.Ecopath.Input
 Imports ScientificInterface.Ecopath.Output
@@ -34,8 +33,6 @@ Imports ScientificInterface.Ecopath.Tools
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
 Imports ScientificInterfaceShared.Forms
-Imports ScientificInterfaceShared.Commands
-Imports WeifenLuo.WinFormsUI.Docking
 
 #End Region
 
@@ -81,8 +78,8 @@ Public Class frmNavigationPanel
         Me.m_pluginManager = pluginManager
 
         Try
-        ' Hit 'em, Jimmy
-        Me.InitializeComponent()
+            ' Hit 'em, Jimmy
+            Me.InitializeComponent()
         Catch ex As Exception
 
         End Try
@@ -261,7 +258,7 @@ Public Class frmNavigationPanel
 
         ' JS 19Mar2010: now why was this necessary?
         If (Me.m_tvNavigation.SelectedNode IsNot Nothing) Then
-            If Me.m_uic.StyleGuide.IsRightToLeft Then
+            If cSystemUtils.IsRightToLeft Then
                 Me.ShowHint = DockState.DockRight
             Else
                 Me.ShowHint = DockState.DockLeft

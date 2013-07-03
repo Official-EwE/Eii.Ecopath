@@ -574,7 +574,7 @@ Public Class AppLauncher
 
     Private Sub InitDockPanelPositions()
 
-        If Me.StyleGuide.IsRightToLeft Then
+        If cSystemUtils.IsRightToLeft Then
             Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockRight)
         Else
             Me.Panel(cPANEL_NAV).Show(m_DockPanel, DockState.DockLeft)

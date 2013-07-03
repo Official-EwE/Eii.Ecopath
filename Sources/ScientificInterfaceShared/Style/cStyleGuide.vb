@@ -29,6 +29,7 @@ Imports EwECore.Auxiliary
 Imports EwEUtils.Core
 Imports EwEUtils.Drawing
 Imports EwEUtils.Utilities
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -372,9 +373,9 @@ Namespace Style
         ''' </summary>
         ''' <returns></returns>
         ''' -------------------------------------------------------------------
+        <Obsolete("Use cSystemUtils.IsRightToLeft instead")> _
         Public Function IsRightToLeft() As Boolean
-            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
-            Return ci.TextInfo.IsRightToLeft
+            Return cSystemUtils.IsRightToLeft()
         End Function
 
 #End Region ' System settings
@@ -1766,9 +1767,9 @@ Namespace Style
                 Dim lGroups As New List(Of cCoreGroupBase)
 
                 ' For all groups:
-                For i As Integer = 1 To Core.nGroups
+                For i As Integer = 1 To core.nGroups
                     ' Get group
-                    grp = Core.EcoPathGroupInputs(i)
+                    grp = core.EcoPathGroupInputs(i)
                     ' Group not included in final list?
                     If Not bIncluded(i) Then
                         ' #Yes: add group
@@ -1776,9 +1777,9 @@ Namespace Style
                         ' Is multi-stanza?
                         If (grp.isMultiStanza) Then
                             ' #Yes: Add all related stanza for this group:
-                            For j As Integer = i + 1 To Core.nGroups
+                            For j As Integer = i + 1 To core.nGroups
                                 ' Get remaining group
-                                grpTest = Core.EcoPathGroupInputs(j)
+                                grpTest = core.EcoPathGroupInputs(j)
                                 ' Is of same stanza?
                                 If (grpTest.iStanza = grp.iStanza) Then
                                     ' #Yes: add below current group

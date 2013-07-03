@@ -20,12 +20,12 @@
 
 Option Strict On
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Properties
 Imports ScientificInterfaceShared.Style
-Imports EwECore
 
 #End Region ' Imports
 
@@ -189,7 +189,7 @@ Namespace Controls.Map
 
             Dim iAvgPad As Integer = 3
 
-            If (Me.m_uic.StyleGuide.IsRightToLeft) Then
+            If (cSystemUtils.IsRightToLeft) Then
                 ' [ [prev][label    ][vis][edt] ]
                 rcEditable.X = rcControl.Width - iAvgPad - 16
                 rcEditable.Y = CInt((rcControl.Height - 16) / 2)
@@ -329,7 +329,7 @@ Namespace Controls.Map
                 ' - Render remarks indicator
                 Dim sg As cStyleGuide = Me.m_uic.StyleGuide
                 If (prop.HasRemark()) Then
-                    cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rcPreview, e.Graphics, True, sg.IsRightToLeft)
+                    cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rcPreview, e.Graphics, True, cSystemUtils.IsRightToLeft)
                 End If
             End If
 

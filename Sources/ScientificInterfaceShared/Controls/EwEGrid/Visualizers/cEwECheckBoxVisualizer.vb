@@ -19,13 +19,10 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
-Imports System.Drawing
-Imports EwECore
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
 Imports SourceGrid2.Cells.Real
-Imports SourceGrid2.VisualModels
 
 #End Region ' Imports
 
@@ -98,7 +95,7 @@ Namespace Controls.EwEGrid
             ' Need to draw remarks indicator?
             If ((style And cStyleGuide.eStyleFlags.Remarks) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: draw remarks indicator
-                cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rc, e.Graphics, True, sg.IsRightToLeft)
+                cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rc, e.Graphics, True, cSystemUtils.IsRightToLeft)
             End If
 
         End Sub

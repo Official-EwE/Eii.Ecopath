@@ -23,6 +23,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports ScientificInterfaceShared.Definitions
+Imports EwECore
 
 #End Region ' Imports
 
@@ -36,7 +37,7 @@ Namespace Commands
     Public Class cExportLayerCommand
         Inherits cCommand
 
-        Private m_alayers() As cRasterLayer = Nothing
+        Private m_alayers() As cEcospaceLayer = Nothing
 
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~exportLayer"
@@ -49,16 +50,46 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' ---------------------------------------------------------------------------
         Public Overrides Sub Invoke()
-            Me.Invoke(Nothing)
+            Me.Invoke(New cEcospaceLayer() {})
         End Sub
 
         ''' ---------------------------------------------------------------------------
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="alayers">The layers to export data from.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cRasterLayer)
+        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer)
             Me.m_alayers = alayers
             MyBase.Invoke()
+        End Sub
+
+        ''' ---------------------------------------------------------------------------
+        ''' <inheritdocs cref="cCommand.Invoke"/>
+        ''' <param name="arl">Array of raster layers to export data from.</param>
+        ''' ---------------------------------------------------------------------------
+        Public Overloads Sub Invoke(ByVal arl() As cRasterLayer)
+
+            Dim layers As New List(Of cEcospaceLayer)
+            Dim layer As cEcospaceLayer = Nothing
+
+            If (arl IsNot Nothing) Then
+                For Each l As cLayer In arl
+                    If TypeOf l Is cRasterLayerBundle Then
+                        Dim rlb As cRasterLayerBundle = DirectCast(l, cRasterLayerBundle)
+                        For i As Integer = 0 To rlb.nLayers
+                            layer = rlb.Data(i)
+                            If (layer IsNot Nothing) Then
+                                layers.Add(layer)
+                            End If
+                        Next
+                    ElseIf TypeOf l Is cRasterLayer Then
+                        Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                        layers.Add(rl.Data)
+                    End If
+                Next
+            End If
+
+            Me.Invoke(layers.ToArray)
+
         End Sub
 
         ''' ---------------------------------------------------------------------------
@@ -66,7 +97,7 @@ Namespace Commands
         ''' Get the raster layers the command was invoked for.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property Layers() As cRasterLayer()
+        Public ReadOnly Property Layers() As cEcospaceLayer()
             Get
                 Return Me.m_alayers
             End Get

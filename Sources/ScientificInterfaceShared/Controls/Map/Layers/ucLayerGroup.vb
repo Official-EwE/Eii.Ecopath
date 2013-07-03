@@ -24,6 +24,7 @@ Imports EwEUtils.Core
 Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 Imports EwEUtils.Commands
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -388,7 +389,7 @@ Namespace Controls.Map
 
             Dim iAvgPad As Integer = 3
 
-            If (Me.m_uic.StyleGuide.IsRightToLeft) Then
+            If (cSystemUtils.IsRightToLeft) Then
                 ' [ [edit][label    ][vis][Collapse] ]
                 rcCollapse.X = rcControl.Width - iAvgPad - 16
                 rcCollapse.Y = CInt((rcControl.Height - 16) / 2)

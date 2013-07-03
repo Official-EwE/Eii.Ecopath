@@ -19,12 +19,12 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Windows.Forms
 Imports System.Drawing
-Imports System.Reflection
-Imports EwEUtils.Database.cEwEDatabase
-Imports ScientificInterfaceShared.Style
+Imports System.Windows.Forms
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Controls
+Imports ScientificInterfaceShared.Style
+Imports EwEUtils.Database.cEwEDatabase
 
 #End Region ' Imports
 
@@ -222,7 +222,7 @@ Public Class plUnitControl
 
         If (img IsNot Nothing) Then
             Dim rcImage As Rectangle = New Rectangle(0, 0, CInt(24 * Me.ZoomFactor), CInt(24 * Me.ZoomFactor))
-            If Me.m_uic.StyleGuide.IsRightToLeft Then
+            If cSystemUtils.IsRightToLeft Then
                 rcImage.Offset(2, Me.Height - rcImage.Height - 2)
             Else
                 rcImage.Offset(Me.Width - rcImage.Width - 2, Me.Height - rcImage.Height - 2)

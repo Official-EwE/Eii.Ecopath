@@ -19,9 +19,9 @@
 #Region " Imports "
 
 Option Strict On
-Imports EwEUtils.SystemUtilities.cSystemUtils
-Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports EwEUtils.SystemUtilities.cSystemUtils
 
 #End Region ' Imports
 
@@ -318,7 +318,7 @@ Namespace Controls
                 End If
 
                 ' Calc horizontal hover menu pos
-                If Me.m_uic.StyleGuide.IsRightToLeft Then
+                If cSystemUtils.IsRightToLeft Then
                     ptHover.X += Me.m_ctrlTarget.ClientRectangle.Width - Me.Width - Me.Margin.Right - Me.m_ctrlTarget.Padding.Right
                 Else
                     ptHover.X += Me.Margin.Left + Me.m_ctrlTarget.Padding.Left

@@ -438,11 +438,23 @@ Namespace Controls.Map
             Handles m_tsbnExport.Click
 
             Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-            Dim lLayers As New List(Of cRasterLayer)
+            Dim lLayers As New List(Of cEcospaceLayer)
+            Dim layer As cEcospaceLayer = Nothing
 
             For Each l As cLayer In Me.m_lLayers
                 If (l.IsSelected) And (TypeOf l Is cRasterLayer) Then
-                    lLayers.Add(DirectCast(l, cRasterLayer))
+                    If TypeOf l Is cRasterLayerBundle Then
+                        Dim rlb As cRasterLayerBundle = DirectCast(l, cRasterLayerBundle)
+                        For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
+                            layer = rlb.Data(i)
+                            If (layer IsNot Nothing) Then
+                                lLayers.Add(layer)
+                            End If
+                        Next
+                    Else
+                        Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                        lLayers.Add(rl.Data)
+                    End If
                 End If
             Next
 
