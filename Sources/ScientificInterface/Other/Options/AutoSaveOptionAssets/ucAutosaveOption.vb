@@ -21,9 +21,9 @@ Option Strict On
 
 Imports System.IO
 Imports EwEPlugin
-Imports EwEUtils.Core
-Imports EwECore
 Imports EwEUtils.Commands
+Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
@@ -190,7 +190,7 @@ Namespace Other
             If (Me.UIContext Is Nothing) Then Return
 
             ' Apply indentation
-            If Me.UIContext.StyleGuide.IsRightToLeft Then
+            If cSystemUtils.IsRightToLeft Then
                 Me.m_cbOption.Location = New Point(Me.m_cbOption.Location.X - Me.m_iIndent * cCHECKBOX_SIZE, Me.m_cbOption.Location.Y)
             Else
                 Me.m_cbOption.Location = New Point(Me.m_cbOption.Location.X + Me.m_iIndent * cCHECKBOX_SIZE, Me.m_cbOption.Location.Y)
@@ -204,7 +204,7 @@ Namespace Other
                 Me.m_cbOption.Checked = (Me.UIContext.Core.Autosave(Me.m_autosavetype) = True)
             End If
 
-             cToolTipShared.GetInstance().SetToolTip(Me.m_btnVisitFolder, SharedResources.TOOLTIP_VIEWFOLDER)
+            cToolTipShared.GetInstance().SetToolTip(Me.m_btnVisitFolder, SharedResources.TOOLTIP_VIEWFOLDER)
 
         End Sub
 

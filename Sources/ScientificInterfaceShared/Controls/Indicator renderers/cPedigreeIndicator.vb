@@ -19,9 +19,7 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Globalization
-Imports System.Threading
-Imports System.Drawing
+Imports EwEUtils.SystemUtilities
 Imports ScientificInterfaceShared.Style
 
 #End Region ' Imports
@@ -91,7 +89,7 @@ Namespace Controls
         Private Shared Function GetPedigreeArea(ByVal sg As cStyleGuide, _
                                                 ByVal rcClip As Rectangle) As Rectangle
 
-            If (sg.IsRightToLeft) Then
+            If (cSystemUtils.IsRightToLeft) Then
                 ' ------.
                 '     | |
                 '     |=|

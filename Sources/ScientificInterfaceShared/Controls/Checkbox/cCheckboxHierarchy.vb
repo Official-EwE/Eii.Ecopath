@@ -20,6 +20,8 @@
 
 Option Strict On
 
+Imports ScientificInterfaceShared.Controls.EwEGrid
+
 #End Region ' Imports
 
 Namespace Controls
@@ -32,32 +34,30 @@ Namespace Controls
 
 #Region " Private vars "
 
-        Private m_dtLinks As New Dictionary(Of CheckBox, cLink)
+        Private m_dtLinks As New Dictionary(Of Object, cLink)
         Private m_linkRoot As cLink = Nothing
         Private m_bManageChecks As Boolean = False
         Private m_iLockCount As Integer = 0
 
 #End Region ' Private vars
 
-#Region " Private helper classes "
+#Region " Checkbox links "
 
         ''' <summary>
         ''' Link in a checkbox hierarchy chain. Each link has a checkbox, an
         ''' optional parent link, and zero or more child links.
         ''' </summary>
-        Private Class cLink
+        Private MustInherit Class cLink
             Implements IDisposable
 
 #Region " Private vars "
 
             ''' <summary>Parent hierarchy.</summary>
-            Private m_hr As cCheckboxHierarchy = Nothing
-            ''' <summary>Checkbox the link is created for.</summary>
-            Private m_cb As CheckBox
+            Protected m_hr As cCheckboxHierarchy = Nothing
             ''' <summary>Parent link in the hierarchy.</summary>
-            Private m_parent As cLink = Nothing
+            Protected m_parent As cLink = Nothing
             ''' <summary>List of child links in the hierarchy.</summary>
-            Private m_children As New List(Of cLink)
+            Protected m_children As New List(Of cLink)
 
 #End Region ' Private vars
 
@@ -69,13 +69,10 @@ Namespace Controls
             ''' </summary>
             ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
             ''' created for.</param>
-            ''' <param name="cb">The checkbox to define this link for.</param>
             ''' <param name="parent">An optional parent link.</param>
             ''' -------------------------------------------------------------------
-            Public Sub New(hr As cCheckboxHierarchy, cb As CheckBox, Optional parent As cLink = Nothing)
+            Protected Sub New(hr As cCheckboxHierarchy, parent As cLink)
                 Me.m_hr = hr
-                Me.m_cb = cb
-                AddHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
                 Me.m_parent = parent
             End Sub
 
@@ -84,13 +81,9 @@ Namespace Controls
             ''' Cleanup.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub Dispose() Implements IDisposable.Dispose
+            Public Overridable Sub Dispose() Implements IDisposable.Dispose
                 GC.SuppressFinalize(Me)
-                If (Me.m_cb IsNot Nothing) Then
-                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
-                End If
                 Me.m_hr = Nothing
-                Me.m_cb = Nothing
                 Me.m_parent = Nothing
                 Me.m_children.Clear()
             End Sub
@@ -111,11 +104,11 @@ Namespace Controls
             ''' of all of its children.
             ''' </summary>
             ''' -------------------------------------------------------------------
-            Public Sub Update()
+            Public Overridable Sub Update()
 
                 Dim iNumChecked As Integer = 0
                 Dim iNumInterm As Integer = 0
-                Dim state As CheckState = CheckState.Unchecked
+                Dim state As CheckState = Checkstate.Unchecked
 
                 ' Only affect links with children
                 If (Me.m_children.Count > 0) Then
@@ -124,28 +117,70 @@ Namespace Controls
                     For Each child As cLink In Me.m_children
                         ' Update its checked state
                         child.Update()
-                        ' Count checked state of childred
-                        If child.m_cb.CheckState = CheckState.Checked Then iNumChecked += 1
-                        If child.m_cb.CheckState = CheckState.Indeterminate Then iNumInterm += 1
+                        ' Count checked state of children
+                        If child.Checkstate = Checkstate.Checked Then iNumChecked += 1
+                        If child.Checkstate = Checkstate.Indeterminate Then iNumInterm += 1
                     Next
 
                     ' Determine checked state of this node
                     If (iNumChecked = 0) Then
-                        If (iNumInterm > 0) Then state = CheckState.Indeterminate
+                        If (iNumInterm > 0) Then state = Checkstate.Indeterminate
                     ElseIf (iNumChecked > 0) And (iNumChecked < Me.m_children.Count) Then
-                        state = CheckState.Indeterminate
+                        state = Checkstate.Indeterminate
                     Else
-                        state = CheckState.Checked
+                        state = Checkstate.Checked
                     End If
 
                     ' Apply state
-                    Me.m_cb.CheckState = state
+                    Me.Checkstate = state
 
                 End If
 
             End Sub
 
+            Public MustOverride Property Checkstate() As Windows.Forms.CheckState
+
 #End Region ' Public access
+
+        End Class
+
+        Private Class cCheckboxLink
+            Inherits cLink
+
+            ''' <summary>Checkbox the link is created for.</summary>
+            Private m_cb As CheckBox
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Constructor
+            ''' </summary>
+            ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
+            ''' created for.</param>
+            ''' <param name="cb">The checkbox to define this link for.</param>
+            ''' <param name="parent">An optional parent link.</param>
+            ''' -------------------------------------------------------------------
+            Public Sub New(cb As CheckBox, hr As cCheckboxHierarchy, parent As cLink)
+                MyBase.new(hr, parent)
+                Me.m_cb = cb
+                AddHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
+            End Sub
+
+            Public Overrides Sub Dispose()
+                If (Me.m_cb IsNot Nothing) Then
+                    RemoveHandler Me.m_cb.CheckedChanged, AddressOf OnCheckChanged
+                    Me.m_cb = Nothing
+                End If
+                MyBase.Dispose()
+            End Sub
+
+            Public Overrides Property Checkstate As System.Windows.Forms.CheckState
+                Get
+                    Return Me.m_cb.CheckState
+                End Get
+                Set(value As System.Windows.Forms.CheckState)
+                    Me.m_cb.CheckState = value
+                End Set
+            End Property
 
 #Region " Event handling "
 
@@ -162,7 +197,7 @@ Namespace Controls
                     Me.m_hr.BeginCheckChange()
                     ' Apply check state to all children
                     For Each linkChild As cLink In Me.m_children
-                        linkChild.m_cb.Checked = Me.m_cb.Checked
+                        linkChild.Checkstate = Me.Checkstate
                     Next
                     ' Release check lock
                     Me.m_hr.EndCheckChange()
@@ -174,7 +209,149 @@ Namespace Controls
 
         End Class
 
-#End Region ' Private helper classes
+        Private Class cCheckboxCellLink
+            Inherits cLink
+            Implements SourceGrid2.BehaviorModels.IBehaviorModel
+
+            ''' <summary>Checkbox the link is created for.</summary>
+            Private m_cb As EwECheckboxCell
+            Private m_pos As SourceGrid2.Position
+
+            ''' -------------------------------------------------------------------
+            ''' <summary>
+            ''' Constructor
+            ''' </summary>
+            ''' <param name="hr">The <see cref="cCheckboxHierarchy"/> this link is 
+            ''' created for.</param>
+            ''' <param name="cb">The <see cref="EwECheckboxCell"/> to define this link for.</param>
+            ''' <param name="parent">An optional parent link.</param>
+            ''' -------------------------------------------------------------------
+            Public Sub New(cb As EwECheckboxCell, hr As cCheckboxHierarchy, parent As cLink)
+                MyBase.new(hr, parent)
+                Me.m_cb = cb
+                Me.m_cb.Behaviors.Add(Me)
+            End Sub
+
+            Public Overrides Sub Dispose()
+                If (Me.m_cb IsNot Nothing) Then
+                    Me.m_cb.Behaviors.Remove(Me)
+                    Me.m_cb = Nothing
+                End If
+                MyBase.Dispose()
+            End Sub
+
+            Public Overrides Property Checkstate As System.Windows.Forms.CheckState
+                Get
+                    Dim pos As New SourceGrid2.Position(Me.m_cb.Row, Me.m_cb.Column)
+                    Select Case Me.m_cb.GetCheckedValue(pos)
+                        Case True
+                            Return Windows.Forms.CheckState.Checked
+                        Case False
+                            Return Windows.Forms.CheckState.Unchecked
+                    End Select
+                    Return Windows.Forms.CheckState.Indeterminate
+                End Get
+                Set(value As System.Windows.Forms.CheckState)
+                    Dim pos As New SourceGrid2.Position(Me.m_cb.Row, Me.m_cb.Column)
+                    Me.m_cb.SetCheckedValue(pos, (value <> Windows.Forms.CheckState.Unchecked))
+                End Set
+            End Property
+
+#Region " Event handling "
+
+            Public ReadOnly Property CanReceiveFocus As Boolean Implements SourceGrid2.BehaviorModels.IBehaviorModel.CanReceiveFocus
+                Get
+                    Return True
+                End Get
+            End Property
+
+            Public Sub OnClick(e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnClick
+
+            End Sub
+
+            Public Sub OnContextMenuPopUp(e As SourceGrid2.PositionContextMenuEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnContextMenuPopUp
+
+            End Sub
+
+            Public Sub OnDoubleClick(e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnDoubleClick
+
+            End Sub
+
+            Public Sub OnEditEnded(e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditEnded
+
+            End Sub
+
+            Public Sub OnEditStarting(e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnEditStarting
+
+            End Sub
+
+            Public Sub OnFocusEntered(e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntered
+
+            End Sub
+
+            Public Sub OnFocusEntering(e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusEntering
+
+            End Sub
+
+            Public Sub OnFocusLeaving(e As SourceGrid2.PositionCancelEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeaving
+
+            End Sub
+
+            Public Sub OnFocusLeft(e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnFocusLeft
+
+            End Sub
+
+            Public Sub OnKeyDown(e As SourceGrid2.PositionKeyEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyDown
+
+            End Sub
+
+            Public Sub OnKeyPress(e As SourceGrid2.PositionKeyPressEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyPress
+
+            End Sub
+
+            Public Sub OnKeyUp(e As SourceGrid2.PositionKeyEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnKeyUp
+
+            End Sub
+
+            Public Sub OnMouseDown(e As SourceGrid2.PositionMouseEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseDown
+
+            End Sub
+
+            Public Sub OnMouseEnter(e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseEnter
+
+            End Sub
+
+            Public Sub OnMouseLeave(e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseLeave
+
+            End Sub
+
+            Public Sub OnMouseMove(e As SourceGrid2.PositionMouseEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseMove
+
+            End Sub
+
+            Public Sub OnMouseUp(e As SourceGrid2.PositionMouseEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnMouseUp
+
+            End Sub
+
+            Public Sub OnValueChanged(e As SourceGrid2.PositionEventArgs) Implements SourceGrid2.BehaviorModels.IBehaviorModel.OnValueChanged
+                ' If allowed to dispatch checks
+                If (Me.m_hr.ManageCheckedStates) Then
+                    ' Engage check lock
+                    Me.m_hr.BeginCheckChange()
+                    ' Apply check state to all children
+                    For Each linkChild As cLink In Me.m_children
+                        linkChild.Checkstate = Me.Checkstate
+                    Next
+                    ' Release check lock
+                    Me.m_hr.EndCheckChange()
+                End If
+            End Sub
+
+#End Region ' Event handling
+
+        End Class
+
+#End Region ' Checkbox links
 
 #Region " Public methods "
 
@@ -184,7 +361,7 @@ Namespace Controls
         ''' </summary>
         ''' <param name="cbRoot">The root checkbox to use.</param>
         ''' -----------------------------------------------------------------------
-        Public Sub New(cbRoot As CheckBox)
+        Public Sub New(cbRoot As Object)
             Me.Add(cbRoot, Nothing)
         End Sub
 
@@ -206,31 +383,37 @@ Namespace Controls
         ''' <summary>
         ''' Add a checkbox to the hierarchy.
         ''' </summary>
-        ''' <param name="cb">The checkbox to add.</param>
-        ''' <param name="cbParent">The parent checkbox, if any.</param>
+        ''' <param name="checkbox">The checkbox to add.</param>
+        ''' <param name="checkboxParent">The parent checkbox, if any. If left empty,
+        ''' the root of the hierarchy is assumed.</param>
         ''' -----------------------------------------------------------------------
-        Public Function Add(cb As CheckBox, cbParent As CheckBox) As Boolean
+        Public Function Add(checkbox As Object, checkboxParent As Object) As Boolean
+
+            Dim linkParent As cLink = Nothing
 
             ' Checkbox already defined?
-            If Me.m_dtLinks.ContainsKey(cb) Then Return False
+            If Me.m_dtLinks.ContainsKey(checkbox) Then Return False
 
             If (Me.m_linkRoot IsNot Nothing) Then
-                If (cbParent Is Nothing) Then Return False
-                If (Not Me.m_dtLinks.ContainsKey(cbParent)) Then Return False
 
-                ' Locate parent link
-                Dim linkParent As cLink = Me.m_dtLinks(cbParent)
+                If (checkboxParent IsNot Nothing) Then
+                    If (Not Me.m_dtLinks.ContainsKey(checkboxParent)) Then Return False
+                    linkParent = Me.m_dtLinks(checkboxParent)
+                Else
+                    linkParent = Me.m_linkRoot
+                End If
+
                 ' Create new link
-                Dim linkNew As cLink = New cLink(Me, cb, linkParent)
+                Dim linkNew As cLink = Me.GetLink(checkbox, linkParent)
                 ' Add new link as child to parent
                 linkParent.AddChild(linkNew)
                 ' Remember new link
-                Me.m_dtLinks(cb) = linkNew
+                Me.m_dtLinks(checkbox) = linkNew
             Else
                 ' Create new root link
-                Me.m_linkRoot = New cLink(Me, cb)
+                Me.m_linkRoot = Me.GetLink(checkbox, Nothing)
                 ' Remember new link
-                Me.m_dtLinks(cb) = Me.m_linkRoot
+                Me.m_dtLinks(checkbox) = Me.m_linkRoot
             End If
 
             Return True
@@ -305,6 +488,17 @@ Namespace Controls
             Me.m_iLockCount -= 1
             Me.Update()
         End Sub
+
+        Private Function GetLink(cb As Object, parent As cLink) As cLink
+            Select Case cb.GetType
+                Case GetType(CheckBox)
+                    Return New cCheckboxLink(DirectCast(cb, CheckBox), Me, parent)
+                Case GetType(EwECheckboxCell)
+                    Return New cCheckboxCellLink(DirectCast(cb, EwECheckboxCell), Me, parent)
+            End Select
+            Return Nothing
+
+        End Function
 
 #End Region ' Internals
 

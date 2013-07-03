@@ -26,6 +26,8 @@ Imports System.Security.Principal
 Imports EwEUtils.Utilities
 Imports System.Diagnostics
 Imports System.DirectoryServices.AccountManagement
+Imports System.Globalization
+Imports System.Threading
 
 #End Region ' Imports
 
@@ -306,6 +308,17 @@ Namespace SystemUtilities
 
             Return System.Windows.Forms.SystemInformation.TerminalServerSession
 
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns whether the current UI culture is right-to-left ordered.
+        ''' </summary>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function IsRightToLeft() As Boolean
+            Dim ci As CultureInfo = Thread.CurrentThread.CurrentUICulture
+            Return ci.TextInfo.IsRightToLeft
         End Function
 
         ''' -----------------------------------------------------------------------

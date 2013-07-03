@@ -21,7 +21,7 @@
 Option Strict On
 Option Explicit On
 
-Imports EwECore
+Imports EwEUtils.SystemUtilities
 Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region
@@ -658,7 +658,7 @@ Namespace Other
                 End Using
 
                 If bIsRemark Then
-                    cRemarksIndicator.Paint(ci.BackColor, Me.m_plPreview.ClientRectangle, e.Graphics, True, Me.m_uic.StyleGuide.IsRightToLeft)
+                    cRemarksIndicator.Paint(ci.BackColor, Me.m_plPreview.ClientRectangle, e.Graphics, True, cSystemUtils.IsRightToLeft)
                 End If
             End If
 

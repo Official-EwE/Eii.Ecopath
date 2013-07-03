@@ -19,6 +19,7 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwEUtils.SystemUtilities
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Style
 Imports SourceGrid2
@@ -45,7 +46,7 @@ Namespace Controls.EwEGrid
         Private m_nHighlightBorderWidth As Integer = 4
         ''' <summary>Text indentation level.</summary>
         Private m_iTextIndent As Integer = 0
- 
+
 #End Region ' Private bits 
 
 #Region " Public configuration bits "
@@ -120,7 +121,7 @@ Namespace Controls.EwEGrid
             ' Need to draw remarks indicator?
             If ((style And cStyleGuide.eStyleFlags.Remarks) > 0) And (sg IsNot Nothing) Then
                 ' #Yes: draw remarks indicator
-                cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rc, e.Graphics, True, sg.IsRightToLeft)
+                cRemarksIndicator.Paint(sg.ApplicationColor(cStyleGuide.eApplicationColorType.REMARKS_BACKGROUND), rc, e.Graphics, True, cSystemUtils.IsRightToLeft)
             End If
 
         End Sub
@@ -172,7 +173,7 @@ Namespace Controls.EwEGrid
             ' Render Image and Text
             Dim ftCell As Font = Me.GetCellFont()
             Using ft As New Font(ftCell, _
-                                 ftCell.Style Or DirectCast(IIf((style And cStyleGuide.eStyleFlags.Taxon) > 0, FontStyle.Italic, ftCell.Style), FontStyle))
+                                 ftCell.Style Or DirectCast(IIF((style And cStyleGuide.eStyleFlags.Taxon) > 0, FontStyle.Italic, ftCell.Style), FontStyle))
                 Utility.PaintImageAndText(e.Graphics, rcClient, _
                     Me.Image, Me.ImageAlignment, Me.ImageStretch, _
                     cell.GetDisplayText(pos), _

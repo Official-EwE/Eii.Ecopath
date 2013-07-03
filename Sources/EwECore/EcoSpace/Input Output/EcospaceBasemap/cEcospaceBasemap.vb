@@ -212,7 +212,7 @@ Public Class cEcospaceBasemap
             meta = New cVariableMetaData(Integer.MinValue, Integer.MaxValue, cOperatorManager.getOperator(eOperators.GreaterThanOrEqualTo), cOperatorManager.getOperator(eOperators.LessThanOrEqualTo), cCore.NULL_VALUE)
             Me.m_dictLayers(eVarNameFlags.LayerDepth) = New cEcospaceLayer() {New cEcospaceLayerDepth(theCore, Me, meta)}
 
-            For i As Integer = 1 To ecospaceDS.NoHabitats
+            For i As Integer = 1 To ecospaceDS.NoHabitats - 1
                 llayers.Add(New cEcospaceLayerHabitat(theCore, Me, i))
             Next
             Me.m_dictLayers(eVarNameFlags.LayerHabitat) = llayers.ToArray

@@ -93,6 +93,17 @@ Namespace Controls.Map.Layers
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Get the number of layers in the bundle.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public ReadOnly Property nLayers As Integer
+            Get
+                Return Me.m_uic.Core.GetCoreCounter(Me.CoreCounter)
+            End Get
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get the <see cref="eCoreCounterTypes"/> that defines the indexing
         ''' of the layers bundled in this class.
         ''' </summary>

@@ -24,6 +24,7 @@ Imports EwECore
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports ScientificInterfaceShared.Definitions
 Imports ScientificInterfaceShared.Style
+Imports EwEUtils.SystemUtilities
 
 #End Region ' Imports
 
@@ -122,7 +123,7 @@ Namespace Controls
 
             ' Provide defaults
             If (sYMax = cCore.NULL_VALUE) Then sYMax = shape.YMax * 1.2!
-            If (sYMark = cCore.NULL_VALUE) Then sYMark = IIf(TypeOf (shape) Is cMediationFunction, 0.5!, 1.0!)
+            If (sYMark = cCore.NULL_VALUE) Then sYMark = IIF(TypeOf (shape) Is cMediationFunction, 0.5!, 1.0!)
             If (iXMax <= 0) Then iXMax = shape.nPoints
 
             cShapeImage.DrawShapeDirect(uic, _
@@ -373,7 +374,7 @@ Namespace Controls
                     If (icoOverlay IsNot Nothing) Then
                         ' Calc rectangle to render icon
                         Dim rc As Rectangle = Nothing
-                        If sg.IsRightToLeft Then
+                        If cSystemUtils.IsRightToLeft Then
                             ' RtoL reading order: draw image in lower left corner
                             rc = New Rectangle(0, _
                                                Math.Max(0, bmp.Height - iOverlaySize), _

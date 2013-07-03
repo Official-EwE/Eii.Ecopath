@@ -26,9 +26,7 @@ Imports EwEUtils.Commands
 Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
-Imports ScientificInterfaceShared.Controls.Map.Layers
 Imports SharedResources = ScientificInterfaceShared.My.Resources
-Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -36,170 +34,15 @@ Namespace Ecospace.Basemap
 
     ''' ---------------------------------------------------------------------------
     ''' <summary>
-    ''' 
+    ''' Dialogue for exporting layer data to CSV.
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Public Class dlgExportLayerData
 
-#Region " Private classes "
-
-        <CLSCompliant(False)> _
-        Public Class gridExportMappings
-            Inherits EwEGrid
-
-#Region " Private vars "
-
-            ''' <summary>The layers to map upon.</summary>
-            Private m_aLayers As cRasterLayer()
-            ''' <summary>Mappings. MAPPINGS!</summary>
-            Private m_dtLayerMapping As New Dictionary(Of cRasterLayer, String)
-
-            Private Enum eColumnTypes As Integer
-                ColumnLayer = 0
-                ColumnField
-                ' Show datatype columns?
-            End Enum
-
-#End Region ' Private vars
-
-#Region " Construction "
-
-            Public Sub New()
-
-            End Sub
-
-#End Region ' Construction
-
-#Region " Public interfaces "
-
-            Public Property Layers() As cRasterLayer()
-                Get
-                    Return Nothing
-                End Get
-                Set(ByVal value As cRasterLayer())
-
-                    Me.m_aLayers = value
-                    Me.m_dtLayerMapping.Clear()
-
-                    If value IsNot Nothing Then
-                        For Each l As cRasterLayer In value
-                            Me.m_dtLayerMapping(l) = l.DisplayText.Trim()
-                        Next
-                    End If
-
-                    Me.RefreshContent()
-                End Set
-            End Property
-
-            Public Function Mappings() As Dictionary(Of cRasterLayer, String)
-                Return Me.m_dtLayerMapping
-            End Function
-
-#End Region ' Public interfaces
-
-#Region " Overrides "
-
-            Protected Overrides Sub InitStyle()
-                MyBase.InitStyle()
-
-                If Not Me.HasData() Then Return
-
-                Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
-
-                Me(0, eColumnTypes.ColumnLayer) = New EwEColumnHeaderCell(SharedResources.HEADER_LAYER)
-                Me(0, eColumnTypes.ColumnField) = New EwEColumnHeaderCell(SharedResources.HEADER_FIELD)
-
-                Me.Columns(eColumnTypes.ColumnLayer).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
-                Me.Columns(eColumnTypes.ColumnField).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableStretch
-
-                Me.FixedColumns = 1
-                Me.FixedColumnWidths = False
-
-            End Sub
-
-            Protected Overrides Sub FillData()
-
-                If Not Me.HasData Then Return
-
-                Me.RowsCount = 1
-
-                Dim layer As cRasterLayer = Nothing
-                Dim ewec As EwECell = Nothing
-                Dim cmb As Cells.Real.ComboBox = Nothing
-
-                For iLayer As Integer = 0 To Me.m_aLayers.Length - 1
-
-                    Me.AddRow()
-                    layer = Me.m_aLayers(iLayer)
-
-                    ewec = New EwECell(layer.Name, GetType(String))
-                    ewec.Style = (cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
-                    Me(iLayer + 1, eColumnTypes.ColumnLayer) = ewec
-
-                    ewec = New EwECell(layer.Name, GetType(String))
-                    ewec.Behaviors.Add(Me.EwEEditHandler)
-                    Me(iLayer + 1, eColumnTypes.ColumnField) = ewec
-
-                    Me.Rows(iLayer + 1).Tag = layer
-
-                Next iLayer
-
-            End Sub
-
-            Protected Overrides Sub FinishStyle()
-                MyBase.FinishStyle()
-                Me.StretchColumnsToFitWidth()
-            End Sub
-
-            Protected Overrides Function OnCellValueChanged(p As SourceGrid2.Position, cell As SourceGrid2.Cells.ICellVirtual) As Boolean
-
-                MyBase.OnCellValueChanged(p, cell)
-
-                Dim strField As String = Me.FieldAtRow(p.Row)
-                Dim layer As cRasterLayer = Me.LayerAtRow(p.Row)
-
-                Try
-                    If String.IsNullOrWhiteSpace(strField) Then
-                        ' May be nothing
-                        Me.m_dtLayerMapping(layer) = String.Empty
-                    Else
-                        Me.m_dtLayerMapping(layer) = strField
-                    End If
-                Catch ex As Exception
-                End Try
-
-                Return True
-
-            End Function
-
-            Private Function LayerAtRow(ByVal iRow As Integer) As cRasterLayer
-                If iRow > 0 And iRow < Me.RowsCount Then
-                    Return DirectCast(Me.Rows(iRow).Tag, cRasterLayer)
-                End If
-                Return Nothing
-            End Function
-
-            Private Function FieldAtRow(ByVal iRow As Integer) As String
-                If iRow > 0 And iRow < Me.RowsCount Then
-                    Return CStr(Me(iRow, eColumnTypes.ColumnField).Value)
-                End If
-                Return ""
-            End Function
-
-            Private Function HasData() As Boolean
-                Return (Me.m_aLayers IsNot Nothing)
-            End Function
-
-#End Region ' Overrides
-
-        End Class
-
-#End Region ' Private classes
-
 #Region " Private vars "
 
         Private m_uic As cUIContext = Nothing
-        Private m_lLayers As New List(Of cRasterLayer)
+        Private m_lLayers As New List(Of cEcospaceLayer)
         Private m_bDataValid As Boolean = False
         Private m_data As cEcospaceImportExportXYData = Nothing
 
@@ -216,17 +59,17 @@ Namespace Ecospace.Basemap
 
 #Region " Public properties "
 
-        Public Property Layers() As cRasterLayer()
+        Public Property Layers() As cEcospaceLayer()
             Get
                 Return Me.m_lLayers.ToArray()
             End Get
-            Set(ByVal aLayers As cRasterLayer())
+            Set(ByVal aLayers As cEcospaceLayer())
+
                 Me.m_lLayers.Clear()
-
-                If aLayers Is Nothing Then Return
-                If aLayers.Length = 0 Then Return
-
+                If (aLayers Is Nothing) Then Return
+                If (aLayers.Length = 0) Then Return
                 Me.m_lLayers.AddRange(aLayers)
+
             End Set
         End Property
 
@@ -243,13 +86,14 @@ Namespace Ecospace.Basemap
             Debug.Assert(Me.m_uic IsNot Nothing)
 
             Dim f As New cLayerFactoryInternal()
+            Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
 
             ' Set default file
             Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), "layers")
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
-                Me.m_lLayers.AddRange(f.BaseRasterLayers(Me.m_uic))
+                Me.m_lLayers.AddRange(bm.Layers(eVarNameFlags.NotSet))
             End If
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic
@@ -259,14 +103,7 @@ Namespace Ecospace.Basemap
         End Sub
 
         Protected Overrides Sub OnFormClosed(ByVal e As System.Windows.Forms.FormClosedEventArgs)
-
-            For Each layer As cRasterLayer In Me.m_lLayers
-                If layer IsNot Nothing Then
-                    layer.Dispose()
-                End If
-            Next
             Me.m_lLayers = Nothing
-
             MyBase.OnFormClosed(e)
         End Sub
 
@@ -311,12 +148,12 @@ Namespace Ecospace.Basemap
 
             ' ToDo: localize this method
 
-            Dim dtMappings As Dictionary(Of cRasterLayer, String) = Me.m_grid.Mappings()
+            Dim dtMappings As Dictionary(Of cEcospaceLayer, String) = Me.m_grid.Mappings()
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
             Dim lstrFields As New List(Of String)
             Dim strField As String = ""
             Dim strFile As String = Me.m_tbTarget.Text
-            Dim layerUI As cRasterLayer = Nothing
+            Dim layer As cEcospaceLayer = Nothing
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
@@ -326,8 +163,8 @@ Namespace Ecospace.Basemap
             Try
 
                 ' Populate local data
-                For Each layerUI In dtMappings.Keys
-                    strField = dtMappings(layerUI).Trim
+                For Each layer In dtMappings.Keys
+                    strField = dtMappings(layer).Trim
                     If Not String.IsNullOrWhiteSpace(strField) Then
                         If (lstrFields.IndexOf(strField) = -1) Then
                             lstrFields.Add(strField)
@@ -342,28 +179,12 @@ Namespace Ecospace.Basemap
                 For iRow = 1 To bm.InRow
                     For iCol = 1 To bm.InCol
                         ' Populate data
-                        For Each layerUI In dtMappings.Keys
-                            strField = dtMappings(layerUI)
+                        For Each layer In dtMappings.Keys
+                            strField = dtMappings(layer)
                             If Not String.IsNullOrEmpty(strField.Trim) Then
-
-                                If (TypeOf layerUI Is cRasterLayerBundle) Then
-
-                                    ' Add data for all sub-layers in the bundle to individual fields
-                                    Dim rlb As cRasterLayerBundle = DirectCast(layerUI, cRasterLayerBundle)
-                                    Dim layerSpace As cEcospaceLayer = Nothing
-                                    For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
-                                        layerSpace = rlb.Data(i)
-                                        If layerSpace IsNot Nothing Then
-                                            Me.m_data.Value(iRow, iCol, strField & "_" & i) = CSng(layerUI.Value(iRow, iCol))
-                                        End If
-                                    Next
-
-                                Else
-                                    Me.m_data.Value(iRow, iCol, strField) = CSng(layerUI.Value(iRow, iCol))
-                                End If
-
+                                Me.m_data.Value(iRow, iCol, strField) = CSng(layer.Cell(iRow, iCol))
                             End If
-                        Next layerUI
+                        Next layer
                     Next iCol
                 Next iRow
 
