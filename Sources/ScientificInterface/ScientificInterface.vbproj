@@ -1890,10 +1890,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Sources Internal\Plugins\CEFASMSEPlugin\EwEMSEPlugin\EwEMSEPlugin.vbproj">
-      <Project>{19B57860-D7C5-479A-8979-E4DFE9A46B50}</Project>
-      <Name>EwEMSEPlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EwECore\EwECore.vbproj">
       <Project>{CDECE065-503A-4562-A955-06777B2F909E}</Project>
       <Name>EwECore</Name>
