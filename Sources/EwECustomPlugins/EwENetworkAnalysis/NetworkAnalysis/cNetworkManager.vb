@@ -24,6 +24,7 @@ Imports ScientificInterfaceShared.Style
 Imports ScientificInterfaceShared.Controls
 Imports EwECore
 Imports EwEUtils.Core
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -202,10 +203,9 @@ Public Class cNetworkManager
 
             Catch ex As Exception
                 cLog.Write(ex)
-                Dim msg As String = Me.unravelExceptionMessage(ex)
+                Dim msg As String = cStringUtils.UnravelException(ex)
                 ' ToDo: globalize this
-                m_publisher.SendMessage(New cMessage(Me.ToString & ".RunMainNetwork() Error " & msg, eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
-                'Debug.Assert(False, msg)
+                m_publisher.SendMessage(New cMessage("Network analysis RunMainNetwork() error: " & msg, eMessageType.ErrorEncountered, m_messagesource, eMessageImportance.Critical))
                 bSucces = False
             End Try
         Else
@@ -283,10 +283,9 @@ Public Class cNetworkManager
 
             Catch ex As Exception
                 cLog.Write(ex)
-                Dim msg As String = Me.unravelExceptionMessage(ex)
+                Dim msg As String = cStringUtils.UnravelException(ex)
                 ' ToDo: globalize this
-                Core.Messages.SendMessage(New cMessage(Me.ToString & ".RunReguiredPrimaryProd() Error " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
-
+                Core.Messages.SendMessage(New cMessage("Network Analysis run PPR error: " & msg, eMessageType.ErrorEncountered, eCoreComponentType.EcoPath, eMessageImportance.Critical))
                 bSuccess = False
             End Try
         Else
@@ -306,7 +305,7 @@ Public Class cNetworkManager
 
 #Region " Pathways "
 
-    Public Property UseCyclesPathways As Boolean
+    Public Property AllowFindPathsAndCycles As Boolean
         Get
             Return My.Settings.UseCyclesPathways
         End Get
@@ -325,7 +324,7 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        If (Not Me.UseCyclesPathways) Then
+        If (Not Me.AllowFindPathsAndCycles) Then
             Me.m_pathwaystate = ePathways.NotRan
             Return True
         End If
@@ -362,7 +361,7 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        If (Not Me.UseCyclesPathways) Then
+        If (Not Me.AllowFindPathsAndCycles) Then
             Me.m_pathwaystate = ePathways.NotRan
             Return True
         End If
@@ -404,7 +403,7 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        If (Not Me.UseCyclesPathways) Then
+        If (Not Me.AllowFindPathsAndCycles) Then
             Me.m_pathwaystate = ePathways.NotRan
             Return True
         End If
@@ -441,7 +440,7 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        If (Not Me.UseCyclesPathways) Then
+        If (Not Me.AllowFindPathsAndCycles) Then
             Me.m_pathwaystate = ePathways.NotRan
             Return True
         End If
@@ -476,7 +475,7 @@ Public Class cNetworkManager
 
         Dim nPaths As Integer, nArrows As Integer
 
-        If (Not Me.UseCyclesPathways) Then
+        If (Not Me.AllowFindPathsAndCycles) Then
             Me.m_pathwaystate = ePathways.NotRan
             Return True
         End If
@@ -639,19 +638,6 @@ Public Class cNetworkManager
 
     Public Property RunWithEcopath() As Boolean
     Public Property RunWithEcosim() As Boolean
-
-    ''' <summary>
-    ''' Flag, stating whether paths and cycles should be found. This can
-    ''' be very time consuming, and may not be needed if PPR is not required.
-    ''' </summary>
-    Public Property FindPathsAndCycles() As Boolean
-        Get
-            Return Me.m_econetwork.AllowFindPathsAndCycles
-        End Get
-        Set(ByVal value As Boolean)
-            Me.m_econetwork.AllowFindPathsAndCycles = value
-        End Set
-    End Property
 
 #End Region ' Settings
 
@@ -2101,47 +2087,6 @@ Public Class cNetworkManager
 #End Region ' Model outputs
 
 #End Region ' Public Properties
-
-#Region " Misc private methods "
-
-    ''' <summary>
-    ''' Build a string that contains the messages from this exception and all it's InnerException's
-    ''' </summary>
-    ''' <param name="theEX">Exception </param>
-    ''' <returns>String formatted with all the messages from the Exception</returns>
-    Private Function unravelExceptionMessage(ByRef theEX As Exception) As String
-        'unravel the error messages
-        'ToDo_jb unravelErrorMessage() sort out where this should be. Not here!!!!!
-        'this should be a static function some place in the core 
-        'or it could be part of an EwEException Class
-        Dim thisEx As Exception = theEX
-        Try
-            Dim errormsg As String = ""
-            Do While thisEx IsNot Nothing
-                errormsg = errormsg & thisEx.Message & vbNewLine
-                thisEx = thisEx.InnerException
-            Loop
-            Return errormsg
-        Catch ex As Exception
-            'oooppps
-            Debug.Assert(False, ex.Message)
-            Return ""
-        End Try
-
-    End Function
-
-    'Private Function MayRunSlow() As Boolean
-    '    Dim nGroups As Integer = Me.Core.nGroups
-    '    Dim nDiets As Integer = 0
-    '    For i As Integer = 1 To nGroups
-    '        For j As Integer = 1 To nGroups
-    '            If EcopathData.DCInput(i, j) > 0 Then nDiets += 1
-    '        Next
-    '    Next
-    '    Return (nGroups > 30) And (nDiets > nGroups * 6)
-    'End Function
-
-#End Region ' Misc private methods
 
 #Region " Message handlers "
 

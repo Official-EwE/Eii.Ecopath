@@ -900,6 +900,30 @@ Namespace Utilities
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Converts an exception with all its nested inner exceptions into a 
+        ''' single string.
+        ''' </summary>
+        ''' <param name="ex"></param>
+        ''' <returns>A string</returns>
+        ''' -------------------------------------------------------------------
+        Public Shared Function UnravelException(ByVal ex As Exception) As String
+
+            Dim sb As New StringBuilder()
+
+            Try
+                Do While ex IsNot Nothing
+                    sb.AppendLine(ex.Message)
+                    ex = ex.InnerException
+                Loop
+            Catch exKaboom As Exception
+                'oooppps
+                Debug.Assert(False, exKaboom.Message)
+            End Try
+            Return sb.ToString
+
+        End Function
 #Region " Replace "
 
         ''' -----------------------------------------------------------------------

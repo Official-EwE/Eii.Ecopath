@@ -342,7 +342,11 @@ Public Class cEcoNetwork
 
 #Region " Public Properties "
 
-    Public Property AllowFindPathsAndCycles As Boolean = True
+    Public ReadOnly Property AllowFindPathsAndCycles As Boolean
+        Get
+            Return Me.m_manager.AllowFindPathsAndCycles
+        End Get
+    End Property
 
     Public Property GroupsToShow() As Boolean()
         Get
