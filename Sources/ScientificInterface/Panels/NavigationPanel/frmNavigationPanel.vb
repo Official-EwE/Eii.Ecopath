@@ -45,8 +45,8 @@ Imports ScientificInterfaceShared.Forms
 ''' <remarks>
 ''' <para>The Navigation Panel will not actually create or highlight the GUI items 
 ''' that it provides access to. Instead, the panel will outsource this functionality 
-''' via the central <see cref="cCommandHandler">CommandHandler</see> and its
-''' <see cref="cNavigationCommand">NavigationCommand</see>.</para>
+''' via the central <see cref="EwEUtils.Commands.cCommandHandler">CommandHandler</see> 
+''' and the <see cref="ScientificInterfaceShared.Commands.cNavigationCommand">Navigation command</see>.</para>
 ''' </remarks>
 ''' ---------------------------------------------------------------------------
 Public Class frmNavigationPanel
@@ -259,9 +259,9 @@ Public Class frmNavigationPanel
         ' JS 19Mar2010: now why was this necessary?
         If (Me.m_tvNavigation.SelectedNode IsNot Nothing) Then
             If cSystemUtils.IsRightToLeft Then
-                Me.ShowHint = DockState.DockRight
+                Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockRight
             Else
-                Me.ShowHint = DockState.DockLeft
+                Me.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockLeft
             End If
         End If
 
