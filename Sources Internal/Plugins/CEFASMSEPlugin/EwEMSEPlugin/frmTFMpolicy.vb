@@ -343,13 +343,12 @@ Public Class frmTFMpolicy
 
         'Create a new HCR_Group
         Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
-        HRCDialogue.Init(Me.m_MSEPlugin)
+        HRCDialogue.Init(Me.m_MSEPlugin, Me.m_SelectedStrategy)
         HRCDialogue.ShowDialog()
-
 
         If HRCDialogue.DialogResult = Windows.Forms.DialogResult.OK Then
             'add the newly created harvest control rule to the current strategy
-            Me.m_SelectedStrategy.HCRules.Add(HRCDialogue.HarvestControlRule)
+            Me.m_SelectedStrategy.Add(HRCDialogue.HarvestControlRule)
             Me.m_grid.RefreshContent()
         End If
 
@@ -372,12 +371,16 @@ Public Class frmTFMpolicy
             Return
         End If
 
+        'Build the filename out of the strategy name
         Dim StartFilename As String = Path.Combine(Me.m_MSEPlugin.Strategies.DataDirectory, StratName + ".csv")
         Dim strategy As Strategy = New Strategy(StratName, StartFilename)
-        Me.m_MSEPlugin.Strategies.Add(strategy)
-
-        Me.populateStrategies()
-        Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
+        If Not Me.m_MSEPlugin.Strategies.Contains(strategy) Then
+            Me.m_MSEPlugin.Strategies.Add(strategy)
+            Me.populateStrategies()
+            Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
+        Else
+            MsgBox("Sorry this strategy name has already been used. Please select another name.", MsgBoxStyle.Critical)
+        End If
 
     End Sub
 
@@ -389,7 +392,7 @@ Public Class frmTFMpolicy
         For Each iStrategy In Me.m_MSEPlugin.Strategies
             csvStrategyFile = New StreamWriter(iStrategy.FileName, False)
             csvStrategyFile.WriteLine("GroupNameForBiomass,GroupNumberForBiomass,LowerLimit,UpperLimit,GroupNameForF,GroupNumberForF,MaxF,CostFunctionType")
-            For Each iHCR In iStrategy.HCRules
+            For Each iHCR In iStrategy
                 csvStrategyFile.WriteLine(iHCR.GroupName4Biomass & "," & iHCR.GroupNumber4Biomass & "," & iHCR.LowerLimit & "," & _
                                             iHCR.UpperLimit & "," & iHCR.GroupName4F & "," & iHCR.GroupNumber4F & "," & iHCR.MaxF & "," & iHCR.CostFunction)
             Next
@@ -421,7 +424,7 @@ Public Class frmTFMpolicy
             If Me.m_SelectedStrategy IsNot Nothing Then
                 'ToDo Like the Deleted Strategy this should be handled by the Strategy object
                 'that way there can be an isDirty flag
-                Me.m_SelectedStrategy.HCRules.RemoveAt(selHCRIndex - 1)
+                Me.m_SelectedStrategy.RemoveAt(selHCRIndex - 1)
                 populateStrategies()
                 If curStratIndex > -1 And curStratIndex < Me.cbStrategies.Items.Count Then
                     Me.cbStrategies.SelectedIndex = curStratIndex
@@ -430,6 +433,11 @@ Public Class frmTFMpolicy
         End If
 
     End Sub
+
+
+    Private Function selectedStrategy() As Strategy
+
+    End Function
 
 End Class
 

@@ -31,9 +31,9 @@ Public Class HCR_Group
         Get
             Dim tmp As String
             tmp = "Biomass Group = " + GroupName4Biomass
-            tmp += " , Biomass Index = " + GroupNumber4Biomass.ToString
-            tmp += " , Fishing Mort. Group = " + GroupName4F
-            tmp += " , Fishing Mort. Index = " + GroupNumber4F.ToString
+            tmp += Environment.NewLine + "Biomass Index = " + GroupNumber4Biomass.ToString
+            tmp += Environment.NewLine + "Fishing Mort. Group = " + GroupName4F
+            tmp += Environment.NewLine + "Fishing Mort. Index = " + GroupNumber4F.ToString
             Return tmp
         End Get
     End Property
@@ -74,7 +74,7 @@ Public Class HCR_Group
 
 
     ''' <summary>
-    ''' Validate the Harvest Control Rule against the core
+    ''' Validate the Harvest Control Rule against the core group indexes
     ''' </summary>
     ''' <returns>True if this rule is valid. False otherwise.</returns>
     ''' <remarks></remarks>

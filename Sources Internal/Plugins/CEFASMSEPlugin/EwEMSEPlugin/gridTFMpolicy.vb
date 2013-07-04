@@ -157,7 +157,7 @@ Public Class gridTargetFishingMortalityPolicy
 
         Dim cb As EwEComboBoxCellEditor = New EwEComboBoxCellEditor(New cTFMFormatter(), lstOptions)
 
-        For Each Rule As HCR_Group In strategy.HCRules
+        For Each Rule As HCR_Group In strategy
             iHCR = Me.AddRow()
             Me(iHCR, eColumnTypes.Index) = New EwERowHeaderCell(CStr(iHCR))
 

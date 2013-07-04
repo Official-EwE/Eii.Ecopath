@@ -33,8 +33,9 @@ Public Class dlgHarvestControlRule
 #Region "Private variables and Properties"
 
     Private m_Plugin As cMSE
+    Private m_strategy As Strategy
     Private m_HRC As HCR_Group
-
+    Private m_isValid As Boolean = True
 
     Private ReadOnly Property Core As EwECore.cCore
         Get
@@ -56,8 +57,9 @@ Public Class dlgHarvestControlRule
 
 #Region "Initialization Construction"
 
-    Public Sub Init(MSEPlugin As cMSE)
+    Public Sub Init(MSEPlugin As cMSE, curStrategy As Strategy)
         m_Plugin = MSEPlugin
+        m_strategy = curStrategy
     End Sub
 
     Private Sub dlgHarvestControlRule_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
@@ -90,21 +92,36 @@ Public Class dlgHarvestControlRule
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         Dim validationstring As String
+        Me.m_isValid = True
+
+        If Me.m_strategy.Contains(Me.HarvestControlRule) Then
+            Me.m_isValid = False
+            'Failed vaidation rule already exists in strategy
+            MsgBox("Sorry this harvest Control Rule already exists in the current Strategy.", MsgBoxStyle.Critical, "Please fix any errors and try again.")
+            Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            '  Me.Close()
+            'Don't bother checking the other validation
+            'Just boot out
+            Return
+        End If
 
         If Not Me.HarvestControlRule.isValid(validationstring) Then
-            MsgBox("Invalid Harvest Control Rule." + Environment.NewLine + validationstring + Environment.NewLine + "The rule will not be used.", MsgBoxStyle.Critical, "Sorry please complete the Harvest Control Rule.")
+            Me.m_isValid = False
+            'If the Harvest Rule is not valid set the DialogResult to Cancel so the rule is not used
+            MsgBox("Sorry invalid Harvest Control Rule." + Environment.NewLine + validationstring, MsgBoxStyle.Critical, "Please fix any errors and try again.")
             Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+            Return
         End If
 
         Me.Close()
+
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.m_isValid = True
         Me.Close()
     End Sub
-
-
 
 
     Private Sub cbBiomassGroups_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbBiomassGroups.SelectedIndexChanged
@@ -146,10 +163,34 @@ Public Class dlgHarvestControlRule
 
     End Sub
 
-
     Private Sub cbCostFunctions_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbCostFunctions.SelectedIndexChanged
         Me.updateHRC()
     End Sub
+
+
+
 #End Region
+
+    Private Sub dlgHarvestControlRule_Validated(sender As Object, e As System.EventArgs) Handles Me.Validated
+
+    End Sub
+
+    Private Sub dlgHarvestControlRule_Validating(sender As Object, e As System.ComponentModel.CancelEventArgs) Handles Me.Validating
+
+    End Sub
+
+
+    Protected Overrides Sub OnFormClosing(ByVal e As System.Windows.Forms.FormClosingEventArgs)
+        MyBase.OnFormClosing(e)
+
+        If Not Me.m_isValid Then
+            'Not a valid rule
+            'so stop the form from closing 
+            'to let the user correct the rule
+            e.Cancel = True
+        End If
+
+    End Sub
+
    
 End Class

@@ -6,13 +6,13 @@ Imports System.IO
 ''' </summary>
 ''' <remarks></remarks>
 Public Class Strategy
+    Inherits List(Of HCR_Group)
 
     Public Name As String
     Public FileName As String
-    Public HCRules As List(Of HCR_Group)
 
     Public Sub New()
-        HCRules = New List(Of HCR_Group)
+
     End Sub
 
     Public Sub New(StrategyName As String)
@@ -25,14 +25,24 @@ Public Class Strategy
         Me.FileName = theFilename
     End Sub
 
-    Public Sub New(StrategyName As String, ListOfHCRules As List(Of HCR_Group))
-        Me.New(StrategyName)
-        Me.HCRules = ListOfHCRules
+
+    Public Shadows Sub Add(Item As HCR_Group)
+        If Not Me.Contains(Item) Then
+            MyBase.Add(Item)
+        End If
     End Sub
 
-    Public Sub New(StrategyName As String, FullPathFileName As String, ListOfHCRules As List(Of HCR_Group))
-        Me.New(StrategyName, FullPathFileName)
-        Me.HCRules = ListOfHCRules
-    End Sub
+
+    Public Shadows Function Contains(Item As HCR_Group) As Boolean
+
+        For Each Rule As HCR_Group In Me
+            If Item.GroupNumber4Biomass = Rule.GroupNumber4Biomass And Item.GroupNumber4F = Rule.GroupNumber4F Then
+                Return True
+            End If
+        Next
+        Return False
+
+    End Function
+
 
 End Class
