@@ -41,14 +41,14 @@ Public Class ucOptions
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_cbCalcCyclesPathways.Checked = Me.m_man.UseCyclesPathways
+        Me.m_cbCalcCyclesPathways.Checked = Me.m_man.AllowFindPathsAndCycles
         Me.UpdateControls()
     End Sub
 
     Private Sub m_cbCalcCyclesPathways_CheckedChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbCalcCyclesPathways.CheckedChanged
         Try
-            Me.m_man.UseCyclesPathways = m_cbCalcCyclesPathways.Checked
+            Me.m_man.AllowFindPathsAndCycles = m_cbCalcCyclesPathways.Checked
             Me.UpdateControls()
         Catch ex As Exception
             cLog.Write(ex)
@@ -56,9 +56,9 @@ Public Class ucOptions
     End Sub
 
     Private Sub UpdateControls()
-        Me.m_nudTimeOut.Enabled = Me.m_man.UseCyclesPathways
-        Me.m_lblTimeout.Enabled = Me.m_man.UseCyclesPathways
-        Me.m_lblTimeOutUnit.Enabled = Me.m_man.UseCyclesPathways
+        Me.m_nudTimeOut.Enabled = Me.m_man.AllowFindPathsAndCycles
+        Me.m_lblTimeout.Enabled = Me.m_man.AllowFindPathsAndCycles
+        Me.m_lblTimeOutUnit.Enabled = Me.m_man.AllowFindPathsAndCycles
     End Sub
 
 End Class

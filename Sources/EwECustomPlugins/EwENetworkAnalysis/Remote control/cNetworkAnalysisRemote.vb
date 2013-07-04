@@ -109,10 +109,10 @@ Public Class cNetworkAnalysisRemote
                                  ByVal bFindCycles As Boolean) As Boolean
 
         Dim writer As New cResultWriter(Me.m_manager)
-        Dim bFindCyclesCurr As Boolean = Me.m_manager.FindPathsAndCycles
+        Dim bFindCyclesCurr As Boolean = Me.m_manager.AllowFindPathsAndCycles
         Dim bSuccess As Boolean = True
 
-        Me.m_manager.FindPathsAndCycles = bFindCycles
+        Me.m_manager.AllowFindPathsAndCycles = bFindCycles
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_uic.Core.OutputPath
 
         Try
@@ -120,7 +120,7 @@ Public Class cNetworkAnalysisRemote
         Catch ex As Exception
             bSuccess = False
         End Try
-        Me.m_manager.FindPathsAndCycles = bFindCyclesCurr
+        Me.m_manager.AllowFindPathsAndCycles = bFindCyclesCurr
         Return bSuccess
 
     End Function

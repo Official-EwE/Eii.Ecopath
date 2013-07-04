@@ -239,6 +239,9 @@ Public Class cEcospaceDataStructures
     ''' <remarks>RelPP can be changed by external data this is use to restore RelPP to its original value</remarks>
     Public relPP0(,) As Single
 
+    ''' <summary>
+    ''' Sailing cost (fleet x row x col)
+    ''' </summary>
     Public Sail(,,) As Single 'effort to fish a map cell, used as a multiplier with effort, Scaled to Ecopath ScaleSailingToUnity() in InitSpatialEqulibrium()
     Public Port(,,) As Boolean
 
