@@ -83,7 +83,7 @@ Public Class frmTFMpolicy
 
         Me.m_zgh = New cZedGraphHelper()
         Me.m_zgh.Attach(Me.UIContext, Me.m_graph)
-        Me.m_zgh.ConfigurePane("", SharedResources.HEADER_BIOMASS, SharedResources.HEADER_TFM, True)
+        Me.m_zgh.ConfigurePane("", "Biomass (kt)", SharedResources.HEADER_TFM, True)
 
         Me.m_zgh.AllowZoom = False
         Me.m_zgh.AllowPan = False
@@ -92,7 +92,7 @@ Public Class frmTFMpolicy
         Me.m_grid.Init(Me.m_MSEPlugin)
         Me.m_grid.UIContext = Me.UIContext
 
-        populateStrategies()
+        Me.UpdateControls()
 
         Me.cbStrategies.SelectedIndex = 0
 
@@ -134,21 +134,6 @@ Public Class frmTFMpolicy
 
 #Region " Internals "
 
-    Sub populateStrategies()
-
-        Try
-            Dim i As Integer
-            Me.cbStrategies.Items.Clear()
-            For Each strategy As Strategy In Me.m_MSEPlugin.Strategies
-                i += 1
-                Me.cbStrategies.Items.Add(strategy.Name)
-            Next
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-
     Private Property HCRGroup() As HCR_Group
         Get
             Return m_HCR
@@ -185,9 +170,9 @@ Public Class frmTFMpolicy
                 If bsum > 0 Then
                     ' Add points
                     lpts.Add(0, 0)
-                    lpts.Add(Me.m_HCR.LowerLimit, 0)
-                    lpts.Add(Me.m_HCR.UpperLimit, Me.m_HCR.MaxF) ' Point order?
-                    lpts.Add(Me.m_HCR.UpperLimit * 4, Me.m_HCR.MaxF) ' Max X value?
+                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.LowerLimit), 0)
+                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF) ' Point order?
+                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit) * 4, Me.m_HCR.MaxF) ' Max X value?
                 Else
                     'Zero biomass values user has only entered F
                     'draw a square line at zero up to F
@@ -292,9 +277,9 @@ Public Class frmTFMpolicy
 
             Select Case Me.m_dragtype
                 Case eDragType.BLower
-                    Me.m_HCR.LowerLimit = Math.Max(0, Math.Min(CSng(dX), Me.m_HCR.UpperLimit))
+                    Me.m_HCR.LowerLimit = Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit))
                 Case eDragType.BUpperFMax
-                    Me.m_HCR.UpperLimit = Math.Max(Me.m_HCR.LowerLimit, CSng(dX))
+                    Me.m_HCR.UpperLimit = Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX))
                     Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
                 Case eDragType.FMax
                     Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
@@ -332,16 +317,11 @@ Public Class frmTFMpolicy
         Me.m_grid.SelectedStrategyIndex = iSelectedIndex
         Me.Redraw()
 
-        'figure out how to pass the selected group up from the grid
-        'repopulate the grid
-        'select a group
-        'redraw the graph for the selected group
-
     End Sub
 
     Private Sub btAddHCR_Click(sender As Object, e As System.EventArgs) Handles btAddHCR.Click
 
-        'Create a new HCR_Group
+        'Ask the user to create a new HCR_Group
         Dim HRCDialogue As dlgHarvestControlRule = New dlgHarvestControlRule
         HRCDialogue.Init(Me.m_MSEPlugin, Me.m_SelectedStrategy)
         HRCDialogue.ShowDialog()
@@ -351,12 +331,6 @@ Public Class frmTFMpolicy
             Me.m_SelectedStrategy.Add(HRCDialogue.HarvestControlRule)
             Me.m_grid.RefreshContent()
         End If
-
-        'assign a Biomass and F group to it, not sure how  this should look
-        'Set default lower and upper biomass limits
-        'set default F (possible the current Ecopath F)
-        'Added it to the current strategy
-        'Update the grid it should appear
 
 
     End Sub
@@ -376,7 +350,7 @@ Public Class frmTFMpolicy
         Dim strategy As Strategy = New Strategy(StratName, StartFilename)
         If Not Me.m_MSEPlugin.Strategies.Contains(strategy) Then
             Me.m_MSEPlugin.Strategies.Add(strategy)
-            Me.populateStrategies()
+            Me.UpdateControls()
             Me.changeSelectedStrategy(Me.cbStrategies.Items.Count - 1)
         Else
             MsgBox("Sorry this strategy name has already been used. Please select another name.", MsgBoxStyle.Critical)
@@ -409,8 +383,7 @@ Public Class frmTFMpolicy
         'Also there should be an isDirty flag
         If selStrategy >= 0 Then
             Me.m_MSEPlugin.Strategies.RemoveAt(selStrategy)
-
-            populateStrategies()
+            Me.UpdateControls()
             Me.cbStrategies.SelectedIndex = 0
         End If
 
@@ -425,7 +398,7 @@ Public Class frmTFMpolicy
                 'ToDo Like the Deleted Strategy this should be handled by the Strategy object
                 'that way there can be an isDirty flag
                 Me.m_SelectedStrategy.RemoveAt(selHCRIndex - 1)
-                populateStrategies()
+                Me.UpdateControls()
                 If curStratIndex > -1 And curStratIndex < Me.cbStrategies.Items.Count Then
                     Me.cbStrategies.SelectedIndex = curStratIndex
                 End If
@@ -435,9 +408,22 @@ Public Class frmTFMpolicy
     End Sub
 
 
-    Private Function selectedStrategy() As Strategy
+    Public Shadows Sub UpdateControls()
+        MyBase.UpdateControls()
 
-    End Function
+        Try
+            Dim i As Integer
+            Me.cbStrategies.Items.Clear()
+            For Each strategy As Strategy In Me.m_MSEPlugin.Strategies
+                i += 1
+                Me.cbStrategies.Items.Add(strategy.Name)
+            Next
+        Catch ex As Exception
+
+        End Try
+
+
+    End Sub
 
 End Class
 

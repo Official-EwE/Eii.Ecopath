@@ -42,6 +42,7 @@ Public Class cMSE
         Triangular = 2
     End Enum
 
+
     Private Sub ExtractChangeInEffortLimits()
         Dim EffortLimitsCSV As New CsvReader(New StreamReader(DataPath & "\Fleet\ChangesInEffortLimits.csv"), True)
         ReDim ChangeInEffortLimits(mCore.nFleets - 1)
@@ -1387,6 +1388,8 @@ stepend:
 
     Public Sub Initialize(ByVal core As Object) Implements EwEPlugin.IPlugin.Initialize
         mCore = core
+
+        Units.Init(mCore)
 
     End Sub
 

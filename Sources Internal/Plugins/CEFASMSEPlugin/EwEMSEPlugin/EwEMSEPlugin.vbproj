@@ -161,6 +161,7 @@
     </Compile>
     <Compile Include="Strategies.vb" />
     <Compile Include="Strategy.vb" />
+    <Compile Include="Units.vb" />
     <Compile Include="xalglib.vb" />
   </ItemGroup>
   <ItemGroup>
