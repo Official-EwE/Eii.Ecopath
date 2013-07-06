@@ -135,7 +135,7 @@
     <value>NoControl</value>
   </data>
   <data name="btDeleteHCR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>555, 50</value>
+    <value>407, 67</value>
   </data>
   <data name="btDeleteHCR.Size" type="System.Drawing.Size, System.Drawing">
     <value>177, 22</value>
@@ -163,7 +163,7 @@
     <value>NoControl</value>
   </data>
   <data name="btDeleteStrategy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>555, 22</value>
+    <value>407, 24</value>
   </data>
   <data name="btDeleteStrategy.Size" type="System.Drawing.Size, System.Drawing">
     <value>177, 22</value>
@@ -190,7 +190,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnSaveStrategies.Location" type="System.Drawing.Point, System.Drawing">
-    <value>353, 78</value>
+    <value>590, 24</value>
   </data>
   <data name="btnSaveStrategies.Size" type="System.Drawing.Size, System.Drawing">
     <value>177, 22</value>
@@ -217,7 +217,7 @@
     <value>NoControl</value>
   </data>
   <data name="btAddHCR.Location" type="System.Drawing.Point, System.Drawing">
-    <value>353, 50</value>
+    <value>224, 67</value>
   </data>
   <data name="btAddHCR.Size" type="System.Drawing.Size, System.Drawing">
     <value>177, 22</value>
@@ -226,7 +226,7 @@
     <value>4</value>
   </data>
   <data name="btAddHCR.Text" xml:space="preserve">
-    <value>Add Harvest Control Rule</value>
+    <value>Add New Harvest Control Rule</value>
   </data>
   <data name="&gt;&gt;btAddHCR.Name" xml:space="preserve">
     <value>btAddHCR</value>
@@ -244,7 +244,7 @@
     <value>NoControl</value>
   </data>
   <data name="btAddStrategy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>353, 22</value>
+    <value>224, 24</value>
   </data>
   <data name="btAddStrategy.Size" type="System.Drawing.Size, System.Drawing">
     <value>177, 22</value>
@@ -253,7 +253,7 @@
     <value>3</value>
   </data>
   <data name="btAddStrategy.Text" xml:space="preserve">
-    <value>Add Strategy</value>
+    <value>Add New Strategy</value>
   </data>
   <data name="&gt;&gt;btAddStrategy.Name" xml:space="preserve">
     <value>btAddStrategy</value>
@@ -397,7 +397,7 @@
     <value>ToolStrip1</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9419.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -490,6 +490,6 @@
     <value>frmTFMpolicy</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9419.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

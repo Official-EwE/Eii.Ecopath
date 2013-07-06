@@ -163,8 +163,6 @@ Public Class frmTFMpolicy
 
             If Me.m_HCR IsNot Nothing Then
 
-
-
                 ' #Yes: plot stick
                 Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
                 If bsum > 0 Then

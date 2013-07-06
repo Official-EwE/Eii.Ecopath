@@ -46,11 +46,8 @@ Public Class frmMSE
         frmPlugin = Me
     End Sub
 
-    Private Sub btnEcopathParams_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEcopathParams.Click
-        mMSE.GenerateEcopathParamaters()
-    End Sub
-
     Private Sub btnSample_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSample.Click
+        mMSE.GenerateEcopathParamaters()
         mMSE.Create1DimParams("MaxRelFeedingTime")
         mMSE.Create1DimParams("FeedingTimeAdjustRate")
         mMSE.Create1DimParams("OtherMortFeedingTime")
@@ -59,6 +56,7 @@ Public Class frmMSE
         mMSE.Create1DimParams("QBMaxxQBio")
         mMSE.Create1DimParams("SwitchingPower")
         'mMSE.Create2DimParams("DietComposition")
+        mMSE.CreateVulnerabilities()
     End Sub
 
     Private Sub GenerateEmptyDietcsv()
@@ -113,9 +111,7 @@ Public Class frmMSE
         mMSE.ChangeEffortFlag = False
     End Sub
 
-    Private Sub btnVulnerabilities_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVulnerabilities.Click
-        mMSE.CreateVulnerabilities()
-    End Sub
+
 
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -162,6 +158,48 @@ Public Class frmMSE
 
 
     Private Sub frmMSE_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        txtArea.Text = mCore.EwEModel.Area
+    End Sub
 
+
+
+    Private Sub btnAdvancedSettings_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdvancedSettings.Click
+        If Label2.Visible = False Then
+            Label2.Show()
+            txtTolerance.Show()
+            Label6.Show()
+            Panel3.Show()
+            btnGamma.Show()
+            btnEcopathParams2.Show()
+            txtArea.Show()
+            lblArea.Show()
+        Else
+            Label2.Hide()
+            txtTolerance.Hide()
+            Label6.Hide()
+            Panel3.Hide()
+            btnGamma.Hide()
+            btnEcopathParams2.Hide()
+            txtArea.Hide()
+            lblArea.Hide()
+        End If
+
+    End Sub
+
+    Private Sub Panel3_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Panel3.Paint
+
+    End Sub
+
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        mMSE.Create1DimParams("MaxRelFeedingTime")
+        mMSE.Create1DimParams("FeedingTimeAdjustRate")
+        mMSE.Create1DimParams("OtherMortFeedingTime")
+        mMSE.Create1DimParams("PredEffectFeedingTime")
+        mMSE.Create1DimParams("DenDepCatchability")
+        mMSE.Create1DimParams("QBMaxxQBio")
+        mMSE.Create1DimParams("SwitchingPower")
+        'mMSE.Create2DimParams("DietComposition")
+        mMSE.CreateVulnerabilities()
     End Sub
 End Class

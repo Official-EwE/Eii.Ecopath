@@ -20,7 +20,7 @@ Public Class Strategy
         Me.Name = StrategyName
     End Sub
 
-    Public Sub New(StrategyName As String, theFilename As String)
+    Public Sub New(ByVal StrategyName As String, ByVal theFilename As String)
         Me.New(StrategyName)
         Me.FileName = theFilename
     End Sub

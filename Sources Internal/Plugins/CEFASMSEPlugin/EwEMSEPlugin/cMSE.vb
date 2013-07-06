@@ -103,7 +103,7 @@ Public Class cMSE
     End Sub
 
     Private Function ExtractParamsCSV(ByRef param_name As String)
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtNModels2Run.Text)
         Dim csv As New CsvReader(New StreamReader(DataPath & "\ParametersOut\" & param_name & "_out.csv"), True)
         Dim Params(nIterations - 1, csv.FieldCount - 1) As Double
         Dim iRecord As Integer = 0
@@ -123,7 +123,7 @@ Public Class cMSE
     End Function
 
     Private Function ExtractVulnerabilitiesCSV()
-        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtnTrials.Text)
+        Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtNModels2Run.Text)
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, _ecopath.EcopathData.NumGroups - 1, _ecopath.EcopathData.NumGroups - 1) As Double
 
@@ -252,9 +252,9 @@ Public Class cMSE
                 NumberIterationsAlreadyInResults = results_read(0)
             End While
             results_read.Dispose()
-            sw = New StreamWriter(DataPath & "\Results\Results.csv", True)
+            sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
         Else
-            sw = New StreamWriter(DataPath & "\Results\Results.csv", True)
+            sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
             sw.WriteLine("Iteration,Strategy,GroupName,ResultName,Value")
         End If
 
@@ -268,10 +268,10 @@ Public Class cMSE
             End While
             results_read.Dispose()
             'Create the csv writer for writing out individual fleets catches of each group
-            FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", True)
+            FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", False)
         Else
             'Create the csv writer for writing out individual fleets catches of each group
-            FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", True)
+            FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", False)
             FleetCsv.WriteLine("Iteration,Strategy,FleetName,GroupName,Value")
         End If
 
@@ -320,9 +320,9 @@ Public Class cMSE
         LoadNaturalMortalites()
 
         'load parameter values into ecopath and ecosim to be used
-        nTrials = Convert.ToInt32(MSEForm.txtnTrials.Text)    '0 is the 1st dimension and 1' the second etc
+        nTrials = Convert.ToInt32(MSEForm.txtNModels2Run.Text)    '0 is the 1st dimension and 1' the second etc
         For iTrial = 1 To nTrials
-
+            Console.WriteLine("Trial = " & iTrial)
             For igrp = 1 To mCore.nLivingGroups
                 ecopathData.B(igrp) = B(iTrial - 1, igrp - 1)
                 ecopathData.PB(igrp) = PB(iTrial - 1, igrp - 1)
@@ -1795,9 +1795,6 @@ stepend:
                             For iFleet = 1 To mCore.nFleets
                                 Constraints(iFleet) = TechnologyCreep(iFleet) * _ecosim.EcosimData.FishMGear(iFleet, iGrp) * (_ecosim.EcosimData.PropLandedTime(iFleet, iGrp) + _ecosim.EcosimData.Propdiscardtime(iFleet, iGrp)) * QMult(iGrp - 1)
                             Next
-                            If Constraints(1) = 0 Then
-                                Console.WriteLine("constraint(1)=0")
-                            End If
                             Constraints(mCore.nFleets + indexGroupConstraint * 2 + 1) = 1
                             Constraints(mCore.nFleets + indexGroupConstraint * 2 + 2) = -1
                             indexGroupConstraint += 1
@@ -1856,7 +1853,6 @@ stepend:
 
                     solution_return_value = cLPSolver.lpsolve55.solve(lp)
                     If solution_return_value <> 0 Then MsgBox("Linear Programming solution not optimal. LP Solve code:" & solution_return_value)
-                    Console.WriteLine("solution return value = " & solution_return_value)
 
                     cLPSolver.lpsolve55.print_str(lp, solution_return_value & ": " & cLPSolver.lpsolve55.get_objective(lp) & vbLf)
 
