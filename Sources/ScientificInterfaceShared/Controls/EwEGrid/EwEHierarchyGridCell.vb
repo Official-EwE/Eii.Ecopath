@@ -43,7 +43,7 @@ Namespace Controls.EwEGrid
 
         Private m_bExpanded As Boolean = True
         Private m_viz As New cVisualizerEwECollapseExpandRowHeader()
-        Private m_liChildRows As New List(Of Integer)
+        Private m_lChildRows As New List(Of RowInfo)
 
 #End Region ' Private vars
 
@@ -75,15 +75,17 @@ Namespace Controls.EwEGrid
         ''' <param name="iRow">Index of the row to add.</param>
         ''' -------------------------------------------------------------------
         Public Sub AddChildRow(ByVal iRow As Integer)
+
             Dim iPos As Integer = 0
+
             ' Add in descending order
-            While iPos < Me.m_liChildRows.Count()
-                If (Me.m_liChildRows(iPos) < iRow) Then Exit While
+            While iPos < Me.m_lChildRows.Count()
+                If (Me.m_lChildRows(iPos).Index < iRow) Then Exit While
                 iPos += 1
             End While
-            Me.m_liChildRows.Insert(iPos, iRow)
-
+            Me.m_lChildRows.Insert(iPos, Me.Grid.Rows(iRow))
             Me.UpdateViz()
+
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -93,7 +95,12 @@ Namespace Controls.EwEGrid
         ''' <param name="iRow">Index of the row to remove.</param>
         ''' -------------------------------------------------------------------
         Public Sub RemoveChildRow(ByVal iRow As Integer)
-            Me.m_liChildRows.Remove(iRow)
+            For Each ri As RowInfo In Me.m_lChildRows
+                If ri.Index = iRow Then
+                    Me.m_lChildRows.Remove(ri)
+                    Exit For
+                End If
+            Next
             Me.UpdateViz()
         End Sub
 
@@ -102,17 +109,15 @@ Namespace Controls.EwEGrid
         ''' </summary>
         Public ReadOnly Property NumChildRows() As Integer
             Get
-                Return Me.m_liChildRows.Count
+                Return Me.m_lChildRows.Count
             End Get
         End Property
 
         Private Sub ShowHideChildren()
             Dim g As GridVirtual = Me.Grid
-            Dim ri As RowInfo = Nothing
 
             If g IsNot Nothing Then
-                For Each iChild As Integer In Me.m_liChildRows
-                    ri = g.Rows(iChild)
+                For Each ri As RowInfo In Me.m_lChildRows
                     If Not Object.ReferenceEquals(ri, Nothing) Then
                         ri.Visible = Me.m_bExpanded
                     End If

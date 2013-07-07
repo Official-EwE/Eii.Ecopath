@@ -402,6 +402,12 @@ Namespace Controls.Map
                 Case eVarNameFlags.LayerBiomassForcing
                     strGroup = My.Resources.ECOSPACE_LAYERGROUP_BIOMASSFORCING
 
+                Case eVarNameFlags.LayerAdvection, _
+                     eVarNameFlags.LayerMLD, _
+                     eVarNameFlags.LayerWind, _
+                     eVarNameFlags.LayerUpwelling
+                    strGroup = My.Resources.ECOSPACE_LAYERGROUP_ADVECTION
+
             End Select
             Return strGroup
 

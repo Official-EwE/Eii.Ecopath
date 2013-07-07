@@ -65,6 +65,11 @@ Namespace Commands
             MyBase.New(cmdh, COMMAND_NAME)
         End Sub
 
+        ''' -----------------------------------------------------------------------
+        ''' <summary>
+        ''' Invoke the file save command with default parameters.
+        ''' </summary>
+        ''' -----------------------------------------------------------------------
         Public Overrides Sub Invoke()
             Me.m_iResult = DialogResult.Cancel
             MyBase.Invoke()
@@ -72,12 +77,15 @@ Namespace Commands
 
         ''' -----------------------------------------------------------------------
         ''' <summary>
+        ''' Invoke the file save user interface with a given file name, file filter,
+        ''' and dialog title box.
+        ''' selection 
         ''' </summary>
         ''' <param name="strFileName"></param>
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
         ''' <param name="strTitle">
-        ''' Optional dialog title. If left empty, the .NET default is used.
+        ''' Optional dialog title. If left empty, a system default is used.
         ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileName As String, _

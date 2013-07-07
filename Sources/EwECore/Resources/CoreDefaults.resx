@@ -169,7 +169,7 @@
     <comment>{0} sequential number</comment>
   </data>
   <data name="CORE_DEFAULT_MIGRATION" xml:space="preserve">
-    <value>Migration</value>
+    <value>Migration {0}</value>
   </data>
   <data name="CORE_DEFAULT_MIXEDLAYERDEPTH" xml:space="preserve">
     <value>Mixed layer depth</value>

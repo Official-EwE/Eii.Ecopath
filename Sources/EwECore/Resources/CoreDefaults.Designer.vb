@@ -200,7 +200,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Migration.
+        '''  Looks up a localized string similar to Migration {0}.
         '''</summary>
         Friend Shared ReadOnly Property CORE_DEFAULT_MIGRATION() As String
             Get

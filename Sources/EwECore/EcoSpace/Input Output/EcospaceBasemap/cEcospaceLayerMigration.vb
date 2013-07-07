@@ -41,7 +41,9 @@ Public Class cEcospaceLayerMigration
     ''' <param name="manager"></param>
     ''' -----------------------------------------------------------------------
     Public Sub New(ByRef theCore As cCore, ByVal manager As cEcospaceBasemap, iIndex As Integer)
-        MyBase.New(theCore, cCore.NULL_VALUE, manager, My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION, eVarNameFlags.LayerMigration, iIndex, Nothing)
+        MyBase.New(theCore, cCore.NULL_VALUE, manager, _
+                   String.Format(My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION, iIndex), _
+                   eVarNameFlags.LayerMigration, iIndex, Nothing)
         Me.m_dataType = eDataTypes.EcospaceLayerMigration
     End Sub
 
