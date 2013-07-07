@@ -2871,4 +2871,7 @@
   <data name="VARIABLE_LAYERSAIL" xml:space="preserve">
     <value>Sailing cost</value>
   </data>
+  <data name="ECOSPACE_LAYERGROUP_ADVECTION" xml:space="preserve">
+    <value>Advection</value>
+  </data>
 </root>

@@ -186,6 +186,13 @@ Namespace Commands
         ''' Base implementation for invoking a Command. Use either this implementation
         ''' or subclass the Command and implement a complex Invoke() variant.
         ''' </summary>
+        ''' <remarks>
+        ''' We realize that the method name 'Invoke' is somewhat awkward, suggesting
+        ''' .NET invoke, which refers to asynchronous or cross-threaded method activation.
+        ''' Ouch. This was accidental. Invoke could have been called 'Run', 'Execute',
+        ''' 'AttaBoy', or anything else. We just picked 'Invoke' because it had a darn 
+        ''' good ring to it. Note that command invokation is synchronous and blocking!
+        ''' </remarks>
         ''' -----------------------------------------------------------------------
         Public Overridable Sub Invoke()
 

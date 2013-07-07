@@ -47,7 +47,7 @@ Public Class cEcospaceImportExportXYData
 
     Private m_bm As cEcospaceBasemap = Nothing
 
-    Private m_readbuffer As New Dictionary(Of String, Single())
+    Private m_readbuffer As New Dictionary(Of String, Object())
     Private m_astrFields As String() = Nothing
     Private m_bRowColImplicit As Boolean = False
 
@@ -76,7 +76,36 @@ Public Class cEcospaceImportExportXYData
 
 #Region " Read & Write "
 
-    Public Function ReadXYFile(strFile As String) As Boolean
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Returns all duplicate field names defined in the import/export data.
+    ''' </summary>
+    ''' <returns></returns>
+    ''' -----------------------------------------------------------------------
+    Public Function NumDuplicateFields() As String()
+
+        Dim htNames As New HashSet(Of String)
+        Dim lstrDuplicates As New List(Of String)
+        Dim strField As String = ""
+
+        For Each strField In Me.m_astrFields
+            If Not String.IsNullOrWhiteSpace(strField) Then
+                If htNames.Contains(strField) Then
+                    If Not lstrDuplicates.Contains(strField) Then
+                        lstrDuplicates.Add(strField)
+                    End If
+                Else
+                    htNames.Add(strField)
+                End If
+            End If
+        Next
+
+        lstrDuplicates.Sort()
+        Return lstrDuplicates.ToArray
+
+    End Function
+
+    Public Function ReadXYFile(strFile As String, Optional ByVal separator As Char = ","c) As Boolean
 
         Dim tr As TextReader = Nothing
         Dim strLine As String = ""
@@ -95,7 +124,7 @@ Public Class cEcospaceImportExportXYData
         Try
             ' Read fields line
             strLine = tr.ReadLine()
-            astrFields = cStringUtils.SplitQualified(strLine, (","c))
+            astrFields = cStringUtils.SplitQualified(strLine, separator)
 
             ' Clean up
             For i As Integer = 0 To astrFields.Length - 1
@@ -104,14 +133,12 @@ Public Class cEcospaceImportExportXYData
             Me.Fields = astrFields
 
             iCell = 0
-            Dim val As Single
             While (tr.Peek() <> -1) And (iCell < Me.NumCells)
                 strLine = tr.ReadLine()
-                astrValues = strLine.Split(","c)
+                astrValues = strLine.Split(separator)
 
                 For iField = 0 To astrFields.Length - 1
-                    Single.TryParse(astrValues(iField), val)
-                    Me.Value(iCell, astrFields(iField)) = val
+                    Me.Value(iCell, astrFields(iField)) = astrValues(iField)
                 Next
                 ' Next
                 iCell += 1
@@ -135,47 +162,56 @@ Public Class cEcospaceImportExportXYData
     ''' -------------------------------------------------------------------
     Public Function WriteXYFile(ByVal strFile As String, strColField As String, strRowField As String) As Boolean
 
-        Dim strm As TextWriter = Nothing
+        If (Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
+            Return False
+        End If
+
+        Dim strm As StreamWriter = Nothing
         Dim lstrFields As New List(Of String)
-        Dim sb As New StringBuilder()
+
+        Try
+            strm = New StreamWriter(strFile)
+        Catch ex As Exception
+            Return False
+        End Try
 
         lstrFields.AddRange(Me.m_astrFields)
         lstrFields.Remove(strRowField)
         lstrFields.Remove(strColField)
 
         ' Write header line
-        sb.Append(strColField)
-        sb.Append(",")
-        sb.Append(strRowField)
+        strm.Write(strColField)
+        strm.Write(",")
+        strm.Write(strRowField)
         For iField As Integer = 0 To lstrFields.Count - 1
-            sb.Append(",")
-            sb.Append(cStringUtils.ToCSVField(Me.Fields(iField).Trim))
+            strm.Write(",")
+            strm.Write(cStringUtils.ToCSVField(Me.Fields(iField).Trim))
         Next
-        sb.AppendLine()
+        strm.WriteLine()
 
         ' Write content
         For iRow As Integer = 1 To Me.m_bm.InRow
             For iCol As Integer = 1 To Me.m_bm.InCol
-                sb.Append(iCol)
-                sb.Append(",")
-                sb.Append(iRow)
+                strm.Write(iCol)
+                strm.Write(",")
+                strm.Write(iRow)
                 For iField As Integer = 0 To Me.Fields.Length - 1
-                    sb.Append(",")
-                    sb.Append(Me.Value(iRow, iCol, cStringUtils.FormatNumber(Me.Fields(iField))))
+                    strm.Write(",")
+                    Dim val As Object = Me.Value(iRow, iCol, Me.Fields(iField))
+                    Select Case val.GetType
+                        Case GetType(Single), GetType(Double), GetType(Integer)
+                            strm.Write(cStringUtils.FormatNumber(val))
+                        Case GetType(Boolean), GetType(String)
+                            strm.Write(CStr(val))
+                        Case Else
+                    End Select
                 Next iField
-                sb.AppendLine()
+                strm.WriteLine()
             Next iCol
         Next iRow
 
-        If (cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strFile), True)) Then
-            Try
-                strm = New StreamWriter(strFile)
-                strm.Write(sb.ToString())
-                strm.Close()
-            Catch ex As Exception
-                Return False
-            End Try
-        End If
+        strm.Flush()
+        strm.Close()
 
         Return True
 
@@ -212,7 +248,7 @@ Public Class cEcospaceImportExportXYData
 
             ' Create storage
             For Each strField As String In Me.Fields
-                Dim asCells(Me.NumCells) As Single
+                Dim asCells(Me.NumCells) As Object
                 Me.m_readbuffer.Add(strField, asCells)
             Next
 
@@ -228,11 +264,11 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="strField">Optional field to access a value for.</param>
     ''' -------------------------------------------------------------------
     Public Property Value(ByVal iRow As Integer, ByVal iCol As Integer, _
-                          Optional ByVal strField As String = "") As Single
+                          Optional ByVal strField As String = "") As Object
         Get
             Return Me.Value(Me.Cell(iRow, iCol), strField)
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As Object)
             Me.Value(Me.Cell(iRow, iCol), strField) = value
         End Set
     End Property
@@ -246,14 +282,14 @@ Public Class cEcospaceImportExportXYData
     ''' <param name="strField">Optional field to access a value for.</param>
     ''' -------------------------------------------------------------------
     Public Property Value(ByVal iCell As Integer, _
-                          Optional ByVal strField As String = "") As Single
+                          Optional ByVal strField As String = "") As Object
         Get
             If String.IsNullOrEmpty(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If
             Return Me.m_readbuffer(strField)(iCell)
         End Get
-        Set(ByVal value As Single)
+        Set(ByVal value As Object)
             If String.IsNullOrEmpty(strField) Then
                 strField = cEcospaceImportExportXYData.cMAPPING_IMPLICIT
             End If

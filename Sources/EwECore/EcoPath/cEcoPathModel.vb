@@ -15,12 +15,15 @@
 ' Copyright 1991-2013 UBC Fisheries Centre, Vancouver BC, Canada.
 ' ===============================================================================
 '
+#Region " Imports "
 
 Option Strict On
 Imports EwEUtils.Core
 Imports EwEPlugin
 Imports EwEUtils.SystemUtilities.cSystemUtils
 Imports EwEUtils.Utilities
+
+#End Region ' Imports
 
 Namespace Ecopath
 

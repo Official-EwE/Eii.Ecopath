@@ -58,7 +58,7 @@ Namespace Ecospace.Basemap
 
         Public Property Layers() As cEcospaceLayer()
             Get
-                Return Nothing
+                Return Me.m_aLayers
             End Get
             Set(ByVal value As cEcospaceLayer())
                 Me.m_aLayers = value
@@ -91,8 +91,6 @@ Namespace Ecospace.Basemap
         Protected Overrides Sub InitStyle()
             MyBase.InitStyle()
 
-            If Not Me.HasData() Then Return
-
             Me.Redim(1, System.Enum.GetValues(GetType(eColumnTypes)).Length)
 
             Me(0, eColumnTypes.ColumnParent) = New EwEColumnHeaderCell("")
@@ -107,7 +105,7 @@ Namespace Ecospace.Basemap
 
         Protected Overrides Sub FillData()
 
-            If Not Me.HasData Then Return
+            If (Not Me.HasData) Then Return
 
             Me.RowsCount = 1
             Dim lfbase As New cLayerFactoryInternal()
@@ -129,16 +127,22 @@ Namespace Ecospace.Basemap
                 If Not dtParents.ContainsKey(strGroup) Then
                     iRow = Me.AddRow()
                     For j As Integer = 0 To Me.ColumnsCount - 1 : Me(iRow, j) = New EwERowHeaderCell() : Next
-                    cellParent = New EwEHierarchyGridCell()
-                    checkParent = New EwECheckboxCell(True)
-                    Me(iRow, eColumnTypes.ColumnParent) = cellParent
-                    Me(iRow, eColumnTypes.ColumnLayer) = New EwERowHeaderCell(strGroup)
-                    Me(iRow, eColumnTypes.ColumnExport) = checkParent
-                    dtParents(strGroup) = cellParent
 
+                    ' Hierarchy cell
+                    cellParent = New EwEHierarchyGridCell()
+                    dtParents(strGroup) = cellParent
+                    Me(iRow, eColumnTypes.ColumnParent) = cellParent
+
+                    ' Layer group name
+                    Me(iRow, eColumnTypes.ColumnLayer) = New EwERowHeaderCell(strGroup)
+
+                    ' Hierarchy check cell
+                    checkParent = New EwECheckboxCell(True)
+                    Me(iRow, eColumnTypes.ColumnExport) = checkParent
                     hrParent = New cCheckboxHierarchy(checkParent)
                     dtHierarchy(strGroup) = hrParent
 
+                    ' New row for data
                     iRow = Me.AddRow()
 
                 Else
@@ -229,7 +233,7 @@ Namespace Ecospace.Basemap
         Private Function FieldAtRow(ByVal iRow As Integer) As String
             If iRow > 0 And iRow < Me.RowsCount Then
                 If CBool(Me(iRow, eColumnTypes.ColumnExport).Value) Then
-                    Return CStr(Me(iRow, eColumnTypes.ColumnField).Value)
+                    Return CStr(Me(iRow, eColumnTypes.ColumnField).Value).Trim
                 End If
             End If
             Return ""

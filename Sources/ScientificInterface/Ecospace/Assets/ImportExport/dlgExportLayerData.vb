@@ -27,6 +27,7 @@ Imports EwEUtils.Core
 Imports ScientificInterface.Ecospace.Basemap.Layers
 Imports ScientificInterfaceShared.Commands
 Imports SharedResources = ScientificInterfaceShared.My.Resources
+Imports EwEUtils.Utilities
 
 #End Region ' Imports
 
@@ -89,12 +90,17 @@ Namespace Ecospace.Basemap
             Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
 
             ' Set default file
-            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), "layers")
+            Me.m_tbTarget.Text = Path.Combine(Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecospace), "layers.csv")
 
             ' Get default layers if needed
             If (Me.m_lLayers.Count = 0) Then
-                Me.m_lLayers.AddRange(bm.Layers(eVarNameFlags.NotSet))
+                For Each layer As cEcospaceLayer In bm.Layers(eVarNameFlags.NotSet)
+                    If Not TypeOf layer Is cEcospaceLayerVector Then
+                        Me.m_lLayers.Add(layer)
+                    End If
+                Next
             End If
+
             Me.m_grid.Layers = Me.m_lLayers.ToArray()
             Me.m_grid.UIContext = Me.m_uic
 
@@ -157,14 +163,16 @@ Namespace Ecospace.Basemap
             Dim iRow As Integer = 0
             Dim iCol As Integer = 0
             Dim iCell As Integer = 0
+            Dim bSuccess As Boolean = True
+            Dim msg As cMessage = Nothing
 
-            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core, My.Resources.STATUS_APPLYVALUES)
+            cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
 
             Try
 
                 ' Populate local data
                 For Each layer In dtMappings.Keys
-                    strField = dtMappings(layer).Trim
+                    strField = dtMappings(layer)
                     If Not String.IsNullOrWhiteSpace(strField) Then
                         If (lstrFields.IndexOf(strField) = -1) Then
                             lstrFields.Add(strField)
@@ -182,13 +190,13 @@ Namespace Ecospace.Basemap
                         For Each layer In dtMappings.Keys
                             strField = dtMappings(layer)
                             If Not String.IsNullOrEmpty(strField.Trim) Then
-                                Me.m_data.Value(iRow, iCol, strField) = CSng(layer.Cell(iRow, iCol))
+                                Me.m_data.Value(iRow, iCol, strField) = layer.Cell(iRow, iCol)
                             End If
                         Next layer
                     Next iCol
                 Next iRow
 
-                Me.m_data.WriteXYFile(strFile, Me.ColField, Me.RowField)
+                bSuccess = Me.m_data.WriteXYFile(strFile, Me.ColField, Me.RowField)
 
             Catch ex As Exception
 
@@ -196,14 +204,22 @@ Namespace Ecospace.Basemap
 
             cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
 
-            ' Log this
-            ' ToDo: globalize this
-            Dim msg As New cMessage(String.Format("Layer data exported to '{0}'", strFile), _
-                                    eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
-            msg.Hyperlink = strFile
+            If (bSuccess) Then
+
+                ' Log this
+                ' ToDo: globalize this
+                msg = New cMessage(String.Format("Layer data exported to '{0}'", strFile), _
+                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(strFile)
+            Else
+                msg = New cMessage(String.Format("Layer data could not be exported to '{0}'", strFile), _
+                                   eMessageType.DataExport, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+
+            End If
+
             Me.m_uic.Core.Messages.SendMessage(msg)
 
-            Return True
+            Return bSuccess
 
         End Function
 

@@ -57,7 +57,6 @@ Namespace Auxiliary
         ''' <summary>Key to identify core variable this data refers to.</summary>
         Private m_key As cValueID = Nothing
         Private m_core As cCore = Nothing
-        Private m_bAllowValidation As Boolean = False
 
 #If USE_REFERENCES Then
         ''' <summary>List of <see cref="cReference">references</see> for this data.</summary>
@@ -112,13 +111,6 @@ Namespace Auxiliary
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overloads Property AllowValidation() As Boolean
-            Get
-                Return Me.m_bAllowValidation
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bAllowValidation = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
