@@ -172,7 +172,8 @@ Public Class cEcotrophPlugin
 
 
 
-        Dim default_accessibility As Single = 0.9
+        Dim default_accessibility As Single = 0.8
+
 
 
 
@@ -223,8 +224,10 @@ Public Class cEcotrophPlugin
             ETinputdatafromEP.catches(ifleet) = New Single(epdata.GroupName.Length) {}
             ETinputdata.catches(ifleet) = New Single(epdata.GroupName.Length) {}
             For j As Integer = 1 To epdata.B.Length - 1
-                If (ETinputdatafromEP.accessibility(j) = 0 And epdata.Landing(ifleet, j) > 0) Then ETinputdatafromEP.accessibility(j) = default_accessibility
-                ETinputdatafromEP.catches(ifleet)(j) = epdata.Landing(ifleet + 1, j)
+                If (ETinputdatafromEP.accessibility(j) = 0 And (epdata.Landing(ifleet, j) > 0 Or epdata.Discard(ifleet, j) > 0)) Then ETinputdatafromEP.accessibility(j) = default_accessibility
+                ETinputdatafromEP.catches(ifleet)(j) = epdata.Landing(ifleet + 1, j) + epdata.Discard(ifleet + 1, j)
+
+
             Next
         Next
 
