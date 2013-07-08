@@ -44,12 +44,12 @@ Partial Class frmMSE
         Me.Label6 = New System.Windows.Forms.Label()
         Me.btnAdvancedSettings = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.txtArea = New System.Windows.Forms.TextBox()
+        Me.lblArea = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
-        Me.txtArea = New System.Windows.Forms.TextBox()
-        Me.lblArea = New System.Windows.Forms.Label()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Panel3.SuspendLayout()
         Me.Panel4.SuspendLayout()
@@ -269,6 +269,26 @@ Partial Class frmMSE
         Me.Panel1.Size = New System.Drawing.Size(300, 66)
         Me.Panel1.TabIndex = 28
         '
+        'txtArea
+        '
+        Me.txtArea.Location = New System.Drawing.Point(119, 24)
+        Me.txtArea.Name = "txtArea"
+        Me.txtArea.Size = New System.Drawing.Size(70, 20)
+        Me.txtArea.TabIndex = 25
+        Me.txtArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.txtArea.Visible = False
+        '
+        'lblArea
+        '
+        Me.lblArea.AutoSize = True
+        Me.lblArea.Location = New System.Drawing.Point(73, 27)
+        Me.lblArea.MaximumSize = New System.Drawing.Size(100, 0)
+        Me.lblArea.Name = "lblArea"
+        Me.lblArea.Size = New System.Drawing.Size(32, 13)
+        Me.lblArea.TabIndex = 26
+        Me.lblArea.Text = "Area:"
+        Me.lblArea.Visible = False
+        '
         'Label7
         '
         Me.Label7.AutoSize = True
@@ -308,26 +328,6 @@ Partial Class frmMSE
         Me.PictureBox1.TabIndex = 53
         Me.PictureBox1.TabStop = False
         '
-        'txtArea
-        '
-        Me.txtArea.Location = New System.Drawing.Point(119, 24)
-        Me.txtArea.Name = "txtArea"
-        Me.txtArea.Size = New System.Drawing.Size(70, 20)
-        Me.txtArea.TabIndex = 25
-        Me.txtArea.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.txtArea.Visible = False
-        '
-        'lblArea
-        '
-        Me.lblArea.AutoSize = True
-        Me.lblArea.Location = New System.Drawing.Point(73, 27)
-        Me.lblArea.MaximumSize = New System.Drawing.Size(100, 0)
-        Me.lblArea.Name = "lblArea"
-        Me.lblArea.Size = New System.Drawing.Size(32, 13)
-        Me.lblArea.TabIndex = 26
-        Me.lblArea.Text = "Area:"
-        Me.lblArea.Visible = False
-        '
         'Button2
         '
         Me.Button2.Location = New System.Drawing.Point(711, 137)
@@ -336,6 +336,7 @@ Partial Class frmMSE
         Me.Button2.TabIndex = 54
         Me.Button2.Text = "Button2"
         Me.Button2.UseVisualStyleBackColor = True
+        Me.Button2.Visible = False
         '
         'frmMSE
         '

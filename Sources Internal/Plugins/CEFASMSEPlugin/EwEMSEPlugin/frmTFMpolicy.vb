@@ -64,6 +64,8 @@ Public Class frmTFMpolicy
 
 #End Region ' Internals
 
+#Region "Construction Initialization"
+
     Public Sub New()
         MyBase.New()
         Me.InitializeComponent()
@@ -73,6 +75,8 @@ Public Class frmTFMpolicy
         Me.UIContext = UI
         Me.m_MSEPlugin = Plugin
     End Sub
+
+#End Region
 
 #Region " Events "
 
@@ -130,175 +134,6 @@ Public Class frmTFMpolicy
         'End Try
     End Sub
 
-#End Region ' Events
-
-#Region " Internals "
-
-    Private Property HCRGroup() As HCR_Group
-        Get
-            Return m_HCR
-        End Get
-        Set(value As HCR_Group)
-            Me.m_HCR = value
-            If Me.m_HCR IsNot Nothing Then
-                Redraw()
-            End If
-        End Set
-    End Property
-
-
-    ''' -------------------------------------------------------------------
-    ''' <summary>
-    ''' Redraw the quota curve.
-    ''' </summary>
-    ''' -------------------------------------------------------------------
-    Private Sub Redraw()
-
-        If Me.m_zgh Is Nothing Then Return
-
-        Dim lpts As New PointPairList
-        Dim line As LineItem = Nothing
-        Dim lLines As New List(Of LineItem)
-        Try
-
-            If Me.m_HCR IsNot Nothing Then
-
-                ' #Yes: plot stick
-                Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
-                If bsum > 0 Then
-                    ' Add points
-                    lpts.Add(0, 0)
-                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.LowerLimit), 0)
-                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF) ' Point order?
-                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit) * 4, Me.m_HCR.MaxF) ' Max X value?
-                Else
-                    'Zero biomass values user has only entered F
-                    'draw a square line at zero up to F
-                    lpts.Add(-1, 0)
-                    lpts.Add(0, 0)
-                    lpts.Add(0, Me.m_HCR.MaxF) ' Point order?
-                    lpts.Add(4, Me.m_HCR.MaxF) ' Max X value?
-                End If
-
-                line = New LineItem(Me.m_HCR.GroupName4Biomass, lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupNumber4Biomass), SymbolType.Circle)
-                line.Line.Width = 2.0
-
-                lLines.Add(line)
-            End If
-
-            If lLines.Count > 0 Then
-                ' Plot graph, but rescale ONLY when not dragging
-                Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
-                Me.m_graph.Cursor = Cursors.Default
-            Else
-                ' Clear graph
-                Me.m_zgh.PlotLines(Nothing)
-                Me.m_graph.Cursor = Cursors.No
-            End If
-
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-
-    End Sub
-
-
-    Private ReadOnly Property MSE As cMSE
-        Get
-            Return Me.m_MSEPlugin
-        End Get
-    End Property
-
-#End Region ' Internals
-
-#Region " Dragging "
-
-    Private Function HandleGraphMouseDownEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
-            Handles m_graph.MouseDownEvent
-
-        Dim pane As GraphPane = sender.GraphPane
-        Dim pt As PointF = New PointF(e.X, e.Y)
-        Dim curve As CurveItem = Nothing
-        Dim iIndex As Integer = 0
-
-        ' Find the point that was clicked, and make sure the point list is editable
-        If (pane.FindNearestPoint(pt, curve, iIndex)) Then
-            If (curve IsNot Nothing) Then
-                If (TypeOf curve.Points Is PointPairList) Then
-                    ' Set drag operation type
-                    Me.m_dragtype = DirectCast(iIndex, eDragType)
-                End If
-            End If
-        End If
-
-        Return False
-
-    End Function
-
-    Private Function m_graph_MouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
-        Handles m_graph.MouseMoveEvent
-
-        Dim pane As GraphPane = sender.GraphPane
-        Dim pt As PointF = New PointF(e.X, e.Y)
-        Dim curve As CurveItem = Nothing
-        Dim iIndex As Integer = 0
-        Dim bIsNear As Boolean = False
-
-        ' Find the point that was clicked, and make sure the point list is editable
-        If (pane.FindNearestPoint(pt, curve, iIndex)) Then
-            bIsNear = (curve IsNot Nothing)
-        End If
-
-        If bIsNear Then
-            Me.m_graph.Cursor = Cursors.Hand
-        Else
-            Me.m_graph.Cursor = Cursors.Default
-        End If
-        Return True
-
-    End Function
-
-    Private Function HandleGraphMouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
-            Handles m_graph.MouseMoveEvent
-
-        If Me.m_HCR Is Nothing Then Return False
-
-        Dim pane As GraphPane = sender.GraphPane
-        Dim pt As PointF = New PointF(e.X, e.Y)
-        Dim dX As Double = 0.0
-        Dim dy As Double = 0.0
-
-        ' Dragging?
-        If (Me.m_dragtype <> eDragType.None) Then
-            ' Translate value
-            pane.ReverseTransform(pt, dX, dy)
-
-            Select Case Me.m_dragtype
-                Case eDragType.BLower
-                    Me.m_HCR.LowerLimit = Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit))
-                Case eDragType.BUpperFMax
-                    Me.m_HCR.UpperLimit = Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX))
-                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
-                Case eDragType.FMax
-                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
-            End Select
-            Me.Redraw()
-            Me.m_grid.Update()
-        End If
-        Return True
-
-    End Function
-
-    Private Function HandleGraphMouseUpEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
-            Handles m_graph.MouseUpEvent
-
-        Me.m_dragtype = eDragType.None
-        Me.m_zgh.RescaleAndRedraw()
-        Return True
-
-    End Function
-
-#End Region ' Dragging
 
     Private Sub OnSelectedStrategyChanged(sender As Object, e As System.EventArgs) Handles cbStrategies.SelectedIndexChanged
 
@@ -405,6 +240,83 @@ Public Class frmTFMpolicy
 
     End Sub
 
+#End Region ' Events
+
+#Region " Internals "
+
+    Private Property HCRGroup() As HCR_Group
+        Get
+            Return m_HCR
+        End Get
+        Set(value As HCR_Group)
+            Me.m_HCR = value
+            If Me.m_HCR IsNot Nothing Then
+                Redraw()
+            End If
+        End Set
+    End Property
+
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Redraw the quota curve.
+    ''' </summary>
+    ''' -------------------------------------------------------------------
+    Private Sub Redraw()
+
+        If Me.m_zgh Is Nothing Then Return
+
+        Dim lpts As New PointPairList
+        Dim line As LineItem = Nothing
+        Dim lLines As New List(Of LineItem)
+        Try
+
+            If Me.m_HCR IsNot Nothing Then
+
+                ' #Yes: plot stick
+                Dim bsum As Double = Me.m_HCR.LowerLimit + Me.m_HCR.UpperLimit
+                If bsum > 0 Then
+                    ' Add points
+                    lpts.Add(0, 0)
+                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.LowerLimit), 0)
+                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit), Me.m_HCR.MaxF) ' Point order?
+                    lpts.Add(Units.Convert(eConvertTypes.ToDisplayBio, Me.m_HCR.UpperLimit) * 4, Me.m_HCR.MaxF) ' Max X value?
+                Else
+                    'Zero biomass values user has only entered F
+                    'draw a square line at zero up to F
+                    lpts.Add(-1, 0)
+                    lpts.Add(0, 0)
+                    lpts.Add(0, Me.m_HCR.MaxF) ' Point order?
+                    lpts.Add(4, Me.m_HCR.MaxF) ' Max X value?
+                End If
+
+                line = New LineItem(Me.m_HCR.GroupName4Biomass, lpts, Me.StyleGuide.GroupColor(Me.Core, Me.m_HCR.GroupNumber4Biomass), SymbolType.Circle)
+                line.Line.Width = 2.0
+
+                lLines.Add(line)
+            End If
+
+            If lLines.Count > 0 Then
+                ' Plot graph, but rescale ONLY when not dragging
+                Me.m_zgh.PlotLines(lLines.ToArray, 1, (Me.m_dragtype = eDragType.None))
+                Me.m_graph.Cursor = Cursors.Default
+            Else
+                ' Clear graph
+                Me.m_zgh.PlotLines(Nothing)
+                Me.m_graph.Cursor = Cursors.No
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+    End Sub
+
+    Private ReadOnly Property MSE As cMSE
+        Get
+            Return Me.m_MSEPlugin
+        End Get
+    End Property
 
     Public Shadows Sub UpdateControls()
         MyBase.UpdateControls()
@@ -420,8 +332,98 @@ Public Class frmTFMpolicy
 
         End Try
 
-
     End Sub
+
+#End Region ' Internals
+
+#Region " Dragging "
+
+    Private Function HandleGraphMouseDownEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+            Handles m_graph.MouseDownEvent
+
+        Dim pane As GraphPane = sender.GraphPane
+        Dim pt As PointF = New PointF(e.X, e.Y)
+        Dim curve As CurveItem = Nothing
+        Dim iIndex As Integer = 0
+
+        ' Find the point that was clicked, and make sure the point list is editable
+        If (pane.FindNearestPoint(pt, curve, iIndex)) Then
+            If (curve IsNot Nothing) Then
+                If (TypeOf curve.Points Is PointPairList) Then
+                    ' Set drag operation type
+                    Me.m_dragtype = DirectCast(iIndex, eDragType)
+                End If
+            End If
+        End If
+
+        Return False
+
+    End Function
+
+    Private Function m_graph_MouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+        Handles m_graph.MouseMoveEvent
+
+        Dim pane As GraphPane = sender.GraphPane
+        Dim pt As PointF = New PointF(e.X, e.Y)
+        Dim curve As CurveItem = Nothing
+        Dim iIndex As Integer = 0
+        Dim bIsNear As Boolean = False
+
+        ' Find the point that was clicked, and make sure the point list is editable
+        If (pane.FindNearestPoint(pt, curve, iIndex)) Then
+            bIsNear = (curve IsNot Nothing)
+        End If
+
+        If bIsNear Then
+            Me.m_graph.Cursor = Cursors.Hand
+        Else
+            Me.m_graph.Cursor = Cursors.Default
+        End If
+        Return True
+
+    End Function
+
+    Private Function HandleGraphMouseMoveEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+            Handles m_graph.MouseMoveEvent
+
+        If Me.m_HCR Is Nothing Then Return False
+
+        Dim pane As GraphPane = sender.GraphPane
+        Dim pt As PointF = New PointF(e.X, e.Y)
+        Dim dX As Double = 0.0
+        Dim dy As Double = 0.0
+
+        ' Dragging?
+        If (Me.m_dragtype <> eDragType.None) Then
+            ' Translate value
+            pane.ReverseTransform(pt, dX, dy)
+
+            Select Case Me.m_dragtype
+                Case eDragType.BLower
+                    Me.m_HCR.LowerLimit = Math.Max(0, Math.Min(Units.Convert(eConvertTypes.ToEcopathBio, dX), Me.m_HCR.UpperLimit))
+                Case eDragType.BUpperFMax
+                    Me.m_HCR.UpperLimit = Math.Max(Me.m_HCR.LowerLimit, Units.Convert(eConvertTypes.ToEcopathBio, dX))
+                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
+                Case eDragType.FMax
+                    Me.m_HCR.MaxF = Math.Max(0, CSng(dy))
+            End Select
+            Me.Redraw()
+            Me.m_grid.Update()
+        End If
+        Return True
+
+    End Function
+
+    Private Function HandleGraphMouseUpEvent(ByVal sender As ZedGraphControl, ByVal e As MouseEventArgs) As Boolean _
+            Handles m_graph.MouseUpEvent
+
+        Me.m_dragtype = eDragType.None
+        Me.m_zgh.RescaleAndRedraw()
+        Return True
+
+    End Function
+
+#End Region ' Dragging
 
 End Class
 

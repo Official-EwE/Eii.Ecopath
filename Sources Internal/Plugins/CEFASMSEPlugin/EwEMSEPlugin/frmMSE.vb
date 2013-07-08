@@ -173,6 +173,7 @@ Public Class frmMSE
             btnEcopathParams2.Show()
             txtArea.Show()
             lblArea.Show()
+            Button2.Show()
         Else
             Label2.Hide()
             txtTolerance.Hide()
@@ -182,6 +183,7 @@ Public Class frmMSE
             btnEcopathParams2.Hide()
             txtArea.Hide()
             lblArea.Hide()
+            Button2.Hide()
         End If
 
     End Sub
