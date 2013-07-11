@@ -56,9 +56,9 @@ Namespace Controls.Map
         ''' <summary>Map title.</summary>
         Private m_strTitle As String = ""
         ''' <summary>List of layers.</summary>
-        Private m_layers As New List(Of cLayer)
+        Private m_layers As New List(Of cDisplayLayer)
         ''' <summary>Selected layer</summary>
-        Private m_layerSelected As cLayer = Nothing
+        Private m_layerSelected As cDisplayLayer = Nothing
         ''' <summary>States whether map must be refreshed</summary>
         Private m_bRefreshMap As Boolean = False
 
@@ -283,7 +283,7 @@ Namespace Controls.Map
 
             If (Me.CanEdit = False) Then Return
 
-            Dim rl As cRasterLayer = DirectCast(Me.m_layerSelected, cRasterLayer)
+            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_layerSelected, cDisplayRasterLayer)
 
             If ((e.Button And Windows.Forms.MouseButtons.Right) > 0) Then
 
@@ -316,7 +316,7 @@ Namespace Controls.Map
             Dim bm As cEcospaceBasemap = Me.Basemap
             Dim InRow As Integer = bm.InRow
             Dim InCol As Integer = bm.InCol
-            Dim l As cLayer = Me.m_layerSelected
+            Dim l As cDisplayLayer = Me.m_layerSelected
 
             If (Me.CanEdit And Me.Capture) Then
                 Me.ProcessMouseInput(e, InRow, InCol)
@@ -330,8 +330,8 @@ Namespace Controls.Map
                     Dim strVal As String = ""
                     Dim strFeedback As String = ""
 
-                    If TypeOf l Is cRasterLayer Then
-                        strVal = l.Renderer.GetDisplayText(DirectCast(l, cRasterLayer).Value(ptCell.Y, ptCell.X))
+                    If TypeOf l Is cDisplayRasterLayer Then
+                        strVal = l.Renderer.GetDisplayText(DirectCast(l, cDisplayRasterLayer).Value(ptCell.Y, ptCell.X))
                     End If
 
                     Dim sel As cPropertySelectionCommand = DirectCast(Me.UIContext.CommandHandler.GetCommand(cPropertySelectionCommand.COMMAND_NAME), cPropertySelectionCommand)
@@ -363,13 +363,13 @@ Namespace Controls.Map
             If (Me.CanEdit = False) Then Return
             If (Me.Capture = False) Then Return
 
-            DirectCast(Me.m_layerSelected, cRasterLayer).Editor.EndEdit()
+            DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.EndEdit()
 
             ' Process pending layer changes
-            For Each l As cLayer In m_layers
-                If (TypeOf l Is cRasterLayer) Then
-                    Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
-                    If rl.IsModified Then rl.Update(cLayer.eChangeFlags.Map) : rl.IsModified = False
+            For Each l As cDisplayLayer In m_layers
+                If (TypeOf l Is cDisplayRasterLayer) Then
+                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                    If rl.IsModified Then rl.Update(cDisplayLayer.eChangeFlags.Map) : rl.IsModified = False
                 End If
             Next
 
@@ -399,26 +399,26 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="l">The layer that changed</param>
         ''' -------------------------------------------------------------------
-        Private Sub OnLayerChanged(ByVal l As cLayer, ByVal cf As cLayer.eChangeFlags)
+        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal cf As cDisplayLayer.eChangeFlags)
 
             ' Ignore sole descriptive layer changes
-            If (cf = cLayer.eChangeFlags.Descriptive) Then Return
+            If (cf = cDisplayLayer.eChangeFlags.Descriptive) Then Return
 
             ' Handle selection changes
-            If ((cf And cLayer.eChangeFlags.Selected) > 0) Then
+            If ((cf And cDisplayLayer.eChangeFlags.Selected) > 0) Then
                 ' Update selection
                 Me.UpdateSelection(l)
             End If
 
-            If ((cf And (cLayer.eChangeFlags.Map Or _
-                                 cLayer.eChangeFlags.Visibility Or _
-                                 cLayer.eChangeFlags.VisualStyle Or _
-                                 cLayer.eChangeFlags.Selected)) > 0) Then
+            If ((cf And (cDisplayLayer.eChangeFlags.Map Or _
+                                 cDisplayLayer.eChangeFlags.Visibility Or _
+                                 cDisplayLayer.eChangeFlags.VisualStyle Or _
+                                 cDisplayLayer.eChangeFlags.Selected)) > 0) Then
                 ' Update Map
                 Me.UpdateMap()
             End If
 
-            If ((cf And (cLayer.eChangeFlags.Editable Or cLayer.eChangeFlags.Selected)) > 0) Then
+            If ((cf And (cDisplayLayer.eChangeFlags.Editable Or cDisplayLayer.eChangeFlags.Selected)) > 0) Then
                 ' Refresh edit environment
                 Me.UpdateCursorFeedback()
             End If
@@ -458,7 +458,7 @@ Namespace Controls.Map
             Dim ptCellTo As Point = Me.GetCellIndex(ptScreenCur, InRow, InCol)
             Dim ptUpdateMin As New Point(Math.Min(ptCellFrom.X, ptCellTo.X), Math.Min(ptCellFrom.Y, ptCellTo.Y))
             Dim ptUpdateMax As New Point(Math.Max(ptCellFrom.X, ptCellTo.X), Math.Max(ptCellFrom.Y, ptCellTo.Y))
-            Dim rl As cRasterLayer = DirectCast(Me.m_layerSelected, cRasterLayer)
+            Dim rl As cDisplayRasterLayer = DirectCast(Me.m_layerSelected, cDisplayRasterLayer)
 
             rl.Editor.Edit(ptCellFrom, ptCellTo, _
                            New Point(ptScreenCur.X - Me.m_ptScreenPrevious.X, ptScreenCur.Y - Me.m_ptScreenPrevious.Y), _
@@ -512,7 +512,7 @@ Namespace Controls.Map
             Dim InRow As Integer = bm.InRow
             Dim InCol As Integer = bm.InCol
             Dim g As Graphics = Graphics.FromImage(bmp)
-            Dim l As cLayer = Nothing
+            Dim l As cDisplayLayer = Nothing
             Dim style As cStyleGuide.eStyleFlags = cStyleGuide.eStyleFlags.OK
             Dim layDepth As cEcospaceLayerDepth = Me.Basemap.LayerDepth()
             Dim layExcl As cEcospaceLayerExclusion = Me.Basemap.LayerExclusion()
@@ -551,9 +551,9 @@ Namespace Controls.Map
                 l = Me.m_layers(iLayer)
                 If (l.Renderer.IsVisible) Then
 
-                    If (TypeOf l Is cRasterLayer) Then
+                    If (TypeOf l Is cDisplayRasterLayer) Then
 
-                        Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
                         If (rl.HasData) Then
 
                             For X As Integer = iXFrom To iXTo
@@ -601,7 +601,7 @@ Namespace Controls.Map
 
         End Sub
 
-        Private Sub UpdateSelection(ByVal l As cLayer)
+        Private Sub UpdateSelection(ByVal l As cDisplayLayer)
 
             ' Sanity check
             If Object.ReferenceEquals(Me.Basemap, Nothing) Then Return
@@ -630,7 +630,7 @@ Namespace Controls.Map
             Dim InRow As Integer = bm.InRow
             Dim InCol As Integer = bm.InCol
             If Me.CanEdit Then
-                Me.Cursor = DirectCast(Me.m_layerSelected, cRasterLayer).Editor.Cursor(Me.GetCellSize(bm.InRow, bm.InCol))
+                Me.Cursor = DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.Cursor(Me.GetCellSize(bm.InRow, bm.InCol))
             Else
                 Me.Cursor = Cursors.Default
             End If
@@ -666,9 +666,9 @@ Namespace Controls.Map
         Private Function CanEdit() As Boolean
             If (Me.Editable = False) Then Return False
             If (Me.m_layerSelected Is Nothing) Then Return False
-            If Not (TypeOf Me.m_layerSelected Is cRasterLayer) Then Return False
+            If Not (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then Return False
             If (Me.m_layerSelected.Renderer.IsVisible = False) Then Return False
-            If (DirectCast(Me.m_layerSelected, cRasterLayer).Editor.IsEditable = False) Then Return False
+            If (DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.IsEditable = False) Then Return False
             Return True
         End Function
 
@@ -676,8 +676,8 @@ Namespace Controls.Map
 
 #Region " Layers "
 
-        Public Event LayerAdded(sender As ucMap, layer As cLayer)
-        Public Event LayerRemoved(sender As ucMap, layer As cLayer)
+        Public Event LayerAdded(sender As ucMap, layer As cDisplayLayer)
+        Public Event LayerRemoved(sender As ucMap, layer As cDisplayLayer)
 
         Public Sub Clear()
 
@@ -689,7 +689,7 @@ Namespace Controls.Map
             End If
 
             ' Clean up layers to prevent dangling event handlers, which in turn keep disposed objects alive.
-            Dim alayers As cLayer() = Me.m_layers.ToArray()
+            Dim alayers As cDisplayLayer() = Me.m_layers.ToArray()
             For iLayer As Integer = 0 To alayers.Length - 1
                 Me.RemoveLayer(alayers(iLayer))
             Next
@@ -705,8 +705,8 @@ Namespace Controls.Map
         ''' <param name="layer">The layer to add.</param>
         ''' <param name="layerPosition">The layer to add the layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal layer As cLayer, _
-                            Optional ByVal layerPosition As cLayer = Nothing)
+        Public Sub AddLayer(ByVal layer As cDisplayLayer, _
+                            Optional ByVal layerPosition As cDisplayLayer = Nothing)
 
             ' Sanity check
             If (layer Is Nothing) Then Return
@@ -736,7 +736,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="layer">The layer to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveLayer(ByVal layer As cLayer)
+        Public Sub RemoveLayer(ByVal layer As cDisplayLayer)
 
             ' Sanity check
             If (layer Is Nothing) Then Return
@@ -764,7 +764,7 @@ Namespace Controls.Map
         ''' Get all layers currently active in the map.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Layers() As cLayer()
+        Public ReadOnly Property Layers() As cDisplayLayer()
             Get
                 Return Me.m_layers.ToArray
             End Get

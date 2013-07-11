@@ -37,7 +37,7 @@ Namespace Controls.Map.Layers
 
         ' === LAYER SUPPORT ===
         ''' <summary>The raster layer to operate on.</summary>
-        Private m_layer As cRasterLayer = Nothing
+        Private m_layer As cDisplayRasterLayer = Nothing
         ''' <summary>Flag stating whether the layer is editable.</summary>
         Private m_bEditable As Boolean = True
         ''' <summary>Flag stating whether the layer is read-only.</summary>
@@ -78,7 +78,7 @@ Namespace Controls.Map.Layers
         ''' <param name="layer">Layer to attach.</param>
         ''' -------------------------------------------------------------------
         Public Overridable Sub Initialize(ByVal uic As cUIContext, _
-                                          ByVal layer As cRasterLayer)
+                                          ByVal layer As cDisplayRasterLayer)
             Me.UIContext = uic
             Me.Layer = layer
         End Sub
@@ -113,7 +113,7 @@ Namespace Controls.Map.Layers
 
 #Region " Events "
 
-        Private Sub OnLayerChanged(ByVal layer As cLayer, ByVal cf As cLayer.eChangeFlags)
+        Private Sub OnLayerChanged(ByVal layer As cDisplayLayer, ByVal cf As cDisplayLayer.eChangeFlags)
             If Me.GUI IsNot Nothing Then
                 Me.GUI.UpdateContent(Me)
             End If
@@ -325,7 +325,7 @@ Namespace Controls.Map.Layers
             ' Notify the editor GUI, if any
             If (Me.GUI IsNot Nothing) Then Me.GUI.EndEdit(Me)
             ' Update layer
-            Me.Layer.Update(cLayer.eChangeFlags.Map)
+            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -404,7 +404,7 @@ Namespace Controls.Map.Layers
                     Me.Layer.Value(i, j) = cnew(i, j)
                 Next
             Next
-            Me.Layer.Update(cLayer.eChangeFlags.Map)
+            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
 
         End Sub
 
@@ -427,7 +427,7 @@ Namespace Controls.Map.Layers
                     End If
                 Next j
             Next i
-            Me.Layer.Update(cLayer.eChangeFlags.Map)
+            Me.Layer.Update(cDisplayLayer.eChangeFlags.Map)
 
         End Sub
 
@@ -461,7 +461,7 @@ Namespace Controls.Map.Layers
                     Me.m_bEditable = bEditable
                     ' Send out change notification
                     If (Me.m_layer IsNot Nothing) Then
-                        Me.m_layer.Update(cLayer.eChangeFlags.Editable)
+                        Me.m_layer.Update(cDisplayLayer.eChangeFlags.Editable)
                     End If
                 End If
             End Set
@@ -574,11 +574,11 @@ Namespace Controls.Map.Layers
         ''' Get/set the layer to attach to this Editor.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public Property Layer() As cRasterLayer
+        Public Property Layer() As cDisplayRasterLayer
             Get
                 Return Me.m_layer
             End Get
-            Private Set(ByVal value As cRasterLayer)
+            Private Set(ByVal value As cDisplayRasterLayer)
                 If Object.ReferenceEquals(value, Me.m_layer) Then Return
 
                 ' Already has a layer?

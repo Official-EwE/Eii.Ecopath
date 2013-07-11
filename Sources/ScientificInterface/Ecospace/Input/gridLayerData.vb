@@ -33,7 +33,7 @@ Public Class gridLayerData
     Inherits EwEGrid
 
     Private m_basemap As cEcospaceBasemap = Nothing
-    Private m_layer As cRasterLayer = Nothing
+    Private m_layer As cDisplayRasterLayer = Nothing
 
     Public Sub New()
         MyBase.New()
@@ -148,11 +148,11 @@ Public Class gridLayerData
     ''' Get/set the layer to display in the grid
     ''' </summary>
     ''' -----------------------------------------------------------------------
-    Public Property Layer() As cRasterLayer
+    Public Property Layer() As cDisplayRasterLayer
         Get
             Return Me.m_layer
         End Get
-        Set(ByVal value As cRasterLayer)
+        Set(ByVal value As cDisplayRasterLayer)
 
             If Me.m_layer IsNot Nothing Then
                 RemoveHandler Me.m_layer.LayerChanged, AddressOf OnLayerChanged
@@ -177,7 +177,7 @@ Public Class gridLayerData
     ''' <param name="layTarget"></param>
     ''' <returns>True when the layer data was changed.</returns>
     ''' -----------------------------------------------------------------------
-    Public Function Apply(Optional ByVal layTarget As cRasterLayer = Nothing) As Boolean
+    Public Function Apply(Optional ByVal layTarget As cDisplayRasterLayer = Nothing) As Boolean
         Dim p As SourceGrid2.Position = Nothing
         Dim sNew As Single = 0.0!
         Dim sOrg As Single = 0.0!
@@ -216,8 +216,8 @@ Public Class gridLayerData
 
     End Function
 
-    Private Sub OnLayerChanged(l As cLayer, cf As cLayer.eChangeFlags)
-        If ((cf And cLayer.eChangeFlags.Map) > 0) Then
+    Private Sub OnLayerChanged(l As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
+        If ((cf And cDisplayLayer.eChangeFlags.Map) > 0) Then
             Me.RefreshContent()
         End If
     End Sub

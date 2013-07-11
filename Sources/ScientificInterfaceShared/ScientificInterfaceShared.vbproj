@@ -263,11 +263,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Indicator renderers\cRemarksIndicator.vb" />
-    <Compile Include="Controls\Map\Layers\Layer types\cImageLayer.vb" />
-    <Compile Include="Controls\Map\Layers\Layer types\cLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cDisplayImageLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cDisplayLayer.vb" />
     <Compile Include="Controls\Map\Layers\cLayerFactoryBase.vb" />
-    <Compile Include="Controls\Map\Layers\Layer types\cRasterLayerBundle.vb" />
-    <Compile Include="Controls\Map\Layers\Layer types\cRasterLayer.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cDisplayRasterLayerBundle.vb" />
+    <Compile Include="Controls\Map\Layers\Layer types\cDisplayRasterLayer.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditor.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorAdvection.vb" />
     <Compile Include="Controls\Map\Layers\Editing\cLayerEditorDepth.vb" />

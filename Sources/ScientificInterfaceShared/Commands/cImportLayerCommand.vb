@@ -19,10 +19,8 @@
 #Region " Imports "
 
 Option Strict On
+Imports EwECore
 Imports EwEUtils.Commands
-Imports EwEUtils.Core
-Imports ScientificInterfaceShared.Controls.Map.Layers
-Imports ScientificInterfaceShared.Definitions
 
 #End Region ' Imports
 
@@ -36,7 +34,7 @@ Namespace Commands
     Public Class cImportLayerCommand
         Inherits cCommand
 
-        Private m_alayers() As cRasterLayer = Nothing
+        Private m_alayers() As cEcospaceLayer = Nothing
 
         ''' <summary>Static name for this command.</summary>
         Public Shared cCOMMAND_NAME As String = "~importLayer"
@@ -56,7 +54,7 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="alayers">The layers to import data into.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal alayers() As cRasterLayer)
+        Public Overloads Sub Invoke(ByVal alayers() As cEcospaceLayer)
             Me.m_alayers = alayers
             MyBase.Invoke()
         End Sub
@@ -66,7 +64,7 @@ Namespace Commands
         ''' Get the layers the command was invoked for.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property Layers() As cRasterLayer()
+        Public ReadOnly Property Layers() As cEcospaceLayer()
             Get
                 Return Me.m_alayers
             End Get

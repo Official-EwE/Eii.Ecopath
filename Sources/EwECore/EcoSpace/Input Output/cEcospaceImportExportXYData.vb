@@ -82,21 +82,19 @@ Public Class cEcospaceImportExportXYData
     ''' </summary>
     ''' <returns></returns>
     ''' -----------------------------------------------------------------------
-    Public Function NumDuplicateFields() As String()
+    Public Function DuplicateFields() As String()
 
         Dim htNames As New HashSet(Of String)
         Dim lstrDuplicates As New List(Of String)
         Dim strField As String = ""
 
         For Each strField In Me.m_astrFields
-            If Not String.IsNullOrWhiteSpace(strField) Then
-                If htNames.Contains(strField) Then
-                    If Not lstrDuplicates.Contains(strField) Then
-                        lstrDuplicates.Add(strField)
-                    End If
-                Else
-                    htNames.Add(strField)
+            If htNames.Contains(strField) Then
+                If Not lstrDuplicates.Contains(strField) Then
+                    lstrDuplicates.Add(strField)
                 End If
+            Else
+                htNames.Add(strField)
             End If
         Next
 
@@ -240,7 +238,13 @@ Public Class cEcospaceImportExportXYData
             If (Me.m_bRowColImplicit) Then
                 Me.m_astrFields = New String() {cEcospaceImportExportXYData.cMAPPING_IMPLICIT}
             Else
-                Me.m_astrFields = value
+                Dim lFields As New List(Of String)
+                For Each strField As String In value
+                    If Not String.IsNullOrWhiteSpace(strField) Then
+                        lFields.Add(strField.Trim)
+                    End If
+                Next
+                Me.m_astrFields = lFields.ToArray
             End If
 
             ' Clear

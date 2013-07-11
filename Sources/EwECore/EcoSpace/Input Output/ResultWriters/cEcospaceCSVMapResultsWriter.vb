@@ -89,9 +89,10 @@ Public Class cEcospaceCSVMapResultsWriter
                                 strm = Nothing
                             End If
                         Catch ex As IOException
-                            'Failed to open the file
                             cLog.Write(ex)
-                            System.Console.WriteLine("Ecospace failed to save file " & strFile)
+                            Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
+                                                   eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+                            Me.m_core.Messages.SendMessage(msg)
                         End Try
 
                     End If
@@ -114,9 +115,10 @@ Public Class cEcospaceCSVMapResultsWriter
                     strm = Nothing
                 End If
             Catch ex As IOException
-                'Failed to open the file
                 cLog.Write(ex)
-                System.Console.WriteLine("Ecospace failed to save file " & strFile)
+                Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED, strFile, ex.Message), _
+                                       eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Warning)
+                Me.m_core.Messages.SendMessage(msg)
             End Try
         Next
 
@@ -126,8 +128,7 @@ Public Class cEcospaceCSVMapResultsWriter
     ''' <inheritdocs cref="cEcospaceBaseResultsWriter.EndWrite"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Sub EndWrite()
-        ' ToDo_JS: globalize this message
-        Dim msg As New cMessage("Ecospace result CSV files have been written to " & Me.m_OutputPath, _
+        Dim msg As New cMessage(String.Format(My.Resources.CoreMessages.ECOSPACE_EXPORT_CSV_SUCCESS, Me.m_OutputPath), _
                                 eMessageType.DataExport, eCoreComponentType.EcoSpace, eMessageImportance.Information)
         ' Provide hyperlink to the directory with the files
         msg.Hyperlink = Me.m_OutputPath

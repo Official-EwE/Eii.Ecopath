@@ -29,7 +29,7 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Base class for rendering a Scientific Interface <see cref="cLayer">layer</see>
+    ''' Base class for rendering a <see cref="cDisplayLayer">display layer</see>
     ''' onto the base map.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -150,7 +150,7 @@ Namespace Controls.Map.Layers
         ''' <param name="style">Layer style to use when rendering/</param>
         ''' -----------------------------------------------------------------------
         Public MustOverride Sub Render(ByVal g As Graphics, _
-                                       ByVal layer As cLayer, _
+                                       ByVal layer As cDisplayLayer, _
                                        ByVal rc As Rectangle, _
                                        ByVal ptfTL As PointF, _
                                        ByVal ptfBR As PointF, _

@@ -45,7 +45,7 @@ Namespace Controls.Map.Layers
         ''' <inheritdoc cref="cLayerEditor.Initialize"/>
         ''' -------------------------------------------------------------------
         Public Overrides Sub Initialize(ByVal uic As cUIContext, _
-                                        ByVal layer As cRasterLayer)
+                                        ByVal layer As cDisplayRasterLayer)
             MyBase.Initialize(uic, layer)
             Me.CellValueMax = CSng(Math.Max(layer.ValueSet, layer.ValueClear))
             Me.CellValueMin = CSng(Math.Min(layer.ValueSet, layer.ValueClear))

@@ -53,17 +53,17 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         Public Property Group() As Integer
             Get
-                Dim layerCore As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
+                Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
                 Return layerCore.iLayer
             End Get
             Set(ByVal value As Integer)
-                Dim layerCore As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
+                Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
                 ' Will Group index change?
                 If value <> layerCore.iLayer Then
                     ' #Yes: update Group index in the underlying Ecospace layer
                     layerCore.iLayer = value
                     ' Force map update
-                    Me.Layer.Update(cLayer.eChangeFlags.Map Or cLayer.eChangeFlags.Selected, False)
+                    Me.Layer.Update(cDisplayLayer.eChangeFlags.Map Or cDisplayLayer.eChangeFlags.Selected, False)
                 End If
             End Set
         End Property
@@ -86,7 +86,7 @@ Namespace Controls.Map.Layers
                                              value As Object, _
                                              e As System.Windows.Forms.MouseEventArgs, _
                                              ptClick As System.Drawing.Point)
-            Dim layerCore As cRasterLayerBundle = DirectCast(Me.Layer, cRasterLayerBundle)
+            Dim layerCore As cDisplayRasterLayerBundle = DirectCast(Me.Layer, cDisplayRasterLayerBundle)
             Dim grp As cEcospaceGroup = Me.UIContext.Core.EcospaceGroups(layerCore.iLayer)
             grp.IsMigratory = True
             MyBase.SetCellValue(ptSet, value, e, ptClick)

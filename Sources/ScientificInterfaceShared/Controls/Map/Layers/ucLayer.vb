@@ -40,7 +40,7 @@ Namespace Controls.Map
 
         Private m_uic As cUIContext = Nothing
         ''' <summary>Layer</summary>
-        Private m_layer As cLayer = Nothing
+        Private m_layer As cDisplayLayer = Nothing
         ''' <summary>Parent layer group</summary>
         Private m_lgParent As ucLayerGroup = Nothing
         ''' <summary>States whether the mouse is hovering over the control.</summary>
@@ -58,7 +58,7 @@ Namespace Controls.Map
 
 #Region " Constructor / destructor "
 
-        Public Sub New(ByVal uic As cUIContext, ByVal l As cLayer)
+        Public Sub New(ByVal uic As cUIContext, ByVal l As cDisplayLayer)
 
             Me.InitializeComponent()
 
@@ -73,7 +73,7 @@ Namespace Controls.Map
 
             AddHandler m_layer.LayerChanged, AddressOf OnLayerChanged
             ' Kick off
-            Me.OnLayerChanged(l, cLayer.eChangeFlags.Descriptive)
+            Me.OnLayerChanged(l, cDisplayLayer.eChangeFlags.Descriptive)
 
         End Sub
 
@@ -97,7 +97,7 @@ Namespace Controls.Map
 
 #Region " Properties "
 
-        Public ReadOnly Property Layer() As cLayer
+        Public ReadOnly Property Layer() As cDisplayLayer
             Get
                 Return Me.m_layer
             End Get
@@ -116,22 +116,22 @@ Namespace Controls.Map
 
 #Region " Internal implementation "
 
-        Private Sub OnLayerChanged(ByVal l As cLayer, ByVal updateType As cLayer.eChangeFlags)
+        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal updateType As cDisplayLayer.eChangeFlags)
 
-            If (updateType = cLayer.eChangeFlags.Map) Then
+            If (updateType = cDisplayLayer.eChangeFlags.Map) Then
                 Me.Invalidate()
                 Return
             End If
 
-            If ((updateType And cLayer.eChangeFlags.Selected) = cLayer.eChangeFlags.Selected) Then
+            If ((updateType And cDisplayLayer.eChangeFlags.Selected) = cDisplayLayer.eChangeFlags.Selected) Then
                 ' Provide instant feedback
                 Me.Refresh()
             Else
                 ' Just redraw whenever there is time
                 Me.Invalidate()
 
-                If (TypeOf l Is cRasterLayer) Then
-                    Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                If (TypeOf l Is cDisplayRasterLayer) Then
+                    Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
                     Dim pm As cPropertyManager = Me.m_uic.PropertyManager
                     Dim prop As cProperty = pm.GetProperty(rl.Source, eVarNameFlags.Name)
 
@@ -143,9 +143,9 @@ Namespace Controls.Map
         End Sub
 
         Public Sub EditLayer(ByVal edittype As eLayerEditTypes)
-            If (TypeOf Me.Layer Is cRasterLayer) Then
+            If (TypeOf Me.Layer Is cDisplayRasterLayer) Then
                 Try
-                    Dim rl As cRasterLayer = DirectCast(Me.Layer, cRasterLayer)
+                    Dim rl As cDisplayRasterLayer = DirectCast(Me.Layer, cDisplayRasterLayer)
                     Dim cmd As cEditLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEditLayerCommand.cCOMMAND_NAME), cEditLayerCommand)
                     cmd.Invoke(rl, Nothing, edittype)
                 Catch ex As Exception
@@ -155,9 +155,9 @@ Namespace Controls.Map
         End Sub
 
         Public Sub EditLayerConnection()
-            If (TypeOf Me.Layer Is cRasterLayer) Then
+            If (TypeOf Me.Layer Is cDisplayRasterLayer) Then
                 Try
-                    Dim rl As cRasterLayer = DirectCast(Me.Layer, cRasterLayer)
+                    Dim rl As cDisplayRasterLayer = DirectCast(Me.Layer, cDisplayRasterLayer)
                     Dim cmd As cEcospaceExternalDataCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME), cEcospaceExternalDataCommand)
                     cmd.Invoke(rl.Data)
                 Catch ex As Exception
@@ -280,8 +280,8 @@ Namespace Controls.Map
                 e.Graphics.FillRectangle(SystemBrushes.Control, rcControl)
             End If
 
-            If (TypeOf Me.m_layer Is cRasterLayer) Then
-                Dim rl As cRasterLayer = DirectCast(Me.m_layer, cRasterLayer)
+            If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
+                Dim rl As cDisplayRasterLayer = DirectCast(Me.m_layer, cDisplayRasterLayer)
                 ' Draw editable indicator (only when selected or hovering)
                 If (rl.IsExternal) Then
                     img = g_imgData
@@ -347,12 +347,12 @@ Namespace Controls.Map
 
         Private Sub ucLayer_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseClick
 
-            Dim flag As cLayer.eChangeFlags = 0
+            Dim flag As cDisplayLayer.eChangeFlags = 0
 
             ' Select layer first
             If Not m_layer.IsSelected Then
                 Me.m_layer.IsSelected = True
-                flag = flag Or cLayer.eChangeFlags.Selected
+                flag = flag Or cDisplayLayer.eChangeFlags.Selected
             End If
 
             ' After selecting, determine hit area and process further
@@ -363,10 +363,10 @@ Namespace Controls.Map
                     Me.EditLayer(eLayerEditTypes.EditVisuals)
 
                 Case eAreaTypes.Editable
-                    If (TypeOf Me.m_layer Is cRasterLayer) Then
-                        Dim edt As cLayerEditor = DirectCast(Me.m_layer, cRasterLayer).Editor
+                    If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
+                        Dim edt As cLayerEditor = DirectCast(Me.m_layer, cDisplayRasterLayer).Editor
                         edt.IsEditable = Not edt.IsEditable
-                        flag = flag Or cLayer.eChangeFlags.Editable
+                        flag = flag Or cDisplayLayer.eChangeFlags.Editable
                     End If
 
                 Case eAreaTypes.Label
@@ -374,7 +374,7 @@ Namespace Controls.Map
 
                 Case eAreaTypes.Visible
                     Me.m_layer.Renderer.IsVisible = Not Me.m_layer.Renderer.IsVisible
-                    flag = flag Or cLayer.eChangeFlags.Visibility
+                    flag = flag Or cDisplayLayer.eChangeFlags.Visibility
 
             End Select
 

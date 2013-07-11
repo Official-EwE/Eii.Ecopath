@@ -80,7 +80,7 @@ Namespace Controls.Map
 
         Public Sub RemoveAllLayers()
 
-            Dim al As New List(Of cLayer)
+            Dim al As New List(Of cDisplayLayer)
 
             ' Get all layers
             For Each uc As UserControl In Me.m_fpItems.Controls
@@ -89,7 +89,7 @@ Namespace Controls.Map
             Next
 
             ' Now nuke 'em
-            For Each l As cLayer In al
+            For Each l As cDisplayLayer In al
                 Me.RemoveLayer(l, False)
             Next
 
@@ -103,12 +103,12 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Add a <see cref="cLayer">layer</see> to this group.
+        ''' Add a <see cref="cDisplayLayer">display layer</see> to this group.
         ''' </summary>
-        ''' <param name="l"><see cref="cLayer">Layer</see> to add.</param>
+        ''' <param name="l">The <see cref="cDisplayLayer">display layer</see> to add.</param>
         ''' <param name="lPosition">Layer to position this layer before, if any</param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(ByVal l As cLayer, Optional ByVal lPosition As cLayer = Nothing)
+        Public Sub AddLayer(ByVal l As cDisplayLayer, Optional ByVal lPosition As cDisplayLayer = Nothing)
             Dim ucl As New ucLayer(Me.m_uic, l)
 
             Me.m_fpItems.Controls.Add(ucl)
@@ -133,9 +133,9 @@ Namespace Controls.Map
         ''' <summary>
         ''' Remove a <see cref="ucLayer">ucLayer</see> instance from this group.
         ''' </summary>
-        ''' <param name="l"><see cref="cLayer">Layer</see> to remove.</param>
+        ''' <param name="l">The <see cref="cDisplayLayer">display layer</see> to remove.</param>
         ''' -------------------------------------------------------------------
-        Public Sub RemoveLayer(ByVal l As cLayer, Optional ByVal bUpdate As Boolean = True)
+        Public Sub RemoveLayer(ByVal l As cDisplayLayer, Optional ByVal bUpdate As Boolean = True)
             Dim ucl As ucLayer = Me.FindLayerControl(l)
 
             If (ucl IsNot Nothing) Then
@@ -167,9 +167,9 @@ Namespace Controls.Map
         ''' Get all layers attached to this group.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Layers() As cLayer()
+        Public ReadOnly Property Layers() As cDisplayLayer()
             Get
-                Dim al As New List(Of cLayer)
+                Dim al As New List(Of cDisplayLayer)
                 ' Get all layers
                 For Each uc As UserControl In Me.m_fpItems.Controls
                     Dim lc As ucLayer = DirectCast(uc, ucLayer)
@@ -198,7 +198,7 @@ Namespace Controls.Map
                 lc = DirectCast(uc, ucLayer)
                 With lc.Layer
                     .Renderer.IsVisible = bShow
-                    .Update(cLayer.eChangeFlags.Visibility)
+                    .Update(cDisplayLayer.eChangeFlags.Visibility)
                 End With
             Next
 
@@ -212,10 +212,10 @@ Namespace Controls.Map
             ' Toggle layer visiblity
             For Each uc As UserControl In Me.m_fpItems.Controls
                 lc = DirectCast(uc, ucLayer)
-                If (TypeOf lc.Layer Is cRasterLayer) Then
-                    DirectCast(lc.Layer, cRasterLayer).Editor.IsEditable = bEditable
+                If (TypeOf lc.Layer Is cDisplayRasterLayer) Then
+                    DirectCast(lc.Layer, cDisplayRasterLayer).Editor.IsEditable = bEditable
                 End If
-                lc.Layer.Update(cLayer.eChangeFlags.Visibility)
+                lc.Layer.Update(cDisplayLayer.eChangeFlags.Visibility)
             Next
             Me.UpdateControls()
         End Sub
@@ -354,9 +354,9 @@ Namespace Controls.Map
             Me.Invalidate(False)
         End Sub
 
-        Private Sub OnLayerChanged(ByVal l As cLayer, ByVal updateFlag As cLayer.eChangeFlags)
+        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal updateFlag As cDisplayLayer.eChangeFlags)
             ' Update whenever child layer visiblity changes
-            If ((updateFlag And cLayer.eChangeFlags.Visibility) = cLayer.eChangeFlags.Visibility) Then
+            If ((updateFlag And cDisplayLayer.eChangeFlags.Visibility) = cDisplayLayer.eChangeFlags.Visibility) Then
                 ' Redraw at some point
                 Me.Invalidate(False)
             End If
@@ -490,12 +490,12 @@ Namespace Controls.Map
         ''' <summary>
         ''' Find a child layer control for a given layer
         ''' </summary>
-        ''' <param name="layer"><see cref="cLayer">Layer</see> to find the
-        ''' <see cref="ucLayer">control</see> for.</param>
+        ''' <param name="layer">The <see cref="cDisplayLayer">display layer</see> 
+        ''' to find the <see cref="ucLayer">control</see> for.</param>
         ''' <returns>A child layer control, or nothing if the control could
         ''' not be found.</returns>
         ''' -------------------------------------------------------------------
-        Private Function FindLayerControl(ByVal layer As cLayer) As ucLayer
+        Private Function FindLayerControl(ByVal layer As cDisplayLayer) As ucLayer
             Dim ucl As ucLayer = Nothing
             For Each uc As UserControl In Me.m_fpItems.Controls
                 ucl = DirectCast(uc, ucLayer)

@@ -196,6 +196,11 @@ Public MustInherit Class cEcospaceLayer
         End Get
     End Property
 
+    ''' -----------------------------------------------------------------------
+    ''' <summary>
+    ''' Get the <see cref="eVarNameFlags"/> for the variable of this layers' data
+    ''' </summary>
+    ''' -----------------------------------------------------------------------
     Public ReadOnly Property VarName() As eVarNameFlags
         Get
             Return Me.m_vnData

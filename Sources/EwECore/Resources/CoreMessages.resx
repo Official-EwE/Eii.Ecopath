@@ -1162,4 +1162,16 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
     <value>Ecopath estimates saved to '{0}'</value>
     <comment>{0}=file</comment>
   </data>
+  <data name="ECOSPACE_EXPORT_ASCII_SUCCESS" xml:space="preserve">
+    <value>Ecospace result .asc files have been written to {0}.</value>
+    <comment>{0}=folder</comment>
+  </data>
+  <data name="ECOSPACE_EXPORT_CSV_SUCCESS" xml:space="preserve">
+    <value>Ecospace result .csv files have been written to {0}.</value>
+    <comment>{0}=folder</comment>
+  </data>
+  <data name="ECOSPACE_EXPORT_FAILED" xml:space="preserve">
+    <value>Ecospace failed to save file {0}. {1}</value>
+    <comment>{0}=file name, {1}=exception message</comment>
+  </data>
 </root>

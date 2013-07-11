@@ -52,7 +52,7 @@ Namespace Controls.Map.Layers
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Update the content of the editor GUI because something in the
-        ''' underlying <see cref="cLayer">layer</see> or
+        ''' underlying <see cref="cDisplayLayer">display layer</see> or
         ''' <see cref="cLayerEditor">layer editor</see> has changed.
         ''' </summary>
         ''' <param name="editor"></param>
