@@ -29,7 +29,7 @@ Imports ScientificInterfaceShared.Controls.Map.Layers
 
 ''' ---------------------------------------------------------------------------
 ''' <summary>
-''' Helper class to generate and style the <see cref="cLayer">layer</see> that 
+''' Helper class to generate and style the <see cref="cDisplayLayer">display layer</see> that 
 ''' will be used to display Ecospace indicators.
 ''' </summary>
 ''' ---------------------------------------------------------------------------
@@ -44,15 +44,15 @@ Public Class cEcospaceLayerFactory
     ''' <param name="ind">The <see cref="cIndicatorSettings.cIndicatorInfo">indicator information</see>
     ''' to create the layer for.</param>
     ''' <param name="data">The data that holds the computed values for the indicator.</param>
-    ''' <returns>A <see cref="cLayer"/>.</returns>
+    ''' <returns>A <see cref="cDisplayLayer"/>.</returns>
     ''' -----------------------------------------------------------------------
     Public Overloads Function GetLayer(ByVal uic As cUIContext, _
                                        ByVal ind As cIndicatorSettings.cIndicatorInfo, ByVal data As Single(,)) As  _
-                                   ScientificInterfaceShared.Controls.Map.Layers.cLayer
+                                   ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer
 
-        Dim lLayers As New List(Of cLayer)
+        Dim lLayers As New List(Of cDisplayLayer)
 
-        Dim layer As cLayer = Nothing
+        Dim layer As cDisplayLayer = Nothing
         Dim layerData As New cEcospaceLayerSingle(uic.Core, data, ind.Name)
         Dim vs As New cVisualStyle()
         Dim renderer As New cLayerRendererValue(vs)
@@ -61,7 +61,7 @@ Public Class cEcospaceLayerFactory
         vs.BackColour = Color.Transparent
         renderer.DrawAlways = True
 
-        Return New cRasterLayer(uic, layerData, renderer, Nothing)
+        Return New cDisplayRasterLayer(uic, layerData, renderer, Nothing)
 
     End Function
 

@@ -49,9 +49,9 @@ Public Class cEcospaceMapWrapper
     Private m_dtIndicators As Dictionary(Of Point, cEcospaceIndicators)
 
     ''' <summary>Ecospace depth layer for finding water cells and for showing context.</summary>
-    Private m_layerDepth As cLayer = Nothing
+    Private m_layerDepth As cDisplayLayer = Nothing
     ''' <summary>Indicator layer data.</summary>
-    Private m_layerData As cLayer = Nothing
+    Private m_layerData As cDisplayLayer = Nothing
 
 #End Region ' Private variables
 
