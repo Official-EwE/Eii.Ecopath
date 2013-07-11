@@ -53,11 +53,11 @@ Partial Class frmUI
         Me.m_lblNumYears = New System.Windows.Forms.Label()
         Me.m_nudNumYears = New System.Windows.Forms.NumericUpDown()
         Me.m_tbxWeightPower = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.m_lblDWP = New System.Windows.Forms.Label()
         Me.m_tcMain = New System.Windows.Forms.TabControl()
         Me.m_tabOutput = New System.Windows.Forms.TabPage()
         Me.m_cmbFormat = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.m_lblFormat = New System.Windows.Forms.Label()
         Me.m_tabBA = New System.Windows.Forms.TabPage()
         CType(Me.m_nudNumYears, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_tcMain.SuspendLayout()
@@ -145,10 +145,10 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_tbxWeightPower, "m_tbxWeightPower")
         Me.m_tbxWeightPower.Name = "m_tbxWeightPower"
         '
-        'Label1
+        'm_lblDWP
         '
-        resources.ApplyResources(Me.Label1, "Label1")
-        Me.Label1.Name = "Label1"
+        resources.ApplyResources(Me.m_lblDWP, "m_lblDWP")
+        Me.m_lblDWP.Name = "m_lblDWP"
         '
         'm_tcMain
         '
@@ -162,7 +162,7 @@ Partial Class frmUI
         '
         Me.m_tabOutput.Controls.Add(Me.m_cmbFormat)
         Me.m_tabOutput.Controls.Add(Me.m_cbEnable)
-        Me.m_tabOutput.Controls.Add(Me.Label2)
+        Me.m_tabOutput.Controls.Add(Me.m_lblFormat)
         Me.m_tabOutput.Controls.Add(Me.m_lblPath)
         Me.m_tabOutput.Controls.Add(Me.m_tbxOutputPath)
         Me.m_tabOutput.Controls.Add(Me.m_btnChoose)
@@ -177,15 +177,15 @@ Partial Class frmUI
         resources.ApplyResources(Me.m_cmbFormat, "m_cmbFormat")
         Me.m_cmbFormat.Name = "m_cmbFormat"
         '
-        'Label2
+        'm_lblFormat
         '
-        resources.ApplyResources(Me.Label2, "Label2")
-        Me.Label2.Name = "Label2"
+        resources.ApplyResources(Me.m_lblFormat, "m_lblFormat")
+        Me.m_lblFormat.Name = "m_lblFormat"
         '
         'm_tabBA
         '
         Me.m_tabBA.Controls.Add(Me.m_lblBACalcType)
-        Me.m_tabBA.Controls.Add(Me.Label1)
+        Me.m_tabBA.Controls.Add(Me.m_lblDWP)
         Me.m_tabBA.Controls.Add(Me.m_cmbBACalcType)
         Me.m_tabBA.Controls.Add(Me.m_lblNumYears)
         Me.m_tabBA.Controls.Add(Me.m_tbxWeightPower)
@@ -219,12 +219,12 @@ Partial Class frmUI
     Private WithEvents m_cmbBACalcType As System.Windows.Forms.ComboBox
     Private WithEvents m_tbxOutputPath As System.Windows.Forms.TextBox
     Private WithEvents m_lblNumYears As System.Windows.Forms.Label
-    Friend WithEvents m_nudNumYears As System.Windows.Forms.NumericUpDown
-    Friend WithEvents m_tbxWeightPower As System.Windows.Forms.TextBox
-    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Private WithEvents m_nudNumYears As System.Windows.Forms.NumericUpDown
+    Private WithEvents m_tbxWeightPower As System.Windows.Forms.TextBox
+    Private WithEvents m_lblDWP As System.Windows.Forms.Label
     Private WithEvents m_tcMain As System.Windows.Forms.TabControl
     Private WithEvents m_tabOutput As System.Windows.Forms.TabPage
     Private WithEvents m_cmbFormat As System.Windows.Forms.ComboBox
-    Private WithEvents Label2 As System.Windows.Forms.Label
+    Private WithEvents m_lblFormat As System.Windows.Forms.Label
     Private WithEvents m_tabBA As System.Windows.Forms.TabPage
 End Class
