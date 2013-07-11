@@ -21,6 +21,7 @@
 Option Strict On
 Imports ScientificInterfaceShared.Controls.EwEGrid
 Imports ScientificInterfaceShared.Style
+Imports SourceGrid2
 
 #End Region ' Imports
 
@@ -98,7 +99,7 @@ Friend Class gridUI
 
             Me(i, eColumnTypes.Year) = New EwERowHeaderCell(CStr(Me.m_data.FirstLabelYear + i - 1))
 
-            Me(i, eColumnTypes.Check) = New SourceGrid2.Cells.Real.CheckBox(Me.m_data.CreateModel(i))
+            Me(i, eColumnTypes.Check) = New Cells.Real.CheckBox(Me.m_data.CreateModel(i))
             Me(i, eColumnTypes.Check).Behaviors.Add(Me.EwEEditHandler)
 
             Me(i, eColumnTypes.Name) = New EwECell(Me.m_data.ModelName(i), GetType(String), style)
@@ -108,8 +109,8 @@ Friend Class gridUI
 
     End Sub
 
-    Protected Overrides Function OnCellValueChanged(ByVal p As SourceGrid2.Position, _
-                                                    ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellValueChanged(ByVal p As Position, _
+                                                    ByVal cell As Cells.ICellVirtual) As Boolean
 
         Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -126,13 +127,13 @@ Friend Class gridUI
 
         End Select
 
-        Me.InvalidateRange(New SourceGrid2.Range(p.Row, 0, p.Row, Me.RowsCount - 1))
+        Me.InvalidateRange(New Range(p.Row, 0, p.Row, Me.RowsCount - 1))
         Return True
 
     End Function
 
-    Protected Overrides Function OnCellEdited(ByVal p As SourceGrid2.Position, _
-                                              ByVal cell As SourceGrid2.Cells.ICellVirtual) As Boolean
+    Protected Overrides Function OnCellEdited(ByVal p As Position, _
+                                              ByVal cell As Cells.ICellVirtual) As Boolean
         Try
             Select Case DirectCast(p.Column, eColumnTypes)
 
@@ -144,7 +145,7 @@ Friend Class gridUI
 
         End Try
 
-        Me.InvalidateRange(New SourceGrid2.Range(p.Row, 0, p.Row, Me.RowsCount - 1))
+        Me.InvalidateRange(New Range(p.Row, 0, p.Row, Me.RowsCount - 1))
         Return True
 
     End Function

@@ -166,7 +166,7 @@
     <value>m_grid</value>
   </data>
   <data name="&gt;&gt;m_grid.Type" xml:space="preserve">
-    <value>EwEModelFromEcosim.gridUI, EwEModelFromEcosim, Version=6.3.6841.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
+    <value>EwEModelFromEcosim.gridUI, EwEModelFromEcosim, Version=6.3.9431.0, Culture=neutral, PublicKeyToken=39cec52bd095db6e</value>
   </data>
   <data name="&gt;&gt;m_grid.Parent" xml:space="preserve">
     <value>$this</value>
@@ -381,31 +381,31 @@
   <data name="&gt;&gt;m_tbxWeightPower.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblDWP.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblDWP.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 61</value>
   </data>
-  <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblDWP.Size" type="System.Drawing.Size, System.Drawing">
     <value>132, 13</value>
   </data>
-  <data name="Label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblDWP.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
+  <data name="m_lblDWP.Text" xml:space="preserve">
     <value>&amp;Distance weighting power:</value>
   </data>
-  <data name="&gt;&gt;Label1.Name" xml:space="preserve">
-    <value>Label1</value>
+  <data name="&gt;&gt;m_lblDWP.Name" xml:space="preserve">
+    <value>m_lblDWP</value>
   </data>
-  <data name="&gt;&gt;Label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblDWP.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblDWP.Parent" xml:space="preserve">
     <value>m_tabBA</value>
   </data>
-  <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblDWP.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="m_tcMain.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -432,34 +432,34 @@
   <data name="&gt;&gt;m_cmbFormat.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="Label2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="m_lblFormat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="m_lblFormat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="m_lblFormat.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 57</value>
   </data>
-  <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="m_lblFormat.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
   </data>
-  <data name="Label2.TabIndex" type="System.Int32, mscorlib">
+  <data name="m_lblFormat.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
+  <data name="m_lblFormat.Text" xml:space="preserve">
     <value>Output &amp;format:</value>
   </data>
-  <data name="&gt;&gt;Label2.Name" xml:space="preserve">
-    <value>Label2</value>
+  <data name="&gt;&gt;m_lblFormat.Name" xml:space="preserve">
+    <value>m_lblFormat</value>
   </data>
-  <data name="&gt;&gt;Label2.Type" xml:space="preserve">
+  <data name="&gt;&gt;m_lblFormat.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Label2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;m_lblFormat.Parent" xml:space="preserve">
     <value>m_tabOutput</value>
   </data>
-  <data name="&gt;&gt;Label2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;m_lblFormat.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="m_tabOutput.Location" type="System.Drawing.Point, System.Drawing">
@@ -565,6 +565,6 @@
     <value>frmUI</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9288.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>
