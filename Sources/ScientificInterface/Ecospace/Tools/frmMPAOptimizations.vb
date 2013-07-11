@@ -97,12 +97,12 @@ Namespace Ecospace
         ' == Layer cache ==
 
         ''' <summary>All layers in the basemap.</summary>
-        Private m_lLayers As New List(Of cLayer)
+        Private m_lLayers As New List(Of cDisplayLayer)
         ''' <summary>All layers that reflect search progress.</summary>
         ''' <remarks>The data for these layers orginates from the core.</remarks>
-        Private m_alayerFeedback() As cRasterLayer = Nothing
-        Private m_layerSeed As cRasterLayer = Nothing
-        Private m_alayerMPA() As cRasterLayer = Nothing
+        Private m_alayerFeedback() As cDisplayRasterLayer = Nothing
+        Private m_layerSeed As cDisplayRasterLayer = Nothing
+        Private m_alayerMPA() As cDisplayRasterLayer = Nothing
         ''' <summary>Data structure to update with feedback data.</summary>
         Private m_aiFeedback As Integer(,) = Nothing
 
@@ -227,10 +227,10 @@ Namespace Ecospace
 
         Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
 
-            Dim alays As cLayer() = Me.m_lLayers.ToArray
+            Dim alays As cDisplayLayer() = Me.m_lLayers.ToArray
 
             Me.m_ucZoomBar.RemoveZoomContainer(Me.m_ucZoom)
-            For Each l As cLayer In alays
+            For Each l As cDisplayLayer In alays
                 Me.RemoveLayer(l)
             Next
             Me.m_lLayers = Nothing
@@ -349,8 +349,8 @@ Namespace Ecospace
                 ' Set the layer
                 Me.SetLayer(Me.m_manager.OrgMPA, Me.m_basemap.LayerMPA)
                 ' Update MPAs
-                For Each l As cLayer In Me.m_alayerMPA
-                    l.Update(cLayer.eChangeFlags.Map)
+                For Each l As cDisplayLayer In Me.m_alayerMPA
+                    l.Update(cDisplayLayer.eChangeFlags.Map)
                 Next
             Catch ex As Exception
 
@@ -425,9 +425,9 @@ Namespace Ecospace
             End Select
 
             ' Refresh the MPA layer that has been affected
-            For Each l As cLayer In Me.m_alayerMPA
+            For Each l As cDisplayLayer In Me.m_alayerMPA
                 'If l.Data.Index = Me.SelectedMPA Then
-                l.Update(cLayer.eChangeFlags.Map)
+                l.Update(cDisplayLayer.eChangeFlags.Map)
                 ' End If
             Next
 
@@ -438,8 +438,8 @@ Namespace Ecospace
 
             Dim cmdh As cCommandHandler = Me.CommandHandler
             Dim cmd As cCommand = cmdh.GetCommand("ExportLayerData")
-            Dim lLayers As New List(Of cLayer)
-            Dim layerTmp As cLayer = Nothing
+            Dim lLayers As New List(Of cDisplayLayer)
+            Dim layerTmp As cDisplayLayer = Nothing
             Dim ldataTmp As cEcospaceLayerInteger = Nothing
             Dim iAreaClosed As Integer = 0
             Dim iNumResults As Integer = 0
@@ -456,7 +456,7 @@ Namespace Ecospace
                                                      Me.m_manager.CellSelectedMap(100, iAreaClosed, iNumResults), _
                                                      String.Format(My.Resources.ECOSPACE_LAYER_MPABESTCOUNT, iAreaClosed))
                 ' Wrap THIS in turn in a GUI layer, required by the exporter
-                layerTmp = New cRasterLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
+                layerTmp = New cDisplayRasterLayer(Me.UIContext, ldataTmp, Nothing, Nothing)
                 ' Add the layer to the stash to save
                 lLayers.Add(layerTmp)
 
@@ -567,8 +567,8 @@ Namespace Ecospace
 
 #Region " Map "
 
-        Private Sub OnLayerChanged(ByVal l As cLayer, ByVal changeFlags As cLayer.eChangeFlags)
-            If ((changeFlags And cLayer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
+        Private Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal changeFlags As cDisplayLayer.eChangeFlags)
+            If ((changeFlags And cDisplayLayer.eChangeFlags.Selected) > 0) Then Me.UpdateControls()
         End Sub
 
 #End Region ' Map
@@ -1018,13 +1018,13 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="varName">The core variable to load basemap data for.</param>
         ''' -------------------------------------------------------------------
-        Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cRasterLayer()
+        Private Function AddBaseLayers(ByVal varName As eVarNameFlags) As cDisplayRasterLayer()
 
             Dim factory As New cLayerFactoryInternal()
             Dim strGroup As String = factory.GetLayerGroup(varName)
             Dim strCommand As String = factory.GetLayerGroupEditCommand(varName)
-            Dim alayers As cRasterLayer() = factory.GetLayers(Me.UIContext, varName)
-            Dim l As cLayer = Nothing
+            Dim alayers As cDisplayRasterLayer() = factory.GetLayers(Me.UIContext, varName)
+            Dim l As cDisplayLayer = Nothing
 
             ' Add group, and collapse and hide habitat layers
             Me.m_ucLayers.AddGroup(strGroup, strCommand, varName <> eVarNameFlags.LayerHabitat)
@@ -1049,9 +1049,9 @@ Namespace Ecospace
 
             Dim strGroup As String = ""
             Dim datalayerTemp As cEcospaceLayerInteger = Nothing
-            Dim l As cRasterLayer = Nothing
-            Dim alayers As cRasterLayer() = Nothing
-            Dim lRunStateLayers As New List(Of cRasterLayer)
+            Dim l As cDisplayRasterLayer = Nothing
+            Dim alayers As cDisplayRasterLayer() = Nothing
+            Dim lRunStateLayers As New List(Of cDisplayRasterLayer)
             Dim factory As New cLayerFactoryInternal()
 
             Me.m_ucLayers.LockUpdates()
@@ -1121,7 +1121,7 @@ Namespace Ecospace
 
         Private Sub ClearMapFeedback()
             If Me.m_alayerFeedback IsNot Nothing Then
-                For Each l As cLayer In Me.m_alayerFeedback
+                For Each l As cDisplayLayer In Me.m_alayerFeedback
                     Me.RemoveLayer(l)
                 Next
                 Me.m_alayerFeedback = Nothing
@@ -1152,7 +1152,7 @@ Namespace Ecospace
                     ' Invalidate to recalc min, max
                     Me.m_alayerFeedback(0).IsModified = True
                     ' Trigger redraw
-                    Me.m_alayerFeedback(0).Update(cLayer.eChangeFlags.Map)
+                    Me.m_alayerFeedback(0).Update(cDisplayLayer.eChangeFlags.Map)
 
             End Select
 
@@ -1346,7 +1346,7 @@ Namespace Ecospace
         ''' <param name="strGroup">Group to add the layer to.</param>
         ''' <param name="layerPosition">Layer to position this layer before, if any.</param>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As cLayer, ByVal strGroup As String, strCommand As String, Optional ByVal layerPosition As cLayer = Nothing)
+        Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, strCommand As String, Optional ByVal layerPosition As cDisplayLayer = Nothing)
             Me.m_lLayers.Add(l)
             Me.m_ucZoom.Map.AddLayer(l, layerPosition)
             Me.m_ucLayers.AddLayer(l, strGroup, strCommand, layerPosition)
@@ -1359,7 +1359,7 @@ Namespace Ecospace
         ''' </summary>
         ''' <param name="l">Layer to remove.</param>
         ''' -------------------------------------------------------------------
-        Private Sub RemoveLayer(ByVal l As cLayer)
+        Private Sub RemoveLayer(ByVal l As cDisplayLayer)
             Me.m_lLayers.Remove(l)
             Me.m_ucZoom.Map.RemoveLayer(l)
             Me.m_ucLayers.RemoveLayer(l)

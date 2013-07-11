@@ -55,7 +55,7 @@ Namespace Controls.Map
         ''' <summary>List of attached zoom maps that need to be synchronized.</summary>
         Private m_lZoomContainers As New List(Of ucMapZoom)
         ''' <summary>List of attached layers.</summary>
-        Private m_lLayers As New List(Of cLayer)
+        Private m_lLayers As New List(Of cDisplayLayer)
 
 #End Region ' Private vars
 
@@ -112,7 +112,7 @@ Namespace Controls.Map
 
             Me.m_lZoomContainers.Add(zoomContainer)
             ' All all existing layers manually - 'cause we may have missed addition events
-            For Each l As cLayer In zoomContainer.Map.Layers
+            For Each l As cDisplayLayer In zoomContainer.Map.Layers
                 Me.m_lLayers.Add(l)
             Next
 
@@ -140,7 +140,7 @@ Namespace Controls.Map
             Me.m_lZoomContainers.Remove(zoomContainer)
 
             ' Remove all layers manually - 'cause we're going to miss removal events
-            For Each l As cLayer In zoomContainer.Map.Layers
+            For Each l As cDisplayLayer In zoomContainer.Map.Layers
                 Me.m_lLayers.Remove(l)
             Next
 
@@ -184,7 +184,7 @@ Namespace Controls.Map
         ''' layers to provide layer data export and import interface elements.
         ''' </summary>
         ''' -----------------------------------------------------------------------
-        Public ReadOnly Property Layers As cLayer()
+        Public ReadOnly Property Layers As cDisplayLayer()
             Get
                 Return Me.m_lLayers.ToArray
             End Get
@@ -330,17 +330,17 @@ Namespace Controls.Map
 
 #Region " Map events "
 
-        Private Sub OnMapLayerAdded(sender As ucMap, layer As cLayer)
+        Private Sub OnMapLayerAdded(sender As ucMap, layer As cDisplayLayer)
             Me.m_lLayers.Add(layer)
             AddHandler layer.LayerChanged, AddressOf OnLayerChanged
         End Sub
 
-        Private Sub OnMapLayerRemoved(sender As ucMap, layer As cLayer)
+        Private Sub OnMapLayerRemoved(sender As ucMap, layer As cDisplayLayer)
             RemoveHandler layer.LayerChanged, AddressOf OnLayerChanged
             Me.m_lLayers.Remove(layer)
         End Sub
 
-        Private Sub OnLayerChanged(layer As cLayer, cf As cLayer.eChangeFlags)
+        Private Sub OnLayerChanged(layer As cDisplayLayer, cf As cDisplayLayer.eChangeFlags)
             Try
                 Me.UpdateControls()
             Catch ex As Exception
@@ -404,10 +404,10 @@ Namespace Controls.Map
             Dim bHasSelectedLayers As Boolean = False
             Dim bHasEditableLayers As Boolean = False
 
-            For Each l As cLayer In Me.m_lLayers
+            For Each l As cDisplayLayer In Me.m_lLayers
                 bHasSelectedLayers = bHasSelectedLayers Or l.IsSelected
-                If (TypeOf l Is cRasterLayer) Then
-                    bHasEditableLayers = bHasEditableLayers Or (l.IsSelected And DirectCast(l, cRasterLayer).Editor.IsEditable)
+                If (TypeOf l Is cDisplayRasterLayer) Then
+                    bHasEditableLayers = bHasEditableLayers Or (l.IsSelected And DirectCast(l, cDisplayRasterLayer).Editor.IsEditable)
                 End If
             Next
 
@@ -422,11 +422,23 @@ Namespace Controls.Map
             Handles m_tsbnImport.Click
 
             Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-            Dim lLayers As New List(Of cRasterLayer)
+            Dim lLayers As New List(Of cEcospaceLayer)
+            Dim layer As cEcospaceLayer = Nothing
 
-            For Each l As cLayer In Me.m_lLayers
-                If (l.IsSelected) And (TypeOf l Is cRasterLayer) Then
-                    lLayers.Add(DirectCast(l, cRasterLayer))
+            For Each l As cDisplayLayer In Me.m_lLayers
+                If (l.IsSelected) And (TypeOf l Is cDisplayRasterLayer) Then
+                    If TypeOf l Is cDisplayRasterLayerBundle Then
+                        Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
+                        For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
+                            layer = rlb.Data(i)
+                            If (layer IsNot Nothing) Then
+                                lLayers.Add(layer)
+                            End If
+                        Next
+                    Else
+                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
+                        lLayers.Add(rl.Data)
+                    End If
                 End If
             Next
 
@@ -441,10 +453,10 @@ Namespace Controls.Map
             Dim lLayers As New List(Of cEcospaceLayer)
             Dim layer As cEcospaceLayer = Nothing
 
-            For Each l As cLayer In Me.m_lLayers
-                If (l.IsSelected) And (TypeOf l Is cRasterLayer) Then
-                    If TypeOf l Is cRasterLayerBundle Then
-                        Dim rlb As cRasterLayerBundle = DirectCast(l, cRasterLayerBundle)
+            For Each l As cDisplayLayer In Me.m_lLayers
+                If (l.IsSelected) And (TypeOf l Is cDisplayRasterLayer) Then
+                    If TypeOf l Is cDisplayRasterLayerBundle Then
+                        Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
                         For i As Integer = 0 To Me.m_uic.Core.GetCoreCounter(rlb.CoreCounter)
                             layer = rlb.Data(i)
                             If (layer IsNot Nothing) Then
@@ -452,7 +464,7 @@ Namespace Controls.Map
                             End If
                         Next
                     Else
-                        Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
                         lLayers.Add(rl.Data)
                     End If
                 End If

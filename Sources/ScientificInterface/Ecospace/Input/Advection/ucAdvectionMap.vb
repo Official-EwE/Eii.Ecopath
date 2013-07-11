@@ -40,7 +40,7 @@ Namespace Ecospace.Advection
         ''' <summary>UI context to operate on.</summary>
         Private m_uic As cUIContext = Nothing
         ''' <summary>The raster layer that can be edited in this map, if any.</summary>
-        Private m_layerData As cRasterLayer = Nothing
+        Private m_layerData As cDisplayRasterLayer = Nothing
 
         Public Sub New()
             Me.InitializeComponent()
@@ -95,7 +95,7 @@ Namespace Ecospace.Advection
         ''' Get the layer that the user can edit in this map.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property DataLayer() As cRasterLayer
+        Public ReadOnly Property DataLayer() As cDisplayRasterLayer
             Get
                 Return Me.m_layerData
             End Get
@@ -182,8 +182,8 @@ Namespace Ecospace.Advection
             Me.UpdateControls()
         End Sub
 
-        Protected Overridable Sub OnLayerChanged(ByVal l As cLayer, ByVal changeFlags As cLayer.eChangeFlags)
-            If ((changeFlags And cLayer.eChangeFlags.Editable) > 0) Then Me.UpdateControls()
+        Protected Overridable Sub OnLayerChanged(ByVal l As cDisplayLayer, ByVal changeFlags As cDisplayLayer.eChangeFlags)
+            If ((changeFlags And cDisplayLayer.eChangeFlags.Editable) > 0) Then Me.UpdateControls()
         End Sub
 
 #End Region ' Events
@@ -225,11 +225,11 @@ Namespace Ecospace.Advection
 
         End Sub
 
-        Private Function AddLayer(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean) As cRasterLayer
+        Private Function AddLayer(ByVal vn As eVarNameFlags, ByVal bEditable As Boolean) As cDisplayRasterLayer
 
             Dim factory As New cLayerFactoryInternal()
-            Dim layers() As cRasterLayer = factory.GetLayers(Me.m_uic, vn)
-            Dim l As cRasterLayer = Nothing
+            Dim layers() As cDisplayRasterLayer = factory.GetLayers(Me.m_uic, vn)
+            Dim l As cDisplayRasterLayer = Nothing
 
             If (layers Is Nothing) Then Return Nothing
             If (layers.Length = 0) Then

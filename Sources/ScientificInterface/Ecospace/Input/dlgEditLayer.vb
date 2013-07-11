@@ -43,12 +43,12 @@ Namespace Ecospace.Basemap.Layers
         Private m_qehGrid As cQuickEditHandler = Nothing
 
         ''' <summary>Original layer this dialog was invoked for.</summary>
-        Private m_layerOriginal As cRasterLayer = Nothing
-        Private m_layerDepth As cRasterLayer = Nothing
+        Private m_layerOriginal As cDisplayRasterLayer = Nothing
+        Private m_layerDepth As cDisplayRasterLayer = Nothing
         Private m_edittype As eLayerEditTypes
 
         ''' <summary>Work layer (a copy of the original) for this dialog to work on.</summary>
-        Private m_layerWork As cRasterLayer = Nothing
+        Private m_layerWork As cDisplayRasterLayer = Nothing
         ''' <summary>Editor to transmogrify the representation of the layer.</summary>
         Private m_ucEditVisualStyle As ucEditVisualStyle = Nothing
 
@@ -69,7 +69,7 @@ Namespace Ecospace.Basemap.Layers
         ''' <param name="edittype"></param>
         ''' -------------------------------------------------------------------
         Public Sub New(ByVal uic As cUIContext, _
-                       ByRef layer As cRasterLayer, _
+                       ByRef layer As cDisplayRasterLayer, _
                        ByVal edittype As eLayerEditTypes)
 
             Debug.Assert(layer IsNot Nothing)
@@ -89,7 +89,7 @@ Namespace Ecospace.Basemap.Layers
             End If
             Me.m_edittype = edittype
 
-            Me.m_layerWork = New cRasterLayer(uic, layer) ' Work on a clone
+            Me.m_layerWork = New cDisplayRasterLayer(uic, layer) ' Work on a clone
             Me.m_layerWork.AllowValidation = False
             Me.m_layerWork.IsSelected = True ' Select layer, otherwise its content may not be rendered
 
@@ -179,7 +179,7 @@ Namespace Ecospace.Basemap.Layers
 
             ' Update work layer Visual Style
             Me.m_ucEditVisualStyle.Apply(Me.m_layerWork.Renderer.VisualStyle)
-            Me.m_layerWork.Update(cLayer.eChangeFlags.VisualStyle)
+            Me.m_layerWork.Update(cDisplayLayer.eChangeFlags.VisualStyle)
 
         End Sub
 
@@ -187,7 +187,7 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsbnImport.Click
             Try
                 Dim cmd As cImportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cImportLayerCommand.cCOMMAND_NAME), cImportLayerCommand)
-                cmd.Invoke(New cRasterLayer() {Me.m_layerWork})
+                cmd.Invoke(New cEcospaceLayer() {Me.m_layerWork.Data})
             Catch ex As Exception
 
             End Try
@@ -197,7 +197,7 @@ Namespace Ecospace.Basemap.Layers
             Handles m_tsbnExport.Click
             Try
                 Dim cmd As cExportLayerCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cExportLayerCommand.cCOMMAND_NAME), cExportLayerCommand)
-                cmd.Invoke(New cRasterLayer() {Me.m_layerWork})
+                cmd.Invoke(New cDisplayRasterLayer() {Me.m_layerWork})
                 Me.UpdateControls()
             Catch ex As Exception
 
@@ -301,7 +301,7 @@ Namespace Ecospace.Basemap.Layers
 
         Private Function ApplyChanges() As Boolean
 
-            Dim cf As cLayer.eChangeFlags = 0
+            Dim cf As cDisplayLayer.eChangeFlags = 0
             Dim src As cCoreInputOutputBase = Me.m_layerOriginal.Source
 
             If (HasUniqueSource()) Then
@@ -324,11 +324,11 @@ Namespace Ecospace.Basemap.Layers
             If (Me.m_ucEditVisualStyle IsNot Nothing) Then
                 ' Apply changes
                 Me.m_ucEditVisualStyle.Apply(Me.m_layerOriginal.Renderer.VisualStyle)
-                cf = cf Or cLayer.eChangeFlags.VisualStyle
+                cf = cf Or cDisplayLayer.eChangeFlags.VisualStyle
             End If
 
             If Me.m_grid.Apply(Me.m_layerOriginal) Then
-                cf = cf Or cLayer.eChangeFlags.Map
+                cf = cf Or cDisplayLayer.eChangeFlags.Map
             End If
 
             ' Fire layer changed notification

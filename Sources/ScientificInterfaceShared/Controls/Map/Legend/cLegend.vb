@@ -32,8 +32,7 @@ Namespace Controls.Map
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Simple map legend renderer, that renderes a series of <see cref="cLayer">
-    ''' map layers</see> as a single column of entries to a file.
+    ''' Simple map legend rendererfor <see cref="cDisplayLayer">display layers</see>.
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Public Class cLegend
@@ -96,15 +95,15 @@ Namespace Controls.Map
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' A legend entry wrapping a <see cref="cLayer">map layer</see>.
+        ''' A legend entry for a single <see cref="cDisplayLayer">display layer</see>.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Class cLayerEntry
             Inherits cLegendEntry
 
-            Private m_layer As cLayer
+            Private m_layer As cDisplayLayer
 
-            Public Sub New(layer As cLayer)
+            Public Sub New(layer As cDisplayLayer)
                 Me.m_layer = layer
             End Sub
 
@@ -122,8 +121,8 @@ Namespace Controls.Map
 
             Public Overrides ReadOnly Property Max As Single
                 Get
-                    If (TypeOf Me.m_layer Is cRasterLayer) Then
-                        Return DirectCast(Me.m_layer, cRasterLayer).Data.MaxValue
+                    If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
+                        Return DirectCast(Me.m_layer, cDisplayRasterLayer).Data.MaxValue
                     End If
                     Return cCore.NULL_VALUE
                 End Get
@@ -131,8 +130,8 @@ Namespace Controls.Map
 
             Public Overrides ReadOnly Property Min As Single
                 Get
-                    If (TypeOf Me.m_layer Is cRasterLayer) Then
-                        Return DirectCast(Me.m_layer, cRasterLayer).Data.MinValue
+                    If (TypeOf Me.m_layer Is cDisplayRasterLayer) Then
+                        Return DirectCast(Me.m_layer, cDisplayRasterLayer).Data.MinValue
                     End If
                     Return cCore.NULL_VALUE
                 End Get
@@ -168,8 +167,8 @@ Namespace Controls.Map
 
             Me.New(map.UIContext, map.Title)
 
-            Dim al As cLayer() = map.Layers
-            Dim l As cLayer = Nothing
+            Dim al As cDisplayLayer() = map.Layers
+            Dim l As cDisplayLayer = Nothing
             Dim r As cLayerRenderer = Nothing
 
             For i As Integer = 0 To al.Length - 1
@@ -267,7 +266,7 @@ Namespace Controls.Map
         ''' </summary>
         ''' <param name="l"></param>
         ''' -------------------------------------------------------------------
-        Public Sub AddLayer(l As cLayer)
+        Public Sub AddLayer(l As cDisplayLayer)
             Me.m_lLayers.Add(New cLayerEntry(l))
         End Sub
 

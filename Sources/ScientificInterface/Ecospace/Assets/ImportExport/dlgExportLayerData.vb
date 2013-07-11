@@ -166,22 +166,22 @@ Namespace Ecospace.Basemap
             Dim bSuccess As Boolean = True
             Dim msg As cMessage = Nothing
 
+            ' Populate local data
+            For Each layer In dtMappings.Keys
+                strField = dtMappings(layer)
+                If Not String.IsNullOrWhiteSpace(strField) Then
+                    If (lstrFields.IndexOf(strField) = -1) Then
+                        lstrFields.Add(strField)
+                    End If
+                End If
+            Next
+
+            ' Create data
+            Me.m_data = New cEcospaceImportExportXYData(bm, lstrFields.ToArray())
+
             cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
 
             Try
-
-                ' Populate local data
-                For Each layer In dtMappings.Keys
-                    strField = dtMappings(layer)
-                    If Not String.IsNullOrWhiteSpace(strField) Then
-                        If (lstrFields.IndexOf(strField) = -1) Then
-                            lstrFields.Add(strField)
-                        End If
-                    End If
-                Next
-
-                ' Create data
-                Me.m_data = New cEcospaceImportExportXYData(bm, lstrFields.ToArray())
 
                 ' Store layer
                 For iRow = 1 To bm.InRow

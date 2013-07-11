@@ -66,23 +66,23 @@ Namespace Commands
         ''' <inheritdocs cref="cCommand.Invoke"/>
         ''' <param name="arl">Array of raster layers to export data from.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal arl() As cRasterLayer)
+        Public Overloads Sub Invoke(ByVal arl() As cDisplayRasterLayer)
 
             Dim layers As New List(Of cEcospaceLayer)
             Dim layer As cEcospaceLayer = Nothing
 
             If (arl IsNot Nothing) Then
-                For Each l As cLayer In arl
-                    If TypeOf l Is cRasterLayerBundle Then
-                        Dim rlb As cRasterLayerBundle = DirectCast(l, cRasterLayerBundle)
+                For Each l As cDisplayLayer In arl
+                    If TypeOf l Is cDisplayRasterLayerBundle Then
+                        Dim rlb As cDisplayRasterLayerBundle = DirectCast(l, cDisplayRasterLayerBundle)
                         For i As Integer = 0 To rlb.nLayers
                             layer = rlb.Data(i)
                             If (layer IsNot Nothing) Then
                                 layers.Add(layer)
                             End If
                         Next
-                    ElseIf TypeOf l Is cRasterLayer Then
-                        Dim rl As cRasterLayer = DirectCast(l, cRasterLayer)
+                    ElseIf TypeOf l Is cDisplayRasterLayer Then
+                        Dim rl As cDisplayRasterLayer = DirectCast(l, cDisplayRasterLayer)
                         layers.Add(rl.Data)
                     End If
                 Next

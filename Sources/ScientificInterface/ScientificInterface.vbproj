@@ -170,6 +170,9 @@
     <Compile Include="Ecospace\Assets\ImportExport\gridExportLayerMappings.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Ecospace\Assets\ImportExport\gridImportLayerMappings.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">
       <DependentUpon>dlgDefineRegions.vb</DependentUpon>
     </Compile>

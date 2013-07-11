@@ -29,7 +29,7 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Base class for rendering a Scientific Interface <see cref="cLayer">layer</see>
+    ''' Base class for rendering a <see cref="cDisplayLayer">display layer</see>
     ''' onto the base map.
     ''' </summary>
     ''' -----------------------------------------------------------------------

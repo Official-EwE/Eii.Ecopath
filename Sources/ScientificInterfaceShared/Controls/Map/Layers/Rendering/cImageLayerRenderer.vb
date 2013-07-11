@@ -29,7 +29,7 @@ Namespace Controls.Map.Layers
 
     ''' -----------------------------------------------------------------------
     ''' <summary>
-    ''' Base class for rendering a Scientific Interface <see cref="cLayer">layer</see>
+    ''' Base class for rendering a <see cref="cDisplayLayer">display layer</see>
     ''' onto the base map.
     ''' </summary>
     ''' -----------------------------------------------------------------------
@@ -63,15 +63,15 @@ Namespace Controls.Map.Layers
         ''' <param name="ptfBR">Bottom-right corner (lon, lat) represented by <paramref name="rc"/>.</param>
         ''' -----------------------------------------------------------------------
         Public Overrides Sub Render(ByVal g As Graphics, _
-                                       ByVal layer As cLayer, _
+                                       ByVal layer As cDisplayLayer, _
                                        ByVal rc As Rectangle, _
                                        ByVal ptfTL As PointF, _
                                        ByVal ptfBR As PointF, _
                                        ByVal style As cStyleGuide.eStyleFlags)
 
-            If (Not TypeOf layer Is cImageLayer) Then Return
+            If (Not TypeOf layer Is cDisplayImageLayer) Then Return
 
-            Dim bml As cImageLayer = DirectCast(layer, cImageLayer)
+            Dim bml As cDisplayImageLayer = DirectCast(layer, cDisplayImageLayer)
             Dim img As Image = bml.Image
             Dim imgTL As PointF = bml.ImageTL
             Dim imgBR As PointF = bml.ImageBR

@@ -36,8 +36,8 @@ Namespace Commands
     Public Class cEditLayerCommand
         Inherits cCommand
 
-        Private m_layer As cRasterLayer = Nothing
-        Private m_layerDepth As cRasterLayer = Nothing
+        Private m_layer As cDisplayRasterLayer = Nothing
+        Private m_layerDepth As cDisplayRasterLayer = Nothing
         Private m_edittype As eLayerEditTypes
 
         ''' <summary>Static name for this command.</summary>
@@ -53,7 +53,7 @@ Namespace Commands
         ''' <param name="layerDepth">Depth reference layer.</param>
         ''' <param name="edittype">Type of <see cref="eLayerEditTypes">edit operation</see>.</param>
         ''' ---------------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal layer As cRasterLayer, ByVal layerDepth As cRasterLayer, ByVal edittype As eLayerEditTypes)
+        Public Overloads Sub Invoke(ByVal layer As cDisplayRasterLayer, ByVal layerDepth As cDisplayRasterLayer, ByVal edittype As eLayerEditTypes)
             Me.m_layer = layer
             Me.m_layerDepth = layerDepth
             Me.m_edittype = edittype
@@ -65,7 +65,7 @@ Namespace Commands
         ''' Get the layer to edit.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property Layer() As cRasterLayer
+        Public ReadOnly Property Layer() As cDisplayRasterLayer
             Get
                 Return Me.m_layer
             End Get
@@ -76,7 +76,7 @@ Namespace Commands
         ''' Get the reference depth layer to help with the edit operation.
         ''' </summary>
         ''' ---------------------------------------------------------------------------
-        Public ReadOnly Property LayerDepth() As cRasterLayer
+        Public ReadOnly Property LayerDepth() As cDisplayRasterLayer
             Get
                 Return Me.m_layer
             End Get

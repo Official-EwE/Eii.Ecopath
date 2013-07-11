@@ -44,7 +44,7 @@ Namespace Ecospace.Basemap
 #Region " Private vars "
 
         ''' <summary>The one and only administration of layers.</summary>
-        Private m_layers As New List(Of cLayer)
+        Private m_layers As New List(Of cDisplayLayer)
         ''' <summary>The one and only control that renders the basemap.</summary>
         Private m_ucBasemap As ucMap = Nothing
 
@@ -149,12 +149,12 @@ Namespace Ecospace.Basemap
             Me.m_ucBasemap.Refresh()
         End Sub
 
-        Private Sub OnLayerChanged(ByVal layer As cLayer, ByVal changeFlag As cLayer.eChangeFlags)
-            Dim layerSelect As cLayer = Nothing
+        Private Sub OnLayerChanged(ByVal layer As cDisplayLayer, ByVal changeFlag As cDisplayLayer.eChangeFlags)
+            Dim layerSelect As cDisplayLayer = Nothing
             ' Is selection change?
-            If ((changeFlag And cLayer.eChangeFlags.Selected) > 0) Then
+            If ((changeFlag And cDisplayLayer.eChangeFlags.Selected) > 0) Then
                 ' #Yes: Find newly selected layer
-                For Each layerTemp As cLayer In Me.m_layers
+                For Each layerTemp As cDisplayLayer In Me.m_layers
                     ' Got it?
                     If layerTemp.IsSelected Then
                         ' #Yes: remember this
@@ -218,7 +218,7 @@ Namespace Ecospace.Basemap
         Private Sub AddData(ByVal varName As eVarNameFlags, Optional ByVal bClearGroup As Boolean = True)
 
             Dim factory As New cLayerFactoryInternal()
-            Dim alayers As cLayer() = factory.GetLayers(Me.UIContext, varName)
+            Dim alayers As cDisplayLayer() = factory.GetLayers(Me.UIContext, varName)
             Dim strGroup As String = factory.GetLayerGroup(varName)
             Dim strCommand As String = factory.GetLayerGroupEditCommand(varName)
 
@@ -237,8 +237,8 @@ Namespace Ecospace.Basemap
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Sub RemoveAllLayers()
-            Dim alayers As cLayer() = Me.m_layers.ToArray()
-            For Each layer As cLayer In alayers
+            Dim alayers As cDisplayLayer() = Me.m_layers.ToArray()
+            For Each layer As cDisplayLayer In alayers
                 Me.RemoveLayer(layer)
             Next
         End Sub
@@ -248,7 +248,7 @@ Namespace Ecospace.Basemap
         ''' Add a single layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub AddLayer(ByVal l As cLayer, ByVal strGroup As String, strCommand As String)
+        Private Sub AddLayer(ByVal l As cDisplayLayer, ByVal strGroup As String, strCommand As String)
             Me.m_layers.Add(l)
             Me.m_ucBasemap.AddLayer(l)
             Me.m_ucLayers.AddLayer(l, strGroup, strCommand)
@@ -261,7 +261,7 @@ Namespace Ecospace.Basemap
         ''' Remove a single layer.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub RemoveLayer(ByVal l As cLayer)
+        Private Sub RemoveLayer(ByVal l As cDisplayLayer)
             Me.m_layers.Remove(l)
             Me.m_ucBasemap.RemoveLayer(l)
             Me.m_ucLayers.RemoveLayer(l)
@@ -275,15 +275,15 @@ Namespace Ecospace.Basemap
 #Region " Internals "
 
         ''' <summary>The layer currently selected by the user.</summary>
-        Private m_layerSelected As cLayer = Nothing
+        Private m_layerSelected As cDisplayLayer = Nothing
         ''' <summary>The editor belonging to the selected layer, if any.</summary>
         Private m_editorGUISelected As ucLayerEditor = Nothing
 
-        Private Property SelectedLayer() As cLayer
+        Private Property SelectedLayer() As cDisplayLayer
             Get
                 Return Me.m_layerSelected
             End Get
-            Set(ByVal layer As cLayer)
+            Set(ByVal layer As cDisplayLayer)
 
                 If Object.ReferenceEquals(layer, Me.m_layerSelected) Then Return
 
@@ -298,8 +298,8 @@ Namespace Ecospace.Basemap
                         Me.m_editorGUISelected = Nothing
                     End If
 
-                    If (TypeOf Me.m_layerSelected Is cRasterLayer) Then
-                        DirectCast(Me.m_layerSelected, cRasterLayer).Editor.DestroyEditorControl()
+                    If (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then
+                        DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.DestroyEditorControl()
                     End If
                 End If
 
@@ -308,8 +308,8 @@ Namespace Ecospace.Basemap
                 If (Me.m_layerSelected IsNot Nothing) Then
 
                     ' Add layer editor GUI
-                    If (TypeOf Me.m_layerSelected Is cRasterLayer) Then
-                        Me.m_editorGUISelected = DirectCast(Me.m_layerSelected, cRasterLayer).Editor.CreateEditorControl()
+                    If (TypeOf Me.m_layerSelected Is cDisplayRasterLayer) Then
+                        Me.m_editorGUISelected = DirectCast(Me.m_layerSelected, cDisplayRasterLayer).Editor.CreateEditorControl()
                     End If
 
                     If (Me.m_editorGUISelected IsNot Nothing) Then
