@@ -3662,7 +3662,7 @@ exitline:
                     TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt) ' * Me.m_Data.PropEffortFleetArea(iFlt, iArea)
 
                     'set the total effort by zone
-                    For iArea As Integer = 1 To Me.m_Data.nEffZones
+                    For iArea As Integer = 0 To Me.m_Data.nEffZones
                         TotEffortZone(iArea) = TotE * Me.m_Data.PropEffortFleetZone(iFlt, iArea)
                         TotAttractZone(iArea) = 1.0E-30
                     Next iArea
@@ -3799,7 +3799,7 @@ exitline:
                 TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
 
                 'set the total effort by zone
-                For iArea As Integer = 1 To Me.m_Data.nEffZones
+                For iArea As Integer = 0 To Me.m_Data.nEffZones
                     TotEffortZone(iArea) = TotE * Me.m_Data.PropEffortFleetZone(iFlt, iArea)
                     TotAttractZone(iArea) = 1.0E-30
                 Next iArea
@@ -3855,7 +3855,6 @@ exitline:
 
                         ' m_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(iRow, iCol) / TotAttract
                         m_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.m_Data.EffZones(iRow, iCol)) * Attract(iRow, iCol) / TotAttractZone(Me.m_Data.EffZones(iRow, iCol))
-
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
                         'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
