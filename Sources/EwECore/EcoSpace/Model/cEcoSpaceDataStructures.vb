@@ -627,7 +627,7 @@ Public Class cEcospaceDataStructures
     Public PropEffortFleetZone(,) As Single
 
     ''' <summary>
-    ''' PropEffortFleetArea() index of the area a cell is in by Row Col
+    ''' PropEffortFleetArea() index of the Effort Zone a cell is in by Row Col
     ''' </summary>
     ''' <remarks></remarks>
     Public EffZones(,) As Integer
