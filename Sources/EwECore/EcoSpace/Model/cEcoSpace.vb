@@ -1114,7 +1114,11 @@ Public Class cEcoSpace
                 For i = 1 To m_Data.InRow
                     For j = 1 To m_Data.InCol
                         For ip = 0 To m_Data.NGroups
-                            Btime(ip) += m_Data.Bcell(i, j, ip) * m_Data.Width(i)
+                            'jb 12-July-2013 Added Depth check and removed width multiplier
+                            'This fixes a bug in the Ecospace Results grid were biomass was not matching Ecopath base with large spatial models
+                            If Me.m_Data.Depth(i, j) > 0 Then
+                                Btime(ip) += m_Data.Bcell(i, j, ip) ' * m_Data.Width(i)
+                            End If
                         Next ip
                     Next j
                 Next i
@@ -1875,6 +1879,7 @@ Public Class cEcoSpace
                 Next
             Next iflt
 
+            Dim sumb(Me.m_Data.NGroups) As Single
             For ip = 0 To m_Data.NGroups
                 Btime(ip) = 0
                 For i = 0 To m_Data.InRow + 1
@@ -1891,6 +1896,7 @@ Public Class cEcoSpace
                         If m_Data.Depth(i, j) > 0 Then
 
                             m_Data.Bcell(i, j, ip) = (Me.m_Data.nWaterCells / Me.m_Data.TotHabCap(ip)) * Me.m_Data.HabCap(i, j, ip) * m_SimData.StartBiomass(ip)
+                            sumb(ip) += m_Data.Bcell(i, j, ip)
                             'If m_Data.PrefHab(ip, m_Data.HabType(i, j)) = False And m_Data.PrefHab(ip, 0) = False Then
                             '    m_Data.Bcell(i, j, ip) = 0.1 * m_SimData.StartBiomass(ip)
                             'End If
