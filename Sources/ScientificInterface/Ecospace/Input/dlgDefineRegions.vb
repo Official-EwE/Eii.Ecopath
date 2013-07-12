@@ -89,8 +89,9 @@ Namespace Ecospace
             Dim bm As cEcospaceBasemap = Me.UIContext.Core.EcospaceBasemap
             Dim regions As cEcospaceLayerRegion = bm.LayerRegion
             Dim parms As cEcospaceModelParameters = Me.UIContext.Core.EcospaceModelParameters
+            Dim nReg As Integer = CInt(Me.m_nudNoRegions.Value)
 
-            If (Me.m_nudNoRegions.Value < regions.MaxValue) Then
+            If (nReg < regions.MaxValue) Then
                 ' ToDo: globalize this
                 Dim fmsg As New cFeedbackMessage("There are cells that will no longer be assigned to regions if you continue.", _
                                                  EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.Any, eMessageImportance.Question, _
@@ -100,7 +101,9 @@ Namespace Ecospace
                 If (fmsg.Reply <> eMessageReply.OK) Then Return
             End If
 
-            parms.nRegions = Me.UIContext.Core.nMPAs
+            ' parms.nRegions = Me.UIContext.Core.nMPAs
+            parms.nRegions = nReg
+
 
         End Sub
 
