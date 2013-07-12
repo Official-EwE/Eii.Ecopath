@@ -101,9 +101,7 @@ Namespace Ecospace
                 If (fmsg.Reply <> eMessageReply.OK) Then Return
             End If
 
-            ' parms.nRegions = Me.UIContext.Core.nMPAs
             parms.nRegions = nReg
-
 
         End Sub
 
