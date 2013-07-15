@@ -125,6 +125,25 @@ Public Class cEcoNetwork
     Private Sel As Integer 'jb I don't think this is used anymore In EwE5 it is set from PrepareReqPPDetails()
     Private m_GroupsToShow() As Boolean
 
+
+    Private m_AbortTimer As System.Timers.Timer
+
+    ''' <summary>Abort Timer timed out. Used to post a message at the end of a run.</summary>
+    Private m_timedOut As Boolean
+
+    ''' <summary>
+    ''' Number of milliseconds to wait for the Network Analysis to complete before it times out.
+    ''' </summary>
+    ''' <remarks>This is only effective if <see cref="bUseAbortTimer">bUseAbortTimer</see> = True. Default of 30 minutes</remarks> 
+    Public TimeOutMilSecs As Integer = 30 * 60 * 1000 '30min * 60sec * 1000milsec
+
+    ''' <summary>Use the Abort Timer to abort a run after <see cref="TimeOutMilSecs">time out in Milliseconds</see></summary>
+    ''' <remarks>
+    ''' False by default. The AbortTimer works in the Scientific interface but needs an interface to turn it on/off and set the TimeOutMilSecs. 
+    ''' At this time this can only be used from code.
+    ''' </remarks>
+    Private m_bUseAbortTimer As Boolean = False
+
 #Region "Private Ecosim Data"
 
     'biomass computed by Ecosim at the current time step
@@ -375,9 +394,74 @@ Public Class cEcoNetwork
         End Set
     End Property
 
+    Public Property bUseAbortTimer As Boolean
+        Get
+            Return Me.m_bUseAbortTimer
+        End Get
+        Set(value As Boolean)
+            Me.m_bUseAbortTimer = value
+        End Set
+    End Property
+
 #End Region ' Public Properties
 
 #Region " Network Analysis "
+
+    Private Sub startAbortTimer()
+
+        If Not Me.m_bUseAbortTimer Then Exit Sub
+
+        Try
+
+            'Create or start a new timer
+            If Me.m_AbortTimer Is Nothing Then
+                Me.m_AbortTimer = New System.Timers.Timer(Me.TimeOutMilSecs)
+                Me.m_AbortTimer.AutoReset = False
+                Me.m_AbortTimer.Start()
+            Else
+                Me.m_AbortTimer.Stop()
+                Me.m_AbortTimer.Start()
+            End If
+
+            Me.m_timedOut = False
+            AddHandler Me.m_AbortTimer.Elapsed, AddressOf Me.OnAbortTimerEvent
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub stopAbortTimer()
+
+        If Not Me.m_bUseAbortTimer Then Exit Sub
+
+        Try
+            Debug.Assert(Me.m_AbortTimer IsNot Nothing, Me.ToString + " abort timer has not been set!")
+
+            If Me.m_timedOut Then
+                Me.SendMessage(New cMessage("Sorry Network Analysis timed out after " + (TimeOutMilSecs / 60 / 1000).ToString + " minutes. Results will not be displayed.", _
+                                            eMessageType.ErrorEncountered, EwEUtils.Core.eCoreComponentType.EcoPath, eMessageImportance.Warning))
+            End If
+
+            Me.m_AbortTimer.Close()
+            RemoveHandler Me.m_AbortTimer.Elapsed, AddressOf Me.OnAbortTimerEvent
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+
+    Private Sub OnAbortTimerEvent(source As Object, e As System.Timers.ElapsedEventArgs)
+
+        If Not Me.m_bUseAbortTimer Then Exit Sub
+
+        Me.bStopNetworkAnnalysis = True
+        Me.m_timedOut = True
+        Console.WriteLine("The abortTimer.Elapsed event was raised at {0}", e.SignalTime)
+    End Sub
+
 
     ''' <summary>
     ''' Run the Main Network Analysis routine
@@ -422,10 +506,15 @@ Public Class cEcoNetwork
                 strErr = "Ulanow()"
                 Ulanow(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp)
 
+                Me.startAbortTimer()
+
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_LINDEMAN, 0.3)
                 strErr = "Lindeman()"
                 Lindeman(m_epdata.B, m_epdata.PB, m_epdata.QB, m_epdata.EE, m_epdata.DC, im, m_epdata.Ex, m_epdata.Resp) '
                 cApplicationStatusNotifier.UpdateProgress(Me.m_core, My.Resources.STATUS_RUNNING_NA, 0.4)
+
+                Me.stopAbortTimer()
+
             Catch ex As Exception
                 cLog.Write(ex)
                 bSucces = False
