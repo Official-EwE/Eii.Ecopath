@@ -639,6 +639,33 @@ Public Class cNetworkManager
     Public Property RunWithEcopath() As Boolean
     Public Property RunWithEcosim() As Boolean
 
+    ''' <summary>Use the Abort Timer to abort a run after <see cref="TimeOutMilSecs">time out in Milliseconds</see></summary>
+    ''' <remarks>
+    ''' False by default. The AbortTimer works in the Scientific interface but needs an interface to turn it on/off and set the TimeOutMilSecs. 
+    ''' At this time this can only be used from code.
+    ''' </remarks>
+    Public Property bUseAbortTimer As Boolean
+        Get
+            Return Me.m_econetwork.bUseAbortTimer
+        End Get
+        Set(value As Boolean)
+            Me.m_econetwork.bUseAbortTimer = value
+        End Set
+    End Property
+
+    ''' <summary>
+    ''' Number of milliseconds to wait for the Network Analysis to complete before it times out.
+    ''' </summary>
+    ''' <remarks>This is only effective if <see cref="bUseAbortTimer">bUseAbortTimer</see> = True. Default of 30 minutes</remarks> 
+    Public Property TimeOutMilSecs As Integer
+        Get
+            Return Me.m_econetwork.TimeOutMilSecs
+        End Get
+        Set(value As Integer)
+            Me.m_econetwork.TimeOutMilSecs = value
+        End Set
+    End Property
+
 #End Region ' Settings
 
 #Region " Inputs "
