@@ -1158,7 +1158,7 @@ Public Class cEcospaceDataStructures
 
         For iflt As Integer = 1 To nFleets
             'Default proportion of effort in an area = 1
-            For iarea As Integer = 1 To nEffZones
+            For iarea As Integer = 0 To nEffZones
                 PropEffortFleetZone(iflt, iarea) = 1
             Next iarea
         Next
