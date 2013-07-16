@@ -41,24 +41,33 @@ Public Class ucOptions
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
-        Me.m_cbCalcCyclesPathways.Checked = Me.m_man.AllowFindPathsAndCycles
+        Me.m_cbUseTimeout.Checked = Me.m_man.UseAbortTimer
         Me.UpdateControls()
     End Sub
 
     Private Sub m_cbCalcCyclesPathways_CheckedChanged(sender As System.Object, e As System.EventArgs) _
-        Handles m_cbCalcCyclesPathways.CheckedChanged
+        Handles m_cbUseTimeout.CheckedChanged
         Try
-            Me.m_man.AllowFindPathsAndCycles = m_cbCalcCyclesPathways.Checked
+            Me.m_man.UseAbortTimer = m_cbUseTimeout.Checked
             Me.UpdateControls()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
     End Sub
 
+    Private Sub m_nudTimeOut_ValueChanged(sender As System.Object, e As System.EventArgs) _
+        Handles m_nudTimeOut.Validated
+        Try
+            Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000)
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
     Private Sub UpdateControls()
-        Me.m_nudTimeOut.Enabled = Me.m_man.AllowFindPathsAndCycles
-        Me.m_lblTimeout.Enabled = Me.m_man.AllowFindPathsAndCycles
-        Me.m_lblTimeOutUnit.Enabled = Me.m_man.AllowFindPathsAndCycles
+        Me.m_nudTimeOut.Enabled = Me.m_man.UseAbortTimer
+        Me.m_lblTimeout.Enabled = Me.m_man.UseAbortTimer
+        Me.m_lblTimeOutUnit.Enabled = Me.m_man.UseAbortTimer
     End Sub
 
 End Class

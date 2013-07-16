@@ -23,7 +23,7 @@ Partial Class ucOptions
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.m_hdrOptions = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_cbCalcCyclesPathways = New System.Windows.Forms.CheckBox()
+        Me.m_cbUseTimeout = New System.Windows.Forms.CheckBox()
         Me.m_lblTimeout = New System.Windows.Forms.Label()
         Me.m_nudTimeOut = New System.Windows.Forms.NumericUpDown()
         Me.m_lblTimeOutUnit = New System.Windows.Forms.Label()
@@ -44,15 +44,15 @@ Partial Class ucOptions
         Me.m_hdrOptions.Text = "Generic options"
         Me.m_hdrOptions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'm_cbCalcCyclesPathways
+        'm_cbUseTimeout
         '
-        Me.m_cbCalcCyclesPathways.AutoSize = True
-        Me.m_cbCalcCyclesPathways.Location = New System.Drawing.Point(6, 32)
-        Me.m_cbCalcCyclesPathways.Name = "m_cbCalcCyclesPathways"
-        Me.m_cbCalcCyclesPathways.Size = New System.Drawing.Size(103, 17)
-        Me.m_cbCalcCyclesPathways.TabIndex = 1
-        Me.m_cbCalcCyclesPathways.Text = "Calculate cycles"
-        Me.m_cbCalcCyclesPathways.UseVisualStyleBackColor = True
+        Me.m_cbUseTimeout.AutoSize = True
+        Me.m_cbUseTimeout.Location = New System.Drawing.Point(6, 32)
+        Me.m_cbUseTimeout.Name = "m_cbUseTimeout"
+        Me.m_cbUseTimeout.Size = New System.Drawing.Size(156, 17)
+        Me.m_cbUseTimeout.TabIndex = 1
+        Me.m_cbUseTimeout.Text = "&Use timeout for calculations"
+        Me.m_cbUseTimeout.UseVisualStyleBackColor = True
         '
         'm_lblTimeout
         '
@@ -62,16 +62,16 @@ Partial Class ucOptions
         Me.m_lblTimeout.Size = New System.Drawing.Size(51, 13)
         Me.m_lblTimeout.TabIndex = 2
         Me.m_lblTimeout.Text = "Time out:"
-        Me.m_lblTimeout.Visible = False
         '
         'm_nudTimeOut
         '
         Me.m_nudTimeOut.Location = New System.Drawing.Point(79, 55)
         Me.m_nudTimeOut.Maximum = New Decimal(New Integer() {360, 0, 0, 0})
+        Me.m_nudTimeOut.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
         Me.m_nudTimeOut.Name = "m_nudTimeOut"
         Me.m_nudTimeOut.Size = New System.Drawing.Size(49, 20)
         Me.m_nudTimeOut.TabIndex = 3
-        Me.m_nudTimeOut.Visible = False
+        Me.m_nudTimeOut.Value = New Decimal(New Integer() {30, 0, 0, 0})
         '
         'm_lblTimeOutUnit
         '
@@ -81,7 +81,6 @@ Partial Class ucOptions
         Me.m_lblTimeOutUnit.Size = New System.Drawing.Size(31, 13)
         Me.m_lblTimeOutUnit.TabIndex = 4
         Me.m_lblTimeOutUnit.Text = "mins."
-        Me.m_lblTimeOutUnit.Visible = False
         '
         'ucOptions
         '
@@ -90,17 +89,17 @@ Partial Class ucOptions
         Me.Controls.Add(Me.m_lblTimeOutUnit)
         Me.Controls.Add(Me.m_nudTimeOut)
         Me.Controls.Add(Me.m_lblTimeout)
-        Me.Controls.Add(Me.m_cbCalcCyclesPathways)
+        Me.Controls.Add(Me.m_cbUseTimeout)
         Me.Controls.Add(Me.m_hdrOptions)
         Me.Name = "ucOptions"
-        Me.Size = New System.Drawing.Size(167, 54)
+        Me.Size = New System.Drawing.Size(167, 83)
         CType(Me.m_nudTimeOut, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Private WithEvents m_hdrOptions As ScientificInterfaceShared.Controls.cEwEHeaderLabel
-    Private WithEvents m_cbCalcCyclesPathways As System.Windows.Forms.CheckBox
+    Private WithEvents m_cbUseTimeout As System.Windows.Forms.CheckBox
     Private WithEvents m_lblTimeout As System.Windows.Forms.Label
     Private WithEvents m_nudTimeOut As System.Windows.Forms.NumericUpDown
     Private WithEvents m_lblTimeOutUnit As System.Windows.Forms.Label

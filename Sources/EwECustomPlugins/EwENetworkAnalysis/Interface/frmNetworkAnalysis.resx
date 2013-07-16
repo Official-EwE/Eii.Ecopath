@@ -244,7 +244,7 @@
     <value>m_plot</value>
   </data>
   <data name="&gt;&gt;m_plot.Type" xml:space="preserve">
-    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.3.9419.0, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
+    <value>EwENetworkAnalysis.ucPlot, EwENetworkAnalysis, Version=6.3.9460.0, Culture=neutral, PublicKeyToken=43ed0cfa9d8c0f9a</value>
   </data>
   <data name="&gt;&gt;m_plot.Parent" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -535,7 +535,7 @@
     <value>m_toolstrip</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9419.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9460.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_toolstrip.Parent" xml:space="preserve">
     <value>m_scNetworkAnalysis.Panel2</value>
@@ -604,7 +604,7 @@
     <value>m_hdrPage</value>
   </data>
   <data name="&gt;&gt;m_hdrPage.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9419.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9460.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrPage.Parent" xml:space="preserve">
     <value>$this</value>
@@ -2987,9 +2987,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAA4AcAAMADAADAAwAAwAMAAIABAACAAQAAAAEAAAAAAAAAAAAAAAEAAIAB
         AACAAQAAwAMAAMAHAADwDwAA/D8AAA==
 </value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>&lt;title&gt;</value>

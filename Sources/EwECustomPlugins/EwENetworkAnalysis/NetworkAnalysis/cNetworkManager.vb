@@ -109,6 +109,10 @@ Public Class cNetworkManager
         Me.m_econetwork = New cEcoNetwork(Me)
 
         AddHandler Me.m_corestatemonitor.CoreExecutionStateEvent, AddressOf OnCoreExecutionStateChanged
+
+        Me.UseAbortTimer = My.Settings.UseAbortTimer
+        Me.TimeOutMilSecs = CLng(My.Settings.AbortTimoutMins * 60 * 1000)
+
         Return True
 
     End Function
@@ -305,16 +309,6 @@ Public Class cNetworkManager
 
 #Region " Pathways "
 
-    Public Property AllowFindPathsAndCycles As Boolean
-        Get
-            Return My.Settings.UseCyclesPathways
-        End Get
-        Set(value As Boolean)
-            My.Settings.UseCyclesPathways = value
-            My.Settings.Save()
-        End Set
-    End Property
-
     ''' <summary>
     ''' TL1-->Consumer
     ''' </summary>
@@ -323,11 +317,6 @@ Public Class cNetworkManager
     Public Function FindPathwaysToConsumer(ByVal iToGroup As Integer) As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
-
-        If (Not Me.AllowFindPathsAndCycles) Then
-            Me.m_pathwaystate = ePathways.NotRan
-            Return True
-        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.ToConsumer) And (Me.m_iPathwayToGroup = iToGroup) Then Return True
@@ -356,15 +345,10 @@ Public Class cNetworkManager
     ''' <param name="iToGroup"></param>
     ''' <param name="iViaGroup"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
+
     Public Function FindPathwaysToConsumerViaPrey(ByVal iToGroup As Integer, ByVal iViaGroup As Integer) As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
-
-        If (Not Me.AllowFindPathsAndCycles) Then
-            Me.m_pathwaystate = ePathways.NotRan
-            Return True
-        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.ToConsumerViaPrey) And _
@@ -398,15 +382,9 @@ Public Class cNetworkManager
     ''' </summary>
     ''' <param name="iFromGroup"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function FindPathwaysFromPrey(ByVal iFromGroup As Integer) As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
-
-        If (Not Me.AllowFindPathsAndCycles) Then
-            Me.m_pathwaystate = ePathways.NotRan
-            Return True
-        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.FromPrey) And _
@@ -435,15 +413,9 @@ Public Class cNetworkManager
     ''' Cycles(excl. detitus)
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function FindPathwaysCycles() As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
-
-        If (Not Me.AllowFindPathsAndCycles) Then
-            Me.m_pathwaystate = ePathways.NotRan
-            Return True
-        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.LinkedPathways) Then Return True
@@ -470,15 +442,9 @@ Public Class cNetworkManager
     ''' All cycles
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function FindPathwaysCyclesAll() As Boolean
 
         Dim nPaths As Integer, nArrows As Integer
-
-        If (Not Me.AllowFindPathsAndCycles) Then
-            Me.m_pathwaystate = ePathways.NotRan
-            Return True
-        End If
 
         ' Optimization
         If (Me.m_pathwaystate = ePathways.All) Then Return True
@@ -507,7 +473,6 @@ Public Class cNetworkManager
     ''' <summary>
     ''' Run Ecosim and compute the ecosim network analysis data - if not already ran.
     ''' </summary>
-    ''' <remarks></remarks>
     Public Function RunEcosimNetwork() As Boolean
 
         Try
@@ -544,7 +509,6 @@ Public Class cNetworkManager
     ''' Initialize Ecosim Network Analysis
     ''' </summary>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function InitNetworkForEcosim() As Boolean
 
         Try
@@ -596,7 +560,6 @@ Public Class cNetworkManager
     ''' <param name="EcosimDatastructures"></param>
     ''' <param name="iTime"></param>
     ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Function EcosimTimeStep(ByRef BiomassAtTimestep() As Single, ByVal EcosimDatastructures As cEcosimDatastructures, ByVal iTime As Integer) As Boolean
 
         Dim bSucces As Boolean = True
@@ -644,25 +607,27 @@ Public Class cNetworkManager
     ''' False by default. The AbortTimer works in the Scientific interface but needs an interface to turn it on/off and set the TimeOutMilSecs. 
     ''' At this time this can only be used from code.
     ''' </remarks>
-    Public Property bUseAbortTimer As Boolean
+    Public Property UseAbortTimer As Boolean
         Get
             Return Me.m_econetwork.bUseAbortTimer
         End Get
         Set(value As Boolean)
             Me.m_econetwork.bUseAbortTimer = value
+            My.Settings.UseAbortTimer = value
         End Set
     End Property
 
     ''' <summary>
     ''' Number of milliseconds to wait for the Network Analysis to complete before it times out.
     ''' </summary>
-    ''' <remarks>This is only effective if <see cref="bUseAbortTimer">bUseAbortTimer</see> = True. Default of 30 minutes</remarks> 
-    Public Property TimeOutMilSecs As Integer
+    ''' <remarks>This is only effective if <see cref="UseAbortTimer"/> = True. Default of 30 minutes</remarks> 
+    Public Property TimeOutMilSecs As Long
         Get
             Return Me.m_econetwork.TimeOutMilSecs
         End Get
-        Set(value As Integer)
+        Set(value As Long)
             Me.m_econetwork.TimeOutMilSecs = value
+            My.Settings.AbortTimoutMins = CInt(value / (60 * 1000))
         End Set
     End Property
 
@@ -686,7 +651,7 @@ Public Class cNetworkManager
     ''' <summary>
     ''' Ecopath data to run the analysis on
     ''' </summary>
-    ''' <remarks></remarks>
+
     Public Property EcosimData() As cEcosimDatastructures
         Get
             Return m_esdata
@@ -827,7 +792,7 @@ Public Class cNetworkManager
     ''' <summary>
     ''' EwE5 Cycles and Pathways
     ''' </summary>
-    ''' <remarks></remarks>
+
     Public ReadOnly Property NumArrows() As Integer
         Get
             Return Me.m_econetwork.NumberArrows
