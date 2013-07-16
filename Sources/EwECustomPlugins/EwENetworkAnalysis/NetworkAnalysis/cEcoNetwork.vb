@@ -135,14 +135,7 @@ Public Class cEcoNetwork
     ''' Number of milliseconds to wait for the Network Analysis to complete before it times out.
     ''' </summary>
     ''' <remarks>This is only effective if <see cref="bUseAbortTimer">bUseAbortTimer</see> = True. Default of 30 minutes</remarks> 
-    Public TimeOutMilSecs As Integer = 30 * 60 * 1000 '30min * 60sec * 1000milsec
-
-    ''' <summary>Use the Abort Timer to abort a run after <see cref="TimeOutMilSecs">time out in Milliseconds</see></summary>
-    ''' <remarks>
-    ''' False by default. The AbortTimer works in the Scientific interface but needs an interface to turn it on/off and set the TimeOutMilSecs. 
-    ''' At this time this can only be used from code.
-    ''' </remarks>
-    Private m_bUseAbortTimer As Boolean = False
+    Public Property TimeOutMilSecs As Long = 30 * 60 * 1000 '30min * 60sec * 1000milsec
 
 #Region "Private Ecosim Data"
 
@@ -361,12 +354,6 @@ Public Class cEcoNetwork
 
 #Region " Public Properties "
 
-    Public ReadOnly Property AllowFindPathsAndCycles As Boolean
-        Get
-            Return Me.m_manager.AllowFindPathsAndCycles
-        End Get
-    End Property
-
     Public Property GroupsToShow() As Boolean()
         Get
             Return Me.m_GroupsToShow
@@ -394,14 +381,12 @@ Public Class cEcoNetwork
         End Set
     End Property
 
-    Public Property bUseAbortTimer As Boolean
-        Get
-            Return Me.m_bUseAbortTimer
-        End Get
-        Set(value As Boolean)
-            Me.m_bUseAbortTimer = value
-        End Set
-    End Property
+    ''' <summary>Use the Abort Timer to abort a run after <see cref="TimeOutMilSecs">time out in Milliseconds</see></summary>
+    ''' <remarks>
+    ''' False by default. The AbortTimer works in the Scientific interface but needs an interface to turn it on/off and set the TimeOutMilSecs. 
+    ''' At this time this can only be used from code.
+    ''' </remarks>
+    Public Property bUseAbortTimer As Boolean = My.Settings.UseAbortTimer
 
 #End Region ' Public Properties
 
@@ -409,7 +394,7 @@ Public Class cEcoNetwork
 
     Private Sub startAbortTimer()
 
-        If Not Me.m_bUseAbortTimer Then Exit Sub
+        If Not Me.bUseAbortTimer Then Exit Sub
 
         Try
 
@@ -434,7 +419,7 @@ Public Class cEcoNetwork
 
     Private Sub stopAbortTimer()
 
-        If Not Me.m_bUseAbortTimer Then Exit Sub
+        If Not Me.bUseAbortTimer Then Exit Sub
 
         Try
             Debug.Assert(Me.m_AbortTimer IsNot Nothing, Me.ToString + " abort timer has not been set!")
@@ -455,7 +440,7 @@ Public Class cEcoNetwork
 
     Private Sub OnAbortTimerEvent(source As Object, e As System.Timers.ElapsedEventArgs)
 
-        If Not Me.m_bUseAbortTimer Then Exit Sub
+        If Not Me.bUseAbortTimer Then Exit Sub
 
         Me.bStopNetworkAnnalysis = True
         Me.m_timedOut = True
@@ -834,7 +819,7 @@ Public Class cEcoNetwork
         SumDiet(SumDC)
         ThruputByGroup()
 
-        If FoundCycles = False And AllowFindPathsAndCycles Then
+        If FoundCycles = False Then
             FindCycles(Cons)
             FoundCycles = True
         End If

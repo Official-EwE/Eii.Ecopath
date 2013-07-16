@@ -106,13 +106,14 @@ Public Class cNetworkAnalysisRemote
 
     Private Function SaveIndices(ByVal strPath As String, _
                                  ByVal bWithPPR As Boolean, _
-                                 ByVal bFindCycles As Boolean) As Boolean
+                                 ByVal bUseTimer As Boolean) As Boolean
 
         Dim writer As New cResultWriter(Me.m_manager)
-        Dim bFindCyclesCurr As Boolean = Me.m_manager.AllowFindPathsAndCycles
+        Dim bUseTimeCurr As Boolean = Me.m_manager.UseAbortTimer
+        Dim lTimeoutCurr As Long = Me.m_manager.TimeOutMilSecs
         Dim bSuccess As Boolean = True
 
-        Me.m_manager.AllowFindPathsAndCycles = bFindCycles
+        Me.m_manager.UseAbortTimer = bUseTimer
         If String.IsNullOrEmpty(strPath) Then strPath = Me.m_uic.Core.OutputPath
 
         Try
@@ -120,7 +121,7 @@ Public Class cNetworkAnalysisRemote
         Catch ex As Exception
             bSuccess = False
         End Try
-        Me.m_manager.AllowFindPathsAndCycles = bFindCyclesCurr
+        Me.m_manager.UseAbortTimer = bUseTimeCurr
         Return bSuccess
 
     End Function

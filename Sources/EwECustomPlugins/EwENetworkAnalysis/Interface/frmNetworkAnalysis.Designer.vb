@@ -48,6 +48,7 @@ Partial Class frmNetworkAnalysis
         Me.m_scMain = New System.Windows.Forms.SplitContainer()
         Me.m_tlpInfo = New System.Windows.Forms.TableLayoutPanel()
         Me.m_pbCredits = New System.Windows.Forms.PictureBox()
+        Me.m_plot = New EwENetworkAnalysis.ucPlot()
         Me.m_graph = New ZedGraph.ZedGraphControl()
         Me.m_datagrid = New System.Windows.Forms.DataGridView()
         Me.m_tlpOptions = New System.Windows.Forms.TableLayoutPanel()
@@ -62,7 +63,6 @@ Partial Class frmNetworkAnalysis
         Me.tsbtnOutputIndicesCSV = New System.Windows.Forms.ToolStripButton()
         Me.tsbtnOutputGraphEMF = New System.Windows.Forms.ToolStripButton()
         Me.m_hdrPage = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
-        Me.m_plot = New EwENetworkAnalysis.ucPlot()
         ts3 = New System.Windows.Forms.ToolStripSeparator()
         ts1 = New System.Windows.Forms.ToolStripSeparator()
         ts2 = New System.Windows.Forms.ToolStripSeparator()
@@ -136,6 +136,11 @@ Partial Class frmNetworkAnalysis
         Me.m_pbCredits.Image = Global.EwENetworkAnalysis.My.Resources.Resources.N_Asponsors
         Me.m_pbCredits.Name = "m_pbCredits"
         Me.m_pbCredits.TabStop = False
+        '
+        'm_plot
+        '
+        resources.ApplyResources(Me.m_plot, "m_plot")
+        Me.m_plot.Name = "m_plot"
         '
         'm_graph
         '
@@ -232,11 +237,6 @@ Partial Class frmNetworkAnalysis
         Me.m_hdrPage.CollapsedParentHeight = 0
         Me.m_hdrPage.IsCollapsed = False
         Me.m_hdrPage.Name = "m_hdrPage"
-        '
-        'm_plot
-        '
-        resources.ApplyResources(Me.m_plot, "m_plot")
-        Me.m_plot.Name = "m_plot"
         '
         'frmNetworkAnalysis
         '

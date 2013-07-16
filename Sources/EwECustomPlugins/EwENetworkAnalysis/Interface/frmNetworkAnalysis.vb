@@ -577,10 +577,12 @@ Public Class frmNetworkAnalysis
 
         If (bShow = True) Then
             ctrlOptions = New ucOptions(Me.m_uic, Me.m_networkmanager)
+            ctrlOptions.Dock = DockStyle.Fill
             Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 0)
             If (Me.m_contentmanager IsNot Nothing) Then
                 ctrlOptions = Me.m_contentmanager.OptionsControl
-                If ctrlOptions IsNot Nothing Then
+                If (ctrlOptions IsNot Nothing) Then
+                    ctrlOptions.Dock = DockStyle.Fill
                     Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
                 End If
             End If
