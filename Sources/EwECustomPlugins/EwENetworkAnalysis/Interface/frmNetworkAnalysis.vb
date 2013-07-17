@@ -572,22 +572,29 @@ Public Class frmNetworkAnalysis
     Private Sub ShowOptions(ByVal bShow As Boolean)
 
         Dim ctrlOptions As Control = Nothing
+        Dim iWidth As Integer = 0
 
         Me.m_tlpOptions.Controls.Clear()
 
         If (bShow = True) Then
+
             ctrlOptions = New ucOptions(Me.m_uic, Me.m_networkmanager)
+            iWidth = ctrlOptions.Width
             ctrlOptions.Dock = DockStyle.Fill
             Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 0)
+
             If (Me.m_contentmanager IsNot Nothing) Then
                 ctrlOptions = Me.m_contentmanager.OptionsControl
                 If (ctrlOptions IsNot Nothing) Then
+
+                    iWidth = Math.Max(iWidth, ctrlOptions.Width)
                     ctrlOptions.Dock = DockStyle.Fill
                     Me.m_tlpOptions.Controls.Add(ctrlOptions, 0, 1)
                 End If
             End If
+
             Me.m_scMain.Panel2Collapsed = False
-            Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - m_tlpOptions.Width
+            Me.m_scMain.SplitterDistance = Me.m_scMain.Width - Me.m_scMain.SplitterWidth - iWidth
             Me.tsbtnOptions.Checked = True
         Else
             Me.m_scMain.Panel2Collapsed = True
