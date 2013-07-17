@@ -113,7 +113,7 @@ Public Class cSpaceSolver
     Private pbb() As Single
 
     'These are total sums for every cell, so must be summed for each thread seperately, then combined after they've all run
-    Public BtimeLocal() As Single
+    'Public BtimeLocal() As Single
     Public TotLossThread() As Single
     Public TotEatenByThread() As Single
     Public TotBiomThread() As Single
@@ -220,7 +220,7 @@ Public Class cSpaceSolver
         ReDim FishRateGear(m_Data.nFleets, 0)
 
         'thread copy of global sums
-        ReDim BtimeLocal(m_Data.NGroups)
+        ' ReDim BtimeLocal(m_Data.NGroups)
         ReDim TotLossThread(m_Data.NGroups)
         ReDim TotEatenByThread(m_Data.NGroups)
         ReDim TotBiomThread(m_Data.NGroups)
@@ -311,7 +311,7 @@ Public Class cSpaceSolver
             Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
             Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
 
-            Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
+            'Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
             Array.Clear(Me.TotLossThread, 0, m_Data.NGroups)
             Array.Clear(Me.TotEatenByThread, 0, m_Data.NGroups)
             Array.Clear(Me.TotBiomThread, 0, m_Data.NGroups)
@@ -408,7 +408,7 @@ Public Class cSpaceSolver
                 'sum biomass over all the cells
                 'this is now done individually for each thread, then summed outside the threads
                 'Btime(ip) = Btime(ip) + BB(ip)
-                BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
+                'BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
 
                 If (m_SimData.NoIntegrate(iGrp) = iGrp Or m_SimData.NoIntegrate(iGrp) < 0) And m_SimData.SimGE(iGrp) > 0 Then
                     If (Cper(i, j, iGrp) > 0 And m_SimData.FtimeAdjust(iGrp) > 0) Then
@@ -1279,7 +1279,7 @@ Public Class cSpaceSolver_LocalMemory
     Private pbb() As Single
 
     'These are total sums for every cell, so must be summed for each thread seperately, then combined after they've all run
-    Public BtimeLocal() As Single
+    'Public BtimeLocal() As Single
     Public TotLossThread() As Single
     Public TotEatenByThread() As Single
     Public TotBiomThread() As Single
@@ -1573,7 +1573,7 @@ Public Class cSpaceSolver_LocalMemory
         EffortSpace = New Single(nFleets, 0) {}
 
         'thread copy of global sums
-        BtimeLocal = New Single(nGroups) {}
+        'BtimeLocal = New Single(nGroups) {}
         TotLossThread = New Single(nGroups) {}
         TotEatenByThread = New Single(nGroups) {}
         TotBiomThread = New Single(nGroups) {}
@@ -1633,7 +1633,7 @@ Public Class cSpaceSolver_LocalMemory
                 Array.Clear(Me.ResultsByFleetGroup, 0, Me.ResultsByFleetGroup.Length)
                 Array.Clear(Me.ResultsCatchRegionGearGroup, 0, Me.ResultsCatchRegionGearGroup.Length)
 
-                Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
+                'Array.Clear(Me.BtimeLocal, 0, m_Data.NGroups)
                 Array.Clear(Me.TotLossThread, 0, m_Data.NGroups)
                 Array.Clear(Me.TotEatenByThread, 0, m_Data.NGroups)
                 Array.Clear(Me.TotBiomThread, 0, m_Data.NGroups)
@@ -1727,9 +1727,9 @@ Public Class cSpaceSolver_LocalMemory
                 'iCell linear index to cell in spatial map, converts to row col via iWaterCellIndex(iCell) and jWaterCellIndex(iCell)
                 'iLinearCells linear index to spatial data stored locally 0 to iLstCell-iFrstCell+1 (number of cells to compute)
                 ' If Me.bUseLocalMemory Then
-                'Me.SolveCell_LocalMemory(iCell, iLinearCells)
+                Me.SolveCell_LocalMemory(iCell, iLinearCells)
                 ' Else
-                Me.SolveCell_SharedMemory(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
+                ' Me.SolveCell_SharedMemory(m_Data.iWaterCellIndex(iCell), m_Data.jWaterCellIndex(iCell))
                 'End If
                 iLinearCells += 1
 
@@ -1812,7 +1812,7 @@ Public Class cSpaceSolver_LocalMemory
                 'sum biomass over all the cells
                 'this is now done individually for each thread, then summed outside the threads
                 'Btime(ip) = Btime(ip) + BB(ip)
-                BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
+                'BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
 
                 If (m_SimData.NoIntegrate(iGrp) = iGrp Or m_SimData.NoIntegrate(iGrp) < 0) And m_SimData.SimGE(iGrp) > 0 Then
                     If (Cper(i, j, iGrp) > 0 And m_SimData.FtimeAdjust(iGrp) > 0) Then
@@ -2096,7 +2096,7 @@ Public Class cSpaceSolver_LocalMemory
                 'sum biomass over all the cells
                 'this is now done individually for each thread, then summed outside the threads
                 'Btime(ip) = Btime(ip) + BB(ip)
-                BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
+                'BtimeLocal(iGrp) = BB(iGrp) * m_Data.Width(i) + BtimeLocal(iGrp)
 
                 If (m_SimData.NoIntegrate(iGrp) = iGrp Or m_SimData.NoIntegrate(iGrp) < 0) And SimGE(iGrp) > 0 Then
                     If (Cper(i, j, iGrp) > 0 And m_SimData.FtimeAdjust(iGrp) > 0) Then
