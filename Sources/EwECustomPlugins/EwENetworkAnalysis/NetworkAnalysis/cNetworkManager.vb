@@ -613,7 +613,6 @@ Public Class cNetworkManager
         End Get
         Set(value As Boolean)
             Me.m_econetwork.bUseAbortTimer = value
-            My.Settings.UseAbortTimer = value
         End Set
     End Property
 
@@ -627,7 +626,6 @@ Public Class cNetworkManager
         End Get
         Set(value As Long)
             Me.m_econetwork.TimeOutMilSecs = value
-            My.Settings.AbortTimoutMins = CInt(value / (60 * 1000))
         End Set
     End Property
 

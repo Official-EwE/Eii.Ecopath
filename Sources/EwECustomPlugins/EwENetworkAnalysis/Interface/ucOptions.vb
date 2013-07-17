@@ -27,6 +27,7 @@ Public Class ucOptions
 
     Private m_uic As cUIContext = Nothing
     Private m_man As cNetworkManager = Nothing
+    Private m_bInUpdate As Boolean = False
 
     Public Sub New(ByVal uic As cUIContext, _
                    ByVal man As cNetworkManager)
@@ -41,27 +42,44 @@ Public Class ucOptions
     Protected Overrides Sub OnLoad(e As System.EventArgs)
         MyBase.OnLoad(e)
 
+        Me.m_bInUpdate = True
         Me.m_cbUseTimeout.Checked = Me.m_man.UseAbortTimer
+        Me.m_nudTimeOut.Value = CInt(Me.m_man.TimeOutMilSecs / (1000 * 60))
+        Me.m_bInUpdate = False
+
         Me.UpdateControls()
     End Sub
 
-    Private Sub m_cbCalcCyclesPathways_CheckedChanged(sender As System.Object, e As System.EventArgs) _
+    Private Sub OnTimeOutCheckChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_cbUseTimeout.CheckedChanged
+
+        If Me.m_bInUpdate Then Return
+
         Try
             Me.m_man.UseAbortTimer = m_cbUseTimeout.Checked
-            Me.UpdateControls()
+            My.Settings.UseAbortTimer = m_cbUseTimeout.Checked
+            My.Settings.Save()
         Catch ex As Exception
             cLog.Write(ex)
         End Try
+        Me.UpdateControls()
+
     End Sub
 
-    Private Sub m_nudTimeOut_ValueChanged(sender As System.Object, e As System.EventArgs) _
+    Private Sub OnTimeOutChanged(sender As System.Object, e As System.EventArgs) _
         Handles m_nudTimeOut.Validated
-        Try
-            Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000)
-        Catch ex As Exception
 
+        If Me.m_bInUpdate Then Return
+
+        Try
+            Me.m_man.TimeOutMilSecs = CInt(Me.m_nudTimeOut.Value * 1000 * 60)
+            My.Settings.AbortTimoutMins = CInt(Me.m_nudTimeOut.Value)
+            My.Settings.Save()
+        Catch ex As Exception
+            cLog.Write(ex)
         End Try
+        Me.UpdateControls()
+
     End Sub
 
     Private Sub UpdateControls()
