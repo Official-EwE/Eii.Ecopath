@@ -320,6 +320,7 @@ Partial Class frmEcotroph
         Me.Label11.Size = New System.Drawing.Size(35, 13)
         Me.Label11.TabIndex = 19
         Me.Label11.Text = "Ponto"
+        Me.Label11.Visible = False
         '
         'Ponto
         '
@@ -331,6 +332,7 @@ Partial Class frmEcotroph
         Me.Ponto.TabIndex = 18
         Me.Ponto.Text = "03"
         Me.Ponto.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.Ponto.Visible = False
         '
         'Label10
         '
@@ -340,6 +342,7 @@ Partial Class frmEcotroph
         Me.Label10.Size = New System.Drawing.Size(35, 13)
         Me.Label10.TabIndex = 17
         Me.Label10.Text = "Kfeed"
+        Me.Label10.Visible = False
         '
         'Kfeed
         '
@@ -351,6 +354,7 @@ Partial Class frmEcotroph
         Me.Kfeed.TabIndex = 16
         Me.Kfeed.Text = "05"
         Me.Kfeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.Kfeed.Visible = False
         '
         'Forag
         '
@@ -361,6 +365,7 @@ Partial Class frmEcotroph
         Me.Forag.TabIndex = 15
         Me.Forag.Text = "Foraging Arena"
         Me.Forag.UseVisualStyleBackColor = True
+        Me.Forag.Visible = False
         '
         'same_mf
         '
@@ -457,6 +462,7 @@ Partial Class frmEcotroph
         Me.RectangleShape3.Location = New System.Drawing.Point(120, 66)
         Me.RectangleShape3.Name = "RectangleShape3"
         Me.RectangleShape3.Size = New System.Drawing.Size(181, 61)
+        Me.RectangleShape3.Visible = False
         '
         'RectangleShape2
         '
