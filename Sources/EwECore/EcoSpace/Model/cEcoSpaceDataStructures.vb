@@ -621,7 +621,7 @@ Public Class cEcospaceDataStructures
     Public nEffZones As Integer
 
     ''' <summary>
-    ''' Proportion of fishing effort for a fleet in an area(LME,Region....) by nFleets, nAreas
+    ''' Proportion of fishing effort for a fleet in an zone(LME,Region....) by nFleets, nEffZones
     ''' </summary>
     ''' <remarks></remarks>
     Public PropEffortFleetZone(,) As Single
