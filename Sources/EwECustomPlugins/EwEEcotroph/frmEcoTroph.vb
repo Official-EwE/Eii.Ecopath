@@ -968,11 +968,12 @@ Public Class frmEcotroph
         Dim param_pas2 As String = ", TopD = " & Replace(TopD.Text, ",", ".") & ", FormD = " & Replace(formd.Text, ",", ".")
 
         If (b_input_check.Checked) Then param_pas2 = param_pas2 & ",B.Input=TRUE, Beta = " & Replace(beta.Text, ",", ".")
-        If (Forag.Checked) Then
-            param_pas2 = param_pas2 & ",Forag.A=TRUE, Kfeed = " & Replace(Kfeed.Text, ",", ".") & ", Ponto = " & Replace(Ponto.Text, ",", ".")
-        Else
-            param_pas2 = param_pas2 & ",Forag.A=FALSE"
-        End If
+        'Au 20 Juillet 2013, la foraiging arena est retirée du package, pas mure .....+ tard
+        'If (Forag.Checked) Then
+        'param_pas2 = param_pas2 & ",Forag.A=TRUE, Kfeed = " & Replace(Kfeed.Text, ",", ".") & ", Ponto = " & Replace(Ponto.Text, ",", ".")
+        'Else
+        'param_pas2 = param_pas2 & ",Forag.A=FALSE"
+        'End If
         Dim param_EMSY As String = param_pas2
 
         If (same_mf.Checked) Then param_pas2 = param_pas2 & ",same.mE=TRUE"
