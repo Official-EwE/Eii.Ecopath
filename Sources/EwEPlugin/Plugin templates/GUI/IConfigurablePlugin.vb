@@ -27,7 +27,7 @@ Imports System.Xml
 
 ''' ===========================================================================
 ''' <summary>
-''' Plugin point that provides a configuration interface as a form.
+''' Plugin point that provides a configuration interface as a <see cref="Control">user interface control</see>.
 ''' </summary>
 ''' ===========================================================================
 Public Interface IConfigurablePlugin
