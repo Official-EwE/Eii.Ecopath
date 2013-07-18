@@ -1015,15 +1015,15 @@ Public Class cSpaceSolver
                 If Me.m_PathData.fCatch(iGrp) > 0 Then
                     'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
                     'use fishing mortality rate passed in instead 
-                    'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
-                    Dim bCatch As Single = Biomass(iGrp) * FMortByGroup(iGrp) * m_Data.Width(iRow)
-                    Me.ResultsByGroup(eSpaceResultsGroups.CatchBio, iGrp) += bCatch '= m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
+                    'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) 
+                    Dim bCatch As Single = Biomass(iGrp) * FMortByGroup(iGrp)
+                    Me.ResultsByGroup(eSpaceResultsGroups.CatchBio, iGrp) += bCatch
                     m_Data.CatchMap(iRow, iCol, iGrp) += bCatch
                     'Next value of catch, depends on what gear was used:
                     For iFlt = 1 To Me.m_PathData.NumFleet
                         If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
                             'First get catch
-                            cellCatch = Biomass(iGrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, iGrp) * m_Data.Width(iRow)
+                            cellCatch = Biomass(iGrp) * m_Data.EffortSpace(iFlt, iRow, iCol) * m_SimData.relQ(iFlt, iGrp)
 
                             'Sum the total catch by gear
                             Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch
@@ -2695,7 +2695,7 @@ Public Class cSpaceSolver_LocalMemory
                     'jb 29-Jan-12 in the multithreaded version FishTime was not updated to the F for this cell
                     'use fishing mortality rate passed in instead 
                     'Dim bCatch As Single = Biomass(igrp) * m_SimData.FishTime(igrp) * m_Data.Width(iRow)
-                    Dim bCatch As Single = Biomass(iGrp) * FMortByGroup(iGrp) * m_Data.Width(iRow)
+                    Dim bCatch As Single = Biomass(iGrp) * FMortByGroup(iGrp) ' * m_Data.Width(iRow)
                     Me.ResultsByGroup(eSpaceResultsGroups.CatchBio, iGrp) += bCatch '= m_Data.ResultsByGroup(eSpaceResultsGroups.CatchBio, igrp, iCumTime) + bCatch
                     m_Data.CatchMap(iRow, iCol, iGrp) += bCatch
                     'Next value of catch, depends on what gear was used:
@@ -2710,7 +2710,7 @@ Public Class cSpaceSolver_LocalMemory
                             'If isCaught(iFlt, iGrp) Then
                             If Me.m_PathData.Landing(iFlt, iGrp) + Me.m_PathData.Discard(iFlt, iGrp) > 0 Then
                                 'First get catch
-                                cellCatch = Biomass(iGrp) * Me.EffortSpace(iFlt, 0) * m_SimData.relQ(iFlt, iGrp) * m_Data.Width(iRow)
+                                cellCatch = Biomass(iGrp) * Me.EffortSpace(iFlt, 0) * m_SimData.relQ(iFlt, iGrp) ' * m_Data.Width(iRow)
 
                                 'Sum the total catch by gear
                                 Me.ResultsByFleet(eSpaceResultsFleets.CatchBio, iFlt) += cellCatch

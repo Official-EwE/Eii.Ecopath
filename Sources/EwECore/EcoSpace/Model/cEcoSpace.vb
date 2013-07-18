@@ -3495,136 +3495,6 @@ exitline:
     End Sub
 
 
-    ''' <summary>
-    ''' Threaded Version
-    ''' This routine predicts spatial effort and fishing mortality rate
-    ''' distribution by gear type; called at each iteration
-    ''' step in finding biomass spatial equilibrium
-    ''' model below is a gravity attraction model, distributing
-    ''' total efforts TotEffort(gear) over all cells where each gear can fish
-    ''' in proportion to relative profitability (catch rate x price sum) for that cell for the gear
-    ''' </summary>
-    ''' <remarks></remarks>
-    Sub PredictEffortDistributionThreaded_NoZones(ByVal obParam As Object)
-        Dim i As Integer, j As Integer, TotAttract As Single
-        Dim Valt As Single, isp As Integer
-        Dim EffortCost As Single
-        Dim SailCost As Single
-        Dim TotE As Single
-        Dim Attract(,) As Single
-        Dim arguments As cThreadedCallArgs
-        Dim nEffCells As Integer, sumEff As Single
-
-        Dim stpwtch As Stopwatch
-
-        Try
-
-            arguments = DirectCast(obParam, cThreadedCallArgs)
-            'Make sure the number of fleets is in bounds
-            'This could happen because of rounding error in the number of fleets per thread
-            If arguments.iFirst <= Me.m_Data.nFleets Then
-
-                'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
-
-                'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
-                'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
-                stpwtch = Stopwatch.StartNew
-
-                ReDim Attract(m_Data.InRow, m_Data.InCol)
-
-                For iFlt As Integer = arguments.iFirst To arguments.iLast
-                    'check the bounds
-                    If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
-                    'System.Console.WriteLine("  Fleet " & iFlt.ToString)
-
-                    For iArea As Integer = 1 To Me.m_Data.nEffZones
-                        TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt) * Me.m_Data.PropEffortFleetZone(iFlt, iArea)
-
-                        'jb Attract() gets cleared out for each fleet
-                        Array.Clear(Attract, 0, Attract.Length)
-                        TotAttract = 0.0000000001
-
-                        'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
-                        If m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail) = 0 Then
-                            EffortCost = 0
-                            SailCost = 1
-                        Else
-                            EffortCost = m_EPdata.cost(iFlt, eCostIndex.CUPE) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
-                            SailCost = m_EPdata.cost(iFlt, eCostIndex.Sail) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
-                        End If
-
-                        '
-                        For i = 1 To m_Data.InRow
-                            For j = 1 To m_Data.InCol
-                                'Moved to InitSpatialEquilibrium
-                                If Me.m_Data.IsFished(iFlt, i, j) And iArea = Me.m_Data.EffZones(i, j) Then
-                                    'Water and (Not closed by MPA) and (Fished by this gear)
-                                    'mpamonth(Month, MPAType) is false if closed, True if open.
-                                    Valt = 0
-                                    For isp = 1 To m_Data.NGroups
-                                        Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
-                                    Next
-                                    'Debug.Assert(Not Single.IsNaN(Valt))
-                                    'jb Move to InitSpatialEquilibrium()
-                                    ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
-
-                                    'VC Sail() above: to avoid dividing with zero
-                                    Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
-                                    Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
-                                    TotAttract += Attract(i, j) ' TotAttract + Valt * Me.m_Data.PAreaFished(i, j, iFlt)
-                                End If 'Me.m_Data.IsFished(iFlt, i, j)
-                            Next j
-                        Next i
-
-                        sumEff = 0
-                        nEffCells = 0
-                        For i = 1 To m_Data.InRow
-                            For j = 1 To m_Data.InCol
-                                'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
-                                If Me.m_Data.IsFished(iFlt, i, j) And iArea = Me.m_Data.EffZones(i, j) Then
-
-                                    'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
-                                    m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract * Me.m_Data.PropEffortFleetZone(iFlt, iArea)  'propfleeteffort in this lme
-                                    sumEff += m_Data.EffortSpace(iFlt, i, j)
-                                    nEffCells += 1 ' Me.m_Data.PAreaFished(i, j, iFlt)
-
-                                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                                    'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
-                                    'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
-                                    '        For isp = 1 To m_Data.NGroups
-                                    '            'Fishing Mort
-                                    '            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(iFlt, i, j) * m_SimData.relQ(iFlt, isp) / Me.m_Data.PAreaFished(i, j, iFlt)
-                                    '        Next isp
-                                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-                                End If
-                            Next j
-                        Next i
-
-                        If nEffCells = 0 Then nEffCells = 1
-                        Console.WriteLine("Fleet," + iFlt.ToString + ",avg effort," + (sumEff / nEffCells).ToString + ",Sim Effort," + m_SimData.FishRateGear(iFlt, arguments.iCumMonth).ToString)
-
-                    Next iArea
-
-                Next iFlt
-
-            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
-                'First Fleet Index > Number of Fleets
-                'We still need to Decrement the Interlock counter
-                System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
-            End If
-
-        Catch ex As Exception
-            Debug.Assert(False, ex.Message)
-        End Try
-
-        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
-            arguments.WaitHandle.Set()
-        End If
-
-        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
-
-    End Sub
 
     Sub PredictEffortDistributionThreaded(ByVal obParam As Object)
         Dim i As Integer, j As Integer, TotAttract As Single
@@ -3634,11 +3504,10 @@ exitline:
         Dim TotE As Single
         Dim Attract(,) As Single
         Dim arguments As cThreadedCallArgs
+        'Dim stpwtch As Stopwatch
 
         Dim TotAttractZone(Me.m_Data.nEffZones) As Single
         Dim TotEffortZone(Me.m_Data.nEffZones) As Single
-
-        Dim stpwtch As Stopwatch
 
         Try
 
@@ -3650,7 +3519,7 @@ exitline:
                 'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
                 'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
                 'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
-                stpwtch = Stopwatch.StartNew
+                'stpwtch = Stopwatch.StartNew
 
                 ReDim Attract(m_Data.InRow, m_Data.InCol)
 
@@ -3659,13 +3528,13 @@ exitline:
                     If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
                     'System.Console.WriteLine("  Fleet " & iFlt.ToString)
 
-                    TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt) ' * Me.m_Data.PropEffortFleetArea(iFlt, iArea)
+                    TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
 
                     'set the total effort by zone
-                    For iArea As Integer = 0 To Me.m_Data.nEffZones
-                        TotEffortZone(iArea) = TotE * Me.m_Data.PropEffortFleetZone(iFlt, iArea)
-                        TotAttractZone(iArea) = 1.0E-30
-                    Next iArea
+                    For iZone As Integer = 0 To Me.m_Data.nEffZones
+                        TotEffortZone(iZone) = TotE * Me.m_Data.PropEffortFleetZone(iFlt, iZone)
+                        TotAttractZone(iZone) = 1.0E-30
+                    Next iZone
 
                     'jb Attract() gets cleared out for each fleet
                     Array.Clear(Attract, 0, Attract.Length)
@@ -3695,12 +3564,8 @@ exitline:
                                 Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
 
                                 Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
-                                ' TotAttract += Attract(i, j) ' TotAttract + Valt * Me.m_Data.PAreaFished(i, j, iFlt)
                                 'sum of attractivness by zone
                                 TotAttractZone(Me.m_Data.EffZones(i, j)) += Attract(i, j)
-
-                                'Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) * m_Data.RelEffort(iFlt, i, j) 'may want to modify this by dividing by a site cost factor for cell i,j
-                                'TotAttract = TotAttract + Attract(i, j)
 
                             End If 'Me.m_Data.IsFished(iFlt, i, j)
                         Next j
@@ -3711,8 +3576,8 @@ exitline:
                             'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
                             If Me.m_Data.IsFished(iFlt, i, j) Then
 
-                                'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
-                                ' m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract ' * Me.m_Data.PropEffortFleetArea(iFlt, iArea)  'propfleeteffort in this lme
+                                'm_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract 
+                                'Effort distribution scaled by Effort Zone
                                 m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.m_Data.EffZones(i, j)) * Attract(i, j) / TotAttractZone(Me.m_Data.EffZones(i, j))
 
                                 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -3727,9 +3592,6 @@ exitline:
                             End If
                         Next j
                     Next i
-
-                    'If nEffCells = 0 Then nEffCells = 1
-                    'Console.WriteLine("Fleet," + iFlt.ToString + ",avg effort," + (sumEff / nEffCells).ToString + ",Sim Effort," + m_SimData.FishRateGear(iFlt, arguments.iCumMonth).ToString)
 
                 Next iFlt
 
@@ -3773,7 +3635,7 @@ exitline:
         Dim arguments As cThreadedCallArgs
         Dim ncells As Integer
         Dim iFlt As Integer
-        Dim stpwtch As Stopwatch
+        'Dim stpwtch As Stopwatch
 
         Dim TotAttractZone(Me.m_Data.nEffZones) As Single
         Dim TotEffortZone(Me.m_Data.nEffZones) As Single
@@ -3785,7 +3647,7 @@ exitline:
             'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
             'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
             'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
-            stpwtch = Stopwatch.StartNew
+            'stpwtch = Stopwatch.StartNew
 
             ReDim Attract(m_Data.InRow, m_Data.InCol)
 
@@ -3799,10 +3661,10 @@ exitline:
                 TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
 
                 'set the total effort by zone
-                For iArea As Integer = 0 To Me.m_Data.nEffZones
-                    TotEffortZone(iArea) = TotE * Me.m_Data.PropEffortFleetZone(iFlt, iArea)
-                    TotAttractZone(iArea) = 1.0E-30
-                Next iArea
+                For iZone As Integer = 0 To Me.m_Data.nEffZones
+                    TotEffortZone(iZone) = TotE * Me.m_Data.PropEffortFleetZone(iFlt, iZone)
+                    TotAttractZone(iZone) = 1.0E-30
+                Next iZone
 
                 'jb Attract() gets cleared out for each fleet
                 Array.Clear(Attract, 0, Attract.Length)
@@ -3838,9 +3700,6 @@ exitline:
                         'Total attractiveness by zone
                         TotAttractZone(Me.m_Data.EffZones(iRow, iCol)) += Attract(iRow, iCol)
 
-                        'Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iRow, iCol, iFlt) * m_Data.RelEffort(iFlt, iRow, iCol)  'may want to modify this by dividing by a site cost factor for cell i,j
-                        'TotAttract = TotAttract + Attract(iRow, iCol)
-
                     End If
                 Next
 
@@ -3853,7 +3712,8 @@ exitline:
                     'IsFished() is set every timestep to account for monthly MPA Closures
                     If Me.m_Data.IsFished(iFlt, iRow, iCol) Then
 
-                        ' m_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(iRow, iCol) / TotAttract
+                        'm_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(iRow, iCol) / TotAttract
+                        'Effort distribution scaled by Effort Zone
                         m_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotEffortZone(Me.m_Data.EffZones(iRow, iCol)) * Attract(iRow, iCol) / TotAttractZone(Me.m_Data.EffZones(iRow, iCol))
                         'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                         'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
@@ -3866,12 +3726,10 @@ exitline:
 
                     End If
                 Next rowcol
-                'If nEffCells = 0 Then nEffCells = 1
-                'Console.WriteLine("Fleet," + iFlt.ToString + ",avg effort," + (sumEff / nEffCells).ToString + ",Sim Effort," + m_SimData.FishRateGear(iFlt, arguments.iCumMonth).ToString)
 
             Loop
 
-            stpwtch.Stop()
+            'stpwtch.Stop()
             'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
             'Console.WriteLine("Effort Distribution Loadshared , ThreadID = " + thrdID.ToString & ",  RunTime(sec) = " + stpwtch.Elapsed.TotalSeconds.ToString + ", N Cells = " + ncells.ToString)
         Catch ex As Exception
@@ -5394,53 +5252,6 @@ exitline:
     End Sub
 
 #End Region
-
-#If 0 Then
-
-    Private Sub SetVtot(ByVal XvTot(,) As Single, ByVal YvTot(,) As Single, ByVal Corio As Single, ByVal Hstress As Single)
-        'sets total pressure in x and y directions for all cells
-        Dim i As Integer, j As Integer
-        For i = 0 To Me.m_Data.InRow + 1
-            For j = 0 To Me.m_Data.InCol + 1
-                If Me.m_Data.Depth(i, j) > 0 Then
-                    XvTot(i, j) = Me.m_Data.Xvloc(i, j)
-                    YvTot(i, j) = Me.m_Data.Yvloc(i, j)
-                End If
-            Next
-        Next
-        'add force components due to horizontal shear along box sides
-        For i = 1 To Me.m_Data.InRow
-            For j = 1 To Me.m_Data.InCol
-                If Me.m_Data.Depth(i, j) > 0 Then
-                    XvTot(i, j) = XvTot(i, j) - Corio * Me.m_Data.Yvel(i, j) + Hstress * (Me.m_Data.Xvel(i - 1, j) + Me.m_Data.Xvel(i + 1, j) - 2.0# * Me.m_Data.Xvel(i, j))
-                    YvTot(i, j) = YvTot(i, j) + Corio * Me.m_Data.Xvel(i, j) + Hstress * (Me.m_Data.Yvel(i, j - 1) + Me.m_Data.Yvel(i, j + 1) - 2.0# * Me.m_Data.Yvel(i, j))
-                End If
-            Next
-        Next
-    End Sub
-
-    Private Sub SetVelocities(ByRef vel(,) As Single, _
-                              ByVal SorWv As Single, ByVal Grav As Single, ByVal UpWell As Single, _
-                              ByVal XvToT(,) As Single, ByVal YvTot(,) As Single)
-        Dim i As Integer
-        Dim j As Integer
-        For i = 0 To Me.m_Data.InRow
-            For j = 0 To Me.m_Data.InCol
-                If Me.m_Data.Depth(i, j) > 0 Then
-                    If Me.m_Data.Depth(i, j + 1) > 0 Then Me.m_Data.Xvel(i, j) = (1 - SorWv) * Me.m_Data.Xvel(i, j) + SorWv * Me.m_Data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1))) Else Me.m_Data.Xvel(i, j) = 0
-                    If Me.m_Data.Depth(i + 1, j) > 0 Then Me.m_Data.Yvel(i, j) = (1 - SorWv) * Me.m_Data.Yvel(i, j) + SorWv * Me.m_Data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j))) Else Me.m_Data.Yvel(i, j) = 0
-                    Me.m_Data.UpVel(i, j) = -UpWell * Me.m_Data.DepthA(i, j) * vel(i, j)
-                Else
-                    Me.m_Data.Xvel(i, j) = 0
-                    Me.m_Data.Yvel(i, j) = 0
-                End If
-            Next
-        Next
-    End Sub
-
-#End If
-
-
 
 #Region "Multi Threading stuff"
     ' this creates a solver object for each thread and initialises them with ecospace data
@@ -7197,6 +7008,184 @@ exitline:
 
 
 
+#End Region
+
+#Region "Depreciated Code"
+
+#If 0 Then
+    ''' <summary>
+    ''' Threaded Version
+    ''' This routine predicts spatial effort and fishing mortality rate
+    ''' distribution by gear type; called at each iteration
+    ''' step in finding biomass spatial equilibrium
+    ''' model below is a gravity attraction model, distributing
+    ''' total efforts TotEffort(gear) over all cells where each gear can fish
+    ''' in proportion to relative profitability (catch rate x price sum) for that cell for the gear
+    ''' </summary>
+    ''' <remarks></remarks>
+    Sub PredictEffortDistributionThreaded_NoZones(ByVal obParam As Object)
+        Dim i As Integer, j As Integer, TotAttract As Single
+        Dim Valt As Single, isp As Integer
+        Dim EffortCost As Single
+        Dim SailCost As Single
+        Dim TotE As Single
+        Dim Attract(,) As Single
+        Dim arguments As cThreadedCallArgs
+        Dim nEffCells As Integer, sumEff As Single
+
+        Dim stpwtch As Stopwatch
+
+        Try
+
+            arguments = DirectCast(obParam, cThreadedCallArgs)
+            'Make sure the number of fleets is in bounds
+            'This could happen because of rounding error in the number of fleets per thread
+            If arguments.iFirst <= Me.m_Data.nFleets Then
+
+                'Dim thrdID As Integer = Threading.Thread.CurrentThread.ManagedThreadId
+
+                'Console.WriteLine("Effort Distribution , ThreadID = " & thrdID.ToString & ", Start T = " & DateTime.Now.ToLongTimeString)
+                'Console.WriteLine("  N Fleets = " & (arguments.iLast - arguments.iFirst + 1).ToString)
+                stpwtch = Stopwatch.StartNew
+
+                ReDim Attract(m_Data.InRow, m_Data.InCol)
+
+                For iFlt As Integer = arguments.iFirst To arguments.iLast
+                    'check the bounds
+                    If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
+                    'System.Console.WriteLine("  Fleet " & iFlt.ToString)
+
+                    For iArea As Integer = 1 To Me.m_Data.nEffZones
+                        TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt) * Me.m_Data.PropEffortFleetZone(iFlt, iArea)
+
+                        'jb Attract() gets cleared out for each fleet
+                        Array.Clear(Attract, 0, Attract.Length)
+                        TotAttract = 0.0000000001
+
+                        'Introduce a factor which balances fixed and sailingcost: (up to 02Jan02 the next if then was in the loop over spatial cells below, no need for this)
+                        If m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail) = 0 Then
+                            EffortCost = 0
+                            SailCost = 1
+                        Else
+                            EffortCost = m_EPdata.cost(iFlt, eCostIndex.CUPE) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+                            SailCost = m_EPdata.cost(iFlt, eCostIndex.Sail) / (m_EPdata.cost(iFlt, eCostIndex.Fixed) + m_EPdata.cost(iFlt, eCostIndex.CUPE) + m_EPdata.cost(iFlt, eCostIndex.Sail))
+                        End If
+
+                        '
+                        For i = 1 To m_Data.InRow
+                            For j = 1 To m_Data.InCol
+                                'Moved to InitSpatialEquilibrium
+                                If Me.m_Data.IsFished(iFlt, i, j) And iArea = Me.m_Data.EffZones(i, j) Then
+                                    'Water and (Not closed by MPA) and (Fished by this gear)
+                                    'mpamonth(Month, MPAType) is false if closed, True if open.
+                                    Valt = 0
+                                    For isp = 1 To m_Data.NGroups
+                                        Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(i, j, isp) * m_SimData.relQ(iFlt, isp)
+                                    Next
+                                    'Debug.Assert(Not Single.IsNaN(Valt))
+                                    'jb Move to InitSpatialEquilibrium()
+                                    ' If m_Data.Sail(iFlt, i, j) = 0 Then m_Data.Sail(iFlt, i, j) = 0.000001
+
+                                    'VC Sail() above: to avoid dividing with zero
+                                    Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, i, j) / m_Data.SailScale(iFlt))
+                                    Attract(i, j) = Valt * Me.m_Data.PAreaFished(i, j, iFlt) 'may want to modify this by dividing by a site cost factor for cell i,j
+                                    TotAttract += Attract(i, j) ' TotAttract + Valt * Me.m_Data.PAreaFished(i, j, iFlt)
+                                End If 'Me.m_Data.IsFished(iFlt, i, j)
+                            Next j
+                        Next i
+
+                        sumEff = 0
+                        nEffCells = 0
+                        For i = 1 To m_Data.InRow
+                            For j = 1 To m_Data.InCol
+                                'VC19Aug98: Fishing in water, not in MPA unless the MPA is fished, and only if this gear operate in this habitat or in all habitats
+                                If Me.m_Data.IsFished(iFlt, i, j) And iArea = Me.m_Data.EffZones(i, j) Then
+
+                                    'VC/080499 Above changed per CJWs advice to reflect effort change over time in Ecospace
+                                    m_Data.EffortSpace(iFlt, i, j) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(i, j) / TotAttract * Me.m_Data.PropEffortFleetZone(iFlt, iArea)  'propfleeteffort in this lme
+                                    sumEff += m_Data.EffortSpace(iFlt, i, j)
+                                    nEffCells += 1 ' Me.m_Data.PAreaFished(i, j, iFlt)
+
+                                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                    'jb 19-July-2012 moved summing of fishing mortality out of the distribution threads
+                                    'this stops the threading bug caused when different threads try to sum F at the same time resulting in different F (Ftot(,,,))
+                                    '        For isp = 1 To m_Data.NGroups
+                                    '            'Fishing Mort
+                                    '            m_Data.Ftot(isp, i, j) = m_Data.Ftot(isp, i, j) + m_Data.EffortSpace(iFlt, i, j) * m_SimData.relQ(iFlt, isp) / Me.m_Data.PAreaFished(i, j, iFlt)
+                                    '        Next isp
+                                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+                                End If
+                            Next j
+                        Next i
+
+                        If nEffCells = 0 Then nEffCells = 1
+                        Console.WriteLine("Fleet," + iFlt.ToString + ",avg effort," + (sumEff / nEffCells).ToString + ",Sim Effort," + m_SimData.FishRateGear(iFlt, arguments.iCumMonth).ToString)
+
+                    Next iArea
+
+                Next iFlt
+
+            Else ' If arguments.iFirst <= Me.m_Data.nFleets Then
+                'First Fleet Index > Number of Fleets
+                'We still need to Decrement the Interlock counter
+                System.Console.WriteLine("Effort Dist No fleets to process = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+            End If
+
+        Catch ex As Exception
+            Debug.Assert(False, ex.Message)
+        End Try
+
+        If Interlocked.Decrement(cEcoSpace.m_ThreadIncrementCount) = 0 Then
+            arguments.WaitHandle.Set()
+        End If
+
+        'System.Console.WriteLine("Effort Dist Increment Lock = " & cEcoSpace.m_ThreadIncrementCount.ToString)
+
+    End Sub
+
+     Private Sub SetVtot(ByVal XvTot(,) As Single, ByVal YvTot(,) As Single, ByVal Corio As Single, ByVal Hstress As Single)
+        'sets total pressure in x and y directions for all cells
+        Dim i As Integer, j As Integer
+        For i = 0 To Me.m_Data.InRow + 1
+            For j = 0 To Me.m_Data.InCol + 1
+                If Me.m_Data.Depth(i, j) > 0 Then
+                    XvTot(i, j) = Me.m_Data.Xvloc(i, j)
+                    YvTot(i, j) = Me.m_Data.Yvloc(i, j)
+                End If
+            Next
+        Next
+        'add force components due to horizontal shear along box sides
+        For i = 1 To Me.m_Data.InRow
+            For j = 1 To Me.m_Data.InCol
+                If Me.m_Data.Depth(i, j) > 0 Then
+                    XvTot(i, j) = XvTot(i, j) - Corio * Me.m_Data.Yvel(i, j) + Hstress * (Me.m_Data.Xvel(i - 1, j) + Me.m_Data.Xvel(i + 1, j) - 2.0# * Me.m_Data.Xvel(i, j))
+                    YvTot(i, j) = YvTot(i, j) + Corio * Me.m_Data.Xvel(i, j) + Hstress * (Me.m_Data.Yvel(i, j - 1) + Me.m_Data.Yvel(i, j + 1) - 2.0# * Me.m_Data.Yvel(i, j))
+                End If
+            Next
+        Next
+    End Sub
+
+    Private Sub SetVelocities(ByRef vel(,) As Single, _
+                              ByVal SorWv As Single, ByVal Grav As Single, ByVal UpWell As Single, _
+                              ByVal XvToT(,) As Single, ByVal YvTot(,) As Single)
+        Dim i As Integer
+        Dim j As Integer
+        For i = 0 To Me.m_Data.InRow
+            For j = 0 To Me.m_Data.InCol
+                If Me.m_Data.Depth(i, j) > 0 Then
+                    If Me.m_Data.Depth(i, j + 1) > 0 Then Me.m_Data.Xvel(i, j) = (1 - SorWv) * Me.m_Data.Xvel(i, j) + SorWv * Me.m_Data.DepthX(i, j) * (XvToT(i, j) + Grav * (vel(i, j) - vel(i, j + 1))) Else Me.m_Data.Xvel(i, j) = 0
+                    If Me.m_Data.Depth(i + 1, j) > 0 Then Me.m_Data.Yvel(i, j) = (1 - SorWv) * Me.m_Data.Yvel(i, j) + SorWv * Me.m_Data.DepthY(i, j) * (YvTot(i, j) + Grav * (vel(i, j) - vel(i + 1, j))) Else Me.m_Data.Yvel(i, j) = 0
+                    Me.m_Data.UpVel(i, j) = -UpWell * Me.m_Data.DepthA(i, j) * vel(i, j)
+                Else
+                    Me.m_Data.Xvel(i, j) = 0
+                    Me.m_Data.Yvel(i, j) = 0
+                End If
+            Next
+        Next
+    End Sub
+
+#End If
 #End Region
 
 End Class
