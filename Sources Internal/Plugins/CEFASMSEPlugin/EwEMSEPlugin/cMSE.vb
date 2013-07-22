@@ -11,11 +11,8 @@ Public Class cMSE
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.IEcosimInitializedPlugin
     Implements EwEPlugin.IEcosimBeginTimestepPlugin
+    Implements EwEPlugin.IMessageFilterPlugin
 
-    'Public Strategies As New List(Of List(Of HCR_Group))
-    'Private CurrentStrategy As List(Of HCR_Group)
-
-    'Public Strategies As New List(Of Strategy)
     Public Strategies As New Strategies
     Private CurrentStrategy As Strategy
 
@@ -2033,4 +2030,13 @@ stepend:
     '    Next
     'End Sub
 
+    Public Sub onPreProcessMessage(msg As EwEUtils.Core.IMessage, ByRef bCancelMessage As Boolean) Implements EwEPlugin.IMessageFilterPlugin.PreProcessMessage
+        'Plugin Point called to cancel a message
+        bCancelMessage = False
+        If msg.Type = EwEUtils.Core.eMessageType.Estimate_BA Or msg.Type = EwEUtils.Core.eMessageType.Estimate_Net_Migration Then
+            'Cancel the Estimate BA and Estimate Net Migration messages
+            'use the default handling
+            bCancelMessage = True
+        End If
+    End Sub
 End Class
