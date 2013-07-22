@@ -314,6 +314,9 @@ Namespace Controls.Map
             ' Draw label
             fmt.LineAlignment = StringAlignment.Center
             fmt.Alignment = StringAlignment.Near
+            fmt.FormatFlags = StringFormatFlags.NoWrap
+            fmt.Trimming = StringTrimming.EllipsisPath
+
             If Me.m_layer.IsSelected Then
                 e.Graphics.DrawString(Me.Layer.DisplayText, Me.Font, SystemBrushes.HighlightText, rcLabel, fmt)
             Else

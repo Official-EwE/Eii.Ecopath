@@ -291,6 +291,9 @@ Namespace Controls.Map
             ' Draw label
             fmt.LineAlignment = StringAlignment.Center
             fmt.Alignment = StringAlignment.Near
+            fmt.FormatFlags = StringFormatFlags.NoWrap
+            fmt.Trimming = StringTrimming.EllipsisPath
+
             Using ft As New Font(Me.Font, FontStyle.Bold)
                 e.Graphics.DrawString(String.Format(SharedResources.GENERIC_LABEL_DETAILED, Me.Text, Me.m_fpItems.Controls.Count), _
                     ft, SystemBrushes.ControlText, rcLabel, fmt)
