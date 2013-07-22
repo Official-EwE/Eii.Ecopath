@@ -405,6 +405,7 @@ Public Class cEcoNetwork
                 Me.m_AbortTimer.Start()
             Else
                 Me.m_AbortTimer.Stop()
+                Me.m_AbortTimer.Interval = Me.TimeOutMilSecs
                 Me.m_AbortTimer.Start()
             End If
 
@@ -505,6 +506,10 @@ Public Class cEcoNetwork
                 bSucces = False
             End Try
 
+            'if Lindeman timed out then don't do the processing and return False
+            'Me.stopAbortTimer() will send a message
+            bSucces = bSucces And (Not Me.m_timedOut)
+
             If (bSucces) Then
 
                 ' PROCEED TO THE MIXED TROPHIC IMPACT ROUTINE
@@ -554,6 +559,7 @@ Public Class cEcoNetwork
 
         cApplicationStatusNotifier.EndProgress(Me.m_core)
 
+        Return bSucces
         'Count = 2
     End Function
 
