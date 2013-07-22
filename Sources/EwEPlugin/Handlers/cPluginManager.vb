@@ -893,10 +893,10 @@ Public Class cPluginManager
     ''' cancelled.</param>
     ''' ---------------------------------------------------------------------------
     Public Sub PreProcessMessage(ByVal msg As IMessage, ByRef bCancelMessage As Boolean)
-
-        ' Invokes IMessage()
-        Me.TryInvokeMethod(GetType(IMessageFilterPlugin), "PreProcessMessage", New Object() {msg, bCancelMessage})
-
+        Dim args() As Object = New Object() {msg, bCancelMessage}
+        Me.TryInvokeMethod(GetType(IMessageFilterPlugin), "PreProcessMessage", args)
+        'Update bCancelMessage with the values from the plugin 
+        bCancelMessage = DirectCast(args(1), Boolean)
     End Sub
 
 #End Region ' Core
