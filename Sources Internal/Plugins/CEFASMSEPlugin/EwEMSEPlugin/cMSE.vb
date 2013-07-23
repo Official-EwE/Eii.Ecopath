@@ -77,9 +77,10 @@ Public Class cMSE
             csv = New CsvReader(New StreamReader(HCRFileName), True)
             'Create the new Strategy with the Filename as the strategy name
             Strategy = New Strategy(Path.GetFileNameWithoutExtension(HCRFileName), HCRFileName)
-            While Not csv.EndOfStream 'Read each line in the file
+            'While Not csv.EndOfStream 'Read each line in the file
+            Do Until Not csv.ReadNextRecord()
                 'Read all fields from csv and then add to the list that makes up the whole strategy
-                csv.ReadNextRecord()
+                'csv.ReadNextRecord()
                 'Each HCR Group needs to be a new object
                 tempHCRGroup = New HCR_Group(Me.m_uic.Core)
                 tempHCRGroup.GroupName4Biomass = csv(0)
@@ -91,7 +92,8 @@ Public Class cMSE
                 tempHCRGroup.MaxF = csv(6)
                 tempHCRGroup.CostFunction = csv(7)
                 Strategy.Add(tempHCRGroup)
-            End While
+            Loop
+            'End While
             Strategies.Add(Strategy)
             csv.Dispose()
 
@@ -235,42 +237,19 @@ Public Class cMSE
         Dim TrajectoryCsv As StreamWriter
         Dim Trajectory2Csv As List(Of StreamWriter)             'Trajectories2 is similar to trajectories apart from it each file contains only 1 group
         Dim FleetCsv As StreamWriter
+        Dim TrajectoryF As StreamWriter
         Dim nFailedParameterisations As Integer = 0
 
 
         OriginalNTimesteps = _ecosim.EcosimData.NTimes
 
         'Output the final results
-        If File.Exists(DataPath & "\Results\Results.csv") Then
-            results_read = New CsvReader(New StreamReader(DataPath & "\Results\Results.csv"), True)
-            'count the number of record
-            While Not results_read.EndOfStream
-                results_read.ReadNextRecord()
-                NumberIterationsAlreadyInResults = results_read(0)
-            End While
-            results_read.Dispose()
-            sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
-        Else
-            sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
-            sw.WriteLine("Iteration,Strategy,GroupName,ResultName,Value")
-        End If
+        sw = New StreamWriter(DataPath & "\Results\Results.csv", False)
+        sw.WriteLine("Iteration,Strategy,GroupName,ResultName,Value")
 
-        'check whether fleet.csv file exists and if so see how many iterations in it
-        If File.Exists(DataPath & "\Results\Fleet.csv") Then
-            results_read = New CsvReader(New StreamReader(DataPath & "\Results\Fleet.csv"), True)
-            'count th number of records
-            While Not results_read.EndOfStream()
-                results_read.ReadNextRecord()
-                NumberIterationsAlreadyInFleets = results_read(0)
-            End While
-            results_read.Dispose()
-            'Create the csv writer for writing out individual fleets catches of each group
-            FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", False)
-        Else
             'Create the csv writer for writing out individual fleets catches of each group
             FleetCsv = New StreamWriter(DataPath & "\Results\Fleet.csv", False)
             FleetCsv.WriteLine("Iteration,Strategy,FleetName,GroupName,Value")
-        End If
 
         'Get a list of all the strategy files in the strategies folder
         HCRFiles = Directory.GetFiles(DataPath & "\Strategies")
@@ -391,12 +370,20 @@ Public Class cMSE
 
                     'This creates the files we will write the biomass trajectories to
                     TrajectoryCsv = New StreamWriter(DataPath & "\Results\Trajectories\Trial" & iTrial & ".csv", False)
-                    TrajectoryCsv.Write("Group, Strategy")
+                    TrajectoryCsv.Write("Group,Strategy")
                     For iTime As Integer = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                         TrajectoryCsv.Write("," & iTime)
                     Next
                     TrajectoryCsv.WriteLine()
 
+                    'diagnositics check to see what is happening with f's on cod
+                    TrajectoryF = New StreamWriter(DataPath & "\Results\Trajectories\f.csv", True)
+                    TrajectoryF.Write(CurrentStrategy.Name)
+                    For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                        TrajectoryF.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, 14, iTime))
+                    Next
+                    TrajectoryF.WriteLine()
+                    TrajectoryF.Dispose()
 
                     For iFleet = 1 To mCore.nFleets
                         For iGrp = 1 To mCore.nLivingGroups
@@ -847,41 +834,60 @@ stepend:
             'Save the results to a .csv
 
             Dim sPath As String = DataPath & "\ParametersOut"
-            Dim b_csvout As New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
-            Dim ba_csvout As New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
-            Dim pb_csvout As New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
-            Dim qb_csvout As New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
-            Dim ee_csvout As New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
+            Dim b_csvout As StreamWriter
+            Dim ba_csvout As StreamWriter
+            Dim pb_csvout As StreamWriter
+            Dim qb_csvout As StreamWriter
+            Dim ee_csvout As StreamWriter
 
             If Not File.Exists(Path.Combine(sPath & "/b_out.csv")) Then
+                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
                 b_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
                 For igrp As Integer = 2 To nLiving
                     b_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
                 Next
+            Else
+                b_csvout = New StreamWriter(Path.Combine(sPath & "/b_out.csv"), True)
             End If
+
             If Not File.Exists(Path.Combine(sPath & "/ba_out.csv")) Then
+                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
                 ba_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
                 For igrp As Integer = 2 To nLiving
                     ba_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
                 Next
+            Else
+                ba_csvout = New StreamWriter(Path.Combine(sPath & "/ba_out.csv"), True)
             End If
+
             If Not File.Exists(Path.Combine(sPath & "/pb_out.csv")) Then
+                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
                 pb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
                 For igrp As Integer = 2 To nLiving
                     pb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
                 Next
+            Else
+                pb_csvout = New StreamWriter(Path.Combine(sPath & "/pb_out.csv"), True)
             End If
+
             If Not File.Exists(Path.Combine(sPath & "/qb_out.csv")) Then
+                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
                 qb_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
                 For igrp As Integer = 2 To nLiving
                     qb_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
                 Next
+            Else
+                qb_csvout = New StreamWriter(Path.Combine(sPath & "/qb_out.csv"), True)
             End If
+
             If Not File.Exists(Path.Combine(sPath & "/ee_out.csv")) Then
+                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
                 ee_csvout.Write(mCore.EcoPathGroupInputs(1).Name)
                 For igrp As Integer = 2 To nLiving
                     ee_csvout.Write(",""" & mCore.EcoPathGroupInputs(igrp).Name & """")
                 Next
+            Else
+                ee_csvout = New StreamWriter(Path.Combine(sPath & "/ee_out.csv"), True)
             End If
 
             b_csvout.WriteLine()
@@ -1731,6 +1737,8 @@ stepend:
                     Next
                 Next
 
+
+
                 'if there are no fleets to optimise for skip all this
                 If Fleets2Fit.Count > 0 Then
 
@@ -1860,17 +1868,6 @@ stepend:
                     ReDim variable_results(cLPSolver.lpsolve55.get_Ncolumns(lp))
                     cLPSolver.lpsolve55.get_variables(lp, variable_results)
 
-                    'If Not cLPSolver.lpsolve55.is_feasible(lp, variable_results, 0) Then
-                    '    Console.WriteLine()
-                    '    MsgBox("Timestep:" & iTime & "There was no possible solution of efforts within the ranges specified that could produce the fishing mortalities desired." & vbCrLf & "One possible solution could be to increase the range that the efforts can vary", MsgBoxStyle.Exclamation)
-                    '    If iTime = 229 Then Console.WriteLine("Failed")
-                    'End If
-                    'If iTime = 229 Then
-                    '    For i = 1 To cLPSolver.lpsolve55.get_Ncolumns(lp)
-                    '        Console.Write(variable_results(i) & vbTab)
-                    '    Next
-                    'End If
-
                     'Set the fishing effort according to what the optimised efforts were just calculated
                     For iFleet = 1 To mCore.nFleets
                         For iMonth = 1 To 12
@@ -1882,76 +1879,16 @@ stepend:
                         Next
                     Next
 
-                    'Calc the squared error between fishing mortalities and 
-
-                    'Set up all the variables that we want to send to be used inside optisation routine
-                    'they need to be sent as a single list of objects, but can be set back to individually named variables once into optimised routine
-                    'parameters.Add(FTargetandConservation)
-                    'parameters.Add(Fleets2Fit)
-                    'parameters.Add(QMult)
-                    'parameters.Add(TechnologyCreep)
-                    'parameters.Add(iTime)
-
-                    'Use XAglib to optimise Effort2ProduceF subroutine
-                    'For iIteration = 1 To Convert.ToInt32(MSEForm.txtOptimIterations.Text)
-                    '    AllEffortsAboveZero = False
-                    '    'Use XAglib to optimise Effort2ProduceF subroutine
-                    '    Do Until AllEffortsAboveZero = True
-
-                    '        'Initialise the starting point for Effort
-                    '        For iFleet = 1 To Fleets2Fit.Count
-                    '            x(iFleet - 1) = Rnd() * 4
-                    '        Next
-                    '        XAlglib.minlbfgscreatef(3, x, diffstep, state)
-                    '        XAlglib.minlbfgssetcond(state, epsg, epsf, epsx, maxits)
-                    '        XAlglib.minlbfgsoptimize(state, AddressOf Effort2produceF, Nothing, parameters)
-                    '        XAlglib.minlbfgsresults(state, x, rep)
-                    '        'Console.WriteLine("Starting Point = " & iIteration & "; Timestep = " & iTime)
-                    '        AllEffortsAboveZero = True
-                    '        For i = 1 To x.Length
-                    '            If x(i - 1) < 0 Then AllEffortsAboveZero = False
-                    '        Next
-                    '    Loop
-                    '    Console.Write(state.csobj.f)
-                    '    For iEffort = 1 To x.GetLength(0)
-                    '        Console.Write(vbTab & x(iEffort - 1))
-                    '    Next
-                    '    Console.WriteLine()
-
-                    '    If state.csobj.f < BestCost Then
-                    '        BestCost = state.csobj.f
-                    '        For i = 1 To Fleets2Fit.Count
-                    '            BestEfforts(i - 1) = x(i - 1)
-                    '        Next
-                    '    End If
-
-                    'Next
-
-                    'Set the fishing effort according to what the optimised efforts were just calculated
-                    'For iFleet = 1 To mCore.nFleets
-                    '    For iMonth = 1 To 12
-                    '        If Fleets2Fit.IndexOf(iFleet) = -1 Then 'If fleet doesnt effect a group that has a HCR set effort to what it was end of last year
-                    '            _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
-                    '        Else
-                    '            If BestEfforts(Fleets2Fit.IndexOf(iFleet)) < 0 Then 'If the optimised effort is < 0 (which should only ever be slight below 0 because
-                    '                'of penalty for values<0) then set effort to 0
-                    '                _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = 0
-                    '            Else
-                    '                _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = BestEfforts(Fleets2Fit.IndexOf(iFleet)) 'Set effort to optimised
-                    '            End If
-                    '        End If
-                    '    Next
-                    'Next
-
 
                 End If
 
-                'Set the efforts of all fleets which can a conservation species with an F=0 to zero
-                'For Each iFleet In ZeroEffortFleetsList
-                '    For iMonth = 1 To 12
-                '        _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = 0
-                '    Next
-                'Next
+                For iFleet = 1 To mCore.nFleets
+                    If Fleets2Fit.IndexOf(iFleet) = -1 Then
+                        For iMonth = 1 To 12
+                            _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
+                        Next
+                    End If
+                Next
 
                 'Calculates what the F's are for each species given the effort
                 For iMonth = 0 To 11

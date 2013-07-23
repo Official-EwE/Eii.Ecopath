@@ -171,8 +171,6 @@ Public Class frmMSE
             Panel3.Show()
             btnGamma.Show()
             btnEcopathParams2.Show()
-            txtArea.Show()
-            lblArea.Show()
             Button2.Show()
         Else
             Label2.Hide()
@@ -181,8 +179,6 @@ Public Class frmMSE
             Panel3.Hide()
             btnGamma.Hide()
             btnEcopathParams2.Hide()
-            txtArea.Hide()
-            lblArea.Hide()
             Button2.Hide()
         End If
 
@@ -203,5 +199,9 @@ Public Class frmMSE
         mMSE.Create1DimParams("SwitchingPower")
         'mMSE.Create2DimParams("DietComposition")
         mMSE.CreateVulnerabilities()
+    End Sub
+
+    Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
+        txtArea.Text = mCore.EwEModel.Area
     End Sub
 End Class
