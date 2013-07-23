@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ReferencePath>C:\Users\Mark\Desktop\GAP\Code\Ecopath_dev\Ecopath\Sources\ScientificInterfaceShared\bin\x86\Debug\;C:\Users\Mark\Desktop\GAP\Code\Ecopath_dev\Ecopath\Sources\ScientificInterface\bin\x86\Debug\</ReferencePath>
+    <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
 </Project>
