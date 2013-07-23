@@ -2338,6 +2338,14 @@ EwECore
 	<param name="astrFields">An optional array of field names.</param>
  -------------------------------------------------------------------
 
+</member><member name="M:EwECore.cEcospaceImportExportXYData.DuplicateFields">
+ -----------------------------------------------------------------------
+ <summary>
+ Returns all duplicate field names defined in the import/export data.
+ </summary>
+	<returns></returns>
+ -----------------------------------------------------------------------
+
 </member><member name="M:EwECore.cEcospaceImportExportXYData.WriteXYFile(System.String,System.String,System.String)">
  -------------------------------------------------------------------
  <summary>
@@ -2779,12 +2787,12 @@ EwECore
 	<remarks></remarks>
 </member><member name="F:EwECore.cEcospaceDataStructures.PropEffortFleetZone">
 	<summary>
- Proportion of fishing effort for a fleet in an area(LME,Region....) by nFleets, nAreas
+ Proportion of fishing effort for a fleet in an zone(LME,Region....) by nFleets, nEffZones
  </summary>
 	<remarks></remarks>
 </member><member name="F:EwECore.cEcospaceDataStructures.EffZones">
 	<summary>
- PropEffortFleetArea() index of the area a cell is in by Row Col
+ PropEffortFleetArea() index of the Effort Zone a cell is in by Row Col
  </summary>
 	<remarks></remarks>
 </member><member name="P:EwECore.cEcospaceDataStructures.NGroups">
@@ -9602,7 +9610,7 @@ min_B_QB: minimum B*QB.
 </summary>
 </member><member name="P:EwECore.My.Resources.CoreDefaults.CORE_DEFAULT_MIGRATION">
 	<summary>
-  Looks up a localized string similar to Migration.
+  Looks up a localized string similar to Migration {0}.
 </summary>
 </member><member name="P:EwECore.My.Resources.CoreDefaults.CORE_DEFAULT_MIXEDLAYERDEPTH">
 	<summary>
@@ -13611,17 +13619,6 @@ pass in params that this method needs instead of obtaining them from the manager
 	<summary>
  Evaluate the <see cref="F:EwECore.cEcospaceDataStructures.IsFished">fishing access map</see> for the current month.
  </summary>
-</member><member name="M:EwECore.cEcoSpace.PredictEffortDistributionThreaded_NoZones(System.Object)">
-	<summary>
- Threaded Version
- This routine predicts spatial effort and fishing mortality rate
- distribution by gear type; called at each iteration
- step in finding biomass spatial equilibrium
- model below is a gravity attraction model, distributing
- total efforts TotEffort(gear) over all cells where each gear can fish
- in proportion to relative profitability (catch rate x price sum) for that cell for the gear
- </summary>
-	<remarks></remarks>
 </member><member name="M:EwECore.cEcoSpace.PredictEffortDistributionThreadedLoadShared(System.Object)">
 	<summary>
  Threaded and Load Shared Version
@@ -19371,6 +19368,13 @@ pass in params that this method needs instead of obtaining them from the manager
  </summary>
  -----------------------------------------------------------------------
 
+</member><member name="P:EwECore.cEcospaceLayer.VarName">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the <see cref="T:EwEUtils.Core.eVarNameFlags"/> for the variable of this layers' data
+ </summary>
+ -----------------------------------------------------------------------
+
 </member><member name="P:EwECore.cEcospaceLayer.ValueType">
  -----------------------------------------------------------------------
  <summary>
@@ -20005,6 +20009,18 @@ Note that for unexploited top-predators it may not be possible to estimate P/B (
 </member><member name="P:EwECore.My.Resources.CoreMessages.ECOSIM_SAVE_SUCCESS">
 	<summary>
   Looks up a localized string similar to Ecosim scenario '{0}' has been saved..
+</summary>
+</member><member name="P:EwECore.My.Resources.CoreMessages.ECOSPACE_EXPORT_ASCII_SUCCESS">
+	<summary>
+  Looks up a localized string similar to Ecospace result .asc files have been written to {0}..
+</summary>
+</member><member name="P:EwECore.My.Resources.CoreMessages.ECOSPACE_EXPORT_CSV_SUCCESS">
+	<summary>
+  Looks up a localized string similar to Ecospace result .csv files have been written to {0}..
+</summary>
+</member><member name="P:EwECore.My.Resources.CoreMessages.ECOSPACE_EXPORT_FAILED">
+	<summary>
+  Looks up a localized string similar to Ecospace failed to save file {0}. {1}.
 </summary>
 </member><member name="P:EwECore.My.Resources.CoreMessages.ECOSPACE_GENERIC_ERROR">
 	<summary>

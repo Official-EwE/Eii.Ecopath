@@ -1776,7 +1776,7 @@ EwEPlugin
 </member><member name="T:EwEPlugin.IConfigurablePlugin">
  ===========================================================================
  <summary>
- Plugin point that provides a configuration interface as a form.
+ Plugin point that provides a configuration interface as a <see cref="T:System.Windows.Forms.Control">user interface control</see>.
  </summary>
  ===========================================================================
 

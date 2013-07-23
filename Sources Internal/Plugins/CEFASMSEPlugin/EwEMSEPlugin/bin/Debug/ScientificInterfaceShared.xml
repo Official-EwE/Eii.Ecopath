@@ -1380,6 +1380,10 @@ ScientificInterfaceShared
 	<summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
+</member><member name="P:ScientificInterfaceShared.My.Resources.Resources.ECOSPACE_LAYERGROUP_ADVECTION">
+	<summary>
+  Looks up a localized string similar to Advection.
+</summary>
 </member><member name="P:ScientificInterfaceShared.My.Resources.Resources.ECOSPACE_LAYERGROUP_BIOMASSFORCING">
 	<summary>
   Looks up a localized string similar to Biomass forcing.
@@ -4622,7 +4626,7 @@ ScientificInterfaceShared
 
 </member><member name="F:ScientificInterfaceShared.Commands.cEditLayerCommand.cCOMMAND_NAME">
 	<summary>Static name for this command.</summary>
-</member><member name="M:ScientificInterfaceShared.Commands.cEditLayerCommand.Invoke(ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer,ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer,ScientificInterfaceShared.Definitions.eLayerEditTypes)">
+</member><member name="M:ScientificInterfaceShared.Commands.cEditLayerCommand.Invoke(ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer,ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer,ScientificInterfaceShared.Definitions.eLayerEditTypes)">
  ---------------------------------------------------------------------------
  <inheritdocs cref="M:EwEUtils.Commands.cCommand.Invoke"/>
 	<param name="layer">The layer to edit.</param>
@@ -4736,21 +4740,21 @@ ScientificInterfaceShared
 	<summary>Locked for updates.</summary>
 </member><member name="F:ScientificInterfaceShared.Controls.Map.ucLayerGroup.m_bHovering">
 	<summary>States whether the mouse is hovering over the control.</summary>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayerGroup.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer,ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayerGroup.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
- Add a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see> to this group.
+ Add a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> to this group.
  </summary>
-	<param name="l"><see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">Layer</see> to add.</param>
+	<param name="l">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> to add.</param>
 	<param name="lPosition">Layer to position this layer before, if any</param>
  -------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayerGroup.RemoveLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer,System.Boolean)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayerGroup.RemoveLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,System.Boolean)">
  -------------------------------------------------------------------
  <summary>
  Remove a <see cref="T:ScientificInterfaceShared.Controls.Map.ucLayer">ucLayer</see> instance from this group.
  </summary>
-	<param name="l"><see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">Layer</see> to remove.</param>
+	<param name="l">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> to remove.</param>
  -------------------------------------------------------------------
 
 </member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayerGroup.GetLayerCount">
@@ -4785,13 +4789,13 @@ ScientificInterfaceShared
  Enum to identify areas in the control
  </summary>
 	<remarks></remarks>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayerGroup.FindLayerControl(ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayerGroup.FindLayerControl(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
  Find a child layer control for a given layer
  </summary>
-	<param name="layer"><see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">Layer</see> to find the
- <see cref="T:ScientificInterfaceShared.Controls.Map.ucLayer">control</see> for.</param>
+	<param name="layer">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> 
+ to find the <see cref="T:ScientificInterfaceShared.Controls.Map.ucLayer">control</see> for.</param>
 	<returns>A child layer control, or nothing if the control could
  not be found.</returns>
  -------------------------------------------------------------------
@@ -4979,7 +4983,7 @@ ScientificInterfaceShared
  <inheritdocs cref="M:EwEUtils.Commands.cCommand.Invoke"/>
  ---------------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Commands.cImportLayerCommand.Invoke(ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer[])">
+</member><member name="M:ScientificInterfaceShared.Commands.cImportLayerCommand.Invoke(EwECore.cEcospaceLayer[])">
  ---------------------------------------------------------------------------
  <inheritdocs cref="M:EwEUtils.Commands.cCommand.Invoke"/>
 	<param name="alayers">The layers to import data into.</param>
@@ -5146,7 +5150,7 @@ ScientificInterfaceShared
  -------------------------------------------------------------------
  <summary>
  Get/set whether this attached layer should always rendered (True),
- or only when the layer is <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cLayer.IsSelected"/> (False).
+ or only when the layer is <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.IsSelected"/> (False).
  </summary>
  -------------------------------------------------------------------
 
@@ -6743,6 +6747,94 @@ ScientificInterfaceShared
  </summary>
  =======================================================================
 
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.m_bAllowValidation">
+	<summary>By default allow core data validation</summary>
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer)">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+	<param name="renderer"></param>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
+ -----------------------------------------------------------------------
+ <summary>
+ Copy constructor.
+ </summary>
+	<param name="layer">The layer to copy.</param>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.Dispose(System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+	</summary>
+	<param name="bDisposing"></param>
+ -----------------------------------------------------------------------
+
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags.Map">
+	<summary>Value to indicate that a layers' map data has changed.</summary>
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags.VisualStyle">
+	<summary>Value to indicate that a layers' visual representation style has changed.</summary>
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags.Visibility">
+	<summary>Value to indicate that a layers' visible state has changed.</summary>
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags.Selected">
+	<summary>Value to indicate that a layers' selected state has changed.</summary>
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags.Descriptive">
+	<summary>Value to indicate that one ore more of a layers' name, description (?) 
+ and other descriptive values have changed.</summary>
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags.Editable">
+	<summary>Value to indicate that a layers' editable state has changed.</summary>
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags.All">
+	<summary>All possible flags.</summary>
+</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags">
+	<summary>
+ Enumerated type to indicate layer changes.
+ </summary>
+</member><member name="E:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.LayerChanged">
+	<summary>
+ Layer change event
+ </summary>
+	<param name="layer"></param>
+	<param name="updateType"></param>
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.Update(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Call this whenever properties and visual aspects of the layer have changed.
+ </summary>
+	<param name="updateType">Bitwise <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags">flag</see>
+ indicating which aspects of the layer have changed.</param>
+	<param name="bNotifyCore">Flag stating whether this change should be
+ passed to the Core. This flag should be true if the method was called
+ to commit a layer data change to the core, and should be false if the 
+ layer is responding to a core layer change message.</param>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.Name">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the name of this layer.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.Renderer">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the layer <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer">renderer</see>.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.IsSelected">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set whether the layer is selected.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">
+	<summary>
+ Class that wraps spatial data for display in the UI.
+ </summary>
 </member><member name="M:ScientificInterfaceShared.Controls.cFishingBaseShapeGUIHandler.SupportCommand(ScientificInterfaceShared.Controls.cShapeGUIHandler.eShapeCommandTypes)">
  -------------------------------------------------------------------
  <summary>
@@ -7400,7 +7492,7 @@ ScientificInterfaceShared
  -------------------------------------------------------------------
  <summary>
  Update the content of the editor GUI because something in the
- underlying <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see> or
+ underlying <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> or
  <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor">layer editor</see> has changed.
  </summary>
 	<param name="editor"></param>
@@ -7506,7 +7598,7 @@ ScientificInterfaceShared
 </member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cVectorLayerRenderer">
  -----------------------------------------------------------------------
  <summary>
- Base class for rendering a Scientific Interface <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see>
+ Base class for rendering a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see>
  onto the base map.
  </summary>
  -----------------------------------------------------------------------
@@ -7575,7 +7667,7 @@ ScientificInterfaceShared
  </summary>
  -------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucMap.OnLayerChanged(ScientificInterfaceShared.Controls.Map.Layers.cLayer,ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucMap.OnLayerChanged(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags)">
  -------------------------------------------------------------------
  <summary>
  Layer changed event
@@ -7614,7 +7706,7 @@ ScientificInterfaceShared
  </remarks>
  -------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucMap.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer,ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucMap.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
  Add a layer to the basemap.
@@ -7623,7 +7715,7 @@ ScientificInterfaceShared
 	<param name="layerPosition">The layer to add the layer before, if any.</param>
  -------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucMap.RemoveLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucMap.RemoveLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
  Remove a layer from the basemap.
@@ -9234,7 +9326,7 @@ ScientificInterfaceShared
 	<summary>A GUI, if any.</summary>
 </member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor.m_uic">
 	<summary>UI context to operate on.</summary>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer)">
  -------------------------------------------------------------------
  <summary>
  Initialize the layer editor.
@@ -10851,15 +10943,25 @@ ScientificInterfaceShared
  </summary>
  -----------------------------------------------------------------------
 
+</member><member name="M:ScientificInterfaceShared.Commands.cFileSaveCommand.Invoke">
+ -----------------------------------------------------------------------
+ <summary>
+ Invoke the file save command with default parameters.
+ </summary>
+ -----------------------------------------------------------------------
+
 </member><member name="M:ScientificInterfaceShared.Commands.cFileSaveCommand.Invoke(System.String,System.String,System.Int32,System.String)">
  -----------------------------------------------------------------------
  <summary>
-	</summary>
+ Invoke the file save user interface with a given file name, file filter,
+ and dialog title box.
+ selection 
+ </summary>
 	<param name="strFileName"></param>
 	<param name="strFileFilter"></param>
 	<param name="iFilter"></param>
 	<param name="strTitle">
- Optional dialog title. If left empty, the .NET default is used.
+ Optional dialog title. If left empty, a system default is used.
  </param>
  -----------------------------------------------------------------------
 
@@ -11178,6 +11280,62 @@ ScientificInterfaceShared
  </summary>
  ---------------------------------------------------------------------------
 
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.iLayer">
+ -------------------------------------------------------------------
+ <summary>
+ Get/set the index of the current active layer in the bundle.
+ </summary>
+ -------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.nLayers">
+ -------------------------------------------------------------------
+ <summary>
+ Get the number of layers in the bundle.
+ </summary>
+ -------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.CoreCounter">
+ -------------------------------------------------------------------
+ <summary>
+ Get the <see cref="T:EwEUtils.Core.eCoreCounterTypes"/> that defines the indexing
+ of the layers bundled in this class.
+ </summary>
+ -------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.SourceSec">
+ -------------------------------------------------------------------
+ <summary>
+ Get the secundary data index for a raster bundle. The type of 
+ object is derived from the bundle <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.CoreCounter"/>.
+ </summary>
+ -------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.Data">
+ -------------------------------------------------------------------
+ <summary>
+ Get the Ecospace layer <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.iLayer">currently active</see> in
+ the bundle.
+ </summary>
+ -------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.Data(System.Int32)">
+ -------------------------------------------------------------------
+ <summary>
+ Get an Ecospace layer from the bundle.
+ </summary>
+	<param name="iLayer">The index of the layer to obtain. Note that this
+ value cannot exceed the range stipulted by the underlying <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle.CoreCounter"/>.</param>
+ -------------------------------------------------------------------
+
+</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayerBundle">
+ -------------------------------------------------------------------
+ <summary>
+ Layer that wraps a collection of <see cref="T:EwECore.cEcospaceLayer"/>s for 
+ bundled display and processing in the UI. The indexing of the bundled
+ data is based on <see cref="T:EwEUtils.Core.eCoreCounterTypes"/>.
+ </summary>
+ -------------------------------------------------------------------
+
 </member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerRendererSymbol.GetSymbolColor(System.Object,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
 	<summary>
  Override to change the colour of the layer symbol.
@@ -11228,22 +11386,22 @@ ScientificInterfaceShared
 	<summary>
  User control to interact with a single layer in a Ecospace layer stack.
  </summary>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer,System.String,System.String,ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,System.String,System.String,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
- Add a layer to this control.
+ Add a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> to this control.
  </summary>
-	<param name="layer">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see> to add.</param>
+	<param name="layer">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> to add.</param>
 	<param name="layerPosition">Layer to position this layer before, if any</param>
 	<remarks>A layer can only be added once.</remarks>
  -------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.RemoveLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.RemoveLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
  Remove a layer from this control.
  </summary>
-	<param name="layer">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see> to remove.</param>
+	<param name="layer">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> to remove.</param>
 	<remarks>A layer can only be removed once.</remarks>
  -------------------------------------------------------------------
 
@@ -11293,23 +11451,23 @@ ScientificInterfaceShared
 
 </member><member name="F:ScientificInterfaceShared.Controls.Map.ucLayersControl.m_bInSelectionUpdate">
 	<summary>Flag to prevent selection update recursion.</summary>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.UpdateSelectedLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.UpdateSelectedLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
  Make sure only one layer is selected.
  </summary>
-	<param name="layerSelect"><see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">Layer</see> that has been 
- selected.</param>
+	<param name="layerSelect">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> 
+ that has been selected.</param>
  -------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.FireSelectionCommand(ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.ucLayersControl.FireSelectionCommand(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
  Fire global selection command to allow users to manage remarks for
  a <see cref="T:EwECore.cCoreInputOutputBase">source</see> attached a layer.
  </summary>
-	<param name="layer"><see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">Layer</see> that has been 
- selected.</param>
+	<param name="layer">The <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see> 
+ that has been selected.</param>
  -------------------------------------------------------------------
 
 </member><member name="T:ScientificInterfaceShared.Controls.Map.ucLayersControl">
@@ -12615,7 +12773,7 @@ ScientificInterfaceShared
  </summary>
  -----------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
  -----------------------------------------------------------------------
  <summary>
  Render a layer onto a graphics context
@@ -12684,7 +12842,7 @@ ScientificInterfaceShared
 </member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer">
  -----------------------------------------------------------------------
  <summary>
- Base class for rendering a Scientific Interface <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see>
+ Base class for rendering a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see>
  onto the base map.
  </summary>
  -----------------------------------------------------------------------
@@ -13136,249 +13294,9 @@ ScientificInterfaceShared
  </remarks>
  -----------------------------------------------------------------------
 
-</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.cDefaultEditor">
- ===================================================================
- <summary>
- Default editor class for layers without an editor.
- </summary>
- ===================================================================
-
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.m_propBacklink">
-	<summary>
- The <see cref="T:ScientificInterfaceShared.Properties.cProperty">property</see> that simulates live map changes to sync different
- layer instances linked to the same data.
- </summary>
-	<remarks>
- This is a hack solution. <see cref="T:EwECore.cEcospaceLayer">Basemap layers</see> are not exposed as true
- <see cref="T:EwECore.ValueWrapper.cValue">core value objects</see>. To provide layers with common GUI issues
- such as remark feedback and broadcasted updates, as well as the ability to attach 
- <see cref="T:EwECore.Auxiliary.cVisualStyle">Visual Styles</see> to layers, this hidden property is used.
- </remarks>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,EwECore.cEcospaceLayer,ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer,ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor,EwECore.cCoreInputOutputBase,EwEUtils.Core.eVarNameFlags,System.Single,System.Single)">
- -----------------------------------------------------------------------
- <summary>
- Constructor.
- </summary>
-	<param name="data"></param>
-	<param name="renderer"></param>
-	<param name="source">
- The core object that serves two purposes:
- <list type="number">
-			<item><description>Provide the dynamic name for a layer</description></item>
-			<item><description>Provide the definition for distributing data changes</description></item>
-		</list>
-	</param>
-	<param name="varName">The name of the variable to associate data changes with</param>
-	<param name="sValueSet"></param>
-	<param name="sValueClear"></param>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer)">
- -----------------------------------------------------------------------
- <summary>
- Copy constructor.
- </summary>
-	<param name="layer">The layer to copy.</param>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.Dispose(System.Boolean)">
- -----------------------------------------------------------------------
- <summary>
-	</summary>
-	<param name="bDisposing"></param>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.SetUnitMask(System.String,ScientificInterfaceShared.Style.cStyleGuide.eUnitType)">
- -----------------------------------------------------------------------
- <summary>
- Instructs the layer to incorporate units the layer name display.
- </summary>
-	<param name="strUnitMask">The format mask to apply. This mask must
- contain a '{0}' field to place the layer name value, and a '{1}' field
- to place the unit value.</param>
-	<param name="unitType">Definition of the unit to place in the layer
- display text.</param>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.SetUnitMask(System.String,ScientificInterfaceShared.Style.cStyleGuide.eUnitType[])">
- -----------------------------------------------------------------------
- <summary>
- Instructs the layer to incorporate units the layer name display.
- </summary>
-	<param name="strUnitMask">The format mask to apply. This mask must
- contain a '{0}' field to place the layer name value, and placeholder
- fields for the units. The unit fields must be numbered '{1}', '{2}'
- etc. Units will be placed in the placeholder fields in the order that
- they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
-	<param name="aUnitTypes">Definitions of units to place in the layer
- display text.</param>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.Update(ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags,System.Boolean)">
- -----------------------------------------------------------------------
- <summary>
- Call this whenever properties and visual aspects of the layer have changed.
- </summary>
-	<param name="updateType">Bitwise <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags">flag</see>
- indicating which aspects of the layer have changed.</param>
-	<param name="bNotifyCore">Flag stating whether this change should be
- passed to the Core. This flag should be true if the method was called
- to commit a layer data change to the core, and should be false if the 
- layer is responding to a core layer change message.</param>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.Name">
- -----------------------------------------------------------------------
- <summary>
- Get the name of this layer.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.Source">
- -----------------------------------------------------------------------
- <summary>
- Get the source of this layer.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.SourceSec">
- -----------------------------------------------------------------------
- <summary>
- Get the source of this layer.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.VarName">
- -----------------------------------------------------------------------
- <summary>
- Get the variable of the source this layer applies to.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.Data">
- -----------------------------------------------------------------------
- <summary>
- Get the underlying core-exposed layer data.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.ValueSet">
- -----------------------------------------------------------------------
- <summary>
- Get the value that this layer interprets as relevant values.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.ValueClear">
- -----------------------------------------------------------------------
- <summary>
- Get the value that this layer interprets as clear values.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.IsValue(System.Object)">
- -----------------------------------------------------------------------
- <summary>
- Get whether a given cell position has a value.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.Value(System.Int32,System.Int32)">
- -----------------------------------------------------------------------
- <summary>
- Get/set the value in the underlying data layer.
- </summary>
-	<param name="iRow"></param>
-	<param name="iCol"></param>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.ValueType">
- -----------------------------------------------------------------------
- <summary>
- Get the data type of values in the underlying data layer.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.Editor">
- -----------------------------------------------------------------------
- <summary>
- Get the layer <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor">editor</see>.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.IsExternal">
- -----------------------------------------------------------------------
- <summary>
- Get whether the underlying data is 
- <see cref="P:EwECore.cEcospaceLayer.IsExternalData">driven externally</see>.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.IsModified">
- -----------------------------------------------------------------------
- <summary>
- Get/set whether the layer has been modified.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.EcospaceMessageHandler(EwECore.cMessage@)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorTwoState.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer)">
  -------------------------------------------------------------------
- <summary>
- For core layers, the regular core DataModified messages relay layer 
- updates.
- </summary>
-	<param name="msg"></param>
- -------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer.OnPropertyChanged(ScientificInterfaceShared.Properties.cProperty,ScientificInterfaceShared.Properties.cProperty.eChangeFlags)">
- -------------------------------------------------------------------
- <summary>
- For non-core layers, a property change is used to trigger layer 
- updates among independent copies of layers.
- </summary>
-	<param name="prop"></param>
-	<param name="changeFlags"></param>
- -------------------------------------------------------------------
-
-</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer">
-	<summary>
- Class that wraps a single <see cref="T:EwECore.cEcospaceLayer">Ecospace data layer</see> for 
- manipulation in a User Interface.
- </summary>
-	<remarks>
-		<para>
- Ok, the UI layer thing has gotten so complex that a bit of an explanation would not hurt.
- </para>
-		<para>
- The entire basemap chain consists of the following collaborating classes:
- <list>
-				<item>
-					<description>One <see cref="T:EwECore.cEcospaceBasemap">basemap</see> which defines the size and other aspects
- of the map currently active in Ecospace. This class also provides access to individual data
- <see cref="T:EwECore.cEcospaceLayer">layers</see>.
- </description></item>
-				<item><description>
-						<para>
- Several <see cref="T:EwECore.cEcospaceLayer">data layers</see> which each expose 
- spatial array(s) of data. Basemap layers are two dimensional, allowing access to the array
- via cell(row, col) interaction. Poking around in a basemap layer in fact modifies Ecospace
- spatial cells of spatial data array that the the layer is connected to.
- </para>
-					</description></item>
-				<item><description>
-						<para>
- GUI <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">Layers</see> combine one or more <see cref="T:EwECore.cEcospaceLayer">core
- basemap layers</see> as a single unit for display and interaction in the user interface. The GUI
- Layer uses a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer">layer renderer</see> to decide how this assembly
- of core data is reflected.
- </para>
-					</description></item>
-			</list>
-		</para>
-	</remarks>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorTwoState.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer)">
- -------------------------------------------------------------------
- <inheritdoc cref="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer)"/>
+ <inheritdoc cref="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer)"/>
  -------------------------------------------------------------------
 
 </member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorTwoState.StartEdit(System.Drawing.Point,System.Windows.Forms.MouseEventArgs)">
@@ -14024,94 +13942,6 @@ ScientificInterfaceShared
  </summary>
  ---------------------------------------------------------------------------
 
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.m_bAllowValidation">
-	<summary>By default allow core data validation</summary>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer)">
- -----------------------------------------------------------------------
- <summary>
- Constructor.
- </summary>
-	<param name="renderer"></param>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
- -----------------------------------------------------------------------
- <summary>
- Copy constructor.
- </summary>
-	<param name="layer">The layer to copy.</param>
- -----------------------------------------------------------------------
-
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayer.Dispose(System.Boolean)">
- -----------------------------------------------------------------------
- <summary>
-	</summary>
-	<param name="bDisposing"></param>
- -----------------------------------------------------------------------
-
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags.Map">
-	<summary>Value to indicate that a layers' map data has changed.</summary>
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags.VisualStyle">
-	<summary>Value to indicate that a layers' visual representation style has changed.</summary>
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags.Visibility">
-	<summary>Value to indicate that a layers' visible state has changed.</summary>
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags.Selected">
-	<summary>Value to indicate that a layers' selected state has changed.</summary>
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags.Descriptive">
-	<summary>Value to indicate that one ore more of a layers' name, description (?) 
- and other descriptive values have changed.</summary>
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags.Editable">
-	<summary>Value to indicate that a layers' editable state has changed.</summary>
-</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags.All">
-	<summary>All possible flags.</summary>
-</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags">
-	<summary>
- Enumerated type to indicate layer changes.
- </summary>
-</member><member name="E:ScientificInterfaceShared.Controls.Map.Layers.cLayer.LayerChanged">
-	<summary>
- Layer change event
- </summary>
-	<param name="layer"></param>
-	<param name="updateType"></param>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayer.Update(ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags,System.Boolean)">
- -----------------------------------------------------------------------
- <summary>
- Call this whenever properties and visual aspects of the layer have changed.
- </summary>
-	<param name="updateType">Bitwise <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer.eChangeFlags">flag</see>
- indicating which aspects of the layer have changed.</param>
-	<param name="bNotifyCore">Flag stating whether this change should be
- passed to the Core. This flag should be true if the method was called
- to commit a layer data change to the core, and should be false if the 
- layer is responding to a core layer change message.</param>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cLayer.Name">
- -----------------------------------------------------------------------
- <summary>
- Get the name of this layer.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cLayer.Renderer">
- -----------------------------------------------------------------------
- <summary>
- Get the layer <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer">renderer</see>.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cLayer.IsSelected">
- -----------------------------------------------------------------------
- <summary>
- Get/set whether the layer is selected.
- </summary>
- -----------------------------------------------------------------------
-
-</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">
-	<summary>
- Class that wraps spatial data for display in the UI.
- </summary>
 </member><member name="M:ScientificInterfaceShared.Controls.Map.cLayerFactoryBase.GetLayers(ScientificInterfaceShared.Controls.cUIContext,EwEUtils.Core.eVarNameFlags)">
  -------------------------------------------------------------------
  <summary>
@@ -14136,8 +13966,8 @@ ScientificInterfaceShared
 </member><member name="T:ScientificInterfaceShared.Controls.Map.cLayerFactoryBase">
  =======================================================================
  <summary>
- Factory for returning <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">UI layer wrappers</see> for 
- <see cref="T:EwECore.cEcospaceLayer">Ecospace basemap layer data.</see>
+ Factory for returning <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layers</see> for 
+ given <see cref="T:EwECore.cEcospaceLayer">Ecospace data layers.</see>
 	</summary>
  =======================================================================
 
@@ -15242,9 +15072,9 @@ ScientificInterfaceShared
 
 </member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorMLD.m_layerDepth">
 	<summary>The depth layer to limit MLD values against.</summary>
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorMLD.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorMLD.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer)">
  -------------------------------------------------------------------
- <inheritdoc cref="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer)"/>
+ <inheritdoc cref="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor.Initialize(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer)"/>
  -------------------------------------------------------------------
 
 </member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorMLD.SetCellValue(System.Drawing.Point,System.Object,System.Windows.Forms.MouseEventArgs,System.Drawing.Point)">
@@ -16342,7 +16172,7 @@ ScientificInterfaceShared
 	<param name="alayers">The layers to export data from.</param>
  ---------------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Commands.cExportLayerCommand.Invoke(ScientificInterfaceShared.Controls.Map.Layers.cRasterLayer[])">
+</member><member name="M:ScientificInterfaceShared.Commands.cExportLayerCommand.Invoke(ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer[])">
  ---------------------------------------------------------------------------
  <inheritdocs cref="M:EwEUtils.Commands.cCommand.Invoke"/>
 	<param name="arl">Array of raster layers to export data from.</param>
@@ -16442,6 +16272,246 @@ ScientificInterfaceShared
  </summary>
  ===========================================================================
 
+</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.cDefaultEditor">
+ ===================================================================
+ <summary>
+ Default editor class for layers without an editor.
+ </summary>
+ ===================================================================
+
+</member><member name="F:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.m_propBacklink">
+	<summary>
+ The <see cref="T:ScientificInterfaceShared.Properties.cProperty">property</see> that simulates live map changes to sync different
+ layer instances linked to the same data.
+ </summary>
+	<remarks>
+ This is a hack solution. <see cref="T:EwECore.cEcospaceLayer">Basemap layers</see> are not exposed as true
+ <see cref="T:EwECore.ValueWrapper.cValue">core value objects</see>. To provide layers with common GUI issues
+ such as remark feedback and broadcasted updates, as well as the ability to attach 
+ <see cref="T:EwECore.Auxiliary.cVisualStyle">Visual Styles</see> to layers, this hidden property is used.
+ </remarks>
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,EwECore.cEcospaceLayer,ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer,ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor,EwECore.cCoreInputOutputBase,EwEUtils.Core.eVarNameFlags,System.Single,System.Single)">
+ -----------------------------------------------------------------------
+ <summary>
+ Constructor.
+ </summary>
+	<param name="data"></param>
+	<param name="renderer"></param>
+	<param name="source">
+ The core object that serves two purposes:
+ <list type="number">
+			<item><description>Provide the dynamic name for a layer</description></item>
+			<item><description>Provide the definition for distributing data changes</description></item>
+		</list>
+	</param>
+	<param name="varName">The name of the variable to associate data changes with</param>
+	<param name="sValueSet"></param>
+	<param name="sValueClear"></param>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.#ctor(ScientificInterfaceShared.Controls.cUIContext,ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer)">
+ -----------------------------------------------------------------------
+ <summary>
+ Copy constructor.
+ </summary>
+	<param name="layer">The layer to copy.</param>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.Dispose(System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+	</summary>
+	<param name="bDisposing"></param>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.SetUnitMask(System.String,ScientificInterfaceShared.Style.cStyleGuide.eUnitType)">
+ -----------------------------------------------------------------------
+ <summary>
+ Instructs the layer to incorporate units the layer name display.
+ </summary>
+	<param name="strUnitMask">The format mask to apply. This mask must
+ contain a '{0}' field to place the layer name value, and a '{1}' field
+ to place the unit value.</param>
+	<param name="unitType">Definition of the unit to place in the layer
+ display text.</param>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.SetUnitMask(System.String,ScientificInterfaceShared.Style.cStyleGuide.eUnitType[])">
+ -----------------------------------------------------------------------
+ <summary>
+ Instructs the layer to incorporate units the layer name display.
+ </summary>
+	<param name="strUnitMask">The format mask to apply. This mask must
+ contain a '{0}' field to place the layer name value, and placeholder
+ fields for the units. The unit fields must be numbered '{1}', '{2}'
+ etc. Units will be placed in the placeholder fields in the order that
+ they are defined in <paramref name="aUnitTypes">aUnitTypes</paramref>.</param>
+	<param name="aUnitTypes">Definitions of units to place in the layer
+ display text.</param>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.Update(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags,System.Boolean)">
+ -----------------------------------------------------------------------
+ <summary>
+ Call this whenever properties and visual aspects of the layer have changed.
+ </summary>
+	<param name="updateType">Bitwise <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer.eChangeFlags">flag</see>
+ indicating which aspects of the layer have changed.</param>
+	<param name="bNotifyCore">Flag stating whether this change should be
+ passed to the Core. This flag should be true if the method was called
+ to commit a layer data change to the core, and should be false if the 
+ layer is responding to a core layer change message.</param>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.Name">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the name of this layer.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.Source">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the source of this layer.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.SourceSec">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the source of this layer.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.VarName">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the variable of the source this layer applies to.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.Data">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the underlying core-exposed layer data.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.ValueSet">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the value that this layer interprets as relevant values.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.ValueClear">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the value that this layer interprets as clear values.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.IsValue(System.Object)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get whether a given cell position has a value.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.Value(System.Int32,System.Int32)">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set the value in the underlying data layer.
+ </summary>
+	<param name="iRow"></param>
+	<param name="iCol"></param>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.ValueType">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the data type of values in the underlying data layer.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.Editor">
+ -----------------------------------------------------------------------
+ <summary>
+ Get the layer <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditor">editor</see>.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.IsExternal">
+ -----------------------------------------------------------------------
+ <summary>
+ Get whether the underlying data is 
+ <see cref="P:EwECore.cEcospaceLayer.IsExternalData">driven externally</see>.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.IsModified">
+ -----------------------------------------------------------------------
+ <summary>
+ Get/set whether the layer has been modified.
+ </summary>
+ -----------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.EcospaceMessageHandler(EwECore.cMessage@)">
+ -------------------------------------------------------------------
+ <summary>
+ For core layers, the regular core DataModified messages relay layer 
+ updates.
+ </summary>
+	<param name="msg"></param>
+ -------------------------------------------------------------------
+
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer.OnPropertyChanged(ScientificInterfaceShared.Properties.cProperty,ScientificInterfaceShared.Properties.cProperty.eChangeFlags)">
+ -------------------------------------------------------------------
+ <summary>
+ For non-core layers, a property change is used to trigger layer 
+ updates among independent copies of layers.
+ </summary>
+	<param name="prop"></param>
+	<param name="changeFlags"></param>
+ -------------------------------------------------------------------
+
+</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayRasterLayer">
+	<summary>
+ Class that wraps a single <see cref="T:EwECore.cEcospaceLayer">Ecospace data layer</see> for 
+ manipulation in a User Interface.
+ </summary>
+	<remarks>
+		<para>
+ Ok, the UI layer thing has gotten so complex that a bit of an explanation would not hurt.
+ </para>
+		<para>
+ The entire basemap chain consists of the following collaborating classes:
+ <list>
+				<item>
+					<description>One <see cref="T:EwECore.cEcospaceBasemap">basemap</see> which defines the size and other aspects
+ of the map currently active in Ecospace. This class also provides access to individual data
+ <see cref="T:EwECore.cEcospaceLayer">layers</see>.
+ </description></item>
+				<item><description>
+						<para>
+ Several <see cref="T:EwECore.cEcospaceLayer">data layers</see> which each expose 
+ spatial array(s) of data. Basemap layers are two dimensional, allowing access to the array
+ via cell(row, col) interaction. Poking around in a basemap layer in fact modifies Ecospace
+ spatial cells of spatial data array that the the layer is connected to.
+ </para>
+					</description></item>
+				<item><description>
+						<para>
+							<see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">Display layers</see> combine one or more <see cref="T:EwECore.cEcospaceLayer">Ecospace 
+ data layers</see> as a single unit for display and interaction in the user interface. The GUI
+ Layer uses a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer">layer renderer</see> to decide how this assembly
+ of core data is reflected.
+ </para>
+					</description></item>
+			</list>
+		</para>
+	</remarks>
 </member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cImageLayerRenderer.#ctor(EwECore.Auxiliary.cVisualStyle,EwECore.Auxiliary.cVisualStyle.eVisualStyleTypes)">
  -----------------------------------------------------------------------
  <summary>
@@ -16450,7 +16520,7 @@ ScientificInterfaceShared
 	<param name="layerStyleFlags"></param>
  -----------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cImageLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cImageLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
  -----------------------------------------------------------------------
  <summary>
  Render a cell of a layer.
@@ -16465,7 +16535,7 @@ ScientificInterfaceShared
 </member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cImageLayerRenderer">
  -----------------------------------------------------------------------
  <summary>
- Base class for rendering a Scientific Interface <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see>
+ Base class for rendering a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see>
  onto the base map.
  </summary>
  -----------------------------------------------------------------------
@@ -16489,7 +16559,7 @@ ScientificInterfaceShared
 </member><member name="T:ScientificInterfaceShared.Controls.Map.cLegend.cLayerEntry">
  -------------------------------------------------------------------
  <summary>
- A legend entry wrapping a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">map layer</see>.
+ A legend entry for a single <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see>.
  </summary>
  -------------------------------------------------------------------
 
@@ -16562,7 +16632,7 @@ ScientificInterfaceShared
  </summary>
  -------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.cLegend.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cLayer)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.cLegend.AddLayer(ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer)">
  -------------------------------------------------------------------
  <summary>
  Add a layer to the legend.
@@ -16614,8 +16684,7 @@ ScientificInterfaceShared
 </member><member name="T:ScientificInterfaceShared.Controls.Map.cLegend">
  -----------------------------------------------------------------------
  <summary>
- Simple map legend renderer, that renderes a series of <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">
- map layers</see> as a single column of entries to a file.
+ Simple map legend rendererfor <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layers</see>.
  </summary>
  -----------------------------------------------------------------------
 
@@ -18406,62 +18475,6 @@ ScientificInterfaceShared
  </summary>
  ---------------------------------------------------------------------------
 
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.iLayer">
- -------------------------------------------------------------------
- <summary>
- Get/set the index of the current active layer in the bundle.
- </summary>
- -------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.nLayers">
- -------------------------------------------------------------------
- <summary>
- Get the number of layers in the bundle.
- </summary>
- -------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.CoreCounter">
- -------------------------------------------------------------------
- <summary>
- Get the <see cref="T:EwEUtils.Core.eCoreCounterTypes"/> that defines the indexing
- of the layers bundled in this class.
- </summary>
- -------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.SourceSec">
- -------------------------------------------------------------------
- <summary>
- Get the secundary data index for a raster bundle. The type of 
- object is derived from the bundle <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.CoreCounter"/>.
- </summary>
- -------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.Data">
- -------------------------------------------------------------------
- <summary>
- Get the Ecospace layer <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.iLayer">currently active</see> in
- the bundle.
- </summary>
- -------------------------------------------------------------------
-
-</member><member name="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.Data(System.Int32)">
- -------------------------------------------------------------------
- <summary>
- Get an Ecospace layer from the bundle.
- </summary>
-	<param name="iLayer">The index of the layer to obtain. Note that this
- value cannot exceed the range stipulted by the underlying <see cref="P:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle.CoreCounter"/>.</param>
- -------------------------------------------------------------------
-
-</member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerBundle">
- -------------------------------------------------------------------
- <summary>
- Layer that wraps a collection of <see cref="T:EwECore.cEcospaceLayer"/>s for 
- bundled display and processing in the UI. The indexing of the bundled
- data is based on <see cref="T:EwEUtils.Core.eCoreCounterTypes"/>.
- </summary>
- -------------------------------------------------------------------
-
 </member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cLayerEditorAdvection">
  -----------------------------------------------------------------------
  <summary>
@@ -18542,9 +18555,9 @@ ScientificInterfaceShared
 	<param name="layerStyleFlags"></param>
  -----------------------------------------------------------------------
 
-</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
+</member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
  -----------------------------------------------------------------------
- <inheritdocs cref="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)"/>
+ <inheritdocs cref="M:ScientificInterfaceShared.Controls.Map.Layers.cLayerRenderer.Render(System.Drawing.Graphics,ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer,System.Drawing.Rectangle,System.Drawing.PointF,System.Drawing.PointF,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)"/>
  -----------------------------------------------------------------------
 
 </member><member name="M:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerRenderer.RenderCell(System.Drawing.Graphics,System.Drawing.Rectangle,EwECore.cEcospaceLayer,System.Object,ScientificInterfaceShared.Style.cStyleGuide.eStyleFlags)">
@@ -18561,7 +18574,7 @@ ScientificInterfaceShared
 </member><member name="T:ScientificInterfaceShared.Controls.Map.Layers.cRasterLayerRenderer">
  -----------------------------------------------------------------------
  <summary>
- Base class for rendering a Scientific Interface <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cLayer">layer</see>
+ Base class for rendering a <see cref="T:ScientificInterfaceShared.Controls.Map.Layers.cDisplayLayer">display layer</see>
  onto the base map.
  </summary>
  -----------------------------------------------------------------------

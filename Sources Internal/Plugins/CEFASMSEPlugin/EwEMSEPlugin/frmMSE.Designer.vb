@@ -52,10 +52,10 @@ Partial Class frmMSE
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.Panel3.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.Panel6.SuspendLayout()
@@ -275,7 +275,7 @@ Partial Class frmMSE
         '
         'txtArea
         '
-        Me.txtArea.Location = New System.Drawing.Point(119, 45)
+        Me.txtArea.Location = New System.Drawing.Point(119, 13)
         Me.txtArea.Name = "txtArea"
         Me.txtArea.ReadOnly = True
         Me.txtArea.Size = New System.Drawing.Size(70, 20)
@@ -285,7 +285,7 @@ Partial Class frmMSE
         'lblArea
         '
         Me.lblArea.AutoSize = True
-        Me.lblArea.Location = New System.Drawing.Point(76, 45)
+        Me.lblArea.Location = New System.Drawing.Point(76, 16)
         Me.lblArea.MaximumSize = New System.Drawing.Size(100, 0)
         Me.lblArea.Name = "lblArea"
         Me.lblArea.Size = New System.Drawing.Size(32, 13)
@@ -354,14 +354,16 @@ Partial Class frmMSE
         Me.Panel2.Size = New System.Drawing.Size(300, 77)
         Me.Panel2.TabIndex = 55
         '
-        'Button3
+        'Label12
         '
-        Me.Button3.Location = New System.Drawing.Point(204, 35)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(84, 30)
-        Me.Button3.TabIndex = 56
-        Me.Button3.Text = "Update Area"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(13, 42)
+        Me.Label12.MaximumSize = New System.Drawing.Size(270, 0)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(249, 26)
+        Me.Label12.TabIndex = 58
+        Me.Label12.Text = "If the area is incorrect change it from within EwE at Input data -> Model paramet" & _
+            "ers -> Model area"
         '
         'Label10
         '
@@ -373,6 +375,15 @@ Partial Class frmMSE
         Me.Label10.TabIndex = 57
         Me.Label10.Visible = False
         '
+        'Button3
+        '
+        Me.Button3.Location = New System.Drawing.Point(204, 7)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(84, 30)
+        Me.Button3.TabIndex = 56
+        Me.Button3.Text = "Update Area"
+        Me.Button3.UseVisualStyleBackColor = True
+        '
         'Label11
         '
         Me.Label11.AutoSize = True
@@ -381,17 +392,6 @@ Partial Class frmMSE
         Me.Label11.Size = New System.Drawing.Size(38, 13)
         Me.Label11.TabIndex = 56
         Me.Label11.Text = "Step 4"
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(15, 10)
-        Me.Label12.MaximumSize = New System.Drawing.Size(270, 0)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(268, 26)
-        Me.Label12.TabIndex = 58
-        Me.Label12.Text = "If incorrect change this from within EwE at Input data -> Model parameters -> Mod" & _
-            "el area"
         '
         'frmMSE
         '
