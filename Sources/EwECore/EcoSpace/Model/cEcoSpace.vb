@@ -157,12 +157,6 @@ Public Class cEcoSpace
     'the analog of habgrad, but for migration, and has a monthly component
     Private MigGrad(,,,) As Single
 
-    ''' <summary>
-    ''' Sum of Ecopath Effort across the map modified by width and proportion of habitat area in the cell
-    ''' </summary>
-    ''' <remarks>Set in <see cref="SetEffortParameters"> SetEffortParameter()</see></remarks>
-    Private TotEffort() As Single
-
     Private RelMoveFit(,) As Single 'populated in SetKmove()
     Private PzoTOmove() As Single 'populated in SetKmove()
     Private Kmovefit() As Single 'populated in SetKmove()
@@ -2283,6 +2277,8 @@ Public Class cEcoSpace
 
             If Me.m_EPdata.isEcospaceModelCoupled Then Me.m_Data.allocate(m_Data.GroupDetritus, m_Data.InRow, m_Data.InCol, m_Data.NGroups)
 
+            ReDim Me.m_Data.TotEffort(m_Data.nFleets)
+
             ReDim Btime(m_Data.NGroups)
             ReDim TotLoss(m_Data.NGroups)
             ReDim TotEatenBy(m_Data.NGroups)
@@ -2303,7 +2299,7 @@ Public Class cEcoSpace
             ReDim Flowin(m_Data.nvartot)
             ReDim FlowoutRate(m_Data.nvartot)
 
-            ReDim TotEffort(m_Data.nFleets)
+
             ReDim RecSplit(m_Data.Nvarsplit)
             ReDim PconSplit(m_Data.Nvarsplit)
             ReDim Tstanza(m_Data.Nvarsplit)
@@ -2837,7 +2833,7 @@ Public Class cEcoSpace
         Dim PFished As Single
 
         For ig = 1 To m_Data.nFleets
-            TotEffort(ig) = 0
+            m_Data.TotEffort(ig) = 0
             For i = 1 To m_Data.InRow
                 For j = 1 To m_Data.InCol
                     'below changed following CJW's email of 20 Jan 98:
@@ -2877,12 +2873,12 @@ Public Class cEcoSpace
 
                             If Not Me.m_Data.bUseEffortDistThreshold Then
                                 'Fishing is only restricted by the Habitat types
-                                TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
+                                m_Data.TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
 
                             Else ' Me.m_Data.bUseEffortDistThreshold  = True
                                 'Fishing is also restricted by sailing cost < effort distribution threshold
                                 If Me.m_Data.Sail(ig, i, j) < Me.m_Data.EffortDistThreshold Then
-                                    TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
+                                    m_Data.TotEffort(ig) += Me.m_Data.PAreaFished(i, j, ig)
                                 Else
                                     'Sailing cost > effort distribution threshold
                                     'So not fishing in this cell
@@ -3528,7 +3524,7 @@ exitline:
                     If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit For
                     'System.Console.WriteLine("  Fleet " & iFlt.ToString)
 
-                    TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
+                    TotE = m_Data.TotEffort(iFlt) * m_Data.SEmult(iFlt)
 
                     'set the total effort by zone
                     For iZone As Integer = 0 To Me.m_Data.nEffZones
@@ -3658,7 +3654,8 @@ exitline:
                 Debug.Assert(iFlt > 0 And iFlt <= Me.m_Data.nFleets, "cEcoSpace.getNextFleet(fleetIndex) Returned an invalid fleet index.")
                 If (iFlt < 1) Or (iFlt > Me.m_Data.nFleets) Then Exit Do
 
-                TotE = TotEffort(iFlt) * m_Data.SEmult(iFlt)
+                TotE = m_Data.TotEffort(iFlt) * m_Data.SEmult(iFlt)
+                ' Debug.Assert(iFlt <> 14)
 
                 'set the total effort by zone
                 For iZone As Integer = 0 To Me.m_Data.nEffZones
@@ -3685,6 +3682,8 @@ exitline:
                     iRow = rowcol.Row
                     iCol = rowcol.Col
 
+                    'Debug.Assert(iFlt <> 14 And Not Me.m_Data.EffZones(iRow, iCol) = 0)
+
                     'IsFished() is set every timestep to account for monthly MPA Closures
                     If Me.m_Data.IsFished(iFlt, iRow, iCol) Then
                         'Water and (Not closed by MPA) and (Fished by this gear)
@@ -3693,6 +3692,8 @@ exitline:
                         For isp = 1 To m_Data.NGroups
                             Valt = Valt + m_EPdata.Market(iFlt, isp) * m_Data.Bcell(iRow, iCol, isp) * m_SimData.relQ(iFlt, isp)
                         Next
+
+                        'Debug.Assert(Not (iFlt = 14 And Me.m_Data.EffZones(iRow, iCol) = 0))
 
                         Valt = (Valt ^ m_Data.EffPower(iFlt)) / (EffortCost + SailCost * m_Data.Sail(iFlt, iRow, iCol) / m_Data.SailScale(iFlt))
                         Attract(iRow, iCol) = Valt * Me.m_Data.PAreaFished(iRow, iCol, iFlt)  'may want to modify this by dividing by a site cost factor for cell i,j
@@ -3711,6 +3712,8 @@ exitline:
 
                     'IsFished() is set every timestep to account for monthly MPA Closures
                     If Me.m_Data.IsFished(iFlt, iRow, iCol) Then
+
+                        ' Debug.Assert(Not (iFlt = 14 And Me.m_Data.EffZones(iRow, iCol) = 0))
 
                         'm_Data.EffortSpace(iFlt, iRow, iCol) = m_SimData.FishRateGear(iFlt, arguments.iCumMonth) * TotE * Attract(iRow, iCol) / TotAttract
                         'Effort distribution scaled by Effort Zone
@@ -4123,7 +4126,7 @@ exitline:
 
             '*** finally reset total effort using number of water cells, Ecopath base catch, and WtCat summed catch/effort x attraction weight
             '***note ThabArea below is total number of cells with depth>0 (water cells)
-            TotEffort(ig) = m_Data.ThabArea * CatGear / WtCat  '***
+            m_Data.TotEffort(ig) = m_Data.ThabArea * CatGear / WtCat  '***
 
         Next ig
 
