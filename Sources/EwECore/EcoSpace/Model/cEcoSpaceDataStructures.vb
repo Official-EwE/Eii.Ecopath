@@ -632,6 +632,14 @@ Public Class cEcospaceDataStructures
     ''' <remarks></remarks>
     Public EffZones(,) As Integer
 
+    ''' <summary>
+    ''' Sum of Effort modified by proportion of area fished in a cell.
+    ''' </summary>
+    ''' <remarks>
+    ''' Set in <see cref="cEcospace.SetEffortParameters"> cEcospace.SetEffortParameter()
+    ''' </see></remarks>
+    Public TotEffort() As Single
+
   
 #End Region
 
