@@ -889,7 +889,7 @@ Public Class cPluginManager
     ''' Bridge, filter a message.
     ''' </summary>
     ''' <param name="msg">The message to filter.</param>
-    ''' <param name="bCancelMessage">Flkag, stating whether the message should be
+    ''' <param name="bCancelMessage">Flag, stating whether the message should be
     ''' cancelled.</param>
     ''' ---------------------------------------------------------------------------
     Public Sub PreProcessMessage(ByVal msg As IMessage, ByRef bCancelMessage As Boolean)

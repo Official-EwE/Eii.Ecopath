@@ -334,6 +334,12 @@
     <Compile Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.vb">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Other\Options\ucOptionsPedigree.Designer.vb">
+      <DependentUpon>ucOptionsPedigree.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Other\Options\ucOptionsPedigree.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Other\Options\ucOptionsMap.Designer.vb">
       <DependentUpon>ucOptionsMap.vb</DependentUpon>
     </Compile>
@@ -946,6 +952,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\AutoSaveOptionAssets\ucAutosaveOption.resx">
       <DependentUpon>ucAutosaveOption.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Other\Options\ucOptionsPedigree.resx">
+      <DependentUpon>ucOptionsPedigree.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Other\Options\ucOptionsMap.resx">
       <DependentUpon>ucOptionsMap.vb</DependentUpon>

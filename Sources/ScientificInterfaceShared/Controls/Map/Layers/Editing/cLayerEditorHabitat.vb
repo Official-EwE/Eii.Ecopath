@@ -54,7 +54,7 @@ Namespace Controls.Map.Layers
             Dim sTotal As Single = 0
 
             ' Hackerdihack: scale cell for all other habitat layers
-            For i As Integer = 1 To core.nHabitats
+            For i As Integer = 1 To core.nHabitats - 1
                 If (i = iHab) Then
                     sTotal += sValue
                 Else
@@ -64,7 +64,7 @@ Namespace Controls.Map.Layers
 
             If (sTotal > 1) Then
                 Dim sRemainer As Single = (1 - sValue)
-                For i As Integer = 1 To core.nHabitats
+                For i As Integer = 1 To core.nHabitats - 1
                     If (i <> iHab) Then
                         ' Scale down other habitat capacities
                         bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X) = CSng(bm.LayerHabitat(i).Cell(ptSet.Y, ptSet.X)) * sRemainer

@@ -118,6 +118,9 @@ Namespace Style
         Private m_ptMapRefLayerTL As PointF
         Private m_ptMapRefLayerBR As PointF
 
+        ' -- pedigree --
+        Private m_bShowPedigree As Boolean = True
+
         ' -- event locks --
         ''' <summary>Event lock count.</summary>
         Private m_nEventLock As Integer = 0
@@ -312,6 +315,7 @@ Namespace Style
             Thumbnails = &H40
             GraphStyle = &H80
             Map = &H100
+            Pedigree = &H200
             All = &HFFFFFFFF
         End Enum
 
@@ -1168,6 +1172,31 @@ Namespace Style
 
         ''' -------------------------------------------------------------------
         ''' <summary>
+        ''' Notify the world that the pedigree display style has changed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Sub PedigreeChanged()
+            Me.FireChangeEvent(eChangeType.Pedigree)
+        End Sub
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether pedigree indicators are to be shown on input grids and
+        ''' other UI elements.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Public Property ShowPedigree As Boolean
+            Get
+                Return Me.m_bShowPedigree
+            End Get
+            Set(value As Boolean)
+                Me.m_bShowPedigree = value
+                Me.PedigreeChanged()
+            End Set
+        End Property
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
         ''' Get/set the color to represent a pedigree level.
         ''' </summary>
         ''' <remarks>
@@ -1455,6 +1484,11 @@ Namespace Style
             Return lColors
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Notify the world that colours have changed.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Sub ColorsChanged()
             Me.FireChangeEvent(eChangeType.Colours)
         End Sub
