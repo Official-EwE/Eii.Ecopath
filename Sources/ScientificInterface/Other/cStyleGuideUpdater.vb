@@ -202,6 +202,7 @@ Friend Class cStyleGuideUpdater
             ' Fix: do not allow disabling of legend viz
             If (My.Settings.ShowLegends = TriState.False) Then My.Settings.ShowLegends = TriState.UseDefault
             .ShowLegends = DirectCast(My.Settings.ShowLegends, TriState)
+            .ShowPedigree = My.Settings.ShowPedigree
             .UseTransparentBackgrounds = My.Settings.UseTransparentBackgrounds
 
             .MapReferenceLayerFile = My.Settings.MapLayerRefFile
@@ -248,6 +249,7 @@ Friend Class cStyleGuideUpdater
 
             My.Settings.ThumbnailSize = .ThumbnailSize
             My.Settings.ShowLegends = .ShowLegends
+            My.Settings.ShowPedigree = .ShowPedigree
             My.Settings.UseTransparentBackgrounds = .UseTransparentBackgrounds
 
             My.Settings.MapLayerRefFile = .MapReferenceLayerFile

@@ -278,6 +278,7 @@ Namespace Other
                 Case "ndGraphCharts" : t = GetType(ucOptionsGraphs)
                 Case "ndPlugins" : t = GetType(ucOptionsPlugins)
                 Case "ndMap" : t = GetType(ucOptionsMap)
+                Case "ndPedigree" : t = GetType(ucOptionsPedigree)
                 Case Else
                     Debug.Assert(False, "Node name not recognized")
             End Select

@@ -85,7 +85,6 @@ Namespace Controls.EwEGrid
 
             Dim sg As cStyleGuide = Me.StyleGuide(cell)
             Dim style As cStyleGuide.eStyleFlags = Me.Style(cell)
-            Dim sPedigree As Single = Me.Pedigree(cell)
             Dim clrBack As Color = Me.BackColor
             Dim clrFore As Color = Nothing ' Not used here
 
@@ -108,8 +107,13 @@ Namespace Controls.EwEGrid
                 e.Graphics.FillRectangle(br, rc)
             End Using
 
-            If (sPedigree > 0) Then
-                cPedigreeIndicator.Paint(sg, rc, e.Graphics, sPedigree)
+            If (sg IsNot Nothing) Then
+                If (sg.ShowPedigree) Then
+                    Dim sPedigree As Single = Me.Pedigree(cell)
+                    If (sPedigree > 0) Then
+                        cPedigreeIndicator.Paint(sg, rc, e.Graphics, sPedigree)
+                    End If
+                End If
             End If
 
             ' Check if need to render specific styles
