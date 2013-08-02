@@ -727,7 +727,8 @@ Public Class cMonteCarloManager
                 'BalanceEcopathWithNewPars() updated the core arrays 
                 'Now load the new values into the MonteCarloManagers Input/Output objects
                 'Core.EcoPathGroupInputs and Core.EcoPathGroupOutputs have NOT been update and will not contain the latest values
-                Me.LoadGroups()
+                'For now this is messing up the way the model re-initializes so remove it...
+                'Me.LoadGroups()
 
                 Return True
             End If

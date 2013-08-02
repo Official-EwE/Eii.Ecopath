@@ -19,6 +19,7 @@
 #Region " Imports "
 
 Option Strict On
+
 Imports EwECore.Ecopath
 Imports EwECore.Ecosim
 Imports EwEUtils.Core
@@ -152,8 +153,6 @@ Friend Class cEcosimMonteCarlo
     Private m_stanza As cStanzaDatastructures 'needs to come in from the core
     Private m_tracerData As cContaminantTracerDataStructures
     Private m_pluginmanager As cPluginManager
-
-    Private AbortRun As Boolean
 
     ''' <summary>
     ''' Ecopath parameters by Parameter, nGroups 
@@ -316,6 +315,10 @@ Friend Class cEcosimMonteCarlo
 
             StopTrial = False
 
+            'This gives the same sequence of random numbers 
+            'Used for debugging
+            'm_rand = New Random(666)
+
             ReDim isCrashed(m_core.nGroups)
             ReDim isExploded(m_core.nGroups)
 
@@ -348,6 +351,7 @@ Friend Class cEcosimMonteCarlo
                 Pmean(eMCParams.PB, iGrp) = m_epdata.PB(iGrp)
                 Pmean(eMCParams.EE, iGrp) = m_epdata.EE(iGrp)
                 Pmean(eMCParams.BA, iGrp) = m_epdata.BA(iGrp)
+                Pmean(eMCParams.QB, iGrp) = m_epdata.QB(iGrp)
                 'vc sep 2008: adding vulnerability to MC
                 'Pmean(eMCParams.Vulnerability, iGrp) = m_esdata.VulnerabilityPredator(iGrp)
                 'js feb 2011: added other mort
@@ -408,9 +412,7 @@ Friend Class cEcosimMonteCarlo
 
 
     Public Sub Run(ByVal ob As Object)
-
         Dim iter As Integer 'number of ecopath interation to find new pararameters for each trial
-        Dim Itertot As Integer 'total number of ecopath interation across all the trials
 
         'Dim NtrialsPerThread As Integer
         'Dim nThreads As Integer
@@ -448,9 +450,6 @@ Friend Class cEcosimMonteCarlo
             'this does not turn off the core's messages just ecopath
             m_ecopath.suppressMessages = True
 
-            'm_ecosim.Run()
-            'Dim OrigSS As Single = m_core.EcosimStats.SS
-
             'Ecosim was run in initForRun()
             'm_esdata.SS is the fit of the currently loaded reference data
             If m_esdata.SS > 0 Then
@@ -468,34 +467,7 @@ Friend Class cEcosimMonteCarlo
                 iter = 0
                 RunsSinceLastWithLowerSS += 1
 
-                If Not BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
-                    'Ecopath failed to run stop the trials
-                    Exit For
-                End If
-
-                Itertot = Itertot + iter
-
-                If iter < maxEcopathTries Then
-
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                    'jb removed the vulnerability until there is an iterface
-                    'this was causeing the results to vary in groups that had all variablity turned off 
-                    'VC Sep 2008 adding vulnerability to MC routine
-                    ' The Ecopath balancing above does not need to consider the vulnerabilities, so just set them now before returning:
-                    'VC Sep 2008 found that it would increase vulnerabilities to get certain groups to increase initially,
-                    'while instead it should have increased the initial biomass, so letting it get started before 
-                    'changing vulnerabilities
-                    'ChangeVulnerabilities(Pmean, CVpar)
-                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-                    'For Each MCthread In MCthreadList
-                    '    Itertot = Itertot + iter
-                    '    Array.Copy(Pmean, MCthread.pmean, Pmean.Length)
-                    '    Array.Copy(CVpar, MCthread.CVpar, CVpar.Length)
-                    '    MCthread.iter = iter
-                    '    MCthread.signalState.Reset()
-                    '    ThreadPool.QueueUserWorkItem(AddressOf MCthread.run)
-                    'Next
+                If BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
 
                     'VC Sep 2008: Change the vulmult at this point
 
@@ -504,20 +476,8 @@ Friend Class cEcosimMonteCarlo
                     'the ecosim time step delegate was set before the loop
                     m_ecosim.Run()
 
-                    'For Each MCthread In MCthreadList
-                    '    MCthread.signalState.WaitOne()
-                    'Next
-                    'm_esdata = MCthread.ESdata
-                    'm_epdata = MCthread.EPdata
-
-                    'For Each MCthread In MCthreadList
-                    'If MCthread.ESdata.SS < SSBestFit Then
-                    'Console.Write(m_esdata.SS.ToString & ", ")
-
                     'Calculate penalty for being away from reasonable fishing mortality
-
                     'Below is for global Nereus model, June 2013
-
                     Dim Fpenalty As Single
                     Dim FirstRun As Boolean = False
 
@@ -611,7 +571,7 @@ Friend Class cEcosimMonteCarlo
     ''' <summary>
     ''' Restore Ecopath to its original state
     ''' </summary>
-    ''' <remarks>The Monte Carlo changed to basic input data of Ecopath this will set it back to the state it was in when the Monte Carlo was run.</remarks>
+    ''' <remarks>The Monte Carlo changed the basic input data of Ecopath. This will set it back to the state it was in when the Monte Carlo was run.</remarks>
     Public Sub restoreOriginalState()
         Dim bSuccess As Boolean
 
@@ -715,14 +675,7 @@ Friend Class cEcosimMonteCarlo
         Try
             Dim nIters As Integer
             If BalanceEcopathWithNewPars(Pmean, CVpar, nIters, MaxIters) Then
-                If nIters < MaxIters Then
-                    Return True
-                Else
-                    Dim msg As String = Me.ToString & ".selectNewEcopathParameters() Exceeded maximum number of iterations. Failed to find balanced Ecopath model."
-                    System.Console.WriteLine(msg)
-                    cLog.Write(msg)
-                    Return False
-                End If
+                Return True
             End If
 
         Catch ex As Exception
@@ -730,6 +683,8 @@ Friend Class cEcosimMonteCarlo
             Debug.Assert(False, Me.ToString & ".selectNewEcopathParameters() Exception: " & ex.Message)
         End Try
 
+        'Failed to find a balanced set of parameters within MaxIters
+        'or
         'An error has been thrown some place along the line
         Return False
 
@@ -745,8 +700,6 @@ Friend Class cEcosimMonteCarlo
         Dim bEcopathNeedsBalancing As Boolean
 
         Try
-            'Dim BBar As Single
-            AbortRun = True
             bEcopathNeedsBalancing = True
             Do While bEcopathNeedsBalancing
                 iter = iter + 1
@@ -777,7 +730,7 @@ Friend Class cEcosimMonteCarlo
                     End If
 
                     ' JS13feb12 added
-                    'GB
+                    'QB
                     If m_ecopath.missing(igrp, 3) = False Then
                         m_epdata.QB(igrp) = ChooseFeasiblePar(ParCurVal(eMCParams.QB, igrp), _
                                                               CVpar(eMCParams.QB, igrp), _
@@ -828,8 +781,8 @@ Friend Class cEcosimMonteCarlo
 
                 If iter > maxEcopathIterations Then
                     'max number of iteration to find balanced ecopath model
-                    'it is OK to try again so return True
-                    Return True 'frmBvary.lblNoGood.Caption = "Cannot find feasible Ecopath model; Quitting": Exit Sub
+                    'Exit the Do Loop
+                    Exit Do
                 End If
 
             Loop
@@ -840,7 +793,10 @@ Friend Class cEcosimMonteCarlo
             Throw New ApplicationException(Me.ToString & ".BalanceEcopathWithNewPars()", ex)
         End Try
 
-        Return True
+        'bEcopathNeedsBalancing will be False if a balanced model was found(does not need balancing)
+        'True if not balanced(the model does need balancing)
+        'BalanceEcopathWithNewPars() will return True if the model was balanced, the opposite of bEcopathNeedsBalancing
+        Return Not bEcopathNeedsBalancing
 
     End Function
 

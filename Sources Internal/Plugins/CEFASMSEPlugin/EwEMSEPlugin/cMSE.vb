@@ -802,11 +802,11 @@ stepend:
                         Me.dumpEcopathParameters(iter)
 
                         For iGrp = 1 To nLiving
-                            b(iter, iGrp) = MonteCarlo.Groups(iGrp).B
-                            ba(iter, iGrp) = MonteCarlo.Groups(iGrp).BA
-                            pb(iter, iGrp) = MonteCarlo.Groups(iGrp).PB
-                            qb(iter, iGrp) = MonteCarlo.Groups(iGrp).QB
-                            ee(iter, iGrp) = MonteCarlo.Groups(iGrp).EE
+                            b(iter, iGrp) = Me._ecopath.EcopathData.B(iGrp)
+                            ba(iter, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
+                            pb(iter, iGrp) = Me._ecopath.EcopathData.PB(iGrp)
+                            qb(iter, iGrp) = Me._ecopath.EcopathData.QB(iGrp)
+                            ee(iter, iGrp) = Me._ecopath.EcopathData.EE(iGrp)
                         Next iGrp
 
                         ''This runs Ecosim without core support
@@ -949,7 +949,7 @@ stepend:
         Dim Interacts(mCore.nLivingGroups - 1, mCore.nGroups) As Integer
         Dim sPath As String = DataPath & "\DistributionParameters"
         Dim SuccessfullyMassBalanced As Boolean = False
-
+        Dim iParameterSet As Integer
         'I am just altering the tolerance so that it can run faster; this needs deleting later
         MonteCarlo.EcopathEETolerance = Convert.ToSingle(MSEForm.txtTolerance.Text)
 
@@ -975,7 +975,6 @@ stepend:
         Do While csv_multipliers.ReadNextRecord
             DietPropMultipliers(csv_multipliers(0) - 1) = csv_multipliers(2)
         Loop
-
 
 
         Try
@@ -1006,12 +1005,15 @@ stepend:
                             Me.dumpEcopathParameters(iTrial)
                             Console.WriteLine("Mass balanced @ trial " & iTrial)
 
+                            'Save the results of the balanced model for this trial
+                            'this has to happen from the underlying core arrays
+                            'because the interface objects have not been updated at this point
                             For iGrp = 1 To nLiving
-                                b(iTrial, iGrp) = MonteCarlo.Groups(iGrp).B
-                                ba(iTrial, iGrp) = MonteCarlo.Groups(iGrp).BA
-                                pb(iTrial, iGrp) = MonteCarlo.Groups(iGrp).PB
-                                qb(iTrial, iGrp) = MonteCarlo.Groups(iGrp).QB
-                                ee(iTrial, iGrp) = MonteCarlo.Groups(iGrp).EE
+                                b(iTrial, iGrp) = Me._ecopath.EcopathData.B(iGrp)
+                                ba(iTrial, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
+                                pb(iTrial, iGrp) = Me._ecopath.EcopathData.PB(iGrp)
+                                qb(iTrial, iGrp) = Me._ecopath.EcopathData.QB(iGrp)
+                                ee(iTrial, iGrp) = Me._ecopath.EcopathData.EE(iGrp)
                             Next iGrp
 
                             Exit For
@@ -1054,7 +1056,8 @@ stepend:
                     'End If ' MonteCarlo.selectNewEcopathParameters()
 
                     If SuccessfullyMassBalanced = True Then
-                        Console.WriteLine("Successful found a set of parameters inc. diet matrix that is mass balanced!")
+                        Console.WriteLine("Successful found a set of parameters inc. diet matrix that is mass balanced.")
+                        ' MsgBox("Version 2 in " + iParameterSet.ToString + " iterations.")
                     Else
                         Console.WriteLine("Failed to find mass-balanced parameter set!")
                     End If
@@ -1261,7 +1264,7 @@ stepend:
 
             'Make sure nothing is listening to Ecosim when we run it
             Me._EcosimTimeStepDelegate = Me._ecosim.TimeStepDelegate
-            Me._EcosimTimeStepDelegate = Nothing
+            Me._ecosim.TimeStepDelegate = Nothing
 
             'Save any parameters that we are going to change 
             'This has not been implemented here but...
