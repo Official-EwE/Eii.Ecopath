@@ -131,6 +131,31 @@
   <data name="m_scMain.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
+  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>590, 67</value>
+  </data>
+  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>176, 22</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>Close Form</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
+    <value>m_scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="btDeleteHCR.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -140,7 +165,6 @@
   <data name="btDeleteHCR.Size" type="System.Drawing.Size, System.Drawing">
     <value>177, 22</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btDeleteHCR.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
@@ -157,7 +181,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;btDeleteHCR.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btDeleteStrategy.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -184,7 +208,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;btDeleteStrategy.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnSaveStrategies.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -199,7 +223,7 @@
     <value>5</value>
   </data>
   <data name="btnSaveStrategies.Text" xml:space="preserve">
-    <value>Save Strategies</value>
+    <value>Save Strategies to CSV</value>
   </data>
   <data name="&gt;&gt;btnSaveStrategies.Name" xml:space="preserve">
     <value>btnSaveStrategies</value>
@@ -211,7 +235,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;btnSaveStrategies.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="btAddHCR.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -238,7 +262,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;btAddHCR.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="btAddStrategy.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -265,7 +289,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;btAddStrategy.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="Label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -295,7 +319,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;Label1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="cbStrategies.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 24</value>
@@ -316,7 +340,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;cbStrategies.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="m_graph.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -340,7 +364,7 @@
     <value>m_scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;m_graph.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;m_scMain.Panel1.Name" xml:space="preserve">
     <value>m_scMain.Panel1</value>
@@ -397,7 +421,7 @@
     <value>ToolStrip1</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEToolstrip, ScientificInterfaceShared, Version=6.3.9488.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
     <value>m_scMain.Panel2</value>
@@ -490,6 +514,6 @@
     <value>frmTFMpolicy</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9431.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Forms.frmEwE, ScientificInterfaceShared, Version=6.3.9488.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
 </root>

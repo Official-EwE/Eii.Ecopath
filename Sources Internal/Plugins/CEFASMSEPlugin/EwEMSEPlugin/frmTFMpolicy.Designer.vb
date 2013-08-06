@@ -57,6 +57,7 @@ Partial Class frmTFMpolicy
         Me.ToolStrip1 = New ScientificInterfaceShared.Controls.cEwEToolstrip()
         Me.tsbDefaultTFM = New System.Windows.Forms.ToolStripButton()
         Me.m_grid = New EwEMSEPlugin.gridTargetFishingMortalityPolicy()
+        Me.btnClose = New System.Windows.Forms.Button()
         CType(Me.m_scMain, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.m_scMain.Panel1.SuspendLayout()
         Me.m_scMain.Panel2.SuspendLayout()
@@ -72,6 +73,7 @@ Partial Class frmTFMpolicy
         '
         'm_scMain.Panel1
         '
+        Me.m_scMain.Panel1.Controls.Add(Me.btnClose)
         Me.m_scMain.Panel1.Controls.Add(Me.btDeleteHCR)
         Me.m_scMain.Panel1.Controls.Add(Me.btDeleteStrategy)
         Me.m_scMain.Panel1.Controls.Add(Me.btnSaveStrategies)
@@ -184,6 +186,12 @@ Partial Class frmTFMpolicy
                     Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
         Me.m_grid.UIContext = Nothing
         '
+        'btnClose
+        '
+        resources.ApplyResources(Me.btnClose, "btnClose")
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.UseVisualStyleBackColor = True
+        '
         'frmTFMpolicy
         '
         resources.ApplyResources(Me, "$this")
@@ -214,6 +222,7 @@ Partial Class frmTFMpolicy
     Friend WithEvents btnSaveStrategies As System.Windows.Forms.Button
     Friend WithEvents btDeleteHCR As System.Windows.Forms.Button
     Friend WithEvents btDeleteStrategy As System.Windows.Forms.Button
+    Friend WithEvents btnClose As System.Windows.Forms.Button
 
 End Class
 

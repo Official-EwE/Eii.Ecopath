@@ -15,6 +15,7 @@ Public Class frmMSE
     Dim StrategiesExtracted As Boolean 'this is a flag used to determine whether the strategies have already been loads and if so not to load them again
 
     Dim frmTargetF As frmTFMpolicy
+    Dim frmDisParams As frmDistributionParameters
 
     Public Sub New(ByRef core As cCore, ByVal MSE As cMSE)
 
@@ -23,6 +24,7 @@ Public Class frmMSE
         mCore = core
         mMSE = MSE
         StrategiesExtracted = False
+        lblDataDirectoryPath.Text = mMSE.DataPath
 
         ' Add any initialization after the InitializeComponent() call.
 
@@ -123,6 +125,7 @@ Public Class frmMSE
             .Description = "Select the directory to retrieve data from and output results to"
             If .ShowDialog = DialogResult.OK Then
                 mMSE.DataPath = .SelectedPath
+                lblDataDirectoryPath.Text = .SelectedPath
             End If
 
         End With
@@ -203,5 +206,21 @@ Public Class frmMSE
 
     Private Sub Button3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button3.Click
         txtArea.Text = mCore.EwEModel.Area
+    End Sub
+
+    Private Sub btnDistParams_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDistParams.Click
+        Dim bhasForm As Boolean
+
+
+        'Ok now the interface
+        If Me.frmDisParams IsNot Nothing Then
+            bhasForm = Not frmDisParams.IsDisposed
+        End If
+        If Not bhasForm Then
+            frmDisParams = New frmDistributionParameters()
+            frmDisParams.Init(Me.m_uic, Me.mMSE)
+        End If
+
+        frmDisParams.Show()
     End Sub
 End Class

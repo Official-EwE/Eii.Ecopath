@@ -39,7 +39,6 @@ Public Class cMSE
         Triangular = 2
     End Enum
 
-
     Private Sub ExtractChangeInEffortLimits()
         Dim EffortLimitsCSV As New CsvReader(New StreamReader(DataPath & "\Fleet\ChangesInEffortLimits.csv"), True)
         ReDim ChangeInEffortLimits(mCore.nFleets - 1)
@@ -125,10 +124,13 @@ Public Class cMSE
         Dim nIterations As Integer = Convert.ToInt32(MSEForm.txtNModels2Run.Text)
         Dim csv As CsvReader
         Dim vulnerabilities(nIterations - 1, _ecopath.EcopathData.NumGroups - 1, _ecopath.EcopathData.NumGroups - 1) As Double
+        Dim countrows As Integer
 
         For iIteration As Integer = 1 To nIterations
             csv = New CsvReader(New StreamReader(DataPath & "\ParametersOut\VulnerabilityIteration" & iIteration.ToString & "_out.csv"), True)
+            countrows = 0
             While Not csv.EndOfStream
+                countrows += 1
                 csv.ReadNextRecord()
                 For iPred As Integer = 1 To _ecopath.EcopathData.NumGroups
                     vulnerabilities(iIteration - 1, csv.CurrentRecordIndex, iPred - 1) = csv(iPred - 1)
@@ -377,10 +379,20 @@ Public Class cMSE
                     TrajectoryCsv.WriteLine()
 
                     'diagnositics check to see what is happening with f's on cod
-                    TrajectoryF = New StreamWriter(DataPath & "\Results\Trajectories\f.csv", True)
-                    TrajectoryF.Write(CurrentStrategy.Name)
+                    TrajectoryF = New StreamWriter(DataPath & "\Results\Trajectories\f.csv", False)
+                    TrajectoryF.Write(CurrentStrategy.Name & ",FishMort-PredMort")
+                    For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                        TrajectoryF.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, 14, iTime) - Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, 14, iTime))
+                    Next
+                    TrajectoryF.WriteLine()
+                    TrajectoryF.Write(CurrentStrategy.Name & ",FishMort")
                     For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
                         TrajectoryF.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.FishMort, 14, iTime))
+                    Next
+                    TrajectoryF.WriteLine()
+                    TrajectoryF.Write(CurrentStrategy.Name & ",PredMort")
+                    For iTime = 1 To OriginalNTimesteps + NYearsProject * _ecosim.EcosimData.NumStepsPerYear
+                        TrajectoryF.Write("," & Me._simdata.ResultsOverTime(cEcosimDatastructures.eEcosimResults.PredMort, 14, iTime))
                     Next
                     TrajectoryF.WriteLine()
                     TrajectoryF.Dispose()
@@ -795,33 +807,34 @@ stepend:
                     'SampleDietMatrix() this takes too long to run so if to be included, we need to consider alternatives
                     'Console.WriteLine("Iteration: " & iMonteIterations)
                     TimeFindingBalanced.Start()
-                    If MonteCarlo.selectNewEcopathParameters(10000000) Then
+                    For i = 1 To 1000000
+                        Console.WriteLine("Iteration = " & i)
+                        If MonteCarlo.selectNewEcopathParameters(0) Then
 
-                        'write some of the new Ecopath parameters to the console window
-                        'Again for debugging
-                        Me.dumpEcopathParameters(iter)
+                            'write some of the new Ecopath parameters to the console window
+                            'Again for debugging
+                            Me.dumpEcopathParameters(iter)
 
-                        For iGrp = 1 To nLiving
-                            b(iter, iGrp) = Me._ecopath.EcopathData.B(iGrp)
-                            ba(iter, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
-                            pb(iter, iGrp) = Me._ecopath.EcopathData.PB(iGrp)
-                            qb(iter, iGrp) = Me._ecopath.EcopathData.QB(iGrp)
-                            ee(iter, iGrp) = Me._ecopath.EcopathData.EE(iGrp)
-                        Next iGrp
+                            For iGrp = 1 To nLiving
+                                b(iter, iGrp) = Me._ecopath.EcopathData.B(iGrp)
+                                ba(iter, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
+                                pb(iter, iGrp) = Me._ecopath.EcopathData.PB(iGrp)
+                                qb(iter, iGrp) = Me._ecopath.EcopathData.QB(iGrp)
+                                ee(iter, iGrp) = Me._ecopath.EcopathData.EE(iGrp)
+                            Next iGrp
 
-                        ''This runs Ecosim without core support
-                        'If Me.RunEcosim() Then
-                        '    'dumps out some Ecosim results
-                        '    Me.getEcosimResults()
-                        'End If 'RunEcosim
-                        'Exit For
+                            ''This runs Ecosim without core support
+                            'If Me.RunEcosim() Then
+                            '    'dumps out some Ecosim results
+                            '    Me.getEcosimResults()
+                            'End If 'RunEcosim
+                            'Exit For
 
-                    Else
-                        System.Console.WriteLine("Failed to find balanced Ecopath model")
-                    End If ' MonteCarlo.selectNewEcopathParameters()
+                        Else
+                            System.Console.WriteLine("Failed to find balanced Ecopath model")
+                        End If ' MonteCarlo.selectNewEcopathParameters()
+                    Next
 
-
-                    'Next
 
                     Console.WriteLine("Number of seconds to run iteration: " & (TimeFindingBalanced.ElapsedMilliseconds / 1000).ToString)
                     TimeFindingBalanced.Reset()
@@ -1873,15 +1886,13 @@ stepend:
 
                     'Set the fishing effort according to what the optimised efforts were just calculated
                     For iFleet = 1 To mCore.nFleets
-                        For iMonth = 1 To 12
-                            If Fleets2Fit.IndexOf(iFleet) = -1 Then 'If fleet doesnt effect a group that has a HCR set effort to what it was end of last year
-                                _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
-                            Else
-                                _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = variable_results(iFleet - 1)
-                            End If
-                        Next
-                    Next
 
+                        If Fleets2Fit.IndexOf(iFleet) <> -1 Then 'If fleet doesnt effect a group that has a HCR set effort to what it was end of last year
+                            For iMonth = 1 To 12
+                                _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = variable_results(iFleet - 1)
+                            Next
+                        End If
+                    Next
 
                 End If
 
@@ -1889,6 +1900,7 @@ stepend:
                     If Fleets2Fit.IndexOf(iFleet) = -1 Then
                         For iMonth = 1 To 12
                             _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
+                            '_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = 2
                         Next
                     End If
                 Next
@@ -1979,4 +1991,5 @@ stepend:
             bCancelMessage = True
         End If
     End Sub
+
 End Class

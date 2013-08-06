@@ -56,6 +56,8 @@ Partial Class frmMSE
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Label11 = New System.Windows.Forms.Label()
+        Me.lblDataDirectoryPath = New System.Windows.Forms.Label()
+        Me.btnDistParams = New System.Windows.Forms.Button()
         Me.Panel3.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.Panel6.SuspendLayout()
@@ -165,7 +167,7 @@ Partial Class frmMSE
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(80, 48)
+        Me.Button1.Location = New System.Drawing.Point(80, 26)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(145, 21)
         Me.Button1.TabIndex = 22
@@ -257,7 +259,7 @@ Partial Class frmMSE
         '
         'btnAdvancedSettings
         '
-        Me.btnAdvancedSettings.Location = New System.Drawing.Point(357, 48)
+        Me.btnAdvancedSettings.Location = New System.Drawing.Point(357, 26)
         Me.btnAdvancedSettings.Name = "btnAdvancedSettings"
         Me.btnAdvancedSettings.Size = New System.Drawing.Size(23, 21)
         Me.btnAdvancedSettings.TabIndex = 36
@@ -393,11 +395,31 @@ Partial Class frmMSE
         Me.Label11.TabIndex = 56
         Me.Label11.Text = "Step 4"
         '
+        'lblDataDirectoryPath
+        '
+        Me.lblDataDirectoryPath.AutoSize = True
+        Me.lblDataDirectoryPath.Location = New System.Drawing.Point(94, 59)
+        Me.lblDataDirectoryPath.Name = "lblDataDirectoryPath"
+        Me.lblDataDirectoryPath.Size = New System.Drawing.Size(45, 13)
+        Me.lblDataDirectoryPath.TabIndex = 57
+        Me.lblDataDirectoryPath.Text = "Label13"
+        '
+        'btnDistParams
+        '
+        Me.btnDistParams.Location = New System.Drawing.Point(525, 23)
+        Me.btnDistParams.Name = "btnDistParams"
+        Me.btnDistParams.Size = New System.Drawing.Size(115, 36)
+        Me.btnDistParams.TabIndex = 58
+        Me.btnDistParams.Text = "Setup Distribution Parameters"
+        Me.btnDistParams.UseVisualStyleBackColor = True
+        '
         'frmMSE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(879, 477)
+        Me.Controls.Add(Me.btnDistParams)
+        Me.Controls.Add(Me.lblDataDirectoryPath)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.Panel2)
@@ -465,4 +487,6 @@ Partial Class frmMSE
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents lblDataDirectoryPath As System.Windows.Forms.Label
+    Friend WithEvents btnDistParams As System.Windows.Forms.Button
 End Class
