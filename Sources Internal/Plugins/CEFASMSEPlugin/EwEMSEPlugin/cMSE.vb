@@ -1894,12 +1894,12 @@ stepend:
                 End If
 
                 For iFleet = 1 To mCore.nFleets
-                    If Fleets2Fit.IndexOf(iFleet) = -1 Then
-                        For iMonth = 1 To 12
-                            _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
-                            '_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = 2
-                        Next
-                    End If
+                    'If Fleets2Fit.IndexOf(iFleet) = -1 Then
+                    For iMonth = 1 To 12
+                        _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = _ecosim.EcosimData.FishRateGear(iFleet, iTime - 1)
+                        '_ecosim.EcosimData.FishRateGear(iFleet, iTime - 1 + iMonth) = 2
+                    Next
+                    'End If
                 Next
 
                 'Calculates what the F's are for each species given the effort
