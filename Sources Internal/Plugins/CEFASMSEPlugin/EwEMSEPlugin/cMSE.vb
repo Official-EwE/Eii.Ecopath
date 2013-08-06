@@ -809,7 +809,7 @@ stepend:
                     TimeFindingBalanced.Start()
                     For i = 1 To 1000000
                         Console.WriteLine("Iteration = " & i)
-                        If MonteCarlo.selectNewEcopathParameters(0) Then
+                        If MonteCarlo.selectNewEcopathParameters(1) Then
 
                             'write some of the new Ecopath parameters to the console window
                             'Again for debugging
@@ -828,7 +828,8 @@ stepend:
                             '    'dumps out some Ecosim results
                             '    Me.getEcosimResults()
                             'End If 'RunEcosim
-                            'Exit For
+
+                            Exit For
 
                         Else
                             System.Console.WriteLine("Failed to find balanced Ecopath model")
