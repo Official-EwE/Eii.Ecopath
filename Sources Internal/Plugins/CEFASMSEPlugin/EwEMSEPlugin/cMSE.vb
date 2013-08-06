@@ -811,10 +811,6 @@ stepend:
                         Console.WriteLine("Iteration = " & i)
                         If MonteCarlo.selectNewEcopathParameters(1) Then
 
-                            'write some of the new Ecopath parameters to the console window
-                            'Again for debugging
-                            Me.dumpEcopathParameters(iter)
-
                             For iGrp = 1 To nLiving
                                 b(iter, iGrp) = Me._ecopath.EcopathData.B(iGrp)
                                 ba(iter, iGrp) = Me._ecopath.EcopathData.BA(iGrp)
