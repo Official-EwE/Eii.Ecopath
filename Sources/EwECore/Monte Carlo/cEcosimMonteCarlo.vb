@@ -209,6 +209,10 @@ Friend Class cEcosimMonteCarlo
     Public Function Init() As Boolean
 
         Try
+            'Used to debug Fpenalty
+            Debug.Assert(False, "Include F Penalty has been set for debugging.")
+            IncludeFpenalty = True
+
             redimVariables()
             m_pluginmanager = Me.m_core.PluginManager
 
@@ -417,7 +421,8 @@ Friend Class cEcosimMonteCarlo
 
     Public Sub Run(ByVal ob As Object)
         Dim iter As Integer 'number of ecopath interation to find new pararameters for each trial
-
+        Dim Fpenalty As Single
+        Dim bFirstRun As Boolean = True
         'Dim NtrialsPerThread As Integer
         'Dim nThreads As Integer
 
@@ -473,42 +478,17 @@ Friend Class cEcosimMonteCarlo
 
                 If BalanceEcopathWithNewPars(Pmean, CVpar, iter, maxEcopathTries) Then
 
-                    'VC Sep 2008: Change the vulmult at this point
-
-                    m_ecosim.Init(True) 'StartEcoSimAgain())
+                    m_ecosim.Init(True)
 
                     'the ecosim time step delegate was set before the loop
                     m_ecosim.Run()
 
+                    'xxxxxxxxxxxxxxxxxxxx Below is for global Nereus model, June 2013 xxxxxxxxxxxxxxxxxx
                     'Calculate penalty for being away from reasonable fishing mortality
-                    'Below is for global Nereus model, June 2013
-                    Dim Fpenalty As Single
-                    Dim FirstRun As Boolean = False
-
-                    If Me.IncludeFpenalty Then
-                        If Fpenalty = 0 Then FirstRun = True
-                        Fpenalty = 0
-                        Dim sStr As String = ""
-                        For ii As Integer = 1 To Me.m_epdata.NumGroups
-                            'If Me.Me.m_epdata.fCatch(ii) > 0 Then
-                            If (bForcedCatches(ii)) Then
-                                Dim lasttimestep As Integer = m_esdata.NTimes
-                                Dim NatMort As Single = Me.m_epdata.M0(ii) + Me.m_epdata.M2(ii)
-                                Dim SScont As Single = (Me.m_esdata.FishRateNo(ii, lasttimestep) - Me.FMratioForSRA * NatMort)
-                                Fpenalty += CSng(100 * SScont ^ 2)
-                                sStr += ii & " " & SScont & ","
-                            End If
-                        Next
-                        'Debug.Print(sStr)
-                    End If
-
-                    If FirstRun Then
-                        SSBestFit = SSBestFit + Fpenalty
-                        FirstRun = False
-                    End If
-
+                    Fpenalty = Me.getFPenalty(bFirstRun, bForcedCatches)
                     m_esdata.SS += Fpenalty
-                    Debug.Print(Me.m_esdata.SS & " = " & Me.m_esdata.SS - Fpenalty & " + " & Fpenalty)
+                    'Debug.Print(Me.m_esdata.SS & " = " & Me.m_esdata.SS - Fpenalty & " + " & Fpenalty)
+                    'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
                     If m_esdata.SS < SSBestFit Then
                         RunsSinceLastWithLowerSS = 0
@@ -571,6 +551,40 @@ Friend Class cEcosimMonteCarlo
     Public Sub setDefaults()
         Me.EcopathEETol = EE_TOL
     End Sub
+
+    ''' <summary>
+    ''' Calculate penalty for being away from reasonable fishing mortality
+    ''' </summary>
+    ''' <param name="bForcedCatches"></param>
+    ''' <remarks></remarks>
+    Private Function getFPenalty(ByRef bFirstRun As Boolean, bForcedCatches() As Boolean) As Single
+        'Used for global Nereus model, June 2013
+        Dim Fpenalty As Single
+
+        If Me.IncludeFpenalty Then
+            'If Fpenalty = 0 Then FirstRun = True
+            Fpenalty = 0
+            Dim sStr As String = ""
+            For ii As Integer = 1 To Me.m_epdata.NumGroups
+                If (bForcedCatches(ii)) Then
+                    Dim lasttimestep As Integer = m_esdata.NTimes
+                    Dim NatMort As Single = Me.m_epdata.M0(ii) + Me.m_epdata.M2(ii)
+                    Dim SScont As Single = (Me.m_esdata.FishRateNo(ii, lasttimestep) - Me.FMratioForSRA * NatMort)
+                    Fpenalty += CSng(100 * SScont ^ 2)
+                    sStr += ii & " " & SScont & ","
+                End If
+            Next
+
+            If bFirstRun Then
+                SSBestFit = SSBestFit + Fpenalty
+                bFirstRun = False
+            End If
+
+            System.Console.WriteLine("SS = " + m_esdata.SS.ToString + ", F Penalty = " + Fpenalty.ToString + ", SS + Fpenalty = " + (m_esdata.SS + Fpenalty).ToString)
+        End If
+
+        Return Fpenalty
+    End Function
 
     ''' <summary>
     ''' Restore Ecopath to its original state
