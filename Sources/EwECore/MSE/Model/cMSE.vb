@@ -1230,7 +1230,7 @@ Namespace MSE
 
                     Else 'Me.isTStepRegulated(iTimeStep)
                         'xxxxxxxxxxxxxxx
-                        'Not Regulated and Quota
+                        'Not Regulated or Quota
                         'xxxxxxxxxxxxxxx
 
                         'set FishTime(group) (F at timestep) using FishYear and load timeseries data
@@ -1322,7 +1322,7 @@ Namespace MSE
 
             If Me.m_data.UseLPSolution Then
 
-                '
+                'Only call the LP Solution for the first month of the year
                 If imonth = 1 Then
                     'RegulateEffortViaLPSolve(Biomass, QMult, QYear, t)
                     RegulateLPEffort(Biomass, QMult, QYear, t)

@@ -202,6 +202,10 @@ Friend Class cEcosimMonteCarlo
 
     End Sub
 
+    Public Sub initRandomSequence(seed As Integer)
+        m_rand = New Random(seed)
+    End Sub
+
     Public Function Init() As Boolean
 
         Try
@@ -675,6 +679,10 @@ Friend Class cEcosimMonteCarlo
         Try
             Dim nIters As Integer
             If BalanceEcopathWithNewPars(Pmean, CVpar, nIters, MaxIters) Then
+                ''Used for debugging CEFAS MSE Plugin
+                'If MaxIters > 1 Then
+                '    System.Console.WriteLine("Balanced model in " + nIters.ToString)
+                'End If
                 Return True
             End If
 
@@ -748,6 +756,9 @@ Friend Class cEcosimMonteCarlo
 
                 m_ecosim.InitStanza()
 
+                'For debugging
+                'dumpEcopathPars()
+
                 'Estimate basic params
                 If Not m_ecopath.Run() Then
 
@@ -799,6 +810,16 @@ Friend Class cEcosimMonteCarlo
         Return Not bEcopathNeedsBalancing
 
     End Function
+
+
+    Private Sub dumpEcopathPars()
+        Dim strm As New System.IO.StreamWriter("EcopathPars.csv", True)
+        strm.WriteLine("iter")
+        For igrp As Integer = 1 To Me.m_epdata.NumGroups
+            strm.WriteLine(Me.m_epdata.GroupName(igrp) + "," + Me.m_epdata.B(igrp).ToString + "," + Me.m_epdata.PB(igrp).ToString + "," + Me.m_epdata.QB(igrp).ToString + "," + Me.m_epdata.EE(igrp).ToString)
+        Next
+        strm.Close()
+    End Sub
 
     ''' <summary>
     ''' Apply the results of the Monte Carlo trials (best fitting parameters) to the ecopath data
