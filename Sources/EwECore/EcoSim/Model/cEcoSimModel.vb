@@ -4252,7 +4252,7 @@ Namespace Ecosim
         End Sub
 
         ''' <summary>
-        ''' Populates FishTime(ngroups) and FishRateNo(group,time) with fishing mortality rates for a timestep from the current Biomass, Effort and Density dependent catchability(Qmult())
+        ''' Populates FishTime(ngroups) and FishRateNo(group,time) with fishing mortality rates for a timestep from the current Biomass, Effort
         ''' </summary>
         ''' <param name="BB">Biomass(group).</param>
         ''' <param name="t">Timestep.</param>
@@ -4275,9 +4275,15 @@ Namespace Ecosim
                         Ft = Ft + QYear(ig) * m_Data.FishMGear(ig, i) * m_Data.FishRateGear(ig, t) * (Me.m_Data.PropLandedTime(ig, i) + Me.m_Data.Propdiscardtime(ig, i))
                     Next
 
-                    'multiply the catchability multiplyer (density-dependent)
-                    m_Data.FishRateNo(i, t) = Qmult(i) * Ft
-                    m_Data.FishTime(i) = m_Data.FishRateNo(i, t)
+                    'Save F for this time step 
+                    'NOT including Density Dependant Catchability.
+                    'This is because Density Dependant Catchability is dependant on B(t) B(0) ratio which we may not know for given t
+                    'Density Dependant Catchability will need to be applied during the timestep when FishTime() is populated
+                    'In SetFishTime()
+                    m_Data.FishRateNo(i, t) = Ft
+
+                    'Include Density Dependant Catchability in the F that is applied to the current timestep
+                    m_Data.FishTime(i) = m_Data.FishRateNo(i, t) * Qmult(i)
                 End If
 
             Next i

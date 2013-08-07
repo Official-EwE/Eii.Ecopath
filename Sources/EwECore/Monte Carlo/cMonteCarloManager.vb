@@ -697,6 +697,14 @@ Public Class cMonteCarloManager
         End Set
     End Property
 
+    ''' <summary>
+    ''' Initialize the random sequence generator to a new seed.
+    ''' </summary>
+    ''' <param name="seed"></param>
+    ''' <remarks>This can be used to generate the same sequence of random numbers for each run. This can be useful for debugging. </remarks>
+    Public Sub InitRandomSequence(seed As Integer)
+        Me.m_mc.initRandomSequence(seed)
+    End Sub
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' Yippee.
