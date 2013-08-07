@@ -788,6 +788,8 @@ stepend:
 
         'I am just altering the tolerance so that it can run faster; this needs deleting later
         MonteCarlo.EcopathEETolerance = Convert.ToSingle(MSEForm.txtTolerance.Text)
+        'Forces the same sequence of random numbers for each run. Used only for debugging runs
+        'MonteCarlo.InitRandomSequence(666)
 
         'cMonteCarloManager.selectNewEcopathParameters() will alter the Ecopath Input parameters
         'We need to save the original state of Ecopath so it can be restored when we are done
@@ -960,8 +962,12 @@ stepend:
         Dim sPath As String = DataPath & "\DistributionParameters"
         Dim SuccessfullyMassBalanced As Boolean = False
         Dim iParameterSet As Integer
+
         'I am just altering the tolerance so that it can run faster; this needs deleting later
         MonteCarlo.EcopathEETolerance = Convert.ToSingle(MSEForm.txtTolerance.Text)
+        'Forces the same sequence of random numbers for each run. Used only for debugging runs
+        'MonteCarlo.InitRandomSequence(666)
+
 
         'cMonteCarloManager.selectNewEcopathParameters() will alter the Ecopath Input parameters
         'We need to save the original state of Ecopath so it can be restored when we are done
@@ -1066,7 +1072,7 @@ stepend:
                     'End If ' MonteCarlo.selectNewEcopathParameters()
 
                     If SuccessfullyMassBalanced = True Then
-                        Console.WriteLine("Successful found a set of parameters inc. diet matrix that is mass balanced.")
+                        Console.WriteLine("Successful found a set of parameters inc. diet matrix that is mass balanced in " + iParameterSet.ToString + " Ecopath iterations.")
                         ' MsgBox("Version 2 in " + iParameterSet.ToString + " iterations.")
                     Else
                         Console.WriteLine("Failed to find mass-balanced parameter set!")
