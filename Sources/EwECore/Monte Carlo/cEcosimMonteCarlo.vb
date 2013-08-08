@@ -210,8 +210,8 @@ Friend Class cEcosimMonteCarlo
 
         Try
             'Used to debug Fpenalty
-            Debug.Assert(False, "Include F Penalty has been set for debugging.")
-            IncludeFpenalty = True
+            'Debug.Assert(False, "Include F Penalty has been set for debugging.")
+            'IncludeFpenalty = True
 
             redimVariables()
             m_pluginmanager = Me.m_core.PluginManager
