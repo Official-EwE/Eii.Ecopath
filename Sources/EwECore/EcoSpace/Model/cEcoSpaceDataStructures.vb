@@ -1187,6 +1187,8 @@ Public Class cEcospaceDataStructures
 
     Friend Sub DebugTestEffortZones()
 
+        'Warning
+        Debug.Assert(False, "Effort Zones have been set for debugging.")
         'set the number of zones to 4
         Me.ReDimEffortZones(4)
 
