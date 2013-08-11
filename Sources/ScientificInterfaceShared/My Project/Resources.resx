@@ -2874,4 +2874,7 @@
   <data name="ECOSPACE_LAYERGROUP_ADVECTION" xml:space="preserve">
     <value>Advection</value>
   </data>
+  <data name="VARIABLE_NOTSET" xml:space="preserve">
+    <value>|n/a||(No variable specified)</value>
+  </data>
 </root>

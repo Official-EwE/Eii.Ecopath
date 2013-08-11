@@ -45,6 +45,11 @@ Public Class dlgConfig
         Me.Text = strTitle
         ' Store control
         Me.m_ctrl = ctrl
+        ' Configure control
+        If TypeOf ctrl Is IUIElement Then
+            DirectCast(ctrl, IUIElement).UIContext = Me.UIContext
+        End If
+
         ' Base, do your work
         Return MyBase.ShowDialog(owner)
 
@@ -69,6 +74,12 @@ Public Class dlgConfig
         Me.m_ctrl.Dock = DockStyle.Fill
         Me.m_plContent.Controls.Add(Me.m_ctrl)
 
+        If (TypeOf Me.m_ctrl Is IOptionsPage) Then
+            Dim opts As IOptionsPage = DirectCast(Me.m_ctrl, IOptionsPage)
+            AddHandler opts.OnChanged, AddressOf OnOptionsPageChanged
+            Me.OnOptionsPageChanged(opts, New EventArgs)
+        End If
+
         Me.CenterToParent()
 
     End Sub
@@ -76,6 +87,11 @@ Public Class dlgConfig
     Protected Overrides Sub OnFormClosed(e As System.Windows.Forms.FormClosedEventArgs)
         Me.m_plContent.Controls.Remove(Me.m_ctrl)
         Me.m_ctrl.Dispose()
+
+        If (TypeOf Me.m_ctrl Is IOptionsPage) Then
+            RemoveHandler DirectCast(Me.m_ctrl, IOptionsPage).OnChanged, AddressOf OnOptionsPageChanged
+        End If
+
         Me.UIContext = Nothing
         MyBase.OnFormClosed(e)
     End Sub
@@ -87,6 +103,9 @@ Public Class dlgConfig
 
         Try
             Me.DialogResult = Windows.Forms.DialogResult.OK
+            If TypeOf Me.m_ctrl Is IOptionsPage Then
+                DirectCast(Me.m_ctrl, IOptionsPage).Apply()
+            End If
             Me.Close()
         Catch ex As Exception
             cLog.Write(ex, "dlgConfig::OnOK")
@@ -96,6 +115,24 @@ Public Class dlgConfig
             cApplicationStatusNotifier.StartProgress(uic.Core, ScientificInterfaceShared.My.Resources.STATUS_APPLYVALUES)
         End If
 
+    End Sub
+
+    Private Sub OnCancel(sender As System.Object, e As System.EventArgs) _
+     Handles m_btnCancel.Click
+
+        Dim uic As cUIContext = Me.UIContext
+
+        Try
+            Me.DialogResult = Windows.Forms.DialogResult.Cancel
+            Me.Close()
+        Catch ex As Exception
+            cLog.Write(ex, "dlgConfig::OnOK")
+        End Try
+
+    End Sub
+
+    Private Sub OnOptionsPageChanged(ByVal sender As IOptionsPage, ByVal args As EventArgs)
+        Me.m_btnOK.Enabled = DirectCast(Me.m_ctrl, IOptionsPage).CanApply
     End Sub
 
 End Class

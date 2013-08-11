@@ -482,6 +482,13 @@ Namespace Other
 
 #End Region ' Helper methods
 
+        Public Function CanApply() As Boolean _
+            Implements IOptionsPage.CanApply
+            Return True
+        End Function
+
+        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
+
     End Class
 
 End Namespace
