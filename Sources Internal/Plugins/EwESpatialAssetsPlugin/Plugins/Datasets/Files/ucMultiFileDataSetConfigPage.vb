@@ -23,6 +23,10 @@ Imports System.Windows.Forms
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
 Imports System.Collections.Generic
+Imports EwEUtils.Core
+Imports ScientificInterfaceShared.Style
+Imports ScientificInterfaceShared.Controls
+Imports EwECore.SpatialData
 
 #End Region ' Imports
 
@@ -34,6 +38,8 @@ Namespace SpatialData
     ''' </summary>
     ''' ---------------------------------------------------------------------------
     Friend Class ucMultiFileDatasetConfigPage
+        Implements IUIElement
+        Implements IOptionsPage
 
 #Region " Private classes "
 
@@ -97,6 +103,9 @@ Namespace SpatialData
 
 #Region " Overrides "
 
+        Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
+            Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
+
         ''' -----------------------------------------------------------------------
         ''' <summary>
         ''' 
@@ -134,20 +143,17 @@ Namespace SpatialData
             Me.m_cmbExtensions.SelectedIndex = 0
             Me.m_cmbInterval.SelectedIndex = 0
 
+            Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
+            If Me.UIContext IsNot Nothing Then
+                For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
+                    Me.m_cmbVarName.Items.Add(adt.VarName)
+                Next
+            End If
+            Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
+
             Me.m_hdrDescription.IsCollapsed = True
             Me.m_hdrTime.IsCollapsed = True
 
-        End Sub
-
-        Protected Overrides Sub Dispose(bDispose As Boolean)
-            Try
-                Me.Apply()
-                If Disposing And (components IsNot Nothing) Then
-                    components.Dispose()
-                End If
-            Finally
-                MyBase.Dispose(Disposing)
-            End Try
         End Sub
 
 #End Region ' Overrides
@@ -169,15 +175,28 @@ Namespace SpatialData
             End Set
         End Property
 
-        Public Function Apply() As Boolean
+        Public Function CanApply() As Boolean _
+            Implements IOptionsPage.CanApply
+            Return (Me.m_lFiles.Count > 0)
+        End Function
+
+        Public Event OnMultiFileConfigPageChanged(sender As IOptionsPage, args As System.EventArgs) _
+            Implements IOptionsPage.OnChanged
+
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+            Implements IOptionsPage.Apply
             Try
                 Me.DoApply()
             Catch ex As Exception
-                Return False
+                Return IOptionsPage.eApplyResultType.Failed
             End Try
-            Return True
-
+            Return IOptionsPage.eApplyResultType.Success
         End Function
+
+        Public Sub SetDefaults() _
+            Implements IOptionsPage.SetDefaults
+            ' NOP
+        End Sub
 
 #End Region ' Interface implementation
 
@@ -286,6 +305,12 @@ Namespace SpatialData
             Return dt
 
         End Function
+
+        Private Sub m_cmbVarName_Format(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
+            Handles m_cmbVarName.Format
+            Dim fmt As New cVarnameTypeFormatter
+            e.Value = fmt.GetDescriptor(e.Value)
+        End Sub
 
 #End Region ' Control events
 
@@ -397,6 +422,12 @@ Namespace SpatialData
             Next
             Me.UpdateGrid()
 
+            Try
+                RaiseEvent OnMultiFileConfigPageChanged(Me, New EventArgs())
+            Catch ex As Exception
+
+            End Try
+
         End Sub
 
         Private Sub UpdateGrid()
@@ -422,6 +453,7 @@ Namespace SpatialData
             Me.m_dataset.Description = Me.m_tbxDescription.Text
             Me.m_dataset.Source = Me.m_tbxPath.Text
             Me.m_dataset.IsAnnual = Me.m_cbAnnual.Checked
+            Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
 
             Me.m_dataset.Clear()
             For Each entry As cFileEntry In Me.m_lFiles

@@ -179,16 +179,24 @@ Namespace SpatialData
             Dim xnDetails As XmlNode = Nothing
             Dim xaDataset As XmlAttribute = Nothing
             Dim bChanged As Boolean = False
+            Dim strConfigFileName As String = cSpatialDataSetManager.ConfigFileName()
             Dim bSuccess As Boolean = True
 
+            ' Create dir
+            If Not cFileUtils.IsDirectoryAvailable(Path.GetDirectoryName(strConfigFileName)) Then
+                Return False
+            End If
+
             Try
-                doc.Load(cSpatialDataSetManager.ConfigFileName())
-                xnRoot = doc.GetElementsByTagName("Datasets")(0)
+                If File.Exists(strConfigFileName) Then
+                    doc.Load(strConfigFileName)
+                    xnRoot = doc.GetElementsByTagName("Datasets")(0)
+                End If
             Catch ex As Exception
-                bSuccess = False
+                ' Plop
             End Try
 
-            If (bSuccess = False) Or (xnRoot Is Nothing) Then
+            If (xnRoot Is Nothing) Then
                 ' Wipe and recreate
                 doc.RemoveAll()
                 doc.AppendChild(doc.CreateXmlDeclaration("1.0", "", "yes"))

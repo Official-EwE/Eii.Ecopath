@@ -60,10 +60,12 @@ Namespace SpatialData
             Me.m_btnSetTime = New System.Windows.Forms.Button()
             Me.m_plFiles = New System.Windows.Forms.Panel()
             Me.m_tbxFileNamePattern = New System.Windows.Forms.TextBox()
-            Me.Label1 = New System.Windows.Forms.Label()
+            Me.m_lblFileType = New System.Windows.Forms.Label()
             Me.m_cmbExtensions = New System.Windows.Forms.ComboBox()
             Me.m_plDescription = New System.Windows.Forms.Panel()
+            Me.m_cmbVarName = New System.Windows.Forms.ComboBox()
             Me.m_hdrDescription = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_lblVariable = New System.Windows.Forms.Label()
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_tlpConfig.SuspendLayout()
             Me.m_plTime.SuspendLayout()
@@ -108,6 +110,7 @@ Namespace SpatialData
             Me.m_dgvFiles.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                 Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_dgvFiles.BorderStyle = System.Windows.Forms.BorderStyle.None
             Me.m_dgvFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
             Me.m_dgvFiles.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.m_colFileName, Me.m_colTime})
             Me.m_dgvFiles.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
@@ -121,7 +124,7 @@ Namespace SpatialData
             Me.m_dgvFiles.ShowCellToolTips = False
             Me.m_dgvFiles.ShowEditingIcon = False
             Me.m_dgvFiles.ShowRowErrors = False
-            Me.m_dgvFiles.Size = New System.Drawing.Size(465, 160)
+            Me.m_dgvFiles.Size = New System.Drawing.Size(465, 193)
             Me.m_dgvFiles.TabIndex = 9
             '
             'm_colFileName
@@ -192,6 +195,7 @@ Namespace SpatialData
             Me.m_tbxDescription.Name = "m_tbxDescription"
             Me.m_tbxDescription.Size = New System.Drawing.Size(388, 73)
             Me.m_tbxDescription.TabIndex = 4
+            Me.m_tbxDescription.Text = "1" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "2" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5"
             '
             'm_lblDescription
             '
@@ -245,7 +249,7 @@ Namespace SpatialData
             Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlpConfig.RowStyles.Add(New System.Windows.Forms.RowStyle())
-            Me.m_tlpConfig.Size = New System.Drawing.Size(477, 527)
+            Me.m_tlpConfig.Size = New System.Drawing.Size(477, 584)
             Me.m_tlpConfig.TabIndex = 0
             '
             'm_plTime
@@ -261,7 +265,7 @@ Namespace SpatialData
             Me.m_plTime.Controls.Add(Me.m_hdrTime)
             Me.m_plTime.Controls.Add(Me.m_btnSetTime)
             Me.m_plTime.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plTime.Location = New System.Drawing.Point(3, 398)
+            Me.m_plTime.Location = New System.Drawing.Point(3, 455)
             Me.m_plTime.Name = "m_plTime"
             Me.m_plTime.Size = New System.Drawing.Size(471, 126)
             Me.m_plTime.TabIndex = 0
@@ -376,7 +380,7 @@ Namespace SpatialData
             'm_plFiles
             '
             Me.m_plFiles.Controls.Add(Me.m_tbxFileNamePattern)
-            Me.m_plFiles.Controls.Add(Me.Label1)
+            Me.m_plFiles.Controls.Add(Me.m_lblFileType)
             Me.m_plFiles.Controls.Add(Me.m_cmbExtensions)
             Me.m_plFiles.Controls.Add(Me.m_dgvFiles)
             Me.m_plFiles.Controls.Add(Me.m_hdrFiles)
@@ -386,9 +390,9 @@ Namespace SpatialData
             Me.m_plFiles.Controls.Add(Me.m_btnBrowse)
             Me.m_plFiles.Controls.Add(Me.m_btnSearch)
             Me.m_plFiles.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plFiles.Location = New System.Drawing.Point(3, 131)
+            Me.m_plFiles.Location = New System.Drawing.Point(3, 155)
             Me.m_plFiles.Name = "m_plFiles"
-            Me.m_plFiles.Size = New System.Drawing.Size(471, 261)
+            Me.m_plFiles.Size = New System.Drawing.Size(471, 294)
             Me.m_plFiles.TabIndex = 1
             '
             'm_tbxFileNamePattern
@@ -401,14 +405,14 @@ Namespace SpatialData
             Me.m_tbxFileNamePattern.TabIndex = 7
             Me.m_tbxFileNamePattern.Text = "*"
             '
-            'Label1
+            'm_lblFileType
             '
-            Me.Label1.AutoSize = True
-            Me.Label1.Location = New System.Drawing.Point(3, 49)
-            Me.Label1.Name = "Label1"
-            Me.Label1.Size = New System.Drawing.Size(49, 13)
-            Me.Label1.TabIndex = 3
-            Me.Label1.Text = "&File type:"
+            Me.m_lblFileType.AutoSize = True
+            Me.m_lblFileType.Location = New System.Drawing.Point(3, 49)
+            Me.m_lblFileType.Name = "m_lblFileType"
+            Me.m_lblFileType.Size = New System.Drawing.Size(49, 13)
+            Me.m_lblFileType.TabIndex = 3
+            Me.m_lblFileType.Text = "&File type:"
             '
             'm_cmbExtensions
             '
@@ -423,23 +427,36 @@ Namespace SpatialData
             '
             'm_plDescription
             '
+            Me.m_plDescription.Controls.Add(Me.m_cmbVarName)
             Me.m_plDescription.Controls.Add(Me.m_hdrDescription)
             Me.m_plDescription.Controls.Add(Me.m_tbxName)
+            Me.m_plDescription.Controls.Add(Me.m_lblVariable)
             Me.m_plDescription.Controls.Add(Me.m_lblDescription)
             Me.m_plDescription.Controls.Add(Me.m_lblName)
             Me.m_plDescription.Controls.Add(Me.m_tbxDescription)
             Me.m_plDescription.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plDescription.Location = New System.Drawing.Point(3, 3)
             Me.m_plDescription.Name = "m_plDescription"
-            Me.m_plDescription.Size = New System.Drawing.Size(471, 122)
+            Me.m_plDescription.Size = New System.Drawing.Size(471, 146)
             Me.m_plDescription.TabIndex = 0
+            '
+            'm_cmbVarName
+            '
+            Me.m_cmbVarName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_cmbVarName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+            Me.m_cmbVarName.FormattingEnabled = True
+            Me.m_cmbVarName.Location = New System.Drawing.Point(80, 125)
+            Me.m_cmbVarName.Name = "m_cmbVarName"
+            Me.m_cmbVarName.Size = New System.Drawing.Size(388, 21)
+            Me.m_cmbVarName.TabIndex = 5
             '
             'm_hdrDescription
             '
             Me.m_hdrDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_hdrDescription.CanCollapseParent = True
-            Me.m_hdrDescription.CollapsedParentHeight = 87
+            Me.m_hdrDescription.CollapsedParentHeight = 94
             Me.m_hdrDescription.IsCollapsed = False
             Me.m_hdrDescription.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrDescription.Name = "m_hdrDescription"
@@ -447,6 +464,16 @@ Namespace SpatialData
             Me.m_hdrDescription.TabIndex = 0
             Me.m_hdrDescription.Text = "Description"
             Me.m_hdrDescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+            '
+            'm_lblVariable
+            '
+            Me.m_lblVariable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+            Me.m_lblVariable.AutoSize = True
+            Me.m_lblVariable.Location = New System.Drawing.Point(4, 128)
+            Me.m_lblVariable.Name = "m_lblVariable"
+            Me.m_lblVariable.Size = New System.Drawing.Size(48, 13)
+            Me.m_lblVariable.TabIndex = 3
+            Me.m_lblVariable.Text = "&Variable:"
             '
             'ucMultiFileDatasetConfigPage
             '
@@ -456,7 +483,7 @@ Namespace SpatialData
             Me.Controls.Add(Me.m_tlpConfig)
             Me.MinimumSize = New System.Drawing.Size(410, 400)
             Me.Name = "ucMultiFileDatasetConfigPage"
-            Me.Size = New System.Drawing.Size(480, 530)
+            Me.Size = New System.Drawing.Size(480, 587)
             CType(Me.m_dgvFiles, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_tlpConfig.ResumeLayout(False)
             Me.m_plTime.ResumeLayout(False)
@@ -499,8 +526,10 @@ Namespace SpatialData
         Private WithEvents m_rbFromName As System.Windows.Forms.RadioButton
         Private WithEvents m_cmbExtensions As System.Windows.Forms.ComboBox
         Private WithEvents m_tbxFileNamePattern As System.Windows.Forms.TextBox
-        Private WithEvents Label1 As System.Windows.Forms.Label
+        Private WithEvents m_lblFileType As System.Windows.Forms.Label
         Private WithEvents m_lblIntervalWith As System.Windows.Forms.Label
+        Private WithEvents m_cmbVarName As System.Windows.Forms.ComboBox
+        Private WithEvents m_lblVariable As System.Windows.Forms.Label
 
     End Class
 

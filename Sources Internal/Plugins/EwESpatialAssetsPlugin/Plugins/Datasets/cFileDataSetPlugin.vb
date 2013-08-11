@@ -54,8 +54,6 @@ Namespace SpatialData
 
         ''' <summary>Global unique ID of the data set.</summary>
         Protected m_GUID As Guid = Guid.Empty
-        ''' <summary>Source for the data set.</summary>
-        Protected m_strSource As String = ""
         ''' <summary>Name of the data set.</summary>
         Protected m_strName As String = ""
         ''' <summary>Description of the data set.</summary>
@@ -129,13 +127,6 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property Source As String _
             Implements ISpatialDataSet.Source
-            Get
-                Return Me.m_strSource
-            End Get
-            Set(ByVal value As String)
-                Me.m_strSource = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.TimeSteps" />
@@ -164,6 +155,12 @@ Namespace SpatialData
         Public Overrides Function ToString() As String
             Return Me.DisplayName()
         End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="ISpatialDataSet.VarName"/>"
+        ''' -------------------------------------------------------------------
+        Public Property VarName As EwEUtils.Core.eVarNameFlags _
+             Implements EwEUtils.SpatialData.ISpatialDataSet.VarName
 
 #End Region ' Information
 

@@ -63,7 +63,8 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Sub New()
             MyBase.New()
-            Me.m_strName = My.Resources.DATASET_SINGLE_NAME
+            Me.DisplayName = My.Resources.DATASET_SINGLE_NAME
+            Me.VarName = eVarNameFlags.NotSet
         End Sub
 
         ''' -------------------------------------------------------------------
@@ -72,9 +73,9 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Sub New(strSource As String)
-            MyBase.New()
-            Me.m_strSource = strSource
-            Me.m_strName = Path.GetFileNameWithoutExtension(strSource)
+            Me.New()
+            Me.Source = strSource
+            Me.DisplayName = Path.GetFileNameWithoutExtension(strSource)
         End Sub
 
 #End Region ' Construction / destruction
@@ -89,7 +90,7 @@ Namespace SpatialData
                 If (Not String.IsNullOrWhiteSpace(Me.m_strName)) Then
                     Return Me.m_strName
                 End If
-                Return String.Format(My.Resources.DATASET_SINGLE_DISPLAYNAME, Me.m_strSource)
+                Return String.Format(My.Resources.DATASET_SINGLE_DISPLAYNAME, Me.Source)
             End Get
             Set(value As String)
                 Me.m_strName = value
@@ -165,14 +166,14 @@ Namespace SpatialData
         ''' <inheritdocs cref="cFileDataSetPlugin.IsConfigured"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function IsConfigured() As Boolean
-            Return Not String.IsNullOrWhiteSpace(Me.m_strSource)
+            Return Not String.IsNullOrWhiteSpace(Me.Source)
         End Function
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.IsDataAvailable"/>
         ''' -------------------------------------------------------------------
         Public Overrides Function IsDataAvailable(ByVal runtype As IRunType) As Boolean
-            Return System.IO.File.Exists(Me.m_strSource)
+            Return System.IO.File.Exists(Me.Source)
         End Function
 
         ''' -------------------------------------------------------------------
@@ -201,10 +202,14 @@ Namespace SpatialData
             xn.InnerText = Me.m_strDescription
             xnMaster.AppendChild(xn)
 
+            xn = doc.CreateElement("Variable")
+            xn.InnerText = CStr(CInt(Me.VarName))
+            xnMaster.AppendChild(xn)
+
             xnFile = doc.CreateElement("File")
 
             xaFile = doc.CreateAttribute("Source")
-            xaFile.Value = Me.m_strSource
+            xaFile.Value = Me.Source
             xnFile.Attributes.Append(xaFile)
 
             xaFile = doc.CreateAttribute("Date")
@@ -264,8 +269,9 @@ Namespace SpatialData
                     Select Case xn.Name
                         Case "Name" : Me.m_strName = xn.InnerText
                         Case "Description" : Me.m_strDescription = xn.InnerText
+                        Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
                         Case "File"
-                            Me.m_strSource = xn.Attributes("Source").InnerText
+                            Me.Source = xn.Attributes("Source").InnerText
                             Dim strDate As String = xn.Attributes("Date").InnerText
                             Dim dt As DateTime = DateTime.FromOADate(Convert.ToDouble(strDate))
                             If (dt = DateTime.MinValue) Or (dt = DateTime.MaxValue) Then
@@ -407,7 +413,7 @@ Namespace SpatialData
         End Function
 
         Protected Overrides Function SourceFileName() As String
-            Return Me.m_strSource
+            Return Me.Source
         End Function
 
 #End Region ' Internals

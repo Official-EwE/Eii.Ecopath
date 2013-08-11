@@ -105,6 +105,7 @@ Namespace SpatialData
             MyBase.New()
             Me.m_lFiles = New List(Of cTemporalFile)
             Me.m_strName = My.Resources.DATASET_MULTIPLE_NAME
+            Me.VarName = eVarNameFlags.NotSet
         End Sub
 
 #End Region ' Construction / destruction
@@ -347,6 +348,10 @@ Namespace SpatialData
             xn.InnerText = Me.Description
             xnMaster.AppendChild(xn)
 
+            xn = doc.CreateElement("Variable")
+            xn.InnerText = CStr(CInt(Me.VarName))
+            xnMaster.AppendChild(xn)
+
             xn = doc.CreateElement("Source")
             xn.InnerText = Me.Source
             xnMaster.AppendChild(xn)
@@ -430,14 +435,15 @@ Namespace SpatialData
                     Select Case xn.Name
                         Case "Name" : Me.m_strName = xn.InnerText
                         Case "Description" : Me.m_strDescription = xn.InnerText
-                        Case "Source" : Me.m_strSource = xn.InnerText
+                        Case "Source" : Me.Source = xn.InnerText
                         Case "Annual" : Me.m_bSeasonal = Convert.ToBoolean(xn.InnerText)
+                        Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
                         Case "Files"
                             For Each xnFile In xn.ChildNodes
                                 Dim strName As String = xnFile.Attributes("Name").InnerText
                                 Dim strDate As String = xnFile.Attributes("Date").InnerText
                                 Dim dt As DateTime = DateTime.FromOADate(Convert.ToDouble(strDate))
-                                Dim f As New cTemporalFile(dt, Path.Combine(Me.m_strSource, strName))
+                                Dim f As New cTemporalFile(dt, Path.Combine(Me.Source, strName))
                                 f.IndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
                                 If (xnFile.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
                                     If (Boolean.Parse(xnFile.Attributes("Indexed").InnerText)) Then
@@ -449,7 +455,7 @@ Namespace SpatialData
                                     End If
                                 End If
                                 Me.m_lFiles.Add(f)
-                             Next
+                            Next
                     End Select
                 Next
                 Me.m_bCanSort = True

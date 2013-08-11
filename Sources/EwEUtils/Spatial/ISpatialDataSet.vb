@@ -94,6 +94,13 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ReadOnly Property TimeSteps As DateTime()
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Variable of the dataset, if any.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
+        Property VarName As eVarNameFlags
+
 #End Region ' Information
 
 #Region " Configuration "

@@ -65,6 +65,7 @@ Namespace Ecospace.Controls
         Private m_bHasCachedData As Boolean = False
 
         Private m_mhEcospace As cMessageHandler = Nothing
+        Private m_bHasTemplates As Boolean = False
 
 #End Region ' Private variables
 
@@ -517,7 +518,7 @@ Namespace Ecospace.Controls
                 bCanConfigCV = bHasContext And (TypeOf cv Is IConfigurablePlugin)
             End If
 
-            Me.m_btnCreateDS.Enabled = (Me.m_cmbNewDS.SelectedIndex >= 0)
+            Me.m_btnCreateDS.Enabled = Me.m_bHasTemplates
             Me.m_btnConfigDS.Visible = bCanConfigDS
             Me.m_btnDeleteDS.Enabled = (ds IsNot Nothing)
             Me.m_btnConfigureCV.Enabled = bCanConfigCV
@@ -578,20 +579,28 @@ Namespace Ecospace.Controls
 
             If (Me.m_cmbNewDS.Items.Count = 0) Then
                 Me.m_cmbNewDS.Items.Add("")
+                Me.m_bHasTemplates = False
+            Else
+                Me.m_bHasTemplates = True
             End If
             Me.m_cmbNewDS.SelectedIndex = 0
 
         End Sub
 
-        Private Sub FillExistingDatasetBox(Optional ds As ISpatialDataSet = Nothing)
+        Private Sub FillExistingDatasetBox(Optional dsSelect As ISpatialDataSet = Nothing)
 
-            If (ds Is Nothing) Then ds = Me.SelectedDataset
+            If (Me.m_adt Is Nothing) Then Return
+            If (dsSelect Is Nothing) Then dsSelect = Me.SelectedDataset
+
             Me.m_lbxExistingDS.Items.Clear()
             Me.m_lbxExistingDS.Items.Add("")
             For i As Integer = 0 To Me.m_manSets.Count - 1
-                Me.m_lbxExistingDS.Items.Add(Me.m_manSets(i))
+                Dim ds As ISpatialDataSet = Me.m_manSets(i)
+                If (ds.VarName = eVarNameFlags.NotSet Or ds.VarName = Me.m_adt.VarName) Then
+                    Me.m_lbxExistingDS.Items.Add(Me.m_manSets(i))
+                End If
             Next
-            Me.SelectDataset(ds)
+            Me.SelectDataset(dsSelect)
 
         End Sub
 
@@ -617,8 +626,12 @@ Namespace Ecospace.Controls
             If (dataset IsNot Nothing) Then
                 iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
             End If
-            Me.m_lbxExistingDS.SelectedIndex = iIndex
-            Me.SelectedDataset = dataset
+            If (Me.m_lbxExistingDS.Items.Count > 0) Then
+                Me.m_lbxExistingDS.SelectedIndex = iIndex
+                Me.SelectedDataset = dataset
+            Else
+                Me.SelectedDataset = Nothing
+            End If
 
         End Sub
 
@@ -675,6 +688,8 @@ Namespace Ecospace.Controls
 
         Private Sub CreateDS()
 
+            If (Me.m_adt Is Nothing) Then Return
+
             Dim item As Object = Me.m_cmbNewDS.SelectedItem
             If Not TypeOf (item) Is ISpatialDataSet Then Return
 
@@ -687,6 +702,7 @@ Namespace Ecospace.Controls
             If (dsNew Is Nothing) Then Return
 
             Try
+                dsNew.VarName = Me.m_adt.VarName
                 If Me.ConfigDS(dsNew) Then
                     Me.m_manSets.Add(dsNew)
                     Me.FillExistingDatasetBox(dsNew)
@@ -712,6 +728,7 @@ Namespace Ecospace.Controls
             If (ctrl Is Nothing) Then Return dsConf.IsConfigured
 
             Dim dlg As New dlgConfig()
+            dlg.UIContext = Me.UIContext
             dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
 
             Return (dsConf.IsConfigured)

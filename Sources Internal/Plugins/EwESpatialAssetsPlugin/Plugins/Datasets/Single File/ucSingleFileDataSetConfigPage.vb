@@ -21,10 +21,13 @@ Option Strict On
 Imports System.Windows.Forms
 Imports EwESpatialAssetsPlugin.SpatialData
 Imports ScientificInterfaceShared.Controls
+Imports System.IO
 
 #End Region ' Imports
 
 Friend Class ucSingleFileDataSetConfigPage
+    Implements IUIElement
+    Implements IOptionsPage
 
     Private m_dataset As cSingleFileDataSetPlugin = Nothing
 
@@ -47,17 +50,6 @@ Friend Class ucSingleFileDataSetConfigPage
             Me.DoBrowse()
         End If
 
-    End Sub
-
-    Protected Overrides Sub Dispose(bDispose As Boolean)
-        Try
-            Me.Apply()
-            If Disposing And (components IsNot Nothing) Then
-                components.Dispose()
-            End If
-        Finally
-            MyBase.Dispose(Disposing)
-        End Try
     End Sub
 
 #Region " Events "
@@ -86,6 +78,23 @@ Friend Class ucSingleFileDataSetConfigPage
 
 #Region " Interface implementation "
 
+    Public Property UIContext As ScientificInterfaceShared.Controls.cUIContext _
+    Implements ScientificInterfaceShared.Controls.IUIElement.UIContext
+
+    Public Function Apply() As IOptionsPage.eApplyResultType _
+        Implements IOptionsPage.Apply
+        Try
+            Me.DoApply()
+            Return IOptionsPage.eApplyResultType.Success
+        Catch ex As Exception
+            Return IOptionsPage.eApplyResultType.Failed
+        End Try
+    End Function
+
+    Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
+        ' NOP
+    End Sub
+
     ''' -----------------------------------------------------------------------
     ''' <summary>
     ''' 
@@ -101,16 +110,6 @@ Friend Class ucSingleFileDataSetConfigPage
         End Set
     End Property
 
-    Public Function Apply() As Boolean
-        Try
-            Me.DoApply()
-        Catch ex As Exception
-            Return False
-        End Try
-        Return True
-
-    End Function
-
 #End Region ' Interface implementation
 
     ''' -----------------------------------------------------------------------
@@ -119,7 +118,11 @@ Friend Class ucSingleFileDataSetConfigPage
     ''' </summary>
     ''' -----------------------------------------------------------------------
     Private Sub UpdateControls()
+        Try
+            RaiseEvent OnSingleFileConfigPageChanged(Me, New EventArgs())
+        Catch ex As Exception
 
+        End Try
     End Sub
 
     Private Sub DoBrowse()
@@ -142,5 +145,13 @@ Friend Class ucSingleFileDataSetConfigPage
         End If
 
     End Sub
+
+    Public Function CanApply() As Boolean _
+        Implements IOptionsPage.CanApply
+        Return File.Exists(Me.m_tbxFile.Text)
+    End Function
+
+    Public Event OnSingleFileConfigPageChanged(sender As IOptionsPage, args As System.EventArgs) _
+        Implements IOptionsPage.OnChanged
 
 End Class
