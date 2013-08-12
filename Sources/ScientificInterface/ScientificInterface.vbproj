@@ -1477,7 +1477,6 @@
     <Compile Include="Other\Options\ucOptionsPresentation.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Other\Options\IOptionsPage.vb" />
     <Compile Include="Tools\MSEBatch\frmMSERunBatch.Designer.vb">
       <DependentUpon>frmMSERunBatch.vb</DependentUpon>
     </Compile>
