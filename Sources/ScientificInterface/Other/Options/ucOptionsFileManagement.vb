@@ -37,10 +37,10 @@ Namespace Other
     ''' -----------------------------------------------------------------------
     Public Class ucOptionsFileManagement
         Implements IOptionsPage
+        Implements IUIElement
 
 #Region " Private vars "
 
-        Private m_uic As cUIContext = Nothing
         Private m_strVersion As String = Application.ProductVersion.ToString
         Private m_strDocDir As String = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
         Private m_cbh As cCheckboxHierarchy = Nothing
@@ -52,20 +52,20 @@ Namespace Other
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
-            Me.m_uic = uic
+            Me.UIContext = uic
             Me.InitializeComponent()
 
             ' Autosave
-            Me.m_autosaveoptions = New cAutoSaveItemEngine(Me.m_uic)
+            Me.m_autosaveoptions = New cAutoSaveItemEngine(Me.UIContext)
             Me.m_autosaveoptions.Attach(Me.m_plAutoSave)
 
             ' Output path
-            Me.m_fieldpickOutput.UIContext = Me.m_uic
+            Me.m_fieldpickOutput.UIContext = Me.UIContext
             Me.m_fieldpickOutput.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
             Me.m_tbOutputMask.Text = My.Settings.OutputPathMask
 
             ' Backup path masks
-            Me.m_fieldpickBackup.UIContext = Me.m_uic
+            Me.m_fieldpickBackup.UIContext = Me.UIContext
             Me.m_fieldpickBackup.Fields = [Enum].GetValues(GetType(cPathUtility.ePathPlaceholderTypes))
             Me.m_tbBackupMask.Text = My.Settings.BackupFileMask
 
@@ -93,45 +93,6 @@ Namespace Other
             cToolTipShared.GetInstance().SetToolTip(Me.m_btnVisitBackupFolder, SharedResources.TOOLTIP_VIEWFOLDER)
 
             Me.m_cbSaveWithHeader.Checked = My.Settings.AutosaveHeaders
-        End Sub
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IOptionsPage.Apply"/>
-        ''' -------------------------------------------------------------------
-        Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
-
-            Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
-
-            Try
-
-                My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
-                My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
-                My.Settings.AutosaveHeaders = Me.m_cbSaveWithHeader.Checked
-
-                Me.m_autosaveoptions.Apply()
-
-            Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutosave::Apply")
-                result = IOptionsPage.eApplyResultType.Failed
-            End Try
-
-            Return result
-
-        End Function
-
-        ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
-        ''' -------------------------------------------------------------------
-        Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
-
-            Try
-                Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
-                Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
-                Me.m_cbSaveWithHeader.Checked = CBool(My.Settings.GetDefaultValue("AutosaveHeaders"))
-            Catch ex As Exception
-                cLog.Write(ex, "ucOptionsAutosave::SetDefaults")
-            End Try
-
         End Sub
 
 #End Region ' Overrides
@@ -184,9 +145,9 @@ Namespace Other
         Private Sub OnVisitFolder(sender As System.Object, e As System.EventArgs) _
             Handles m_btnVisitBackupFolder.Click, m_btnVisitOutputFolder.Click
 
-            If (Me.m_uic IsNot Nothing) Then
+            If (Me.UIContext IsNot Nothing) Then
                 Try
-                    Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
+                    Dim cmdh As cCommandHandler = Me.UIContext.CommandHandler
                     Dim cmd As cBrowserCommand = DirectCast(cmdh.GetCommand(cBrowserCommand.COMMAND_NAME), cBrowserCommand)
                     cmd.Invoke(CStr(DirectCast(sender, Control).Tag))
                 Catch ex As Exception
@@ -201,7 +162,7 @@ Namespace Other
 
         Private Sub UpdateControls()
 
-            Dim core As cCore = Me.m_uic.Core
+            Dim core As cCore = Me.UIContext.Core
 
             Me.UpdateSample(Me.m_tbxOutputSample, Me.m_tbOutputMask.Text, Me.m_btnVisitOutputFolder, False)
             Me.UpdateSample(Me.m_tbxBackupSample, Me.m_tbBackupMask.Text, Me.m_btnVisitBackupFolder, True)
@@ -215,7 +176,7 @@ Namespace Other
             Dim strSample As String = ""
             Dim strPath As String = ""
 
-            If Not cPathUtility.ResolvePath(strMask, Me.m_uic.Core, strSample) Then
+            If Not cPathUtility.ResolvePath(strMask, Me.UIContext.Core, strSample) Then
                 cPathUtility.ResolvePath(strMask, "{model}", m_strDocDir, ".eweaccdb", m_strVersion, strSample)
             End If
 
@@ -259,12 +220,69 @@ Namespace Other
 
 #End Region ' Internals
 
+#Region " interface implementation "
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
+        ''' -------------------------------------------------------------------
+        Public Event OnOptionsFileManagementChanged(sender As IOptionsPage, args As System.EventArgs) _
+            Implements IOptionsPage.OnChanged
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanApply"/>
+        ''' -------------------------------------------------------------------
         Public Function CanApply() As Boolean _
             Implements IOptionsPage.CanApply
             Return True
         End Function
 
-        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
+        ''' -------------------------------------------------------------------
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+            Implements IOptionsPage.Apply
+
+            If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
+
+            Try
+
+                My.Settings.BackupFileMask = Me.m_tbBackupMask.Text
+                My.Settings.OutputPathMask = Me.m_tbOutputMask.Text
+                My.Settings.AutosaveHeaders = Me.m_cbSaveWithHeader.Checked
+
+                Me.m_autosaveoptions.Apply()
+
+            Catch ex As Exception
+                cLog.Write(ex, "ucOptionsAutosave::Apply")
+                Return IOptionsPage.eApplyResultType.Failed
+            End Try
+
+            Return IOptionsPage.eApplyResultType.Success
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
+        ''' -------------------------------------------------------------------
+        Public Sub SetDefaults() Implements IOptionsPage.SetDefaults
+
+            Try
+                Me.m_tbOutputMask.Text = CStr(My.Settings.GetDefaultValue("OutputPathMask"))
+                Me.m_tbBackupMask.Text = CStr(My.Settings.GetDefaultValue("BackupFileMask"))
+                Me.m_cbSaveWithHeader.Checked = CBool(My.Settings.GetDefaultValue("AutosaveHeaders"))
+            Catch ex As Exception
+                cLog.Write(ex, "ucOptionsAutosave::SetDefaults")
+            End Try
+
+        End Sub
+
+#End Region
 
     End Class
 

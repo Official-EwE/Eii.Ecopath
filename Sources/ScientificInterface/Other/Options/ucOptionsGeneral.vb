@@ -23,13 +23,9 @@ Option Strict On
 
 Imports System.IO
 Imports EwECore
-Imports EwEUtils.Commands
-Imports WeifenLuo.WinFormsUI
-Imports ScientificInterfaceShared.Commands
-Imports EwEUtils.Utilities
-Imports System.Configuration
-Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Core
+Imports EwEUtils.SystemUtilities
+Imports ScientificInterfaceShared.Commands
 
 #End Region
 
@@ -101,8 +97,25 @@ Namespace Other
 
 #Region " Public access "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
+        ''' -------------------------------------------------------------------
+        Public Event OnOptionsGeneralChanged(sender As IOptionsPage, args As System.EventArgs) _
+               Implements IOptionsPage.OnChanged
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanApply"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanApply() As Boolean _
+              Implements IOptionsPage.CanApply
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
+        ''' -------------------------------------------------------------------
         Public Function Apply() As IOptionsPage.eApplyResultType _
-            Implements IOptionsPage.Apply
+             Implements IOptionsPage.Apply
 
             Dim result As IOptionsPage.eApplyResultType = IOptionsPage.eApplyResultType.Success
 
@@ -125,9 +138,7 @@ Namespace Other
         End Function
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Reset all values
-        ''' </summary>
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
         ''' -------------------------------------------------------------------
         Public Sub SetDefaults() _
             Implements IOptionsPage.SetDefaults
@@ -203,13 +214,6 @@ Namespace Other
         End Sub
 
 #End Region ' Internals
-
-        Public Function CanApply() As Boolean _
-           Implements IOptionsPage.CanApply
-            Return True
-        End Function
-
-        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
 
     End Class
 

@@ -35,6 +35,7 @@ Namespace Other
     ''' -----------------------------------------------------------------------
     Public Class ucOptionsGraphs
         Implements IOptionsPage
+        Implements IUIElement
 
 #Region " Helper classes "
 
@@ -144,8 +145,6 @@ Namespace Other
 
 #Region " Variables "
 
-        ''' <summary>UI context to operate onto.</summary>
-        Private m_uic As cUIContext = Nothing
         ''' <summary>Prevent loops.</summary>
         Private m_bInUpdate As Boolean = False
 
@@ -156,7 +155,7 @@ Namespace Other
         Public Sub New(ByVal uic As cUIContext)
 
             Me.InitializeComponent()
-            Me.m_uic = uic
+            Me.UIContext = uic
 
             ' Invisible init
             Me.FillFontFamiliesComboBox()
@@ -177,9 +176,9 @@ Namespace Other
 
             MyBase.OnLoad(e)
 
-            Me.m_nudThumbnailSize.Value = CDec(Math.Max(Me.m_nudThumbnailSize.Minimum, Math.Min(Me.m_nudThumbnailSize.Maximum, Me.m_uic.StyleGuide.ThumbnailSize)))
+            Me.m_nudThumbnailSize.Value = CDec(Math.Max(Me.m_nudThumbnailSize.Minimum, Math.Min(Me.m_nudThumbnailSize.Maximum, Me.UIContext.StyleGuide.ThumbnailSize)))
 
-            Select Case Me.m_uic.StyleGuide.ShowLegends
+            Select Case Me.UIContext.StyleGuide.ShowLegends
                 Case TriState.UseDefault, TriState.False
                     Me.m_rbLegendSelective.Checked = True
                 Case TriState.True
@@ -260,7 +259,7 @@ Namespace Other
             Handles m_nudFontSize.ValueChanged
 
             ' Hackerdihack - NUD controls send events from InitializeComponent
-            If Me.m_uic Is Nothing Then Return
+            If Me.UIContext Is Nothing Then Return
 
             If Me.m_bInUpdate Then Return
             Me.SelectedFontSize = Me.SelectedFontSize
@@ -272,11 +271,32 @@ Namespace Other
 #Region " Public methods "
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Save graph settings back to the style guide.
-        ''' </summary>
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
         ''' -------------------------------------------------------------------
-        Public Function Apply() As IOptionsPage.eApplyResultType Implements IOptionsPage.Apply
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanApply"/>
+        ''' ------------------------------------------------------------------- 
+        Public Function CanApply() As Boolean _
+            Implements IOptionsPage.CanApply
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
+        ''' ------------------------------------------------------------------- 
+        Public Event OnOptionsGraphsChanged(sender As IOptionsPage, args As System.EventArgs) _
+            Implements IOptionsPage.OnChanged
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
+        ''' ------------------------------------------------------------------- 
+        Public Function Apply() As IOptionsPage.eApplyResultType _
+             Implements IOptionsPage.Apply
+
+            If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
 
             Dim fti As cFontTypeItem = Nothing
             Dim tsShowLegends As TriState = TriState.UseDefault
@@ -287,32 +307,33 @@ Namespace Other
                 '    tsShowLegends = TriState.False
             End If
 
-            Me.m_uic.StyleGuide.SuspendEvents()
+            Me.UIContext.StyleGuide.SuspendEvents()
 
             ' Update thumbnails, legend settings
-            Me.m_uic.StyleGuide.ThumbnailSize = CInt(Me.m_nudThumbnailSize.Value)
-            Me.m_uic.StyleGuide.ShowLegends = tsShowLegends
+            Me.UIContext.StyleGuide.ThumbnailSize = CInt(Me.m_nudThumbnailSize.Value)
+            Me.UIContext.StyleGuide.ShowLegends = tsShowLegends
 
             ' Update fonts
             For i As Integer = 0 To Me.m_lbFontTypes.Items.Count - 1
                 fti = DirectCast(Me.m_lbFontTypes.Items(i), cFontTypeItem)
-                Me.m_uic.StyleGuide.FontFamilyName(fti.FontType) = fti.FontFamilyName
-                Me.m_uic.StyleGuide.FontStyle(fti.FontType) = fti.FontStyle
-                Me.m_uic.StyleGuide.FontSize(fti.FontType) = fti.FontSize
+                Me.UIContext.StyleGuide.FontFamilyName(fti.FontType) = fti.FontFamilyName
+                Me.UIContext.StyleGuide.FontStyle(fti.FontType) = fti.FontStyle
+                Me.UIContext.StyleGuide.FontSize(fti.FontType) = fti.FontSize
             Next
 
-            Me.m_uic.StyleGuide.ResumeEvents()
-            Me.m_uic.StyleGuide.FontsChanged()
+            Me.UIContext.StyleGuide.ResumeEvents()
+            Me.UIContext.StyleGuide.FontsChanged()
 
             Return IOptionsPage.eApplyResultType.Success
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
+        ''' ------------------------------------------------------------------- 
         Public Sub SetDefaults() _
-            Implements IOptionsPage.SetDefaults
-
+             Implements IOptionsPage.SetDefaults
             Me.FillFontTypesListBox()
-
         End Sub
 
 #End Region ' Public methods
@@ -331,7 +352,7 @@ Namespace Other
         End Sub
 
         Private Sub AddFontTypeItem(ByVal strText As String, ByVal ft As cStyleGuide.eApplicationFontType)
-            Me.m_lbFontTypes.Items.Add(New cFontTypeItem(strText, ft, Me.m_uic.StyleGuide))
+            Me.m_lbFontTypes.Items.Add(New cFontTypeItem(strText, ft, Me.UIContext.StyleGuide))
         End Sub
 
         Private Property SelectedFontType() As cFontTypeItem
@@ -481,13 +502,6 @@ Namespace Other
         End Sub
 
 #End Region ' Helper methods
-
-        Public Function CanApply() As Boolean _
-            Implements IOptionsPage.CanApply
-            Return True
-        End Function
-
-        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
 
     End Class
 

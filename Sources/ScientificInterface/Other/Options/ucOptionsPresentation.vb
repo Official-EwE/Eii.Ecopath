@@ -64,8 +64,27 @@ Namespace Other
 
 #Region " Public access "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.UI"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanApply() As Boolean _
+              Implements IOptionsPage.CanApply
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
+        ''' -------------------------------------------------------------------
+        Public Event OnOptionsPresentationChanged(sender As IOptionsPage, args As System.EventArgs) _
+               Implements IOptionsPage.OnChanged
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
+        ''' -------------------------------------------------------------------
         Public Function Apply() As IOptionsPage.eApplyResultType _
-            Implements IOptionsPage.Apply
+             Implements IOptionsPage.Apply
+
+            If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
 
             My.Settings.PresentationModeHideModelBar = Me.m_cbHideModelBar.Checked
             My.Settings.PresentationModeHideMainMenu = Me.m_cbHideMainMenu.Checked
@@ -76,8 +95,11 @@ Namespace Other
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
+        ''' -------------------------------------------------------------------
         Public Sub SetDefaults() _
-            Implements IOptionsPage.SetDefaults
+                 Implements IOptionsPage.SetDefaults
 
             Try
                 Me.m_cbHideModelBar.Checked = CBool(My.Settings.GetDefaultValue("PresentationModeHideModelBar"))
@@ -99,13 +121,6 @@ Namespace Other
         End Sub
 
 #End Region ' Internals
-
-        Public Function CanApply() As Boolean _
-            Implements IOptionsPage.CanApply
-            Return True
-        End Function
-
-        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
 
     End Class
 

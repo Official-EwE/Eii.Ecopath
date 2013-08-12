@@ -35,6 +35,7 @@ Namespace Other
     ''' -----------------------------------------------------------------------
     Public Class ucOptionsColors
         Implements IOptionsPage
+        Implements IUIElement
 
 #Region " Helper classes "
 
@@ -146,8 +147,6 @@ Namespace Other
 
 #Region " Variables "
 
-        ''' <summary>Only ref to core.</summary>
-        Private m_uic As cUIContext = Nothing
         ''' <summary>List of known colours.</summary>
         Private m_lciKnownColors As New List(Of cKnownColorItem)
 
@@ -157,7 +156,7 @@ Namespace Other
 
         Public Sub New(ByVal uic As cUIContext)
 
-            Me.m_uic = uic
+            Me.UIContext = uic
             Me.InitializeComponent()
             Me.InitKnownColors()
 
@@ -251,7 +250,7 @@ Namespace Other
 
         Private Sub AddColorTypeItem(ByVal strName As String, ByVal ctFore As cStyleGuide.eApplicationColorType, _
                 Optional ByVal ctBack As cStyleGuide.eApplicationColorType = cStyleGuide.eApplicationColorType.NotSet)
-            Dim ci As New cColorItem(strName, ctFore, ctBack, Me.m_uic.StyleGuide)
+            Dim ci As New cColorItem(strName, ctFore, ctBack, Me.UIContext.StyleGuide)
             Dim lvi As New ListViewItem(ci.Name)
             lvi.SubItems.Add(ci.Description)
             lvi.Tag = ci
@@ -325,7 +324,7 @@ Namespace Other
             Dim bShowBackground As Boolean = False
             Dim strName As String = ""
             Dim strDescription As String = ""
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             If (item IsNot Nothing) Then
                 bShowForeground = (item.ForeColorType <> cStyleGuide.eApplicationColorType.NotSet)
@@ -583,7 +582,7 @@ Namespace Other
 
 
             Dim sel As ListView.SelectedIndexCollection = Me.m_lvItems.SelectedIndices
-            Me.m_uic.StyleGuide.ResetApplicationColors()
+            Me.UIContext.StyleGuide.ResetApplicationColors()
             Me.FillColorItemsList()
             For Each i As Integer In sel
                 Me.m_lvItems.Items(i).Selected = True
@@ -668,6 +667,17 @@ Namespace Other
 
 #Region " Public methods "
 
+        Public Property UIContext As cUIContext _
+            Implements IUIElement.UIContext
+
+        Public Function CanApply() As Boolean _
+            Implements IOptionsPage.CanApply
+            Return True
+        End Function
+
+        Public Event OnOptionsColorsChanged(sender As IOptionsPage, args As System.EventArgs) _
+            Implements IOptionsPage.OnChanged
+
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Save colour selections back to the style guide.
@@ -677,7 +687,7 @@ Namespace Other
             Implements IOptionsPage.Apply
 
             Dim ci As cColorItem = Nothing
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             ' Apply colors to the style guide
             sg.SuspendEvents()
@@ -706,7 +716,7 @@ Namespace Other
             Implements IOptionsPage.SetDefaults
 
             Dim sel As ListView.SelectedIndexCollection = Me.m_lvItems.SelectedIndices
-            Me.m_uic.StyleGuide.ResetApplicationColors()
+            Me.UIContext.StyleGuide.ResetApplicationColors()
             Me.FillColorItemsList()
             For Each i As Integer In sel
                 Me.m_lvItems.Items(i).Selected = True
@@ -716,15 +726,7 @@ Namespace Other
 
 #End Region ' Public methods
 
-        Public Function CanApply() As Boolean _
-            Implements IOptionsPage.CanApply
-            Return True
-        End Function
-
-        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
-
     End Class
-
 
 End Namespace
 
