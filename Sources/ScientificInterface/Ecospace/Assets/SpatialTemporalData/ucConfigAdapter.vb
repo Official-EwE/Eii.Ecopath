@@ -152,7 +152,7 @@ Namespace Ecospace.Controls
 
             ' Set initials
             If (adt IsNot Nothing) And (layer IsNot Nothing) Then
-                Me.SelectDataset(adt.Dataset(layer.Index))
+                Me.FillExistingDatasetBox(adt.Dataset(layer.Index))
                 Me.SelectConverter(adt.Converter(layer.Index))
             End If
 
