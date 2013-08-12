@@ -410,6 +410,7 @@ Namespace Utilities
 
             ' Path indicates a file: abort
             If File.Exists(strPath) Then Return False
+            If Not Directory.Exists(strPath) Then Return True
 
             Dim bSucces As Boolean = True
             Try
