@@ -18,10 +18,12 @@
 #Region " Imports "
 
 Option Strict On
+Imports System.IO
 Imports System.Windows.Forms
 Imports EwESpatialAssetsPlugin.SpatialData
 Imports ScientificInterfaceShared.Controls
-Imports System.IO
+Imports EwECore.SpatialData
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -45,6 +47,14 @@ Friend Class ucSingleFileDataSetConfigPage
             Me.m_rbFirstTimeStep.Checked = True
             Me.m_date.Value = Date.Now
         End If
+
+        Me.m_cmbVarName.Items.Add(eVarNameFlags.NotSet)
+        If Me.UIContext IsNot Nothing Then
+            For Each adt As cSpatialDataAdapter In Me.UIContext.Core.SpatialDataConnectionManager.Adapters
+                Me.m_cmbVarName.Items.Add(adt.VarName)
+            Next
+        End If
+        Me.m_cmbVarName.SelectedItem = Me.m_dataset.VarName
 
         If String.IsNullOrWhiteSpace(Me.m_dataset.Source) Then
             Me.DoBrowse()
@@ -137,6 +147,7 @@ Friend Class ucSingleFileDataSetConfigPage
         Me.m_dataset.DisplayName = Me.m_tbxName.Text
         Me.m_dataset.Description = Me.m_tbxDescription.Text
         Me.m_dataset.Source = Me.m_tbxFile.Text
+        Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
 
         If Me.m_rbFirstTimeStep.Checked Then
             Me.m_dataset.Time = DateTime.MinValue

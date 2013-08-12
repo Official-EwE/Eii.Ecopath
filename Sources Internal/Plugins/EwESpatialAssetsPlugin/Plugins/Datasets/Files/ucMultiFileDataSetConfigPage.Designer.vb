@@ -195,7 +195,6 @@ Namespace SpatialData
             Me.m_tbxDescription.Name = "m_tbxDescription"
             Me.m_tbxDescription.Size = New System.Drawing.Size(388, 73)
             Me.m_tbxDescription.TabIndex = 4
-            Me.m_tbxDescription.Text = "1" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "2" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "3" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "4" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "5"
             '
             'm_lblDescription
             '

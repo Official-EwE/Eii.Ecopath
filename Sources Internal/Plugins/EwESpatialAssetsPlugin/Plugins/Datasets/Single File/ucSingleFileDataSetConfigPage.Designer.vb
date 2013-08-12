@@ -21,6 +21,8 @@ Partial Class ucSingleFileDataSetConfigPage
         Me.m_rbFirstTimeStep = New System.Windows.Forms.RadioButton()
         Me.m_rbMonth = New System.Windows.Forms.RadioButton()
         Me.m_date = New System.Windows.Forms.DateTimePicker()
+        Me.m_cmbVarName = New System.Windows.Forms.ComboBox()
+        Me.m_lblVariable = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'm_tbxName
@@ -54,18 +56,20 @@ Partial Class ucSingleFileDataSetConfigPage
         'm_tbxDescription
         '
         Me.m_tbxDescription.AcceptsReturn = True
-        Me.m_tbxDescription.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_tbxDescription.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.m_tbxDescription.Location = New System.Drawing.Point(72, 29)
         Me.m_tbxDescription.Multiline = True
         Me.m_tbxDescription.Name = "m_tbxDescription"
-        Me.m_tbxDescription.Size = New System.Drawing.Size(286, 73)
+        Me.m_tbxDescription.Size = New System.Drawing.Size(286, 88)
         Me.m_tbxDescription.TabIndex = 3
         '
         'm_lblFile
         '
+        Me.m_lblFile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.m_lblFile.AutoSize = True
-        Me.m_lblFile.Location = New System.Drawing.Point(3, 111)
+        Me.m_lblFile.Location = New System.Drawing.Point(3, 157)
         Me.m_lblFile.Name = "m_lblFile"
         Me.m_lblFile.Size = New System.Drawing.Size(26, 13)
         Me.m_lblFile.TabIndex = 4
@@ -73,9 +77,9 @@ Partial Class ucSingleFileDataSetConfigPage
         '
         'm_tbxFile
         '
-        Me.m_tbxFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.m_tbxFile.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_tbxFile.Location = New System.Drawing.Point(72, 108)
+        Me.m_tbxFile.Location = New System.Drawing.Point(72, 154)
         Me.m_tbxFile.MaxLength = 100
         Me.m_tbxFile.Name = "m_tbxFile"
         Me.m_tbxFile.Size = New System.Drawing.Size(205, 20)
@@ -83,8 +87,8 @@ Partial Class ucSingleFileDataSetConfigPage
         '
         'm_btnBrowse
         '
-        Me.m_btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.m_btnBrowse.Location = New System.Drawing.Point(283, 106)
+        Me.m_btnBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_btnBrowse.Location = New System.Drawing.Point(283, 152)
         Me.m_btnBrowse.Name = "m_btnBrowse"
         Me.m_btnBrowse.Size = New System.Drawing.Size(75, 23)
         Me.m_btnBrowse.TabIndex = 6
@@ -93,8 +97,9 @@ Partial Class ucSingleFileDataSetConfigPage
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(3, 136)
+        Me.Label1.Location = New System.Drawing.Point(3, 182)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(33, 13)
         Me.Label1.TabIndex = 7
@@ -102,8 +107,9 @@ Partial Class ucSingleFileDataSetConfigPage
         '
         'm_rbFirstTimeStep
         '
+        Me.m_rbFirstTimeStep.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.m_rbFirstTimeStep.AutoSize = True
-        Me.m_rbFirstTimeStep.Location = New System.Drawing.Point(72, 134)
+        Me.m_rbFirstTimeStep.Location = New System.Drawing.Point(72, 180)
         Me.m_rbFirstTimeStep.Name = "m_rbFirstTimeStep"
         Me.m_rbFirstTimeStep.Size = New System.Drawing.Size(89, 17)
         Me.m_rbFirstTimeStep.TabIndex = 8
@@ -113,8 +119,9 @@ Partial Class ucSingleFileDataSetConfigPage
         '
         'm_rbMonth
         '
+        Me.m_rbMonth.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.m_rbMonth.AutoSize = True
-        Me.m_rbMonth.Location = New System.Drawing.Point(72, 157)
+        Me.m_rbMonth.Location = New System.Drawing.Point(72, 203)
         Me.m_rbMonth.Name = "m_rbMonth"
         Me.m_rbMonth.Size = New System.Drawing.Size(92, 17)
         Me.m_rbMonth.TabIndex = 9
@@ -124,19 +131,41 @@ Partial Class ucSingleFileDataSetConfigPage
         '
         'm_date
         '
-        Me.m_date.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_date.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.m_date.CustomFormat = "MM/yyyy"
         Me.m_date.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.m_date.Location = New System.Drawing.Point(170, 156)
+        Me.m_date.Location = New System.Drawing.Point(170, 202)
         Me.m_date.Name = "m_date"
         Me.m_date.Size = New System.Drawing.Size(107, 20)
         Me.m_date.TabIndex = 10
+        '
+        'm_cmbVarName
+        '
+        Me.m_cmbVarName.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.m_cmbVarName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.m_cmbVarName.FormattingEnabled = True
+        Me.m_cmbVarName.Location = New System.Drawing.Point(72, 123)
+        Me.m_cmbVarName.Name = "m_cmbVarName"
+        Me.m_cmbVarName.Size = New System.Drawing.Size(286, 21)
+        Me.m_cmbVarName.TabIndex = 12
+        '
+        'm_lblVariable
+        '
+        Me.m_lblVariable.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.m_lblVariable.AutoSize = True
+        Me.m_lblVariable.Location = New System.Drawing.Point(3, 126)
+        Me.m_lblVariable.Name = "m_lblVariable"
+        Me.m_lblVariable.Size = New System.Drawing.Size(48, 13)
+        Me.m_lblVariable.TabIndex = 11
+        Me.m_lblVariable.Text = "&Variable:"
         '
         'ucSingleFileDataSetConfigPage
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.m_cmbVarName)
+        Me.Controls.Add(Me.m_lblVariable)
         Me.Controls.Add(Me.m_date)
         Me.Controls.Add(Me.m_rbMonth)
         Me.Controls.Add(Me.m_rbFirstTimeStep)
@@ -149,7 +178,7 @@ Partial Class ucSingleFileDataSetConfigPage
         Me.Controls.Add(Me.m_lblName)
         Me.Controls.Add(Me.m_tbxDescription)
         Me.Name = "ucSingleFileDataSetConfigPage"
-        Me.Size = New System.Drawing.Size(361, 182)
+        Me.Size = New System.Drawing.Size(361, 228)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -165,5 +194,7 @@ Partial Class ucSingleFileDataSetConfigPage
     Friend WithEvents m_rbFirstTimeStep As System.Windows.Forms.RadioButton
     Friend WithEvents m_rbMonth As System.Windows.Forms.RadioButton
     Private WithEvents m_date As System.Windows.Forms.DateTimePicker
+    Private WithEvents m_cmbVarName As System.Windows.Forms.ComboBox
+    Private WithEvents m_lblVariable As System.Windows.Forms.Label
 
 End Class
