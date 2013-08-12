@@ -38,10 +38,9 @@ Namespace Other
     ''' -----------------------------------------------------------------------
     Public Class ucOptionsMap
         Implements IOptionsPage
+        Implements IUIElement
 
 #Region " Variables "
-
-        Private m_uic As cUIContext = Nothing
 
         Private m_fpSouth As cEwEFormatProvider = Nothing
         Private m_fpNorth As cEwEFormatProvider = Nothing
@@ -58,24 +57,24 @@ Namespace Other
 
         Public Sub New(ByVal uic As cUIContext)
 
-            Me.m_uic = uic
+            Me.UIContext = uic
             Me.InitializeComponent()
 
-            Me.m_fpNorth = New cEwEFormatProvider(Me.m_uic, Me.m_nudNorth, GetType(Single))
-            Me.m_fpSouth = New cEwEFormatProvider(Me.m_uic, Me.m_nudSouth, GetType(Single))
-            Me.m_fpEast = New cEwEFormatProvider(Me.m_uic, Me.m_nudEast, GetType(Single))
-            Me.m_fpWest = New cEwEFormatProvider(Me.m_uic, Me.m_nudWest, GetType(Single))
+            Me.m_fpNorth = New cEwEFormatProvider(Me.UIContext, Me.m_nudNorth, GetType(Single))
+            Me.m_fpSouth = New cEwEFormatProvider(Me.UIContext, Me.m_nudSouth, GetType(Single))
+            Me.m_fpEast = New cEwEFormatProvider(Me.UIContext, Me.m_nudEast, GetType(Single))
+            Me.m_fpWest = New cEwEFormatProvider(Me.UIContext, Me.m_nudWest, GetType(Single))
 
             AddHandler Me.m_fpNorth.OnValueChanged, AddressOf OnExtentChanged
             AddHandler Me.m_fpSouth.OnValueChanged, AddressOf OnExtentChanged
             AddHandler Me.m_fpEast.OnValueChanged, AddressOf OnExtentChanged
             AddHandler Me.m_fpWest.OnValueChanged, AddressOf OnExtentChanged
 
-            Me.m_layerBack = New cDisplayImageLayer(Me.m_uic, My.Resources.urf)
+            Me.m_layerBack = New cDisplayImageLayer(Me.UIContext, My.Resources.urf)
             Me.m_layerBack.ImageTL = New PointF(-180, 90)
             Me.m_layerBack.ImageBR = New PointF(180, -90)
 
-            Me.m_layerPreview = New cDisplayImageLayer(Me.m_uic, Nothing)
+            Me.m_layerPreview = New cDisplayImageLayer(Me.UIContext, Nothing)
 
         End Sub
 
@@ -173,7 +172,7 @@ Namespace Other
             ' Draw error indicator
             If (bError) Then
                 Dim ft As New Font("Arial", iSize / 4.0!)
-                Dim br As New SolidBrush(Me.m_uic.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND))
+                Dim br As New SolidBrush(Me.UIContext.StyleGuide.ApplicationColor(cStyleGuide.eApplicationColorType.MISSINGPARAMETER_BACKGROUND))
                 Dim fmt As New StringFormat()
                 fmt.Alignment = StringAlignment.Center
                 fmt.LineAlignment = StringAlignment.Center
@@ -191,14 +190,32 @@ Namespace Other
 #Region " Public methods "
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Save colour selections back to the style guide.
-        ''' </summary>
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
+        Public Property UIContext As cUIContext _
+             Implements IUIElement.UIContext
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanApply"/>
+        ''' -------------------------------------------------------------------
+        Public Function CanApply() As Boolean _
+               Implements IOptionsPage.CanApply
+            Return True
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
+        ''' -------------------------------------------------------------------
+        Public Event OnOptionsMapChanged(sender As IOptionsPage, args As System.EventArgs) _
+                Implements IOptionsPage.OnChanged
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
         ''' -------------------------------------------------------------------
         Public Function Apply() As IOptionsPage.eApplyResultType _
             Implements IOptionsPage.Apply
 
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             ' Apply colors to the style guide
             sg.SuspendEvents()
@@ -217,8 +234,11 @@ Namespace Other
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
+        ''' -------------------------------------------------------------------
         Public Sub SetDefaults() _
-            Implements IOptionsPage.SetDefaults
+             Implements IOptionsPage.SetDefaults
 
             Try
                 Me.m_nudNorth.Value = CDec(My.Settings.GetDefaultValue("MapLayerRefLatMax"))
@@ -242,9 +262,9 @@ Namespace Other
         ''' -------------------------------------------------------------------
         Private Sub UpdateControls()
 
-            If (Me.m_uic Is Nothing) Then Return
+            If (Me.UIContext Is Nothing) Then Return
 
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             Me.m_tbxFile.Text = sg.MapReferenceLayerFile
             Me.m_fpNorth.Value = sg.MapReferenceLayerTL.Y
@@ -256,8 +276,6 @@ Namespace Other
 
         End Sub
 
-#End Region ' Helper methods
-
         Private Sub UpdatePreviewImage()
 
             If (Me.m_imgPreview IsNot Nothing) Then
@@ -267,13 +285,13 @@ Namespace Other
             Dim strFile As String = Me.m_tbxFile.Text
             If (Not String.IsNullOrWhiteSpace(strFile)) Then
                 If (File.Exists(strFile)) Then
-                    cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
+                    cApplicationStatusNotifier.StartProgress(Me.UIContext.Core)
                     Try
                         Me.m_imgPreview = Image.FromFile(strFile)
                     Catch ex As Exception
                         cLog.Write(ex, "ucOptionsMap::UpdatePreviewImage(" & strFile & ")")
                     End Try
-                    cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
+                    cApplicationStatusNotifier.EndProgress(Me.UIContext.Core)
                 End If
             End If
             Me.m_layerPreview.Image = Me.m_imgPreview
@@ -289,14 +307,9 @@ Namespace Other
 
         End Sub
 
-        Public Function CanApply() As Boolean _
-           Implements IOptionsPage.CanApply
-            Return True
-        End Function
+#End Region ' Helper methods
 
-        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
-
-    End Class
+     End Class
 
 End Namespace
 

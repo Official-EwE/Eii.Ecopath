@@ -38,24 +38,17 @@ Namespace Other
     ''' -----------------------------------------------------------------------
     Public Class ucOptionsPedigree
         Implements IOptionsPage
-
-#Region " Variables "
-
-        Private m_uic As cUIContext = Nothing
-
-#End Region ' Variables
+        Implements IUIElement
 
 #Region " Constructors "
 
         Public Sub New(ByVal uic As cUIContext)
 
-            Me.m_uic = uic
+            Me.UIContext = uic
             Me.InitializeComponent()
 
-            If (Me.m_uic IsNot Nothing) Then
-                Dim sg As cStyleGuide = Me.m_uic.StyleGuide
-                Me.m_cbShowPedigreeIndicators.Checked = sg.ShowPedigree
-            End If
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
+            Me.m_cbShowPedigreeIndicators.Checked = sg.ShowPedigree
 
         End Sub
 
@@ -72,35 +65,39 @@ Namespace Other
             MyBase.OnLoad(e)
         End Sub
 
-        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-
-            If disposing AndAlso components IsNot Nothing Then
-                components.Dispose()
-            End If
-            MyBase.Dispose(disposing)
-
-        End Sub
-
 #End Region ' Event handlers
 
 #Region " Public methods "
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
+        Public Property UIContext As cUIContext _
+                 Implements IUIElement.UIContext
+
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.CanApply"/>
+        ''' -------------------------------------------------------------------
         Public Function CanApply() As Boolean _
-            Implements IOptionsPage.CanApply
+              Implements IOptionsPage.CanApply
             Return True
         End Function
 
-        Public Event OnChanged(sender As IOptionsPage, args As System.EventArgs) Implements IOptionsPage.OnChanged
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.OnChanged"/>
+        ''' -------------------------------------------------------------------
+        Public Event OnOptionsPedigreeChanged(sender As IOptionsPage, args As System.EventArgs) _
+              Implements IOptionsPage.OnChanged
 
         ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Save colour selections back to the style guide.
-        ''' </summary>
+        ''' <inheritdocs cref="IOptionsPage.Apply"/>
         ''' -------------------------------------------------------------------
         Public Function Apply() As IOptionsPage.eApplyResultType _
             Implements IOptionsPage.Apply
 
-            Dim sg As cStyleGuide = Me.m_uic.StyleGuide
+            If Not Me.CanApply Then Return IOptionsPage.eApplyResultType.Failed
+
+            Dim sg As cStyleGuide = Me.UIContext.StyleGuide
 
             ' Apply colors to the style guide
             sg.SuspendEvents()
@@ -117,8 +114,11 @@ Namespace Other
 
         End Function
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IOptionsPage.SetDefaults"/>
+        ''' -------------------------------------------------------------------
         Public Sub SetDefaults() _
-            Implements IOptionsPage.SetDefaults
+                Implements IOptionsPage.SetDefaults
 
             Try
                 Me.m_cbShowPedigreeIndicators.Checked = CBool(My.Settings.GetDefaultValue("ShowPedigree"))
