@@ -65,7 +65,7 @@ Namespace Other
 #Region " Public access "
 
         ''' -------------------------------------------------------------------
-        ''' <inheritdocs cref="IOptionsPage.UI"/>
+        ''' <inheritdocs cref="IOptionsPage.CanApply"/>
         ''' -------------------------------------------------------------------
         Public Function CanApply() As Boolean _
               Implements IOptionsPage.CanApply
