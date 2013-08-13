@@ -26,6 +26,7 @@ Imports EwEPlugin
 Imports EwEUtils.Core
 Imports EwEUtils.SpatialData
 Imports EwEUtils.Utilities
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -64,7 +65,6 @@ Namespace Ecospace.Controls
         ''' <summary>Flag that states whether there is any data in the cache</summary>
         Private m_bHasCachedData As Boolean = False
 
-        Private m_mhEcospace As cMessageHandler = Nothing
         Private m_bHasTemplates As Boolean = False
 
 #End Region ' Private variables
@@ -90,12 +90,9 @@ Namespace Ecospace.Controls
             Set(uic As cUIContext)
 
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.m_uic.Core.Messages.RemoveMessageHandler(Me.m_mhEcospace)
-                    Me.m_mhEcospace = Nothing
-
                     Me.m_adt = Nothing
                     Me.m_layer = Nothing
-                    Me.m_manSets.IndexDataset(Nothing) ' Stop indexing
+                    'Me.m_manSets.IndexDataset = Nothing ' Stop indexing
                     Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_man = Nothing
@@ -107,10 +104,6 @@ Namespace Ecospace.Controls
                     ' Set new
                     Me.m_man = Me.m_uic.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
-
-                    Me.m_mhEcospace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, eMessageType.DataModified, Me.m_uic.SyncObject)
-                    Me.m_uic.Core.Messages.AddMessageHandler(Me.m_mhEcospace)
-
                 End If
             End Set
         End Property
@@ -123,7 +116,7 @@ Namespace Ecospace.Controls
 
             ' Populate all
             Me.FillTemplateDatasetBox()
-            Me.FillExistingDatasetBox(Nothing)
+            Me.m_gridDatasets.Fill(Me.m_adt, Nothing)
             Me.FillExistingConverterBox()
 
             ' Update cache state (will also update controls)
@@ -152,7 +145,7 @@ Namespace Ecospace.Controls
 
             ' Set initials
             If (adt IsNot Nothing) And (layer IsNot Nothing) Then
-                Me.FillExistingDatasetBox(adt.Dataset(layer.Index))
+                Me.m_gridDatasets.Fill(Me.m_adt, adt.Dataset(layer.Index))
                 Me.SelectConverter(adt.Converter(layer.Index))
             End If
 
@@ -178,7 +171,7 @@ Namespace Ecospace.Controls
         ''' Event handler for customizing how datasets are displayed in this UI.
         ''' </summary>
         Private Sub OnFormatDS(sender As Object, e As System.Windows.Forms.ListControlConvertEventArgs) _
-            Handles m_lbxExistingDS.Format, m_cmbNewDS.Format
+            Handles m_cmbNewDS.Format
 
             Dim fmt As New cSpatialDatasetFormatter()
             If e.ListItem.Equals(String.Empty) Then
@@ -206,19 +199,24 @@ Namespace Ecospace.Controls
         ''' <summary>
         ''' User has selected a dataset for the current adapter and layer.
         ''' </summary>
-        Private Sub OnSelectDS(sender As System.Object, e As System.EventArgs) _
-            Handles m_lbxExistingDS.SelectedIndexChanged
-            Try
-                Dim obj As Object = Me.m_lbxExistingDS.SelectedItem
-                If String.Empty.Equals(obj) Then
-                    Me.SelectedDataset = Nothing
-                Else
-                    Me.SelectedDataset = DirectCast(obj, ISpatialDataSet)
-                End If
-                Me.UpdateControls()
-            Catch ex As Exception
-                Debug.Assert(False, ex.Message)
-            End Try
+        Private Sub OnSelectDS(sender As System.Object, e As System.EventArgs)
+
+
+            'Try
+            '    Dim lviSelected As ListViewItem = Nothing
+            '    If Me.m_gridDatasets.SelectedItems.Count = 1 Then
+            '        lviSelected = Me.m_gridDatasets.SelectedItems(0)
+            '    End If
+
+            '    If lviSelected Is Nothing Then
+            '        Me.SelectedDataset = Nothing
+            '    Else
+            '        Me.SelectedDataset = DirectCast(lviSelected.Tag, ISpatialDataSet)
+            '    End If
+            '    Me.UpdateControls()
+            'Catch ex As Exception
+            '    Debug.Assert(False, ex.Message)
+            'End Try
         End Sub
 
         ''' <summary>
@@ -230,7 +228,7 @@ Namespace Ecospace.Controls
             Me.Cursor = Cursors.WaitCursor
             Try
                 Me.ConfigDS(Me.SelectedDataset)
-                Me.FillExistingDatasetBox()
+                Me.m_gridDatasets.Fill(Me.m_adt, Nothing)
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
                 cLog.Write(ex, "ucConficAdapter::OnConfigureDS")
@@ -383,7 +381,7 @@ Namespace Ecospace.Controls
             Handles m_btnCalculate.Click
             Try
                 ' Stop any indexing
-                Me.m_manSets.IndexDataset(Nothing)
+                Me.m_manSets.IndexDataset = Nothing
                 Me.UpdateControls()
 
                 Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
@@ -419,14 +417,6 @@ Namespace Ecospace.Controls
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
-        End Sub
-
-        Private Sub OnCoreMessage(ByRef msg As cMessage)
-
-            If msg.DataType = EwEUtils.Core.eDataTypes.EcospaceSpatialDataConnection Then
-                Me.UpdateControls()
-            End If
-
         End Sub
 
         Private Sub OnSaveStats(sender As System.Object, e As System.EventArgs) _
@@ -537,36 +527,9 @@ Namespace Ecospace.Controls
                 Me.m_hdrSource.Text = My.Resources.CAPTION_EXTERNAL_DATA
             End If
 
-            Me.m_lbxExistingDS.Enabled = bHasContext
+            Me.m_gridDatasets.Enabled = bHasContext
             Me.m_cmbConverter.Enabled = bHasContext
             Me.m_btnCalculate.Enabled = bIsConfigured
-
-            ' -- Indexing status --
-
-            Dim strValidate As String = ""
-            Dim imgValidate As Image = Nothing
-
-            If (ds IsNot Nothing) Then
-
-                Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds)
-                strValidate = String.Format(My.Resources.STATUS_SPATIALCOMPATIBILITY, _
-                                            Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(comp.FirstTimeStep).ToShortDateString, _
-                                            Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(comp.LastTimeStep).ToShortDateString, _
-                                            CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps))), _
-                                            comp.ToString, _
-                                            cStringUtils.vbNewline)
-                If bIsIndexing Then
-                    imgValidate = ScientificInterfaceShared.My.Resources.ani_loader
-                ElseIf (comp.Compatibility = cDatasetCompatilibity.eCompatibilityTypes.TotalOverlap) Then
-                    imgValidate = ScientificInterfaceShared.My.Resources.OK
-                Else
-                    imgValidate = ScientificInterfaceShared.My.Resources.Warning
-                End If
-
-            End If
-
-            Me.m_pbCompatibility.Image = imgValidate
-            Me.m_lblCompatibility.Text = strValidate
 
         End Sub
 
@@ -587,22 +550,6 @@ Namespace Ecospace.Controls
 
         End Sub
 
-        Private Sub FillExistingDatasetBox(Optional dsSelect As ISpatialDataSet = Nothing)
-
-            If (Me.m_adt Is Nothing) Then Return
-            If (dsSelect Is Nothing) Then dsSelect = Me.SelectedDataset
-
-            Me.m_lbxExistingDS.Items.Clear()
-            Me.m_lbxExistingDS.Items.Add("")
-            For i As Integer = 0 To Me.m_manSets.Count - 1
-                Dim ds As ISpatialDataSet = Me.m_manSets(i)
-                If (ds.VarName = eVarNameFlags.NotSet Or ds.VarName = Me.m_adt.VarName) Then
-                    Me.m_lbxExistingDS.Items.Add(Me.m_manSets(i))
-                End If
-            Next
-            Me.SelectDataset(dsSelect)
-
-        End Sub
 
         Private Sub FillExistingConverterBox(Optional cv As ISpatialDataConverter = Nothing)
 
@@ -619,22 +566,6 @@ Namespace Ecospace.Controls
             ' NOP
         End Sub
 
-        Private Sub SelectDataset(dataset As ISpatialDataSet)
-
-            ' Update selection
-            Dim iIndex As Integer = 0
-            If (dataset IsNot Nothing) Then
-                iIndex = Me.m_lbxExistingDS.Items.IndexOf(dataset)
-            End If
-            If (Me.m_lbxExistingDS.Items.Count > 0) Then
-                Me.m_lbxExistingDS.SelectedIndex = iIndex
-                Me.SelectedDataset = dataset
-            Else
-                Me.SelectedDataset = Nothing
-            End If
-
-        End Sub
-
         Private Property SelectedDataset As ISpatialDataSet
             Get
                 If (Me.m_adt Is Nothing) Then Return Nothing
@@ -649,7 +580,7 @@ Namespace Ecospace.Controls
                     Me.m_adt.Dataset(Me.m_layer.Index) = dataset
                     Me.LayerChanged()
                 End If
-                Me.m_manSets.IndexDataset(dataset)
+                Me.m_manSets.IndexDataset = dataset
 
             End Set
         End Property
@@ -705,7 +636,7 @@ Namespace Ecospace.Controls
                 dsNew.VarName = Me.m_adt.VarName
                 If Me.ConfigDS(dsNew) Then
                     Me.m_manSets.Add(dsNew)
-                    Me.FillExistingDatasetBox(dsNew)
+                    Me.m_gridDatasets.Fill(Me.m_adt, dsNew)
                 End If
             Catch ex As Exception
                 cLog.Write(ex, "ucConficAdapter::CreateDS")
@@ -738,7 +669,7 @@ Namespace Ecospace.Controls
         Public Sub DeleteDS(ds As ISpatialDataSet)
             Me.SelectedDataset = Nothing
             Me.m_manSets.Remove(ds)
-            Me.FillExistingDatasetBox()
+            Me.m_gridDatasets.Fill(Me.m_adt)
         End Sub
 
         Private Sub LayerChanged()
@@ -754,118 +685,9 @@ Namespace Ecospace.Controls
 
         Private Sub EvaluateCache()
             Me.m_bHasCachedData = (cSpatialDataCache.DefaultDataCache.GetSize > 0)
-            Me.UpdateControls()
         End Sub
 
 #Region " Scalar data adapter "
-
-        'Private Sub CalculateScaleFromEcopathTimePeriod()
-
-        '    Dim iIndex As Integer = Me.m_layer.Index
-
-        '    ' Early bail-out
-        '    If Not Me.m_adt.IsConnected(iIndex) Then Return
-
-        '    Dim ds As ISpatialDataSet = Me.m_adt.Dataset(Me.m_layer.Index)
-        '    Dim cv As ISpatialDataConverter = Me.m_adt.Converter(Me.m_layer.Index)
-        '    Dim iYear As Integer = Me.m_uic.Core.EcosimFirstYear
-        '    Dim bm As cEcospaceBasemap = Me.m_uic.Core.EcospaceBasemap
-        '    Dim ldtData As New List(Of DateTime)
-        '    Dim iTSMin As Integer = 1
-        '    Dim iTSMax As Integer = 1
-        '    Dim rs As ISpatialRaster = Nothing
-
-        '    ' Determine time steps with overlap
-        '    For i As Integer = 1 To CInt(Me.m_uic.Core.EcospaceModelParameters.NumberOfTimeStepsPerYear)
-        '        Dim dt As Date = Me.m_uic.Core.EcospaceTimestepToAbsoluteTime(i)
-        '        If ds.HasDataAtT(dt) Then
-        '            iTSMin = Math.Min(iTSMin, i)
-        '            iTSMax = Math.Max(iTSMax, i)
-        '            ldtData.Add(dt)
-        '        End If
-        '    Next
-
-        '    ' Determine compatibility
-        '    Dim comp As New cDatasetCompatilibity(Me.m_uic.Core, ds, iTSMin, iTSMax - iTSMin)
-        '    Dim msg As cMessage = Nothing
-
-        '    Select Case comp.Compatibility
-        '        Case cDatasetCompatilibity.eCompatibilityTypes.Errors, _
-        '             cDatasetCompatilibity.eCompatibilityTypes.NoTemporal
-        '            msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NODATA, iYear), _
-        '                               eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
-        '        Case cDatasetCompatilibity.eCompatibilityTypes.NoSpatial
-        '            msg = New cMessage(String.Format(My.Resources.PROMPT_SPATIALTEMPORAL_CALC_NOOVERLAP, iYear), _
-        '                               eMessageType.Any, EwEUtils.Core.eCoreComponentType.Ecotracer, eMessageImportance.Warning)
-
-        '    End Select
-
-        '    ' Got compatibility error message?
-        '    If (msg IsNot Nothing) Then
-        '        ' #Yes: abort
-        '        Me.m_uic.Core.Messages.SendMessage(msg)
-        '        Return
-        '    End If
-
-        '    Dim rst As ISpatialRaster = Nothing
-        '    Dim depth As cEcospaceLayerDepth = bm.LayerDepth
-        '    Dim dCellSize As Double = bm.CellSize
-        '    Dim dMean As Double = 0.0
-        '    Dim MapTotValue As Double = 0.0
-        '    Dim lNumValCells As Long = 0
-        '    Dim NumWaterCells As Long = 0
-        '    Dim iInRow As Integer = bm.InRow
-        '    Dim iInCol As Integer = bm.InCol
-
-        '    ' Stop any indexing
-        '    Me.m_manSets.IndexDataset(Nothing)
-
-        '    cApplicationStatusNotifier.StartProgress(Me.m_uic.Core)
-        '    Try
-
-        '        For i As Integer = 0 To ldtData.Count - 1
-        '            Dim dt As DateTime = ldtData(i)
-
-        '            cApplicationStatusNotifier.UpdateProgress(Me.m_uic.Core, _
-        '                                                      String.Format(My.Resources.STATUS_SPATIALTEMPORAL_CALCULATING, m_layer.Name, ds.DisplayName), _
-        '                                                      CSng(i / ldtData.Count))
-
-        '            ' Do the spatial magics
-        '            If (ds.LockDataAtT(dt, dCellSize, bm.PosTopLeft, bm.PosBottomRight)) Then
-        '                rst = Me.m_adt.Dataset(iIndex).GetRaster(Me.m_adt.Converter(iIndex), Me.m_layer.Name())
-
-        '                For iRow As Integer = 1 To iInRow
-        '                    For iCol As Integer = 1 To iInCol
-        '                        If depth.IsWaterCell(iRow, iCol) Then
-        '                            Dim dval As Double = rst.Cell(iRow, iCol)
-        '                            If (dval <> cCore.NULL_VALUE And dval <> rst.NoData) Then
-        '                                NumWaterCells += 1
-        '                                MapTotValue += dval
-        '                            End If
-        '                        End If
-        '                    Next
-        '                Next
-
-        '                ds.Unlock()
-        '            End If
-
-        '        Next
-        '    Catch ex As Exception
-
-        '    End Try
-        '    cApplicationStatusNotifier.EndProgress(Me.m_uic.Core)
-
-        '    ' Resume indexing
-        '    Me.m_manSets.IndexDataset(Me.SelectedDataset)
-
-        '    If MapTotValue = 0 Then MapTotValue = 1
-
-        '    ' Update format provider
-        '    Me.m_tbxScale.Text = (NumWaterCells / MapTotValue).ToString
-        '    ' Notify the world
-        '    Me.LayerChanged()
-
-        'End Sub
 
         Private Sub PopulateAdapterControls()
             If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then

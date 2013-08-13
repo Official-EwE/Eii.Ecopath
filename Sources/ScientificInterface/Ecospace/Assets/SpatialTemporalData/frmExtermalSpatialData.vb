@@ -122,7 +122,7 @@ Namespace Ecospace
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Me.m_manDS.IndexDataset(Nothing) ' Stop indexing
+            Me.m_manDS.IndexDataset = Nothing ' Stop indexing
             Me.m_manDS.Save()
 
             Dim cmd As cCommand = Me.CommandHandler.GetCommand(cEcospaceExternalDataCommand.cCOMMAND_NAME)
@@ -164,7 +164,7 @@ Namespace Ecospace
 
             Me.m_ds = ds
             Me.m_map.SelectedDataset = ds
-            Me.m_manDS.IndexDataset(ds)
+            Me.m_manDS.IndexDataset = ds
 
         End Sub
 

@@ -962,14 +962,18 @@ Namespace Controls.EwEGrid
             End Get
         End Property
 
+        ''' <summary>
+        ''' Core components that grids can use to connect to the message flow
+        ''' of encapsulating EwEForms.
+        ''' </summary>
         <Browsable(False)> _
-        Public Overridable ReadOnly Property MessageSources() As eCoreComponentType()
+        Public Overridable ReadOnly Property CoreComponents() As eCoreComponentType()
             Get
                 Return New eCoreComponentType() {Me.MessageSource}
             End Get
         End Property
 
-        Public Overridable Sub OnCoreMessage(ByVal msg As cMessage)
+        Public Overridable Sub OnCoreMessage(ByRef msg As cMessage)
             If (msg.Type = eMessageType.DataAddedOrRemoved) Then
                 Me.RefreshContent()
             End If

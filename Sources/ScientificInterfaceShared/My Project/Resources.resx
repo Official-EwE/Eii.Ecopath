@@ -2877,4 +2877,16 @@
   <data name="VARIABLE_NOTSET" xml:space="preserve">
     <value>|n/a||(No variable specified)</value>
   </data>
+  <data name="HEADER_FROM" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="HEADER_OVERLAP_SPATIAL" xml:space="preserve">
+    <value>Spatial overlap</value>
+  </data>
+  <data name="HEADER_OVERLAP_TEMPORAL" xml:space="preserve">
+    <value>Temp. overlap</value>
+  </data>
+  <data name="HEADER_TO" xml:space="preserve">
+    <value>To</value>
+  </data>
 </root>
