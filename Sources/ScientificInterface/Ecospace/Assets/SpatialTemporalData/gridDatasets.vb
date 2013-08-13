@@ -154,7 +154,10 @@ Namespace Ecospace.Controls
 
         Protected Overrides Sub FinishStyle()
             MyBase.FinishStyle()
-            'Me.Columns(eColumnTypes.Description).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+
+            Me.Columns(eColumnTypes.Description).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
+            Me.AutoSizeAll()
+            Me.AutoStretchColumnsToFitWidth = True
         End Sub
 
         Private Sub UpdateDatasetRow(ds As ISpatialDataSet)
