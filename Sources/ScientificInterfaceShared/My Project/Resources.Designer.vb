@@ -1943,6 +1943,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (full).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_FULL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_FULL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Iteration {0}.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_ITERATION() As String
@@ -2033,6 +2042,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to (partial).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_PARTIAL() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_PARTIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to {0}%.
         '''</summary>
         Public ReadOnly Property GENERIC_VALUE_PERCENTAGE() As String
@@ -2047,6 +2065,15 @@ Namespace My.Resources
         Public ReadOnly Property GENERIC_VALUE_TIMES() As String
             Get
                 Return ResourceManager.GetString("GENERIC_VALUE_TIMES", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to (unknown).
+        '''</summary>
+        Public ReadOnly Property GENERIC_VALUE_UNKNOWN() As String
+            Get
+                Return ResourceManager.GetString("GENERIC_VALUE_UNKNOWN", resourceCulture)
             End Get
         End Property
         
@@ -4188,6 +4215,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_INDEX_ONMIVORY() As String
             Get
                 Return ResourceManager.GetString("HEADER_INDEX_ONMIVORY", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Indexed.
+        '''</summary>
+        Public ReadOnly Property HEADER_INDEXED() As String
+            Get
+                Return ResourceManager.GetString("HEADER_INDEXED", resourceCulture)
             End Get
         End Property
         

@@ -90,6 +90,7 @@ Namespace Ecospace.Controls
             Set(uic As cUIContext)
 
                 If (Me.m_uic IsNot Nothing) Then
+                    Me.m_gridDatasets.UIContext = Nothing
                     Me.m_adt = Nothing
                     Me.m_layer = Nothing
                     'Me.m_manSets.IndexDataset = Nothing ' Stop indexing
@@ -104,6 +105,7 @@ Namespace Ecospace.Controls
                     ' Set new
                     Me.m_man = Me.m_uic.Core.SpatialDataConnectionManager
                     Me.m_manSets = Me.m_man.DatasetManager
+                    Me.m_gridDatasets.UIContext = Me.m_uic
                 End If
             End Set
         End Property
@@ -122,6 +124,7 @@ Namespace Ecospace.Controls
             ' Update cache state (will also update controls)
             Me.EvaluateCache()
 
+            AddHandler Me.m_gridDatasets.OnSelectionChanged, AddressOf OnSelectDS
         End Sub
 
 #End Region ' Mandatory overrides etc
@@ -199,24 +202,14 @@ Namespace Ecospace.Controls
         ''' <summary>
         ''' User has selected a dataset for the current adapter and layer.
         ''' </summary>
-        Private Sub OnSelectDS(sender As System.Object, e As System.EventArgs)
+        Private Sub OnSelectDS(selection As SourceGrid2.CellVirtualCollection)
 
+            Try
+                Me.SelectedDataset = Me.m_gridDatasets.SelectedDataset
+            Catch ex As Exception
+                Debug.Assert(False, ex.Message)
+            End Try
 
-            'Try
-            '    Dim lviSelected As ListViewItem = Nothing
-            '    If Me.m_gridDatasets.SelectedItems.Count = 1 Then
-            '        lviSelected = Me.m_gridDatasets.SelectedItems(0)
-            '    End If
-
-            '    If lviSelected Is Nothing Then
-            '        Me.SelectedDataset = Nothing
-            '    Else
-            '        Me.SelectedDataset = DirectCast(lviSelected.Tag, ISpatialDataSet)
-            '    End If
-            '    Me.UpdateControls()
-            'Catch ex As Exception
-            '    Debug.Assert(False, ex.Message)
-            'End Try
         End Sub
 
         ''' <summary>
