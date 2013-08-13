@@ -199,7 +199,7 @@ Namespace SpatialData
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Description")
-            xn.InnerText = Me.m_strDescription
+            xn.InnerText = Me.Description
             xnMaster.AppendChild(xn)
 
             xn = doc.CreateElement("Variable")
@@ -268,8 +268,9 @@ Namespace SpatialData
                 For Each xn In node.ChildNodes
                     Select Case xn.Name
                         Case "Name" : Me.m_strName = xn.InnerText
-                        Case "Description" : Me.m_strDescription = xn.InnerText
+                        Case "Description" : Me.Description = xn.InnerText
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                        Case "Annual" : Convert.ToBoolean(xn.InnerText)
                         Case "File"
                             Me.Source = xn.Attributes("Source").InnerText
                             Dim strDate As String = xn.Attributes("Date").InnerText

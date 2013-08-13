@@ -167,7 +167,7 @@
     <Compile Include="Plugins\Converters\cAreaRatioConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\cRasterConverterPlugin.vb" />
     <Compile Include="Plugins\Converters\cVectorConverterPlugin.vb" />
-    <Compile Include="Plugins\Datasets\AAASBackdoor\cAAASFileDataSetPlugin.vb" />
+    <Compile Include="Plugins\Datasets\Files\Specific\cASCIIFilesDataSetPlugin.vb" />
     <Compile Include="Plugins\Datasets\Files\cCalendarColumn.vb">
       <SubType>Component</SubType>
     </Compile>

@@ -85,8 +85,6 @@ Namespace SpatialData
         Private m_lFiles As List(Of cTemporalFile) = Nothing
         ''' <summary>Index in the file list for the current date.</summary>
         Protected m_iFileIndex As Integer = -1
-        ''' <summary>States whether the data represents an annual pattern.</summary>
-        Private m_bSeasonal As Boolean = False
 
         ''' <summary>Flag stating whether the dataset is sorted.</summary>
         Private m_bSorted As Boolean = False
@@ -111,20 +109,6 @@ Namespace SpatialData
 #End Region ' Construction / destruction
 
 #Region " Information "
-
-        ''' -------------------------------------------------------------------
-        ''' <summary>
-        ''' Get/set the repetition interval, if any.
-        ''' </summary>
-        ''' -------------------------------------------------------------------
-        Public Property IsAnnual As Boolean
-            Get
-                Return Me.m_bSeasonal
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bSeasonal = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="cFileDataSetPlugin.DisplayName" />
@@ -356,10 +340,6 @@ Namespace SpatialData
             xn.InnerText = Me.Source
             xnMaster.AppendChild(xn)
 
-            xn = doc.CreateElement("Annual")
-            xn.InnerText = Convert.ToString(Me.IsAnnual)
-            xnMaster.AppendChild(xn)
-
             xn = doc.CreateElement("Files")
             xnMaster.AppendChild(xn)
 
@@ -434,10 +414,10 @@ Namespace SpatialData
                 For Each xn In node.ChildNodes
                     Select Case xn.Name
                         Case "Name" : Me.m_strName = xn.InnerText
-                        Case "Description" : Me.m_strDescription = xn.InnerText
+                        Case "Description" : Me.Description = xn.InnerText
                         Case "Source" : Me.Source = xn.InnerText
-                        Case "Annual" : Me.m_bSeasonal = Convert.ToBoolean(xn.InnerText)
                         Case "Variable" : Me.VarName = DirectCast(CInt(xn.InnerText), eVarNameFlags)
+                        Case "Annual" : Convert.ToBoolean(xn.InnerText)
                         Case "Files"
                             For Each xnFile In xn.ChildNodes
                                 Dim strName As String = xnFile.Attributes("Name").InnerText

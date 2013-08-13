@@ -54,7 +54,6 @@ Namespace SpatialData
             Me.m_rbFromName = New System.Windows.Forms.RadioButton()
             Me.m_rbFromDate = New System.Windows.Forms.RadioButton()
             Me.m_rbInterval = New System.Windows.Forms.RadioButton()
-            Me.m_cbAnnual = New System.Windows.Forms.CheckBox()
             Me.m_tbxDatePart = New System.Windows.Forms.TextBox()
             Me.m_hdrTime = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnSetTime = New System.Windows.Forms.Button()
@@ -124,7 +123,7 @@ Namespace SpatialData
             Me.m_dgvFiles.ShowCellToolTips = False
             Me.m_dgvFiles.ShowEditingIcon = False
             Me.m_dgvFiles.ShowRowErrors = False
-            Me.m_dgvFiles.Size = New System.Drawing.Size(465, 193)
+            Me.m_dgvFiles.Size = New System.Drawing.Size(465, 217)
             Me.m_dgvFiles.TabIndex = 9
             '
             'm_colFileName
@@ -259,14 +258,13 @@ Namespace SpatialData
             Me.m_plTime.Controls.Add(Me.m_rbFromName)
             Me.m_plTime.Controls.Add(Me.m_rbFromDate)
             Me.m_plTime.Controls.Add(Me.m_rbInterval)
-            Me.m_plTime.Controls.Add(Me.m_cbAnnual)
             Me.m_plTime.Controls.Add(Me.m_tbxDatePart)
             Me.m_plTime.Controls.Add(Me.m_hdrTime)
             Me.m_plTime.Controls.Add(Me.m_btnSetTime)
             Me.m_plTime.Dock = System.Windows.Forms.DockStyle.Fill
-            Me.m_plTime.Location = New System.Drawing.Point(3, 455)
+            Me.m_plTime.Location = New System.Drawing.Point(3, 479)
             Me.m_plTime.Name = "m_plTime"
-            Me.m_plTime.Size = New System.Drawing.Size(471, 126)
+            Me.m_plTime.Size = New System.Drawing.Size(471, 102)
             Me.m_plTime.TabIndex = 0
             '
             'm_cmbInterval
@@ -274,7 +272,7 @@ Namespace SpatialData
             Me.m_cmbInterval.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbInterval.FormattingEnabled = True
             Me.m_cmbInterval.Items.AddRange(New Object() {"month", "3 months", "6 months", "year", "decade"})
-            Me.m_cmbInterval.Location = New System.Drawing.Point(275, 23)
+            Me.m_cmbInterval.Location = New System.Drawing.Point(252, 23)
             Me.m_cmbInterval.Name = "m_cmbInterval"
             Me.m_cmbInterval.Size = New System.Drawing.Size(87, 21)
             Me.m_cmbInterval.TabIndex = 4
@@ -282,7 +280,7 @@ Namespace SpatialData
             'm_lblIntervalWith
             '
             Me.m_lblIntervalWith.AutoSize = True
-            Me.m_lblIntervalWith.Location = New System.Drawing.Point(158, 26)
+            Me.m_lblIntervalWith.Location = New System.Drawing.Point(135, 26)
             Me.m_lblIntervalWith.Name = "m_lblIntervalWith"
             Me.m_lblIntervalWith.Size = New System.Drawing.Size(111, 13)
             Me.m_lblIntervalWith.TabIndex = 3
@@ -290,7 +288,7 @@ Namespace SpatialData
             '
             'm_mtbIntervalStart
             '
-            Me.m_mtbIntervalStart.Location = New System.Drawing.Point(104, 23)
+            Me.m_mtbIntervalStart.Location = New System.Drawing.Point(81, 23)
             Me.m_mtbIntervalStart.Mask = "0000/00"
             Me.m_mtbIntervalStart.Name = "m_mtbIntervalStart"
             Me.m_mtbIntervalStart.Size = New System.Drawing.Size(52, 20)
@@ -300,7 +298,7 @@ Namespace SpatialData
             'm_rbFromName
             '
             Me.m_rbFromName.AutoSize = True
-            Me.m_rbFromName.Location = New System.Drawing.Point(30, 78)
+            Me.m_rbFromName.Location = New System.Drawing.Point(7, 78)
             Me.m_rbFromName.Name = "m_rbFromName"
             Me.m_rbFromName.Size = New System.Drawing.Size(185, 17)
             Me.m_rbFromName.TabIndex = 7
@@ -311,7 +309,7 @@ Namespace SpatialData
             'm_rbFromDate
             '
             Me.m_rbFromDate.AutoSize = True
-            Me.m_rbFromDate.Location = New System.Drawing.Point(30, 51)
+            Me.m_rbFromDate.Location = New System.Drawing.Point(7, 51)
             Me.m_rbFromDate.Name = "m_rbFromDate"
             Me.m_rbFromDate.Size = New System.Drawing.Size(88, 17)
             Me.m_rbFromDate.TabIndex = 6
@@ -323,7 +321,7 @@ Namespace SpatialData
             '
             Me.m_rbInterval.AutoSize = True
             Me.m_rbInterval.Checked = True
-            Me.m_rbInterval.Location = New System.Drawing.Point(30, 24)
+            Me.m_rbInterval.Location = New System.Drawing.Point(7, 24)
             Me.m_rbInterval.Name = "m_rbInterval"
             Me.m_rbInterval.Size = New System.Drawing.Size(73, 17)
             Me.m_rbInterval.TabIndex = 1
@@ -331,22 +329,12 @@ Namespace SpatialData
             Me.m_rbInterval.Text = "S&tarting at"
             Me.m_rbInterval.UseVisualStyleBackColor = True
             '
-            'm_cbAnnual
-            '
-            Me.m_cbAnnual.AutoSize = True
-            Me.m_cbAnnual.Location = New System.Drawing.Point(6, 106)
-            Me.m_cbAnnual.Name = "m_cbAnnual"
-            Me.m_cbAnnual.Size = New System.Drawing.Size(129, 17)
-            Me.m_cbAnnual.TabIndex = 9
-            Me.m_cbAnnual.Text = "Data repeats &annually"
-            Me.m_cbAnnual.UseVisualStyleBackColor = True
-            '
             'm_tbxDatePart
             '
             Me.m_tbxDatePart.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
                 Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tbxDatePart.HideSelection = False
-            Me.m_tbxDatePart.Location = New System.Drawing.Point(211, 78)
+            Me.m_tbxDatePart.Location = New System.Drawing.Point(188, 78)
             Me.m_tbxDatePart.Name = "m_tbxDatePart"
             Me.m_tbxDatePart.ReadOnly = True
             Me.m_tbxDatePart.Size = New System.Drawing.Size(155, 20)
@@ -391,7 +379,7 @@ Namespace SpatialData
             Me.m_plFiles.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_plFiles.Location = New System.Drawing.Point(3, 155)
             Me.m_plFiles.Name = "m_plFiles"
-            Me.m_plFiles.Size = New System.Drawing.Size(471, 294)
+            Me.m_plFiles.Size = New System.Drawing.Size(471, 318)
             Me.m_plFiles.TabIndex = 1
             '
             'm_tbxFileNamePattern
@@ -514,7 +502,6 @@ Namespace SpatialData
         Private WithEvents m_plFiles As System.Windows.Forms.Panel
         Private WithEvents m_plDescription As System.Windows.Forms.Panel
         Private WithEvents m_hdrDescription As Controls.cEwEHeaderLabel
-        Private WithEvents m_cbAnnual As System.Windows.Forms.CheckBox
         Private WithEvents m_tbxDatePart As System.Windows.Forms.TextBox
         Private WithEvents m_hdrFiles As Controls.cEwEHeaderLabel
         Private WithEvents m_cmbInterval As System.Windows.Forms.ComboBox

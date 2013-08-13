@@ -52,12 +52,8 @@ Namespace SpatialData
 
         Protected m_core As cCore = Nothing
 
-        ''' <summary>Global unique ID of the data set.</summary>
-        Protected m_GUID As Guid = Guid.Empty
         ''' <summary>Name of the data set.</summary>
         Protected m_strName As String = ""
-        ''' <summary>Description of the data set.</summary>
-        Protected m_strDescription As String = ""
 
         ''' <summary>Source data file (not loaded from cache).</summary>
         Private m_dsSourceData As IDataSet = Nothing
@@ -78,6 +74,7 @@ Namespace SpatialData
 #Region " Construction / destruction "
 
         Public Sub New()
+            Me.DBID = Guid.Empty
         End Sub
 
         Public Sub Dispose() _
@@ -95,13 +92,6 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property DBID As Guid _
             Implements ISpatialDataSet.GUID
-            Get
-                Return Me.m_GUID
-            End Get
-            Friend Set(ByVal value As Guid)
-                Me.m_GUID = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.DisplayName" />
@@ -114,13 +104,6 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Public Property Description As String _
             Implements ISpatialDataSet.Description
-            Get
-                Return Me.m_strDescription
-            End Get
-            Set(ByVal value As String)
-                Me.m_strDescription = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <inheritdocs cref="ISpatialDataSet.Source" />

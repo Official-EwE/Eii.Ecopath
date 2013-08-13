@@ -134,7 +134,6 @@ Namespace SpatialData
             Me.m_tbxName.Text = Me.m_dataset.DisplayName
             Me.m_tbxDescription.Text = Me.m_dataset.Description
             Me.m_tbxPath.Text = Me.m_dataset.Source
-            Me.m_cbAnnual.Checked = Me.m_dataset.IsAnnual
 
             Dim astrFilters As String() = Me.m_dataset.DialogReadFilter.Split("|"c)
             For i As Integer = 0 To astrFilters.Length - 1 Step 2
@@ -452,7 +451,6 @@ Namespace SpatialData
             Me.m_dataset.DisplayName = Me.m_tbxName.Text
             Me.m_dataset.Description = Me.m_tbxDescription.Text
             Me.m_dataset.Source = Me.m_tbxPath.Text
-            Me.m_dataset.IsAnnual = Me.m_cbAnnual.Checked
             Me.m_dataset.VarName = DirectCast(Me.m_cmbVarName.SelectedItem, eVarNameFlags)
 
             Me.m_dataset.Clear()

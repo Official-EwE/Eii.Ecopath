@@ -135,6 +135,12 @@
   <data name="CONVERTER_DIRECTVECTOR_NAME" xml:space="preserve">
     <value>Simple vector converter</value>
   </data>
+  <data name="DATASET_ASCII_DESCRIPTION" xml:space="preserve">
+    <value>Plugin that implements access to a series of ASCII map files over time.</value>
+  </data>
+  <data name="DATASET_ASCII_NAME" xml:space="preserve">
+    <value>A series of ASCII maps over time</value>
+  </data>
   <data name="DATASET_MULTIPLE_DESCR" xml:space="preserve">
     <value>Plugin that implements access to a series of spatial files over time.</value>
   </data>
