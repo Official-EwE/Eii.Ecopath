@@ -2889,4 +2889,16 @@
   <data name="HEADER_TO" xml:space="preserve">
     <value>To</value>
   </data>
+  <data name="HEADER_INDEXED" xml:space="preserve">
+    <value>Indexed</value>
+  </data>
+  <data name="GENERIC_VALUE_FULL" xml:space="preserve">
+    <value>(full)</value>
+  </data>
+  <data name="GENERIC_VALUE_PARTIAL" xml:space="preserve">
+    <value>(partial)</value>
+  </data>
+  <data name="GENERIC_VALUE_UNKNOWN" xml:space="preserve">
+    <value>(unknown)</value>
+  </data>
 </root>

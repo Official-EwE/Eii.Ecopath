@@ -1478,16 +1478,18 @@ Namespace Controls.EwEGrid
         Public Sub SelectRow(ByVal iRow As Integer)
 
             ' Clear current selection
-            If Me.Selection IsNot Nothing Then
+            If (Me.Selection IsNot Nothing) Then
                 Dim r As SourceGrid2.Range = Me.Selection.GetRange()
                 If Not r.IsEmpty Then
                     Me.Selection.RemoveRange(r)
                 End If
             End If
-            Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount - 1))
 
-            ' Make sure selected row is visible
-            Me.ShowCell(New Position(iRow, 0))
+            If (iRow >= 0 And iRow < Me.RowsCount) Then
+                Me.Selection.AddRange(New SourceGrid2.Range(iRow, 0, iRow, Me.ColumnsCount - 1))
+                ' Make sure selected row is visible
+                Me.ShowCell(New Position(iRow, 0))
+            End If
         End Sub
 
         ''' -------------------------------------------------------------------
