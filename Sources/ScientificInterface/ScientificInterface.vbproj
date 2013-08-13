@@ -125,6 +125,9 @@
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EwE6, Version=6.3.9500.0, Culture=neutral, PublicKeyToken=4ea0a63e8269aae8, processorArchitecture=x86">
+      <ExecutableExtension>.exe</ExecutableExtension>
+    </Reference>
     <Reference Include="SourceGrid2">
       <HintPath>..\ScientificInterfaceShared\Includes\SourceGrid2.dll</HintPath>
     </Reference>
@@ -171,6 +174,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Assets\ImportExport\gridImportLayerMappings.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Ecospace\Assets\SpatialTemporalData\gridDatasets.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Ecospace\Input\dlgDefineRegions.Designer.vb">

@@ -39,7 +39,7 @@ Namespace Ecopath.Input
     Public Class BasicInputEwEGrid
         : Inherits EwEGrid
 
-        Enum eColumnTypes As Integer
+        Private Enum eColumnTypes As Integer
             Index = 0
             Name
             Area

@@ -3976,6 +3976,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to From.
+        '''</summary>
+        Public ReadOnly Property HEADER_FROM() As String
+            Get
+                Return ResourceManager.GetString("HEADER_FROM", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to g.
         '''</summary>
         Public ReadOnly Property HEADER_G() As String
@@ -4800,6 +4809,24 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_OUTPUT_LOCATION() As String
             Get
                 Return ResourceManager.GetString("HEADER_OUTPUT_LOCATION", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Spatial overlap.
+        '''</summary>
+        Public ReadOnly Property HEADER_OVERLAP_SPATIAL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_OVERLAP_SPATIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Temp. overlap.
+        '''</summary>
+        Public ReadOnly Property HEADER_OVERLAP_TEMPORAL() As String
+            Get
+                Return ResourceManager.GetString("HEADER_OVERLAP_TEMPORAL", resourceCulture)
             End Get
         End Property
         
@@ -5700,6 +5727,15 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_TLC() As String
             Get
                 Return ResourceManager.GetString("HEADER_TLC", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to To.
+        '''</summary>
+        Public ReadOnly Property HEADER_TO() As String
+            Get
+                Return ResourceManager.GetString("HEADER_TO", resourceCulture)
             End Get
         End Property
         

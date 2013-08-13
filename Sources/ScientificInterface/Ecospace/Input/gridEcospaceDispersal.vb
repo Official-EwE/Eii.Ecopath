@@ -119,7 +119,7 @@ Namespace Ecospace
 
         End Sub
 
-        Public Overrides ReadOnly Property MessageSources() As eCoreComponentType()
+        Public Overrides ReadOnly Property CoreComponents() As eCoreComponentType()
             Get
                 ' Refresh on Ecopath notifications
                 Return New eCoreComponentType() {eCoreComponentType.EcoPath, eCoreComponentType.EcoSpace}

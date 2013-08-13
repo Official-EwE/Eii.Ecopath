@@ -177,7 +177,7 @@ Namespace Forms
             ' JS 05Sep09: QEbar was Input grid only. Now, CSV interaction is available for all grids
             Me.SetQuickEditHandler(True)
 
-            Me.CoreComponents = Me.Grid.MessageSources
+            Me.CoreComponents = Me.Grid.CoreComponents
 
         End Sub
 

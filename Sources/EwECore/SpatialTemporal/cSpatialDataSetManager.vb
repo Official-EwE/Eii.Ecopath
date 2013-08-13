@@ -77,7 +77,7 @@ Namespace SpatialData
         Public Sub Dispose() _
             Implements IDisposable.Dispose
 
-            Me.IndexDataset(Nothing)
+            Me.IndexDataset = Nothing
 
             ' Cleanup
             If (Me.m_fswSpy IsNot Nothing) Then
@@ -129,6 +129,9 @@ Namespace SpatialData
                         If (xa IsNot Nothing) Then
                             Try
                                 Dim strTypeName As String = xa.InnerText
+                                ' Hack
+                                strTypeName = strTypeName.Replace("cAAASFileDataSetPlugin", "cASCIIFilesDataSetPlugin")
+                                ' Get plug-in
                                 Dim t As Type = cTypeUtils.StringToType(strTypeName)
                                 If (t IsNot Nothing) Then
 
@@ -280,7 +283,7 @@ Namespace SpatialData
         Public Overrides Function StopRun(Optional WaitTimeInMillSec As Integer = -1) As Boolean
             Dim result As Boolean = True
             Try
-                Me.IndexDataset(Nothing)
+                Me.IndexDataset = Nothing
                 result = Me.Wait(WaitTimeInMillSec)
             Catch ex As Exception
                 result = False
@@ -290,44 +293,45 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Starts indexing a dataset.
+        ''' Get/set the dataset to index.
         ''' </summary>
-        ''' <param name="ds">The dataset to index. If left empty any running
-        ''' index thread is aborted.</param>
         ''' -------------------------------------------------------------------
-        Public Sub IndexDataset(ds As ISpatialDataSet)
+        Public Property IndexDataset As ISpatialDataSet
+            Get
+                Return Me.m_dsIndex
+            End Get
+            Set(ds As ISpatialDataSet)
+                If Object.ReferenceEquals(ds, Me.m_dsIndex) Then Return
 
-            If Object.ReferenceEquals(ds, Me.m_dsIndex) Then Return
-
-            Try
-                If (Me.m_threadIndex IsNot Nothing) Then
-                    If (Me.m_threadIndex.IsAlive) Then
-                        Try
-                            Me.m_threadIndex.Abort()
-                        Catch ex As Exception
-                            ' All good
-                        End Try
+                Try
+                    If (Me.m_threadIndex IsNot Nothing) Then
+                        If (Me.m_threadIndex.IsAlive) Then
+                            Try
+                                Me.m_threadIndex.Abort()
+                            Catch ex As Exception
+                                ' All good
+                            End Try
+                        End If
+                        Me.m_threadIndex = Nothing
+                        Me.m_dsIndex = Nothing
                     End If
-                    Me.m_threadIndex = Nothing
-                    Me.m_dsIndex = Nothing
+                Catch ex As Exception
+                    ' Whoah
+                    cLog.Write(ex, "cSpatialDataSetManager::UpdateIndex")
+                End Try
+
+                Me.m_dsIndex = ds
+
+                If (ds IsNot Nothing) Then
+                    If (ds.FractionIndexed() < 1.0!) Then
+                        Me.m_dsIndex = ds
+                        Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
+                        Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
+                        Me.m_threadIndex.Start()
+                    End If
                 End If
-            Catch ex As Exception
-                ' Whoah
-                cLog.Write(ex, "cSpatialDataSetManager::UpdateIndex")
-            End Try
-
-            Me.m_dsIndex = ds
-
-            If (ds IsNot Nothing) Then
-                If (ds.FractionIndexed() < 1.0!) Then
-                    Me.m_dsIndex = ds
-                    Me.m_threadIndex = New Threading.Thread(AddressOf IndexDatasetThread)
-                    Me.m_threadIndex.Priority = Threading.ThreadPriority.BelowNormal
-                    Me.m_threadIndex.Start()
-                End If
-            End If
-
-        End Sub
+            End Set
+        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -416,7 +420,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         Private Sub Clear() _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Clear
-            If (Me.IsIndexing(Me.m_dsIndex)) Then Me.IndexDataset(Nothing)
+            If (Me.IsIndexing(Me.m_dsIndex)) Then Me.IndexDataset = Nothing
             Me.m_lAvailable.Clear()
             Me.m_lDeleted.Clear()
         End Sub
@@ -463,7 +467,7 @@ Namespace SpatialData
         Public Function Remove(ByVal item As ISpatialDataSet) As Boolean _
             Implements System.Collections.Generic.ICollection(Of ISpatialDataSet).Remove
             If (item Is Nothing) Then Return False
-            If (Me.IsIndexing(item)) Then Me.IndexDataset(Nothing)
+            If (Me.IsIndexing(item)) Then Me.IndexDataset = Nothing
             Me.m_lDeleted.Add(item.GUID)
             Return Me.m_lAvailable.Remove(item)
         End Function

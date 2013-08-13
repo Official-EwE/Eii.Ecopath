@@ -43,29 +43,26 @@ Namespace Ecospace.Controls
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(ucConfigAdapter))
             Me.m_tlpContent = New System.Windows.Forms.TableLayoutPanel()
             Me.m_plConnectionConverter = New System.Windows.Forms.Panel()
-            Me.m_lblCompatibility = New System.Windows.Forms.Label()
-            Me.m_pbCompatibility = New System.Windows.Forms.PictureBox()
             Me.m_cmbConverter = New System.Windows.Forms.ComboBox()
+            Me.m_btnSaveStats = New System.Windows.Forms.Button()
             Me.m_btnClearCache = New System.Windows.Forms.Button()
             Me.m_cmbNewDS = New System.Windows.Forms.ComboBox()
             Me.m_btnConfigureCV = New System.Windows.Forms.Button()
             Me.m_btnDeleteDS = New System.Windows.Forms.Button()
             Me.m_btnConfigDS = New System.Windows.Forms.Button()
             Me.m_btnCreateDS = New System.Windows.Forms.Button()
-            Me.m_lbxExistingDS = New System.Windows.Forms.ListBox()
             Me.m_lblSelectCV = New System.Windows.Forms.Label()
             Me.m_lblNewDS = New System.Windows.Forms.Label()
-            Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_plScalarAdapter = New System.Windows.Forms.Panel()
-            Me.m_hdrScaling = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
             Me.m_btnCalculate = New System.Windows.Forms.Button()
             Me.m_tbxScale = New System.Windows.Forms.TextBox()
             Me.m_rbRelative = New System.Windows.Forms.RadioButton()
             Me.m_rbAbsolute = New System.Windows.Forms.RadioButton()
-            Me.m_btnSaveStats = New System.Windows.Forms.Button()
+            Me.m_hdrSource = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_hdrScaling = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_gridDatasets = New ScientificInterface.Ecospace.Controls.gridDatasets()
             Me.m_tlpContent.SuspendLayout()
             Me.m_plConnectionConverter.SuspendLayout()
-            CType(Me.m_pbCompatibility, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.m_plScalarAdapter.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -78,8 +75,7 @@ Namespace Ecospace.Controls
             '
             'm_plConnectionConverter
             '
-            Me.m_plConnectionConverter.Controls.Add(Me.m_lblCompatibility)
-            Me.m_plConnectionConverter.Controls.Add(Me.m_pbCompatibility)
+            Me.m_plConnectionConverter.Controls.Add(Me.m_gridDatasets)
             Me.m_plConnectionConverter.Controls.Add(Me.m_cmbConverter)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnSaveStats)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnClearCache)
@@ -88,23 +84,11 @@ Namespace Ecospace.Controls
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnDeleteDS)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnConfigDS)
             Me.m_plConnectionConverter.Controls.Add(Me.m_btnCreateDS)
-            Me.m_plConnectionConverter.Controls.Add(Me.m_lbxExistingDS)
             Me.m_plConnectionConverter.Controls.Add(Me.m_lblSelectCV)
             Me.m_plConnectionConverter.Controls.Add(Me.m_lblNewDS)
             Me.m_plConnectionConverter.Controls.Add(Me.m_hdrSource)
             resources.ApplyResources(Me.m_plConnectionConverter, "m_plConnectionConverter")
             Me.m_plConnectionConverter.Name = "m_plConnectionConverter"
-            '
-            'm_lblCompatibility
-            '
-            resources.ApplyResources(Me.m_lblCompatibility, "m_lblCompatibility")
-            Me.m_lblCompatibility.Name = "m_lblCompatibility"
-            '
-            'm_pbCompatibility
-            '
-            resources.ApplyResources(Me.m_pbCompatibility, "m_pbCompatibility")
-            Me.m_pbCompatibility.Name = "m_pbCompatibility"
-            Me.m_pbCompatibility.TabStop = False
             '
             'm_cmbConverter
             '
@@ -112,6 +96,12 @@ Namespace Ecospace.Controls
             Me.m_cmbConverter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
             Me.m_cmbConverter.FormattingEnabled = True
             Me.m_cmbConverter.Name = "m_cmbConverter"
+            '
+            'm_btnSaveStats
+            '
+            resources.ApplyResources(Me.m_btnSaveStats, "m_btnSaveStats")
+            Me.m_btnSaveStats.Name = "m_btnSaveStats"
+            Me.m_btnSaveStats.UseVisualStyleBackColor = True
             '
             'm_btnClearCache
             '
@@ -150,12 +140,6 @@ Namespace Ecospace.Controls
             Me.m_btnCreateDS.Name = "m_btnCreateDS"
             Me.m_btnCreateDS.UseVisualStyleBackColor = True
             '
-            'm_lbxExistingDS
-            '
-            resources.ApplyResources(Me.m_lbxExistingDS, "m_lbxExistingDS")
-            Me.m_lbxExistingDS.FormattingEnabled = True
-            Me.m_lbxExistingDS.Name = "m_lbxExistingDS"
-            '
             'm_lblSelectCV
             '
             resources.ApplyResources(Me.m_lblSelectCV, "m_lblSelectCV")
@@ -166,14 +150,6 @@ Namespace Ecospace.Controls
             resources.ApplyResources(Me.m_lblNewDS, "m_lblNewDS")
             Me.m_lblNewDS.Name = "m_lblNewDS"
             '
-            'm_hdrSource
-            '
-            resources.ApplyResources(Me.m_hdrSource, "m_hdrSource")
-            Me.m_hdrSource.CanCollapseParent = False
-            Me.m_hdrSource.CollapsedParentHeight = 0
-            Me.m_hdrSource.IsCollapsed = False
-            Me.m_hdrSource.Name = "m_hdrSource"
-            '
             'm_plScalarAdapter
             '
             Me.m_plScalarAdapter.Controls.Add(Me.m_hdrScaling)
@@ -183,14 +159,6 @@ Namespace Ecospace.Controls
             Me.m_plScalarAdapter.Controls.Add(Me.m_rbAbsolute)
             resources.ApplyResources(Me.m_plScalarAdapter, "m_plScalarAdapter")
             Me.m_plScalarAdapter.Name = "m_plScalarAdapter"
-            '
-            'm_hdrScaling
-            '
-            Me.m_hdrScaling.CanCollapseParent = False
-            Me.m_hdrScaling.CollapsedParentHeight = 0
-            resources.ApplyResources(Me.m_hdrScaling, "m_hdrScaling")
-            Me.m_hdrScaling.IsCollapsed = False
-            Me.m_hdrScaling.Name = "m_hdrScaling"
             '
             'm_btnCalculate
             '
@@ -217,11 +185,51 @@ Namespace Ecospace.Controls
             Me.m_rbAbsolute.TabStop = True
             Me.m_rbAbsolute.UseVisualStyleBackColor = True
             '
-            'm_btnSaveStats
+            'm_hdrSource
             '
-            resources.ApplyResources(Me.m_btnSaveStats, "m_btnSaveStats")
-            Me.m_btnSaveStats.Name = "m_btnSaveStats"
-            Me.m_btnSaveStats.UseVisualStyleBackColor = True
+            resources.ApplyResources(Me.m_hdrSource, "m_hdrSource")
+            Me.m_hdrSource.CanCollapseParent = False
+            Me.m_hdrSource.CollapsedParentHeight = 0
+            Me.m_hdrSource.IsCollapsed = False
+            Me.m_hdrSource.Name = "m_hdrSource"
+            '
+            'm_hdrScaling
+            '
+            Me.m_hdrScaling.CanCollapseParent = False
+            Me.m_hdrScaling.CollapsedParentHeight = 0
+            resources.ApplyResources(Me.m_hdrScaling, "m_hdrScaling")
+            Me.m_hdrScaling.IsCollapsed = False
+            Me.m_hdrScaling.Name = "m_hdrScaling"
+            '
+            'm_gridDatasets
+            '
+            Me.m_gridDatasets.AllowBlockSelect = True
+            resources.ApplyResources(Me.m_gridDatasets, "m_gridDatasets")
+            Me.m_gridDatasets.AutoSizeMinHeight = 10
+            Me.m_gridDatasets.AutoSizeMinWidth = 10
+            Me.m_gridDatasets.AutoStretchColumnsToFitWidth = False
+            Me.m_gridDatasets.AutoStretchRowsToFitHeight = False
+            Me.m_gridDatasets.BackColor = System.Drawing.Color.White
+            Me.m_gridDatasets.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+            Me.m_gridDatasets.ContextMenuStyle = CType((((SourceGrid2.ContextMenuStyle.ColumnResize Or SourceGrid2.ContextMenuStyle.AutoSize) _
+                Or SourceGrid2.ContextMenuStyle.CopyPasteSelection) _
+                Or SourceGrid2.ContextMenuStyle.CellContextMenu), SourceGrid2.ContextMenuStyle)
+            Me.m_gridDatasets.CustomSort = False
+            Me.m_gridDatasets.FixedColumnWidths = True
+            Me.m_gridDatasets.FocusStyle = SourceGrid2.FocusStyle.None
+            Me.m_gridDatasets.GridToolTipActive = True
+            Me.m_gridDatasets.Name = "m_gridDatasets"
+            Me.m_gridDatasets.SelectedDataset = Nothing
+            Me.m_gridDatasets.SpecialKeys = CType((((((((((SourceGrid2.GridSpecialKeys.Ctrl_C Or SourceGrid2.GridSpecialKeys.Ctrl_V) _
+                Or SourceGrid2.GridSpecialKeys.Ctrl_X) _
+                Or SourceGrid2.GridSpecialKeys.Delete) _
+                Or SourceGrid2.GridSpecialKeys.Arrows) _
+                Or SourceGrid2.GridSpecialKeys.Tab) _
+                Or SourceGrid2.GridSpecialKeys.PageDownUp) _
+                Or SourceGrid2.GridSpecialKeys.Enter) _
+                Or SourceGrid2.GridSpecialKeys.Escape) _
+                Or SourceGrid2.GridSpecialKeys.Backspace), SourceGrid2.GridSpecialKeys)
+            Me.m_gridDatasets.UIContext = Nothing
             '
             'ucConfigAdapter
             '
@@ -232,7 +240,6 @@ Namespace Ecospace.Controls
             Me.m_tlpContent.ResumeLayout(False)
             Me.m_plConnectionConverter.ResumeLayout(False)
             Me.m_plConnectionConverter.PerformLayout()
-            CType(Me.m_pbCompatibility, System.ComponentModel.ISupportInitialize).EndInit()
             Me.m_plScalarAdapter.ResumeLayout(False)
             Me.m_plScalarAdapter.PerformLayout()
             Me.ResumeLayout(False)
@@ -247,7 +254,6 @@ Namespace Ecospace.Controls
         Private WithEvents m_btnDeleteDS As System.Windows.Forms.Button
         Private WithEvents m_btnConfigDS As System.Windows.Forms.Button
         Private WithEvents m_btnCreateDS As System.Windows.Forms.Button
-        Private WithEvents m_lbxExistingDS As System.Windows.Forms.ListBox
         Private WithEvents m_lblSelectCV As System.Windows.Forms.Label
         Private WithEvents m_lblNewDS As System.Windows.Forms.Label
         Private WithEvents m_hdrSource As ScientificInterfaceShared.Controls.cEwEHeaderLabel
@@ -256,10 +262,9 @@ Namespace Ecospace.Controls
         Private WithEvents m_tbxScale As System.Windows.Forms.TextBox
         Private WithEvents m_rbRelative As System.Windows.Forms.RadioButton
         Private WithEvents m_rbAbsolute As System.Windows.Forms.RadioButton
-        Private WithEvents m_lblCompatibility As System.Windows.Forms.Label
-        Private WithEvents m_pbCompatibility As System.Windows.Forms.PictureBox
         Private WithEvents m_hdrScaling As ScientificInterfaceShared.Controls.cEwEHeaderLabel
         Private WithEvents m_btnSaveStats As System.Windows.Forms.Button
+        Friend WithEvents m_gridDatasets As ScientificInterface.Ecospace.Controls.gridDatasets
 
     End Class
 

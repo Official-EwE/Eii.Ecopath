@@ -59,7 +59,7 @@ Namespace Ecospace
             'm_btnOK
             '
             Me.m_btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-            Me.m_btnOK.Location = New System.Drawing.Point(608, 401)
+            Me.m_btnOK.Location = New System.Drawing.Point(818, 401)
             Me.m_btnOK.Name = "m_btnOK"
             Me.m_btnOK.Size = New System.Drawing.Size(75, 23)
             Me.m_btnOK.TabIndex = 2
@@ -82,8 +82,8 @@ Namespace Ecospace
             'm_sc.Panel2
             '
             Me.m_sc.Panel2.Controls.Add(Me.m_config)
-            Me.m_sc.Size = New System.Drawing.Size(671, 383)
-            Me.m_sc.SplitterDistance = 178
+            Me.m_sc.Size = New System.Drawing.Size(881, 383)
+            Me.m_sc.SplitterDistance = 201
             Me.m_sc.TabIndex = 0
             '
             'm_hdrLayers
@@ -94,7 +94,7 @@ Namespace Ecospace
             Me.m_hdrLayers.IsCollapsed = False
             Me.m_hdrLayers.Location = New System.Drawing.Point(0, 0)
             Me.m_hdrLayers.Name = "m_hdrLayers"
-            Me.m_hdrLayers.Size = New System.Drawing.Size(178, 18)
+            Me.m_hdrLayers.Size = New System.Drawing.Size(201, 18)
             Me.m_hdrLayers.TabIndex = 1
             Me.m_hdrLayers.Text = "Layers"
             Me.m_hdrLayers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -109,7 +109,7 @@ Namespace Ecospace
             Me.m_tvAdapters.Location = New System.Drawing.Point(0, 21)
             Me.m_tvAdapters.Name = "m_tvAdapters"
             Me.m_tvAdapters.ShowLines = False
-            Me.m_tvAdapters.Size = New System.Drawing.Size(178, 362)
+            Me.m_tvAdapters.Size = New System.Drawing.Size(201, 362)
             Me.m_tvAdapters.TabIndex = 0
             '
             'm_config
@@ -117,7 +117,7 @@ Namespace Ecospace
             Me.m_config.Dock = System.Windows.Forms.DockStyle.Fill
             Me.m_config.Location = New System.Drawing.Point(0, 0)
             Me.m_config.Name = "m_config"
-            Me.m_config.Size = New System.Drawing.Size(489, 383)
+            Me.m_config.Size = New System.Drawing.Size(676, 383)
             Me.m_config.TabIndex = 0
             Me.m_config.UIContext = Nothing
             '
@@ -131,7 +131,7 @@ Namespace Ecospace
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(695, 439)
+            Me.ClientSize = New System.Drawing.Size(905, 439)
             Me.ControlBox = False
             Me.Controls.Add(Me.m_sc)
             Me.Controls.Add(Me.m_btnOK)
