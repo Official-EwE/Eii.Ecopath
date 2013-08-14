@@ -413,24 +413,30 @@ Namespace Utilities
             If Not Directory.Exists(strPath) Then Return True
 
             Dim bSucces As Boolean = True
-            Try
 
-                ' Recursively get rid off all subfolders
-                For Each strSubFolder As String In Directory.GetDirectories(strPath)
-                    bSucces = bSucces And cFileUtils.DeleteDirectory(strSubFolder)
-                Next strSubFolder
+            ' Recursively get rid off all subfolders
+            For Each strSubFolder As String In Directory.GetDirectories(strPath)
+                bSucces = bSucces And cFileUtils.DeleteDirectory(strSubFolder)
+            Next strSubFolder
 
-                ' Now trash the content of this directory
-                For Each strFile As String In Directory.GetFiles(strPath)
+            ' Now trash the content of this directory
+            For Each strFile As String In Directory.GetFiles(strPath)
+                Try
                     File.Delete(strFile)
-                Next strFile
+                Catch ex As Exception
+                    ' File in use?
+                    bSucces = False
+                End Try
+            Next strFile
 
+            Try
                 ' Lastly trash directory itself
                 Directory.Delete(strPath)
-
             Catch ex As Exception
+                ' Directory in use?
                 bSucces = False
             End Try
+
             Return bSucces
 
         End Function
