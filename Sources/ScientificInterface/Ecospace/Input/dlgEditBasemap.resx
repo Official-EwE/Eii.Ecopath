@@ -181,7 +181,7 @@
     <value>1</value>
   </data>
   <data name="m_tlpButtons.Location" type="System.Drawing.Point, System.Drawing">
-    <value>181, 233</value>
+    <value>53, 233</value>
   </data>
   <data name="m_tlpButtons.RowCount" type="System.Int32, mscorlib">
     <value>1</value>
@@ -274,7 +274,7 @@
     <value>m_nudRowCount</value>
   </data>
   <data name="&gt;&gt;m_nudRowCount.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudRowCount.Parent" xml:space="preserve">
     <value>$this</value>
@@ -295,7 +295,7 @@
     <value>m_nudColCount</value>
   </data>
   <data name="&gt;&gt;m_nudColCount.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudColCount.Parent" xml:space="preserve">
     <value>$this</value>
@@ -333,12 +333,12 @@
   <data name="m_pbLink.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAAcAAAAQCAYAAADagWXwAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfbAgoREgTDLYjF
-        AAAA2UlEQVQoU31RuQqEQAydzsIDr0Y7t/CPFIRBtHCx1D+200YQUVGbtyaiICwWGSaZJO8YAUBQ5HkO
-        0zSRpumRnjU+wjBE13WYpgnDMMCyLG4QURRh33ds2wbf9zHPM9Z1RVmWELZtYxxHOI5D0yIIArRtC8Mw
-        IFRV5UkpJTfUdY2maeC6LkRRFJx4nseYiqJwnmXZyUrXdcRxzKSqquKGi+2HLiSj73tomvaQ8vp4ryWs
-        x1oiRLqIkEwSxluW5ST0TwqxZimvJvyzj7DZvgPvexlPRYrb+Lcv+wFrpBlVzqs3nAAAAABJRU5ErkJg
-        gg==
+        YQUAAAAJcEhZcwAACxAAAAsQAa0jvXUAAAAGYktHRAD/AP8A/6C9p5MAAAAHdElNRQfbAgoREgTDLYjF
+        AAAA3UlEQVQoU41RuwqDQBC8zsIHvhrtTOEfKQiHaGGw1D+200YQUVGbibsSIURCil1unzM7JwCw5XkO
+        0zSRpukRnjl2YRii6zpM04RhGGBZFjeIKIqw7zu2bYPv+5jnGeu6oixLCNu2MY4jHMehaREEAdq2hWEY
+        EKqq8qSUkhvqukbTNHBdF6IoCg48z2NMRVE4zrLsZKXrOuI4ZlJVVXEDEzrcgx50Rt/30DSNC38Vr7WE
+        9bGWCNFdREgmCReWZTkJ3Z1CrPmUnyLcyUfYLN+B93wLT0myS3hyZN9fBvECa6QZVbWLgPsAAAAASUVO
+        RK5CYII=
 </value>
   </data>
   <data name="m_pbLink.Location" type="System.Drawing.Point, System.Drawing">
@@ -402,7 +402,7 @@
     <value>m_nudCellSize</value>
   </data>
   <data name="&gt;&gt;m_nudCellSize.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudCellSize.Parent" xml:space="preserve">
     <value>$this</value>
@@ -423,7 +423,7 @@
     <value>m_nudCellLength</value>
   </data>
   <data name="&gt;&gt;m_nudCellLength.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudCellLength.Parent" xml:space="preserve">
     <value>$this</value>
@@ -444,7 +444,7 @@
     <value>m_nudLonTL</value>
   </data>
   <data name="&gt;&gt;m_nudLonTL.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudLonTL.Parent" xml:space="preserve">
     <value>$this</value>
@@ -465,7 +465,7 @@
     <value>m_nudLatTL</value>
   </data>
   <data name="&gt;&gt;m_nudLatTL.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwENumericUpDown, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_nudLatTL.Parent" xml:space="preserve">
     <value>$this</value>
@@ -549,7 +549,7 @@
     <value>m_hdrDimensions</value>
   </data>
   <data name="&gt;&gt;m_hdrDimensions.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrDimensions.Parent" xml:space="preserve">
     <value>$this</value>
@@ -579,7 +579,7 @@
     <value>m_hdrSpatialReference</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatialReference.Type" xml:space="preserve">
-    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.8817.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
+    <value>ScientificInterfaceShared.Controls.cEwEHeaderLabel, ScientificInterfaceShared, Version=6.3.9513.0, Culture=neutral, PublicKeyToken=f4272e218706910f</value>
   </data>
   <data name="&gt;&gt;m_hdrSpatialReference.Parent" xml:space="preserve">
     <value>$this</value>
@@ -594,7 +594,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>497, 274</value>
+    <value>240, 274</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>
