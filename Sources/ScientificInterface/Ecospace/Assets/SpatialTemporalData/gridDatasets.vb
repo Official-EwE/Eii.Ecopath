@@ -51,9 +51,10 @@ Namespace Ecospace.Controls
             DateTo
             Variable
             Description
-            Indexed
+            Status
             TempOverlap
             SpatOverlap
+            CacheSize
         End Enum
 
 #End Region ' Private vars
@@ -110,12 +111,13 @@ Namespace Ecospace.Controls
             Me(0, eColumnTypes.DateTo) = New EwEColumnHeaderCell(SharedResources.HEADER_TO)
             Me(0, eColumnTypes.Variable) = New EwEColumnHeaderCell(SharedResources.HEADER_VALUE)
             Me(0, eColumnTypes.Description) = New EwEColumnHeaderCell(SharedResources.HEADER_DESCRIPTION)
-            Me(0, eColumnTypes.Indexed) = New EwEColumnHeaderCell(SharedResources.HEADER_INDEXED)
+            Me(0, eColumnTypes.Status) = New EwEColumnHeaderCell(SharedResources.HEADER_STATUS)
             Me(0, eColumnTypes.SpatOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_SPATIAL)
             Me(0, eColumnTypes.TempOverlap) = New EwEColumnHeaderCell(SharedResources.HEADER_OVERLAP_TEMPORAL)
+            Me(0, eColumnTypes.CacheSize) = New EwEColumnHeaderCell(SharedResources.HEADER_CACHESIZE)
 
-            Me.FixedColumns = 1
-            Me.FixedColumnWidths = False
+            Me.Selection.SelectionMode = GridSelectionMode.Row
+            Me.Selection.EnableMultiSelection = False
             Me.AllowBlockSelect = False
 
         End Sub
@@ -131,19 +133,32 @@ Namespace Ecospace.Controls
             Dim iRow As Integer = 0
             Dim cell As EwECell = Nothing
 
+            ' NONE row
+            iRow = Me.AddRow()
+            For Each col As eColumnTypes In [Enum].GetValues(GetType(eColumnTypes))
+                Select Case col
+                    Case eColumnTypes.Name
+                        Me(iRow, col) = New EwECell(SharedResources.GENERIC_VALUE_NONE, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
+                    Case Else
+                        Me(iRow, col) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
+                End Select
+            Next
+
+            ' Dataset rows
             For i As Integer = 0 To Me.m_manSets.Count - 1
                 ds = Me.m_manSets(i)
                 If (ds.VarName = eVarNameFlags.NotSet Or ds.VarName = Me.m_adt.VarName) Then
 
                     iRow = Me.AddRow()
-                    Me(iRow, eColumnTypes.Name) = New EwERowHeaderCell(ds.DisplayName)
+                    Me(iRow, eColumnTypes.Name) = New EwECell(ds.DisplayName, GetType(String), cStyleGuide.eStyleFlags.Names Or cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Variable) = New EwECell(vfmt.GetDescriptor(ds.VarName), GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.Description) = New EwECell(ds.Description, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateFrom) = New EwECell(ds.TimeStart.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.DateTo) = New EwECell(ds.TimeEnd.ToShortDateString, GetType(String), cStyleGuide.eStyleFlags.NotEditable)
-                    Me(iRow, eColumnTypes.Indexed) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.Status) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.SpatOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me(iRow, eColumnTypes.TempOverlap) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
+                    Me(iRow, eColumnTypes.CacheSize) = New EwECell("", GetType(String), cStyleGuide.eStyleFlags.NotEditable)
                     Me.Rows(iRow).Tag = ds
 
                 End If
@@ -158,31 +173,45 @@ Namespace Ecospace.Controls
             Me.Columns(eColumnTypes.Description).AutoSizeMode = SourceGrid2.AutoSizeMode.EnableAutoSize
             Me.AutoSizeAll()
             Me.AutoStretchColumnsToFitWidth = True
+            Me.FixedColumns = 1
+            Me.FixedColumnWidths = False
+
         End Sub
 
         Private Sub UpdateDatasetRow(ds As ISpatialDataSet)
 
             Dim iRow As Integer = Me.DatasetRowIndex(ds)
+            Dim cache As cSpatialDataCache = cSpatialDataCache.DefaultDataCache
 
             If (iRow < 1) Then Return
 
             Dim comp As New cDatasetCompatilibity(Me.Core, ds)
-            Dim iNumTS As Integer = Math.Max(core.nEcospaceTimeSteps, 1)
+            Dim iNumTS As Integer = Math.Max(Core.nEcospaceTimeSteps, 1)
+            Dim strVal As String = ""
 
-            Me(iRow, eColumnTypes.Indexed).Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps))))
+            ' Status col: indexing x%, or compatibility result
+            If Me.m_manSets.IsIndexing(ds) Then
+                Me(iRow, eColumnTypes.Status).Value = String.Format(SharedResources.VALUE_INDEXING_PERCENT, CInt(Math.Ceiling(100 * comp.NumIndexed / Math.Max(1, comp.NumOverlappingTimeSteps))))
+            Else
+                Dim cfmt As New cCompatibilityTypeFormatter()
+                Me(iRow, eColumnTypes.Status).Value = cfmt.GetDescriptor(comp.Compatibility)
+            End If
+
+            ' Temporal overlap
             Me(iRow, eColumnTypes.TempOverlap).Value = String.Format(SharedResources.GENERIC_VALUE_PERCENTAGE, CInt(Math.Ceiling(100 * comp.NumOverlappingTimeSteps / iNumTS)))
 
-            Dim strSpatial As String = SharedResources.GENERIC_VALUE_UNKNOWN
-            If comp.NumIndexed > 0 Then
-                If comp.NumFullSpatialOverlap = comp.NumIndexed Then
-                    strSpatial = SharedResources.GENERIC_VALUE_FULL
-                ElseIf comp.NumPartialSpatialOverlap > 0 Then
-                    strSpatial = SharedResources.GENERIC_VALUE_PARTIAL
+            If (comp.NumIndexed > 0) Then
+                If (comp.NumFullSpatialOverlap = comp.NumIndexed) Then
+                    strVal = SharedResources.GENERIC_VALUE_FULL
+                ElseIf (comp.NumPartialSpatialOverlap > 0) Then
+                    strVal = SharedResources.GENERIC_VALUE_PARTIAL
                 Else
-                    strSpatial = SharedResources.GENERIC_VALUE_NONE
+                    strVal = SharedResources.GENERIC_VALUE_NONE
                 End If
             End If
-            Me(iRow, eColumnTypes.SpatOverlap).Value = strSpatial
+            Me(iRow, eColumnTypes.SpatOverlap).Value = strVal
+
+            Me(iRow, eColumnTypes.CacheSize).Value = Me.StyleGuide.FormatNumber(cache.GetSize(ds) / (1024 * 1024))
 
         End Sub
 
@@ -215,6 +244,10 @@ Namespace Ecospace.Controls
             Me.RefreshContent()
             Me.SelectedDataset = dsSelect
 
+        End Sub
+
+        Public Sub UpdateCacheInfo(ds As ISpatialDataSet)
+            Me.UpdateDatasetRow(ds)
         End Sub
 
         Public Property SelectedDataset As ISpatialDataSet

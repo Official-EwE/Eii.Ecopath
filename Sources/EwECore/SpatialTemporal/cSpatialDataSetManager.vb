@@ -369,6 +369,8 @@ Namespace SpatialData
                 If (Object.ReferenceEquals(Me.m_dsIndex, ds)) Then
                     Me.m_dsIndex = Nothing
                     Me.m_threadIndex = Nothing
+                    ' Fire off one last update to signify that dataset has been completely indexed
+                    Me.OnSpatialIndexUpdated(ds)
                 End If
                 Console.WriteLine("Done indexing " & ds.DisplayName)
             Catch ex As Threading.ThreadAbortException
@@ -378,7 +380,6 @@ Namespace SpatialData
                 cLog.Write(ex, "cSpatialDatasetManager::IndexDatasetThread(" & ds.DisplayName & ")")
                 Console.WriteLine(ex.Message)
             End Try
-            Me.OnSpatialIndexUpdated(Nothing)
         End Sub
 
         Private Delegate Sub OnSpatialIndexUpdatedDelegate(ds As ISpatialDataSet)

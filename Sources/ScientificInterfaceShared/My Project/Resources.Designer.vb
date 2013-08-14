@@ -629,6 +629,51 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Failed.
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_FAILED() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_FAILED", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No spatial overlap.
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_NOSPATIAL() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_NOSPATIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to No temporal overlap.
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_NOTEMPORAL() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_NOTEMPORAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Partial spatial overlap.
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_PARTIALSPATIAL() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_PARTIALSPATIAL", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Full spatial overlap.
+        '''</summary>
+        Public ReadOnly Property COMPATIBILITY_TOTALOVERLAP() As String
+            Get
+                Return ResourceManager.GetString("COMPATIBILITY_TOTALOVERLAP", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Public ReadOnly Property Computer() As System.Drawing.Bitmap
@@ -3031,6 +3076,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Cache size (MB).
+        '''</summary>
+        Public ReadOnly Property HEADER_CACHESIZE() As String
+            Get
+                Return ResourceManager.GetString("HEADER_CACHESIZE", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to Capital depreciation rate.
         '''</summary>
         Public ReadOnly Property HEADER_CAPITALDEPRECIATION_RATE() As String
@@ -4215,15 +4269,6 @@ Namespace My.Resources
         Public ReadOnly Property HEADER_INDEX_ONMIVORY() As String
             Get
                 Return ResourceManager.GetString("HEADER_INDEX_ONMIVORY", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized string similar to Indexed.
-        '''</summary>
-        Public ReadOnly Property HEADER_INDEXED() As String
-            Get
-                Return ResourceManager.GetString("HEADER_INDEXED", resourceCulture)
             End Get
         End Property
         
@@ -7701,6 +7746,15 @@ Namespace My.Resources
         Public ReadOnly Property UNIT_TIME_YEAR() As String
             Get
                 Return ResourceManager.GetString("UNIT_TIME_YEAR", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Indexing {0}%.
+        '''</summary>
+        Public ReadOnly Property VALUE_INDEXING_PERCENT() As String
+            Get
+                Return ResourceManager.GetString("VALUE_INDEXING_PERCENT", resourceCulture)
             End Get
         End Property
         

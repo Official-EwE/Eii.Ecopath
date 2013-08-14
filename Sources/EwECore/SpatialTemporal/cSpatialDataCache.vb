@@ -81,7 +81,19 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the total size of the cache.
+        ''' Returns the size of the cache for a single <see cref="ISpatialDataSet"/>
+        ''' (in bytes).
+        ''' </summary>
+        ''' <param name="ds">The dataset to obtain cache size information for.</param>
+        ''' -------------------------------------------------------------------
+        Public Function GetSize(ds As ISpatialDataSet) As Long
+            If (ds Is Nothing) Then Return 0L
+            Return Me.GetTotalFileSize(Me.GetCachePath(ds))
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Returns the total size of the cache (in bytes).
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function GetSize() As Long
@@ -91,7 +103,7 @@ Namespace SpatialData
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Returns the size of the cache of datasets no longer present in the
-        ''' datamanager.
+        ''' datamanager (in bytes).
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Function GetUnusedSize(man As cSpatialDataSetManager) As Long
@@ -100,7 +112,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Clear cached data files
+        ''' Clear cached data files.
         ''' </summary>
         ''' <param name="man">If provided, only datasets no longer present in the
         ''' datamanager will be cleared.</param>
@@ -150,7 +162,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get/set the path to the cache root folder.
+        ''' <inheritdocs cref="ISpatialDataCache.RootFolder"/>"
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property RootFolder As String _
@@ -182,7 +194,7 @@ Namespace SpatialData
             End If
 
             If bKnownFile Then
-                Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strFilter, strExt)
+                Return Me.GetCacheFileName(ds, ptfTL, ptfBR, dCellSize, time, strFilter, strExt, True)
             End If
 
             Return cFileUtils.MakeTempFile(strExt)
@@ -236,13 +248,10 @@ Namespace SpatialData
                                                       String.Format("[{0},{1}-{2},{3}]", cStringUtils.FormatSingle(ptfTL.X), cStringUtils.FormatSingle(ptfBR.Y), cStringUtils.FormatSingle(ptfBR.X), cStringUtils.FormatSingle(ptfTL.Y)))
             Dim strCacheFolder As String = System.IO.Path.Combine(strBoxFolder, cStringUtils.FormatSingle(CSng(dCellSize)))
 
-            If (bCreateIfMissing And Not Directory.Exists(strCacheFolder)) Then
-                Try
-                    Directory.CreateDirectory(strCacheFolder)
-                Catch ex As Exception
-
-                End Try
+            If (Not cFileUtils.IsDirectoryAvailable(strCacheFolder, bCreateIfMissing)) Then
+                Debug.Assert(False, "Unable to create cache folder " & strCacheFolder)
             End If
+
             Return strCacheFolder
         End Function
 
@@ -255,7 +264,9 @@ Namespace SpatialData
         ''' <param name="ptfBR">Bottom-right location (in decimal degrees lon,lat) of the bounding box of the data.</param>
         ''' <param name="dCellSize">Cell size to obtain the cache path for.</param>
         ''' <param name="dt">Date to create the file name for.</param>
-        ''' <param name="strExt">File extension tpo create the file name for.</param>
+        ''' <param name="strExt">File extension to create the file name for.</param>
+        ''' <param name="strFilter">Optional filter to include in the file name, may be empty.</param>
+        ''' <param name="bCreateIfMissing">Flag, indicating whether the path should be created if missing.</param>
         ''' <returns>A cache path.</returns>
         ''' -------------------------------------------------------------------
         Private Function GetCacheFileName(ds As ISpatialDataSet, _
@@ -263,12 +274,29 @@ Namespace SpatialData
                                           dCellSize As Double, _
                                           dt As DateTime, _
                                           strFilter As String, _
-                                          strExt As String) As String
+                                          strExt As String, _
+                                          bCreateIfMissing As Boolean) As String
 
             Dim strPath As String = GetCacheFolder(ds, ptfTL, ptfBR, dCellSize, True)
-            Dim strFileName As String = cFileUtils.ToValidFileName(String.Format("{0}[{1}]{2}", dt.ToString("yyyy-MM-dd"), strFilter, strExt), False)
+            Dim strFileName As String = cFileUtils.ToValidFileName(String.Format("{0}[{1}]{2}", dt.ToString("yyyy-MM-dd"), strFilter, strExt), bCreateIfMissing)
 
             Return System.IO.Path.Combine(strPath, strFileName)
+
+        End Function
+
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get the cache folder(s) for a single <see cref="ISpatialDataSet"/>.
+        ''' </summary>
+        ''' <param name="ds">The <see cref="ISpatialDataSet"/> to get the cache
+        ''' folders for.</param>
+        ''' <returns></returns>
+        ''' -------------------------------------------------------------------
+        Private Function GetCachePath(ds As ISpatialDataSet) As String()
+
+            Dim lstrPaths As New List(Of String)
+            lstrPaths.Add(Me.GetCacheFolder(ds))
+            Return lstrPaths.ToArray()
 
         End Function
 
@@ -278,9 +306,7 @@ Namespace SpatialData
             Dim lstrRemove As New List(Of String)
 
             ' Get all cache dirs
-            If (Directory.Exists(Me.RootFolder)) Then
-                lstrPaths.AddRange(Directory.GetDirectories(Me.RootFolder))
-            End If
+            lstrPaths.AddRange(Directory.GetDirectories(Me.RootFolder))
 
             If (man IsNot Nothing) Then
                 ' Remove all folder entries for datasets that are defined
@@ -319,7 +345,7 @@ Namespace SpatialData
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Returns the total file size of a series of folders.
+        ''' Returns the total file size of a series of folders (in bytes).
         ''' </summary>
         ''' <param name="astrFolders"></param>
         ''' <returns></returns>
@@ -328,15 +354,18 @@ Namespace SpatialData
             Dim lTotalSize As Long = 0
 
             For Each strPath As String In astrFolders
-                Dim di As New DirectoryInfo(strPath)
-                Dim afsi() As FileInfo = di.GetFiles("*.*", SearchOption.AllDirectories)
-                For Each fsi As FileInfo In afsi
-                    lTotalSize += fsi.Length
-                Next
+                If Directory.Exists(strPath) Then
+                    Dim di As New DirectoryInfo(strPath)
+                    Dim afsi() As FileInfo = di.GetFiles("*.*", SearchOption.AllDirectories)
+                    For Each fsi As FileInfo In afsi
+                        lTotalSize += fsi.Length
+                    Next
+                End If
             Next
             Return lTotalSize
 
         End Function
+
 #End Region ' Internals
 
     End Class
