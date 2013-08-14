@@ -90,10 +90,16 @@ Namespace Ecospace.Controls
             Set(uic As cUIContext)
 
                 If (Me.m_uic IsNot Nothing) Then
-                    Me.m_gridDatasets.UIContext = Nothing
+                    '' Stop indexing
+                    'Me.m_manSets.IndexDataset = Nothing 
+
+                    ' Disconnect from data objects first; we do not want disconnecting UI
+                    ' elements from screwing up the last configuration
                     Me.m_adt = Nothing
                     Me.m_layer = Nothing
-                    'Me.m_manSets.IndexDataset = Nothing ' Stop indexing
+
+                    Me.m_gridDatasets.UIContext = Nothing
+
                     Me.m_manSets.Save()
                     Me.m_manSets = Nothing
                     Me.m_man = Nothing
@@ -275,6 +281,9 @@ Namespace Ecospace.Controls
                 bSucces = False
             End Try
 
+            ' Repopulate grid to reflect cache sizes
+            Me.m_gridDatasets.Fill(Me.m_adt, Me.SelectedDataset)
+
             Dim dSizeTot2 As Double = cache.GetSize() / 1024
             Dim msg As New cMessage(String.Format(My.Resources.STATUS_CACHECLEARED, Me.m_uic.StyleGuide.FormatNumber(dSizeTot - dSizeTot2)), _
                                     eMessageType.Any, EwEUtils.Core.eCoreComponentType.External, eMessageImportance.Information)
@@ -340,10 +349,16 @@ Namespace Ecospace.Controls
                     Else
                         ssda.DataScaleType(Me.m_layer.Index) = cSpatialScalarDataAdapterBase.eScaleType.Relative
                     End If
-                    ' Invalidate the cached data for this dataset
-                    cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
-                    ' Reflect new state
-                    Me.EvaluateCache()
+
+                    If Not Me.m_bInUpdate Then
+                        ' Invalidate the cached data for this dataset
+                        ' ToDo_JS: Make dataset clearing more sublte. 
+                        '          This statement deletes cached data for ALL scenarios a dataset is cached for. It should only
+                        '          clear the cached data for the current Ecospace scenario. Oof. Ok, at least it works...
+                        cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
+                        ' Reflect new state
+                        Me.EvaluateCache()
+                    End If
                 End If
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -352,22 +367,22 @@ Namespace Ecospace.Controls
         End Sub
 
         Private Sub OnScaleChanged(sender As Object, e As System.EventArgs) _
-            Handles m_tbxScale.TextChanged
+            Handles m_tbxScale.TextChanged, m_tbxScale.LostFocus
             Try
-                ' Invalidate the cached data for this dataset
-                cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
+                If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
+                    Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
+                    Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
+                End If
+
+                If Not Me.m_bInUpdate Then
+                    ' Invalidate the cached data for this dataset
+                    cSpatialDataCache.DefaultDataCache.Clear(Me.SelectedDataset)
+                End If
                 ' Reflect new state
                 Me.EvaluateCache()
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
             End Try
-        End Sub
-
-        Private Sub m_tbxScale_LostFocus(sender As Object, e As System.EventArgs) Handles m_tbxScale.LostFocus
-            If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
-                Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
-                Double.TryParse(Me.m_tbxScale.Text, ssda.DataScale(Me.m_layer.Index))
-            End If
         End Sub
 
         Private Sub OnCalculateScale(sender As System.Object, e As System.EventArgs) _
@@ -406,6 +421,8 @@ Namespace Ecospace.Controls
                 End If
 
                 Me.PopulateAdapterControls()
+                Me.EvaluateCache()
+                Me.m_gridDatasets.UpdateCacheInfo(Me.SelectedDataset)
 
             Catch ex As Exception
                 Debug.Assert(False, ex.Message)
@@ -502,7 +519,7 @@ Namespace Ecospace.Controls
             End If
 
             Me.m_btnCreateDS.Enabled = Me.m_bHasTemplates
-            Me.m_btnConfigDS.Visible = bCanConfigDS
+            Me.m_btnConfigDS.Enabled = bCanConfigDS
             Me.m_btnDeleteDS.Enabled = (ds IsNot Nothing)
             Me.m_btnConfigureCV.Enabled = bCanConfigCV
             Me.m_btnClearCache.Enabled = (Me.m_bHasCachedData = True)
@@ -543,7 +560,6 @@ Namespace Ecospace.Controls
 
         End Sub
 
-
         Private Sub FillExistingConverterBox(Optional cv As ISpatialDataConverter = Nothing)
 
             If (cv Is Nothing) Then cv = Me.SelectedConverter
@@ -574,6 +590,7 @@ Namespace Ecospace.Controls
                     Me.LayerChanged()
                 End If
                 Me.m_manSets.IndexDataset = dataset
+                Me.UpdateControls()
 
             End Set
         End Property
@@ -655,6 +672,8 @@ Namespace Ecospace.Controls
             dlg.UIContext = Me.UIContext
             dlg.ShowDialog(Me.FindForm, My.Resources.CAPTION_EXTERNAL_DATASET_CONFIGURE, ctrl)
 
+            Me.EvaluateCache()
+
             Return (dsConf.IsConfigured)
 
         End Function
@@ -673,16 +692,22 @@ Namespace Ecospace.Controls
 
             Me.m_man.Update()
             ' Me.m_uic.Core.onChanged(Me.m_layer)
+            Me.UpdateControls()
 
         End Sub
 
         Private Sub EvaluateCache()
             Me.m_bHasCachedData = (cSpatialDataCache.DefaultDataCache.GetSize > 0)
+            Me.UpdateControls()
         End Sub
 
 #Region " Scalar data adapter "
 
         Private Sub PopulateAdapterControls()
+
+            ' Do not trigger invalidating updates!
+            Me.m_bInUpdate = True
+
             If (TypeOf Me.m_adt Is cSpatialScalarDataAdapterBase) Then
                 Dim ssda As cSpatialScalarDataAdapterBase = DirectCast(Me.m_adt, cSpatialScalarDataAdapterBase)
                 Select Case ssda.DataScaleType(Me.m_layer.Index)
@@ -696,6 +721,9 @@ Namespace Ecospace.Controls
             Else
                 Me.m_plScalarAdapter.Visible = False
             End If
+
+            Me.m_bInUpdate = False
+
         End Sub
 
 #End Region ' Scalar data adapter
