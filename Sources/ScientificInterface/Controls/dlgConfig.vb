@@ -101,18 +101,24 @@ Public Class dlgConfig
 
         Dim uic As cUIContext = Me.UIContext
 
+        ' Status
+        If (uic IsNot Nothing) Then
+            cApplicationStatusNotifier.StartProgress(uic.Core, ScientificInterfaceShared.My.Resources.STATUS_APPLYVALUES)
+        End If
+
         Try
-            Me.DialogResult = Windows.Forms.DialogResult.OK
-            If TypeOf Me.m_ctrl Is IOptionsPage Then
+            If (TypeOf Me.m_ctrl Is IOptionsPage) Then
                 DirectCast(Me.m_ctrl, IOptionsPage).Apply()
             End If
+            Me.DialogResult = Windows.Forms.DialogResult.OK
             Me.Close()
         Catch ex As Exception
             cLog.Write(ex, "dlgConfig::OnOK")
         End Try
 
+        ' Status
         If (uic IsNot Nothing) Then
-            cApplicationStatusNotifier.StartProgress(uic.Core, ScientificInterfaceShared.My.Resources.STATUS_APPLYVALUES)
+            cApplicationStatusNotifier.EndProgress(uic.Core)
         End If
 
     End Sub
