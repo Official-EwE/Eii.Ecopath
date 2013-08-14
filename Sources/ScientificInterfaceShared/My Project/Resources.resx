@@ -2889,9 +2889,6 @@
   <data name="HEADER_TO" xml:space="preserve">
     <value>To</value>
   </data>
-  <data name="HEADER_INDEXED" xml:space="preserve">
-    <value>Indexed</value>
-  </data>
   <data name="GENERIC_VALUE_FULL" xml:space="preserve">
     <value>(full)</value>
   </data>
@@ -2900,5 +2897,26 @@
   </data>
   <data name="GENERIC_VALUE_UNKNOWN" xml:space="preserve">
     <value>(unknown)</value>
+  </data>
+  <data name="COMPATIBILITY_FAILED" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="COMPATIBILITY_NOSPATIAL" xml:space="preserve">
+    <value>No spatial overlap</value>
+  </data>
+  <data name="COMPATIBILITY_NOTEMPORAL" xml:space="preserve">
+    <value>No temporal overlap</value>
+  </data>
+  <data name="COMPATIBILITY_PARTIALSPATIAL" xml:space="preserve">
+    <value>Partial spatial overlap</value>
+  </data>
+  <data name="COMPATIBILITY_TOTALOVERLAP" xml:space="preserve">
+    <value>Full spatial overlap</value>
+  </data>
+  <data name="VALUE_INDEXING_PERCENT" xml:space="preserve">
+    <value>Indexing {0}%</value>
+  </data>
+  <data name="HEADER_CACHESIZE" xml:space="preserve">
+    <value>Cache size (MB)</value>
   </data>
 </root>

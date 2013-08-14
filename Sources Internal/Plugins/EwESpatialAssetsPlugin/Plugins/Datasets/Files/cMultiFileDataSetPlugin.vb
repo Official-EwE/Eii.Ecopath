@@ -48,15 +48,15 @@ Namespace SpatialData
         ''' </summary>
         ''' -------------------------------------------------------------------
         Private Class cTemporalFile
-            Public time As DateTime
-            Public file As String
-            Public IndexStatus As ISpatialDataSet.eIndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
-            Public ptTL As PointF
-            Public ptBR As PointF
+            Public Property Time As DateTime
+            Public Property FileName As String
+            Public Property IndexStatus As ISpatialDataSet.eIndexStatus = ISpatialDataSet.eIndexStatus.NotIndexed
+            Public Property TopLeft As PointF
+            Public Property BottomRight As PointF
 
             Public Sub New(ByVal time As DateTime, ByVal strFile As String)
-                Me.time = time
-                Me.file = strFile
+                Me.Time = time
+                Me.FileName = strFile
             End Sub
 
         End Class
@@ -72,7 +72,7 @@ Namespace SpatialData
 
             Public Function Compare(ByVal x As cTemporalFile, ByVal y As cTemporalFile) As Integer _
                 Implements System.Collections.Generic.IComparer(Of cTemporalFile).Compare
-                Return DateTime.Compare(x.time, y.time)
+                Return DateTime.Compare(x.Time, y.Time)
             End Function
 
         End Class
@@ -130,7 +130,7 @@ Namespace SpatialData
                 Dim lTimeSteps As New List(Of DateTime)
                 Me.Sort()
                 For i As Integer = 0 To Me.m_lFiles.Count - 1
-                    lTimeSteps.Add(Me.m_lFiles(i).time)
+                    lTimeSteps.Add(Me.m_lFiles(i).Time)
                 Next
                 Return lTimeSteps.ToArray
             End Get
@@ -143,7 +143,7 @@ Namespace SpatialData
             Get
                 If (Me.m_lFiles.Count = 0) Then Return DateTime.MinValue
                 Me.Sort()
-                Return Me.m_lFiles(Me.m_lFiles.Count - 1).time
+                Return Me.m_lFiles(Me.m_lFiles.Count - 1).Time
             End Get
         End Property
 
@@ -154,7 +154,7 @@ Namespace SpatialData
             Get
                 If (Me.m_lFiles.Count = 0) Then Return DateTime.MaxValue
                 Me.Sort()
-                Return Me.m_lFiles(0).time
+                Return Me.m_lFiles(0).Time
             End Get
         End Property
 
@@ -183,7 +183,7 @@ Namespace SpatialData
             Get
                 Dim i As Integer = Me.FileIndex(time)
                 If i = -1 Then Return ""
-                Return Me.m_lFiles(i).file
+                Return Me.m_lFiles(i).FileName
             End Get
             Set(ByVal strFilePath As String)
 
@@ -198,7 +198,7 @@ Namespace SpatialData
                     If String.IsNullOrWhiteSpace(strFilePath) Then
                         Me.m_lFiles.RemoveAt(i)
                     Else
-                        Me.m_lFiles(i).file = strFilePath
+                        Me.m_lFiles(i).FileName = strFilePath
                     End If
                 End If
                 Me.m_bSorted = False
@@ -242,7 +242,7 @@ Namespace SpatialData
             Dim iFile As Integer = Me.FileIndex(time)
             If (iFile = -1) Then Return False
 
-            strFile = Me.m_lFiles(iFile).file
+            strFile = Me.m_lFiles(iFile).FileName
             If (String.IsNullOrWhiteSpace(strFile)) Then Return False
 
             Return True
@@ -296,8 +296,8 @@ Namespace SpatialData
             If (iFile = -1) Then Return False
 
             Dim f As cTemporalFile = Me.m_lFiles(iFile)
-            ptfTL = f.ptTL
-            ptfBR = f.ptBR
+            ptfTL = f.TopLeft
+            ptfBR = f.BottomRight
             Return (f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed)
 
         End Function
@@ -351,11 +351,11 @@ Namespace SpatialData
                 'jb 3-May-2012 still need to confirm files are relative to the "Source" node
                 'not what-every it is that cFileUtils.RelativePath returns 
                 'so strip of the path part of the file
-                xaFile.Value = Path.GetFileName(tf.file)
+                xaFile.Value = Path.GetFileName(tf.FileName)
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Date")
-                xaFile.Value = Convert.ToString(tf.time.ToOADate)
+                xaFile.Value = Convert.ToString(tf.Time.ToOADate)
                 xnFile.Attributes.Append(xaFile)
 
                 xaFile = doc.CreateAttribute("Indexed")
@@ -365,19 +365,19 @@ Namespace SpatialData
                 If (tf.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed) Then
 
                     xaFile = doc.CreateAttribute("lonmin")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.ptTL.X)
+                    xaFile.Value = cStringUtils.FormatSingle(tf.TopLeft.X)
                     xnFile.Attributes.Append(xaFile)
 
                     xaFile = doc.CreateAttribute("lonmax")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.ptBR.X)
+                    xaFile.Value = cStringUtils.FormatSingle(tf.BottomRight.X)
                     xnFile.Attributes.Append(xaFile)
 
                     xaFile = doc.CreateAttribute("latmin")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.ptBR.Y)
+                    xaFile.Value = cStringUtils.FormatSingle(tf.BottomRight.Y)
                     xnFile.Attributes.Append(xaFile)
 
                     xaFile = doc.CreateAttribute("latmax")
-                    xaFile.Value = cStringUtils.FormatSingle(tf.ptTL.Y)
+                    xaFile.Value = cStringUtils.FormatSingle(tf.TopLeft.Y)
                     xnFile.Attributes.Append(xaFile)
 
                 End If
@@ -428,9 +428,9 @@ Namespace SpatialData
                                 If (xnFile.Attributes.GetNamedItem("Indexed") IsNot Nothing) Then
                                     If (Boolean.Parse(xnFile.Attributes("Indexed").InnerText)) Then
                                         f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
-                                        f.ptTL = New PointF(CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("lonmin").InnerText, GetType(Single))), _
+                                        f.TopLeft = New PointF(CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("lonmin").InnerText, GetType(Single))), _
                                                             CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("latmax").InnerText, GetType(Single))))
-                                        f.ptBR = New PointF(CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("lonmax").InnerText, GetType(Single))), _
+                                        f.BottomRight = New PointF(CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("lonmax").InnerText, GetType(Single))), _
                                                             CSng(cStringUtils.ConvertToNumber(xnFile.Attributes("latmin").InnerText, GetType(Single))))
                                     End If
                                 End If
@@ -460,8 +460,8 @@ Namespace SpatialData
             Dim f As cTemporalFile = Me.m_lFiles(Me.m_iFileIndex)
 
             If (ext IsNot Nothing) Then
-                f.ptTL = New PointF(CSng(ext.MinX), CSng(ext.MaxY))
-                f.ptBR = New PointF(CSng(ext.MaxX), CSng(ext.MinY))
+                f.TopLeft = New PointF(CSng(ext.MinX), CSng(ext.MaxY))
+                f.BottomRight = New PointF(CSng(ext.MaxX), CSng(ext.MinY))
                 f.IndexStatus = ISpatialDataSet.eIndexStatus.Indexed
             Else
                 f.IndexStatus = ISpatialDataSet.eIndexStatus.Failed
@@ -479,7 +479,7 @@ Namespace SpatialData
             Debug.Assert(Me.m_iFileIndex >= 0)
             Debug.Assert(Me.m_iFileIndex < Me.m_lFiles.Count)
 
-            Return Me.m_lFiles(Me.m_iFileIndex).file
+            Return Me.m_lFiles(Me.m_iFileIndex).FileName
 
         End Function
 
@@ -504,7 +504,7 @@ Namespace SpatialData
                                      cDotSpatialUtils.TopLeft(Me.m_extModelArea), _
                                      cDotSpatialUtils.BottomRight(Me.m_extModelArea), _
                                      Me.m_dModelCellSize, _
-                                     Me.m_lFiles(Me.m_iFileIndex).time, _
+                                     Me.m_lFiles(Me.m_iFileIndex).Time, _
                                      strLayerName, strExt)
             End If
             Return cFileUtils.MakeTempFile(strExt)
@@ -523,7 +523,7 @@ Namespace SpatialData
             Dim t As DateTime
 
             For i As Integer = 0 To Me.m_lFiles.Count - 1
-                t = Me.m_lFiles(i).time
+                t = Me.m_lFiles(i).Time
                 If (time = t) Then Return i
             Next i
             Return -1
@@ -583,8 +583,8 @@ Namespace SpatialData
 
             ' Truncate dates
             If (Me.m_lFiles.Count > 0) Then
-                If dateStart < Me.m_lFiles(0).time Then dateStart = Me.m_lFiles(0).time
-                If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).time Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).time
+                If dateStart < Me.m_lFiles(0).Time Then dateStart = Me.m_lFiles(0).Time
+                If dateEnd > Me.m_lFiles(Me.m_lFiles.Count - 1).Time Then dateEnd = Me.m_lFiles(Me.m_lFiles.Count - 1).Time
             End If
 
             Dim iStart As Integer = Me.FileIndex(dateStart)
@@ -599,7 +599,7 @@ Namespace SpatialData
                     Me.ReadFromCache = False
 
                     Try
-                        If Me.LockDataAtT(f.time, 1.0!, ptfTL, ptfBR) Then
+                        If Me.LockDataAtT(f.Time, 1.0!, ptfTL, ptfBR) Then
                             Me.LoadSource()
                             dgt.Invoke(Me)
                             Me.UnlockData()

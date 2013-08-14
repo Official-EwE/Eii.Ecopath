@@ -586,8 +586,20 @@ Namespace Controls.EwEGrid
         ''' -------------------------------------------------------------------
         Public Event OnSelectionChanged(ByVal selection As SourceGrid2.CellVirtualCollection)
 
+        Public Property IsLayoutSuspended As Boolean
+
+        Public Overrides Sub SuspendLayoutGrid()
+            MyBase.SuspendLayoutGrid()
+            Me.IsLayoutSuspended = True
+        End Sub
+
+        Public Overrides Sub ResumeLayoutGrid()
+            MyBase.ResumeLayoutGrid()
+            Me.IsLayoutSuspended = False
+        End Sub
+
         Protected Sub RaiseSelectionChangeEvent()
-            If Me.UIContext IsNot Nothing Then
+            If (Me.UIContext IsNot Nothing) And (Not Me.IsLayoutSuspended) Then
                 RaiseEvent OnSelectionChanged(Me.Selection.GetCells())
             End If
         End Sub
