@@ -195,7 +195,8 @@ Namespace Ecospace.Basemap
             Me.AddData(eVarNameFlags.LayerRelCin, False)
             Me.AddData(eVarNameFlags.LayerRegion)
             Me.AddData(eVarNameFlags.LayerDepth)
-            Me.AddData(eVarNameFlags.LayerExclusion, False)
+            '16-Aug-2013 Remove the Exclusion layer until it has been implemented in the core
+            'Me.AddData(eVarNameFlags.LayerExclusion, False)
             Me.AddData(eVarNameFlags.LayerHabitatCapacityInput)
             Me.AddData(eVarNameFlags.LayerHabitatCapacity, False)
             Me.AddData(eVarNameFlags.LayerDriver)
