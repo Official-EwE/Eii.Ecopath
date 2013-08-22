@@ -818,11 +818,12 @@ Namespace Ecospace
 
             Me.ClearResults()
 
-            Me.IsRunning = True
+            '22-Aug-2013 Changed Me.IsRunning to be set by Core.RunEcoSpace()
+            'so if the run fails Me.IsRunning will be set to False and the interface will update correctly
+            'Me.IsRunning = True
             Me.m_iTimeStepCur = 0
             Me.Core.SetStopRunDelegate(New cCore.StopRunDelegate(AddressOf Me.Core.StopEcospace))
-            Me.Core.RunEcoSpace(AddressOf onEcospaceTimeStep)
-            Me.m_cbOverlay.Enabled = True
+            Me.IsRunning = Me.Core.RunEcoSpace(AddressOf onEcospaceTimeStep)
 
         End Sub
 
