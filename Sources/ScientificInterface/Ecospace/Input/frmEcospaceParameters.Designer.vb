@@ -258,7 +258,6 @@ Namespace Ecospace
             '
             resources.ApplyResources(Me.m_rbCapHap, "m_rbCapHap")
             Me.m_rbCapHap.Name = "m_rbCapHap"
-            Me.m_rbCapHap.TabStop = True
             Me.m_rbCapHap.UseVisualStyleBackColor = True
             '
             'm_gbIMB
