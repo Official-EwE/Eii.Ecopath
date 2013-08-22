@@ -64,31 +64,24 @@ Public Class frmMSE
     Private Sub GenerateEmptyDietcsv()
         Dim sPath As String = mMSE.DataPath & "\DistributionParameters"
         Dim diet_csvout As New StreamWriter(Path.Combine(sPath & "\DietComposition.csv"), False)
-        Dim upper As Single
-        Dim lower As Single
+        Dim mean As Single
 
-        diet_csvout.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Lower,Upper")
+        diet_csvout.Write("Predator,Prey,PredIndex,PreyIndex,Interacts,Mean")
         diet_csvout.WriteLine()
 
         For iPred As Integer = 1 To mCore.nLivingGroups
             If mCore.EcoPathGroupInputs(iPred).ImpDiet > 0 Then
-                upper = mCore.EcoPathGroupInputs(iPred).ImpDiet + 0.1
-                If upper > 1 Then upper = 1
-                lower = mCore.EcoPathGroupInputs(iPred).ImpDiet - 0.1
-                If lower < 0 Then lower = 0
-                diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,Imports, " & iPred & ",0,1," & lower & "," & upper)
+                mean = mCore.EcoPathGroupInputs(iPred).ImpDiet
+                diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,Imports," & iPred & ",0,1," & mean)
             Else
-                diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,Imports, " & iPred & ",0,0,0,1")
+                diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,Imports," & iPred & ",0,0,0")
             End If
             For iPrey As Integer = 1 To mCore.nGroups
                 If mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) > 0 Then
-                    upper = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) + 0.1
-                    If upper > 1 Then upper = 1
-                    lower = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey) - 0.1
-                    If lower < 0 Then lower = 0
-                    diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,""" & mCore.EcoPathGroupInputs(iPrey).Name & """," & iPred & "," & iPrey & ",1," & lower & "," & upper)
+                    mean = mCore.EcoPathGroupInputs(iPred).DietComp(iPrey)
+                    diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,""" & mCore.EcoPathGroupInputs(iPrey).Name & """," & iPred & "," & iPrey & ",1," & mean)
                 Else
-                    diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,""" & mCore.EcoPathGroupInputs(iPrey).Name & """," & iPred & "," & iPrey & ",0,0,1")
+                    diet_csvout.WriteLine("""" & mCore.EcoPathGroupInputs(iPred).Name & """,""" & mCore.EcoPathGroupInputs(iPrey).Name & """," & iPred & "," & iPrey & ",0,0")
                 End If
             Next
         Next
@@ -155,13 +148,10 @@ Public Class frmMSE
         frmTargetF.Show()
     End Sub
 
-    Private Sub btnEcopathParams2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnEcopathParams2.Click
-        mMSE.GenerateEcopathParamaters2()
-    End Sub
-
 
     Private Sub frmMSE_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         txtArea.Text = mCore.EwEModel.Area
+
     End Sub
 
 
@@ -211,14 +201,13 @@ Public Class frmMSE
     Private Sub btnDistParams_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDistParams.Click
         Dim bhasForm As Boolean
 
-
         'Ok now the interface
         If Me.frmDisParams IsNot Nothing Then
             bhasForm = Not frmDisParams.IsDisposed
         End If
         If Not bhasForm Then
             frmDisParams = New frmDistributionParameters()
-            frmDisParams.Init(Me.m_uic, Me.mMSE)
+            frmDisParams.Init(Me.m_uic, Me.mMSE, mMSE.DataPath, mCore)
         End If
 
         frmDisParams.Show()

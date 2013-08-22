@@ -147,7 +147,6 @@ Partial Class frmMSE
         '
         'btnGamma
         '
-        Me.btnGamma.Enabled = False
         Me.btnGamma.Location = New System.Drawing.Point(200, 6)
         Me.btnGamma.Name = "btnGamma"
         Me.btnGamma.Size = New System.Drawing.Size(121, 32)

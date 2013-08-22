@@ -22,21 +22,29 @@ Partial Class frmDistributionParameters
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend4 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.cboPathOrSim = New System.Windows.Forms.ComboBox()
         Me.cboParamName = New System.Windows.Forms.ComboBox()
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.dgvParameters = New System.Windows.Forms.DataGridView()
         Me.GroupNumber = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.GroupName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Mean = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.CV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Lower = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Upper = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.chtDistribution = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.btnClose = New System.Windows.Forms.Button()
+        Me.btnSaveAndClose = New System.Windows.Forms.Button()
+        CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chtDistribution, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'cboPathOrSim
@@ -56,85 +64,122 @@ Partial Class frmDistributionParameters
         Me.cboParamName.Size = New System.Drawing.Size(187, 21)
         Me.cboParamName.TabIndex = 1
         '
-        'DataGridView1
+        'dgvParameters
         '
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.GroupNumber, Me.GroupName, Me.Mean, Me.CV, Me.Lower, Me.Upper})
-        Me.DataGridView1.Location = New System.Drawing.Point(46, 138)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(646, 349)
-        Me.DataGridView1.TabIndex = 2
+        Me.dgvParameters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvParameters.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.GroupNumber, Me.GroupName, Me.Mean, Me.CV, Me.Lower, Me.Upper})
+        Me.dgvParameters.Location = New System.Drawing.Point(46, 138)
+        Me.dgvParameters.Name = "dgvParameters"
+        Me.dgvParameters.Size = New System.Drawing.Size(672, 349)
+        Me.dgvParameters.TabIndex = 2
         '
         'GroupNumber
         '
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.GroupNumber.DefaultCellStyle = DataGridViewCellStyle1
         Me.GroupNumber.HeaderText = "Group Number"
         Me.GroupNumber.Name = "GroupNumber"
         '
         'GroupName
         '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.GroupName.DefaultCellStyle = DataGridViewCellStyle2
         Me.GroupName.HeaderText = "Group Name"
         Me.GroupName.Name = "GroupName"
         '
         'Mean
         '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Mean.DefaultCellStyle = DataGridViewCellStyle3
         Me.Mean.HeaderText = "Mean"
         Me.Mean.Name = "Mean"
         '
         'CV
         '
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.CV.DefaultCellStyle = DataGridViewCellStyle4
         Me.CV.HeaderText = "CV"
         Me.CV.Name = "CV"
+        Me.CV.Width = 50
         '
         'Lower
         '
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Lower.DefaultCellStyle = DataGridViewCellStyle5
         Me.Lower.HeaderText = "Lower"
         Me.Lower.Name = "Lower"
+        Me.Lower.Width = 50
         '
         'Upper
         '
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.Upper.DefaultCellStyle = DataGridViewCellStyle6
         Me.Upper.HeaderText = "Upper"
         Me.Upper.Name = "Upper"
+        Me.Upper.Width = 50
         '
-        'Chart1
+        'chtDistribution
         '
-        ChartArea4.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea4)
-        Legend4.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend4)
-        Me.Chart1.Location = New System.Drawing.Point(712, 147)
-        Me.Chart1.Name = "Chart1"
-        Series4.ChartArea = "ChartArea1"
-        Series4.Legend = "Legend1"
-        Series4.Name = "Series1"
-        Me.Chart1.Series.Add(Series4)
-        Me.Chart1.Size = New System.Drawing.Size(264, 212)
-        Me.Chart1.TabIndex = 3
-        Me.Chart1.Text = "Chart1"
+        ChartArea1.Name = "ChartArea1"
+        Me.chtDistribution.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.chtDistribution.Legends.Add(Legend1)
+        Me.chtDistribution.Location = New System.Drawing.Point(766, 147)
+        Me.chtDistribution.Name = "chtDistribution"
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.chtDistribution.Series.Add(Series1)
+        Me.chtDistribution.Size = New System.Drawing.Size(210, 217)
+        Me.chtDistribution.TabIndex = 3
+        Me.chtDistribution.Text = "Chart1"
+        '
+        'btnClose
+        '
+        Me.btnClose.Location = New System.Drawing.Point(352, 47)
+        Me.btnClose.Name = "btnClose"
+        Me.btnClose.Size = New System.Drawing.Size(138, 22)
+        Me.btnClose.TabIndex = 4
+        Me.btnClose.Text = "Close"
+        Me.btnClose.UseVisualStyleBackColor = True
+        '
+        'btnSaveAndClose
+        '
+        Me.btnSaveAndClose.Location = New System.Drawing.Point(352, 87)
+        Me.btnSaveAndClose.Name = "btnSaveAndClose"
+        Me.btnSaveAndClose.Size = New System.Drawing.Size(138, 22)
+        Me.btnSaveAndClose.TabIndex = 5
+        Me.btnSaveAndClose.Text = "Save and Close"
+        Me.btnSaveAndClose.UseVisualStyleBackColor = True
         '
         'frmDistributionParameters
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(992, 519)
-        Me.Controls.Add(Me.Chart1)
-        Me.Controls.Add(Me.DataGridView1)
+        Me.Controls.Add(Me.btnSaveAndClose)
+        Me.Controls.Add(Me.btnClose)
+        Me.Controls.Add(Me.chtDistribution)
+        Me.Controls.Add(Me.dgvParameters)
         Me.Controls.Add(Me.cboParamName)
         Me.Controls.Add(Me.cboPathOrSim)
         Me.Name = "frmDistributionParameters"
         Me.Text = "Distribution Parameters"
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgvParameters, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chtDistribution, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
     Friend WithEvents cboPathOrSim As System.Windows.Forms.ComboBox
     Friend WithEvents cboParamName As System.Windows.Forms.ComboBox
-    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
+    Friend WithEvents dgvParameters As System.Windows.Forms.DataGridView
+    Friend WithEvents chtDistribution As System.Windows.Forms.DataVisualization.Charting.Chart
+    Friend WithEvents btnClose As System.Windows.Forms.Button
+    Friend WithEvents btnSaveAndClose As System.Windows.Forms.Button
     Friend WithEvents GroupNumber As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents GroupName As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Mean As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents CV As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Lower As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents Upper As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents Chart1 As System.Windows.Forms.DataVisualization.Charting.Chart
 End Class

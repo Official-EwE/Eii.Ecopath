@@ -101,6 +101,10 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Troschuetz.Random, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Troschuetz.Random.dll</HintPath>
+    </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking">
       <HintPath>..\..\..\..\Sources\ScientificInterfaceShared\Includes\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
@@ -220,6 +224,9 @@
       <Project>{70AF596E-7D27-4D39-BDE7-89D4525BD60F}</Project>
       <Name>ScientificInterfaceShared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Troschuetz.Random.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

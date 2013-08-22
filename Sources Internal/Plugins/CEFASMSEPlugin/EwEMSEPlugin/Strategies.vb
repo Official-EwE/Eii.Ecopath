@@ -11,6 +11,7 @@ Public Class Strategies
     'So the Strategies could load and save them selves
 
     Private m_dataDir As String
+    Private m_Name As String
 
     Public Property DataDirectory As String
         Get
