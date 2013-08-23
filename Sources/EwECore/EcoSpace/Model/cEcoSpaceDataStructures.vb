@@ -1978,6 +1978,27 @@ Public Class cEcospaceDataStructures
 
     End Sub
 
+
+    ''' <summary>
+    ''' Until the Excluded Cells Layer has been completed make sure all cells are Included.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub OverwriteExcludedCells()
+        Try
+            System.Console.WriteLine("WARNING: Excluded cells will be overwritten.")
+            'Include all cells
+            For irow As Integer = 1 To InRow
+                For icol As Integer = 1 To InCol
+                    Me.Excluded(irow, icol) = False
+                Next icol
+            Next irow
+
+        Catch ex As Exception
+            Debug.Assert(False, "setDebugNoExcludedCells()")
+        End Try
+
+    End Sub
+
     Public Function GetCellSize() As Single
         Dim cellSizeDegrees As Single = Me.CellSize
         If cellSizeDegrees = 0 Then cellSizeDegrees = cEcospaceBasemap.ToCellSize(Me.CellLength)

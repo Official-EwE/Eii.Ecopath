@@ -7245,6 +7245,10 @@ Namespace DataSources
             bSucces = bSucces And Me.LoadEcospaceDataAdapters(iScenarioID)
             bSucces = bSucces And Me.LoadAuxillaryData()
 
+            'HACK! make sure NO cells are Excluded!
+            'To be removed once the Excluded cells are implemented
+            ecospaceDS.OverwriteExcludedCells()
+
             Me.ClearChanged(s_EcospaceComponents)
 
             Return bSucces
