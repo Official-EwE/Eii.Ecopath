@@ -1057,10 +1057,14 @@ Namespace MSE
         ''' Reset group references levels to default fishing mortalities.
         ''' </summary>
         Public Sub SetDefaultGroupRefLevels()
-
+            Dim refLevelPercent As Single = 0.5
             For iGroup As Integer = 1 To Me.m_MSEdata.NGroups
-                Me.m_MSEdata.BioBounds(iGroup).Lower = Me.m_MSEdata.Blim(iGroup)
-                Me.m_MSEdata.BioBounds(iGroup).Upper = Me.m_MSEdata.Bbase(iGroup)
+                'Me.m_MSEdata.BioBounds(iGroup).Lower = Me.m_MSEdata.Blim(iGroup)
+                'Me.m_MSEdata.BioBounds(iGroup).Upper = Me.m_MSEdata.Bbase(iGroup)
+                'Set default to percentage of Ecopath base
+                Dim b As Single = Me.m_core.m_EcoPathData.B(iGroup)
+                Me.m_MSEdata.BioBounds(iGroup).Lower = b * refLevelPercent
+                Me.m_MSEdata.BioBounds(iGroup).Upper = b / refLevelPercent
             Next iGroup
             Me.Load()
 
