@@ -233,13 +233,9 @@ Namespace Forms
 
         ''' <summary>Almighty UI context holding form UI contextual information.</summary>
         Private m_uic As cUIContext = Nothing
-        ''' <summary>Core state that determines the enabled state of a form.</summary>
-        Private m_coreExecutionState As eCoreExecutionState = eCoreExecutionState.Idle
         ''' <summary>Array of message sources that invalidate the information displayed in a form.</summary>
         Private m_aMessageSources As eCoreComponentType() = Nothing
-        ''' <summary>Flag stating whether this is an input form.</summary>
-        Private m_bIsInputForm As Boolean = False
-        ''' <summary>States whether the form is running. Only valid for forms 
+         ''' <summary>States whether the form is running. Only valid for forms 
         ''' that are flagged as <see cref="IsRunForm"/>.</summary>
         Private m_bIsRunning As Boolean = False
         ''' <summary>Misc. form settings.</summary>
@@ -391,6 +387,7 @@ Namespace Forms
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overridable Sub OnCoreMessage(ByVal msg As cMessage)
+            ' NOP
         End Sub
 
         ''' -----------------------------------------------------------------------
@@ -399,13 +396,6 @@ Namespace Forms
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overridable Property CoreExecutionState() As eCoreExecutionState
-            Get
-                Return Me.m_coreExecutionState
-            End Get
-            Set(ByVal value As eCoreExecutionState)
-                Me.m_coreExecutionState = value
-            End Set
-        End Property
 
         ''' -----------------------------------------------------------------------
         ''' <summary>

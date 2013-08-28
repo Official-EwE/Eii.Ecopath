@@ -136,7 +136,7 @@
     <value>g/m²</value>
   </data>
   <data name="STATUS_TIMESERIES_ADDING" xml:space="preserve">
-    <value>Adding time series {0} ...</value>
+    <value>Adding time series {0}...</value>
     <comment>{0}: time series name</comment>
   </data>
   <data name="GENERIC_CHAR_COMMA" xml:space="preserve">
@@ -2921,5 +2921,16 @@
   </data>
   <data name="fish_dead" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\fish_dead.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GENERIC_FILELOAD_FAILURE" xml:space="preserve">
+    <value>'{0}' failed to load from '{1}': {2}.</value>
+    <comment>{0}: item that failed to load. {1}: file/folder dest. {2}: error reason</comment>
+  </data>
+  <data name="GENERIC_FILELOAD_SUCCES" xml:space="preserve">
+    <value>'{0}' loaded from '{1}'.</value>
+    <comment>{0}: item that loaded. {1}: file/folder dest</comment>
+  </data>
+  <data name="GENERIC_VALUE_GRID_CONTENT" xml:space="preserve">
+    <value>grid content</value>
   </data>
 </root>
