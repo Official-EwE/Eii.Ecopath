@@ -40,28 +40,20 @@ Partial Class dlgSensitivityOfSStoV
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgSensitivityOfSStoV))
-        Me.m_ucVulBlocks = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks
-        Me.m_progress = New System.Windows.Forms.ProgressBar
-        Me.m_btnSearch = New System.Windows.Forms.Button
-        Me.m_rbSearchPredPrey = New System.Windows.Forms.RadioButton
-        Me.m_rbSearchPred = New System.Windows.Forms.RadioButton
-        Me.m_lblNumCategories = New System.Windows.Forms.Label
-        Me.m_nudNumBlocks = New cEwENumericUpDown
-        Me.m_btnCancel = New System.Windows.Forms.Button
-        Me.m_btnOk = New System.Windows.Forms.Button
-        Me.m_hdrSearch = New cEwEHeaderLabel
-        Me.m_hdrTransfer = New cEwEHeaderLabel
+        Me.m_progress = New System.Windows.Forms.ProgressBar()
+        Me.m_btnSearch = New System.Windows.Forms.Button()
+        Me.m_rbSearchPredPrey = New System.Windows.Forms.RadioButton()
+        Me.m_rbSearchPred = New System.Windows.Forms.RadioButton()
+        Me.m_lblNumCategories = New System.Windows.Forms.Label()
+        Me.m_btnCancel = New System.Windows.Forms.Button()
+        Me.m_btnOk = New System.Windows.Forms.Button()
+        Me.m_btnSaveToCSV = New System.Windows.Forms.Button()
+        Me.m_nudNumBlocks = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+        Me.m_hdrTransfer = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_hdrSearch = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+        Me.m_ucVulBlocks = New ScientificInterface.Ecosim.ucVulnerabiltyBlocks()
         CType(Me.m_nudNumBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'm_ucVulBlocks
-        '
-        resources.ApplyResources(Me.m_ucVulBlocks, "m_ucVulBlocks")
-        Me.m_ucVulBlocks.BlockColors = Nothing
-        Me.m_ucVulBlocks.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.m_ucVulBlocks.Name = "m_ucVulBlocks"
-        Me.m_ucVulBlocks.SelectedBlockNum = 0
-        Me.m_ucVulBlocks.UIContext = Nothing
         '
         'm_progress
         '
@@ -94,13 +86,6 @@ Partial Class dlgSensitivityOfSStoV
         resources.ApplyResources(Me.m_lblNumCategories, "m_lblNumCategories")
         Me.m_lblNumCategories.Name = "m_lblNumCategories"
         '
-        'm_nudNumBlocks
-        '
-        resources.ApplyResources(Me.m_nudNumBlocks, "m_nudNumBlocks")
-        Me.m_nudNumBlocks.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.m_nudNumBlocks.Name = "m_nudNumBlocks"
-        Me.m_nudNumBlocks.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
         'm_btnCancel
         '
         resources.ApplyResources(Me.m_btnCancel, "m_btnCancel")
@@ -114,24 +99,50 @@ Partial Class dlgSensitivityOfSStoV
         Me.m_btnOk.Name = "m_btnOk"
         Me.m_btnOk.UseVisualStyleBackColor = True
         '
-        'm_hdrSearch
+        'm_btnSaveToCSV
         '
-        Me.m_hdrSearch.BackColor = System.Drawing.SystemColors.ControlDark
-        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
-        Me.m_hdrSearch.Name = "m_hdrSearch"
+        resources.ApplyResources(Me.m_btnSaveToCSV, "m_btnSaveToCSV")
+        Me.m_btnSaveToCSV.Name = "m_btnSaveToCSV"
+        Me.m_btnSaveToCSV.UseVisualStyleBackColor = True
+        '
+        'm_nudNumBlocks
+        '
+        resources.ApplyResources(Me.m_nudNumBlocks, "m_nudNumBlocks")
+        Me.m_nudNumBlocks.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.m_nudNumBlocks.Name = "m_nudNumBlocks"
+        Me.m_nudNumBlocks.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'm_hdrTransfer
         '
-        Me.m_hdrTransfer.BackColor = System.Drawing.SystemColors.ControlDark
+        Me.m_hdrTransfer.CanCollapseParent = False
+        Me.m_hdrTransfer.CollapsedParentHeight = 0
         resources.ApplyResources(Me.m_hdrTransfer, "m_hdrTransfer")
+        Me.m_hdrTransfer.IsCollapsed = False
         Me.m_hdrTransfer.Name = "m_hdrTransfer"
+        '
+        'm_hdrSearch
+        '
+        Me.m_hdrSearch.CanCollapseParent = False
+        Me.m_hdrSearch.CollapsedParentHeight = 0
+        resources.ApplyResources(Me.m_hdrSearch, "m_hdrSearch")
+        Me.m_hdrSearch.IsCollapsed = False
+        Me.m_hdrSearch.Name = "m_hdrSearch"
+        '
+        'm_ucVulBlocks
+        '
+        resources.ApplyResources(Me.m_ucVulBlocks, "m_ucVulBlocks")
+        Me.m_ucVulBlocks.BlockColors = Nothing
+        Me.m_ucVulBlocks.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.m_ucVulBlocks.Name = "m_ucVulBlocks"
+        Me.m_ucVulBlocks.SelectedBlockNum = 0
+        Me.m_ucVulBlocks.UIContext = Nothing
         '
         'dlgSensitivityOfSStoV
         '
-        Me.AcceptButton = Me.m_btnSearch
         resources.ApplyResources(Me, "$this")
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.m_btnCancel
+        Me.Controls.Add(Me.m_btnSaveToCSV)
         Me.Controls.Add(Me.m_nudNumBlocks)
         Me.Controls.Add(Me.m_lblNumCategories)
         Me.Controls.Add(Me.m_btnSearch)
@@ -143,7 +154,6 @@ Partial Class dlgSensitivityOfSStoV
         Me.Controls.Add(Me.m_ucVulBlocks)
         Me.Controls.Add(Me.m_btnCancel)
         Me.Controls.Add(Me.m_btnOk)
-        Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "dlgSensitivityOfSStoV"
         Me.ShowIcon = False
@@ -158,11 +168,12 @@ Partial Class dlgSensitivityOfSStoV
     Friend WithEvents m_rbSearchPred As System.Windows.Forms.RadioButton
     Friend WithEvents m_btnCancel As System.Windows.Forms.Button
     Friend WithEvents m_btnOk As System.Windows.Forms.Button
-    Friend WithEvents m_nudNumBlocks As System.Windows.Forms.NumericUpDown
     Private WithEvents m_hdrSearch As cEwEHeaderLabel
     Private WithEvents m_hdrTransfer As cEwEHeaderLabel
     Private WithEvents m_ucVulBlocks As ScientificInterface.Ecosim.ucVulnerabiltyBlocks
     Private WithEvents m_btnSearch As System.Windows.Forms.Button
     Private WithEvents m_progress As System.Windows.Forms.ProgressBar
     Private WithEvents m_lblNumCategories As System.Windows.Forms.Label
+    Friend WithEvents m_nudNumBlocks As ScientificInterfaceShared.Controls.cEwENumericUpDown
+    Private WithEvents m_btnSaveToCSV As System.Windows.Forms.Button
 End Class

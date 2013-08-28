@@ -47,7 +47,7 @@ Namespace Ecopath.Input
             Me.m_ts = New cEwEToolstrip
             Me.m_tsbnEditGroups = New System.Windows.Forms.ToolStripButton
             Me.m_tsbnEditMultiStanza = New System.Windows.Forms.ToolStripButton
-            Me.m_grid = New ScientificInterface.Ecopath.Input.BasicInputEwEGrid
+            Me.m_grid = New ScientificInterface.Ecopath.Input.gridBasicInput
             Me.m_ts.SuspendLayout()
             Me.SuspendLayout()
             '
@@ -129,7 +129,7 @@ Namespace Ecopath.Input
         Private WithEvents m_ts As cEwEToolstrip
         Private WithEvents m_tsbnEditGroups As System.Windows.Forms.ToolStripButton
         Private WithEvents m_tsbnEditMultiStanza As System.Windows.Forms.ToolStripButton
-        Private WithEvents m_grid As ScientificInterface.Ecopath.Input.BasicInputEwEGrid
+        Private WithEvents m_grid As ScientificInterface.Ecopath.Input.gridBasicInput
     End Class
 
 End Namespace

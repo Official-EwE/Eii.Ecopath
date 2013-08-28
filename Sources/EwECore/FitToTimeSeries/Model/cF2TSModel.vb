@@ -18,9 +18,7 @@
 
 Option Strict On
 
-Imports EwECore.Ecopath
 Imports EwECore.Ecosim
-Imports System.ComponentModel
 Imports EwEUtils.Core
 
 Imports EwEUtils.SystemUtilities.cSystemUtils
@@ -89,7 +87,6 @@ Namespace FitToTimeSeries
 
         'run data
         Private m_results As cF2TSResults
-        Private m_runType As eRunType = eRunType.Idle
 
         Const VUL_MULT As Single = 1.01
 
@@ -189,7 +186,7 @@ Namespace FitToTimeSeries
 
 
             ' Safety check
-            Debug.Assert(m_runType = eRunType.Idle)
+            Debug.Assert(Me.RunState = eRunType.Idle)
 
             Me.m_runstartedHandler = runstartedHandler
             Me.m_runstepHandler = runstepHandler
@@ -205,16 +202,9 @@ Namespace FitToTimeSeries
 
 #End Region
 
-#Region "Public Properties"
+#Region " Public bits "
 
-        Public Property RunState() As eRunType
-            Get
-                Return Me.m_runType
-            End Get
-            Private Set(ByVal runState As eRunType)
-                Me.m_runType = runState
-            End Set
-        End Property
+        Public Property RunState() As eRunType = eRunType.Idle
 
         ''' <summary>
         ''' Results of the run or iteration depending on when it is accessed
@@ -234,14 +224,13 @@ Namespace FitToTimeSeries
             End Get
         End Property
 
-
         Public ReadOnly Property Data() As cF2TSDataStructures
             Get
                 Return Me.m_data
             End Get
         End Property
 
-#End Region
+#End Region ' Public bits
 
 #Region " SensitivitySS2VByPredPrey "
 
@@ -270,13 +259,13 @@ Namespace FitToTimeSeries
             Try
 
                 ' ToDo: add sanity checks; check if threading set up ok, not running, etc
-                m_runType = eRunType.SensitivitySS2VByPredPrey
+                Me.RunState = eRunType.SensitivitySS2VByPredPrey
 
-                InitForRun(m_runType)
+                InitForRun(Me.RunState)
                 m_lastRunSens = eSensType.PredPreyCell
                 Dim senResults As cSensitivityToVulResults = DirectCast(m_results, cSensitivityToVulResults)
 
-                Me.m_runstartedHandler(Me.m_runType, esData.Narena)
+                Me.m_runstartedHandler(Me.RunState, esData.Narena)
 
                 ecosim.RunModelValue(esData.NumYears, Nothing, 0)
                 SSBase = esData.SS
@@ -330,8 +319,8 @@ Namespace FitToTimeSeries
 
             End Try
 
-            Me.m_runstoppedHandler(Me.m_runType)
-            m_runType = eRunType.Idle
+            Me.m_runstoppedHandler(Me.RunState)
+            Me.RunState = eRunType.Idle
 
 
         End Sub
@@ -374,15 +363,15 @@ Namespace FitToTimeSeries
 
 
                 'init 
-                m_runType = eRunType.SensitivitySS2VByPredator
-                InitForRun(m_runType)
+                Me.RunState = eRunType.SensitivitySS2VByPredator
+                InitForRun(Me.RunState)
                 m_lastRunSens = eSensType.PredColumn
 
                 'cast the results into the correct type of object
                 Dim senResults As cSensitivityToVulResults = DirectCast(m_results, cSensitivityToVulResults)
 
                 'tell the interface the run is starting
-                Me.m_runstartedHandler(Me.m_runType, nLiving)
+                Me.m_runstartedHandler(Me.RunState, nLiving)
 
                 initEcosimForSearchIteration()
 
@@ -442,8 +431,8 @@ Namespace FitToTimeSeries
 
             End Try
 
-            Me.m_runstoppedHandler(Me.m_runType)
-            m_runType = eRunType.Idle
+            Me.m_runstoppedHandler(Me.RunState)
+            Me.RunState = eRunType.Idle
 
         End Sub
 
@@ -482,7 +471,7 @@ Namespace FitToTimeSeries
 
                         'nBlocks is the user set number of blocks
                         'm_lstSSResults.Count is the actual number of pred/columns found by the sensitivity search
-                        n = CInt(IIf(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
+                        n = CInt(IIF(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
 
                         icell = 0
                         For Each ssObj In m_lstSSResults
@@ -503,7 +492,7 @@ Namespace FitToTimeSeries
 
                     Case eSensType.PredPreyCell
 
-                        n = CInt(IIf(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
+                        n = CInt(IIF(m_lstSSResults.Count > nBlocks, nBlocks, m_lstSSResults.Count))
                         icell = 0
                         For Each ssObj In m_lstSSResults
                             icell = icell + 1
@@ -528,9 +517,6 @@ Namespace FitToTimeSeries
 
 
         End Sub
-
-
-        '  private 
 
 #End Region ' SensitivitySS2VByPredatory
 
@@ -558,8 +544,8 @@ Namespace FitToTimeSeries
                 InitForRun(eRunType.Search)
 
                 ' Start run
-                m_runType = eRunType.Search
-                Me.m_runstartedHandler(Me.m_runType, nSteps)
+                Me.RunState = eRunType.Search
+                Me.m_runstartedHandler(Me.RunState, nSteps)
 
                 DoEstimation(failed)
 
@@ -574,10 +560,10 @@ Namespace FitToTimeSeries
 
             End Try
 
-            Me.m_runstoppedHandler(Me.m_runType)
+            Me.m_runstoppedHandler(Me.RunState)
 
             ' Done searching
-            m_runType = eRunType.Idle
+            Me.RunState = eRunType.Idle
             m_core.m_SearchData.SearchMode = eSearchModes.NotInSearch
 
         End Sub
@@ -642,7 +628,7 @@ Namespace FitToTimeSeries
 
 #End Region ' Notifications
 
-#Region "Model Logic"
+#Region " Model Logic "
 
         Private Sub InitForRun(ByVal runType As eRunType)
 
@@ -735,7 +721,6 @@ Namespace FitToTimeSeries
         ''' <summary>
         ''' Count the number of parameters being searched for. Used to compute AIC.
         ''' </summary>
-        ''' <remarks></remarks>
         Public Sub updateAICNPars()
 
             'nAICData is updated by the manager
@@ -973,8 +958,8 @@ Namespace FitToTimeSeries
                 Failed = 1
                 SetParsFromP(Po)
 
-                Me.m_runstoppedHandler(Me.m_runType)
-                m_runType = eRunType.Idle
+                Me.m_runstoppedHandler(Me.RunState)
+                Me.RunState = eRunType.Idle
 
             Catch ex As Exception
 
@@ -984,8 +969,8 @@ Namespace FitToTimeSeries
                 SetParsFromP(Po)
                 Debug.Assert(False, ex.Message)
 
-                Me.m_runstoppedHandler(Me.m_runType)
-                m_runType = eRunType.Idle
+                Me.m_runstoppedHandler(Me.RunState)
+                Me.RunState = eRunType.Idle
 
                 AddMessage(New cMessage(String.Format(My.Resources.CoreMessages.F2TS_ERROR_ESTIMATION, ex.Message), _
                                         eMessageType.ErrorEncountered, _
@@ -1606,7 +1591,7 @@ Namespace FitToTimeSeries
         Private Sub modelCalled(ByVal i As Integer, ByVal n As Integer)
 
             Try
-                Me.m_runModelHandler(m_runType, i, n)
+                Me.m_runModelHandler(Me.RunState, i, n)
 
             Catch ex As Exception
                 'don't do anything if the interface exploded
