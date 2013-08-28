@@ -30,21 +30,21 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         '<System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
-            Me.m_pbFishingBlocks = New System.Windows.Forms.PictureBox
-            Me.m_lblBlockHeader = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_nudSeqEndYear = New cEwENumericUpDown
-            Me.m_lblEndYear = New System.Windows.Forms.Label
-            Me.m_nudSeqStartYear = New cEwENumericUpDown
-            Me.m_lblStartYear = New System.Windows.Forms.Label
-            Me.m_nudNumYearsPerBlock = New cEwENumericUpDown
-            Me.m_btnSetGear = New System.Windows.Forms.Button
-            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel
-            Me.m_hdrControls = New ScientificInterfaceShared.Controls.cEwEHeaderLabel
-            Me.m_pnlControls = New System.Windows.Forms.Panel
-            Me.m_lblYear = New System.Windows.Forms.Label
-            Me.m_plBlocks = New System.Windows.Forms.Panel
-            Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel
-            Me.m_plScroll = New System.Windows.Forms.Panel
+            Me.m_pbFishingBlocks = New System.Windows.Forms.PictureBox()
+            Me.m_lblBlockHeader = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_nudSeqEndYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblEndYear = New System.Windows.Forms.Label()
+            Me.m_nudSeqStartYear = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_lblStartYear = New System.Windows.Forms.Label()
+            Me.m_nudNumYearsPerBlock = New ScientificInterfaceShared.Controls.cEwENumericUpDown()
+            Me.m_btnSetGear = New System.Windows.Forms.Button()
+            Me.m_tlpMain = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_hdrControls = New ScientificInterfaceShared.Controls.cEwEHeaderLabel()
+            Me.m_pnlControls = New System.Windows.Forms.Panel()
+            Me.m_lblYear = New System.Windows.Forms.Label()
+            Me.m_plBlocks = New System.Windows.Forms.Panel()
+            Me.TableLayoutPanel3 = New System.Windows.Forms.TableLayoutPanel()
+            Me.m_plScroll = New System.Windows.Forms.Panel()
             CType(Me.m_pbFishingBlocks, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqEndYear, System.ComponentModel.ISupportInitialize).BeginInit()
             CType(Me.m_nudSeqStartYear, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -66,8 +66,11 @@ Namespace Ecosim
             'm_lblBlockHeader
             '
             Me.m_lblBlockHeader.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_lblBlockHeader.CanCollapseParent = False
+            Me.m_lblBlockHeader.CollapsedParentHeight = 0
             Me.m_lblBlockHeader.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_lblBlockHeader.IsCollapsed = False
             Me.m_lblBlockHeader.Location = New System.Drawing.Point(0, 0)
             Me.m_lblBlockHeader.Margin = New System.Windows.Forms.Padding(0)
             Me.m_lblBlockHeader.Name = "m_lblBlockHeader"
@@ -126,7 +129,6 @@ Namespace Ecosim
             '
             'm_btnSetGear
             '
-            Me.m_btnSetGear.FlatStyle = System.Windows.Forms.FlatStyle.Popup
             Me.m_btnSetGear.Location = New System.Drawing.Point(96, 3)
             Me.m_btnSetGear.Name = "m_btnSetGear"
             Me.m_btnSetGear.Size = New System.Drawing.Size(82, 20)
@@ -137,10 +139,10 @@ Namespace Ecosim
             'm_tlpMain
             '
             Me.m_tlpMain.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_tlpMain.ColumnCount = 2
             Me.m_tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-            Me.m_tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle)
+            Me.m_tlpMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
             Me.m_tlpMain.Controls.Add(Me.m_hdrControls, 1, 0)
             Me.m_tlpMain.Controls.Add(Me.m_pnlControls, 1, 1)
             Me.m_tlpMain.Controls.Add(Me.m_lblBlockHeader, 0, 0)
@@ -149,7 +151,7 @@ Namespace Ecosim
             Me.m_tlpMain.Margin = New System.Windows.Forms.Padding(0)
             Me.m_tlpMain.Name = "m_tlpMain"
             Me.m_tlpMain.RowCount = 2
-            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle)
+            Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
             Me.m_tlpMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
             Me.m_tlpMain.Size = New System.Drawing.Size(870, 69)
             Me.m_tlpMain.TabIndex = 0
@@ -157,8 +159,11 @@ Namespace Ecosim
             'm_hdrControls
             '
             Me.m_hdrControls.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+            Me.m_hdrControls.CanCollapseParent = False
+            Me.m_hdrControls.CollapsedParentHeight = 0
             Me.m_hdrControls.ImeMode = System.Windows.Forms.ImeMode.NoControl
+            Me.m_hdrControls.IsCollapsed = False
             Me.m_hdrControls.Location = New System.Drawing.Point(689, 0)
             Me.m_hdrControls.Margin = New System.Windows.Forms.Padding(3, 0, 0, 0)
             Me.m_hdrControls.Name = "m_hdrControls"
@@ -170,8 +175,8 @@ Namespace Ecosim
             'm_pnlControls
             '
             Me.m_pnlControls.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_pnlControls.Controls.Add(Me.m_nudSeqEndYear)
             Me.m_pnlControls.Controls.Add(Me.m_lblEndYear)
             Me.m_pnlControls.Controls.Add(Me.m_nudSeqStartYear)
@@ -221,8 +226,8 @@ Namespace Ecosim
             'm_plScroll
             '
             Me.m_plScroll.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                        Or System.Windows.Forms.AnchorStyles.Left) _
-                        Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+                Or System.Windows.Forms.AnchorStyles.Left) _
+                Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
             Me.m_plScroll.AutoScroll = True
             Me.m_plScroll.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
             Me.m_plScroll.Controls.Add(Me.m_pbFishingBlocks)
@@ -252,11 +257,8 @@ Namespace Ecosim
 
         End Sub
         Private WithEvents m_pbFishingBlocks As System.Windows.Forms.PictureBox
-        Private WithEvents m_nudNumYearsPerBlock As System.Windows.Forms.NumericUpDown
         Private WithEvents m_btnSetGear As System.Windows.Forms.Button
-        Private WithEvents m_nudSeqEndYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblEndYear As System.Windows.Forms.Label
-        Private WithEvents m_nudSeqStartYear As System.Windows.Forms.NumericUpDown
         Private WithEvents m_lblStartYear As System.Windows.Forms.Label
         Private WithEvents m_lblBlockHeader As cEwEHeaderLabel
         Private WithEvents TableLayoutPanel3 As System.Windows.Forms.TableLayoutPanel
@@ -266,6 +268,9 @@ Namespace Ecosim
         Private WithEvents m_plBlocks As System.Windows.Forms.Panel
         Private WithEvents m_lblYear As System.Windows.Forms.Label
         Private WithEvents m_plScroll As System.Windows.Forms.Panel
+        Private WithEvents m_nudNumYearsPerBlock As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudSeqEndYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
+        Private WithEvents m_nudSeqStartYear As ScientificInterfaceShared.Controls.cEwENumericUpDown
 
     End Class
 

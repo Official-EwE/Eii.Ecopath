@@ -57,8 +57,6 @@ Namespace Ecosim
 
         Private m_bIsFirstTimeLoaded As Boolean = True
 
-        Private m_EcosimMsgHandler As cMessageHandler = Nothing
-
         Private m_PropBaseYear As cProperty = Nothing
         Private m_PropEcosimNYears As cProperty = Nothing
 

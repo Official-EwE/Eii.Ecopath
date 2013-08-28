@@ -47,6 +47,7 @@ Namespace Ecosim
         Private m_fpUsePlugin As cPropertyFormatProvider = Nothing
 
         Private m_propBaseYear As cProperty = Nothing
+        Private m_blockData As IPolicyColorBlockDataSource = Nothing
 
         Private m_lstOptEnabled As New List(Of cControlEnabler)
         ''' <summary>Results to be plotted</summary>
@@ -70,9 +71,6 @@ Namespace Ecosim
             Me.m_manager = Me.Core.FishingPolicyManager
             Me.m_manager.Connect(AddressOf Me.RunStartedHandler, AddressOf Me.RunCompletedHandler, _
                                 AddressOf Me.SearchProgressHandler, AddressOf Me.SearchCompletedHandler)
-
-
-            'Me.m_blocks.ParmBlockCodes.NumBlocks = Me.Core.nGroups
 
             Me.m_gridObjWeights.UIContext = Me.UIContext
             Me.m_gridObjWeights.Manager = Me.Core.FishingPolicyManager
@@ -111,11 +109,12 @@ Namespace Ecosim
 
             Me.m_lstOptEnabled.Add(New cControlEnabler(Me.m_chkIncludeCCosts, eOptimizeApproachTypes.FleetValues))
 
-            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries}
+            Me.CoreComponents = New eCoreComponentType() {eCoreComponentType.FishingPolicySearch, eCoreComponentType.SearchObjective, eCoreComponentType.TimeSeries, eCoreComponentType.EcoSim}
 
             Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.Value)
 
-            Me.m_blocks.Attach(New cFPSearchColorBlockDataSource(Me.UIContext), New ucParmBlockCodes())
+            Me.m_blockData = New cFPSearchColorBlockDataSource(Me.UIContext)
+            Me.m_blocks.Attach(Me.m_blockData, New ucParmBlockCodes())
             Me.m_blocks.Invalidate()
 
             '     Me.m_blocks.DataSource = New cFPSearchColorBlockDataSource(Me.UIContext)
@@ -418,7 +417,6 @@ Namespace Ecosim
         ''' <summary>
         ''' Delegate for cFishingPolicyManager.SearchCompletedHandler. This sub will be called when cFishingPolicyManager.Run has completed.
         ''' </summary>
-        ''' <remarks></remarks>
         Private Sub SearchCompletedHandler()
 
             Try
@@ -503,9 +501,16 @@ Namespace Ecosim
 
         Public Overrides Sub OnCoreMessage(ByVal msg As cMessage)
 
-            If msg.Source = eCoreComponentType.TimeSeries Then
-                Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.All)
-            End If
+            Select Case msg.Source
+                Case eCoreComponentType.TimeSeries
+                    Me.OnBaseYearChanged(Me.m_propBaseYear, cProperty.eChangeFlags.All)
+                Case eCoreComponentType.EcoSim
+                    If (msg.Type = eMessageType.EcosimNYearsChanged) Then
+                        ' HACK! Solves #1263
+                        Me.m_blockData.Init()
+                        Me.m_blocks.Refresh()
+                    End If
+            End Select
 
         End Sub
 
