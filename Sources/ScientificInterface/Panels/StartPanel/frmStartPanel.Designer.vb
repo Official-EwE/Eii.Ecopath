@@ -74,7 +74,7 @@ Partial Class frmStartPanel
         'm_ts1
         '
         Me.m_ts1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
-        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnStartPage, Me.m_tsbnEcopathSite, Me.m_tsbnFacebook, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_tsbnRefresh, Me.m_tsbnRSS, Me.m_sep2, Me.m_tsbnBugTracker})
+        Me.m_ts1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.m_tsbnStartPage, Me.m_tsbnEcopathSite, Me.m_tsbnFacebook, Me.m_tsbnBugTracker, Me.m_sep1, Me.m_tsbnBack, Me.m_tsbnForward, Me.m_tsbnRefresh, Me.m_tsbnRSS, Me.m_sep2})
         resources.ApplyResources(Me.m_ts1, "m_ts1")
         Me.m_ts1.Name = "m_ts1"
         Me.m_ts1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
@@ -133,6 +133,7 @@ Partial Class frmStartPanel
         '
         'm_tsbnBugTracker
         '
+        Me.m_tsbnBugTracker.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         resources.ApplyResources(Me.m_tsbnBugTracker, "m_tsbnBugTracker")
         Me.m_tsbnBugTracker.Name = "m_tsbnBugTracker"
         '

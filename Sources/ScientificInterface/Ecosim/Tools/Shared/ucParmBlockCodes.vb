@@ -222,6 +222,8 @@ Namespace Ecosim
 
         Protected Overrides Sub OnResize(ByVal e As System.EventArgs)
             MyBase.OnResize(e)
+            Me.m_slSelectedBlockCode.Left = Me.m_pbxBlockCodes.Left + CInt(Me.BlockWidth / 2)
+            Me.m_slSelectedBlockCode.Width = CInt(Me.m_pbxBlockCodes.Width - Me.BlockWidth)
             Me.Invalidate()
         End Sub
 
@@ -255,7 +257,7 @@ Namespace Ecosim
             If (Me.m_uic Is Nothing) Then Return
             If (Me.m_bInUpdate = True) Then Return
 
-            Me.SelectedBlock = CInt(CSng(e.X) / Me.BlockWidth())
+            Me.SelectedBlock = CInt(Math.Floor(CSng(e.X) / Me.BlockWidth()))
 
         End Sub
 
