@@ -570,8 +570,8 @@ Public Class cF2TSManager
         End If
 
         'jb this should never happen but if it does we better tell the interface why this could not be run
-        m_core.Messages.SendMessage(New cMessage("Fit to Time Series no time series data loaded for fitting.", eMessageType.ErrorEncountered, _
-                                    eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
+        m_core.Messages.SendMessage(New cMessage(My.Resources.CoreMessages.F2TS_ERROR_NO_TS, _
+                                                 eMessageType.ErrorEncountered, eCoreComponentType.EcoSimFitToTimeSeries, eMessageImportance.Warning))
 
         Return False
     End Function
@@ -1005,7 +1005,6 @@ Public Class cF2TSManager
     ''' Delegate handler for Model to add a message to the managers list of messages
     ''' </summary>
     ''' <param name="msg"></param>
-    ''' <remarks> </remarks>
     Private Sub AddMessageCallback(ByVal msg As cMessage)
         Try
             If Me.m_runSilent Then
