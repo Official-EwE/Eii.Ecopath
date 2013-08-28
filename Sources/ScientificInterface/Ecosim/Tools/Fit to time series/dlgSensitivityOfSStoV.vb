@@ -19,10 +19,11 @@
 #Region " Imports "
 
 Option Strict On
-Imports System.Drawing
+Imports System.IO
 Imports EwECore
 Imports EwECore.FitToTimeSeries
-Imports ScientificInterface.Other
+Imports ScientificInterfaceShared.Commands
+Imports SharedResources = ScientificInterfaceShared.My.Resources
 
 #End Region ' Imports
 
@@ -191,12 +192,30 @@ Public Class dlgSensitivityOfSStoV
     ''' 
     ''' </summary>
     ''' -------------------------------------------------------------------
-    Private Sub Cancel_button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+    Private Sub OnCancel(ByVal sender As System.Object, ByVal e As System.EventArgs) _
             Handles m_btnCancel.Click
 
         If (Me.StopRun() = False) Then Return
         Me.DialogResult = Windows.Forms.DialogResult.Cancel
         Me.Close()
+
+    End Sub
+
+    Private Sub OnSaveToCSV(sender As System.Object, e As System.EventArgs) _
+        Handles m_btnSaveToCSV.Click
+
+        Dim cmdFS As cFileSaveCommand = DirectCast(Me.m_uic.CommandHandler.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+        Dim strPath As String = Me.m_uic.Core.DefaultOutputPath(EwEUtils.Core.eAutosaveTypes.Ecosim)
+
+        cmdFS.Invoke(Path.Combine(strPath, "SensitivityToV.csv"), SharedResources.FILEFILTER_CSV, 0)
+
+        If (cmdFS.Result = DialogResult.OK) Then
+            Try
+                Me.m_F2TSManager.SaveToCSV(cmdFS.FileName)
+            Catch ex As Exception
+                ' NOP
+            End Try
+        End If
 
     End Sub
 
@@ -311,6 +330,7 @@ Public Class dlgSensitivityOfSStoV
 
         Me.m_btnSearch.Enabled = Not Me.m_bRunning
         Me.m_btnOk.Enabled = Me.HasRun() And Not Me.m_bRunning
+        Me.m_btnSaveToCSV.Enabled = Me.HasRun() And Not Me.m_bRunning
 
         Me.m_bInUpdate = False
 

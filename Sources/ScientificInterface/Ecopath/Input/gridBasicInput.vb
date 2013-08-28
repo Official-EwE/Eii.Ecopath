@@ -36,7 +36,7 @@ Namespace Ecopath.Input
     ''' </summary>
     ''' =======================================================================
     <CLSCompliant(False)> _
-    Public Class BasicInputEwEGrid
+    Public Class gridBasicInput
         : Inherits EwEGrid
 
         Private Enum eColumnTypes As Integer

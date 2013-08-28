@@ -23,6 +23,8 @@ Imports System.Threading
 Imports EwECore.FitToTimeSeries
 Imports EwEUtils.Core
 Imports EwECore.SearchObjectives
+Imports System.IO
+Imports EwEUtils.Utilities
 
 Public Class cF2TSManager
     Inherits cCoreInputOutputBase
@@ -451,11 +453,8 @@ Public Class cF2TSManager
     End Property
 
     ''' <summary>
-    ''' Vulnerability block to use for pred,prey
+    ''' Get/set the vulnerability block to use for pred,prey
     ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
     Public Property VulnerabilityBlocks() As Integer(,)
         Get
             ' Translate m_model.Vblockcode into pred/prey array
@@ -560,7 +559,7 @@ Public Class cF2TSManager
     End Sub
 
     Public Sub SetWait() Implements IThreadedProcess.SetWait
-        Me.m_nonBlockingWait.setwait()
+        Me.m_nonBlockingWait.SetWait()
     End Sub
 
 
@@ -794,6 +793,59 @@ Public Class cF2TSManager
             Return Me.m_model.HasRunSens
         End Get
     End Property
+
+    ''' -------------------------------------------------------------------
+    ''' <summary>
+    ''' Save blocks to CSV
+    ''' </summary>
+    ''' <param name="strFilename">The name of the file to save to.</param>
+    ''' <returns>True if successful.</returns>
+    ''' -------------------------------------------------------------------
+    Public Function SaveToCSV(strFilename As String) As Boolean
+
+        If (Me.HasRunSens = False) Then Return False
+
+        Dim vblocks(,) As Integer = Me.VulnerabilityBlocks
+        Dim sw As StreamWriter = Nothing
+        Dim msg As cMessage = Nothing
+
+        Try
+            sw = New StreamWriter(strFilename, False)
+        Catch ex As Exception
+            msg = New cMessage(String.Format("Unable to Sensitivity CSV file {0}. {1}", strFilename, ex.Message), _
+                               eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Critical)
+            Me.m_core.Messages.SendMessage(msg)
+            Return False
+        End Try
+
+        sw.WriteLine(Me.m_core.DefaultFileHeader(eAutosaveTypes.Ecosim))
+        sw.WriteLine()
+        For iPrey As Integer = 1 To Me.m_core.nGroups
+            sw.Write("," & cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(iPrey).Name))
+        Next
+        sw.WriteLine()
+
+        For iPred As Integer = 1 To Me.m_core.nGroups
+            sw.Write(cStringUtils.ToCSVField(Me.m_core.EcoPathGroupInputs(iPred).Name) & ",")
+            For iPrey As Integer = 1 To Me.m_core.nGroups
+                If Me.isPredPrey(iPred, iPrey) Then
+                    sw.Write(vblocks(iPred, iPrey))
+                End If
+                sw.Write(",")
+            Next iPrey
+            sw.WriteLine()
+        Next iPred
+
+        sw.Flush()
+        sw.Close()
+
+        msg = New cMessage(String.Format("Saved sensitivity CSV file {0}.", strFilename), _
+                           eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+        msg.Hyperlink = Path.GetDirectoryName(strFilename)
+        Me.m_core.Messages.SendMessage(msg)
+        Return True
+
+    End Function
 
 #End Region ' Public access
 
