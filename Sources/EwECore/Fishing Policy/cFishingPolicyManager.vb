@@ -325,8 +325,6 @@ Namespace FishingPolicy
 
 #Region "Public Properties"
 
-
-
         Public ReadOnly Property SearchBlocks(ByVal iFleet As Integer) As cFishingPolicySearchBlock
             Get
                 Return m_lstFleets(iFleet)
@@ -339,17 +337,11 @@ Namespace FishingPolicy
             End Get
         End Property
 
-
-
         ''' <summary>
         ''' Number of unique search blocks across all the fleets
         ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Public ReadOnly Property nSearchBlocks() As Integer
             Get
-
                 Dim nblocks As New List(Of Integer)
                 Dim bindex As Integer
                 Dim value As Integer
@@ -357,64 +349,19 @@ Namespace FishingPolicy
 
                     For i As Integer = 1 To m_core.nEcosimYears
                         value = flt.SearchBlocks(i)
-                        If value > 0 Then 'don't count zero blocks these do not contain a search block
+                        ' Only count search (non-zero) blocks
+                        If (value > 0) Then
                             bindex = nblocks.IndexOf(value)
-                            If bindex < 0 Then
+                            If (bindex < 0) Then
                                 nblocks.Add(value)
                             End If
                         End If
                     Next i
                 Next
                 Return nblocks.Count
+
             End Get
-
         End Property
-
-        'All Callbacks have been moved to the Connect(...) method
-        '''' <summary>
-        '''' A Fishing Policy search has completed all it's runs.
-        '''' </summary>
-        '''' <remarks>If there are multiple runs they have all been completed or an Error has occured and the runs could not be completed.</remarks>
-        'Public WriteOnly Property SearchCompletedHandler() As SearchCompletedDelegate
-        '    Set(ByVal value As SearchCompletedDelegate)
-        '        m_SearchCompletedDelegate = value
-        '    End Set
-        'End Property
-
-        '''' <summary>
-        '''' Progress of the current Fishing Policy run
-        '''' </summary>
-        '''' <remarks>The Results object will contian the results of the current iteration</remarks>
-        'Public WriteOnly Property ProgressHandler() As ProgressDelegate
-        '    Set(ByVal value As ProgressDelegate)
-        '        m_ProgressDelegate = value
-        '    End Set
-        'End Property
-
-        '''' <summary>
-        '''' A Fishing Policy Search run has started.
-        '''' </summary>
-        '''' <remarks>When this is called the SearchResults object will be initialized and dimensioned but it will not contain any values. 
-        '''' The number of the run about the be started will be in the iRun poperty </remarks>
-        'Public WriteOnly Property RunStartedHandler() As RunStartedDelegate
-        '    Set(ByVal value As RunStartedDelegate)
-        '        Me.m_StartRunDelegate = value
-        '    End Set
-        'End Property
-
-
-        '''' <summary>
-        '''' A run of the Fishing Policy search has completed.
-        '''' </summary>
-        '''' <remarks></remarks>
-        'Public WriteOnly Property RunCompletedHandler() As RunCompletedDelegate
-        '    Set(ByVal value As RunCompletedDelegate)
-        '        Me.m_RunCompletedDelegate = value
-        '    End Set
-        'End Property
-
-
-
 
         ''' <summary>
         ''' Progress results of the search

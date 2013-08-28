@@ -32,7 +32,6 @@ Imports EwEUtils.Utilities
 
 Namespace Ecosim
 
-
 #Region "Interface for Datasource (IPolicyColorBlockDataSource)"
 
     ''' <summary>
@@ -40,6 +39,7 @@ Namespace Ecosim
     ''' </summary>
     ''' <remarks>Different types of core data use the ucPolicyColorBlocks differently this allows the core data to all look the same to the control. </remarks>
     Public Interface IPolicyColorBlockDataSource
+
         ''' <summary>
         ''' Values used to color the grid
         ''' </summary>
@@ -77,7 +77,6 @@ Namespace Ecosim
         ''' </summary>
         ReadOnly Property isControlPanelVisible() As Boolean
 
-
         ''' <summary>
         ''' Attach an <see cref="IBlockSelector">IBlockSelector</see> object to this data source 
         ''' </summary>
@@ -108,16 +107,15 @@ Namespace Ecosim
         ''' <summary>
         ''' Update the core data 
         ''' </summary>
-        ''' <remarks>Use when the BlockSelector has change values of the blocks </remarks>
+        ''' <remarks>Use when the BlockSelector has changed the values of blocks.</remarks>
         Sub Update()
 
         ''' <summary>
         ''' Return the value of a Block
         ''' </summary>
         ''' <param name="iBlock">Block index/value</param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
         Function BlockToValue(ByVal iBlock As Integer) As Single
+
     End Interface
 
 #End Region
