@@ -360,11 +360,13 @@ Partial Public Class AppLauncher
         '
         Me.m_tsmiHelpReportIssue.Name = "m_tsmiHelpReportIssue"
         resources.ApplyResources(Me.m_tsmiHelpReportIssue, "m_tsmiHelpReportIssue")
+        Me.m_tsmiHelpReportIssue.Image = SharedResources.bug
         '
         'm_tsmiHelpViewReports
         '
         Me.m_tsmiHelpViewReports.Name = "m_tsmiHelpViewReports"
         resources.ApplyResources(Me.m_tsmiHelpViewReports, "m_tsmiHelpViewReports")
+        Me.m_tsmiHelpViewReports.Image = SharedResources.bug
         '
         'm_tsmiViewLog
         '

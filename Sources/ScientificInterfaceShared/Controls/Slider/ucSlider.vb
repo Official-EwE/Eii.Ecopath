@@ -273,51 +273,49 @@ Namespace Controls
             lKnobIndexes.Remove(Me.m_iKnobCurr)
             lKnobIndexes.Add(Me.m_iKnobCurr)
 
-            If Me.Enabled Then
+            For Each i As Integer In lKnobIndexes
 
-                For Each i As Integer In lKnobIndexes
+                Dim iX0 As Integer = CInt((Me.Value(i) - Me.m_iValueMin) / Me.RenderScale()) + Me.Margin.Left
+                Dim aptKnobOutline(5) As Point
 
-                    Dim iX0 As Integer = CInt((Me.Value(i) - Me.m_iValueMin) / Me.RenderScale()) + Me.Margin.Left
-                    Dim aptKnobOutline(5) As Point
+                '    2
+                ' 1 / \ 3
+                '  |___|
+                ' 0     4
+                aptKnobOutline(0) = New Point(iX0, 14)
+                aptKnobOutline(1) = New Point(iX0, 8)
+                aptKnobOutline(2) = New Point(iX0 + CInt(cKNOBSIZE / 2), CInt(8 - cKNOBSIZE / 2))
+                aptKnobOutline(3) = New Point(iX0 + cKNOBSIZE, 8)
+                aptKnobOutline(4) = New Point(iX0 + cKNOBSIZE, 14)
+                aptKnobOutline(5) = aptKnobOutline(0)
 
-                    '    2
-                    ' 1 / \ 3
-                    '  |___|
-                    ' 0     4
-                    aptKnobOutline(0) = New Point(iX0, 14)
-                    aptKnobOutline(1) = New Point(iX0, 8)
-                    aptKnobOutline(2) = New Point(iX0 + CInt(cKNOBSIZE / 2), CInt(8 - cKNOBSIZE / 2))
-                    aptKnobOutline(3) = New Point(iX0 + cKNOBSIZE, 8)
-                    aptKnobOutline(4) = New Point(iX0 + cKNOBSIZE, 14)
-                    aptKnobOutline(5) = aptKnobOutline(0)
+                ' - Body
+                If Not Me.Enabled Then
+                    ' Render as disabled
+                    e.Graphics.FillPolygon(SystemBrushes.ControlLightLight, aptKnobOutline)
+                ElseIf (i = Me.m_iKnobCurr) And (Me.NumKnobs > 1) Then
+                    ' Render as selected
+                    e.Graphics.FillPolygon(SystemBrushes.ButtonHighlight, aptKnobOutline)
+                Else
+                    ' Render as active
+                    e.Graphics.FillPolygon(SystemBrushes.Control, aptKnobOutline)
+                End If
+                ' - Outline
+                e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(0), aptKnobOutline(1))
+                e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(1), aptKnobOutline(2))
+                e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(2), aptKnobOutline(3))
+                e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(3), aptKnobOutline(4))
+                e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(4), aptKnobOutline(0))
+                ' - Fancy bits
+                aptKnobOutline(2).Y += 1
+                aptKnobOutline(3).X -= 1
+                aptKnobOutline(4).X -= 1 : aptKnobOutline(4).Y -= 1
+                aptKnobOutline(0).X += 1 : aptKnobOutline(0).Y -= 1
+                e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(2), aptKnobOutline(3))
+                e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(3), aptKnobOutline(4))
+                e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(4), aptKnobOutline(0))
 
-                    ' - Body
-                    ' Is current selected knob?
-                    If (i = Me.m_iKnobCurr) And (Me.NumKnobs > 1) Then
-                        ' #Yes: render with highlighted background
-                        e.Graphics.FillPolygon(SystemBrushes.Highlight, aptKnobOutline)
-                    Else
-                        ' #Yes: render as regular control
-                        e.Graphics.FillPolygon(SystemBrushes.Control, aptKnobOutline)
-                    End If
-                    ' - Outline
-                    e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(0), aptKnobOutline(1))
-                    e.Graphics.DrawLine(SystemPens.ControlLightLight, aptKnobOutline(1), aptKnobOutline(2))
-                    e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(2), aptKnobOutline(3))
-                    e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(3), aptKnobOutline(4))
-                    e.Graphics.DrawLine(SystemPens.ControlDarkDark, aptKnobOutline(4), aptKnobOutline(0))
-                    ' - Fancy bits
-                    aptKnobOutline(2).Y += 1
-                    aptKnobOutline(3).X -= 1
-                    aptKnobOutline(4).X -= 1 : aptKnobOutline(4).Y -= 1
-                    aptKnobOutline(0).X += 1 : aptKnobOutline(0).Y -= 1
-                    e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(2), aptKnobOutline(3))
-                    e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(3), aptKnobOutline(4))
-                    e.Graphics.DrawLine(SystemPens.ControlDark, aptKnobOutline(4), aptKnobOutline(0))
-
-                Next
-
-            End If
+            Next
 
         End Sub
 
