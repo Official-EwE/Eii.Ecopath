@@ -67,7 +67,6 @@ Namespace Controls.EwEGrid
         Private m_btnImport As ToolStripButton = Nothing
         Private m_btnExport As ToolStripButton = Nothing
 
-        Private m_bIsOutputGrid As Boolean = False
         Private m_strDataName As String = ""
 
 #End Region ' Private variables
@@ -126,16 +125,16 @@ Namespace Controls.EwEGrid
             AddHandler Me.m_btnSet.Click, AddressOf OnBtnSetClick
 
             ' Create import button (input grids only)
-            If Not Me.m_bIsOutputGrid Then
+            If Not Me.IsOutputGrid Then
                 Me.m_btnImport = New ToolStripButton(My.Resources.ImportXMLHS)
                 Me.m_btnImport.ToolTipText = My.Resources.TOOLTIP_LOADFROMCSV
-                AddHandler Me.m_btnImport.Click, AddressOf OnBtnImportClick
+                AddHandler Me.m_btnImport.Click, AddressOf OnImportGrid
             End If
 
             ' Create export button
             Me.m_btnExport = New ToolStripButton(My.Resources.ExportXMLHS)
             Me.m_btnExport.ToolTipText = My.Resources.TOOLTIP_SAVETOCSV
-            AddHandler Me.m_btnExport.Click, AddressOf OnBtnExportClick
+            AddHandler Me.m_btnExport.Click, AddressOf OnExportGrid
 
             ' Add items to the toolstrip
             If (cSystemUtils.IsRightToLeft) Then
@@ -186,12 +185,12 @@ Namespace Controls.EwEGrid
             Me.m_ts.Items.Remove(Me.m_lblSet)
 
             If Me.m_btnImport IsNot Nothing Then
-                RemoveHandler Me.m_btnImport.Click, AddressOf OnBtnImportClick
+                RemoveHandler Me.m_btnImport.Click, AddressOf OnImportGrid
                 Me.m_btnImport.Dispose()
                 Me.m_btnImport = Nothing
             End If
 
-            RemoveHandler Me.m_btnExport.Click, AddressOf OnBtnExportClick
+            RemoveHandler Me.m_btnExport.Click, AddressOf OnExportGrid
             Me.m_btnExport.Dispose()
             Me.m_btnExport = Nothing
 
@@ -215,13 +214,6 @@ Namespace Controls.EwEGrid
         End Sub
 
         Public Property IsOutputGrid As Boolean
-            Get
-                Return Me.m_bIsOutputGrid
-            End Get
-            Set(ByVal value As Boolean)
-                Me.m_bIsOutputGrid = value
-            End Set
-        End Property
 
 #End Region ' Public interfaces
 
@@ -278,7 +270,7 @@ Namespace Controls.EwEGrid
         ''' from a CSV file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBtnImportClick(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnImportGrid(ByVal sender As Object, ByVal e As EventArgs)
             Me.ImportFromCSV()
         End Sub
 
@@ -288,7 +280,7 @@ Namespace Controls.EwEGrid
         ''' to a CSV file.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Private Sub OnBtnExportClick(ByVal sender As Object, ByVal e As EventArgs)
+        Private Sub OnExportGrid(ByVal sender As Object, ByVal e As EventArgs)
             Me.ExportToCSV()
         End Sub
 
@@ -312,7 +304,7 @@ Namespace Controls.EwEGrid
         Private Sub UpdateControls()
 
             Dim sel As SourceGrid2.Selection = Me.m_grid.Selection
-            Dim bIsInputForm As Boolean = False
+            Dim bIsInputGrid As Boolean = False
             Dim bHasEditableCells As Boolean = False
             ' Flag stating that the selection contains a mix of variable names
             Dim bIsMixedSelection As Boolean = False
@@ -323,7 +315,7 @@ Namespace Controls.EwEGrid
             Dim bIsMixedValue As Boolean = False
             Dim objValue As Object = Nothing
 
-            bIsInputForm = Not Me.m_bIsOutputGrid
+            bIsInputGrid = Not Me.IsOutputGrid
 
             ' Iterate through cells
             For Each cell As SourceGrid2.Cells.ICell In sel.GetCells()
@@ -361,13 +353,13 @@ Namespace Controls.EwEGrid
             ' Enable set label if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_lblSet, Nothing) Then
                 Me.m_lblSet.Enabled = bHasEditableCells And Not bIsMixedSelection
-                Me.m_lblSet.Visible = bIsInputForm
+                Me.m_lblSet.Visible = bIsInputGrid
             End If
 
             ' Enable edit control if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_ttbValue, Nothing) Then
                 Me.m_ttbValue.Enabled = bHasEditableCells And Not bIsMixedSelection
-                Me.m_ttbValue.Visible = bIsInputForm
+                Me.m_ttbValue.Visible = bIsInputGrid
                 Me.m_ttbValue.Text = ""
 
                 ' ToDo_JS: replace text box with a dynamic control that is smartly configured to
@@ -396,12 +388,12 @@ Namespace Controls.EwEGrid
             ' Enable set button if the grid has editable cells that represent only one type of variable.
             If Not Object.ReferenceEquals(Me.m_btnSet, Nothing) Then
                 Me.m_btnSet.Enabled = bHasEditableCells And Not bIsMixedSelection
-                Me.m_btnSet.Visible = bIsInputForm
+                Me.m_btnSet.Visible = bIsInputGrid
             End If
 
             ' Enable import button only for input forms
             If Not Object.ReferenceEquals(Me.m_btnImport, Nothing) Then
-                Me.m_btnImport.Visible = bIsInputForm
+                Me.m_btnImport.Visible = bIsInputGrid
             End If
 
         End Sub
@@ -461,6 +453,7 @@ Namespace Controls.EwEGrid
 
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdOF As cFileOpenCommand = DirectCast(cmdh.GetCommand(cFileOpenCommand.COMMAND_NAME), cFileOpenCommand)
+            Dim msg As cMessage = Nothing
             Dim fs As Stream = Nothing
             Dim sr As StreamReader = Nothing
 
@@ -473,39 +466,70 @@ Namespace Controls.EwEGrid
                                     FileAccess.Read, _
                                     FileShare.ReadWrite Or FileShare.Delete Or FileShare.Inheritable)
             Catch ex As Exception
-                Return
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_FAILURE, Me.DataName, cmdOF.FileName, ex.Message), _
+                                  eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
 
-            sr = New StreamReader(fs)
-            Me.m_grid.ReadContent(sr)
-            sr.Close()
-            fs.Close()
+            If (fs IsNot Nothing) Then
+
+                sr = New StreamReader(fs)
+                Me.m_grid.ReadContent(sr)
+                sr.Close()
+                fs.Close()
+
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILELOAD_SUCCES, Me.DataName, cmdOF.FileName), _
+                    eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(cmdOF.FileName)
+
+            End If
+
+            ' Log!
+            Me.m_uic.Core.Messages.SendMessage(msg)
 
         End Sub
 
         Private Sub ExportToCSV()
 
+            If (Me.m_uic Is Nothing) Then Return
+
             Dim cmdh As cCommandHandler = Me.m_uic.CommandHandler
             Dim cmdSF As cFileSaveCommand = DirectCast(cmdh.GetCommand(cFileSaveCommand.COMMAND_NAME), cFileSaveCommand)
+            Dim msg As cMessage = Nothing
             Dim fs As Stream = Nothing
             Dim sw As StreamWriter = Nothing
 
             cmdSF.Invoke(Me.GetCSVFileName(), My.Resources.FILEFILTER_CSV)
-            If cmdSF.Result <> Windows.Forms.DialogResult.OK Then Return
+            If (cmdSF.Result <> Windows.Forms.DialogResult.OK) Then Return
 
             Try
                 'Create the file
                 fs = New FileStream(cmdSF.FileName, FileMode.Create, FileAccess.Write, FileShare.None)
             Catch ex As Exception
-                ' Woops! Send message?
-                Return
+                ' Woops!
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_FAILURE, Me.DataName, cmdSF.FileName, ex.Message), _
+                                  eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Warning)
             End Try
-            sw = New StreamWriter(fs)
-            Me.m_grid.WriteContent(sw)
-            sw.Close()
-            fs.Close()
+
+            If (fs IsNot Nothing) Then
+                sw = New StreamWriter(fs)
+                Me.m_grid.WriteContent(sw)
+                sw.Close()
+                fs.Close()
+
+                msg = New cMessage(String.Format(My.Resources.GENERIC_FILESAVE_SUCCES, Me.DataName, cmdSF.FileName), _
+                                   eMessageType.DataExport, eCoreComponentType.External, eMessageImportance.Information)
+                msg.Hyperlink = Path.GetDirectoryName(cmdSF.FileName)
+            End If
+
+            ' Log!
+            Me.m_uic.Core.Messages.SendMessage(msg)
 
         End Sub
+
+        Private Function DataName() As String
+            If String.IsNullOrWhiteSpace(Me.m_strDataName) Then Return My.Resources.GENERIC_VALUE_GRID_CONTENT
+            Return Me.m_strDataName
+        End Function
 
 #End Region ' Internal implementation
 
