@@ -34,23 +34,6 @@ Namespace Commands
     Public Class cFileSaveCommand
         Inherits cCommand
 
-#Region " Privates "
-
-        ''' <summary>Dialog caption.</summary>
-        Private m_strTitle As String = ""
-        ''' <summary>Name of the file to save.</summary>
-        Private m_strFileName As String = ""
-        ''' <summary>Directory to initialize the dialog with.</summary>
-        Private m_strDirectory As String = ""
-        ''' <summary>File filter to use.</summary>
-        Private m_strFileFilters As String = ""
-        ''' <summary>Default file filter.</summary>
-        Private m_iFilter As Integer = 0
-        ''' <summary>The dialog result.</summary>
-        Private m_iResult As DialogResult = DialogResult.OK
-
-#End Region ' Privates
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' -----------------------------------------------------------------------
@@ -71,7 +54,7 @@ Namespace Commands
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overrides Sub Invoke()
-            Me.m_iResult = DialogResult.Cancel
+            Me.Result = DialogResult.Cancel
             MyBase.Invoke()
         End Sub
 
@@ -95,15 +78,15 @@ Namespace Commands
 
             Dim strPath As String = ""
 
-            Me.m_strTitle = strTitle
-            Me.m_strFileName = strFileName
-            Me.m_strFileFilters = strFileFilter
-            Me.m_iFilter = iFilter
+            Me.Title = strTitle
+            Me.FileName = strFileName
+            Me.Filters = strFileFilter
+            Me.FilterIndex = iFilter
 
             Try
                 ' Only update directory if a directory has been specified
                 strPath = Path.GetDirectoryName(strFileName)
-                If Not String.IsNullOrEmpty(strPath) Then Me.m_strDirectory = strPath
+                If Not String.IsNullOrEmpty(strPath) Then Me.Directory = strPath
             Catch ex As Exception
             End Try
 
@@ -135,13 +118,6 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Title() As String
-            Get
-                Return Me.m_strTitle
-            End Get
-            Set(ByVal strTitle As String)
-                Me.m_strTitle = strTitle
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -152,13 +128,6 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property FileName() As String
-            Get
-                Return Me.m_strFileName
-            End Get
-            Set(ByVal strFileName As String)
-                Me.m_strFileName = strFileName
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -166,13 +135,6 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Directory() As String
-            Get
-                Return Me.m_strDirectory
-            End Get
-            Set(ByVal strDirectory As String)
-                Me.m_strDirectory = strDirectory
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -180,24 +142,13 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Result() As DialogResult
-            Get
-                Return Me.m_iResult
-            End Get
-            Set(ByVal value As DialogResult)
-                Me.m_iResult = value
-            End Set
-        End Property
-
+            
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the file filters that the dialog was invoked with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Filters() As String
-            Get
-                Return Me.m_strFileFilters
-            End Get
-        End Property
+        Public Property Filters() As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -205,14 +156,6 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property FilterIndex() As Integer
-            Get
-                Return Me.m_iFilter
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iFilter = value
-            End Set
-        End Property
-
 
     End Class
 

@@ -2933,4 +2933,10 @@
   <data name="GENERIC_VALUE_GRID_CONTENT" xml:space="preserve">
     <value>grid content</value>
   </data>
+  <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
+    <value>Please select a folder</value>
+  </data>
+  <data name="LABEL_CHOOSE_FOLDER" xml:space="preserve">
+    <value>Choose folder...</value>
+  </data>
 </root>

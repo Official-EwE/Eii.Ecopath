@@ -2807,15 +2807,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Please select or create a folder.
-        '''</summary>
-        Public ReadOnly Property PROMPT_FOLDER_SELECTION() As String
-            Get
-                Return ResourceManager.GetString("PROMPT_FOLDER_SELECTION", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  Looks up a localized string similar to You are about to delete forcing function &apos;{0}&apos;. This action cannot be undone. Are you sure you want to do this?.
         '''</summary>
         Public ReadOnly Property PROMPT_FORCING_DELETE() As String

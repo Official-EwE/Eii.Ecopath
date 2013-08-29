@@ -643,6 +643,7 @@ Namespace Ecosim
 
             Dim cmd As cDirectoryOpenCommand = DirectCast(Me.CommandHandler.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
+            cmd.Directory = Me.UIContext.Core.DefaultOutputPath(eAutosaveTypes.Ecosim)
             cmd.Invoke()
 
             If cmd.Result = Windows.Forms.DialogResult.OK Then

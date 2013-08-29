@@ -34,6 +34,7 @@ Imports EwEUtils.Core
 Imports EwEUtils.Database
 Imports EwEUtils.SystemUtilities
 Imports EwEUtils.Utilities
+Imports Ookii.Dialogs
 Imports ScientificInterface.Ecopath
 Imports ScientificInterface.Ecosim
 Imports ScientificInterface.Ecospace
@@ -2411,7 +2412,7 @@ Public Class AppLauncher
 
     Private Sub OnDirectoryOpen(ByVal cmd As cCommand) Handles m_cmdDirectoryOpen.OnInvoke
 
-        Dim dlgLoad As FolderBrowserDialog = Nothing
+        Dim dlgLoad As Ookii.Dialogs.VistaFolderBrowserDialog = Nothing
         Dim doc As cDirectoryOpenCommand = DirectCast(cmd, cDirectoryOpenCommand)
         Dim strPath As String = doc.Directory
 
@@ -3423,11 +3424,11 @@ Public Class AppLauncher
         Handles m_cmdExportEcosimResultsToCSV.OnInvoke
 
         Dim writer As EwECore.Ecosim.cEcosimResultWriter = Nothing
-        Dim strPath As String = Me.Core.OutputPath
-        Dim dlg As FolderBrowserDialog = cEwEFileDialogHelper.FolderBrowserDialog(My.Resources.PROMPT_FOLDER_SELECTION, strPath)
+        Dim strPath As String = ""
 
-        If (dlg.ShowDialog <> Windows.Forms.DialogResult.OK) Then Return
-        strPath = dlg.SelectedPath
+        Me.m_cmdDirectoryOpen.Invoke(Me.Core.DefaultOutputPath(eAutosaveTypes.Ecosim))
+        If (Me.m_cmdDirectoryOpen.Result <> Windows.Forms.DialogResult.OK) Then Return
+        strPath = Me.m_cmdDirectoryOpen.Directory
 
         writer = New EwECore.Ecosim.cEcosimResultWriter(Me.UIContext.Core)
         writer.WriteResults(strPath, DirectCast(cmd, cEcosimSaveDataCommand).Results)

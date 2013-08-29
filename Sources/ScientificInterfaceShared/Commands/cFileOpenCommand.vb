@@ -34,27 +34,6 @@ Namespace Commands
     Public Class cFileOpenCommand
         Inherits cCommand
 
-#Region " Privates "
-
-        ''' <summary>Dialog caption.</summary>
-        Private m_strTitle As String = ""
-        ''' <summary>Name of the file to open.</summary>
-        Private m_strFileName As String = ""
-        ''' <summary>Names of the files to open.</summary>
-        Private m_astrFileNames As String()
-        ''' <summary>Directory to initialize the dialog with.</summary>
-        Private m_strDirectory As String = ""
-        ''' <summary>File filter to use.</summary>
-        Private m_strFileFilters As String = ""
-        ''' <summary>Default file filter.</summary>
-        Private m_iFilter As Integer = 0
-        ''' <summary>Allow mutliple files to be selected.</summary>
-        Private m_bAllowMultiple As Boolean = False
-        ''' <summary>The dialog result.</summary>
-        Private m_iResult As DialogResult = DialogResult.OK
-
-#End Region ' Privates
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' -----------------------------------------------------------------------
@@ -70,7 +49,7 @@ Namespace Commands
         End Sub
 
         Public Overrides Sub Invoke()
-            Me.m_iResult = DialogResult.Cancel
+            Me.Result = DialogResult.Cancel
             MyBase.Invoke()
         End Sub
 
@@ -81,7 +60,7 @@ Namespace Commands
         ''' <param name="strFileFilter"></param>
         ''' <param name="iFilter"></param>
         ''' <param name="strTitle">
-        ''' Optional dialog title. If left empty, the the .NET default is used.
+        ''' Optional dialog title. If left empty, the .NET default is used.
         ''' </param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strFileName As String, _
@@ -91,16 +70,16 @@ Namespace Commands
 
             Dim strPath As String = ""
 
-            Me.m_strTitle = strTitle
-            Me.m_strFileName = strFileName
-            Me.m_strFileFilters = strFileFilter
-            Me.m_iFilter = iFilter
+            Me.Title = strTitle
+            Me.FileName = strFileName
+            Me.Filters = strFileFilter
+            Me.FilterIndex = iFilter
 
             ' Only update directory if a diretory has been specified with the file name
             If Not String.IsNullOrWhiteSpace(strFileName) Then
                 Try
                     strPath = Path.GetDirectoryName(strFileName)
-                    If Not String.IsNullOrEmpty(strPath) Then Me.m_strDirectory = strPath
+                    If Not String.IsNullOrWhiteSpace(strPath) Then Me.Directory = strPath
                 Catch ex As Exception
                 End Try
             End If
@@ -133,13 +112,6 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Title() As String
-            Get
-                Return Me.m_strTitle
-            End Get
-            Set(ByVal strTitle As String)
-                Me.m_strTitle = strTitle
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -150,13 +122,6 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property FileName() As String
-            Get
-                Return Me.m_strFileName
-            End Get
-            Set(ByVal strFileName As String)
-                Me.m_strFileName = strFileName
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -167,27 +132,13 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property FileNames() As String()
-            Get
-                Return Me.m_astrFileNames
-            End Get
-            Set(ByVal astrFileNames As String())
-                Me.m_astrFileNames = astrFileNames
-            End Set
-        End Property
-
+           
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the directory that the command was invoked with.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Directory() As String
-            Get
-                Return Me.m_strDirectory
-            End Get
-            Set(ByVal strDirectory As String)
-                Me.m_strDirectory = strDirectory
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -195,47 +146,27 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Result() As DialogResult
-            Get
-                Return Me.m_iResult
-            End Get
-            Set(ByVal value As DialogResult)
-                Me.m_iResult = value
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' Get the file filters that the dialog was invoked with.
         ''' </summary>
         ''' -------------------------------------------------------------------
-        Public ReadOnly Property Filters() As String
-            Get
-                Return Me.m_strFileFilters
-            End Get
-        End Property
+        Public Property Filters() As String
 
         ''' -------------------------------------------------------------------
         ''' <summary>
-        ''' Get the file filter index that the dialog was invoked with.
+        ''' Get/set the file filter index.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property FilterIndex() As Integer
-            Get
-                Return Me.m_iFilter
-            End Get
-            Set(ByVal value As Integer)
-                Me.m_iFilter = value
-            End Set
-        End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Get/set whether the dialog allows multiple selections.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Public Property AllowMultiple() As Boolean
-            Get
-                Return Me.m_bAllowMultiple
-            End Get
-            Set(ByVal bAllowMultiple As Boolean)
-                Me.m_bAllowMultiple = bAllowMultiple
-            End Set
-        End Property
 
     End Class
 

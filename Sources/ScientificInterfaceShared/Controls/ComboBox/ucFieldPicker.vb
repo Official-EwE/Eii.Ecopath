@@ -103,7 +103,7 @@ Namespace Controls
             Me.m_tsddFields.DropDownItems.Clear()
 
             If Me.m_bShowDirPicker Then
-                item = New ToolStripButton("Choose folder...", Nothing, AddressOf OnPickDirectory)
+                item = New ToolStripButton(My.Resources.LABEL_CHOOSE_FOLDER, Nothing, AddressOf OnPickDirectory)
                 Me.m_tsddFields.DropDown.Items.Add(item)
             End If
 
@@ -144,7 +144,7 @@ Namespace Controls
                 Dim cmd As cDirectoryOpenCommand = DirectCast(cmdh.GetCommand(cDirectoryOpenCommand.COMMAND_NAME), cDirectoryOpenCommand)
 
                 If cmd IsNot Nothing Then
-                    cmd.Prompt = "Select directory"
+                    cmd.Prompt = My.Resources.PROMPT_FOLDER_SELECTION
                     cmd.Directory = Path.GetDirectoryName(".\")
                     cmd.Invoke()
                     If cmd.Result = DialogResult.OK Then

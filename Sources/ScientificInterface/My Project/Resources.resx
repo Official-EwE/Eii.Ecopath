@@ -5664,9 +5664,6 @@ Location: {1}</value>
     <value>Creating Ecosim scenario '{0}'...</value>
     <comment>{0}=scenario name</comment>
   </data>
-  <data name="PROMPT_FOLDER_SELECTION" xml:space="preserve">
-    <value>Please select or create a folder</value>
-  </data>
   <data name="ECOSPACE_CAPTION_IMPORTLAYERIMAGE" xml:space="preserve">
     <value>Import layer image</value>
   </data>
