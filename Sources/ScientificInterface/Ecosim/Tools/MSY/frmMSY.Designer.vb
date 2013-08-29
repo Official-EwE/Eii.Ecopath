@@ -44,6 +44,7 @@ Namespace Ecosim
         'Do not modify it using the code editor.
         <System.Diagnostics.DebuggerStepThrough()> _
         Private Sub InitializeComponent()
+            Me.components = New System.ComponentModel.Container()
             Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMSY))
             Me.m_ts = New ScientificInterfaceShared.Controls.cEwEToolstrip()
             Me.m_tsbnShowHide = New System.Windows.Forms.ToolStripButton()
