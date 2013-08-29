@@ -34,17 +34,6 @@ Namespace Commands
     Public Class cDirectoryOpenCommand
         Inherits cCommand
 
-#Region " Privates "
-
-        ''' <summary>Dialog prompt</summary>
-        Private m_strPrompt As String = ""
-        ''' <summary>Name of the file to open.</summary>
-        Private m_strDirectory As String = ""
-        ''' <summary>The dialog result.</summary>
-        Private m_iResult As DialogResult = DialogResult.OK
-
-#End Region ' Privates
-
         ''' -----------------------------------------------------------------------
         ''' <summary>The name of this command.</summary>
         ''' -----------------------------------------------------------------------
@@ -66,7 +55,7 @@ Namespace Commands
         ''' </summary>
         ''' -----------------------------------------------------------------------
         Public Overrides Sub Invoke()
-            Me.m_iResult = DialogResult.Cancel
+            Me.Result = DialogResult.Cancel
             MyBase.Invoke()
         End Sub
 
@@ -75,10 +64,10 @@ Namespace Commands
         ''' Invoke the 'Directory open' command with default path and a custom
         ''' description.
         ''' </summary>
-        ''' <param name="strDescription">The description to show in the dialog.</param>
+        ''' <param name="strDirectory">The directory to show in the dialog.</param>
         ''' -----------------------------------------------------------------------
-        Public Overloads Sub Invoke(ByVal strDescription As String)
-            Me.m_strPrompt = strDescription
+        Public Overloads Sub Invoke(ByVal strDirectory As String)
+            Me.Directory = strDirectory
             Me.Invoke()
         End Sub
 
@@ -90,8 +79,8 @@ Namespace Commands
         ''' <param name="strDescription">The description to show in the dialog.</param>
         ''' -----------------------------------------------------------------------
         Public Overloads Sub Invoke(ByVal strDirectory As String, ByVal strDescription As String)
-            Me.m_strPrompt = strDescription
-            Me.m_strDirectory = strDirectory
+            Me.Prompt = strDescription
+            Me.Directory = strDirectory
             Me.Invoke()
         End Sub
 
@@ -101,13 +90,6 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Prompt() As String
-            Get
-                Return Me.m_strPrompt
-            End Get
-            Set(ByVal strDescription As String)
-                Me.m_strPrompt = strDescription
-            End Set
-        End Property
 
         ''' -------------------------------------------------------------------
         ''' <summary>
@@ -115,28 +97,14 @@ Namespace Commands
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Directory() As String
-            Get
-                Return Me.m_strDirectory
-            End Get
-            Set(ByVal strDirectory As String)
-                Me.m_strDirectory = strDirectory
-            End Set
-        End Property
-
+           
         ''' -------------------------------------------------------------------
         ''' <summary>
         ''' The result that the dialog closed with.
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Property Result() As DialogResult
-            Get
-                Return Me.m_iResult
-            End Get
-            Set(ByVal value As DialogResult)
-                Me.m_iResult = value
-            End Set
-        End Property
-
+           
     End Class
 
 End Namespace

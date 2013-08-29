@@ -6314,6 +6314,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to Choose folder....
+        '''</summary>
+        Public ReadOnly Property LABEL_CHOOSE_FOLDER() As String
+            Get
+                Return ResourceManager.GetString("LABEL_CHOOSE_FOLDER", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to &amp;Fleet:.
         '''</summary>
         Public ReadOnly Property LABEL_FLEET() As String
@@ -6859,6 +6868,15 @@ Namespace My.Resources
         Public ReadOnly Property PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH() As String
             Get
                 Return ResourceManager.GetString("PROMPT_FILEIMPORT_INVALIDIMAGEFORGLYPH", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to Please select a folder.
+        '''</summary>
+        Public ReadOnly Property PROMPT_FOLDER_SELECTION() As String
+            Get
+                Return ResourceManager.GetString("PROMPT_FOLDER_SELECTION", resourceCulture)
             End Get
         End Property
         

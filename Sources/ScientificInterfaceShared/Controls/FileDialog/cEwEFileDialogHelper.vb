@@ -142,17 +142,20 @@ Namespace Controls
         ''' <returns>A file dialog.</returns>
         ''' -------------------------------------------------------------------
         Public Shared Function FolderBrowserDialog(ByVal strDescription As String, _
-                                    ByVal strInitialDirectory As String) As FolderBrowserDialog
+                                                   ByVal strInitialDirectory As String) As Ookii.Dialogs.VistaFolderBrowserDialog
 
-            Dim dlg As New FolderBrowserDialog()
+            Dim dlg As New Ookii.Dialogs.VistaFolderBrowserDialog()
 
-            With dlg
-                .SelectedPath = strInitialDirectory
-                .ShowNewFolderButton = True
-                .Description = strDescription
-            End With
+            If (String.IsNullOrWhiteSpace(strDescription)) Then
+                strDescription = My.Resources.PROMPT_FOLDER_SELECTION
+            End If
 
-            ' Hack when SP1 installation is not detected
+            dlg.SelectedPath = strInitialDirectory
+            dlg.ShowNewFolderButton = True
+            dlg.Description = strDescription
+            dlg.UseDescriptionForTitle = True
+
+            ' Hack when XP SP1 installation is not detected
             Dim pi As PropertyInfo = GetType(FolderBrowserDialog).GetProperty("AutoUpgradeEnabled")
             If (pi IsNot Nothing) Then pi.SetValue(dlg, True, Nothing)
 
