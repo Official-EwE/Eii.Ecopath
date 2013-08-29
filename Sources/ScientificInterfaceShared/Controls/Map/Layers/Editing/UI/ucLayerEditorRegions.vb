@@ -23,6 +23,8 @@ Namespace Controls.Map.Layers
 
     Public Class ucLayerEditorRegion
 
+        Private m_mhSpace As cMessageHandler = Nothing
+
         Public Sub New()
             MyBase.New()
             Me.InitializeComponent()
@@ -35,29 +37,46 @@ Namespace Controls.Map.Layers
 
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim iNumRegions As Integer = Me.UIContext.Core.nRegions
+            Me.UpdateContent(Me.Editor)
 
-            Me.Editor.CellValueMax = iNumRegions
-            Me.m_nudRegion.Maximum = iNumRegions
+            Me.m_mhSpace = New cMessageHandler(AddressOf OnCoreMessage, EwEUtils.Core.eCoreComponentType.EcoSpace, EwEUtils.Core.eMessageType.DataValidation, Me.UIContext.SyncObject)
+            Me.UIContext.Core.Messages.AddMessageHandler(Me.m_mhSpace)
+#If DEBUG Then
+            Me.m_mhSpace.Name = "ucLayerEditorRegions"
+#End If
 
         End Sub
 
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                    Me.UIContext.Core.Messages.RemoveMessageHandler(Me.m_mhSpace)
+                    Me.m_mhSpace.Dispose()
+                    Me.m_mhSpace = Nothing
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
+
         Public Overrides Sub UpdateContent(editor As cLayerEditor)
+
             MyBase.UpdateContent(editor)
             If (Me.UIContext Is Nothing) Then Return
 
-            Dim iVal As Integer
-
-            ' Sanity check
+            ' Sanity checks
+            If (editor Is Nothing) Then Return
+            If (editor.Layer Is Nothing) Then Return
             If (Me.m_nudRegion Is Nothing) Then Return
 
+            editor.CellValueMax = editor.Layer.Data.MaxValue
+            Dim decMax As Decimal = CDec(editor.CellValueMax)
+            Dim decVal As Decimal = CDec(editor.CellValue)
+
             ' Set control value
-            iVal = CInt(editor.CellValue)
-
-            Me.m_nudRegion.Value = iVal
-            Me.m_nudRegion.Maximum = CDec(editor.CellValueMax)
-
-            ' Whooh
+            Me.m_nudRegion.Value = Math.Min(decMax, decVal)
+            Me.m_nudRegion.Maximum = decMax
 
         End Sub
 
@@ -72,6 +91,16 @@ Namespace Controls.Map.Layers
 
             Me.Editor.CellValue = CInt(Me.m_nudRegion.Value)
 
+        End Sub
+
+        Private Sub OnCoreMessage(ByRef msg As cMessage)
+            Try
+                If (msg.DataType = EwEUtils.Core.eDataTypes.EcospaceModelParameter) And (msg.Type = EwEUtils.Core.eMessageType.DataValidation) Then
+                    Me.UpdateContent(Me.Editor)
+                End If
+            Catch ex As Exception
+
+            End Try
         End Sub
 
 #End Region ' Event handlers
