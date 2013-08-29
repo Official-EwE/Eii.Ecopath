@@ -89,6 +89,7 @@ Namespace Controls
             Dim sLabelXScale As Single = 1.0!
             Dim fmtTS As New cTimeSeriesTypeFormatter()
             Dim fmtIO As New cCoreInterfaceFormatter()
+            Dim iLineHeight As Integer = 17
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, iXMax, sYMax)
 
@@ -128,10 +129,8 @@ Namespace Controls
                     Else
                         sLabelXPos = CSng(i * rcImage.Width * sLabelXScale / Math.Max(1, astrXMarks.Length - 1))
                     End If
-                    g.DrawString(astrXMarks(i), Me.Font, brTmp, _
-                            rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace, sfmt)
-                    g.DrawLine(penTmp, rcImage.Left + sLabelXPos, _
-                            rcImage.Bottom, rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace / 2)
+                    g.DrawString(astrXMarks(i), Me.Font, brTmp, rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace, sfmt)
+                    g.DrawLine(penTmp, rcImage.Left + sLabelXPos, rcImage.Bottom, rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace / 2)
                 Next
 
                 Dim yStep As Integer
@@ -169,7 +168,7 @@ Namespace Controls
 
                 ' Draw time series name
                 strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXED, Me.Shape.Index, Me.Shape.Name)
-                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
+                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + iLineHeight, sfmt)
 
                 ' Draw time series type
                 If TypeOf shape Is cGroupTimeSeries Then
@@ -199,7 +198,7 @@ Namespace Controls
                 End If
 
                 strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, strType, strName)
-                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 33, sfmt)
+                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 2 * iLineHeight, sfmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.
                 brTmp.Dispose()
