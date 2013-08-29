@@ -84,10 +84,11 @@ Namespace Controls
             Dim strType As String = ""
             Dim strName As String = ""
             Dim strLabel As String = ""
-            Dim fmt As StringFormat = Nothing
-            Dim desc As New cTimeSeriesTypeFormatter()
+            Dim sfmt As StringFormat = Nothing
             Dim astrXMarks As String() = Nothing
             Dim sLabelXScale As Single = 1.0!
+            Dim fmtTS As New cTimeSeriesTypeFormatter()
+            Dim fmtIO As New cCoreInterfaceFormatter()
 
             MyBase.DrawShape(shape, rcImage, g, clr, bDrawLabels, drawMode, iXMax, sYMax)
 
@@ -111,9 +112,9 @@ Namespace Controls
                 ' Draw X axis labels
                 Me.GetXAxisLabels(rcImage.Width, astrXMarks, sLabelXScale)
 
-                fmt = New StringFormat
-                fmt.Alignment = StringAlignment.Center
-                fmt.LineAlignment = StringAlignment.Center
+                sfmt = New StringFormat
+                sfmt.Alignment = StringAlignment.Center
+                sfmt.LineAlignment = StringAlignment.Center
 
                 Dim brTmp As New SolidBrush(System.Drawing.Color.FromArgb(128, 0, 0, 0))
                 Dim penTmp As New Pen(System.Drawing.Color.FromArgb(128, 0, 0, 0))
@@ -128,7 +129,7 @@ Namespace Controls
                         sLabelXPos = CSng(i * rcImage.Width * sLabelXScale / Math.Max(1, astrXMarks.Length - 1))
                     End If
                     g.DrawString(astrXMarks(i), Me.Font, brTmp, _
-                            rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace, fmt)
+                            rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace, sfmt)
                     g.DrawLine(penTmp, rcImage.Left + sLabelXPos, _
                             rcImage.Bottom, rcImage.Left + sLabelXPos, rcImage.Bottom - sBtnSpace / 2)
                 Next
@@ -168,7 +169,7 @@ Namespace Controls
 
                 ' Draw time series name
                 strLabel = String.Format(My.Resources.GENERIC_LABEL_INDEXED, Me.Shape.Index, Me.Shape.Name)
-                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, fmt)
+                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 15, sfmt)
 
                 ' Draw time series type
                 If TypeOf shape Is cGroupTimeSeries Then
@@ -177,11 +178,11 @@ Namespace Controls
                     Dim igroup As Integer = gts.GroupIndex
 
                     If (igroup > 0) Then
-                        strName = core.EcoPathGroupInputs(igroup).Name
+                        strName = fmtIO.GetDescriptor(core.EcoPathGroupInputs(igroup))
                     Else
                         strName = My.Resources.TIMESERIES_WARNING_NOGROUP
                     End If
-                    strType = desc.GetDescriptor(gts.TimeSeriesType)
+                    strType = fmtTS.GetDescriptor(gts.TimeSeriesType)
 
                 ElseIf TypeOf shape Is cFleetTimeSeries Then
 
@@ -189,16 +190,16 @@ Namespace Controls
                     Dim ifleet As Integer = fts.FleetIndex
 
                     If (ifleet > 0) Then
-                        strName = core.FleetInputs(fts.FleetIndex).Name
+                        strName = fmtIO.GetDescriptor(core.FleetInputs(fts.FleetIndex))
                     Else
                         strName = My.Resources.TIMESERIES_WARNING_NOFLEET
                     End If
-                    strType = desc.GetDescriptor(fts.TimeSeriesType)
+                    strType = fmtTS.GetDescriptor(fts.TimeSeriesType)
 
                 End If
 
                 strLabel = String.Format(My.Resources.GENERIC_LABEL_DOUBLE, strType, strName)
-                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 33, fmt)
+                g.DrawString(strLabel, tmpFont, brTmp, CSng(rcImage.Width / 2), rcImage.Top + 33, sfmt)
 
                 ' Dispose the pen, brush and font we created and let the system garbage collect them.
                 brTmp.Dispose()
