@@ -1316,9 +1316,7 @@ Namespace MSE
             Dim i As Integer, ig As Integer, Elim As Single, Emax As Single
             Dim ci As Single
 
-            If Not Me.isTStepRegulated(t) Then
-                Exit Sub
-            End If
+            If Not Me.isTStepRegulated(t) Then Return
 
             If Me.m_data.UseLPSolution Then
 
@@ -2708,13 +2706,11 @@ Namespace MSE
         ''' </summary>
         ''' <param name="iTime"></param>
         ''' <param name="data"></param>
-        ''' <remarks></remarks>
         Private Sub onEcosimTimestep(ByVal iTime As Long, ByVal data As cEcoSimResults)
             Try
                 Dim iflt As Integer, igrp As Integer
-                If Me.m_Search.SearchMode <> eSearchModes.MSE Then
-                    Exit Sub
-                End If
+
+                If (Me.m_Search.SearchMode <> eSearchModes.MSE) Then Return
 
                 'After the first year
 
@@ -2735,21 +2731,17 @@ Namespace MSE
                 For igrp = 1 To Me.m_data.nLiving
                     Me.m_data.BioStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Biomass, igrp, CInt(iTime)))
                     Me.m_data.CatchGroupStats.AddValue(igrp, CInt(iTime), Me.m_esData.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, igrp, CInt(iTime)))
-
                     'Me.m_data.FStats.AddValue(igrp, CInt(iTime), 1 + (Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)))
-
                     ' System.Console.Write((Me.m_esData.FishTime(igrp) - Me.m_data.FTarget(igrp)).ToString & ",")
-
                 Next igrp
 
                 Dim sumValue As Single
+
                 For iflt = 1 To Me.m_esData.nGear
                     sumValue += Me.m_esData.ResultsSumValueByGear(iflt, CInt(iTime))
                     Me.m_data.CatchFleetStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsSumCatchByGear(iflt, CInt(iTime)))
                     Me.m_data.EffortStats.AddValue(iflt, CInt(iTime), Me.m_esData.ResultsEffort(iflt, CInt(iTime)))
-
                     ' Me.m_data.EffortYear(iflt) = Me.m_esData.FishRateGear(iflt, CInt(iTime))
-
                 Next iflt
 
                 Me.m_data.ValueFleetStats.AddValue(1, CInt(iTime), sumValue)
