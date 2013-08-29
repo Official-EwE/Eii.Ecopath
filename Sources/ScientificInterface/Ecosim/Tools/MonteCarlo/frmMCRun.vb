@@ -687,7 +687,7 @@ Namespace Ecosim
             Me.m_bInUpdate = True
 
             Me.m_spPlot.Panel2Collapsed = Not Me.m_tsbnShowGroups.Checked
-            Me.m_btnApply.Enabled = Not bIsBusy And (Me.m_mcmanager.SSBestFit > Me.m_mcmanager.SSorg)
+            Me.m_btnApply.Enabled = Not bIsBusy And (Me.m_mcmanager.SSBestFit < Me.m_mcmanager.SSorg)
             Me.m_cbRetainEstimates.Enabled = Not bIsBusy
             Me.m_cbShowBioTraj.Enabled = Not bIsBusy
             Me.m_nudNumTrials.Enabled = Not bIsBusy
