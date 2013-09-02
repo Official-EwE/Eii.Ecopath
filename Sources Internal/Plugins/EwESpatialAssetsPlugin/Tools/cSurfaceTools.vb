@@ -138,6 +138,8 @@ Public Class cSurfaceTools
                     Dim dAreaCell As Double = polyCut.Area
                     Dim dAreaOverlap As Double = 0.0
 
+                    ' See useful discussion for faster polygon overlap processing: http://dotspatial.codeplex.com/discussions/265535
+
                     Try
                         ' Get intersection of cell with feature
                         Dim fIntersect As IGeometry = polyCut.Intersection(polyToConvert)
