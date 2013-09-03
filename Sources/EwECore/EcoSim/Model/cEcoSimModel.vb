@@ -63,7 +63,6 @@ Namespace Ecosim
     ''' <summary>
     ''' Class to encapsulate EcoSim Model
     ''' </summary>
-    ''' <remarks></remarks>
     Public Class cEcoSimModel
 
 #Region "Data Private and Public"
@@ -271,7 +270,6 @@ Namespace Ecosim
 #End Region
 
 #Region "Construction Destruction"
-
 
         Sub New(ByVal functions As cEcoFunctions)
             m_bInit = False
@@ -4807,7 +4805,7 @@ Namespace Ecosim
                     'Baseline value
                     Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_EPData.TTLX, m_Data.StartBiomass, 0.25)
                 Else
-                    ' JS 28Feb13: I may found a bug here. EcoFunctions would base KemptonsQ calculations implicitly on 
+                    ' JS 28Feb13: I may have found a bug here. EcoFunctions would base KemptonsQ calculations implicitly on 
                     '             Ecopath TTLX, rather than on the varying sim TL.
                     Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(Me.m_EPData.NumLiving, Me.m_Data.TLSim, BB, 0.25)
                 End If
@@ -4815,17 +4813,9 @@ Namespace Ecosim
                 If m_Data.CatchSim(0) > 0 Then
                     ' Calculate TL of catch
                     Me.m_Data.TLC(TimeStep) = CSng(totalTL / (Me.m_Data.CatchSim(TimeStep) + 1.0E-20))
-
-                    'jb 17-Mar-2011 move calculation of Kemptons() outside CatchSim(0) > 0
-                    '' Calculate keptons Q
-                    'If TimeStep = 0 Then
-                    '    Me.m_Data.Kemptons(0) = Me.m_Ecofunctions.KemptonsQ(m_Data.StartBiomass, 0.25)
-                    'Else
-                    '    Me.m_Data.Kemptons(TimeStep) = Me.m_Ecofunctions.KemptonsQ(BB, 0.25)
-                    'End If
                 Else
                     ' ?!
-                    m_EPData.TLcatch = CSng(totalTL / (m_Data.CatchSim(TimeStep) + 1.0E-20))
+                    Me.m_EPData.TLcatch = CSng(totalTL / (Me.m_Data.CatchSim(TimeStep) + 1.0E-20))
                 End If
 
             Catch ex As Exception

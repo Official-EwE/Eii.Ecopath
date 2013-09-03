@@ -212,12 +212,11 @@ Public Class cEcospaceDataStructures
     Public DepthX(,) As Integer
     Public DepthY(,) As Single
 
+    ''' <summary>Catch by Row, Col, Group.</summary>
     Public CatchMap(,,) As Single
     Public Excluded(,) As Boolean
 
-    ''' <summary>
-    ''' Trophic Level by Row, Col, Group
-    ''' </summary>
+    ''' <summary>Trophic Level by Row, Col, Group.</summary>
     Public TL(,,) As Single
 
     'these are all part of velmaker
