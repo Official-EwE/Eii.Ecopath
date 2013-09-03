@@ -20,6 +20,7 @@
 Option Strict On
 Imports System.Drawing
 Imports EwECore
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -35,6 +36,10 @@ Public Class cEcospaceIndicators
 
     ''' <summary>The map location (col, row) that this indicator represents.</summary>
     Private m_ptLocation As Point = Nothing
+    ''' <summary>The <see cref="cEcopathDataStructures">Ecopath data structures</see> to operate onto.</summary>
+    Private m_ecopathDS As cEcopathDataStructures = Nothing
+    ''' <summary>The <see cref="cEcosimDataStructures">Ecosim data structures</see> to operate onto.</summary>
+    Private m_ecosimDS As cEcosimDatastructures = Nothing
     ''' <summary>The <see cref="cEcospaceDataStructures">Ecospace data structures</see> to operate onto.</summary>
     Private m_ecospaceDS As cEcospaceDataStructures = Nothing
 
@@ -61,6 +66,8 @@ Public Class cEcospaceIndicators
                     ByVal taxonDS As cTaxonDataStructures)
 
         MyBase.New(core, ecopathDS, stanzaDS, taxonDS)
+        Me.m_ecopathDS = ecopathDS
+        Me.m_ecosimDS = m_ecosimDS
         Me.m_ecospaceDS = ecospaceDS
         Me.m_ptLocation = ptLocation
 
@@ -108,16 +115,28 @@ Public Class cEcospaceIndicators
     ''' <inheritdocs cref="cIndicators.ModelTL"/>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function ModelTL(iGroup As Integer) As Single
-        ' ToDo: implement this method
-        Return 0
+        Return Me.m_ecospaceDS.TL(Me.m_ptLocation.Y, Me.m_ptLocation.X, iGroup)
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.ModelTLCatch"/>
     ''' -----------------------------------------------------------------------
     Protected Overrides Function ModelTLCatch() As Single
-        ' ToDo: implement this method
+
+        Dim totalTL As Single = 0
+        Dim fCatch As Single = 0
+
+        For iGroup As Integer = 1 To Me.m_ecopathDS.NumGroups
+            fCatch += Me.m_ecospaceDS.CatchMap(Me.m_ptLocation.Y, Me.m_ptLocation.X, iGroup)
+            totalTL += Me.m_ecospaceDS.Ftot(Me.m_ptLocation.Y, Me.m_ptLocation.X, iGroup)
+        Next
+
+        If (fCatch > 0) Then
+            Return CSng(totalTL / (fCatch + 1.0E-20))
+        End If
+
         Return 0
+
     End Function
 
     ''' -----------------------------------------------------------------------
@@ -126,13 +145,33 @@ Public Class cEcospaceIndicators
     Protected Overrides Function ModelDiscards(iGroup As Integer) As Single
         ' ToDo: implement this method
         Return 0
+        'Dim sLandings As Single = 0
+        'For iFleet As Integer = 1 To Me.EcopathDS.NumFleet
+        '    sLandings += Me.EcosimDS.ResultsLandings(iGroup, iFleet)
+        'Next
+        'Return Me.EcosimDS.ResultsOverTime(cEcosimDatastructures.eEcosimResults.Yield, iGroup, Me.m_iTime) - sLandings
     End Function
 
     ''' -----------------------------------------------------------------------
     ''' <inheritdocs cref="cIndicators.KemptonsQ"/>
     ''' -----------------------------------------------------------------------
     Public Overrides Function KemptonsQ() As Single
-        Return 0
+
+        ' Recompose TLs, Biomass array
+        Dim TLs(Me.m_ecopathDS.NumGroups) As Single
+        Dim BSpace(Me.m_ecopathDS.NumGroups) As Single
+
+        For iGroup As Integer = 1 To Me.m_ecopathDS.NumGroups
+            TLs(iGroup) = Me.ModelTL(iGroup)
+            BSpace(iGroup) = Me.ModelBiomass(iGroup)
+        Next
+
+        If (Me.m_ecospaceDS.TimeStep = 0) Then
+            Return Me.Core.EcoFunction.KemptonsQ(Me.m_ecopathDS.NumLiving, Me.m_ecopathDS.TTLX, m_ecospaceDS.BBase, 0.25)
+        Else
+            Return Me.Core.EcoFunction.KemptonsQ(Me.m_ecopathDS.NumLiving, TLs, BSpace, 0.25)
+        End If
+
     End Function
 
 #End Region ' Overrides Core data access and public bits

@@ -46,9 +46,11 @@ Public Class cEwEBioDiversityIndicatorsPlugin
     Implements EwEPlugin.IEcosimRunCompletedPostPlugin
     Implements EwEPlugin.IEcosimRunInvalidatedPlugin
     Implements EwEPlugin.IEcosimPlugin
+    Implements EwEPlugin.IEcospacePlugin
     Implements EwEPlugin.IEcospaceEndTimestepPostPlugin
     Implements EwEPlugin.IEcospaceRunInvalidatedPlugin
-    Implements EwEPlugin.IEcospacePlugin
+    Implements EwEPlugin.IEcospaceInitRunCompletedPlugin
+    Implements EwEPlugin.IEcospaceRunCompletedPlugin
     Implements EwEPlugin.IMenuItemPlugin
     Implements EwEPlugin.IUIContextPlugin
     Implements EwEPlugin.ISearchPlugin
@@ -406,11 +408,28 @@ Public Class cEwEBioDiversityIndicatorsPlugin
         End If
     End Sub
 
-    Public Sub EcospaceEndTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
-        Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
+    Private Property PreserveCalcTL As Boolean
+
+    Public Sub EcospaceInitRunCompleted(EcospaceDatastructures As Object) _
+        Implements EwEPlugin.IEcospaceInitRunCompletedPlugin.EcospaceInitRunCompleted
 
         ' Grab and remember ecosim data structures when provided via the plug-in mechanism
         Me.m_ecospaceDS = DirectCast(EcospaceDatastructures, cEcospaceDataStructures)
+
+        ' Preserve old TL calc setting, and make sure TL is calculated
+        Me.PreserveCalcTL = Me.m_ecospaceDS.bCalTrophicLevel
+        Me.m_ecospaceDS.bCalTrophicLevel = True
+
+    End Sub
+
+    Public Sub EcospaceRunCompleted(EcoSpaceDatastructures As Object) _
+        Implements EwEPlugin.IEcospaceRunCompletedPlugin.EcospaceRunCompleted
+        ' Restore old TL calc setting
+        Me.m_ecospaceDS.bCalTrophicLevel = Me.PreserveCalcTL
+    End Sub
+
+    Public Sub EcospaceEndTimeStepPost(ByVal EcospaceDatastructures As Object, ByVal iTime As Integer) _
+        Implements EwEPlugin.IEcospaceEndTimestepPostPlugin.EcospaceEndTimeStepPost
 
         ' Do not calculate if not supposed to run with Ecospace
         If (Not My.Settings.RunWithEcospace) Then Return
