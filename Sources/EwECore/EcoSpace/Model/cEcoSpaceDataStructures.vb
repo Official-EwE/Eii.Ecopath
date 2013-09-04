@@ -218,6 +218,10 @@ Public Class cEcospaceDataStructures
 
     ''' <summary>Trophic Level by Row, Col, Group.</summary>
     Public TL(,,) As Single
+    ''' <summary>Trophic Level of the catch by Row, Col.</summary>
+    Public TLc(,) As Single
+    ''' <summary>Kemptons Q by Row, Col.</summary>
+    Public KemptonsQ(,) As Single
 
     'these are all part of velmaker
     'velmaker may become its own class
@@ -1433,8 +1437,8 @@ Public Class cEcospaceDataStructures
             Me.allocate(relPP0, InRow + 1, InCol + 1)
 
             Me.allocate(TL, InRow, InCol, NGroups)
-
-            ' 
+            Me.allocate(TLc, InRow, InCol)
+            Me.allocate(KemptonsQ, InRow, InCol)
 
             'jb not used in 6
             'Me.allocate(DepthOrig, InRow + 1, InCol + 1)   'for use with habitat change
