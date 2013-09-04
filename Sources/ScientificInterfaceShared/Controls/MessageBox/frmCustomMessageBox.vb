@@ -25,6 +25,7 @@ Imports System.Windows.Forms
 Imports System.ComponentModel
 Imports EwEUtils.Utilities
 Imports ScientificInterfaceShared.Commands
+Imports EwEUtils.Core
 
 #End Region ' Imports
 
@@ -175,6 +176,9 @@ Namespace Controls
             End Get
         End Property
 
+        ''' -------------------------------------------------------------------
+        ''' <inheritdocs cref="IUIElement.UIContext"/>
+        ''' -------------------------------------------------------------------
         Public Property UIContext As cUIContext _
             Implements IUIElement.UIContext
 
@@ -213,8 +217,13 @@ Namespace Controls
 
         End Sub
 
+        ''' -------------------------------------------------------------------
+        ''' <summary>
+        ''' Event handler, handles a hyperlink click.
+        ''' </summary>
+        ''' -------------------------------------------------------------------
         Private Sub OnLinkClicked(sender As Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) _
-            Handles m_lblPrompt.LinkClicked
+               Handles m_lblPrompt.LinkClicked
 
             If String.IsNullOrWhiteSpace(Me.m_strHyperlink) Then Return
 
@@ -223,6 +232,13 @@ Namespace Controls
                 If (cmd IsNot Nothing) Then
                     cmd.Invoke(Me.m_strHyperlink)
                 End If
+            Else
+                Try
+                    ' Go!
+                    Process.Start(Me.m_strHyperlink)
+                Catch ex As Exception
+                    cLog.Write(ex.Message, "frmCustomMessageBox::OnLinkClicked(" & Me.m_strHyperlink & ")")
+                End Try
             End If
 
         End Sub
