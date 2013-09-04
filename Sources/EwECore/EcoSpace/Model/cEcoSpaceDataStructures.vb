@@ -682,8 +682,10 @@ Public Class cEcospaceDataStructures
                 Dim n As Integer = 0
                 For irow As Integer = 1 To InRow
                     For icol As Integer = 1 To InCol
-                        If Region(irow, icol) = iRegion Then
-                            n += 1
+                        If Me.Depth(irow, icol) > 0 Then
+                            If Region(irow, icol) = iRegion Then
+                                n += 1
+                            End If
                         End If
                     Next
                 Next
