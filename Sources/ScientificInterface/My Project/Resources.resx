@@ -172,7 +172,7 @@
     <comment>{0}=selected object, {1}=selected variable name</comment>
   </data>
   <data name="PROMPT_ERROR_IMPORTFAILED" xml:space="preserve">
-    <value>Failed to convert Ewe5 database to EwE6.</value>
+    <value>Failed to convert the Ecopath 5 database to the EwE6 format.</value>
   </data>
   <data name="ECOSIM_SUITABILITY_PLOT_ELECTIVITY" xml:space="preserve">
     <value>Electivity</value>

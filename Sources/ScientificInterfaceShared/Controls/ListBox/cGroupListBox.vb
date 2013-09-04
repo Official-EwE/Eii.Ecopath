@@ -722,7 +722,7 @@ Namespace Controls
         ''' </summary>
         ''' -------------------------------------------------------------------
         Public Overrides Sub Refresh()
-            If Me.Sorted Then Me.Sort()
+            Me.Sort()
             MyBase.Refresh()
         End Sub
 
@@ -739,7 +739,6 @@ Namespace Controls
             Dim bIncludeGroup As Boolean = False
             Dim iGroupStart As Integer = 1
             Dim iGroupEnd As Integer = 1
-            Dim bSorted As Boolean = Me.Sorted
             Dim bSelected As Boolean = (Me.SelectedIndex > -1)
 
             If (Not Me.IsInitialized()) Then Return
@@ -799,7 +798,6 @@ Namespace Controls
                 End If
             Next
 
-            Me.Sorted = bSorted
             Me.ResumeLayout()
 
             ' Todo: preserve selection
@@ -929,13 +927,18 @@ Namespace Controls
         Protected Overrides Sub Sort()
 
             Dim items(Me.Items.Count - 1) As cGroupItem
+
             Me.Items.CopyTo(items, 0)
             Array.Sort(items, New cGroupItemComparer(Me.m_sortType))
+
             Me.Items.Clear()
+            ' Prevent .NET from screwing up the order of items again
+            Me.Sorted = False
+
+            ' Add items in newly sorted order
             For i As Integer = 0 To items.Length - 1
                 Me.Items.Add(items(i))
             Next
-
         End Sub
 
 #End Region ' Internals

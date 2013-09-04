@@ -2765,7 +2765,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to Failed to convert Ewe5 database to EwE6..
+        '''  Looks up a localized string similar to Failed to convert the Ecopath 5 database to the EwE6 format..
         '''</summary>
         Public ReadOnly Property PROMPT_ERROR_IMPORTFAILED() As String
             Get
