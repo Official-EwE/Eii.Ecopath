@@ -90,7 +90,7 @@ Namespace Controls
 
             ' Config content
             Me.m_lblPrompt.Text = Me.m_strPrompt
-            Me.m_lblPrompt.LinkArea = New LinkArea(iLinkStart, iLinkEnd - iLinkStart)
+            Me.m_lblPrompt.LinkArea = New LinkArea(Math.Max(0, iLinkStart), Math.Max(iLinkEnd - iLinkStart, 0))
 
             Me.Text = Me.m_strCaption
 
